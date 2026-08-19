@@ -1,0 +1,40 @@
+2.1.13 Styling an HTML Tag's Relative Position with CSS 
+ Browsers automatically determine the default position of all content displayed on the screen. You can override these 
+ default positions using the CSS position property. This property supports several values, with the most common ones 
+ being relative , absolute , static , and ﬁxed . Setting the position property to relative allows you to shift an element from its 
+ default position without affecting the layout of surrounding elements. You can then use the top , bottom , left , and right 
+ properties to specify the direction and distance of the shift. To practice positioning elements relatively, copy the CSS and 
+ HTML code provided below into index.css and Positions.tsx , respectively. Verify that your browser renders the result as 
+ shown in Figure 2.1.13. Note that the background colors referenced in this exercise were deﬁned in a previous exercise. 
+ app/labs/lab2/index.css app/labs/lab2/Positions.tsx 
+ . wd-pos-relative-nudge-up-right { 
+ position : relative ; 
+ bottom : 30 px ; 
+ left : 30 px ; 
+ } 
+ . wd-pos-relative-nudge-down-right { 
+ position : relative ; 
+ top : 20 px ; 
+ left : 20 px ; 
+ } 
+ . wd-pos-relative { 
+ position : relative ; 
+ } 
+ <div id = "wd-css-position-relative" > 
+ <h2> Relative </h2> 
+ <div className = "wd-bg-color-gray" > 
+ <div className = "wd-bg-color-yellow 
+ wd-dimension-portrait" > 
+ <div className = "wd-pos-relative-nudge-down-right" > 
+ Portrait </div></div> 
+ <div className = "wd-pos-relative-nudge-up-right 
+ wd-bg-color-blue 
+ wd-fg-color-white 
+ wd-dimension-landscape" > 
+ Landscape </div> 
+ <div className = "wd-bg-color-red 
+ wd-dimension-square" > 
+ Square </div> 
+ </div> 
+ </div> 
+ 

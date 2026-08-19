@@ -1,0 +1,70 @@
+2.1.18 Laying Out Content in a Grid Using CSS 
+ Building on the concept of horizontal content arrangement using the CSS ﬂoat property, you can create sophisticated grid 
+ layouts with rows and columns, as illustrated in the ﬁgure below. To practice implementing a grid layout, copy the 
+ provided CSS and HTML code below into index.css and GridLayout.tsx , respectively, and verify that the browser renders 
+ the layout as shown in the ﬁgure below. 
+ app/labs/lab2/index.css app/labs/lab2/GridLayout.tsx 
+ . wd-grid-row { 
+ clear : both ; 
+ } 
+ . wd-grid-col-half-page { 
+ width : 50 %; 
+ float : left ; 
+ } 
+ . wd-grid-col-third-page { 
+ width : 33 %; 
+ float : left ; 
+ } 
+ . wd-grid-col-two-thirds-page 
+ { 
+ width : 67 %; 
+ float : left ; 
+ } 
+ . wd-grid-col-left-sidebar { 
+ width : 20 %; 
+ float : left ; 
+ } 
+ . wd-grid-col-main-content { 
+ width : 60 %; 
+ float : left ; 
+ } 
+ . wd-grid-col-right-sidebar { 
+ width : 20 %; 
+ float : left ; 
+ } 
+ <div id = "wd-css-grid-layout" > 
+ <div id = "wd-css-left-right-layout" > 
+ <h2> Grid layout </h2> 
+ <div className = "wd-grid-row" > 
+ <div className = "wd-grid-col-half-page wd-bg-color-yellow" > 
+ <h3> Left half </h3> </div> 
+ <div className = "wd-grid-col-half-page wd-bg-color-blue wd-fg-color-white" > 
+ <h3> Right half </h3> </div> 
+ </div> 
+ </div> 
+ <div id = "wd-css-left-third-right-two-thirds" className = "wd-grid-row" > 
+ <div className = "wd-grid-col-third-page wd-bg-color-green 
+ wd-fg-color-white" > 
+ <h3> Left third </h3> </div> 
+ <div className = "wd-grid-col-two-thirds-page wd-bg-color-red wd-fg-color-white" > 
+ <h3> Right two thirds </h3> </div> 
+ </div> 
+ <div id = "wd-css-side-bars" className = "wd-grid-row" > 
+ <div className = "wd-grid-col-left-sidebar wd-bg-color-yellow" > 
+ <h3> Side bar </h3> 
+ <p> This is the left sidebar </p> </div> 
+ <div className = "wd-grid-col-main-content wd-bg-color-blue wd-fg-color-white" > 
+ <h3> Main content </h3> 
+ <p> 
+ This is the main content. This is the main content. This is the 
+ main content. 
+ </p> </div> 
+ <div className = "wd-grid-col-right-sidebar wd-bg-color-green wd-fg-color-white" > 
+ <h3> Side bar </h3> 
+ <p> This is the right sidebar </p> 
+ </div> 
+ </div></div> 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 17 
+
+===== PAGE 18 =====
+ Figure 

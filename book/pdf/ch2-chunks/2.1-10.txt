@@ -1,0 +1,35 @@
+2.1.7 Styling an HTML Tag's Foreground Color with CSS 
+ Foreground colors can be conﬁgured using the CSS color property as follows 
+ . some-css-selector { 
+ color : blue ; 
+ } 
+ /* selects some DOM element */ 
+ /* sets color property to blue */ 
+ Colors can be deﬁned in various ways: 
+ ● As strings, e.g., white , red , blue , etc. There are thousands of declared color names. [REF] 
+ ● As hexadecimals, e.g., #ABCDEF, where each group of 2 digits, from left to right specify the amound of red, green 
+ and blue. 
+ ● As RGB, e.g., rgb(12, 34, 56), where each digit, from left to right, speciﬁes the amound of red, green and blue. 
+ Here are a couple of examples: 
+ . the-sun { color : rgb ( 255 , 255 , 0 ); } . the-sky { color : blue ; } . ketchup { color : #FF0000 ; } 
+ 8 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 9 =====
+ To practice working with foreground colors, copy the CSS rules below into index.css to declare several useful color 
+ classes. Copy the HTML code below into a new ﬁle called ForegroundColors.tsx . Import the ﬁle into Lab2 and conﬁrm it 
+ renders as shown. 
+ app/labs/lab2/index.css app/labs/lab2/ForegroundColors.tsx 
+ . wd-fg-color-black { color : black ; } 
+ . wd-fg-color-white { color : white ; } 
+ . wd-fg-color-blue { color : #7070ff ; } 
+ . wd-fg-color-red { color : #ff7070 ; } 
+ . wd-fg-color-green { color : green ; } 
+ <div id = "wd-css-colors" > 
+ <h2> Colors </h2> 
+ <h3 className = "wd-fg-color-blue" > Foreground color </h3> 
+ <p className = "wd-fg-color-red" > 
+ The text in this paragraph is red but 
+ <span className = "wd-fg-color-green" > this text is green </span> 
+ </p> 
+ </div> 
+ Figure 

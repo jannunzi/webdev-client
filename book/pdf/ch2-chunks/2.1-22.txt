@@ -1,0 +1,25 @@
+2.1.15 Styling an HTML Tag's Fixed Position with CSS 
+ Setting the CSS position property to ﬁxed positions an element relative to the browser's viewport . This ensures that the 
+ element remains in place, even when the page content is scrolled. To practice using ﬁxed positioning, copy the CSS and 
+ HTML code provided below into index.css and Positions.tsx , respectively, and verify that the browser renders the result as 
+ shown in the ﬁgure below. Note that the appearance may vary slightly depending on your screen size and scroll position. 
+ app/labs/lab2/index.css app/labs/lab2/Positions.tsx 
+ . wd-pos-fixed { 
+ position : fixed ; 
+ right : 0 px ; 
+ bottom : 50 %; 
+ } 
+ <div id = "wd-css-position-fixed" > 
+ <h2> Fixed position </h2> 
+ Checkout the blue square that says "Fixed position" stuck all the way on the right and half 
+ way down the page. It doesn't scroll with the rest of the page. Its position is "Fixed". 
+ <div className = "wd-pos-fixed 
+ wd-dimension-square wd-bg-color-blue 
+ wd-fg-color-white" > 
+ Fixed position 
+ </div> 
+ </div> 
+ 14 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 15 =====
+ Figure 

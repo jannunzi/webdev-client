@@ -1,0 +1,26 @@
+2.1.16 Styling an HTML Tag's Z Index with CSS 
+ When rendering HTML content, the browser automatically calculates the positions and dimensions of elements, assigning 
+ each a dedicated rectangular space on the screen to prevent overlap. However, using the CSS position property to override 
+ default positioning can lead to elements overlapping. By default, elements are rendered in the order they appear in the 
+ HTML, meaning later-declared elements appear above earlier ones when they overlap. The z-index CSS property allows 
+ you to control this stacking order: elements with a higher z-index value are displayed above those with a lower value. The 
+ default value of z-index is auto where elements are rendered in the order they are declared. To practice setting an 
+ element’s z-index , copy the CSS and HTML code provided below into index.css and Zindex.tsx , respectively, and conﬁrm 
+ that the browser renders the result as shown in the ﬁgure below. 
+ app/labs/lab2/index.css app/labs/lab2/Zindex.tsx 
+ . wd-zindex-bring-to-front { 
+ z-index : 10 ; 
+ } 
+ <div id = "wd-z-index" > 
+ <h2> Z index </h2> 
+ <div className = "wd-pos-relative" > 
+ <div className = "wd-pos-absolute-10-10 wd-bg-color-yellow wd-dimension-portrait" > 
+ Portrait </div> 
+ <div className = "wd-zindex-bring-to-front wd-pos-absolute-50-50 
+ wd-dimension-landscape wd-bg-color-blue wd-fg-color-white" > 
+ Landscape </div> 
+ <div className = "wd-pos-absolute-120-20 wd-bg-color-red wd-dimension-square" > 
+ Square </div> 
+ </div><br /><br /><br /><br /><br /><br /><br /> 
+ </div> 
+ Figure 

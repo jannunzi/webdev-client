@@ -1,0 +1,8 @@
+2.1 Styling React Components with CSS (Cascading Style Sheets) 
+ This section introduces several CSS , Bootstrap , and React Icons exercises to practice and learn how to style HTML 
+ documents. Use the same project created the last chapter. Using VS Code , open the project created in the previous 
+ chapter ( kambaz-next-js ), and complete all the exercises under the src directory. If not already done, under the app/labs 
+ directory, create a new directory called lab2 , create page.tsx under app/labs/lab2 and do all work in a new page.tsx ﬁle. 
+ Make sure to add links in app/labs/page.tsx and app/labs/TOC.tsx to the new exercises in app/labs/lab2/page.tsx . Conﬁrm 
+ you can navigate to the new exercises from the table of content. 
+ 

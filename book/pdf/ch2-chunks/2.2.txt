@@ -1,0 +1,37 @@
+2.2 Decorating Documents with React Icons 
+ React icons is a CSS library that aggregates icons from various sources including Fontawesome , Bootstrap , and 
+ Heroicons . Install React icons from the root of your project as shown below. 
+ npm install react-icons 
+ Head over to https://react-icons.github.io/react-icons to search for icons of interest. Search for icons by typing a topic in 
+ the search box. Here are a few example searches found from several icon sources. 
+ 20 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 21 =====
+ Navigate through the icons by their vendors as shown below, e.g, Bootstrap and Fontawesome . 
+ The icons are made available as React components that can be imported and used as tags within HTML code. To practice 
+ using React Icons , create the ReactIconsSampler component as shown below. Import the component at the end of Lab2 
+ page and conﬁrm it renders as shown below on the right. 
+ app/labs/lab2/ReactIconsSampler.tsx 
+ import { FaCalendar, FaEnvelopeOpenText, FaRegClock } from "react-icons/fa" ; 
+ import { AiOutlineDashboard } from "react-icons/ai" ; 
+ import { FaBookBible } from "react-icons/fa6" ; 
+ import { VscAccount } from "react-icons/vsc" ; 
+ export default function ReactIconsSampler() { 
+ return ( 
+ <div id = "wd-react-icons-sampler" className = "mb-4" > 
+ <h3> React Icons Sampler </h3> 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 21 
+
+===== PAGE 22 =====
+ <div className = "d-flex" > 
+ <VscAccount className = "fs-3 text" /> 
+ <AiOutlineDashboard className = "fs-3 text" /> 
+ <FaBookBible className = "fs-3 text" /> 
+ <FaCalendar className = "fs-3 text" /> 
+ <FaEnvelopeOpenText className = "fs-3 text" /> 
+ <FaRegClock className = "fs-3 text" /> 
+ </div> 
+ </div> 
+ );} 
+ Figure 2.2 - Decorating Documents with React Icons 
+ 

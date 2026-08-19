@@ -1,0 +1,58 @@
+2.1.5 Selecting HTML Content Based on the Document Structure 
+ Selectors can be combined to refer to tags in particular places in the document. A set of selectors separated by a space 
+ can refer to elements in a hierarchy. For instance: .selector1 .selector2 { … } refers to an element whose class is .selector2 
+ and is inside some ancestor whose class is .selector1 . Alternatively, separating class selectors with the ">" character 
+ establishes a direct parent/child relationship. To practice selecting elements using a set of selectors, copy the following 
+ content in page.tsx . The code below does not show ellipses as previous examples, but the code is intended to be copied 
+ at the end of the ﬁle shown. Be sure to include the code within the function's return and within the wrapping <div> . 
+ app/labs/lab2/page.tsx 
+ <div id = "wd-css-document-structure" > 
+ <div className = "wd-selector-1" > 
+ <h3> Document structure selectors </h3> 
+ <div className = "wd-selector-2" > 
+ Selectors can be combined to refer elements in particular 
+ places in the document 
+ <p className = "wd-selector-3" > 
+ This paragraph's red background is referenced as 
+ <br /> 
+ .selector-2 .selector3 <br /> 
+ meaning the descendant of some ancestor. <br /> 
+ <span className = "wd-selector-4" > 
+ Whereas this span is a direct child of its parent 
+ </span><br /> 
+ You can combine these relationships to create specific 
+ styles depending on the document structure 
+ </p> 
+ </div> 
+ </div> 
+ </div> 
+ {/* this is parent element with selector 
+ .wd-selector-1 
+ .wd-selector-2 is a direct child of 
+ .wd-selector-1 
+ .wd-selector-3 is a direct child of 
+ .wd-selector-2 and a descendant of 
+ .wd-selector-1 
+ .wd-selector-4 is a direct child of 
+ .wd-selector-3 and is a descendant of 
+ .wd-selector-2 and is a descendant of 
+ .wd-selector-1 
+ */} 
+ Now, in index.css , style tags .wd-selector-3 and .wd-selector-4 as shown below. 
+ app/labs/lab2/index.css 
+ . wd-selector-1 . wd-selector-3 { 
+ background-color : red ; 
+ color : white ; } 
+ . wd-selector-2 > . wd-selector-3 > . wd-selector-4 { 
+ background-color : yellow ; 
+ color : blue ; } 
+ /* refers to .wd-selector-3 as a descendant 
+ of .wd-selector-1 */ 
+ /* refers to .wd-selector-4 as a direct child 
+ of .wd-selector-3 which is a direct child 
+ of .wd-selector-2 */ 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 7 
+
+===== PAGE 8 =====
+ Conﬁrm that the page renders as shown below. 
+ Figure 

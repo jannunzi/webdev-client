@@ -1,0 +1,25 @@
+2.1.8 Styling an HTML Tag's Background Color with CSS 
+ Similar to styling foreground color, the background-color CSS property is used to conﬁgure the background color of any 
+ tag. To practice working with background colors, copy the CSS rules shown below into index.css and the HTML code into 
+ a new ﬁle called BackgroundColors.tsx . Import the ﬁle into Lab2 and conﬁrm the browser renders as shown. 
+ app/labs/lab2/index.css app/labs/lab2/BackgroundColors.tsx 
+ . wd-bg-color-yellow { 
+ background-color : #ffff07 ; } 
+ . wd-bg-color-blue { 
+ background-color : #7070ff ; } 
+ . wd-bg-color-red { 
+ background-color : #ff7070 ; } 
+ . wd-bg-color-green { 
+ background-color : green ; } 
+ . wd-bg-color-gray { 
+ background-color : lightgray ; } 
+ <div id = "wd-css-background-colors" > 
+ <h3 className = "wd-bg-color-blue wd-fg-color-white" > Background color </h3> 
+ <p className = "wd-bg-color-red wd-fg-color-black" > 
+ This background of this paragraph is red but 
+ <span className = "wd-bg-color-green wd-fg-color-white" > 
+ the background of this text is green and the foreground white 
+ </span> 
+ </p> 
+ </div> 
+ Figure 

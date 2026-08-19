@@ -1,0 +1,15 @@
+2.1.6 CSS Selection Rule Mechanism 
+ CSS rules override the default styling of the tags the rules refer to. That means that there are at least two rules that apply 
+ to the same element, the default rule declared by the browser, and then the custom rule that overrides the default rule. The 
+ custom rules wins out over the default rule, but why? The Cascading in Cascading Style Sheets refer to the way CSS rules 
+ are applied to HTML elements based on a hierarchy of speciﬁcity and origin. This mechanism determines how styles are 
+ applied when there are multiple style rules that could affect an element. Here’s how it works: 
+ 1. Speciﬁcity : CSS rules are applied based on their speciﬁcity. This is a measure of how precise a selector is. For 
+ example, since ID selectors only refer to a single tag, whereas class selectors can refer to many tags, the ID 
+ selector is more speciﬁc than a class selector. Since a tag's name refers to all tags with that name regardless of 
+ ID or class, a class selector is more speciﬁc than a tag name selector. More speciﬁc selectors override more 
+ general ones. 
+ 2. Source Order : If multiple rules have the same speciﬁcity, the last rule deﬁned in the CSS will take precedence. 
+ 3. Inheritance : Some styles are inherited by child elements from their parent elements, such as font styles. However, 
+ properties like width and margin are not inherited. 
+ 

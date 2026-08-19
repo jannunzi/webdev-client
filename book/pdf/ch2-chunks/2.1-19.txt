@@ -1,0 +1,36 @@
+2.1.14 Styling a Tag's Absolute Position with CSS 
+ The CSS position property set to absolute positions an element relative to its nearest ancestor with a position value of 
+ relative , absolute , or ﬁxed . If no such ancestor exists, the element is positioned relative to the body tag, effectively aligning 
+ with the browser's viewport . To practice using absolute positioning, copy the CSS and HTML code provided below into 
+ index.css and Positions.tsx , respectively, and verify the browser renders the result as shown in the ﬁgure below. Note that 
+ several br elements are included at the end of the example to create space for the next exercise. 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 13 
+
+===== PAGE 14 =====
+ app/labs/lab2/index.css app/labs/lab2/Positions.tsx 
+ . wd-pos-absolute-10-10 { 
+ position : absolute ; 
+ top : 10 px ; left : 10 px ; } 
+ . wd-pos-absolute-50-50 { 
+ position : absolute ; 
+ top : 50 px ; left : 50 px ; } 
+ . wd-pos-absolute-120-20 { 
+ position : absolute ; 
+ top : 20 px ; left : 120 px ; } 
+ <div id = "wd-css-position-absolute" > 
+ <h2> Absolute position </h2> 
+ <div className = "wd-pos-relative" > 
+ <div className = "wd-pos-absolute-10-10 wd-bg-color-yellow wd-dimension-portrait" > 
+ Portrait </div> 
+ <div className = "wd-pos-absolute-50-50 wd-bg-color-blue wd-fg-color-white 
+ wd-dimension-landscape" > 
+ Landscape </div> 
+ <div className = "wd-pos-absolute-120-20 wd-bg-color-red wd-dimension-square" > 
+ Square </div> 
+ </div><br /><br /><br /><br /><br /><br /><br /> 
+ </div> 
+ The term " absolute " can be misleading, as it positions the element relative to a parent or the body tag rather than an 
+ absolute point on the screen. Additionally, an element with absolute positioning scrolls with the rest of the page content. 
+ In contrast, when precise positioning is needed regardless of other elements or scrolling, the ﬁxed position property, 
+ covered in the next section, anchors an element relative to the browser's viewport. 
+ Figure 

@@ -1,0 +1,617 @@
+2.5 Styling Kambaz with CSS and Bootstrap 
+ The previous chapter implemented a prototype of the Kambaz Web application using plain HTML without overriding the 
+ default browser style sheet. This section revisits the Kambaz screens using CSS and Bootstrap to layout and color the 
+ screens so they look more like the screenshots provided. Make an effort to style the HTML code to make the screens look 
+ as close as possible to their intended look and feel, but don't fret if the screens are not pixel perfect and instead, follow 
+ the guidelines and requirements to practice. Several code snippets are provided as a suggestion on how to achieve the 
+ layout and style. Feel free to use the code as provided or ignore it to implement as you will. If you do implement the styling 
+ on your own, make sure it matches the screenshots provided. 
+ The previous chapter used table , tr , and td elements to layout screens horizontally, but in general this is considered a bad 
+ practice and CSS alternatives are preferred. Remove the table elements in preparation of using CSS instead as shown 
+ below. 
+ app/(kambaz)/layout.tsx 
+ <div id = "wd-kambaz" > 
+ <table><tbody><tr><td valign = "top" width = "200" > 
+ <div className = "d-flex" > 
+ <div> 
+ <KambazNavigation /> 
+ </div> 
+ </td><td valign = "top" width = "100%" > 
+ <div className = "flex-fill" > 
+ { children } 
+ </div> 
+ </div> 
+ </td></tr></tbody></table> 
+ </div> 
+ Do the same for the Courses and Home screens replacing the table elements with div elements styled with Bootstrap ﬂex 
+ classes and display classes . Style the Course header as shown below and conﬁrm the CourseNavigation sidebar and the 
+ Course Status sidebar appears and hides as you resize the window. Add any missing imports as needed. 
+ app/(kambaz)/courses/[cid]/layout.tsx app/(kambaz)/courses/[cid]/home/page.tsx 
+ <div id = "wd-courses" > 
+ <h2 className ="text-danger"> 
+ <FaAlignJustify className = "me-4 fs-4 mb-1" /> 
+ Course {cid} </h2> <hr /> 
+ <table><tbody><tr><td valign = "top" width="200" > 
+ <div id = "wd-home" > 
+ <table><tbody><tr><td valign = "top" > 
+ <div className = "d-flex" id = "wd-home" > 
+ <div className = "flex-fill me-3" > 
+ <Modules /> 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 39 
+
+===== PAGE 40 =====
+ <div className = "d-flex" > 
+ <div className = "d-none d-md-block" > 
+ <CourseNavigation /> 
+ </td><td valign = "top" width="100%" > 
+ </div> 
+ <div className = "flex-fill" > 
+ { children } 
+ </div></div> 
+ </td></tr> 
+ </tbody></table> 
+ </div> 
+ </div> 
+ </td><td valign = "top" > 
+ <div className = "d-none d-lg-block" > 
+ <CourseStatus /> 
+ </div> 
+ </div> 
+ </td></tr></tbody></table> 
+ </div> 
+ 2.5.1 Styling the Kambaz Navigation Sidebar 
+ The Kambaz Web application has several screens implementing different features. Figure 2.4.1.a bellow illustrates the 
+ Kambaz Navigation sidebar with the Dashboard link selected displaying a grid of courses that allow navigating to different 
+ courses. Without CSS the best the previous chapter could do was implement the list of links shown below in Figure 
+ 2.4.1.b. With CSS and Bootstrap, this section demonstrates how to style the Kambaz Navigation as shown below in Figure 
+ 2.4.1.c, as well as conﬁgure it to navigate to the Kambaz Dashboard and Courses Home screens. 
+ Figure 2.4.1.a - Kambaz Navigation and 
+ Dashboard 
+ Figure 2.4.1.b - Kambaz 
+ Navigation so far 
+ Figure 2.4.1.c - Kambaz Navigation this 
+ chapter 
+ The previous chapter implemented the Kambaz Navigation sidebar in app/(kambaz)/Navigation.tsx as rendered above. 
+ Using Bootstrap's Links and Buttons to Navigation.tsx , style the sidebar with CSS so that it looks more like the sidebar in 
+ the screenshot above on the right. Use the code below as a guide to apply the Bootstrap classes and React Icons to render 
+ the Dashboard and Calendar as icons. Explore other icons for the rest of the links. The icons don't have to match the ones 
+ showed here, but should reﬂect the meaning and intention of the link's text and target screen. 
+ app/(kambaz)/Navigation.tsx 
+ import { AiOutlineDashboard } from "react-icons/ai" ; 
+ import { IoCalendarOutline } from "react-icons/io5" ; 
+ import { LiaBookSolid, LiaCogSolid } from "react-icons/lia" ; 
+ import { FaInbox, FaRegCircleUser } from "react-icons/fa6" ; 
+ import { ListGroup, ListGroupItem } from "react-bootstrap" ; 
+ import Link from "next/link" ; 
+ export default function KambazNavigation() { 
+ return ( 
+ < ListGroup className = "rounded-0 position-fixed bottom-0 top-0 d-none d-md-block bg-black z-2" style = { { width: 120 } } 
+ id = "wd-kambaz-navigation" > 
+ < ListGroupItem className = "bg-black border-0 text-center" as = "a" 
+ target = "_blank" href = " https://www.northeastern.edu/ " id = "wd-neu-link" > 
+ <img src = "/images/NEU.png" width = "75px" alt = "Northeastern University" /> 
+ </ ListGroupItem > <br /> 
+ 40 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 41 =====
+ <ListGroupItem className = "border-0 bg-black text-center" > 
+ <Link href = "/account" id="wd-account-link" className = "text-white text-decoration-none" > 
+ <FaRegCircleUser className = "fs-1 text-white" /> 
+ <br /> 
+ Account 
+ </Link> 
+ </ListGroupItem> <br /> 
+ <ListGroupItem className = "border-0 bg-white text-center" > 
+ <Link href = "/dashboard" id="wd-dashboard-link" className = "text-danger text-decoration-none" > 
+ <AiOutlineDashboard className = "fs-1 text-danger" /> 
+ <br /> 
+ Dashboard 
+ </Link> 
+ </ListGroupItem> <br /> 
+ { /* complete styling the rest of the links */ } 
+ </ ListGroup > 
+ );} 
+ The Northeastern logo can be found in the Brand Center website . Apply the following Bootstrap classes to ﬁx the position 
+ of the Kambaz Navigation sidebar and stretch it vertically the whole height of the screen. 
+ ● position-ﬁxed - applies display: ﬁxed so that the sidebar stays ﬁxed in one place and doesn't scroll wit the rest of 
+ the screen 
+ ● bottom-0 top-0 - applies bottom: 0 and top: 0 so that the top edge is ﬁxed at the top of the screen and the bottom 
+ edge is ﬁxed at the bottom of the screen, effectively stretching the height of the element the whole height of the 
+ window. 
+ ● d-none d-md-block - applies display: none so that the element is initially hidden. And then applies display: block to 
+ display the element when the screen width reaches mid sized screens, e.g., 768 pixels 
+ ● z-2 - applies z-index: 2 which brings the element above other elements with a lower z-index . 
+ ● bg-black - applies background-color: black 
+ Conﬁrm that the the Kambaz Navigation sidebar stretches the whole height of the screen, does not scroll with the rest of 
+ the Dashboard and disappears when the screen is narrow, but appears again when the the screen widens. 
+ app/(kambaz)/Navigation.tsx 
+ export default function KambazNavigation() { 
+ return ( 
+ <ListGroup id = "wd-kambaz-navigation" style ={{ width: 120 }} 
+ className = "rounded-0 position-fixed bottom-0 top-0 d-none d-md-block bg-black z-2 " > 
+ ... 
+ </ListGroup> 
+ );} 
+ The implementation does not need to be pixel perfect, but here are some rough requirements that should be consider 
+ when implementing the Kambaz Navigation . Use your own access to Canvas to help guide your design 
+ ● The Kambaz Account Sign screen must be the default screen when navigating to Kambaz 
+ ● Icons must be red , except the Account icon which must be white 
+ ● Icons don't have to match exactly, but must be similar. Use an equivalent React Icons 
+ ● The font size and style must be similar 
+ ● The whole sidebar must have a black background 
+ ● Selected (active) links must have a white background with red text 
+ ● Non selected links must have a black background with white text 
+ ● The width of the sidebar must be about 110 pixels wide, +/- 5 pixels. 
+ ● The icons and text must be centered in the sidebar 
+ Once you are satisﬁed with the styling of the Kambaz Navigation sidebar, visit all the screens and make sure that the 
+ Kambaz Navigation styling is as shown above. The Kambaz Navigation sidebar is now stuck to the left of the screen and 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 41 
+
+===== PAGE 42 =====
+ does not scroll with the main content on the right, but the Dashboard now renders under the sidebar which overlaps the 
+ main content. This is because position-ﬁxed removes the DIV from the normal layout ﬂow and no longer pushes other 
+ content to render below it. This can be ﬁxed by offsetting the main content to the right to compensate for the width of the 
+ sidebar. Additionally, the sidebar appears and disappears at different screen sizes, so the offset needs to apply only when 
+ the sidebar is present and not apply when the sidebar is hidden. Create class wd-main-content-offset in a new styles.css 
+ ﬁle that offsets Kambaz 's main content by 140 pixels, enough to move the Routes to the right off under the Kambaz 
+ Navigation sidebar. The class is declared inside a @media query that applies the 140 pixel offset only when the screen is 
+ wider than 768 pixels, exactly when the sidebar appears. Navigate to the Dashboard and conﬁrm that it does not render 
+ under the sidebar for all screen sizes 
+ app/(kambaz)/layout.tsx app/(kambaz)/styles.css 
+ import { ReactNode } from "react" ; 
+ import KambazNavigation from "./Navigation" ; 
+ import "./styles.css" ; 
+ export default function KambazLayout( ... ) { 
+ return ( 
+ <div id = "wd-kambaz" > 
+ <div className = "d-flex" > 
+ <div> 
+ <KambazNavigation /> 
+ </div> 
+ <div className = " wd-main-content-offset p-3 flex-fill" > 
+ { children } 
+ </div> 
+ </div> 
+ </div> 
+ );} 
+ body { 
+ margin: 0; 
+ padding: 0; 
+ } 
+ body * { 
+ font-family: Arial, 
+ Helvetica, sans-serif; 
+ } 
+ @media ( min-width : 768px ) { 
+ #wd-kambaz .wd-main-content-offset { 
+ padding-left : 140px !important ; 
+ } 
+ } 
+ 2.5.2 Styling the Kambaz Dashboard Screen 
+ The previous chapter implemented the Kambaz Dashboard as the default screen when ﬁrst login into Kambaz and it lists 
+ courses as shown below. Clicking on a course navigates to that speciﬁc course. Since JavaScript has not been oﬃcially 
+ covered yet, this chapter will just implement a single course and all courses in the Kambaz Dashboard will navigate to that 
+ same course. Later chapters will implement a data structure representing multiple courses. Courses are rendered in a 
+ responsive grid pattern that adapts (responds) to the width of the screen. When the screen is wide, each row of the grid 
+ displays several courses, as shown in Figure 2.4.2.a below. As the screen becomes narrower, the courses that don't ﬁt, 
+ wrap to the next row as shown in Figures 2.4.2.b, and 2.4.2.c below. When the screen is too narrow, the Kambaz 
+ Navigation is hidden and courses are displayed in a single column as shown in Figure 2.4.2.d. 
+ Figure 2.4.2.a - Dashboard at widest screen Figure 2.4.2.b - As screen narrows, courses wrap 
+ 42 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 43 =====
+ Figure 2.4.2.c - As screen narrows, courses wrap even further Figure 2.4.2.d - At narrowest screen, 
+ just one column of courses shows 
+ The behavior of adapting the layout of the screen and hiding and showing content at various screen sizes is referred to as 
+ Responsive Design , allowing developers to create content that can be viewed in multiple devices with varying screen 
+ sizes. Refactor the current Dashboard implementation so that it behaves as described above. Use React Bootstrap 's 
+ responsive Grid Cards which render a row of Bootstrap Cards from left to right and wrap as the window becomes 
+ narrower. Use the page.tsx ﬁle shown below as an example. Feel free to come up with your own courses. Replace the 
+ course's image <img> with React Bootstrap 's <CardImg> , replace the course's title <h5> with React Bootstrap 's <CardTitle> , 
+ replace the course's description paragraph <p> with React Bootstrap 's <CardText> , replace <button> with React Bootstrap 's 
+ <Button> . Download images for each course and save them to public/images . The code below uses an image of the React 
+ logo . Feel free to use your own implementation as long as it looks and behaves as described. 
+ app/(kambaz)/dashboard/page.tsx 
+ ... 
+ <div id = "wd-dashboard" > 
+ <h1 id = "wd-dashboard-title" > Dashboard </h1> <hr /> 
+ <h2 id = "wd-dashboard-published" > Published Courses (12) </h2> <hr /> 
+ <div id = "wd-dashboard-courses" > 
+ <Row xs = { 1 } md = { 5 } className = "g-4" > 
+ <Col className = "wd-dashboard-course" style = { { width: "300px" } } > 
+ <Card> 
+ <Link href = "/courses/1234/home" 
+ className = "wd-dashboard-course-link text-decoration-none text-dark" > 
+ <CardImg variant = "top" src = "/images/reactjs.jpg" width="100%" height={160} /> 
+ <CardBody> 
+ <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden "> CS1234 React JS </CardTitle> 
+ <CardText className="wd-dashboard-course-description overflow-hidden " style = { { height: "100px" } } > 
+ Full Stack software developer </CardText> 
+ <Button variant = "primary" > Go </Button> 
+ </CardBody> 
+ </Link> 
+ </Card> 
+ </Col> 
+ <Col className = "wd-dashboard-course" style = { { width: "300px" } } > ... Another course ... </Col> 
+ <Col className = "wd-dashboard-course" style = { { width: "300px" } } > ... Another course ... </Col> 
+ </Row> 
+ </div></div> 
+ ... 
+ Your implementation does not need to pixel perfect, but here are some rough requirements you should consider when 
+ implementing the Kambaz Dashboard . Use your own access to Canvas to help guide your design 
+ ● The Dashboard link must be rendered as selected in the Kambaz Navigation sidebar with red text, red icon, and 
+ white background 
+ ● A Dashboard title must appear at the top of the screen as shown 
+ ● Clicking the Dashboard link must display the Kambaz Dashboard screen 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 43 
+
+===== PAGE 44 =====
+ ● Clicking any course in Kambaz Dashboard , reveals the Home screen implemented in previous chapters 
+ ● A horizontal rule ( <hr/> ) must appear below the title as shown 
+ ● A Published Courses sub title must appear as shown 
+ ● At least 7 courses must be rendered under the Published Courses as shown 
+ ● Courses must render in a grid of rows and columns as shown 
+ ● Use Grid Cards and Bootstrap Cards must to render each course as a card with an image or solid color at the top 
+ and the course's title and description, linked to the course Home screen 
+ ● The widths of the courses as shown are about 300 pixels, and don't change as the window narrows 
+ ● There must be white spacing between courses above and below of between 30 and 40 pixels 
+ ● There must be white spacing between the right most edge of the Kambaz Navigation sidebar and the left most 
+ edge of the left most course 
+ ● When the window is at its widest, rows should ﬁt at least 4 courses per row 
+ ● When the window shrinks and courses don't ﬁt, then courses should wrap to the next row 
+ 2.5.3 Styling the Course Navigation Sidebar 
+ Clicking a course in the Kambaz Dashboard navigates to that course's Home screen. For now, implement the Kambaz 
+ Dashboard to navigate to the same course. Later chapters will introduce JavaScript and revisit this implementation to 
+ navigate to the corresponding course. The previous chapter implemented the Course Navigation sidebar in 
+ app/(kambaz)/courses/[cid]/Navigation.tsx . Style the Course Navigation sidebar to look more like the one from Canvas . 
+ The code below illustrates how to apply styles to the Courses Navigation sidebar so that it renders closer to the target 
+ look and feel shown here on the right. Refactor the list of links using Bootstrap List and buttons so that the clickable area 
+ is wider and easier to use in smaller screens. The styles.css ﬁle is implemented at the root of the Kambaz folder and is the 
+ same we used in the Kambaz Navigation sidebar and is documented earlier in this document. Feel free to use and modify 
+ the code below as necessary or implement your own version as long as it looks and behaves as shown. 
+ app/(kambaz)/courses/[cid]/Navigation.tsx 
+ import Link from "next/link" ; 
+ export default function CourseNavigation() { 
+ return ( 
+ <div id = "wd-courses-navigation" className = "wd list-group fs-5 rounded-0" > 
+ <Link href = "/courses/1234/home" id = "wd-course-home-link" 
+ className = "list-group-item active border-0" > Home </Link> <br /> 
+ <Link href = "/courses/1234/modules" id = "wd-course-modules-link" 
+ className = "list-group-item text-danger border-0" > Modules </Link> <br /> 
+ <Link href = "/courses/1234/piazza" id = "wd-course-piazza-link" 
+ className = "list-group-item text-danger border-0" > Piazza </Link> <br /> 
+ <Link href = "/courses/1234/zoom" id = "wd-course-zoom-link" 
+ className = "list-group-item text-danger border-0" > Zoom </Link> <br /> 
+ <Link href = "/courses/1234/assignments" id = "wd-course-assignments-link" 
+ className = "list-group-item text-danger border-0" > Assignments </Link> <br /> 
+ <Link href = "/courses/1234/quizzes" id = "wd-course-quizzes-link" 
+ className = "list-group-item text-danger border-0" > Quizzes </Link> <br /> 
+ <Link href = "/courses/1234/people/Table" id = "wd-course-people-link" 
+ className = "list-group-item text-danger border-0" > People </Link> <br /> 
+ </div> 
+ );} 
+ The CSS rule in styles.css shown below overrides Bootstrap classes list-group , list-group-time , and active so that the 
+ sidebar renders with a white background color, red text, and black border of the highlighted link. 
+ app/(kambaz)/styles.css 
+ ... 
+ .list-group.wd > .list-group-item.active { 
+ color : black ; 
+ 44 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 45 =====
+ background-color : white ; 
+ border-left : 3px solid black !important ; 
+ } 
+ 2.5.4 Styling the Modules Screen 
+ The Modules in the Modules Screen is also used in Home Screen so style the Modules ﬁrst. Clicking on a course in the 
+ Kambaz Dashboard displays the course's Home screen as shown below. The Course Navigation sidebar provides various 
+ links to navigate to different screens related to the course such as Home , Modules , Assignments , and Grades . The Course 
+ Home screen is displayed by default and its link is rendered as selected when you ﬁrst navigate to a course from the 
+ Dashboard . In a wide screen the Course Home screen renders 4 columns as shown in the Figure 2.4.4.a shown below. The 
+ ﬁrst column is the Kambaz Navigation sidebar, the second column is the Course Navigation sidebar, and the third column 
+ contains the Course Home showing a list of modules starting at Week 1 . The last column are various buttons and links 
+ we'll refer to as the Course Status . If the window narrows below some threshold, the last column is hidden and the third 
+ column takes the remaining width as shown in Figure 2.4.4.b below. 
+ 2.4.4.a. Course Home screen renders 4 columns in a wide screen 2.4.4.b. Course Status hides as screen 
+ narrows 
+ If the window narrows below some other threshold, the ﬁrst and second column are hidden, and the third column takes 
+ the remaining width as shown in Figure 2.4.4.c shown below. Even though the Kambaz Navigation is hidden, it is still 
+ available by clicking the top left icon and displays as shown in screenshot Figure 2.4.4.d shown below. The Course 
+ Navigation is also hidden, but available by clicking the top right corner icon and displays as shown in Figure 2.4.4.e shown 
+ below. 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 45 
+
+===== PAGE 46 =====
+ Figure 2.4.4.c - Hide Kambaz and 
+ Courses Navigation at narrowest screen 
+ Figure 2.4.4.d - Click top left icon to 
+ show Kambaz Navigation 
+ Figure 2.4.4.e - Click top right icon to 
+ show Courses Navigation 
+ Since Course Home screen's main content is the Modules , style 
+ those ﬁrst as shown in Figures 2.4.4 below. At the top of the 
+ Modules there's a collection of buttons and dropdowns including 
+ Collapse All , View Progress , Publish All , Module as shown on the 
+ right. First, create the green circular checkmark in a 
+ GreenCheckmark component as shown below. 
+ app/(kambaz)/courses/[cid]/modules/GreenCheckmark.tsx 
+ import { FaCheckCircle, FaCircle } from "react-icons/fa" ; 
+ export default function GreenCheckmark() { 
+ return ( 
+ <span className = "me-1 position-relative" > 
+ <FaCheckCircle style = { { top: "2px" } } className = "text-success me-1 position-absolute fs-5" /> 
+ <FaCircle className = "text-white me-1 fs-6" /> 
+ </span> );} 
+ Style the Modules Screen screen and Home Screen to look and behave as shown in the screenshots below. 
+ 46 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 47 =====
+ Figure 2.4.4.f - Course Home screen renders 4 
+ columns in a wide screen 
+ Figure 2.4.4.g - Course Status 
+ hides as screen narrows 
+ Figure 2.4.4.h - Hide Kambaz 
+ and Courses Navigation at 
+ narrowest screen 
+ Implement the controls at the top of the Module in a new ModulesControls component. Feel free to use the code below as 
+ an example or implement your own as long as it looks and behaves as described. 
+ app/(kambaz)/courses/[cid]/modules/modulesControls.tsx 
+ import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from "react-bootstrap" ; 
+ import { FaPlus } from "react-icons/fa6" ; 
+ import GreenCheckmark from "./GreenCheckmark" ; 
+ export default function ModulesControls() { 
+ return ( 
+ <div id = "wd-modules-controls" className = "text-nowrap" > 
+ <Button variant = "danger" size = "lg" className = "me-1 float-end" id = "wd-add-module-btn" > 
+ <FaPlus className = "position-relative me-2" style = { { bottom: "1px" } } /> 
+ Module 
+ </Button> 
+ <Dropdown className = "float-end me-2" > 
+ <DropdownToggle variant = "secondary" size = "lg" id = "wd-publish-all-btn" > 
+ <GreenCheckmark /> Publish All 
+ </DropdownToggle> 
+ <DropdownMenu> 
+ <DropdownItem id = "wd-publish-all" > 
+ <GreenCheckmark /> Publish All 
+ </DropdownItem> 
+ <DropdownItem id = "wd-publish-all-modules-and-items" > 
+ <GreenCheckmark /> Publish all modules and items 
+ </DropdownItem> 
+ <DropdownItem id = "wd-publish-modules-only" > 
+ <GreenCheckmark /> Publish modules only 
+ </DropdownItem> 
+ { /* Create two more items with IDs wd-unpublish-all-modules-and-items and wd-unpublish-modules-only with 
+ labels Unpublish all modules and items and Unpublish modules only */ } 
+ </DropdownMenu> 
+ </Dropdown> 
+ { /* Implement the View Progress and Collapse All buttons with IDs wd-view-progress and wd-collapse-all */ } 
+ </div> 
+ );} 
+ Import the component at the top of the Modules components and conﬁrm they look as shown in Figures 2.4.4.f through 
+ 2.4.4.h. You might need to add several break elements to add some vertical spacing. Refactor the Modules component by 
+ replacing HTML tags ul and li with Bootstrap components ListGroup and ListGroupItem as shown below. The following 
+ code illustrates how you might implement and style modules Week 1 and Week 2 . Feel free to use the code as a guide, or 
+ implement your own version as long as it looks and behaves as described. Override the btn-secondary and bg-secondary 
+ Bootstrap classes and implement a new border class as show in the style.css below. 
+ app/(kambaz)/courses/[cid]/modules/page.tsx app/(kambaz)/styles.css 
+ <div > 
+ <ModulesControls /><br /><br /><br /><br /> 
+ <ListGroup className = "rounded-0" id = "wd-modules" > 
+ <ListGroupItem className = "wd-module p-0 mb-5 fs-5 border-gray " > 
+ <div className = "wd-title p-3 ps-2 bg-secondary " > Week 1 </div> 
+ <ListGroup className = "wd-lessons rounded-0 " > 
+ <ListGroupItem className = "wd-lesson p-3 ps-1 " > 
+ LEARNING OBJECTIVES </ListGroupItem> 
+ <ListGroupItem className = "wd-lesson p-3 ps-1 " > 
+ Introduction to the course </ListGroupItem> 
+ <ListGroupItem className = "wd-lesson p-3 ps-1 " > 
+ Learn what is Web Development </ListGroupItem> 
+ </ListGroup> 
+ </ListGroupItem> 
+ <ListGroupItem className = "wd-module p-0 mb-5 fs-5 border-gray " > 
+ <div className = "wd-title p-3 ps-2 bg-secondary " > Week 2 </div> 
+ <ListGroup className = "wd-lessons rounded-0 " > 
+ body { margin : 0 ; padding : 0 ; } 
+ body * { font-family : 
+ Arial , Helvetica , 
+ sans-serif ; } 
+ @media ( min-width : 768px ) { 
+ #wd-kambaz .wd-main-content-offset { 
+ padding-left : 140px !important ; 
+ } 
+ } 
+ .btn-secondary { 
+ --bs-btn-color : #000 !important ; 
+ --bs-btn-bg : #c7cdd1 !important ; 
+ --bs-btn-border-color : #c7cdd1 !important ; 
+ --bs-btn-hover-color : #fff !important ; 
+ } 
+ .bg-secondary { 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 47 
+
+===== PAGE 48 =====
+ <ListGroupItem className = "wd-lesson p-3 ps-1 " > 
+ LESSON 1 </ListGroupItem> 
+ <ListGroupItem className = "wd-lesson p-3 ps-1 " > 
+ LESSON 2 </ListGroupItem> 
+ </ListGroup> 
+ </ListGroupItem> 
+ </ListGroup> 
+ </div> 
+ --bs-secondary-rgb : 199, 205, 209 ; 
+ } 
+ .list-group-item { 
+ --bs-list-group-border-color : gray ; 
+ } 
+ .wd-lesson { 
+ border-left : 3px solid green !important ; 
+ } 
+ Each module title and lesson has a set of control buttons at the 
+ right end of the title as shown here on the right. Implement each 
+ set of control buttons as separate component. Start with the 
+ LessonControlButtons with the GreenCheckmark plus a vertical 
+ ellipsis as shown below. Using the component below as an 
+ example, implement ModuleControlButtons with an additional 
+ BsPlus icon. 
+ app/(kambaz)/courses/[cid]/modules/LessonControlButtons.tsx 
+ import { IoEllipsisVertical } from "react-icons/io5" ; 
+ import GreenCheckmark from "./GreenCheckmark" ; 
+ export default function LessonControlButtons() { 
+ return ( 
+ <div className = "float-end" > 
+ <GreenCheckmark /> 
+ <IoEllipsisVertical className = "fs-4" /> 
+ </div> );} 
+ Add the new LessonControlButtons and ModuleControlButtons components to the Modules component as shown below. 
+ app/(kambaz)/courses/[cid]/modules/page.tsx 
+ <ModulesControls /><br /><br /><br /> 
+ <ListGroup className = "rounded-0" id = "wd-modules" > 
+ <ListGroupItem className = "wd-module p-0 mb-5 fs-5 border-gray" > 
+ <div className = "wd-title p-3 ps-2 bg-secondary" > 
+ <BsGripVertical className = "me-2 fs-3" /> Week 1 <ModuleControlButtons /> 
+ </div> 
+ <ListGroup className = "wd-lessons rounded-0" > 
+ <ListGroupItem className = "wd-lesson p-3 ps-1" > 
+ <BsGripVertical className = "me-2 fs-3" /> LEARNING OBJECTIVES <LessonControlButtons /> 
+ </ListGroupItem> 
+ <ListGroupItem className = "wd-lesson p-3 ps-1" > 
+ <BsGripVertical className = "me-2 fs-3" /> Introduction to the course <LessonControlButtons /> 
+ </ListGroupItem> 
+ ... 
+ </ListGroup> 
+ </ListGroupItem> 
+ </ListGroup> 
+ 2.5.5 Styling the Home Screen 
+ Since the Modules in the Modules Screen are also used in the Home Screen , we almost done with the Home 
+ Screen . The only thing left to style is the the CourseStatus component at the right of the Home Screen contains 
+ several buttons. Here's an example how the ﬁrst few buttons can styled. Implement and style the rest of the buttons so 
+ that the Home Screen looks like and behaves as documented in the screen shot in Figures 4.4. Your implementation does 
+ not need to pixel perfect. Use your own access to Canvas to help guide your design. 
+ app/(kambaz)/courses/[cid]/home/Status.tsx 
+ 48 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 49 =====
+ import { MdDoNotDisturbAlt } from "react-icons/md" ; 
+ import { FaCheckCircle } from "react-icons/fa" ; 
+ import { BiImport } from "react-icons/bi" ; 
+ import { LiaFileImportSolid } from "react-icons/lia" ; 
+ import { Button } from "react-bootstrap" ; 
+ { /* Find more icons */ } 
+ export default function CourseStatus() { 
+ return ( 
+ <div id = "wd-course-status" style = { { width: "350px" } } > 
+ <h2> Course Status </h2> 
+ <div className = "d-flex" > 
+ <div className = "w-50 pe-1" > 
+ <Button variant = "secondary" size = "lg" className = "w-100 text-nowrap " > 
+ <MdDoNotDisturbAlt className = "me-2 fs-5" /> Unpublish </Button> </div> 
+ <div className = "w-50" > 
+ <Button variant = "success" size = "lg" className = "w-100" > 
+ <FaCheckCircle className = "me-2 fs-5" /> Publish </Button> </div> 
+ </div> 
+ <br /> 
+ <Button variant = "secondary" size = "lg" className = "w-100 mt-1 text-start" > 
+ <BiImport className = "me-2 fs-5" /> Import Existing Content </Button> 
+ <Button variant = "secondary" size = "lg" className = "w-100 mt-1 text-start" > 
+ <LiaFileImportSolid className = "me-2 fs-5" /> Import from Commons </Button> 
+ { /* Complete the rest of the buttons */ } 
+ </div> );} 
+ 2.5.6 Implementing the People Screen 
+ The People screen displays a list of students, teaching assistants, and faculty associated with the selected course. This 
+ section implements and styles a prototype of the screen. 
+ Figure 2.4.6 - The People Screen displaying a table of people enrolled in the course 
+ The component below implements the People screen as a table that displays each user as a separate row. Practice by 
+ showing a total of three users. Navigate to a course from the Dashboard and then to the People screen to conﬁrm that it 
+ renders as shown above. 
+ app/(kambaz)/courses/[cid]/people/table/page.tsx 
+ import { Table } from "react-bootstrap" ; 
+ import { FaUserCircle } from "react-icons/fa" ; 
+ export default function PeopleTable() { 
+ return ( 
+ <div id="wd-people-table"> 
+ <Table striped > 
+ <thead> 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 49 
+
+===== PAGE 50 =====
+ <tr><th> Name </th><th> Login ID </th><th> Section </th><th> Role </th><th> Last Activity </th><th> Total Activity </th></tr> 
+ </thead> 
+ <tbody> 
+ <tr><td className ="wd-full-name text-nowrap"> 
+ <FaUserCircle className = "me-2 fs-1 text-secondary" /> 
+ <span className ="wd-first-name" >Tony </span>{" "} 
+ <span className ="wd-last-name" >Stark </span></td> 
+ <td className ="wd-login-id"> 001234561S </td> 
+ <td className ="wd-section"> S101 </td> 
+ <td className ="wd-role"> STUDENT </td> 
+ <td className ="wd-last-activity"> 2020-10-01 </td> 
+ <td className ="wd-total-activity"> 10:21:32 </td></tr> 
+ {/* Add at least 3 more users such as Bruce Wayne, Steve Rogers, and Natasha Romanoff */} 
+ </tbody> 
+ </Table> 
+ </div> );} 
+ 2.5.7 Styling the Assignments Screen (On Your Own) 
+ Clicking Assignments in the Course Navigation sidebar displays the Assignments screen as shown on the right. 
+ Figure 2.4.7 - The Assignments Screen Screenshot 
+ On your own, use the implementation of the Home and Modules Screen s as examples, and create and style the 
+ Assignments Screen as shown here on the right. The implementation does not have to be pixel perfect, but make an effort 
+ to use icons, colors, spacing, font size, as close as possible to the screen shot shown here on the right. Make an effort to 
+ style the Assignments Screen as shown above, but it doesn't need to be pixel perfect. Here are some requirements you 
+ need to follow 
+ ● Buttons must be ﬂoated to the right as shown 
+ ● The Search for Assignment text ﬁeld must render as shown including the placeholder text, the magnifying glass , 
+ and justiﬁed to the left. 
+ ● Use React Icons similar to the ones shown 
+ ● The Group and Assignment buttons must be justiﬁed to the right, in the color shown, and plus icons. Use the same 
+ colors used in the Modules and Home Screen 
+ ● White spaces around and between content must be rendered with Bootstrap 's margin and padding classes 
+ ● The border to the left of the line items must be rendered green as shown 
+ ● The titles of the assignments, A1 , A2 , etc, must be rendered as shown 
+ ● The subtext under the titles such as the due dates, start times, and points, must render as shown, but the dates 
+ and times can be different 
+ 50 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 51 =====
+ 2.5.8 Styling Edit Assignment Screen (On Your Own) 
+ Clicking on the title of any assignment displays the Edit Assignment Screen as shown below in Figure 2.4.8. For now this 
+ screen displays the same content regardless which assignment you click. In later chapters the content will be different 
+ depending which assignment you click. The screen provides a form elements for faculty to edit the assignment including 
+ the Assignment Name , Description , Points , and Due Date . Use React Bootstrap Components such as Form , Form.Group , and 
+ FormLabel , to style the Edit Assignment screen as close to the screen shot here on the right. On your own, make an effort 
+ to style the screen as close as possible to the wireframes provided, but it is not required to be pixel perfect. 
+ Figure 2.4.8 - The Assignment Editor Screen Screenshot 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 51 
+
+===== PAGE 52 =====
+ 2.5.9 Styling the Account Screens (On Your Own) 
+ Using Bootstrap classes and the styling of the Course Navigation sidebar as an example, style the Account Screens so 
+ that they look as shown in Figures 2.4.9. Using form and button Bootstrap classes, style the Sign In screen as shown 
+ below. Also style the Account Navigation sidebar based on the Course Navigation sidebar. 
+ app/(kambaz)/account/signin/page.tsx 
+ import Link from "next/link"; 
+ export default function Signin() { 
+ return ( 
+ <div id = "wd-signin-screen" > 
+ <h1> Sign in </h1> 
+ <FormControl id = "wd-username" 
+ placeholder = "username" 
+ className = "mb-2" /> <br /> 
+ <FormControl id = "wd-password" 
+ placeholder = "password" type = "password" 
+ className = "mb-2" /> <br /> 
+ <Link id = "wd-signin-btn" 
+ href=" /account/profile" 
+ className = "btn btn-primary w-100 mb-2" > 
+ Sign in </Link> <br /> 
+ <Link id = "wd-signup-link" href=" /account/signup" > Sign up </Link> 
+ </div> );} 
+ Using the Sign In screen as an example, style the Sign Up and Proﬁle screens so that they look as shown below. 
+ Figure 2.4.9.a 
+ Styled Signin Screen 
+ Figure 2.4.9.b 
+ Styled Signup Screen 
+ Figure 2.4.9.c 
+ Styled Proﬁle Screen 
+ Figure 2.4.9.d 
+ Styled Account Navigation 
+ 

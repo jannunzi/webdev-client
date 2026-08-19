@@ -1,0 +1,43 @@
+2.1.12 Styling an HTML Tag's Dimensions with CSS 
+ An element's dimensions can be styled with the width and height properties. To practice setting an element's dimensions, 
+ copy the CSS and HTML below into index.css and Dimensions.tsx . Import and conﬁrm the browser renders as shown. 
+ app/labs/lab2/index.css app/labs/lab2/Dimensions.tsx 
+ . wd-dimension-portrait { 
+ width : 75 px ; 
+ height : 100 px ; 
+ } 
+ . wd-dimension-landscape { 
+ width : 100 px ; 
+ height : 75 px ; 
+ } 
+ . wd-dimension-square { 
+ width : 75 px ; 
+ height : 75 px ; 
+ } 
+ <div id = "wd-css-dimensions" > 
+ <h2> Dimension </h2> 
+ <div> 
+ <div className = "wd-dimension-portrait 
+ wd-bg-color-yellow" > 
+ Portrait 
+ </div> 
+ <div className = "wd-dimension-landscape 
+ wd-bg-color-blue 
+ wd-fg-color-white" > 
+ Landscape 
+ </div> 
+ <div className = "wd-dimension-square 
+ wd-bg-color-red" > 
+ Square </div> 
+ </div> 
+ </div> 
+ By default, block elements such as <div> , headings , and paragraphs span the full width of their parent container—often the 
+ entire browser window—as shown on the left below. You can override these dimensions using the CSS width and height 
+ properties, as demonstrated on the right. Even when the width is reduced to make the elements skinnier, increasing their 
+ height (or adding margins/padding) still pushes subsequent block elements further down the page, since block elements 
+ naturally stack vertically and occupy space based on their total height. 
+ 12 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 13 =====
+ Figure 2.1.12.a - Styling an HTML Tag's Dimensions with CSS Figure 2.1.12.b - Styling an HTML Tag's Dimensions with CSS 
+ 

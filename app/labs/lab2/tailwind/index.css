@@ -1,0 +1,3 @@
+/* Full Tailwind (includes Preflight). Import only from the dedicated
+   /labs/lab2/tailwind route — not from the book or shared Kambaz chrome. */
+@import "tailwindcss";

@@ -1,0 +1,282 @@
+2.3 Styling Webpages with the Tailwind CSS Library 
+ Tailwind CSS is a utility-ﬁrst CSS framework that enables developers to rapidly build custom, modern user interfaces 
+ directly in their HTML by applying pre-deﬁned utility classes instead of writing custom CSS. Tailwind CSS was 
+ preconﬁgured when the Next.js project was created, but we disabled it in app/layout.tsx so we could discuss plain HTML 
+ without adding the complexity of CSS styling. 
+ app/layout.tsx 
+ import type { Metadata } from "next" ; 
+ import { Geist, Geist_Mono } from "next/font/google" ; 
+ // import "./globals.css"; 
+ ... 
+ To explore using tailwind, let's create a CSS ﬁle where we can import the tailwind library. This will allow us to target 
+ speciﬁc pages and components that explicitly import the CSS ﬁle. 
+ app/labs/lab2/tailwind/index.css 
+ @import "tailwindcss" ; 
+ Create a new page where we can practice with some of the more common tailwind features. 
+ app/labs/lab2/tailwind/page.tsx 
+ import "./index.css" ; 
+ export default function TailwindLab() { 
+ return ( 
+ <div className = "p-8" > 
+ <h1 className = "text-4xl font-bold mb-8" > Tailwind CSS </h1> 
+ </div> 
+ ); 
+ } 
+ 2.3.1 Spacing 
+ The deﬁning feature of Tailwind CSS is its utility-ﬁrst approach, which provides low-level atomic utility classes for styling 
+ elements directly in HTML, enabling rapid custom design without writing traditional custom CSS. The padding and margin 
+ 22 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 23 =====
+ utility classes allow deﬁning spacing of between and around content. The component below illustrates using margin 
+ classes to conﬁgure spacing between content and padding to conﬁgure spacing surrounding the content. 
+ app/labs/lab2/tailwind/TailwindSpacing.tsx 
+ export default function TailwindSpacing() { 
+ return ( 
+ <div> 
+ <h2 className = "text-3xl" > Margin </h2> 
+ <div className = "bg-blue-200 mb-4 p-4" > 
+ This div has a bottom margin of 4. 
+ </div> 
+ <div className = "bg-blue-200 ms-4 me-8 p-4" > 
+ This div has a start margin of 4 and an end margin of 8. 
+ </div> 
+ <h2 className = "text-3xl mt-8" > Padding </h2> 
+ <div className = "bg-green-200 ps-2 pt-4 pb-8 mb-4" > 
+ This div has starting padding of 2, top padding of 4, and bottom padding of 8. 
+ </div> 
+ <div className = "bg-green-200 p-6" > 
+ This div has padding all around of 6. 
+ </div> 
+ </div> 
+ ); 
+ } 
+ Classes beginning with m conﬁgure margin and classes beginning with p conﬁgure padding. A number can be appended 
+ at to m- or p- to conﬁgure the amount of margin or padding, e.g., m-1 , m-2 , through m-8 , conﬁgure increasing amounts of 
+ margin where as p-1 through p-8 conﬁgures increasing amounts of padding. Import the component above into the 
+ TailwindLab page and conﬁrm it renders as shown below. 
+ Figure 2.3.1a - Margin Spacing Figure 2.3.1b - Padding Spacing 
+ 2.3.2 Typography 
+ Tailwind CSS provides a comprehensive set of typography utility classes that allow developers to quickly control text 
+ styling—such as font size, weight, color, alignment, and more—directly in their markup without writing custom CSS. 
+ The following React component demonstrates some common Tailwind typography classes by showcasing a range of font 
+ sizes (from text-sm to text-3xl) and font weights (from font-thin to font-black) . 
+ app/labs/lab2/tailwind/TailwindTypography.tsx 
+ export default function TailwindTypography() { 
+ return ( 
+ <div> 
+ <h2 className = "text-3xl" > Font Size </h2> 
+ <p className = "text-sm" > This is small text. </p> 
+ <p className = "text-base" > This is base text. </p> 
+ <p className = "text-lg" > This is large text. </p> 
+ <p className = "text-xl" > This is extra large text. </p> 
+ <p className = "text-2xl" > This is 2x extra large text. </p> 
+ <p className = "text-3xl" > This is 3x extra large text. </p> 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 23 
+
+===== PAGE 24 =====
+ <h2 className = "text-3xl font-bold mt-4" > Font Weight </h2> 
+ <p className = "font-thin" > This is thin font weight. </p> 
+ <p className = "font-light" > This is light font weight. </p> 
+ <p className = "font-normal" > This is normal font weight. </p> 
+ <p className = "font-medium" > This is medium font weight. </p> 
+ <p className = "font-semibold" > This is semi-bold font weight. </p> 
+ <p className = "font-bold" > This is bold font weight. </p> 
+ <p className = "font-extrabold" > This is extra-bold font weight. </p> 
+ <p className = "font-black" > This is black font weight. </p> 
+ </div> 
+ ); 
+ } 
+ Import the component into the TailwindLab and conﬁrm it renders as shown below. 
+ Figure 2.3.2a - Font Size Figure 2.3.2b - Font Weight 
+ 2.3.3 Background Colors 
+ Tailwind CSS offers a powerful and customizable palette of background color utility classes that allow 
+ developers to quickly apply solid colors, gradients, or even arbitrary values to elements directly in their markup. 
+ The following React component demonstrates some common Tailwind background color classes by applying 
+ vibrant shades like bg-red-500 , bg-green-500 , bg-blue-500 , and bg-yellow-500 to div elements, with contrasting 
+ text colors for readability. 
+ app/labs/lab2/tailwind/TailwindBackgroundColors.tsx 
+ export default function TailwindBackgroundColors() { 
+ return ( 
+ <div> 
+ <h2 className = "text-3xl font-bold mb-4" > Background Colors </h2> 
+ <div className = "bg-red-500 text-white p-4 mb-4" > 
+ This div has a red background. 
+ </div> 
+ <div className = "bg-green-500 text-white p-4 mb-4" > 
+ This div has a green background. 
+ </div> 
+ <div className = "bg-blue-500 text-white p-4 mb-4" > 
+ This div has a blue background. 
+ </div> 
+ <div className = "bg-yellow-500 text-black p-4 mb-4" > 
+ This div has a yellow background. 
+ </div> 
+ </div> 
+ 24 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 25 =====
+ ); 
+ } 
+ Import the component above into the TailwindLab page and conﬁrm it renders as shown below. 
+ Figure 2.3.3 - Background Colors 
+ 2.3.4 Responsive Design 
+ Tailwind CSS excels at responsive design through its mobile-ﬁrst breakpoints , allowing developers to apply 
+ utility classes preﬁxed with screen sizes (like sm:, md:, lg:) to adapt layouts, spacing, and styling seamlessly 
+ across devices. 
+ The following React component demonstrates Tailwind's responsive features by creating a card that stacks 
+ vertically on smaller screens and switches to a ﬂexible side-by-side layout with adjusted widths on medium 
+ screens and above (using classes like md:ﬂex, md:max-w-2xl, and md:w-48). 
+ The code below references an image of the React logo . Download the image and save it to public/images . 
+ app/labs/lab2/tailwind/TailwindResponsiveDesign.tsx 
+ export default function TailwindResponsiveDesign() { 
+ return ( 
+ <div className = "mx-auto max-w-md overflow-hidden rounded-xl bg-white shadow-md md:max-w-2xl" > 
+ <div className = "md:flex" > 
+ <div className = "md:shrink-0" > 
+ <img className = "h-48 w-full object-cover md:h-full md:w-48" src = "/images/reactjs.jpg" alt = "ReactJS logo" /> 
+ </div> 
+ <div className = "p-8" > 
+ <div className = "text-sm font-semibold tracking-wide text-indigo-500 uppercase" > 
+ Professional Courses 
+ </div> 
+ <a href = "#" className = "mt-1 block text-lg leading-tight font-medium text-black hover:underline" > 
+ Rocket Propulsion Fundamentals 
+ </a> 
+ <p className = "mt-2 text-gray-500" > 
+ This course provides an in-depth study of the fundamentals of rocket 
+ propulsion, covering topics such as propulsion theory, engine types, 
+ fuel chemistry, and the practical applications of rocket technology. 
+ Designed for students with a strong background in physics and 
+ engineering, the course includes both theoretical instruction and 
+ hands-on laboratory work 
+ </p> 
+ </div> 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 25 
+
+===== PAGE 26 =====
+ </div> 
+ <br /> 
+ </div> 
+ ); 
+ } 
+ Import the component above into the TailwindLab page and conﬁrm it renders as shown below. 
+ Figure 2.3.4 - Tailwind Responsive Design 
+ Wide Screen 
+ Figure 2.3.4 - Tailwind Responsive Design Narrow Screen 
+ 2.3.5 Filters 
+ Tailwind CSS includes a robust set of ﬁlter utility classes that enable developers to easily apply visual effects like blur, 
+ brightness, contrast, grayscale, sepia, and more directly to elements such as images. 
+ The following React component illustrates Tailwind's blur ﬁlters by displaying the same image of Angel Falls four times 
+ side-by-side, applying progressively stronger blur effects with classes blur-none , blur-sm , blur-lg , and blur-2xl . 
+ app/labs/lab2/tailwind/TailwindFilters.tsx 
+ export default function TailwindFilters() { 
+ return ( 
+ <div> 
+ <div> 
+ <h3>Blurs</h3> 
+ <div className = "flex" > 
+ <img className = "blur-none w-1/4" src = "/images/angel-falls.jpg" /> 
+ <img className = "blur-sm w-1/4" src = "/images/angel-falls.jpg" /> 
+ <img className = "blur-lg w-1/4" src = "/images/angel-falls.jpg" /> 
+ <img className = "blur-2xl w-1/4" src = "/images/angel-falls.jpg" /> 
+ </div> 
+ </div> 
+ </div> 
+ ); 
+ } 
+ Import the component above into the TailwindLab page and conﬁrm it renders as shown below. 
+ 26 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 27 =====
+ Figure 2.3.5 - Blur ﬁlters 
+ 2.3.6 CSS Grid Layout 
+ Tailwind CSS provides powerful and intuitive grid utility classes based on CSS Grid, allowing developers to easily create 
+ complex, responsive layouts by deﬁning columns, rows, gaps, and item placement directly in markup. 
+ The following React component demonstrates a basic Tailwind grid by using grid grid-cols-4 gap-4 to create a 4-column 
+ layout where nine numbered items automatically ﬂow and wrap into multiple rows. 
+ app/labs/lab2/tailwind/TailwindGrids.tsx 
+ export default function TailwindGrids() { 
+ return ( 
+ <div> 
+ <h2> Tailwind Grids </h2> 
+ <div> 
+ <h3 className = "mt-6 text-3xl font-bold" > 4 Columns Grid </h3> 
+ <div className = "grid grid-cols-4 gap-4" > 
+ <div className = "text-center bg-blue-300 p-3" > 01 </div> 
+ <div className = "text-center bg-blue-300 p-3" > 02 </div> 
+ <div className = "text-center bg-blue-300 p-3" > 03 </div> 
+ <div className = "text-center bg-blue-300 p-3" > 04 </div> 
+ <div className = "text-center bg-blue-300 p-3" > 05 </div> 
+ <div className = "text-center bg-blue-300 p-3" > 06 </div> 
+ <div className = "text-center bg-blue-300 p-3" > 07 </div> 
+ <div className = "text-center bg-blue-300 p-3" > 08 </div> 
+ <div className = "text-center bg-blue-300 p-3" > 09 </div> 
+ </div> 
+ </div> 
+ <div> 
+ <h3 className = "mt-6 text-3xl font-bold" > 3 Columns Grid </h3> 
+ <div className = "grid grid-cols-3 gap-4" > 
+ <div className = "text-center bg-blue-300 p-3" > 01 </div> 
+ <div className = "text-center bg-blue-300 p-3" > 02 </div> 
+ <div className = "text-center bg-blue-300 p-3" > 03 </div> 
+ <div className = "col-span-2 text-center bg-blue-300 p-3" > 04 </div> 
+ <div className = "text-center bg-blue-300 p-3" > 05 </div> 
+ <div className = "text-center bg-blue-300 p-3" > 06 </div> 
+ <div className = "col-span-2 text-center bg-blue-300 p-3" > 07 </div> 
+ </div> 
+ </div> 
+ </div> 
+ ); 
+ } 
+ Import the component above into the TailwindLab page and conﬁrm it renders as shown below. 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 27 
+
+===== PAGE 28 =====
+ Figure 2.3.6a - CSS Grid Layout 
+ Figure 2.3.6b - CSS Grid Layout 
+ 2.4.3 Laying Out HTML Content with Tailwind CSS 
+ It's easy to break a page vertically in HTML with the p and div tags. It's a little harder to layout content horizontally. Some 
+ resort to HTML tables, but this is generally considered a bad practice. Instead, we can use CSS Flexbox or Grid. Tailwind 
+ CSS provides powerful utility classes to achieve this functionality eﬃciently. To practice with Tailwind layouts, append the 
+ following to the TailwindGrids component using the code below. 
+ app/labs/lab2/tailwind/TailwindGrids.tsx 
+ <div id = "wd-tailwind-grid-system" > 
+ <h2> Grid system </h2> 
+ <div className = "grid grid-cols-2 gap-2" > 
+ <div className = "bg-red-500 text-white" > 
+ <h3> Left half </h3> 
+ </div> 
+ <div className = "bg-blue-500 text-white" > 
+ <h3> Right half </h3> 
+ </div> 
+ </div> 
+ <div className = "grid grid-cols-12 gap-2" > 
+ <div className = "col-span-4 bg-yellow-500" > 
+ <h3> One third </h3> 
+ </div> 
+ <div className = "col-span-8 bg-green-500 text-white" > 
+ <h3> Two thirds </h3> 
+ </div> 
+ </div> 
+ <div className = "grid grid-cols-12 gap-2" > 
+ <div className = "col-span-2 bg-black text-white" > 
+ <h3> Sidebar </h3> 
+ </div> 
+ <div className = "col-span-8 bg-gray-500 text-white" > 
+ <h3> Main content </h3> 
+ </div> 
+ <div className = "col-span-2 bg-blue-400" > 
+ <h3> Sidebar </h3> 
+ </div> 
+ </div> 
+ 28 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 29 =====
+ </div> 
+ Figure 2.3.3 - Laying Out HTML Content with Tailwind CSS Grids 
+ Speciﬁc surrounding directions top , bottom , start , and end sides can be conﬁgured separately by using t , b , s , and e , in 
+ combination with the margin and padding classes, e.g., mb refers to margin top , ms refers to margin start . 
+ 2.4.4 Implementing Responsive HTML Content with Tailwind Grids 
+ ...create new content here... 
+ 

@@ -1,0 +1,29 @@
+2.1.2 Importing CSS Documents from React 
+ Instead of changing styles within HTML, it is a best practice to do all styling conﬁguration in separate CSS ﬁles and then 
+ import the ﬁles. To practice importing CSS ﬁles, create a brand new ﬁle called app/labs/lab2/index.css in the same 
+ directory of the app/labs/lab2/page.tsx document, and copy and paste the following content. 
+ app/labs/lab2/index.css 
+ p { 
+ background-color : green ; 
+ color : white ; 
+ } 
+ Then, remove the style attribute highlighted in red below and instead, import the index.css ﬁle highlighted in green. 
+ Conﬁrm that the paragraph now has a green background. 
+ app/labs/lab2/page.tsx 
+ import "./index.css" ; 
+ export default function Lab2() { 
+ return ( 
+ <div id="wd-lab2"> 
+ <h2> Lab 2 - Cascading Style Sheets </h2> 
+ <h3> Styling with the STYLE attribute </h3> 
+ <p style = { { backgroundColor: "blue" , color: "white" } } > 
+ Style attribute allows configuring look and feel 
+ right on the element. Although it's very convenient 
+ it is considered bad practice and you should avoid 
+ using the style attribute </p> 
+ </div> );} 
+ Figure 2.1.2.a - Styling with the STYLE attribute Figure 2.1.2.b - Styling with the CSS ﬁle 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 5 
+
+===== PAGE 6 =====
+ 

@@ -1,0 +1,26 @@
+2.6 Delivery 
+ 1. In the same React application created in earlier chapters, kambaz-next-js , complete all the exercises described in 
+ this document 
+ 2. In a branch called a2 , add, commit and push the source code of the React application kambaz-next-js to the same 
+ remote source repository in GitHub.com created in an earlier chapter. Here's an example of how to add, commit 
+ and push your code 
+ $ git checkout -b a2 
+ $ git add . 
+ 52 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 53 =====
+ $ git commit -am "a2 CSS and Bootstrap" 
+ $ git push 
+ 3. Deploy the a2 branch to the same Vercel created in an earlier chapter. Conﬁgure Vercel to deploy all branches to 
+ separate URLs. From your Vercel's dashboard go to Site settings > Build & deploy > Branches > Branch deploys 
+ and select All . Now each time you commit to a branch, the application will be available at a URL that contains the 
+ name of the branch 
+ 4. Push the source code of the React application kambaz-next-js to a remote source repository in GitHub.com as 
+ described 
+ 5. labs/page.tsx contains a TOC.tsx that references each of the labs and Kambaz. Add a link to your repository in 
+ GitHub. The link should have an ID attribute with a value of wd-github . 
+ 6. In labs/page.tsx , add your full name: ﬁrst name ﬁrst and last name second. Use the same name as in Canvas. 
+ 7. Deploy the branch for this chapter to your kambaz-next-js React application to Vercel as described. 
+ 8. As a deliverable in Canvas , submit the URL to the a2 branch deployment of your React application running on 
+ Vercel. 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 53

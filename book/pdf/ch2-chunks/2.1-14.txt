@@ -1,0 +1,34 @@
+2.1.9 Styling an HTML Tag's Borders with CSS 
+ CSS has several properties that conﬁgure the look and feel of tag border around their content. Here's a sample of the 
+ properties that can be conﬁgured. 
+ . some-selector { 
+ border-width : 10 px ; 
+ border-style : solid | dotted | dashed | double ; 
+ border-color : red | blue ...; } 
+ /* configure border with several properties */ 
+ /* border's width. Can also provide per border */ 
+ /* the style of the border */ 
+ /* the color of the border */ 
+ To practice styling borders, copy the CSS code below into index.css and the HTML code into a new ﬁle called Borders.tsx . 
+ Import the new ﬁle into the Lab2 page and conﬁrm the browser renders as shown. Note how several classes are applied to 
+ the same tag to combine their cumulative styles to that tag. 
+ app/labs/lab2/index.css app/labs/lab2/Borders.tsx 
+ . wd-border-fat { border-width : 20 px 30 px 20 px 30 px ; } 
+ . wd-border-thin { border-width : 4 px ; } 
+ . wd-border-solid { border-style : solid ; } 
+ . wd-border-dashed { border-style : dashed ; } 
+ . wd-border-yellow { border-color : #ffff07 ; } 
+ . wd-border-red { border-color : #ff7070 ; } 
+ . wd-border-blue { border-color : #7070ff ; } 
+ <div id = "wd-css-borders" > 
+ <h2> Borders </h2> 
+ <p className = "wd-border-fat 
+ wd-border-red wd-border-solid" > 
+ Solid fat red border </p> 
+ <p className = "wd-border-thin 
+ wd-border-blue wd-border-dashed" > 
+ Dashed thin blue border 
+ </p> 
+ </div> 
+ Figure 2.1.9.a - Solid fat red border Figure 2.1.9.b - Dashed thin blue border 
+ 

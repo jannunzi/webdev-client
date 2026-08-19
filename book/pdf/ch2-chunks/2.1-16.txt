@@ -1,0 +1,47 @@
+2.1.11 Styling an HTML Tag's Corners with CSS 
+ Tag border corners can be styled to be rounded to soften their look and feel. All corners can be styled together or 
+ individual corners can be styled separately. How rounded a corner is can be conﬁgured by setting the corner's border 
+ radius. To practice rounding some corners, copy the CSS and HTML below into index.css and Corners.tsx . Import and 
+ conﬁrm the browser renders as shown. 
+ app/labs/lab2/index.css app/labs/lab2/Corners.tsx 
+ . wd-rounded-corners-top { 
+ border-top-left-radius : 40 px ; 
+ border-top-right-radius : 40 px ; 
+ } 
+ . wd-rounded-corners-bottom { 
+ border-bottom-left-radius : 40 px ; 
+ <div id = "wd-css-borders" > 
+ <h3> Rounded corners </h3> 
+ <p className = "wd-rounded-corners-top wd-border-thin 
+ wd-border-blue wd-border-solid wd-padding-fat" > 
+ Rounded corners on the top </p> 
+ <p className = "wd-rounded-corners-bottom 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 11 
+
+===== PAGE 12 =====
+ border-bottom-right-radius : 40 px ; 
+ } 
+ . wd-rounded-corners-all-around { 
+ border-radius : 50 px ; 
+ } 
+ . wd-rounded-corners-inline { 
+ border-radius : 30 px 0 px 20 px 50 px ; 
+ } 
+ wd-border-thin wd-border-blue wd-border-solid wd-padding-fat" > 
+ Rounded corners at the bottom </p> 
+ <p className = "wd-rounded-corners-all-around 
+ wd-border-thin wd-border-blue wd-border-solid wd-padding-fat" > 
+ Rounded corners all around </p> 
+ <p className = "wd-rounded-corners-inline 
+ wd-border-thin wd-border-blue wd-border-solid wd-padding-fat" > 
+ Different rounded corners </p> 
+ </div> 
+ Figure 2.1.11.a - Rounded corners 
+ on the top 
+ Figure 2.1.11.b - Rounded corners 
+ at the bottom 
+ Figure 2.1.11.c - Rounded corners 
+ all around 
+ Figure 2.1.11.d - Different rounded 
+ corners 
+ 

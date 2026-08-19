@@ -1,0 +1,64 @@
+2.1.10 Styling an HTML Tag's Margins and Paddings with CSS 
+ White space such as padding and margin can be styled with various CSS properties. Each side can be styled separately, 
+ e.g., top, bottom, left, right, or all the space around the content. To practice styling padding , copy the CSS code below into 
+ index.css and the HTML into Padding.tsx . Import and conﬁrm the browser renders as shown. 
+ app/labs/lab2/index.css app/labs/lab2/Padding.tsx 
+ . wd-padded-top-left { 
+ padding-top : 50 px ; 
+ padding-left : 50 px ; 
+ } 
+ . wd-padded-bottom-right { 
+ padding-bottom : 50 px ; 
+ padding-right : 50 px ; 
+ } 
+ . wd-padding-fat { 
+ padding : 50 px ; 
+ } 
+ <div id = "wd-css-paddings" > 
+ <h2> Padding </h2> 
+ <div className = "wd-padded-top-left wd-border-fat 
+ wd-border-red wd-border-solid wd-bg-color-yellow" > 
+ Padded top left </div> 
+ <div className = "wd-padded-bottom-right wd-border-fat 
+ wd-border-blue wd-border-solid wd-bg-color-yellow" > 
+ Padded bottom right </div> 
+ <div className = "wd-padding-fat wd-border-fat 
+ wd-border-yellow wd-border-solid wd-bg-color-blue wd-fg-color-white" > 
+ Padded all around </div> 
+ </div> 
+ 10 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 11 =====
+ Conﬁrm that Paddings.tsx renders as shown in the ﬁgures below. 
+ Figure 2.1.10.a - Padding top left Figure 2.1.10.b - Padded bottom right Figure 2.1.10.c - Padded all around 
+ To practice styling margin s, copy the CSS code below into index.css and the HTML into Margins.tsx . Import and conﬁrm 
+ the browser renders as shown. 
+ app/labs/lab2/index.css app/labs/lab2/Margins.tsx 
+ . wd-margin-bottom { 
+ margin-bottom : 50 px ; 
+ } 
+ . wd-margin-right-left { 
+ margin-left : 50 px ; 
+ margin-right : 50 px ; 
+ } 
+ . wd-margin-all-around { 
+ margin : 30 px ; 
+ } 
+ <div id = "wd-css-margins" > 
+ <h2> Margins </h2> 
+ <div 
+ className = "wd-margin-bottom wd-padded-top-left wd-border-fat 
+ wd-border-red wd-border-solid wd-bg-color-yellow" > 
+ Margin bottom </div> 
+ <div 
+ className = "wd-margin-right-left wd-padded-bottom-right wd-border-fat 
+ wd-border-blue wd-border-solid wd-bg-color-yellow" > 
+ Margin left right </div> 
+ <div 
+ className = "wd-margin-all-around wd-padding-fat wd-border-fat 
+ wd-border-yellow wd-border-solid wd-bg-color-blue wd-fg-color-white" > 
+ Margin all around </div> 
+ </div> 
+ Conﬁrm that Margins.tsx renders as shown in the ﬁgures below. 
+ Figure 2.1.10.d - Margin bottom Figure 2.1.10.e - Margin left and right Figure 2.1.10.f - Margin all around 
+ 

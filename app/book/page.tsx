@@ -1,0 +1,30 @@
+import Link from "next/link";
+
+export default function BookHome() {
+  return (
+    <div>
+      <h1 className="mt-0 font-sans text-3xl font-semibold">
+        Developing Full Stack Next.js Web Applications
+      </h1>
+      <p className="text-neutral-700">Dr. Jose Annunziato</p>
+      <h2 className="font-sans text-xl font-semibold">Chapters</h2>
+      <ul>
+        <li>
+          <Link href="/book/ch1">
+            Chapter 1 — Building Next.js User Interfaces with HTML
+          </Link>
+        </li>
+        <li>
+          <Link href="/book/ch2">
+            Chapter 2 — Styling User Interfaces with CSS and Tailwind
+          </Link>
+        </li>
+        <li>
+          <Link href="/book/ch3">
+            Chapter 3 — Creating Single Page Applications with JavaScript
+          </Link>
+        </li>
+      </ul>
+    </div>
+  );
+}

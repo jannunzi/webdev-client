@@ -1,0 +1,27 @@
+2.1.1 Styling HTML Tags with the Style Attribute 
+ An HTML tag's style attribute can conﬁgure the look and feel of the tag by changing the values of its style properties as 
+ shown below. The value of the style attribute is an object in JSON format ( JavaScript Object Notation ). 
+ < element style ={{ property1 : " value1" , property2 : " value2" }} > 
+ element body 
+ </ element > 
+ Examples of properties property1 and property2 are foreground color, background color, font size, etc. The value of the 
+ properties are primitive data types such as strings or numbers, or declared variable JSON objects. To practice using the 
+ style attribute, copy and paste the example below into app/labs/lab2/page.tsx . 
+ 4 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 5 =====
+ app/labs/lab2/page.tsx 
+ export default function Lab2() { 
+ return ( 
+ <div id="wd-lab2"> 
+ <h2> Lab 2 - Cascading Style Sheets </h2> 
+ <h3> Styling with the STYLE attribute </h3> 
+ <p style = { { backgroundColor: "blue" , color: "white" } } > 
+ Style attribute allows configuring look and feel right on the element. Although it's very convenient 
+ it is considered bad practice and you should avoid using the style attribute 
+ </p> 
+ </div> );} 
+ The exercise above styles the paragraph tag with its style attribute, changing the background color by setting the 
+ backgroundColor property to blue and also changing the foreground color to white by setting the color property to white . 
+ There are 100s of style attributes of which we'll only cover the most common [REF]. 
+ 

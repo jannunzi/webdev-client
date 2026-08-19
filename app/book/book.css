@@ -1,0 +1,157 @@
+@import "tailwindcss/theme" layer(theme);
+@import "tailwindcss/utilities" layer(utilities);
+
+.book-shell {
+  color: #1a1a1a;
+  background: #fafafa;
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.55;
+}
+
+.book-shell a {
+  color: #1d4ed8;
+}
+
+.book-shell .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.book-shell code,
+.book-shell pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875em;
+}
+
+/* Inline snippets in prose — not Shiki's pre > code in CodeBlock */
+.book-shell :not(pre) > code {
+  color: #c41e3a;
+  background: #eeeeee;
+  padding: 0.12em 0.38em;
+  border-radius: 0.2rem;
+}
+
+.book-code-block-body pre {
+  margin: 0;
+  overflow-x: auto;
+  background: #0d1117 !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.book-code-block-plain pre {
+  padding: 0.75rem 1rem;
+}
+
+.book-code-block-lined pre {
+  padding: 0.75rem 0.75rem 0.75rem 0;
+}
+
+.book-code-block-body code {
+  display: grid;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.book-code-block-lined .line {
+  display: inline-block;
+  width: 100%;
+  padding-right: 1rem;
+}
+
+.book-code-block-lined .line::before {
+  content: attr(data-line);
+  display: inline-block;
+  width: 2.5rem;
+  margin-right: 0.75rem;
+  padding-right: 0.75rem;
+  border-right: 1px solid #30363d;
+  color: #6e7681;
+  text-align: right;
+  user-select: none;
+}
+
+.book-code-block-lined .line:last-child:empty,
+.book-code-block-lined .line:last-child:has(> :only-child:empty) {
+  display: none;
+}
+
+.book-live-figure {
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.book-code-block {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.book-live-demo {
+  /* Keep browser-default rendering for embedded HTML labs */
+  all: initial;
+  display: block;
+  font-family: Times, "Times New Roman", serif;
+  color: #000;
+  background: #fff;
+  line-height: normal;
+  /* Re-apply after `all: initial` (utility classes are reset) */
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  padding: 0.625rem 0.75rem;
+}
+
+/* HTML-only demos: restore browser defaults on descendants.
+   Do NOT apply to .book-live-demo-styled — `all: revert` overrides SVG
+   presentation attributes (e.g. react-icons width/height="1em") and
+   strips Tailwind / lab CSS that styled demos need. */
+.book-live-demo:not(.book-live-demo-styled) * {
+  all: revert;
+}
+
+/* Ch2+ CSS / Tailwind demos — do not strip author styles */
+.book-live-demo-styled {
+  all: unset;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  padding: 0.625rem 0.75rem;
+  font-family: system-ui, sans-serif;
+  color: #212529;
+  background: #fff;
+  line-height: 1.5;
+}
+
+.book-live-demo-styled,
+.book-live-demo-styled * {
+  box-sizing: border-box;
+}
+
+.book-live-demo table {
+  max-width: 100%;
+}
+
+/* HTML valign is ignored after `all: revert`; honor it for layout tables */
+.book-live-demo td[valign="top"],
+.book-live-demo th[valign="top"] {
+  vertical-align: top;
+}
+
+/* Only for plain HTML demos — do not override lab CSS (e.g. float height: 100px) */
+.book-live-demo:not(.book-live-demo-styled) img {
+  max-width: 100%;
+  height: auto;
+}

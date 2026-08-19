@@ -1,0 +1,73 @@
+2.1.19 Laying Out Content with CSS Flex 
+ Flexbox Layout ( Flexible Box , or just Flex ) provides a simpler way to layout and distribute content in an HTML document. It 
+ all starts with creating a container element that conﬁgures the layout and behavior of its child elements. To illustrate 
+ some of the features of ﬂex, create a container with the display property set to ﬂex as shown below. 
+ app/labs/lab2/Flex.tsx app/labs/lab2/index.css 
+ <div id = "wd-css-flex" > 
+ <h2> Flex </h2> 
+ <div className = "wd-flex-row-container" > 
+ <div className = "wd-bg-color-yellow" > Column 1 </div> 
+ <div className = "wd-bg-color-blue" > Column 2 </div> 
+ <div className = "wd-bg-color-red" > Column 3 </div> 
+ </div> 
+ </div> 
+ .wd-flex-row-container { 
+ display : flex ; 
+ flex-direction : row ; 
+ } 
+ Note how DIV elements inside the container render horizontally as a row of element instead of stacking the elements 
+ vertically. Flex simpliﬁes laying out content horizontally. Flex child elements can also be conﬁgured to grow and expand to 
+ ﬁll into empty spaces. The styling below illustrates how the last column can expand into the empty space to its right. 
+ app/labs/lab2/Flex.tsx app/labs/lab2/index.css 
+ <div id = "wd-css-flex" > 
+ <h2> Flex </h2> 
+ <div className = "wd-flex-row-container" > 
+ <div className = "wd-bg-color-yellow" > 
+ Column 1 </div> 
+ <div className = "wd-bg-color-blue" > 
+ Column 2 </div> 
+ <div className = "wd-bg-color-red wd-flex-grow-1 " > 
+ Column 3 </div> 
+ </div> 
+ </div> 
+ .wd-flex-row-container { 
+ display : flex ; 
+ flex-direction : row ; 
+ } 
+ .wd-flex-grow-1 { 
+ flex-grow : 1 ; 
+ } 
+ The rest of the ﬂex child elements can be conﬁgured independently to have speciﬁc widths to ﬁt whatever content is 
+ needed as shown below. 
+ 18 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 19 =====
+ app/labs/lab2/Flex.tsx app/labs/lab2/index.css 
+ <div id = "wd-css-flex" > 
+ <h2> Flex </h2> 
+ <div className = "wd-flex-row-container" > 
+ <div className = "wd-bg-color-yellow wd-width-75px " > 
+ Column 1 </div> 
+ <div className = "wd-bg-color-blue" > 
+ Column 2 </div> 
+ <div className = "wd-bg-color-red wd-flex-grow-1" > 
+ Column 3 </div> 
+ </div> 
+ </div> 
+ .wd-flex-row-container { 
+ display : flex ; 
+ flex-direction : row ; 
+ } 
+ .wd-flex-grow-1 { 
+ flex-grow : 1 ; 
+ } 
+ .wd-width-75px { 
+ width : 75px ; 
+ } 
+ Figure 2.1.19.a - Laying Out Content with CSS 
+ Flex 
+ Figure 2.1.19.b - Laying Out Content with CSS 
+ Flex 
+ Figure 2.1.19.c - Laying Out Content with CSS 
+ Flex 
+ 

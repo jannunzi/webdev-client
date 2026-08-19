@@ -1,0 +1,421 @@
+2.4.4 Implementing Responsive HTML Content with React Bootstrap Grids 
+ React Bootstrap Grids can adapt to the size of the screen, that is, they can be responsive. We can achieve this by applying 
+ more than one .col class which only applies for a given window size. To practice with Bootstrap responsive grids, create a 
+ BootstrapGrids component as shown below. Conﬁrm it looks similar to image shown. Resize the browser and conﬁrm that 
+ the grid shows 4 columns, then 2 and then just 1. 
+ app/labs/lab2/BootstrapGrids.tsx 
+ <div id = "wd-bs-responsive-grids" > 
+ <h2> Responsive grid system </h2> 
+ <Row> 
+ <Col xs = { 12 } md = { 6 } xl = { 3 } className = "bg-warning" > 
+ <h3> Column A </h3> 
+ </Col> 
+ <Col xs = { 12 } md = { 6 } xl = { 3 } className = "bg-primary text-white" > 
+ <h3> Column B </h3> 
+ </Col> 
+ <Col xs = { 12 } md = { 6 } xl = { 3 } className = "bg-danger text-white" > 
+ <h3> Column C </h3> 
+ </Col> 
+ <Col xs = { 12 } md = { 6 } xl = { 3 } className = "bg-success text-white" > 
+ <h3> Column D </h3> 
+ </Col> 
+ </Row> 
+ </div> 
+ Figure 2.3.4.a - Wide browser window shows 4 columns Figure 2.3.4.b - Moderate width 
+ browser window shows 2 columns 
+ Figure 2.3.4.c - Thin browser 
+ window shows only 1 column 
+ Let's try a more dramatic example by adding more content spread over more columns and rows. Copy the HTML code 
+ below to the end of BootstrapGrids.tsx , and save. Refresh the browser and conﬁrm that the column layout changes as you 
+ resize the browser window. 
+ app/labs/lab2/BootstrapGrids.tsx 
+ <div id = "wd-bs-responsive-dramatic" > 
+ <h2> Responsive grid system </h2> 
+ <Row> 
+ <Col xs = { 12 } sm = { 6 } md = { 4 } lg = { 3 } xl = { 2 } xxl = { 1 } className = "bg-warning" > 
+ <h4> 1 </h4></Col> 
+ <Col xs = { 12 } sm = { 6 } md = { 4 } lg = { 3 } xl = { 2 } xxl = { 1 } className = "bg-primary text-white" > 
+ <h4> 2 </h4></Col> 
+ <Col xs = { 12 } sm = { 6 } md = { 4 } lg = { 3 } xl = { 2 } xxl = { 1 } className = "bg-danger text-white" > 
+ <h4> 3 </h4></Col> 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 29 
+
+===== PAGE 30 =====
+ <Col xs = { 12 } sm = { 6 } md = { 4 } lg = { 3 } xl = { 2 } xxl = { 1 } className = "bg-success text-white" > 
+ <h4> 4 </h4></Col> 
+ <Col xs = { 12 } sm = { 6 } md = { 4 } lg = { 3 } xl = { 2 } xxl = { 1 } className = "bg-warning" > 
+ <h4> 5 </h4></Col> 
+ <Col xs = { 12 } sm = { 6 } md = { 4 } lg = { 3 } xl = { 2 } xxl = { 1 } className = "bg-primary text-white" > 
+ <h4> 6 </h4></Col> 
+ <Col xs = { 12 } sm = { 6 } md = { 4 } lg = { 3 } xl = { 2 } xxl = { 1 } className = "bg-danger text-white" > 
+ <h4> 7 </h4></Col> 
+ <Col xs = { 12 } sm = { 6 } md = { 4 } lg = { 3 } xl = { 2 } xxl = { 1 } className = "bg-success text-white" > 
+ <h4> 8 </h4></Col> 
+ <Col xs = { 12 } sm = { 6 } md = { 4 } lg = { 3 } xl = { 2 } xxl = { 1 } className = "bg-warning" > 
+ <h4> 9 </h4></Col> 
+ <Col xs = { 12 } sm = { 6 } md = { 4 } lg = { 3 } xl = { 2 } xxl = { 1 } className = "bg-primary text-white" > 
+ <h4> 10 </h4></Col> 
+ <Col xs = { 12 } sm = { 6 } md = { 4 } lg = { 3 } xl = { 2 } xxl = { 1 } className = "bg-danger text-white" > 
+ <h4> 11 </h4></Col> 
+ <Col xs = { 12 } sm = { 6 } md = { 4 } lg = { 3 } xl = { 2 } xxl = { 1 } className = "bg-success text-white" > 
+ <h4> 12 </h4></Col> 
+ </Row> 
+ </div> 
+ Figure 2.3.4.d - Extra extra large (xxl) screen size 
+ renders 12 column grid 
+ Figure 2.3.4.e - Extra large (xl) screen size 
+ renders 6 column grid 
+ Figure 2.3.4.f - Large (lg) screen 
+ size renders 4 column grid 
+ Figure 2.3.4.g - Medium screen (md) size renders 
+ 3 column grid 
+ Figure 2.3.4.h - Small (sm) screen size 
+ renders 2 column grid 
+ Figure 2.3.4.i - Extra small (xm) 
+ screen renders 1 column grid 
+ 2.4.5 Hiding and Showing Responsive HTML Content with React Bootstrap 
+ As users shrink or widen the browser window, there may be more or less space to show some content. Bootstrap can 
+ conﬁgure content to show or hide depending on the width of the screen. As described earlier in Responsive grids , 
+ Bootstrap breaks up the screen into 5 sizes: extra small , small , medium , large , extra large , and extra extra large . Create a 
+ new component called ScreenSizeLabel as shown below which displays and hides different labels at different screen 
+ sizes. Add the styling to index.css to position the label at the bottom right corner. Create a component as shown below 
+ and conﬁrm that the label displays the current screen size when you resize the window. 
+ app/labs/lab2/ScreenSizeLabel.tsx app/labs/lab2/index.css 
+ export default function ScreenSizeLabel() { #wd-screen-size-label { 
+ 30 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 31 =====
+ return ( 
+ <div id = "wd-screen-size-label" > 
+ <div className = "d-block d-sm-none" > 
+ XS - Extra Small (&lt;576px) </div> 
+ <div className = "d-none d-sm-block d-md-none" > 
+ S - Small ( ≥ 576px) </div> 
+ <div className = "d-none d-md-block d-lg-none" > 
+ M - Medium ( ≥ 768px) </div> 
+ <div className = "d-none d-lg-block d-xl-none" > 
+ L - Large ( ≥ 992px) </div> 
+ <div className = "d-none d-xl-block d-xxl-none" > 
+ XL - Extra Large ( ≥ 1200px) </div> 
+ <div className = "d-none d-xxl-block" > 
+ XXL - Extra Extra Large ( ≥ 1400px) </div> 
+ </div> 
+ );} 
+ position : fixed ; 
+ bottom : 0 ; 
+ right : 0 ; 
+ background-color : black ; 
+ color : white ; 
+ padding : 5px ; 
+ font-size : 12px ; 
+ z-index : 1000 ; 
+ width : 220px ; 
+ text-align : center; 
+ } 
+ Figure 2.3.5 - Hiding and Showing Responsive Content with React Bootstrap 
+ 2.4.6 Styling HTML Tables with React Bootstrap 
+ The React Bootstrap Table component and classes that enhance the look and feel of common HTML widgets such as 
+ tables, lists, and form elements. Let's start with tables. To practice with styling HTML tables , create a component with the 
+ code shown below. Refresh the browser and conﬁrm it looks similar to image shown. 
+ app/labs/lab2/BootstrapTables.tsx 
+ < div id ="wd-css-styling-tables" > 
+ < h2 >Tables</ h2 > 
+ < Table > 
+ < thead > 
+ < tr className= "table-dark" >< th >Quiz</ th >< th >Topic</ th >< th >Date</ th >< th >Grade</ th ></ tr > 
+ </ thead > 
+ < tbody > 
+ < tr className= "table-warning" >< td >Q1</ td >< td >HTML</ td >< td >2/3/21</ td >< td >85</ td ></ tr > 
+ < tr className= "table-danger" >< td >Q2</ td >< td >CSS</ td >< td >2/10/21</ td >< td >90</ td ></ tr > 
+ < tr className= "table-primary" >< td >Q3</ td >< td >JavaScript</ td >< td >2/17/21</ td >< td >90</ td ></ tr > 
+ </ tbody > 
+ < tfoot > 
+ < tr className= "table-success" >< td colSpan ={3} >Average</ td >< td >90</ td ></ tr > 
+ </ tfoot > 
+ </ Table > 
+ </ div > 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 31 
+
+===== PAGE 32 =====
+ Figure 2.3.6 - Styling HTML Tables with React Bootstrap 
+ 2.4.7 Implementing Responsive Tables with React Bootstrap 
+ In general it is a good practice to minimize the number of scrollbars shown at any one time in a browser screen. In 
+ browsers, large amounts of content extends vertically beyond the height of the window, and then scrollbars allow you to 
+ access that extra content by scrolling vertically. Sometimes it is necessary to use additional scrollbars when appropriate 
+ such as tables or images that might be too wide to ﬁt horizontally. Bootstrap provides tables that can show scrollbars 
+ when they don't ﬁt in a screen. To practice with React Bootstrap Responsive Tables , create a component with the code 
+ below and conﬁrm it looks similar to image shown. Resize the window and conﬁrm that the table shows a horizontal 
+ scroll bar when the screen is too small to ﬁt the table comfortably. 
+ app/labs/lab2/BootstrapTables.tsx 
+ < div id ="wd-css-responsive-tables" > 
+ < h2 >Responsive tables</ h2 > 
+ < Table responsive > 
+ < thead > 
+ < tr >< th >Very</ th >< th >long</ th >< th >set</ th >< th >of</ th >< th >columns</ th > 
+ < th >Very</ th >< th >long</ th >< th >set</ th >< th >of</ th >< th >columns</ th > 
+ < th >Very</ th >< th >long</ th >< th >set</ th >< th >of</ th >< th >columns</ th > 
+ </ tr > 
+ </ thead > 
+ < tbody > 
+ < tr > 
+ < td >Very</ td >< td >long</ td >< td >set</ td >< td >of</ td >< td >columns</ td > 
+ < td >Very</ td >< td >long</ td >< td >set</ td >< td >of</ td >< td >columns</ td > 
+ < td >Very</ td >< td >long</ td >< td >set</ td >< td >of</ td >< td >columns</ td > 
+ </ tr > 
+ </ tbody > 
+ </ Table > 
+ </ div > 
+ Figure 2.3.7.a - Responsive tables don't add scrollbars if they ﬁt Figure 2.3.7.b - Responsive 
+ tables add scrollbars when they 
+ don't ﬁt 
+ 32 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 33 =====
+ 2.4.8 Styling Lists with React Bootstrap 
+ Another set of React Bootstrap components can make simple HTML lists look more presentable. The ListGroup and 
+ ListGroupItem components can be applied to ul and li tags correspondingly to make list stand out. The active attribute can 
+ be applied to an ListGroupItem components to highlight it. To practice with React Bootstrap List Group , create a 
+ component with the code below and conﬁrm it looks similar to image shown in Figure 2.3.8. 
+ app/labs/lab2/BootstrapLists.tsx 
+ < div id ="wd-css-styling-lists" > 
+ < h2 >Favorite movies</ h2 > 
+ <ListGroup> 
+ <ListGroupItem active > Aliens </ListGroupItem> 
+ <ListGroupItem> Terminator </ListGroupItem> 
+ <ListGroupItem> Blade Runner </ListGroupItem> 
+ <ListGroupItem> Lord of the Ring </ListGroupItem> 
+ <ListGroupItem disabled > Star Wars </ListGroupItem> 
+ </ListGroup> 
+ </ div > 
+ 2.4.9 Styling Hyperlink Lists with React Bootstrap 
+ The same ListGroup and ListGroupItem Bootstrap components can be conﬁgured as action s and href to implement a list 
+ of anchor links. To practice with React Bootstrap hyperlink lists , create a component with the code below and conﬁrm it 
+ looks similar to image shown in Figure 2.3.9 and that the links work. Note that you'll need to make this a client component . 
+ app/labs/lab2/BootstrapLists.tsx 
+ < div id ="wd-css-hyperlink-list" > 
+ < h3 >Favorite books</ h3 > 
+ <ListGroup> 
+ <ListGroupItem action active href = "https://en.wikipedia.org/wiki/Dune_(novel)" > 
+ Dune 
+ </ListGroupItem> 
+ <ListGroupItem action href = "https://en.wikipedia.org/wiki/The_Lord_of_the_Rings" > 
+ Lord of the Rings 
+ </ListGroupItem> 
+ <ListGroupItem action href = "https://en.wikipedia.org/wiki/The_Forever_War" > 
+ The Forever War 
+ </ListGroupItem> 
+ <ListGroupItem action href = "https://en.wikipedia.org/wiki/2001:_A_Space_Odyssey_(novel)" > 
+ 2001 A Space Odyssey 
+ </ListGroupItem> 
+ <ListGroupItem action disabled href = "https://en.wikipedia.org/wiki/Ender%27s_Game" > 
+ Enders Game 
+ </ListGroupItem> 
+ <ListGroupItem action onClick = { () => alert( "New book added" ) } > 
+ Add another book 
+ </ListGroupItem> 
+ </ListGroup> 
+ </ div > 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 33 
+
+===== PAGE 34 =====
+ Figure 2.3.8 - Favorite movies Figure 2.3.9 - Favorite books 
+ 2.4.10 Styling Forms with React Bootstrap 
+ React Bootstrap has tons of components to style form elements especially to make them friendly for mobile Web 
+ applications. To practice with React Bootstrap form components , create a component with the code below and conﬁrm it 
+ renders similar to the image shown. 
+ app/labs/lab2/BootstrapForms.tsx 
+ <div id = "wd-css-styling-forms" > 
+ <h2> Forms </h2> 
+ <FormLabel> Email address </FormLabel> 
+ <FormControl type = "email" placeholder = "name@example.com" /> 
+ <FormLabel> Example textarea </FormLabel> 
+ <FormControl as = "textarea" rows = { 3 } /> 
+ </div> 
+ Figure 2.3.10 - Styling Forms with React Bootstrap 
+ 2.4.11 Styling Dropdowns with React Bootstrap 
+ Dropdowns can also be styled professionally. To practice with React Bootstrap dropdown styling , create a component with 
+ the code below and conﬁrm it looks similar to image shown. 
+ app/labs/lab2/BootstrapForms.tsx 
+ < div id ="wd-css-styling-dropdowns" > 
+ < h3 >Dropdowns</ h3 > 
+ <FormS elect > 
+ < option value ="0" defaultChecked >Open this select menu</ option > 
+ < option value ="1" >One</ option > 
+ < option value ="2" >Two</ option > 
+ < option value ="3" >Three</ option > 
+ </FormS elect > 
+ </ div > 
+ Figure 2.3.11 - Styling Dropdowns with React Bootstrap 
+ 34 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 35 =====
+ 2.4.12 Styling Switches with React Bootstrap 
+ Checkboxes can be styled to look like switches with React Bootstrap components FormCheck with type="switch" . To 
+ practice with Bootstrap form switches , create a component with the code below. 
+ app/labs/lab2/BootstrapForms.tsx 
+ <div id = "wd-css-styling-switches" > 
+ <h3> Switches </h3> 
+ <FormCheck type = "switch" defaultChecked = {false} label = "Unchecked switch checkbox input" /> 
+ <FormCheck type = "switch" defaultChecked = {true} label = "Checked switch checkbox input" /> 
+ <FormCheck type = "switch" defaultChecked = {false} label = "Unchecked disabled switch checkbox input" disabled /> 
+ <FormCheck type = "switch" defaultChecked = {true} label = "Checked disabled switch checkbox input" disabled /> 
+ </div> 
+ Figure 2.3.12 - Styling Switches with React Bootstrap 
+ 2.4.13 Styling Range and Sliders with React Bootstrap 
+ Range input ﬁelds render as sliders. To practice with Bootstrap sliders , create a component with the code below and 
+ conﬁrm it renders similar to image shown. 
+ app/labs/lab2/BootstrapForms.tsx 
+ <div id = "wd-css-styling-range-and-sliders" > 
+ <h3> Range </h3> 
+ <FormLabel> Example range </FormLabel> 
+ <FormRange min = "0" max = "5" step = "0.5" /> 
+ </div> 
+ Figure 2.3.13 - Styling Range and Sliders with React Bootstrap 
+ 2.4.15 Styling Responsive Forms with React Bootstrap 
+ Forms can be conﬁgured to display either horizontally or vertically depending on the size of the containing element. To 
+ practice with Bootstrap responsive forms, create a component with the code below and conﬁrm it renders similar to 
+ image shown. Resize the window to show how the form changes layout as the window resizes. 
+ app/labs/lab2/BootstrapForms.tsx 
+ <div id = "wd-css-responsive-forms-1" > 
+ <h3> Responsive forms </h3> 
+ <Row className = "mb-3" controlId = "email1" > 
+ <FormLabel column sm = { 2 } > Email </FormLabel> 
+ <Col sm = { 10 } > 
+ <FormControl type = "email" defaultValue = "email@example.com" /> 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 35 
+
+===== PAGE 36 =====
+ </Col> 
+ </Row> 
+ <Row className = "mb-3" controlId = "password1" > 
+ <FormLabel column sm = { 2 } > Password </FormLabel> 
+ <Col sm = { 10 } > 
+ <FormControl type = "password" /> 
+ </Col> 
+ </Row> 
+ <Row className = "mb-3" controlId = "textarea2" > 
+ <FormLabel column sm = { 2 } > Bio </FormLabel> 
+ <Col sm = { 10 } > 
+ <FormControl as = "textarea" style = { { height: "100px" } } /> 
+ </Col> 
+ </Row> 
+ </div> 
+ Figure 2.3.15.a - Styling Responsive Forms with React 
+ Bootstrap 
+ Figure 2.3.15.b - Styling Responsive Forms with React 
+ Bootstrap 
+ Here's another example. Create a component with the code below and conﬁrm it renders similar to image shown. Resize 
+ the window to show how the form changes layout as the window resizes. 
+ app/labs/lab2/BootstrapForms.tsx 
+ <div id = "wd-css-responsive-forms-2" > 
+ <h3> Responsive forms 2 </h3> 
+ <Form> 
+ <Row className = "mb-3" controlId = "formHorizontalEmail" > 
+ <FormLabel column sm = { 2 } > Email </FormLabel> 
+ <Col sm = { 10 } > <FormControl type = "email" placeholder = "Email" /> </Col> 
+ </Row> 
+ <Row className = "mb-3" controlId = "formHorizontalPassword" > 
+ <FormLabel column sm = { 2 } > Password </FormLabel> 
+ <Col sm = { 10 } > <FormControl type = "password" placeholder = "Password" /> </Col> 
+ </Row> 
+ <fieldset> 
+ <Row className = "mb-3" > 
+ <FormLabel as = "legend" column sm = { 2 } > Radios </FormLabel> 
+ <Col sm = { 10 } > 
+ <FormCheck type = "radio" label = "First radio" name = "formHorizontalRadios" defaultChecked /> 
+ <FormCheck type = "radio" label = "Second radio" name = "formHorizontalRadios" /> 
+ <FormCheck type = "radio" label = "Third radio" name = "formHorizontalRadios" /> 
+ <FormCheck type = "radio" label = "Remember me" name = "formHorizontalRadios" /> 
+ </Col> 
+ </Row> 
+ </fieldset> 
+ <Col> <Button type = "submit" > Sign in </Button> </Col> 
+ </Form> 
+ </div> 
+ 36 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 37 =====
+ Figure 2.3.15.c - Styling Responsive Forms with React 
+ Bootstrap 
+ Figure 2.3.15.d - Styling Responsive Forms with React 
+ Bootstrap 
+ 2.4.16 Styling Navigation Tabs with React Bootstrap 
+ Bootstrap provides several common navigation widgets such as tabs, menus, and pills. Let's take a look at tabs ﬁrst. To 
+ practice with Bootstrap tabs, create a component with the code below and conﬁrm it renders similar to image shown. 
+ app/labs/lab2/BootstrapNavigation.tsx 
+ < div id ="wd-css-navigating-with-tabs" > 
+ < h2 >Tabs</ h2 > 
+ <Nav variant = "tabs" > 
+ <NavItem> 
+ <NavLink href = "#/labs/lab2/Active" > Active </NavLink> 
+ </NavItem> 
+ <NavItem> 
+ <NavLink href = "#/labs/lab2/Link1" > Link 1 </NavLink> 
+ </NavItem> 
+ <NavItem> 
+ <NavLink href = "#/labs/lab2/Link2" > Link 2 </NavLink> 
+ </NavItem> 
+ <NavItem> 
+ <NavLink href = "#/labs/lab2/Disabled" disabled > Disabled </NavLink> 
+ </NavItem> 
+ </Nav> 
+ </ div > 
+ Figure 2.3.16 - Styling Navigation Tabs with React Bootstrap 
+ 2.4.17 Styling Navigation Pills with React Bootstrap 
+ Pills are another navigation widget listing several links. Here's an example of using the Bootstrap Pills to refactor the TOC 
+ component with Bootstrap's pills variant of the Nav component. Conﬁrm the TOC highlights the corresponding link as you 
+ navigate between the labs. 
+ app/labs/TOC.tsx 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 37 
+
+===== PAGE 38 =====
+ import { Nav, NavItem, NavLink } from "react-bootstrap" ; 
+ import Link from "next/link"; 
+ export default function TOC() { 
+ return ( 
+ <Nav variant = "pills" > 
+ <NavItem> 
+ <NavLink href=" /labs" as = { Link } > Labs </NavLink> 
+ </NavItem> 
+ <NavItem> 
+ <NavLink href=" /labs/lab1" as = { Link } > Lab 1 </NavLink> 
+ </NavItem> 
+ <NavItem> 
+ <NavLink href=" /labs/lab2" as = { Link } > Lab 2 </NavLink> 
+ </NavItem> 
+ <NavItem> 
+ <NavLink href=" /labs/lab3" as = { Link } > Lab 3 </NavLink> 
+ </NavItem> 
+ <NavItem> 
+ <NavLink href=" /" as = { Link } > Kambaz </NavLink> 
+ </NavItem> 
+ <NavItem> 
+ <NavLink href = "https://github.com/jannunzi" > My GitHub </NavLink> 
+ </NavItem> 
+ </Nav> 
+ );} 
+ Figure 2.3.17 - Styling Navigation Pills with React Bootstrap 
+ 2.4.18 Styling Navigation with React Bootstrap Cards 
+ Cards combine images, titles, paragraphs and buttons into a reusable component that can quickly summarize a topic. To 
+ practice with Bootstrap cards , create a component with the code below and conﬁrm it renders similar to image shown. 
+ Use an image of your own, or download one from my Flickr account and save it to public/images/stacked.jpg . Import all 
+ necessary Bootstrap components, e.g, Card , and Button . 
+ app/labs/lab2/BootstrapNavigation.tsx 
+ <div id = "wd-css-navigating-with-cards" > 
+ <h2> Cards </h2> 
+ <Card style = { { width: "18rem" } } > 
+ <CardImg variant = "top" src = "images/stacked.jpg" /> 
+ <CardBody> 
+ <CardTitle> Stacking Starship </CardTitle> 
+ <CardText> 
+ Stacking the most powerful rocket in history. Mars or bust! 
+ </CardText> 
+ <Button variant = "primary" > Boldly Go </Button> 
+ </CardBody> 
+ </Card> 
+ </div> 
+ 38 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 39 =====
+ Figure 2.3.18 - Styling Navigation with React Bootstrap Cards 
+ 

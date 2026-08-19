@@ -1,0 +1,7 @@
+/* Simulates the very first index.css rule from §2.1.2 — a tag selector that
+   matches every <p> — scoped to this demo so it does not leak into the rest
+   of the book page. */
+.demo p {
+  background-color: green;
+  color: white;
+}

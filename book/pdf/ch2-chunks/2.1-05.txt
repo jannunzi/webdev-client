@@ -1,0 +1,28 @@
+2.1.4 Selecting HTML Content with CSS Class Selectors 
+ Instead of using IDs to refer to a speciﬁc tag, the className attribute can select a group of tags, even if they are different 
+ types of elements. To practice using class selectors , copy the CSS rule below into index.css , and the HTML at the end of 
+ page.tsx . The ellipses below (...) means that there's code above and/or below that is not shown for brevity. Do not include 
+ the ellipses in actual code. 
+ app/labs/lab2/index.css app/labs/lab2/page.tsx 
+ ... 
+ . wd-class-selector { 
+ background-color : yellow ; 
+ color : blue ; 
+ } 
+ ... 
+ <div id = "wd-css-class-selectors" > 
+ <h3> Class selectors </h3> 
+ <p className = " wd-class-selector " > 
+ Instead of using IDs to refer to elements, you can use an element's CLASS attribute </p> 
+ <h4 className = " wd-class-selector " > 
+ This heading has same style as paragraph above </h4> 
+ </div> 
+ ... 
+ 6 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 7 =====
+ The example above declares a selector that transforms the background and foreground color and then applies the 
+ transformation to several tags. The above example applies the style to two elements, the paragraph and the heading. 
+ Copy the code above into the stylesheet and page, and then conﬁrm that the browser renders as shown in the ﬁgure 
+ below. 
+ Figure 

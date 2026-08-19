@@ -1,0 +1,859 @@
+2.1 Styling React Components with CSS (Cascading Style Sheets) 
+ This section introduces several CSS , Bootstrap , and React Icons exercises to practice and learn how to style HTML 
+ documents. Use the same project created the last chapter. Using VS Code , open the project created in the previous 
+ chapter ( kambaz-next-js ), and complete all the exercises under the src directory. If not already done, under the app/labs 
+ directory, create a new directory called lab2 , create page.tsx under app/labs/lab2 and do all work in a new page.tsx ﬁle. 
+ Make sure to add links in app/labs/page.tsx and app/labs/TOC.tsx to the new exercises in app/labs/lab2/page.tsx . Conﬁrm 
+ you can navigate to the new exercises from the table of content. 
+ 2.1.1 Styling HTML Tags with the Style Attribute 
+ An HTML tag's style attribute can conﬁgure the look and feel of the tag by changing the values of its style properties as 
+ shown below. The value of the style attribute is an object in JSON format ( JavaScript Object Notation ). 
+ < element style ={{ property1 : " value1" , property2 : " value2" }} > 
+ element body 
+ </ element > 
+ Examples of properties property1 and property2 are foreground color, background color, font size, etc. The value of the 
+ properties are primitive data types such as strings or numbers, or declared variable JSON objects. To practice using the 
+ style attribute, copy and paste the example below into app/labs/lab2/page.tsx . 
+ 4 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 5 =====
+ app/labs/lab2/page.tsx 
+ export default function Lab2() { 
+ return ( 
+ <div id="wd-lab2"> 
+ <h2> Lab 2 - Cascading Style Sheets </h2> 
+ <h3> Styling with the STYLE attribute </h3> 
+ <p style = { { backgroundColor: "blue" , color: "white" } } > 
+ Style attribute allows configuring look and feel right on the element. Although it's very convenient 
+ it is considered bad practice and you should avoid using the style attribute 
+ </p> 
+ </div> );} 
+ The exercise above styles the paragraph tag with its style attribute, changing the background color by setting the 
+ backgroundColor property to blue and also changing the foreground color to white by setting the color property to white . 
+ There are 100s of style attributes of which we'll only cover the most common [REF]. 
+ 2.1.2 Importing CSS Documents from React 
+ Instead of changing styles within HTML, it is a best practice to do all styling conﬁguration in separate CSS ﬁles and then 
+ import the ﬁles. To practice importing CSS ﬁles, create a brand new ﬁle called app/labs/lab2/index.css in the same 
+ directory of the app/labs/lab2/page.tsx document, and copy and paste the following content. 
+ app/labs/lab2/index.css 
+ p { 
+ background-color : green ; 
+ color : white ; 
+ } 
+ Then, remove the style attribute highlighted in red below and instead, import the index.css ﬁle highlighted in green. 
+ Conﬁrm that the paragraph now has a green background. 
+ app/labs/lab2/page.tsx 
+ import "./index.css" ; 
+ export default function Lab2() { 
+ return ( 
+ <div id="wd-lab2"> 
+ <h2> Lab 2 - Cascading Style Sheets </h2> 
+ <h3> Styling with the STYLE attribute </h3> 
+ <p style = { { backgroundColor: "blue" , color: "white" } } > 
+ Style attribute allows configuring look and feel 
+ right on the element. Although it's very convenient 
+ it is considered bad practice and you should avoid 
+ using the style attribute </p> 
+ </div> );} 
+ Figure 2.1.2.a - Styling with the STYLE attribute Figure 2.1.2.b - Styling with the CSS ﬁle 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 5 
+
+===== PAGE 6 =====
+ 2.1.3 Selecting HTML Content with CSS ID Selectors 
+ The CSS rules in previous exercises styled all paragraphs by using the name of the tag p and then specifying the style 
+ property values. Instead of changing the look and feel of all the tags of the same name, e.g., p , we can refer to a speciﬁc 
+ tag by their ID, an attribute that uniquely identiﬁes elements in a document. To practice using ID selectors , in index.css , 
+ comment out or delete the paragraph CSS rule highlighted in red as shown below, and add the two CSS rules referring to 
+ paragraphs with IDs id-selector-1 and id-selector-2 , highlighted in green. 
+ app/labs/lab2/index.css app/labs/lab2/page.tsx 
+ /*p { 
+ background-color: green; 
+ color: white;}*/ 
+ p#wd-id-selector-1 { 
+ background-color : red ; 
+ color : white ; 
+ } 
+ p#wd-id-selector-2 { 
+ background-color : yellow ; 
+ color : black ; 
+ } 
+ import "./index.css" ; 
+ export default function Lab2() { 
+ return ( 
+ <div id="wd-lab2"> 
+ <h2> Lab 2 - Cascading Style Sheets </h2> 
+ <h3> Styling with the STYLE attribute </h3> 
+ … 
+ <div id = "wd-css-id-selectors" > 
+ <h3> ID selectors </h3> 
+ <p id = "wd-id-selector-1" > 
+ Instead of changing the look and feel of all the 
+ elements of the same name, e.g., P, we can refer to a specific element by its ID 
+ </p> 
+ <p id = "wd-id-selector-2" > 
+ Here's another paragraph using a different ID and a different look and feel 
+ </p> 
+ </div> 
+ </div> 
+ );} 
+ Add the code above highlighted in green to page.tsx , and conﬁrm the page renders as shown in the ﬁgure below. 
+ Figure 2.1.3 - Selecting with ID CSS selectors 
+ 2.1.4 Selecting HTML Content with CSS Class Selectors 
+ Instead of using IDs to refer to a speciﬁc tag, the className attribute can select a group of tags, even if they are different 
+ types of elements. To practice using class selectors , copy the CSS rule below into index.css , and the HTML at the end of 
+ page.tsx . The ellipses below (...) means that there's code above and/or below that is not shown for brevity. Do not include 
+ the ellipses in actual code. 
+ app/labs/lab2/index.css app/labs/lab2/page.tsx 
+ ... 
+ . wd-class-selector { 
+ background-color : yellow ; 
+ color : blue ; 
+ } 
+ ... 
+ <div id = "wd-css-class-selectors" > 
+ <h3> Class selectors </h3> 
+ <p className = " wd-class-selector " > 
+ Instead of using IDs to refer to elements, you can use an element's CLASS attribute </p> 
+ <h4 className = " wd-class-selector " > 
+ This heading has same style as paragraph above </h4> 
+ </div> 
+ ... 
+ 6 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 7 =====
+ The example above declares a selector that transforms the background and foreground color and then applies the 
+ transformation to several tags. The above example applies the style to two elements, the paragraph and the heading. 
+ Copy the code above into the stylesheet and page, and then conﬁrm that the browser renders as shown in the ﬁgure 
+ below. 
+ Figure 2.1.3 - Selecting with CSS class selectors 
+ 2.1.5 Selecting HTML Content Based on the Document Structure 
+ Selectors can be combined to refer to tags in particular places in the document. A set of selectors separated by a space 
+ can refer to elements in a hierarchy. For instance: .selector1 .selector2 { … } refers to an element whose class is .selector2 
+ and is inside some ancestor whose class is .selector1 . Alternatively, separating class selectors with the ">" character 
+ establishes a direct parent/child relationship. To practice selecting elements using a set of selectors, copy the following 
+ content in page.tsx . The code below does not show ellipses as previous examples, but the code is intended to be copied 
+ at the end of the ﬁle shown. Be sure to include the code within the function's return and within the wrapping <div> . 
+ app/labs/lab2/page.tsx 
+ <div id = "wd-css-document-structure" > 
+ <div className = "wd-selector-1" > 
+ <h3> Document structure selectors </h3> 
+ <div className = "wd-selector-2" > 
+ Selectors can be combined to refer elements in particular 
+ places in the document 
+ <p className = "wd-selector-3" > 
+ This paragraph's red background is referenced as 
+ <br /> 
+ .selector-2 .selector3 <br /> 
+ meaning the descendant of some ancestor. <br /> 
+ <span className = "wd-selector-4" > 
+ Whereas this span is a direct child of its parent 
+ </span><br /> 
+ You can combine these relationships to create specific 
+ styles depending on the document structure 
+ </p> 
+ </div> 
+ </div> 
+ </div> 
+ {/* this is parent element with selector 
+ .wd-selector-1 
+ .wd-selector-2 is a direct child of 
+ .wd-selector-1 
+ .wd-selector-3 is a direct child of 
+ .wd-selector-2 and a descendant of 
+ .wd-selector-1 
+ .wd-selector-4 is a direct child of 
+ .wd-selector-3 and is a descendant of 
+ .wd-selector-2 and is a descendant of 
+ .wd-selector-1 
+ */} 
+ Now, in index.css , style tags .wd-selector-3 and .wd-selector-4 as shown below. 
+ app/labs/lab2/index.css 
+ . wd-selector-1 . wd-selector-3 { 
+ background-color : red ; 
+ color : white ; } 
+ . wd-selector-2 > . wd-selector-3 > . wd-selector-4 { 
+ background-color : yellow ; 
+ color : blue ; } 
+ /* refers to .wd-selector-3 as a descendant 
+ of .wd-selector-1 */ 
+ /* refers to .wd-selector-4 as a direct child 
+ of .wd-selector-3 which is a direct child 
+ of .wd-selector-2 */ 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 7 
+
+===== PAGE 8 =====
+ Conﬁrm that the page renders as shown below. 
+ Figure 2.1.5 - Selecting HTML Content Based on the Document Structure 
+ 2.1.6 CSS Selection Rule Mechanism 
+ CSS rules override the default styling of the tags the rules refer to. That means that there are at least two rules that apply 
+ to the same element, the default rule declared by the browser, and then the custom rule that overrides the default rule. The 
+ custom rules wins out over the default rule, but why? The Cascading in Cascading Style Sheets refer to the way CSS rules 
+ are applied to HTML elements based on a hierarchy of speciﬁcity and origin. This mechanism determines how styles are 
+ applied when there are multiple style rules that could affect an element. Here’s how it works: 
+ 1. Speciﬁcity : CSS rules are applied based on their speciﬁcity. This is a measure of how precise a selector is. For 
+ example, since ID selectors only refer to a single tag, whereas class selectors can refer to many tags, the ID 
+ selector is more speciﬁc than a class selector. Since a tag's name refers to all tags with that name regardless of 
+ ID or class, a class selector is more speciﬁc than a tag name selector. More speciﬁc selectors override more 
+ general ones. 
+ 2. Source Order : If multiple rules have the same speciﬁcity, the last rule deﬁned in the CSS will take precedence. 
+ 3. Inheritance : Some styles are inherited by child elements from their parent elements, such as font styles. However, 
+ properties like width and margin are not inherited. 
+ 2.1.7 Styling an HTML Tag's Foreground Color with CSS 
+ Foreground colors can be conﬁgured using the CSS color property as follows 
+ . some-css-selector { 
+ color : blue ; 
+ } 
+ /* selects some DOM element */ 
+ /* sets color property to blue */ 
+ Colors can be deﬁned in various ways: 
+ ● As strings, e.g., white , red , blue , etc. There are thousands of declared color names. [REF] 
+ ● As hexadecimals, e.g., #ABCDEF, where each group of 2 digits, from left to right specify the amound of red, green 
+ and blue. 
+ ● As RGB, e.g., rgb(12, 34, 56), where each digit, from left to right, speciﬁes the amound of red, green and blue. 
+ Here are a couple of examples: 
+ . the-sun { color : rgb ( 255 , 255 , 0 ); } . the-sky { color : blue ; } . ketchup { color : #FF0000 ; } 
+ 8 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 9 =====
+ To practice working with foreground colors, copy the CSS rules below into index.css to declare several useful color 
+ classes. Copy the HTML code below into a new ﬁle called ForegroundColors.tsx . Import the ﬁle into Lab2 and conﬁrm it 
+ renders as shown. 
+ app/labs/lab2/index.css app/labs/lab2/ForegroundColors.tsx 
+ . wd-fg-color-black { color : black ; } 
+ . wd-fg-color-white { color : white ; } 
+ . wd-fg-color-blue { color : #7070ff ; } 
+ . wd-fg-color-red { color : #ff7070 ; } 
+ . wd-fg-color-green { color : green ; } 
+ <div id = "wd-css-colors" > 
+ <h2> Colors </h2> 
+ <h3 className = "wd-fg-color-blue" > Foreground color </h3> 
+ <p className = "wd-fg-color-red" > 
+ The text in this paragraph is red but 
+ <span className = "wd-fg-color-green" > this text is green </span> 
+ </p> 
+ </div> 
+ Figure 2.1.7 - Foreground color 
+ 2.1.8 Styling an HTML Tag's Background Color with CSS 
+ Similar to styling foreground color, the background-color CSS property is used to conﬁgure the background color of any 
+ tag. To practice working with background colors, copy the CSS rules shown below into index.css and the HTML code into 
+ a new ﬁle called BackgroundColors.tsx . Import the ﬁle into Lab2 and conﬁrm the browser renders as shown. 
+ app/labs/lab2/index.css app/labs/lab2/BackgroundColors.tsx 
+ . wd-bg-color-yellow { 
+ background-color : #ffff07 ; } 
+ . wd-bg-color-blue { 
+ background-color : #7070ff ; } 
+ . wd-bg-color-red { 
+ background-color : #ff7070 ; } 
+ . wd-bg-color-green { 
+ background-color : green ; } 
+ . wd-bg-color-gray { 
+ background-color : lightgray ; } 
+ <div id = "wd-css-background-colors" > 
+ <h3 className = "wd-bg-color-blue wd-fg-color-white" > Background color </h3> 
+ <p className = "wd-bg-color-red wd-fg-color-black" > 
+ This background of this paragraph is red but 
+ <span className = "wd-bg-color-green wd-fg-color-white" > 
+ the background of this text is green and the foreground white 
+ </span> 
+ </p> 
+ </div> 
+ Figure 2.1.8 - Background color 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 9 
+
+===== PAGE 10 =====
+ 2.1.9 Styling an HTML Tag's Borders with CSS 
+ CSS has several properties that conﬁgure the look and feel of tag border around their content. Here's a sample of the 
+ properties that can be conﬁgured. 
+ . some-selector { 
+ border-width : 10 px ; 
+ border-style : solid | dotted | dashed | double ; 
+ border-color : red | blue ...; } 
+ /* configure border with several properties */ 
+ /* border's width. Can also provide per border */ 
+ /* the style of the border */ 
+ /* the color of the border */ 
+ To practice styling borders, copy the CSS code below into index.css and the HTML code into a new ﬁle called Borders.tsx . 
+ Import the new ﬁle into the Lab2 page and conﬁrm the browser renders as shown. Note how several classes are applied to 
+ the same tag to combine their cumulative styles to that tag. 
+ app/labs/lab2/index.css app/labs/lab2/Borders.tsx 
+ . wd-border-fat { border-width : 20 px 30 px 20 px 30 px ; } 
+ . wd-border-thin { border-width : 4 px ; } 
+ . wd-border-solid { border-style : solid ; } 
+ . wd-border-dashed { border-style : dashed ; } 
+ . wd-border-yellow { border-color : #ffff07 ; } 
+ . wd-border-red { border-color : #ff7070 ; } 
+ . wd-border-blue { border-color : #7070ff ; } 
+ <div id = "wd-css-borders" > 
+ <h2> Borders </h2> 
+ <p className = "wd-border-fat 
+ wd-border-red wd-border-solid" > 
+ Solid fat red border </p> 
+ <p className = "wd-border-thin 
+ wd-border-blue wd-border-dashed" > 
+ Dashed thin blue border 
+ </p> 
+ </div> 
+ Figure 2.1.9.a - Solid fat red border Figure 2.1.9.b - Dashed thin blue border 
+ 2.1.10 Styling an HTML Tag's Margins and Paddings with CSS 
+ White space such as padding and margin can be styled with various CSS properties. Each side can be styled separately, 
+ e.g., top, bottom, left, right, or all the space around the content. To practice styling padding , copy the CSS code below into 
+ index.css and the HTML into Padding.tsx . Import and conﬁrm the browser renders as shown. 
+ app/labs/lab2/index.css app/labs/lab2/Padding.tsx 
+ . wd-padded-top-left { 
+ padding-top : 50 px ; 
+ padding-left : 50 px ; 
+ } 
+ . wd-padded-bottom-right { 
+ padding-bottom : 50 px ; 
+ padding-right : 50 px ; 
+ } 
+ . wd-padding-fat { 
+ padding : 50 px ; 
+ } 
+ <div id = "wd-css-paddings" > 
+ <h2> Padding </h2> 
+ <div className = "wd-padded-top-left wd-border-fat 
+ wd-border-red wd-border-solid wd-bg-color-yellow" > 
+ Padded top left </div> 
+ <div className = "wd-padded-bottom-right wd-border-fat 
+ wd-border-blue wd-border-solid wd-bg-color-yellow" > 
+ Padded bottom right </div> 
+ <div className = "wd-padding-fat wd-border-fat 
+ wd-border-yellow wd-border-solid wd-bg-color-blue wd-fg-color-white" > 
+ Padded all around </div> 
+ </div> 
+ 10 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 11 =====
+ Conﬁrm that Paddings.tsx renders as shown in the ﬁgures below. 
+ Figure 2.1.10.a - Padding top left Figure 2.1.10.b - Padded bottom right Figure 2.1.10.c - Padded all around 
+ To practice styling margin s, copy the CSS code below into index.css and the HTML into Margins.tsx . Import and conﬁrm 
+ the browser renders as shown. 
+ app/labs/lab2/index.css app/labs/lab2/Margins.tsx 
+ . wd-margin-bottom { 
+ margin-bottom : 50 px ; 
+ } 
+ . wd-margin-right-left { 
+ margin-left : 50 px ; 
+ margin-right : 50 px ; 
+ } 
+ . wd-margin-all-around { 
+ margin : 30 px ; 
+ } 
+ <div id = "wd-css-margins" > 
+ <h2> Margins </h2> 
+ <div 
+ className = "wd-margin-bottom wd-padded-top-left wd-border-fat 
+ wd-border-red wd-border-solid wd-bg-color-yellow" > 
+ Margin bottom </div> 
+ <div 
+ className = "wd-margin-right-left wd-padded-bottom-right wd-border-fat 
+ wd-border-blue wd-border-solid wd-bg-color-yellow" > 
+ Margin left right </div> 
+ <div 
+ className = "wd-margin-all-around wd-padding-fat wd-border-fat 
+ wd-border-yellow wd-border-solid wd-bg-color-blue wd-fg-color-white" > 
+ Margin all around </div> 
+ </div> 
+ Conﬁrm that Margins.tsx renders as shown in the ﬁgures below. 
+ Figure 2.1.10.d - Margin bottom Figure 2.1.10.e - Margin left and right Figure 2.1.10.f - Margin all around 
+ 2.1.11 Styling an HTML Tag's Corners with CSS 
+ Tag border corners can be styled to be rounded to soften their look and feel. All corners can be styled together or 
+ individual corners can be styled separately. How rounded a corner is can be conﬁgured by setting the corner's border 
+ radius. To practice rounding some corners, copy the CSS and HTML below into index.css and Corners.tsx . Import and 
+ conﬁrm the browser renders as shown. 
+ app/labs/lab2/index.css app/labs/lab2/Corners.tsx 
+ . wd-rounded-corners-top { 
+ border-top-left-radius : 40 px ; 
+ border-top-right-radius : 40 px ; 
+ } 
+ . wd-rounded-corners-bottom { 
+ border-bottom-left-radius : 40 px ; 
+ <div id = "wd-css-borders" > 
+ <h3> Rounded corners </h3> 
+ <p className = "wd-rounded-corners-top wd-border-thin 
+ wd-border-blue wd-border-solid wd-padding-fat" > 
+ Rounded corners on the top </p> 
+ <p className = "wd-rounded-corners-bottom 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 11 
+
+===== PAGE 12 =====
+ border-bottom-right-radius : 40 px ; 
+ } 
+ . wd-rounded-corners-all-around { 
+ border-radius : 50 px ; 
+ } 
+ . wd-rounded-corners-inline { 
+ border-radius : 30 px 0 px 20 px 50 px ; 
+ } 
+ wd-border-thin wd-border-blue wd-border-solid wd-padding-fat" > 
+ Rounded corners at the bottom </p> 
+ <p className = "wd-rounded-corners-all-around 
+ wd-border-thin wd-border-blue wd-border-solid wd-padding-fat" > 
+ Rounded corners all around </p> 
+ <p className = "wd-rounded-corners-inline 
+ wd-border-thin wd-border-blue wd-border-solid wd-padding-fat" > 
+ Different rounded corners </p> 
+ </div> 
+ Figure 2.1.11.a - Rounded corners 
+ on the top 
+ Figure 2.1.11.b - Rounded corners 
+ at the bottom 
+ Figure 2.1.11.c - Rounded corners 
+ all around 
+ Figure 2.1.11.d - Different rounded 
+ corners 
+ 2.1.12 Styling an HTML Tag's Dimensions with CSS 
+ An element's dimensions can be styled with the width and height properties. To practice setting an element's dimensions, 
+ copy the CSS and HTML below into index.css and Dimensions.tsx . Import and conﬁrm the browser renders as shown. 
+ app/labs/lab2/index.css app/labs/lab2/Dimensions.tsx 
+ . wd-dimension-portrait { 
+ width : 75 px ; 
+ height : 100 px ; 
+ } 
+ . wd-dimension-landscape { 
+ width : 100 px ; 
+ height : 75 px ; 
+ } 
+ . wd-dimension-square { 
+ width : 75 px ; 
+ height : 75 px ; 
+ } 
+ <div id = "wd-css-dimensions" > 
+ <h2> Dimension </h2> 
+ <div> 
+ <div className = "wd-dimension-portrait 
+ wd-bg-color-yellow" > 
+ Portrait 
+ </div> 
+ <div className = "wd-dimension-landscape 
+ wd-bg-color-blue 
+ wd-fg-color-white" > 
+ Landscape 
+ </div> 
+ <div className = "wd-dimension-square 
+ wd-bg-color-red" > 
+ Square </div> 
+ </div> 
+ </div> 
+ By default, block elements such as <div> , headings , and paragraphs span the full width of their parent container—often the 
+ entire browser window—as shown on the left below. You can override these dimensions using the CSS width and height 
+ properties, as demonstrated on the right. Even when the width is reduced to make the elements skinnier, increasing their 
+ height (or adding margins/padding) still pushes subsequent block elements further down the page, since block elements 
+ naturally stack vertically and occupy space based on their total height. 
+ 12 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 13 =====
+ Figure 2.1.12.a - Styling an HTML Tag's Dimensions with CSS Figure 2.1.12.b - Styling an HTML Tag's Dimensions with CSS 
+ 2.1.13 Styling an HTML Tag's Relative Position with CSS 
+ Browsers automatically determine the default position of all content displayed on the screen. You can override these 
+ default positions using the CSS position property. This property supports several values, with the most common ones 
+ being relative , absolute , static , and ﬁxed . Setting the position property to relative allows you to shift an element from its 
+ default position without affecting the layout of surrounding elements. You can then use the top , bottom , left , and right 
+ properties to specify the direction and distance of the shift. To practice positioning elements relatively, copy the CSS and 
+ HTML code provided below into index.css and Positions.tsx , respectively. Verify that your browser renders the result as 
+ shown in Figure 2.1.13. Note that the background colors referenced in this exercise were deﬁned in a previous exercise. 
+ app/labs/lab2/index.css app/labs/lab2/Positions.tsx 
+ . wd-pos-relative-nudge-up-right { 
+ position : relative ; 
+ bottom : 30 px ; 
+ left : 30 px ; 
+ } 
+ . wd-pos-relative-nudge-down-right { 
+ position : relative ; 
+ top : 20 px ; 
+ left : 20 px ; 
+ } 
+ . wd-pos-relative { 
+ position : relative ; 
+ } 
+ <div id = "wd-css-position-relative" > 
+ <h2> Relative </h2> 
+ <div className = "wd-bg-color-gray" > 
+ <div className = "wd-bg-color-yellow 
+ wd-dimension-portrait" > 
+ <div className = "wd-pos-relative-nudge-down-right" > 
+ Portrait </div></div> 
+ <div className = "wd-pos-relative-nudge-up-right 
+ wd-bg-color-blue 
+ wd-fg-color-white 
+ wd-dimension-landscape" > 
+ Landscape </div> 
+ <div className = "wd-bg-color-red 
+ wd-dimension-square" > 
+ Square </div> 
+ </div> 
+ </div> 
+ 2.1.14 Styling a Tag's Absolute Position with CSS 
+ The CSS position property set to absolute positions an element relative to its nearest ancestor with a position value of 
+ relative , absolute , or ﬁxed . If no such ancestor exists, the element is positioned relative to the body tag, effectively aligning 
+ with the browser's viewport . To practice using absolute positioning, copy the CSS and HTML code provided below into 
+ index.css and Positions.tsx , respectively, and verify the browser renders the result as shown in the ﬁgure below. Note that 
+ several br elements are included at the end of the example to create space for the next exercise. 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 13 
+
+===== PAGE 14 =====
+ app/labs/lab2/index.css app/labs/lab2/Positions.tsx 
+ . wd-pos-absolute-10-10 { 
+ position : absolute ; 
+ top : 10 px ; left : 10 px ; } 
+ . wd-pos-absolute-50-50 { 
+ position : absolute ; 
+ top : 50 px ; left : 50 px ; } 
+ . wd-pos-absolute-120-20 { 
+ position : absolute ; 
+ top : 20 px ; left : 120 px ; } 
+ <div id = "wd-css-position-absolute" > 
+ <h2> Absolute position </h2> 
+ <div className = "wd-pos-relative" > 
+ <div className = "wd-pos-absolute-10-10 wd-bg-color-yellow wd-dimension-portrait" > 
+ Portrait </div> 
+ <div className = "wd-pos-absolute-50-50 wd-bg-color-blue wd-fg-color-white 
+ wd-dimension-landscape" > 
+ Landscape </div> 
+ <div className = "wd-pos-absolute-120-20 wd-bg-color-red wd-dimension-square" > 
+ Square </div> 
+ </div><br /><br /><br /><br /><br /><br /><br /> 
+ </div> 
+ The term " absolute " can be misleading, as it positions the element relative to a parent or the body tag rather than an 
+ absolute point on the screen. Additionally, an element with absolute positioning scrolls with the rest of the page content. 
+ In contrast, when precise positioning is needed regardless of other elements or scrolling, the ﬁxed position property, 
+ covered in the next section, anchors an element relative to the browser's viewport. 
+ Figure 2.1.13 - Relative position Figure 2.1.4 - Absolute position 
+ 2.1.15 Styling an HTML Tag's Fixed Position with CSS 
+ Setting the CSS position property to ﬁxed positions an element relative to the browser's viewport . This ensures that the 
+ element remains in place, even when the page content is scrolled. To practice using ﬁxed positioning, copy the CSS and 
+ HTML code provided below into index.css and Positions.tsx , respectively, and verify that the browser renders the result as 
+ shown in the ﬁgure below. Note that the appearance may vary slightly depending on your screen size and scroll position. 
+ app/labs/lab2/index.css app/labs/lab2/Positions.tsx 
+ . wd-pos-fixed { 
+ position : fixed ; 
+ right : 0 px ; 
+ bottom : 50 %; 
+ } 
+ <div id = "wd-css-position-fixed" > 
+ <h2> Fixed position </h2> 
+ Checkout the blue square that says "Fixed position" stuck all the way on the right and half 
+ way down the page. It doesn't scroll with the rest of the page. Its position is "Fixed". 
+ <div className = "wd-pos-fixed 
+ wd-dimension-square wd-bg-color-blue 
+ wd-fg-color-white" > 
+ Fixed position 
+ </div> 
+ </div> 
+ 14 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 15 =====
+ Figure 2.1.15 - Fixed position 
+ 2.1.16 Styling an HTML Tag's Z Index with CSS 
+ When rendering HTML content, the browser automatically calculates the positions and dimensions of elements, assigning 
+ each a dedicated rectangular space on the screen to prevent overlap. However, using the CSS position property to override 
+ default positioning can lead to elements overlapping. By default, elements are rendered in the order they appear in the 
+ HTML, meaning later-declared elements appear above earlier ones when they overlap. The z-index CSS property allows 
+ you to control this stacking order: elements with a higher z-index value are displayed above those with a lower value. The 
+ default value of z-index is auto where elements are rendered in the order they are declared. To practice setting an 
+ element’s z-index , copy the CSS and HTML code provided below into index.css and Zindex.tsx , respectively, and conﬁrm 
+ that the browser renders the result as shown in the ﬁgure below. 
+ app/labs/lab2/index.css app/labs/lab2/Zindex.tsx 
+ . wd-zindex-bring-to-front { 
+ z-index : 10 ; 
+ } 
+ <div id = "wd-z-index" > 
+ <h2> Z index </h2> 
+ <div className = "wd-pos-relative" > 
+ <div className = "wd-pos-absolute-10-10 wd-bg-color-yellow wd-dimension-portrait" > 
+ Portrait </div> 
+ <div className = "wd-zindex-bring-to-front wd-pos-absolute-50-50 
+ wd-dimension-landscape wd-bg-color-blue wd-fg-color-white" > 
+ Landscape </div> 
+ <div className = "wd-pos-absolute-120-20 wd-bg-color-red wd-dimension-square" > 
+ Square </div> 
+ </div><br /><br /><br /><br /><br /><br /><br /> 
+ </div> 
+ Figure 2.1.16 - Z-Index 
+ 2.1.17 Floating Images and Content with CSS 
+ The CSS ﬂoat property aligns elements to the left or right edges of the browser window while allowing adjacent content to 
+ wrap around the ﬂoated element. For instance consider the screen shot shown in Figure 2.1.17.a where long paragraphs 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 15 
+
+===== PAGE 16 =====
+ ﬂow around images aligned to the right and to the left. To accomplish this layout, images can be inserted in between 
+ several long portions of text. Normally images would ﬂow inline with the rest of the adjacent text, but if the images are 
+ ﬂoated , they align with the edges of the browser and the text would then ﬂow around the images. The text in the screen 
+ shot is lorem ipsum , a popular placeholder text often used when designing Web pages and other printed media. It can be 
+ found in https://www.lipsum.com . 
+ app/labs/lab2/index.css app/labs/lab2/Float.tsx 
+ . wd-float-left { 
+ float : left ; 
+ height : 100 px ; 
+ } 
+ . wd-float-right { 
+ float : right ; 
+ height : 100 px ; 
+ } 
+ . wd-float-done { 
+ clear : both ; 
+ } 
+ <div id = "wd-float-divs" > 
+ <h2> Float </h2> 
+ <div> 
+ <img className = "wd-float-right" 
+ src = " https://www.staradvertiser.com/wp-content/uploads/2021/08/web1_Starship-gap2.jpg"/ > 
+ Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eius hic ... 
+ Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eius hic ... 
+ <img className = "wd-float-left" 
+ src = " https://www.staradvertiser.com/wp-content/uploads/2021/08/web1_Starship-gap2.jpg"/ > 
+ Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eius hic ... 
+ Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eius hic ... 
+ <img className = "wd-float-right" 
+ src = " https://www.staradvertiser.com/wp-content/uploads/2021/08/web1_Starship-gap2.jpg"/ > 
+ Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eius hic ... 
+ Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eius hic ... 
+ <img className = "wd-float-left" 
+ src = " https://www.staradvertiser.com/wp-content/uploads/2021/08/web1_Starship-gap2.jpg"/ > 
+ Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eius hic ... 
+ Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eius hic ... 
+ <div className = "wd-float-done" ></div> 
+ </div> 
+ </div> 
+ Use the CSS and HTML code snippets above to practice using the ﬂoat property to layout images as shown in the ﬁgure. 
+ Copy longer portions of the lorem ipsum text from the reference, or feel free to use your own text. Implement the example 
+ in a new Float.tsx ﬁle, import it and conﬁrm it renders as shown. By default, HTML alone cannot arrange content 
+ horizontally, except through methods like table columns. The CSS ﬂoat property can be applied to div elements to create 
+ horizontal layouts, as demonstrated in Figure 2.1.17.b. To practice this horizontal arrangement, copy the CSS and HTML 
+ code provided below into Float.tsx , import it, and conﬁrm that the browser renders the layout as shown in the ﬁgure below. 
+ app/labs/lab2/index.css app/labs/lab2/Float.tsx 
+ . wd-float-left { 
+ float : left ; 
+ height : 100 px ; 
+ } 
+ . wd-float-right { 
+ float : right ; 
+ height : 100 px ; 
+ } 
+ . wd-float-done { 
+ clear : both ; 
+ } 
+ <div id = "wd-float-divs" > 
+ <h2> Float </h2> 
+ <div> 
+ <div className = "wd-float-left wd-dimension-portrait wd-bg-color-yellow" > 
+ Yellow </div> 
+ <div className = "wd-float-left wd-dimension-portrait wd-bg-color-blue wd-fg-color-white" > 
+ Blue </div> 
+ <div className = "wd-float-left wd-dimension-portrait wd-bg-color-red" > 
+ Red </div> 
+ <img className = "wd-float-right" 
+ src = "https://www.staradvertiser.com/wp-content/uploads/2021/08/web1_Starship-gap2.jpg" /> 
+ <div className = "wd-float-done" ></div> 
+ </div> 
+ </div> 
+ 16 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 17 =====
+ Figure 2.1.17.a - Floating Images and Content with CSS Figure 2.1.17.b - Floating Images and Content with CSS 
+ 2.1.18 Laying Out Content in a Grid Using CSS 
+ Building on the concept of horizontal content arrangement using the CSS ﬂoat property, you can create sophisticated grid 
+ layouts with rows and columns, as illustrated in the ﬁgure below. To practice implementing a grid layout, copy the 
+ provided CSS and HTML code below into index.css and GridLayout.tsx , respectively, and verify that the browser renders 
+ the layout as shown in the ﬁgure below. 
+ app/labs/lab2/index.css app/labs/lab2/GridLayout.tsx 
+ . wd-grid-row { 
+ clear : both ; 
+ } 
+ . wd-grid-col-half-page { 
+ width : 50 %; 
+ float : left ; 
+ } 
+ . wd-grid-col-third-page { 
+ width : 33 %; 
+ float : left ; 
+ } 
+ . wd-grid-col-two-thirds-page 
+ { 
+ width : 67 %; 
+ float : left ; 
+ } 
+ . wd-grid-col-left-sidebar { 
+ width : 20 %; 
+ float : left ; 
+ } 
+ . wd-grid-col-main-content { 
+ width : 60 %; 
+ float : left ; 
+ } 
+ . wd-grid-col-right-sidebar { 
+ width : 20 %; 
+ float : left ; 
+ } 
+ <div id = "wd-css-grid-layout" > 
+ <div id = "wd-css-left-right-layout" > 
+ <h2> Grid layout </h2> 
+ <div className = "wd-grid-row" > 
+ <div className = "wd-grid-col-half-page wd-bg-color-yellow" > 
+ <h3> Left half </h3> </div> 
+ <div className = "wd-grid-col-half-page wd-bg-color-blue wd-fg-color-white" > 
+ <h3> Right half </h3> </div> 
+ </div> 
+ </div> 
+ <div id = "wd-css-left-third-right-two-thirds" className = "wd-grid-row" > 
+ <div className = "wd-grid-col-third-page wd-bg-color-green 
+ wd-fg-color-white" > 
+ <h3> Left third </h3> </div> 
+ <div className = "wd-grid-col-two-thirds-page wd-bg-color-red wd-fg-color-white" > 
+ <h3> Right two thirds </h3> </div> 
+ </div> 
+ <div id = "wd-css-side-bars" className = "wd-grid-row" > 
+ <div className = "wd-grid-col-left-sidebar wd-bg-color-yellow" > 
+ <h3> Side bar </h3> 
+ <p> This is the left sidebar </p> </div> 
+ <div className = "wd-grid-col-main-content wd-bg-color-blue wd-fg-color-white" > 
+ <h3> Main content </h3> 
+ <p> 
+ This is the main content. This is the main content. This is the 
+ main content. 
+ </p> </div> 
+ <div className = "wd-grid-col-right-sidebar wd-bg-color-green wd-fg-color-white" > 
+ <h3> Side bar </h3> 
+ <p> This is the right sidebar </p> 
+ </div> 
+ </div></div> 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 17 
+
+===== PAGE 18 =====
+ Figure 2.1.18 - Laying Out Content in a Grid Using CSS 
+ 2.1.19 Laying Out Content with CSS Flex 
+ Flexbox Layout ( Flexible Box , or just Flex ) provides a simpler way to layout and distribute content in an HTML document. It 
+ all starts with creating a container element that conﬁgures the layout and behavior of its child elements. To illustrate 
+ some of the features of ﬂex, create a container with the display property set to ﬂex as shown below. 
+ app/labs/lab2/Flex.tsx app/labs/lab2/index.css 
+ <div id = "wd-css-flex" > 
+ <h2> Flex </h2> 
+ <div className = "wd-flex-row-container" > 
+ <div className = "wd-bg-color-yellow" > Column 1 </div> 
+ <div className = "wd-bg-color-blue" > Column 2 </div> 
+ <div className = "wd-bg-color-red" > Column 3 </div> 
+ </div> 
+ </div> 
+ .wd-flex-row-container { 
+ display : flex ; 
+ flex-direction : row ; 
+ } 
+ Note how DIV elements inside the container render horizontally as a row of element instead of stacking the elements 
+ vertically. Flex simpliﬁes laying out content horizontally. Flex child elements can also be conﬁgured to grow and expand to 
+ ﬁll into empty spaces. The styling below illustrates how the last column can expand into the empty space to its right. 
+ app/labs/lab2/Flex.tsx app/labs/lab2/index.css 
+ <div id = "wd-css-flex" > 
+ <h2> Flex </h2> 
+ <div className = "wd-flex-row-container" > 
+ <div className = "wd-bg-color-yellow" > 
+ Column 1 </div> 
+ <div className = "wd-bg-color-blue" > 
+ Column 2 </div> 
+ <div className = "wd-bg-color-red wd-flex-grow-1 " > 
+ Column 3 </div> 
+ </div> 
+ </div> 
+ .wd-flex-row-container { 
+ display : flex ; 
+ flex-direction : row ; 
+ } 
+ .wd-flex-grow-1 { 
+ flex-grow : 1 ; 
+ } 
+ The rest of the ﬂex child elements can be conﬁgured independently to have speciﬁc widths to ﬁt whatever content is 
+ needed as shown below. 
+ 18 Copyright © 2026 Jose Annunziato. All rights reserved. 
+
+===== PAGE 19 =====
+ app/labs/lab2/Flex.tsx app/labs/lab2/index.css 
+ <div id = "wd-css-flex" > 
+ <h2> Flex </h2> 
+ <div className = "wd-flex-row-container" > 
+ <div className = "wd-bg-color-yellow wd-width-75px " > 
+ Column 1 </div> 
+ <div className = "wd-bg-color-blue" > 
+ Column 2 </div> 
+ <div className = "wd-bg-color-red wd-flex-grow-1" > 
+ Column 3 </div> 
+ </div> 
+ </div> 
+ .wd-flex-row-container { 
+ display : flex ; 
+ flex-direction : row ; 
+ } 
+ .wd-flex-grow-1 { 
+ flex-grow : 1 ; 
+ } 
+ .wd-width-75px { 
+ width : 75px ; 
+ } 
+ Figure 2.1.19.a - Laying Out Content with CSS 
+ Flex 
+ Figure 2.1.19.b - Laying Out Content with CSS 
+ Flex 
+ Figure 2.1.19.c - Laying Out Content with CSS 
+ Flex 
+ 2.1.20 Media Queries 
+ Media queries are a CSS feature that allow styles to be applied conditionally based on characteristics of the device or 
+ viewport, such as screen width, height, orientation, or resolution. They are essential for creating responsive web designs 
+ that adapt seamlessly to different devices, like desktops, tablets, and smartphones. 
+ The example below demonstrates applying simple background and foreground colors based on various screen sizes. The 
+ default style, outside of any @media at rule , deﬁnes the default background and foreground colors as white text on a 
+ green background. Subsequent at rules redeﬁne the style that only take effect at various screen size rages, e.g., black on 
+ white for screen widths between 750 and 1000 pixels. 
+ app/labs/lab2/MediaQueriesDemo.css 
+ /* Default styles */ 
+ .wd-media-queries-demo { 
+ background-color : green ; 
+ color : white ; 
+ } 
+ /* Style between 750px and 1000px */ 
+ @media ( min-width : 750px ) and ( max-width : 1000px ) { 
+ .wd-media-queries-demo { 
+ background-color : yellow ; 
+ color : black ; 
+ } 
+ } 
+ /* Style between 1000px and 1250px */ 
+ @media ( min-width : 1000px ) and ( max-width : 1250px ) { 
+ .wd-media-queries-demo { 
+ background-color : blue ; 
+ color : white ; 
+ } 
+ } 
+ /* Style for widths greater than 1250px */ 
+ @media ( min-width : 1250px ) { 
+ .wd-media-queries-demo { 
+ background-color : red ; 
+ color : white ; 
+ } 
+ } 
+ Copyright © 2026 Jose Annunziato. All rights reserved. 19 
+
+===== PAGE 20 =====
+ The component below applies the wd-media-queries-demo class rendering the content in various combinations of 
+ background and foreground colors as the browser window is resized. 
+ app/labs/lab2/MediaQueriesDemo.tsx 
+ import "./MediaQueriesDemo.css" ; 
+ export default function MediaQueriesDemo() { 
+ return ( 
+ <div className = "wd-media-queries-demo" > 
+ <h1> Media Query Demo </h1> 
+ <p> 
+ This demo uses CSS media queries to change colors based on screen width: 
+ </p> 
+ <ul> 
+ <li> Default is White text on Green background </li> 
+ <li> 750px to 1000px: Black text on Yellow background </li> 
+ <li> 1000px to 1250px: White text on Blue background </li> 
+ <li> Above 1250px: White text on Red background </li> 
+ </ul> 
+ </div> 
+ ); 
+ } 
+ Import MediaQueriesDemo into the labs page, resize the browser window, and conﬁrm the content renders as shown 
+ below for different screen widths. 
+ Figure 2.1.20a - Default Style Figure 2.1.20b - Styles between 750px and 1000px 
+ Figure 2.1.20c - Styles between 1000px and 1250px Figure 2.1.20d - Styles between 1250px and above 
+ 
