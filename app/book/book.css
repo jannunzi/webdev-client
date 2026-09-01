@@ -12,6 +12,16 @@
   color: #1d4ed8;
 }
 
+.book-shell a.book-official-link {
+  color: #0369a1;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.book-shell a.book-official-link:hover {
+  color: #0ea5e9;
+}
+
 .book-shell .sr-only {
   position: absolute;
   width: 1px;
@@ -144,14 +154,152 @@
   max-width: 100%;
 }
 
-/* HTML valign is ignored after `all: revert`; honor it for layout tables */
+/* HTML presentational attributes are ignored after `all: revert`; honor the lab ones */
+.book-live-demo table[width="100%"],
+.book-live-demo td[width="100%"] {
+  width: 100%;
+}
+
+.book-live-demo table[border],
+.book-live-demo table[border] th,
+.book-live-demo table[border] td {
+  border-width: 1px;
+  border-style: solid;
+}
+
+.book-live-demo td[align="left"],
+.book-live-demo th[align="left"] {
+  text-align: left;
+}
+
+.book-live-demo td[align="center"],
+.book-live-demo th[align="center"] {
+  text-align: center;
+}
+
+.book-live-demo td[align="right"],
+.book-live-demo th[align="right"] {
+  text-align: right;
+}
+
 .book-live-demo td[valign="top"],
 .book-live-demo th[valign="top"] {
   vertical-align: top;
+}
+
+.book-live-demo td[valign="middle"],
+.book-live-demo th[valign="middle"] {
+  vertical-align: middle;
+}
+
+.book-live-demo td[valign="bottom"],
+.book-live-demo th[valign="bottom"] {
+  vertical-align: bottom;
 }
 
 /* Only for plain HTML demos — do not override lab CSS (e.g. float height: 100px) */
 .book-live-demo:not(.book-live-demo-styled) img {
   max-width: 100%;
   height: auto;
+}
+
+.book-practice {
+  margin: 1rem 0;
+  padding: 0.75rem 0.9rem 0.85rem;
+  border-radius: 0.4rem;
+  border: 1px solid transparent;
+}
+
+.book-practice-header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.4rem;
+  font-family: system-ui, sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+}
+
+.book-practice-icon {
+  flex-shrink: 0;
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.book-practice-body {
+  font-size: 1.02rem;
+}
+
+.book-practice-body > :first-child {
+  margin-top: 0;
+}
+
+.book-practice-body > :last-child {
+  margin-bottom: 0;
+}
+
+.book-practice-body p,
+.book-practice-body ul {
+  margin: 0.45em 0;
+}
+
+.book-practice-body ul {
+  padding-left: 1.25rem;
+}
+
+.book-practice-own {
+  background: #fff8eb;
+  border-color: #f3d19a;
+  border-left: 4px solid #d97706;
+}
+
+.book-practice-own .book-practice-header {
+  color: #b45309;
+}
+
+.book-practice-ai {
+  background: #f5f3ff;
+  border-color: #ddd6fe;
+  border-left: 4px solid #7c3aed;
+}
+
+.book-practice-ai .book-practice-header {
+  color: #6d28d9;
+}
+
+.book-practice-own + .book-practice-ai {
+  margin-top: -0.35rem;
+}
+
+.book-practice-prompt {
+  margin-top: 0.65rem;
+  overflow: hidden;
+  border: 1px solid #ddd6fe;
+  border-radius: 0.3rem;
+  background: #faf8ff;
+}
+
+.book-practice-prompt-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.3rem 0.55rem;
+  border-bottom: 1px solid #ddd6fe;
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6d28d9;
+}
+
+.book-practice-prompt pre {
+  margin: 0;
+  padding: 0.65rem 0.7rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #1e1b4b;
 }

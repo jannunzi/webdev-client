@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-/** Labs TOC + content layout from §1.3.12 */
+/** Labs TOC + content layout from §1.3.11 */
 export default function LabsLayoutDemo() {
   return (
     <table>

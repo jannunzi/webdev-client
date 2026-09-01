@@ -6,32 +6,35 @@ import CodeBlock from "../../components/CodeBlock";
 import LiveDemo from "../../components/LiveDemo";
 import HeadingTags from "@/app/labs/lab1/HeadingTags";
 import ParagraphTag from "@/app/labs/lab1/ParagraphTag";
-import ListTags from "@/app/labs/lab1/ListTags";
 import Tables from "@/app/labs/lab1/Tables";
 import Images from "@/app/labs/lab1/Images";
 import AnchorTag from "@/app/labs/lab1/AnchorTag";
 import Lab1 from "@/app/labs/lab1/page";
 import ParagraphUnwrapped from "@/app/labs/lab1/intermediates/1-3-2a-ParagraphUnwrapped";
 import OrderedListPlain from "@/app/labs/lab1/intermediates/1-3-3a-OrderedListPlain";
-import TextFields from "@/app/labs/lab1/TextFields";
-import Textarea from "@/app/labs/lab1/Textarea";
-import RadioButtons from "@/app/labs/lab1/RadioButtons";
-import Checkboxes from "@/app/labs/lab1/Checkboxes";
-import Dropdowns from "@/app/labs/lab1/Dropdowns";
+import OrderedListTagged from "@/app/labs/lab1/intermediates/1-3-3b-OrderedListTagged";
+import UnorderedLists from "@/app/labs/lab1/intermediates/1-3-4-UnorderedLists";
+import ListTags from "@/app/labs/lab1/ListTags";
+import TextFields from "@/app/labs/lab1/forms/TextFields";
+import Textarea from "@/app/labs/lab1/forms/Textarea";
+import RadioButtonsGenre from "@/app/labs/lab1/intermediates/1-3-7c-RadioButtons";
+import RadioButtons from "@/app/labs/lab1/forms/RadioButtons";
+import Checkboxes from "@/app/labs/lab1/forms/Checkboxes";
+import Dropdowns from "@/app/labs/lab1/forms/Dropdowns";
 import DropdownSingle from "@/app/labs/lab1/intermediates/1-3-7e1-DropdownSingle";
-import OtherFieldTypes from "@/app/labs/lab1/OtherFieldTypes";
-import Buttons from "@/app/labs/lab1/Buttons";
+import OtherFieldTypes from "@/app/labs/lab1/forms/OtherFieldTypes";
+import Buttons from "@/app/labs/lab1/forms/Buttons";
 import FieldEmail from "@/app/labs/lab1/intermediates/1-3-7f1-FieldEmail";
 import FieldEmailNumber from "@/app/labs/lab1/intermediates/1-3-7f2-FieldEmailNumber";
 import FieldEmailNumberRange from "@/app/labs/lab1/intermediates/1-3-7f3-FieldEmailNumberRange";
-import Forms from "@/app/labs/lab1/Forms";
-import RadioTwoGroups from "@/app/labs/lab1/intermediates/1-3-7c2-RadioTwoGroups";
+import Forms from "@/app/labs/lab1/forms/Forms";
 import RadioLabelPatterns from "@/app/labs/lab1/intermediates/1-3-7c3-RadioLabelPatterns";
 import HighlightedParagraph from "@/app/labs/lab1/HighlightedParagraph";
 import HighlightedBox from "@/app/labs/lab1/HighlightedBox";
 import LabsIndexDemo from "@/app/labs/lab1/intermediates/1-3-11-LabsIndex";
 import LabsLayoutDemo from "@/app/labs/lab1/intermediates/1-3-12-LabsLayout";
 import AnchorHrefPatterns from "@/app/labs/lab1/intermediates/1-3-10b-AnchorHrefPatterns";
+import { OnYourOwn, WithAI } from "../../components/Practice";
 
 export default function HtmlSections() {
   return (
@@ -43,9 +46,11 @@ export default function HtmlSections() {
           for structuring and formatting plain text so web browsers can interpret
           and render it with specific styles, layouts, and interactivity. In
           Next.js you write that HTML as <strong>JSX</strong>{" "}inside React
-          components (in <code>.tsx</code>{" "}files — see <SectionLink to="1.2.4" />). For this chapter,
+          components (in <code>.tsx</code>{" "}files — see <SectionLink to="1.2.5" />). For this chapter,
           focus on the tags and structure; treat the surrounding component syntax
-          as the container that delivers HTML to the browser.
+          as the container that delivers HTML to the browser. A coverage
+          checklist is in <SectionLink to="1.3.12" /> — use it after you have
+          walked through the tags, not instead of building them as you read.
         </p>
         <p>
           Consider the following snippet, which marks the text &quot;Labs&quot;
@@ -61,7 +66,7 @@ export default function HtmlSections() {
         </LiveDemo>
         <p>
           In that code, <code>&lt;h1&gt;</code>{" "}and <code>&lt;/h1&gt;</code>{" "}are
-          called <strong>tags</strong>: <code>&lt;h1&gt;</code>{" "}is the{" "}
+          called <strong>tags</strong>. <code>&lt;h1&gt;</code>{" "}is the{" "}
           <strong>opening tag</strong>, and <code>&lt;/h1&gt;</code>{" "}is the{" "}
           <strong>closing tag</strong>. The text &quot;Labs&quot; between them
           is the <strong>body</strong>{" "}(or content) of the tag. Tags add
@@ -74,12 +79,12 @@ export default function HtmlSections() {
           builds an in-memory tree called the <strong>DOM</strong>{" "}(Document
           Object Model). Each tag becomes a <strong>node</strong>{" "}in that tree.
           The DOM is what the browser uses to paint the page, and JavaScript —
-          including React in Next.js — can update nodes later without reloading
+          including React in Next.js — can programmatically update nodes later without reloading
           the whole page.
         </p>
         <p>
           We often say &quot;tag&quot; and &quot;element&quot; interchangeably,
-          but there is a small distinction: a <strong>tag</strong>{" "}is the
+          but there is a small distinction. A <strong>tag</strong>{" "}is the
           textual syntax in your source (for example{" "}
           <code>&lt;h1&gt;</code>), while an <strong>element</strong>{" "}is the
           fuller idea — the tag, optional <strong>attributes</strong>{" "}(settings
@@ -96,31 +101,29 @@ export default function HtmlSections() {
         title="1.3.1 Structuring Web Content with the HTML Heading, Div, and Span Tags"
       >
         <p>
-          Text documents are often broken up into several sections and
-          subsections. Each section is usually prefaced with a short title or
-          heading that summarizes the topic of the section it precedes. Section
-          headings are typically larger and bolder than the plain text that
-          follows. HTML heading tags format that plain text so it renders as
-          prominent titles. There are six heading levels: <code>h1</code>,{" "}
-          <code>h2</code>, <code>h3</code>, <code>h4</code>, <code>h5</code>, and{" "}
-          <code>h6</code>. Tag <code>h1</code>{" "}is the largest heading;{" "}
-          <code>h6</code>{" "}is the smallest.
+          The <code>&lt;h1&gt;</code>{" "}through <code>&lt;h6&gt;</code>{" "}tags
+          format section titles so they render larger and bolder than the plain
+          text that follows. Text documents are often broken up into several
+          sections and subsections, and each section is usually prefaced with a
+          short title that summarizes the topic it precedes.{" "}
+          <code>&lt;h1&gt;</code>{" "}is the largest heading;{" "}
+          <code>&lt;h6&gt;</code>{" "}is the smallest.
         </p>
         <p>
-          Another common element is the <code>div</code>{" "}tag (division tag) — a
-          generic container used to group elements together. Unlike headings,{" "}
-          <code>div</code>{" "}does not add much inherent visual styling beyond
-          behaving like a <strong>block</strong>: it starts on a new line and
-          stretches as wide as its parent. Its job is organization: grouping a
+          Another common element is the <code>&lt;div&gt;</code>{" "}tag (division
+          tag) — a generic container used to group elements together. Unlike
+          headings, <code>&lt;div&gt;</code>{" "}does not add much inherent visual
+          styling beyond behaving like a <strong>block</strong>. It starts on a
+          new line and stretches as wide as its parent. Its job is grouping a
           heading, paragraph, and image as one unit so you can style or lay
           them out together later with CSS.
         </p>
         <p>
           The opposite of a block is an <strong>inline</strong>{" "}element. Inline
           tags sit in the line of text without breaking to a new row — the way
-          a word sits among other words. The generic inline container is{" "}
-          <code>span</code>. Later you will meet other inline tags such as{" "}
-          <code>a</code>{" "}(links in <SectionLink to="1.3.10" />) and many form
+          a word sits among other words. The generic inline container is the{" "}
+          <code>&lt;span&gt;</code>{" "}tag. Later you will meet other inline tags such as{" "}
+          <code>a</code>{" "}(links in <SectionLink to="1.3.9" />) and many form
           controls. Headings, <code>p</code>, <code>div</code>, lists, and{" "}
           <code>form</code>{" "}are blocks; <code>span</code>, <code>a</code>, and{" "}
           <code>strong</code>{" "}are inline. <ChapterLink to={2} />{" "}lets you
@@ -133,7 +136,7 @@ export default function HtmlSections() {
         <p>
           For Lab 1, keep each HTML topic in its own component under{" "}
           <code>app/labs/lab1/</code>, then import those components into{" "}
-          <code>app/labs/lab1/page.tsx</code>. Start with headings: create{" "}
+          <code>app/labs/lab1/page.tsx</code>. Start with headings by creating{" "}
           <code>app/labs/lab1/HeadingTags.tsx</code>{" "}with a{" "}
           <code>div</code>{" "}that holds an <code>h4</code>{" "}plus the explanatory
           text about heading tags:
@@ -163,13 +166,13 @@ export default function HtmlSections() {
 }`}</CodeBlock>
         <p>
           Notice <code>id=&quot;wd-h-tag&quot;</code>{" "}on the opening{" "}
-          <code>&lt;div&gt;</code>. That is an <strong>attribute</strong>: a
+          <code>&lt;div&gt;</code>. That is an <strong>attribute</strong> — a
           name/value pair written inside the opening tag that configures the
           element. Here the name is <code>id</code>{" "}and the value is{" "}
           <code>wd-h-tag</code>. An <code>id</code>{" "}gives the element a unique
           name on the page — useful for styling, testing, and (later) linking to
           a spot in the document. You will see many more attributes as you add
-          images, forms, and links; the pattern is always the same:{" "}
+          images, forms, and links. The pattern is always{" "}
           <code>name=&quot;value&quot;</code>{" "}on the opening tag.
         </p>
         <p>
@@ -226,16 +229,21 @@ export default function Lab1() {
           marker for the following sections — you will replace it by importing
           more components the same way.
         </p>
-        <p>
-          <strong>On your own.</strong>{" "}In the same{" "}
-          <code>HeadingTags.tsx</code>{" "}file, add a short personal section: an{" "}
-          <code>h4</code>{" "}with your name (or a nickname) and a sentence or two
-          about yourself under it. Wrap that block in a{" "}
+        <OnYourOwn>
+          In the same <code>HeadingTags.tsx</code>{" "}file, add a short personal
+          section — an <code>h4</code>{" "}with your name (or a nickname) and a
+          sentence or two about yourself under it. Wrap that block in a{" "}
           <code>div</code>{" "}with id <code>wd-your-heading</code>{" "}so you can
           find it later in DevTools. Wrap one word of that sentence in a{" "}
           <code>span</code>{" "}with id <code>wd-your-span</code>{" "}so you can
           compare a block and an inline element in the same personal section.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab1/HeadingTags.tsx, keep my personal heading block as it is. After the sample h1–h6 tags, add a second sample outline (not about me) with id wd-ai-headings: an h4 titled "Lab notes", an h5 titled "What I built", and an h6 titled "Next step". Use placeholder sentences, not my name.`}
+        >
+          Ask the assistant to add a second sample outline — not your personal
+          heading:
+        </WithAI>
       </Section>
 
       <Section
@@ -244,11 +252,11 @@ export default function Lab1() {
         title="1.3.2 Formatting Vertical Spacing with the HTML Paragraph Tag"
       >
         <p>
-          Browsers ignore whitespace such as extra spaces, tabs, and newlines in
-          your source. To put vertical space between blocks of text, wrap each
-          block in a paragraph tag <code>&lt;p&gt;</code>. Create{" "}
-          <code>app/labs/lab1/ParagraphTag.tsx</code>{" "}for this section, then
-          import it into Lab 1 the same way you imported{" "}
+          The <code>&lt;p&gt;</code>{" "}tag wraps a block of text so the browser
+          adds vertical space around it. Browsers ignore extra spaces, tabs, and
+          newlines in your source, so without paragraph tags those blocks blend
+          together. Create <code>app/labs/lab1/ParagraphTag.tsx</code>{" "}for this
+          section, then import it into Lab 1 the same way you imported{" "}
           <code>HeadingTags</code>:
         </p>
         <CodeBlock
@@ -308,7 +316,7 @@ export default function Lab1() {
         <p>
           To get the intended vertical spacing, wrap each paragraph so the
           browser adds margin above and below. Paragraph and heading tags are{" "}
-          <strong>block elements</strong>: they take the full width of their
+          <strong>block elements</strong>. They take the full width of their
           parent and add vertical space before and after their content. By
           combining inline and block layout, you can build clearer document
           structures.
@@ -352,32 +360,45 @@ export default function Lab1() {
         <LiveDemo name="ParagraphTag" file="app/labs/lab1/ParagraphTag.tsx">
           <ParagraphTag />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Still in <code>ParagraphTag.tsx</code>,
-          add two more <code>&lt;p&gt;</code>{" "}elements that introduce you —
-          for example where you are from and what you hope to learn in this
-          course. Give them ids <code>wd-p-your-1</code>{" "}and{" "}
-          <code>wd-p-your-2</code>. You should see vertical gaps
-          between your paragraphs the same way it does for the sample text.
-        </p>
+        <OnYourOwn>
+          Still in <code>ParagraphTag.tsx</code>, add two more{" "}
+          <code>&lt;p&gt;</code>{" "}elements that introduce you — for example
+          where you are from and what you hope to learn in this course. Give
+          them ids <code>wd-p-your-1</code>{" "}and <code>wd-p-your-2</code>. You
+          should see vertical gaps between your paragraphs the same way it does
+          for the sample text.
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab1/ParagraphTag.tsx, keep the two personal paragraphs (wd-p-your-1 and wd-p-your-2) unchanged. After the sample lorem paragraphs, add one more sample <p id="wd-ai-p"> that explains in one or two sentences why wrapping text in <p> creates vertical spacing. Do not write about me.`}
+        >
+          Ask the assistant to add one extra sample paragraph that explains the
+          tag — leave your two personal paragraphs alone:
+        </WithAI>
       </Section>
 
       <Section
         level={3}
         id="sec-1-3-3"
-        title="1.3.3 Listing Content with the HTML Ordered List Tag"
+        title="1.3.3 Listing Content with HTML List Tags"
       >
         <p>
-          List elements group related items. There are two primary types:{" "}
-          <strong>ordered</strong>{" "}and <strong>unordered</strong>. Ordered lists
+          The <code>&lt;ol&gt;</code>, <code>&lt;ul&gt;</code>, and{" "}
+          <code>&lt;li&gt;</code>{" "}tags group related items into a collection the
+          reader can scan as a unit — steps in a recipe, titles on a shelf,
+          anything that belongs together rather than in a free-flowing paragraph.
+          There are two primary types: <strong>ordered</strong>{" "}and{" "}
+          <strong>unordered</strong>. Ordered lists (<code>&lt;ol&gt;</code>)
           are for sequences where order matters — for example, procedural steps.
-          If you type numbered lines without list tags, the browser still treats
-          them as ordinary text and blends them into one paragraph, just like
-          unwrapped paragraphs earlier.
+          Unordered lists (<code>&lt;ul&gt;</code>) are for collections where
+          order does not change the meaning; the browser uses bullets instead of
+          numbers. Each item in either list is wrapped in a{" "}
+          <code>&lt;li&gt;</code>. If you type numbered lines without list
+          tags, the browser still treats them as ordinary text and blends them
+          into one paragraph, just like unwrapped paragraphs earlier.
         </p>
         <p>
           Create <code>ListTags.tsx</code>{" "}and import it into{" "}
-          <code>page.tsx</code>{" "}the same way. First write the pancake steps as
+          <code>page.tsx</code>{" "}the same way. First write the pancake steps below as
           plain text (no <code>&lt;ol&gt;</code>{" "}yet):
         </p>
         <CodeBlock
@@ -409,11 +430,11 @@ export default function Lab1() {
           <OrderedListPlain />
         </LiveDemo>
         <p>
-          Get the intended formatting with an ordered list: wrap the whole list
+          The intended formatting can be achieved by wrapping the whole list
           in <code>&lt;ol&gt;</code> / <code>&lt;/ol&gt;</code>, and each step
           in <code>&lt;li&gt;</code> / <code>&lt;/li&gt;</code>. The browser
           numbers the items for you, so the sequence stays correct even if you
-          add or remove steps.
+          add or remove steps. You might want to remove the unnecessary numbers added earlier.
         </p>
         <CodeBlock
           language="tsx"
@@ -441,66 +462,26 @@ export default function Lab1() {
         <p>
           Both <code>&lt;ol&gt;</code>{" "}and <code>&lt;li&gt;</code>{" "}are{" "}
           <strong>block elements</strong>, so items stack vertically across the
-          width of their container.
-        </p>
-        <p>
-          <strong>On your own.</strong>{" "}Add a second ordered list for your own
-          favorite recipe (at least three steps). Use id{" "}
-          <code>wd-your-favorite-recipe</code>:
-        </p>
-        <CodeBlock
-          language="tsx"
-          name="ListTags"
-          file="app/labs/lab1/ListTags.tsx"
-        >{`export default function ListTags() {
-  return (
-    <div id="wd-lists">
-      <h4>List Tags</h4>
-      <h5>Ordered List Tag</h5>
-      How to make pancakes:
-      <ol id="wd-pancakes">...</ol>
-      My favorite recipe:
-      <ol id="wd-your-favorite-recipe">
-        <li>Boil water and cook pasta until al dente.</li>
-        <li>Sauté garlic in olive oil, then add crushed tomatoes.</li>
-        <li>Toss pasta with sauce and top with grated Parmesan.</li>
-      </ol>
-    </div>
-  );
-}`}</CodeBlock>
-        <p>
-          Now each step sits on its own line with automatic numbering — and your
-          favorite-recipe list below it follows the same pattern:
+          width of their container. Now each step sits on its own line with
+          automatic numbering:
         </p>
         <LiveDemo name="ListTags" file="app/labs/lab1/ListTags.tsx">
-          <ListTags />
+          <OrderedListTagged />
         </LiveDemo>
-      </Section>
-
-      <Section
-        level={3}
-        id="sec-1-3-4"
-        title="1.3.4 Listing Content In No Particular Order with the HTML Unordered List Tag"
-      >
         <p>
-          Unordered lists display collections where order does not change the
-          meaning of the content. Instead of numbers, the browser uses bullets
-          for each item. The list is defined with <code>&lt;ul&gt;</code>; each
-          item still uses <code>&lt;li&gt;</code>. Like ordered lists,{" "}
-          <code>&lt;ul&gt;</code>{" "}is a <strong>block element</strong>.
-        </p>
-        <p>
-          Continue in the same <code>ListTags.tsx</code>{" "}file — you already
-          imported it into <code>page.tsx</code>. After your favorite recipe
-          ordered list, add an unordered list of sample books:
+          Unordered lists use the same <code>&lt;li&gt;</code>{" "}items inside{" "}
+          <code>&lt;ul&gt;</code>{" "}instead of <code>&lt;ol&gt;</code>.{" "}
+          <code>&lt;ul&gt;</code>{" "}is a <strong>block element</strong> too.
+          Continue in the same <code>ListTags.tsx</code>{" "}file. After the pancake
+          list, add an unordered list of my favorite books:
         </p>
         <CodeBlock
           language="tsx"
           name="ListTags"
           file="app/labs/lab1/ListTags.tsx"
-        >{`My favorite recipe:
-<ol id="wd-your-favorite-recipe">
-  {/* your steps */}
+        >{`How to make pancakes:
+<ol id="wd-pancakes">
+  {/* pancake steps */}
 </ol>
 <h5>Unordered List Tag</h5>
 My favorite books (in no particular order)
@@ -516,27 +497,39 @@ My favorite books (in no particular order)
           a single paragraph:
         </p>
         <LiveDemo name="ListTags" file="app/labs/lab1/ListTags.tsx">
+          <UnorderedLists />
+        </LiveDemo>
+        <OnYourOwn>
+          In the same file, add two personal lists — an ordered list of your own
+          favorite recipe (at least three steps) with id{" "}
+          <code>wd-your-favorite-recipe</code>, and an unordered list with id{" "}
+          <code>wd-your-books</code>{" "}and at least three titles you actually
+          like (books, albums, or podcasts — your call). Do not copy the sample
+          below — pick content that is yours. The figure is one possible result;
+          yours will look different.
+        </OnYourOwn>
+        <LiveDemo name="ListTags" file="app/labs/lab1/ListTags.tsx">
           <ListTags />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Add a second unordered list with id{" "}
-          <code>wd-your-books</code>{" "}and at least three titles you actually
-          like (books, albums, or podcasts — your call). Keep the structure the
-          same; only the content should be personal.
-        </p>
+        <WithAI
+          prompt={`In app/labs/lab1/ListTags.tsx, keep my personal lists (wd-your-favorite-recipe and wd-your-books) unchanged. After the sample pancake and book lists, add an unordered list with id wd-ai-html-tags of at least five HTML tags from this chapter (for example h1, p, ol, ul, table) with a short phrase each. Not about me.`}
+        >
+          Ask the assistant to add one more sample list of HTML tags from this
+          chapter — not your recipe or favorites:
+        </WithAI>
       </Section>
 
       <Section
         level={3}
-        id="sec-1-3-5"
-        title="1.3.5 Tabulating Data with the HTML Table Tags"
+        id="sec-1-3-4"
+        title="1.3.4 Tabulating Data with the HTML Table Tags"
       >
         <p>
-          HTML began as a way to share scientific documents among physicists.
-          Those documents often included structured measurements — speed,
-          temperature, location — presented in tabular form. The{" "}
-          <code>&lt;table&gt;</code>{" "}tag was added in the mid-1990s so data could
-          be organized into rows and columns. For example, quiz grades over a
+          The <code>&lt;table&gt;</code>{" "}tag organizes data into rows and
+          columns. HTML began as a way to share scientific documents among
+          physicists, and those documents often included structured measurements
+          — speed, temperature, location — presented in tabular form, which is
+          why the tag was added in the mid-1990s. For example, quiz grades over a
           semester can look like this:
         </p>
         <div className="my-4 overflow-x-auto">
@@ -544,29 +537,51 @@ My favorite books (in no particular order)
             <thead>
               <tr className="bg-neutral-100">
                 <th className="border border-neutral-400 px-2 py-1">Quiz</th>
-                <th className="border border-neutral-400 px-2 py-1">Topic</th>
-                <th className="border border-neutral-400 px-2 py-1">Date</th>
+                <th className="border border-neutral-400 px-2 py-1 text-center">
+                  Topic
+                </th>
+                <th className="border border-neutral-400 px-2 py-1 text-center">
+                  Date
+                </th>
                 <th className="border border-neutral-400 px-2 py-1">Grade</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td className="border border-neutral-400 px-2 py-1">Q1</td>
-                <td className="border border-neutral-400 px-2 py-1">HTML</td>
-                <td className="border border-neutral-400 px-2 py-1">2/3/21</td>
-                <td className="border border-neutral-400 px-2 py-1">85</td>
+                <td className="border border-neutral-400 px-2 py-1 text-center">
+                  HTML
+                </td>
+                <td className="border border-neutral-400 px-2 py-1 text-center">
+                  2/3/21
+                </td>
+                <td className="border border-neutral-400 px-2 py-1 text-right">
+                  85
+                </td>
               </tr>
               <tr>
                 <td className="border border-neutral-400 px-2 py-1">Q2</td>
-                <td className="border border-neutral-400 px-2 py-1">CSS</td>
-                <td className="border border-neutral-400 px-2 py-1">2/10/21</td>
-                <td className="border border-neutral-400 px-2 py-1">90</td>
+                <td className="border border-neutral-400 px-2 py-1 text-center">
+                  CSS
+                </td>
+                <td className="border border-neutral-400 px-2 py-1 text-center">
+                  2/10/21
+                </td>
+                <td className="border border-neutral-400 px-2 py-1 text-right">
+                  90
+                </td>
               </tr>
               <tr>
                 <td className="border border-neutral-400 px-2 py-1">Q3</td>
-                <td className="border border-neutral-400 px-2 py-1">JavaScript</td>
-                <td className="border border-neutral-400 px-2 py-1">2/17/21</td>
-                <td className="border border-neutral-400 px-2 py-1">95</td>
+                <td className="border border-neutral-400 px-2 py-1 text-center">
+                  JavaScript
+                </td>
+                <td className="border border-neutral-400 px-2 py-1 text-center">
+                  2/17/21
+                </td>
+                <td className="border border-neutral-400 px-2 py-1 text-right">
+                  95
+                </td>
               </tr>
             </tbody>
             <tfoot>
@@ -574,7 +589,9 @@ My favorite books (in no particular order)
                 <td className="border border-neutral-400 px-2 py-1" colSpan={3}>
                   Average
                 </td>
-                <td className="border border-neutral-400 px-2 py-1">90</td>
+                <td className="border border-neutral-400 px-2 py-1 text-right">
+                  90
+                </td>
               </tr>
             </tfoot>
           </table>
@@ -583,23 +600,17 @@ My favorite books (in no particular order)
         <ol>
           <li>The first row is formatted as headings for each column.</li>
           <li>There are data rows — one quiz per row.</li>
-          <li>Data under the same column shares the same kind of value.</li>
+          <li>Data under the same column shares the same kind of value, e.g. name, date, grade, etc.</li>
           <li>The last row is formatted as a footer.</li>
           <li>
             The first three columns of the footer are merged into one cell
-            (cells can also span rows when needed).
+            (cells can span to adjacent rows or columns).
           </li>
         </ol>
         <p>HTML tables use nested tags:</p>
         <ul>
           <li>
             <code>table</code> — declares the table
-          </li>
-          <li>
-            <code>tr</code> — a row
-          </li>
-          <li>
-            <code>td</code> — a data cell
           </li>
           <li>
             <code>thead</code> — heading section
@@ -611,15 +622,73 @@ My favorite books (in no particular order)
             <code>tfoot</code> — footer section
           </li>
           <li>
+            <code>tr</code> — a row
+          </li>
+          <li>
             <code>th</code> — a heading cell
+          </li>
+          <li>
+            <code>td</code> — a data cell
           </li>
         </ul>
         <p>
-          That semantic structure keeps multi-attribute data (like a quiz) lined
-          up across columns. Create <code>Tables.tsx</code>, import it into{" "}
-          <code>page.tsx</code>, and implement a quiz grades table — include
-          Q1–Q10 with sample dates and scores, plus an Average footer that
-          spans three columns:
+          Those tags define structure. Presentational attributes on the table
+          and its cells control size, borders, merging, and alignment — useful
+          now, before CSS in <ChapterLink to="2" />. In JSX some names are
+          camelCase because they map to DOM properties:
+        </p>
+        <ul>
+          <li>
+            <code>border</code> — on <code>table</code>. Pixel thickness of the
+            grid. Use <code>0</code> for none, <code>1</code> for a thin line (
+            <code>border={"{1}"}</code>). Larger integers draw thicker lines.
+          </li>
+          <li>
+            <code>width</code> — on <code>table</code>, <code>td</code>, or{" "}
+            <code>th</code>. Size as a percentage of the parent (
+            <code>&quot;100%&quot;</code>, <code>&quot;25%&quot;</code>) or in
+            pixels (<code>&quot;200&quot;</code>).{" "}
+            <code>width=&quot;100%&quot;</code> stretches the table across its
+            container.
+          </li>
+          <li>
+            <code>colSpan</code> — on <code>td</code> or <code>th</code> (HTML{" "}
+            <code>colspan</code>). How many columns this cell occupies. A
+            positive integer; default is <code>1</code>. The Average row uses{" "}
+            <code>colSpan={"{3}"}</code> so the label covers Quiz, Topic, and
+            Date.
+          </li>
+          <li>
+            <code>rowSpan</code> — on <code>td</code> or <code>th</code> (HTML{" "}
+            <code>rowspan</code>). How many rows this cell occupies. A positive
+            integer; default is <code>1</code>. Use it when one label should sit
+            beside several rows — for example a unit that covers Q1–Q3.
+          </li>
+          <li>
+            <code>align</code> — on <code>td</code>, <code>th</code>, or{" "}
+            <code>tr</code>. Horizontal placement of the cell&apos;s content:{" "}
+            <code>&quot;left&quot;</code>, <code>&quot;center&quot;</code>,{" "}
+            <code>&quot;right&quot;</code> (also{" "}
+            <code>&quot;justify&quot;</code>). Default for data cells is left;
+            heading cells often default to center. Numbers read more clearly
+            when right-aligned; short labels and dates often sit in the center.
+          </li>
+          <li>
+            <code>valign</code> — on <code>td</code>, <code>th</code>, or{" "}
+            <code>tr</code>. Vertical placement when a row is taller than its
+            content: <code>&quot;top&quot;</code>,{" "}
+            <code>&quot;middle&quot;</code>, <code>&quot;bottom&quot;</code>{" "}
+            (also <code>&quot;baseline&quot;</code>). Default is middle. Layout
+            tables later use <code>valign=&quot;top&quot;</code> so navigation
+            stays at the top of a tall cell.
+          </li>
+        </ul>
+        <p>
+          Put them on the quiz table: full width, a visible border, Average
+          spanning three columns, Topic and Date centered, grade numbers
+          right-aligned. Create <code>Tables.tsx</code>, import it into{" "}
+          <code>page.tsx</code>, and include Q1–Q3 with sample dates and
+          scores:
         </p>
         <CodeBlock
           language="tsx"
@@ -633,30 +702,35 @@ My favorite books (in no particular order)
         <thead>
           <tr>
             <th>Quiz</th>
-            <th>Topic</th>
-            <th>Date</th>
+            <th align="center">Topic</th>
+            <th align="center">Date</th>
             <th>Grade</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>Q1</td>
-            <td>HTML</td>
-            <td>2/3/21</td>
-            <td>85</td>
+            <td align="center">HTML</td>
+            <td align="center">2/3/21</td>
+            <td align="right">85</td>
           </tr>
           <tr>
             <td>Q2</td>
-            <td>CSS</td>
-            <td>2/10/21</td>
-            <td>90</td>
+            <td align="center">CSS</td>
+            <td align="center">2/10/21</td>
+            <td align="right">90</td>
           </tr>
-          <tr>...</tr>
+          <tr>
+            <td>Q3</td>
+            <td align="center">JavaScript</td>
+            <td align="center">2/17/21</td>
+            <td align="right">95</td>
+          </tr>
         </tbody>
         <tfoot>
           <tr>
             <td colSpan={3}>Average</td>
-            <td>90</td>
+            <td align="right">90</td>
           </tr>
         </tfoot>
       </table>
@@ -664,47 +738,52 @@ My favorite books (in no particular order)
   );
 }`}</CodeBlock>
         <p>
-          Quiz grades line up in rows and columns, with the Average row spanning
-          three cells via <code>colSpan</code>:
+          Apply the same <code>align</code>{" "}on every Topic, Date, and grade
+          number through Q3. Leave the Grade heading with the default
+          alignment. Quiz stays left; Average stays left under the merged
+          cells; the average number lines up with the scores:
         </p>
         <LiveDemo name="Tables" file="app/labs/lab1/Tables.tsx">
           <Tables />
         </LiveDemo>
-        <p>
-          You can refine cells further with alignment attributes:{" "}
-          <code>valign</code>{" "}for vertical alignment (for example{" "}
-          <code>&quot;top&quot;</code>) and <code>align</code>{" "}for horizontal
-          alignment (for example <code>&quot;right&quot;</code>).
-        </p>
-        <p>
-          <strong>On your own.</strong>{" "}Still in <code>Tables.tsx</code>, add a
-          second table with id <code>wd-your-table</code>{" "}for something personal
-          — for example courses you are taking this term, or a short weekly
-          schedule (Day / Activity / Time). Use <code>thead</code>,{" "}
-          <code>tbody</code>, and at least three data rows.
-        </p>
+        <OnYourOwn>
+          Still in <code>Tables.tsx</code>, add a second table with id{" "}
+          <code>wd-your-table</code>{" "}for something personal — for example
+          courses you are taking this term, or a short weekly schedule (Day /
+          Activity / Time). Use <code>thead</code>, <code>tbody</code>, at
+          least three data rows, and <code>align</code>{" "}where it helps (center
+          labels, right-align numbers).
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab1/Tables.tsx, keep my personal table (wd-your-table) unchanged. In the quiz grades table, keep Q1–Q3 as they are. Add rows Q4 through Q10 with plausible weekly topics, dates, and grades. Copy the same align attributes as Q1–Q3 (Topic and Date center, grade numbers right). Recalculate the Average in the footer from all ten scores.`}
+        >
+          Typing ten similar rows is busywork. Paste this prompt so the
+          assistant extends the quiz table — then check that every new grade is
+          still right-aligned and that the average matches the ten scores:
+        </WithAI>
       </Section>
 
-      <Section level={3} id="sec-1-3-6" title="1.3.6 Image Tag">
+      <Section level={3} id="sec-1-3-5" title="1.3.5 Image Tag">
         <p>
-          The image tag renders pictures in HTML documents. Images can live
-          anywhere on the internet or as files in your project. Unlike a heading{" "}
-          <code>id</code>{" "}(<SectionLink to="1.3.1" />), image attributes mostly change{" "}
-          <em>what</em>{" "}and <em>how</em>{" "}the element displays. The{" "}
-          <code>src</code>{" "}attribute points at the file (remote URL or local
-          path). Optional <code>width</code>{" "}and <code>height</code>{" "}set the
-          display size; if you provide only one, the other scales
-          proportionally. <code>alt</code>{" "}holds a short text description when
-          the image cannot load — important for{" "}
-          <strong>accessibility</strong>{" "}(helping people and tools that cannot
-          see the picture understand what it shows).
+          The <code>&lt;img&gt;</code>{" "}tag places pictures in an HTML document,
+          whether they live at a remote URL on the internet or as files in your
+          project. Attributes on the tag change <em>what</em>{" "}and <em>how</em>{" "}
+          the picture displays. The <code>src</code>{" "}attribute points at the
+          file, either a remote URL or a local path. The optional attributes{" "}
+          <code>width</code>{" "}and <code>height</code>{" "}set the display size; if
+          you provide only one, the other scales proportionally.{" "}
+          <code>alt</code>{" "}holds a short text description when the image cannot
+          load. That description matters for{" "}
+          <strong>accessibility</strong>: it helps people and tools that cannot
+          see the picture understand what it shows.
         </p>
         <p>
           <code>&lt;img&gt;</code>{" "}is a <strong>void element</strong>: it has
           no body and no closing tag in HTML. In JSX you write it as a
-          self-closing tag ending in <code>/&gt;</code>, the same pattern you
-          already use for <code>&lt;br /&gt;</code>{" "}and will soon use for{" "}
-          <code>&lt;input /&gt;</code>. Void elements cannot wrap children —
+          self-closing tag ending in <code>/&gt;</code>. The same pattern
+          applies to other void elements you will meet next, including{" "}
+          <code>&lt;br /&gt;</code>{" "}(a line break) and{" "}
+          <code>&lt;input /&gt;</code>. Void elements cannot wrap children, so
           attributes carry all of their configuration.
         </p>
         <CodeBlock language="html">{`<img
@@ -715,9 +794,9 @@ My favorite books (in no particular order)
 {/* src references a local or remote image.
     width / height configure size; one alone scales the other */}`}</CodeBlock>
         <p>
-          Remote images use absolute URLs. Local images in Next.js usually go
-          under <code>public/images</code>{" "}and are referenced from the site root
-          (for example <code>/images/teslabot.jpg</code>). Download a Tesla Bot
+          Remote images use absolute URLs, while local images in Next.js usually
+          go under <code>public/images</code>{" "}and are referenced from the site
+          root (for example <code>/images/teslabot.jpg</code>). Download a Tesla Bot
           picture and save it as <code>public/images/teslabot.jpg</code>, then
           create <code>Images.tsx</code>, import it into <code>page.tsx</code>,
           and add both a remote Starship image and the local bot:
@@ -751,75 +830,91 @@ My favorite books (in no particular order)
   );
 }`}</CodeBlock>
         <p>
-          Two images stack in the page flow: Starship from a remote URL, then
+          Two images stack in the page flow, Starship from a remote URL, then
           Tesla Bot from <code>/images/teslabot.jpg</code>{" "}in your{" "}
           <code>public</code>{" "}folder:
         </p>
         <LiveDemo name="Images" file="app/labs/lab1/Images.tsx">
           <Images />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}In <code>Images.tsx</code>, add one more
-          image that matters to you — a remote URL of a place, pet, or product
-          you like, or a second file under <code>public/images/</code>. Give it
-          id <code>wd-your-image</code>, a meaningful <code>alt</code>, and a{" "}
-          <code>width</code>{" "}or <code>height</code>{" "}so it does not dominate the
-          page.
-        </p>
+        <OnYourOwn>
+          In <code>Images.tsx</code>, add one more image that matters to you — a
+          remote URL of a place, pet, or product you like, or a second file
+          under <code>public/images/</code>. Give it id{" "}
+          <code>wd-your-image</code>, a meaningful <code>alt</code>, and a{" "}
+          <code>width</code>{" "}or <code>height</code>{" "}so it does not dominate
+          the page.
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab1/Images.tsx, keep my personal image (wd-your-image) unchanged. After the Starship and teslabot samples, add one more remote sample image with id wd-ai-image. Use a public URL (for example from nasa.gov), a short alt, and width="200px". Not a photo of me.`}
+        >
+          Ask the assistant to add one extra sample image from a public URL —
+          leave yours as the personal one:
+        </WithAI>
       </Section>
 
-      <Section level={3} id="sec-1-3-7" title="1.3.7 Creating Web Forms">
+      <Section level={3} id="sec-1-3-6" title="1.3.6 Creating Web Forms">
         <p>
-          So far the Lab 1 examples have been mostly static markup — headings,
-          paragraphs, lists, tables, and images that the browser displays.
-          <strong> Forms</strong>{" "}are different: they let users{" "}
-          <strong>interact</strong>{" "}with the interface, in particular to{" "}
-          <strong>enter data</strong>{" "}such as a username, password, biography,
-          or preferred options. That input is what applications later validate,
-          store, or send to a server.
+          The <code>&lt;form&gt;</code>{" "}tag is different from the static markup
+          so far — headings, paragraphs, lists, tables, and images that the
+          browser displays. Forms let users <strong>interact</strong>{" "}with the
+          interface, in particular to <strong>enter data</strong>{" "}such as a
+          username, password, biography, or preferred options. That input is
+          what applications later validate, store, or send to a server for long term storage and later retrieval.
         </p>
         <p>
-          Build a <code>form</code>{" "}that wraps the most common input
-          elements: text fields, multi-line text areas, radio buttons,
-          checkboxes, dropdowns, typed inputs such as email, number, range,
-          and date, and buttons that save or cancel (
-          <code>input</code>, <code>textarea</code>, <code>select</code>,{" "}
-          <code>button</code>, and related options) so users can fill in and
-          submit information.
+          The following sections present several kinds of input, each in turn:
+          text fields, multi-line text areas, radio buttons, checkboxes,
+          dropdowns, typed inputs such as email, number, range, and date, and
+          buttons that save or cancel. A <code>&lt;form&gt;</code>{" "}wraps those
+          controls — <code>&lt;input&gt;</code>,{" "}
+          <code>&lt;textarea&gt;</code>, <code>&lt;select&gt;</code>,{" "}
+          <code>&lt;button&gt;</code>, and related options — so users can fill
+          in and submit information as one unit.
         </p>
         <p>
-          Put each form topic in its own component file under{" "}
-          <code>app/labs/lab1/</code> — for example <code>TextFields.tsx</code>,{" "}
-          <code>Textarea.tsx</code>, and so on — then assemble them in{" "}
-          <code>Forms.tsx</code>{" "}and import <code>Forms</code>{" "}into{" "}
-          <code>page.tsx</code>{" "}the same way as <code>HeadingTags</code>{" "}and the
-          earlier components. The following sections walk through each kind of
-          input in turn.
+          Until now each Lab 1 topic was a single file next to{" "}
+          <code>page.tsx</code>. Forms is a cluster of related components —
+          enough that dumping them all in <code>app/labs/lab1/</code>{" "}would
+          bury the rest of the lab. Put the form work in its own folder,{" "}
+          <code>app/labs/lab1/forms/</code>, so related files sit together and
+          the lab folder stays easy to browse. That folder is only for organization:
+          do not add a <code>page.tsx</code>{" "}inside it, or Next.js would
+          create a <code>/labs/lab1/forms</code>{" "}route. Inside the folder,
+          files still import each other the same way (
+          <code>import TextFields from &quot;./TextFields&quot;</code>). From{" "}
+          <code>page.tsx</code>{" "}you reach one level down:{" "}
+          <code>import Forms from &quot;./forms/Forms&quot;</code>.
+        </p>
+        <p>
+          Each form topic lives in its own file under that folder — for example{" "}
+          <code>TextFields.tsx</code>, <code>Textarea.tsx</code>, and so on.
+          <code>Forms.tsx</code>{" "}assembles them, and <code>page.tsx</code>{" "}
+          imports <code>Forms</code>.
         </p>
 
         <h3
-          id="sec-1-3-7-1"
+          id="sec-1-3-6-1"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.7.1 Text Fields
+          1.3.6.1 Text Fields
         </h3>
         <p>
-          Text fields are the most common way to collect short strings —
-          usernames, passwords, names, and similar values. In HTML they are{" "}
-          <code>&lt;input&gt;</code>{" "}elements.
+          The <code>&lt;input&gt;</code>{" "}tag is the most common way to collect
+          short strings such as usernames, passwords, names, and similar values.
         </p>
         <p>
           In React, form fields come in two flavors. An{" "}
           <strong>uncontrolled</strong>{" "}input gets an initial value and then
           the <em>browser</em>{" "}owns what the user types — React does not
-          track every keystroke. A <strong>controlled</strong>{" "}input is the
-          opposite: React state holds the current text, and every change goes
-          through <code>onChange</code>{" "}so your code stays in sync. For these
-          early HTML labs, stay uncontrolled with{" "}
-          <code>defaultValue</code>. Controlled inputs return when you learn
+          track every keystroke — while a <strong>controlled</strong>{" "}input
+          is the opposite: React state holds the current text, and every
+          change goes through <code>onChange</code>{" "}so your code stays in
+          sync. For these early HTML labs, stay uncontrolled with{" "}
+          <code>defaultValue</code>; controlled inputs return when you learn
           state in later chapters — if you set <code>value</code>{" "}without that
           state wiring, the field looks frozen because React keeps forcing the
-          same text back onto the input.
+          same text back onto the input. Later chapters discuss controlled inputs in detail.
         </p>
         <p>Useful attributes include:</p>
         <ul>
@@ -828,11 +923,12 @@ My favorite books (in no particular order)
             JavaScript, and other elements can refer to it.
           </li>
           <li>
-            <code>type</code> — kind of input. Omit it (or use{" "}
-            <code>type=&quot;text&quot;</code>) for ordinary single-line text.
+            <code>type</code> — kind of input such as <code>text</code>, <code>password</code>, <code>email</code>, <code>date</code>, <code>number</code>, <code>range</code>, etc.
+            The default is <code>text</code> so if you want a simple single-line text, omit it (or use{" "}
+            <code>type=&quot;text&quot;</code>).
             Use <code>type=&quot;password&quot;</code>{" "}to mask characters as
-            the user types. Later sections introduce other types such as email
-            and date.
+            the user types. Later sections introduce other types such as <code>email</code>
+            and <code>date</code>.
           </li>
           <li>
             <code>placeholder</code> — hint text shown inside an empty field
@@ -846,7 +942,7 @@ My favorite books (in no particular order)
           </li>
           <li>
             <code>defaultValue</code> — initial text for an uncontrolled
-            field; the user can edit freely afterward. Prefer this for Lab 1.
+            field; the user can edit freely afterward. Prefer this for this chapter.
           </li>
           <li>
             <code>value</code> — current text for a controlled field (paired
@@ -857,7 +953,7 @@ My favorite books (in no particular order)
           Beside each field, add a <code>&lt;label&gt;</code>{" "}element for the
           visible caption (for example &quot;Username:&quot;). Give the label a{" "}
           <code>htmlFor</code>{" "}attribute whose value matches the input&apos;s{" "}
-          <code>id</code>. That links the two: clicking the label focuses the
+          <code>id</code>. That links the two. Clicking the label focuses the
           field, and screen readers can announce the connection. In plain HTML
           the attribute is named <code>for</code>; in JSX it must be{" "}
           <code>htmlFor</code>{" "}because <code>for</code>{" "}is a reserved word in
@@ -867,13 +963,14 @@ My favorite books (in no particular order)
           Associating labels this way is good practice because it enlarges the
           clickable area — especially on small mobile screens, where tapping the
           label text is often easier than hitting a narrow input. Later examples
-          with radio buttons and checkboxes make the point even clearer: their
+          with radio buttons and checkboxes make the point even clearer. Their
           controls are tiny, so being able to tap the adjacent label text is a
           real usability win.
         </p>
         <p>
-          Create <code>TextFields.tsx</code>{" "}with labeled text inputs for
-          username, password, and name fields. The component returns a{" "}
+          Create <code>app/labs/lab1/forms/TextFields.tsx</code>{" "}with labeled
+          text inputs for username, password, and name fields. The component
+          returns a{" "}
           <strong>fragment</strong>{" "}(<code>&lt;&gt;…&lt;/&gt;</code>) — a React
           wrapper that groups several sibling tags without adding an extra{" "}
           <code>&lt;div&gt;</code>{" "}to the DOM:
@@ -881,7 +978,7 @@ My favorite books (in no particular order)
         <CodeBlock
           language="tsx"
           name="TextFields"
-          file="app/labs/lab1/TextFields.tsx"
+          file="app/labs/lab1/forms/TextFields.tsx"
         >{`export default function TextFields() {
   return (
     <>
@@ -911,22 +1008,23 @@ My favorite books (in no particular order)
 }`}</CodeBlock>
         <p>
           Try clicking a label to focus its field, hover for{" "}
-          <code>title</code>{" "}tooltips, and notice the password hides its value
-          while last name shows <code>Wonderland</code>:
+          <code>title</code>{" "}tooltips, type in the Username field and notice the placeholder text disappears, and notice the password hides its value
+          while last name shows the default value <code>Wonderland</code>:
         </p>
-        <LiveDemo name="TextFields" file="app/labs/lab1/TextFields.tsx">
+        <LiveDemo name="TextFields" file="app/labs/lab1/forms/TextFields.tsx">
           <TextFields />
         </LiveDemo>
         <p>
-          Wire <code>TextFields</code>{" "}into a new <code>Forms.tsx</code>{" "}that
-          wraps everything in <code>#wd-forms</code>{" "}and a{" "}
+          Wire <code>TextFields</code>{" "}into a new{" "}
+          <code>app/labs/lab1/forms/Forms.tsx</code>{" "}that wraps everything in{" "}
+          <code>#wd-forms</code>{" "}and a{" "}
           <code>&lt;form id=&quot;wd-text-fields&quot;&gt;</code>. Leave room
           for the later form components:
         </p>
         <CodeBlock
           language="tsx"
           name="Forms"
-          file="app/labs/lab1/Forms.tsx"
+          file="app/labs/lab1/forms/Forms.tsx"
         >{`import TextFields from "./TextFields";
 
 export default function Forms() {
@@ -941,21 +1039,22 @@ export default function Forms() {
   );
 }`}</CodeBlock>
         <p>
-          Then import <code>Forms</code>{" "}into <code>page.tsx</code>{" "}the same way
-          as <code>HeadingTags</code>, <code>Images</code>, and the other Lab 1
-          components.
+          Then import <code>Forms</code>{" "}into <code>page.tsx</code>{" "}from the
+          new folder — <code>import Forms from &quot;./forms/Forms&quot;</code>{" "}
+          — not the same one-level <code>./HeadingTags</code>{" "}path as the
+          earlier Lab 1 components.
         </p>
 
         <h3
-          id="sec-1-3-7-2"
+          id="sec-1-3-6-2"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.7.2 Textarea
+          1.3.6.2 Textarea
         </h3>
         <p>
           Use <code>&lt;textarea&gt;</code>{" "}for longer multi-line text such as
-          a biography. Unlike the void <code>&lt;input&gt;</code>{" "}(<SectionLink to="1.3.6" /> /
-          <SectionLink to="1.3.7.1" />), a textarea is <em>not</em>{" "}void in
+          a biography. Unlike the void <code>&lt;input&gt;</code>{" "}(<SectionLink to="1.3.5" /> /
+          <SectionLink to="1.3.6.1" />), a textarea is <em>not</em>{" "}void in
           HTML — it has an opening and closing tag, and the browser uses the
           text between those tags as the starting value:
         </p>
@@ -963,37 +1062,28 @@ export default function Forms() {
 Lorem ipsum dolor sit amet...
 </textarea>`}</CodeBlock>
         <p>
-          JSX is not that HTML. React models every form field the same way
-          it models <code>&lt;input&gt;</code>: the current text is a{" "}
-          <strong>prop</strong>{" "}(<code>defaultValue</code>{" "}or{" "}
-          <code>value</code>), not child nodes. Through React 18, body
-          text still rendered — you only got a development warning. React
-          19, which this course uses, throws:{" "}
+          That HTML pattern does not carry over to JSX. React models every
+          form field the same way it models <code>&lt;input&gt;</code>, so
+          the current text is a <strong>prop</strong>{" "}
+          (<code>defaultValue</code>{" "}or <code>value</code>), not child
+          nodes. Through React 18, body text still rendered and you only got
+          a development warning; React 19, which this course uses, throws:{" "}
           <code>
             Use the defaultValue or value props instead of setting children
             on &lt;textarea&gt;
           </code>
-          . Put the biography on <code>defaultValue</code>{" "}instead:
+          . Put the biography on <code>defaultValue</code>{" "}instead — the same
+          idea as on <code>&lt;input&gt;</code>, and what Lab 1 uses.
         </p>
-        <ul>
-          <li>
-            <code>defaultValue</code> — initial text for an uncontrolled
-            textarea (same idea as on <code>&lt;input&gt;</code>). The user
-            can edit freely. This is what Lab 1 uses.
-          </li>
-          <li>
-            <code>value</code> — controlled textarea text; save for later
-            chapters when you wire state.
-          </li>
-        </ul>
         <p>
-          Create <code>Textarea.tsx</code>{" "}with <code>cols</code>{" "}and{" "}
-          <code>rows</code>{" "}for the visible size:
+          Create <code>Textarea.tsx</code>{" "}in the same{" "}
+          <code>forms</code>{" "}folder, with the <code>cols</code>{" "}and{" "}
+          <code>rows</code>{" "}attributes for the visible size:
         </p>
         <CodeBlock
           language="tsx"
           name="Textarea"
-          file="app/labs/lab1/Textarea.tsx"
+          file="app/labs/lab1/forms/Textarea.tsx"
         >{`export default function Textarea() {
   return (
     <>
@@ -1014,7 +1104,7 @@ Lorem ipsum dolor sit amet...
           than a single-line input, sized by <code>rows</code>{" "}and{" "}
           <code>cols</code>:
         </p>
-        <LiveDemo name="Textarea" file="app/labs/lab1/Textarea.tsx">
+        <LiveDemo name="Textarea" file="app/labs/lab1/forms/Textarea.tsx">
           <Textarea />
         </LiveDemo>
         <p>
@@ -1024,28 +1114,30 @@ Lorem ipsum dolor sit amet...
         </p>
 
         <h3
-          id="sec-1-3-7-3"
+          id="sec-1-3-6-3"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.7.3 Radio Buttons
+          1.3.6.3 Radio Buttons
         </h3>
         <p>
-          Radio buttons let the user pick <strong>one</strong>{" "}option from a
-          set. Choices in the same set are <strong>mutually exclusive</strong>:
-          selecting Comedy clears Drama. The browser groups radios that share
-          the same <code>name</code>{" "}attribute. Give each option its own{" "}
-          <code>id</code>{" "}(and usually a <code>value</code>{" "}when you submit the
-          form later), but reuse one <code>name</code>{" "}for the whole group.
+          The <code>&lt;input type=&quot;radio&quot;&gt;</code>{" "}tag lets the
+          user pick <strong>one</strong>{" "}option from a set, so choices in the
+          same group are <strong>mutually exclusive</strong> — selecting the Comedy option
+          clears the Drama option. The browser groups radios that share the same{" "}
+          <code>name</code>{" "}attribute: give each option its own{" "}
+          <code>id</code>{" "}(and usually a <code>value</code>{" "}when you submit
+          the form later), but reuse one <code>name</code>{" "}for the whole group.
         </p>
         <p>
-          Create <code>RadioButtons.tsx</code>{" "}with a favorite-genre radio
+          Create <code>RadioButtons.tsx</code>{" "}in <code>forms</code>{" "}with a
+          favorite-genre radio
           group. Here each caption sits <strong>next to</strong>{" "}its input and
           uses <code>htmlFor</code>{" "}to match the input&apos;s <code>id</code>:
         </p>
         <CodeBlock
           language="tsx"
           name="RadioButtons"
-          file="app/labs/lab1/RadioButtons.tsx"
+          file="app/labs/lab1/forms/RadioButtons.tsx"
         >{`export default function RadioButtons() {
   return (
     <>
@@ -1070,44 +1162,62 @@ Lorem ipsum dolor sit amet...
           Four genre radios share one <code>name</code>, so picking Comedy
           clears Drama — only one choice stays selected:
         </p>
-        <LiveDemo name="RadioButtons" file="app/labs/lab1/RadioButtons.tsx">
-          <RadioButtons />
+        <LiveDemo name="RadioButtons" file="app/labs/lab1/forms/RadioButtons.tsx">
+          <RadioButtonsGenre />
         </LiveDemo>
         <p>
           Import <code>RadioButtons</code>{" "}into <code>Forms.tsx</code>{" "}and add{" "}
-          <code>&lt;RadioButtons /&gt;</code>{" "}inside the form. Your Lab 1 file
-          only needs this single genre group.
+          <code>&lt;RadioButtons /&gt;</code>{" "}inside the form.
         </p>
         <p>
           Mutual exclusion applies <strong>within a name group</strong>, not
-          across the whole page. If you need a second independent choice — for
-          example genre <em>and</em>{" "}how often someone watches movies — use a
-          different <code>name</code>{" "}for the second set. Selecting Weekly does
-          not clear Comedy, because <code>radio-frequency</code>{" "}and{" "}
-          <code>radio-genre</code>{" "}are separate groups. The following demo is
-          illustrative; you do not need to keep two groups in your lab file:
+          across the whole page. Add a second independent choice to the same
+          file — for example how often someone watches movies — with a different{" "}
+          <code>name</code>{" "}for the second set. Selecting Weekly does not
+          clear Comedy, because <code>radio-frequency</code>{" "}and{" "}
+          <code>radio-genre</code>{" "}are separate groups:
         </p>
         <CodeBlock
           language="tsx"
-          name="RadioTwoGroups"
-        >{`<p>Favorite movie genre:</p>
-<input type="radio" name="radio-genre" id="wd-radio2-comedy" />
-<label htmlFor="wd-radio2-comedy">Comedy</label>
-{/* ... more genre options with name="radio-genre" ... */}
-
-<p>How often do you watch movies?</p>
-<input type="radio" name="radio-frequency" id="wd-radio-daily" />
-<label htmlFor="wd-radio-daily">Daily</label>
-<input type="radio" name="radio-frequency" id="wd-radio-weekly" />
-<label htmlFor="wd-radio-weekly">Weekly</label>
-<input type="radio" name="radio-frequency" id="wd-radio-rarely" />
-<label htmlFor="wd-radio-rarely">Rarely</label>`}</CodeBlock>
+          name="RadioButtons"
+          file="app/labs/lab1/forms/RadioButtons.tsx"
+        >{`export default function RadioButtons() {
+  return (
+    <>
+      <h5 id="wd-radio-buttons">Radio buttons</h5>
+      <label>Favorite movie genre:</label>
+      <br />
+      <input type="radio" name="radio-genre" id="wd-radio-comedy" />
+      <label htmlFor="wd-radio-comedy">Comedy</label>
+      <br />
+      <input type="radio" name="radio-genre" id="wd-radio-drama" />
+      <label htmlFor="wd-radio-drama">Drama</label>
+      <br />
+      <input type="radio" name="radio-genre" id="wd-radio-scifi" />
+      <label htmlFor="wd-radio-scifi">Science Fiction</label>
+      <br />
+      <input type="radio" name="radio-genre" id="wd-radio-fantasy" />
+      <label htmlFor="wd-radio-fantasy">Fantasy</label>
+      <br />
+      <label>How often do you watch movies?</label>
+      <br />
+      <input type="radio" name="radio-frequency" id="wd-radio-daily" />
+      <label htmlFor="wd-radio-daily">Daily</label>
+      <br />
+      <input type="radio" name="radio-frequency" id="wd-radio-weekly" />
+      <label htmlFor="wd-radio-weekly">Weekly</label>
+      <br />
+      <input type="radio" name="radio-frequency" id="wd-radio-rarely" />
+      <label htmlFor="wd-radio-rarely">Rarely</label>
+    </>
+  );
+}`}</CodeBlock>
         <p>
           Two groups, two <code>name</code>s: pick a genre and a frequency and
           both selections stay selected at once:
         </p>
-        <LiveDemo name="RadioTwoGroups">
-          <RadioTwoGroups />
+        <LiveDemo name="RadioButtons" file="app/labs/lab1/forms/RadioButtons.tsx">
+          <RadioButtons />
         </LiveDemo>
         <p>
           Labels work with radios in two common ways. You already used the first:
@@ -1145,28 +1255,29 @@ Lorem ipsum dolor sit amet...
           <RadioLabelPatterns />
         </LiveDemo>
         <p>
-          For Lab 1, keep the favorite-genre group with sibling labels and{" "}
-          <code>htmlFor</code>{" "}(as in <code>RadioButtons.tsx</code>). The other
-          patterns are here so you understand how grouping and labeling work when
-          you design denser layouts later.
+          For Lab 1, keep both groups in <code>RadioButtons.tsx</code>{" "}with
+          sibling labels and <code>htmlFor</code>. The other label patterns are
+          here so you understand how grouping and labeling work when you design
+          denser layouts later.
         </p>
 
         <h3
-          id="sec-1-3-7-4"
+          id="sec-1-3-6-4"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.7.4 Checkboxes
+          1.3.6.4 Checkboxes
         </h3>
         <p>
-          Checkboxes use the same label pattern as radio buttons, but each box
-          can be selected <strong>independently</strong>. Unlike radios, choosing
-          Comedy does not clear Drama — the user can pick several genres at once.
-          Create <code>Checkboxes.tsx</code>:
+          The <code>&lt;input type=&quot;checkbox&quot;&gt;</code>{" "}tag uses the
+          same label pattern as radio buttons, but each box can be selected{" "}
+          <strong>independently</strong>. Unlike radios, choosing Comedy does
+          not clear Drama — the user can pick several genres at once. Create{" "}
+          <code>Checkboxes.tsx</code>:
         </p>
         <CodeBlock
           language="tsx"
           name="Checkboxes"
-          file="app/labs/lab1/Checkboxes.tsx"
+          file="app/labs/lab1/forms/Checkboxes.tsx"
         >{`export default function Checkboxes() {
   return (
     <>
@@ -1191,7 +1302,7 @@ Lorem ipsum dolor sit amet...
           Unlike radios, each box is independent — Comedy and Drama can both
           stay checked:
         </p>
-        <LiveDemo name="Checkboxes" file="app/labs/lab1/Checkboxes.tsx">
+        <LiveDemo name="Checkboxes" file="app/labs/lab1/forms/Checkboxes.tsx">
           <Checkboxes />
         </LiveDemo>
         <p>
@@ -1200,10 +1311,10 @@ Lorem ipsum dolor sit amet...
         </p>
 
         <h3
-          id="sec-1-3-7-5"
+          id="sec-1-3-6-5"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.7.5 Dropdowns
+          1.3.6.5 Dropdowns
         </h3>
         <p>
           Use <code>&lt;select&gt;</code>{" "}when the user can pick from a fixed
@@ -1211,7 +1322,7 @@ Lorem ipsum dolor sit amet...
           <code>&lt;option&gt;</code>{" "}inside that list. The text between the
           option tags is what people see (for example &quot;Science Fiction&quot;);
           the <code>value</code>{" "}attribute is what the form actually records
-          when that option is selected.
+          when that option is selected and is what would be sent to the server.
         </p>
         <p>
           Option <code>value</code>s are typically short{" "}
@@ -1223,10 +1334,10 @@ Lorem ipsum dolor sit amet...
           later without breaking stored data.
         </p>
         <p>
-          On the <code>&lt;select&gt;</code>{" "}itself,{" "}
-          <code>defaultValue</code>{" "}sets the initial selection (uncontrolled,
-          as with text fields). That value must match one of the option{" "}
-          <code>value</code>s — for example{" "}
+          On the <code>&lt;select&gt;</code>{" "}itself, the{" "}
+          <code>defaultValue</code>{" "}attribute sets the initial selection
+          (uncontrolled, as with text fields). That value must match one of the
+          option <code>value</code>s — for example{" "}
           <code>defaultValue=&quot;SCIFI&quot;</code>{" "}selects the Science Fiction
           option. Prefer <code>defaultValue</code>{" "}here; controlled{" "}
           <code>value</code>{" "}+ state comes later.
@@ -1237,7 +1348,7 @@ Lorem ipsum dolor sit amet...
         <CodeBlock
           language="tsx"
           name="Dropdowns"
-          file="app/labs/lab1/Dropdowns.tsx"
+          file="app/labs/lab1/forms/Dropdowns.tsx"
         >{`export default function Dropdowns() {
   return (
     <>
@@ -1259,14 +1370,14 @@ Lorem ipsum dolor sit amet...
           selected because <code>defaultValue</code>{" "}matches{" "}
           <code>SCIFI</code>:
         </p>
-        <LiveDemo name="Dropdowns" file="app/labs/lab1/Dropdowns.tsx">
+        <LiveDemo name="Dropdowns" file="app/labs/lab1/forms/Dropdowns.tsx">
           <DropdownSingle />
         </LiveDemo>
 
         <p>
-          Sometimes the user needs more than one selection from the same list.
-          Add the <code>multiple</code>{" "}attribute to the{" "}
-          <code>&lt;select&gt;</code>{" "}to allow that. Then{" "}
+          Sometimes the user needs more than one selection from the same list,
+          which you enable by adding the <code>multiple</code>{" "}attribute to the{" "}
+          <code>&lt;select&gt;</code>. Then{" "}
           <code>defaultValue</code>{" "}(or <code>value</code>) can be an{" "}
           <strong>array</strong>{" "}of tokens — for example{" "}
           <code>{`defaultValue={["COMEDY", "SCIFI"]}`}</code> — so more than one
@@ -1285,7 +1396,7 @@ Lorem ipsum dolor sit amet...
         <CodeBlock
           language="tsx"
           name="Dropdowns"
-          file="app/labs/lab1/Dropdowns.tsx"
+          file="app/labs/lab1/forms/Dropdowns.tsx"
         >{`export default function Dropdowns() {
   return (
     <>
@@ -1320,7 +1431,7 @@ Lorem ipsum dolor sit amet...
           Fiction preselected. Shift- and Command-/Control-click to change the
           set:
         </p>
-        <LiveDemo name="Dropdowns" file="app/labs/lab1/Dropdowns.tsx">
+        <LiveDemo name="Dropdowns" file="app/labs/lab1/forms/Dropdowns.tsx">
           <Dropdowns />
         </LiveDemo>
         <p>
@@ -1329,16 +1440,16 @@ Lorem ipsum dolor sit amet...
         </p>
 
         <h3
-          id="sec-1-3-7-6"
+          id="sec-1-3-6-6"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.7.6 Other Field Types
+          1.3.6.6 Other Field Types
         </h3>
         <p>
           Plain <code>type=&quot;text&quot;</code>{" "}accepts almost any string. HTML
           also provides <strong>strongly typed</strong>{" "}input types that expect a
           particular kind of data — email addresses, numbers, dates, and more.
-          Prefer these when you can: they nudge users toward valid input (and on
+          Prefer these when you can. They nudge users toward valid input (and on
           phones often show a specialized keyboard), help the browser validate
           before submit, and reduce mistakes you would otherwise catch only in
           JavaScript later.
@@ -1359,7 +1470,7 @@ Lorem ipsum dolor sit amet...
         <CodeBlock
           language="tsx"
           name="OtherFieldTypes"
-          file="app/labs/lab1/OtherFieldTypes.tsx"
+          file="app/labs/lab1/forms/OtherFieldTypes.tsx"
         >{`export default function OtherFieldTypes() {
   return (
     <>
@@ -1379,23 +1490,23 @@ Lorem ipsum dolor sit amet...
           tap it and notice the keyboard emphasizes <code>@</code>{" "}and{" "}
           <code>.</code>:
         </p>
-        <LiveDemo name="OtherFieldTypes" file="app/labs/lab1/OtherFieldTypes.tsx">
+        <LiveDemo name="OtherFieldTypes" file="app/labs/lab1/forms/OtherFieldTypes.tsx">
           <FieldEmail />
         </LiveDemo>
 
         <h4 className="font-sans text-base font-semibold">Number</h4>
         <p>
           Use <code>type=&quot;number&quot;</code>{" "}for numeric values such as a
-          salary. Many mobiles show a numeric keypad. Optional{" "}
-          <code>min</code>{" "}and <code>max</code>{" "}attributes limit the allowed
-          range (for example <code>min={"{0}"}</code>{" "}to reject negative
-          salaries). Some browsers also provide step buttons for incrementing
-          the value.
+          salary. On many mobiles the field brings up a numeric keypad. The
+          optional attributes <code>min</code>{" "}and <code>max</code>{" "}limit the
+          allowed range (for example <code>min={"{0}"}</code>{" "}to reject
+          negative salaries), and some browsers also provide step buttons for
+          incrementing the value.
         </p>
         <CodeBlock
           language="tsx"
           name="OtherFieldTypes"
-          file="app/labs/lab1/OtherFieldTypes.tsx"
+          file="app/labs/lab1/forms/OtherFieldTypes.tsx"
         >{`export default function OtherFieldTypes() {
   return (
     <>
@@ -1423,7 +1534,7 @@ Lorem ipsum dolor sit amet...
           Email plus a number field for starting salary — steppers or a numeric
           keypad often appear, and <code>min={"{0}"}</code>{" "}blocks negatives:
         </p>
-        <LiveDemo name="OtherFieldTypes" file="app/labs/lab1/OtherFieldTypes.tsx">
+        <LiveDemo name="OtherFieldTypes" file="app/labs/lab1/forms/OtherFieldTypes.tsx">
           <FieldEmailNumber />
         </LiveDemo>
 
@@ -1439,7 +1550,7 @@ Lorem ipsum dolor sit amet...
         <CodeBlock
           language="tsx"
           name="OtherFieldTypes"
-          file="app/labs/lab1/OtherFieldTypes.tsx"
+          file="app/labs/lab1/forms/OtherFieldTypes.tsx"
         >{`export default function OtherFieldTypes() {
   return (
     <>
@@ -1461,14 +1572,14 @@ Lorem ipsum dolor sit amet...
           A slider joins the typed fields — drag it and it stays between 1 and
           5:
         </p>
-        <LiveDemo name="OtherFieldTypes" file="app/labs/lab1/OtherFieldTypes.tsx">
+        <LiveDemo name="OtherFieldTypes" file="app/labs/lab1/forms/OtherFieldTypes.tsx">
           <FieldEmailNumberRange />
         </LiveDemo>
 
         <h4 className="font-sans text-base font-semibold">Date</h4>
         <p>
           Use <code>type=&quot;date&quot;</code>{" "}for calendar dates. The value
-          uses a fixed format: <code>YYYY-MM-DD</code>{" "}(year-month-day), even if
+          uses a fixed <code>YYYY-MM-DD</code>{" "}format (year-month-day), even if
           the browser displays dates according to the user&apos;s locale. On
           many phones, tapping the field opens a native date picker rather than
           a text keyboard — another reason typed fields reduce entry mistakes.{" "}
@@ -1478,7 +1589,7 @@ Lorem ipsum dolor sit amet...
         <CodeBlock
           language="tsx"
           name="OtherFieldTypes"
-          file="app/labs/lab1/OtherFieldTypes.tsx"
+          file="app/labs/lab1/forms/OtherFieldTypes.tsx"
         >{`export default function OtherFieldTypes() {
   return (
     <>
@@ -1524,7 +1635,7 @@ Lorem ipsum dolor sit amet...
           The full set includes a date of birth control — open it and try a day
           outside the min/max range if your browser enforces those bounds:
         </p>
-        <LiveDemo name="OtherFieldTypes" file="app/labs/lab1/OtherFieldTypes.tsx">
+        <LiveDemo name="OtherFieldTypes" file="app/labs/lab1/forms/OtherFieldTypes.tsx">
           <OtherFieldTypes />
         </LiveDemo>
 
@@ -1568,17 +1679,17 @@ Lorem ipsum dolor sit amet...
         </p>
 
         <h3
-          id="sec-1-3-7-7"
+          id="sec-1-3-6-7"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.7.7 Buttons
+          1.3.6.7 Buttons
         </h3>
         <p>
-          A form still needs a way to <strong>submit</strong>{" "}or{" "}
-          <strong>cancel</strong>. Prefer the <code>&lt;button&gt;</code>{" "}tag
-          over <code>&lt;input type=&quot;submit&quot;&gt;</code>{" "}or{" "}
-          <code>&lt;input type=&quot;button&quot;&gt;</code>: the label is
-          nested text (so later you can put an icon inside), and the{" "}
+          The <code>&lt;button&gt;</code>{" "}tag gives a form a way to{" "}
+          <strong>submit</strong>{" "}or <strong>cancel</strong>. Prefer it over{" "}
+          <code>&lt;input type=&quot;submit&quot;&gt;</code>{" "}or{" "}
+          <code>&lt;input type=&quot;button&quot;&gt;</code>, because the label
+          is nested text (so later you can put an icon inside) and the{" "}
           <code>type</code>{" "}attribute says what the click should do.
         </p>
         <p>
@@ -1597,7 +1708,7 @@ Lorem ipsum dolor sit amet...
         <CodeBlock
           language="tsx"
           name="Buttons"
-          file="app/labs/lab1/Buttons.tsx"
+          file="app/labs/lab1/forms/Buttons.tsx"
         >{`export default function Buttons() {
   return (
     <>
@@ -1614,7 +1725,7 @@ Lorem ipsum dolor sit amet...
         <p>
           Save submits the form; Cancel does not:
         </p>
-        <LiveDemo name="Buttons" file="app/labs/lab1/Buttons.tsx">
+        <LiveDemo name="Buttons" file="app/labs/lab1/forms/Buttons.tsx">
           <Buttons />
         </LiveDemo>
         <p>
@@ -1633,7 +1744,7 @@ Lorem ipsum dolor sit amet...
         <CodeBlock
           language="tsx"
           name="Forms"
-          file="app/labs/lab1/Forms.tsx"
+          file="app/labs/lab1/forms/Forms.tsx"
         >{`"use client";
 
 import TextFields from "./TextFields";
@@ -1670,76 +1781,88 @@ export default function Forms() {
           radios, checkboxes, dropdowns, typed inputs, and buttons in order.
           Click Save here; the page should stay put:
         </p>
-        <LiveDemo name="Forms" file="app/labs/lab1/Forms.tsx">
+        <LiveDemo name="Forms" file="app/labs/lab1/forms/Forms.tsx">
           <Forms />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Build a personal{" "}
-          <strong>Student Profile</strong>{" "}form that reuses every control family
-          from this section — not a tiny stub. Create{" "}
-          <code>YourForm.tsx</code>, wrap the fields in{" "}
-          <code>&lt;form id=&quot;wd-your-form&quot;&gt;</code>, import it into{" "}
-          <code>Forms.tsx</code>{" "}after the sample components, and include all of
-          the following:
-        </p>
-        <ul>
-          <li>
-            <strong>Text fields</strong> — first name, last name, and a password
-            (or student ID) field, each with a labeled{" "}
-            <code>htmlFor</code>/<code>id</code>{" "}pair.
-          </li>
-          <li>
-            <strong>Textarea</strong> — a short bio or &quot;why I am taking this
-            course&quot; blurb (<code>cols</code>/<code>rows</code>{" "}set).
-          </li>
-          <li>
-            <strong>Radio buttons</strong> — one mutually exclusive group for
-            your class standing (for example Freshman / Sophomore / Junior /
-            Senior / Graduate), sharing one <code>name</code>.
-          </li>
-          <li>
-            <strong>Checkboxes</strong> — at least three independent interests
-            (languages, frameworks, or career goals you care about).
-          </li>
-          <li>
-            <strong>Dropdowns</strong> — a single-select for your major (or
-            college), plus a <code>multiple</code>{" "}select for topics you want to
-            deepen this term (at least four options; preselect two).
-          </li>
-          <li>
-            <strong>Typed fields</strong> — <code>type=&quot;email&quot;</code>{" "}for
-            your school email, <code>type=&quot;number&quot;</code>{" "}for expected
-            graduation year (with a sensible <code>min</code>/<code>max</code>),{" "}
-            <code>type=&quot;date&quot;</code>{" "}for your birthday or program start
-            date, and <code>type=&quot;range&quot;</code>{" "}for how excited you are
-            about the course (0–10) with a visible label.
-          </li>
-          <li>
-            <strong>Buttons</strong> — a Save control with{" "}
-            <code>type=&quot;submit&quot;</code>{" "}and a Cancel control with{" "}
-            <code>type=&quot;button&quot;</code>, each with its own{" "}
-            <code>id</code>.
-          </li>
-        </ul>
-        <p>
-          Prefer realistic defaults that describe you (placeholders,{" "}
-          <code>defaultValue</code>, checked options). The live demo above is
-          the course sample; your profile form is the ambitious personal piece
-          graders can skim for coverage of each input type.
-        </p>
+        <OnYourOwn>
+          <p>
+            Build a personal <strong>Student Profile</strong>{" "}form that reuses
+            every control family from this section — not a tiny stub. Create{" "}
+            <code>app/labs/lab1/forms/YourForm.tsx</code>, wrap the fields in{" "}
+            <code>&lt;form id=&quot;wd-your-form&quot;&gt;</code>, import it into{" "}
+            <code>Forms.tsx</code>{" "}after the sample components, and include all
+            of the following:
+          </p>
+          <ul>
+            <li>
+              <strong>Text fields</strong> — first name, last name, and a
+              password (or student ID) field, each with a labeled{" "}
+              <code>htmlFor</code>/<code>id</code>{" "}pair.
+            </li>
+            <li>
+              <strong>Textarea</strong> — a short bio or &quot;why I am taking
+              this course&quot; blurb (<code>cols</code>/<code>rows</code>{" "}
+              set).
+            </li>
+            <li>
+              <strong>Radio buttons</strong> — two mutually exclusive groups,
+              each with its own <code>name</code>: class standing (for example
+              Freshman / Sophomore / Junior / Senior / Graduate) and one more
+              exclusive choice such as full-time / part-time or on-campus /
+              commuter.
+            </li>
+            <li>
+              <strong>Checkboxes</strong> — at least three independent interests
+              (languages, frameworks, or career goals you care about).
+            </li>
+            <li>
+              <strong>Dropdowns</strong> — a single-select for your major (or
+              college), plus a <code>multiple</code>{" "}select for topics you want
+              to deepen this term (at least four options; preselect two).
+            </li>
+            <li>
+              <strong>Typed fields</strong> —{" "}
+              <code>type=&quot;email&quot;</code>{" "}for your school email,{" "}
+              <code>type=&quot;number&quot;</code>{" "}for expected graduation year
+              (with a sensible <code>min</code>/<code>max</code>),{" "}
+              <code>type=&quot;date&quot;</code>{" "}for your birthday or program
+              start date, and <code>type=&quot;range&quot;</code>{" "}for how
+              excited you are about the course (0–10) with a visible label.
+            </li>
+            <li>
+              <strong>Buttons</strong> — a Save control with{" "}
+              <code>type=&quot;submit&quot;</code>{" "}and a Cancel control with{" "}
+              <code>type=&quot;button&quot;</code>, each with its own{" "}
+              <code>id</code>.
+            </li>
+          </ul>
+          <p>
+            Prefer realistic defaults that describe you (placeholders,{" "}
+            <code>defaultValue</code>, checked options). The live demo above is
+            the course sample; your profile form is the ambitious personal piece
+            graders can skim for coverage of each input type.
+          </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`Create app/labs/lab1/forms/YourForm.tsx as a Student Profile form with id wd-your-form. Cover every control from Lab 1 forms: labeled text/password fields, textarea bio, two radio name-groups (class standing plus one more exclusive choice such as full-time/part-time), at least three checkboxes, a single select and a multiple select (four+ options, two preselected), email, number (graduation year with min/max), date, range 0–10, submit Save and type=button Cancel with their own ids. Import YourForm into app/labs/lab1/forms/Forms.tsx after the sample components. Use obvious SAMPLE placeholders (Jane Doe, jane@university.edu) — I will replace them with my own details.`}
+        >
+          The profile form is a lot of markup. Paste this prompt to scaffold{" "}
+          <code>YourForm.tsx</code>, then replace every sample default with facts
+          about you so the form still reads as yours:
+        </WithAI>
       </Section>
 
       <Section
         level={3}
-        id="sec-1-3-8"
-        title="1.3.8 Parameterizing Components with Props"
+        id="sec-1-3-7"
+        title="1.3.7 Parameterizing Components with Props"
       >
         <p>
           Since <SectionLink to="1.3.1" />{" "}you have been configuring HTML tags with{" "}
           <strong>attributes</strong>{" "}— <code>id</code>, then{" "}
           <code>src</code>/<code>alt</code>{" "}on images, <code>type</code>/
           <code>name</code>{" "}on form controls, and more. Your own React
-          components can accept values the same way. In React those values are
+          components can accept values the same way; in React those values are
           called <strong>props</strong>{" "}(short for properties). You declare them
           as parameters on the function, then pass them as attributes when you
           use the component — including the paragraph text itself via a{" "}
@@ -1830,22 +1953,27 @@ export default function HighlightedParagraphLab() {
         >
           <HighlightedParagraph />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Add one more{" "}
-          <code>HighlightedParagraph</code>{" "}with a short sentence about you
-          (hobby, hometown, or favorite course) and style props you choose —
-          your colors, border width, and corner radius. Self-closing tag only;
-          pass the wording through the <code>text</code>{" "}attribute.
-        </p>
+        <OnYourOwn>
+          Add one more <code>HighlightedParagraph</code>{" "}with a short sentence
+          about you (hobby, hometown, or favorite course) and style props you
+          choose — your colors, border width, and corner radius. Self-closing
+          tag only; pass the wording through the <code>text</code>{" "}attribute.
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab1/page.tsx (or wherever HighlightedParagraph is rendered), keep my personal HighlightedParagraph unchanged. Add one more sample <HighlightedParagraph text="Props let the same component render with different colors." backgroundColor="lavender" borderColor="purple" borderWidth={3} borderRadius={12} />. Not a sentence about me.`}
+        >
+          Ask the assistant to add one extra sample highlight with different
+          colors — not your personal sentence:
+        </WithAI>
       </Section>
 
       <Section
         level={3}
-        id="sec-1-3-9"
-        title="1.3.9 Wrapping Content with Children"
+        id="sec-1-3-8"
+        title="1.3.8 Wrapping Content with Children"
       >
         <p>
-          In <SectionLink to="1.3.8" />{" "}every value — including the paragraph wording — arrived as
+          In <SectionLink to="1.3.7" />{" "}every value — including the paragraph wording — arrived as
           an attribute. That works for a string, but not when you want to wrap{" "}
           <em>arbitrary markup</em>{" "}(headings, paragraphs, lists, and so on).
           In React, content nested between a component&apos;s opening and closing
@@ -1932,7 +2060,7 @@ export default function HighlightedBoxLab() {
         <p>
           Two boxes share the same wrapper idea: border and background stay with
           the box, while nested headings, paragraphs, and lists (the{" "}
-          <code>children</code>) differ — the pattern layouts reuse in <SectionLink to="1.3.12" />:
+          <code>children</code>) differ — the pattern layouts reuse in <SectionLink to="1.3.11" />:
         </p>
         <LiveDemo
           name="HighlightedBox"
@@ -1940,28 +2068,33 @@ export default function HighlightedBoxLab() {
         >
           <HighlightedBox />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Add another{" "}
-          <code>HighlightedBox</code>{" "}that wraps personal content — for
-          example an <code>h4</code>{" "}with your name and an unordered list of
-          three goals for this course. Pick style props that feel different from
-          the sample boxes so you can see the wrapper stay the same while{" "}
-          <code>children</code>{" "}change.
-        </p>
+        <OnYourOwn>
+          Add another <code>HighlightedBox</code>{" "}that wraps personal content
+          — for example an <code>h4</code>{" "}with your name and an unordered
+          list of three goals for this course. Pick style props that feel
+          different from the sample boxes so you can see the wrapper stay the
+          same while <code>children</code>{" "}change.
+        </OnYourOwn>
+        <WithAI
+          prompt={`Where HighlightedBox is rendered in Lab 1, keep my personal box unchanged. Add one more sample HighlightedBox with backgroundColor="honeydew", borderColor="seagreen", wrapping an h4 "Sample nested content" and a three-item ul of HTML tags (p, table, form). Not about me.`}
+        >
+          Ask the assistant to add one extra sample box of nested tags — leave
+          your goals list as the personal one:
+        </WithAI>
       </Section>
 
       <Section
         level={3}
-        id="sec-1-3-10"
-        title="1.3.10 Implementing Navigation with the Anchor Tag"
+        id="sec-1-3-9"
+        title="1.3.9 Implementing Navigation with the Anchor Tag"
       >
         <p>
-          The <strong>&quot;Hyper&quot;</strong>{" "}in HyperText Markup Language
-          refers to <strong>hyperlinks</strong> — the ability to navigate from
-          one document on the Web to another (or to a specific place within a
-          document). The HTML element that creates those links is the anchor tag{" "}
-          <code>&lt;a&gt;</code>. Its <code>href</code>{" "}attribute (hypertext
-          reference) holds the destination address the browser should load or
+          The <code>&lt;a&gt;</code>{" "}tag creates <strong>hyperlinks</strong> —
+          the ability to navigate from one document on the Web to another, or to
+          a specific place within a document. The{" "}
+          <strong>&quot;Hyper&quot;</strong>{" "}in HyperText Markup Language refers
+          to that idea. Its <code>href</code>{" "}attribute, short for hypertext
+          reference, holds the destination address the browser should load or
           jump to when the user follows the link.
         </p>
         <p>
@@ -1989,10 +2122,11 @@ export default function HighlightedBoxLab() {
           </li>
         </ul>
         <p>
-          Optional attributes refine how the link behaves.{" "}
-          <code>target=&quot;_blank&quot;</code>{" "}opens the destination in a new
-          browser tab or window — useful for external sites so users do not lose
-          your app. When you use <code>target=&quot;_blank&quot;</code>, also set{" "}
+          Optional attributes refine how the link behaves. The{" "}
+          <code>target</code>{" "}attribute set to <code>&quot;_blank&quot;</code>{" "}
+          opens the destination in a new browser tab or window — useful for
+          external sites so users do not lose your app. When you use{" "}
+          <code>target=&quot;_blank&quot;</code>, also set{" "}
           <code>rel=&quot;noreferrer&quot;</code>{" "}(or at least{" "}
           <code>noopener</code>) so the new page cannot access{" "}
           <code>window.opener</code> — a small but important security habit.
@@ -2062,18 +2196,24 @@ export default function HighlightedBoxLab() {
         <LiveDemo name="AnchorHrefPatterns">
           <AnchorHrefPatterns />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}In <code>AnchorTag.tsx</code>, add two
-          more anchors: one absolute link to a website you visit often (news,
-          docs, or a hobby site) with id <code>wd-your-link</code>, and one that
-          opens your own GitHub (or LinkedIn) profile in a new tab with{" "}
+        <OnYourOwn>
+          In <code>AnchorTag.tsx</code>, add two more anchors — one absolute
+          link to a website you visit often (news, docs, or a hobby site) with
+          id <code>wd-your-link</code>, and one that opens your own GitHub (or
+          LinkedIn) profile in a new tab with{" "}
           <code>target=&quot;_blank&quot;</code>{" "}and{" "}
           <code>rel=&quot;noreferrer&quot;</code>{" "}(id{" "}
           <code>wd-your-github</code>).
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab1/AnchorTag.tsx, keep wd-your-link and wd-your-github unchanged. Add one more sample absolute link with id wd-ai-link to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/table labeled "MDN: table element". Not a link to my profiles.`}
+        >
+          Ask the assistant to add one extra sample docs link — not your hobby
+          site or GitHub:
+        </WithAI>
       </Section>
 
-      <Section level={3} id="sec-1-3-11" title="1.3.11 Implementing Navigation">
+      <Section level={3} id="sec-1-3-10" title="1.3.10 Implementing Navigation">
         <p>
           Recall from the chapter introduction: a{" "}
           <strong>Single Page Application</strong>{" "}(<strong>SPA</strong>) keeps
@@ -2083,7 +2223,7 @@ export default function HighlightedBoxLab() {
           should feel instant, without flashing a full reload.
         </p>
         <p>
-          In <SectionLink to="1.2.4" />{" "}you defined routes by adding <code>page.tsx</code>{" "}files
+          In <SectionLink to="1.2.5" />{" "}you defined routes by adding <code>page.tsx</code>{" "}files
           under <code>app/</code>{" "}(the App Router). Navigation is how the user{" "}
           <em>moves between</em>{" "}those routes. Historically, some SPAs used the
           URL <strong>hash</strong>{" "}(<code>#/lab1</code>) for client-side
@@ -2093,7 +2233,7 @@ export default function HighlightedBoxLab() {
           <strong>History API</strong>{" "}so paths like <code>/labs/lab1</code>{" "}
           update without a full reload — and without requiring a{" "}
           <code>#</code>{" "}prefix. Reserve hash fragments for in-page jumps (as in
-          <SectionLink to="1.3.10" />), not for app routes in this course.
+          <SectionLink to="1.3.9" />), not for app routes in this course.
         </p>
         <p>
           A plain <code>&lt;a href=&quot;/labs/lab1&quot;&gt;</code>{" "}still works,
@@ -2135,30 +2275,38 @@ export default function Labs() {
   );
 }`}</CodeBlock>
         <p>
-          A Labs index lists Lab 1–3. In the running app, click a link: the URL
-          becomes a path such as <code>/labs/lab1</code>{" "}without the full-page
-          flash a raw external <code>&lt;a&gt;</code>{" "}would cause:
+          A Labs index lists Lab 1–3. In the running app, clicking a link
+          changes the URL to a path such as <code>/labs/lab1</code>{" "}without the
+          full-page flash a raw external <code>&lt;a&gt;</code>{" "}would cause:
         </p>
         <LiveDemo name="Labs" file="app/labs/page.tsx">
           <LabsIndexDemo />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Create a Lab 4 placeholder page at{" "}
+        <OnYourOwn>
+          Create a Lab 4 placeholder page at{" "}
           <code>app/labs/lab4/page.tsx</code>{" "}(a simple heading is enough), then
           add a <code>Link</code>{" "}to <code>/labs/lab4</code>{" "}on the Labs
           index. The new route should load without a full page refresh, just
           like Labs 1–3.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`Create app/labs/lab5/page.tsx that exports a default component rendering an h2 "Lab 5". In app/labs/page.tsx, add a Next.js Link to /labs/lab5 next to the existing lab links. Do not replace Labs 1–4.`}
+        >
+          After Lab 4 works, paste this prompt to add a Lab 5 placeholder the
+          same way — then confirm that link also navigates without a full
+          reload:
+        </WithAI>
       </Section>
 
-      <Section level={3} id="sec-1-3-12" title="1.3.12 Implementing Layouts">
+      <Section level={3} id="sec-1-3-11" title="1.3.11 Implementing Layouts">
         <p>
-          Recall from <SectionLink to="1.2.4" />: in the App Router, <code>page.tsx</code>{" "}creates a
-          route, while <code>layout.tsx</code>{" "}is the other reserved filename
-          you need most often. A layout does <em>not</em>{" "}create its own URL by
-          itself. Instead it <strong>wraps</strong>{" "}the <code>page.tsx</code>{" "}
-          (and nested layouts) in the same folder and below. Shared chrome —
-          navigation, sidebars, headers — belongs in a layout so every child
+          In the App Router, <code>page.tsx</code>{" "}creates a route (
+          <SectionLink to="1.2.5" />
+          ); another reserved filename is <code>layout.tsx</code>, which does{" "}
+          <em>not</em>{" "}create its own URL by itself. Instead it{" "}
+          <strong>wraps</strong>{" "}the <code>page.tsx</code>{" "}
+          (and nested layouts) in the same folder and below, so shared chrome —
+          navigation, sidebars, headers — belongs in a layout and every child
           route gets it without copying markup into each page.
         </p>
         <p>
@@ -2170,7 +2318,7 @@ export default function Labs() {
         </p>
         <p>
           Layouts receive a prop named <code>children</code> — the same wrapping
-          idea you practiced with <code>HighlightedBox</code>{" "}in <SectionLink to="1.3.9" />. You do
+          idea you practiced with <code>HighlightedBox</code>{" "}in <SectionLink to="1.3.8" />. You do
           not pass the page in by hand — the framework renders the matching{" "}
           <code>page.tsx</code>{" "}(and nested UI) into <code>children</code>{" "}for
           you. Create <code>app/labs/TOC.tsx</code>{" "}for a small table of
@@ -2201,29 +2349,37 @@ export default function LabsLayout({
   );
 }`}</CodeBlock>
         <p>
-          TOC on the left, page content on the right: the sidebar stays put while
-          the main area (<code>children</code>) swaps as you open different labs:
+          With the TOC on the left and page content on the right, the sidebar
+          stays put while the main area (<code>children</code>) swaps as you
+          open different labs:
         </p>
         <LiveDemo name="LabsLayout" file="app/labs/layout.tsx">
           <LabsLayoutDemo />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}In <code>TOC.tsx</code>, add a small
-          personal touch above or below the lab links — your name, a one-line
-          motto, or a <code>Link</code>{" "}back to the book chapter. Keep the
-          shared layout structure; only the TOC content should feel like yours.
-        </p>
+        <OnYourOwn>
+          In <code>TOC.tsx</code>, add a small personal touch above or below the
+          lab links — your name, a one-line motto, or a <code>Link</code>{" "}back
+          to the book chapter. Keep the shared layout structure; only the TOC
+          content should feel like yours.
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/TOC.tsx, keep any personal name or motto I added. Add a Next.js Link to /book/ch1 labeled "Chapter 1" (id wd-toc-book-link) with the other lab links. Do not change the layout table in layout.tsx.`}
+        >
+          Ask the assistant to add a Chapter 1 link in the TOC — leave your
+          name or motto as the personal bit:
+        </WithAI>
       </Section>
 
-      <Section level={3} id="sec-1-3-13" title="1.3.13 Exercises">
+      <Section level={3} id="sec-1-3-12" title="1.3.12 Exercises">
         <p>
           Use this checklist to confirm Lab 1 covers every HTML topic in <SectionLink to="1.3" />.
           Each item points back to the section where you built the worked
           example. When you are done, <code>app/labs/lab1/page.tsx</code>{" "}should
           import and render the components in order so the page matches the live
           demo below. Complete each section&apos;s{" "}
-          <strong>On your own</strong>{" "}prompt as well — those personal pieces
-          are listed after the core checklist.
+          <strong>On your own</strong>{" "}and <strong>With AI</strong>{" "}blocks as
+          well — personal pieces and assistant-generated extras are listed after
+          the core checklist.
         </p>
         <ol>
           <li>
@@ -2236,51 +2392,48 @@ export default function LabsLayout({
           </li>
           <li>
             Create <code>ListTags.tsx</code>, import it, and build the pancake
-            ordered list (1.3.3).
-          </li>
-          <li>
-            Continue in <code>ListTags.tsx</code>{" "}with the sample book unordered
-            list (1.3.4).
+            ordered list plus the sample book unordered list (1.3.3).
           </li>
           <li>
             Create <code>Tables.tsx</code>, import it, and build the quiz grades
-            table with Q1–Q10 and an average row (1.3.5).
+            table with Q1–Q3 and an average row (1.3.4).
           </li>
           <li>
             Create <code>Images.tsx</code>, import it, and embed the remote
-            Starship image plus the local teslabot image (1.3.6).
+            Starship image plus the local teslabot image (1.3.5).
           </li>
           <li>
-            Create the form components (<code>TextFields.tsx</code>,{" "}
+            Create the form components under{" "}
+            <code>app/labs/lab1/forms/</code>{" "}(<code>TextFields.tsx</code>,{" "}
             <code>Textarea.tsx</code>, <code>RadioButtons.tsx</code>,{" "}
             <code>Checkboxes.tsx</code>, <code>Dropdowns.tsx</code>,{" "}
             <code>OtherFieldTypes.tsx</code>, <code>Buttons.tsx</code>), assemble
             them in{" "}
-            <code>Forms.tsx</code>, and import <code>Forms</code>{" "}into{" "}
-            <code>page.tsx</code>{" "}(1.3.7).
+            <code>forms/Forms.tsx</code>, and import <code>Forms</code>{" "}into{" "}
+            <code>page.tsx</code>{" "}with <code>./forms/Forms</code>{" "}(1.3.6).
           </li>
           <li>
             Create <code>HighlightedParagraph.tsx</code>{" "}with{" "}
             <code>text</code>{" "}and style props (attributes only), show a few
-            variations, and import it into <code>page.tsx</code>{" "}(1.3.8).
+            variations, and import it into <code>page.tsx</code>{" "}(1.3.7).
           </li>
           <li>
             Create <code>HighlightedBox.tsx</code>{" "}that wraps nested{" "}
             <code>children</code>{" "}with the same style props, and import it
-            (1.3.9).
+            (1.3.8).
           </li>
           <li>
             Create <code>AnchorTag.tsx</code>, import it, and add lipsum plus
-            GitHub anchors (1.3.10).
+            GitHub anchors (1.3.9).
           </li>
           <li>
             Set up Lab 1–3 navigation with <code>Link</code>{" "}in{" "}
-            <code>app/labs/page.tsx</code>{" "}(1.3.11).
+            <code>app/labs/page.tsx</code>{" "}(1.3.10).
           </li>
           <li>
             Create <code>app/labs/TOC.tsx</code>{" "}and{" "}
             <code>app/labs/layout.tsx</code>{" "}so the TOC wraps lab pages via{" "}
-            <code>children</code>{" "}(1.3.12).
+            <code>children</code>{" "}(1.3.11).
           </li>
         </ol>
         <p>
@@ -2298,50 +2451,93 @@ export default function LabsLayout({
           </li>
           <li>
             Favorite recipe ordered list{" "}
-            <code>wd-your-favorite-recipe</code>{" "}(1.3.3).
+            <code>wd-your-favorite-recipe</code>{" "}and favorites unordered list{" "}
+            <code>wd-your-books</code>{" "}(1.3.3).
           </li>
           <li>
-            Your favorites unordered list <code>wd-your-books</code>{" "}(1.3.4).
+            Second personal table <code>wd-your-table</code>{" "}(1.3.4).
           </li>
           <li>
-            Second personal table <code>wd-your-table</code>{" "}(1.3.5).
+            Your image <code>wd-your-image</code>{" "}(1.3.5).
           </li>
           <li>
-            Your image <code>wd-your-image</code>{" "}(1.3.6).
-          </li>
-          <li>
-            Student Profile form in <code>YourForm.tsx</code>{" "}(
-            <code>wd-your-form</code>) covering text fields, textarea, radios,
-            checkboxes, single and multiple dropdowns, email, number, date, and
-            range, plus Save (<code>type=&quot;submit&quot;</code>) and Cancel (
-            <code>type=&quot;button&quot;</code>) (1.3.7).
+            Student Profile form in <code>forms/YourForm.tsx</code>{" "}(
+            <code>wd-your-form</code>) covering text fields, textarea, two
+            radio name groups, checkboxes, single and multiple dropdowns,
+            email, number, date, and range, plus Save (
+            <code>type=&quot;submit&quot;</code>) and Cancel (
+            <code>type=&quot;button&quot;</code>) (1.3.6).
           </li>
           <li>
             Extra <code>HighlightedParagraph</code>{" "}with your text and colors
-            (1.3.8).
+            (1.3.7).
           </li>
           <li>
-            Extra <code>HighlightedBox</code>{" "}wrapping your goals list (1.3.9).
+            Extra <code>HighlightedBox</code>{" "}wrapping your goals list (1.3.8).
           </li>
           <li>
             Personal anchors <code>wd-your-link</code>{" "}and{" "}
-            <code>wd-your-github</code>{" "}(1.3.10).
+            <code>wd-your-github</code>{" "}(1.3.9).
           </li>
           <li>
-            Create Lab 4 and link to it from the Labs index (1.3.11).
+            Create Lab 4 and link to it from the Labs index (1.3.10).
           </li>
           <li>
-            Personal note or link in the labs <code>TOC</code>{" "}(1.3.12).
+            Personal note or link in the labs <code>TOC</code>{" "}(1.3.11).
+          </li>
+        </ol>
+        <p>
+          <strong>With AI</strong>{" "}(from each section — extra sample content;
+          read it before you keep it):
+        </p>
+        <ol>
+          <li>
+            Sample outline <code>wd-ai-headings</code>{" "}(1.3.1).
+          </li>
+          <li>
+            Extra sample paragraph <code>wd-ai-p</code>{" "}(1.3.2).
+          </li>
+          <li>
+            Sample HTML-tags list <code>wd-ai-html-tags</code>{" "}(1.3.3).
+          </li>
+          <li>
+            Quiz rows Q4–Q10 and a recalculated average (1.3.4).
+          </li>
+          <li>
+            Extra sample image <code>wd-ai-image</code>{" "}(1.3.5).
+          </li>
+          <li>
+            Scaffold <code>YourForm.tsx</code>, then replace sample defaults
+            with your details (1.3.6).
+          </li>
+          <li>
+            Extra sample <code>HighlightedParagraph</code>{" "}(1.3.7).
+          </li>
+          <li>
+            Extra sample <code>HighlightedBox</code>{" "}(1.3.8).
+          </li>
+          <li>
+            Sample docs link <code>wd-ai-link</code>{" "}(1.3.9).
+          </li>
+          <li>
+            Lab 5 placeholder and index link (1.3.10).
+          </li>
+          <li>
+            Chapter 1 link in the labs TOC (1.3.11).
           </li>
         </ol>
         <p>
           When the checklist is done, Lab 1 should match the core HTML examples
-          below. Your On your own additions appear in the same page (and Labs
-          chrome) beyond what this demo shows.
+          below. Your On your own additions and With AI extras appear in the
+          same page (and Labs chrome) beyond what this demo shows.
         </p>
         <LiveDemo name="Lab1" file="app/labs/lab1/page.tsx">
           <Lab1 />
         </LiveDemo>
+        <p>
+          When the checklist feels solid, try the self-check in{" "}
+          <SectionLink to="1.3.13" />{" "}before you start Kambaz.
+        </p>
       </Section>
     </>
   );

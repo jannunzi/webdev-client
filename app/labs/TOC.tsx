@@ -8,6 +8,7 @@ const LINKS = [
   { href: "/labs/lab1", id: "wd-lab1-link", label: "Lab 1", match: (p: string) => p.endsWith("/lab1") || p.includes("/lab1/") },
   { href: "/labs/lab2", id: "wd-lab2-link", label: "Lab 2", match: (p: string) => p.includes("/lab2") },
   { href: "/labs/lab3", id: "wd-lab3-link", label: "Lab 3", match: (p: string) => p.includes("/lab3") },
+  { href: "/labs/lab4", id: "wd-lab4-link", label: "Lab 4", match: (p: string) => p.includes("/lab4") },
   { href: "/", id: "wd-kambaz-link", label: "Kambaz", match: () => false },
 ] as const;
 
@@ -58,6 +59,16 @@ export default function TOC() {
       <li>
         <Link href="/book/ch3" id="wd-book-ch3-link">
           Book Ch3
+        </Link>
+      </li>
+      <li>
+        <Link href="/labs/lab4/intermediates" id="wd-lab4-intermediates-link">
+          Lab 4 Steps
+        </Link>
+      </li>
+      <li>
+        <Link href="/book/ch4" id="wd-book-ch4-link">
+          Book Ch4
         </Link>
       </li>
     </ul>

@@ -1,4 +1,4 @@
-/** Section 1.3.7.5 — Single-select dropdown only */
+/** Section 1.3.6.5 — Single-select dropdown only */
 export default function DropdownSingle() {
   return (
     <>

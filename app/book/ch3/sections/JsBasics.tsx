@@ -10,6 +10,7 @@ import TernaryOperator from "@/app/labs/lab3/TernaryOperator";
 import ConditionalOutputIfElse from "@/app/labs/lab3/ConditionalOutputIfElse";
 import ConditionalOutputInline from "@/app/labs/lab3/ConditionalOutputInline";
 import NullUndefined from "@/app/labs/lab3/NullUndefined";
+import { OnYourOwn, WithAI } from "../../components/Practice";
 
 export default function JsBasics() {
   return (
@@ -20,8 +21,8 @@ export default function JsBasics() {
         title="3.2.1 Variables and Constants"
       >
         <p>
-          Variables hold application state — a username, a course id, a
-          preference. JavaScript offers three declarations:{" "}
+          Variables hold application state, such as a username, a course
+          id, or a preference. JavaScript offers three declarations:{" "}
           <code>var</code>{" "}(function-scoped, the old default),{" "}
           <code>let</code>{" "}(block-scoped, the usual choice when the value
           will change), and <code>const</code>{" "}(block-scoped and not
@@ -66,13 +67,19 @@ export default function JsBasics() {
           same import-and-place pattern you will repeat for every exercise
           in this chapter.
         </p>
-        <p>
-          <strong>On your own.</strong>{" "}Still in{" "}
+        <OnYourOwn>
+          Still in{" "}
           <code>VariablesAndConstants.tsx</code>, declare one more{" "}
           <code>let</code>{" "}and one more <code>const</code>{" "}(for example
           a name and a computed greeting) and interpolate both into the
           JSX so they appear under the existing values.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/VariablesAndConstants.tsx, keep any extra let/const I added for myself. After the existing sample values, declare const sampleSum = functionScoped + blockScoped and interpolate it as sampleSum = {sampleSum} under the other values. Do not rename my personal variables.`}
+        >
+          Paste this prompt so the assistant adds one extra sample constant —
+          leave your name and greeting as the personal bit:
+        </WithAI>
       </Section>
 
       <Section
@@ -129,11 +136,17 @@ export default function JsBasics() {
         <LiveDemo name="VariableTypes" file="app/labs/lab3/VariableTypes.tsx">
           <VariableTypes />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Add a second string and a second
+        <OnYourOwn>
+          Add a second string and a second
           number, plus <code>typeof</code>{" "}for each, and display them in
           the same component.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/VariableTypes.tsx, keep any extra string and number I added. After the existing samples, add let sampleCount = 42 and let sampleLabel = "Lab 3", plus typeof for each, and display them the same way (value, then the typeof string). Do not change my personal variables.`}
+        >
+          Ask the assistant to add one extra sample string and number — not
+          the ones you invented:
+        </WithAI>
       </Section>
 
       <Section
@@ -196,14 +209,20 @@ export default function JsBasics() {
         >
           <BooleanVariables />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Add one more comparison that uses{" "}
+        <OnYourOwn>
+          Add one more comparison that uses{" "}
           <code>===</code>{" "}(for example a string compared to another
           string) and display it the same way — then deliberately try{" "}
           <code>==</code>{" "}with <code>&quot;123&quot;</code>{" "}and{" "}
           <code>123</code>{" "}in the console so you see why{" "}
           <code>===</code>{" "}is the safer habit.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/BooleanVariables.tsx, keep any extra comparison I added. After the existing booleans, add const true6 = numberVariable !== 0 and display it as true6 = {true6 + ""} the same way as the others. Do not change my personal comparison.`}
+        >
+          Ask the assistant to add one extra sample comparison on the page —
+          leave yours (and the console experiment) as the personal bit:
+        </WithAI>
       </Section>
 
       <Section level={3} id="sec-3-2-4" title="3.2.4 Conditionals">
@@ -239,11 +258,18 @@ export default function JsBasics() {
         <LiveDemo name="IfElse" file="app/labs/lab3/IfElse.tsx">
           <IfElse />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Flip <code>true1</code>{" "}to{" "}
+        <OnYourOwn>
+          Flip <code>true1</code>{" "}to{" "}
           <code>false</code>{" "}and confirm the first paragraph disappears,
           then restore it.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/IfElse.tsx, keep true1 as true (do not flip it for me). After the existing paragraphs, add {false1 && <p>false1</p>} so a third short-circuit example stays hidden. Do not change the ternary that is already there.`}
+        >
+          Paste this prompt so the assistant adds one extra short-circuit
+          paragraph — then confirm it stays hidden while <code>false1</code>{" "}
+          is false:
+        </WithAI>
       </Section>
 
       <Section
@@ -282,11 +308,18 @@ export default function JsBasics() {
         >
           <TernaryOperator />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Set <code>loggedIn</code>{" "}to{" "}
+        <OnYourOwn>
+          Set <code>loggedIn</code>{" "}to{" "}
           <code>false</code>{" "}and confirm the greeting switches to
           &quot;Please login&quot;, then set it back.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/TernaryOperator.tsx, keep loggedIn as true. After the Welcome/Please login ternary, add const premium = false and a second ternary that renders <p>Premium</p> or <p>Free</p>. Do not change the existing greeting.`}
+        >
+          Ask the assistant to add a second sample ternary for a{" "}
+          <code>premium</code>{" "}flag — leave the logged-in greeting for you
+          to flip:
+        </WithAI>
       </Section>
 
       <Section
@@ -352,11 +385,17 @@ export default function JsBasics() {
           early; the inline version always returns one wrapper and includes
           whichever heading the flags allow.
         </p>
-        <p>
-          <strong>On your own.</strong>{" "}Swap the <code>loggedIn</code>{" "}
+        <OnYourOwn>
+          Swap the <code>loggedIn</code>{" "}
           constants in both files and confirm each heading pair flips,
           then restore the values shown above.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/ConditionalOutputInline.tsx, keep loggedIn as false. Add const admin = true and a third heading {admin && <h2>Admin Inline</h2>} inside the same wrapper. Do not change ConditionalOutputIfElse.tsx or the two existing headings.`}
+        >
+          Paste this prompt so the assistant adds one extra inline heading —
+          then you still flip <code>loggedIn</code>{" "}in both files yourself:
+        </WithAI>
       </Section>
 
       <Section
@@ -411,51 +450,18 @@ export default function JsBasics() {
         <LiveDemo name="NullUndefined" file="app/labs/lab3/NullUndefined.tsx">
           <NullUndefined />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}In the browser console, compare{" "}
+        <OnYourOwn>
+          In the browser console, compare{" "}
           <code>null == undefined</code>{" "}(true, because <code>==</code>{" "}
           coerces) with <code>null === undefined</code>{" "}(false). That is
           another reason this chapter sticks to <code>===</code>.
-        </p>
-      </Section>
-
-      <Section level={3} id="sec-3-2-8" title="3.2.8 Exercises">
-        <p>
-          Confirm Lab 3 covers every JavaScript-basics topic in{" "}
-          <SectionLink to="3.2" />. Import each component into{" "}
-          <code>app/labs/lab3/page.tsx</code>{" "}in order. Complete each
-          section&apos;s <strong>On your own</strong>{" "}prompt as well.
-        </p>
-        <ol>
-          <li>
-            Create <code>VariablesAndConstants.tsx</code>{" "}and import it
-            (3.2.1).
-          </li>
-          <li>
-            Create <code>VariableTypes.tsx</code>, import it, and coerce
-            the boolean with <code>+ &quot;&quot;</code>{" "}(3.2.2).
-          </li>
-          <li>
-            Create <code>BooleanVariables.tsx</code>{" "}and compare with{" "}
-            <code>===</code>/<code>!==</code>{" "}(3.2.3).
-          </li>
-          <li>
-            Create <code>IfElse.tsx</code>{" "}with short-circuit{" "}
-            <code>&amp;&amp;</code>{" "}and a ternary (3.2.4).
-          </li>
-          <li>
-            Create <code>TernaryOperator.tsx</code>{" "}for the logged-in
-            greeting (3.2.5).
-          </li>
-          <li>
-            Create <code>ConditionalOutputIfElse.tsx</code>{" "}and{" "}
-            <code>ConditionalOutputInline.tsx</code>{" "}(3.2.6).
-          </li>
-          <li>
-            Create <code>NullUndefined.tsx</code>{" "}and display both values
-            with <code>String(...)</code>{" "}(3.2.7).
-          </li>
-        </ol>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/NullUndefined.tsx, keep the existing null/undefined displays. After them, add two more lines: null == undefined = {String(null == undefined)} and null === undefined = {String(null === undefined)}. Do not remove the String(...) lines already on the page.`}
+        >
+          Ask the assistant to print those two comparisons on the page so you
+          can match them against what you typed in the console:
+        </WithAI>
       </Section>
     </>
   );

@@ -21,6 +21,7 @@ import DestructingImports from "@/app/labs/lab3/DestructingImports";
 import IncludesSomeEvery from "@/app/labs/lab3/IncludesSomeEvery";
 import ReduceFunction from "@/app/labs/lab3/ReduceFunction";
 import OptionalChaining from "@/app/labs/lab3/OptionalChaining";
+import { OnYourOwn, WithAI } from "../../components/Practice";
 
 export default function DataStructures() {
   return (
@@ -80,11 +81,17 @@ export default function DataStructures() {
       <LiveDemo name="SimpleArrays" file="app/labs/lab3/SimpleArrays.tsx">
         <SimpleArrays />
       </LiveDemo>
-      <p>
-        <strong>On your own.</strong>{" "}Push a third <code>li</code>{" "}onto{" "}
+      <OnYourOwn>
+        Push a third <code>li</code>{" "}onto{" "}
         <code>htmlArray1</code>{" "}with its own <code>key</code>{" "}and confirm
         the ordered list grows.
-      </p>
+      </OnYourOwn>
+      <WithAI
+        prompt={`In app/labs/lab3/SimpleArrays.tsx, keep any third li I added to htmlArray1. Push one more sample <li key={4}>Call the dentist</li> onto htmlArray1. Do not change my personal todo text or its key.`}
+      >
+        Ask the assistant to add one extra sample todo item — leave the third
+        item as yours:
+      </WithAI>
 
       <Section
         level={3}
@@ -125,11 +132,17 @@ export default function DataStructures() {
         >
           <ArrayIndexAndLength />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Display{" "}
+        <OnYourOwn>
+          Display{" "}
           <code>numberArray1.indexOf(9)</code>{" "}and confirm it is{" "}
           <code>-1</code>.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/ArrayIndexAndLength.tsx, keep any indexOf(9) display I added. After index1, also interpolate numberArray1.indexOf(1) labeled indexOf1 so the page shows 0. Do not remove my missing-value line.`}
+        >
+          Paste this prompt so the assistant also shows a hit at index{" "}
+          <code>0</code>{" "}— you still display the missing <code>9</code>:
+        </WithAI>
       </Section>
 
       <Section
@@ -184,16 +197,23 @@ export default function DataStructures() {
         >
           <AddingAndRemovingToFromArrays />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}<code>push</code>{" "}one more todo
+        <OnYourOwn>
+          <code>push</code>{" "}one more todo
           with a new key, then <code>splice</code>{" "}the first item, and
           confirm the list on screen matches.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/AddingAndRemovingToFromArrays.tsx, keep any extra todo I pushed. After the existing todoArray.push for Walk the dogs, also push <li key={4}>Buy stamps</li>. Leave the number and string splices as they are. Do not overwrite my extra todo.`}
+        >
+          Ask the assistant to push one extra sample todo — you still splice
+          the first item yourself:
+        </WithAI>
       </Section>
 
       <Section level={3} id="sec-3-4-3" title="3.4.3 For Loops">
         <p>
-          A <code>for</code>{" "}loop visits every index. Build a new array
+          A <code>for</code>{" "}loop visits every index and is useful when you
+          need the position as well as the value. Build a new array
           inside the loop rather than mutating the source. Create{" "}
           <code>ForLoops.tsx</code>:
         </p>
@@ -224,10 +244,16 @@ export default function DataStructures() {
         <LiveDemo name="ForLoops" file="app/labs/lab3/ForLoops.tsx">
           <ForLoops />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Build a third array of lowercased
+        <OnYourOwn>
+          Build a third array of lowercased
           copies in the same loop (or a second loop) and display it.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/ForLoops.tsx, keep any lowercased array I built. In the same loop (or a second loop), also push string1.length into a number[] named stringLengths and display stringLengths under stringArray2. Do not overwrite my lowercase array.`}
+        >
+          Paste this prompt so the assistant maps lengths as a sample extra —
+          leave the lowercased copies as yours:
+        </WithAI>
       </Section>
 
       <Section level={3} id="sec-3-4-4" title="3.4.4 Map Function">
@@ -275,17 +301,23 @@ export default function DataStructures() {
         <LiveDemo name="MapFunction" file="app/labs/lab3/MapFunction.tsx">
           <MapFunction />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Add a third string to{" "}
+        <OnYourOwn>
+          Add a third string to{" "}
           <code>todos</code>{" "}and confirm the ordered list grows — the{" "}
           <code>key</code>{" "}must stay unique.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/MapFunction.tsx, keep any third todo I added. Append "Email the TA" to the todos array (unique string) so map renders a fourth <li key={todo}>. Also interpolate numberArray1.map((a) => a * 2) labeled doubles under cubes. Do not change my personal todo text.`}
+        >
+          Ask the assistant to add one extra sample todo and a doubles map —
+          leave your third string as the personal bit:
+        </WithAI>
       </Section>
 
       <Section level={3} id="sec-3-4-5" title="3.4.5 Find Function">
         <p>
           <code>find</code>{" "}returns the <em>first</em>{" "}element whose
-          predicate is true, or <code>undefined</code>{" "}if none match. The
+          predicate is true, or <code>undefined</code>{" "}if none match — the
           predicate is an arrow that receives the current item. Create{" "}
           <code>FindFunction.tsx</code>:
         </p>
@@ -311,13 +343,19 @@ export default function DataStructures() {
         <LiveDemo name="FindFunction" file="app/labs/lab3/FindFunction.tsx">
           <FindFunction />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}<code>find</code>{" "}a value that is
+        <OnYourOwn>
+          <code>find</code>{" "}a value that is
           not in the array and display the result — it should be empty on
           the page because JSX hides <code>undefined</code>. Wrap it in{" "}
           <code>String(...)</code>{" "}if you want to see the word
           &quot;undefined&quot;.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/FindFunction.tsx, keep any missing-value find I added. After string3, also find 2 in numberArray1 as const two = numberArray1.find((a) => a === 2) and interpolate two = {two}. Do not remove my undefined example.`}
+        >
+          Ask the assistant to also find a value that exists — you still
+          display the missing one:
+        </WithAI>
       </Section>
 
       <Section level={3} id="sec-3-4-6" title="3.4.6 Find Index">
@@ -352,12 +390,18 @@ export default function DataStructures() {
         <LiveDemo name="FindIndex" file="app/labs/lab3/FindIndex.tsx">
           <FindIndex />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Display{" "}
+        <OnYourOwn>
+          Display{" "}
           <code>numberArray1.findIndex((a) =&gt; a === 3)</code>{" "}— there is
           no <code>3</code>{" "}in this array, so the index is{" "}
           <code>-1</code>.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/FindIndex.tsx, keep any findIndex for 3 that I added. After string3Index, also interpolate numberArray1.findIndex((a) => a === 6) labeled sixIndex so the page shows 4. Do not remove my -1 line.`}
+        >
+          Paste this prompt so the assistant also shows a hit at index{" "}
+          <code>4</code>{" "}— you still display the missing <code>3</code>:
+        </WithAI>
       </Section>
 
       <Section level={3} id="sec-3-4-7" title="3.4.7 Filter Function">
@@ -394,10 +438,16 @@ export default function DataStructures() {
         >
           <FilterFunction />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Filter numbers greater than or equal
+        <OnYourOwn>
+          Filter numbers greater than or equal
           to <code>5</code>{" "}into a new constant and display it.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/FilterFunction.tsx, keep any >= 5 filter I added. After oddNumbers, add const numbersLessThan2 = numberArray1.filter((a) => a < 2) and interpolate it. Do not overwrite my >= 5 constant.`}
+        >
+          Ask the assistant to add a sample less-than-2 filter — leave the
+          greater-than-or-equal-to-5 array as yours:
+        </WithAI>
       </Section>
 
       <Section
@@ -406,10 +456,10 @@ export default function DataStructures() {
         title="3.4.8 Includes, some, and every"
       >
         <p>
-          Three more array questions, each returning a boolean.{" "}
-          <code>includes(value)</code>{" "}asks whether the value is present.{" "}
-          <code>some(predicate)</code>{" "}asks whether <em>at least one</em>{" "}
-          item passes. <code>every(predicate)</code>{" "}asks whether{" "}
+          Three more array questions, each returning a boolean:{" "}
+          <code>includes(value)</code>{" "}asks whether the value is present,{" "}
+          <code>some(predicate)</code>{" "}whether <em>at least one</em>{" "}
+          item passes, and <code>every(predicate)</code>{" "}whether{" "}
           <em>all</em>{" "}items pass. Create{" "}
           <code>IncludesSomeEvery.tsx</code>:
         </p>
@@ -448,11 +498,17 @@ export default function DataStructures() {
         >
           <IncludesSomeEvery />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Display{" "}
+        <OnYourOwn>
+          Display{" "}
           <code>numbers.every((n) =&gt; n &gt; 4)</code>{" "}— it should be
           false — and <code>numbers.some((n) =&gt; n === 1)</code>.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/IncludesSomeEvery.tsx, keep any extra every/some I added. After the existing booleans, also display numbers.includes(5) as includes(5) = {numbers.includes(5) + ""}. Do not remove my every(n > 4) or some(n === 1) lines.`}
+        >
+          Ask the assistant to add one extra sample <code>includes</code>{" "}
+          line — you still display the two predicates yourself:
+        </WithAI>
       </Section>
 
       <Section level={3} id="sec-3-4-9" title="3.4.9 Reduce">
@@ -488,10 +544,16 @@ export default function DataStructures() {
         >
           <ReduceFunction />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Reduce the same array to a product
+        <OnYourOwn>
+          Reduce the same array to a product
           (start the accumulator at <code>1</code>) and display it.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/ReduceFunction.tsx, keep any product reduce I added. After sum, also reduce numbers to a concatenated string const joined = numbers.reduce((text, n) => text + n, "") and interpolate joined. Do not overwrite my product.`}
+        >
+          Paste this prompt so the assistant adds a sample string reduce —
+          leave the product as yours:
+        </WithAI>
       </Section>
 
       <Section level={3} id="sec-3-4-10" title="3.4.10 JSON Stringify">
@@ -521,11 +583,17 @@ export default function DataStructures() {
         <LiveDemo name="JsonStringify" file="app/labs/lab3/JsonStringify.tsx">
           <JsonStringify />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Stringify a small object (for
+        <OnYourOwn>
+          Stringify a small object (for
           example <code>{`{ course: "RS101", credits: 4 }`}</code>) and
           display it next to the array.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/JsonStringify.tsx, keep any extra object I stringified. After the squares line, also interpolate JSON.stringify({ course: "RS102", modules: 3 }) labeled sampleCourse. Do not change my personal object.`}
+        >
+          Ask the assistant to stringify one extra sample object — leave
+          yours next to the array:
+        </WithAI>
       </Section>
 
       <Section
@@ -534,8 +602,8 @@ export default function DataStructures() {
         title="3.4.11 JavaScript Objects"
       >
         <p>
-          An <strong>object</strong> groups named properties. Values can be
-          numbers, strings, arrays, or nested objects. Curly braces around
+          An <strong>object</strong> groups named properties whose values can
+          be numbers, strings, arrays, or nested objects. Curly braces around
           <code>key: value</code>{" "}pairs are an object literal. Create{" "}
           <code>House.tsx</code>:
         </p>
@@ -583,10 +651,16 @@ export default function DataStructures() {
         <LiveDemo name="House" file="app/labs/lab3/House.tsx">
           <House />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Add a <code>yearBuilt</code>{" "}
+        <OnYourOwn>
+          Add a <code>yearBuilt</code>{" "}
           property and interpolate it under bathrooms.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/House.tsx, keep yearBuilt if I added it. Add garage: { cars: 2 } to the house object and interpolate house.garage.cars under bathrooms (or under yearBuilt if that heading exists). Do not remove yearBuilt.`}
+        >
+          Ask the assistant to add a sample nested <code>garage</code>{" "}
+          object — leave <code>yearBuilt</code>{" "}as yours:
+        </WithAI>
       </Section>
 
       <Section
@@ -625,8 +699,8 @@ export default function DataStructures() {
   );
 }`}</CodeBlock>
         <p>
-          Objects print as expandable trees.{" "}
-          <code>House.tsx</code>{" "}already logs the house. Reload Lab 3,
+          Objects print in the Console as expandable trees.{" "}
+          <code>House.tsx</code>{" "}already logs the house — reload Lab 3,
           find that log, and expand <code>address</code>{" "}and{" "}
           <code>owners</code>{" "}(
           <FigureLink to="3.4.12c" />
@@ -638,11 +712,17 @@ export default function DataStructures() {
           alt="House object logged in the DevTools console"
           caption="Figure 3.4.12c — House object in the console"
         />
-        <p>
-          <strong>On your own.</strong>{" "}Log <code>house.owners</code>{" "}
+        <OnYourOwn>
+          Log <code>house.owners</code>{" "}
           from <code>House.tsx</code>{" "}and confirm the two-string array
           appears in the console.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/House.tsx, keep console.log(house) and any console.log(house.owners) I added. Also console.log(house.address.city). Do not remove my owners log.`}
+        >
+          Paste this prompt so the assistant logs one extra sample field —
+          you still log <code>house.owners</code>{" "}yourself:
+        </WithAI>
       </Section>
 
       <Section
@@ -695,18 +775,25 @@ export default function DataStructures() {
         <LiveDemo name="Spreading" file="app/labs/lab3/Spreader.tsx">
           <Spreader />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Build <code>obj4</code>{" "}by spreading{" "}
+        <OnYourOwn>
+          Build <code>obj4</code>{" "}by spreading{" "}
           <code>obj2</code>{" "}and overriding <code>a</code>, then stringify
           it.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/Spreader.tsx, keep obj4 if I added it. After arr2, also declare const arr3 = [...arr2, 7] and interpolate JSON.stringify(arr3). Do not overwrite obj4.`}
+        >
+          Ask the assistant to spread one extra sample array — leave{" "}
+          <code>obj4</code>{" "}as yours:
+        </WithAI>
       </Section>
 
       <Section level={3} id="sec-3-4-14" title="3.4.14 Destructing">
         <p>
-          Spread copies outward. <strong>Destructuring</strong> unpacks
-          inward: object properties by name, array items by position. The
-          lab file is named <code>Destructing.tsx</code>{" "}— the spelling used
+          Spread copies properties or items <em>outward</em>{" "}into a new object
+          or array; <strong>destructuring</strong> unpacks{" "}
+          <em>inward</em>: object properties by name, array items by position.
+          The lab file is named <code>Destructing.tsx</code>{" "}— the spelling used
           in the original assignment — but the operation in prose is
           destructuring. Create that component:
         </p>
@@ -752,11 +839,17 @@ export default function DataStructures() {
         <LiveDemo name="Destructing" file="app/labs/lab3/Destructing.tsx">
           <Destructing />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Destructure a fourth array item
+        <OnYourOwn>
+          Destructure a fourth array item
           (add <code>&quot;four&quot;</code>{" "}to the array first) or a
           third object property, and display it.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/Destructing.tsx, keep any fourth array item or extra object property I added. Add city: "Boston" to person, destructure city with name and age, and interpolate city = {city}. Do not remove my fourth/third display.`}
+        >
+          Ask the assistant to destructure one extra sample property — leave
+          the fourth array item as yours:
+        </WithAI>
       </Section>
 
       <Section
@@ -817,13 +910,20 @@ export default function DataStructures() {
         >
           <FunctionDestructing />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Add a <code>multiply</code>{" "}arrow
+        <OnYourOwn>
+          Add a <code>multiply</code>{" "}arrow
           that destructures <code>{`{ a, b }`}</code>{" "}and display the
           product. Then add a <code>greet</code>{" "}arrow with a default{" "}
           <code>name = &quot;Ada&quot;</code>{" "}and interpolate a call with
           no argument.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/FunctionDestructing.tsx, keep multiply and greet if I already added them. Add const divide = ({ a, b }: { a: number; b: number }) => a / b, call it as divide({ a: 10, b: 2 }), and interpolate the quotient. Do not overwrite multiply or greet.`}
+        >
+          Paste this prompt so the assistant adds a sample destructured{" "}
+          <code>divide</code>{" "}— leave <code>multiply</code>{" "}and{" "}
+          <code>greet</code>{" "}as yours:
+        </WithAI>
       </Section>
 
       <Section
@@ -925,12 +1025,18 @@ export default function DestructingImports() {
         >
           <DestructingImports />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Import only <code>add</code>{" "}in a
+        <OnYourOwn>
+          Import only <code>add</code>{" "}in a
           one-line experiment in the same file (or a comment) and confirm
           you can still call <code>Math.divide</code>{" "}through the default
           import.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/Math.ts, keep the existing named exports. Add export function remainder(a: number, b: number): number { return a % b; } and include remainder on the default Math object. In app/labs/lab3/DestructingImports.tsx, add one table row that shows Math.remainder(10, 3), Matematica.remainder(10, 3), and remainder(10, 3) — import remainder named if needed. Do not remove my add-only import experiment.`}
+        >
+          Ask the assistant to add a sample <code>remainder</code>{" "}export
+          and table row — you still try the add-only import yourself:
+        </WithAI>
       </Section>
 
       <Section
@@ -986,64 +1092,18 @@ export default function DestructingImports() {
         >
           <OptionalChaining />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Read{" "}
+        <OnYourOwn>
+          Read{" "}
           <code>house.garage?.cars ?? 0</code>{" "}and display it — there is no{" "}
           <code>garage</code>, so the fallback should appear.
-        </p>
-      </Section>
-
-      <Section level={3} id="sec-3-4-18" title="3.4.18 Exercises">
-        <p>
-          Confirm Lab 3 covers every data-structure topic in{" "}
-          <SectionLink to="3.4" />. Import each component into{" "}
-          <code>page.tsx</code>. Give every mapped JSX sibling a{" "}
-          <code>key</code>.
-        </p>
-        <ol>
-          <li>
-            Create <code>SimpleArrays.tsx</code>{" "}with a keyed todo list
-            (3.4).
-          </li>
-          <li>
-            Create <code>ArrayIndexAndLength.tsx</code>{" "}(3.4.1).
-          </li>
-          <li>
-            Create <code>AddingAndRemovingToFromArrays.tsx</code>{" "}using{" "}
-            <code>push</code>{" "}and <code>splice</code>{" "}(3.4.2).
-          </li>
-          <li>
-            Create <code>ForLoops.tsx</code>{" "}(3.4.3).
-          </li>
-          <li>
-            Create <code>MapFunction.tsx</code>{" "}and map todos with{" "}
-            <code>key={"{todo}"}</code>{" "}(3.4.4).
-          </li>
-          <li>
-            Create <code>FindFunction.tsx</code>{" "}and{" "}
-            <code>FindIndex.tsx</code>{" "}(3.4.5–3.4.6).
-          </li>
-          <li>
-            Create <code>FilterFunction.tsx</code>{" "}(3.4.7).
-          </li>
-          <li>
-            Create <code>IncludesSomeEvery.tsx</code>{" "}and{" "}
-            <code>ReduceFunction.tsx</code>{" "}(3.4.8–3.4.9).
-          </li>
-          <li>
-            Create <code>JsonStringify.tsx</code>{" "}and{" "}
-            <code>House.tsx</code>, then log the house in the Console tab
-            (3.4.10–3.4.12).
-          </li>
-          <li>
-            Create <code>Spreader.tsx</code>, <code>Destructing.tsx</code>,{" "}
-            <code>FunctionDestructing.tsx</code>, <code>Math.ts</code>, and{" "}
-            <code>DestructingImports.tsx</code>{" "}(3.4.13–3.4.16).
-          </li>
-          <li>
-            Create <code>OptionalChaining.tsx</code>{" "}(3.4.17).
-          </li>
-        </ol>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/OptionalChaining.tsx, keep any house.garage?.cars ?? 0 display I added. After the existing lines, also interpolate house.address?.zip ?? "unknown" so the missing zip uses the fallback. Do not remove my garage line.`}
+        >
+          Paste this prompt so the assistant adds one extra sample{" "}
+          <code>?.</code>/<code>??</code>{" "}line — leave the garage fallback
+          as yours:
+        </WithAI>
       </Section>
     </Section>
   );

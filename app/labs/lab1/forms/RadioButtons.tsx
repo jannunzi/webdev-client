@@ -15,6 +15,17 @@ export default function RadioButtons() {
       <br />
       <input type="radio" name="radio-genre" id="wd-radio-fantasy" />
       <label htmlFor="wd-radio-fantasy">Fantasy</label>
+      <br />
+      <label>How often do you watch movies?</label>
+      <br />
+      <input type="radio" name="radio-frequency" id="wd-radio-daily" />
+      <label htmlFor="wd-radio-daily">Daily</label>
+      <br />
+      <input type="radio" name="radio-frequency" id="wd-radio-weekly" />
+      <label htmlFor="wd-radio-weekly">Weekly</label>
+      <br />
+      <input type="radio" name="radio-frequency" id="wd-radio-rarely" />
+      <label htmlFor="wd-radio-rarely">Rarely</label>
     </>
   );
 }

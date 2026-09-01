@@ -1,4 +1,4 @@
-/** Section 1.3.7.6 — email + number + range */
+/** Section 1.3.6.6 — email + number + range */
 export default function FieldEmailNumberRange() {
   return (
     <>

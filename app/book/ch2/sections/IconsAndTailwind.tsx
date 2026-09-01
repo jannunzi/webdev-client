@@ -10,6 +10,7 @@ import ChapterLink from "../../components/ChapterLink";
 import LocalUrl from "../../components/LocalUrl";
 import CodeBlock from "../../components/CodeBlock";
 import LiveDemo from "../../components/LiveDemo";
+import { OnYourOwn, WithAI } from "../../components/Practice";
 import ReactIconsSampler from "@/app/labs/lab2/intermediates/2-2-ReactIconsSampler";
 import TailwindSpacing from "@/app/labs/lab2/tailwind/TailwindSpacing";
 import TailwindTypography from "@/app/labs/lab2/tailwind/TailwindTypography";
@@ -38,7 +39,7 @@ export default function IconsAndTailwind() {
           >
             react-icons.github.io/react-icons
           </a>{" "}
-          and search by keyword or icon family. Each result page shows the
+          and search by keyword or icon family — each result page shows the
           import path and component name to copy. Try a handful from
           different families in one component:
         </p>
@@ -87,12 +88,18 @@ export default function ReactIconsSampler() {
           the Dashboard link, a calendar icon for Calendar, and so on.
         </p>
       
-        <p>
-          <strong>On your own.</strong>{" "}In <code>ReactIconsSampler.tsx</code>,
+        <OnYourOwn>
+          In <code>ReactIconsSampler.tsx</code>,
           import two more icons from families you have not used yet, give them a{" "}
           <code>className</code>{" "}for size or color, and keep them on the Lab 2
           page.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/ReactIconsSampler.tsx, keep my personal extra icons unchanged. After the sample six icons, import two more sample icons from families not already used in the file (for example md and hi2), render them with className for size or color (text-4xl text-blue-600), and keep them on the Lab 2 page. Not icons I already added.`}
+        >
+          Paste this prompt to add two more sample icons — then confirm yours
+          are still there and the new ones come from different families:
+        </WithAI>
       </Section>
 
       <Section
@@ -189,12 +196,18 @@ export default function TailwindLab() {
         <LiveDemo mode="styled" name="TailwindSpacing" file="app/labs/lab2/tailwind/TailwindSpacing.tsx">
           <TailwindSpacing />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}In <code>TailwindSpacing.tsx</code>, add
+        <OnYourOwn>
+          In <code>TailwindSpacing.tsx</code>, add
           one more box that mixes directional spacing utilities (for example{" "}
           <code>mt-*</code>, <code>ps-*</code>, <code>pb-*</code>) so margin and
           padding differences are obvious.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/tailwind/TailwindSpacing.tsx, keep my personal extra spacing box unchanged. After the sample margin and padding boxes, add one more sample box with id wd-ai-spacing that mixes mt-6 ps-8 pb-4 and a distinct background (bg-purple-200) so the directional spacing is obvious. Not my personal box.`}
+        >
+          Paste this prompt to add a second sample spacing mix — then confirm
+          margin and padding differences are visible:
+        </WithAI>
 
         <h3
           id="sec-2-3-2"
@@ -233,12 +246,18 @@ export default function TailwindLab() {
         <LiveDemo mode="styled" name="TailwindTypography" file="app/labs/lab2/tailwind/TailwindTypography.tsx">
           <TailwindTypography />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}In <code>TailwindTypography.tsx</code>,
+        <OnYourOwn>
+          In <code>TailwindTypography.tsx</code>,
           add a short personal line that pairs a size utility with a weight utility
           you have not used yet (for example <code>text-xl</code>{" "}plus{" "}
           <code>font-semibold</code>).
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/tailwind/TailwindTypography.tsx, keep my personal size-plus-weight line unchanged. After the sample size and weight paragraphs, add one more sample line with id wd-ai-type that pairs text-2xl with font-medium. Not a sentence about me.`}
+        >
+          Paste this prompt to add a second sample size/weight pair — then
+          confirm your personal line is still there:
+        </WithAI>
 
         <h3
           id="sec-2-3-3"
@@ -277,12 +296,18 @@ export default function TailwindLab() {
         <LiveDemo mode="styled" name="TailwindBackgroundColors" file="app/labs/lab2/tailwind/TailwindBackgroundColors.tsx">
           <TailwindBackgroundColors />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}In{" "}
+        <OnYourOwn>
+          In{" "}
           <code>TailwindBackgroundColors.tsx</code>, add another band that uses a
           different color and shade (not just <code>-500</code>) and pick a
           contrasting <code>text-*</code>{" "}class so the text stays legible.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/tailwind/TailwindBackgroundColors.tsx, keep my personal extra color band unchanged. After the sample red/green/blue/yellow -500 bands, add one more sample band with id wd-ai-bg that uses a non-500 shade (for example bg-indigo-700) and a contrasting text class (text-white) plus p-4 mb-4. Not my personal band.`}
+        >
+          Paste this prompt to add a second sample shade — then confirm the
+          text stays legible on the new band:
+        </WithAI>
 
         <h3
           id="sec-2-3-4"
@@ -340,13 +365,19 @@ export default function TailwindLab() {
         <LiveDemo mode="styled" name="TailwindResponsiveDesign" file="app/labs/lab2/tailwind/TailwindResponsiveDesign.tsx">
           <TailwindResponsiveDesign />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}In{" "}
+        <OnYourOwn>
+          In{" "}
           <code>TailwindResponsiveDesign.tsx</code>, change the copy or image to
           something personal, then add one more{" "}
           <code>md:</code>{" "}(or <code>lg:</code>) utility so a property clearly
           differs between narrow and wide viewports.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/tailwind/TailwindResponsiveDesign.tsx, keep my personal copy or image unchanged. After the existing card, add a second sample card with id wd-ai-responsive that keeps the course sample copy, and add one more breakpoint utility (for example lg:p-12 on the text column, or md:bg-indigo-50 on the card) so padding or background clearly differs between narrow and wide viewports. Do not overwrite my personal card.`}
+        >
+          Paste this prompt to add a second sample breakpoint — then resize the
+          panel and confirm a property changes at md or lg:
+        </WithAI>
 
         <h3
           id="sec-2-3-5"
@@ -389,12 +420,18 @@ export default function TailwindLab() {
         <LiveDemo mode="styled" name="TailwindFilters" file="app/labs/lab2/tailwind/TailwindFilters.tsx">
           <TailwindFilters />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}In <code>TailwindFilters.tsx</code>, add a
+        <OnYourOwn>
+          In <code>TailwindFilters.tsx</code>, add a
           second row that demos a different filter family — for example{" "}
           <code>grayscale</code>, <code>brightness-*</code>, or{" "}
           <code>contrast-*</code> — on the same image.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/tailwind/TailwindFilters.tsx, keep my personal second filter row unchanged. After the sample blur row, add another sample row with id wd-ai-filters that demos grayscale, grayscale-0, brightness-50, and brightness-150 on the same image (w-1/4 each) under an h3 "Grayscale and brightness". Not my personal row.`}
+        >
+          Paste this prompt to add a third sample filter row — then confirm it
+          uses a different filter family than blur:
+        </WithAI>
 
         <h3
           id="sec-2-3-6"
@@ -467,13 +504,64 @@ export default function TailwindLab() {
         <LiveDemo mode="styled" name="TailwindGrids" file="app/labs/lab2/tailwind/TailwindGrids.tsx">
           <TailwindGrids />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}In <code>TailwindGrids.tsx</code>, add one
+        <OnYourOwn>
+          In <code>TailwindGrids.tsx</code>, add one
           more grid row that uses <code>col-span-*</code>{" "}in a layout you have not
           shown yet (for example three equal columns or a 3/9 split on a
           twelve-column grid).
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/tailwind/TailwindGrids.tsx, keep my personal extra grid row unchanged. After the sample grid-system rows, add one more sample twelve-column row with id wd-ai-grid that uses col-span-3 and col-span-9 (a 3/9 split) with distinct background classes. Do not overwrite my personal row.`}
+        >
+          Paste this prompt to add a 3/9 sample split — then confirm it uses
+          col-span utilities on a twelve-column grid:
+        </WithAI>
 
+      </Section>
+
+      <Section level={3} id="sec-2-3-7" title="2.3.7 Exercises">
+        <p>
+          Use this checklist to confirm Lab 2 covers the CSS, icon, and
+          Tailwind topics in <SectionLink to="2.1" />–<SectionLink to="2.3" />.
+          Each item points back to the section where you built the worked
+          example. When you are done, <code>app/labs/lab2/page.tsx</code>{" "}
+          should import the CSS samples in order, and the Tailwind samples
+          should live under <code>app/labs/lab2/tailwind/</code>. Complete
+          each section&apos;s <strong>On your own</strong>{" "}and{" "}
+          <strong>With AI</strong>{" "}blocks as well.
+        </p>
+        <ol>
+          <li>
+            Create <code>app/labs/lab2/page.tsx</code>{" "}and{" "}
+            <code>index.css</code>, and link Lab 2 from the Labs index and
+            TOC (<SectionLink to="2.1" />).
+          </li>
+          <li>
+            Practice the style attribute, then move rules into the CSS file
+            with id, class, and document-structure selectors (
+            <SectionLink to="2.1.1" />–<SectionLink to="2.1.5" />).
+          </li>
+          <li>
+            Create the color, border, box-model, corner, dimension, and
+            display samples and import them (<SectionLink to="2.1.7" />–
+            <SectionLink to="2.1.12" />).
+          </li>
+          <li>
+            Create the position, z-index, float, grid, flex, and media-query
+            samples and import them (<SectionLink to="2.1.13" />–
+            <SectionLink to="2.1.20" />).
+          </li>
+          <li>
+            Create <code>ReactIconsSampler.tsx</code>{" "}and import it (
+            <SectionLink to="2.2" />).
+          </li>
+          <li>
+            Create the Tailwind samples under{" "}
+            <code>app/labs/lab2/tailwind/</code>{" "}— spacing, typography,
+            backgrounds, responsive prefixes, filters, and grids (
+            <SectionLink to="2.3" />).
+          </li>
+        </ol>
       </Section>
     </>
   );

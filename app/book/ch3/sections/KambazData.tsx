@@ -8,6 +8,7 @@ import FigureLink from "../../components/FigureLink";
 import LocalUrl from "../../components/LocalUrl";
 import Dashboard from "@/app/(kambaz)/dashboard/page";
 import Link from "next/link";
+import { OnYourOwn, WithAI } from "../../components/Practice";
 
 export default function KambazData() {
   return (
@@ -22,7 +23,9 @@ export default function KambazData() {
         application you keep building across the course. Wire those screens
         to JSON so the UI follows the data: different courses on the
         dashboard, and different modules, assignments, and people once the
-        URL encodes a course id.
+        URL encodes a course id. A single coverage checklist is in{" "}
+        <SectionLink to="3.9.10" /> — use it after you have walked through
+        the screens, not instead of wiring data as you read.
       </p>
       <p>
         Confirm the Kambaz landing route still redirects to Sign in:
@@ -142,11 +145,18 @@ export default function KambazNavigation() {
     </nav>
   );
 }`}</CodeBlock>
-        <p>
-          <strong>On your own.</strong>{" "}If any sidebar item is still
+        <OnYourOwn>
+          If any sidebar item is still
           hardcoded, move it into <code>LINKS</code>{" "}and confirm the
           highlight still follows Dashboard, Courses, and Labs.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/(kambaz)/Navigation.tsx, keep the existing LINKS array and Account as a special case. After Labs, add { label: "History", path: "/history", icon: IoCalendarOutline } so map renders one extra sample item. Do not hardcode that item outside LINKS, and do not remove Dashboard, Courses, or Labs.`}
+        >
+          Ask the assistant to add one extra sample sidebar item via{" "}
+          <code>LINKS</code>{" "}— you still fold any leftover hardcoded links
+          yourself:
+        </WithAI>
       </Section>
 
       <Section
@@ -181,11 +191,17 @@ export { courses, modules, assignments, users, enrollments };`}</CodeBlock>
           at least three courses so the dashboard grid is obviously
           data-driven.
         </p>
-        <p>
-          <strong>On your own.</strong>{" "}Open <code>courses.json</code>{" "}and
+        <OnYourOwn>
+          Open <code>courses.json</code>{" "}and
           confirm each object has a unique <code>_id</code>{" "}you can put in
           a path such as <code>/courses/RS101/home</code>.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/(kambaz)/database/courses.json, keep every existing _id as it is. On each course object, add a "term" field set to "Spring 2023" if it is missing. Do not rename RS101, RS102, or RS103.`}
+        >
+          Paste this prompt so the assistant adds one extra sample JSON field
+          — you still confirm each <code>_id</code>{" "}is unique:
+        </WithAI>
       </Section>
 
       <Section
@@ -302,12 +318,18 @@ export default function CourseCard({
         >
           <Dashboard />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Add or rename one course in{" "}
+        <OnYourOwn>
+          Add or rename one course in{" "}
           <code>courses.json</code>{" "}and confirm the dashboard grid and the
           published count update without editing{" "}
           <code>CourseCard.tsx</code>.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/(kambaz)/database/courses.json, keep any course I added or renamed. Append one more sample course with _id "RS104", name "Organic Chemistry", number "RS4580", the same date range as the others, department "D123", credits 4, a short description, and image "/images/reactjs.jpg". Do not edit app/(kambaz)/dashboard/CourseCard.tsx or overwrite my course.`}
+        >
+          Ask the assistant to append one extra sample course — leave the
+          course you added or renamed as yours:
+        </WithAI>
       </Section>
 
       <Section
@@ -319,7 +341,7 @@ export default function CourseCard({
           The course layout lives at{" "}
           <code>app/(kambaz)/courses/[cid]/layout.tsx</code>. Next.js
           provides <code>params</code>{" "}for the dynamic{" "}
-          <code>[cid]</code>{" "}segment. Await it, then{" "}
+          <code>[cid]</code>{" "}segment — await it, then{" "}
           <code>find</code>{" "}the course whose <code>_id</code>{" "}matches:
         </p>
         <CodeBlock
@@ -369,11 +391,18 @@ export default async function CoursesLayout({
           alt="Course screen heading with breadcrumb showing Home"
           caption="Figure 3.9.4 — Course Home breadcrumb"
         />
-        <p>
-          <strong>On your own.</strong>{" "}Open two different dashboard cards
+        <OnYourOwn>
+          Open two different dashboard cards
           and confirm the red heading name changes with{" "}
           <code>cid</code>.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/(kambaz)/courses/[cid]/layout.tsx, keep the Breadcrumb as it is. After <Breadcrumb course={course} />, add a small span that interpolates {course?._id} in parentheses so the heading shows the id next to the name. Do not change how cid is found.`}
+        >
+          Paste this prompt so the assistant shows the sample{" "}
+          <code>_id</code>{" "}beside the heading — you still click two cards
+          to confirm the name follows <code>cid</code>:
+        </WithAI>
       </Section>
 
       <Section
@@ -447,12 +476,19 @@ export default function CourseNavigation({ cid }: { cid: string }) {
     </div>
   );
 }`}</CodeBlock>
-        <p>
-          <strong>On your own.</strong>{" "}If any course link is still written
+        <OnYourOwn>
+          If any course link is still written
           out by hand, fold it into <code>LINKS</code>{" "}and confirm Home,
           Modules, Assignments, and People still highlight on their
           routes.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/(kambaz)/courses/[cid]/Navigation.tsx, keep the existing LINKS entries. After People, add { segment: "announcements", id: "wd-course-announcements-link", label: "Announcements" } so map renders one extra sample item. Do not hardcode that link outside LINKS.`}
+        >
+          Ask the assistant to add one extra sample course-nav item via{" "}
+          <code>LINKS</code>{" "}— you still fold any leftover handwritten
+          links yourself:
+        </WithAI>
       </Section>
 
       <Section
@@ -515,11 +551,17 @@ export default function Breadcrumb({
           where <code>find</code>{" "}returns <code>undefined</code>{" "}— the
           same <code>?.</code>{" "}from <SectionLink to="3.4.17" />.
         </p>
-        <p>
-          <strong>On your own.</strong>{" "}Click Home, then Modules, then
+        <OnYourOwn>
+          Click Home, then Modules, then
           Assignments and confirm the text after{" "}
           <code>&gt;</code>{" "}tracks the last path segment.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/(kambaz)/courses/[cid]/Breadcrumb.tsx, keep the course name and last-segment label. If section === "table", show "People" instead of "Table"; otherwise keep the capitalized segment. Do not remove course?.name.`}
+        >
+          Paste this prompt so the assistant maps the People table segment as
+          a sample extra — you still click Home, Modules, and Assignments:
+        </WithAI>
       </Section>
 
       <Section
@@ -604,11 +646,17 @@ export default function Modules() {
           optional chaining so a module without lessons does not throw.
           Open two courses and confirm the module titles change.
         </p>
-        <p>
-          <strong>On your own.</strong>{" "}Add one lesson to a module in{" "}
+        <OnYourOwn>
+          Add one lesson to a module in{" "}
           <code>modules.json</code>{" "}and confirm it appears only for that
           module&apos;s course.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/(kambaz)/database/modules.json, keep any lesson I added. On module M102 (Fuel and Combustion, course RS101), append one more sample lesson { "_id": "L204", "name": "Nozzle Design", "description": "How nozzle shape affects thrust.", "module": "M102" }. Do not change my personal lesson or move lessons to another course.`}
+        >
+          Ask the assistant to append one extra sample lesson — leave the
+          lesson you added as yours, then confirm it stays on that course:
+        </WithAI>
       </Section>
 
       <Section
@@ -704,13 +752,19 @@ export default async function Assignments({
     </div>
   );
 }`}</CodeBlock>
-        <p>
-          <strong>On your own.</strong>{" "}Point each{" "}
+        <OnYourOwn>
+          Point each{" "}
           <code>AssignmentItem</code>{" "}at{" "}
           <code>{`/courses/\${cid}/assignments/\${aid}`}</code>{" "}and confirm
           two courses show different assignment titles from{" "}
           <code>assignments.json</code>.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/(kambaz)/database/assignments.json, keep existing assignments. Append one more sample assignment for RS102 with _id "A204", title "A4", points 100, due "2024-06-03", available "2024-05-27", and a short aerodynamics description. Do not change AssignmentItem hrefs I already set to /courses/\${cid}/assignments/\${aid}.`}
+        >
+          Paste this prompt so the assistant adds one extra sample assignment
+          row — you still wire each item to the editor URL:
+        </WithAI>
       </Section>
 
       <Section
@@ -807,12 +861,18 @@ export default async function AssignmentEditor({
     </div>
   );
 }`}</CodeBlock>
-        <p>
-          <strong>On your own.</strong>{" "}Open two different assignments and
+        <OnYourOwn>
+          Open two different assignments and
           confirm the title, description, points, due date, and available
           date follow <code>aid</code>, and that Cancel/Save return to that
           course&apos;s list.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/(kambaz)/courses/[cid]/assignments/[aid]/page.tsx, keep the existing fields filled from assignment?.title and the other properties. After the name input, add a read-only line Assignment id: {aid} so the sample id is visible. Do not change Cancel/Save hrefs back to /courses/\${cid}/assignments.`}
+        >
+          Ask the assistant to show the sample <code>aid</code>{" "}on the form
+          — you still open two assignments and check Cancel/Save:
+        </WithAI>
       </Section>
 
       <Section
@@ -889,11 +949,68 @@ export default async function PeopleTable({
           dashboard, or jump to a course Home such as{" "}
           <Link href="/courses/RS101/home">/courses/RS101/home</Link>.
         </p>
-        <p>
-          <strong>On your own.</strong>{" "}Enroll an existing user in a second
+        <OnYourOwn>
+          Enroll an existing user in a second
           course in <code>enrollments.json</code>{" "}and confirm that person
           appears in both People tables.
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/(kambaz)/database/enrollments.json, keep any enrollment I added. Append one more sample object { "_id": "16", "user": "567", "course": "RS102" } so user 567 also appears in the RS102 People table. Do not remove my extra enrollment or change existing ids.`}
+        >
+          Ask the assistant to add one extra sample enrollment — leave the
+          second-course enrollment you added as yours:
+        </WithAI>
+      </Section>
+
+      <Section level={3} id="sec-3-9-10" title="3.9.10 Exercises">
+        <p>
+          Use this checklist to confirm the data-driven Kambaz prototype
+          covers every screen in <SectionLink to="3.9" />. Each item points
+          back to the section where you wired the worked example. Build in
+          order as you read — this list is for checking coverage, not a
+          substitute for the walkthroughs. Course Navigation, Assignments,
+          and the Assignment Editor stay On your own: match the ids and
+          LiveDemos in those sections.
         </p>
+        <ol>
+          <li>
+            Drive Kambaz Navigation from data (
+            <SectionLink to="3.9.1" />).
+          </li>
+          <li>
+            Add the JSON database under <code>app/(kambaz)/database/</code>{" "}
+            (<SectionLink to="3.9.2" />).
+          </li>
+          <li>
+            Render the Dashboard from courses JSON (
+            <SectionLink to="3.9.3" />).
+          </li>
+          <li>
+            Drive the Courses screen from the URL course id (
+            <SectionLink to="3.9.4" />).
+          </li>
+          <li>
+            Drive Course Navigation from data (
+            <SectionLink to="3.9.5" />).
+          </li>
+          <li>
+            Implement the breadcrumb (<SectionLink to="3.9.6" />).
+          </li>
+          <li>
+            Drive Modules from JSON (<SectionLink to="3.9.7" />).
+          </li>
+          <li>
+            Drive Assignments from JSON (<SectionLink to="3.9.8" />).
+          </li>
+          <li>
+            Drive the Assignment Editor from JSON (
+            <SectionLink to="3.9.8.1" />).
+          </li>
+          <li>
+            Drive the People table from users and enrollments (
+            <SectionLink to="3.9.9" />).
+          </li>
+        </ol>
       </Section>
     </Section>
   );

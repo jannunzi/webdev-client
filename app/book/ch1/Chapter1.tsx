@@ -1,5 +1,6 @@
 import IntroAndSetup from "./sections/IntroAndSetup";
 import HtmlSections from "./sections/HtmlSections";
+import CheckUnderstanding from "./sections/CheckUnderstanding";
 import KambazSections from "./sections/KambazSections";
 import ClosingSections from "./sections/ClosingSections";
 
@@ -12,6 +13,7 @@ export default function Chapter1() {
     <article className="mx-auto max-w-3xl">
       <IntroAndSetup />
       <HtmlSections />
+      <CheckUnderstanding />
       <KambazSections />
       <ClosingSections />
     </article>

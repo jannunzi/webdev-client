@@ -1,1 +1,1 @@
-export { default } from "../OtherFieldTypes";
+export { default } from "../forms/OtherFieldTypes";

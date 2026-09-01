@@ -1,4 +1,4 @@
-/** Section 1.3.10 — Anchor tag navigation */
+/** Section 1.3.9 — Anchor tag navigation */
 export default function AnchorTag() {
   return (
     <div id="wd-lab1">

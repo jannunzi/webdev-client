@@ -24,6 +24,11 @@ export default function BookHome() {
             Chapter 3 — Creating Single Page Applications with JavaScript
           </Link>
         </li>
+        <li>
+          <Link href="/book/ch4">
+            Chapter 4 — Managing Client State
+          </Link>
+        </li>
       </ul>
     </div>
   );

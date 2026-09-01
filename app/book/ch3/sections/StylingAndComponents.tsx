@@ -14,6 +14,7 @@ import Highlight from "@/app/labs/lab3/Highlight";
 import PathParameters from "@/app/labs/lab3/PathParameters";
 import TodoList from "@/app/labs/lab3/todos/TodoList";
 import Link from "next/link";
+import { OnYourOwn, WithAI } from "../../components/Practice";
 
 export default function StylingAndComponents() {
   return (
@@ -106,12 +107,19 @@ export default function Classes() {
           >
             <Classes />
           </LiveDemo>
-          <p>
-            <strong>On your own.</strong>{" "}Set <code>color</code>{" "}to{" "}
+          <OnYourOwn>
+            Set <code>color</code>{" "}to{" "}
             <code>&quot;yellow&quot;</code>{" "}and <code>dangerous</code>{" "}to{" "}
             <code>false</code>, confirm the last two boxes change, then
             restore the values above.
-          </p>
+          </OnYourOwn>
+          <WithAI
+            prompt={`In app/labs/lab3/Classes.tsx, keep color as "blue" and dangerous as true. After the existing boxes, add a sixth div whose className uses a new const shade = "green" as \`wd-bg-\${shade} wd-fg-black wd-padding-10px\` and the text "Dynamic Green background". Do not flip color or dangerous.`}
+          >
+            Ask the assistant to add one extra dynamic-class box — you still
+            flip <code>color</code>{" "}and <code>dangerous</code>{" "}yourself,
+            then restore them:
+          </WithAI>
         </Section>
 
         <Section
@@ -168,28 +176,17 @@ export default function Classes() {
           <LiveDemo mode="styled" name="Styles" file="app/labs/lab3/Styles.tsx">
             <Styles />
           </LiveDemo>
-          <p>
-            <strong>On your own.</strong>{" "}Declare a <code>bgGreen</code>{" "}
+          <OnYourOwn>
+            Declare a <code>bgGreen</code>{" "}
             object (spread <code>colorBlack</code>{" "}and{" "}
             <code>padding10px</code>) and apply it to a fourth box.
-          </p>
-        </Section>
-
-        <Section level={3} id="sec-3-5-3" title="3.5.3 Exercises">
-          <p>
-            Confirm Lab 3 covers dynamic styling in{" "}
-            <SectionLink to="3.5" />.
-          </p>
-          <ol>
-            <li>
-              Create <code>Classes.css</code>{" "}and <code>Classes.tsx</code>{" "}
-              with static, concatenated, and ternary class names (3.5.1).
-            </li>
-            <li>
-              Create <code>Styles.tsx</code>{" "}with inline and spread style
-              objects (3.5.2).
-            </li>
-          </ol>
+          </OnYourOwn>
+          <WithAI
+            prompt={`In app/labs/lab3/Styles.tsx, keep bgGreen if I already added it. After the existing boxes, add const bgGray = { backgroundColor: "lightgray", ...colorBlack, ...padding10px } and a fifth div style={bgGray} with the text "Gray background". Do not overwrite bgGreen.`}
+          >
+            Paste this prompt so the assistant adds a sample gray box — leave
+            the green one as yours:
+          </WithAI>
         </Section>
       </Section>
 
@@ -246,11 +243,17 @@ export default function ClientComponentDemo() {
           >
             <ClientComponentDemo />
           </LiveDemo>
-          <p>
-            <strong>On your own.</strong>{" "}Temporarily remove{" "}
+          <OnYourOwn>
+            Temporarily remove{" "}
             <code>&quot;use client&quot;</code>{" "}and confirm the error,
             then put the directive back.
-          </p>
+          </OnYourOwn>
+          <WithAI
+            prompt={`In app/labs/lab3/ClientComponentDemo.tsx, keep "use client" as the first statement. After the pathname paragraph, add a second <p>Last segment: {pathname.split("/").pop()}</p>. Do not remove the directive.`}
+          >
+            Ask the assistant to display one extra pathname snippet — you still
+            remove and restore <code>&quot;use client&quot;</code>{" "}yourself:
+          </WithAI>
         </Section>
 
         <Section
@@ -260,9 +263,9 @@ export default function ClientComponentDemo() {
         >
           <p>
             Omit <code>&quot;use client&quot;</code>{" "}and the file stays a
-            Server Component. It can import <code>node:fs</code>{" "}and read{" "}
-            <code>process</code>. Adding the client directive would make
-            those APIs unavailable. Create{" "}
+            Server Component, which means it can import <code>node:fs</code>{" "}
+            and read <code>process</code> — adding the client directive would
+            make those APIs unavailable. Create{" "}
             <code>ServerComponentDemo.tsx</code>:
           </p>
           <CodeBlock
@@ -323,42 +326,18 @@ export default function ServerComponentDemo() {
             page. Use this pattern whenever Node I/O — and later, a network
             call — can fail.
           </p>
-          <p>
-            <strong>On your own.</strong>{" "}Log one extra{" "}
+          <OnYourOwn>
+            Log one extra{" "}
             <code>process</code>{" "}field (for example{" "}
             <code>process.arch</code>) into the JSON the component
             stringifies.
-          </p>
-        </Section>
-
-        <Section level={3} id="sec-3-6-3" title="3.6.3 Exercises">
-          <p>
-            Confirm Lab 3 includes both a client demo and a server demo
-            from <SectionLink to="3.6" />. Import each component into{" "}
-            <code>app/labs/lab3/page.tsx</code>. Complete each
-            section&apos;s <strong>On your own</strong>{" "}prompt as well.
-          </p>
-          <ol>
-            <li>
-              Create <code>ClientComponentDemo.tsx</code>{" "}with{" "}
-              <code>&quot;use client&quot;</code>{" "}as the first statement
-              and <code>usePathname</code>{" "}from{" "}
-              <code>next/navigation</code>{" "}(3.6.1).
-            </li>
-            <li>
-              Create <code>ServerComponentDemo.tsx</code>{" "}with no client
-              directive. Read <code>process.platform</code>{" "}and{" "}
-              <code>process.version</code>, and list files in{" "}
-              <code>app/labs/lab3</code>{" "}with <code>node:fs</code>{" "}
-              (3.6.2). Keep the <code>try</code>/<code>catch</code>{" "}
-              around <code>readdirSync</code>.
-            </li>
-            <li>
-              Import both demos into <code>page.tsx</code>{" "}and confirm
-              the client demo shows the Lab 3 pathname while the server
-              demo shows a file list the browser could not have produced.
-            </li>
-          </ol>
+          </OnYourOwn>
+          <WithAI
+            prompt={`In app/labs/lab3/ServerComponentDemo.tsx, keep any extra process field I already added. Include process.pid in the JSON.stringify object next to platform, nodeVersion, and serverRenderTime. Do not remove my extra field or the try/catch around readdirSync.`}
+          >
+            Paste this prompt so the assistant adds <code>process.pid</code>{" "}
+            to the sample JSON — leave your extra field as the personal bit:
+          </WithAI>
         </Section>
       </Section>
 
@@ -394,11 +373,18 @@ export default function ServerComponentDemo() {
         <LiveDemo name="Add" file="app/labs/lab3/Add.tsx">
           <Add a={3} b={4} />
         </LiveDemo>
-        <p>
-          <strong>On your own.</strong>{" "}Render a second{" "}
+        <OnYourOwn>
+          Render a second{" "}
           <code>{`<Add a={10} b={20} />`}</code>{" "}on the Lab 3 page and
           confirm it prints <code>30</code>.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab3/page.tsx, keep <Add a={3} b={4} /> and any <Add a={10} b={20} /> I added. Render one more sample <Add a={7} b={8} /> under those. Do not change Add.tsx.`}
+        >
+          Ask the assistant to render one extra sample{" "}
+          <code>{`<Add a={7} b={8} />`}</code>{" "}— leave the 10 + 20 instance
+          as yours:
+        </WithAI>
 
         <Section
           level={3}
@@ -457,11 +443,17 @@ export default function Highlight({ children }: { children: ReactNode }) {
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
             </Highlight>
           </LiveDemo>
-          <p>
-            <strong>On your own.</strong>{" "}Wrap a sentence of your own in{" "}
+          <OnYourOwn>
+            Wrap a sentence of your own in{" "}
             <code>Highlight</code>{" "}on the Lab 3 page, and render{" "}
             <code>{`<Square>9</Square>`}</code>{" "}next to the square of 4.
-          </p>
+          </OnYourOwn>
+          <WithAI
+            prompt={`In app/labs/lab3/page.tsx, keep any Highlight sentence I wrote and any <Square>9</Square> I added. After the sample Square of 4, add <p>Square of 5 = <Square>5</Square></p> and one more <Highlight>Children can be any JSX</Highlight>. Do not change my personal sentence.`}
+          >
+            Ask the assistant to add one extra sample highlight and square —
+            leave your sentence as the personal bit:
+          </WithAI>
         </Section>
 
         <Section
@@ -555,12 +547,18 @@ export default function TOC() {
             picks up the blue pill classes; Lab 1 and Lab 2 should do the
             same on their routes.
           </p>
-          <p>
-            <strong>On your own.</strong>{" "}If Lab 3 is not yet in{" "}
+          <OnYourOwn>
+            If Lab 3 is not yet in{" "}
             <code>LINKS</code>, add it with a <code>match</code>{" "}that
             uses <code>includes(&quot;/lab3&quot;)</code>, and confirm the
             highlight follows you between labs.
-          </p>
+          </OnYourOwn>
+          <WithAI
+            prompt={`In app/labs/TOC.tsx, keep the existing LINKS entries including Lab 3. After the Lab 3 object, add { href: "/labs/lab4", id: "wd-lab4-link", label: "Lab 4", match: (p: string) => p.includes("/lab4") }. Do not remove or rename my Lab 3 link.`}
+          >
+            Paste this prompt so the assistant adds a sample Lab 4 TOC entry —
+            you still confirm Lab 3 highlights on its own route:
+          </WithAI>
         </Section>
 
         <Section
@@ -626,10 +624,16 @@ export default function PathParameters() {
             <code>1 + 2 = 3</code>. The second link should print{" "}
             <code>3 + 4 = 7</code>.
           </p>
-          <p>
-            <strong>On your own.</strong>{" "}Add a third link that encodes two
+          <OnYourOwn>
+            Add a third link that encodes two
             numbers of your choice and confirm the add page sums them.
-          </p>
+          </OnYourOwn>
+          <WithAI
+            prompt={`In app/labs/lab3/PathParameters.tsx, keep the 1+2 and 3+4 links and any third link I added. After them, add <Link href="/labs/lab3/add/5/6">5 + 6</Link>. Do not change app/labs/lab3/add/[a]/[b]/page.tsx or overwrite my numbers.`}
+          >
+            Ask the assistant to add a sample 5 + 6 link — leave the third
+            pair of numbers as yours:
+          </WithAI>
         </Section>
 
         <Section
@@ -675,7 +679,7 @@ const TodoItem = ({
 
 export default TodoItem;`}</CodeBlock>
           <p>
-            Store the list next to the component as JSON. Next.js lets you
+            Store the list next to the component as JSON — Next.js lets you
             import JSON as a value:
           </p>
           <CodeBlock
@@ -721,8 +725,8 @@ export default function TodoList() {
           <LiveDemo name="TodoList" file="app/labs/lab3/todos/TodoList.tsx">
             <TodoList />
           </LiveDemo>
-          <p>
-            <strong>On your own.</strong>{" "}Add a fourth object to{" "}
+          <OnYourOwn>
+            Add a fourth object to{" "}
             <code>todos.json</code>{" "}with a unique title and confirm a
             fourth row appears — then put a <code>key</code>{" "}on every
             mapped <code>TodoItem</code>{" "}if it is missing. Log the{" "}
@@ -730,40 +734,82 @@ export default function TodoList() {
             confirm the objects appear in the console (
             <SectionLink to="3.4.12" />
             ).
-          </p>
+          </OnYourOwn>
+          <WithAI
+            prompt={`In app/labs/lab3/todos/todos.json, keep any fourth todo I added. Append one more sample object { "title": "Email the TA", "status": "COMPLETED", "done": true } with a unique title. In app/labs/lab3/todos/TodoList.tsx, keep key={todo.title} on every TodoItem and add console.log(todos) if it is missing. Do not change my personal todo title.`}
+          >
+            Paste this prompt so the assistant adds one extra sample todo and
+            the console log — leave your fourth title as the personal bit:
+          </WithAI>
         </Section>
 
         <Section level={3} id="sec-3-7-5" title="3.7.5 Exercises">
           <p>
-            Confirm Lab 3 covers parameterization in{" "}
-            <SectionLink to="3.7" />. Complete each section&apos;s{" "}
-            <strong>On your own</strong>{" "}prompt as well.
+            Use this checklist to confirm Lab 3 covers every JavaScript
+            topic in <SectionLink to="3.2" />–<SectionLink to="3.7" />.
+            Import each component into <code>app/labs/lab3/page.tsx</code>{" "}
+            in order. Complete each section&apos;s{" "}
+            <strong>On your own</strong>{" "}and <strong>With AI</strong>{" "}
+            blocks as well. Give every mapped JSX sibling a{" "}
+            <code>key</code>.
           </p>
           <ol>
             <li>
-              Create <code>Add.tsx</code>{" "}and render{" "}
-              <code>{`<Add a={3} b={4} />`}</code>{" "}from{" "}
-              <code>page.tsx</code>{" "}(3.7).
+              Create <code>VariablesAndConstants.tsx</code>,{" "}
+              <code>VariableTypes.tsx</code>,{" "}
+              <code>BooleanVariables.tsx</code>, <code>IfElse.tsx</code>,{" "}
+              <code>TernaryOperator.tsx</code>,{" "}
+              <code>ConditionalOutputIfElse.tsx</code>,{" "}
+              <code>ConditionalOutputInline.tsx</code>, and{" "}
+              <code>NullUndefined.tsx</code>{" "}(<SectionLink to="3.2" />).
             </li>
             <li>
-              Create <code>Square.tsx</code>{" "}and{" "}
-              <code>Highlight.tsx</code>{" "}that wrap{" "}
-              <code>children</code>{" "}(3.7.1).
+              Create <code>LegacyFunctions.tsx</code>,{" "}
+              <code>ArrowFunctions.tsx</code>,{" "}
+              <code>ImpliedReturn.tsx</code>, and{" "}
+              <code>TemplateLiterals.tsx</code>{" "}(<SectionLink to="3.3" />).
+            </li>
+            <li>
+              Create the array samples through{" "}
+              <code>ReduceFunction.tsx</code>{" "}(<SectionLink to="3.4.1" />–
+              <SectionLink to="3.4.9" />).
+            </li>
+            <li>
+              Create <code>JsonStringify.tsx</code>, <code>House.tsx</code>,{" "}
+              <code>Spreader.tsx</code>, <code>Destructing.tsx</code>,{" "}
+              <code>FunctionDestructing.tsx</code>, <code>Math.ts</code>,{" "}
+              <code>DestructingImports.tsx</code>, and{" "}
+              <code>OptionalChaining.tsx</code>{" "}(<SectionLink to="3.4.10" />–
+              <SectionLink to="3.4.17" />).
+            </li>
+            <li>
+              Create <code>Classes.css</code>, <code>Classes.tsx</code>, and{" "}
+              <code>Styles.tsx</code>{" "}(<SectionLink to="3.5" />).
+            </li>
+            <li>
+              Create <code>ClientComponentDemo.tsx</code>{" "}with{" "}
+              <code>&quot;use client&quot;</code>{" "}and{" "}
+              <code>ServerComponentDemo.tsx</code>{" "}without it (
+              <SectionLink to="3.6" />).
+            </li>
+            <li>
+              Create <code>Add.tsx</code>, <code>Square.tsx</code>, and{" "}
+              <code>Highlight.tsx</code>{" "}(<SectionLink to="3.7" />–
+              <SectionLink to="3.7.1" />).
             </li>
             <li>
               Highlight the active lab in <code>app/labs/TOC.tsx</code>{" "}
-              with <code>usePathname</code>{" "}and Tailwind{" "}
-              <code>className</code>{" "}(3.7.2).
+              with <code>usePathname</code>{" "}(<SectionLink to="3.7.2" />).
             </li>
             <li>
               Create the <code>add/[a]/[b]</code>{" "}page and{" "}
-              <code>PathParameters.tsx</code>{" "}links (3.7.3).
+              <code>PathParameters.tsx</code>{" "}(<SectionLink to="3.7.3" />).
             </li>
             <li>
-              Create <code>todos/TodoItem.tsx</code>{" "}with a default{" "}
-              <code>todo</code>{" "}prop, <code>todos/todos.json</code>{" "}with
-              at least three items, and <code>todos/TodoList.tsx</code>{" "}
-              that maps with <code>key={"{todo.title}"}</code>{" "}(3.7.4).
+              Create <code>todos/TodoItem.tsx</code>,{" "}
+              <code>todos/todos.json</code>, and{" "}
+              <code>todos/TodoList.tsx</code>{" "}that maps with{" "}
+              <code>key={"{todo.title}"}</code>{" "}(<SectionLink to="3.7.4" />).
             </li>
           </ol>
         </Section>

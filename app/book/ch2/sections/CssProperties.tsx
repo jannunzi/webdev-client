@@ -24,6 +24,7 @@ import FlexWidth from "@/app/labs/lab2/intermediates/2-1-19c-FlexWidth";
 import MediaQueriesDemo from "@/app/labs/lab2/intermediates/2-1-20-MediaQueries";
 import SelfCheck from "../../components/SelfCheck";
 import SectionLink from "../../components/SectionLink";
+import { OnYourOwn, WithAI } from "../../components/Practice";
 import { CH2_SECTION_21_QUESTIONS } from "../../quizzes/ch2-2-1";
 
 export default function CssProperties() {
@@ -82,12 +83,18 @@ export default function CssProperties() {
           <ForegroundColors />
         </LiveDemo>
       
-        <p>
-          <strong>On your own.</strong>{" "}In <code>ForegroundColors.tsx</code>, add
+        <OnYourOwn>
+          In <code>ForegroundColors.tsx</code>, add
           one more sentence that mixes at least two of your{" "}
           <code>wd-fg-color-*</code>{" "}classes (paragraph plus nested{" "}
           <code>span</code>) so different words show different foreground colors.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/ForegroundColors.tsx, keep my personal mixed-color sentence unchanged. After the sample red paragraph with the green span, add one more sample paragraph with id wd-ai-fg that uses wd-fg-color-blue on the paragraph and wd-fg-color-black on a nested span. Not a sentence about me.`}
+        >
+          Paste this prompt to add a second sample color mix — then confirm
+          your personal sentence is still there:
+        </WithAI>
       </Section>
 
       <Section
@@ -138,12 +145,18 @@ export default function CssProperties() {
           <BackgroundColors />
         </LiveDemo>
       
-        <p>
-          <strong>On your own.</strong>{" "}In <code>BackgroundColors.tsx</code>, add
+        <OnYourOwn>
+          In <code>BackgroundColors.tsx</code>, add
           another block that stacks a background class with a contrasting
           foreground class (for example yellow background with dark text) so the
           content stays readable.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/BackgroundColors.tsx, keep my personal stacked background/foreground block unchanged. After the sample heading and paragraph, add one more sample block with id wd-ai-bg that uses wd-bg-color-yellow and wd-fg-color-black. Not about me.`}
+        >
+          Paste this prompt to add a second sample stacked block — then confirm
+          the yellow-on-dark text stays readable:
+        </WithAI>
       </Section>
 
       <Section
@@ -197,12 +210,18 @@ export default function CssProperties() {
           <Borders />
         </LiveDemo>
       
-        <p>
-          <strong>On your own.</strong>{" "}In <code>Borders.tsx</code>, add a third
+        <OnYourOwn>
+          In <code>Borders.tsx</code>, add a third
           paragraph that mixes a different width, style, and color class from{" "}
           <code>index.css</code>{" "}(for example fat + dashed + yellow) without
           writing a new combined rule.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/Borders.tsx, keep my personal third border paragraph unchanged. After the sample fat-red-solid and thin-blue-dashed paragraphs, add one more sample paragraph with id wd-ai-border that mixes wd-border-fat wd-border-dashed wd-border-yellow. Do not write a new combined CSS rule.`}
+        >
+          Paste this prompt to add a fourth sample mix — then confirm it uses
+          only existing width, style, and color classes:
+        </WithAI>
       </Section>
 
       <Section
@@ -323,7 +342,7 @@ export default function CssProperties() {
           edge; margin is transparent — you see whatever is behind the gap.
         </p>
         <p>
-          Those layers also change how <code>width</code>{" "}is measured. The{" "}
+          Those layers also change how <code>width</code>{" "}is measured: the{" "}
           <code>box-sizing</code>{" "}property chooses the rule. The CSS default
           is <code>content-box</code>: <code>width: 200px</code>{" "}sizes only
           the content, then padding and border add extra pixels outside it.{" "}
@@ -419,14 +438,20 @@ export default function CssProperties() {
           <BoxModel />
         </LiveDemo>
       
-        <p>
-          <strong>On your own.</strong>{" "}In <code>Padding.tsx</code>{" "}or{" "}
+        <OnYourOwn>
+          In <code>Padding.tsx</code>{" "}or{" "}
           <code>Margins.tsx</code>, add one more box that uses a new per-side
           padding or margin class from <code>index.css</code>, keeping a fat border
           so the spacing is easy to see. Then change the{" "}
           <code>width</code>{" "}on the two <code>box-sizing</code>{" "}boxes (or add
           a third) and confirm which one stays the declared width on screen.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`Keep my personal extra padding/margin box and any box-sizing width change I made. In app/labs/lab2/Padding.tsx, after the three sample boxes, add one more sample box with id wd-ai-padded that uses a new class in app/labs/lab2/index.css (padding-top only, plus a fat red solid border and yellow background). In app/labs/lab2/BoxModel.tsx, add a third sample box with the same width/padding/border as the others but a comment noting which box-sizing keeps the declared width. Do not overwrite my personal boxes.`}
+        >
+          Paste this prompt to add another sample padded box and a third
+          box-sizing demo — then confirm which box stays the declared width:
+        </WithAI>
       </Section>
 
       <Section
@@ -491,11 +516,17 @@ export default function CssProperties() {
           <Corners />
         </LiveDemo>
       
-        <p>
-          <strong>On your own.</strong>{" "}In <code>Corners.tsx</code>, add another
+        <OnYourOwn>
+          In <code>Corners.tsx</code>, add another
           box that rounds only some corners (or uses a larger radius) via your{" "}
           <code>border-radius</code>{" "}classes in <code>index.css</code>.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/Corners.tsx and app/labs/lab2/index.css, keep my personal rounded box unchanged. After the four sample paragraphs, add one more sample paragraph with id wd-ai-corners using a new class .wd-ai-rounded-left that rounds only the left corners (border-top-left-radius and border-bottom-left-radius 40px) plus the existing thin blue solid border and fat padding.`}
+        >
+          Paste this prompt to add a second sample radius — then confirm only
+          the left corners round on that new box:
+        </WithAI>
       </Section>
 
       <Section
@@ -657,14 +688,21 @@ export default function CssProperties() {
           <Display />
         </LiveDemo>
       
-        <p>
-          <strong>On your own.</strong>{" "}In <code>Dimensions.tsx</code>, add one
+        <OnYourOwn>
+          In <code>Dimensions.tsx</code>, add one
           more element with an explicit width and height from{" "}
           <code>index.css</code>{" "}and confirm it keeps that size even when its
           text is short or long. In <code>Display.tsx</code>, force a{" "}
           <code>div</code>{" "}to <code>display: inline</code>{" "}and confirm its{" "}
           <code>width</code>{" "}stops applying.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`Keep my personal extra dimension box and my inline div experiment unchanged. In app/labs/lab2/Dimensions.tsx, after the portrait/landscape/square samples, add a sample box with id wd-ai-dimension using a new class in app/labs/lab2/index.css (width 120px, height 60px, yellow background) whose text is a long sentence so the declared size is obvious. In app/labs/lab2/Display.tsx, after the block row, add a sample div with id wd-ai-display that uses wd-display-inline plus a background class. Do not overwrite my personal elements.`}
+        >
+          Paste this prompt to add another sized box and an inline sample div —
+          then confirm the long text still fits the declared size and the div
+          width is ignored:
+        </WithAI>
       </Section>
 
       <Section
@@ -728,12 +766,18 @@ export default function CssProperties() {
           <PositionRelative />
         </LiveDemo>
       
-        <p>
-          <strong>On your own.</strong>{" "}In <code>Positions.tsx</code>, add another
+        <OnYourOwn>
+          In <code>Positions.tsx</code>, add another
           relatively positioned box that nudges itself with{" "}
           <code>top</code>/<code>left</code>{" "}(or <code>right</code>/<code>bottom</code>)
           so it clearly leaves its normal spot in the flow.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/Positions.tsx and app/labs/lab2/index.css, keep my personal relatively positioned box unchanged. In the relative-position demo, after the sample portrait/landscape/square boxes, add a sample box with id wd-ai-relative using a new class .wd-ai-pos-relative-nudge (position: relative; top: 15px; right: 25px) plus a background and dimension class so the nudge is obvious.`}
+        >
+          Paste this prompt to add a second sample nudge — then confirm the new
+          box leaves its normal spot while neighbors do not reflow:
+        </WithAI>
       </Section>
 
       <Section
@@ -799,12 +843,18 @@ export default function CssProperties() {
           <PositionAbsolute />
         </LiveDemo>
       
-        <p>
-          <strong>On your own.</strong>{" "}Still in <code>Positions.tsx</code>, place
+        <OnYourOwn>
+          Still in <code>Positions.tsx</code>, place
           one more absolutely positioned element inside a{" "}
           <code>position: relative</code>{" "}parent and offset it to a different corner
           than the demo already shows.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/Positions.tsx and app/labs/lab2/index.css, keep my personal absolute-positioned element unchanged. In the absolute-position demo, add a sample box with id wd-ai-absolute using a new class .wd-ai-pos-absolute-br (position: absolute; right: 10px; bottom: 10px) plus a background and dimension class, inside the existing position: relative parent. Offset it to the bottom-right corner the demo does not already show.`}
+        >
+          Paste this prompt to pin a second sample box to another corner — then
+          confirm it sits bottom-right of the relative parent:
+        </WithAI>
       </Section>
 
       <Section
@@ -858,11 +908,17 @@ export default function CssProperties() {
           intends.
         </p>
       
-        <p>
-          <strong>On your own.</strong>{" "}In <code>Positions.tsx</code>, add a small
+        <OnYourOwn>
+          In <code>Positions.tsx</code>, add a small
           fixed-position badge (corner of the viewport) with its own background
           color, then scroll the page to confirm it stays put.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/Positions.tsx and app/labs/lab2/index.css, keep my personal fixed badge unchanged. After the sample wd-pos-fixed square, add a small sample badge with id wd-ai-fixed using a new class .wd-ai-pos-fixed (position: fixed; left: 0; bottom: 0) plus a distinct background and white text saying "AI fixed". Do not replace the existing blue square.`}
+        >
+          Paste this prompt to add a second sample fixed badge — then scroll Lab
+          2 and confirm both badges stay put:
+        </WithAI>
       </Section>
 
       <Section
@@ -918,11 +974,17 @@ export default function CssProperties() {
           <Zindex />
         </LiveDemo>
       
-        <p>
-          <strong>On your own.</strong>{" "}In <code>Zindex.tsx</code>, add a fourth
+        <OnYourOwn>
+          In <code>Zindex.tsx</code>, add a fourth
           overlapping box and assign <code>z-index</code>{" "}values so your new box
           sits above or below the existing stack on purpose.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/Zindex.tsx and app/labs/lab2/index.css, keep my personal fourth overlapping box unchanged. After the sample portrait/landscape/square stack, add a sample box with id wd-ai-zindex using a new class .wd-ai-zindex-top (z-index: 20; position: absolute; top: 80px; left: 80px) plus a background and dimension class so it sits above the existing stack. Do not change my personal z-index values.`}
+        >
+          Paste this prompt to add another overlapping sample — then confirm it
+          stacks above the existing boxes:
+        </WithAI>
       </Section>
 
       <Section
@@ -1000,12 +1062,18 @@ img.wd-float-right {
           <Float />
         </LiveDemo>
       
-        <p>
-          <strong>On your own.</strong>{" "}In <code>Float.tsx</code>, float one more
+        <OnYourOwn>
+          In <code>Float.tsx</code>, float one more
           image (or colored box) the opposite direction from your first float, wrap
           text around it, and end the wrap with a{" "}
           <code>clear: both</code>{" "}element.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/Float.tsx, keep my personal extra float and its clear unchanged. After the sample left/right image floats, add a sample colored box with id wd-ai-float, class wd-float-right plus a background class, a short lorem paragraph wrapping around it, and a wd-float-done clearer after. Not my personal image.`}
+        >
+          Paste this prompt to add a second sample float — then confirm text
+          wraps and the clearer stops the wrap:
+        </WithAI>
       </Section>
 
       <Section
@@ -1074,11 +1142,17 @@ img.wd-float-right {
           <GridLayout />
         </LiveDemo>
       
-        <p>
-          <strong>On your own.</strong>{" "}In <code>GridLayout.tsx</code>, add another{" "}
+        <OnYourOwn>
+          In <code>GridLayout.tsx</code>, add another{" "}
           <code>wd-grid-row</code>{" "}that uses a layout you have not built yet — for
           example a one-third / two-thirds split with your float column classes.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/GridLayout.tsx, keep my personal extra grid row unchanged. After the sample half/half and sidebar/main/sidebar rows, add one more sample wd-grid-row with id wd-ai-grid that uses wd-grid-col-third-page and wd-grid-col-two-thirds-page plus background classes. Do not overwrite my personal row.`}
+        >
+          Paste this prompt to add a 1/3–2/3 sample row — then confirm it sits
+          on its own line below the existing rows:
+        </WithAI>
       </Section>
 
       <Section
@@ -1170,11 +1244,17 @@ img.wd-float-right {
           <FlexWidth />
         </LiveDemo>
       
-        <p>
-          <strong>On your own.</strong>{" "}In <code>Flex.tsx</code>, add a fourth
+        <OnYourOwn>
+          In <code>Flex.tsx</code>, add a fourth
           flex row where one child uses <code>flex-grow</code>{" "}and another has a
           fixed width, then confirm which columns stretch and which stay pinned.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/Flex.tsx, keep my personal fourth flex row unchanged. After the sample rows, add one more sample flex row with id wd-ai-flex: three children, the first with wd-width-75px, the last with wd-flex-grow-1, and background classes so it is obvious which column stretches. Do not overwrite my personal row.`}
+        >
+          Paste this prompt to add another sample grow/pin row — then confirm
+          which column stretches and which stays pinned:
+        </WithAI>
       </Section>
 
       <Section level={3} id="sec-2-1-20" title="2.1.20 Media Queries">
@@ -1301,13 +1381,19 @@ export default function MediaQueriesDemo() {
           <MediaQueriesDemo />
         </LiveDemo>
       
-        <p>
-          <strong>On your own.</strong>{" "}In <code>MediaQueriesDemo.css</code>, add
+        <OnYourOwn>
+          In <code>MediaQueriesDemo.css</code>, add
           one more <code>@media</code>{" "}breakpoint (or change an existing
           background) and update the checklist in{" "}
           <code>MediaQueriesDemo.tsx</code>{" "}so resizing the window still matches
           what the list promises.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/MediaQueriesDemo.css and app/labs/lab2/MediaQueriesDemo.tsx, keep my personal extra breakpoint (or background change) unchanged. Add a sample @media (max-width: 749px) that sets .wd-media-queries-demo to a purple background and white text, plus a matching checklist li with class wd-mq-rule-ai. Highlight that bullet the same way the other range bullets are highlighted. Do not remove existing breakpoints.`}
+        >
+          Paste this prompt to add one extra sample breakpoint — then resize the
+          window and confirm the new bullet matches the color you see:
+        </WithAI>
       </Section>
 
       <Section
@@ -1323,7 +1409,7 @@ export default function MediaQueriesDemo() {
           box model, block vs inline), syntax (hyphens vs camelCase,{" "}
           <code>#</code> vs <code>.</code>, <code>box-sizing</code>,{" "}
           <code>display</code>), button types from Lab 1 (
-          <SectionLink to="1.3.7.7" />), acronyms, snippets, fill-in-the-blank,
+          <SectionLink to="1.3.6.7" />), acronyms, snippets, fill-in-the-blank,
           and short puzzles. It is a self-check, not part of the Canvas grade in{" "}
           <SectionLink to="2.5" />. Misses link back to the subsection you
           should reread; each new attempt draws a different 10.

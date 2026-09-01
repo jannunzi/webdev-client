@@ -1,11 +1,13 @@
 import Section from "../../components/Section";
 import SectionLink from "../../components/SectionLink";
 import LocalUrl from "../../components/LocalUrl";
+import OfficialLink from "../../components/OfficialLink";
 import CodeBlock from "../../components/CodeBlock";
 import LiveDemo from "../../components/LiveDemo";
 import BookFigure from "../../components/BookFigure";
 import FigureLink from "../../components/FigureLink";
 import Lab1Starter from "@/app/labs/lab1/intermediates/1-2-4-Lab1Starter";
+import { OnYourOwn, WithAI } from "../../components/Practice";
 
 export default function IntroAndSetup() {
   return (
@@ -23,137 +25,190 @@ export default function IntroAndSetup() {
       <section className="space-y-4 text-[1.05rem]">
         <p>
           The foundation of our modern digital landscape is the{" "}
-          <strong>Internet</strong>, a global array of interconnected computer
-          networks. It originated in the early 1960s as a research project
-          commissioned by the Advanced Research Projects Agency (
-          <strong>ARPA</strong>), the research arm of the United States
-          Department of Defense. The initial goal was to build{" "}
-          <strong>ARPANET</strong>, a robust, decentralized, and redundant
-          communication infrastructure capable of maintaining connectivity even
-          in the event of major disruptions. By the 1980s, the standardization
-          of protocols like TCP/IP allowed these isolated military and academic
-          networks to proliferate and connect worldwide, establishing the
-          underlying network of networks upon which modern digital communication
-          relies.
+          <OfficialLink href="https://en.wikipedia.org/wiki/Internet">
+            <strong>Internet</strong>
+          </OfficialLink>
+          , a global array of interconnected computer networks. It originated in
+          the early 1960s as a research project commissioned by the Advanced
+          Research Projects Agency (
+          <OfficialLink href="https://www.darpa.mil/">
+            <strong>ARPA</strong>
+          </OfficialLink>
+          ), the research arm of the United States Department of Defense (
+          <OfficialLink href="https://www.defense.gov/">
+            <strong>DoD</strong>
+          </OfficialLink>
+          ). The initial goal was to build{" "}
+          <OfficialLink href="https://en.wikipedia.org/wiki/ARPANET">
+            <strong>ARPANET</strong>
+          </OfficialLink>
+          , a robust, decentralized, and redundant communication infrastructure
+          capable of maintaining connectivity even in the event of major
+          disruptions. By the 1980s, the standardization of protocols like{" "}
+          <OfficialLink href="https://www.ietf.org/">TCP/IP</OfficialLink>{" "}
+          allowed these isolated military and academic networks to proliferate
+          and connect worldwide, establishing the underlying network of networks
+          upon which modern digital communication relies.
         </p>
         <p>
-          The <strong>World Wide Web</strong>{" "}was invented in 1989 by British
-          computer scientist Sir Tim Berners-Lee during his tenure at{" "}
-          <strong>CERN</strong>, the European particle physics laboratory in
-          Switzerland. The objective was to enable the efficient sharing and
-          linking of research documents over the existing Internet. In March
-          1989, Sir Tim Berners-Lee proposed a system of hypertext documents
-          connected via hyperlinks, which users access through Uniform Resource
-          Locators (<strong>URL</strong>s) using the HyperText Transfer Protocol
-          (<strong>HTTP</strong>). By 1990, he had created the first web browser
-          (named <strong>WorldWideWeb</strong>), a <strong>web server</strong>,
-          and the foundational HyperText Markup Language (
-          <strong>HTML</strong>) language to create HTTP{" "}
-          <strong>web pages</strong>. Browsers and servers connect to one
-          another over the internet in a client-server architecture. Sir Tim
-          Berners-Lee made the Web public in 1991, and on April 30, 1993, CERN
-          released the technology into the public domain, facilitating explosive
-          growth. Presently, billions of static and dynamic pages power various
-          systems ranging from simple sites to complex applications.
+          The{" "}
+          <OfficialLink href="https://www.w3.org/">
+            <strong>World Wide Web</strong>
+          </OfficialLink>{" "}
+          was invented in 1989 by British computer scientist{" "}
+          <OfficialLink href="https://www.w3.org/People/Berners-Lee/">
+            Sir Tim Berners-Lee
+          </OfficialLink>{" "}
+          during his tenure at{" "}
+          <OfficialLink href="https://home.cern/">
+            <strong>CERN</strong>
+          </OfficialLink>
+          , the European particle physics laboratory in Switzerland. The
+          objective was to enable the efficient sharing and linking of research
+          documents over the existing Internet. In March 1989, Sir Tim
+          Berners-Lee proposed a system of hypertext documents connected via
+          hyperlinks, which users access through Uniform Resource Locators (
+          <OfficialLink href="https://url.spec.whatwg.org/">
+            <strong>URL</strong>
+          </OfficialLink>
+          s) using the HyperText Transfer Protocol (
+          <OfficialLink href="https://httpwg.org/specs/rfc9110.html">
+            <strong>HTTP</strong>
+          </OfficialLink>
+          ). By 1990, he had created the first web browser (named{" "}
+          <OfficialLink href="https://en.wikipedia.org/wiki/WorldWideWeb">
+            <strong>WorldWideWeb</strong>
+          </OfficialLink>
+          ), a <strong>web server</strong>, and the foundational HyperText Markup
+          Language (
+          <OfficialLink href="https://html.spec.whatwg.org/">
+            <strong>HTML</strong>
+          </OfficialLink>
+          ) language to create HTTP <strong>web pages</strong>. Browsers and
+          servers connect to one another over the internet in a client-server
+          architecture (
+          <FigureLink to="1.1" />
+          ). Sir Tim Berners-Lee made the Web public in 1991, and on April 30,
+          1993, CERN released the technology into the public domain, facilitating
+          explosive growth. Presently, billions of static and dynamic pages power
+          various systems ranging from simple sites to complex applications.
         </p>
 
-        <LiveDemo title="Figure 1.1 — The Client Server Architecture">
-          <div
-            style={{
-              display: "flex",
-              gap: "2rem",
-              alignItems: "center",
-              justifyContent: "center",
-              flexWrap: "wrap",
-              padding: "1rem 0",
-              fontFamily: "system-ui, sans-serif",
-            }}
-          >
-            <div style={{ textAlign: "center" }}>
-              <div
-                style={{
-                  border: "2px solid #333",
-                  borderRadius: "8px",
-                  padding: "1rem 1.5rem",
-                  minWidth: "8rem",
-                }}
-              >
-                <strong>Browser</strong>
-                <div style={{ fontSize: "0.9rem", marginTop: "0.35rem" }}>
-                  Client
-                </div>
-              </div>
-            </div>
-            <div style={{ textAlign: "center", fontSize: "0.9rem" }}>
-              <div>HTTP Request →</div>
-              <div>← HTTP Response</div>
-              <div style={{ marginTop: "0.35rem", color: "#555" }}>URL / HTML</div>
-            </div>
-            <div style={{ textAlign: "center" }}>
-              <div
-                style={{
-                  border: "2px solid #333",
-                  borderRadius: "8px",
-                  padding: "1rem 1.5rem",
-                  minWidth: "8rem",
-                }}
-              >
-                <strong>Web Server</strong>
-                <div style={{ fontSize: "0.9rem", marginTop: "0.35rem" }}>
-                  Hosts documents
-                </div>
-              </div>
-            </div>
-          </div>
-        </LiveDemo>
+        <BookFigure
+          id="fig-1.1"
+          src="/images/book/ch1/figures/fig-1.1-client-server.png"
+          alt="Client-server architecture: a browser UI with HTML, CSS, JavaScript, and React talks HTTP to a Node.js server with Express, REST APIs, session, and Mongoose; the server reads static files, the cloud, and a database"
+          caption="Figure 1.1 — The Client Server Architecture"
+        />
 
         <p>
           Web pages are comprised of plain text documents formatted with{" "}
-          <strong>HTML</strong>, a dialect of <strong>XML</strong>{" "}(
+          <strong>HTML</strong>, a dialect of{" "}
+          <OfficialLink href="https://www.w3.org/XML/">
+            <strong>XML</strong>
+          </OfficialLink>{" "}
+          (
           <strong>eXtensible Markup Language</strong>). HTML is a computer
           language utilized to format the content displayed in web pages,
           including properties such as foreground and background color, white
           spaces, text alignment, font, lists, tables, and forms. Browsers
           establish a network connection with servers to send HTTP Requests for
           HTML documents. These requests rely on Uniform Resource Locators (
-          <strong>URL</strong>s), which specify the server&apos;s IP address or
-          hostname alongside the precise path to the requested document. In local
-          development you will often see a URL such as{" "}
+          <strong>URL</strong>s). A URL such as{" "}
+          <code>http://www.nasa.gov</code>{" "}names the{" "}
+          <strong>protocol</strong>{" "}(
+          <code>http</code> — Hypertext Transfer Protocol), then the{" "}
+          <strong>server</strong>{" "}(
+          <code>www.nasa.gov</code>). That hostname is mapped to an IP
+          address so the browser can find the machine on the network. A{" "}
+          <strong>path</strong>{" "}after the server name pinpoints a specific
+          document. Local development uses the same pattern:{" "}
           <LocalUrl href="/labs/lab1" /> — here{" "}
-          <code>localhost</code>{" "}is the host on your machine and{" "}
+          <code>http</code>{" "}is still the protocol,{" "}
+          <code>localhost</code>{" "}is the hostname for your own machine,{" "}
           <code>3000</code>{" "}is the <strong>port</strong>{" "}where the Next.js
-          dev server listens. Servers
+          dev server listens, and{" "}
+          <code>/labs/lab1</code>{" "}is the path to Lab 1. Servers
           locate the requested documents, and then respond with the
           document&apos;s content. Browsers parse HTML documents to create
-          in-memory object representations known as the <strong>DOM</strong>{" "}(
+          in-memory object representations known as the{" "}
+          <OfficialLink href="https://dom.spec.whatwg.org/">
+            <strong>DOM</strong>
+          </OfficialLink>{" "}
+          (
           <strong>Document Object Model</strong>). The DOM consists of a
           hierarchical data structure where each node is configured to render
           content in a specific format and style. This chapter examines using
           HTML for formatting web pages and creating user interfaces.
         </p>
         <p>
-          <strong>JavaScript</strong>{" "}is a programming language that initially
-          was mostly used to write programs that can execute within browsers and
-          to programmatically manipulate the DOM and control what a browser
-          renders on the screen. JavaScript files are referenced by HTML
-          documents, downloaded from servers, and executed within the browser to
-          implement dynamic user interfaces. Today JavaScript has outgrown beyond
-          the browser and is widely used for implementing general-purpose
-          programs. <strong>TypeScript</strong>{" "}is a version of JavaScript
-          developed by Microsoft, that adds strong typing support and is quickly
-          becoming the preferred programming language for web development. Later
-          chapters discuss programming server-side logic, including API routes
-          and database interactions with <strong>MongoDB</strong>.
+          Plain HTML documents are static: the same document does not change
+          over time, and does not depend on the data or user interactions.
+          The Web quickly reached the limit of what could be render on a screen.
+           — a list of courses that never changes, a heading that
+          never knows who signed in. In the early 1990s, servers began to{" "}
+          <em>compute</em>{" "}HTML on request so the content could be data
+          driven and interact with users. Scripts on the server —{" "}
+          <OfficialLink href="https://datatracker.ietf.org/doc/html/rfc3875">
+            CGI
+          </OfficialLink>
+          , then languages such as{" "}
+          <OfficialLink href="https://www.php.net/">
+            <strong>PHP</strong>
+          </OfficialLink>{" "}
+          — could assemble a finished document and send it to the browser. Every
+          click still meant a full round trip for a new page.{" "}
+          <OfficialLink href="https://tc39.es/ecma262/">
+            <strong>JavaScript</strong>
+          </OfficialLink>
+          , created by Brendan Eich at{" "}
+          <OfficialLink href="https://en.wikipedia.org/wiki/Netscape">
+            Netscape
+          </OfficialLink>{" "}
+          in 1995, brought that computation into the browser. HTML documents
+          download <code>.js</code>{" "}files from the server; the browser
+          runs them to manipulate the DOM and build dynamic user interfaces
+          without a full round trip for every change. The same language now
+          also runs on the server — in{" "}
+          <FigureLink to="1.1" />, the client box is HTML, CSS, JavaScript,
+          and React; the Node.js box is JavaScript too. This course uses
+          both: later chapters generate HTML on the server and still use
+          the browser for clicks, state, and anything that reads the
+          address bar.{" "}
+          <OfficialLink href="https://www.typescriptlang.org/">
+            <strong>TypeScript</strong>
+          </OfficialLink>{" "}
+          is a version of JavaScript developed by Microsoft that adds static
+          types and is quickly becoming the preferred language for web
+          development. Later chapters discuss programming server-side logic,
+          including{" "}
+          <OfficialLink href="https://en.wikipedia.org/wiki/API">
+            <strong>API</strong>
+          </OfficialLink>{" "}
+          (Application Programming Interface) routes and database interactions
+          with{" "}
+          <OfficialLink href="https://www.mongodb.com/">
+            <strong>MongoDB</strong>
+          </OfficialLink>
+          .
         </p>
         <p>
-          <strong>React</strong>{" "}is a popular JavaScript library developed by
+          <OfficialLink href="https://react.dev/">
+            <strong>React</strong>
+          </OfficialLink>{" "}
+          is a popular JavaScript library developed by
           Meta for building dynamic and interactive user interfaces. It promotes
           a component-based architecture where developers break down complex UIs
           into small and reusable pieces of code called{" "}
           <strong>components</strong>. React efficiently manages the state of
           these components, ensuring that the user interface stays in sync with
-          underlying data changes.           Developers use React to build Single Page
-          Applications (<strong>SPA</strong>s), which provide a seamless, fluid
+          underlying data changes and user interaction. Developers use React to
+          build Single Page
+          Applications (
+          <OfficialLink href="https://en.wikipedia.org/wiki/Single-page_application">
+            <strong>SPA</strong>
+          </OfficialLink>
+          s), which provide a seamless, fluid
           user experience by updating only the necessary parts of the page
           without requiring full-page reloads — unlike traditional multi-page
           sites, where every link often fetches an entirely new HTML document
@@ -162,11 +217,21 @@ export default function IntroAndSetup() {
           UI should look like for a given state.
         </p>
         <p>
-          <strong>Next.js</strong>{" "}is a powerful framework designed to simplify
+          <OfficialLink href="https://nextjs.org/">
+            <strong>Next.js</strong>
+          </OfficialLink>{" "}
+          is a powerful framework designed to simplify
           the construction of full-stack web applications. Built on top of React,
           it provides an all-in-one solution that includes robust features such
-          as server-side rendering (<strong>SSR</strong>), static site generation
-          (<strong>SSG</strong>), and seamless API endpoint integration. Next.js
+          as server-side rendering (
+          <OfficialLink href="https://en.wikipedia.org/wiki/Server-side_rendering">
+            <strong>SSR</strong>
+          </OfficialLink>
+          ), static site generation (
+          <OfficialLink href="https://en.wikipedia.org/wiki/Static_site_generator">
+            <strong>SSG</strong>
+          </OfficialLink>
+          ), and seamless API endpoint integration. Next.js
           extends React by offering built-in routing, data fetching, and
           performance optimizations, allowing developers to create highly
           scalable applications that interact efficiently with backend resources,
@@ -175,9 +240,14 @@ export default function IntroAndSetup() {
         <p>
           This chapter describes how to install and configure a local development
           environment for building Next.js applications. Development is done in
-          the local environment and then shared in a remote GitHub source
-          repository. The source in GitHub is then deployed to a remote server
-          hosted on Vercel which is optimized for Next.js and provides seamless
+          the local environment and then shared in a remote{" "}
+          <OfficialLink href="https://github.com/">
+            GitHub
+          </OfficialLink>{" "}
+          source repository. The source in GitHub is then deployed to a remote
+          server hosted on{" "}
+          <OfficialLink href="https://vercel.com/">Vercel</OfficialLink>{" "}
+          which is optimized for Next.js and provides seamless
           serverless deployment. This chapter introduces creating a Next.js
           application and explores building user interfaces using HTML and
           JavaScript. Various HTML elements are described to render user
@@ -191,7 +261,11 @@ export default function IntroAndSetup() {
         <p>
           The <strong>Kambaz</strong>{" "}sections in each chapter contain exercises
           that ask readers to build a fully functional web application inspired
-          by a popular Learning Management System (<strong>LMS</strong>) with a
+          by a popular Learning Management System (
+          <OfficialLink href="https://en.wikipedia.org/wiki/Learning_management_system">
+            <strong>LMS</strong>
+          </OfficialLink>
+          ) with a
           similar name. The exercises provide sample code and requirements but
           deliberately leave out steps where the reader is expected to experiment
           and discover how to implement the requirements using the skills learned
@@ -200,7 +274,11 @@ export default function IntroAndSetup() {
           Kambaz screens, which at first won&apos;t look like the target
           product in <FigureLink to="1a" />–<FigureLink to="1d">1d</FigureLink>.
           Later chapters will continue working on the Kambaz
-          application, introducing Cascading Style Sheets (<strong>CSS</strong>)
+          application, introducing Cascading Style Sheets (
+          <OfficialLink href="https://www.w3.org/Style/CSS/">
+            <strong>CSS</strong>
+          </OfficialLink>
+          )
           to style the Web pages so they look more like these screen shots,
           and integrating MongoDB for data persistence.
         </p>
@@ -239,8 +317,15 @@ export default function IntroAndSetup() {
         <ul>
           <li>Understand the fundamentals of HTML and how it structures web content.</li>
           <li>Set up a development environment for Next.js applications.</li>
+          <li>Install Claude Code in the IDE and sign in with a Claude account.</li>
           <li>Create and organize Next.js components using JSX.</li>
-          <li>Use Chrome DevTools to inspect and manipulate the DOM.</li>
+          <li>
+            Use{" "}
+            <OfficialLink href="https://developer.chrome.com/docs/devtools">
+              Chrome DevTools
+            </OfficialLink>{" "}
+            to inspect and manipulate the DOM.
+          </li>
           <li>Implement headings, paragraphs, lists, tables, and images.</li>
           <li>Build interactive web forms with different input types.</li>
           <li>
@@ -250,20 +335,33 @@ export default function IntroAndSetup() {
           <li>Implement navigation in a Next.js SPA using built-in routing.</li>
           <li>Develop a structured approach to building UIs in Next.js.</li>
         </ul>
+        <p>
+          Those objectives are best achieved by building along with the
+          narration — each lab component and Kambaz screen as it appears —
+          rather than reading first and coding later. Glance at the Lab 1
+          checklist in <SectionLink to="1.3.12" />{" "}and the Kambaz checklist
+          in <SectionLink to="1.4.9" />{" "}so the expected coverage is visible
+          from the start. Those lists are recaps, not a reason to skip ahead:
+          work through each section, then use them to confirm what stuck.
+        </p>
       </Section>
 
       <Section id="sec-1-2" title="1.2 Setting Up the Development Environment">
         <p>
           HTML practice in this book happens inside Next.js components, so first
-          install the tools that run the app on your machine. Complete the
-          exercises in order — later ones assume earlier ones.
+          install the tools that run the app on your machine. Later sections
+          assume earlier ones, so it helps to keep the project in step as you
+          read.
         </p>
 
         <h3 id="sec-1-2-1" className="scroll-mt-6 font-sans text-xl font-semibold">
           1.2.1 Installing Node.js
         </h3>
         <p>
-          <strong>Node.js</strong>{" "}is a JavaScript runtime that lets you run
+          <OfficialLink href="https://nodejs.org/">
+            <strong>Node.js</strong>
+          </OfficialLink>{" "}
+          is a JavaScript runtime that lets you run
           JavaScript outside the browser — typically from a terminal or console
           on your computer. It is essential for Next.js development: it powers
           the local development server, installs and manages project
@@ -272,21 +370,41 @@ export default function IntroAndSetup() {
         </p>
         <p>
           Installing Node.js also gives you two companion tools,{" "}
-          <strong>npm</strong>{" "}(Node Package Manager) and <strong>npx</strong>.
-          Think of them as the JavaScript ecosystem&apos;s equivalent of build
-          and package tools you may already know: <strong>mvn</strong>{" "}for Java
-          (Maven) or <strong>pip</strong>{" "}for Python. With{" "}
+          <OfficialLink href="https://www.npmjs.com/">
+            <strong>npm</strong>
+          </OfficialLink>{" "}
+          (Node Package Manager) and{" "}
+          <OfficialLink href="https://docs.npmjs.com/cli/v11/commands/npx">
+            <strong>npx</strong>
+          </OfficialLink>
+          . Think of them as the JavaScript ecosystem&apos;s equivalent of build
+          and package tools you may already know:{" "}
+          <OfficialLink href="https://maven.apache.org/">
+            <strong>mvn</strong>
+          </OfficialLink>{" "}
+          for Java (
+          <OfficialLink href="https://maven.apache.org/">Maven</OfficialLink>
+          ) or{" "}
+          <OfficialLink href="https://pip.pypa.io/">
+            <strong>pip</strong>
+          </OfficialLink>{" "}
+          for Python. With{" "}
           <code>npm</code>{" "}you install libraries, run project scripts (for
           example <code>npm run dev</code>), and manage versions listed in{" "}
           <code>package.json</code>. With <code>npx</code>{" "}you can run a
           one-off package command without installing it globally first — which
           is how we will scaffold the app with{" "}
-          <code>npx create-next-app</code>{" "}in the next subsection.
+          <code>npx create-next-app</code>{" "}in <SectionLink to="1.2.4" />.
         </p>
         <p>
           In this chapter we use Node.js mainly to create and host the React
           user interface. Later chapters will use the same runtime to implement
-          HTTP servers and RESTful Web APIs, and to integrate databases such as
+          HTTP servers and{" "}
+          <OfficialLink href="https://en.wikipedia.org/wiki/REST">
+            <strong>REST</strong>
+          </OfficialLink>{" "}
+          APIs (Representational State Transfer), and to integrate databases
+          such as
           MongoDB. Getting a solid Node.js install now sets you up for both the
           front end and the back end of the stack.
         </p>
@@ -295,29 +413,43 @@ export default function IntroAndSetup() {
           <a href="https://nodejs.org/" target="_blank" rel="noreferrer">
             https://nodejs.org/
           </a>
-          , download the latest <strong>LTS</strong>{" "}(Long Term Support) version
-          for your operating system (recommended: version 22.x or later as of
-          2025), and install it. Restart your computer if prompted. Confirm the
+          , download the latest{" "}
+          <OfficialLink href="https://nodejs.org/en/about/previous-releases">
+            <strong>LTS</strong>
+          </OfficialLink>{" "}
+          (Long Term Support) version
+          for your operating system (recommended: version 24.x or later as of
+          2026), and install it. Restart your computer if prompted. Confirm the
           install by typing <code>node -v</code>{" "}in a console or terminal. The
           output should show the installed version (for example{" "}
-          <code>v22.4.0</code>). Your exact version may differ, but it should be
-          at least <strong>18.18</strong>{" "}or later, as required by Next.js.
+          <code>v24.19.0</code>). Your exact version may differ, but it should be
+          at least <strong>20.9</strong>{" "}or later, as required by Next.js.
         </p>
         <CodeBlock language="shell">{`node -v
-v22.4.0`}</CodeBlock>
+v24.19.0`}</CodeBlock>
 
         <h3 id="sec-1-2-2" className="scroll-mt-6 font-sans text-xl font-semibold">
           1.2.2 Installing an Integrated Development Environment (IDE)
         </h3>
         <p>
           You can edit Next.js projects in any text editor, but an{" "}
-          <strong>Integrated Development Environment (IDE)</strong>{" "}makes the
-          work much smoother: syntax highlighting, autocomplete, inline errors,
-          debugging, and a built-in terminal in one place. For this course,{" "}
-          <strong>Visual Studio Code</strong>{" "}(<strong>VS Code</strong>) is
-          highly recommended because of its strong support for JavaScript,
+          <OfficialLink href="https://en.wikipedia.org/wiki/Integrated_development_environment">
+            <strong>Integrated Development Environment (IDE)</strong>
+          </OfficialLink>{" "}
+          makes the work much smoother: syntax highlighting, autocomplete, inline
+          errors, debugging, and a built-in terminal in one place. For this
+          course,{" "}
+          <OfficialLink href="https://code.visualstudio.com">
+            <strong>Visual Studio Code</strong>
+          </OfficialLink>{" "}
+          (<strong>VS Code</strong>) or{" "}
+          <OfficialLink href="https://cursor.com">
+            <strong>Cursor</strong>
+          </OfficialLink>{" "}
+          is highly recommended. Both have strong support for JavaScript,
           TypeScript, React, and Next.js — including IntelliSense suggestions
-          and debugging integrations.
+          and debugging integrations. Cursor is built on VS Code, so the menus
+          and extensions match the screenshots in this book.
         </p>
         <p>
           Download and install VS Code from{" "}
@@ -327,31 +459,105 @@ v22.4.0`}</CodeBlock>
             rel="noreferrer"
           >
             https://code.visualstudio.com
+          </a>{" "}
+          or Cursor from{" "}
+          <a href="https://cursor.com" target="_blank" rel="noreferrer">
+            https://cursor.com
           </a>
-          . (Cursor and similar editors built on VS Code work well too, if you
-          already prefer them.) Once installed, open the Extensions view and add
-          a few useful packages: <strong>ESLint</strong>{" "}for catching common
-          code problems, <strong>Prettier</strong>{" "}for consistent formatting, and
-          browser <strong>React Developer Tools</strong>{" "}for inspecting
-          component trees while you run the app.
+          . Once installed, open the Extensions view and add a few
+          useful packages:{" "}
+          <OfficialLink href="https://eslint.org/">
+            <strong>ESLint</strong>
+          </OfficialLink>{" "}
+          for catching common code problems,{" "}
+          <OfficialLink href="https://prettier.io/">
+            <strong>Prettier</strong>
+          </OfficialLink>{" "}
+          for consistent formatting, and browser{" "}
+          <OfficialLink href="https://react.dev/learn/react-developer-tools">
+            <strong>React Developer Tools</strong>
+          </OfficialLink>{" "}
+          for inspecting component trees while you run the app.
         </p>
         <p>
           You will run many commands — <code>npm run dev</code>,{" "}
-          <code>git</code>, and others — from a terminal. Prefer the integrated
-          terminal inside the IDE (in VS Code:{" "}
+          <OfficialLink href="https://git-scm.com/">
+            <code>git</code>
+          </OfficialLink>
+          , and others — from a terminal. Prefer the integrated
+          terminal inside the IDE (in VS Code or Cursor:{" "}
           <strong>Terminal → New Terminal</strong>) so you stay in the same
           window as your files and do not have to switch back and forth to a
           separate console.
         </p>
 
         <h3 id="sec-1-2-3" className="scroll-mt-6 font-sans text-xl font-semibold">
-          1.2.3 Creating a Next.js Application
+          1.2.3 Adding Claude to the IDE
         </h3>
         <p>
-          React has become one of the most popular JavaScript libraries for
-          building Web user interfaces. In this course we build on React using
-          Next.js. With <code>npx</code> — the tool that shipped with your
-          Node.js install — you can scaffold a new project from a maintained
+          <OfficialLink href="https://claude.ai">
+            <strong>Claude</strong>
+          </OfficialLink>{" "}
+          is an AI assistant from{" "}
+          <OfficialLink href="https://www.anthropic.com/">
+            Anthropic
+          </OfficialLink>
+          . In this course you can use it inside the editor to explain code,
+          draft a first version, and hunt down errors — still read what it
+          writes, and keep the book and labs as the source of truth. If your
+          school, employer, or a personal Claude plan already includes access,
+          sign in with that account. Otherwise start at{" "}
+          <OfficialLink href="https://claude.ai">claude.ai</OfficialLink>.{" "}
+          <OfficialLink href="https://code.claude.com/docs/en/vs-code">
+            Claude Code
+          </OfficialLink>{" "}
+          — the editor extension we install next — expects a Claude
+          subscription (Pro, Max, Team, or Enterprise) or a Claude Console
+          account, not a one-off API key for this setup.
+        </p>
+        <p>
+          Open the Extensions view (
+          <strong>Cmd+Shift+X</strong>{" "}on macOS,{" "}
+          <strong>Ctrl+Shift+X</strong>{" "}on Windows or Linux), search for{" "}
+          <strong>Claude Code</strong>, and install the one published by
+          Anthropic. The same extension works in VS Code and in Cursor. Direct
+          install links are in the{" "}
+          <OfficialLink href="https://code.claude.com/docs/en/vs-code">
+            Claude Code for VS Code
+          </OfficialLink>{" "}
+          docs. If the spark icon does not appear, reload the window from the
+          Command Palette: <strong>Developer: Reload Window</strong>.
+        </p>
+        <p>
+          Open Claude from the Command Palette (
+          <strong>Cmd+Shift+P</strong>{" "}/{" "}
+          <strong>Ctrl+Shift+P</strong>), type{" "}
+          <code>Claude Code</code>, and choose{" "}
+          <strong>Open in New Tab</strong>. The first time, click{" "}
+          <strong>Sign in</strong>{" "}and finish authorization in the browser. In
+          Cursor, Claude Code is separate from Cursor&apos;s built-in chat —
+          install and sign in even if Cursor AI already works.
+        </p>
+        <OnYourOwn>
+          Install Claude Code, sign in, and confirm the spark icon opens a chat
+          tab. This is the assistant you will paste <strong>With AI</strong>{" "}
+          prompts into for the rest of the book.
+        </OnYourOwn>
+        <WithAI
+          prompt={`What did node -v print in this project? Look at the terminal output or package engines if needed, and quote the exact version string.`}
+        >
+          Amber blocks are work you invent by hand. Violet blocks include a
+          prompt you can copy into Claude Code (or another assistant). Read the
+          result before you keep it. Start with this check — the reply should
+          match what you printed in <SectionLink to="1.2.1" />:
+        </WithAI>
+
+        <h3 id="sec-1-2-4" className="scroll-mt-6 font-sans text-xl font-semibold">
+          1.2.4 Creating a Next.js Application
+        </h3>
+        <p>
+          With <code>npx</code> — the tool that shipped with your Node.js
+          install — you can scaffold a new Next.js project from a maintained
           template that already follows current best practices.
         </p>
         <p>
@@ -387,8 +593,15 @@ Ok to proceed? (y)`}</CodeBlock>
         <p>
           When prompted for a project name, enter{" "}
           <code>kambaz-next-js</code>. For the remaining prompts — TypeScript,
-          ESLint, Tailwind CSS, <code>src/</code>{" "}directory, App Router,
-          Turbopack, and the <code>@/*</code>{" "}import alias — choose the defaults
+          ESLint,{" "}
+          <OfficialLink href="https://tailwindcss.com/">
+            Tailwind CSS
+          </OfficialLink>
+          , <code>src/</code>{" "}directory, App Router,{" "}
+          <OfficialLink href="https://nextjs.org/docs/app/api-reference/turbopack">
+            Turbopack
+          </OfficialLink>
+          , and the <code>@/*</code>{" "}import alias — choose the defaults
           (typically Yes for TypeScript, ESLint, Tailwind, App Router, and
           Turbopack; No for a <code>src/</code>{" "}directory and for customizing
           the alias). Exact wording can vary slightly by{" "}
@@ -415,7 +628,11 @@ npm run dev`}</CodeBlock>
           The console should report that Next.js is ready and print a local URL,
           usually{" "}
           <LocalUrl href="/" />
-          . Open that URL in <strong>Google Chrome</strong>{" "}and confirm the
+          . Open that URL in{" "}
+          <OfficialLink href="https://www.google.com/chrome/">
+            <strong>Google Chrome</strong>
+          </OfficialLink>{" "}
+          and confirm the
           default Next.js starter page (logo and getting-started content)
           appears. Stop the server anytime with <strong>Ctrl+C</strong>.
         </p>
@@ -446,25 +663,28 @@ npm run dev`}</CodeBlock>
           <code>kambaz-next-js</code>{" "}folder in VS Code (or Cursor), show the
           terminal with <strong>View → Terminal</strong>{" "}if needed, and run the
           command there. Other browsers and editors are fine, but this course
-          assumes <strong>Google Chrome</strong>{" "}and <strong>VS Code</strong>{" "}
+          assumes <strong>Google Chrome</strong>{" "}and{" "}
+          <strong>VS Code</strong>{" "}or <strong>Cursor</strong>{" "}
           unless noted otherwise.
         </p>
 
-        <h3 id="sec-1-2-4" className="scroll-mt-6 font-sans text-xl font-semibold">
-          1.2.4 Creating Pages and Routes with the App Router
+        <h3 id="sec-1-2-5" className="scroll-mt-6 font-sans text-xl font-semibold">
+          1.2.5 Creating Pages and Routes with the App Router
         </h3>
         <p>
-          React is a JavaScript library for building dynamic web user interfaces
-          (UI). In Next.js, which is built on React, those interfaces are written
-          as JavaScript functions (or classes) called <strong>components</strong>.
-          A component computes and returns the UI. The syntax that mixes
-          JavaScript with HTML-like tags is called <strong>JSX</strong>{" "}
-          (JavaScript XML). JSX deliberately blurs the line between JavaScript
-          and HTML so you can <strong>compute</strong>{" "}dynamic HTML content —
-          for example choosing tags, text, or structure based on data — instead
-          of maintaining a static page file by hand. Files that use JSX typically
-          end in <code>.jsx</code>. Chapter 3 covers JavaScript in more depth;
-          for now, focus on the HTML-like markup inside each component.
+          Next.js user interfaces are written as JavaScript functions (or
+          classes) called <strong>components</strong>. A component{" "}
+          <em>computes</em>{" "}HTML: it can choose markup, text, or structure
+          from data instead of returning the same static document every time.
+          To make that easier to write, the syntax blurs the line between
+          JavaScript and HTML — you put HTML-like markup right in the function.
+          That mix is called{" "}
+          <OfficialLink href="https://react.dev/learn/writing-markup-with-jsx">
+            <strong>JSX</strong>
+          </OfficialLink>{" "}
+          (JavaScript XML). Files that use JSX typically end in{" "}
+          <code>.jsx</code>. Chapter 3 covers JavaScript in more depth; for now,
+          focus on the HTML-like markup inside each component.
         </p>
         <p>
           <strong>TypeScript</strong>{" "}is a superset of JavaScript that adds
@@ -487,7 +707,11 @@ npm run dev`}</CodeBlock>
           <code>app/</code>{" "}defines the routes.
         </p>
         <p>
-          That folder-based system is the <strong>App Router</strong> — Next.js
+          That folder-based system is the{" "}
+          <OfficialLink href="https://nextjs.org/docs/app">
+            <strong>App Router</strong>
+          </OfficialLink>{" "}
+          — Next.js
           &apos;s current routing model (you chose it when you answered
           &quot;Would you like to use App Router?&quot; during{" "}
           <code>create-next-app</code>). An older Next.js style put routes under
@@ -496,11 +720,10 @@ npm run dev`}</CodeBlock>
           <code>pages/</code>.
         </p>
         <p>
-          Inside <code>app/</code>, a few filenames are{" "}
-          <strong>reserved</strong>. The most important for now is{" "}
-          <code>page.tsx</code>. When a folder contains <code>page.tsx</code>,
-          Next.js exposes that folder as a public route. Nested folders become
-          nested path segments:
+          Inside <code>app/</code>, the filename{" "}
+          <code>page.tsx</code>{" "}is reserved. When a folder contains{" "}
+          <code>page.tsx</code>, Next.js exposes that folder as a public route.
+          Nested folders become nested path segments:
         </p>
         <ul>
           <li>
@@ -513,17 +736,6 @@ npm run dev`}</CodeBlock>
             <code>app/labs/lab1/page.tsx</code>{" "}→ <code>/labs/lab1</code>
           </li>
         </ul>
-        <p>
-          Another reserved file is <code>layout.tsx</code>: it does not create
-          its own URL by itself. It wraps the <code>page.tsx</code>{" "}(and nested
-          layouts) in the same folder tree with shared chrome such as
-          navigation. You will use layouts for Labs in <SectionLink to="1.3.12" />{" "}and for Kambaz in
-          <SectionLink to="1.4" />. Ordinary component files — for example{" "}
-          <code>HeadingTags.tsx</code>{" "}later in Lab 1 — are{" "}
-          <em>not</em>{" "}routes. Only the special filenames create URLs; other{" "}
-          <code>.tsx</code>{" "}files are imported into pages (or layouts) when
-          you need them.
-        </p>
         <p>
           In the IDE Explorer, open the <code>app</code>{" "}directory and create
           Lab 1 at <code>app/labs/lab1/page.tsx</code>{" "}with the following
@@ -554,15 +766,17 @@ npm run dev`}</CodeBlock>
           As you add HTML examples in the next sections, keep{" "}
           <code>page.tsx</code>{" "}as a thin page that imports smaller components
           (one file per exercise) instead of pasting everything into this one
-          file. Those exercise files are components, not new routes — Lab 1
-          stays a single URL while its content grows.
+          file. Those exercise files — for example{" "}
+          <code>HeadingTags.tsx</code>{" "}later in Lab 1 — are components, not
+          new routes. Only <code>page.tsx</code>{" "}creates a URL; other{" "}
+          <code>.tsx</code>{" "}files are imported into the page when you need
+          them. Lab 1 stays a single URL while its content grows.
         </p>
         <p>
           The starter project also loads Tailwind CSS through{" "}
           <code>app/globals.css</code>. For the HTML exercises in this chapter we
           want the browser&apos;s default styling, so comment out that import in{" "}
-          <code>app/layout.tsx</code>{" "}(the root layout that already wraps every
-          route) and leave the rest of the file alone:
+          <code>app/layout.tsx</code>{" "}and leave the rest of the file alone:
         </p>
         <CodeBlock language="tsx" name="RootLayout" file="app/layout.tsx">{`import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";

@@ -32,10 +32,11 @@ export const CH1_TOC: TocEntry[] = [
         id: "sec-1-2-2",
         label: "1.2.2 Installing an Integrated Development Environment (IDE)",
       },
-      { id: "sec-1-2-3", label: "1.2.3 Creating a Next.js Application" },
+      { id: "sec-1-2-3", label: "1.2.3 Adding Claude to the IDE" },
+      { id: "sec-1-2-4", label: "1.2.4 Creating a Next.js Application" },
       {
-        id: "sec-1-2-4",
-        label: "1.2.4 Creating Pages and Routes with the App Router",
+        id: "sec-1-2-5",
+        label: "1.2.5 Creating Pages and Routes with the App Router",
       },
     ],
   },
@@ -53,46 +54,42 @@ export const CH1_TOC: TocEntry[] = [
       },
       {
         id: "sec-1-3-3",
-        label: "1.3.3 Listing Content with the HTML Ordered List Tag",
+        label: "1.3.3 Listing Content with HTML List Tags",
       },
       {
         id: "sec-1-3-4",
-        label:
-          "1.3.4 Listing Content In No Particular Order with the HTML Unordered List Tag",
+        label: "1.3.4 Tabulating Data with the HTML Table Tags",
       },
+      { id: "sec-1-3-5", label: "1.3.5 Image Tag" },
       {
-        id: "sec-1-3-5",
-        label: "1.3.5 Tabulating Data with the HTML Table Tags",
-      },
-      { id: "sec-1-3-6", label: "1.3.6 Image Tag" },
-      {
-        id: "sec-1-3-7",
-        label: "1.3.7 Creating Web Forms",
+        id: "sec-1-3-6",
+        label: "1.3.6 Creating Web Forms",
         children: [
-          { id: "sec-1-3-7-1", label: "1.3.7.1 Text Fields" },
-          { id: "sec-1-3-7-2", label: "1.3.7.2 Textarea" },
-          { id: "sec-1-3-7-3", label: "1.3.7.3 Radio Buttons" },
-          { id: "sec-1-3-7-4", label: "1.3.7.4 Checkboxes" },
-          { id: "sec-1-3-7-5", label: "1.3.7.5 Dropdowns" },
-          { id: "sec-1-3-7-6", label: "1.3.7.6 Other Field Types" },
-          { id: "sec-1-3-7-7", label: "1.3.7.7 Buttons" },
+          { id: "sec-1-3-6-1", label: "1.3.6.1 Text Fields" },
+          { id: "sec-1-3-6-2", label: "1.3.6.2 Textarea" },
+          { id: "sec-1-3-6-3", label: "1.3.6.3 Radio Buttons" },
+          { id: "sec-1-3-6-4", label: "1.3.6.4 Checkboxes" },
+          { id: "sec-1-3-6-5", label: "1.3.6.5 Dropdowns" },
+          { id: "sec-1-3-6-6", label: "1.3.6.6 Other Field Types" },
+          { id: "sec-1-3-6-7", label: "1.3.6.7 Buttons" },
         ],
       },
       {
+        id: "sec-1-3-7",
+        label: "1.3.7 Parameterizing Components with Props",
+      },
+      {
         id: "sec-1-3-8",
-        label: "1.3.8 Parameterizing Components with Props",
+        label: "1.3.8 Wrapping Content with Children",
       },
       {
         id: "sec-1-3-9",
-        label: "1.3.9 Wrapping Content with Children",
+        label: "1.3.9 Implementing Navigation with the Anchor Tag",
       },
-      {
-        id: "sec-1-3-10",
-        label: "1.3.10 Implementing Navigation with the Anchor Tag",
-      },
-      { id: "sec-1-3-11", label: "1.3.11 Implementing Navigation" },
-      { id: "sec-1-3-12", label: "1.3.12 Implementing Layouts" },
-      { id: "sec-1-3-13", label: "1.3.13 Exercises" },
+      { id: "sec-1-3-10", label: "1.3.10 Implementing Navigation" },
+      { id: "sec-1-3-11", label: "1.3.11 Implementing Layouts" },
+      { id: "sec-1-3-12", label: "1.3.12 Exercises" },
+      { id: "sec-1-3-13", label: "1.3.13 Check Your Understanding" },
     ],
   },
   {
@@ -102,9 +99,6 @@ export const CH1_TOC: TocEntry[] = [
       {
         id: "sec-1-4-1",
         label: "1.4.1 Implementing the Kambaz Landing Page",
-        children: [
-          { id: "sec-1-4-1-1", label: "1.4.1.1 Exercises" },
-        ],
       },
       {
         id: "sec-1-4-2",
@@ -114,7 +108,6 @@ export const CH1_TOC: TocEntry[] = [
           { id: "sec-1-4-2-2", label: "1.4.2.2 The Sign Up Screen" },
           { id: "sec-1-4-2-3", label: "1.4.2.3 The Profile Screen" },
           { id: "sec-1-4-2-4", label: "1.4.2.4 Account Navigation" },
-          { id: "sec-1-4-2-5", label: "1.4.2.5 Exercises" },
         ],
       },
       {
@@ -123,7 +116,6 @@ export const CH1_TOC: TocEntry[] = [
         children: [
           { id: "sec-1-4-3-1", label: "1.4.3.1 Kambaz Navigation Sidebar" },
           { id: "sec-1-4-3-2", label: "1.4.3.2 Handling Missing Pages" },
-          { id: "sec-1-4-3-3", label: "1.4.3.3 Exercises" },
         ],
       },
       {
@@ -149,6 +141,7 @@ export const CH1_TOC: TocEntry[] = [
         id: "sec-1-4-8",
         label: "1.4.8 Assignment Editor Screen (On Your Own)",
       },
+      { id: "sec-1-4-9", label: "1.4.9 Exercises" },
     ],
   },
   { id: "sec-1-5", label: "1.5 Committing Code to Source Control" },
@@ -196,6 +189,7 @@ export const CH2_TOC: TocEntry[] = [
       { id: "sec-2-3-4", label: "2.3.4 Responsive Design" },
       { id: "sec-2-3-5", label: "2.3.5 Filters" },
       { id: "sec-2-3-6", label: "2.3.6 CSS Grid Layout" },
+      { id: "sec-2-3-7", label: "2.3.7 Exercises" },
     ],
   },
   {
@@ -211,6 +205,7 @@ export const CH2_TOC: TocEntry[] = [
       { id: "sec-2-4-7", label: "2.4.7 Assignments Screen" },
       { id: "sec-2-4-8", label: "2.4.8 Assignment Editor (On Your Own)" },
       { id: "sec-2-4-9", label: "2.4.9 Account Screens (On Your Own)" },
+      { id: "sec-2-4-10", label: "2.4.10 Exercises" },
     ],
   },
   { id: "sec-2-5", label: "2.5 Delivery" },
@@ -230,7 +225,6 @@ export const CH3_TOC: TocEntry[] = [
       { id: "sec-3-2-5", label: "3.2.5 Ternary Operator" },
       { id: "sec-3-2-6", label: "3.2.6 Generating Conditional Output" },
       { id: "sec-3-2-7", label: "3.2.7 Null vs Undefined" },
-      { id: "sec-3-2-8", label: "3.2.8 Exercises" },
     ],
   },
   {
@@ -240,7 +234,6 @@ export const CH3_TOC: TocEntry[] = [
       { id: "sec-3-3-1", label: "3.3.1 Arrow Functions" },
       { id: "sec-3-3-2", label: "3.3.2 Implied Return" },
       { id: "sec-3-3-3", label: "3.3.3 Template Literals" },
-      { id: "sec-3-3-4", label: "3.3.4 Exercises" },
     ],
   },
   {
@@ -267,7 +260,6 @@ export const CH3_TOC: TocEntry[] = [
         id: "sec-3-4-17",
         label: "3.4.17 Optional chaining and nullish coalescing",
       },
-      { id: "sec-3-4-18", label: "3.4.18 Exercises" },
     ],
   },
   {
@@ -276,7 +268,6 @@ export const CH3_TOC: TocEntry[] = [
     children: [
       { id: "sec-3-5-1", label: "3.5.1 Working with HTML Classes" },
       { id: "sec-3-5-2", label: "3.5.2 Working with the Style Attribute" },
-      { id: "sec-3-5-3", label: "3.5.3 Exercises" },
     ],
   },
   {
@@ -285,7 +276,6 @@ export const CH3_TOC: TocEntry[] = [
     children: [
       { id: "sec-3-6-1", label: "3.6.1 Client Components" },
       { id: "sec-3-6-2", label: "3.6.2 Server Components" },
-      { id: "sec-3-6-3", label: "3.6.3 Exercises" },
     ],
   },
   {
@@ -323,9 +313,95 @@ export const CH3_TOC: TocEntry[] = [
         label: "3.9.8.1 Assignment Editor (On Your Own)",
       },
       { id: "sec-3-9-9", label: "3.9.9 Data Driven People Screen" },
+      { id: "sec-3-9-10", label: "3.9.10 Exercises" },
     ],
   },
   { id: "sec-3-10", label: "3.10 Delivery" },
+];
+
+export const CH4_TOC: TocEntry[] = [
+  { id: "intro", label: "Introduction" },
+  { id: "sec-4-1", label: "4.1 Learning Objectives" },
+  {
+    id: "sec-4-2",
+    label: "4.2 Managing State and User Input",
+    children: [
+      { id: "sec-4-2-1", label: "4.2.1 Handling User Events" },
+      { id: "sec-4-2-2", label: "4.2.2 Passing Data on Events" },
+      { id: "sec-4-2-3", label: "4.2.3 Passing Functions" },
+      { id: "sec-4-2-4", label: "4.2.4 useState and the Counter" },
+      { id: "sec-4-2-5", label: "4.2.5 Boolean State Variables" },
+      { id: "sec-4-2-6", label: "4.2.6 String State Variables" },
+      { id: "sec-4-2-7", label: "4.2.7 Date State Variables" },
+      { id: "sec-4-2-8", label: "4.2.8 Object State Variables" },
+      { id: "sec-4-2-9", label: "4.2.9 Array State Variables" },
+    ],
+  },
+  {
+    id: "sec-4-3",
+    label: "4.3 Sharing State, Prop Drilling, and URLs",
+    children: [
+      { id: "sec-4-3-1", label: "4.3.1 Sharing State Between Parent and Child" },
+      { id: "sec-4-3-2", label: "4.3.2 Prop Drilling" },
+      { id: "sec-4-3-3", label: "4.3.3 Encoding State in the URL" },
+    ],
+  },
+  { id: "sec-4-4", label: "4.4 React Context" },
+  {
+    id: "sec-4-5",
+    label: "4.5 Zustand",
+    children: [
+      { id: "sec-4-5-1", label: "4.5.1 Zustand Counter" },
+      { id: "sec-4-5-2", label: "4.5.2 Zustand Todo List" },
+    ],
+  },
+  { id: "sec-4-6", label: "4.6 Redux Toolkit" },
+  { id: "sec-4-7", label: "4.7 Side Effects with useEffect" },
+  { id: "sec-4-8", label: "4.8 Exercises" },
+  { id: "sec-4-9", label: "4.9 Check Your Understanding" },
+  {
+    id: "sec-4-10",
+    label: "4.10 Adding State to the Kambaz User Interface",
+    children: [
+      { id: "sec-4-10-1", label: "4.10.1 A Courses Store" },
+      { id: "sec-4-10-2", label: "4.10.2 Dashboard Create, Edit, and Delete" },
+      { id: "sec-4-10-3", label: "4.10.3 Course Navigation Toggle" },
+      {
+        id: "sec-4-10-4",
+        label: "4.10.4 Adding State to the Modules Screen",
+        children: [
+          { id: "sec-4-10-4-1", label: "4.10.4.1 Creating a Module" },
+          { id: "sec-4-10-4-2", label: "4.10.4.2 Deleting a Module" },
+          { id: "sec-4-10-4-3", label: "4.10.4.3 Editing a Module" },
+          { id: "sec-4-10-4-4", label: "4.10.4.4 A Modules Store" },
+        ],
+      },
+      {
+        id: "sec-4-10-5",
+        label: "4.10.5 Account Screens",
+        children: [
+          { id: "sec-4-10-5-1", label: "4.10.5.1 Account Context" },
+          { id: "sec-4-10-5-2", label: "4.10.5.2 Sign in" },
+          { id: "sec-4-10-5-3", label: "4.10.5.3 Dashboard by Enrollment" },
+          { id: "sec-4-10-5-4", label: "4.10.5.4 Account Navigation" },
+          { id: "sec-4-10-5-5", label: "4.10.5.5 Profile" },
+        ],
+      },
+      {
+        id: "sec-4-10-6",
+        label: "4.10.6 Assignments (On Your Own)",
+        children: [
+          { id: "sec-4-10-6-1", label: "4.10.6.1 Assignments Store" },
+          { id: "sec-4-10-6-2", label: "4.10.6.2 Creating an Assignment" },
+          { id: "sec-4-10-6-3", label: "4.10.6.3 Editing an Assignment" },
+          { id: "sec-4-10-6-4", label: "4.10.6.4 Deleting an Assignment" },
+        ],
+      },
+      { id: "sec-4-10-7", label: "4.10.7 Enrollments (On Your Own)" },
+      { id: "sec-4-11", label: "4.11 Exercises" },
+    ],
+  },
+  { id: "sec-4-12", label: "4.12 Delivery" },
 ];
 
 export const CHAPTERS: ChapterToc[] = [
@@ -346,6 +422,12 @@ export const CHAPTERS: ChapterToc[] = [
     label: "Chapter 3 — JavaScript",
     href: "/book/ch3",
     sections: CH3_TOC,
+  },
+  {
+    id: "ch4",
+    label: "Chapter 4 — Client State",
+    href: "/book/ch4",
+    sections: CH4_TOC,
   },
 ];
 

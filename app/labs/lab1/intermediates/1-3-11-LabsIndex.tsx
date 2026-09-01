@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-/** Labs index as shown in §1.3.11 */
+/** Labs index as shown in §1.3.10 */
 export default function LabsIndexDemo() {
   return (
     <div id="wd-labs">

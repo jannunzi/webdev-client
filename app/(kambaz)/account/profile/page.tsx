@@ -1,42 +1,88 @@
-import Link from "next/link";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAccountContext, type User } from "../AccountContext";
 
 export default function Profile() {
+  const [profile, setProfile] = useState<User | null>(null);
+  const { currentUser, setCurrentUser } = useAccountContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!currentUser) {
+      router.push("/account/signin");
+      return;
+    }
+    setProfile(currentUser);
+  }, [currentUser, router]);
+
+  const signout = () => {
+    setCurrentUser(null);
+    router.push("/account/signin");
+  };
+
+  if (!profile) return null;
+
   return (
     <div id="wd-profile-screen">
       <h3>Profile</h3>
       <input
-        defaultValue="alice"
+        value={profile.username}
         placeholder="username"
-        className="wd-username"
+        className="wd-username mb-2 block rounded border border-neutral-300 px-3 py-1.5"
+        id="wd-username"
+        onChange={(e) => setProfile({ ...profile, username: e.target.value })}
       />
-      <br />
       <input
-        defaultValue="123"
+        value={profile.password}
         placeholder="password"
         type="password"
-        className="wd-password"
+        className="wd-password mb-2 block rounded border border-neutral-300 px-3 py-1.5"
+        id="wd-password"
+        onChange={(e) => setProfile({ ...profile, password: e.target.value })}
       />
-      <br />
-      <input defaultValue="Alice" placeholder="First Name" id="wd-firstname" />
-      <br />
       <input
-        defaultValue="Wonderland"
+        value={profile.firstName}
+        placeholder="First Name"
+        id="wd-firstname"
+        className="mb-2 block rounded border border-neutral-300 px-3 py-1.5"
+        onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
+      />
+      <input
+        value={profile.lastName}
         placeholder="Last Name"
         id="wd-lastname"
+        className="mb-2 block rounded border border-neutral-300 px-3 py-1.5"
+        onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
       />
-      <br />
-      <input defaultValue="2000-01-01" type="date" id="wd-dob" />
-      <br />
-      <input defaultValue="alice@wonderland" type="email" id="wd-email" />
-      <br />
-      <select defaultValue="FACULTY" id="wd-role">
+      <input
+        value={profile.email}
+        type="email"
+        id="wd-email"
+        className="mb-2 block rounded border border-neutral-300 px-3 py-1.5"
+        onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+      />
+      <select
+        value={profile.role}
+        id="wd-role"
+        className="mb-2 block rounded border border-neutral-300 px-3 py-1.5"
+        onChange={(e) => setProfile({ ...profile, role: e.target.value })}
+      >
         <option value="USER">User</option>
         <option value="ADMIN">Admin</option>
         <option value="FACULTY">Faculty</option>
         <option value="STUDENT">Student</option>
+        <option value="TA">TA</option>
       </select>
-      <br />
-      <Link href="/account/signin">Sign out</Link>
+      <button
+        type="button"
+        onClick={signout}
+        id="wd-signout-btn"
+        className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+      >
+        Sign out
+      </button>
     </div>
   );
 }

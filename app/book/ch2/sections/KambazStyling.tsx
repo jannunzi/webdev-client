@@ -25,6 +25,7 @@ import AssignmentsDemo from "@/app/book/ch1/embeds/AssignmentsDemo";
 import AssignmentEditorDemo from "@/app/book/ch1/embeds/AssignmentEditorDemo";
 import AccountScreensDemo from "@/app/book/ch1/embeds/AccountScreensDemo";
 import Link from "next/link";
+import { OnYourOwn, WithAI } from "../../components/Practice";
 
 export default function KambazStyling() {
   return (
@@ -35,7 +36,10 @@ export default function KambazStyling() {
         content into side-by-side columns — functional, but exactly the kind
         of layout-via-table this chapter has spent <SectionLink to="2.1.18" />–<SectionLink to="2.1.19" />{" "}replacing
         with CSS. Before restyling each screen, we wire Tailwind into the Kambaz
-        shell the right way, then swap those tables for flex layouts.
+        shell the right way, then swap those tables for flex layouts. A single
+        coverage checklist is in <SectionLink to="2.4.10" /> — use it after
+        you have walked through the screens, not instead of restyling them
+        as you read.
       </p>
       <p>
         In <SectionLink to="2.3" />{" "}the Tailwind lab imports the full library
@@ -241,13 +245,19 @@ export default function KambazNavigation() {
           center icons and labels in the bar
         </li>
       </ul>
-      <p>
-        <strong>On your own.</strong>{" "}In <code>Navigation.tsx</code>, finish any
+      <OnYourOwn>
+        In <code>Navigation.tsx</code>, finish any
         remaining sidebar links with fitting React Icons, then confirm the active
         link (white background, red text) and the{" "}
         <code>wd-main-content-offset</code>{" "}rule in <code>kambaz.css</code>{" "}still
         keep content clear of the fixed bar.
-      </p>
+      </OnYourOwn>
+      <WithAI
+        prompt={`In app/(kambaz)/Navigation.tsx, keep my personal sidebar links and icon choices unchanged. After the existing tiles, add one more sample link with id wd-ai-nav-help to /labs with a fitting icon (for example FaCircleQuestion) and the same tile classes as the idle black/white links. Do not change Account/Dashboard or my personal icons. Do not overwrite wd-main-content-offset in app/(kambaz)/kambaz.css.`}
+      >
+        Paste this prompt to add a second sample tile — then confirm the active
+        link has a white background and red text, and content stays clear of the bar:
+      </WithAI>
 
       <h3
         id="sec-2-4-2"
@@ -420,12 +430,18 @@ export default function Dashboard() {
           remaining cards as the window narrows
         </li>
       </ul>
-      <p>
-        <strong>On your own.</strong>{" "}In <code>CourseCard.tsx</code>{" "}or{" "}
+      <OnYourOwn>
+        In <code>CourseCard.tsx</code>{" "}or{" "}
         <code>dashboard/page.tsx</code>, personalize at least one card (title,
         subtitle, or image) and resize the window to confirm the responsive{" "}
         <code>grid</code>{" "}still wraps cleanly.
-      </p>
+      </OnYourOwn>
+      <WithAI
+        prompt={`In app/(kambaz)/dashboard/page.tsx, keep my personalized course card unchanged. After the existing CourseCard calls, add one more sample CourseCard with id CS9999, title "CS9999 Sample Course", subtitle "Assistant-generated sample — not my course", and image "/images/reactjs.jpg". Do not change CourseCard.tsx styling.`}
+      >
+        Paste this prompt to add a fourth sample card — then resize the window
+        and confirm the grid still wraps:
+      </WithAI>
 
       <h3
         id="sec-2-4-3"
@@ -552,12 +568,18 @@ export default function CourseNavigation({ cid }: { cid: string }) {
           <CourseNavigation cid="1234" />
         </div>
       </LiveDemo>
-      <p>
-        <strong>On your own.</strong>{" "}In{" "}
+      <OnYourOwn>
+        In{" "}
         <code>courses/[cid]/Navigation.tsx</code>, finish every course link as a
         list-group item, confirm the active route gets the black left border,
         and keep the sidebar about 140px wide in the course layout.
-      </p>
+      </OnYourOwn>
+      <WithAI
+        prompt={`In app/(kambaz)/courses/[cid]/Navigation.tsx, keep any personal extra course links I added. After the existing list-group items, add one more sample link with id wd-course-ai-link labeled "Sample" pointing to the course home path, using the same idle list-group-item border-0 text-red-600 classes. Do not change my personal links or the active-route border logic. Keep the sidebar about 140px wide in app/(kambaz)/courses/[cid]/layout.tsx.`}
+      >
+        Paste this prompt to add a second sample course link — then confirm the
+        active route still gets the black left border:
+      </WithAI>
 
       <h3
         id="sec-2-4-4"
@@ -735,12 +757,18 @@ export default function Lesson({
           lessons
         </li>
       </ul>
-      <p>
-        <strong>On your own.</strong>{" "}In <code>Module.tsx</code>{" "}and{" "}
+      <OnYourOwn>
+        In <code>Module.tsx</code>{" "}and{" "}
         <code>Lesson.tsx</code>, add one more module or lesson with your own
         title, keeping the gray module header, green lesson border, and{" "}
         <code>GreenCheckmark</code>.
-      </p>
+      </OnYourOwn>
+      <WithAI
+        prompt={`In app/(kambaz)/courses/[cid]/modules/page.tsx, keep my personal extra module or lesson unchanged. After the existing Module/Lesson tree, add one more sample Module titled "Sample module (AI)" containing one Lesson titled "Sample lesson (AI)". Reuse Module.tsx, Lesson.tsx, and GreenCheckmark — do not restyle those components or overwrite my personal titles.`}
+      >
+        Paste this prompt to add a second sample module — then confirm the
+        gray header, green lesson border, and checkmark still appear:
+      </WithAI>
 
       <h3
         id="sec-2-4-5"
@@ -877,13 +905,19 @@ export default function CourseStatus() {
           <Home />
         </div>
       </LiveDemo>
-      <p>
-        <strong>On your own.</strong>{" "}In <code>home/Status.tsx</code>, finish the
+      <OnYourOwn>
+        In <code>home/Status.tsx</code>, finish the
         remaining Course Status actions as full-width buttons with icons, then
         resize the window: Status should vanish first (below{" "}
         <code>lg</code>), then both navigation sidebars together (below{" "}
         <code>md</code>).
-      </p>
+      </OnYourOwn>
+      <WithAI
+        prompt={`In app/(kambaz)/courses/[cid]/home/Status.tsx, keep any personal extra status buttons I added. After the existing full-width actions, add one more sample button with id wd-ai-status labeled "Sample action" using a fitting React Icon and the same full-width bordered button classes. Do not change my personal buttons or the hidden lg:block / hidden md:block layout in app/(kambaz)/courses/[cid]/home/page.tsx and layout.tsx.`}
+      >
+        Paste this prompt to add a second sample status action — then resize:
+        Status should vanish first (below lg), then both sidebars (below md):
+      </WithAI>
 
       <h3
         id="sec-2-4-6"
@@ -962,12 +996,18 @@ export default function PeopleTable() {
       >
         <PeopleTable />
       </LiveDemo>
-      <p>
-        <strong>On your own.</strong>{" "}In{" "}
+      <OnYourOwn>
+        In{" "}
         <code>people/table/page.tsx</code>, add at least three more people rows
         (names you choose) with a user icon, and confirm the People nav link opens
         the styled table.
-      </p>
+      </OnYourOwn>
+      <WithAI
+        prompt={`In app/(kambaz)/courses/[cid]/people/table/page.tsx, keep my personal extra people rows unchanged. After the sample Tony Stark row (and any other course samples), add three more sample rows with odd:bg-neutral-50, FaUserCircle, and placeholder names (for example Jane Sample, Alex Sample, Sam Sample) plus Login ID, Section, Role, Last Activity, and Total Activity cells matching the existing columns. Not names I already added.`}
+      >
+        Paste this prompt to add three more sample roster rows — then confirm
+        the People nav link still opens the styled table:
+      </WithAI>
 
       <h3
         id="sec-2-4-7"
@@ -1146,12 +1186,18 @@ export default async function Assignments({
           subtext as shown in the screenshots — exact dates and times may differ
         </li>
       </ul>
-      <p>
-        <strong>On your own.</strong>{" "}In <code>AssignmentItem.tsx</code>{" "}or{" "}
+      <OnYourOwn>
+        In <code>AssignmentItem.tsx</code>{" "}or{" "}
         <code>assignments/page.tsx</code>, add one more assignment with your own
         title and due-date line, keeping the green left border, search field, and
         toolbar button layout.
-      </p>
+      </OnYourOwn>
+      <WithAI
+        prompt={`In app/(kambaz)/courses/[cid]/assignments/page.tsx, keep my personal extra assignment unchanged. After the existing AssignmentItem calls, add one more sample AssignmentItem with aid "ai-a", title "A9 - Sample assignment", and a due-date/points details line in the same format as A1. Do not restyle AssignmentItem.tsx or the search/toolbar layout.`}
+      >
+        Paste this prompt to add a second sample assignment — then confirm the
+        green left border, search field, and toolbar still match:
+      </WithAI>
 
       <h3
         id="sec-2-4-8"
@@ -1242,13 +1288,19 @@ export default async function Assignments({
           params={Promise.resolve({ cid: "1234", aid: "123" })}
         />
       </LiveDemo>
-      <p>
-        <strong>On your own.</strong>{" "}Restyle{" "}
+      <OnYourOwn>
+        Restyle{" "}
         <code>assignments/[aid]/page.tsx</code>{" "}with Tailwind form utilities so
         Assignment Name, Description, Points, and Due Date read as a clean
         labeled form — then confirm Cancel/Save still return to the
         assignments list.
-      </p>
+      </OnYourOwn>
+      <WithAI
+        prompt={`In app/(kambaz)/courses/[cid]/assignments/[aid]/page.tsx, keep any personal form styling I already applied. After the existing fields, add one more sample labeled field with id wd-ai-editor-notes: a label "Sample notes" and a full-width textarea using the same Tailwind form utilities as Assignment Name/Description. Do not overwrite my personal classes or change Cancel/Save so they still return to the assignments list.`}
+      >
+        Paste this prompt to add a second sample field — then confirm
+        Cancel/Save still return to the assignments list:
+      </WithAI>
 
       <h3
         id="sec-2-4-9"
@@ -1347,12 +1399,65 @@ export default async function Assignments({
         <Link href="/account/signin">/account/signin</Link>{" "}remains the
         first screen a visitor sees when navigating to Kambaz.
       </p>
-      <p>
-        <strong>On your own.</strong>{" "}Style Sign in, Sign up, Profile, and{" "}
+      <OnYourOwn>
+        Style Sign in, Sign up, Profile, and{" "}
         <code>account/Navigation.tsx</code>{" "}with the same Tailwind form/button
         patterns, mirroring Course Navigation for the account sidebar, and confirm{" "}
         <code>/account/signin</code>{" "}is still the first Kambaz screen.
-      </p>
+      </OnYourOwn>
+      <WithAI
+        prompt={`Keep any personal styling I already applied on the account screens. In app/(kambaz)/account/signin/page.tsx, after the existing fields, add one more sample labeled input with id wd-ai-signin-note (placeholder "sample note") using the same full-width rounded border utilities as username/password. Do not change Sign up, Profile, or app/(kambaz)/account/Navigation.tsx, and do not change routing so /account/signin stays the first Kambaz screen.`}
+      >
+        Paste this prompt to add a second sample Sign in field — then confirm{" "}
+        <code>/account/signin</code>{" "}is still the first Kambaz screen:
+      </WithAI>
+      <Section level={3} id="sec-2-4-10" title="2.4.10 Exercises">
+        <p>
+          Use this checklist to confirm the Kambaz restyle covers every
+          screen in <SectionLink to="2.4" />. Each item points back to the
+          section where you styled the worked example. Restyle the screens
+          in order as you read — this list is for checking coverage, not a
+          substitute for the walkthroughs. Assignment Editor and Account
+          stay On your own: match the figures and LiveDemos in those
+          sections.
+        </p>
+        <ol>
+          <li>
+            Style Kambaz Navigation and replace the table layout with flex (
+            <SectionLink to="2.4.1" />).
+          </li>
+          <li>
+            Style the Dashboard and <code>CourseCard</code>{" "}(
+            <SectionLink to="2.4.2" />).
+          </li>
+          <li>
+            Style Course Navigation (<SectionLink to="2.4.3" />).
+          </li>
+          <li>
+            Style Modules, <code>Module</code>, and <code>Lesson</code>{" "}(
+            <SectionLink to="2.4.4" />).
+          </li>
+          <li>
+            Style Home and Course Status (<SectionLink to="2.4.5" />).
+          </li>
+          <li>
+            Style the People table (<SectionLink to="2.4.6" />).
+          </li>
+          <li>
+            Style the Assignments screen (<SectionLink to="2.4.7" />).
+          </li>
+          <li>
+            Style the Assignment Editor (
+            <SectionLink to="2.4.8" />
+            ).
+          </li>
+          <li>
+            Style Sign in, Sign up, Profile, and Account Navigation (
+            <SectionLink to="2.4.9" />
+            ).
+          </li>
+        </ol>
+      </Section>
     </Section>
   );
 }

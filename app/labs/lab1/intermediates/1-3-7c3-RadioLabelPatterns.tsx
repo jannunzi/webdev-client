@@ -1,4 +1,4 @@
-/** Section 1.3.7.3 — Sibling labels (htmlFor) vs wrapping labels */
+/** Section 1.3.6.3 — Sibling labels (htmlFor) vs wrapping labels */
 export default function RadioLabelPatterns() {
   return (
     <div>

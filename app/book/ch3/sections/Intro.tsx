@@ -105,6 +105,16 @@ export default function Intro() {
             using React.
           </li>
         </ul>
+        <p>
+          Those objectives are best achieved by building along with the
+          narration — each Lab 3 component and Kambaz data screen as it
+          appears — rather than reading first and coding later. Glance at
+          the Lab 3 checklist in <SectionLink to="3.7.5" />{" "}and the Kambaz
+          checklist in <SectionLink to="3.9.10" />{" "}so the expected coverage
+          is visible from the start. Those lists are recaps, not a reason to
+          skip ahead: work through each section, then use them to confirm
+          what stuck.
+        </p>
       </Section>
 
       <Section id="sec-3-2" title="3.2 Introduction to JavaScript">
@@ -116,13 +126,15 @@ export default function Intro() {
           instead of living as copy-pasted markup. One{" "}
           <code>map</code>{" "}over an array of courses can replace eight
           nearly identical cards; a ternary can swap a login prompt for a
-          welcome heading. In the following exercises we will learn how to
-          write that logic ourselves — conditionals, iteration, and
-          data-driven, dynamic content — as components imported into a Lab
-          3 page you grow as you go, the same pattern as Lab 1 and Lab 2.
+          welcome heading. The following sections walk through that logic —
+          conditionals, iteration, and data-driven content — as components
+          imported into a Lab 3 page you grow as you go, the same pattern as
+          Lab 1 and Lab 2.
           Those lab files are throwaway drills — one idea per component.
           Kambaz, later in this chapter and across the rest of the course,
-          is the application you keep.
+          is the application you keep. A coverage checklist for Lab 3 is in{" "}
+          <SectionLink to="3.7.5" /> — use it after you have walked through
+          the samples, not instead of building them as you read.
         </p>
         <p>
           Keep working in the same{" "}
@@ -145,8 +157,8 @@ export default function Intro() {
           Add a link to the new lab in both{" "}
           <code>app/labs/page.tsx</code>{" "}and{" "}
           <code>app/labs/TOC.tsx</code>, the same two files you updated for{" "}
-          <Link href="/labs/lab2">Lab 2</Link>{" "}in <SectionLink to="1.3.11" />
-          –<SectionLink to="1.3.12" />. Confirm you can reach{" "}
+          <Link href="/labs/lab2">Lab 2</Link>{" "}in <SectionLink to="1.3.10" />
+          –<SectionLink to="1.3.11" />. Confirm you can reach{" "}
           <LocalUrl href="/labs/lab3" />{" "}from the Labs table of contents
           before continuing.
         </p>

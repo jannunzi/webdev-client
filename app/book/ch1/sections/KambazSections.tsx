@@ -30,11 +30,13 @@ export default function KambazSections() {
           <strong>Kambaz</strong> — a website inspired by a popular Online
           Learning Management System (<strong>LMS</strong>). This chapter
           focuses on simple prototype screens; later chapters improve the same
-          structure with CSS, state, and data.
+          structure with CSS, state, and data. A single coverage checklist is in{" "}
+          <SectionLink to="1.4.9" /> — use it after you have walked through the
+          screens, not instead of building them as you read.
         </p>
         <p>
           Do all Kambaz work under <code>app/(kambaz)</code>. This is still the
-          App Router from <SectionLink to="1.2.4" /> — folders plus <code>page.tsx</code>{" "}create
+          App Router from <SectionLink to="1.2.5" /> — folders plus <code>page.tsx</code>{" "}create
           routes — with one new wrinkle: parentheses make a{" "}
           <strong>route group</strong>. A route group organizes files and
           layouts without appearing in the URL. A page at{" "}
@@ -105,34 +107,6 @@ export default function TOC() {
             / (Kambaz)
           </Link>
         </p>
-        <h3
-          id="sec-1-4-1-1"
-          className="scroll-mt-6 font-sans text-lg font-semibold"
-        >
-          1.4.1.1 Exercises
-        </h3>
-        <ol>
-          <li>
-            Create the Kambaz landing page in{" "}
-            <code>app/(kambaz)/page.tsx</code>{" "}with id{" "}
-            <code>wd-kambaz</code>{" "}and an <code>h1</code>{" "}heading.
-          </li>
-          <li>
-            Remove any leftover root <code>app/page.tsx</code>{" "}and ensure the
-            Kambaz folder is named <code>(kambaz)</code>{" "}with parentheses so it
-            is a route group.
-          </li>
-          <li>
-            Update <code>app/labs/TOC.tsx</code>{" "}and{" "}
-            <code>app/labs/page.tsx</code>{" "}with a{" "}
-            <code>Link</code>{" "}to <code>/</code>{" "}and id{" "}
-            <code>wd-kambaz-link</code>.
-          </li>
-          <li>
-            Verify that <LocalUrl href="/" />{" "}displays the Kambaz
-            landing page (before the Sign in redirect in <SectionLink to="1.4.2" />).
-          </li>
-        </ol>
       </Section>
 
       <Section
@@ -384,7 +358,7 @@ export default function Profile() {
           Signin, Signup, and Profile. Then wrap account routes in{" "}
           <code>app/(kambaz)/account/layout.tsx</code>{" "}using a two-column table
           — navigation on the left, <code>children</code>{" "}on the right (same
-          layout idea as Labs in <SectionLink to="1.3.12" />):
+          layout idea as Labs in <SectionLink to="1.3.11" />):
         </p>
         <CodeBlock
           language="tsx"
@@ -473,45 +447,6 @@ export default function AccountLayout({
         >
           <AccountScreensDemo />
         </LiveDemo>
-        <h3
-          id="sec-1-4-2-5"
-          className="scroll-mt-6 font-sans text-lg font-semibold"
-        >
-          1.4.2.5 Exercises
-        </h3>
-        <ol start={5}>
-          <li>
-            Create Sign in in{" "}
-            <code>app/(kambaz)/account/signin/page.tsx</code>{" "}(<SectionLink to="1.4.2.1" />).
-          </li>
-          <li>
-            Redirect <code>app/(kambaz)/account/page.tsx</code>{" "}and{" "}
-            <code>app/(kambaz)/page.tsx</code>{" "}to{" "}
-            <code>/account/signin</code>.
-          </li>
-          <li>
-            Implement Sign up in{" "}
-            <code>app/(kambaz)/account/signup/page.tsx</code>{" "}(<SectionLink to="1.4.2.2" />).
-          </li>
-          <li>
-            Create Profile in{" "}
-            <code>app/(kambaz)/account/profile/page.tsx</code>{" "}with date, email,
-            and role <code>select</code>{" "}(<SectionLink to="1.4.2.3" />).
-          </li>
-          <li>
-            Build <code>app/(kambaz)/account/Navigation.tsx</code>{" "}with links to
-            Signin, Signup, and Profile.
-          </li>
-          <li>
-            Wrap account routes in{" "}
-            <code>app/(kambaz)/account/layout.tsx</code>{" "}using a two-column table
-            (nav left, <code>children</code>{" "}right).
-          </li>
-          <li>
-            Verify sidebar navigation among Sign in, Sign up, and Profile, and
-            that Sign in is the default account screen.
-          </li>
-        </ol>
       </Section>
 
       <Section
@@ -538,7 +473,7 @@ export default function AccountLayout({
           <code>CourseCard</code>{" "}component that accepts the differing values
           as <strong>props</strong>. Use{" "}
           <code>type=&quot;button&quot;</code>{" "}on Go (
-          <SectionLink to="1.3.7.7" />) so the click does not try to submit a
+          <SectionLink to="1.3.6.7" />) so the click does not try to submit a
           form. Keep the markup plain for now;{" "}
           <ChapterLink to={2} />{" "}will add Tailwind classes to this same
           component and lay the cards out in a responsive grid.
@@ -727,8 +662,9 @@ export default function KambazLayout({
         <p>
           Calendar and Inbox links will 404 until those pages exist. Handle
           missing routes gracefully with <code>app/not-found.tsx</code>{" "}— another
-          reserved App Router filename (like <code>page.tsx</code>{" "}and{" "}
-          <code>layout.tsx</code>{" "}from <SectionLink to="1.2.4" />) — so users can return to the
+          reserved App Router filename (like <code>page.tsx</code>{" "}in{" "}
+          <SectionLink to="1.2.5" />{" "}and <code>layout.tsx</code>{" "}in{" "}
+          <SectionLink to="1.3.11" />) — so users can return to the
           Dashboard. Keep the markup simple; fancy <code>className</code>{" "}values
           are optional placeholders until <ChapterLink to={2} />{" "}styling is on:
         </p>
@@ -763,37 +699,6 @@ export default function NotFound() {
         >
           <DashboardDemo />
         </LiveDemo>
-        <h3
-          id="sec-1-4-3-3"
-          className="scroll-mt-6 font-sans text-lg font-semibold"
-        >
-          1.4.3.3 Exercises
-        </h3>
-        <ol start={12}>
-          <li>
-            Extract a plain <code>CourseCard</code>{" "}in{" "}
-            <code>app/(kambaz)/dashboard/CourseCard.tsx</code>, then implement
-            the Dashboard in <code>app/(kambaz)/dashboard/page.tsx</code>{" "}with
-            at least three <code>CourseCard</code>s (image, title, subtitle,
-            link to <code>/courses/[cid]/home</code>).
-          </li>
-          <li>
-            Create <code>app/(kambaz)/Navigation.tsx</code>{" "}with Northeastern
-            (external), Account, Dashboard, Courses, Calendar, Inbox, and Labs.
-          </li>
-          <li>
-            Update <code>app/(kambaz)/layout.tsx</code>{" "}to a two-column table:
-            Kambaz Navigation on the left, <code>children</code>{" "}on the right.
-          </li>
-          <li>
-            Point the Sign in link (
-            <code>wd-signin-btn</code>) at <code>/dashboard</code>.
-          </li>
-          <li>
-            Implement <code>app/not-found.tsx</code>{" "}so Calendar/Inbox use it
-            with a link back to the Dashboard.
-          </li>
-        </ol>
       </Section>
 
       <Section
@@ -804,7 +709,7 @@ export default function NotFound() {
         <p>
           Clicking a course on the Dashboard should open that course&apos;s{" "}
           <strong>Home</strong>{" "}screen at{" "}
-          <code>/courses/[cid]/home</code>. Same App Router rule as <SectionLink to="1.2.4" /> — a
+          <code>/courses/[cid]/home</code>. Same App Router rule as <SectionLink to="1.2.5" /> — a
           folder with <code>page.tsx</code>{" "}is a route — except{" "}
           <code>[cid]</code>{" "}is a <strong>dynamic segment</strong>: Next.js
           fills <code>cid</code>{" "}from whatever appears in that part of the URL
@@ -1429,6 +1334,115 @@ export default async function Assignments({
         >
           <AssignmentEditorDemo />
         </LiveDemo>
+      </Section>
+
+      <Section level={3} id="sec-1-4-9" title="1.4.9 Exercises">
+        <p>
+          Use this checklist to confirm the Kambaz prototype covers every
+          screen in <SectionLink to="1.4" />. Each item points back to the
+          section where you built the worked example. Build the screens in
+          order as you read — this list is for checking coverage, not a
+          substitute for the walkthroughs. Assignments and the Assignment
+          Editor stay On your own: match the ids and LiveDemos in those
+          sections.
+        </p>
+        <ol>
+          <li>
+            Create the Kambaz landing page in{" "}
+            <code>app/(kambaz)/page.tsx</code>{" "}with id{" "}
+            <code>wd-kambaz</code>{" "}and an <code>h1</code>{" "}heading (
+            <SectionLink to="1.4.1" />
+            ).
+          </li>
+          <li>
+            Remove any leftover root <code>app/page.tsx</code>{" "}and ensure the
+            Kambaz folder is named <code>(kambaz)</code>{" "}with parentheses so it
+            is a route group (<SectionLink to="1.4.1" />).
+          </li>
+          <li>
+            Update <code>app/labs/TOC.tsx</code>{" "}and{" "}
+            <code>app/labs/page.tsx</code>{" "}with a{" "}
+            <code>Link</code>{" "}to <code>/</code>{" "}and id{" "}
+            <code>wd-kambaz-link</code>{" "}(<SectionLink to="1.4.1" />).
+          </li>
+          <li>
+            Create Sign in in{" "}
+            <code>app/(kambaz)/account/signin/page.tsx</code>{" "}(
+            <SectionLink to="1.4.2.1" />
+            ).
+          </li>
+          <li>
+            Redirect <code>app/(kambaz)/account/page.tsx</code>{" "}and{" "}
+            <code>app/(kambaz)/page.tsx</code>{" "}to{" "}
+            <code>/account/signin</code>{" "}(<SectionLink to="1.4.2" />).
+          </li>
+          <li>
+            Implement Sign up in{" "}
+            <code>app/(kambaz)/account/signup/page.tsx</code>{" "}(
+            <SectionLink to="1.4.2.2" />
+            ).
+          </li>
+          <li>
+            Create Profile in{" "}
+            <code>app/(kambaz)/account/profile/page.tsx</code>{" "}with date, email,
+            and role <code>select</code>{" "}(<SectionLink to="1.4.2.3" />).
+          </li>
+          <li>
+            Build <code>app/(kambaz)/account/Navigation.tsx</code>{" "}and wrap
+            account routes in{" "}
+            <code>app/(kambaz)/account/layout.tsx</code>{" "}(nav left,{" "}
+            <code>children</code>{" "}right) (<SectionLink to="1.4.2.4" />).
+          </li>
+          <li>
+            Extract <code>CourseCard</code>{" "}and implement the Dashboard in{" "}
+            <code>app/(kambaz)/dashboard/page.tsx</code>{" "}with at least three
+            cards linking to <code>/courses/[cid]/home</code>{" "}(
+            <SectionLink to="1.4.3" />
+            ).
+          </li>
+          <li>
+            Create <code>app/(kambaz)/Navigation.tsx</code>{" "}and{" "}
+            <code>app/(kambaz)/layout.tsx</code>{" "}(Kambaz Navigation left,{" "}
+            <code>children</code>{" "}right). Point Sign in (
+            <code>wd-signin-btn</code>) at <code>/dashboard</code>{" "}(
+            <SectionLink to="1.4.3.1" />
+            ).
+          </li>
+          <li>
+            Implement <code>app/not-found.tsx</code>{" "}so Calendar and Inbox use
+            it with a link back to the Dashboard (
+            <SectionLink to="1.4.3.2" />
+            ).
+          </li>
+          <li>
+            Add Course Navigation and{" "}
+            <code>app/(kambaz)/courses/[cid]/layout.tsx</code>. Include
+            placeholder pages for Piazza, Zoom, Quizzes, Grades, and People (
+            <SectionLink to="1.4.4" />
+            ).
+          </li>
+          <li>
+            Create <code>Module</code>{" "}and <code>Lesson</code>, then the
+            Modules page with nested weeks, lessons, and content items (
+            <SectionLink to="1.4.5" />
+            ).
+          </li>
+          <li>
+            Build Course Status and assemble Home (Modules plus Status). Delete
+            any leftover <code>page.tsx</code>{" "}directly under{" "}
+            <code>courses/[cid]/</code>{" "}(<SectionLink to="1.4.6" />).
+          </li>
+          <li>
+            Build the Assignments screen (
+            <SectionLink to="1.4.7" />
+            ).
+          </li>
+          <li>
+            Build the Assignment Editor screen (
+            <SectionLink to="1.4.8" />
+            ).
+          </li>
+        </ol>
       </Section>
     </>
   );

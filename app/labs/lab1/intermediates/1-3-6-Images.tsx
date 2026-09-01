@@ -1,4 +1,4 @@
-/** Section 1.3.6 — Remote and local images */
+/** Section 1.3.5 — Remote and local images */
 export default function Images() {
   return (
     <div id="wd-lab1">

@@ -1,0 +1,60 @@
+import type { ComponentType } from "react";
+import ClickEvent from "../../ClickEvent";
+import PassingDataOnEvent from "../../PassingDataOnEvent";
+import PassingFunctions from "../../PassingFunctions";
+import CounterBroken from "../../CounterBroken";
+import Counter from "../../Counter";
+import BooleanStateVariables from "../../BooleanStateVariables";
+import StringStateVariables from "../../StringStateVariables";
+import DateStateVariable from "../../DateStateVariable";
+import ObjectStateVariable from "../../ObjectStateVariable";
+import ArrayStateVariable from "../../ArrayStateVariable";
+import ParentStateComponent from "../../ParentStateComponent";
+import PropDrilling from "../../PropDrilling";
+import UrlEncoding from "../../UrlEncoding";
+import Effect from "../../Effect";
+import ContextExamples from "../../context/ContextExamples";
+import ZustandExamples from "../../zustand/ZustandExamples";
+import ReduxExamples from "../../redux/ReduxExamples";
+import { notFound } from "next/navigation";
+
+function PassingFunctionsDemo() {
+  return (
+    <PassingFunctions
+      theFunction={() => {
+        alert("Hello from Lab 4");
+      }}
+    />
+  );
+}
+
+const STEPS: Record<string, ComponentType> = {
+  ClickEvent,
+  PassingDataOnEvent,
+  PassingFunctions: PassingFunctionsDemo,
+  CounterBroken,
+  Counter,
+  BooleanStateVariables,
+  StringStateVariables,
+  DateStateVariable,
+  ObjectStateVariable,
+  ArrayStateVariable,
+  ParentStateComponent,
+  PropDrilling,
+  UrlEncoding,
+  Effect,
+  ContextExamples,
+  ZustandExamples,
+  ReduxExamples,
+};
+
+export default async function IntermediateStepPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const Step = STEPS[slug];
+  if (!Step) notFound();
+  return <Step />;
+}

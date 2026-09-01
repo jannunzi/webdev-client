@@ -54,6 +54,16 @@ export default function Intro() {
           left as guided, self-directed exercises — by now you have the tools
           to style them without a step-by-step walkthrough.
         </p>
+        <p>
+          The chapter&apos;s objectives are best achieved by building along
+          with the narration — each Lab 2 sample and Kambaz restyle as it
+          appears — rather than reading first and coding later. Glance at
+          the Lab 2 checklist in <SectionLink to="2.3.7" />{" "}and the Kambaz
+          checklist in <SectionLink to="2.4.10" />{" "}so the expected coverage
+          is visible from the start. Those lists are recaps, not a reason to
+          skip ahead: work through each section, then use them to confirm
+          what stuck.
+        </p>
         <BookFigure
           sources={[
             {
@@ -120,10 +130,12 @@ export default function Intro() {
           Add a link to the new lab in both{" "}
           <code>app/labs/page.tsx</code>{" "}and{" "}
           <code>app/labs/TOC.tsx</code>, the same two files you updated for{" "}
-          <Link href="/labs/lab1">Lab 1</Link>{" "}in <SectionLink to="1.3.11" />–<SectionLink to="1.3.12" />. Confirm
+          <Link href="/labs/lab1">Lab 1</Link>{" "}in <SectionLink to="1.3.10" />–<SectionLink to="1.3.11" />. Confirm
           you can reach{" "}
           <LocalUrl href="/labs/lab2" />{" "}from the Labs table
-          of contents before continuing.
+          of contents before continuing. A coverage checklist for Lab 2 is in{" "}
+          <SectionLink to="2.3.7" /> — use it after you have walked through
+          the samples, not instead of building them as you read.
         </p>
       </Section>
     </>

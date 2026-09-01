@@ -1,4 +1,4 @@
-/** Section 1.3.10 — Illustrative href patterns (absolute, relative, hash, target) */
+/** Section 1.3.9 — Illustrative href patterns (absolute, relative, hash, target) */
 export default function AnchorHrefPatterns() {
   return (
     <div>

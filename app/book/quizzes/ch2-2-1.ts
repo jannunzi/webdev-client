@@ -667,7 +667,7 @@ box-sizing: content-box;`,
   },
   {
     id: "2-1-button-default-type",
-    section: "1.3.7.7",
+    section: "1.3.6.7",
     kind: "concept",
     prompt:
       "Inside a <form>, what does a <button> do if you omit the type attribute?",
@@ -686,7 +686,7 @@ box-sizing: content-box;`,
   },
   {
     id: "2-1-button-type-button",
-    section: "1.3.7.7",
+    section: "1.3.6.7",
     kind: "syntax",
     prompt:
       "Which attribute stops a <button> from submitting the surrounding form?",
@@ -702,7 +702,7 @@ box-sizing: content-box;`,
   },
   {
     id: "2-1-button-vs-input",
-    section: "1.3.7.7",
+    section: "1.3.6.7",
     kind: "concept",
     prompt:
       "Why does the lab prefer <button> over <input type=\"submit\">?",

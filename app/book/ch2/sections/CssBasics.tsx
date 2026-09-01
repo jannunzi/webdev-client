@@ -2,6 +2,7 @@ import Section from "../../components/Section";
 import SectionLink from "../../components/SectionLink";
 import CodeBlock from "../../components/CodeBlock";
 import LiveDemo from "../../components/LiveDemo";
+import { OnYourOwn, WithAI } from "../../components/Practice";
 import StyleAttribute from "@/app/labs/lab2/intermediates/2-1-1-StyleAttribute";
 import CssImport from "@/app/labs/lab2/intermediates/2-1-2-CssImport";
 import IdSelectors from "@/app/labs/lab2/intermediates/2-1-3-IdSelectors";
@@ -64,13 +65,19 @@ export default function CssBasics() {
           <StyleAttribute />
         </LiveDemo>
       
-        <p>
-          <strong>On your own.</strong>{" "}Still in{" "}
+        <OnYourOwn>
+          Still in{" "}
           <code>app/labs/lab2/page.tsx</code>, add another paragraph with a{" "}
           <code>style</code>{" "}attribute that sets a green background and yellow
           foreground text (camelCase: <code>backgroundColor</code>{" "}and{" "}
           <code>color</code>).
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/page.tsx, keep my personal green-on-yellow paragraph unchanged. After the sample blue-on-white style-attribute paragraph, add one more sample paragraph with id wd-ai-style-attr that uses a style attribute for a purple background and white text. Not a sentence about me.`}
+        >
+          Paste this prompt to add a second sample color combo — then confirm
+          the personal green-on-yellow paragraph is still there:
+        </WithAI>
       </Section>
 
       <Section
@@ -172,12 +179,18 @@ export default function Lab2() {
           <code>p</code>{" "}on the page.
         </p>
       
-        <p>
-          <strong>On your own.</strong>{" "}In <code>index.css</code>, add a second tag
+        <OnYourOwn>
+          In <code>index.css</code>, add a second tag
           rule that styles every <code>h3</code>{" "}(pick a background and text color),
           then confirm it applies to the headings already in{" "}
           <code>page.tsx</code>{" "}without changing their markup.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/index.css, keep my personal h3 tag rule unchanged. After the sample p rule, add one more sample tag rule for h2 with a distinct background and text color (for example navy background and white text). Do not change any markup in page.tsx.`}
+        >
+          Paste this prompt to add an extra sample tag rule — then reload Lab 2
+          and confirm every h2 picks it up without markup changes:
+        </WithAI>
       </Section>
 
       <Section
@@ -242,13 +255,19 @@ p#wd-id-selector-2 {
           <IdSelectors />
         </LiveDemo>
       
-        <p>
-          <strong>On your own.</strong>{" "}Add a third paragraph in{" "}
+        <OnYourOwn>
+          Add a third paragraph in{" "}
           <code>page.tsx</code>{" "}with a new id (for example{" "}
           <code>wd-id-selector-3</code>) and a matching{" "}
           <code>p#…</code>{" "}rule in <code>index.css</code>{" "}with its own color
           scheme — leave the other two ids unchanged.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/page.tsx and app/labs/lab2/index.css, keep my personal third id paragraph (for example wd-id-selector-3) unchanged. After the sample wd-id-selector-1 and wd-id-selector-2 paragraphs, add one more sample paragraph with id wd-ai-id-selector and a matching p#wd-ai-id-selector rule with its own background and text color. Do not restyle the other ids.`}
+        >
+          Paste this prompt to add a fourth sample id — then confirm only that
+          new paragraph changes color:
+        </WithAI>
       </Section>
 
       <Section
@@ -301,13 +320,19 @@ p#wd-id-selector-2 {
           <ClassSelectors />
         </LiveDemo>
       
-        <p>
-          <strong>On your own.</strong>{" "}Still in <code>page.tsx</code>, invent a
+        <OnYourOwn>
+          Still in <code>page.tsx</code>, invent a
           second class (for example <code>wd-your-class</code>) in{" "}
           <code>index.css</code>{" "}and apply it to both a{" "}
           <code>p</code>{" "}and an <code>h4</code>{" "}so two different tags share
           one look.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/page.tsx and app/labs/lab2/index.css, keep my personal class (wd-your-class or similar) unchanged. After the sample wd-class-selector block, add a sample class .wd-ai-class-selector with a distinct background and text color, and apply it to both a p and an h4. Not my personal class.`}
+        >
+          Paste this prompt to add a second sample class on two tags — then
+          confirm your personal class still only styles your elements:
+        </WithAI>
       </Section>
 
       <Section
@@ -388,12 +413,18 @@ p#wd-id-selector-2 {
           <DocumentStructureSelectors />
         </LiveDemo>
       
-        <p>
-          <strong>On your own.</strong>{" "}Extend the nested structure in{" "}
+        <OnYourOwn>
+          Extend the nested structure in{" "}
           <code>page.tsx</code>{" "}with one more element and a new descendant or
           child selector in <code>index.css</code>{" "}— then verify only the intended
           node changes color when you tweak the combinator.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/page.tsx and app/labs/lab2/index.css, keep my extra nested element and its selector unchanged. After the sample .wd-selector-1 .wd-selector-3 and child combinator rules, add a sample span with class wd-ai-selector-5 nested inside .wd-selector-3 and a descendant rule .wd-selector-1 .wd-ai-selector-5 with its own background and text color. Do not restyle my personal node.`}
+        >
+          Paste this prompt to add one extra sample descendant — then tweak the
+          combinator and confirm only that new node changes color:
+        </WithAI>
       </Section>
 
       <Section
@@ -438,12 +469,18 @@ p#wd-id-selector-2 {
           overriding it.
         </p>
       
-        <p>
-          <strong>On your own.</strong>{" "}In <code>index.css</code>, deliberately
+        <OnYourOwn>
+          In <code>index.css</code>, deliberately
           conflict a tag rule, a class rule, and an id rule on the same property for
           one element in <code>page.tsx</code>, then use DevTools to confirm
           specificity (and source order) pick the winner you expect.
-        </p>
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/labs/lab2/index.css and app/labs/lab2/page.tsx, keep my personal specificity experiment unchanged. Add a sample paragraph with id wd-ai-cascade and class wd-ai-cascade that also matches a p tag rule, all three setting background-color to different colors (tag green, class yellow, id red). Put the id rule last. Add a short comment above the rules naming which selector should win.`}
+        >
+          Paste this prompt to add a labeled sample conflict — then use DevTools
+          to confirm the id background wins:
+        </WithAI>
       </Section>
     </>
   );
