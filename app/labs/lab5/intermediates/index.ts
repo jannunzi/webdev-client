@@ -1,35 +1,23 @@
-export { default as HttpMethods } from "./5-2-1-HttpMethods";
-export { default as StatusCodes } from "./5-2-2-StatusCodes";
-export { default as GetHandler } from "./5-3-1-GetHandler";
-export { default as QueryHandler } from "./5-3-2-QueryHandler";
-export { default as PathHandler } from "./5-3-3-PathHandler";
-export { default as PostHandler } from "./5-3-4-PostHandler";
-export { default as PutDelete } from "./5-3-5-PutDelete";
-export { default as ClientGet } from "./5-4-1-ClientGet";
-export { default as ClientPost } from "./5-4-2-ClientPost";
-export { default as ClientCrud } from "./5-4-3-ClientCrud";
-export { default as ServerFetch } from "./5-5-1-ServerFetch";
-export { default as ServerActionDemo } from "./5-6-1-ServerAction";
-export { default as TwoServers } from "./5-7-1-TwoServers";
-export { default as RemoteHello } from "./5-7-2-RemoteHello";
-export { default as CorsNote } from "./5-7-3-CorsNote";
-export { default as RemoteTodos } from "./5-7-4-RemoteTodos";
+export { default as Environment } from "./5-2-1-Environment";
+export { default as PathParameters } from "./5-2-2-1-PathParameters";
+export { default as QueryParameters } from "./5-2-2-2-QueryParameters";
+export { default as WorkingWithObjects } from "./5-2-3-WorkingWithObjects";
+export { default as WorkingWithArrays } from "./5-2-4-WorkingWithArrays";
+export { default as HttpClient } from "./5-2-5-HttpClient";
+export { default as WorkingWithObjectsAsynchronously } from "./5-2-5-WorkingWithObjectsAsync";
+export { default as WorkingWithArraysAsynchronously } from "./5-2-6-WorkingWithArraysAsync";
+export { default as HelloRoute } from "./5-3-1-HelloRoute";
+export { default as CalculatorNextWebApiClient } from "./5-3-1-Calculator";
 
 export const LAB5_INTERMEDIATES = [
-  { slug: "5-2-1-HttpMethods", title: "5.2.1 HTTP Methods", file: "5-2-1-HttpMethods" },
-  { slug: "5-2-2-StatusCodes", title: "5.2.2 Status Codes", file: "5-2-2-StatusCodes" },
-  { slug: "5-3-1-GetHandler", title: "5.3.1 GET Handler", file: "5-3-1-GetHandler" },
-  { slug: "5-3-2-QueryHandler", title: "5.3.2 Query Parameters", file: "5-3-2-QueryHandler" },
-  { slug: "5-3-3-PathHandler", title: "5.3.3 Path Parameters", file: "5-3-3-PathHandler" },
-  { slug: "5-3-4-PostHandler", title: "5.3.4 POST Handler", file: "5-3-4-PostHandler" },
-  { slug: "5-3-5-PutDelete", title: "5.3.5 PUT and DELETE", file: "5-3-5-PutDelete" },
-  { slug: "5-4-1-ClientGet", title: "5.4.1 Client GET", file: "5-4-1-ClientGet" },
-  { slug: "5-4-2-ClientPost", title: "5.4.2 Client POST", file: "5-4-2-ClientPost" },
-  { slug: "5-4-3-ClientCrud", title: "5.4.3 Client CRUD", file: "5-4-3-ClientCrud" },
-  { slug: "5-5-1-ServerFetch", title: "5.5.1 Server Component Fetch", file: "5-5-1-ServerFetch" },
-  { slug: "5-6-1-ServerAction", title: "5.6.1 Server Action", file: "5-6-1-ServerAction" },
-  { slug: "5-7-1-TwoServers", title: "5.7.1 Two Servers", file: "5-7-1-TwoServers" },
-  { slug: "5-7-2-RemoteHello", title: "5.7.2 Remote Hello", file: "5-7-2-RemoteHello" },
-  { slug: "5-7-3-CorsNote", title: "5.7.3 CORS", file: "5-7-3-CorsNote" },
-  { slug: "5-7-4-RemoteTodos", title: "5.7.4 Remote Todos", file: "5-7-4-RemoteTodos" },
+  { slug: "5-2-1-Environment", title: "5.2.1 Environment", file: "5-2-1-Environment" },
+  { slug: "5-2-2-1-PathParameters", title: "5.2.2.1 Path Parameters", file: "5-2-2-1-PathParameters" },
+  { slug: "5-2-2-2-QueryParameters", title: "5.2.2.2 Query Parameters", file: "5-2-2-2-QueryParameters" },
+  { slug: "5-2-3-WorkingWithObjects", title: "5.2.3 Working With Objects", file: "5-2-3-WorkingWithObjects" },
+  { slug: "5-2-4-WorkingWithArrays", title: "5.2.4 Working With Arrays", file: "5-2-4-WorkingWithArrays" },
+  { slug: "5-2-5-HttpClient", title: "5.2.5 HTTP Client", file: "5-2-5-HttpClient" },
+  { slug: "5-2-5-WorkingWithObjectsAsync", title: "5.2.5.5 Objects Async", file: "5-2-5-WorkingWithObjectsAsync" },
+  { slug: "5-2-6-WorkingWithArraysAsync", title: "5.2.6 Arrays Async", file: "5-2-6-WorkingWithArraysAsync" },
+  { slug: "5-3-1-HelloRoute", title: "5.3 Next.js Hello Route", file: "5-3-1-HelloRoute" },
+  { slug: "5-3-1-Calculator", title: "5.3.1 Next.js Calculator", file: "5-3-1-Calculator" },
 ] as const;

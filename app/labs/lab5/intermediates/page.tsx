@@ -6,10 +6,10 @@ export default function Lab5IntermediatesIndex() {
     <div id="wd-lab5-intermediates">
       <h2>Lab 5 Intermediate Steps</h2>
       <p>
-        Progressive HTTP examples from Chapter 5: Route Handlers in
-        this Next.js app, then a separate Express server the UI calls
-        over HTTP. Import these components into the book chapter
-        instead of screenshots.
+        Progressive Express HTTP exercises from Chapter 5, then the Next.js
+        Route Handler calculator. Run{" "}
+        <code>npm run server:dev</code> in a second terminal so remote
+        demos can reach <code>http://localhost:4000</code>.
       </p>
       <ul>
         <li>

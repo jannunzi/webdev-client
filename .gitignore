@@ -33,9 +33,10 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 !.env.example
-!server/.env.example
+!kambaz-node-server-app/.env.example
 
-# separate Node API
+# sibling Express server (Chapter 5)
+/kambaz-node-server-app/node_modules
 /server/node_modules
 
 # vercel

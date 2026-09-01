@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import "@/app/labs/lab2/tailwind/utilities.css";
 import CourseCard from "./CourseCard";
 import { emptyCourse, type Course } from "@/app/api/kambaz/types";
-import { apiUrl } from "@/app/lib/apiUrl";
 import { useAccountContext } from "../account/AccountContext";
-import * as db from "../database";
+import * as client from "../courses/client";
 
 export default function Dashboard() {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -14,45 +13,44 @@ export default function Dashboard() {
   const { currentUser } = useAccountContext();
 
   async function loadCourses() {
-    const response = await fetch(apiUrl("/api/courses"));
-    setCourses(await response.json());
+    try {
+      const data = currentUser
+        ? await client.findMyCourses()
+        : await client.fetchAllCourses();
+      setCourses(data);
+    } catch {
+      setCourses([]);
+    }
   }
 
   useEffect(() => {
     loadCourses();
-  }, []);
+    // Reload when the signed-in user changes (session-filtered vs public list).
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- loadCourses closes over currentUser
+  }, [currentUser]);
 
   async function addCourse() {
-    await fetch(apiUrl("/api/courses"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(course),
-    });
-    await loadCourses();
+    try {
+      if (currentUser) {
+        await client.createCourse(course);
+      } else {
+        await client.createCoursePublic(course);
+      }
+      await loadCourses();
+    } catch {
+      /* companion server may be down */
+    }
   }
 
   async function updateCourse() {
-    await fetch(apiUrl(`/api/courses/${course._id}`), {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(course),
-    });
+    await client.updateCourse(course);
     await loadCourses();
   }
 
   async function deleteCourse(courseId: string) {
-    await fetch(apiUrl(`/api/courses/${courseId}`), { method: "DELETE" });
+    await client.deleteCourse(courseId);
     await loadCourses();
   }
-
-  const visibleCourses = currentUser
-    ? courses.filter((c) =>
-        db.enrollments.some(
-          (enrollment) =>
-            enrollment.user === currentUser._id && enrollment.course === c._id,
-        ),
-      )
-    : courses;
 
   return (
     <div id="wd-dashboard">
@@ -93,13 +91,13 @@ export default function Dashboard() {
         id="wd-course-description"
       />
       <hr />
-      <h2 id="wd-dashboard-published">Published Courses ({visibleCourses.length})</h2>
+      <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2>
       <hr />
       <div
         id="wd-dashboard-courses"
         className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
       >
-        {visibleCourses.map((c) => (
+        {courses.map((c) => (
           <CourseCard
             key={c._id}
             {...c}

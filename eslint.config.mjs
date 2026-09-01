@@ -13,6 +13,7 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
     "server/**",
+    "kambaz-node-server-app/**",
   ]),
 ]);
 

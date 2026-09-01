@@ -28,7 +28,7 @@ export default function Labs() {
         </li>
         <li>
           <Link href="/labs/lab5" id="wd-lab5-link">
-            Lab 5: HTTP APIs
+            Lab 5: RESTful Web APIs
           </Link>
         </li>
         <li>
@@ -69,6 +69,26 @@ export default function Labs() {
             rel="noreferrer"
           >
             GitHub
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/jannunzi"
+            id="wd-github-node"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Node.js HTTP Server GitHub
+          </a>
+        </li>
+        <li>
+          <a
+            href="http://localhost:4000"
+            id="wd-http-server"
+            target="_blank"
+            rel="noreferrer"
+          >
+            HTTP Server (local :4000)
           </a>
         </li>
       </ul>

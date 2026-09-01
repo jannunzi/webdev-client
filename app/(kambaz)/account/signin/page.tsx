@@ -3,31 +3,33 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import * as db from "../../database";
-import { useAccountContext } from "../AccountContext";
+import { useAccountContext, type User } from "../AccountContext";
+import * as client from "../client";
 
 export default function Signin() {
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
+  const [error, setError] = useState("");
   const { setCurrentUser } = useAccountContext();
   const router = useRouter();
 
-  const signin = () => {
-    const user = db.users.find(
-      (u) =>
-        u.username === credentials.username &&
-        u.password === credentials.password,
-    );
-    if (!user) return;
-    setCurrentUser(user);
-    router.push("/dashboard");
+  const signin = async () => {
+    try {
+      const user = (await client.signin(credentials)) as User;
+      setCurrentUser(user);
+      setError("");
+      router.push("/dashboard");
+    } catch {
+      setError("Unable to login. Try again later.");
+    }
   };
 
   return (
     <div id="wd-signin-screen">
       <h3>Sign in</h3>
+      {error ? <p className="text-red-700">{error}</p> : null}
       <input
         placeholder="username"
         className="wd-username mb-2 block rounded border border-neutral-300 px-3 py-1.5"

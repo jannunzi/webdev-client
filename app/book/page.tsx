@@ -31,7 +31,7 @@ export default function BookHome() {
         </li>
         <li>
           <Link href="/book/ch5">
-            Chapter 5 — Server-Side HTTP APIs
+            Chapter 5 — Implementing RESTful Web APIs with Express.js
           </Link>
         </li>
       </ul>
