@@ -1,38 +1,71 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import "@/app/labs/lab2/tailwind/utilities.css";
 import Module from "./Module";
 import Lesson from "./Lesson";
 import ModuleControlButtons from "./ModuleControlButtons";
 import ModulesControls from "./ModulesControls";
-import { useModulesStore } from "../../../store/modulesStore";
+import type { CourseModule } from "@/app/api/kambaz/types";
 
 export default function Modules() {
   const { cid } = useParams();
   const courseId = typeof cid === "string" ? cid : "RS101";
-  const modules = useModulesStore((state) => state.modules);
-  const addModule = useModulesStore((state) => state.addModule);
-  const deleteModule = useModulesStore((state) => state.deleteModule);
-  const updateModule = useModulesStore((state) => state.updateModule);
-  const editModule = useModulesStore((state) => state.editModule);
+  const [modules, setModules] = useState<CourseModule[]>([]);
   const [moduleName, setModuleName] = useState("");
-  const courseModules = modules.filter((module) => module.course === courseId);
+
+  async function loadModules() {
+    const response = await fetch(`/api/modules?course=${courseId}`);
+    setModules(await response.json());
+  }
+
+  useEffect(() => {
+    loadModules();
+  }, [courseId]);
+
+  async function addModule() {
+    if (!moduleName.trim()) return;
+    await fetch("/api/modules", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: moduleName, course: courseId }),
+    });
+    setModuleName("");
+    await loadModules();
+  }
+
+  async function deleteModule(moduleId: string) {
+    await fetch(`/api/modules/${moduleId}`, { method: "DELETE" });
+    await loadModules();
+  }
+
+  async function updateModule(module: CourseModule) {
+    await fetch(`/api/modules/${module._id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(module),
+    });
+    await loadModules();
+  }
+
+  function editModule(moduleId: string) {
+    setModules((current) =>
+      current.map((m) =>
+        m._id === moduleId ? { ...m, editing: true } : m,
+      ),
+    );
+  }
 
   return (
     <div className="wd-modules">
       <ModulesControls
         moduleName={moduleName}
         setModuleName={setModuleName}
-        addModule={() => {
-          if (!moduleName.trim()) return;
-          addModule({ name: moduleName, course: courseId });
-          setModuleName("");
-        }}
+        addModule={addModule}
       />
       <ul id="wd-modules" className="m-0 list-none p-0">
-        {courseModules.map((module) => (
+        {modules.map((module) => (
           <Module
             key={module._id}
             extra={
@@ -48,7 +81,13 @@ export default function Modules() {
                   className="w-1/2 rounded border border-neutral-300 px-2 py-1 text-base"
                   defaultValue={module.name}
                   onChange={(e) =>
-                    updateModule({ ...module, name: e.target.value })
+                    setModules((current) =>
+                      current.map((m) =>
+                        m._id === module._id
+                          ? { ...m, name: e.target.value }
+                          : m,
+                      ),
+                    )
                   }
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {

@@ -404,6 +404,59 @@ export const CH4_TOC: TocEntry[] = [
   { id: "sec-4-12", label: "4.12 Delivery" },
 ];
 
+export const CH5_TOC: TocEntry[] = [
+  { id: "intro", label: "Introduction" },
+  { id: "sec-5-1", label: "5.1 Learning Objectives" },
+  {
+    id: "sec-5-2",
+    label: "5.2 HTTP Fundamentals",
+    children: [
+      { id: "sec-5-2-1", label: "5.2.1 Requests, Responses, and URLs" },
+      { id: "sec-5-2-2", label: "5.2.2 HTTP Methods" },
+      { id: "sec-5-2-3", label: "5.2.3 Status Codes" },
+      { id: "sec-5-2-4", label: "5.2.4 REST Resources and JSON" },
+    ],
+  },
+  {
+    id: "sec-5-3",
+    label: "5.3 Route Handlers",
+    children: [
+      { id: "sec-5-3-1", label: "5.3.1 A GET Handler" },
+      { id: "sec-5-3-2", label: "5.3.2 Query Parameters" },
+      { id: "sec-5-3-3", label: "5.3.3 Path Parameters" },
+      { id: "sec-5-3-4", label: "5.3.4 POST and a JSON Body" },
+      { id: "sec-5-3-5", label: "5.3.5 PUT and DELETE" },
+    ],
+  },
+  {
+    id: "sec-5-4",
+    label: "5.4 Fetching from Client Components",
+    children: [
+      { id: "sec-5-4-1", label: "5.4.1 Fetching on Mount" },
+      { id: "sec-5-4-2", label: "5.4.2 POST from a Form" },
+      { id: "sec-5-4-3", label: "5.4.3 Updating and Deleting" },
+    ],
+  },
+  { id: "sec-5-5", label: "5.5 Fetching from Server Components" },
+  { id: "sec-5-6", label: "5.6 Server Actions versus Route Handlers" },
+  { id: "sec-5-7", label: "5.7 Exercises" },
+  { id: "sec-5-8", label: "5.8 Check Your Understanding" },
+  {
+    id: "sec-5-9",
+    label: "5.9 Implementing Kambaz HTTP APIs",
+    children: [
+      { id: "sec-5-9-1", label: "5.9.1 An In-Memory Kambaz Store" },
+      { id: "sec-5-9-2", label: "5.9.2 Courses API" },
+      { id: "sec-5-9-3", label: "5.9.3 Dashboard through fetch" },
+      { id: "sec-5-9-4", label: "5.9.4 Modules API" },
+      { id: "sec-5-9-5", label: "5.9.5 Modules Screen through fetch" },
+      { id: "sec-5-9-6", label: "5.9.6 Assignments (On Your Own)" },
+      { id: "sec-5-9-7", label: "5.9.7 Exercises" },
+    ],
+  },
+  { id: "sec-5-10", label: "5.10 Delivery" },
+];
+
 export const CHAPTERS: ChapterToc[] = [
   {
     id: "ch1",
@@ -428,6 +481,12 @@ export const CHAPTERS: ChapterToc[] = [
     label: "Chapter 4 — Client State",
     href: "/book/ch4",
     sections: CH4_TOC,
+  },
+  {
+    id: "ch5",
+    label: "Chapter 5 — HTTP APIs",
+    href: "/book/ch5",
+    sections: CH5_TOC,
   },
 ];
 

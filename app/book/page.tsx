@@ -29,6 +29,11 @@ export default function BookHome() {
             Chapter 4 — Managing Client State
           </Link>
         </li>
+        <li>
+          <Link href="/book/ch5">
+            Chapter 5 — Server-Side HTTP APIs with Next.js Route Handlers
+          </Link>
+        </li>
       </ul>
     </div>
   );

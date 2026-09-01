@@ -27,6 +27,11 @@ export default function Labs() {
           </Link>
         </li>
         <li>
+          <Link href="/labs/lab5" id="wd-lab5-link">
+            Lab 5: HTTP APIs
+          </Link>
+        </li>
+        <li>
           <Link href="/labs/lab2/intermediates" id="wd-lab2-steps-link">
             Lab 2 Intermediate Steps
           </Link>
@@ -39,6 +44,11 @@ export default function Labs() {
         <li>
           <Link href="/labs/lab4/intermediates" id="wd-lab4-steps-link">
             Lab 4 Intermediate Steps
+          </Link>
+        </li>
+        <li>
+          <Link href="/labs/lab5/intermediates" id="wd-lab5-steps-link">
+            Lab 5 Intermediate Steps
           </Link>
         </li>
         <li>

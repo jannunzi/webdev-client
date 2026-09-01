@@ -1,23 +1,49 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "@/app/labs/lab2/tailwind/utilities.css";
 import CourseCard from "./CourseCard";
-import {
-  emptyCourse,
-  useCoursesStore,
-  type Course,
-} from "../store/coursesStore";
+import { emptyCourse, type Course } from "@/app/api/kambaz/types";
 import { useAccountContext } from "../account/AccountContext";
 import * as db from "../database";
 
 export default function Dashboard() {
-  const courses = useCoursesStore((state) => state.courses);
-  const addCourse = useCoursesStore((state) => state.addCourse);
-  const deleteCourse = useCoursesStore((state) => state.deleteCourse);
-  const updateCourse = useCoursesStore((state) => state.updateCourse);
+  const [courses, setCourses] = useState<Course[]>([]);
   const [course, setCourse] = useState<Course>(emptyCourse);
   const { currentUser } = useAccountContext();
+
+  async function loadCourses() {
+    const response = await fetch("/api/courses");
+    setCourses(await response.json());
+  }
+
+  useEffect(() => {
+    loadCourses();
+  }, []);
+
+  async function addCourse() {
+    await fetch("/api/courses", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(course),
+    });
+    await loadCourses();
+  }
+
+  async function updateCourse() {
+    await fetch(`/api/courses/${course._id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(course),
+    });
+    await loadCourses();
+  }
+
+  async function deleteCourse(courseId: string) {
+    await fetch(`/api/courses/${courseId}`, { method: "DELETE" });
+    await loadCourses();
+  }
+
   const visibleCourses = currentUser
     ? courses.filter((c) =>
         db.enrollments.some(
@@ -37,7 +63,7 @@ export default function Dashboard() {
           type="button"
           className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
           id="wd-add-new-course-click"
-          onClick={() => addCourse(course)}
+          onClick={addCourse}
         >
           Add
         </button>
@@ -45,7 +71,7 @@ export default function Dashboard() {
           type="button"
           className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
           id="wd-update-course-click"
-          onClick={() => updateCourse(course)}
+          onClick={updateCourse}
         >
           Update
         </button>
