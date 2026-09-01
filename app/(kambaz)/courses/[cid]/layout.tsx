@@ -7,6 +7,7 @@ import "@/app/labs/lab2/tailwind/utilities.css";
 import CourseNavigation from "./Navigation";
 import Breadcrumb from "./Breadcrumb";
 import type { Course } from "@/app/api/kambaz/types";
+import { apiUrl } from "@/app/lib/apiUrl";
 
 export default function CoursesLayout({
   children,
@@ -20,7 +21,7 @@ export default function CoursesLayout({
 
   useEffect(() => {
     if (!courseId) return;
-    fetch(`/api/courses/${courseId}`)
+    fetch(apiUrl(`/api/courses/${courseId}`))
       .then((response) => (response.ok ? response.json() : undefined))
       .then(setCourse);
   }, [courseId]);

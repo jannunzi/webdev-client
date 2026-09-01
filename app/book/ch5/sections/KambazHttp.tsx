@@ -11,8 +11,8 @@ import Link from "next/link";
 export default function KambazHttp() {
   return (
     <Section
-      id="sec-5-9"
-      title="5.9 Implementing Kambaz HTTP APIs"
+      id="sec-5-11"
+      title="5.11 Implementing Kambaz HTTP APIs"
     >
       <p>
         <ChapterLink to={4} />{" "}put courses and modules in Zustand so
@@ -21,22 +21,25 @@ export default function KambazHttp() {
         of truth behind <code>/api</code>. The screens still use{" "}
         <code>useState</code>{" "}for the form draft and the list they
         display; they <code>fetch</code>{" "}to load and to write. A
-        coverage checklist is in <SectionLink to="5.9.7" /> — use it
+        coverage checklist is in <SectionLink to="5.11.9" /> — use it
         after you have walked through the screens, not instead of
         wiring the APIs as you read.
       </p>
       <p>
         The store is still not MongoDB. It is a module-level array
         seeded from the JSON <SectionLink to="3.9.2" />{" "}already uses.
-        Restart the Next.js process and the seed returns. That is
-        enough to practice HTTP. A later chapter will swap the array
-        for a database without changing the URLs.
+        You will keep that array in the Next.js process{" "}
+        <em>and</em>{" "}a twin array in <code>server/</code>. Restart
+        either process and that seed returns. That is enough to
+        practice HTTP on both models from <SectionLink to="5.7.1" />.
+        A later chapter will swap the array for a database without
+        changing the URLs.
       </p>
 
       <Section
         level={3}
-        id="sec-5-9-1"
-        title="5.9.1 An In-Memory Kambaz Store"
+        id="sec-5-11-1"
+        title="5.11.1 An In-Memory Kambaz Store"
       >
         <p>
           Keep types and the empty course object in a file Client
@@ -197,8 +200,8 @@ export function deleteModule(id: string): CourseModule | undefined {
 
       <Section
         level={3}
-        id="sec-5-9-2"
-        title="5.9.2 Courses API"
+        id="sec-5-11-2"
+        title="5.11.2 Courses API"
       >
         <p>
           Collection routes live at{" "}
@@ -294,8 +297,8 @@ export async function DELETE(
 
       <Section
         level={3}
-        id="sec-5-9-3"
-        title="5.9.3 Dashboard through fetch"
+        id="sec-5-11-3"
+        title="5.11.3 Dashboard through fetch"
       >
         <p>
           Replace the Zustand hooks on Dashboard with{" "}
@@ -508,8 +511,8 @@ export default function CoursesLayout({
 
       <Section
         level={3}
-        id="sec-5-9-4"
-        title="5.9.4 Modules API"
+        id="sec-5-11-4"
+        title="5.11.4 Modules API"
       >
         <p>
           Modules are nested under a course in the UI, but the HTTP
@@ -546,7 +549,7 @@ export async function POST(request: Request) {
         <p>
           One module uses the same GET / PUT / DELETE pattern as a
           course. Create <code>app/api/modules/[id]/route.ts</code>{" "}
-          mirroring <SectionLink to="5.9.2" />. Open{" "}
+          mirroring <SectionLink to="5.11.2" />. Open{" "}
           <LocalUrl href="/api/modules?course=RS101" />{" "}and confirm
           only Rocket Propulsion modules appear.
         </p>
@@ -565,8 +568,8 @@ export async function POST(request: Request) {
 
       <Section
         level={3}
-        id="sec-5-9-5"
-        title="5.9.5 Modules Screen through fetch"
+        id="sec-5-11-5"
+        title="5.11.5 Modules Screen through fetch"
       >
         <p>
           The Modules page from <SectionLink to="4.10.4" />{" "}keeps the
@@ -715,62 +718,226 @@ export default function Modules() {
 
       <Section
         level={3}
-        id="sec-5-9-6"
-        title="5.9.6 Assignments (On Your Own)"
+        id="sec-5-11-6"
+        title="5.11.6 The Same Routes on Express"
+      >
+        <p>
+          <SectionLink to="5.7.2" />{" "}already has hello and todos on
+          Express. Kambaz needs the same course and module URLs there
+          so flipping <code>NEXT_PUBLIC_API_BASE</code>{" "}does not 404.
+          Seed <code>server/kambazStore.ts</code>{" "}with the same three
+          courses and their modules — copy values, do not{" "}
+          <code>import</code>{" "}from <code>app/api/kambaz</code>{" "}or
+          from <code>Database/*.json</code>. Render&apos;s root directory
+          is <code>server/</code>; those Next.js files are not on that
+          disk.
+        </p>
+        <p>
+          Mirror the Route Handler contract with{" "}
+          <code>app.get</code>{" "}/ <code>app.post</code>{" "}and{" "}
+          <code>:id</code>{" "}params. Status codes stay{" "}
+          <code>201</code>{" "}on create and{" "}
+          <code>404</code>{" "}when the id is missing:
+        </p>
+        <CodeBlock
+          language="ts"
+          name="Express courses"
+          file="server/index.ts"
+        >{`app.get("/api/courses", (_req, res) => {
+  res.json(getCourses());
+});
+
+app.post("/api/courses", (req, res) => {
+  res.status(201).json(addCourse(req.body ?? {}));
+});
+
+app.get("/api/courses/:id", (req, res) => {
+  const course = getCourse(req.params.id);
+  if (!course) {
+    res.status(404).json({ error: "Course not found" });
+    return;
+  }
+  res.json(course);
+});
+
+app.put("/api/courses/:id", (req, res) => {
+  const updated = updateCourse({ ...req.body, _id: req.params.id });
+  if (!updated) {
+    res.status(404).json({ error: "Course not found" });
+    return;
+  }
+  res.json(updated);
+});
+
+app.delete("/api/courses/:id", (req, res) => {
+  const deleted = deleteCourse(req.params.id);
+  if (!deleted) {
+    res.status(404).json({ error: "Course not found" });
+    return;
+  }
+  res.json(deleted);
+});`}</CodeBlock>
+        <p>
+          Modules use <code>req.query.course</code>{" "}the way the Route
+          Handler used <code>searchParams.get(&quot;course&quot;)</code>.
+          Restart Express and open{" "}
+          <code>http://localhost:4000/api/courses</code>{" "}and{" "}
+          <code>http://localhost:4000/api/modules?course=RS101</code>.
+          The JSON shape must match{" "}
+          <SectionLink to="5.11.2" />{" "}and{" "}
+          <SectionLink to="5.11.4" />{" "}so the existing Dashboard and
+          Modules <code>fetch</code>{" "}calls can aim at either host.
+        </p>
+        <OnYourOwn>
+          POST a course to
+          localhost:4000 from the browser console and confirm GET{" "}
+          <code>/api/courses</code>{" "}on 4000 lists it — and that GET{" "}
+          on port 3000 does <em>not</em>, because the stores do not
+          share memory.
+        </OnYourOwn>
+        <WithAI
+          prompt={`Do not rewrite my Next.js Route Handlers. In server/index.ts, keep my course routes. Add sample GET/POST /api/modules and GET/PUT/DELETE /api/modules/:id that call getModules, addModule, getModule, updateModule, and deleteModule. Filter GET by req.query.course.`}
+        >
+          Ask the assistant to add the module routes — you still
+          compare the two ports yourself:
+        </WithAI>
+      </Section>
+
+      <Section
+        level={3}
+        id="sec-5-11-7"
+        title="5.11.7 Pointing Kambaz at Render"
+      >
+        <p>
+          <SectionLink to="5.11.3" />{" "}first called{" "}
+          <code>fetch(&quot;/api/courses&quot;)</code>{" "}— same origin,
+          Route Handlers. Wrap those paths with the helper from{" "}
+          <SectionLink to="5.7.4" />{" "}so Dashboard, the course
+          layout breadcrumb, and Modules all follow{" "}
+          <code>NEXT_PUBLIC_API_BASE</code>:
+        </p>
+        <CodeBlock
+          language="ts"
+          name="apiUrl on Dashboard"
+          file="app/(kambaz)/dashboard/page.tsx"
+        >{`import { apiUrl } from "@/app/lib/apiUrl";
+
+async function loadCourses() {
+  const response = await fetch(apiUrl("/api/courses"));
+  setCourses(await response.json());
+}
+
+async function addCourse() {
+  await fetch(apiUrl("/api/courses"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(course),
+  });
+  await loadCourses();
+}`}</CodeBlock>
+        <p>
+          Modules becomes{" "}
+          <code>apiUrl(\`/api/modules?course=${"{courseId}"}\`)</code>.
+          The breadcrumb becomes{" "}
+          <code>apiUrl(\`/api/courses/${"{courseId}"}\`)</code>. Empty
+          base — the default in this book&apos;s live demos — keeps
+          everything on Route Handlers.{" "}
+          <code>http://localhost:4000</code>{" "}aims at your Express
+          process. The Render origin from{" "}
+          <SectionLink to="5.8.4" />{" "}aims at the deployed API.
+          Restart <code>next dev</code>{" "}after changing the env var.
+        </p>
+        <p>
+          Remember the two stores are not the same memory. A course
+          you Add while pointed at Render will not appear if you clear
+          the env var and hit Route Handlers, and a Render free
+          instance that slept will make the first Dashboard load
+          slow. That is the separate-server model working as designed.
+        </p>
+        <OnYourOwn>
+          Point{" "}
+          <code>NEXT_PUBLIC_API_BASE</code>{" "}at localhost:4000, Add a
+          course on Dashboard, then clear the var and confirm the new
+          course is gone (different store). Put the var back and
+          confirm it is still on Express.
+        </OnYourOwn>
+        <WithAI
+          prompt={`In app/(kambaz)/dashboard/page.tsx, keep my CRUD. Replace any remaining fetch("/api/courses") strings with apiUrl("/api/courses") and the id URLs with apiUrl(\`/api/courses/\${id}\`). Import apiUrl from @/app/lib/apiUrl. Do not change the UI.`}
+        >
+          Ask the assistant to wrap the remaining fetches — you still
+          flip the env var:
+        </WithAI>
+      </Section>
+
+      <Section
+        level={3}
+        id="sec-5-11-8"
+        title="5.11.8 Assignments (On Your Own)"
       >
         <p>
           Assignments stay your work, the same way{" "}
           <SectionLink to="4.10.6" />{" "}left the Zustand store to you.
-          Follow the courses and modules pattern:
+          Follow the courses and modules pattern on{" "}
+          <em>both</em>{" "}server models:
         </p>
         <ul>
           <li>
             Add <code>get</code>/<code>add</code>/<code>update</code>/
-            <code>delete</code>{" "}for assignments on the in-memory store,
-            seeded from <code>assignments.json</code>.
+            <code>delete</code>{" "}for assignments on the Next.js
+            in-memory store <em>and</em>{" "}on{" "}
+            <code>server/kambazStore.ts</code>, seeded from the same{" "}
+            <code>assignments.json</code>{" "}values (copied, not
+            imported into Express).
           </li>
           <li>
             Create <code>/api/assignments</code>{" "}with GET (filter by{" "}
             <code>?course=</code>) and POST, plus{" "}
             <code>/api/assignments/[id]</code>{" "}with GET, PUT, and
-            DELETE.
+            DELETE as Route Handlers.
           </li>
           <li>
-            Load the list with <code>fetch</code>{" "}on the Assignments
-            screen. + Assignment should POST (or navigate to the editor
-            and POST on Save).
+            Add the matching Express routes so the same paths work on
+            Render.
+          </li>
+          <li>
+            Load the list with <code>fetch(apiUrl(...))</code>{" "}on the
+            Assignments screen. + Assignment should POST (or navigate
+            to the editor and POST on Save).
           </li>
           <li>
             The editor loads one assignment with GET, Save uses PUT
             (or POST when the id is new), Cancel does not write.
           </li>
           <li>
-            Delete removes through <code>DELETE /api/assignments/[id]</code>.
+            Delete removes through{" "}
+            <code>DELETE</code>{" "}<code>/api/assignments/[id]</code>.
           </li>
         </ul>
         <p>
-          Do not stand up Express. Do not introduce MongoDB. The
-          grader will look for the same <code>wd-</code>{" "}ids from
-          earlier chapters and for network calls to{" "}
-          <code>/api/assignments</code>{" "}in the browser.
+          Do not introduce MongoDB. The grader will look for the same{" "}
+          <code>wd-</code>{" "}ids from earlier chapters and for network
+          calls to <code>/api/assignments</code>{" "}— same-origin or
+          prefixed with <code>NEXT_PUBLIC_API_BASE</code>.
         </p>
         <OnYourOwn>
           Create, edit, and delete
-          one assignment on RS101 and confirm the list on Home-adjacent
-          navigation still matches <code>/api/assignments?course=RS101</code>.
+          one assignment on RS101 against Route Handlers, then again
+          with the base set to Express, and confirm each list matches
+          that process&apos;s{" "}
+          <code>/api/assignments?course=RS101</code>.
         </OnYourOwn>
         <WithAI
-          prompt={`Do not implement the assignments API for me. List the files I should create (store functions, two route.ts files, and the screens to edit) as a short checklist matching Chapter 5's courses and modules pattern.`}
+          prompt={`Do not implement the assignments API for me. List the files I should create (Next.js store functions, two route.ts files, Express routes, and the screens to edit) as a short checklist matching Chapter 5's courses and modules pattern on both server models.`}
         >
           Ask the assistant for a file checklist — you still write the
-          handlers and screens:
+          handlers, Express routes, and screens:
         </WithAI>
       </Section>
 
-      <Section level={3} id="sec-5-9-7" title="5.9.7 Exercises">
+      <Section level={3} id="sec-5-11-9" title="5.11.9 Exercises">
         <p>
           Use this checklist to confirm the Kambaz HTTP APIs cover
-          every screen in <SectionLink to="5.9" />. Each item points
+          every screen in <SectionLink to="5.11" />. Each item points
           back to the section where you wired the worked example. Build
           in order as you read — this list is for checking coverage,
           not a substitute for the walkthroughs. Assignments stay On
@@ -779,31 +946,40 @@ export default function Modules() {
         <ol>
           <li>
             Add the in-memory Kambaz store and types (
-            <SectionLink to="5.9.1" />).
+            <SectionLink to="5.11.1" />).
           </li>
           <li>
             Implement <code>/api/courses</code>{" "}and{" "}
-            <code>/api/courses/[id]</code>{" "}(<SectionLink to="5.9.2" />).
+            <code>/api/courses/[id]</code>{" "}(<SectionLink to="5.11.2" />).
           </li>
           <li>
             Load and mutate Dashboard through <code>fetch</code>{" "}(
-            <SectionLink to="5.9.3" />).
+            <SectionLink to="5.11.3" />).
           </li>
           <li>
             Point the course breadcrumb at{" "}
-            <code>GET /api/courses/[id]</code>{" "}(<SectionLink to="5.9.3" />).
+            <code>GET /api/courses/[id]</code>{" "}(<SectionLink to="5.11.3" />).
           </li>
           <li>
             Implement <code>/api/modules</code>{" "}and{" "}
-            <code>/api/modules/[id]</code>{" "}(<SectionLink to="5.9.4" />).
+            <code>/api/modules/[id]</code>{" "}(<SectionLink to="5.11.4" />).
           </li>
           <li>
             Load and mutate Modules through <code>fetch</code>{" "}(
-            <SectionLink to="5.9.5" />).
+            <SectionLink to="5.11.5" />).
           </li>
           <li>
-            Implement Assignments through <code>/api</code>{" "}(On your
-            own, <SectionLink to="5.9.6" />).
+            Add matching courses and modules routes on Express (
+            <SectionLink to="5.11.6" />).
+          </li>
+          <li>
+            Wrap Kambaz fetches with <code>apiUrl</code>{" "}and point{" "}
+            <code>NEXT_PUBLIC_API_BASE</code>{" "}at localhost, then
+            Render (<SectionLink to="5.11.7" />).
+          </li>
+          <li>
+            Implement Assignments through <code>/api</code>{" "}on both
+            backends (On your own, <SectionLink to="5.11.8" />).
           </li>
         </ol>
       </Section>

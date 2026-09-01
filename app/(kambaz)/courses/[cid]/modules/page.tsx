@@ -8,6 +8,7 @@ import Lesson from "./Lesson";
 import ModuleControlButtons from "./ModuleControlButtons";
 import ModulesControls from "./ModulesControls";
 import type { CourseModule } from "@/app/api/kambaz/types";
+import { apiUrl } from "@/app/lib/apiUrl";
 
 export default function Modules() {
   const { cid } = useParams();
@@ -16,7 +17,7 @@ export default function Modules() {
   const [moduleName, setModuleName] = useState("");
 
   async function loadModules() {
-    const response = await fetch(`/api/modules?course=${courseId}`);
+    const response = await fetch(apiUrl(`/api/modules?course=${courseId}`));
     setModules(await response.json());
   }
 
@@ -26,7 +27,7 @@ export default function Modules() {
 
   async function addModule() {
     if (!moduleName.trim()) return;
-    await fetch("/api/modules", {
+    await fetch(apiUrl("/api/modules"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: moduleName, course: courseId }),
@@ -36,12 +37,12 @@ export default function Modules() {
   }
 
   async function deleteModule(moduleId: string) {
-    await fetch(`/api/modules/${moduleId}`, { method: "DELETE" });
+    await fetch(apiUrl(`/api/modules/${moduleId}`), { method: "DELETE" });
     await loadModules();
   }
 
   async function updateModule(module: CourseModule) {
-    await fetch(`/api/modules/${module._id}`, {
+    await fetch(apiUrl(`/api/modules/${module._id}`), {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(module),

@@ -357,19 +357,31 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
       "A Server Action is a function call from this app. /api/courses is an HTTP contract you can later put MongoDB behind.",
   },
   {
-    id: "5-no-express",
-    section: "5.1",
+    id: "5-two-models",
+    section: "5.7.1",
     kind: "concept",
-    prompt: "This chapter’s HTTP APIs run in…",
+    prompt: "Which two server models does this chapter teach?",
     choices: [
-      { id: "a", text: "A separate Express process on port 4000" },
-      { id: "b", text: "Next.js App Router Route Handlers in the same project" },
-      { id: "c", text: "MongoDB stored procedures" },
-      { id: "d", text: "Zustand middleware" },
+      {
+        id: "a",
+        text: "Only MongoDB collections and only Zustand stores",
+      },
+      {
+        id: "b",
+        text: "Next.js Route Handlers in the same app as the UI, and a separate Node/Express process the UI calls over HTTP",
+      },
+      {
+        id: "c",
+        text: "Only Express — Route Handlers are deprecated in this chapter",
+      },
+      {
+        id: "d",
+        text: "Only Server Actions — HTTP APIs are extra credit",
+      },
     ],
     answer: "b",
     explanation:
-      "There is no Express server. route.ts files under app/api are the API. MongoDB comes later.",
+      "Keep both tracks. Route Handlers are same-app APIs. Express is a second process you deploy to Render. Neither uses MongoDB yet.",
   },
   {
     id: "5-in-memory",
@@ -388,7 +400,7 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: "5-modules-query",
-    section: "5.9.4",
+    section: "5.11.4",
     kind: "syntax",
     prompt: "How does the Modules screen ask for RS101’s modules?",
     choices: [
@@ -462,17 +474,101 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: "5-assignments-oyo",
-    section: "5.9.6",
+    section: "5.11.8",
     kind: "concept",
     prompt: "How should Assignments persist in this chapter?",
     choices: [
-      { id: "a", text: "A new Express server on port 4000" },
-      { id: "b", text: "Route Handlers under /api/assignments talking to the in-memory store" },
-      { id: "c", text: "MongoDB collections created in this chapter" },
-      { id: "d", text: "Only Zustand, with no HTTP" },
+      { id: "a", text: "MongoDB collections created in this chapter" },
+      {
+        id: "b",
+        text: "The same /api/assignments HTTP contract on Route Handlers and on Express, talking to in-memory stores — no MongoDB",
+      },
+      { id: "c", text: "Only Zustand, with no HTTP" },
+      { id: "d", text: "Only a SQL file in public/" },
     ],
     answer: "b",
     explanation:
-      "Assignments are On Your Own but follow the same /api pattern as courses and modules. MongoDB is later.",
+      "Assignments are On Your Own but follow courses and modules on both server models. Switching NEXT_PUBLIC_API_BASE must not 404.",
+  },
+  {
+    id: "5-cors-why",
+    section: "5.7.3",
+    kind: "concept",
+    prompt: "Why does the Express server need CORS middleware?",
+    choices: [
+      { id: "a", text: "Express cannot send JSON without CORS" },
+      {
+        id: "b",
+        text: "A page on localhost:3000 (or Vercel) fetching localhost:4000 (or Render) is cross-origin; the browser hides the response without Access-Control-Allow-Origin",
+      },
+      { id: "c", text: "Same-origin Route Handlers also require the cors npm package" },
+      { id: "d", text: "CORS replaces HTTP status codes" },
+    ],
+    answer: "b",
+    explanation:
+      "Different scheme, host, or port is a different origin. OPTIONS preflight asks permission. Route Handlers on the same origin skip this.",
+  },
+  {
+    id: "5-api-base",
+    section: "5.7.4",
+    kind: "syntax",
+    prompt: "What does an empty NEXT_PUBLIC_API_BASE make apiUrl(\"/api/courses\") return?",
+    choices: [
+      { id: "a", text: "http://localhost:4000/api/courses" },
+      { id: "b", text: "/api/courses" },
+      { id: "c", text: "https://vercel.com/api/courses" },
+      { id: "d", text: "undefined" },
+    ],
+    answer: "b",
+    explanation:
+      "Empty base means same-origin Route Handlers. A Render or localhost:4000 origin prefixes that path.",
+  },
+  {
+    id: "5-next-public",
+    section: "5.7.4",
+    kind: "concept",
+    prompt: "Why must the API base env var start with NEXT_PUBLIC_?",
+    choices: [
+      { id: "a", text: "Render rejects any other prefix" },
+      {
+        id: "b",
+        text: "Client Components can only read env vars that Next.js inlines into the browser bundle",
+      },
+      { id: "c", text: "It enables MongoDB" },
+      { id: "d", text: "Without it Express will not listen" },
+    ],
+    answer: "b",
+    explanation:
+      "fetch in Dashboard and Lab 5 runs in the browser. NEXT_PUBLIC_API_BASE is visible there; a server-only var would be undefined.",
+  },
+  {
+    id: "5-render-root",
+    section: "5.8.2",
+    kind: "concept",
+    prompt: "When deploying the separate API to Render, what is the Web Service root directory?",
+    choices: [
+      { id: "a", text: "The repository root (so Render starts Next.js)" },
+      { id: "b", text: "server" },
+      { id: "c", text: "app/api" },
+      { id: "d", text: "node_modules" },
+    ],
+    answer: "b",
+    explanation:
+      "Root Directory server makes Render use server/package.json and npm start (tsx index.ts). The repo root is the Next.js app on Vercel.",
+  },
+  {
+    id: "5-frontend-origin",
+    section: "5.8.3",
+    kind: "concept",
+    prompt: "FRONTEND_ORIGIN on Render should be…",
+    choices: [
+      { id: "a", text: "The Render API URL itself" },
+      { id: "b", text: "The Next.js UI origin (Vercel and/or localhost:3000) allowed by CORS" },
+      { id: "c", text: "A MongoDB connection string" },
+      { id: "d", text: "The GitHub repository URL" },
+    ],
+    answer: "b",
+    explanation:
+      "CORS allow-lists the page that calls fetch. NEXT_PUBLIC_API_BASE is the opposite direction: the UI naming the API host.",
   },
 ];

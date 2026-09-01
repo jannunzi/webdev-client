@@ -10,6 +10,10 @@ export { default as ClientPost } from "./5-4-2-ClientPost";
 export { default as ClientCrud } from "./5-4-3-ClientCrud";
 export { default as ServerFetch } from "./5-5-1-ServerFetch";
 export { default as ServerActionDemo } from "./5-6-1-ServerAction";
+export { default as TwoServers } from "./5-7-1-TwoServers";
+export { default as RemoteHello } from "./5-7-2-RemoteHello";
+export { default as CorsNote } from "./5-7-3-CorsNote";
+export { default as RemoteTodos } from "./5-7-4-RemoteTodos";
 
 export const LAB5_INTERMEDIATES = [
   { slug: "5-2-1-HttpMethods", title: "5.2.1 HTTP Methods", file: "5-2-1-HttpMethods" },
@@ -24,4 +28,8 @@ export const LAB5_INTERMEDIATES = [
   { slug: "5-4-3-ClientCrud", title: "5.4.3 Client CRUD", file: "5-4-3-ClientCrud" },
   { slug: "5-5-1-ServerFetch", title: "5.5.1 Server Component Fetch", file: "5-5-1-ServerFetch" },
   { slug: "5-6-1-ServerAction", title: "5.6.1 Server Action", file: "5-6-1-ServerAction" },
+  { slug: "5-7-1-TwoServers", title: "5.7.1 Two Servers", file: "5-7-1-TwoServers" },
+  { slug: "5-7-2-RemoteHello", title: "5.7.2 Remote Hello", file: "5-7-2-RemoteHello" },
+  { slug: "5-7-3-CorsNote", title: "5.7.3 CORS", file: "5-7-3-CorsNote" },
+  { slug: "5-7-4-RemoteTodos", title: "5.7.4 Remote Todos", file: "5-7-4-RemoteTodos" },
 ] as const;

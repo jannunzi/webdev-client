@@ -31,7 +31,7 @@ export default function BookHome() {
         </li>
         <li>
           <Link href="/book/ch5">
-            Chapter 5 — Server-Side HTTP APIs with Next.js Route Handlers
+            Chapter 5 — Server-Side HTTP APIs
           </Link>
         </li>
       </ul>

@@ -11,6 +11,10 @@ import ClientPost from "../5-4-2-ClientPost";
 import ClientCrud from "../5-4-3-ClientCrud";
 import ServerFetch from "../5-5-1-ServerFetch";
 import ServerActionDemo from "../5-6-1-ServerAction";
+import TwoServers from "../5-7-1-TwoServers";
+import RemoteHello from "../5-7-2-RemoteHello";
+import CorsNote from "../5-7-3-CorsNote";
+import RemoteTodos from "../5-7-4-RemoteTodos";
 import { notFound } from "next/navigation";
 
 const STEPS: Record<string, ComponentType> = {
@@ -26,6 +30,10 @@ const STEPS: Record<string, ComponentType> = {
   "5-4-3-ClientCrud": ClientCrud,
   "5-5-1-ServerFetch": ServerFetch,
   "5-6-1-ServerAction": ServerActionDemo,
+  "5-7-1-TwoServers": TwoServers,
+  "5-7-2-RemoteHello": RemoteHello,
+  "5-7-3-CorsNote": CorsNote,
+  "5-7-4-RemoteTodos": RemoteTodos,
 };
 
 export default async function IntermediateStepPage({

@@ -14,7 +14,7 @@ export default function Intro() {
           Developing Full Stack Next.js Web Applications
         </p>
         <h1 className="mt-1 font-sans text-4xl font-semibold leading-tight">
-          Chapter 5 — Server-Side HTTP APIs with Next.js Route Handlers
+          Chapter 5 — Server-Side HTTP APIs
         </h1>
         <p className="text-neutral-600">Dr. Jose Annunziato</p>
       </header>
@@ -65,7 +65,9 @@ export default function Intro() {
           <OfficialLink href="https://expressjs.com/">
             Express
           </OfficialLink>{" "}
-          process to host those routes. This course does not.{" "}
+          process to host those routes. This chapter teaches{" "}
+          <strong>both</strong>{" "}server models — still without a
+          database. First,{" "}
           <OfficialLink href="https://nextjs.org/docs/app/building-your-application/routing/route-handlers">
             Route Handlers
           </OfficialLink>{" "}
@@ -77,10 +79,22 @@ export default function Intro() {
           <OfficialLink href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API">
             <code>fetch</code>
           </OfficialLink>
-          . A later chapter will put MongoDB behind those same URLs. For
-          now the store is a module-level array — in memory, seeded from
-          the JSON <SectionLink to="3.9.2" />{" "}already uses — so you can
-          learn the HTTP contract without standing up a database.
+          . Same machine, same deploy, from your point of view. Second,
+          a <strong>separate Node process</strong> — Express, or Node{" "}
+          <code>http</code> — listens on another host. The UI calls it
+          over HTTP. You will run that process on localhost:4000 and
+          deploy it to{" "}
+          <OfficialLink href="https://render.com/">
+            Render.com
+          </OfficialLink>
+          . An env var,{" "}
+          <code>NEXT_PUBLIC_API_BASE</code>, switches Lab 5 and Kambaz
+          from same-origin <code>/api</code>{" "}to that remote URL. A
+          later chapter will put MongoDB behind those same paths. For
+          now both stores are module-level arrays — in memory, seeded
+          from the JSON <SectionLink to="3.9.2" />{" "}already uses — so
+          you can learn the HTTP contract twice without standing up a
+          database.
         </p>
       </section>
 
@@ -118,21 +132,32 @@ export default function Intro() {
           </li>
           <li>
             Distinguish Route Handlers from Server Actions and choose
-            Route Handlers when you want a public HTTP API.
+            Route Handlers (or a separate HTTP server) when you want a
+            public HTTP API.
+          </li>
+          <li>
+            Contrast two server models: Next.js Route Handlers in the
+            same app as the UI, and a separate Node/Express process on
+            another host.
+          </li>
+          <li>
+            Enable CORS on the separate server, prefix fetch URLs with{" "}
+            <code>NEXT_PUBLIC_API_BASE</code>, and deploy that server
+            to Render.com.
           </li>
           <li>
             Wire Kambaz courses and modules through{" "}
             <code>/api/courses</code>{" "}and <code>/api/modules</code>{" "}
-            with an in-memory store — no Express server and no MongoDB
-            yet.
+            on <em>both</em>{" "}backends with an in-memory store — no
+            MongoDB yet — and switch the UI between them.
           </li>
         </ul>
         <p>
           Those objectives are best achieved by building along with the
           narration — each Lab 5 handler and Kambaz API as it appears —
           rather than reading first and coding later. Glance at the Lab 5
-          checklist in <SectionLink to="5.7" />{" "}and the Kambaz checklist
-          in <SectionLink to="5.9.7" />{" "}so the expected coverage is
+          checklist in <SectionLink to="5.9" />{" "}and the Kambaz checklist
+          in <SectionLink to="5.11.9" />{" "}so the expected coverage is
           visible from the start. Those lists are recaps, not a reason to
           skip ahead: work through each section, then use them to confirm
           what stuck.
@@ -174,7 +199,7 @@ export default function Intro() {
           for <Link href="/labs/lab4">Lab 4</Link>. Confirm you can reach{" "}
           <LocalUrl href="/labs/lab5" />{" "}from the Labs table of contents
           before continuing. A coverage checklist for Lab 5 is in{" "}
-          <SectionLink to="5.7" /> — use it after you have walked through
+          <SectionLink to="5.9" /> — use it after you have walked through
           the samples, not instead of building them as you read.
         </p>
       </Section>

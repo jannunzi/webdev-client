@@ -122,7 +122,7 @@ export default function ServerActionDemo() {
         Ask the assistant to add a sample caption under the list:
       </WithAI>
       <p>
-        The checklist in <SectionLink to="5.7" />{" "}asks you to keep the
+        The checklist in <SectionLink to="5.9" />{" "}asks you to keep the
         Server Action as a contrast, not as the Kambaz API.
       </p>
     </Section>

@@ -229,7 +229,7 @@ export default function HttpFundamentals() {
           Sketch on paper (or in a
           comment) the five URLs you expect for courses: list, create,
           read one, update one, delete one. Check them against{" "}
-          <SectionLink to="5.9.2" />{" "}when you get there.
+          <SectionLink to="5.11.2" />{" "}when you get there.
         </OnYourOwn>
         <WithAI
           prompt={`Do not edit my course API files. List the five REST URLs and HTTP methods for a modules collection at /api/modules and /api/modules/:id, including a GET that filters by ?course=. Keep it to a short bullet list.`}

@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "server": "npm start --prefix server",
+    "server:dev": "npm run dev --prefix server"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.12.0",

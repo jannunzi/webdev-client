@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import "@/app/labs/lab2/tailwind/utilities.css";
 import CourseCard from "./CourseCard";
 import { emptyCourse, type Course } from "@/app/api/kambaz/types";
+import { apiUrl } from "@/app/lib/apiUrl";
 import { useAccountContext } from "../account/AccountContext";
 import * as db from "../database";
 
@@ -13,7 +14,7 @@ export default function Dashboard() {
   const { currentUser } = useAccountContext();
 
   async function loadCourses() {
-    const response = await fetch("/api/courses");
+    const response = await fetch(apiUrl("/api/courses"));
     setCourses(await response.json());
   }
 
@@ -22,7 +23,7 @@ export default function Dashboard() {
   }, []);
 
   async function addCourse() {
-    await fetch("/api/courses", {
+    await fetch(apiUrl("/api/courses"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(course),
@@ -31,7 +32,7 @@ export default function Dashboard() {
   }
 
   async function updateCourse() {
-    await fetch(`/api/courses/${course._id}`, {
+    await fetch(apiUrl(`/api/courses/${course._id}`), {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(course),
@@ -40,7 +41,7 @@ export default function Dashboard() {
   }
 
   async function deleteCourse(courseId: string) {
-    await fetch(`/api/courses/${courseId}`, { method: "DELETE" });
+    await fetch(apiUrl(`/api/courses/${courseId}`), { method: "DELETE" });
     await loadCourses();
   }
 

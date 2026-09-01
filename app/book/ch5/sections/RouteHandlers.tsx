@@ -23,9 +23,9 @@ export default function RouteHandlers() {
         functions named after HTTP methods. The file path{" "}
         <em>is</em>{" "}the URL:{" "}
         <code>app/api/lab5/hello/route.ts</code>{" "}serves{" "}
-        <code>/api/lab5/hello</code>. There is no Express{" "}
-        <code>app.get</code>. Next.js matches the method export to the
-        incoming request and returns whatever{" "}
+        <code>/api/lab5/hello</code>. This first server model does
+        not use Express <code>app.get</code> — Next.js matches the
+        method export to the incoming request and returns whatever{" "}
         <code>Response</code>{" "}you build. The Web{" "}
         <OfficialLink href="https://developer.mozilla.org/en-US/docs/Web/API/Request">
           Request
@@ -40,7 +40,7 @@ export default function RouteHandlers() {
       <p>
         Those lab files are throwaway drills — one idea per handler.
         Kambaz, later in this chapter, is the application you keep. A
-        coverage checklist is in <SectionLink to="5.7" />.
+        coverage checklist is in <SectionLink to="5.9" />.
       </p>
 
       <Section
