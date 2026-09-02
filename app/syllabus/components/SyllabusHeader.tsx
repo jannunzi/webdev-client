@@ -20,7 +20,7 @@ export default function SyllabusHeader({
   semester: SemesterDates;
 }) {
   return (
-    <header id="overview" className="scroll-mt-28 mb-6">
+    <header id="overview" className="scroll-mt-32 mb-6">
       <p className="font-sans text-sm uppercase tracking-wide text-neutral-500">
         {course.college}
       </p>
