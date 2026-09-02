@@ -2,6 +2,7 @@ import type { AssignmentItem } from "./types";
 
 export const assignmentsIntro = [
   "Six assignments (A1–A6) implement Kambaz incrementally. Each one corresponds to a chapter of the interactive book. Later assignments build on earlier ones — do not skip ahead and leave a hole in the stack.",
+  "Due dates are one Canvas calendar for CS 4550 and both CS 5610 sections. They do not slide if your section starts later. CS 5610-02 (first class September 14) has less runway before A1.",
   "Unless a handout says otherwise, submit (1) a public GitHub repository and (2) a Vercel URL that is running the work for that assignment. The repository must contain the source that produced the deployment.",
 ];
 

@@ -10,15 +10,46 @@ export type Instructor = {
 };
 
 export type CourseInfo = {
-  code: string;
   title: string;
-  section: string;
   credits: number;
   term: string;
   college: string;
-  campus: string;
   bookTitle: string;
   instructor: Instructor;
+};
+
+export type SectionLevel = "undergraduate" | "graduate";
+export type SectionModality = "in-person" | "online";
+
+export type CourseSection = {
+  id: string;
+  code: string;
+  sectionNumber: string;
+  crn: string;
+  level: SectionLevel;
+  modality: SectionModality;
+  campus: string;
+  firstClass: IsoDate;
+  lastClass: IsoDate;
+  /**
+   * Placeholder meeting weekdays until Jose confirms the official pattern.
+   * JavaScript `Date.getDay()`: 0 Sunday … 6 Saturday.
+   */
+  daysOfWeek: DayOfWeek[];
+  /** Clock time — TBA until Jose fills this in. */
+  time: string;
+  /** Room or Zoom — leave TBA; do not invent a room. */
+  location: string;
+  tabLabel: string;
+  notes: string[];
+};
+
+export type DeadlineKind = "assignment" | "quiz" | "exam" | "project";
+
+export type Deadline = {
+  date: IsoDate;
+  kind: DeadlineKind;
+  label: string;
 };
 
 export type SemesterDates = {
@@ -29,24 +60,6 @@ export type SemesterDates = {
   finalExamPeriod: { start: IsoDate; end: IsoDate };
 };
 
-export type ExtraMeeting = {
-  date: IsoDate;
-  label: string;
-};
-
-export type MeetingInfo = {
-  pattern: string;
-  /** JavaScript `Date.getDay()` values: 0 Sunday … 6 Saturday. Tue = 2, Thu = 4. */
-  daysOfWeek: DayOfWeek[];
-  time: string;
-  location: string;
-  modality: string;
-  notes: string[];
-  extraMeetings: ExtraMeeting[];
-  firstMeeting: IsoDate;
-  lastMeeting: IsoDate;
-};
-
 export type Holiday = {
   start: IsoDate;
   end: IsoDate;
@@ -55,21 +68,17 @@ export type Holiday = {
 
 export type LectureTopic = {
   topic: string;
-  assignment?: string;
-  quiz?: string;
-  exam?: string;
 };
 
-export type AgendaKind = "lecture" | "intro" | "holiday";
+export type AgendaKind = "lecture" | "holiday";
 
 export type AgendaRow = {
   date: IsoDate;
   kind: AgendaKind;
   lectureNumber?: number;
   topic: string;
-  assignment?: string;
-  quiz?: string;
-  exam?: string;
+  /** Absolute Canvas dues that happen to fall on this calendar day. */
+  deadlines: Deadline[];
 };
 
 export type CourseGoal = {

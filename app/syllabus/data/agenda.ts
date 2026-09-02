@@ -1,8 +1,20 @@
-import { eachDateInclusive, dateInInclusiveRange, compareIso } from "./dates";
+import {
+  compareIso,
+  dateInInclusiveRange,
+  eachDateInclusive,
+  isoWeekday,
+} from "./dates";
+import { deadlines } from "./deadlines";
 import { holidays } from "./holidays";
-import { meetings } from "./meetings";
+import { sections } from "./sections";
 import { lectureTopics } from "./topics";
-import type { AgendaRow, Holiday, IsoDate } from "./types";
+import type {
+  AgendaRow,
+  CourseSection,
+  Deadline,
+  Holiday,
+  IsoDate,
+} from "./types";
 
 function holidayOn(iso: IsoDate, list: Holiday[]): Holiday | undefined {
   return list.find((holiday) =>
@@ -10,51 +22,42 @@ function holidayOn(iso: IsoDate, list: Holiday[]): Holiday | undefined {
   );
 }
 
-function collectMeetingDates(): { date: IsoDate; intro: boolean }[] {
-  const regular = eachDateInclusive(meetings.firstMeeting, meetings.lastMeeting)
-    .filter((iso) => {
-      const day = new Date(
-        Number(iso.slice(0, 4)),
-        Number(iso.slice(5, 7)) - 1,
-        Number(iso.slice(8, 10)),
-      ).getDay();
-      return meetings.daysOfWeek.includes(day as 0 | 1 | 2 | 3 | 4 | 5 | 6);
-    })
-    .map((date) => ({ date, intro: false }));
-
-  const extras = meetings.extraMeetings.map((meeting) => ({
-    date: meeting.date,
-    intro: true,
-  }));
-
-  const byDate = new Map<IsoDate, { date: IsoDate; intro: boolean }>();
-  for (const row of [...regular, ...extras]) {
-    const existing = byDate.get(row.date);
-    if (!existing) byDate.set(row.date, row);
-    else if (row.intro) byDate.set(row.date, row);
-  }
-
-  return [...byDate.values()].sort((a, b) => compareIso(a.date, b.date));
+function deadlinesOn(iso: IsoDate): Deadline[] {
+  return deadlines.filter((deadline) => deadline.date === iso);
 }
 
 /**
- * Builds dated agenda rows from the meeting pattern, extra sessions,
- * holiday list, and ordered lecture topics. Holiday dates are labeled
- * (not skipped silently) and do not consume a lecture topic.
+ * Meeting dates for one section: firstClass through lastClass on the
+ * configured weekdays. firstClass is always included even if Jose’s
+ * placeholder pattern does not yet list that weekday.
  */
-export function buildAgenda(): AgendaRow[] {
-  const dates = collectMeetingDates();
+export function collectMeetingDates(section: CourseSection): IsoDate[] {
+  const patterned = eachDateInclusive(section.firstClass, section.lastClass)
+    .filter((iso) => section.daysOfWeek.includes(isoWeekday(iso)));
+
+  const dates = new Set(patterned);
+  dates.add(section.firstClass);
+  return [...dates].sort(compareIso);
+}
+
+/**
+ * Projects the shared lecture sequence onto one section’s calendar.
+ * Blackout dates are labeled and do not consume a lecture number.
+ * Deadline labels are attached only when the Canvas date equals the row date.
+ */
+export function buildAgenda(section: CourseSection): AgendaRow[] {
   const rows: AgendaRow[] = [];
   let topicIndex = 0;
   let lectureNumber = 0;
 
-  for (const { date, intro } of dates) {
+  for (const date of collectMeetingDates(section)) {
     const holiday = holidayOn(date, holidays);
     if (holiday) {
       rows.push({
         date,
         kind: "holiday",
         topic: holiday.label,
+        deadlines: deadlinesOn(date),
       });
       continue;
     }
@@ -65,16 +68,16 @@ export function buildAgenda(): AgendaRow[] {
 
     rows.push({
       date,
-      kind: intro ? "intro" : "lecture",
+      kind: "lecture",
       lectureNumber,
-      topic: topic?.topic ?? "TBA",
-      assignment: topic?.assignment,
-      quiz: topic?.quiz,
-      exam: topic?.exam,
+      topic: topic?.topic ?? "Project workshop / catch-up",
+      deadlines: deadlinesOn(date),
     });
   }
 
   return rows;
 }
 
-export const agenda: AgendaRow[] = buildAgenda();
+export const agendasBySection: Record<string, AgendaRow[]> = Object.fromEntries(
+  sections.map((section) => [section.id, buildAgenda(section)]),
+);

@@ -1,8 +1,9 @@
 export { course, semester } from "./course";
-export { meetings } from "./meetings";
-export { holidays } from "./holidays";
+export { sections, defaultSectionId, findSection, SECTION_STORAGE_KEY } from "./sections";
+export { holidays, thanksgivingBlackout } from "./holidays";
 export { lectureTopics } from "./topics";
-export { agenda, buildAgenda } from "./agenda";
+export { deadlines, deadlinesNote } from "./deadlines";
+export { agendasBySection, buildAgenda, collectMeetingDates } from "./agenda";
 export { courseGoals } from "./goals";
 export { evaluationItems, evaluationNotes, gradeBands } from "./evaluation";
 export {
@@ -23,9 +24,10 @@ export {
 export type {
   AgendaRow,
   CourseInfo,
+  CourseSection,
+  Deadline,
   EvaluationItem,
   Holiday,
   IsoDate,
   LectureTopic,
-  MeetingInfo,
 } from "./types";

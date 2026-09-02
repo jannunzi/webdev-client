@@ -1,8 +1,8 @@
 import type { Holiday } from "./types";
 
 /**
- * University no-class dates that should appear on (or suppress) the agenda.
- * Thanksgiving week is the one that lands on Tue/Thu in Fall 2026.
+ * Absolute calendar blackouts. Thanksgiving week is required: no section
+ * meets, and skipped days do not consume a lecture number.
  */
 export const holidays: Holiday[] = [
   {
@@ -21,8 +21,10 @@ export const holidays: Holiday[] = [
     label: "Veterans Day — no class",
   },
   {
-    start: "2026-11-24",
+    start: "2026-11-22",
     end: "2026-11-29",
     label: "Thanksgiving week — no class",
   },
 ];
+
+export const thanksgivingBlackout = holidays[holidays.length - 1];

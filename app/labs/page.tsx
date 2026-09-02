@@ -8,7 +8,7 @@ export default function Labs() {
       <ul>
         <li>
           <Link href="/syllabus" id="wd-syllabus-link">
-            CS 4550 Syllabus
+            CS 4550 / CS 5610 Syllabus
           </Link>
         </li>
         <li>

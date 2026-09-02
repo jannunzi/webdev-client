@@ -8,7 +8,7 @@ export default function BookHome() {
       </h1>
       <p className="text-neutral-700">Dr. Jose Annunziato</p>
       <p>
-        <Link href="/syllabus">CS 4550 Fall 2026 Syllabus</Link>
+        <Link href="/syllabus">CS 4550 / CS 5610 Fall 2026 Syllabus</Link>
       </p>
       <h2 className="font-sans text-xl font-semibold">Chapters</h2>
       <ul>

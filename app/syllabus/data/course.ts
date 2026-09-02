@@ -9,13 +9,10 @@ export const semester: SemesterDates = {
 };
 
 export const course: CourseInfo = {
-  code: "CS 4550",
   title: "Web Development",
-  section: "Online Full",
   credits: 4,
   term: semester.label,
   college: "Khoury College of Computer Sciences",
-  campus: "Online",
   bookTitle: "Developing Full Stack Next.js Web Applications",
   instructor: {
     name: "Dr. Jose Annunziato",

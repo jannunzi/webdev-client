@@ -8,6 +8,7 @@ const SECTIONS = [
   { href: "#evaluation", label: "Evaluation" },
   { href: "#late-policy", label: "Late policy" },
   { href: "#assignments", label: "Assignments" },
+  { href: "#deadlines", label: "Deadlines" },
   { href: "#project", label: "Project" },
   { href: "#agenda", label: "Agenda" },
   { href: "#ai-policy", label: "AI" },

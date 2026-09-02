@@ -1,4 +1,27 @@
-import type { IsoDate } from "./types";
+import type { DayOfWeek, IsoDate } from "./types";
+
+const WEEKDAY_LONG = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+] as const;
+
+export function weekdayName(day: DayOfWeek): string {
+  return WEEKDAY_LONG[day];
+}
+
+export function formatMeetingPattern(days: DayOfWeek[]): string {
+  if (days.length === 0) return "TBA — meeting days not posted";
+  return days.map(weekdayName).join(" / ");
+}
+
+export function isoWeekday(iso: IsoDate): DayOfWeek {
+  return fromIso(iso).getDay() as DayOfWeek;
+}
 
 /** Parse `YYYY-MM-DD` as a local calendar date (avoids UTC day-shift). */
 export function fromIso(iso: IsoDate): Date {
