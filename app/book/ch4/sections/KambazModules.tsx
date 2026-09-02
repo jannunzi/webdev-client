@@ -34,12 +34,11 @@ export default function KambazModules() {
           type a name and confirm. That is a small piece of UI state: a{" "}
           <code>show</code>{" "}boolean plus the draft{" "}
           <code>moduleName</code> string. Create{" "}
-          <code>ModuleEditor.tsx</code>{" "}as a dialog with the same props
-          the PDF used for Bootstrap&apos;s <code>Modal</code> —{" "}
+          <code>ModuleEditor.tsx</code>{" "}as a dialog with these props —{" "}
           <code>show</code>, <code>handleClose</code>,{" "}
           <code>dialogTitle</code>, <code>moduleName</code>,{" "}
-          <code>setModuleName</code>, and <code>addModule</code> — styled
-          with Tailwind so you are not adding Bootstrap to this project:
+          <code>setModuleName</code>, and <code>addModule</code> — and
+          style it with Tailwind:
         </p>
         <CodeBlock
           language="tsx"

@@ -187,9 +187,9 @@ export default function Lab4() {
         </p>
         <p>
           Install the two store libraries now so later sections can import
-          them. This book uses{" "}
+          them. Use{" "}
           <Link href="/labs/lab2">Lab 2</Link>&apos;s Tailwind classes for
-          buttons and fields instead of Bootstrap:
+          buttons and fields:
         </p>
         <CodeBlock language="shell">{`npm install zustand @reduxjs/toolkit react-redux`}</CodeBlock>
       </Section>
