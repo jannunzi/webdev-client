@@ -1,6 +1,5 @@
 import { formatAgendaDate } from "../data/dates";
 import type { AgendaRow, CourseSection } from "../data/types";
-import SectionTabs from "./SectionTabs";
 import SyllabusSection from "./SyllabusSection";
 
 function rowClass(row: AgendaRow): string {
@@ -16,13 +15,9 @@ function rowClass(row: AgendaRow): string {
 export default function AgendaTable({
   section,
   rows,
-  sections,
-  onSelect,
 }: {
   section: CourseSection;
   rows: AgendaRow[];
-  sections: CourseSection[];
-  onSelect: (id: string) => void;
 }) {
   return (
     <SyllabusSection id="agenda" title="Agenda">
@@ -35,14 +30,10 @@ export default function AgendaTable({
         on a meeting day; they do not slide with the section start.
       </p>
       <p className="font-sans text-sm text-neutral-600">
-        Showing {section.tabLabel}. Early in the term, sections are on different
-        lecture numbers in the same calendar week — that is intended.
+        Showing {section.tabLabel}. Use the section buttons at the top of the
+        page to switch. Early in the term, sections are on different lecture
+        numbers in the same calendar week — that is intended.
       </p>
-      <SectionTabs
-        sections={sections}
-        activeId={section.id}
-        onSelect={onSelect}
-      />
       <div
         id="syllabus-agenda-panel"
         role="tabpanel"

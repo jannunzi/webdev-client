@@ -10,7 +10,7 @@ export default function SyllabusSection({
   children: ReactNode;
 }) {
   return (
-    <section id={id} className="scroll-mt-6 py-5">
+    <section id={id} className="scroll-mt-28 py-5">
       <h2 className="mb-3 border-b border-neutral-300 pb-2 font-sans text-2xl font-semibold tracking-tight">
         {title}
       </h2>

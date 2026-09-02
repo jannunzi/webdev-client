@@ -103,12 +103,12 @@ export default function SyllabusView({
 
   return (
     <article className="mx-auto max-w-4xl">
-      <SyllabusHeader course={course} section={section} semester={semester} />
       <SectionTabs
         sections={sections}
         activeId={section.id}
         onSelect={selectSection}
       />
+      <SyllabusHeader course={course} section={section} semester={semester} />
       <div className="mt-6">
         <SyllabusNav />
       </div>
@@ -128,12 +128,7 @@ export default function SyllabusView({
       <AssignmentsBlurb intro={assignmentsIntro} assignments={assignments} />
       <DeadlinesTable deadlines={deadlines} note={deadlinesNote} />
       <ProjectBlurb project={projectBlurb} />
-      <AgendaTable
-        section={section}
-        rows={agendaRows}
-        sections={sections}
-        onSelect={selectSection}
-      />
+      <AgendaTable section={section} rows={agendaRows} />
       <AiPolicy policy={aiPolicy} />
       <AcademicIntegrity policy={academicIntegrity} />
       <ClassroomEnvironment policy={classroomEnvironment} />
