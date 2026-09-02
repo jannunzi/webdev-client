@@ -88,7 +88,7 @@ export default function LabExercises() {
         title="5.2.2 Sending Data to a Server via HTTP Requests"
       >
         <Section
-          level={4}
+          level={3}
           id="sec-5-2-2-1"
           title="5.2.2.1 Path Parameters"
         >
@@ -124,7 +124,7 @@ export default function LabExercises() {
           </OnYourOwn>
         </Section>
         <Section
-          level={4}
+          level={3}
           id="sec-5-2-2-2"
           title="5.2.2.2 Query Parameters"
         >
@@ -142,7 +142,7 @@ export default function LabExercises() {
           </LiveDemo>
         </Section>
         <Section
-          level={4}
+          level={3}
           id="sec-5-2-2-3"
           title="5.2.2.3 On Your Own"
         >
