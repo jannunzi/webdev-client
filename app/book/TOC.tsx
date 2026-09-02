@@ -1037,6 +1037,14 @@ export default function BookTOC() {
           </li>
           <li>
             <Link
+              href="/syllabus"
+              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
+            >
+              Syllabus
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/labs"
               className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
             >

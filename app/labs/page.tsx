@@ -7,6 +7,11 @@ export default function Labs() {
       <h2>Jose Annunziato</h2>
       <ul>
         <li>
+          <Link href="/syllabus" id="wd-syllabus-link">
+            CS 4550 Syllabus
+          </Link>
+        </li>
+        <li>
           <Link href="/labs/lab1" id="wd-lab1-link">
             Lab 1: HTML Examples
           </Link>

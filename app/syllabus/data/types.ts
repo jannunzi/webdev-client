@@ -1,0 +1,111 @@
+/** ISO calendar date, `YYYY-MM-DD`, interpreted in local time (not UTC). */
+export type IsoDate = string;
+
+export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+export type Instructor = {
+  name: string;
+  email: string;
+  role: string;
+};
+
+export type CourseInfo = {
+  code: string;
+  title: string;
+  section: string;
+  credits: number;
+  term: string;
+  college: string;
+  campus: string;
+  bookTitle: string;
+  instructor: Instructor;
+};
+
+export type SemesterDates = {
+  label: string;
+  firstDayOfClasses: IsoDate;
+  lastDayOfClasses: IsoDate;
+  /** Inclusive range for the university final-exam window, if the course uses one. */
+  finalExamPeriod: { start: IsoDate; end: IsoDate };
+};
+
+export type ExtraMeeting = {
+  date: IsoDate;
+  label: string;
+};
+
+export type MeetingInfo = {
+  pattern: string;
+  /** JavaScript `Date.getDay()` values: 0 Sunday … 6 Saturday. Tue = 2, Thu = 4. */
+  daysOfWeek: DayOfWeek[];
+  time: string;
+  location: string;
+  modality: string;
+  notes: string[];
+  extraMeetings: ExtraMeeting[];
+  firstMeeting: IsoDate;
+  lastMeeting: IsoDate;
+};
+
+export type Holiday = {
+  start: IsoDate;
+  end: IsoDate;
+  label: string;
+};
+
+export type LectureTopic = {
+  topic: string;
+  assignment?: string;
+  quiz?: string;
+  exam?: string;
+};
+
+export type AgendaKind = "lecture" | "intro" | "holiday";
+
+export type AgendaRow = {
+  date: IsoDate;
+  kind: AgendaKind;
+  lectureNumber?: number;
+  topic: string;
+  assignment?: string;
+  quiz?: string;
+  exam?: string;
+};
+
+export type CourseGoal = {
+  heading: string;
+  paragraphs: string[];
+  topics: { name: string; detail: string; href?: string }[];
+};
+
+export type EvaluationItem = {
+  label: string;
+  weight: number;
+  description: string;
+};
+
+export type GradeBand = {
+  letter: string;
+  minimum: number;
+};
+
+export type PolicyBlock = {
+  paragraphs: string[];
+  bullets?: string[];
+  links?: { label: string; href: string }[];
+};
+
+export type AssignmentItem = {
+  id: string;
+  title: string;
+  chapter: string;
+  summary: string;
+};
+
+export type OfficeHourRow = {
+  name: string;
+  role: string;
+  hours: string;
+  location: string;
+  contact: string;
+};
