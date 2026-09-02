@@ -4,12 +4,9 @@ import type { CourseSection } from "./types";
 export const SECTION_STORAGE_KEY = "syllabus-section-id";
 
 /**
- * Official Fall 2026 sections. First-class dates are confirmed.
- *
- * TODO(jose): Meeting days and clock times are placeholders so the agenda
- * projector has a weekday pattern that includes each section’s firstClass.
- * Edit `daysOfWeek` and `time` when the registrar / Canvas schedule is final.
- * Do not invent rooms — leave `location` as TBA until a room or Zoom is posted.
+ * Official Fall 2026 sections. Every section meets once per week.
+ * In-person clock time is 6:00–9:00pm ET. Rooms are still TBA.
+ * CS 5610-09 online weekday is Friday; clock time is TBA (6–9pm placeholder).
  */
 export const sections: CourseSection[] = [
   {
@@ -22,17 +19,13 @@ export const sections: CourseSection[] = [
     campus: "Boston",
     firstClass: "2026-09-09",
     lastClass: semester.lastDayOfClasses,
-    // TODO(jose): Confirm meeting days. Mon/Wed is a placeholder so the first
-    // meeting lands on Wed 2026-09-09 (Mon 2026-09-07 is Labor Day).
-    daysOfWeek: [1, 3],
-    // TODO(jose): Confirm start/end time.
-    time: "TBA — meeting time not posted",
+    daysOfWeek: [3],
+    time: "6:00–9:00pm ET",
     // TODO(jose): Fill the Boston room when assigned. Do not invent one.
     location: "TBA — room not posted",
     tabLabel: "CS 4550-01 · In person",
     notes: [
-      "Undergraduate, in person, Boston. First class is Wednesday, September 9, 2026.",
-      "Meeting days and the clock time are placeholders until Jose confirms the official pattern.",
+      "Undergraduate, in person, Boston. Meets once a week on Wednesdays, 6:00–9:00pm ET, starting September 9, 2026.",
     ],
   },
   {
@@ -45,18 +38,14 @@ export const sections: CourseSection[] = [
     campus: "Boston",
     firstClass: "2026-09-14",
     lastClass: semester.lastDayOfClasses,
-    // TODO(jose): Confirm meeting days. Mon/Thu is a placeholder so the first
-    // meeting lands on Mon 2026-09-14.
-    daysOfWeek: [1, 4],
-    // TODO(jose): Confirm start/end time.
-    time: "TBA — meeting time not posted",
+    daysOfWeek: [1],
+    time: "6:00–9:00pm ET",
     // TODO(jose): Fill the Boston room when assigned. Do not invent one.
     location: "TBA — room not posted",
     tabLabel: "CS 5610-02 · In person",
     notes: [
-      "Graduate, in person, Boston. First class is Monday, September 14, 2026 — a few days after the undergraduate section.",
+      "Graduate, in person, Boston. Meets once a week on Mondays, 6:00–9:00pm ET, starting September 14, 2026.",
       "Canvas assignment, quiz, exam, and project dates are the same as every other section. This section has less runway before the earliest deadlines.",
-      "Meeting days and the clock time are placeholders until Jose confirms the official pattern.",
     ],
   },
   {
@@ -69,17 +58,14 @@ export const sections: CourseSection[] = [
     campus: "Online",
     firstClass: "2026-09-11",
     lastClass: semester.lastDayOfClasses,
-    // TODO(jose): Confirm meeting days. Tue/Fri is a placeholder so the first
-    // meeting lands on Fri 2026-09-11 (Tue 2026-09-08 is before the term).
-    daysOfWeek: [2, 5],
-    // TODO(jose): Confirm start/end time or async/live mix.
-    time: "TBA — meeting time not posted",
+    daysOfWeek: [5],
+    // TODO(jose): Confirm the online clock time. 6–9pm ET is a placeholder.
+    time: "TBA — placeholder 6:00–9:00pm ET until confirmed",
     // TODO(jose): Fill Canvas / Zoom when posted. Do not invent a link.
     location: "TBA — online meeting not posted",
     tabLabel: "CS 5610-09 · Online",
     notes: [
-      "Graduate, online. First class is Friday, September 11, 2026.",
-      "Meeting days and the clock time are placeholders until Jose confirms the official pattern.",
+      "Graduate, online. Meets once a week on Fridays, starting September 11, 2026. Clock time is TBA.",
     ],
   },
 ];

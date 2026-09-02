@@ -27,12 +27,12 @@ export default function AgendaTable({
   return (
     <SyllabusSection id="agenda" title="Agenda">
       <p>
-        Every section follows the same lecture sequence (Lecture 1, 2, 3…).
-        Tabs project that sequence onto this section’s calendar from its first
-        class. Thanksgiving week is a calendar blackout — those meetings are
-        labeled and do not consume a lecture number. Due dates in the last
-        column are the shared Canvas dates when they fall on a meeting day;
-        they do not slide with the section start.
+        Every section follows the same lecture sequence (Lecture 1, 2, 3…) and
+        meets once a week. Tabs project that sequence onto this section’s
+        weekday from its first class. Thanksgiving week is a calendar blackout
+        — that week’s meeting is labeled and does not consume a lecture number.
+        Due dates in the last column are the shared Canvas dates when they fall
+        on a meeting day; they do not slide with the section start.
       </p>
       <p className="font-sans text-sm text-neutral-600">
         Showing {section.tabLabel}. Early in the term, sections are on different

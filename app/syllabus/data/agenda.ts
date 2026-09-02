@@ -28,8 +28,7 @@ function deadlinesOn(iso: IsoDate): Deadline[] {
 
 /**
  * Meeting dates for one section: firstClass through lastClass on the
- * configured weekdays. firstClass is always included even if Jose’s
- * placeholder pattern does not yet list that weekday.
+ * configured weekday (once per week). firstClass is always included.
  */
 export function collectMeetingDates(section: CourseSection): IsoDate[] {
   const patterned = eachDateInclusive(section.firstClass, section.lastClass)

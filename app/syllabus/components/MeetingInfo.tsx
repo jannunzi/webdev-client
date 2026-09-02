@@ -11,9 +11,10 @@ export default function MeetingInfo({
 }) {
   return (
     <SyllabusSection id="meetings" title="Meeting information">
-      <p className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm">
-        Meeting days and times are placeholders until Jose confirms the official
-        schedule. Location is TBA — no room or Zoom link has been posted.
+      <p className="rounded-md border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm">
+        Each section meets once a week. In-person sections are 6:00–9:00pm ET.
+        Rooms and the online Zoom link are TBA — do not invent them. The online
+        Friday clock time is a placeholder until Jose confirms it.
       </p>
       <dl className="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
         <div>
@@ -28,10 +29,7 @@ export default function MeetingInfo({
           <dt className="font-sans text-sm font-semibold uppercase tracking-wide text-neutral-500">
             Pattern
           </dt>
-          <dd>
-            {formatMeetingPattern(section.daysOfWeek)}{" "}
-            <span className="text-neutral-500">(placeholder)</span>
-          </dd>
+          <dd>Once a week · {formatMeetingPattern(section.daysOfWeek)}</dd>
         </div>
         <div>
           <dt className="font-sans text-sm font-semibold uppercase tracking-wide text-neutral-500">

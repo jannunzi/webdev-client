@@ -32,11 +32,11 @@ export type CourseSection = {
   firstClass: IsoDate;
   lastClass: IsoDate;
   /**
-   * Placeholder meeting weekdays until Jose confirms the official pattern.
+   * Meeting weekdays. All Fall 2026 sections meet once per week.
    * JavaScript `Date.getDay()`: 0 Sunday … 6 Saturday.
    */
   daysOfWeek: DayOfWeek[];
-  /** Clock time — TBA until Jose fills this in. */
+  /** Clock time (in-person 6:00–9:00pm ET; online may still be TBA). */
   time: string;
   /** Room or Zoom — leave TBA; do not invent a room. */
   location: string;
