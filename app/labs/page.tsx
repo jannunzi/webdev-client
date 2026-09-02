@@ -32,6 +32,11 @@ export default function Labs() {
           </Link>
         </li>
         <li>
+          <Link href="/labs/lab6" id="wd-lab6-link">
+            Lab 6: MongoDB
+          </Link>
+        </li>
+        <li>
           <Link href="/labs/lab2/intermediates" id="wd-lab2-steps-link">
             Lab 2 Intermediate Steps
           </Link>
@@ -49,6 +54,11 @@ export default function Labs() {
         <li>
           <Link href="/labs/lab5/intermediates" id="wd-lab5-steps-link">
             Lab 5 Intermediate Steps
+          </Link>
+        </li>
+        <li>
+          <Link href="/labs/lab6/intermediates" id="wd-lab6-steps-link">
+            Lab 6 Intermediate Steps
           </Link>
         </li>
         <li>

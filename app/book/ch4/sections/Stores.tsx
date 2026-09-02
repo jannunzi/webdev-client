@@ -164,6 +164,34 @@ export default function ContextExamples() {
         >
           Ask the assistant to add a sample Reset on the writer:
         </WithAI>
+
+        <Section
+          level={3}
+          id="sec-4-4-2"
+          title="4.4.2 Implementing a React Context Todo List (On Your Own)"
+        >
+          <p>
+            The PDF asks you to rebuild the todo list with Context —
+            the same CRUD you will later do with Redux and Zustand —
+            so you can feel the difference. A{" "}
+            <code>todosContext</code> holds the array and the add /
+            update / delete functions. A{" "}
+            <code>ReactContextTodoList</code> renders the list. Wrap
+            it in the provider on a Context examples page.
+          </p>
+          <OnYourOwn>
+            Implement <code>todosContext.ts</code> and{" "}
+            <code>ReactContextTodoList.tsx</code>. Add, edit titles,
+            and delete items. Do not put Kambaz courses in this
+            context.
+          </OnYourOwn>
+          <WithAI
+            prompt={`Create app/labs/lab4/context/todosContext.ts and ReactContextTodoList.tsx with add/update/delete for { id, title } todos, wrap the list in a provider, and import it from ContextExamples. Keep any extra context I already added. Do not store Kambaz courses here.`}
+          >
+            After you sketch the context, you can ask the assistant
+            for a sample list — leave the design as yours:
+          </WithAI>
+        </Section>
       </Section>
 
       <Section id="sec-4-5" title="4.5 Zustand">
@@ -461,18 +489,77 @@ export default function ZustandExamples() {
 
       <Section id="sec-4-6" title="4.6 Redux Toolkit">
         <p>
-          Redux Toolkit shows up in a lot of existing React apps, which is
-          why you will see slices, a store, <code>useSelector</code>, and{" "}
-          <code>dispatch</code>{" "}at work. You will not port Kambaz to
-          Redux — Zustand already holds courses and modules, and Context
-          already holds who is signed in — so rebuild only the counter,
-          and the three APIs stay comparable.
+          The PDF&apos;s 4.3 is <strong>Managing Application State
+          with Redux</strong>: install, a Hello reducer, a counter that
+          dispatches events, passing data to a reducer, then a todo
+          list split into form / item / list. Those labs are here so
+          the spine is complete. You will not port Kambaz to Redux —
+          Zustand holds courses and modules, Context holds who is
+          signed in — but you should be able to read a slice when you
+          meet one.
         </p>
+        <p>
+          <code>useState</code> stays inside a component. Lifting it
+          through many parents creates an explicit dependency on every
+          file in the chain. Redux puts that state in a store any
+          subscribed component can read.
+        </p>
+
+        <Section
+          level={3}
+          id="sec-4-6-1"
+          title="4.6.1 Installing Redux and a Hello World reducer"
+        >
+          <p>
+            You already ran{" "}
+            <code>npm install @reduxjs/toolkit react-redux</code> in{" "}
+            <SectionLink to="4.2" />. A Hello reducer is a store
+            field with no actions — proof the provider and selector
+            are wired:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="helloReducer"
+            file="app/labs/lab4/redux/helloReducer.ts"
+          >{`"use client";
+import { createSlice } from "@reduxjs/toolkit";
+const helloSlice = createSlice({
+  name: "hello",
+  initialState: { message: "Hello Redux" },
+  reducers: {},
+});
+export default helloSlice.reducer;`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="HelloRedux"
+            file="app/labs/lab4/redux/HelloRedux.tsx"
+          >{`"use client";
+import { useSelector } from "react-redux";
+import type { RootState } from "./store";
+
+export default function HelloRedux() {
+  const { message } = useSelector((state: RootState) => state.helloReducer);
+  return (
+    <div id="wd-hello-redux">
+      <h3>Hello Redux</h3>
+      <h4>{message}</h4>
+    </div>
+  );
+}`}</CodeBlock>
+        </Section>
+
+        <Section
+          level={3}
+          id="sec-4-6-2"
+          title="4.6.2 Counter Redux — dispatching events to reducers"
+        >
         <p>
           A slice groups a piece of state with the functions that update
           it. Inside those functions you may write what looks like a
           mutation; Immer (bundled with Toolkit) turns it into a new
-          object:
+          object. The counter you already built with{" "}
+          <code>useState</code> becomes <code>up</code> and{" "}
+          <code>down</code> actions:
         </p>
         <CodeBlock
           language="tsx"
@@ -504,11 +591,17 @@ export default counterSlice.reducer;`}</CodeBlock>
         >{`"use client";
 
 import { configureStore } from "@reduxjs/toolkit";
+import helloReducer from "./helloReducer";
 import counterReducer from "./counterReducer";
+import addReducer from "./addReducer";
+import todosReducer from "./todosReducer";
 
 export const store = configureStore({
   reducer: {
+    helloReducer,
     counterReducer,
+    addReducer,
+    todosReducer,
   },
 });
 
@@ -554,54 +647,111 @@ export default function CounterRedux() {
     </div>
   );
 }`}</CodeBlock>
-        <CodeBlock
-          language="tsx"
-          name="ReduxExamples"
-          file="app/labs/lab4/redux/ReduxExamples.tsx"
-        >{`"use client";
+          <OnYourOwn>
+            Add a <code>reset</code> reducer that sets{" "}
+            <code>count</code> back to 7, export it from the slice,
+            and dispatch it from a button.
+          </OnYourOwn>
+          <WithAI
+            prompt={`In app/labs/lab4/redux/counterReducer.ts and CounterRedux.tsx, keep any extra reducer I added. Add a sample reset reducer that sets state.count = 7, export it, and add a button id="wd-redux-reset-click" that dispatches reset(). Do not rename my personal reducer.`}
+          >
+            Ask the assistant to add a sample Reset after your own extra
+            action:
+          </WithAI>
+        </Section>
 
+        <Section
+          level={3}
+          id="sec-4-6-3"
+          title="4.6.3 Passing Data to Reducers"
+        >
+          <p>
+            Actions can carry a payload. Keep <code>a</code> and{" "}
+            <code>b</code> as local <code>useState</code>, then
+            dispatch one object to an <code>add</code> reducer that
+            writes <code>sum</code>:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="addReducer"
+            file="app/labs/lab4/redux/addReducer.ts"
+          >{`"use client";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+const addSlice = createSlice({
+  name: "add",
+  initialState: { sum: 0 },
+  reducers: {
+    add: (state, action: PayloadAction<{ a: number; b: number }>) => {
+      state.sum = action.payload.a + action.payload.b;
+    },
+  },
+});
+export const { add } = addSlice.actions;
+export default addSlice.reducer;`}</CodeBlock>
+        </Section>
+
+        <Section
+          level={3}
+          id="sec-4-6-4"
+          title="4.6.4 Implementing a Todo List with Redux"
+        >
+          <p>
+            The PDF builds the list with <code>useState</code> first,
+            then splits form / item / list, then moves the array into
+            a todos reducer. The worked example here is already split:
+            a slice with <code>addTodo</code>,{" "}
+            <code>deleteTodo</code>, and <code>updateTodo</code>, and
+            a component that dispatches those actions. That is the
+            same CRUD Kambaz will do — this book does it with Zustand
+            in <SectionLink to="4.10" />.
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="ReduxExamples"
+            file="app/labs/lab4/redux/ReduxExamples.tsx"
+          >{`"use client";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import HelloRedux from "./HelloRedux";
 import CounterRedux from "./CounterRedux";
+import AddRedux from "./AddRedux";
+import ReduxTodos from "./ReduxTodos";
 
 export default function ReduxExamples() {
   return (
     <Provider store={store}>
       <div id="wd-redux-examples">
         <h2>Redux Toolkit</h2>
+        <HelloRedux />
         <CounterRedux />
+        <AddRedux />
+        <ReduxTodos />
         <hr />
       </div>
     </Provider>
   );
 }`}</CodeBlock>
-        <LiveDemo
-          name="ReduxExamples"
-          file="app/labs/lab4/redux/ReduxExamples.tsx"
-          mode="styled"
-        >
-          <ReduxExamples />
-        </LiveDemo>
-        <p>
-          Same counter, more pieces to wire together: a slice, a store, a
-          provider, a selector, and a dispatch. That extra setup is why
-          this course puts Kambaz on Zustand. The{" "}
-          <OfficialLink href="https://redux-toolkit.js.org/">
-            Redux Toolkit
-          </OfficialLink>{" "}
-          quick start matches this slice-and-store shape.
-        </p>
-        <OnYourOwn>
-          Add a <code>reset</code>{" "}reducer that sets <code>count</code>{" "}
-          back to 7, export it from the slice, and dispatch it from a
-          button.
-        </OnYourOwn>
-        <WithAI
-          prompt={`In app/labs/lab4/redux/counterReducer.ts and CounterRedux.tsx, keep any extra reducer I added. Add a sample reset reducer that sets state.count = 7, export it, and add a button id="wd-redux-reset-click" that dispatches reset(). Do not rename my personal reducer.`}
-        >
-          Ask the assistant to add a sample Reset after your own extra
-          action:
-        </WithAI>
+          <LiveDemo
+            name="ReduxExamples"
+            file="app/labs/lab4/redux/ReduxExamples.tsx"
+            mode="styled"
+          >
+            <ReduxExamples />
+          </LiveDemo>
+          <p>
+            Hello, counter, add-with-payload, and todos share one
+            store and one <code>Provider</code>. That extra setup is
+            why this course puts Kambaz on Zustand. The{" "}
+            <OfficialLink href="https://redux-toolkit.js.org/">
+              Redux Toolkit
+            </OfficialLink>{" "}
+            quick start matches this slice-and-store shape.
+          </p>
+          <OnYourOwn>
+            Split <code>ReduxTodos</code> into a form component and
+            an item component, as the PDF does in 4.3.5.1.
+          </OnYourOwn>
+        </Section>
       </Section>
     </>
   );

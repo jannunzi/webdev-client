@@ -2,10 +2,16 @@
 
 import { configureStore } from "@reduxjs/toolkit";
 import counterReducer from "./counterReducer";
+import helloReducer from "./helloReducer";
+import addReducer from "./addReducer";
+import todosReducer from "./todosReducer";
 
 export const store = configureStore({
   reducer: {
+    helloReducer,
     counterReducer,
+    addReducer,
+    todosReducer,
   },
 });
 

@@ -4,7 +4,9 @@ import express from "express";
 import session from "express-session";
 import Hello from "./Hello.js";
 import Lab5 from "./Lab5/index.js";
+import Lab6 from "./Lab6/index.js";
 import db from "./Kambaz/Database/index.js";
+import { connectDatabase } from "./Kambaz/Database/mongo.js";
 import UserRoutes from "./Kambaz/Users/routes.js";
 import CourseRoutes from "./Kambaz/Courses/routes.js";
 import ModuleRoutes from "./Kambaz/Modules/routes.js";
@@ -60,7 +62,10 @@ CourseRoutes(app, db);
 ModuleRoutes(app, db);
 AssignmentRoutes(app, db);
 Lab5(app);
+Lab6(app);
 Hello(app);
+
+await connectDatabase();
 
 app.listen(port, () => {
   console.log(`kambaz-node-server-app listening on http://localhost:${port}`);

@@ -36,8 +36,11 @@ export default function KambazState() {
         works. State is how
         that computed UI can change over time — the same loops and
         maps, but the arrays can grow, shrink, and rename as the user
-        interacts with the application. We will put courses and modules in Zustand
-        so any Client Component can subscribe to the same list. A
+        interacts with the application.         The PDF implements these lists as Redux reducers
+        (its 4.6.2 Courses Reducer). This book puts the same
+        arrays in Zustand so any Client Component can subscribe
+        without a provider around the tree. The screens and
+        buttons are the ones in the PDF. A
         coverage checklist is in <SectionLink to="4.11" /> — work through
         each screen as you read, then use the list to confirm you did
         everything. It is a recap, not a reason to skip ahead.

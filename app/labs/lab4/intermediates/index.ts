@@ -33,5 +33,5 @@ export const LAB4_INTERMEDIATES = [
   { slug: "Effect", title: "4.7 useEffect", file: "Effect" },
   { slug: "ContextExamples", title: "4.4 React Context", file: "ContextExamples" },
   { slug: "ZustandExamples", title: "4.5 Zustand", file: "ZustandExamples" },
-  { slug: "ReduxExamples", title: "4.6 Redux Toolkit", file: "ReduxExamples" },
+  { slug: "ReduxExamples", title: "4.6 Redux Toolkit (Hello, Counter, Add, Todos)", file: "ReduxExamples" },
 ] as const;

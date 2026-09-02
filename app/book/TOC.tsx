@@ -324,7 +324,7 @@ export const CH4_TOC: TocEntry[] = [
   { id: "sec-4-1", label: "4.1 Learning Objectives" },
   {
     id: "sec-4-2",
-    label: "4.2 Managing State and User Input",
+    label: "4.2 Managing State and User Input with Forms",
     children: [
       { id: "sec-4-2-1", label: "4.2.1 Handling User Events" },
       { id: "sec-4-2-2", label: "4.2.2 Passing Data on Events" },
@@ -346,7 +346,13 @@ export const CH4_TOC: TocEntry[] = [
       { id: "sec-4-3-3", label: "4.3.3 Encoding State in the URL" },
     ],
   },
-  { id: "sec-4-4", label: "4.4 React Context" },
+  {
+    id: "sec-4-4",
+    label: "4.4 React Context",
+    children: [
+      { id: "sec-4-4-2", label: "4.4.2 Context Todo List (On Your Own)" },
+    ],
+  },
   {
     id: "sec-4-5",
     label: "4.5 Zustand",
@@ -355,7 +361,16 @@ export const CH4_TOC: TocEntry[] = [
       { id: "sec-4-5-2", label: "4.5.2 Zustand Todo List" },
     ],
   },
-  { id: "sec-4-6", label: "4.6 Redux Toolkit" },
+  {
+    id: "sec-4-6",
+    label: "4.6 Redux Toolkit",
+    children: [
+      { id: "sec-4-6-1", label: "4.6.1 Hello World reducer" },
+      { id: "sec-4-6-2", label: "4.6.2 Counter Redux" },
+      { id: "sec-4-6-3", label: "4.6.3 Passing Data to Reducers" },
+      { id: "sec-4-6-4", label: "4.6.4 Todo List with Redux" },
+    ],
+  },
   { id: "sec-4-7", label: "4.7 Side Effects with useEffect" },
   { id: "sec-4-8", label: "4.8 Exercises" },
   { id: "sec-4-9", label: "4.9 Check Your Understanding" },
@@ -475,6 +490,107 @@ export const CH5_TOC: TocEntry[] = [
   { id: "sec-5-7", label: "5.7 Deliverables" },
 ];
 
+export const CH6_TOC: TocEntry[] = [
+  { id: "intro", label: "Introduction" },
+  {
+    id: "sec-6-1",
+    label: "6.1 Working with a Local MongoDB Instance",
+    children: [
+      {
+        id: "sec-6-1-1",
+        label: "6.1.1 Installing and Configuring MongoDB",
+        children: [
+          { id: "sec-6-1-1-1", label: "6.1.1.1 Installing MongoDB Manually (optional)" },
+          { id: "sec-6-1-1-2", label: "6.1.1.2 Starting MongoDB from the Command Line" },
+        ],
+      },
+      { id: "sec-6-1-2", label: "6.1.2 Using MongoDB Compass" },
+      { id: "sec-6-1-3", label: "6.1.3 Creating a MongoDB Database" },
+      { id: "sec-6-1-4", label: "6.1.4 Inserting and Retrieving Data with Compass" },
+    ],
+  },
+  {
+    id: "sec-6-2",
+    label: "6.2 Programming with a MongoDB Database",
+    children: [
+      { id: "sec-6-2-1", label: "6.2.1 Installing and Connecting" },
+      { id: "sec-6-2-2", label: "6.2.2 Connection Strings as Environment Variables" },
+      { id: "sec-6-2-3", label: "6.2.3 Mongoose Schemas and Models" },
+      { id: "sec-6-2-4", label: "6.2.4 Implementing Mongoose Models" },
+      { id: "sec-6-2-5", label: "6.2.5 Retrieving Data with Mongoose" },
+      {
+        id: "sec-6-2-6",
+        label: "6.2.6 APIs from a React Client",
+        children: [
+          { id: "sec-6-2-6-1", label: "6.2.6.1 Refactoring Account Routes" },
+          { id: "sec-6-2-6-2", label: "6.2.6.2 Retrieving All Documents" },
+          { id: "sec-6-2-6-3", label: "6.2.6.3 Retrieving by Predicate" },
+          { id: "sec-6-2-6-4", label: "6.2.6.4 Retrieving by Primary Key" },
+          { id: "sec-6-2-6-5", label: "6.2.6.5 Deleting a Document" },
+          { id: "sec-6-2-6-6", label: "6.2.6.6 Updating a Document" },
+          { id: "sec-6-2-6-7", label: "6.2.6.7 Creating New Documents" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "sec-6-3",
+    label: "6.3 Integrating with MongoDB Hosted in Atlas",
+    children: [
+      {
+        id: "sec-6-3-1",
+        label: "6.3.1 Setting up MongoDB Atlas",
+        children: [
+          { id: "sec-6-3-1-1", label: "6.3.1.1 Connecting from Compass" },
+          { id: "sec-6-3-1-2", label: "6.3.1.2 Connecting from Node.js" },
+        ],
+      },
+      { id: "sec-6-3-2", label: "6.3.2 Configuring Session in Remote Servers" },
+    ],
+  },
+  { id: "sec-6-check", label: "Check Your Understanding" },
+  {
+    id: "sec-6-4",
+    label: "6.4 Integrating the Kambaz Web Application with a Database",
+    children: [
+      {
+        id: "sec-6-4-1",
+        label: "6.4.1 Storing Courses in a Database",
+        children: [
+          { id: "sec-6-4-1-1", label: "6.4.1.1 Retrieving Courses" },
+          { id: "sec-6-4-1-2", label: "6.4.1.2 Inserting Courses" },
+          { id: "sec-6-4-1-3", label: "6.4.1.3 Deleting Courses" },
+          { id: "sec-6-4-1-4", label: "6.4.1.4 Updating Courses" },
+        ],
+      },
+      {
+        id: "sec-6-4-2",
+        label: "6.4.2 Modules as One-to-Many with Courses",
+        children: [
+          { id: "sec-6-4-2-1", label: "6.4.2.1 Declaring One-to-Many Relationships" },
+          { id: "sec-6-4-2-2", label: "6.4.2.2 Retrieving Modules for a Course" },
+          { id: "sec-6-4-2-3", label: "6.4.2.3 Creating Modules" },
+          { id: "sec-6-4-2-4", label: "6.4.2.4 Deleting Modules" },
+          { id: "sec-6-4-2-5", label: "6.4.2.5 Updating Modules" },
+        ],
+      },
+      {
+        id: "sec-6-4-3",
+        label: "6.4.3 Enrollments as Many-to-Many",
+        children: [
+          { id: "sec-6-4-3-1", label: "6.4.3.1 Declaring Enrollments" },
+          { id: "sec-6-4-3-2", label: "6.4.3.2 Courses for Enrolled Users" },
+          { id: "sec-6-4-3-3", label: "6.4.3.3 Deleting Courses" },
+          { id: "sec-6-4-3-4", label: "6.4.3.4 Enrolling / Unenrolling (On Your Own)" },
+          { id: "sec-6-4-3-5", label: "6.4.3.5 Students in a Course (On Your Own)" },
+        ],
+      },
+      { id: "sec-6-4-4", label: "6.4.4 Assignments (On Your Own)" },
+    ],
+  },
+  { id: "sec-6-5", label: "6.5 Deliverables" },
+];
+
 export const CHAPTERS: ChapterToc[] = [
   {
     id: "ch1",
@@ -505,6 +621,12 @@ export const CHAPTERS: ChapterToc[] = [
     label: "Chapter 5 — Express REST APIs",
     href: "/book/ch5",
     sections: CH5_TOC,
+  },
+  {
+    id: "ch6",
+    label: "Chapter 6 — MongoDB",
+    href: "/book/ch6",
+    sections: CH6_TOC,
   },
 ];
 

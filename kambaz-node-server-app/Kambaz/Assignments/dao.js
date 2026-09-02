@@ -1,26 +1,42 @@
 import { v4 as uuidv4 } from "uuid";
+import model from "./model.js";
+import { isMongoEnabled } from "../Database/mongo.js";
 
 export default function AssignmentsDao(db) {
-  function findAssignmentsForCourse(courseId) {
+  async function findAssignmentsForCourse(courseId) {
+    if (isMongoEnabled()) return model.find({ course: courseId });
     return db.assignments.filter((a) => a.course === courseId);
   }
-  function findAssignmentById(assignmentId) {
+
+  async function findAssignmentById(assignmentId) {
+    if (isMongoEnabled()) return model.findById(assignmentId);
     return db.assignments.find((a) => a._id === assignmentId);
   }
-  function createAssignment(assignment) {
-    const created = { ...assignment, _id: uuidv4() };
+
+  async function createAssignment(assignment) {
+    const created = { ...assignment, _id: assignment?._id ?? uuidv4() };
+    if (isMongoEnabled()) return model.create(created);
     db.assignments = [...db.assignments, created];
     return created;
   }
-  function updateAssignment(assignmentId, updates) {
+
+  async function updateAssignment(assignmentId, updates) {
+    if (isMongoEnabled()) {
+      await model.updateOne({ _id: assignmentId }, { $set: updates });
+      return model.findById(assignmentId);
+    }
     db.assignments = db.assignments.map((a) =>
       a._id === assignmentId ? { ...a, ...updates } : a,
     );
     return db.assignments.find((a) => a._id === assignmentId);
   }
-  function deleteAssignment(assignmentId) {
+
+  async function deleteAssignment(assignmentId) {
+    if (isMongoEnabled()) return model.deleteOne({ _id: assignmentId });
     db.assignments = db.assignments.filter((a) => a._id !== assignmentId);
+    return { deletedCount: 1 };
   }
+
   return {
     findAssignmentsForCourse,
     findAssignmentById,

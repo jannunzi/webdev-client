@@ -34,6 +34,11 @@ export default function BookHome() {
             Chapter 5 — Implementing RESTful Web APIs with Express.js
           </Link>
         </li>
+        <li>
+          <Link href="/book/ch6">
+            Chapter 6 — Integrating React with MongoDB
+          </Link>
+        </li>
       </ul>
     </div>
   );

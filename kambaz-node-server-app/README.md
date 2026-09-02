@@ -1,6 +1,6 @@
 # kambaz-node-server-app
 
-Sibling **Node.js / Express** HTTP server for Chapter 5.
+Sibling **Node.js / Express** HTTP server for Chapters 5–6.
 
 This is its **own project** — not Next.js app source. In this interactive-book
 repo the folder sits at the **root next to** `app/`, `package.json`, and the
@@ -11,13 +11,13 @@ repository**:
 ```bash
 cd kambaz-node-server-app
 git init
-# push to a public GitHub repo named kambaz-node-server-app (branch a5)
+# push to a public GitHub repo named kambaz-node-server-app (branch a6)
 ```
 
 Do **not** nest this server inside `app/` or submit it only as files inside
 the Next.js tree.
 
-## Run locally (required for Lab 5 / book LiveDemos)
+## Run locally (required for Lab 5–6 / book LiveDemos)
 
 Render is **not** required locally. Two terminals:
 
@@ -43,9 +43,26 @@ Shortcut from the Next.js root in this monorepo only: `npm run server:dev`.
 - http://localhost:4000 — Welcome to Full Stack Development!
 - http://localhost:4000/hello — Life is good!
 - http://localhost:4000/lab5/welcome — Welcome to Lab 5
+- http://localhost:4000/lab6/status — `{ mongo, store }`
+- http://localhost:4000/lab6/todos — Lab 6 todos (Mongoose or memory)
 - http://localhost:4000/api/courses — JSON course list
+- http://localhost:4000/api/users — users collection
 
-## Later (Chapter 5.5, not needed for demos)
+## MongoDB (Chapter 6)
+
+Set `DATABASE_CONNECTION_STRING` (PDF name) or `MONGO_CONNECTION_STRING` to a
+local `mongodb://127.0.0.1:27017/kambaz` or Atlas `mongodb+srv://…/kambaz?…`
+URI. If the variable is unset or `mongod` is down, DAOs fall back to the
+in-memory copies of the Chapter 5 JSON files so `npm start` still works.
+
+```bash
+# in this folder's .env
+DATABASE_CONNECTION_STRING=mongodb://127.0.0.1:27017/kambaz
+```
+
+## Later (Chapter 5.5 / 6.3)
 
 Deploy **this** GitHub repo to Render (or Heroku). Point Vercel
-`NEXT_PUBLIC_HTTP_SERVER` at that origin. No MongoDB here — that is Chapter 6.
+`NEXT_PUBLIC_HTTP_SERVER` at that origin. On Render set
+`DATABASE_CONNECTION_STRING` to the Atlas URI (database name `kambaz` in the
+path).

@@ -1,36 +1,87 @@
 import { v4 as uuidv4 } from "uuid";
+import model from "./model.js";
+import { isMongoEnabled } from "../Database/mongo.js";
 
 export default function UsersDao(db) {
-  let { users } = db;
-  const createUser = (user) => {
-    const newUser = { ...user, _id: uuidv4() };
-    users = [...users, newUser];
-    db.users = users;
+  const createUser = async (user) => {
+    const { _id: _ignored, ...rest } = user ?? {};
+    const newUser = { ...rest, _id: uuidv4() };
+    if (isMongoEnabled()) {
+      return model.create(newUser);
+    }
+    db.users = [...db.users, newUser];
     return newUser;
   };
-  const findAllUsers = () => users;
-  const findUserById = (userId) => users.find((user) => user._id === userId);
-  const findUserByUsername = (username) =>
-    users.find((user) => user.username === username);
-  const findUserByCredentials = (username, password) =>
-    users.find(
+
+  const findAllUsers = async () => {
+    if (isMongoEnabled()) return model.find();
+    return db.users;
+  };
+
+  const findUserById = async (userId) => {
+    if (isMongoEnabled()) return model.findById(userId);
+    return db.users.find((user) => user._id === userId);
+  };
+
+  const findUserByUsername = async (username) => {
+    if (isMongoEnabled()) return model.findOne({ username });
+    return db.users.find((user) => user.username === username);
+  };
+
+  const findUserByCredentials = async (username, password) => {
+    if (isMongoEnabled()) return model.findOne({ username, password });
+    return db.users.find(
       (user) => user.username === username && user.password === password,
     );
-  const updateUser = (userId, user) => {
-    users = users.map((u) => (u._id === userId ? { ...u, ...user } : u));
-    db.users = users;
-    return users.find((u) => u._id === userId);
   };
-  const deleteUser = (userId) => {
-    users = users.filter((u) => u._id !== userId);
-    db.users = users;
+
+  const findUsersByRole = async (role) => {
+    if (isMongoEnabled()) return model.find({ role });
+    return db.users.filter((user) => user.role === role);
   };
+
+  const findUsersByPartialName = async (partialName) => {
+    if (isMongoEnabled()) {
+      const regex = new RegExp(partialName, "i");
+      return model.find({
+        $or: [{ firstName: { $regex: regex } }, { lastName: { $regex: regex } }],
+      });
+    }
+    const q = String(partialName).toLowerCase();
+    return db.users.filter(
+      (user) =>
+        String(user.firstName ?? "")
+          .toLowerCase()
+          .includes(q) ||
+        String(user.lastName ?? "")
+          .toLowerCase()
+          .includes(q),
+    );
+  };
+
+  const updateUser = async (userId, user) => {
+    if (isMongoEnabled()) {
+      await model.updateOne({ _id: userId }, { $set: user });
+      return model.findById(userId);
+    }
+    db.users = db.users.map((u) => (u._id === userId ? { ...u, ...user } : u));
+    return db.users.find((u) => u._id === userId);
+  };
+
+  const deleteUser = async (userId) => {
+    if (isMongoEnabled()) return model.findByIdAndDelete(userId);
+    db.users = db.users.filter((u) => u._id !== userId);
+    return { deletedCount: 1 };
+  };
+
   return {
     createUser,
     findAllUsers,
     findUserById,
     findUserByUsername,
     findUserByCredentials,
+    findUsersByRole,
+    findUsersByPartialName,
     updateUser,
     deleteUser,
   };

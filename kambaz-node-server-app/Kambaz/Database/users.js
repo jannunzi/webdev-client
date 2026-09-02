@@ -102,5 +102,18 @@ export default [
     "section": "S102",
     "lastActivity": "2020-11-20",
     "totalActivity": "18:44:12"
+  },
+  {
+    "_id": "999",
+    "username": "nick_fury",
+    "password": "fury123",
+    "firstName": "Nick",
+    "lastName": "Fury",
+    "email": "nick@shield.gov",
+    "role": "ADMIN",
+    "loginId": "001234569A",
+    "section": "S100",
+    "lastActivity": "2020-12-01",
+    "totalActivity": "40:00:00"
   }
 ];
