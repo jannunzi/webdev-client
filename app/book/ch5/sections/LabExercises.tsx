@@ -18,12 +18,22 @@ export default function LabExercises() {
     <Section id="sec-5-2" title="5.2 Lab Exercises">
       <p>
         Practice creating HTTP routes on Express and calling them from
-        the Next.js UI. In the Node project, create{" "}
+        the Next.js UI. You need{" "}
+        <strong>two terminals</strong>:
+      </p>
+      <CodeBlock language="shell">{`# terminal 1 — Next.js UI (port 3000)
+npm run dev
+
+# terminal 2 — sibling Express (port 4000)
+npm run server:dev
+# same as: cd kambaz-node-server-app && npm run dev`}</CodeBlock>
+      <p>
+        In the Node project, create{" "}
         <code>Lab5/index.js</code>{" "}and register it from{" "}
-        <code>index.js</code>. Run the companion with{" "}
-        <code>npm run server:dev</code>{" "}from the Next.js repo (or{" "}
-        <code>npm run dev</code>{" "}inside <code>kambaz-node-server-app</code>
-        ) so the demos below can reach port 4000.
+        <code>index.js</code>. Express LiveDemos below call the
+        companion through <code>httpServer()</code>.{" "}
+        <SectionLink to="5.3" />{" "}Route Handler demos stay on
+        same-origin <code>/api/...</code>{" "}and do not need port 4000.
       </p>
       <CodeBlock
         language="js"
@@ -52,17 +62,34 @@ export default function LabExercises() {
           Heroku). Create <code>.env.development</code>{" "}at the Next.js
           root:
         </p>
-        <CodeBlock language="shell">{`NEXT_PUBLIC_HTTP_SERVER=http://localhost:4000`}</CodeBlock>
+        <CodeBlock language="shell">{`NEXT_PUBLIC_HTTP_SERVER=http://localhost:4000
+# alias also read by httpServer(): NEXT_PUBLIC_API_BASE`}</CodeBlock>
         <p>
           Next.js only exposes env vars that start with{" "}
           <OfficialLink href="https://nextjs.org/docs/app/building-your-application/configuring/environment-variables">
             <code>NEXT_PUBLIC_</code>
           </OfficialLink>
-          . Read it as{" "}
-          <code>process.env.NEXT_PUBLIC_HTTP_SERVER</code>. This book
-          wraps that in <code>httpServer()</code>{" "}so LiveDemos default
-          to localhost:4000 when the var is omitted. On Vercel you set
-          the Render origin — same client code, different base URL.
+          . The PDF name is{" "}
+          <code>NEXT_PUBLIC_HTTP_SERVER</code>. This book wraps it (and
+          the alias <code>NEXT_PUBLIC_API_BASE</code>) in one helper so
+          every Express LiveDemo uses the same client code locally and
+          on Render — only the origin changes:
+        </p>
+        <CodeBlock
+          language="ts"
+          name="httpServer"
+          file="app/lib/httpServer.ts"
+        >{`export function httpServer(): string {
+  const raw =
+    process.env.NEXT_PUBLIC_HTTP_SERVER ??
+    process.env.NEXT_PUBLIC_API_BASE ??
+    "http://localhost:4000";
+  return raw.replace(/\\/$/, "");
+}`}</CodeBlock>
+        <p>
+          Unset locally → companion on 4000. On Vercel set the Render
+          origin (no trailing slash). Do not hard-code either host in
+          screens.
         </p>
         <LiveDemo
           name="Environment"

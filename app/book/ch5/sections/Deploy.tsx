@@ -111,7 +111,11 @@ git push -u origin main`}</CodeBlock>
           <code>http://localhost:4000</code>{" "}so{" "}
           <SectionLink to="5.2" />{" "}LiveDemos stay on the companion
           process. Same <code>httpServer()</code>{" "}helper — only the
-          env value changes.
+          env value changes.{" "}
+          <code>NEXT_PUBLIC_API_BASE</code>{" "}is an accepted alias.
+          Route Handler demos in{" "}
+          <SectionLink to="5.3" />{" "}keep using same-origin{" "}
+          <code>/api</code>{" "}even if that env is unset.
         </p>
       </Section>
     </Section>

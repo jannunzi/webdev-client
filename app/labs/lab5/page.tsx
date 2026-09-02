@@ -13,6 +13,12 @@ export default function Lab5() {
   return (
     <div id="wd-lab5">
       <h2>Lab 5</h2>
+      <p>
+        Run <code>npm run dev</code> and, in a second terminal,{" "}
+        <code>npm run server:dev</code> so Express LiveDemos can reach{" "}
+        <code>http://localhost:4000</code>. The Next.js calculator at
+        the bottom uses same-origin <code>/api/lab5/calculator</code>.
+      </p>
       <Environment />
       <PathParameters />
       <QueryParameters />

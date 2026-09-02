@@ -22,7 +22,10 @@ export default function NextRoutes() {
         <code>/api/hello</code>. Same Next.js project as the UI. Same
         machine, same deploy. Support GET, POST, PUT, DELETE. You stay
         inside the App Router when you do not need an independent API
-        process.
+        process. These LiveDemos fetch{" "}
+        <code>/api/lab5/...</code>{" "}on the Next.js origin — they work
+        with only <code>npm run dev</code>. Express Lab 5 still needs
+        the companion on 4000.
       </p>
       <p>
         A trivial hello at{" "}
@@ -32,9 +35,7 @@ export default function NextRoutes() {
         language="ts"
         name="hello"
         file="app/api/lab5/hello/route.ts"
-      >{`import type { NextRequest } from "next/server";
-
-export async function GET(_request: NextRequest) {
+      >{`export async function GET() {
   return Response.json({ message: "Hello from Lab 5 API!" });
 }`}</CodeBlock>
       <LiveDemo
