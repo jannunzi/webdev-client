@@ -39,15 +39,17 @@ export default function Intro() {
           HTTP server in a{" "}
           <strong>sibling project</strong>{" "}named{" "}
           <code>kambaz-node-server-app</code>{" "}— not inside the Next.js
-          app directory. The UI on port 3000 (later Vercel) calls that
-          server on port 4000 (later{" "}
-          <OfficialLink href="https://render.com/">Render.com</OfficialLink>
-          ) with{" "}
+          app directory. Locally the UI is{" "}
+          <code>next dev</code>{" "}on port 3000 and Express is{" "}
+          <code>nodemon</code>{" "}/{" "}
+          <code>npm start</code>{" "}on port 4000, with{" "}
+          <code>NEXT_PUBLIC_HTTP_SERVER=http://localhost:4000</code>.{" "}
+          <SectionLink to="5.5" />{" "}deploys that same server; you do
+          not need a remote host for the labs.{" "}
           <OfficialLink href="https://axios-http.com/">
             axios
           </OfficialLink>{" "}
-          and{" "}
-          <code>NEXT_PUBLIC_HTTP_SERVER</code>.{" "}
+          talks to Express.{" "}
           <SectionLink to="5.3" />{" "}adds App Router Route Handlers as a
           same-app alternative — a section, not the chapter. MongoDB is{" "}
           <ChapterLink to={6} />.

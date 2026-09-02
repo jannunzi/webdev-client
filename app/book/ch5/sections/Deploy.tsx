@@ -24,14 +24,17 @@ export default function Deploy() {
         title="5.5.1 Committing the Node Server to GitHub"
       >
         <p>
-          In <code>kambaz-node-server-app</code>{" "}run{" "}
-          <code>git init</code>.{" "}
+          The working source in this book repo is already{" "}
+          <code>kambaz-node-server-app/</code>{" "}at the Next.js root.
+          Delivery still wants a{" "}
+          <strong>separate</strong>{" "}GitHub repository. In that folder
+          run <code>git init</code>.{" "}
           <code>.gitignore</code>{" "}must list{" "}
           <code>node_modules</code>,{" "}
           <code>.env</code>, and{" "}
           <code>.env.development</code>. Create a public GitHub
           repository named <code>kambaz-node-server-app</code>{" "}and
-          push. Delivery work happens on branch{" "}
+          push. Work on branch{" "}
           <code>a5</code>{" "}in <em>both</em>{" "}repos.
         </p>
         <CodeBlock language="shell">{`git init
@@ -111,9 +114,9 @@ git push -u origin main`}</CodeBlock>
           <code>http://localhost:4000</code>{" "}so{" "}
           <SectionLink to="5.2" />{" "}LiveDemos stay on the companion
           process. Same <code>httpServer()</code>{" "}helper — only the
-          env value changes.{" "}
-          <code>NEXT_PUBLIC_API_BASE</code>{" "}is an accepted alias.
-          Route Handler demos in{" "}
+          env value changes. Lab 5 LiveDemos do{" "}
+          <em>not</em>{" "}need this step; they already work against{" "}
+          <code>http://localhost:4000</code>. Route Handler demos in{" "}
           <SectionLink to="5.3" />{" "}keep using same-origin{" "}
           <code>/api</code>{" "}even if that env is unset.
         </p>

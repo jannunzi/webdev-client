@@ -21,12 +21,13 @@ export default function LabExercises() {
         the Next.js UI. You need{" "}
         <strong>two terminals</strong>:
       </p>
-      <CodeBlock language="shell">{`# terminal 1 — Next.js UI (port 3000)
+      <CodeBlock language="shell">{`# terminal 1 — Next.js UI (port 3000), from kambaz-next-js
 npm run dev
 
-# terminal 2 — sibling Express (port 4000)
-npm run server:dev
-# same as: cd kambaz-node-server-app && npm run dev`}</CodeBlock>
+# terminal 2 — sibling Express (port 4000), from kambaz-node-server-app
+cd kambaz-node-server-app
+npm run dev          # nodemon index.js
+# or: npm start      # node index.js`}</CodeBlock>
       <p>
         In the Node project, create{" "}
         <code>Lab5/index.js</code>{" "}and register it from{" "}
@@ -57,23 +58,22 @@ npm run server:dev
         title="5.2.1 Environment Variables"
       >
         <p>
-          Two processes now: Next.js on 3000, Express on 4000. In
-          production the UI is on Vercel and the API is on Render (or
-          Heroku). Create <code>.env.development</code>{" "}at the Next.js
-          root:
+          Two processes now: Next.js on 3000, Express on 4000. You do
+          not need a public host for these exercises. Create{" "}
+          <code>.env.development</code>{" "}at the Next.js root:
         </p>
-        <CodeBlock language="shell">{`NEXT_PUBLIC_HTTP_SERVER=http://localhost:4000
-# alias also read by httpServer(): NEXT_PUBLIC_API_BASE`}</CodeBlock>
+        <CodeBlock language="shell">{`NEXT_PUBLIC_HTTP_SERVER=http://localhost:4000`}</CodeBlock>
         <p>
           Next.js only exposes env vars that start with{" "}
           <OfficialLink href="https://nextjs.org/docs/app/building-your-application/configuring/environment-variables">
             <code>NEXT_PUBLIC_</code>
           </OfficialLink>
           . The PDF name is{" "}
-          <code>NEXT_PUBLIC_HTTP_SERVER</code>. This book wraps it (and
-          the alias <code>NEXT_PUBLIC_API_BASE</code>) in one helper so
-          every Express LiveDemo uses the same client code locally and
-          on Render — only the origin changes:
+          <code>NEXT_PUBLIC_HTTP_SERVER</code>. This book wraps it in{" "}
+          <code>httpServer()</code>{" "}so every Express LiveDemo uses the
+          same client code — locally{" "}
+          <code>http://localhost:4000</code>, and later whatever origin
+          you set for deploy:
         </p>
         <CodeBlock
           language="ts"
@@ -82,14 +82,14 @@ npm run server:dev
         >{`export function httpServer(): string {
   const raw =
     process.env.NEXT_PUBLIC_HTTP_SERVER ??
-    process.env.NEXT_PUBLIC_API_BASE ??
     "http://localhost:4000";
   return raw.replace(/\\/$/, "");
 }`}</CodeBlock>
         <p>
-          Unset locally → companion on 4000. On Vercel set the Render
-          origin (no trailing slash). Do not hard-code either host in
-          screens.
+          Unset → companion on 4000, which is enough for every LiveDemo
+          in this chapter. <SectionLink to="5.5" />{" "}is when you point
+          the same helper at a deployed origin. Do not hard-code the
+          host in screens.
         </p>
         <LiveDemo
           name="Environment"

@@ -1,27 +1,42 @@
 # kambaz-node-server-app
 
-Sibling **Node.js / Express** HTTP server for Chapter 5 of *Developing Full Stack Next.js Web Applications*.
+Sibling **Node.js / Express** HTTP server for Chapter 5.
 
-This folder is **not** part of the Next.js app source tree. Students treat it as its own project: `git init`, push to a **separate** public GitHub repository named `kambaz-node-server-app`, and deploy that repo to Render (or Heroku). This monorepo copy exists so the interactive book and Lab 5 LiveDemos can call `http://localhost:4000` locally.
-
-## Run locally (with the Next.js app)
-
-From the Next.js repo root:
+This is its **own project** — not Next.js app source. In this interactive-book
+repo the folder sits at the **root next to** `app/`, `package.json`, and the
+rest of `kambaz-next-js` so Lab 5 LiveDemos can call `http://localhost:4000`.
+That is a convenience copy. For the assignment, treat it as a **separate Git
+repository**:
 
 ```bash
-npm run server:dev
+cd kambaz-node-server-app
+git init
+# push to a public GitHub repo named kambaz-node-server-app (branch a5)
 ```
 
-Or from this folder:
+Do **not** nest this server inside `app/` or submit it only as files inside
+the Next.js tree.
+
+## Run locally (required for Lab 5 / book LiveDemos)
+
+Render is **not** required locally. Two terminals:
 
 ```bash
-npm install
+# terminal 1 — Next.js (repo root)
 npm run dev
+
+# terminal 2 — this folder
+cd kambaz-node-server-app
+npm install
+npm run dev          # nodemon index.js
+# or: npm start      # node index.js
 ```
 
-The server listens on **port 4000** (`PORT` overrides). In a second terminal run `npm run dev` for Next.js (port 3000).
+Listens on **port 4000**. In the Next.js app set
+`NEXT_PUBLIC_HTTP_SERVER=http://localhost:4000` (the book helper defaults to
+that origin if the var is omitted).
 
-Set `NEXT_PUBLIC_HTTP_SERVER=http://localhost:4000` in the Next.js `.env.development` (the book helper defaults to that origin if the var is omitted).
+Shortcut from the Next.js root in this monorepo only: `npm run server:dev`.
 
 ## Check
 
@@ -30,8 +45,7 @@ Set `NEXT_PUBLIC_HTTP_SERVER=http://localhost:4000` in the Next.js `.env.develop
 - http://localhost:4000/lab5/welcome — Welcome to Lab 5
 - http://localhost:4000/api/courses — JSON course list
 
-## Production
+## Later (Chapter 5.5, not needed for demos)
 
-See Chapter 5.5 in the book. Render env: `SERVER_ENV=production`, `CLIENT_URL` (Vercel origin, no trailing slash), `SERVER_URL` (Render host without `https://`), `SESSION_SECRET`. On Vercel set `NEXT_PUBLIC_HTTP_SERVER` to the Render origin with `https://` and no trailing slash.
-
-No MongoDB here — that is Chapter 6.
+Deploy **this** GitHub repo to Render (or Heroku). Point Vercel
+`NEXT_PUBLIC_HTTP_SERVER` at that origin. No MongoDB here — that is Chapter 6.

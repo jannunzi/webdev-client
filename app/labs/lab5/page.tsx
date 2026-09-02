@@ -14,10 +14,13 @@ export default function Lab5() {
     <div id="wd-lab5">
       <h2>Lab 5</h2>
       <p>
-        Run <code>npm run dev</code> and, in a second terminal,{" "}
-        <code>npm run server:dev</code> so Express LiveDemos can reach{" "}
-        <code>http://localhost:4000</code>. The Next.js calculator at
-        the bottom uses same-origin <code>/api/lab5/calculator</code>.
+        Run <code>npm run dev</code> in the Next.js folder and, in a
+        second terminal,{" "}
+        <code>cd kambaz-node-server-app && npm run dev</code>{" "}
+        (<code>nodemon</code>) so Express LiveDemos reach{" "}
+        <code>http://localhost:4000</code>. No remote host is required.
+        The Next.js calculator at the bottom uses same-origin{" "}
+        <code>/api/lab5/calculator</code>.
       </p>
       <Environment />
       <PathParameters />

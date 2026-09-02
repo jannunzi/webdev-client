@@ -60,10 +60,18 @@ npm init`}</CodeBlock>
         <p>
           Accept the defaults. <code>npm init</code>{" "}writes{" "}
           <code>package.json</code>{" "}— the Node equivalent of a project
-          manifest. This interactive book keeps a companion copy at the
-          repo root as <code>kambaz-node-server-app/</code>{" "}so Lab 5
-          LiveDemos can call <code>http://localhost:4000</code>. Students
-          still treat it as its own project (own GitHub repo at delivery).
+          manifest. This interactive book ships a working copy at the
+          repo root as <code>kambaz-node-server-app/</code>{" "}so LiveDemos
+          can call <code>http://localhost:4000</code>{" "}without cloning a
+          second remote. It is still a{" "}
+          <strong>separate project</strong>: own{" "}
+          <code>package.json</code>, own{" "}
+          <code>.gitignore</code>, own README. For Canvas you{" "}
+          <code>git init</code>{" "}that folder and push a{" "}
+          <strong>second</strong>{" "}GitHub repository named{" "}
+          <code>kambaz-node-server-app</code>{" "}(
+          <SectionLink to="5.5.1" />) — do not treat it as Next.js app
+          source.
         </p>
       </Section>
 
@@ -104,8 +112,8 @@ npm init`}</CodeBlock>
           <code>express()</code>{" "}creates <code>app</code>.{" "}
           <code>app.get(&apos;/hello&apos;, …)</code>{" "}maps an HTTP GET
           to a handler. <code>res.send</code>{" "}writes the body.{" "}
-          <code>app.listen(4000)</code>{" "}waits for requests (Render will
-          later inject <code>PORT</code>):
+          <code>app.listen(4000)</code>{" "}waits for requests. Local labs
+          stay on 4000; a host can later set <code>PORT</code>.
         </p>
         <CodeBlock
           language="js"
@@ -136,9 +144,12 @@ app.listen(4000);`}</CodeBlock>
           <code>next dev</code>:
         </p>
         <CodeBlock language="shell">{`npm install nodemon --save-dev
-npx nodemon index.js`}</CodeBlock>
+npx nodemon index.js
+# later: npm run dev   (same command, after the script in 5.1.7)`}</CodeBlock>
         <p>
-          Change the hello string to{" "}
+          Keep this process running in the Node folder while{" "}
+          <code>next dev</code>{" "}runs in the Next.js folder. Change the
+          hello string to{" "}
           <code>Life is good!</code>, refresh, and confirm it updates
           without a manual restart. Add a root route{" "}
           <code>/</code>{" "}that sends{" "}
