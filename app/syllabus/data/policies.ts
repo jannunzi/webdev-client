@@ -48,7 +48,7 @@ export const academicIntegrity: PolicyBlock = {
 
 export const classroomEnvironment: PolicyBlock = {
   paragraphs: [
-    "This is an online classroom. Treat lecture, discussion, office hours, and shared repositories as professional spaces. Critique ideas and code, not people. Harassment, slurs, and exclusionary behavior are not acceptable.",
+    "Treat lecture, discussion, office hours, and shared repositories as professional spaces — whether the section meets in Boston or online. Critique ideas and code, not people. Harassment, slurs, and exclusionary behavior are not acceptable.",
     "Keep cameras and microphones considerate during live sessions. Do not record other students without consent. When you post questions, include the route, the error, and what you already tried — that is how we help each other efficiently.",
     "If something in the course environment is preventing you from participating, contact the instructor. You may also use university reporting channels listed under Title IX and Disability Access Services.",
   ],
