@@ -12,9 +12,9 @@ export default function MeetingInfo({
   return (
     <SyllabusSection id="meetings" title="Meeting information">
       <p className="rounded-md border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm">
-        Each section meets once a week. In-person sections are 6:00–9:00pm ET.
-        Rooms and the online Zoom link are TBA — do not invent them. The online
-        Friday clock time is a placeholder until Jose confirms it.
+        Each section meets once a week. CS 4550-01 and CS 5610-02 are
+        6:00–9:00pm ET; CS 5610-09 is 2:00–5:00pm ET on Fridays. Rooms and the
+        online Zoom link are TBA.
       </p>
       <dl className="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
         <div>

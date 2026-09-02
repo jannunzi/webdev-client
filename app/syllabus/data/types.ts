@@ -36,7 +36,7 @@ export type CourseSection = {
    * JavaScript `Date.getDay()`: 0 Sunday … 6 Saturday.
    */
   daysOfWeek: DayOfWeek[];
-  /** Clock time (in-person 6:00–9:00pm ET; online may still be TBA). */
+  /** Locked clock time (ET). */
   time: string;
   /** Room or Zoom — leave TBA; do not invent a room. */
   location: string;

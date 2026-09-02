@@ -5,8 +5,7 @@ export const SECTION_STORAGE_KEY = "syllabus-section-id";
 
 /**
  * Official Fall 2026 sections. Every section meets once per week.
- * In-person clock time is 6:00–9:00pm ET. Rooms are still TBA.
- * CS 5610-09 online weekday is Friday; clock time is TBA (6–9pm placeholder).
+ * Meeting days and clock times are locked. Rooms / Zoom stay TBA.
  */
 export const sections: CourseSection[] = [
   {
@@ -59,13 +58,12 @@ export const sections: CourseSection[] = [
     firstClass: "2026-09-11",
     lastClass: semester.lastDayOfClasses,
     daysOfWeek: [5],
-    // TODO(jose): Confirm the online clock time. 6–9pm ET is a placeholder.
-    time: "TBA — placeholder 6:00–9:00pm ET until confirmed",
+    time: "2:00–5:00pm ET",
     // TODO(jose): Fill Canvas / Zoom when posted. Do not invent a link.
     location: "TBA — online meeting not posted",
     tabLabel: "CS 5610-09 · Online",
     notes: [
-      "Graduate, online. Meets once a week on Fridays, starting September 11, 2026. Clock time is TBA.",
+      "Graduate, online. Meets once a week on Fridays, 2:00–5:00pm ET, starting September 11, 2026.",
     ],
   },
 ];
