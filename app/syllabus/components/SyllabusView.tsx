@@ -108,7 +108,7 @@ export default function SyllabusView({
         activeId={section.id}
         onSelect={selectSection}
       />
-      <SyllabusHeader course={course} section={section} semester={semester} />
+      <SyllabusHeader course={course} section={section} />
       <div className="mt-6">
         <SyllabusNav />
       </div>

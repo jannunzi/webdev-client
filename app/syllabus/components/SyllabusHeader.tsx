@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { formatLongDate } from "../data/dates";
-import type { CourseInfo, CourseSection, SemesterDates } from "../data/types";
+import type { CourseInfo, CourseSection } from "../data/types";
 
 function levelLabel(level: CourseSection["level"]): string {
   return level === "undergraduate" ? "Undergrad" : "Grad";
@@ -13,11 +13,9 @@ function modalityLabel(modality: CourseSection["modality"]): string {
 export default function SyllabusHeader({
   course,
   section,
-  semester,
 }: {
   course: CourseInfo;
   section: CourseSection;
-  semester: SemesterDates;
 }) {
   return (
     <header id="overview" className="scroll-mt-32 mb-6">
@@ -40,10 +38,7 @@ export default function SyllabusHeader({
       <p className="mt-4 text-[1.05rem] text-neutral-800">
         Companion to{" "}
         <Link href="/book">{course.bookTitle}</Link>, Chapters 1–6. This
-        section’s first class is {formatLongDate(section.firstClass)}. University
-        term: {formatLongDate(semester.firstDayOfClasses)} –{" "}
-        {formatLongDate(semester.lastDayOfClasses)}. Edit sections and dates in{" "}
-        <code>app/syllabus/data</code>.
+        section’s first class is {formatLongDate(section.firstClass)}.
       </p>
     </header>
   );
