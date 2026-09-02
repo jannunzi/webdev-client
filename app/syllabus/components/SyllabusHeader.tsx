@@ -37,7 +37,7 @@ export default function SyllabusHeader({
       </p>
       <p className="mt-4 text-[1.05rem] text-neutral-800">
         Companion to{" "}
-        <Link href="/book">{course.bookTitle}</Link>, Chapters 1–6. This
+        <Link href="/book">{course.bookTitle}</Link>. This
         section’s first class is {formatLongDate(section.firstClass)}.
       </p>
     </header>

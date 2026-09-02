@@ -17,7 +17,7 @@ export const evaluationItems: EvaluationItem[] = [
     label: "Exam",
     weight: 30,
     description:
-      "One written / practical exam covering HTML through MongoDB as taught in Chapters 1–6. Date is listed on the agenda.",
+      "One written / practical exam covering HTML through MongoDB. Date is listed on the agenda.",
   },
   {
     label: "Project",

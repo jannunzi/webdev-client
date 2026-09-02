@@ -4,7 +4,7 @@ export const courseGoals: CourseGoal = {
   heading: "Course goals",
   paragraphs: [
     "This course is about building full-stack Web applications that are dynamic, data-driven, and interactive. The emphasis is on the software-engineering problems of combining several languages and runtimes — markup, style, client JavaScript, an HTTP API, and a database — into one product you can deploy and explain.",
-    "We work from the interactive book Developing Full Stack Next.js Web Applications (Chapters 1–6). CS 4550 and CS 5610 share this sequence. You will implement Kambaz, a learning-management interface inspired by Canvas, in layers that match the book: structure first, then style, then data and events, then a REST API, then persistence.",
+    "We work from the interactive book Developing Full Stack Next.js Web Applications. CS 4550 and CS 5610 share this sequence. You will implement Kambaz, a learning-management interface inspired by Canvas, in layers that match the book: structure first, then style, then data and events, then a REST API, then persistence.",
     "By the end of the term you should be able to design a user interface in HTML, style it with CSS and Tailwind, make it interactive with React and Next.js, hold client state in Zustand, expose a Node.js / Express REST API, and store documents in MongoDB — then ship the result to the public Web.",
   ],
   topics: [
