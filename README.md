@@ -32,6 +32,18 @@ npm run dev
 
 Or from this repo root: `npm run server:dev`.
 
+## Book term pages
+
+First-use technology terms in the course book (`OfficialLink`) open an in-app
+page at `/book/terms/[slug]` — for example
+[`/book/terms/react`](http://localhost:3000/book/terms/react) or
+[`/book/terms/next-js`](http://localhost:3000/book/terms/next-js). Each page
+shows the official site plus relevant YouTube explainers.
+
+To populate videos, set **`YOUTUBE_API_KEY`** (YouTube Data API v3) in `.env`
+or the Vercel project. Without the key the page still works: official link plus
+a “Search on YouTube” fallback. Results are cached for 24 hours.
+
 ## Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs)
