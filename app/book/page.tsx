@@ -51,6 +51,12 @@ export default function BookHome() {
           </Link>
         </li>
       </ul>
+      <h2 className="font-sans text-xl font-semibold">Practice</h2>
+      <p>
+        Ungraded self-checks for each chapter live on dedicated practice
+        pages — not Canvas exams.{" "}
+        <Link href="/book/practice">Browse practice quizzes</Link>.
+      </p>
     </div>
   );
 }
