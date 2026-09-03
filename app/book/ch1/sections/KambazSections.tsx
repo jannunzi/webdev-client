@@ -11,9 +11,9 @@ import ModulesDemo from "../embeds/ModulesDemo";
 import HomeDemo from "../embeds/HomeDemo";
 import AssignmentsDemo from "../embeds/AssignmentsDemo";
 import AssignmentEditorDemo from "../embeds/AssignmentEditorDemo";
-import Signin from "@/app/(kambaz)/account/signin/page";
-import Signup from "@/app/(kambaz)/account/signup/page";
-import Profile from "@/app/(kambaz)/account/profile/page";
+import DemoSignin from "../embeds/DemoSignin";
+import DemoSignup from "../embeds/DemoSignup";
+import DemoProfile from "../embeds/DemoProfile";
 import AccountNavigation from "@/app/(kambaz)/account/Navigation";
 import Link from "next/link";
 
@@ -190,7 +190,7 @@ export default function Signin() {
           name="Signin"
           file="app/(kambaz)/account/signin/page.tsx"
         >
-          <Signin />
+          <DemoSignin />
         </LiveDemo>
         <p>
           Make Sign in the default for both <code>/account</code>{" "}and the
@@ -276,7 +276,7 @@ export default function Signup() {
           name="Signup"
           file="app/(kambaz)/account/signup/page.tsx"
         >
-          <Signup />
+          <DemoSignup />
         </LiveDemo>
 
         <h3
@@ -344,7 +344,7 @@ export default function Profile() {
           name="Profile"
           file="app/(kambaz)/account/profile/page.tsx"
         >
-          <Profile />
+          <DemoProfile />
         </LiveDemo>
 
         <h3
@@ -431,7 +431,7 @@ export default function AccountLayout({
                   <AccountNavigation />
                 </td>
                 <td valign="top" width="100%">
-                  <Signin />
+                  <DemoSignin />
                 </td>
               </tr>
             </tbody>
