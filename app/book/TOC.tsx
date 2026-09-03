@@ -2,7 +2,33 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type MutableRefObject,
+  type RefObject,
+} from "react";
+import { FaBars, FaTimes } from "react-icons/fa";
+import {
+  TOC_OPEN_CHAPTERS_KEY,
+  TOC_OPEN_SECTIONS_KEY,
+  type BookLastPosition,
+  getLastPositionServerSnapshot,
+  getLastPositionSnapshot,
+  getMobileTocOpenServerSnapshot,
+  getMobileTocOpenSnapshot,
+  readIdSet,
+  readLastPosition,
+  subscribeLastPosition,
+  subscribeMobileTocOpen,
+  writeIdSet,
+  writeLastPosition,
+  writeMobileTocOpen,
+} from "./bookStorage";
 
 const TOC_SYNC_PAUSE_MS = 2500;
 const READING_MARKER_PX = 96;
@@ -788,217 +814,172 @@ function isFullyVisibleIn(el: HTMLElement, container: HTMLElement): boolean {
   return er.top >= cr.top && er.bottom <= cr.bottom;
 }
 
-export default function BookTOC() {
-  const pathname = usePathname();
-  const [panelOpen, setPanelOpen] = useState(true);
-  const [query, setQuery] = useState("");
-  const [activeId, setActiveId] = useState<string | null>(null);
-  const [openChapters, setOpenChapters] = useState<Set<string>>(
-    () => new Set(CHAPTERS.map((c) => c.id)),
-  );
-  const [openSections, setOpenSections] = useState<Set<string>>(() => {
-    const initial = new Set<string>();
-    for (const chapter of CHAPTERS) {
-      for (const id of collectExpandableIds(chapter.sections)) {
-        initial.add(id);
-      }
+const MD_QUERY = "(min-width: 768px)";
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), input:not([disabled]), textarea, select, [tabindex]:not([tabindex="-1"])';
+
+export function findSectionLabel(
+  entries: TocEntry[],
+  id: string,
+): string | null {
+  for (const entry of entries) {
+    if (entry.id === id) return entry.label;
+    if (entry.children?.length) {
+      const found = findSectionLabel(entry.children, id);
+      if (found) return found;
     }
-    return initial;
-  });
+  }
+  return null;
+}
 
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const linkRefs = useRef(new Map<string, HTMLAnchorElement>());
-  const hoveringTocRef = useRef(false);
-  const pauseUntilRef = useRef(0);
-  const suppressScrollPauseRef = useRef(false);
-
-  const currentChapter = useMemo(
-    () => CHAPTERS.find((c) => pathname === c.href || pathname.startsWith(`${c.href}/`)),
-    [pathname],
+export function describeLastPosition(
+  last: BookLastPosition | null,
+): { href: string; label: string } | null {
+  if (!last) return null;
+  const chapter = CHAPTERS.find(
+    (c) => last.pathname === c.href || last.pathname.startsWith(`${c.href}/`),
   );
+  if (!chapter) return null;
+  const sectionLabel = last.hash
+    ? findSectionLabel(chapter.sections, last.hash)
+    : null;
+  return {
+    href: last.hash ? `${last.pathname}#${last.hash}` : last.pathname,
+    label: sectionLabel ? `${chapter.label} · ${sectionLabel}` : chapter.label,
+  };
+}
 
-  const sectionIds = useMemo(
-    () => (currentChapter ? collectSectionIds(currentChapter.sections) : []),
-    [currentChapter],
-  );
+function lastPositionHref(pathname: string, hash: string): string {
+  return hash ? `${pathname}#${hash}` : pathname;
+}
 
-  const pauseSync = useCallback(() => {
-    pauseUntilRef.current = Date.now() + TOC_SYNC_PAUSE_MS;
-  }, []);
+function subscribeMdUp(onChange: () => void) {
+  const mql = window.matchMedia(MD_QUERY);
+  mql.addEventListener("change", onChange);
+  return () => mql.removeEventListener("change", onChange);
+}
 
-  const setLinkRef = useCallback(
-    (id: string, node: HTMLAnchorElement | null) => {
-      if (node) linkRefs.current.set(id, node);
-      else linkRefs.current.delete(id);
-    },
-    [],
-  );
+function getMdUpSnapshot() {
+  return window.matchMedia(MD_QUERY).matches;
+}
 
-  // Track the section currently being read from window scroll position.
-  useEffect(() => {
-    if (sectionIds.length === 0) {
-      setActiveId(null);
-      return;
+function getMdUpServerSnapshot() {
+  return false;
+}
+
+const DEFAULT_OPEN_CHAPTERS = new Set(CHAPTERS.map((c) => c.id));
+const DEFAULT_OPEN_SECTIONS = (() => {
+  const initial = new Set<string>();
+  for (const chapter of CHAPTERS) {
+    for (const id of collectExpandableIds(chapter.sections)) {
+      initial.add(id);
     }
-
-    let ticking = false;
-    const update = () => {
-      ticking = false;
-      let current = sectionIds[0];
-      for (const id of sectionIds) {
-        const el = document.getElementById(id);
-        if (!el) continue;
-        if (el.getBoundingClientRect().top <= READING_MARKER_PX) {
-          current = id;
-        }
-      }
-      setActiveId((prev) => (prev === current ? prev : current));
-    };
-
-    const onScrollOrResize = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
-      }
-    };
-
-    update();
-    window.addEventListener("scroll", onScrollOrResize, { passive: true });
-    window.addEventListener("resize", onScrollOrResize, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScrollOrResize);
-      window.removeEventListener("resize", onScrollOrResize);
-    };
-  }, [sectionIds]);
-
-  // Keep the active branch expanded so the highlight stays visible.
-  useEffect(() => {
-    if (!activeId || !currentChapter) return;
-    const ancestors = findAncestorIds(currentChapter.sections, activeId) ?? [];
-    setOpenChapters((prev) => {
-      if (prev.has(currentChapter.id)) return prev;
-      const next = new Set(prev);
-      next.add(currentChapter.id);
-      return next;
-    });
-    if (ancestors.length === 0) return;
-    setOpenSections((prev) => {
-      let changed = false;
-      const next = new Set(prev);
-      for (const id of ancestors) {
-        if (!next.has(id)) {
-          next.add(id);
-          changed = true;
-        }
-      }
-      return changed ? next : prev;
-    });
-  }, [activeId, currentChapter]);
-
-  const syncActiveLinkIntoView = useCallback(() => {
-    if (!activeId || !panelOpen || query.trim()) return;
-    if (hoveringTocRef.current) return;
-    if (Date.now() < pauseUntilRef.current) return;
-
-    const link = linkRefs.current.get(activeId);
-    const container = scrollContainerRef.current;
-    if (!link || !container) return;
-    if (isFullyVisibleIn(link, container)) return;
-
-    suppressScrollPauseRef.current = true;
-    link.scrollIntoView({ block: "nearest", behavior: "smooth" });
-    window.setTimeout(() => {
-      suppressScrollPauseRef.current = false;
-    }, 500);
-  }, [activeId, panelOpen, query]);
-
-  // Polite TOC auto-scroll: only when out of view, and not while the user is using the TOC.
-  useEffect(() => {
-    syncActiveLinkIntoView();
-  }, [syncActiveLinkIntoView]);
-
-  const normalizedQuery = query.trim().toLowerCase();
-
-  const filteredChapters = useMemo(() => {
-    return CHAPTERS.map((chapter) => {
-      const chapterMatches = chapter.label.toLowerCase().includes(normalizedQuery);
-      const sections = filterEntries(chapter.sections, normalizedQuery);
-      if (!normalizedQuery) return chapter;
-      if (!chapterMatches && sections.length === 0) return null;
-      return { ...chapter, sections: chapterMatches && sections.length === 0 ? chapter.sections : sections };
-    }).filter(Boolean) as ChapterToc[];
-  }, [normalizedQuery]);
-
-  // While searching, auto-expand matching branches
-  const effectiveOpenSections = useMemo(() => {
-    if (!normalizedQuery) return openSections;
-    const next = new Set(openSections);
-    for (const chapter of filteredChapters) {
-      for (const id of collectExpandableIds(chapter.sections)) {
-        next.add(id);
-      }
-    }
-    return next;
-  }, [normalizedQuery, openSections, filteredChapters]);
-
-  const effectiveOpenChapters = useMemo(() => {
-    if (!normalizedQuery) return openChapters;
-    return new Set(filteredChapters.map((c) => c.id));
-  }, [normalizedQuery, openChapters, filteredChapters]);
-
-  function toggleChapter(id: string) {
-    pauseSync();
-    setOpenChapters((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
   }
+  return initial;
+})();
 
-  function toggleSection(id: string) {
-    pauseSync();
-    setOpenSections((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
+const openChapterListeners = new Set<() => void>();
+const openSectionListeners = new Set<() => void>();
+let openChaptersCache: Set<string> | undefined;
+let openSectionsCache: Set<string> | undefined;
+
+function subscribeOpenChapters(onChange: () => void) {
+  openChapterListeners.add(onChange);
+  return () => {
+    openChapterListeners.delete(onChange);
+  };
+}
+
+function getOpenChaptersSnapshot() {
+  if (!openChaptersCache) {
+    openChaptersCache = readIdSet(TOC_OPEN_CHAPTERS_KEY) ?? DEFAULT_OPEN_CHAPTERS;
   }
+  return openChaptersCache;
+}
 
-  if (!panelOpen) {
-    return (
-      <aside
-        id="wd-book-toc"
-        className="sticky top-0 flex h-screen w-10 shrink-0 flex-col border-r border-neutral-300 bg-neutral-50 font-sans"
-      >
-        <div className="min-h-0 flex-1" />
-        <div className="flex items-center justify-center border-t border-neutral-300 bg-neutral-100 p-2">
-          <button
-            type="button"
-            onClick={() => setPanelOpen(true)}
-            className="rounded border border-neutral-300 bg-white px-2 py-1 text-sm hover:bg-neutral-50"
-            aria-expanded={false}
-            title="Expand table of contents"
-          >
-            »»
-          </button>
-        </div>
-      </aside>
-    );
+function getOpenChaptersServerSnapshot() {
+  return DEFAULT_OPEN_CHAPTERS;
+}
+
+function persistOpenChapters(next: Set<string>) {
+  openChaptersCache = next;
+  writeIdSet(TOC_OPEN_CHAPTERS_KEY, next);
+  openChapterListeners.forEach((listener) => listener());
+}
+
+function subscribeOpenSections(onChange: () => void) {
+  openSectionListeners.add(onChange);
+  return () => {
+    openSectionListeners.delete(onChange);
+  };
+}
+
+function getOpenSectionsSnapshot() {
+  if (!openSectionsCache) {
+    openSectionsCache = readIdSet(TOC_OPEN_SECTIONS_KEY) ?? DEFAULT_OPEN_SECTIONS;
   }
+  return openSectionsCache;
+}
 
+function getOpenSectionsServerSnapshot() {
+  return DEFAULT_OPEN_SECTIONS;
+}
+
+function persistOpenSections(next: Set<string>) {
+  openSectionsCache = next;
+  writeIdSet(TOC_OPEN_SECTIONS_KEY, next);
+  openSectionListeners.forEach((listener) => listener());
+}
+
+type TocPanelProps = {
+  searchId: string;
+  query: string;
+  setQuery: (value: string) => void;
+  pauseSync: () => void;
+  syncActiveLinkIntoView: () => void;
+  scrollContainerRef: RefObject<HTMLDivElement | null>;
+  hoveringTocRef: MutableRefObject<boolean>;
+  suppressScrollPauseRef: MutableRefObject<boolean>;
+  resumeHref: string | null;
+  resumeLabel: string | null;
+  onNavigate: () => void;
+  filteredChapters: ChapterToc[];
+  effectiveOpenChapters: Set<string>;
+  effectiveOpenSections: Set<string>;
+  toggleChapter: (id: string) => void;
+  toggleSection: (id: string) => void;
+  activeId: string | null;
+  setLinkRef: (id: string, node: HTMLAnchorElement | null) => void;
+};
+
+function TocPanel({
+  searchId,
+  query,
+  setQuery,
+  pauseSync,
+  syncActiveLinkIntoView,
+  scrollContainerRef,
+  hoveringTocRef,
+  suppressScrollPauseRef,
+  resumeHref,
+  resumeLabel,
+  onNavigate,
+  filteredChapters,
+  effectiveOpenChapters,
+  effectiveOpenSections,
+  toggleChapter,
+  toggleSection,
+  activeId,
+  setLinkRef,
+}: TocPanelProps) {
   return (
-    <aside
-      id="wd-book-toc"
-      className="sticky top-0 flex h-screen w-72 shrink-0 flex-col border-r border-neutral-300 bg-neutral-50 font-sans text-neutral-900"
-    >
+    <>
       <div className="border-b border-neutral-300 px-3 py-2">
-        <label htmlFor="wd-book-toc-search" className="sr-only">
+        <label htmlFor={searchId} className="sr-only">
           Search
         </label>
         <input
-          id="wd-book-toc-search"
+          id={searchId}
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -1010,13 +991,12 @@ export default function BookTOC() {
 
       <div
         ref={scrollContainerRef}
-        className="min-h-0 flex-1 overflow-y-auto px-2 py-3"
+        className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-2 py-3"
         onPointerEnter={() => {
           hoveringTocRef.current = true;
         }}
         onPointerLeave={() => {
           hoveringTocRef.current = false;
-          // Resume sync after the user stops browsing the TOC.
           window.setTimeout(syncActiveLinkIntoView, 0);
         }}
         onScroll={() => {
@@ -1027,9 +1007,26 @@ export default function BookTOC() {
         onPointerDown={pauseSync}
       >
         <ul className="m-0 mb-3 list-none space-y-0.5 p-0 text-sm">
+          {resumeHref ? (
+            <li>
+              <Link
+                href={resumeHref}
+                onClick={onNavigate}
+                className="block rounded px-2 py-1 font-medium no-underline hover:bg-neutral-200"
+              >
+                Resume reading
+                {resumeLabel ? (
+                  <span className="mt-0.5 block text-xs font-normal text-neutral-500">
+                    {resumeLabel}
+                  </span>
+                ) : null}
+              </Link>
+            </li>
+          ) : null}
           <li>
             <Link
               href="/book"
+              onClick={onNavigate}
               className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
             >
               Book Home
@@ -1038,6 +1035,7 @@ export default function BookTOC() {
           <li>
             <Link
               href="/syllabus"
+              onClick={onNavigate}
               className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
             >
               Syllabus
@@ -1046,6 +1044,7 @@ export default function BookTOC() {
           <li>
             <Link
               href="/labs"
+              onClick={onNavigate}
               className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
             >
               Labs
@@ -1054,6 +1053,7 @@ export default function BookTOC() {
           <li>
             <Link
               href="/account/signin"
+              onClick={onNavigate}
               className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
             >
               Kambaz
@@ -1068,6 +1068,7 @@ export default function BookTOC() {
           <li>
             <Link
               href="/office-hours"
+              onClick={onNavigate}
               className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
             >
               Office Hours
@@ -1076,6 +1077,7 @@ export default function BookTOC() {
           <li>
             <Link
               href="/piazza-hours"
+              onClick={onNavigate}
               className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
             >
               Piazza Hours
@@ -1084,6 +1086,7 @@ export default function BookTOC() {
           <li>
             <Link
               href="/project"
+              onClick={onNavigate}
               className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
             >
               Final Project
@@ -1117,7 +1120,7 @@ export default function BookTOC() {
                     </button>
                     <Link
                       href={chapter.href}
-                      onClick={pauseSync}
+                      onClick={onNavigate}
                       className="min-w-0 flex-1 rounded px-1 py-1 text-sm font-medium no-underline hover:bg-neutral-200"
                     >
                       {chapter.label}
@@ -1132,7 +1135,7 @@ export default function BookTOC() {
                         toggle={toggleSection}
                         activeId={activeId}
                         setLinkRef={setLinkRef}
-                        onNavigate={pauseSync}
+                        onNavigate={onNavigate}
                       />
                     </div>
                   ) : null}
@@ -1142,18 +1145,417 @@ export default function BookTOC() {
           </ul>
         )}
       </div>
+    </>
+  );
+}
 
-      <div className="flex items-center justify-center border-t border-neutral-300 bg-neutral-100 p-2">
-        <button
-          type="button"
-          onClick={() => setPanelOpen(false)}
-          className="rounded border border-neutral-300 bg-white px-3 py-1 text-sm hover:bg-neutral-50"
-          aria-expanded={true}
-          title="Collapse table of contents"
+export default function BookTOC() {
+  const pathname = usePathname();
+  const [panelOpen, setPanelOpen] = useState(true);
+  const [query, setQuery] = useState("");
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const mobileOpen = useSyncExternalStore(
+    subscribeMobileTocOpen,
+    getMobileTocOpenSnapshot,
+    getMobileTocOpenServerSnapshot,
+  );
+  const isMdUp = useSyncExternalStore(
+    subscribeMdUp,
+    getMdUpSnapshot,
+    getMdUpServerSnapshot,
+  );
+  const lastPosition = useSyncExternalStore(
+    subscribeLastPosition,
+    getLastPositionSnapshot,
+    getLastPositionServerSnapshot,
+  );
+  const openChapters = useSyncExternalStore(
+    subscribeOpenChapters,
+    getOpenChaptersSnapshot,
+    getOpenChaptersServerSnapshot,
+  );
+  const openSections = useSyncExternalStore(
+    subscribeOpenSections,
+    getOpenSectionsSnapshot,
+    getOpenSectionsServerSnapshot,
+  );
+  const resume = pathname === "/book" ? describeLastPosition(lastPosition) : null;
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const drawerRef = useRef<HTMLElement>(null);
+  const fabRef = useRef<HTMLButtonElement>(null);
+  const linkRefs = useRef(new Map<string, HTMLAnchorElement>());
+  const hoveringTocRef = useRef(false);
+  const pauseUntilRef = useRef(0);
+  const suppressScrollPauseRef = useRef(false);
+  const restoredPathRef = useRef<string | null>(null);
+
+  const currentChapter = useMemo(
+    () => CHAPTERS.find((c) => pathname === c.href || pathname.startsWith(`${c.href}/`)),
+    [pathname],
+  );
+
+  const sectionIds = useMemo(
+    () => (currentChapter ? collectSectionIds(currentChapter.sections) : []),
+    [currentChapter],
+  );
+
+  const setMobileOpenPersist = useCallback((open: boolean) => {
+    writeMobileTocOpen(open);
+  }, []);
+
+  useEffect(() => {
+    if (restoredPathRef.current === pathname) return;
+
+    const finish = (hash = "") => {
+      restoredPathRef.current = pathname;
+      if (currentChapter) {
+        writeLastPosition({ pathname, hash });
+      }
+    };
+
+    if (window.location.hash) {
+      finish(window.location.hash.slice(1));
+      return;
+    }
+    if (!currentChapter) {
+      restoredPathRef.current = pathname;
+      return;
+    }
+    const last = readLastPosition();
+    if (
+      !last?.hash ||
+      (pathname !== last.pathname && !pathname.startsWith(`${last.pathname}/`))
+    ) {
+      finish();
+      return;
+    }
+    const el = document.getElementById(last.hash);
+    if (!el) {
+      if (sectionIds.length === 0) return;
+      finish();
+      return;
+    }
+    el.scrollIntoView();
+    history.replaceState(null, "", lastPositionHref(pathname, last.hash));
+    finish(last.hash);
+  }, [pathname, currentChapter, sectionIds]);
+
+  useEffect(() => {
+    if (!currentChapter) return;
+    if (restoredPathRef.current !== pathname) return;
+    writeLastPosition({
+      pathname,
+      hash: activeId ?? "",
+    });
+  }, [pathname, activeId, currentChapter]);
+
+  const pauseSync = useCallback(() => {
+    pauseUntilRef.current = Date.now() + TOC_SYNC_PAUSE_MS;
+  }, []);
+
+  const setLinkRef = useCallback(
+    (id: string, node: HTMLAnchorElement | null) => {
+      if (node) linkRefs.current.set(id, node);
+      else linkRefs.current.delete(id);
+    },
+    [],
+  );
+
+  // Track the section currently being read from window scroll position.
+  useEffect(() => {
+    if (sectionIds.length === 0) {
+      return;
+    }
+
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      let current = sectionIds[0];
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        if (el.getBoundingClientRect().top <= READING_MARKER_PX) {
+          current = id;
+        }
+      }
+      setActiveId((prev) => (prev === current ? prev : current));
+    };
+
+    const onScrollOrResize = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    const frame = requestAnimationFrame(update);
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+    };
+  }, [sectionIds]);
+
+  const ancestorIds = useMemo(
+    () =>
+      activeId && currentChapter
+        ? (findAncestorIds(currentChapter.sections, activeId) ?? [])
+        : [],
+    [activeId, currentChapter],
+  );
+
+  const tocVisible = isMdUp ? panelOpen : mobileOpen;
+
+  const syncActiveLinkIntoView = useCallback(() => {
+    if (!activeId || !tocVisible || query.trim()) return;
+    if (hoveringTocRef.current) return;
+    if (Date.now() < pauseUntilRef.current) return;
+
+    const link = linkRefs.current.get(activeId);
+    const container = scrollContainerRef.current;
+    if (!link || !container) return;
+    if (isFullyVisibleIn(link, container)) return;
+
+    suppressScrollPauseRef.current = true;
+    link.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    window.setTimeout(() => {
+      suppressScrollPauseRef.current = false;
+    }, 500);
+  }, [activeId, tocVisible, query]);
+
+  // Polite TOC auto-scroll: only when out of view, and not while the user is using the TOC.
+  useEffect(() => {
+    syncActiveLinkIntoView();
+  }, [syncActiveLinkIntoView]);
+
+  const normalizedQuery = query.trim().toLowerCase();
+
+  const filteredChapters = useMemo(() => {
+    return CHAPTERS.map((chapter) => {
+      const chapterMatches = chapter.label.toLowerCase().includes(normalizedQuery);
+      const sections = filterEntries(chapter.sections, normalizedQuery);
+      if (!normalizedQuery) return chapter;
+      if (!chapterMatches && sections.length === 0) return null;
+      return { ...chapter, sections: chapterMatches && sections.length === 0 ? chapter.sections : sections };
+    }).filter(Boolean) as ChapterToc[];
+  }, [normalizedQuery]);
+
+  const effectiveOpenSections = useMemo(() => {
+    const next = new Set(openSections);
+    if (normalizedQuery) {
+      for (const chapter of filteredChapters) {
+        for (const id of collectExpandableIds(chapter.sections)) {
+          next.add(id);
+        }
+      }
+    }
+    for (const id of ancestorIds) next.add(id);
+    return next;
+  }, [normalizedQuery, openSections, filteredChapters, ancestorIds]);
+
+  const effectiveOpenChapters = useMemo(() => {
+    const next = normalizedQuery
+      ? new Set(filteredChapters.map((c) => c.id))
+      : new Set(openChapters);
+    if (currentChapter) next.add(currentChapter.id);
+    return next;
+  }, [normalizedQuery, openChapters, filteredChapters, currentChapter]);
+
+  function toggleChapter(id: string) {
+    pauseSync();
+    const next = new Set(openChapters);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    persistOpenChapters(next);
+  }
+
+  function toggleSection(id: string) {
+    pauseSync();
+    const next = new Set(openSections);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    persistOpenSections(next);
+  }
+
+  const onNavigate = useCallback(() => {
+    pauseSync();
+    if (!isMdUp) setMobileOpenPersist(false);
+  }, [isMdUp, pauseSync, setMobileOpenPersist]);
+
+  useEffect(() => {
+    if (!mobileOpen || isMdUp) return;
+    const drawer = drawerRef.current;
+    const previouslyFocused = document.activeElement;
+    const fab = fabRef.current;
+    const main = document.querySelector<HTMLElement>(".book-shell main");
+    main?.setAttribute("inert", "");
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const focusable = () =>
+      drawer
+        ? Array.from(drawer.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
+            (el) => !el.hasAttribute("disabled") && el.tabIndex !== -1,
+          )
+        : [];
+
+    const first = focusable()[0];
+    first?.focus();
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setMobileOpenPersist(false);
+        return;
+      }
+      if (event.key !== "Tab" || !drawer) return;
+      const items = focusable();
+      if (items.length === 0) return;
+      const firstItem = items[0];
+      const lastItem = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === firstItem) {
+        event.preventDefault();
+        lastItem.focus();
+      } else if (!event.shiftKey && document.activeElement === lastItem) {
+        event.preventDefault();
+        firstItem.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+      main?.removeAttribute("inert");
+      if (
+        previouslyFocused instanceof HTMLElement &&
+        document.contains(previouslyFocused)
+      ) {
+        previouslyFocused.focus();
+      } else {
+        fab?.focus();
+      }
+    };
+  }, [mobileOpen, isMdUp, setMobileOpenPersist]);
+
+  const showMobileDrawer = mobileOpen && !isMdUp;
+  const showDesktopAside = !showMobileDrawer;
+
+  const panel = (
+    <TocPanel
+      searchId={showMobileDrawer ? "wd-book-toc-search-mobile" : "wd-book-toc-search"}
+      query={query}
+      setQuery={setQuery}
+      pauseSync={pauseSync}
+      syncActiveLinkIntoView={syncActiveLinkIntoView}
+      scrollContainerRef={scrollContainerRef}
+      hoveringTocRef={hoveringTocRef}
+      suppressScrollPauseRef={suppressScrollPauseRef}
+      resumeHref={resume?.href ?? null}
+      resumeLabel={resume?.label ?? null}
+      onNavigate={onNavigate}
+      filteredChapters={filteredChapters}
+      effectiveOpenChapters={effectiveOpenChapters}
+      effectiveOpenSections={effectiveOpenSections}
+      toggleChapter={toggleChapter}
+      toggleSection={toggleSection}
+      activeId={activeId}
+      setLinkRef={setLinkRef}
+    />
+  );
+
+  return (
+    <>
+      <button
+        ref={fabRef}
+        type="button"
+        className="fixed z-50 flex h-12 w-12 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-800 shadow-lg md:hidden"
+        style={{
+          bottom: "max(1rem, env(safe-area-inset-bottom))",
+          right: "max(1rem, env(safe-area-inset-right))",
+        }}
+        aria-expanded={mobileOpen}
+        aria-controls="wd-book-toc-drawer"
+        aria-label={mobileOpen ? "Close table of contents" : "Open table of contents"}
+        onClick={() => setMobileOpenPersist(!mobileOpen)}
+      >
+        {mobileOpen ? <FaTimes aria-hidden /> : <FaBars aria-hidden />}
+      </button>
+
+      {showMobileDrawer ? (
+        <div className="fixed inset-0 z-40 md:hidden">
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/40"
+            aria-label="Close table of contents"
+            onClick={() => setMobileOpenPersist(false)}
+          />
+          <aside
+            ref={drawerRef}
+            id="wd-book-toc-drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Table of contents"
+            className="relative z-10 flex h-full w-[min(18rem,90vw)] flex-col border-r border-neutral-300 bg-neutral-50 font-sans text-neutral-900 shadow-xl"
+          >
+            <div className="flex items-center justify-between border-b border-neutral-300 px-3 py-2">
+              <h2 className="m-0 text-sm font-semibold">Contents</h2>
+              <button
+                type="button"
+                onClick={() => setMobileOpenPersist(false)}
+                className="rounded border border-neutral-300 bg-white px-2 py-1 text-sm hover:bg-neutral-50"
+                aria-label="Close table of contents"
+              >
+                <FaTimes aria-hidden />
+              </button>
+            </div>
+            {panel}
+          </aside>
+        </div>
+      ) : null}
+
+      {showDesktopAside && !panelOpen ? (
+        <aside
+          id="wd-book-toc"
+          className="sticky top-0 hidden h-screen w-10 shrink-0 flex-col border-r border-neutral-300 bg-neutral-50 font-sans md:flex"
         >
-          ««
-        </button>
-      </div>
-    </aside>
+          <div className="min-h-0 flex-1" />
+          <div className="flex items-center justify-center border-t border-neutral-300 bg-neutral-100 p-2">
+            <button
+              type="button"
+              onClick={() => setPanelOpen(true)}
+              className="rounded border border-neutral-300 bg-white px-2 py-1 text-sm hover:bg-neutral-50"
+              aria-expanded={false}
+              title="Expand table of contents"
+            >
+              »»
+            </button>
+          </div>
+        </aside>
+      ) : null}
+
+      {showDesktopAside && panelOpen ? (
+        <aside
+          id="wd-book-toc"
+          className="sticky top-0 hidden h-screen w-72 shrink-0 flex-col border-r border-neutral-300 bg-neutral-50 font-sans text-neutral-900 md:flex"
+        >
+          {panel}
+          <div className="flex items-center justify-center border-t border-neutral-300 bg-neutral-100 p-2">
+            <button
+              type="button"
+              onClick={() => setPanelOpen(false)}
+              className="rounded border border-neutral-300 bg-white px-3 py-1 text-sm hover:bg-neutral-50"
+              aria-expanded={true}
+              title="Collapse table of contents"
+            >
+              ««
+            </button>
+          </div>
+        </aside>
+      ) : null}
+    </>
   );
 }

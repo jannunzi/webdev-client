@@ -10,7 +10,9 @@ export default function BookLayout({
     <AccountProvider>
       <div className="book-shell flex min-h-screen">
         <BookTOC />
-        <main className="min-w-0 flex-1 overflow-x-auto p-6">{children}</main>
+        <main className="min-w-0 w-full flex-1 overflow-x-auto px-4 py-6 md:p-6">
+          {children}
+        </main>
       </div>
     </AccountProvider>
   );

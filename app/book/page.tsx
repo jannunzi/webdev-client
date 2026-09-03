@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ResumeReading from "./ResumeReading";
 
 export default function BookHome() {
   return (
@@ -7,6 +8,7 @@ export default function BookHome() {
         Developing Full Stack Next.js Web Applications
       </h1>
       <p className="text-neutral-700">Dr. Jose Annunziato</p>
+      <ResumeReading />
       <p>
         <Link href="/syllabus">CS 4550 / CS 5610 Fall 2026 Syllabus</Link>
         {" · "}
