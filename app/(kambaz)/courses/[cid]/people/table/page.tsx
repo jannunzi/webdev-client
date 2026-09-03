@@ -19,7 +19,7 @@ export default function PeopleTablePage() {
   const fetchUsers = async () => {
     try {
       const remote = await client.findUsersForCourse(cid);
-      if (Array.isArray(remote) && remote.length > 0) {
+      if (Array.isArray(remote)) {
         setUsers(remote);
         return;
       }

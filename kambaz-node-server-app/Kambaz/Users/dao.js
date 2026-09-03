@@ -70,8 +70,9 @@ export default function UsersDao(db) {
 
   const deleteUser = async (userId) => {
     if (isMongoEnabled()) return model.findByIdAndDelete(userId);
+    const before = db.users.length;
     db.users = db.users.filter((u) => u._id !== userId);
-    return { deletedCount: 1 };
+    return { deletedCount: before - db.users.length };
   };
 
   return {

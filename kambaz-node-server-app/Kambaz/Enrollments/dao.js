@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import model from "./model.js";
 import { isMongoEnabled } from "../Database/mongo.js";
 
@@ -38,22 +37,24 @@ export default function EnrollmentsDao(db) {
     if (isMongoEnabled()) {
       return model.create(enrollment);
     }
-    db.enrollments.push({ ...enrollment, _id: uuidv4() });
+    db.enrollments.push(enrollment);
     return enrollment;
   }
 
   async function unenrollUserFromCourse(user, course) {
     if (isMongoEnabled()) return model.deleteOne({ user, course });
+    const before = db.enrollments.length;
     db.enrollments = db.enrollments.filter(
       (e) => !(e.user === user && e.course === course),
     );
-    return { deletedCount: 1 };
+    return { deletedCount: before - db.enrollments.length };
   }
 
   async function unenrollAllUsersFromCourse(courseId) {
     if (isMongoEnabled()) return model.deleteMany({ course: courseId });
+    const before = db.enrollments.length;
     db.enrollments = db.enrollments.filter((e) => e.course !== courseId);
-    return { deletedCount: 1 };
+    return { deletedCount: before - db.enrollments.length };
   }
 
   function findEnrollmentsForUser(userId) {
