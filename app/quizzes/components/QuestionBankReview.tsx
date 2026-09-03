@@ -80,9 +80,9 @@ export default function QuestionBankReview({
           Review draft / answers shown
         </p>
         <p className="mb-0 mt-1 text-sm">
-          Author review only — not a student exam, not authenticated, and not
-          a Canvas export yet. Correct answers are visible on purpose so the
-          bank can be revised before QTI packaging.
+          Author review only — not a student exam. Correct answers are visible
+          on purpose so the bank can be revised. Students take the graded
+          version at <Link href="/quizzes/take/q1">/quizzes/take/q1</Link>.
         </p>
       </div>
 
