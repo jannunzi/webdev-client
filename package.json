@@ -1,5 +1,5 @@
 {
-  "name": "web-dev-client",
+  "name": "webdev-client",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "server": "npm start --prefix web-dev-server",
-    "server:dev": "npm run dev --prefix web-dev-server"
+    "server": "npm start --prefix webdev-server",
+    "server:dev": "npm run dev --prefix webdev-server"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.12.0",

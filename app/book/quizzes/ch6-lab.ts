@@ -229,6 +229,6 @@ export const CH6_LAB_QUESTIONS: QuizQuestion[] = [
       { id: "d", text: "atlas" },
     ],
     answer: "b",
-    explanation: "Deliverables: a6 on web-dev-client and web-dev-server, plus a new Render service and Vercel preview.",
+    explanation: "Deliverables: a6 on webdev-client and webdev-server, plus a new Render service and Vercel preview.",
   },
 ];

@@ -16,7 +16,7 @@ export default function Lab5() {
       <p>
         Run <code>npm run dev</code> in the Next.js folder and, in a
         second terminal,{" "}
-        <code>cd web-dev-server && npm run dev</code>{" "}
+        <code>cd webdev-server && npm run dev</code>{" "}
         (<code>nodemon</code>) so Express LiveDemos reach{" "}
         <code>http://localhost:4000</code>. No remote host is required.
         The Next.js calculator at the bottom uses same-origin{" "}

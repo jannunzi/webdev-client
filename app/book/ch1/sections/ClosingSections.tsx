@@ -13,7 +13,7 @@ export default function ClosingSections() {
           <strong>Git</strong>{" "}repositories. Git is the tool that records
           snapshots of your project (commits) and syncs them with a remote
           server. Create a public repository named{" "}
-          <code>web-dev-client</code>{" "}on GitHub, then push from your project
+          <code>webdev-client</code>{" "}on GitHub, then push from your project
           folder.
         </p>
         <p>
@@ -33,7 +33,7 @@ export default function ClosingSections() {
         </p>
         <CodeBlock language="shell">{`git add .
 git commit -m "first commit"
-git remote add origin https://github.com/<you>/web-dev-client.git
+git remote add origin https://github.com/<you>/webdev-client.git
 git push -u origin main`}</CodeBlock>
         <p>
           GitHub no longer accepts account passwords for{" "}
@@ -52,7 +52,7 @@ git push -u origin main`}</CodeBlock>
           <a href="https://vercel.com" target="_blank" rel="noreferrer">
             Vercel
           </a>{" "}
-          account, import the GitHub <code>web-dev-client</code>{" "}repo, and deploy
+          account, import the GitHub <code>webdev-client</code>{" "}repo, and deploy
           with the Next.js preset (Vercel usually detects Next.js
           automatically).
         </p>
@@ -68,7 +68,7 @@ git push -u origin main`}</CodeBlock>
       <Section id="sec-1-7" title="1.7 Conclusion">
         <p>By the end of this chapter you should have:</p>
         <ol>
-          <li>Installed Node.js and created <code>web-dev-client</code>.</li>
+          <li>Installed Node.js and created <code>webdev-client</code>.</li>
           <li>Completed all Lab 1 HTML exercises.</li>
           <li>Prototyped Kambaz screens with HTML and React.</li>
           <li>Pushed the project to GitHub.</li>

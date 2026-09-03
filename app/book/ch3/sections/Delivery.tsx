@@ -9,7 +9,7 @@ export default function Delivery() {
     <Section id="sec-3-10" title="3.10 Delivery">
       <p>
         Submit this chapter&apos;s work as a new branch on the same{" "}
-        <code>web-dev-client</code>{" "}repository and deployment from earlier
+        <code>webdev-client</code>{" "}repository and deployment from earlier
         chapters, so graders can compare <ChapterLink to={2} />&apos;s styled
         prototype against this chapter&apos;s JavaScript and data-driven
         screens side by side.
@@ -17,7 +17,7 @@ export default function Delivery() {
       <ol>
         <li>
           Finish every exercise described in this chapter inside the same{" "}
-          <code>web-dev-client</code>{" "}project used in <ChapterLink to={1} />{" "}
+          <code>webdev-client</code>{" "}project used in <ChapterLink to={1} />{" "}
           and <ChapterLink to={2} />.
         </li>
         <li>

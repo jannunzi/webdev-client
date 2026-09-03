@@ -38,7 +38,7 @@ export default function Intro() {
           </OfficialLink>{" "}
           HTTP server in a{" "}
           <strong>sibling project</strong>{" "}named{" "}
-          <code>web-dev-server</code>{" "}— not inside the Next.js
+          <code>webdev-server</code>{" "}— not inside the Next.js
           app directory. Locally the UI is{" "}
           <code>next dev</code>{" "}on port 3000 and Express is{" "}
           <code>nodemon</code>{" "}/{" "}

@@ -16,13 +16,13 @@ export default function Deliverables() {
         <code>a5</code> API while TAs are grading. Confirm Dashboard
         courses and modules come from the database.
       </p>
-      <CodeBlock language="shell">{`# in web-dev-client
+      <CodeBlock language="shell">{`# in webdev-client
 git checkout -b a6
 git add .
 git commit -am "a6 MongoDB"
 git push -u origin a6
 
-# in web-dev-server
+# in webdev-server
 git checkout -b a6
 git add .
 git commit -am "a6 MongoDB"

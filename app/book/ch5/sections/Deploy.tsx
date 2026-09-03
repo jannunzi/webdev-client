@@ -25,7 +25,7 @@ export default function Deploy() {
       >
         <p>
           The working source in this book repo is already{" "}
-          <code>web-dev-server/</code>{" "}at the Next.js root.
+          <code>webdev-server/</code>{" "}at the Next.js root.
           Delivery still wants a{" "}
           <strong>separate</strong>{" "}GitHub repository. In that folder
           run <code>git init</code>.{" "}
@@ -33,14 +33,14 @@ export default function Deploy() {
           <code>node_modules</code>,{" "}
           <code>.env</code>, and{" "}
           <code>.env.development</code>. Create a public GitHub
-          repository named <code>web-dev-server</code>{" "}and
+          repository named <code>webdev-server</code>{" "}and
           push. Work on branch{" "}
           <code>a5</code>{" "}in <em>both</em>{" "}repos.
         </p>
         <CodeBlock language="shell">{`git init
 git add .
 git commit -m "first commit"
-git remote add origin https://github.com/<you>/web-dev-server.git
+git remote add origin https://github.com/<you>/webdev-server.git
 git push -u origin main`}</CodeBlock>
       </Section>
 

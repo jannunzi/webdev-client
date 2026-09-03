@@ -1,8 +1,8 @@
-# web-dev-client
+# webdev-client
 
-Next.js client for CS 4550 / CS 5610 Web Development. Students build **Kambaz**, a Canvas-inspired LMS UI, in this repo. The sibling Express API is **web-dev-server** (nested here as a convenience copy; assignments still treat it as its own GitHub repository).
+Next.js client for CS 4550 / CS 5610 Web Development. Students build **Kambaz**, a Canvas-inspired LMS UI, in this repo. The sibling Express API is **webdev-server** (nested here as a convenience copy; assignments still treat it as its own GitHub repository).
 
-The course homepage (`/`) redirects to `/syllabus`. Kambaz stays on its existing routes (`/account/signin`, `/dashboard`, `/courses/…`).
+The course homepage (`/`) redirects to `/syllabus`. Kambaz stays on its existing routes (`/account/signin`, `/dashboard`, `/courses/…`). The live book is at [https://webdev-client.vercel.app](https://webdev-client.vercel.app).
 
 This project was bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
@@ -25,7 +25,7 @@ Open [http://localhost:3000](http://localhost:3000) — it redirects to the syll
 For Lab 5–6 LiveDemos, run the Express sibling in a second terminal:
 
 ```bash
-cd web-dev-server
+cd webdev-server
 npm install
 npm run dev
 ```
@@ -39,4 +39,4 @@ Or from this repo root: `npm run server:dev`.
 
 ## Deploy on Vercel
 
-The easiest way to deploy the Next.js app is the [Vercel Platform](https://vercel.com/new). Deploy **web-dev-server** separately (Render or Heroku) and point `NEXT_PUBLIC_HTTP_SERVER` at that origin.
+The course book deploys to [https://webdev-client.vercel.app](https://webdev-client.vercel.app). Students deploy their own `webdev-client` fork with the [Vercel Platform](https://vercel.com/new) and **webdev-server** separately (Render or Heroku), then point `NEXT_PUBLIC_HTTP_SERVER` at that origin.

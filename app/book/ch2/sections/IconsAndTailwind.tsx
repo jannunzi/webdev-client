@@ -113,7 +113,7 @@ export default function ReactIconsSampler() {
           classes like <code>p-4</code>{" "}(padding) or{" "}
           <code>bg-red-500</code>{" "}(background color). <code>create-next-app</code>{" "}
           already installed and configured Tailwind when you scaffolded{" "}
-          <code>web-dev-client</code>{" "}in <ChapterLink to={1} /> — you simply commented out
+          <code>webdev-client</code>{" "}in <ChapterLink to={1} /> — you simply commented out
           its import in <code>app/layout.tsx</code>{" "}so the HTML exercises
           could render with plain browser defaults.
         </p>

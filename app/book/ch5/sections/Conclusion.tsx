@@ -28,13 +28,13 @@ export default function Conclusion() {
           UI to Vercel and the API to Render (or Heroku) and confirm
           they integrate.
         </p>
-        <CodeBlock language="shell">{`# in web-dev-client
+        <CodeBlock language="shell">{`# in webdev-client
 git checkout -b a5
 git add .
 git commit -am "a5 HTTP APIs"
 git push -u origin a5
 
-# in web-dev-server
+# in webdev-server
 git checkout -b a5
 git add .
 git commit -am "a5 HTTP APIs"
