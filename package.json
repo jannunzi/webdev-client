@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "tsx --test lib/question-bank/q1.test.ts",
+    "test": "node --experimental-strip-types --test app/book/terms/*.test.ts && tsx --test lib/question-bank/q1.test.ts",
     "server": "npm start --prefix webdev-server",
     "server:dev": "npm run dev --prefix webdev-server"
   },

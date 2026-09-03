@@ -1,21 +1,35 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
+import { getTerm } from "../terms/termRegistry";
+import { childrenToText, termPageHref, termSlug } from "../terms/termSlug";
+
 
 /**
- * First-use link to the site responsible for a technology (official docs,
- * spec, or Wikipedia when there is no single home page).
+ * First-use technology term. Navigates in-app to `/book/terms/[slug]`
+ * (official site + explainer videos) instead of opening the official URL.
+ * Optional `term` / `searchQuery` override the label and YouTube query;
+ * defaults come from `children` text.
  */
 export default function OfficialLink({
   href,
   children,
   className = "book-official-link",
+  term,
+  searchQuery,
 }: {
   href: string;
   children: ReactNode;
   className?: string;
+  term?: string;
+  searchQuery?: string;
 }) {
+  const label = (term ?? childrenToText(children)).trim();
+  const slug = termSlug(label);
+  const path = termPageHref(href, label, getTerm(slug), { term, searchQuery });
+
   return (
-    <a href={href} target="_blank" rel="noreferrer" className={className}>
+    <Link href={path} className={className} title={`Learn more about ${label}`}>
       {children}
-    </a>
+    </Link>
   );
 }
