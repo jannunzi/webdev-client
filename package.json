@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test app/book/terms/*.test.ts",
+    "test": "node --experimental-strip-types --test app/book/terms/*.test.ts && tsx --test lib/question-bank/q1.test.ts",
     "server": "npm start --prefix webdev-server",
     "server:dev": "npm run dev --prefix webdev-server"
   },
@@ -30,6 +30,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
     "tailwindcss": "^4",
+    "tsx": "^4.20.5",
     "typescript": "^5"
   }
 }

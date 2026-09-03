@@ -17,6 +17,8 @@ export default function BookHome() {
         <Link href="/piazza-hours">Piazza Hours</Link>
         {" · "}
         <Link href="/project">Final Project</Link>
+        {" · "}
+        <Link href="/quizzes/q1">Q1 question bank (review draft)</Link>
       </p>
       <h2 className="font-sans text-xl font-semibold">Chapters</h2>
       <ul>
@@ -51,6 +53,12 @@ export default function BookHome() {
           </Link>
         </li>
       </ul>
+      <h2 className="font-sans text-xl font-semibold">Practice</h2>
+      <p>
+        Ungraded self-checks for each chapter live on dedicated practice
+        pages — not Canvas exams.{" "}
+        <Link href="/book/practice">Browse practice quizzes</Link>.
+      </p>
     </div>
   );
 }

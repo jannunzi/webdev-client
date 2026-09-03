@@ -28,6 +28,16 @@
   border-radius: 2px;
 }
 
+.book-shell a.book-practice-cta {
+  color: #fff;
+  text-decoration: none;
+}
+
+.book-shell a.book-practice-cta:hover {
+  color: #fff;
+  background: #404040;
+}
+
 .book-shell .sr-only {
   position: absolute;
   width: 1px;

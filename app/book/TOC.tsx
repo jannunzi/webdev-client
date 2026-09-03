@@ -1052,6 +1052,15 @@ function TocPanel({
           </li>
           <li>
             <Link
+              href="/book/practice"
+              onClick={onNavigate}
+              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
+            >
+              Practice quizzes
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/account/signin"
               onClick={onNavigate}
               className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"

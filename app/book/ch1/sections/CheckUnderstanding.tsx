@@ -1,7 +1,6 @@
 import Section from "../../components/Section";
 import SectionLink from "../../components/SectionLink";
-import SelfCheck from "../../components/SelfCheck";
-import { CH1_LAB_QUESTIONS } from "../../quizzes/ch1-lab";
+import PracticeCard from "../../components/PracticeCard";
 
 export default function CheckUnderstanding() {
   return (
@@ -12,7 +11,7 @@ export default function CheckUnderstanding() {
     >
       <p>
         Before prototyping Kambaz, pause and test what Lab 1 actually stuck.
-        The quiz below draws 10 items from a bank written against this
+        The practice quiz draws 10 items from a bank written against this
         chapter&apos;s HTML exercises — App Router{" "}
         <code>page.tsx</code>, headings and paragraphs, lists and tables,
         images, form fields, radio <code>name</code>{" "}groups and mutual
@@ -24,7 +23,7 @@ export default function CheckUnderstanding() {
         <SectionLink to="1.6" />. Misses link back to the subsection you
         should reread; each new attempt draws a different 10.
       </p>
-      <SelfCheck quizId="1.lab" bank={CH1_LAB_QUESTIONS} />
+      <PracticeCard quizId="1.lab" />
     </Section>
   );
 }

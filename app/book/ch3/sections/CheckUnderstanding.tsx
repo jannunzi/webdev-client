@@ -1,14 +1,13 @@
 import Section from "../../components/Section";
 import SectionLink from "../../components/SectionLink";
-import SelfCheck from "../../components/SelfCheck";
-import { CH3_LAB_QUESTIONS } from "../../quizzes/ch3-lab";
+import PracticeCard from "../../components/PracticeCard";
 
 export default function CheckUnderstanding() {
   return (
     <Section id="sec-3-8" title="3.8 Check Your Understanding">
       <p>
         Before wiring JSON into Kambaz, pause and test what Lab 3
-        actually stuck. The quiz below draws 10 items from a bank
+        actually stuck. The practice quiz draws 10 items from a bank
         written against this chapter&apos;s exercises —{" "}
         <code>var</code>/<code>let</code>/<code>const</code>,{" "}
         <code>===</code>, ternaries, arrows, <code>map</code>/
@@ -19,7 +18,7 @@ export default function CheckUnderstanding() {
         <SectionLink to="3.10" />. Misses link back to the subsection
         you should reread; each new attempt draws a different 10.
       </p>
-      <SelfCheck quizId="3.lab" bank={CH3_LAB_QUESTIONS} />
+      <PracticeCard quizId="3.lab" />
     </Section>
   );
 }
