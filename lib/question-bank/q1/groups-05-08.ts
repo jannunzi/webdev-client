@@ -222,11 +222,14 @@ const IMG_PATH_DOMAINS: { label: string; file: string }[] = [
   { label: "lab equipment", file: "lab-equipment" },
   { label: "library hours poster", file: "library-hours" },
   { label: "shuttle schedule graphic", file: "shuttle-schedule" },
-  { label: "dining menu photo", file: "dining-menu" },
-  { label: "robot demo", file: "robot-demo" },
-  { label: "concert flyer", file: "concert-flyer" },
-  { label: "weather icon", file: "weather-icon" },
-  { label: "course logo", file: "course-logo" },
+];
+
+const IMG_ALT_DOMAINS = [
+  "campus map",
+  "faculty portrait",
+  "robot demo",
+  "dining menu photo",
+  "course logo",
 ];
 
 export const q1Group07: QuestionGroup = {
@@ -236,18 +239,28 @@ export const q1Group07: QuestionGroup = {
   type: "fill_in_blank",
   chapter: 1,
   section: "1.3.5",
-  skill: "Reference files under public/ from the site root and describe images with alt.",
-  questions: IMG_PATH_DOMAINS.map((domain, index) =>
-    fib(
-      `q1-g07-${String(index + 1).padStart(2, "0")}`,
-      `A ${domain.label} file is saved as public/images/${domain.file}.jpg. In <img src>, write the path as _____ (do not include the public/ prefix).`,
-      [
-        `/images/${domain.file}.jpg`,
-        `images/${domain.file}.jpg`,
-      ],
-      "Files under public/ are served from the site root. Drop the public/ prefix: /images/…. (A leading slash is preferred.)",
+  skill: "Reference files under public/ from the site root, and describe images with alt.",
+  questions: [
+    ...IMG_PATH_DOMAINS.map((domain, index) =>
+      fib(
+        `q1-g07-${String(index + 1).padStart(2, "0")}`,
+        `A ${domain.label} file is saved as public/images/${domain.file}.jpg. In <img src>, write the path as _____ (do not include the public/ prefix).`,
+        [
+          `/images/${domain.file}.jpg`,
+          `images/${domain.file}.jpg`,
+        ],
+        "Files under public/ are served from the site root. Drop the public/ prefix: /images/…. (A leading slash is preferred.)",
+      ),
     ),
-  ),
+    ...IMG_ALT_DOMAINS.map((domain, index) =>
+      fib(
+        `q1-g07-${String(index + 6).padStart(2, "0")}`,
+        `The _____ attribute holds a short text description of a ${domain} image when it cannot load, and it matters for accessibility.`,
+        ["alt", "alt text", "the alt", "alt attribute", "the alt attribute"],
+        "alt describes the picture for people and tools that cannot see it. src points at the file.",
+      ),
+    ),
+  ],
 };
 
 export const q1Group08: QuestionGroup = {
