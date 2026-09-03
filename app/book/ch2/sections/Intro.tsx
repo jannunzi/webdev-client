@@ -103,7 +103,7 @@ export default function Intro() {
         </p>
         <p>
           Keep working in the same{" "}
-          <code>kambaz-next-js</code>{" "}project from <ChapterLink to={1} />.
+          <code>web-dev-client</code>{" "}project from <ChapterLink to={1} />.
           Under <code>app/labs</code>, create a new directory called{" "}
           <code>lab2</code>{" "}and add <code>page.tsx</code>{" "}to hold the
           exercises, mirroring the structure you already used for{" "}

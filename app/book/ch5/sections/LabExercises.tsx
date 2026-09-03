@@ -21,11 +21,11 @@ export default function LabExercises() {
         the Next.js UI. You need{" "}
         <strong>two terminals</strong>:
       </p>
-      <CodeBlock language="shell">{`# terminal 1 — Next.js UI (port 3000), from kambaz-next-js
+      <CodeBlock language="shell">{`# terminal 1 — Next.js UI (port 3000), from web-dev-client
 npm run dev
 
-# terminal 2 — sibling Express (port 4000), from kambaz-node-server-app
-cd kambaz-node-server-app
+# terminal 2 — sibling Express (port 4000), from web-dev-server
+cd web-dev-server
 npm run dev          # nodemon index.js
 # or: npm start      # node index.js`}</CodeBlock>
       <p>
@@ -39,7 +39,7 @@ npm run dev          # nodemon index.js
       <CodeBlock
         language="js"
         name="Lab5"
-        file="kambaz-node-server-app/Lab5/index.js"
+        file="web-dev-server/Lab5/index.js"
       >{`export default function Lab5(app) {
   app.get("/lab5/welcome", (req, res) => {
     res.send("Welcome to Lab 5");
@@ -129,7 +129,7 @@ npm run dev          # nodemon index.js
           <CodeBlock
             language="js"
             name="PathParameters"
-            file="kambaz-node-server-app/Lab5/PathParameters.js"
+            file="web-dev-server/Lab5/PathParameters.js"
           >{`export default function PathParameters(app) {
   const add = (req, res) => {
     const { a, b } = req.params;

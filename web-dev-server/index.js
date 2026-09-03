@@ -68,5 +68,5 @@ Hello(app);
 await connectDatabase();
 
 app.listen(port, () => {
-  console.log(`kambaz-node-server-app listening on http://localhost:${port}`);
+  console.log(`web-dev-server listening on http://localhost:${port}`);
 });

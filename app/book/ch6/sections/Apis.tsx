@@ -34,7 +34,7 @@ export default function Apis() {
         <CodeBlock
           language="js"
           name="UserRoutes"
-          file="kambaz-node-server-app/Kambaz/Users/routes.js"
+          file="web-dev-server/Kambaz/Users/routes.js"
         >{`const signin = async (req, res) => {
   const { username, password } = req.body;
   const currentUser = await dao.findUserByCredentials(username, password);
@@ -72,12 +72,12 @@ const signup = async (req, res) => {
         <CodeBlock
           language="js"
           name="findAllUsers"
-          file="kambaz-node-server-app/Kambaz/Users/dao.js"
+          file="web-dev-server/Kambaz/Users/dao.js"
         >{`const findAllUsers = () => model.find();`}</CodeBlock>
         <CodeBlock
           language="js"
           name="findAllUsers route"
-          file="kambaz-node-server-app/Kambaz/Users/routes.js"
+          file="web-dev-server/Kambaz/Users/routes.js"
         >{`const findAllUsers = async (req, res) => {
   const users = await dao.findAllUsers();
   res.json(users);
@@ -117,7 +117,7 @@ app.get("/api/users", findAllUsers);`}</CodeBlock>
         <CodeBlock
           language="js"
           name="predicates"
-          file="kambaz-node-server-app/Kambaz/Users/dao.js"
+          file="web-dev-server/Kambaz/Users/dao.js"
         >{`const findUsersByRole = (role) => model.find({ role });
 const findUsersByPartialName = (partialName) => {
   const regex = new RegExp(partialName, "i");
@@ -159,7 +159,7 @@ export const findUsersByPartialName = async (name: string) => {
         <CodeBlock
           language="js"
           name="findUserById"
-          file="kambaz-node-server-app/Kambaz/Users/dao.js"
+          file="web-dev-server/Kambaz/Users/dao.js"
         >{`const findUserById = (userId) => model.findById(userId);
 // route:
 const findUserById = async (req, res) => {
@@ -177,7 +177,7 @@ app.get("/api/users/:userId", findUserById);`}</CodeBlock>
         <CodeBlock
           language="js"
           name="deleteUser"
-          file="kambaz-node-server-app/Kambaz/Users/dao.js"
+          file="web-dev-server/Kambaz/Users/dao.js"
         >{`const deleteUser = (userId) => model.findByIdAndDelete(userId);
 app.delete("/api/users/:userId", async (req, res) => {
   const status = await dao.deleteUser(req.params.userId);
@@ -203,7 +203,7 @@ app.delete("/api/users/:userId", async (req, res) => {
         <CodeBlock
           language="js"
           name="updateUser"
-          file="kambaz-node-server-app/Kambaz/Users/dao.js"
+          file="web-dev-server/Kambaz/Users/dao.js"
         >{`const updateUser = (userId, user) =>
   model.updateOne({ _id: userId }, { $set: user });`}</CodeBlock>
         <p>
@@ -238,7 +238,7 @@ app.delete("/api/users/:userId", async (req, res) => {
         <CodeBlock
           language="js"
           name="createUser"
-          file="kambaz-node-server-app/Kambaz/Users/dao.js"
+          file="web-dev-server/Kambaz/Users/dao.js"
         >{`const createUser = (user) => {
   const newUser = { ...user, _id: uuidv4() };
   return model.create(newUser);

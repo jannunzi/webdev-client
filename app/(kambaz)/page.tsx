@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 
-export default function Kambaz() {
-  redirect("/account/signin");
+/** Course homepage. Kambaz remains at /account/signin, /dashboard, /courses/*. */
+export default function Home() {
+  redirect("/syllabus");
 }

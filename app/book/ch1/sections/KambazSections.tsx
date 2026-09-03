@@ -103,8 +103,8 @@ export default function TOC() {
         </p>
         <p>
           Open the live app:{" "}
-          <Link href="/" target="_blank">
-            / (Kambaz)
+          <Link href="/account/signin" target="_blank">
+            /account/signin (Kambaz)
           </Link>
         </p>
       </Section>

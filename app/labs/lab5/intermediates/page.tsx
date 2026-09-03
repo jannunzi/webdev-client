@@ -8,7 +8,7 @@ export default function Lab5IntermediatesIndex() {
       <p>
         Progressive Express HTTP exercises from Chapter 5, then the Next.js
         Route Handler calculator. In a second terminal{" "}
-        <code>cd kambaz-node-server-app && npm run dev</code>{" "}
+        <code>cd web-dev-server && npm run dev</code>{" "}
         (<code>nodemon</code>) so remote demos reach{" "}
         <code>http://localhost:4000</code>. Render is not required locally.
       </p>

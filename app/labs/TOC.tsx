@@ -12,7 +12,7 @@ const LINKS = [
   { href: "/labs/lab4", id: "wd-lab4-link", label: "Lab 4", match: (p: string) => p.includes("/lab4") },
   { href: "/labs/lab5", id: "wd-lab5-link", label: "Lab 5", match: (p: string) => p.includes("/lab5") },
   { href: "/labs/lab6", id: "wd-lab6-link", label: "Lab 6", match: (p: string) => p.includes("/lab6") },
-  { href: "/", id: "wd-kambaz-link", label: "Kambaz", match: () => false },
+  { href: "/account/signin", id: "wd-kambaz-link", label: "Kambaz", match: () => false },
 ] as const;
 
 export default function TOC() {

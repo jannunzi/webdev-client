@@ -5,7 +5,7 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
     id: "5-sibling",
     section: "5.1.3",
     kind: "concept",
-    prompt: "Where should kambaz-node-server-app live relative to kambaz-next-js?",
+    prompt: "Where should web-dev-server live relative to web-dev-client?",
     choices: [
       { id: "a", text: "Inside app/ so Next.js can bundle Express" },
       {
@@ -134,7 +134,7 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
     kind: "syntax",
     prompt: "Which file serves GET /api/lab5/hello inside the Next.js app?",
     choices: [
-      { id: "a", text: "kambaz-node-server-app/Hello.js" },
+      { id: "a", text: "web-dev-server/Hello.js" },
       { id: "b", text: "app/api/lab5/hello/route.ts" },
       { id: "c", text: "app/labs/lab5/hello.ts" },
       { id: "d", text: "pages/api/hello.js" },
@@ -197,6 +197,6 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
       { id: "d", text: "render" },
     ],
     answer: "b",
-    explanation: "Deliverables: a5 on kambaz-next-js and on kambaz-node-server-app, plus Vercel and Render URLs.",
+    explanation: "Deliverables: a5 on web-dev-client and on web-dev-server, plus Vercel and Render URLs.",
   },
 ];

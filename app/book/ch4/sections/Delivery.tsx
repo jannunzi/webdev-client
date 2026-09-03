@@ -9,7 +9,7 @@ export default function Delivery() {
     <Section id="sec-4-12" title="4.12 Delivery">
       <p>
         Submit this chapter&apos;s work as a new branch on the same{" "}
-        <code>kambaz-next-js</code>{" "}repository and deployment from earlier
+        <code>web-dev-client</code>{" "}repository and deployment from earlier
         chapters, so graders can compare <ChapterLink to={3} />&apos;s
         data-driven screens against this chapter&apos;s client state side
         by side.
@@ -17,7 +17,7 @@ export default function Delivery() {
       <ol>
         <li>
           Finish every exercise described in this chapter inside the same{" "}
-          <code>kambaz-next-js</code>{" "}project used in <ChapterLink to={1} />,{" "}
+          <code>web-dev-client</code>{" "}project used in <ChapterLink to={1} />,{" "}
           <ChapterLink to={2} />, and <ChapterLink to={3} />.
         </li>
         <li>
@@ -63,7 +63,7 @@ git push -u origin a4`}</CodeBlock>
         <Link href="/labs">Labs</Link>, browse{" "}
         <Link href="/labs/lab4/intermediates">Lab 4 intermediate steps</Link>,
         or open the live{" "}
-        <Link href="/">Kambaz</Link>{" "}prototype to create courses and
+        <Link href="/account/signin">Kambaz</Link>{" "}prototype to create courses and
         modules from the Zustand stores.
       </p>
     </Section>

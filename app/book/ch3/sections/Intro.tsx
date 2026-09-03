@@ -138,7 +138,7 @@ export default function Intro() {
         </p>
         <p>
           Keep working in the same{" "}
-          <code>kambaz-next-js</code>{" "}project. Under <code>app/labs</code>,
+          <code>web-dev-client</code>{" "}project. Under <code>app/labs</code>,
           create <code>lab3</code>{" "}and add <code>page.tsx</code>:
         </p>
         <CodeBlock language="shell">{`mkdir app/labs/lab3`}</CodeBlock>

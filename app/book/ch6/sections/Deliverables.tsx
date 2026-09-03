@@ -16,13 +16,13 @@ export default function Deliverables() {
         <code>a5</code> API while TAs are grading. Confirm Dashboard
         courses and modules come from the database.
       </p>
-      <CodeBlock language="shell">{`# in kambaz-next-js
+      <CodeBlock language="shell">{`# in web-dev-client
 git checkout -b a6
 git add .
 git commit -am "a6 MongoDB"
 git push -u origin a6
 
-# in kambaz-node-server-app
+# in web-dev-server
 git checkout -b a6
 git add .
 git commit -am "a6 MongoDB"
@@ -53,7 +53,7 @@ git push -u origin a6`}</CodeBlock>
       <p>
         Continue in <Link href="/labs">Labs</Link>, browse{" "}
         <Link href="/labs/lab6/intermediates">Lab 6 steps</Link>, or
-        open <Link href="/">Kambaz</Link>.
+        open <Link href="/account/signin">Kambaz</Link>.
       </p>
     </Section>
   );

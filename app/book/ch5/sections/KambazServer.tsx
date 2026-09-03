@@ -33,7 +33,7 @@ export default function KambazServer() {
         <CodeBlock
           language="js"
           name="database"
-          file="kambaz-node-server-app/Kambaz/Database/index.js"
+          file="web-dev-server/Kambaz/Database/index.js"
         >{`import courses from "./courses.js";
 import modules from "./modules.js";
 import assignments from "./assignments.js";

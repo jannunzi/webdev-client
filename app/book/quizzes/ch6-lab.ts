@@ -229,6 +229,6 @@ export const CH6_LAB_QUESTIONS: QuizQuestion[] = [
       { id: "d", text: "atlas" },
     ],
     answer: "b",
-    explanation: "Deliverables: a6 on kambaz-next-js and kambaz-node-server-app, plus a new Render service and Vercel preview.",
+    explanation: "Deliverables: a6 on web-dev-client and web-dev-server, plus a new Render service and Vercel preview.",
   },
 ];

@@ -1053,7 +1053,7 @@ export default function BookTOC() {
           </li>
           <li>
             <Link
-              href="/"
+              href="/account/signin"
               className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
             >
               Kambaz

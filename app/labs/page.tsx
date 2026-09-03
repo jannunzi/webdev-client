@@ -72,7 +72,7 @@ export default function Labs() {
           </Link>
         </li>
         <li>
-          <Link href="/" id="wd-kambaz-link">
+          <Link href="/account/signin" id="wd-kambaz-link">
             Kambaz
           </Link>
         </li>

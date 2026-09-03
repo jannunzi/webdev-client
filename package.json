@@ -1,5 +1,5 @@
 {
-  "name": "kambaz-next-js",
+  "name": "web-dev-client",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "server": "npm start --prefix kambaz-node-server-app",
-    "server:dev": "npm run dev --prefix kambaz-node-server-app"
+    "server": "npm start --prefix web-dev-server",
+    "server:dev": "npm run dev --prefix web-dev-server"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.12.0",
