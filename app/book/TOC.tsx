@@ -1061,6 +1061,36 @@ export default function BookTOC() {
           </li>
         </ul>
 
+        <h3 className="mb-2 mt-1 px-2 text-xs font-semibold uppercase tracking-wide text-neutral-500">
+          Resources
+        </h3>
+        <ul className="m-0 mb-3 list-none space-y-0.5 p-0 text-sm">
+          <li>
+            <Link
+              href="/office-hours"
+              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
+            >
+              Office Hours
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/piazza-hours"
+              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
+            >
+              Piazza Hours
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/project"
+              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
+            >
+              Final Project
+            </Link>
+          </li>
+        </ul>
+
         <h3 className="mb-2 mt-2 px-2 text-xs font-semibold uppercase tracking-wide text-neutral-500">
           Chapters
         </h3>

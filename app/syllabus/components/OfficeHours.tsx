@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { OfficeHourRow } from "../data/types";
 import SyllabusSection from "./SyllabusSection";
 
@@ -13,6 +14,11 @@ export default function OfficeHours({
   return (
     <SyllabusSection id="office-hours" title="Teaching assistants and office hours">
       <p>{placeholder}</p>
+      <p>
+        Dedicated page: <Link href="/office-hours">Office Hours</Link>
+        {" · "}
+        <Link href="/piazza-hours">Piazza Hours</Link>.
+      </p>
       <div className="overflow-x-auto">
         <table className="w-full border-collapse text-left text-sm">
           <thead>
