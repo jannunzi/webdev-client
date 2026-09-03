@@ -22,10 +22,9 @@ import FlexRow from "@/app/labs/lab2/intermediates/2-1-19a-FlexRow";
 import FlexGrow from "@/app/labs/lab2/intermediates/2-1-19b-FlexGrow";
 import FlexWidth from "@/app/labs/lab2/intermediates/2-1-19c-FlexWidth";
 import MediaQueriesDemo from "@/app/labs/lab2/intermediates/2-1-20-MediaQueries";
-import SelfCheck from "../../components/SelfCheck";
+import PracticeCard from "../../components/PracticeCard";
 import SectionLink from "../../components/SectionLink";
 import { OnYourOwn, WithAI } from "../../components/Practice";
-import { CH2_SECTION_21_QUESTIONS } from "../../quizzes/ch2-2-1";
 
 export default function CssProperties() {
   return (
@@ -1403,7 +1402,7 @@ export default function MediaQueriesDemo() {
       >
         <p>
           Before React Icons and Tailwind, pause and test what §2.1 actually
-          stuck. The quiz below draws 10 items from a growing bank written
+          stuck. The practice quiz draws 10 items from a growing bank written
           against this section&apos;s exercises — concepts (why the{" "}
           <code>style</code>{" "}attribute is a bad habit, padding vs margin, the
           box model, block vs inline), syntax (hyphens vs camelCase,{" "}
@@ -1414,7 +1413,7 @@ export default function MediaQueriesDemo() {
           <SectionLink to="2.5" />. Misses link back to the subsection you
           should reread; each new attempt draws a different 10.
         </p>
-        <SelfCheck quizId="2.1" bank={CH2_SECTION_21_QUESTIONS} />
+        <PracticeCard quizId="2.1" />
       </Section>
     </>
   );
