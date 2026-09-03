@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAccountContext, type User } from "../AccountContext";
 import * as client from "../client";
 
@@ -9,14 +9,17 @@ export default function Profile() {
   const [profile, setProfile] = useState<User | null>(null);
   const { currentUser, setCurrentUser } = useAccountContext();
   const router = useRouter();
+  const pathname = usePathname() ?? "";
 
   useEffect(() => {
     if (!currentUser) {
-      router.push("/account/signin");
+      if (pathname.startsWith("/account")) {
+        router.push("/account/signin");
+      }
       return;
     }
     setProfile(currentUser);
-  }, [currentUser, router]);
+  }, [currentUser, router, pathname]);
 
   const signout = async () => {
     try {

@@ -1,9 +1,9 @@
-import Signin from "@/app/(kambaz)/account/signin/page";
-import Signup from "@/app/(kambaz)/account/signup/page";
-import Profile from "@/app/(kambaz)/account/profile/page";
+import DemoSignin from "./DemoSignin";
+import DemoSignup from "./DemoSignup";
+import DemoProfile from "./DemoProfile";
 import AccountNavigation from "@/app/(kambaz)/account/Navigation";
 
-/** Account screens side-by-side for §1.4.2 */
+/** Account screens side-by-side for §1.4.2 — book stubs, not live auth pages. */
 export default function AccountScreensDemo() {
   return (
     <table width="100%">
@@ -13,13 +13,13 @@ export default function AccountScreensDemo() {
             <AccountNavigation />
           </td>
           <td valign="top" width="25%">
-            <Signin />
+            <DemoSignin />
           </td>
           <td valign="top" width="25%">
-            <Signup />
+            <DemoSignup />
           </td>
           <td valign="top" width="25%">
-            <Profile />
+            <DemoProfile />
           </td>
         </tr>
       </tbody>
