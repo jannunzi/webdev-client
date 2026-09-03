@@ -17,6 +17,8 @@ export default function BookHome() {
         <Link href="/piazza-hours">Piazza Hours</Link>
         {" · "}
         <Link href="/project">Final Project</Link>
+        {" · "}
+        <Link href="/quizzes/q1">Q1 question bank (review draft)</Link>
       </p>
       <h2 className="font-sans text-xl font-semibold">Chapters</h2>
       <ul>

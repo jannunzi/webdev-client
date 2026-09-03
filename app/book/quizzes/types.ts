@@ -1,3 +1,8 @@
+/**
+ * Self-check draw items (pedagogical kinds, localStorage attempts).
+ * Canvas / QTI author banks live in `lib/question-bank` — map to that
+ * module rather than inventing a third question shape.
+ */
 export type QuestionKind =
   | "concept"
   | "syntax"
