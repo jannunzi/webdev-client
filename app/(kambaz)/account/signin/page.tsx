@@ -22,7 +22,7 @@ export default function Signin() {
       setError("");
       router.push("/dashboard");
     } catch {
-      setError("Unable to login. Try again later.");
+      setError("Invalid username or password.");
     }
   };
 

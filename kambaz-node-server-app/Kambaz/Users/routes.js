@@ -20,7 +20,7 @@ export default function UserRoutes(app, db) {
     const { username, password } = req.body;
     const currentUser = await dao.findUserByCredentials(username, password);
     if (!currentUser) {
-      res.status(401).json({ message: "Unable to login. Try again later." });
+      res.status(401).json({ message: "Invalid username or password." });
       return;
     }
     req.session["currentUser"] = currentUser;
@@ -67,12 +67,16 @@ export default function UserRoutes(app, db) {
   const updateUser = async (req, res) => {
     const { userId } = req.params;
     const userUpdates = req.body;
-    await dao.updateUser(userId, userUpdates);
+    const updated = await dao.updateUser(userId, userUpdates);
+    if (!updated) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
     const currentUser = req.session["currentUser"];
     if (currentUser && currentUser._id === userId) {
-      req.session["currentUser"] = { ...currentUser, ...userUpdates };
+      req.session["currentUser"] = updated;
     }
-    res.json(req.session["currentUser"] ?? (await dao.findUserById(userId)));
+    res.json(updated);
   };
 
   const deleteUser = async (req, res) => {
