@@ -1486,11 +1486,12 @@ export default function BookTOC() {
       </button>
 
       {showMobileDrawer ? (
-        <div className="md:hidden">
-          <div
-            className="fixed inset-0 z-40 bg-black/40"
+        <div className="fixed inset-0 z-40 md:hidden">
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/40"
+            aria-label="Close table of contents"
             onClick={() => setMobileOpenPersist(false)}
-            aria-hidden
           />
           <aside
             ref={drawerRef}
@@ -1498,7 +1499,7 @@ export default function BookTOC() {
             role="dialog"
             aria-modal="true"
             aria-label="Table of contents"
-            className="fixed inset-y-0 left-0 z-40 flex w-[min(18rem,90vw)] flex-col border-r border-neutral-300 bg-neutral-50 font-sans text-neutral-900 shadow-xl"
+            className="relative z-10 flex h-full w-[min(18rem,90vw)] flex-col border-r border-neutral-300 bg-neutral-50 font-sans text-neutral-900 shadow-xl"
           >
             <div className="flex items-center justify-between border-b border-neutral-300 px-3 py-2">
               <h2 className="m-0 text-sm font-semibold">Contents</h2>
