@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { projectBlurb } from "../data/project";
 import SyllabusSection from "./SyllabusSection";
 
@@ -16,6 +17,10 @@ export default function ProjectBlurb({
           <li key={item}>{item}</li>
         ))}
       </ul>
+      <p>
+        Option overviews (Quizzes, Pazza, or open-ended) are on the{" "}
+        <Link href="/project">Final Project</Link> page.
+      </p>
     </SyllabusSection>
   );
 }
