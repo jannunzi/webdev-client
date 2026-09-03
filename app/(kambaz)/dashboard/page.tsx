@@ -1,31 +1,56 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "@/app/labs/lab2/tailwind/utilities.css";
 import CourseCard from "./CourseCard";
-import {
-  emptyCourse,
-  useCoursesStore,
-  type Course,
-} from "../store/coursesStore";
+import { emptyCourse, type Course } from "@/app/api/kambaz/types";
 import { useAccountContext } from "../account/AccountContext";
-import * as db from "../database";
+import * as client from "../courses/client";
 
 export default function Dashboard() {
-  const courses = useCoursesStore((state) => state.courses);
-  const addCourse = useCoursesStore((state) => state.addCourse);
-  const deleteCourse = useCoursesStore((state) => state.deleteCourse);
-  const updateCourse = useCoursesStore((state) => state.updateCourse);
+  const [courses, setCourses] = useState<Course[]>([]);
   const [course, setCourse] = useState<Course>(emptyCourse);
   const { currentUser } = useAccountContext();
-  const visibleCourses = currentUser
-    ? courses.filter((c) =>
-        db.enrollments.some(
-          (enrollment) =>
-            enrollment.user === currentUser._id && enrollment.course === c._id,
-        ),
-      )
-    : courses;
+
+  async function loadCourses() {
+    try {
+      const data = currentUser
+        ? await client.findMyCourses()
+        : await client.fetchAllCourses();
+      setCourses(data);
+    } catch {
+      setCourses([]);
+    }
+  }
+
+  useEffect(() => {
+    loadCourses();
+    // Reload when the signed-in user changes (session-filtered vs public list).
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- loadCourses closes over currentUser
+  }, [currentUser]);
+
+  async function addCourse() {
+    try {
+      if (currentUser) {
+        await client.createCourse(course);
+      } else {
+        await client.createCoursePublic(course);
+      }
+      await loadCourses();
+    } catch {
+      /* companion server may be down */
+    }
+  }
+
+  async function updateCourse() {
+    await client.updateCourse(course);
+    await loadCourses();
+  }
+
+  async function deleteCourse(courseId: string) {
+    await client.deleteCourse(courseId);
+    await loadCourses();
+  }
 
   return (
     <div id="wd-dashboard">
@@ -37,7 +62,7 @@ export default function Dashboard() {
           type="button"
           className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
           id="wd-add-new-course-click"
-          onClick={() => addCourse(course)}
+          onClick={addCourse}
         >
           Add
         </button>
@@ -45,7 +70,7 @@ export default function Dashboard() {
           type="button"
           className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
           id="wd-update-course-click"
-          onClick={() => updateCourse(course)}
+          onClick={updateCourse}
         >
           Update
         </button>
@@ -66,13 +91,13 @@ export default function Dashboard() {
         id="wd-course-description"
       />
       <hr />
-      <h2 id="wd-dashboard-published">Published Courses ({visibleCourses.length})</h2>
+      <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2>
       <hr />
       <div
         id="wd-dashboard-courses"
         className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
       >
-        {visibleCourses.map((c) => (
+        {courses.map((c) => (
           <CourseCard
             key={c._id}
             {...c}

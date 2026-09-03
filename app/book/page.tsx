@@ -7,6 +7,9 @@ export default function BookHome() {
         Developing Full Stack Next.js Web Applications
       </h1>
       <p className="text-neutral-700">Dr. Jose Annunziato</p>
+      <p>
+        <Link href="/syllabus">CS 4550 / CS 5610 Fall 2026 Syllabus</Link>
+      </p>
       <h2 className="font-sans text-xl font-semibold">Chapters</h2>
       <ul>
         <li>
@@ -27,6 +30,16 @@ export default function BookHome() {
         <li>
           <Link href="/book/ch4">
             Chapter 4 — Managing Client State
+          </Link>
+        </li>
+        <li>
+          <Link href="/book/ch5">
+            Chapter 5 — Implementing RESTful Web APIs with Express.js
+          </Link>
+        </li>
+        <li>
+          <Link href="/book/ch6">
+            Chapter 6 — Integrating React with MongoDB
           </Link>
         </li>
       </ul>

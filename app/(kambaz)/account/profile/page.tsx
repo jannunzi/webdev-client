@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAccountContext, type User } from "../AccountContext";
+import * as client from "../client";
 
 export default function Profile() {
   const [profile, setProfile] = useState<User | null>(null);
@@ -17,7 +18,12 @@ export default function Profile() {
     setProfile(currentUser);
   }, [currentUser, router]);
 
-  const signout = () => {
+  const signout = async () => {
+    try {
+      await client.signout();
+    } catch {
+      /* local sign-out still proceeds */
+    }
     setCurrentUser(null);
     router.push("/account/signin");
   };

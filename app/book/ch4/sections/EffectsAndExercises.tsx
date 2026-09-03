@@ -129,7 +129,8 @@ export default function Effect() {
             <SectionLink to="4.5" />).
           </li>
           <li>
-            Rebuild the counter with Redux Toolkit (
+            Rebuild Hello, the counter, Add with a payload, and a
+            todo list with Redux Toolkit (
             <SectionLink to="4.6" />).
           </li>
           <li>

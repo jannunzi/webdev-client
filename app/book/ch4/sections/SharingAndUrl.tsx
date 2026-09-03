@@ -12,8 +12,14 @@ export default function SharingAndUrl() {
   return (
     <Section
       id="sec-4-3"
-      title="4.3 Sharing State, Prop Drilling, and URLs"
+        title="4.3 Sharing State, Prop Drilling, and URLs"
     >
+      <p>
+        The PDF places sharing state at 4.2.2.8 and URL encoding at
+        4.2.3 (query parameters, then path parameters). Those labs are
+        here as their own section so the problem is visible before
+        Redux, Context, and Zustand offer to solve it.
+      </p>
       <p>
         <code>useState</code>{" "}belongs to the component that calls it,
         so a sibling or a nested screen cannot read that value on its
@@ -118,6 +124,14 @@ export default function ChildStateComponent({
         id="sec-4-3-2"
         title="4.3.2 Prop Drilling"
       >
+        <p>
+          Passing <code>counter</code> one level is fine. Passing it
+          through a chain of components that do not use it — parent →
+          middle → child — is <strong>prop drilling</strong>. Every
+          rename of the prop touches files that only existed to forward
+          it. Context and stores exist so the middle components can
+          stay out of that conversation.
+        </p>
         <p>
           Passing state down as props works until a component in the
           middle does not care about the value and only forwards it. That

@@ -46,27 +46,39 @@ export default function Intro() {
           the user interface renders again to match.
         </p>
         <p>
+          The PDF spine for this chapter is{" "}
+          <em>forms and events → Redux → Context → Zustand →
+          Kambaz</em>. This interactive book keeps that coverage and
+          the Redux Hello / Add / Todo labs, then puts{" "}
+          <strong>Zustand</strong> on Kambaz courses and modules
+          because it is the smaller store students will maintain. The
+          PDF&apos;s Kambaz screens use Redux reducers for the same
+          lists — same screens, different store. You will still be able
+          to read a Redux slice when you meet one.
+        </p>
+        <p>
           This chapter introduces how to maintain both kinds of state.
           React&apos;s{" "}
           <OfficialLink href="https://react.dev/reference/react/useState">
             useState
           </OfficialLink>{" "}
-          hook holds local state.{" "}
+          hook holds local state — a counter, a controlled input, a
+          dialog flag.{" "}
           <OfficialLink href="https://react.dev/learn/passing-data-deeply-with-context">
             React Context
           </OfficialLink>{" "}
           lets nested components read who is signed in without passing
           that user through every parent in between.{" "}
-          <OfficialLink href="https://zustand.docs.pmnd.rs/">
-            Zustand
-          </OfficialLink>{" "}
-          is a store any Client Component can import, such as courses
-          and modules.{" "}
           <OfficialLink href="https://redux-toolkit.js.org/">
             Redux Toolkit
           </OfficialLink>{" "}
-          solves the same sharing problem Zustand does. It is included
-          here because older projects still use it.
+          is the PDF&apos;s application store: a single object, reducers
+          that receive actions, <code>useSelector</code> and{" "}
+          <code>dispatch</code>.{" "}
+          <OfficialLink href="https://zustand.docs.pmnd.rs/">
+            Zustand
+          </OfficialLink>{" "}
+          is the store this book uses for Kambaz courses and modules.
         </p>
         <p>
           The next sections practice these ideas one component at a time.
@@ -132,7 +144,7 @@ export default function Intro() {
         </p>
       </Section>
 
-      <Section id="sec-4-2" title="4.2 Managing State and User Input">
+      <Section id="sec-4-2" title="4.2 Managing State and User Input with Forms">
         <p>
           HTML and CSS describe what a screen looks like. As users
           interact with the application, they generate a stream of events
@@ -175,9 +187,9 @@ export default function Lab4() {
         </p>
         <p>
           Install the two store libraries now so later sections can import
-          them. This book uses{" "}
+          them. Use{" "}
           <Link href="/labs/lab2">Lab 2</Link>&apos;s Tailwind classes for
-          buttons and fields instead of Bootstrap:
+          buttons and fields:
         </p>
         <CodeBlock language="shell">{`npm install zustand @reduxjs/toolkit react-redux`}</CodeBlock>
       </Section>

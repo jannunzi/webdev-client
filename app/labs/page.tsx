@@ -7,6 +7,11 @@ export default function Labs() {
       <h2>Jose Annunziato</h2>
       <ul>
         <li>
+          <Link href="/syllabus" id="wd-syllabus-link">
+            CS 4550 / CS 5610 Syllabus
+          </Link>
+        </li>
+        <li>
           <Link href="/labs/lab1" id="wd-lab1-link">
             Lab 1: HTML Examples
           </Link>
@@ -27,6 +32,16 @@ export default function Labs() {
           </Link>
         </li>
         <li>
+          <Link href="/labs/lab5" id="wd-lab5-link">
+            Lab 5: RESTful Web APIs
+          </Link>
+        </li>
+        <li>
+          <Link href="/labs/lab6" id="wd-lab6-link">
+            Lab 6: MongoDB
+          </Link>
+        </li>
+        <li>
           <Link href="/labs/lab2/intermediates" id="wd-lab2-steps-link">
             Lab 2 Intermediate Steps
           </Link>
@@ -39,6 +54,16 @@ export default function Labs() {
         <li>
           <Link href="/labs/lab4/intermediates" id="wd-lab4-steps-link">
             Lab 4 Intermediate Steps
+          </Link>
+        </li>
+        <li>
+          <Link href="/labs/lab5/intermediates" id="wd-lab5-steps-link">
+            Lab 5 Intermediate Steps
+          </Link>
+        </li>
+        <li>
+          <Link href="/labs/lab6/intermediates" id="wd-lab6-steps-link">
+            Lab 6 Intermediate Steps
           </Link>
         </li>
         <li>
@@ -59,6 +84,26 @@ export default function Labs() {
             rel="noreferrer"
           >
             GitHub
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/jannunzi"
+            id="wd-github-node"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Node.js HTTP Server GitHub
+          </a>
+        </li>
+        <li>
+          <a
+            href="http://localhost:4000"
+            id="wd-http-server"
+            target="_blank"
+            rel="noreferrer"
+          >
+            HTTP Server (local :4000)
           </a>
         </li>
       </ul>

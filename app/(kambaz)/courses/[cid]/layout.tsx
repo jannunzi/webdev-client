@@ -1,12 +1,13 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { FaAlignJustify } from "react-icons/fa6";
 import "@/app/labs/lab2/tailwind/utilities.css";
 import CourseNavigation from "./Navigation";
 import Breadcrumb from "./Breadcrumb";
-import { useCoursesStore } from "../../store/coursesStore";
+import type { Course } from "@/app/api/kambaz/types";
+import * as client from "../client";
 
 export default function CoursesLayout({
   children,
@@ -15,9 +16,16 @@ export default function CoursesLayout({
 }>) {
   const { cid } = useParams();
   const courseId = typeof cid === "string" ? cid : "";
-  const courses = useCoursesStore((state) => state.courses);
-  const course = courses.find((c) => c._id === courseId);
+  const [course, setCourse] = useState<Course | undefined>();
   const [showCourseNav, setShowCourseNav] = useState(true);
+
+  useEffect(() => {
+    if (!courseId) return;
+    client
+      .findCourseById(courseId)
+      .then(setCourse)
+      .catch(() => setCourse(undefined));
+  }, [courseId]);
 
   return (
     <div id="wd-courses">

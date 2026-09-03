@@ -23,6 +23,14 @@ export default function EventsAndState() {
         title="4.2.1 Handling User Events"
       >
         <p>
+          HTML and CSS describe how a screen looks. As users work they
+          generate a stream of <strong>events</strong> — click, change,
+          submit — that describe what they did. Handlers change state;
+          React paints again. The PDF splits this into click events
+          (4.2.1.1), passing data (4.2.1.2), and passing functions
+          (4.2.1.3). Those are the next three subsections.
+        </p>
+        <p>
           A click, a keystroke, and a form submit are events, and React
           listens with attributes such as <code>onClick</code>{" "}and{" "}
           <code>onChange</code>. Those listeners only run in the browser,
@@ -225,8 +233,19 @@ export default function PassingFunctions({
         title="4.2.4 useState and the Counter"
       >
         <p>
-          A local <code>let</code>{" "}is not enough to make the heading
-          change, because React does not know to render again. Create{" "}
+          The PDF calls this <strong>4.2.2 Managing Component
+          State</strong> — the <code>useState</code> hook, then integer,
+          boolean, string, date, object, and array variables. The hook
+          is how you join React&apos;s render cycle. The syntax is a
+          pair:
+        </p>
+        <CodeBlock language="tsx">{`const [stateVariable, setStateVariable] = useState(initialStateValue);`}</CodeBlock>
+        <p>
+          The argument is the first value. Index <code>0</code> is the
+          current value; index <code>1</code> is the setter. Calling the
+          setter queues a new render. A plain <code>let</code> can
+          change in memory and the heading will not move, because React
+          does not know to paint again. Create{" "}
           <code>CounterBroken.tsx</code>{" "}first so the failure is visible:
           clicking Up increments a <code>let</code>, but the heading stays
           at 7:
