@@ -41,7 +41,7 @@ export default function SyllabusNav() {
         {" · "}
         <Link href="/labs">Labs</Link>
         {" · "}
-        <Link href="/">Kambaz</Link>
+        <Link href="/account/signin">Kambaz</Link>
         {" · "}
         <Link href="/office-hours">Office Hours</Link>
         {" · "}

@@ -51,17 +51,17 @@ export default function HttpServer() {
       >
         <p>
           <strong>NOTE: DO NOT</strong>{" "}create the Node project inside{" "}
-          <code>kambaz-next-js</code>. The two directories are{" "}
+          <code>webdev-client</code>. The two directories are{" "}
           <strong>siblings</strong>{" "}under the same parent:
         </p>
-        <CodeBlock language="shell">{`mkdir kambaz-node-server-app
-cd kambaz-node-server-app
+        <CodeBlock language="shell">{`mkdir webdev-server
+cd webdev-server
 npm init`}</CodeBlock>
         <p>
           Accept the defaults. <code>npm init</code>{" "}writes{" "}
           <code>package.json</code>{" "}— the Node equivalent of a project
           manifest. This interactive book ships a working copy at the
-          repo root as <code>kambaz-node-server-app/</code>{" "}so LiveDemos
+          repo root as <code>webdev-server/</code>{" "}so LiveDemos
           can call <code>http://localhost:4000</code>{" "}without cloning a
           second remote. It is still a{" "}
           <strong>separate project</strong>: own{" "}
@@ -69,7 +69,7 @@ npm init`}</CodeBlock>
           <code>.gitignore</code>, own README. For Canvas you{" "}
           <code>git init</code>{" "}that folder and push a{" "}
           <strong>second</strong>{" "}GitHub repository named{" "}
-          <code>kambaz-node-server-app</code>{" "}(
+          <code>webdev-server</code>{" "}(
           <SectionLink to="5.5.1" />) — do not treat it as Next.js app
           source.
         </p>
@@ -85,7 +85,7 @@ npm init`}</CodeBlock>
           <code>Hello.js</code>{" "}and run it with{" "}
           <code>node</code>:
         </p>
-        <CodeBlock language="js" name="Hello" file="kambaz-node-server-app/Hello.js">{`console.log("Hello World!");`}</CodeBlock>
+        <CodeBlock language="js" name="Hello" file="webdev-server/Hello.js">{`console.log("Hello World!");`}</CodeBlock>
         <CodeBlock language="shell">{`node Hello.js
 # Hello World!`}</CodeBlock>
         <p>
@@ -118,7 +118,7 @@ npm init`}</CodeBlock>
         <CodeBlock
           language="js"
           name="index"
-          file="kambaz-node-server-app/index.js"
+          file="webdev-server/index.js"
         >{`import express from "express";
 const app = express();
 app.get("/hello", (req, res) => {
@@ -161,7 +161,7 @@ npx nodemon index.js
           <code>/hello</code>{" "}in two tabs and confirm both strings.
         </OnYourOwn>
         <WithAI
-          prompt={`In kambaz-node-server-app/index.js, keep my /hello route. Add a sample GET / that sends Welcome to Full Stack Development! Do not remove hello.`}
+          prompt={`In webdev-server/index.js, keep my /hello route. Add a sample GET / that sends Welcome to Full Stack Development! Do not remove hello.`}
         >
           Ask the assistant to add the root route — you still refresh
           both tabs:
@@ -179,7 +179,7 @@ npx nodemon index.js
           <code>package.json</code>{" "}to do the same. Add a{" "}
           <code>start</code>{" "}script:
         </p>
-        <CodeBlock language="json" name="package" file="kambaz-node-server-app/package.json">{`{
+        <CodeBlock language="json" name="package" file="webdev-server/package.json">{`{
   "type": "module",
   "scripts": {
     "start": "node index.js",
@@ -206,7 +206,7 @@ npx nodemon index.js
         <CodeBlock
           language="js"
           name="Hello"
-          file="kambaz-node-server-app/Hello.js"
+          file="webdev-server/Hello.js"
         >{`export default function Hello(app) {
   const sayHello = (req, res) => {
     res.send("Life is good!");
@@ -220,7 +220,7 @@ npx nodemon index.js
         <CodeBlock
           language="js"
           name="index"
-          file="kambaz-node-server-app/index.js"
+          file="webdev-server/index.js"
         >{`import express from "express";
 import Hello from "./Hello.js";
 const app = express();

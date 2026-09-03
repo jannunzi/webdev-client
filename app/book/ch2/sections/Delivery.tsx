@@ -9,7 +9,7 @@ export default function Delivery() {
     <Section id="sec-2-5" title="2.5 Delivery">
       <p>
         Submit this chapter&apos;s work as a new branch on the same{" "}
-        <code>kambaz-next-js</code>{" "}repository and deployment from Chapter
+        <code>webdev-client</code>{" "}repository and deployment from Chapter
         1, so graders can compare <ChapterLink to={1} />&apos;s HTML-only prototype against
         this chapter&apos;s CSS, Tailwind, and Tailwind version side by
         side.
@@ -17,7 +17,7 @@ export default function Delivery() {
       <ol>
         <li>
           Finish every exercise described in this chapter inside the same{" "}
-          <code>kambaz-next-js</code>{" "}project used in <ChapterLink to={1} />.
+          <code>webdev-client</code>{" "}project used in <ChapterLink to={1} />.
         </li>
         <li>
           Create a branch named <code>a2</code>, then add, commit, and push
@@ -62,7 +62,7 @@ git push -u origin a2`}</CodeBlock>
         <Link href="/labs">Labs</Link>, browse{" "}
         <Link href="/labs/lab2/intermediates">Lab 2 intermediate steps</Link>,
         or open the live{" "}
-        <Link href="/">Kambaz</Link>{" "}prototype to see this chapter&apos;s
+        <Link href="/account/signin">Kambaz</Link>{" "}prototype to see this chapter&apos;s
         styling applied.
       </p>
     </Section>

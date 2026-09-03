@@ -592,7 +592,7 @@ create-next-app@15.3.5
 Ok to proceed? (y)`}</CodeBlock>
         <p>
           When prompted for a project name, enter{" "}
-          <code>kambaz-next-js</code>. For the remaining prompts — TypeScript,
+          <code>webdev-client</code>. For the remaining prompts — TypeScript,
           ESLint,{" "}
           <OfficialLink href="https://tailwindcss.com/">
             Tailwind CSS
@@ -607,7 +607,7 @@ Ok to proceed? (y)`}</CodeBlock>
           the alias). Exact wording can vary slightly by{" "}
           <code>create-next-app</code>{" "}version.
         </p>
-        <CodeBlock language="shell">{`✔ What is your project named? … kambaz-next-js
+        <CodeBlock language="shell">{`✔ What is your project named? … webdev-client
 ✔ Would you like to use TypeScript? … No / Yes
 ✔ Would you like to use ESLint? … No / Yes
 ✔ Would you like to use Tailwind CSS? … No / Yes
@@ -619,10 +619,10 @@ Ok to proceed? (y)`}</CodeBlock>
           Wait while dependencies install (<code>react</code>,{" "}
           <code>react-dom</code>, <code>next</code>, TypeScript types, Tailwind,
           ESLint, and related packages). When it finishes you should see a
-          success message and a new <code>kambaz-next-js</code>{" "}directory. Change
+          success message and a new <code>webdev-client</code>{" "}directory. Change
           into that directory and start the development server:
         </p>
-        <CodeBlock language="shell">{`cd kambaz-next-js
+        <CodeBlock language="shell">{`cd webdev-client
 npm run dev`}</CodeBlock>
         <p>
           The console should report that Next.js is ready and print a local URL,
@@ -660,7 +660,7 @@ npm run dev`}</CodeBlock>
         <p>
           You can start the app from any terminal, but prefer running{" "}
           <code>npm run dev</code>{" "}from the IDE: open the{" "}
-          <code>kambaz-next-js</code>{" "}folder in VS Code (or Cursor), show the
+          <code>webdev-client</code>{" "}folder in VS Code (or Cursor), show the
           terminal with <strong>View → Terminal</strong>{" "}if needed, and run the
           command there. Other browsers and editors are fine, but this course
           assumes <strong>Google Chrome</strong>{" "}and{" "}

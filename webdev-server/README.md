@@ -1,17 +1,17 @@
-# kambaz-node-server-app
+# webdev-server
 
 Sibling **Node.js / Express** HTTP server for Chapters 5–6.
 
 This is its **own project** — not Next.js app source. In this interactive-book
 repo the folder sits at the **root next to** `app/`, `package.json`, and the
-rest of `kambaz-next-js` so Lab 5 LiveDemos can call `http://localhost:4000`.
+rest of `webdev-client` so Lab 5 LiveDemos can call `http://localhost:4000`.
 That is a convenience copy. For the assignment, treat it as a **separate Git
 repository**:
 
 ```bash
-cd kambaz-node-server-app
+cd webdev-server
 git init
-# push to a public GitHub repo named kambaz-node-server-app (branch a6)
+# push to a public GitHub repo named webdev-server (branch a6)
 ```
 
 Do **not** nest this server inside `app/` or submit it only as files inside
@@ -26,7 +26,7 @@ Render is **not** required locally. Two terminals:
 npm run dev
 
 # terminal 2 — this folder
-cd kambaz-node-server-app
+cd webdev-server
 npm install
 npm run dev          # nodemon index.js
 # or: npm start      # node index.js

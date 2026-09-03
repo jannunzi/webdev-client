@@ -100,7 +100,7 @@ export default function Atlas() {
         </p>
         <CodeBlock language="shell">{`DATABASE_CONNECTION_STRING=mongodb+srv://USER:PASSWORD@cluster/kambaz?retryWrites=true&w=majority
 CLIENT_URL=https://your-a6-preview.vercel.app
-SERVER_URL=your-kambaz-node-server-app.onrender.com
+SERVER_URL=your-webdev-server.onrender.com
 SERVER_ENV=production
 SESSION_SECRET=a long random phrase`}</CodeBlock>
         <OnYourOwn>
@@ -109,7 +109,7 @@ SESSION_SECRET=a long random phrase`}</CodeBlock>
           into the book or a commit.
         </OnYourOwn>
         <WithAI
-          prompt={`Check kambaz-node-server-app/.env.example lists DATABASE_CONNECTION_STRING, CLIENT_URL, SERVER_URL, SERVER_ENV, and SESSION_SECRET. Do not add real credentials.`}
+          prompt={`Check webdev-server/.env.example lists DATABASE_CONNECTION_STRING, CLIENT_URL, SERVER_URL, SERVER_ENV, and SESSION_SECRET. Do not add real credentials.`}
         >
           Ask the assistant to confirm the env keys only:
         </WithAI>

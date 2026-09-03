@@ -30,5 +30,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "kambaz-node-server-app"]
+  "exclude": ["node_modules", "webdev-server"]
 }

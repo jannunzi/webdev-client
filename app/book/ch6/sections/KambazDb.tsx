@@ -39,7 +39,7 @@ export default function KambazDb() {
           <CodeBlock
             language="js"
             name="courseSchema"
-            file="kambaz-node-server-app/Kambaz/Courses/schema.js"
+            file="webdev-server/Kambaz/Courses/schema.js"
           >{`import mongoose from "mongoose";
 const courseSchema = new mongoose.Schema({
   _id: String,
@@ -53,7 +53,7 @@ export default courseSchema;`}</CodeBlock>
           <CodeBlock
             language="js"
             name="CourseModel"
-            file="kambaz-node-server-app/Kambaz/Courses/model.js"
+            file="webdev-server/Kambaz/Courses/model.js"
           >{`import mongoose from "mongoose";
 import schema from "./schema.js";
 const model = mongoose.model("CourseModel", schema);
@@ -74,7 +74,7 @@ export default model;`}</CodeBlock>
           <CodeBlock
             language="js"
             name="createCourse"
-            file="kambaz-node-server-app/Kambaz/Courses/dao.js"
+            file="webdev-server/Kambaz/Courses/dao.js"
           >{`function createCourse(course) {
   const newCourse = { ...course, _id: uuidv4() };
   return model.create(newCourse);
@@ -94,7 +94,7 @@ export default model;`}</CodeBlock>
           <CodeBlock
             language="js"
             name="deleteCourse"
-            file="kambaz-node-server-app/Kambaz/Courses/dao.js"
+            file="webdev-server/Kambaz/Courses/dao.js"
           >{`function deleteCourse(courseId) {
   return model.deleteOne({ _id: courseId });
 }`}</CodeBlock>
@@ -113,7 +113,7 @@ export default model;`}</CodeBlock>
           <CodeBlock
             language="js"
             name="updateCourse"
-            file="kambaz-node-server-app/Kambaz/Courses/dao.js"
+            file="webdev-server/Kambaz/Courses/dao.js"
           >{`function updateCourse(courseId, courseUpdates) {
   return model.updateOne({ _id: courseId }, { $set: courseUpdates });
 }`}</CodeBlock>
@@ -164,7 +164,7 @@ export default model;`}</CodeBlock>
           <CodeBlock
             language="js"
             name="moduleSchema"
-            file="kambaz-node-server-app/Kambaz/Modules/schema.js"
+            file="webdev-server/Kambaz/Modules/schema.js"
           >{`import mongoose from "mongoose";
 const schema = new mongoose.Schema({
   _id: String,
@@ -189,7 +189,7 @@ export default schema;`}</CodeBlock>
           <CodeBlock
             language="js"
             name="findModulesForCourse"
-            file="kambaz-node-server-app/Kambaz/Modules/dao.js"
+            file="webdev-server/Kambaz/Modules/dao.js"
           >{`function findModulesForCourse(courseId) {
   return model.find({ course: courseId });
 }`}</CodeBlock>
@@ -203,7 +203,7 @@ export default schema;`}</CodeBlock>
           <CodeBlock
             language="js"
             name="createModule"
-            file="kambaz-node-server-app/Kambaz/Modules/dao.js"
+            file="webdev-server/Kambaz/Modules/dao.js"
           >{`function createModule(module) {
   const newModule = { ...module, _id: uuidv4() };
   return model.create(newModule);
@@ -218,7 +218,7 @@ export default schema;`}</CodeBlock>
           <CodeBlock
             language="js"
             name="deleteModule"
-            file="kambaz-node-server-app/Kambaz/Modules/dao.js"
+            file="webdev-server/Kambaz/Modules/dao.js"
           >{`function deleteModule(moduleId) {
   return model.deleteOne({ _id: moduleId });
 }`}</CodeBlock>
@@ -232,7 +232,7 @@ export default schema;`}</CodeBlock>
           <CodeBlock
             language="js"
             name="updateModule"
-            file="kambaz-node-server-app/Kambaz/Modules/dao.js"
+            file="webdev-server/Kambaz/Modules/dao.js"
           >{`function updateModule(moduleId, moduleUpdates) {
   return model.updateOne({ _id: moduleId }, { $set: moduleUpdates });
 }`}</CodeBlock>
@@ -274,7 +274,7 @@ export default schema;`}</CodeBlock>
           <CodeBlock
             language="js"
             name="enrollmentSchema"
-            file="kambaz-node-server-app/Kambaz/Enrollments/schema.js"
+            file="webdev-server/Kambaz/Enrollments/schema.js"
           >{`import mongoose from "mongoose";
 const enrollmentSchema = new mongoose.Schema({
   _id: String,
@@ -312,7 +312,7 @@ export default enrollmentSchema;`}</CodeBlock>
           <CodeBlock
             language="js"
             name="findCoursesForUser"
-            file="kambaz-node-server-app/Kambaz/Enrollments/dao.js"
+            file="webdev-server/Kambaz/Enrollments/dao.js"
           >{`async function findCoursesForUser(userId) {
   const enrollments = await model.find({ user: userId }).populate("course");
   return enrollments.map((enrollment) => enrollment.course);
@@ -330,7 +330,7 @@ export default enrollmentSchema;`}</CodeBlock>
           <CodeBlock
             language="js"
             name="unenrollAllUsersFromCourse"
-            file="kambaz-node-server-app/Kambaz/Enrollments/dao.js"
+            file="webdev-server/Kambaz/Enrollments/dao.js"
           >{`function unenrollAllUsersFromCourse(courseId) {
   return model.deleteMany({ course: courseId });
 }`}</CodeBlock>

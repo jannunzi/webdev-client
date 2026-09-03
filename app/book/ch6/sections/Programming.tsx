@@ -19,8 +19,8 @@ export default function Programming() {
         </OfficialLink>{" "}
         is the usual choice on Node. Do this work on branch{" "}
         <code>a6</code> in <em>both</em> repositories —{" "}
-        <code>kambaz-next-js</code> and{" "}
-        <code>kambaz-node-server-app</code>.
+        <code>webdev-client</code> and{" "}
+        <code>webdev-server</code>.
       </p>
       <p>
         LiveDemos in this book call same-origin{" "}
@@ -43,7 +43,7 @@ export default function Programming() {
         <p>
           From the root of the Node project:
         </p>
-        <CodeBlock language="shell">{`cd kambaz-node-server-app
+        <CodeBlock language="shell">{`cd webdev-server
 npm install mongoose`}</CodeBlock>
         <p>
           Import Mongoose and call <code>connect</code> with a{" "}
@@ -54,7 +54,7 @@ npm install mongoose`}</CodeBlock>
         <CodeBlock
           language="js"
           name="index"
-          file="kambaz-node-server-app/index.js"
+          file="webdev-server/index.js"
         >{`import express from "express";
 import mongoose from "mongoose";
 // ...
@@ -87,7 +87,7 @@ DATABASE_CONNECTION_STRING=mongodb://127.0.0.1:27017/kambaz`}</CodeBlock>
         <CodeBlock
           language="js"
           name="index"
-          file="kambaz-node-server-app/index.js"
+          file="webdev-server/index.js"
         >{`import "dotenv/config";
 import mongoose from "mongoose";
 
@@ -116,7 +116,7 @@ mongoose.connect(CONNECTION_STRING);`}</CodeBlock>
           Express is up — or keep using the book store for now.
         </OnYourOwn>
         <WithAI
-          prompt={`In kambaz-node-server-app/.env.example, keep DATABASE_CONNECTION_STRING as the PDF name and mention MONGO_CONNECTION_STRING as an alias. Do not put a real Atlas password in any committed file.`}
+          prompt={`In webdev-server/.env.example, keep DATABASE_CONNECTION_STRING as the PDF name and mention MONGO_CONNECTION_STRING as an alias. Do not put a real Atlas password in any committed file.`}
         >
           Ask the assistant to keep the env names straight:
         </WithAI>
@@ -136,7 +136,7 @@ mongoose.connect(CONNECTION_STRING);`}</CodeBlock>
         <CodeBlock
           language="js"
           name="userSchema"
-          file="kambaz-node-server-app/Kambaz/Users/schema.js"
+          file="webdev-server/Kambaz/Users/schema.js"
         >{`import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   _id: String,
@@ -181,7 +181,7 @@ export default userSchema;`}</CodeBlock>
         <CodeBlock
           language="js"
           name="UserModel"
-          file="kambaz-node-server-app/Kambaz/Users/model.js"
+          file="webdev-server/Kambaz/Users/model.js"
         >{`import mongoose from "mongoose";
 import schema from "./schema.js";
 const model = mongoose.model("UserModel", schema);
@@ -210,7 +210,7 @@ export default model;`}</CodeBlock>
         <CodeBlock
           language="js"
           name="UsersDao"
-          file="kambaz-node-server-app/Kambaz/Users/dao.js"
+          file="webdev-server/Kambaz/Users/dao.js"
         >{`import model from "./model.js";
 import { v4 as uuidv4 } from "uuid";
 export default function UsersDao() {

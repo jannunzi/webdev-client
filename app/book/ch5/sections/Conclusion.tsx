@@ -28,13 +28,13 @@ export default function Conclusion() {
           UI to Vercel and the API to Render (or Heroku) and confirm
           they integrate.
         </p>
-        <CodeBlock language="shell">{`# in kambaz-next-js
+        <CodeBlock language="shell">{`# in webdev-client
 git checkout -b a5
 git add .
 git commit -am "a5 HTTP APIs"
 git push -u origin a5
 
-# in kambaz-node-server-app
+# in webdev-server
 git checkout -b a5
 git add .
 git commit -am "a5 HTTP APIs"
@@ -59,7 +59,7 @@ git push -u origin a5`}</CodeBlock>
         <p>
           Continue in <Link href="/labs">Labs</Link>, browse{" "}
           <Link href="/labs/lab5/intermediates">Lab 5 steps</Link>, or
-          open <Link href="/">Kambaz</Link>.{" "}
+          open <Link href="/account/signin">Kambaz</Link>.{" "}
           <ChapterLink to={6} />{" "}replaces the in-memory arrays with
           MongoDB.
         </p>
