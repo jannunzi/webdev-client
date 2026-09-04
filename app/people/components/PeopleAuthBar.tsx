@@ -9,7 +9,7 @@ export default function PeopleAuthBar() {
 
   return (
     <header className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-neutral-200 pb-3 font-sans text-sm">
-      <p className="m-0 font-medium text-neutral-700">Instructor roster</p>
+      <p className="m-0 font-medium text-neutral-700">Course roster</p>
       <div className="flex items-center gap-2">
         <Show when="signed-out">
           <SignInButton forceRedirectUrl={redirectUrl}>

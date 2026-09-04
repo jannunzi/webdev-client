@@ -3,7 +3,8 @@ import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
 import StatusPanel from "@/app/quizzes/components/StatusPanel";
 import { isClerkConfigured, isClerkPublishableKeySet } from "@/lib/config";
-import { isInstructorUser } from "@/lib/roster/instructors";
+import { collectClerkEmails } from "@/lib/roster/emails";
+import { isInstructor, isStaff } from "@/lib/roster/instructors";
 import { listCanvasRoster } from "@/lib/roster/list";
 import { groupRosterBySection } from "@/lib/roster/sections";
 import PeopleAuthBar from "./components/PeopleAuthBar";
@@ -33,6 +34,8 @@ export default async function PeoplePage({ searchParams }: PageProps) {
           <p>
             Jose: add the keys from <code>.env.example</code> to Vercel,
             including <code>INSTRUCTOR_EMAILS=jannunzi@gmail.com</code>.
+            TAs go in <code>TA_EMAILS</code> after they create a Clerk
+            account.
           </p>
         </StatusPanel>
       </article>
@@ -53,18 +56,22 @@ async function PeoplePageBody({ section }: { section?: string }) {
     return (
       <StatusPanel title="Sign in to view People" tone="neutral">
         <p>
-          This page lists Canvas roster students for the instructor. Sign in
-          with the allowlisted instructor email.
+          This page lists Canvas roster students for instructors and TAs.
+          Anyone may create a Clerk account; People access is an email
+          allowlist, not a separate registration. Sign in with the address
+          on <code>INSTRUCTOR_EMAILS</code> or <code>TA_EMAILS</code>.
         </p>
       </StatusPanel>
     );
   }
 
-  if (!isInstructorUser(user)) {
+  const emails = collectClerkEmails(user);
+  if (!isStaff(emails)) {
     return (
       <StatusPanel title="403 Forbidden" tone="warn">
         <p>
-          People is limited to the course instructor. Signed-in browsing of
+          People is limited to the course instructor and TAs. Being on the
+          Canvas student roster does not grant access. Signed-in browsing of
           the book, syllabus, labs, and practice pages is fine. The roster was
           not loaded.
         </p>
@@ -125,9 +132,15 @@ async function PeoplePageBody({ section }: { section?: string }) {
       </p>
       <h1 className="mt-0 text-3xl font-semibold tracking-tight">People</h1>
       <p className="text-neutral-700">
-        Fall 2026 Canvas roster from MongoDB Atlas. Instructor only — this is
-        not the Kambaz lab People demo.
+        Fall 2026 Canvas roster from MongoDB Atlas. Staff only — this is not
+        the Kambaz lab People demo.
       </p>
+      {isInstructor(emails) ? (
+        <p className="text-sm text-neutral-500">
+          Add TA emails via <code>TA_EMAILS</code> on Vercel after they sign
+          up with Clerk. No invite UI.
+        </p>
+      ) : null}
       <PeopleRoster groups={groups} selectedSection={selectedSection} />
     </>
   );
