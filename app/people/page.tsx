@@ -2,11 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
 import StatusPanel from "@/app/quizzes/components/StatusPanel";
-import {
-  isClerkConfigured,
-  isClerkPublishableKeySet,
-  isMongoConfigured,
-} from "@/lib/config";
+import { isClerkConfigured, isClerkPublishableKeySet } from "@/lib/config";
 import { isInstructorUser } from "@/lib/roster/instructors";
 import { listCanvasRoster } from "@/lib/roster/list";
 import { groupRosterBySection } from "@/lib/roster/sections";
@@ -26,17 +22,13 @@ type PageProps = {
 export default async function PeoplePage({ searchParams }: PageProps) {
   const { section } = await searchParams;
 
-  if (!isClerkConfigured() || !isMongoConfigured()) {
-    const missing = [
-      !isClerkConfigured() ? "Clerk" : null,
-      !isMongoConfigured() ? "MongoDB Atlas" : null,
-    ].filter(Boolean);
+  if (!isClerkConfigured()) {
     return (
       <article className="mx-auto max-w-3xl font-sans">
         <StatusPanel title="People is not configured yet" tone="warn">
           <p>
-            {missing.join(" and ")} env vars are missing, so the Canvas roster
-            cannot be shown. The rest of the course book stays available.
+            Clerk env vars are missing, so this page cannot tell who is signed
+            in. The rest of the course book stays available.
           </p>
           <p>
             Jose: add the keys from <code>.env.example</code> to Vercel,
