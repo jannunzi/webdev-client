@@ -67,7 +67,8 @@ If Clerk or Atlas env vars are missing, those take routes show a clear
 3. **Vercel** project env (Production + Preview + Development):
    `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`,
    `NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in`,
-   `NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up`, `MONGODB_URI`, `MONGODB_DB=webdev`.
+   `NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up`, `MONGODB_URI`, `MONGODB_DB=webdev`,
+   `INSTRUCTOR_EMAILS=jannunzi@gmail.com`.
    Redeploy after saving.
 
 Locally, copy `.env.example` to `.env.local` and fill the same keys. Do not
@@ -97,6 +98,24 @@ A signed-in visitor who is **not** on the roster sees
 attempt is written.
 
 CSV upload in the UI can come later; this script is the MVP refresh path.
+
+### Instructor People (`/people`)
+
+`/people` lists every `canvas_roster` document, grouped by Canvas section
+(name, email, SIS / Canvas ids, counts). It is **not** the Kambaz lab People
+demo under `/courses/[cid]/people`.
+
+Access is a **server-side** check against `INSTRUCTOR_EMAILS` (normalized like
+roster emails) and the signed-in Clerk user’s collected addresses. Default
+allowlist is `jannunzi@gmail.com`. Rostered students do not see this page.
+
+Jose: in the Vercel project, add `INSTRUCTOR_EMAILS=jannunzi@gmail.com` for
+Production, Preview, and Development, then redeploy. Sign in with that Gmail
+(or add another address to the same env var, comma-separated). A signed-out
+visitor is asked to sign in; anyone else gets 403.
+
+An instructor-only “People” link appears on the question-bank index and the
+graded-quiz take layout.
 
 ### Exam sampling
 

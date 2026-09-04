@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { isClerkPublishableKeySet } from "@/lib/config";
+import InstructorPeopleLink from "../components/InstructorPeopleLink";
 import QuizAuthBar from "./components/QuizAuthBar";
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export default function TakeQuizLayout({
   return (
     <div className="mx-auto max-w-3xl font-sans">
       {isClerkPublishableKeySet() ? <QuizAuthBar /> : null}
+      <InstructorPeopleLink asLine />
       {children}
     </div>
   );
