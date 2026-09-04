@@ -1,4 +1,5 @@
 import Link from "next/link";
+import InstructorPeopleLink from "./components/InstructorPeopleLink";
 
 export default function QuizzesIndexPage() {
   return (
@@ -7,6 +8,7 @@ export default function QuizzesIndexPage() {
         <Link href="/book">Course book</Link>
         {" · "}
         <Link href="/syllabus">Syllabus</Link>
+        <InstructorPeopleLink />
       </p>
       <h1 className="mt-0 font-semibold text-3xl tracking-tight">
         Question banks

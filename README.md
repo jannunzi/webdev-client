@@ -67,7 +67,9 @@ If Clerk or Atlas env vars are missing, those take routes show a clear
 3. **Vercel** project env (Production + Preview + Development):
    `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`,
    `NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in`,
-   `NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up`, `MONGODB_URI`, `MONGODB_DB=webdev`.
+   `NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up`, `MONGODB_URI`, `MONGODB_DB=webdev`,
+   `INSTRUCTOR_EMAILS=jannunzi@gmail.com`. Optional: `TA_EMAILS` (empty
+   until you add TAs).
    Redeploy after saving.
 
 Locally, copy `.env.example` to `.env.local` and fill the same keys. Do not
@@ -97,6 +99,48 @@ A signed-in visitor who is **not** on the roster sees
 attempt is written.
 
 CSV upload in the UI can come later; this script is the MVP refresh path.
+
+### Staff People (`/people`)
+
+`/people` lists every `canvas_roster` document, grouped by Canvas section
+(name, email, SIS / Canvas ids, counts). It is **not** the Kambaz lab People
+demo under `/courses/[cid]/people`.
+
+Anyone can Clerk sign in or sign up on the public site. There is **no**
+separate instructor/TA registration. Staff status is **only** the env
+allowlists, matched server-side against the signed-in Clerk emails:
+
+- **`INSTRUCTOR_EMAILS`** — full instructor powers (People now; later admin).
+  Default if unset: `jannunzi@gmail.com`.
+- **`TA_EMAILS`** — TAs see the same People view. Empty by default.
+
+`canvas_roster` only gates **graded quizzes**. Being on the student roster
+does **not** grant People access.
+
+A signed-out visitor is asked to sign in. A signed-in user who is not staff
+gets 403 and the roster is not queried. A staff-only “People” link appears
+on the question-bank index and the graded-quiz take layout.
+
+#### Vercel: Jose (instructor)
+
+1. Project → Settings → Environment Variables.
+2. Set `INSTRUCTOR_EMAILS=jannunzi@gmail.com` for Production, Preview, and
+   Development. Add another Clerk address (comma-separated) if you sign in
+   with it, e.g. `j.annunziato@northeastern.edu`.
+3. Add `TA_EMAILS` as an empty value (or omit it) until you have TAs.
+4. Redeploy production after saving.
+
+#### Vercel: add a TA (no invite UI)
+
+1. The TA creates a Clerk account on the live site with the email they will
+   use (Sign up on https://webdev-client.vercel.app).
+2. Jose adds that **exact** email to `TA_EMAILS` on Vercel (Production;
+   Preview too if they use a preview URL). Comma-separate multiple TAs.
+3. Redeploy (or restart) so the new env value is live.
+4. The TA refreshes `/people` and should see the roster.
+
+Do not put student emails on either allowlist. There is no in-app invite
+or email sender.
 
 ### Exam sampling
 
