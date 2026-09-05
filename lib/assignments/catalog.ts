@@ -56,10 +56,9 @@ function findAssignmentDeadline(
   canvasId: string,
   kind: "due" | "assigned",
 ): Deadline | undefined {
-  const needle =
-    kind === "due" ? `${canvasId} due` : `${canvasId} assigned`;
+  const needle = `${canvasId} ${kind}`;
   return deadlines.find(
-    (row) => row.kind === "assignment" && row.label.startsWith(needle),
+    (row) => row.kind === "assignment" && row.label.includes(needle),
   );
 }
 

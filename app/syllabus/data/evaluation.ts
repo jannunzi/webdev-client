@@ -11,7 +11,7 @@ export const evaluationItems: EvaluationItem[] = [
     label: "Quizzes",
     weight: 10,
     description:
-      "Short checks after each chapter. Quizzes are typically released with the corresponding assignment and cannot be submitted late.",
+      "Short checks after each chapter. Each quiz unlocks Monday 00:00 ET after the corresponding assignment due and locks Sunday 23:59 ET. Quizzes cannot be submitted late.",
   },
   {
     label: "Exam",
