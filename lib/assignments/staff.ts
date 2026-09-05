@@ -1,8 +1,16 @@
 import { normalizeEmail } from "../roster/emails";
-import { compareStudents, studentDisplayName } from "../roster/sections";
+import {
+  compareSectionLabels,
+  compareStudents,
+  studentDisplayName,
+  UNSECTIONED_LABEL,
+} from "../roster/sections";
 import type { CanvasRosterEntry } from "../roster/types";
 import type { AssignmentCheckResult } from "./check-types";
 import type { AssignmentStaffGrade, AssignmentSubmissionDoc } from "./submissions-store";
+
+/** Same fallback as `/people` when `canvas_roster.section` is blank. */
+export { UNSECTIONED_LABEL };
 
 export type StaffGraderAccess = {
   canView: boolean;
@@ -178,4 +186,65 @@ export function adjacentStaffStudentKeys(
   const previous = index > 0 ? queue[index - 1].key : null;
   const next = index < queue.length - 1 ? queue[index + 1].key : null;
   return { previous, next, index };
+}
+
+/** Raw `canvas_roster.section` (trimmed), or `Unsectioned` — same as People tabs. */
+export function staffRowSectionLabel(row: {
+  section?: string | null;
+}): string {
+  return row.section?.trim() || UNSECTIONED_LABEL;
+}
+
+export function listStaffQueueSections(
+  queue: readonly StaffStudentRow[],
+): string[] {
+  return [...new Set(queue.map(staffRowSectionLabel))].sort(compareSectionLabels);
+}
+
+/**
+ * Unknown or empty `?section=` is All (same as `/people`).
+ * Valid values are the stored Canvas section labels.
+ */
+export function resolveStaffSectionFilter(
+  section: string | undefined | null,
+  available: readonly string[],
+): string | undefined {
+  const selected = section?.trim();
+  if (!selected) return undefined;
+  return available.includes(selected) ? selected : undefined;
+}
+
+export function filterStaffQueueBySection(
+  queue: readonly StaffStudentRow[],
+  section: string | undefined | null,
+): StaffStudentRow[] {
+  const selected = section?.trim();
+  if (!selected) return [...queue];
+  return queue.filter((row) => staffRowSectionLabel(row) === selected);
+}
+
+export function staffQueueForSection(
+  queue: readonly StaffStudentRow[],
+  section: string | undefined | null,
+): StaffStudentRow[] {
+  const resolved = resolveStaffSectionFilter(
+    section,
+    listStaffQueueSections(queue),
+  );
+  return filterStaffQueueBySection(queue, resolved);
+}
+
+export function staffGraderHref(
+  assignmentId: string,
+  options?: { section?: string | null; student?: string | null },
+): string {
+  const params = new URLSearchParams();
+  const section = options?.section?.trim();
+  const student = options?.student?.trim();
+  if (section) params.set("section", section);
+  if (student) params.set("student", student);
+  const query = params.toString();
+  return query
+    ? `/assignments/${assignmentId}?${query}`
+    : `/assignments/${assignmentId}`;
 }

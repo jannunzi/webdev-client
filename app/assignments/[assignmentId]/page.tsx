@@ -26,6 +26,9 @@ import {
 import {
   buildStaffStudentQueue,
   findStaffStudent,
+  listStaffQueueSections,
+  resolveStaffSectionFilter,
+  staffQueueForSection,
   type StaffStudentRow,
 } from "@/lib/assignments/staff";
 import {
@@ -52,7 +55,7 @@ export const dynamic = "force-dynamic";
 
 type PageProps = {
   params: Promise<{ assignmentId: string }>;
-  searchParams: Promise<{ student?: string }>;
+  searchParams: Promise<{ student?: string; section?: string }>;
 };
 
 export function generateStaticParams() {
@@ -76,7 +79,7 @@ export default async function AssignmentDetailPage({
   searchParams,
 }: PageProps) {
   const { assignmentId } = await params;
-  const { student: studentKey } = await searchParams;
+  const { student: studentKey, section: sectionParam } = await searchParams;
   const assignment = getAssignment(assignmentId);
   if (!assignment) notFound();
 
@@ -89,6 +92,7 @@ export default async function AssignmentDetailPage({
   let initialSubmission: AssignmentSubmissionView | null = null;
   let staffQueue: StaffStudentRow[] | undefined;
   let selectedStudent: StaffStudentRow | null = null;
+  let selectedSection: string | undefined;
   let showStaffGrader = false;
 
   if (isClerkConfigured()) {
@@ -168,8 +172,16 @@ export default async function AssignmentDetailPage({
             rosterList.status === "ok" ? rosterList.entries : [],
             submissions,
           );
+          selectedSection = resolveStaffSectionFilter(
+            sectionParam,
+            listStaffQueueSections(staffQueue),
+          );
           if (studentKey) {
-            selectedStudent = findStaffStudent(staffQueue, studentKey) ?? null;
+            selectedStudent =
+              findStaffStudent(
+                staffQueueForSection(staffQueue, selectedSection),
+                studentKey,
+              ) ?? null;
             if (selectedStudent?.clerkUserId) {
               const doc = await readAssignmentSubmission(
                 selectedStudent.clerkUserId,
@@ -254,6 +266,7 @@ export default async function AssignmentDetailPage({
           gateReason={canSubmit ? null : gateReason}
           staffQueue={staffQueue}
           selectedStudent={selectedStudent}
+          selectedSection={selectedSection}
         />
       ) : (
         <AssignmentChecklist

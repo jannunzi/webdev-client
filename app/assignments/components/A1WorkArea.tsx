@@ -27,6 +27,7 @@ export default function A1WorkArea({
   gateReason,
   staffQueue,
   selectedStudent,
+  selectedSection,
 }: {
   assignment: AssignmentHubItem;
   initialSubmission: AssignmentSubmissionView | null;
@@ -38,6 +39,7 @@ export default function A1WorkArea({
   gateReason: SubmissionGateReason;
   staffQueue?: StaffStudentRow[];
   selectedStudent?: StaffStudentRow | null;
+  selectedSection?: string;
 }) {
   const staffMode = Boolean(selectedStudent);
   const [submission, setSubmission] = useState<AssignmentSubmissionView | null>(
@@ -137,6 +139,7 @@ export default function A1WorkArea({
           assignmentId={assignment.id}
           queue={staffQueue}
           selectedKey={selectedStudent?.key}
+          selectedSection={selectedSection}
         />
       ) : null}
 
