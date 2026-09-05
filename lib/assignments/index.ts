@@ -15,6 +15,7 @@ export {
   localProgressKey,
   mergeCompletedIds,
   parseLocalProgress,
+  resolveProgressSnapshot,
   serializeLocalProgress,
   summarizeProgress,
   upsertCriterionProgress,

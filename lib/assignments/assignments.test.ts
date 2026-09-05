@@ -15,6 +15,7 @@ import {
   loadCompletedCriterionIds,
   mergeCompletedIds,
   parseLocalProgress,
+  resolveProgressSnapshot,
   serializeLocalProgress,
   summarizeProgress,
   upsertCriterionProgress,
@@ -113,6 +114,17 @@ describe("assignment progress helpers", () => {
     ]);
     assert.deepEqual(parseLocalProgress('["a1-lab-forms"]'), ["a1-lab-forms"]);
     assert.deepEqual(parseLocalProgress("not-json"), []);
+    assert.deepEqual(
+      resolveProgressSnapshot(["a1-delivery-vercel"], null),
+      ["a1-delivery-vercel"],
+    );
+    assert.deepEqual(
+      resolveProgressSnapshot(
+        ["a1-delivery-vercel"],
+        serializeLocalProgress([]),
+      ),
+      [],
+    );
   });
 
   it("upserts per clerk user + assignment + criterion", async () => {

@@ -76,6 +76,17 @@ export function mergeCompletedIds(
   return [...next].sort();
 }
 
+/** localStorage is the full completed set once written; otherwise use server. */
+export function resolveProgressSnapshot(
+  serverIds: readonly string[],
+  localRaw: string | null,
+): string[] {
+  if (localRaw == null) {
+    return [...serverIds].sort();
+  }
+  return parseLocalProgress(localRaw).sort();
+}
+
 export function parseLocalProgress(raw: string | null): string[] {
   if (!raw) return [];
   try {

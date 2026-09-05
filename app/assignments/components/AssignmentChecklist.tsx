@@ -1,16 +1,26 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+  useTransition,
+} from "react";
 import Link from "next/link";
 import type { AssignmentHubItem } from "@/lib/assignments/types";
 import {
   applyCriterionToggle,
   localProgressKey,
-  mergeCompletedIds,
   parseLocalProgress,
-  serializeLocalProgress,
   summarizeProgress,
 } from "@/lib/assignments/progress-store";
+import {
+  readMergedProgress,
+  serverProgressSnapshot,
+  subscribeLocalProgress,
+  writeLocalProgress,
+} from "@/lib/assignments/local-progress";
 import { mergeLocalProgress, setCriterionCompleted } from "../actions";
 
 export default function AssignmentChecklist({
@@ -24,7 +34,15 @@ export default function AssignmentChecklist({
   signedIn: boolean;
   mongoReady: boolean;
 }) {
-  const [completedIds, setCompletedIds] = useState(initialCompletedIds);
+  const serverIds = useMemo(
+    () => serverProgressSnapshot(initialCompletedIds),
+    [initialCompletedIds],
+  );
+  const completedIds = useSyncExternalStore(
+    subscribeLocalProgress,
+    () => readMergedProgress(assignment.id, serverIds),
+    () => serverIds,
+  );
   const [pendingId, setPendingId] = useState<string | null>(null);
   const [syncNote, setSyncNote] = useState<string | null>(null);
   const [, startTransition] = useTransition();
@@ -36,50 +54,28 @@ export default function AssignmentChecklist({
   );
 
   useEffect(() => {
-    if (!rubric) return;
+    if (!rubric || !signedIn || !mongoReady) return;
     const local = parseLocalProgress(
       window.localStorage.getItem(localProgressKey(assignment.id)),
     );
-    const merged = mergeCompletedIds(initialCompletedIds, local);
-    setCompletedIds(merged);
-    window.localStorage.setItem(
-      localProgressKey(assignment.id),
-      serializeLocalProgress(merged),
-    );
-
-    if (signedIn && mongoReady && local.length > 0) {
-      startTransition(async () => {
-        const result = await mergeLocalProgress({
-          assignmentId: assignment.id,
-          completedCriterionIds: local,
-        });
-        if (result.ok) {
-          setCompletedIds(result.completedCriterionIds);
-          window.localStorage.setItem(
-            localProgressKey(assignment.id),
-            serializeLocalProgress(result.completedCriterionIds),
-          );
-        }
+    if (local.length === 0) return;
+    startTransition(async () => {
+      const result = await mergeLocalProgress({
+        assignmentId: assignment.id,
+        completedCriterionIds: local,
       });
-    }
-    // Merge once on mount from the server snapshot + this browser.
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- initial snapshot only
-  }, [assignment.id]);
+      if (result.ok) {
+        writeLocalProgress(assignment.id, result.completedCriterionIds);
+      }
+    });
+  }, [assignment.id, mongoReady, rubric, signedIn, startTransition]);
 
   if (!rubric) return null;
-
-  function persistLocal(next: string[]) {
-    window.localStorage.setItem(
-      localProgressKey(assignment.id),
-      serializeLocalProgress(next),
-    );
-  }
 
   function onToggle(criterionId: string, completed: boolean) {
     const previous = completedIds;
     const next = applyCriterionToggle(completedIds, criterionId, completed);
-    setCompletedIds(next);
-    persistLocal(next);
+    writeLocalProgress(assignment.id, next);
     setSyncNote(null);
 
     if (!signedIn || !mongoReady) {
@@ -95,12 +91,10 @@ export default function AssignmentChecklist({
       });
       setPendingId(null);
       if (result.ok) {
-        setCompletedIds(result.completedCriterionIds);
-        persistLocal(result.completedCriterionIds);
+        writeLocalProgress(assignment.id, result.completedCriterionIds);
         return;
       }
-      setCompletedIds(previous);
-      persistLocal(previous);
+      writeLocalProgress(assignment.id, previous);
       setSyncNote(
         result.code === "unauthenticated"
           ? "Sign in with your school email to sync progress."
