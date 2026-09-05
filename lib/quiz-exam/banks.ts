@@ -1,6 +1,6 @@
 import { CHAPTER1_BANK, type QuestionBank } from "../question-bank";
 
-/** Public exam slug → typed question bank. Author review stays on /quizzes/q1. */
+/** Public exam slug → typed question bank. Author review stays on /quizzes/q1 (staff). */
 export const EXAM_BANKS: Record<string, QuestionBank> = {
   q1: CHAPTER1_BANK,
 };

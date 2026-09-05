@@ -1,17 +1,12 @@
 import Link from "next/link";
-import { currentUser } from "@clerk/nextjs/server";
-import { isClerkConfigured } from "@/lib/config";
-import { collectClerkEmails } from "@/lib/roster/emails";
-import { isStaff } from "@/lib/roster/instructors";
+import { isCurrentUserStaff } from "@/lib/roster/staff-access";
 
 export default async function InstructorPeopleLink({
   asLine = false,
 }: {
   asLine?: boolean;
 }) {
-  if (!isClerkConfigured()) return null;
-  const user = await currentUser();
-  if (!isStaff(collectClerkEmails(user))) return null;
+  if (!(await isCurrentUserStaff())) return null;
   const link = <Link href="/people">People</Link>;
   if (asLine) {
     return (

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import InstructorPeopleLink from "./components/InstructorPeopleLink";
+import InstructorPeopleLink from "../components/InstructorPeopleLink";
 
 export default function QuizzesIndexPage() {
   return (

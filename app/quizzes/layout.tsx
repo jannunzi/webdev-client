@@ -5,7 +5,7 @@ import "../book/book.css";
 export const metadata: Metadata = {
   title: "Question banks (review) — CS 4550 / CS 5610",
   description:
-    "Author review of proposed Canvas quiz question banks. Answers are shown. Not a student exam.",
+    "Staff-only author review of proposed Canvas quiz question banks. Answers are shown. Not a student exam.",
 };
 
 export default function QuizzesLayout({

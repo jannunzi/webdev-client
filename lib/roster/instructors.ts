@@ -42,11 +42,32 @@ export function isTa(
   return anyEmailOnAllowlist(emails, allowlist);
 }
 
-/** Instructor or TA. Use this to gate `/people`. */
+/** Instructor or TA. Use this to gate `/people` and author-review banks. */
 export function isStaff(
   emails: string[],
   instructorAllowlist: string[] = instructorEmailsFromEnv(),
   taAllowlist: string[] = taEmailsFromEnv(),
 ): boolean {
   return isInstructor(emails, instructorAllowlist) || isTa(emails, taAllowlist);
+}
+
+export type StaffAccessStatus =
+  | "not_configured"
+  | "signed_out"
+  | "forbidden"
+  | "ok";
+
+/**
+ * Staff gate for `/people` and `/quizzes` author review (not `/quizzes/take`).
+ * Signed-in users with no allowlisted email are forbidden, even with empty emails.
+ */
+export function staffAccessFromUser(
+  clerkConfigured: boolean,
+  signedIn: boolean,
+  emails: string[],
+): StaffAccessStatus {
+  if (!clerkConfigured) return "not_configured";
+  if (!signedIn) return "signed_out";
+  if (!isStaff(emails)) return "forbidden";
+  return "ok";
 }
