@@ -12,11 +12,7 @@ function renderToken(token: string, key: number): ReactNode {
     );
   }
   if (token.startsWith("`") && token.endsWith("`")) {
-    return (
-      <code key={key} className="rounded bg-black/8 px-1.5 py-0.5 font-mono">
-        {token.slice(1, -1)}
-      </code>
-    );
+    return <code key={key}>{token.slice(1, -1)}</code>;
   }
   const link = token.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
   if (link) {
@@ -37,19 +33,13 @@ function renderToken(token: string, key: number): ReactNode {
   return token;
 }
 
-export default function SlideText({
-  text,
-  density = "spacious",
-}: {
-  text: string;
-  density?: "dense" | "spacious";
-}) {
+export default function SlideText({ text }: { text: string }) {
   const parts = text.split(TOKEN);
   return (
-    <span data-slide-text-density={density}>
+    <>
       {parts.map((part, index) =>
         part ? renderToken(part, index) : null,
       )}
-    </span>
+    </>
   );
 }

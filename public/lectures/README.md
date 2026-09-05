@@ -1,5 +1,9 @@
 # Lecture slide assets
 
+PNG exports from classroom Google Slides remain on disk as optional
+**index-card thumbnails** and historical reference. They are **not** the
+slide figures.
+
 Decks live in `lib/lectures/decks/*.ts` as authored TypeScript — titles,
 bullets, code blocks, live Ch1 `embed`s, and `diagram` ids. The shell
 renders an authored SVG/React figure from
@@ -9,13 +13,16 @@ renders an authored SVG/React figure from
 `LECTURE_DIAGRAM_IDS` in `lib/lectures/types.ts` is the catalog of
 diagrams and product-UI mocks (browser chrome + key labels, not
 screenshots). Live React demos stay on `embed` (User card, Welcome
-heading, Lab 1 stub, Link nav, plus Lab 1 HTML previews).
+heading, Lab 1 stub, Link nav).
 
-Index thumbnails are authored 16:9 logo cards in `public/lectures/thumbs/`
-(`lectureThumbPath(slug)`). They are not Google Slides `slide-01` rasters.
-Regenerate with `node scripts/write-lecture-thumbs.mjs`. Do not nest these
-assets under `/book`.
+Original export counts (full `slide-NN.png` files remain even when unused):
 
-PNG exports from classroom Google Slides may remain on disk as historical
-reference. They are **not** the slide figures and are **not** the index
-cards.
+- intro-to-web-development (17)
+- installing-nodejs (16)
+- creating-a-nextjs-react-application (27)
+- commit-to-github (7)
+- deploying-to-vercel (17)
+
+Index thumbnails use `LECTURE_DECK_THUMBNAILS` — distinctive mid-deck
+figures, never `slide-01.png` (the shared WEB DEV title). Do not nest
+these assets under `/book`.

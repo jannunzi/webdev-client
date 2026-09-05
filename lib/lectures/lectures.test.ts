@@ -16,15 +16,13 @@ import {
   listLectures,
 } from "./catalog";
 import {
-  LECTURE_1_SLUGS,
-  LECTURE_2_SLUGS,
+  LECTURE_DECK_THUMBNAILS,
   LECTURE_DIAGRAM_IDS,
   LECTURE_EMBED_IDS,
   LECTURE_SLUGS,
   lectureSlideAssetPath,
-  lectureSlideDensity,
+  lectureSlideFigurePath,
   lectureSlideCodeBlocks,
-  lectureThumbPath,
 } from "./types";
 
 function slideText(deckSlug: string): string {
@@ -49,18 +47,19 @@ function findSlide(deckSlug: string, id: string) {
 }
 
 describe("lecture catalog", () => {
-  it("lists Lecture 1 then Lecture 2 slugs in locked order", () => {
+  it("lists the five Lecture 1 slugs in locked order", () => {
     assert.deepEqual(listLectureSlugs(), [
-      ...LECTURE_1_SLUGS,
-      ...LECTURE_2_SLUGS,
+      "intro-to-web-development",
+      "installing-nodejs",
+      "creating-a-nextjs-react-application",
+      "commit-to-github",
+      "deploying-to-vercel",
     ]);
     assert.deepEqual(listLectureSlugs(), [...LECTURE_SLUGS]);
-    assert.equal(LECTURE_1_SLUGS.length, 5);
-    assert.equal(LECTURE_2_SLUGS.length, 6);
   });
 
-  it("marks Lecture 1 entries as Canvas Lecture 1 / Chapter 1", () => {
-    const items = listLectures().filter((item) => item.canvasLecture === 1);
+  it("marks every catalog entry as Canvas Lecture 1 / Chapter 1", () => {
+    const items = listLectures();
     assert.equal(items.length, 5);
     for (const item of items) {
       assert.equal(item.chapter, 1);
@@ -72,23 +71,7 @@ describe("lecture catalog", () => {
       assert.equal(item.publicUrl, `${COURSE_SITE_ORIGIN}/lectures/${item.slug}`);
       assert.equal(lecturePublicUrl(item.slug), item.publicUrl);
       assert.equal(item.thumbnailSrc, lectureDeckThumbnail(item.slug));
-      assert.doesNotMatch(item.thumbnailSrc, /slide-01/);
-      assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
-    }
-  });
-
-  it("marks Lecture 2 entries as Canvas Lecture 2 / Chapter 1", () => {
-    const items = listLectures().filter((item) => item.canvasLecture === 2);
-    assert.equal(items.length, 6);
-    assert.deepEqual(
-      items.map((item) => item.slug),
-      [...LECTURE_2_SLUGS],
-    );
-    for (const item of items) {
-      assert.equal(item.chapter, 1);
-      assert.equal(item.canvasLecture, 2);
-      assert.equal(item.chapterHref, "/book/ch1");
-      assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
+      assert.doesNotMatch(item.thumbnailSrc, /slide-01\.png$/);
     }
   });
 
@@ -96,11 +79,10 @@ describe("lecture catalog", () => {
     assert.equal(getLecture("not-a-deck"), undefined);
     assert.equal(getLectureDeck("vite-spa"), undefined);
     assert.equal(isLectureSlug("intro-to-web-development"), true);
-    assert.equal(isLectureSlug("html-and-dom"), true);
     assert.equal(isLectureSlug("intro"), false);
   });
 
-  it("groups Lecture 1 and Lecture 2 decks; later weeks stay empty", () => {
+  it("groups decks under Canvas lecture folders with later weeks empty", () => {
     const groups = listCanvasLectureGroups();
     assert.ok(groups.length >= 11);
     assert.equal(groups[0]?.title, "Lecture 1");
@@ -108,51 +90,39 @@ describe("lecture catalog", () => {
     assert.equal(groups[0]?.decks.length, 5);
     assert.deepEqual(
       groups[0]?.decks.map((deck) => deck.slug),
-      [...LECTURE_1_SLUGS],
-    );
-    assert.equal(groups[1]?.title, "Lecture 2");
-    assert.equal(groups[1]?.canvasLecture, 2);
-    assert.equal(groups[1]?.decks.length, 6);
-    assert.deepEqual(
-      groups[1]?.decks.map((deck) => deck.slug),
-      [...LECTURE_2_SLUGS],
+      [...LECTURE_SLUGS],
     );
     assert.equal(
       lectureDeckThumbnail(groups[0]!.decks[0]!),
-      "/lectures/thumbs/intro-to-web-development.svg",
+      "/lectures/intro-to-web-development/slide-06-figure.png",
     );
     assert.equal(
       lectureDeckThumbnail("commit-to-github"),
-      "/lectures/thumbs/commit-to-github.svg",
-    );
-    assert.equal(
-      lectureDeckThumbnail("html-and-dom"),
-      "/lectures/thumbs/html-and-dom.svg",
+      "/lectures/commit-to-github/slide-05-figure.png",
     );
     for (const slug of LECTURE_SLUGS) {
       const thumb = lectureDeckThumbnail(slug);
       assert.notEqual(thumb, lectureSlideAssetPath(slug, 1));
-      assert.equal(thumb, lectureThumbPath(slug));
-      assert.doesNotMatch(thumb, /slide-\d\d/);
+      assert.equal(
+        thumb,
+        lectureSlideFigurePath(slug, LECTURE_DECK_THUMBNAILS[slug]),
+      );
       const disk = join(process.cwd(), thumb.replace(/^\//, "public/"));
       assert.ok(existsSync(disk), `${thumb} is missing on disk`);
     }
-    for (const group of groups.slice(2)) {
+    for (const group of groups.slice(1)) {
       assert.equal(group.title, `Lecture ${group.canvasLecture}`);
       assert.equal(group.decks.length, 0);
     }
   });
 
-  it("walks adjacent decks across Lecture 1 into Lecture 2", () => {
+  it("walks adjacent decks", () => {
     const first = adjacentLectureSlugs("intro-to-web-development");
     assert.equal(first.prev, undefined);
     assert.equal(first.next?.slug, "installing-nodejs");
-    const lastLecture1 = adjacentLectureSlugs("deploying-to-vercel");
-    assert.equal(lastLecture1.next?.slug, "html-and-dom");
-    assert.equal(lastLecture1.prev?.slug, "commit-to-github");
-    const last = adjacentLectureSlugs("single-page-navigation");
+    const last = adjacentLectureSlugs("deploying-to-vercel");
     assert.equal(last.next, undefined);
-    assert.equal(last.prev?.slug, "anchors");
+    assert.equal(last.prev?.slug, "commit-to-github");
   });
 });
 
@@ -168,12 +138,6 @@ describe("lecture decks", () => {
     assert.equal(counts["commit-to-github"], 7);
     assert.ok((counts["deploying-to-vercel"] ?? 0) >= 14);
     assert.ok((counts["deploying-to-vercel"] ?? 0) <= 17);
-    assert.ok((counts["html-and-dom"] ?? 0) >= 9);
-    assert.ok((counts["headings-and-paragraphs"] ?? 0) >= 9);
-    assert.ok((counts["lists-and-tables"] ?? 0) >= 9);
-    assert.ok((counts["web-forms"] ?? 0) >= 10);
-    assert.ok((counts["anchors"] ?? 0) >= 7);
-    assert.ok((counts["single-page-navigation"] ?? 0) >= 8);
     for (const deck of decks) {
       const ids = deck.slides.map((slide) => slide.id);
       assert.equal(new Set(ids).size, ids.length, `${deck.slug} duplicate slide id`);
@@ -182,25 +146,6 @@ describe("lecture decks", () => {
         assert.ok(slide.title);
       }
     }
-  });
-
-  it("sizes text-only slides spacious and diagram/embed slides dense", () => {
-    const textOnly = findSlide("intro-to-web-development", "internet");
-    const diagram = findSlide("intro-to-web-development", "client-server");
-    const embed = findSlide("creating-a-nextjs-react-application", "welcome-page");
-    const htmlText = findSlide("html-and-dom", "what-is-html");
-    const htmlDiagram = findSlide("html-and-dom", "the-dom");
-    const htmlEmbed = findSlide("headings-and-paragraphs", "heading-component");
-    assert.equal(lectureSlideDensity(textOnly), "spacious");
-    assert.equal(lectureSlideDensity(diagram), "dense");
-    assert.equal(lectureSlideDensity(embed), "dense");
-    assert.equal(lectureSlideDensity(htmlText), "spacious");
-    assert.equal(lectureSlideDensity(htmlDiagram), "dense");
-    assert.equal(lectureSlideDensity(htmlEmbed), "dense");
-    assert.equal(
-      lectureSlideDensity({ id: "forced", title: "Forced", density: "dense" }),
-      "dense",
-    );
   });
 
   it("teaches App Router only in the Next.js deck", () => {
@@ -217,7 +162,7 @@ describe("lecture decks", () => {
     assert.doesNotMatch(text, /No Vite SPA setup/i);
   });
 
-  it("drops Vite SPA leftover phrasing from authored decks", () => {
+  it("drops Vite SPA leftover phrasing from Lecture 1 decks", () => {
     for (const deck of listLectureDecks()) {
       const text = slideText(deck.slug);
       assert.doesNotMatch(text, /Vite SPA leftover/i);
@@ -245,31 +190,6 @@ describe("lecture decks", () => {
       assert.equal(slide.embed, embed);
       assert.equal(slide.imageSrc, undefined);
       assert.ok((LECTURE_EMBED_IDS as readonly string[]).includes(embed));
-    }
-  });
-
-  it("embeds Lab 1 HTML previews on Lecture 2 decks", () => {
-    const expected = {
-      "html-and-dom": { "jsx-in-next": "lab1-stub" },
-      "headings-and-paragraphs": {
-        "heading-component": "heading-tags",
-        "paragraph-wrapped": "paragraph-tag",
-      },
-      "lists-and-tables": { "unordered-list": "list-tags", "table-code": "tables" },
-      "web-forms": { "text-fields": "text-fields" },
-      anchors: { "lab1-anchors": "anchors" },
-      "single-page-navigation": {
-        "labs-index": "labs-index",
-        children: "link-nav",
-      },
-    } as const;
-    for (const [slug, slides] of Object.entries(expected)) {
-      for (const [id, embed] of Object.entries(slides)) {
-        const slide = findSlide(slug, id);
-        assert.equal(slide.embed, embed);
-        assert.equal(slide.imageSrc, undefined);
-        assert.ok((LECTURE_EMBED_IDS as readonly string[]).includes(embed));
-      }
     }
   });
 
@@ -316,45 +236,6 @@ describe("lecture decks", () => {
     assert.doesNotMatch(text, /kanbaz/);
   });
 
-  it("teaches Chapter 1 HTML topics in the Lecture 2 decks", () => {
-    const html = slideText("html-and-dom");
-    assert.match(html, /Document Object Model|\bDOM\b/);
-    assert.match(html, /wd-lab1/);
-    assert.match(html, /Elements/);
-
-    const headings = slideText("headings-and-paragraphs");
-    assert.match(headings, /h1/);
-    assert.match(headings, /wd-h-tag/);
-    assert.match(headings, /wd-p-1/);
-    assert.match(headings, /span/);
-
-    const lists = slideText("lists-and-tables");
-    assert.match(lists, /wd-pancakes/);
-    assert.match(lists, /wd-tables/);
-    assert.match(lists, /colSpan/);
-    assert.match(lists, /wd-starship|wd-teslabot/);
-
-    const forms = slideText("web-forms");
-    assert.match(forms, /defaultValue/);
-    assert.match(forms, /htmlFor/);
-    assert.match(forms, /preventDefault/);
-    assert.match(forms, /app\/labs\/lab1\/forms/);
-    assert.doesNotMatch(forms, /Fall 2026/);
-
-    const anchors = slideText("anchors");
-    assert.match(anchors, /wd-lipsum/);
-    assert.match(anchors, /wd-github/);
-    assert.match(anchors, /noreferrer/);
-    assert.match(anchors, /next\/link/);
-
-    const spa = slideText("single-page-navigation");
-    assert.match(spa, /next\/link/);
-    assert.match(spa, /History API/);
-    assert.match(spa, /layout\.tsx/);
-    assert.match(spa, /app\/labs\/page\.tsx/);
-    assert.match(spa, /#\/lab1/);
-  });
-
   it("uses authored diagrams instead of Google Slides rasters", () => {
     const expected = {
       "intro-to-web-development": {
@@ -379,9 +260,6 @@ describe("lecture decks", () => {
         congratulations: "vercel-success-mock",
         protections: "vercel-protect-mock",
         "disable-auth": "vercel-auth-mock",
-      },
-      "html-and-dom": {
-        "the-dom": "dom-tree",
       },
     } as const;
 
@@ -435,7 +313,6 @@ describe("lecture decks", () => {
     );
     const git = findSlide("commit-to-github", "from-project");
     const ignore = findSlide("commit-to-github", "gitignore");
-    const lab1 = findSlide("html-and-dom", "jsx-in-next");
 
     assert.match(hello.code ?? "", /console\.log/);
     assert.ok(!(hello.bullets ?? []).some((row) => row.includes("console.log")));
@@ -455,7 +332,5 @@ describe("lecture decks", () => {
     assert.ok(!(git.bullets ?? []).some((row) => row.startsWith("`git ")));
     assert.match(ignore.code ?? "", /node_modules\//);
     assert.equal(ignore.codeFile, ".gitignore");
-    assert.match(lab1.code ?? "", /wd-lab1/);
-    assert.equal(lab1.codeFile, "app/labs/lab1/page.tsx");
   });
 });

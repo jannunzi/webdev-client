@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import {
   lectureSlideCodeBlocks,
-  lectureSlideDensity,
   type LectureHubItem,
   type LectureSlide,
 } from "@/lib/lectures/types";
@@ -89,62 +88,16 @@ function replaceLocation({
   }
 }
 
-function titleClasses({
-  density,
-  isFullscreen,
-  kind,
-}: {
-  density: ReturnType<typeof lectureSlideDensity>;
-  isFullscreen: boolean;
-  kind: LectureSlide["kind"];
-}): string {
-  const spacious = density === "spacious";
-  if (isFullscreen) {
-    if (kind === "title") {
-      return spacious
-        ? "mt-0 font-sans text-7xl font-semibold tracking-tight text-white sm:text-8xl"
-        : "mt-0 font-sans text-6xl font-semibold tracking-tight text-white sm:text-7xl";
-    }
-    return spacious
-      ? "mt-0 font-sans text-6xl font-semibold leading-tight tracking-tight sm:text-7xl"
-      : "mt-0 font-sans text-5xl font-semibold leading-tight tracking-tight sm:text-6xl";
-  }
-  if (kind === "title") {
-    return spacious
-      ? "mt-0 font-sans text-6xl font-semibold tracking-tight text-white sm:text-7xl"
-      : "mt-0 font-sans text-5xl font-semibold tracking-tight text-white sm:text-6xl";
-  }
-  return spacious
-    ? "mt-0 font-sans text-5xl font-semibold leading-tight tracking-tight sm:text-6xl lg:text-7xl"
-    : "mt-0 font-sans text-4xl font-semibold leading-tight tracking-tight sm:text-5xl lg:text-6xl";
-}
-
-function bulletClasses({
-  density,
-  kind,
-}: {
-  density: ReturnType<typeof lectureSlideDensity>;
-  kind: LectureSlide["kind"];
-}): string {
-  const color = kind === "title" ? "text-neutral-100" : "text-neutral-900";
-  if (density === "spacious") {
-    return `m-0 space-y-6 pl-10 text-4xl leading-snug sm:text-[2.75rem] lg:text-5xl ${color}`;
-  }
-  return `m-0 space-y-4 pl-8 text-2xl leading-snug sm:text-[1.75rem] lg:text-3xl ${color}`;
-}
-
 export default function LectureDeckShell({
   deckTitle,
   slides,
   prevDeck,
   nextDeck,
-  canvasLecture,
 }: {
   deckTitle: string;
   slides: LectureSlide[];
   prevDeck?: LectureHubItem;
   nextDeck?: LectureHubItem;
-  canvasLecture?: number;
 }) {
   const labelId = useId();
   const stageRef = useRef<HTMLElement>(null);
@@ -154,8 +107,6 @@ export default function LectureDeckShell({
   const last = slides.length - 1;
   const slide = slides[index] ?? slides[0];
   const kind = slide?.kind ?? "content";
-  const density = slide ? lectureSlideDensity(slide) : "spacious";
-  const lectureNumber = canvasLecture ?? prevDeck?.canvasLecture ?? nextDeck?.canvasLecture;
   const codeBlocks = slide ? lectureSlideCodeBlocks(slide) : [];
 
   const goTo = useCallback(
@@ -296,11 +247,13 @@ export default function LectureDeckShell({
   if (!slide) return null;
 
   const percent = slides.length === 0 ? 0 : ((index + 1) / slides.length) * 100;
-  const titleClass = titleClasses({ density, isFullscreen, kind });
-  const hintSize =
-    density === "spacious"
-      ? "mt-6 rounded-md border px-4 py-3 text-2xl sm:text-3xl"
-      : "mt-6 rounded-md border px-4 py-3 text-lg sm:text-xl";
+  const titleClass = isFullscreen
+    ? kind === "title"
+      ? "mt-0 font-sans text-6xl font-semibold tracking-tight text-white sm:text-7xl"
+      : "mt-0 font-sans text-5xl font-semibold leading-tight tracking-tight sm:text-6xl"
+    : kind === "title"
+      ? "mt-0 font-sans text-5xl font-semibold tracking-tight text-white sm:text-6xl"
+      : "mt-0 font-sans text-4xl font-semibold leading-tight tracking-tight sm:text-5xl lg:text-6xl";
 
   return (
     <section
@@ -352,11 +305,10 @@ export default function LectureDeckShell({
 
         <article
           ref={stageRef}
-          data-slide-density={density}
           className={
             isFullscreen
-              ? `lecture-slide lecture-slide-${density} h-full w-full overflow-auto px-6 py-8 sm:px-10 sm:py-10 ${kindFrame(kind)}`
-              : `lecture-slide lecture-slide-${density} min-h-0 flex-1 overflow-auto rounded-lg border-2 px-5 py-6 sm:px-8 sm:py-8 ${kindFrame(kind)}`
+              ? `h-full w-full overflow-auto px-6 py-8 sm:px-10 sm:py-10 ${kindFrame(kind)}`
+              : `min-h-0 flex-1 overflow-auto rounded-lg border-2 px-5 py-6 sm:px-8 sm:py-8 ${kindFrame(kind)}`
           }
         >
           <p
@@ -368,10 +320,14 @@ export default function LectureDeckShell({
           </p>
           <h2 className={`${titleClass} mb-5`}>{slide.title}</h2>
           {slide.bullets && slide.bullets.length > 0 ? (
-            <ul className={bulletClasses({ density, kind })}>
+            <ul
+              className={`m-0 space-y-4 pl-8 text-2xl leading-snug sm:text-[1.75rem] lg:text-3xl ${
+                kind === "title" ? "text-neutral-100" : "text-neutral-900"
+              }`}
+            >
               {slide.bullets.map((bullet, bulletIndex) => (
                 <li key={`${slide.id}-${bulletIndex}`}>
-                  <SlideText text={bullet} density={density} />
+                  <SlideText text={bullet} />
                 </li>
               ))}
             </ul>
@@ -392,14 +348,14 @@ export default function LectureDeckShell({
           ) : null}
           {slide.interactiveHint ? (
             <p
-              className={`${hintSize} ${
+              className={`mt-6 rounded-md border px-4 py-3 text-lg sm:text-xl ${
                 kind === "title"
                   ? "border-neutral-600 bg-neutral-800 text-neutral-100"
                   : "border-neutral-300 bg-white text-neutral-800"
               }`}
             >
               <span className="font-semibold">Try this: </span>
-              <SlideText text={slide.interactiveHint} density={density} />
+              <SlideText text={slide.interactiveHint} />
             </p>
           ) : null}
         </article>
@@ -428,26 +384,18 @@ export default function LectureDeckShell({
               </button>
             </div>
             <nav
-              aria-label={
-                lectureNumber
-                  ? `Other Lecture ${lectureNumber} decks`
-                  : "Other lecture decks"
-              }
+              aria-label="Other Lecture 1 decks"
               className="mt-2 flex shrink-0 flex-wrap gap-x-4 gap-y-1 border-t border-neutral-200 pt-2 font-sans text-sm"
             >
               {prevDeck ? (
                 <Link href={`/lectures/${prevDeck.slug}`}>← {prevDeck.title}</Link>
               ) : (
-                <span className="text-neutral-500">
-                  {lectureNumber ? `Lecture ${lectureNumber} · ` : ""}first deck
-                </span>
+                <span className="text-neutral-500">Lecture 1 · first deck</span>
               )}
               {nextDeck ? (
                 <Link href={`/lectures/${nextDeck.slug}`}>{nextDeck.title} →</Link>
               ) : (
-                <span className="text-neutral-500">
-                  {lectureNumber ? `Lecture ${lectureNumber} · ` : ""}last deck
-                </span>
+                <span className="text-neutral-500">Lecture 1 · last deck</span>
               )}
             </nav>
           </>

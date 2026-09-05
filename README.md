@@ -276,33 +276,24 @@ Updating those assignment HTML descriptions is a follow-up package.
 
 ## Lectures hub
 
-`/lectures` lists Canvas lecture folders. Lecture 1 is environment and
-stack setup. Lecture 2 is Chapter 1 HTML (Lab 1 tags, forms, and
-`next/link` navigation). Each `/lectures/[slug]` page is a keyboard-driven
-slide deck. Slugs:
+`/lectures` lists Fall 2026 Lecture 1 decks (Canvas Lecture 1 / Chapter 1).
+Each `/lectures/[slug]` page is a keyboard-driven slide deck. Slugs:
 
 - `/lectures/intro-to-web-development`
 - `/lectures/installing-nodejs`
 - `/lectures/creating-a-nextjs-react-application`
 - `/lectures/commit-to-github`
 - `/lectures/deploying-to-vercel`
-- `/lectures/html-and-dom`
-- `/lectures/headings-and-paragraphs`
-- `/lectures/lists-and-tables`
-- `/lectures/web-forms`
-- `/lectures/anchors`
-- `/lectures/single-page-navigation`
 
 Catalog and slide data live in `lib/lectures/`. The React shell is
-`app/lectures/_components/LectureDeckShell.tsx`. Text-only slides use
-`spacious` type (larger titles and bullets); slides with a `diagram` or
-`embed` stay `dense`. These routes are not nested under `/book`.
+`app/lectures/_components/LectureDeckShell.tsx`. These routes are not nested
+under `/book`.
 
 Press **f** (or the Fullscreen button) for presentation mode; **Esc** exits.
 Add `?fullscreen=1` to retry fullscreen after the next click (browsers require
 a gesture). Slide figures are authored SVG/React in
-`app/lectures/_components/diagrams/`. Index thumbs are branded SVG cards in
-`public/lectures/thumbs/` — see `public/lectures/README.md`. Commands and
+`app/lectures/_components/diagrams/`. Optional index thumbs stay under
+`public/lectures/<slug>/` — see `public/lectures/README.md`. Commands and
 source live in `LectureSlide.code` / `codeBlocks`, not as bullet items.
 
 ## Learn More
