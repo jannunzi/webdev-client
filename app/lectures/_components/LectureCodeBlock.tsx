@@ -11,13 +11,36 @@ export default function LectureCodeBlock({
   const language = block.language ?? "tsx";
   const [copied, setCopied] = useState(false);
 
+  function fallbackCopy(text: string) {
+    const field = document.createElement("textarea");
+    field.value = text;
+    field.setAttribute("readonly", "");
+    field.style.position = "fixed";
+    field.style.left = "-9999px";
+    document.body.appendChild(field);
+    field.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(field);
+    if (!ok) throw new Error("copy failed");
+  }
+
   async function copyCode() {
     try {
-      await navigator.clipboard.writeText(block.code);
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(block.code);
+      } else {
+        fallbackCopy(block.code);
+      }
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1600);
     } catch {
-      setCopied(false);
+      try {
+        fallbackCopy(block.code);
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 1600);
+      } catch {
+        setCopied(false);
+      }
     }
   }
 
