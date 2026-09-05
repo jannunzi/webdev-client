@@ -52,6 +52,7 @@ export {
   lectureSearchIsPresent,
   nativeFullscreenEnabled,
   nativeFullscreenElement,
+  preferNativeFullscreen,
   swipeSlideDelta,
   swipeTargetIsInteractive,
 } from "./present-mode";

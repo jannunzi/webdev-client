@@ -20,6 +20,46 @@ export function nativeFullscreenEnabled(doc: FullscreenDocument): boolean {
   return Boolean(doc.fullscreenEnabled || doc.webkitFullscreenEnabled);
 }
 
+/**
+ * Native Fullscreen API is for desktop (fine pointer + wide viewport).
+ * Phones — especially iOS Safari — should use the CSS overlay: iOS cannot
+ * fullscreen an article, and a successful API call in a narrow viewport
+ * often leaves the stage as a letterboxed box instead of filling the screen.
+ */
+export function preferNativeFullscreen({
+  fullscreenEnabled,
+  coarsePointer,
+  viewportWidth,
+  userAgent,
+}: {
+  fullscreenEnabled: boolean;
+  coarsePointer: boolean;
+  viewportWidth: number;
+  userAgent: string;
+}): boolean {
+  if (!fullscreenEnabled) return false;
+  if (coarsePointer) return false;
+  if (viewportWidth < 768) return false;
+  if (/iP(ad|hone|od)/i.test(userAgent)) return false;
+  return true;
+}
+
+export function readPresentEnvironment(
+  win: Window & { document: FullscreenDocument } = window,
+): {
+  fullscreenEnabled: boolean;
+  coarsePointer: boolean;
+  viewportWidth: number;
+  userAgent: string;
+} {
+  return {
+    fullscreenEnabled: nativeFullscreenEnabled(win.document),
+    coarsePointer: win.matchMedia("(pointer: coarse)").matches,
+    viewportWidth: win.innerWidth,
+    userAgent: win.navigator.userAgent,
+  };
+}
+
 export function nativeFullscreenElement(doc: FullscreenDocument): Element | null {
   return doc.fullscreenElement ?? doc.webkitFullscreenElement ?? null;
 }

@@ -445,13 +445,24 @@ code.quiz-prompt-code {
  * When the Fullscreen API is missing or rejects, the stage uses this overlay
  * so Present still fills the viewport and hides lecture chrome.
  */
+.lecture-slide:fullscreen,
+.lecture-slide:-webkit-full-screen {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border-style: none;
+  border-radius: 0;
+}
+
 .lecture-slide-present-fallback {
   position: fixed;
   inset: 0;
   z-index: 80;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  width: 100dvw;
+  height: 100vh;
   height: 100dvh;
+  max-width: 100vw;
   max-height: 100dvh;
   border-style: none;
   border-radius: 0;

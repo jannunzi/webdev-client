@@ -36,6 +36,7 @@ import {
   lectureSearchIsPresent,
   nativeFullscreenEnabled,
   nativeFullscreenElement,
+  preferNativeFullscreen,
   swipeSlideDelta,
   swipeTargetIsInteractive,
 } from "./present-mode";
@@ -556,6 +557,42 @@ describe("lecture decks", () => {
     assert.equal(
       nativeFullscreenElement({ webkitFullscreenElement: null, fullscreenElement: null }),
       null,
+    );
+    assert.equal(
+      preferNativeFullscreen({
+        fullscreenEnabled: true,
+        coarsePointer: false,
+        viewportWidth: 1280,
+        userAgent: "Mozilla/5.0 Macintosh",
+      }),
+      true,
+    );
+    assert.equal(
+      preferNativeFullscreen({
+        fullscreenEnabled: true,
+        coarsePointer: true,
+        viewportWidth: 1280,
+        userAgent: "Mozilla/5.0 Macintosh",
+      }),
+      false,
+    );
+    assert.equal(
+      preferNativeFullscreen({
+        fullscreenEnabled: true,
+        coarsePointer: false,
+        viewportWidth: 390,
+        userAgent: "Mozilla/5.0 Macintosh",
+      }),
+      false,
+    );
+    assert.equal(
+      preferNativeFullscreen({
+        fullscreenEnabled: true,
+        coarsePointer: false,
+        viewportWidth: 1024,
+        userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)",
+      }),
+      false,
     );
   });
 

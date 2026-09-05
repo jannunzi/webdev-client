@@ -15,6 +15,8 @@ import {
   lecturePresentHref,
   lectureSearchIsPresent,
   nativeFullscreenElement,
+  preferNativeFullscreen,
+  readPresentEnvironment,
   requestNativeFullscreen,
   swipeSlideDelta,
   swipeTargetIsInteractive,
@@ -136,32 +138,28 @@ export default function LectureDeckShell({
     [last],
   );
 
-  const beginFallbackPresent = useCallback(
-    (slideNumber: number) => {
-      if (!lectureSearchIsPresent(window.location.search)) {
-        const next = lecturePresentHref({
-          href: window.location.href,
-          slideNumber,
-          present: true,
-        });
-        history.pushState(LECTURE_PRESENT_STATE, "", next);
-      }
-      setFallbackPresent(true);
-    },
-    [],
-  );
+  const pushPresentHistory = useCallback((slideNumber: number) => {
+    if (lectureSearchIsPresent(window.location.search)) return;
+    const next = lecturePresentHref({
+      href: window.location.href,
+      slideNumber,
+      present: true,
+    });
+    history.pushState(LECTURE_PRESENT_STATE, "", next);
+  }, []);
 
   const enterPresent = useCallback(async () => {
+    pushPresentHistory(indexRef.current + 1);
     const el = stageRef.current;
-    if (el) {
+    if (el && preferNativeFullscreen(readPresentEnvironment())) {
       const entered = await requestNativeFullscreen(el);
       if (entered) {
         pendingNativeUpgrade.current = false;
         return;
       }
     }
-    beginFallbackPresent(index + 1);
-  }, [beginFallbackPresent, index]);
+    setFallbackPresent(true);
+  }, [pushPresentHistory]);
 
   const exitPresent = useCallback(async () => {
     pendingNativeUpgrade.current = false;
@@ -172,7 +170,6 @@ export default function LectureDeckShell({
         /* browser may already have left fullscreen */
       }
     }
-    if (!fallbackPresentRef.current) return;
     if (isLecturePresentHistoryState(history.state)) {
       history.back();
       return;
@@ -196,7 +193,7 @@ export default function LectureDeckShell({
       setIndex(parsed - 1);
     }
     if (lectureSearchIsPresent(window.location.search)) {
-      pendingNativeUpgrade.current = true;
+      pendingNativeUpgrade.current = preferNativeFullscreen(readPresentEnvironment());
       setFallbackPresent(true);
     }
   }, [slides.length]);
@@ -231,6 +228,8 @@ export default function LectureDeckShell({
   }, [index]);
 
   useEffect(() => {
+    const pane = stageRef.current;
+    if (!pane) return;
     function tryNativeUpgrade() {
       if (!pendingNativeUpgrade.current || nativeFullscreenElement(document)) {
         return;
@@ -240,8 +239,8 @@ export default function LectureDeckShell({
       pendingNativeUpgrade.current = false;
       void requestNativeFullscreen(el);
     }
-    window.addEventListener("pointerdown", tryNativeUpgrade);
-    return () => window.removeEventListener("pointerdown", tryNativeUpgrade);
+    pane.addEventListener("pointerdown", tryNativeUpgrade);
+    return () => pane.removeEventListener("pointerdown", tryNativeUpgrade);
   }, []);
 
   useEffect(() => {
