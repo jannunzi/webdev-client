@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import {
   COURSE_SITE_ORIGIN,
   adjacentLectureSlugs,
@@ -86,7 +88,7 @@ describe("lecture decks", () => {
     );
     assert.equal(counts["intro-to-web-development"], 18);
     assert.ok((counts["installing-nodejs"] ?? 0) >= 16);
-    assert.equal(counts["creating-a-nextjs-react-application"], 25);
+    assert.equal(counts["creating-a-nextjs-react-application"], 27);
     assert.equal(counts["commit-to-github"], 7);
     assert.ok((counts["deploying-to-vercel"] ?? 0) >= 14);
     assert.ok((counts["deploying-to-vercel"] ?? 0) <= 17);
@@ -152,6 +154,8 @@ describe("lecture decks", () => {
           new RegExp(`^/lectures/${deck.slug}/slide-\\d{2}\\.png$`),
         );
         assert.ok(slide.imageAlt);
+        const disk = join(process.cwd(), slide.imageSrc.replace(/^\//, "public/"));
+        assert.ok(existsSync(disk), `${slide.imageSrc} is missing on disk`);
       }
     }
     assert.equal(
@@ -173,6 +177,15 @@ describe("lecture decks", () => {
     assert.equal(
       findSlide("commit-to-github", "from-project").imageSrc,
       "/lectures/commit-to-github/slide-06.png",
+    );
+    assert.equal(
+      findSlide("creating-a-nextjs-react-application", "browser-parses-dom")
+        .imageSrc,
+      "/lectures/creating-a-nextjs-react-application/slide-27.png",
+    );
+    assert.equal(
+      findSlide("deploying-to-vercel", "office-hours").imageSrc,
+      "/lectures/deploying-to-vercel/slide-17.png",
     );
   });
 
