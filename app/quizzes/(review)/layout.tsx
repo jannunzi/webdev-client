@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { isClerkPublishableKeySet } from "@/lib/config";
 import ClerkAuthBar from "../components/ClerkAuthBar";
+import StaffViewModeBar from "../components/StaffViewModeBar";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +19,7 @@ export default function QuizReviewLayout({
       {isClerkPublishableKeySet() ? (
         <ClerkAuthBar title="Author review" fallbackRedirect="/quizzes" />
       ) : null}
+      <StaffViewModeBar />
       {children}
     </>
   );

@@ -71,6 +71,7 @@ export type SubmitExamSuccess = {
   maxScore: number;
   attemptId?: string;
   persisted: boolean;
+  impersonation?: boolean;
   graded: GradedAnswer[];
 };
 

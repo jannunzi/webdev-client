@@ -4,7 +4,7 @@ export type CanvasRosterEntry = {
   sisUserId?: string;
   name?: string;
   section?: string;
-  source?: "mongo" | "env" | "csv" | "json";
+  source?: "mongo" | "env" | "csv" | "json" | "impersonation";
   importedAt?: Date;
 };
 

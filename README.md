@@ -146,6 +146,32 @@ Author-review links are hidden from student-facing surfaces.
 Do not put student emails on either allowlist. There is no in-app invite
 or email sender.
 
+### View as student
+
+Jose is staff (`jannunzi@gmail.com`) and is **not** on the Canvas student
+roster. A second Clerk user with the same email is awkward, so this is an
+**app-level view mode**, not a second Clerk session.
+
+Signed-in staff see a sticky **Viewing as: Instructor | Student** bar on
+`/people`, author review (`/quizzes`, `/quizzes/q1`), and graded take
+(`/quizzes/take`). Non-staff users never see it.
+
+- **Instructor** (default): current staff behavior.
+- **Student**: People and author review behave like a non-staff user (403;
+  answer keys are not loaded). `/quizzes/take/*` treats the actor as a
+  synthetic roster match named **Demo Student**
+  (`demo.student@webdev.local`). That dummy is **not** written to
+  `canvas_roster`. You can submit to smoke-test the exam UI; the score is
+  shown in memory with **Impersonation — attempt not saved**. No
+  `quiz_attempts` document is inserted.
+
+The mode is an httpOnly cookie (`webdev_view_mode`) set only by a server
+action that checks the staff allowlist first. Reading the cookie also
+requires a signed-in staff email, so a forged client cookie does nothing
+for students. Switch back with the same bar on every gated surface.
+
+Optional: set `IMPERSONATION_STUDENT_EMAIL` to override the dummy address.
+
 ### Exam sampling
 
 `/quizzes/take/q1` draws **one question from each of the 16 Q1 groups**. The
@@ -154,7 +180,8 @@ Correct answers are stripped from the client payload and graded on submit.
 
 ### Next step (not in this PR)
 
-Instructor CSV export of `quiz_attempts` for Canvas grade import.
+Instructor CSV export of `quiz_attempts` for Canvas grade import. Storing
+impersonation attempts (e.g. `impersonation: true`) is deferred.
 
 ## Learn More
 

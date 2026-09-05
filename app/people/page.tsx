@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
+import StaffViewModeBar from "@/app/quizzes/components/StaffViewModeBar";
 import StatusPanel from "@/app/quizzes/components/StatusPanel";
 import { isClerkConfigured, isClerkPublishableKeySet } from "@/lib/config";
 import { collectClerkEmails } from "@/lib/roster/emails";
-import { isInstructor, isStaff } from "@/lib/roster/instructors";
+import { isInstructor } from "@/lib/roster/instructors";
 import { listCanvasRoster } from "@/lib/roster/list";
 import { groupRosterBySection } from "@/lib/roster/sections";
+import {
+  getEffectiveStaffAccess,
+  isImpersonatingStudent,
+} from "@/lib/roster/staff-access";
 import PeopleAuthBar from "./components/PeopleAuthBar";
 import PeopleRoster from "./components/PeopleRoster";
 
@@ -45,6 +50,7 @@ export default async function PeoplePage({ searchParams }: PageProps) {
   return (
     <article className="mx-auto max-w-5xl font-sans">
       {isClerkPublishableKeySet() ? <PeopleAuthBar /> : null}
+      <StaffViewModeBar />
       <PeoplePageBody section={section} />
     </article>
   );
@@ -52,7 +58,8 @@ export default async function PeoplePage({ searchParams }: PageProps) {
 
 async function PeoplePageBody({ section }: { section?: string }) {
   const user = await currentUser();
-  if (!user) {
+  const access = await getEffectiveStaffAccess();
+  if (access === "signed_out" || !user) {
     return (
       <StatusPanel title="Sign in to view People" tone="neutral">
         <p>
@@ -66,7 +73,7 @@ async function PeoplePageBody({ section }: { section?: string }) {
   }
 
   const emails = collectClerkEmails(user);
-  if (!isStaff(emails)) {
+  if (access !== "ok") {
     return (
       <StatusPanel title="403 Forbidden" tone="warn">
         <p>
@@ -75,6 +82,12 @@ async function PeoplePageBody({ section }: { section?: string }) {
           the book, syllabus, labs, and practice pages is fine. The roster was
           not loaded.
         </p>
+        {(await isImpersonatingStudent()) ? (
+          <p>
+            You are in student view. Use <strong>Viewing as: Instructor</strong>{" "}
+            above to return to the roster.
+          </p>
+        ) : null}
       </StatusPanel>
     );
   }

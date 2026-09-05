@@ -150,4 +150,28 @@ describe("student exam sampling and grading", () => {
     assert.equal(stored[0]?.meta.source, "student-exam");
     assert.equal(stored[0]?.answers.length, CHAPTER1_BANK.groups.length);
   });
+
+  it("grades in-memory and skips persist for an impersonation dummy roster", async () => {
+    const drawn = drawOnePerGroup(CHAPTER1_BANK, "impersonation");
+    const preview = await runExamSubmit({
+      quizId: "q1",
+      drawnQuestionIds: drawn.map((item) => item.question.id),
+      answers: {},
+      startedAt: new Date().toISOString(),
+      actor: { clerkUserId: "user_jose", email: "demo.student@webdev.local" },
+      roster: {
+        status: "matched",
+        entry: {
+          email: "demo.student@webdev.local",
+          name: "Demo Student",
+          source: "impersonation",
+        },
+      },
+    });
+    assert.equal(preview.ok, true);
+    if (preview.ok) {
+      assert.equal(preview.persisted, false);
+      assert.equal({ ...preview, impersonation: true }.impersonation, true);
+    }
+  });
 });
