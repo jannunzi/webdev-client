@@ -1,6 +1,8 @@
 export { A1_RUBRIC } from "./a1";
 export { A2_RUBRIC } from "./a2";
 export {
+  COURSE_SITE_ORIGIN,
+  assignmentPublicUrl,
   findCriterion,
   getAssignment,
   isAssignmentId,
@@ -9,6 +11,10 @@ export {
   listRubricCriteria,
   rubricPointTotal,
 } from "./catalog";
+export {
+  canvasAssignmentDescriptionHtml,
+  listCanvasFollowupCopy,
+} from "./canvas-copy";
 export {
   applyCriterionToggle,
   loadCompletedCriterionIds,

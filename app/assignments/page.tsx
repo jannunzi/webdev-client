@@ -40,20 +40,31 @@ export default function AssignmentsIndexPage() {
                 </Link>
               </h2>
               <p className="mt-0 mb-2 font-sans text-sm text-neutral-700">
-                <Link href={item.chapterHref}>{item.chapter}</Link>
-                {item.dueDate ? ` · Due ${formatLongDate(item.dueDate)}` : null}
-                {points != null ? ` · ${points} pts` : null}
-                {item.status === "coming_soon" ? " · Checklist coming soon" : null}
+                {item.dueDate ? `Due ${formatLongDate(item.dueDate)}` : null}
+                {points != null
+                  ? `${item.dueDate ? " · " : ""}${points} pts`
+                  : null}
+                {item.status === "coming_soon"
+                  ? `${item.dueDate || points != null ? " · " : ""}Checklist coming soon`
+                  : null}
               </p>
               <p className="mb-3 mt-0 text-neutral-800">{item.summary}</p>
-              <Link
-                href={`/assignments/${item.id}`}
-                className="book-practice-cta inline-block rounded border border-neutral-800 bg-neutral-800 px-3 py-2 text-sm"
-              >
-                {item.status === "ready"
-                  ? `Open ${item.canvasId} checklist`
-                  : `Open ${item.canvasId}`}
-              </Link>
+              <div className="flex flex-wrap gap-2">
+                <Link
+                  href={`/assignments/${item.id}`}
+                  className="book-practice-cta inline-block rounded border border-neutral-800 bg-neutral-800 px-3 py-2 text-sm"
+                >
+                  {item.status === "ready"
+                    ? `Open ${item.canvasId} checklist`
+                    : `Open ${item.canvasId}`}
+                </Link>
+                <Link
+                  href={item.chapterHref}
+                  className="inline-block rounded border border-neutral-800 bg-white px-3 py-2 font-sans text-sm"
+                >
+                  Open {item.chapter} in the book
+                </Link>
+              </div>
             </li>
           );
         })}

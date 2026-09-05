@@ -2,7 +2,9 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { A1_RUBRIC } from "./a1";
 import { A2_RUBRIC } from "./a2";
+import { listCanvasFollowupCopy } from "./canvas-copy";
 import {
+  COURSE_SITE_ORIGIN,
   findCriterion,
   getAssignment,
   listAssignmentIds,
@@ -62,6 +64,35 @@ describe("assignment catalog", () => {
     assert.equal(getAssignment("a2")?.dueDate, "2026-10-13");
     assert.equal(getAssignment("a6")?.dueDate, "2026-12-03");
     assert.equal(getAssignment("a1")?.chapterHref, "/book/ch1");
+    for (const item of items) {
+      const chapterNumber = item.id.slice(1);
+      assert.equal(item.chapterHref, `/book/ch${chapterNumber}`);
+      assert.ok(item.chapterTitle.length > 0);
+      assert.equal(
+        item.publicUrl,
+        `${COURSE_SITE_ORIGIN}/assignments/${item.id}`,
+      );
+    }
+  });
+
+  it("lists Canvas follow-up URLs without dumping the rubric", () => {
+    const copy = listCanvasFollowupCopy();
+    assert.equal(copy.length, 6);
+    assert.deepEqual(
+      copy.map((row) => row.publicUrl),
+      [
+        "https://webdev-client.vercel.app/assignments/a1",
+        "https://webdev-client.vercel.app/assignments/a2",
+        "https://webdev-client.vercel.app/assignments/a3",
+        "https://webdev-client.vercel.app/assignments/a4",
+        "https://webdev-client.vercel.app/assignments/a5",
+        "https://webdev-client.vercel.app/assignments/a6",
+      ],
+    );
+    for (const row of copy) {
+      assert.match(row.html, /school email/);
+      assert.doesNotMatch(row.html, /Clerk|rubric|Best \/ Better/i);
+    }
   });
 
   it("keeps unique criterion ids and book deep links on A1 and A2", () => {

@@ -15,14 +15,38 @@ const RUBRICS: Partial<Record<AssignmentId, AssignmentRubric>> = {
   a2: A2_RUBRIC,
 };
 
-const CHAPTER_HREF: Record<string, string> = {
-  "Chapter 1": "/book/ch1",
-  "Chapter 2": "/book/ch2",
-  "Chapter 3": "/book/ch3",
-  "Chapter 4": "/book/ch4",
-  "Chapter 5": "/book/ch5",
-  "Chapter 6": "/book/ch6",
+export const COURSE_SITE_ORIGIN = "https://webdev-client.vercel.app";
+
+const CHAPTERS: Record<string, { href: string; title: string }> = {
+  "Chapter 1": {
+    href: "/book/ch1",
+    title: "Building Next.js User Interfaces with HTML",
+  },
+  "Chapter 2": {
+    href: "/book/ch2",
+    title: "Styling User Interfaces with CSS and Tailwind",
+  },
+  "Chapter 3": {
+    href: "/book/ch3",
+    title: "Creating Single Page Applications with JavaScript",
+  },
+  "Chapter 4": {
+    href: "/book/ch4",
+    title: "Managing Client State",
+  },
+  "Chapter 5": {
+    href: "/book/ch5",
+    title: "Implementing RESTful Web APIs with Express.js",
+  },
+  "Chapter 6": {
+    href: "/book/ch6",
+    title: "Integrating React with MongoDB",
+  },
 };
+
+export function assignmentPublicUrl(id: AssignmentId): string {
+  return `${COURSE_SITE_ORIGIN}/assignments/${id}`;
+}
 
 function canvasIdToSlug(canvasId: string): AssignmentId {
   return canvasId.toLowerCase() as AssignmentId;
@@ -51,12 +75,15 @@ export function getAssignment(id: string): AssignmentHubItem | undefined {
   if (!syllabus) return undefined;
 
   const rubric = RUBRICS[slug];
+  const chapter = CHAPTERS[syllabus.chapter];
   return {
     id: slug,
     canvasId: syllabus.id,
     title: syllabus.title,
     chapter: syllabus.chapter,
-    chapterHref: CHAPTER_HREF[syllabus.chapter] ?? "/book",
+    chapterTitle: chapter?.title ?? syllabus.chapter,
+    chapterHref: chapter?.href ?? "/book",
+    publicUrl: assignmentPublicUrl(slug),
     summary: syllabus.summary,
     dueDate: findAssignmentDeadline(syllabus.id, "due")?.date,
     assignedDate: findAssignmentDeadline(syllabus.id, "assigned")?.date,

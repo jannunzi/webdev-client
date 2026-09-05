@@ -32,7 +32,9 @@ export type AssignmentHubItem = {
   canvasId: string;
   title: string;
   chapter: string;
+  chapterTitle: string;
   chapterHref: string;
+  publicUrl: string;
   summary: string;
   dueDate?: string;
   assignedDate?: string;

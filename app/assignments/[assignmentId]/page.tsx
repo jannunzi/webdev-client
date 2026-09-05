@@ -14,6 +14,7 @@ import {
   isAssignmentProgressConfigured,
   isClerkConfigured,
 } from "@/lib/config";
+import AssignmentChapterLink from "../components/AssignmentChapterLink";
 import AssignmentChecklist from "../components/AssignmentChecklist";
 import AssignmentHubNav from "../components/AssignmentHubNav";
 
@@ -80,16 +81,15 @@ export default async function AssignmentDetailPage({ params }: PageProps) {
         {assignment.title}
       </h1>
       <p className="font-sans text-neutral-700">
-        <Link href={assignment.chapterHref}>{assignment.chapter}</Link>
-        {assignment.assignedDate
-          ? ` · Assigned ${formatLongDate(assignment.assignedDate)}`
-          : null}
         {assignment.dueDate
-          ? ` · Due ${formatLongDate(assignment.dueDate)}`
+          ? `Due ${formatLongDate(assignment.dueDate)}`
           : null}
-        {points != null ? ` · ${points} pts` : null}
+        {points != null
+          ? `${assignment.dueDate ? " · " : ""}${points} pts`
+          : null}
       </p>
       <p>{assignment.summary}</p>
+      <AssignmentChapterLink assignment={assignment} />
 
       {assignment.status === "coming_soon" || !assignment.rubric ? (
         <StatusPanel title="Checklist coming soon" tone="neutral">
