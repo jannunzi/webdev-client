@@ -44,6 +44,17 @@ export {
   lectureThumbPath,
 } from "./types";
 export { slidePaneOverflows, slidePaneScrollStep } from "./slide-pane";
+export {
+  LECTURE_PRESENT_STATE,
+  SWIPE_MIN_PX,
+  isLecturePresentHistoryState,
+  lecturePresentHref,
+  lectureSearchIsPresent,
+  nativeFullscreenEnabled,
+  nativeFullscreenElement,
+  swipeSlideDelta,
+  swipeTargetIsInteractive,
+} from "./present-mode";
 export type {
   CanvasLectureGroup,
   LectureCodeBlock,

@@ -35,7 +35,7 @@ export default async function LectureDeckPage({ params }: PageProps) {
 
   return (
     <div className="flex h-dvh min-h-0 flex-col overflow-hidden px-2 py-2 sm:px-3">
-      <header className="shrink-0 px-1">
+      <header className="shrink-0 px-1" data-lecture-deck-chrome>
         <LectureHubNav current="deck" />
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
           <h1 className="mt-0 mb-0 font-sans text-xl font-semibold tracking-tight sm:text-2xl">

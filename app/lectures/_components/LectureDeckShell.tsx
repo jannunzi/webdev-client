@@ -9,6 +9,17 @@ import {
   type LectureSlide,
 } from "@/lib/lectures/types";
 import {
+  LECTURE_PRESENT_STATE,
+  exitNativeFullscreen,
+  isLecturePresentHistoryState,
+  lecturePresentHref,
+  lectureSearchIsPresent,
+  nativeFullscreenElement,
+  requestNativeFullscreen,
+  swipeSlideDelta,
+  swipeTargetIsInteractive,
+} from "@/lib/lectures/present-mode";
+import {
   slidePaneOverflows,
   slidePaneScrollStep,
 } from "@/lib/lectures/slide-pane";
@@ -42,54 +53,24 @@ function kindFrame(kind: LectureSlide["kind"]): string {
   return "border-neutral-300 bg-white";
 }
 
-function fullscreenElement(): Element | null {
-  const doc = document as Document & {
-    webkitFullscreenElement?: Element | null;
-  };
-  return document.fullscreenElement ?? doc.webkitFullscreenElement ?? null;
-}
-
-function requestFs(el: HTMLElement): Promise<void> {
-  if (el.requestFullscreen) return el.requestFullscreen();
-  const webkit = (
-    el as HTMLElement & { webkitRequestFullscreen?: () => void }
-  ).webkitRequestFullscreen;
-  if (webkit) {
-    webkit.call(el);
-    return Promise.resolve();
-  }
-  return Promise.reject(new Error("Fullscreen API is not available"));
-}
-
-function exitFs(): Promise<void> {
-  if (document.exitFullscreen && document.fullscreenElement) {
-    return document.exitFullscreen();
-  }
-  const webkit = (
-    document as Document & { webkitExitFullscreen?: () => void }
-  ).webkitExitFullscreen;
-  if (webkit) {
-    webkit.call(document);
-    return Promise.resolve();
-  }
-  return Promise.resolve();
+function currentPath(): string {
+  return `${window.location.pathname}${window.location.search}${window.location.hash}`;
 }
 
 function replaceLocation({
-  fullscreenQuery,
+  present,
   slideNumber,
 }: {
-  fullscreenQuery?: boolean;
+  present?: boolean;
   slideNumber: number;
 }) {
-  const url = new URL(window.location.href);
-  if (fullscreenQuery === true) url.searchParams.set("fullscreen", "1");
-  if (fullscreenQuery === false) url.searchParams.delete("fullscreen");
-  url.hash = `slide-${slideNumber}`;
-  const next = `${url.pathname}${url.search}${url.hash}`;
-  const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
-  if (next !== current) {
-    history.replaceState(null, "", next);
+  const next = lecturePresentHref({
+    href: window.location.href,
+    slideNumber,
+    present,
+  });
+  if (next !== currentPath()) {
+    history.replaceState(history.state, "", next);
   }
 }
 
@@ -131,15 +112,22 @@ export default function LectureDeckShell({
 }) {
   const labelId = useId();
   const stageRef = useRef<HTMLElement>(null);
-  const pendingFullscreen = useRef(false);
+  const pendingNativeUpgrade = useRef(false);
+  const fallbackPresentRef = useRef(false);
+  const indexRef = useRef(0);
+  const swipeStart = useRef<{ x: number; y: number } | null>(null);
   const [index, setIndex] = useState(0);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isNativeFullscreen, setIsNativeFullscreen] = useState(false);
+  const [fallbackPresent, setFallbackPresent] = useState(false);
   const last = slides.length - 1;
   const slide = slides[index] ?? slides[0];
   const kind = slide?.kind ?? "content";
   const density = slide ? lectureSlideDensity(slide) : "spacious";
   const lectureNumber = canvasLecture ?? prevDeck?.canvasLecture ?? nextDeck?.canvasLecture;
   const codeBlocks = slide ? lectureSlideCodeBlocks(slide) : [];
+  const isPresenting = isNativeFullscreen || fallbackPresent;
+  fallbackPresentRef.current = fallbackPresent;
+  indexRef.current = index;
 
   const goTo = useCallback(
     (next: number) => {
@@ -148,32 +136,58 @@ export default function LectureDeckShell({
     [last],
   );
 
-  const enterFullscreen = useCallback(async () => {
+  const beginFallbackPresent = useCallback(
+    (slideNumber: number) => {
+      if (!lectureSearchIsPresent(window.location.search)) {
+        const next = lecturePresentHref({
+          href: window.location.href,
+          slideNumber,
+          present: true,
+        });
+        history.pushState(LECTURE_PRESENT_STATE, "", next);
+      }
+      setFallbackPresent(true);
+    },
+    [],
+  );
+
+  const enterPresent = useCallback(async () => {
     const el = stageRef.current;
-    if (!el) return;
-    try {
-      await requestFs(el);
-    } catch {
-      pendingFullscreen.current = true;
+    if (el) {
+      const entered = await requestNativeFullscreen(el);
+      if (entered) {
+        pendingNativeUpgrade.current = false;
+        return;
+      }
     }
-  }, []);
+    beginFallbackPresent(index + 1);
+  }, [beginFallbackPresent, index]);
 
-  const exitFullscreen = useCallback(async () => {
-    pendingFullscreen.current = false;
-    try {
-      await exitFs();
-    } catch {
-      /* browser may already have left fullscreen */
+  const exitPresent = useCallback(async () => {
+    pendingNativeUpgrade.current = false;
+    if (nativeFullscreenElement(document)) {
+      try {
+        await exitNativeFullscreen();
+      } catch {
+        /* browser may already have left fullscreen */
+      }
     }
-  }, []);
-
-  const toggleFullscreen = useCallback(() => {
-    if (fullscreenElement()) {
-      void exitFullscreen();
+    if (!fallbackPresentRef.current) return;
+    if (isLecturePresentHistoryState(history.state)) {
+      history.back();
       return;
     }
-    void enterFullscreen();
-  }, [enterFullscreen, exitFullscreen]);
+    setFallbackPresent(false);
+    replaceLocation({ present: false, slideNumber: indexRef.current + 1 });
+  }, []);
+
+  const togglePresent = useCallback(() => {
+    if (isPresenting) {
+      void exitPresent();
+      return;
+    }
+    void enterPresent();
+  }, [enterPresent, exitPresent, isPresenting]);
 
   useEffect(() => {
     const raw = window.location.hash.replace(/^#slide-/, "");
@@ -181,34 +195,31 @@ export default function LectureDeckShell({
     if (Number.isFinite(parsed) && parsed >= 1 && parsed <= slides.length) {
       setIndex(parsed - 1);
     }
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("fullscreen") === "1") {
-      pendingFullscreen.current = true;
-      const el = stageRef.current;
-      if (el) {
-        requestFs(el).catch(() => {
-          /* needs a later click or key — Fullscreen API requires a gesture */
-        });
-      }
+    if (lectureSearchIsPresent(window.location.search)) {
+      pendingNativeUpgrade.current = true;
+      setFallbackPresent(true);
     }
   }, [slides.length]);
 
   useEffect(() => {
     replaceLocation({
       slideNumber: index + 1,
-      fullscreenQuery: isFullscreen ? true : undefined,
+      present: isPresenting ? true : undefined,
     });
     const pane = stageRef.current;
     if (pane) pane.scrollTop = 0;
-  }, [index, isFullscreen]);
+  }, [index, isPresenting]);
 
   useEffect(() => {
     function sync() {
-      const active = fullscreenElement() === stageRef.current;
-      setIsFullscreen(active);
-      if (active) pendingFullscreen.current = false;
-      if (!active && !pendingFullscreen.current) {
-        replaceLocation({ fullscreenQuery: false, slideNumber: index + 1 });
+      const active = nativeFullscreenElement(document) === stageRef.current;
+      setIsNativeFullscreen(active);
+      if (active) {
+        pendingNativeUpgrade.current = false;
+        setFallbackPresent(false);
+      }
+      if (!active && !pendingNativeUpgrade.current && !fallbackPresentRef.current) {
+        replaceLocation({ present: false, slideNumber: index + 1 });
       }
     }
     document.addEventListener("fullscreenchange", sync);
@@ -220,16 +231,49 @@ export default function LectureDeckShell({
   }, [index]);
 
   useEffect(() => {
-    function tryPendingGesture() {
-      if (!pendingFullscreen.current || fullscreenElement()) return;
+    function tryNativeUpgrade() {
+      if (!pendingNativeUpgrade.current || nativeFullscreenElement(document)) {
+        return;
+      }
       const el = stageRef.current;
-      if (el) {
-        requestFs(el).catch(() => {});
+      if (!el) return;
+      pendingNativeUpgrade.current = false;
+      void requestNativeFullscreen(el);
+    }
+    window.addEventListener("pointerdown", tryNativeUpgrade);
+    return () => window.removeEventListener("pointerdown", tryNativeUpgrade);
+  }, []);
+
+  useEffect(() => {
+    function onPopState() {
+      if (lectureSearchIsPresent(window.location.search)) {
+        setFallbackPresent(true);
+        return;
+      }
+      setFallbackPresent(false);
+      if (nativeFullscreenElement(document)) {
+        void exitNativeFullscreen();
       }
     }
-    window.addEventListener("pointerdown", tryPendingGesture);
-    return () => window.removeEventListener("pointerdown", tryPendingGesture);
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
   }, []);
+
+  useEffect(() => {
+    if (!fallbackPresent) return;
+    const html = document.documentElement;
+    html.classList.add("lecture-presenting");
+    const chrome = document.querySelectorAll("[data-lecture-deck-chrome]");
+    chrome.forEach((node) => {
+      node.setAttribute("inert", "");
+    });
+    return () => {
+      html.classList.remove("lecture-presenting");
+      chrome.forEach((node) => {
+        node.removeAttribute("inert");
+      });
+    };
+  }, [fallbackPresent]);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -242,15 +286,15 @@ export default function LectureDeckShell({
       ) {
         return;
       }
-      if (!isFullscreen && (event.key === "f" || event.key === "F")) {
+      if (!isPresenting && (event.key === "f" || event.key === "F")) {
         event.preventDefault();
-        toggleFullscreen();
+        togglePresent();
         return;
       }
       if (event.key === "Escape") {
-        if (fullscreenElement()) {
+        if (isPresenting) {
           event.preventDefault();
-          void exitFullscreen();
+          void exitPresent();
         }
         return;
       }
@@ -296,7 +340,40 @@ export default function LectureDeckShell({
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [exitFullscreen, goTo, index, isFullscreen, last, toggleFullscreen]);
+  }, [exitPresent, goTo, index, isPresenting, last, togglePresent]);
+
+  useEffect(() => {
+    if (!isPresenting) return;
+    const pane = stageRef.current;
+    if (!pane) return;
+
+    function onTouchStart(event: TouchEvent) {
+      if (swipeTargetIsInteractive(event.target)) {
+        swipeStart.current = null;
+        return;
+      }
+      const touch = event.changedTouches[0];
+      if (!touch) return;
+      swipeStart.current = { x: touch.clientX, y: touch.clientY };
+    }
+
+    function onTouchEnd(event: TouchEvent) {
+      const start = swipeStart.current;
+      swipeStart.current = null;
+      if (!start || swipeTargetIsInteractive(event.target)) return;
+      const touch = event.changedTouches[0];
+      if (!touch) return;
+      const delta = swipeSlideDelta(start.x, start.y, touch.clientX, touch.clientY);
+      if (delta !== 0) goTo(index + delta);
+    }
+
+    pane.addEventListener("touchstart", onTouchStart, { passive: true });
+    pane.addEventListener("touchend", onTouchEnd);
+    return () => {
+      pane.removeEventListener("touchstart", onTouchStart);
+      pane.removeEventListener("touchend", onTouchEnd);
+    };
+  }, [goTo, index, isPresenting]);
 
   if (!slide) return null;
 
@@ -306,13 +383,18 @@ export default function LectureDeckShell({
     density === "spacious"
       ? "mt-4 rounded-md border px-3 py-2 text-lg sm:text-xl"
       : "mt-3 rounded-md border px-3 py-2 text-base sm:text-lg";
+  const stageClass = isPresenting
+    ? `lecture-slide lecture-slide-${density} h-full w-full overflow-x-hidden overflow-y-auto px-5 py-6 sm:px-8 sm:py-7 ${kindFrame(kind)}${
+        fallbackPresent ? " lecture-slide-present-fallback" : ""
+      }`
+    : `lecture-slide lecture-slide-${density} min-h-0 flex-1 overflow-x-hidden overflow-y-auto rounded-lg border-2 px-4 py-4 sm:px-6 sm:py-5 ${kindFrame(kind)}`;
 
   return (
     <section
       aria-labelledby={labelId}
       className="flex min-h-0 min-w-0 flex-1 gap-2 overflow-hidden"
     >
-      {isFullscreen ? null : (
+      {isPresenting ? null : (
         <LectureFilmstrip
           slides={slides}
           currentIndex={index}
@@ -324,7 +406,7 @@ export default function LectureDeckShell({
         <p className="sr-only" id={labelId}>
           {deckTitle}
         </p>
-        {isFullscreen ? null : (
+        {isPresenting ? null : (
           <div className="mb-2 flex shrink-0 flex-wrap items-center justify-between gap-2 font-sans text-sm text-neutral-600">
             <p className="m-0 tabular-nums" aria-live="polite">
               {index + 1} / {slides.length}
@@ -332,14 +414,14 @@ export default function LectureDeckShell({
             <button
               type="button"
               className="rounded border border-neutral-800 bg-white px-3 py-1.5 text-sm"
-              onClick={() => toggleFullscreen()}
+              onClick={() => togglePresent()}
             >
-              Fullscreen
+              Present
             </button>
           </div>
         )}
 
-        {isFullscreen ? null : (
+        {isPresenting ? null : (
           <div
             className="mb-2 h-1.5 shrink-0 overflow-hidden rounded-full bg-neutral-200"
             role="progressbar"
@@ -359,11 +441,10 @@ export default function LectureDeckShell({
           ref={stageRef}
           data-slide-density={density}
           data-slide-kind={kind}
-          className={
-            isFullscreen
-              ? `lecture-slide lecture-slide-${density} h-full w-full overflow-x-hidden overflow-y-auto px-5 py-6 sm:px-8 sm:py-7 ${kindFrame(kind)}`
-              : `lecture-slide lecture-slide-${density} min-h-0 flex-1 overflow-x-hidden overflow-y-auto rounded-lg border-2 px-4 py-4 sm:px-6 sm:py-5 ${kindFrame(kind)}`
+          data-lecture-present={
+            fallbackPresent ? "fallback" : isNativeFullscreen ? "native" : undefined
           }
+          className={stageClass}
         >
           <p
             className={`m-0 text-sm font-semibold uppercase tracking-wide sm:text-base ${
@@ -410,7 +491,17 @@ export default function LectureDeckShell({
           ) : null}
         </article>
 
-        {isFullscreen ? null : (
+        {fallbackPresent ? (
+          <button
+            type="button"
+            className="lecture-present-exit"
+            onClick={() => void exitPresent()}
+          >
+            Exit
+          </button>
+        ) : null}
+
+        {isPresenting ? null : (
           <>
             <div className="mt-2 flex shrink-0 flex-wrap items-center justify-between gap-3">
               <button
@@ -422,7 +513,7 @@ export default function LectureDeckShell({
                 Previous slide
               </button>
               <p className="m-0 font-sans text-xs text-neutral-500">
-                ← → change slides · ↑ ↓ scroll if the slide overflows · space · f fullscreen · Esc · Home / End
+                ← → change slides · swipe in present · ↑ ↓ scroll if overflow · space · f present · Esc / back exits
               </p>
               <button
                 type="button"

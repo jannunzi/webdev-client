@@ -439,3 +439,46 @@ code.quiz-prompt-code {
 .lecture-slide figure {
   margin-block: var(--lecture-gap, 0.65rem);
 }
+
+/*
+ * iOS Safari (and some Android WebViews) do not fullscreen arbitrary elements.
+ * When the Fullscreen API is missing or rejects, the stage uses this overlay
+ * so Present still fills the viewport and hides lecture chrome.
+ */
+.lecture-slide-present-fallback {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  border-style: none;
+  border-radius: 0;
+  touch-action: pan-y;
+  padding-top: max(1.25rem, env(safe-area-inset-top, 0px));
+  padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
+  padding-bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+  padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
+}
+
+html.lecture-presenting,
+html.lecture-presenting body {
+  overflow: hidden;
+}
+
+.lecture-present-exit {
+  position: fixed;
+  top: max(0.5rem, env(safe-area-inset-top, 0px));
+  right: max(0.5rem, env(safe-area-inset-right, 0px));
+  z-index: 90;
+  margin: 0;
+  border: 1px solid #262626;
+  border-radius: 0.25rem;
+  background: #fff;
+  padding: 0.35rem 0.7rem;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.2;
+  color: #171717;
+}
