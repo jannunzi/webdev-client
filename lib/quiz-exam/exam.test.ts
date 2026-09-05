@@ -4,7 +4,8 @@ import { CHAPTER1_BANK } from "../question-bank";
 import { getExamBank } from "./banks";
 import { isAnswerCorrect } from "./grade";
 import { drawOnePerGroup, findBankQuestion } from "./sample";
-import { assertNoAnswerLeak, toStudentQuestion } from "./sanitize";
+import { buildAttemptReview } from "./review";
+import { assertNoAnswerLeak, stripCorrectReveals, toStudentQuestion } from "./sanitize";
 import { runExamSubmit } from "./submit";
 import type { QuizAttemptDoc, StudentAnswer } from "./types";
 
@@ -119,8 +120,8 @@ describe("student exam sampling and grading", () => {
       quizId: "q1",
       drawnQuestionIds: drawn.map((item) => item.question.id),
       answers,
-      startedAt: "2026-09-03T12:00:00.000Z",
-      now: new Date("2026-09-03T12:10:00.000Z"),
+      startedAt: "2026-09-29T12:00:00.000Z",
+      now: new Date("2026-09-29T12:10:00.000Z"),
       actor: {
         clerkUserId: "user_jane",
         email: "jane.doe@northeastern.edu",
@@ -149,6 +150,64 @@ describe("student exam sampling and grading", () => {
     assert.equal(stored[0]?.score, CHAPTER1_BANK.groups.length);
     assert.equal(stored[0]?.meta.source, "student-exam");
     assert.equal(stored[0]?.answers.length, CHAPTER1_BANK.groups.length);
+    if (result.ok) {
+      assert.equal(result.window?.phase, "submitted_waiting");
+      assert.equal(result.window?.revealAnswers, false);
+      for (const item of result.graded) {
+        assert.equal("correctReveal" in item, false);
+      }
+    }
+  });
+
+  it("rejects a persisted submit after the class-wide take lock", async () => {
+    const stored: QuizAttemptDoc[] = [];
+    const drawn = drawOnePerGroup(CHAPTER1_BANK, "late");
+    const result = await runExamSubmit({
+      quizId: "q1",
+      drawnQuestionIds: drawn.map((item) => item.question.id),
+      answers: {},
+      startedAt: "2026-10-04T12:00:00.000Z",
+      now: new Date("2026-10-05T04:00:00.000Z"),
+      actor: {
+        clerkUserId: "user_late",
+        email: "late@northeastern.edu",
+      },
+      roster: {
+        status: "matched",
+        entry: { email: "late@northeastern.edu", canvasUserId: "9" },
+      },
+      persist: async (doc) => {
+        stored.push(doc);
+        return { insertedId: "nope" };
+      },
+    });
+    assert.equal(result.ok, false);
+    if (!result.ok) {
+      assert.equal(result.code, "take_closed");
+    }
+    assert.equal(stored.length, 0);
+  });
+
+  it("includes correctReveal only when the class answer window is open", async () => {
+    const drawn = drawOnePerGroup(CHAPTER1_BANK, "review-open");
+    const result = await runExamSubmit({
+      quizId: "q1",
+      drawnQuestionIds: drawn.map((item) => item.question.id),
+      answers: {},
+      startedAt: "2026-10-06T12:00:00.000Z",
+      now: new Date("2026-10-06T12:00:00.000Z"),
+      actor: { clerkUserId: "user_review", email: "jane.doe@northeastern.edu" },
+      roster: {
+        status: "matched",
+        entry: { email: "jane.doe@northeastern.edu", canvasUserId: "12345" },
+      },
+    });
+    assert.equal(result.ok, true);
+    if (result.ok) {
+      assert.equal(result.window?.phase, "answers_open");
+      assert.equal(result.window?.revealAnswers, true);
+      assert.ok(result.graded.every((item) => typeof item.correctReveal === "string"));
+    }
   });
 
   it("grades in-memory and skips persist for an impersonation dummy roster", async () => {
@@ -173,5 +232,44 @@ describe("student exam sampling and grading", () => {
       assert.equal(preview.persisted, false);
       assert.equal({ ...preview, impersonation: true }.impersonation, true);
     }
+  });
+
+  it("rebuilds an attempt review without leaking answers when closed", () => {
+    const drawn = drawOnePerGroup(CHAPTER1_BANK, "review-rebuild");
+    const attempt: QuizAttemptDoc = {
+      clerkUserId: "user_jane",
+      quizId: "q1",
+      startedAt: new Date("2026-09-29T12:00:00.000Z"),
+      submittedAt: new Date("2026-09-29T12:10:00.000Z"),
+      score: 0,
+      maxScore: drawn.length,
+      answers: drawn.map(({ group, question }) => ({
+        questionId: question.id,
+        groupId: group.id,
+        type: question.type,
+        response: null,
+        correct: false,
+        points: 0,
+      })),
+      meta: {
+        drawnQuestionIds: drawn.map((item) => item.question.id),
+        source: "student-exam",
+      },
+    };
+
+    const hidden = buildAttemptReview(attempt, false);
+    assert.ok(hidden);
+    assert.equal(hidden.questions.length, drawn.length);
+    for (const question of hidden.questions) {
+      assertNoAnswerLeak(question);
+    }
+    for (const item of hidden.graded) {
+      assert.equal("correctReveal" in item, false);
+    }
+
+    const shown = buildAttemptReview(attempt, true);
+    assert.ok(shown);
+    assert.ok(shown.graded.every((item) => typeof item.correctReveal === "string"));
+    assert.equal(stripCorrectReveals(shown.graded).every((item) => !("correctReveal" in item)), true);
   });
 });

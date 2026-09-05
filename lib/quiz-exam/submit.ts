@@ -2,6 +2,14 @@ import type { CanvasRosterEntry, RosterLookupResult } from "../roster/types";
 import { getExamBank } from "./banks";
 import { gradeDrawnQuestions } from "./grade";
 import { findBankQuestion } from "./sample";
+import { stripCorrectReveals } from "./sanitize";
+import {
+  canRevealAnswers,
+  getAnswerRevealPhase,
+  getQuizSchedule,
+  isTakeWindowOpen,
+  toAnswerWindowInfo,
+} from "./schedule";
 import type {
   QuizAttemptDoc,
   StudentAnswer,
@@ -84,11 +92,25 @@ export async function runExamSubmit(deps: ExamSubmitDeps): Promise<SubmitExamRes
   }
 
   const submittedAt = deps.now ?? new Date();
+  const schedule = getQuizSchedule(deps.quizId);
+  if (deps.persist && schedule && !isTakeWindowOpen(schedule, submittedAt)) {
+    return fail(
+      "take_closed",
+      "The take window for this quiz is closed. New attempts are not accepted.",
+    );
+  }
+
   const startedAt = parseStartedAt(deps.startedAt, submittedAt);
   const graded = gradeDrawnQuestions(drawn, deps.answers);
+  const phase = schedule
+    ? getAnswerRevealPhase(schedule, submittedAt, true)
+    : "submitted_waiting";
+  const reveal = canRevealAnswers(phase);
+  const publicGraded = reveal ? graded : stripCorrectReveals(graded);
   const score = graded.reduce((sum, item) => sum + item.points, 0);
   const maxScore = graded.reduce((sum, item) => sum + item.maxPoints, 0);
   const rosterEntry = (deps.roster as { entry: CanvasRosterEntry }).entry;
+  const window = schedule && phase ? toAnswerWindowInfo(schedule, phase) : undefined;
 
   const doc: QuizAttemptDoc = {
     clerkUserId: deps.actor.clerkUserId,
@@ -116,7 +138,14 @@ export async function runExamSubmit(deps: ExamSubmitDeps): Promise<SubmitExamRes
   };
 
   if (!deps.persist) {
-    return { ok: true, score, maxScore, persisted: false, graded };
+    return {
+      ok: true,
+      score,
+      maxScore,
+      persisted: false,
+      graded: publicGraded,
+      window,
+    };
   }
 
   const inserted = await deps.persist(doc);
@@ -126,7 +155,8 @@ export async function runExamSubmit(deps: ExamSubmitDeps): Promise<SubmitExamRes
     maxScore,
     persisted: true,
     attemptId: String(inserted.insertedId),
-    graded,
+    graded: publicGraded,
+    window,
   };
 }
 

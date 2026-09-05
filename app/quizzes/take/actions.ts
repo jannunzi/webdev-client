@@ -2,7 +2,7 @@
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { isQuizTakingConfigured } from "@/lib/config";
-import { insertQuizAttempt } from "@/lib/quiz-exam/attempts";
+import { findLatestQuizAttempt, insertQuizAttempt } from "@/lib/quiz-exam/attempts";
 import { runExamSubmit } from "@/lib/quiz-exam/submit";
 import type { SubmitExamInput, SubmitExamResult } from "@/lib/quiz-exam/types";
 import {
@@ -53,6 +53,18 @@ export async function submitExamAttempt(
       actor: { clerkUserId: userId, email: emails[0], canvasUserId },
       roster,
     });
+  }
+
+  if (!impersonating) {
+    const existing = await findLatestQuizAttempt(userId, input.quizId);
+    if (existing) {
+      return {
+        ok: false,
+        code: "already_submitted",
+        message:
+          "You already submitted this quiz. Return to this page to see your score and, when the class window opens, the answers.",
+      };
+    }
   }
 
   try {

@@ -1,6 +1,6 @@
 import type { BankQuestion } from "../question-bank";
 import type { DrawnQuestion } from "./sample";
-import type { StudentQuestion } from "./types";
+import type { GradedAnswer, StudentQuestion } from "./types";
 
 export function toStudentQuestion(drawn: DrawnQuestion): StudentQuestion {
   const { group, question } = drawn;
@@ -27,6 +27,11 @@ export function assertNoAnswerLeak(question: StudentQuestion): void {
   ) {
     throw new Error(`Student payload leaked an answer field: ${question.id}`);
   }
+}
+
+/** Drop `correctReveal` so waiting/closed payloads cannot leak the key. */
+export function stripCorrectReveals(graded: GradedAnswer[]): GradedAnswer[] {
+  return graded.map(({ correctReveal: _correctReveal, ...item }) => item);
 }
 
 export function revealCorrectAnswer(question: BankQuestion): string {
