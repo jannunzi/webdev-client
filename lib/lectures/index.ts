@@ -17,6 +17,8 @@ export { DEPLOYING_TO_VERCEL_SLIDES } from "./decks/deploying-to-vercel";
 export { INSTALLING_NODEJS_SLIDES } from "./decks/installing-nodejs";
 export { INTRO_TO_WEB_DEVELOPMENT_SLIDES } from "./decks/intro-to-web-development";
 export {
+  LECTURE_DECK_THUMBNAILS,
+  LECTURE_SLIDE_IMAGE_ALLOWLIST,
   LECTURE_SLUGS,
   lectureSlideAssetPath,
   lectureSlideCodeBlocks,

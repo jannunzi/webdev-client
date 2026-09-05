@@ -15,7 +15,13 @@ import {
   listLectureSlugs,
   listLectures,
 } from "./catalog";
-import { LECTURE_SLUGS, lectureSlideCodeBlocks } from "./types";
+import {
+  LECTURE_DECK_THUMBNAILS,
+  LECTURE_SLIDE_IMAGE_ALLOWLIST,
+  LECTURE_SLUGS,
+  lectureSlideAssetPath,
+  lectureSlideCodeBlocks,
+} from "./types";
 
 function slideText(deckSlug: string): string {
   const deck = getLectureDeck(deckSlug);
@@ -62,6 +68,8 @@ describe("lecture catalog", () => {
       assert.ok(item.summary.length > 0);
       assert.equal(item.publicUrl, `${COURSE_SITE_ORIGIN}/lectures/${item.slug}`);
       assert.equal(lecturePublicUrl(item.slug), item.publicUrl);
+      assert.equal(item.thumbnailSrc, lectureDeckThumbnail(item.slug));
+      assert.doesNotMatch(item.thumbnailSrc, /slide-01\.png$/);
     }
   });
 
@@ -82,8 +90,21 @@ describe("lecture catalog", () => {
       groups[0]?.decks.map((deck) => deck.slug),
       [...LECTURE_SLUGS],
     );
-    assert.equal(lectureDeckThumbnail(groups[0]!.decks[0]!), "/lectures/intro-to-web-development/slide-01.png");
-    assert.equal(lectureDeckThumbnail("commit-to-github"), "/lectures/commit-to-github/slide-01.png");
+    assert.equal(
+      lectureDeckThumbnail(groups[0]!.decks[0]!),
+      "/lectures/intro-to-web-development/slide-06.png",
+    );
+    assert.equal(
+      lectureDeckThumbnail("commit-to-github"),
+      "/lectures/commit-to-github/slide-05.png",
+    );
+    for (const slug of LECTURE_SLUGS) {
+      const thumb = lectureDeckThumbnail(slug);
+      assert.notEqual(thumb, lectureSlideAssetPath(slug, 1));
+      assert.equal(thumb, lectureSlideAssetPath(slug, LECTURE_DECK_THUMBNAILS[slug]));
+      const disk = join(process.cwd(), thumb.replace(/^\//, "public/"));
+      assert.ok(existsSync(disk), `${thumb} is missing on disk`);
+    }
     for (const group of groups.slice(1)) {
       assert.equal(group.title, `Lecture ${group.canvasLecture}`);
       assert.equal(group.decks.length, 0);
@@ -165,16 +186,25 @@ describe("lecture decks", () => {
     assert.doesNotMatch(text, /kanbaz/);
   });
 
-  it("attaches a public lecture PNG to every slide", () => {
+  it("attaches rasters only for allowlisted diagrams and screenshots", () => {
     for (const deck of listLectureDecks()) {
+      const allowed = LECTURE_SLIDE_IMAGE_ALLOWLIST[deck.slug] ?? {};
       for (const slide of deck.slides) {
-        assert.ok(slide.imageSrc, `${deck.slug} ${slide.id} missing imageSrc`);
-        assert.match(
-          slide.imageSrc,
-          new RegExp(`^/lectures/${deck.slug}/slide-\\d{2}\\.png$`),
-        );
+        const number = allowed[slide.id];
+        if (number == null) {
+          assert.equal(
+            slide.imageSrc,
+            undefined,
+            `${deck.slug} ${slide.id} should not auto-attach a PNG`,
+          );
+          continue;
+        }
+        assert.equal(slide.imageSrc, lectureSlideAssetPath(deck.slug, number));
         assert.ok(slide.imageAlt);
-        const disk = join(process.cwd(), slide.imageSrc.replace(/^\//, "public/"));
+        const disk = join(
+          process.cwd(),
+          slide.imageSrc.replace(/^\//, "public/"),
+        );
         assert.ok(existsSync(disk), `${slide.imageSrc} is missing on disk`);
       }
     }
@@ -190,13 +220,10 @@ describe("lecture decks", () => {
       findSlide("intro-to-web-development", "csr").imageSrc,
       "/lectures/intro-to-web-development/slide-11.png",
     );
-    assert.equal(
-      findSlide("installing-nodejs", "title").imageSrc,
-      "/lectures/installing-nodejs/slide-01.png",
-    );
+    assert.equal(findSlide("installing-nodejs", "title").imageSrc, undefined);
     assert.equal(
       findSlide("commit-to-github", "from-project").imageSrc,
-      "/lectures/commit-to-github/slide-06.png",
+      undefined,
     );
     assert.equal(
       findSlide("creating-a-nextjs-react-application", "browser-parses-dom")
@@ -205,7 +232,7 @@ describe("lecture decks", () => {
     );
     assert.equal(
       findSlide("deploying-to-vercel", "office-hours").imageSrc,
-      "/lectures/deploying-to-vercel/slide-17.png",
+      undefined,
     );
   });
 

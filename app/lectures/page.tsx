@@ -77,7 +77,7 @@ export default function LecturesIndexPage() {
                           className="group block overflow-hidden rounded-lg border border-neutral-300 bg-white no-underline shadow-sm transition hover:border-neutral-800"
                         >
                           <div className="aspect-video overflow-hidden bg-neutral-100">
-                            {/* Public first-slide export; path is locked to slide-01.png. */}
+                            {/* Distinctive diagram/screenshot — not the WEB DEV title slide. */}
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                               src={thumb}

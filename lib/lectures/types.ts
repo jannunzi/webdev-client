@@ -43,6 +43,8 @@ export type LectureHubItem = {
   chapterHref: string;
   chapterTitle: string;
   publicUrl: string;
+  /** Distinctive diagram/screenshot — never the shared WEB DEV title slide. */
+  thumbnailSrc: string;
 };
 
 export type LectureDeck = LectureHubItem & {
@@ -56,6 +58,12 @@ export type CanvasLectureGroup = {
   decks: LectureHubItem[];
 };
 
+/**
+ * Decks are authored TypeScript — titles, bullets, code, and room for React
+ * embeds / book links. Google Slides PNGs under `/public/lectures` are
+ * supporting assets for diagrams and UI screenshots only. Do not treat a
+ * raster as the slide face.
+ */
 export function lectureSlideAssetPath(
   slug: LectureSlug,
   slideNumber: number,
@@ -63,63 +71,57 @@ export function lectureSlideAssetPath(
   return `/lectures/${slug}/slide-${String(slideNumber).padStart(2, "0")}.png`;
 }
 
-/** Original Google Slides index when our reconstructed deck is not 1:1. */
-const INTRO_SLIDE_ASSET: Partial<Record<string, number>> = {
-  title: 1,
-  internet: 2,
-  web: 3,
-  "browsers-urls": 4,
-  "network-of-networks": 5,
-  "client-server": 6,
-  http: 12,
-  milestones: 7,
-  "server-frameworks": 8,
-  ssr: 9,
-  "client-frameworks": 10,
-  csr: 11,
-  "web-app-se": 13,
-  teams: 14,
-  "large-projects": 15,
-  architecture: 16,
-  patterns: 17,
-  "next-up": 1,
+/** `{slug, slideId} → original Google Slides export number`. Default: no image. */
+export const LECTURE_SLIDE_IMAGE_ALLOWLIST: {
+  [K in LectureSlug]?: Partial<Record<string, number>>;
+} = {
+  "intro-to-web-development": {
+    "network-of-networks": 5,
+    "client-server": 6,
+    ssr: 9,
+    csr: 11,
+  },
+  "installing-nodejs": {
+    "course-stack": 4,
+  },
+  "creating-a-nextjs-react-application": {
+    "npm-run-dev": 8,
+    "browser-parses-dom": 27,
+  },
+  "commit-to-github": {
+    "create-repo": 5,
+  },
+  "deploying-to-vercel": {
+    "select-repo": 8,
+    deploy: 9,
+    congratulations: 10,
+    protections: 12,
+    "disable-auth": 13,
+  },
 };
 
-const DEPLOY_SLIDE_ASSET: Partial<Record<string, number>> = {
-  break: 16,
-  "office-hours": 17,
-  recap: 1,
-};
-
-const NEXT_APP_SLIDE_ASSET: Partial<Record<string, number>> = {
-  "developer-tools": 26,
-  "browser-parses-dom": 27,
-  "next-up": 1,
+/** Index card thumbs — diagrams/screenshots, not slide-01 (WEB DEV). */
+export const LECTURE_DECK_THUMBNAILS: Record<LectureSlug, number> = {
+  "intro-to-web-development": 6,
+  "installing-nodejs": 4,
+  "creating-a-nextjs-react-application": 8,
+  "commit-to-github": 5,
+  "deploying-to-vercel": 9,
 };
 
 export function lectureSlideImageNumber(
   slug: LectureSlug,
   slide: LectureSlide,
-  index: number,
 ): number | undefined {
-  if (slug === "intro-to-web-development") {
-    return INTRO_SLIDE_ASSET[slide.id] ?? index + 1;
-  }
-  if (slug === "deploying-to-vercel") {
-    return DEPLOY_SLIDE_ASSET[slide.id] ?? index + 1;
-  }
-  if (slug === "creating-a-nextjs-react-application") {
-    return NEXT_APP_SLIDE_ASSET[slide.id] ?? index + 1;
-  }
-  return index + 1;
+  return LECTURE_SLIDE_IMAGE_ALLOWLIST[slug]?.[slide.id];
 }
 
 export function withLectureSlideImages(
   slug: LectureSlug,
   slides: LectureSlide[],
 ): LectureSlide[] {
-  return slides.map((slide, index) => {
-    const number = lectureSlideImageNumber(slug, slide, index);
+  return slides.map((slide) => {
+    const number = lectureSlideImageNumber(slug, slide);
     if (number == null) return slide;
     return {
       ...slide,

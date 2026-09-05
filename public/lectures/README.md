@@ -1,9 +1,16 @@
 # Lecture slide assets
 
-PNG exports from Fall 2026 Google Slides (one image per original slide).
-The deck shell reads `LectureSlide.imageSrc` from `/lectures/<slug>/slide-NN.png`.
+PNG exports from Fall 2026 Google Slides. These are **supporting
+diagrams and UI screenshots**, not the slides themselves.
 
-Original export counts:
+Decks live in `lib/lectures/decks/*.ts` as authored TypeScript — titles,
+bullets, code blocks, and room for React embeds / book links. The catalog
+attaches a PNG only when `{slug, slideId}` is on the allowlist in
+`lib/lectures/types.ts` (`LECTURE_SLIDE_IMAGE_ALLOWLIST`). Default: no
+`imageSrc`. The shell always renders the authored slide; an image, if
+present, is a figure under the text.
+
+Original export counts (files remain in this folder even when unused):
 
 - intro-to-web-development (17)
 - installing-nodejs (16)
@@ -11,10 +18,6 @@ Original export counts:
 - commit-to-github (7)
 - deploying-to-vercel (17)
 
-The catalog sets `imageSrc` on every slide (`/lectures/<slug>/slide-NN.png`).
-Most decks map 1-based index → `slide-NN.png`. Intro / Vercel / the last
-Next.js slides remap so drawings land on the matching original export
-(SSR `slide-09`, CSR `slide-11`, office hours `slide-17`).
-
-A missing file shows a dashed “not in the repo yet” frame. Do not nest
-these under `/book`.
+Index thumbnails use `LECTURE_DECK_THUMBNAILS` — distinctive mid-deck
+diagrams, never `slide-01.png` (the shared WEB DEV title). Do not nest
+these assets under `/book`.

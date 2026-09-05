@@ -5,6 +5,7 @@ import { DEPLOYING_TO_VERCEL_SLIDES } from "./decks/deploying-to-vercel";
 import { INSTALLING_NODEJS_SLIDES } from "./decks/installing-nodejs";
 import { INTRO_TO_WEB_DEVELOPMENT_SLIDES } from "./decks/intro-to-web-development";
 import {
+  LECTURE_DECK_THUMBNAILS,
   LECTURE_SLUGS,
   lectureSlideAssetPath,
   withLectureSlideImages,
@@ -82,6 +83,7 @@ export function getLecture(slug: string): LectureHubItem | undefined {
     chapterHref: CHAPTER_1.href,
     chapterTitle: CHAPTER_1.title,
     publicUrl: lecturePublicUrl(slug),
+    thumbnailSrc: lectureSlideAssetPath(slug, LECTURE_DECK_THUMBNAILS[slug]),
   };
 }
 
@@ -112,8 +114,11 @@ export function listLectureDecks(): LectureDeck[] {
 export function lectureDeckThumbnail(
   deck: LectureHubItem | LectureSlug,
 ): string {
+  if (typeof deck !== "string" && deck.thumbnailSrc) {
+    return deck.thumbnailSrc;
+  }
   const slug = typeof deck === "string" ? deck : deck.slug;
-  return lectureSlideAssetPath(slug, 1);
+  return lectureSlideAssetPath(slug, LECTURE_DECK_THUMBNAILS[slug]);
 }
 
 export function listCanvasLectureGroups(): CanvasLectureGroup[] {
