@@ -14,6 +14,8 @@ export default function BookHome() {
         {" · "}
         <Link href="/assignments">Assignments</Link>
         {" · "}
+        <Link href="/lectures">Lectures</Link>
+        {" · "}
         <Link href="/office-hours">Office Hours</Link>
         {" · "}
         <Link href="/piazza-hours">Piazza Hours</Link>

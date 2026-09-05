@@ -257,6 +257,27 @@ surface. Suggested student copy (HTML helpers in
 The IMSCC cartridge is not in this repo (Jose’s `canvas-fall` tooling).
 Updating those assignment HTML descriptions is a follow-up package.
 
+## Lectures hub
+
+`/lectures` lists Fall 2026 Lecture 1 decks (Canvas Lecture 1 / Chapter 1).
+Each `/lectures/[slug]` page is a keyboard-driven slide deck. Slugs:
+
+- `/lectures/intro-to-web-development`
+- `/lectures/installing-nodejs`
+- `/lectures/creating-a-nextjs-react-application`
+- `/lectures/commit-to-github`
+- `/lectures/deploying-to-vercel`
+
+Catalog and slide data live in `lib/lectures/`. The React shell is
+`app/lectures/_components/LectureDeckShell.tsx`. These routes are not nested
+under `/book`.
+
+Press **f** (or the Fullscreen button) for presentation mode; **Esc** exits.
+Add `?fullscreen=1` to retry fullscreen after the next click (browsers require
+a gesture). Diagram PNGs go in `public/lectures/<slug>/` — see
+`public/lectures/README.md`. Commands and source live in `LectureSlide.code`
+/ `codeBlocks`, not as bullet items.
+
 ## Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs)
