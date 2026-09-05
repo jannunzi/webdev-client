@@ -42,7 +42,12 @@ export {
 export {
   adjacentStaffStudentKeys,
   buildStaffStudentQueue,
+  filterStaffQueueBySection,
   findStaffStudent,
+  listStaffQueueSections,
+  resolveStaffSectionFilter,
+  staffGraderHref,
+  staffQueueForSection,
 } from "./staff";
 export { criterionVerifyUrl } from "./verify-urls";
 export type {

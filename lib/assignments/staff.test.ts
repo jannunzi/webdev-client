@@ -5,9 +5,16 @@ import {
   buildStaffStudentQueue,
   canPersistStaffGrade,
   canViewStaffGrader,
+  filterStaffQueueBySection,
   findStaffStudent,
+  listStaffQueueSections,
   parseStaffStudentKey,
+  resolveStaffSectionFilter,
   staffGraderAccess,
+  staffGraderHref,
+  staffQueueForSection,
+  staffRowSectionLabel,
+  UNSECTIONED_LABEL,
 } from "./staff";
 import type { AssignmentSubmissionDoc } from "./submissions-store";
 
@@ -115,5 +122,96 @@ describe("staff student queue", () => {
     assert.deepEqual(parseStaffStudentKey("clerk:user_1"), {
       clerkUserId: "user_1",
     });
+  });
+});
+
+describe("staff queue section filter", () => {
+  const queue = buildStaffStudentQueue(
+    [
+      {
+        email: "ug@northeastern.edu",
+        name: "Ada Undergrad",
+        section: "CS4550 CRN 11464",
+      },
+      {
+        email: "grad-a@northeastern.edu",
+        name: "Bea Grad",
+        section: "CS5610-02 CRN 17395",
+      },
+      {
+        email: "grad-b@northeastern.edu",
+        name: "Cyd Grad",
+        section: "CS5610-09 CRN 17396",
+      },
+      { email: "pat@northeastern.edu", name: "Pat Lee" },
+    ],
+    [],
+  );
+
+  it("lists stored Canvas section labels, including Unsectioned", () => {
+    assert.deepEqual(listStaffQueueSections(queue), [
+      "CS4550 CRN 11464",
+      "CS5610-02 CRN 17395",
+      "CS5610-09 CRN 17396",
+      UNSECTIONED_LABEL,
+    ]);
+    assert.equal(staffRowSectionLabel({ section: "  CS4550  " }), "CS4550");
+    assert.equal(staffRowSectionLabel({}), UNSECTIONED_LABEL);
+  });
+
+  it("returns the full queue for All (empty, missing, or unknown section)", () => {
+    assert.equal(filterStaffQueueBySection(queue, undefined).length, 4);
+    assert.equal(filterStaffQueueBySection(queue, "").length, 4);
+    assert.equal(staffQueueForSection(queue, "not-a-section").length, 4);
+    assert.equal(resolveStaffSectionFilter("CS4550 CRN 11464", listStaffQueueSections(queue)), "CS4550 CRN 11464");
+    assert.equal(resolveStaffSectionFilter("nope", listStaffQueueSections(queue)), undefined);
+  });
+
+  it("filters to one section and walks prev/next on that subset", () => {
+    const cs561002 = staffQueueForSection(queue, "CS5610-02 CRN 17395");
+    assert.deepEqual(
+      cs561002.map((row) => row.email),
+      ["grad-a@northeastern.edu"],
+    );
+    const cs4550 = staffQueueForSection(queue, "CS4550 CRN 11464");
+    assert.equal(cs4550.length, 1);
+    assert.equal(cs4550[0].name, "Ada Undergrad");
+
+    const twoGrads = staffQueueForSection(
+      [
+        ...queue,
+        ...buildStaffStudentQueue(
+          [
+            {
+              email: "grad-c@northeastern.edu",
+              name: "Dee Grad",
+              section: "CS5610-02 CRN 17395",
+            },
+          ],
+          [],
+        ),
+      ],
+      "CS5610-02 CRN 17395",
+    );
+    assert.equal(twoGrads.length, 2);
+    const mid = adjacentStaffStudentKeys(twoGrads, "grad-c@northeastern.edu");
+    assert.equal(mid.previous, "grad-a@northeastern.edu");
+    assert.equal(mid.next, null);
+    assert.equal(mid.index, 1);
+  });
+
+  it("builds shareable assignment URLs with section and student", () => {
+    assert.equal(staffGraderHref("a1"), "/assignments/a1");
+    assert.equal(
+      staffGraderHref("a1", { section: "CS5610-02 CRN 17395" }),
+      "/assignments/a1?section=CS5610-02+CRN+17395",
+    );
+    assert.equal(
+      staffGraderHref("a1", {
+        section: "CS4550 CRN 11464",
+        student: "ug@northeastern.edu",
+      }),
+      "/assignments/a1?section=CS4550+CRN+11464&student=ug%40northeastern.edu",
+    );
   });
 });
