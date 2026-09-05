@@ -5,12 +5,10 @@ const SERVER = { x: 470, w: 190 };
 const RESOURCE = { x: 780, w: 164 };
 const BOX_Y = 36;
 const BOX_H = 208;
-const REQUEST_Y = 116;
-const RESPONSE_Y = 204;
+const REQUEST_Y = 118;
+const RESPONSE_Y = 202;
 const ARROW_HEAD = 12;
-const ARROW_PAD = 12;
-const LABEL_W = 136;
-const LABEL_H = 26;
+const ARROW_PAD = 14;
 
 function HArrow({
   x1,
@@ -36,38 +34,25 @@ function HArrow({
 }
 
 function ArrowLabel({
-  x1,
-  x2,
+  midX,
   y,
   text,
 }: {
-  x1: number;
-  x2: number;
+  midX: number;
   y: number;
   text: string;
 }) {
-  const midX = (x1 + x2) / 2;
   return (
-    <g>
-      <rect
-        x={midX - LABEL_W / 2}
-        y={y - LABEL_H / 2}
-        width={LABEL_W}
-        height={LABEL_H}
-        rx="6"
-        fill="#ffffff"
-      />
-      <text
-        x={midX}
-        y={y + 5}
-        textAnchor="middle"
-        fontSize="16"
-        fontWeight="700"
-        fontFamily="ui-sans-serif, system-ui, sans-serif"
-      >
-        {text}
-      </text>
-    </g>
+    <text
+      x={midX}
+      y={y}
+      textAnchor="middle"
+      fontSize="16"
+      fontWeight="700"
+      fontFamily="ui-sans-serif, system-ui, sans-serif"
+    >
+      {text}
+    </text>
   );
 }
 
@@ -117,9 +102,17 @@ export default function ClientServerDiagram() {
         </text>
 
         <HArrow x1={requestX1} x2={requestX2} y={REQUEST_Y} />
-        <ArrowLabel x1={requestX1} x2={requestX2} y={REQUEST_Y} text="HTTP request" />
+        <ArrowLabel
+          midX={(requestX1 + requestX2) / 2}
+          y={REQUEST_Y - 16}
+          text="HTTP request"
+        />
         <HArrow x1={requestX2} x2={requestX1} y={RESPONSE_Y} />
-        <ArrowLabel x1={requestX1} x2={requestX2} y={RESPONSE_Y} text="HTTP response" />
+        <ArrowLabel
+          midX={(requestX1 + requestX2) / 2}
+          y={RESPONSE_Y - 16}
+          text="HTTP response"
+        />
 
         <rect
           x={SERVER.x}

@@ -15,7 +15,7 @@ const GAP = 66;
 const START_X =
   (VIEW_W - (STEPS.length * BOX_W + (STEPS.length - 1) * GAP)) / 2;
 const ARROW_HEAD = 12;
-const ARROW_PAD = 10;
+const ARROW_PAD = 14;
 
 function Arrow({ x1, x2, y }: { x1: number; x2: number; y: number }) {
   const base = x2 - ARROW_HEAD;
