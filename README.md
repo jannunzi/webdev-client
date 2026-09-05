@@ -65,7 +65,8 @@ If Clerk or Atlas env vars are missing, those take routes show a clear
    entry that allows Vercel (or `0.0.0.0/0` if you prefer allow-all + strong
    user password). Copy the `mongodb+srv://…` connection string. The app uses
    database `webdev` (override with `MONGODB_DB`) and collections
-   `quiz_attempts`, `canvas_roster`, and `assignment_progress`.
+   `quiz_attempts`, `canvas_roster`, `assignment_progress`, and
+   `assignment_submissions`.
 3. **Vercel** project env (Production + Preview + Development):
    `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`,
    `NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in`,
@@ -239,12 +240,20 @@ those rubrics are authored.
 Signed-in students persist checkmarks to MongoDB (`assignment_progress`,
 keyed by user + assignment + criterion). Visitors who are not signed in keep
 progress in this browser only. The UI never mentions the auth vendor — the
-button says “Sign in with your school email.” URL submit and auto-grading
-are out of scope for this hub.
+button says “Sign in with your school email.”
+
+**A1 URL submit (Phase 2A).** Rostered students and staff can save a public
+GitHub repository URL and a public Vercel deployment URL on
+`/assignments/a1`. Documents live in `assignment_submissions` (user +
+`a1`). After save — or via **Run checks** — the server runs a few basic
+checks (https deploy URL, not localhost; GET succeeds; 401/403 called out
+as Deployment Protection; Labs / `wd-` markers; name markers when a
+roster/profile name is available; GitHub URL format, plus a public-repo
+HEAD when possible). This is **not** full rubric auto-grading. Staff
+**View as student** can exercise the form; the submission is not saved.
 
 Canvas assignment descriptions should **not** paste the website rubric.
-Point students at the live pages and keep Canvas as the submit/grade
-surface. Suggested student copy (HTML helpers in
+Point students at the live pages. Suggested student copy (HTML helpers in
 `lib/assignments/canvas-copy.ts`):
 
 - https://webdev-client.vercel.app/assignments/a1

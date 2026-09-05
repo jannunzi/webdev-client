@@ -26,6 +26,11 @@ export function isAssignmentProgressConfigured(): boolean {
   return isClerkConfigured() && isMongoConfigured();
 }
 
+/** A1 URL submit uses the same Clerk + Mongo gate as checklist sync. */
+export function isAssignmentSubmissionConfigured(): boolean {
+  return isAssignmentProgressConfigured();
+}
+
 export function mongoDbName(): string {
   return process.env.MONGODB_DB?.trim() || "webdev";
 }
