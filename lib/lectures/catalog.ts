@@ -1,3 +1,4 @@
+import { lectureTopics } from "@/app/syllabus/data/topics";
 import { COMMIT_TO_GITHUB_SLIDES } from "./decks/commit-to-github";
 import { CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES } from "./decks/creating-a-nextjs-react-application";
 import { DEPLOYING_TO_VERCEL_SLIDES } from "./decks/deploying-to-vercel";
@@ -5,7 +6,9 @@ import { INSTALLING_NODEJS_SLIDES } from "./decks/installing-nodejs";
 import { INTRO_TO_WEB_DEVELOPMENT_SLIDES } from "./decks/intro-to-web-development";
 import {
   LECTURE_SLUGS,
+  lectureSlideAssetPath,
   withLectureSlideImages,
+  type CanvasLectureGroup,
   type LectureDeck,
   type LectureHubItem,
   type LectureSlide,
@@ -104,6 +107,34 @@ export function listLectureDecks(): LectureDeck[] {
   return listLectureSlugs()
     .map((slug) => getLectureDeck(slug))
     .filter((deck): deck is LectureDeck => Boolean(deck));
+}
+
+export function lectureDeckThumbnail(
+  deck: LectureHubItem | LectureSlug,
+): string {
+  const slug = typeof deck === "string" ? deck : deck.slug;
+  return lectureSlideAssetPath(slug, 1);
+}
+
+export function listCanvasLectureGroups(): CanvasLectureGroup[] {
+  const items = listLectures();
+  const maxFromCatalog = items.reduce(
+    (max, item) => Math.max(max, item.canvasLecture),
+    0,
+  );
+  const count = Math.max(lectureTopics.length, maxFromCatalog, 1);
+  return Array.from({ length: count }, (_, index) => {
+    const canvasLecture = index + 1;
+    const groupDecks = items.filter(
+      (item) => item.canvasLecture === canvasLecture,
+    );
+    return {
+      canvasLecture,
+      title: `Lecture ${canvasLecture}`,
+      topic: lectureTopics[index]?.topic,
+      decks: groupDecks,
+    };
+  });
 }
 
 export function adjacentLectureSlugs(slug: LectureSlug): {

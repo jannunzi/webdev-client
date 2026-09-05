@@ -8,7 +8,9 @@ import {
   getLecture,
   getLectureDeck,
   isLectureSlug,
+  lectureDeckThumbnail,
   lecturePublicUrl,
+  listCanvasLectureGroups,
   listLectureDecks,
   listLectureSlugs,
   listLectures,
@@ -68,6 +70,24 @@ describe("lecture catalog", () => {
     assert.equal(getLectureDeck("vite-spa"), undefined);
     assert.equal(isLectureSlug("intro-to-web-development"), true);
     assert.equal(isLectureSlug("intro"), false);
+  });
+
+  it("groups decks under Canvas lecture folders with later weeks empty", () => {
+    const groups = listCanvasLectureGroups();
+    assert.ok(groups.length >= 11);
+    assert.equal(groups[0]?.title, "Lecture 1");
+    assert.equal(groups[0]?.canvasLecture, 1);
+    assert.equal(groups[0]?.decks.length, 5);
+    assert.deepEqual(
+      groups[0]?.decks.map((deck) => deck.slug),
+      [...LECTURE_SLUGS],
+    );
+    assert.equal(lectureDeckThumbnail(groups[0]!.decks[0]!), "/lectures/intro-to-web-development/slide-01.png");
+    assert.equal(lectureDeckThumbnail("commit-to-github"), "/lectures/commit-to-github/slide-01.png");
+    for (const group of groups.slice(1)) {
+      assert.equal(group.title, `Lecture ${group.canvasLecture}`);
+      assert.equal(group.decks.length, 0);
+    }
   });
 
   it("walks adjacent decks", () => {

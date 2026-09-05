@@ -11,9 +11,5 @@ export const metadata: Metadata = {
 export default function LecturesLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  return (
-    <div className="book-shell min-h-screen">
-      <main className="mx-auto min-w-0 max-w-4xl px-4 py-8 sm:px-6">{children}</main>
-    </div>
-  );
+  return <div className="book-shell min-h-dvh">{children}</div>;
 }

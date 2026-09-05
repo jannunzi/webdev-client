@@ -4,7 +4,9 @@ export {
   getLecture,
   getLectureDeck,
   isLectureSlug,
+  lectureDeckThumbnail,
   lecturePublicUrl,
+  listCanvasLectureGroups,
   listLectureDecks,
   listLectureSlugs,
   listLectures,
@@ -21,6 +23,7 @@ export {
   withLectureSlideImages,
 } from "./types";
 export type {
+  CanvasLectureGroup,
   LectureCodeBlock,
   LectureDeck,
   LectureHubItem,

@@ -6,7 +6,7 @@ export default function LectureHubNav({
   current?: "index" | "deck";
 }) {
   return (
-    <p className="mb-4 font-sans text-sm">
+    <p className="mb-3 font-sans text-sm">
       {current === "deck" ? (
         <>
           <Link href="/lectures">Lectures</Link>
