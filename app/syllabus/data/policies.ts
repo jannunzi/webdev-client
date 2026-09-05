@@ -4,7 +4,7 @@ export const latePolicy: PolicyBlock = {
   paragraphs: [
     "Assignments are due at the date and time posted on Canvas and on the agenda. Submit what you have by the deadline — a partial, working deployment is worth more than a perfect repository that arrives late.",
     "Work submitted after the deadline loses 10% of the assignment’s points per 24-hour period, or fraction thereof, for up to three days. After three days the assignment is not accepted, except when Disability Access Services accommodations or a documented emergency arranged with the instructor apply.",
-    "Quizzes and the exam cannot be submitted late. If you have a university-approved absence or an emergency, write to the instructor before the deadline when possible.",
+    "Quizzes (Q1–Q6) and exams (X1/X2) cannot be submitted late. If you have a university-approved absence or an emergency, write to the instructor before the deadline when possible.",
   ],
   bullets: [
     "On time — eligible for full credit.",
@@ -23,7 +23,7 @@ export const aiPolicy: PolicyBlock = {
   ],
   bullets: [
     "Allowed: using AI to learn an API, draft a first attempt, or refactor code you then rewrite and can defend.",
-    "Not allowed: submitting generated work you cannot explain; sharing solutions; using AI on closed quizzes or the exam unless the handout says otherwise.",
+    "Not allowed: submitting generated work you cannot explain; sharing solutions; using AI on closed quizzes or exams (X1/X2) unless the handout says otherwise.",
     "When in doubt, disclose how you used the tool in a short comment on the assignment.",
   ],
 };

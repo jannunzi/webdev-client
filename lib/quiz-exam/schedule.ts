@@ -83,16 +83,17 @@ export function scheduleFromIso(iso: QuizScheduleIso): QuizSchedule {
 /**
  * Course exam instants (00:00 America/New_York), stored as ISO UTC.
  *
- * The published syllabus has no midterm. It lists one course “Exam” on
- * 2026-12-03 (`app/syllabus/data/deadlines.ts`) and a university final-exam
- * period of 2026-12-14–2026-12-20 (`app/syllabus/data/course.ts`).
+ * The syllabus lists X1 (due 2026-11-01) and Exam · X2 (due 2026-12-03) in
+ * `app/syllabus/data/deadlines.ts`, plus a university final-exam period of
+ * 2026-12-14–2026-12-20 (`app/syllabus/data/course.ts`).
  *
- * - `midtermAt` — assumed placeholder (not on the syllabus): Thursday
- *   2026-11-05 00:00 ET, the first weekday after Q3’s Sunday due.
- * - `finalAt` — syllabus Exam date: 2026-12-03 00:00 ET.
+ * - `midtermAt` — Q1–Q3 answer-reopen close: Thursday 2026-11-05 00:00 ET,
+ *   the first weekday after X1 / Q3’s Sunday due. X1 take pages are still
+ *   stubs (`/quizzes/take/x1`).
+ * - `finalAt` — syllabus Exam · X2 date: 2026-12-03 00:00 ET.
  *
- * Edit these two strings when Jose publishes a midterm (or moves the exam).
- * Q1–Q3 reopen `[midtermAt − 7d, midtermAt)`. Q4–Q6 reopen
+ * Edit these two strings if Jose moves the exam instants used for Q1–Q6
+ * answer reopen. Q1–Q3 reopen `[midtermAt − 7d, midtermAt)`. Q4–Q6 reopen
  * `[finalAt − 7d, finalAt)`.
  */
 export const COURSE_EXAMS = {
