@@ -17,8 +17,8 @@ import {
 } from "./catalog";
 import {
   LECTURE_DECK_THUMBNAILS,
+  LECTURE_DIAGRAM_IDS,
   LECTURE_EMBED_IDS,
-  LECTURE_SLIDE_IMAGE_ALLOWLIST,
   LECTURE_SLUGS,
   lectureSlideAssetPath,
   lectureSlideFigurePath,
@@ -219,55 +219,68 @@ describe("lecture decks", () => {
     assert.doesNotMatch(text, /kanbaz/);
   });
 
-  it("attaches rasters only for allowlisted diagrams and screenshots", () => {
-    for (const deck of listLectureDecks()) {
-      const allowed = LECTURE_SLIDE_IMAGE_ALLOWLIST[deck.slug] ?? {};
-      for (const slide of deck.slides) {
-        const number = allowed[slide.id];
-        if (number == null) {
-          assert.equal(
-            slide.imageSrc,
-            undefined,
-            `${deck.slug} ${slide.id} should not auto-attach a PNG`,
-          );
-          continue;
-        }
-        assert.equal(slide.imageSrc, lectureSlideFigurePath(deck.slug, number));
-        assert.match(slide.imageSrc, /-figure\.png$/);
-        assert.ok(slide.imageAlt);
-        const disk = join(
-          process.cwd(),
-          slide.imageSrc.replace(/^\//, "public/"),
+  it("uses authored diagrams instead of Google Slides rasters", () => {
+    const expected = {
+      "intro-to-web-development": {
+        "network-of-networks": "network-of-networks",
+        "client-server": "client-server",
+        ssr: "ssr",
+        csr: "csr",
+      },
+      "installing-nodejs": {
+        "course-stack": "course-stack",
+      },
+      "creating-a-nextjs-react-application": {
+        "npm-run-dev": "npm-run-dev-mock",
+        "browser-parses-dom": "dom-tree",
+      },
+      "commit-to-github": {
+        "create-repo": "github-create-repo-mock",
+      },
+      "deploying-to-vercel": {
+        "select-repo": "vercel-import-mock",
+        deploy: "vercel-deploy-mock",
+        congratulations: "vercel-success-mock",
+        protections: "vercel-protect-mock",
+        "disable-auth": "vercel-auth-mock",
+      },
+    } as const;
+
+    const used = new Set<string>();
+    for (const [slug, slides] of Object.entries(expected)) {
+      for (const [id, diagram] of Object.entries(slides)) {
+        const slide = findSlide(slug, id);
+        assert.equal(slide.diagram, diagram);
+        assert.equal(
+          slide.imageSrc,
+          undefined,
+          `${slug} ${id} should not attach a PNG figure`,
         );
-        assert.ok(existsSync(disk), `${slide.imageSrc} is missing on disk`);
+        assert.ok((LECTURE_DIAGRAM_IDS as readonly string[]).includes(diagram));
+        used.add(diagram);
       }
     }
-    assert.equal(
-      findSlide("intro-to-web-development", "client-server").imageSrc,
-      "/lectures/intro-to-web-development/slide-06-figure.png",
+
+    assert.deepEqual(
+      [...LECTURE_DIAGRAM_IDS].sort(),
+      [...used].sort(),
+      "every diagram id should be wired to a slide",
     );
-    assert.equal(
-      findSlide("intro-to-web-development", "ssr").imageSrc,
-      "/lectures/intro-to-web-development/slide-09-figure.png",
-    );
-    assert.equal(
-      findSlide("intro-to-web-development", "csr").imageSrc,
-      "/lectures/intro-to-web-development/slide-11-figure.png",
-    );
-    assert.equal(findSlide("installing-nodejs", "title").imageSrc, undefined);
-    assert.equal(
-      findSlide("commit-to-github", "from-project").imageSrc,
-      undefined,
-    );
-    assert.equal(
-      findSlide("creating-a-nextjs-react-application", "browser-parses-dom")
-        .imageSrc,
-      "/lectures/creating-a-nextjs-react-application/slide-27-figure.png",
-    );
-    assert.equal(
-      findSlide("deploying-to-vercel", "office-hours").imageSrc,
-      undefined,
-    );
+
+    for (const deck of listLectureDecks()) {
+      for (const slide of deck.slides) {
+        assert.equal(
+          slide.imageSrc,
+          undefined,
+          `${deck.slug} ${slide.id} should not auto-attach a PNG`,
+        );
+        if (slide.diagram) {
+          assert.ok(
+            (LECTURE_DIAGRAM_IDS as readonly string[]).includes(slide.diagram),
+          );
+        }
+      }
+    }
   });
 
   it("keeps commands and source in code blocks, not bullets", () => {

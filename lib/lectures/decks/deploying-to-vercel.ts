@@ -82,6 +82,7 @@ export const DEPLOYING_TO_VERCEL_SLIDES: LectureSlide[] = [
       "Build command / output: leave the Next.js defaults",
       "Environment variables: none required for the Chapter 1 static UI",
     ],
+    diagram: "vercel-import-mock",
   },
   {
     id: "deploy",
@@ -93,6 +94,7 @@ export const DEPLOYING_TO_VERCEL_SLIDES: LectureSlide[] = [
       "A TypeScript or ESLint error that you ignored locally will fail here",
       "First deploy often takes a minute. Do not close the tab mid-build",
     ],
+    diagram: "vercel-deploy-mock",
     interactiveHint:
       "Build failed? Copy the error, fix it in the IDE, commit, push, and Vercel will rebuild.",
   },
@@ -107,6 +109,7 @@ export const DEPLOYING_TO_VERCEL_SLIDES: LectureSlide[] = [
       "You can later attach a custom domain. Not required for A1",
       "Deployments tab lists each git commit that built",
     ],
+    diagram: "vercel-success-mock",
   },
   {
     id: "share-url",
@@ -129,6 +132,7 @@ export const DEPLOYING_TO_VERCEL_SLIDES: LectureSlide[] = [
       "That gate is for private work previews. It blocks TAs who are not on your Vercel team",
       "Open the protection settings **before** you consider A1 submitted",
     ],
+    diagram: "vercel-protect-mock",
   },
   {
     id: "disable-auth",
@@ -140,6 +144,7 @@ export const DEPLOYING_TO_VERCEL_SLIDES: LectureSlide[] = [
       "If you see “Authentication Required”, TAs cannot grade",
       "Standard Next.js pages stay public. You are not turning off *your* app’s later Clerk quiz gates",
     ],
+    diagram: "vercel-auth-mock",
     interactiveHint:
       "Incognito test is the fastest check. If you get a Vercel login page, protections are still on.",
   },

@@ -33,6 +33,7 @@ export const INSTALLING_NODEJS_SLIDES: LectureSlide[] = [
       "Languages on the page: **HTML** (structure), **CSS** (presentation), **JavaScript** (behavior)",
       "You already installed a browser. Node is the missing runtime on your laptop",
     ],
+    diagram: "course-stack",
   },
   {
     id: "languages",

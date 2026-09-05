@@ -56,6 +56,7 @@ export const COMMIT_TO_GITHUB_SLIDES: LectureSlide[] = [
       "Copy the HTTPS URL: `https://github.com/<your-username>/kambaz-next-js.git`",
       "`<your-username>` is yours. Do not paste the instructor’s username",
     ],
+    diagram: "github-create-repo-mock",
   },
   {
     id: "empty-repo-commands",

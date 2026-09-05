@@ -1,19 +1,19 @@
 # Lecture slide assets
 
-PNG exports from classroom Google Slides. These are **supporting
-diagrams and UI screenshots**, not the slides themselves.
+PNG exports from classroom Google Slides remain on disk as optional
+**index-card thumbnails** and historical reference. They are **not** the
+slide figures.
 
 Decks live in `lib/lectures/decks/*.ts` as authored TypeScript — titles,
-bullets, code blocks, and room for React embeds / book links. The catalog
-attaches a PNG only when `{slug, slideId}` is on the allowlist in
-`lib/lectures/types.ts` (`LECTURE_SLIDE_IMAGE_ALLOWLIST`). Default: no
-`imageSrc`. The shell always renders the authored slide; an image, if
-present, is a figure under the text. UI that students build (User card,
-Welcome heading, Lab 1 stub, Link nav) is a live `embed`, not a screenshot.
+bullets, code blocks, live Ch1 `embed`s, and `diagram` ids. The shell
+renders an authored SVG/React figure from
+`app/lectures/_components/diagrams/` when `diagram` is set. Default: no
+`imageSrc`. Do not crop Google Slides into slide figures.
 
-Allowlisted figures are `slide-NN-figure.png`: the original export with
-the top title band cropped so the Google Slides heading is not repeated
-next to the authored title.
+`LECTURE_DIAGRAM_IDS` in `lib/lectures/types.ts` is the catalog of
+diagrams and product-UI mocks (browser chrome + key labels, not
+screenshots). Live React demos stay on `embed` (User card, Welcome
+heading, Lab 1 stub, Link nav).
 
 Original export counts (full `slide-NN.png` files remain even when unused):
 

@@ -59,6 +59,7 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
       "If one path fails, routing can take another — that was the ARPANET idea",
       "Diagram to sketch: [browser] — [your network] — [Internet] — [server network] — [web server]",
     ],
+    diagram: "network-of-networks",
     interactiveHint:
       "On the board (or a notebook): draw five boxes in a line and label each hop. That picture is the whole Internet story.",
   },
@@ -73,6 +74,7 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
       "They talk over **HTTP**: a request (method + URL + headers + optional body) and a response (status + headers + body)",
       "GET `/labs/lab1` → 200 OK + HTML. The browser never opens the server’s files directly",
     ],
+    diagram: "client-server",
   },
   {
     id: "http",
@@ -124,6 +126,7 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
       "Next.js App Router can still render on the server — `page.tsx` is a Server Component by default",
       "You do not have to pick SSR *or* React. Next.js does both",
     ],
+    diagram: "ssr",
   },
   {
     id: "client-frameworks",
@@ -148,6 +151,7 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
       "React started as a CSR library. Next.js can hydrate a server-rendered page and then behave like CSR",
       "You will use both: Server Components for the first HTML, client components when you need state and events",
     ],
+    diagram: "csr",
   },
   {
     id: "web-app-se",

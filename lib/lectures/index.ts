@@ -18,18 +18,18 @@ export { INSTALLING_NODEJS_SLIDES } from "./decks/installing-nodejs";
 export { INTRO_TO_WEB_DEVELOPMENT_SLIDES } from "./decks/intro-to-web-development";
 export {
   LECTURE_DECK_THUMBNAILS,
+  LECTURE_DIAGRAM_IDS,
   LECTURE_EMBED_IDS,
-  LECTURE_SLIDE_IMAGE_ALLOWLIST,
   LECTURE_SLUGS,
   lectureSlideAssetPath,
   lectureSlideFigurePath,
   lectureSlideCodeBlocks,
-  withLectureSlideImages,
 } from "./types";
 export type {
   CanvasLectureGroup,
   LectureCodeBlock,
   LectureDeck,
+  LectureDiagramId,
   LectureEmbedId,
   LectureHubItem,
   LectureSlide,

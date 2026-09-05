@@ -19,6 +19,24 @@ export const LECTURE_EMBED_IDS = [
 
 export type LectureEmbedId = (typeof LECTURE_EMBED_IDS)[number];
 
+export const LECTURE_DIAGRAM_IDS = [
+  "network-of-networks",
+  "client-server",
+  "ssr",
+  "csr",
+  "course-stack",
+  "dom-tree",
+  "npm-run-dev-mock",
+  "github-create-repo-mock",
+  "vercel-import-mock",
+  "vercel-deploy-mock",
+  "vercel-success-mock",
+  "vercel-protect-mock",
+  "vercel-auth-mock",
+] as const;
+
+export type LectureDiagramId = (typeof LECTURE_DIAGRAM_IDS)[number];
+
 export type LectureCodeBlock = {
   code: string;
   language?: string;
@@ -43,7 +61,9 @@ export type LectureSlide = {
   codeBlocks?: LectureCodeBlock[];
   /** Live React demo under the authored slide. Prefer this over a UI screenshot. */
   embed?: LectureEmbedId;
-}
+  /** Authored SVG/React figure — not a Google Slides raster. */
+  diagram?: LectureDiagramId;
+};
 
 export type LectureHubItem = {
   slug: LectureSlug;
@@ -70,10 +90,9 @@ export type CanvasLectureGroup = {
 };
 
 /**
- * Decks are authored TypeScript — titles, bullets, code, and room for React
- * embeds / book links. Google Slides PNGs under `/public/lectures` are
- * supporting assets for diagrams and UI screenshots only. Do not treat a
- * raster as the slide face.
+ * Decks are authored TypeScript — titles, bullets, code, embeds, and SVG
+ * diagrams. Index thumbs may still use a distinctive PNG under
+ * `/public/lectures`. Do not treat a raster as the slide face.
  */
 export function lectureSlideAssetPath(
   slug: LectureSlug,
@@ -82,7 +101,7 @@ export function lectureSlideAssetPath(
   return `/lectures/${slug}/slide-${String(slideNumber).padStart(2, "0")}.png`;
 }
 
-/** Title-band cropped variant used as a supporting figure (not the slide face). */
+/** Optional index-card thumb (not the slide figure). */
 export function lectureSlideFigurePath(
   slug: LectureSlug,
   slideNumber: number,
@@ -90,36 +109,7 @@ export function lectureSlideFigurePath(
   return `/lectures/${slug}/slide-${String(slideNumber).padStart(2, "0")}-figure.png`;
 }
 
-/** `{slug, slideId} → original Google Slides export number`. Default: no image. */
-export const LECTURE_SLIDE_IMAGE_ALLOWLIST: {
-  [K in LectureSlug]?: Partial<Record<string, number>>;
-} = {
-  "intro-to-web-development": {
-    "network-of-networks": 5,
-    "client-server": 6,
-    ssr: 9,
-    csr: 11,
-  },
-  "installing-nodejs": {
-    "course-stack": 4,
-  },
-  "creating-a-nextjs-react-application": {
-    "npm-run-dev": 8,
-    "browser-parses-dom": 27,
-  },
-  "commit-to-github": {
-    "create-repo": 5,
-  },
-  "deploying-to-vercel": {
-    "select-repo": 8,
-    deploy: 9,
-    congratulations: 10,
-    protections: 12,
-    "disable-auth": 13,
-  },
-};
-
-/** Index card thumbs — diagrams/screenshots, not slide-01 (WEB DEV). */
+/** Index card thumbs — distinctive mid-deck art, never slide-01 (WEB DEV). */
 export const LECTURE_DECK_THUMBNAILS: Record<LectureSlug, number> = {
   "intro-to-web-development": 6,
   "installing-nodejs": 4,
@@ -127,28 +117,6 @@ export const LECTURE_DECK_THUMBNAILS: Record<LectureSlug, number> = {
   "commit-to-github": 5,
   "deploying-to-vercel": 9,
 };
-
-export function lectureSlideImageNumber(
-  slug: LectureSlug,
-  slide: LectureSlide,
-): number | undefined {
-  return LECTURE_SLIDE_IMAGE_ALLOWLIST[slug]?.[slide.id];
-}
-
-export function withLectureSlideImages(
-  slug: LectureSlug,
-  slides: LectureSlide[],
-): LectureSlide[] {
-  return slides.map((slide) => {
-    const number = lectureSlideImageNumber(slug, slide);
-    if (number == null) return slide;
-    return {
-      ...slide,
-      imageSrc: slide.imageSrc ?? lectureSlideFigurePath(slug, number),
-      imageAlt: slide.imageAlt ?? slide.title,
-    };
-  });
-}
 
 export function lectureSlideCodeBlocks(slide: LectureSlide): LectureCodeBlock[] {
   const blocks: LectureCodeBlock[] = [];

@@ -83,6 +83,7 @@ export const CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES: LectureSlide[] = [
     code: `cd kambaz-next-js
 npm run dev`,
     codeLanguage: "bash",
+    diagram: "npm-run-dev-mock",
   },
   {
     id: "ide",
@@ -346,6 +347,7 @@ export default function Home() {
       "Open `/labs/lab1`, then Elements",
       "The highlighted `h2` is the node React rendered from `page.tsx`",
     ],
+    diagram: "dom-tree",
   },
   {
     id: "next-up",

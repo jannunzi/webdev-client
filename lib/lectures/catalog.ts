@@ -8,7 +8,6 @@ import {
   LECTURE_DECK_THUMBNAILS,
   LECTURE_SLUGS,
   lectureSlideFigurePath,
-  withLectureSlideImages,
   type CanvasLectureGroup,
   type LectureDeck,
   type LectureHubItem,
@@ -92,10 +91,7 @@ export function getLectureDeck(slug: string): LectureDeck | undefined {
   if (!item) return undefined;
   return {
     ...item,
-    slides: withLectureSlideImages(
-      item.slug,
-      LECTURE_SUMMARIES[item.slug].slides,
-    ),
+    slides: LECTURE_SUMMARIES[item.slug].slides,
   };
 }
 

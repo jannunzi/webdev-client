@@ -8,6 +8,7 @@ import {
   type LectureSlide,
 } from "@/lib/lectures/types";
 import LectureCodeBlock from "./LectureCodeBlock";
+import LectureDiagram from "./diagrams/LectureDiagram";
 import LectureEmbed from "./embeds/LectureEmbed";
 import LectureFilmstrip from "./LectureFilmstrip";
 import LectureSlideImage from "./LectureSlideImage";
@@ -338,6 +339,7 @@ export default function LectureDeckShell({
             />
           ))}
           {slide.embed ? <LectureEmbed id={slide.embed} /> : null}
+          {slide.diagram ? <LectureDiagram id={slide.diagram} /> : null}
           {slide.imageSrc ? (
             <LectureSlideImage
               src={slide.imageSrc}
