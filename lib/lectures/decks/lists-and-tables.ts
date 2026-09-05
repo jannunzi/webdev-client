@@ -46,6 +46,7 @@ export const LISTS_AND_TABLES_SLIDES: LectureSlide[] = [
       "The browser numbers them. Add or remove a step — the sequence stays correct",
       "Lab 1 sample id: `wd-pancakes` inside `div#wd-lists`",
     ],
+    embed: "list-tags",
     code: `How to make pancakes:
 <ol id="wd-pancakes">
   <li>Mix dry ingredients.</li>

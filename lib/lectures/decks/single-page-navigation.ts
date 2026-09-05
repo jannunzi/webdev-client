@@ -35,7 +35,8 @@ export const SINGLE_PAGE_NAVIGATION_SLIDES: LectureSlide[] = [
   {
     id: "link-toc",
     title: "Next.js Link TOC — no full reload",
-    kind: "content",
+    kind: "demo",
+    embed: "labs-index",
     bullets: [
       "`import Link from \"next/link\"`",
       "`<Link href=\"/labs/lab1\">Lab 1</Link>` — `href` is the path, not a file path",

@@ -1,5 +1,9 @@
 import type { LectureEmbedId } from "@/lib/lectures/types";
+import AlertButtonEmbed from "./AlertButtonEmbed";
 import AnchorsEmbed from "./AnchorsEmbed";
+import ButtonsEmbed from "./ButtonsEmbed";
+import CheckboxesEmbed from "./CheckboxesEmbed";
+import DropdownsEmbed from "./DropdownsEmbed";
 import FileFieldEmbed from "./FileFieldEmbed";
 import HashTocEmbed from "./HashTocEmbed";
 import HeadingScaleEmbed from "./HeadingScaleEmbed";
@@ -13,6 +17,7 @@ import MailtoTelEmbed from "./MailtoTelEmbed";
 import ParagraphTagEmbed from "./ParagraphTagEmbed";
 import RadioButtonsEmbed from "./RadioButtonsEmbed";
 import TablesEmbed from "./TablesEmbed";
+import TextareaEmbed from "./TextareaEmbed";
 import TextFieldsEmbed from "./TextFieldsEmbed";
 import TypedFieldsEmbed from "./TypedFieldsEmbed";
 import UserCardEmbed from "./UserCardEmbed";
@@ -56,6 +61,16 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <MailtoTelEmbed />;
     case "hash-toc":
       return <HashTocEmbed />;
+    case "textarea":
+      return <TextareaEmbed />;
+    case "checkboxes":
+      return <CheckboxesEmbed />;
+    case "dropdowns":
+      return <DropdownsEmbed />;
+    case "alert-button":
+      return <AlertButtonEmbed />;
+    case "buttons":
+      return <ButtonsEmbed />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;

@@ -45,6 +45,11 @@ export const LECTURE_EMBED_IDS = [
   "typed-fields",
   "mailto-tel",
   "hash-toc",
+  "textarea",
+  "checkboxes",
+  "dropdowns",
+  "alert-button",
+  "buttons",
 ] as const;
 
 export type LectureEmbedId = (typeof LECTURE_EMBED_IDS)[number];

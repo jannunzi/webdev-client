@@ -76,7 +76,8 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
   {
     id: "textarea",
     title: "textarea",
-    kind: "content",
+    kind: "demo",
+    embed: "textarea",
     bullets: [
       "`<textarea>` is for longer text: bios, comments",
       "It has an opening and closing tag. Prefer `defaultValue` in React",
@@ -90,7 +91,8 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
   {
     id: "buttons",
     title: "Buttons: type=button vs submit",
-    kind: "content",
+    kind: "demo",
+    embed: "buttons",
     bullets: [
       "A `<button>` inside a form defaults to `type=\"submit\"` — it sends the form",
       "Save can be the default submit. Cancel is `type=\"button\"` so it does not submit",
@@ -110,6 +112,7 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
       "Classroom demo: `alert(\"Hello\")` — later you will set React state instead",
       "The live button below uses `type=\"button\"`. It does not reload this slide",
     ],
+    embed: "alert-button",
     code: `<button
   type="button"
   id="wd-alert-demo"
@@ -163,7 +166,8 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
   {
     id: "checkboxes-multi",
     title: "Checkboxes are multi-select",
-    kind: "content",
+    kind: "demo",
+    embed: "checkboxes",
     bullets: [
       "Each checkbox can stay on while others are on",
       "They may share a `name` for grouping, but they do not exclude each other",
@@ -177,7 +181,8 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
   {
     id: "select-one",
     title: "select one",
-    kind: "content",
+    kind: "demo",
+    embed: "dropdowns",
     bullets: [
       "`<select>` plus `<option value=\"…\">`",
       "`defaultValue` on `select` picks the initial option (match an option’s `value`)",
@@ -193,7 +198,8 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
   {
     id: "select-many",
     title: "select many",
-    kind: "content",
+    kind: "demo",
+    embed: "dropdowns",
     bullets: [
       "`multiple` plus `defaultValue={[\"COMEDY\", \"SCIFI\"]}`",
       "Hold Cmd (macOS) or Ctrl (Windows) to pick more than one",
@@ -203,7 +209,8 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
   {
     id: "number",
     title: "type=number",
-    kind: "content",
+    kind: "demo",
+    embed: "typed-fields",
     bullets: [
       "Numeric keyboard / stepper where the browser supports it",
       "`min`, `max`, `step` constrain the value",
@@ -215,7 +222,8 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
   {
     id: "range",
     title: "type=range",
-    kind: "content",
+    kind: "demo",
+    embed: "typed-fields",
     bullets: [
       "A slider. Pair it with a label so the value’s meaning is clear",
       "Lab 1: rating `wd-text-fields-rating` — `min=\"1\"` `max=\"5\"`",
@@ -224,7 +232,8 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
   {
     id: "email",
     title: "type=email",
-    kind: "content",
+    kind: "demo",
+    embed: "typed-fields",
     bullets: [
       "The browser can hint a keyboard and do a basic format check",
       "Still uncontrolled with `placeholder` / `defaultValue`",

@@ -256,11 +256,24 @@ describe("lecture decks", () => {
         "lab1-nest": "heading-tags",
         "wrap-p": "paragraph-tag",
       },
-      "lists-and-tables": { "books-ul": "list-tags", "quiz-table": "tables" },
+      "lists-and-tables": {
+        "pancakes-after": "list-tags",
+        "books-ul": "list-tags",
+        "quiz-table": "tables",
+      },
       "web-forms": {
         "text-fields-demo": "text-fields",
+        textarea: "textarea",
+        buttons: "buttons",
+        "onclick-alert": "alert-button",
         file: "file-field",
         "radio-same-name": "radio-buttons",
+        "checkboxes-multi": "checkboxes",
+        "select-one": "dropdowns",
+        "select-many": "dropdowns",
+        number: "typed-fields",
+        range: "typed-fields",
+        email: "typed-fields",
         date: "typed-fields",
       },
       anchors: {
@@ -269,18 +282,31 @@ describe("lecture decks", () => {
         "hash-toc": "hash-toc",
       },
       "single-page-navigation": {
+        "link-toc": "labs-index",
         "labs-index-toc": "labs-index",
         "layout-children": "link-nav",
       },
     } as const;
+    const used = new Set<string>();
     for (const [slug, slides] of Object.entries(expected)) {
       for (const [id, embed] of Object.entries(slides)) {
         const slide = findSlide(slug, id);
         assert.equal(slide.embed, embed);
         assert.equal(slide.imageSrc, undefined);
         assert.ok((LECTURE_EMBED_IDS as readonly string[]).includes(embed));
+        used.add(embed);
       }
     }
+    for (const deck of listLectureDecks()) {
+      for (const slide of deck.slides) {
+        if (slide.embed) used.add(slide.embed);
+      }
+    }
+    assert.deepEqual(
+      [...LECTURE_EMBED_IDS].sort(),
+      [...used].sort(),
+      "every embed id should be wired to a slide",
+    );
   });
 
   it("keeps Node deck evergreen and uses kambaz spelling", () => {
