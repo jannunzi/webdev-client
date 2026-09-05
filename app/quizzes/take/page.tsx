@@ -26,7 +26,9 @@ export default function TakeQuizIndexPage() {
       </h1>
       <p className="rounded-lg border border-sky-300 bg-sky-50 px-4 py-3 text-sky-950">
         Anyone can browse the book. Only students on the Canvas roster can
-        start or submit a graded attempt. Practice self-checks stay on{" "}
+        start or submit a graded attempt. After you submit, the same URL is
+        how you come back for your score and — during the class-wide review
+        week — the answers. Practice self-checks stay on{" "}
         <Link href="/book/practice">/book/practice</Link>.
         <StaffOnly>
           {" "}
@@ -49,7 +51,7 @@ export default function TakeQuizIndexPage() {
               href={`/quizzes/take/${quizId}`}
               className="book-practice-cta inline-block rounded border border-neutral-800 bg-neutral-800 px-3 py-2 text-sm"
             >
-              Take {bank.title}
+              Take or review {bank.title}
             </Link>
           </li>
         ))}

@@ -29,6 +29,17 @@ export async function insertQuizAttempt(
   return persistQuizAttempt(collection, doc);
 }
 
+export async function findLatestQuizAttempt(
+  clerkUserId: string,
+  quizId: string,
+): Promise<QuizAttemptDoc | null> {
+  const collection = await getQuizAttemptsCollection();
+  return collection.findOne(
+    { clerkUserId, quizId },
+    { sort: { submittedAt: -1 } },
+  );
+}
+
 export async function ensureAttemptIndexes(): Promise<void> {
   const collection = await getQuizAttemptsCollection();
   await collection.createIndex({ clerkUserId: 1, quizId: 1, submittedAt: -1 });

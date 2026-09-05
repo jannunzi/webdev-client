@@ -7,7 +7,13 @@ import type {
   StudentQuestion,
   SubmitExamResult,
 } from "@/lib/quiz-exam/types";
+import {
+  scheduleFromIso,
+  type QuizPhase,
+  type QuizScheduleIso,
+} from "@/lib/quiz-exam/schedule";
 import { submitExamAttempt } from "../actions";
+import { SubmittedAttemptView } from "./AttemptReview";
 
 function readAnswers(
   questions: StudentQuestion[],
@@ -43,12 +49,14 @@ export default function ExamForm({
   title,
   questions,
   startedAt,
+  schedule,
   impersonating = false,
 }: {
   quizId: string;
   title: string;
   questions: StudentQuestion[];
   startedAt: string;
+  schedule: QuizScheduleIso;
   impersonating?: boolean;
 }) {
   const [result, setResult] = useState<SubmitExamResult | null>(null);
@@ -70,8 +78,19 @@ export default function ExamForm({
   }
 
   if (result?.ok) {
+    const phase: QuizPhase = result.window?.phase ?? "submitted_waiting";
     return (
-      <ScoreSummary title={title} questions={questions} result={result} />
+      <SubmittedAttemptView
+        title={title}
+        schedule={scheduleFromIso(schedule)}
+        phase={phase}
+        score={result.score}
+        maxScore={result.maxScore}
+        questions={questions}
+        graded={result.graded}
+        persisted={result.persisted}
+        impersonation={result.impersonation === true}
+      />
     );
   }
 
@@ -87,8 +106,9 @@ export default function ExamForm({
       ) : null}
 
       <p className="text-sm text-neutral-700">
-        One question is drawn from each of {questions.length} groups. Answers
-        stay hidden until you submit. Grading happens on the server.
+        One question is drawn from each of {questions.length} groups. Correct
+        answers stay hidden until the class-wide review window — not immediately
+        after you submit. Grading happens on the server.
       </p>
 
       {questions.map((question, index) => (
@@ -186,67 +206,5 @@ function QuestionField({
         </div>
       ) : null}
     </fieldset>
-  );
-}
-
-function ScoreSummary({
-  title,
-  questions,
-  result,
-}: {
-  title: string;
-  questions: StudentQuestion[];
-  result: Extract<SubmitExamResult, { ok: true }>;
-}) {
-  const byId = new Map(questions.map((question) => [question.id, question]));
-  return (
-    <div>
-      <div
-        role="status"
-        className={`mb-6 rounded-lg border-2 px-4 py-3 ${
-          result.impersonation
-            ? "border-amber-500 bg-amber-50 text-amber-950"
-            : "border-emerald-600 bg-emerald-50 text-emerald-950"
-        }`}
-      >
-        <p className="m-0 text-lg font-semibold">
-          {title}: {result.score} / {result.maxScore}
-        </p>
-        <p className="mb-0 mt-1 text-sm">
-          {result.impersonation
-            ? "Impersonation — attempt not saved"
-            : result.persisted
-              ? "This attempt was stored in MongoDB Atlas for later Canvas grade import."
-              : "Your score was calculated, but the attempt was not stored. Ask the instructor to check Atlas configuration."}
-        </p>
-      </div>
-      <ol className="m-0 list-none space-y-3 p-0">
-        {result.graded.map((item, index) => {
-          const question = byId.get(item.questionId);
-          return (
-            <li
-              key={item.questionId}
-              className={`rounded-lg border px-4 py-3 ${
-                item.correct
-                  ? "border-emerald-300 bg-emerald-50"
-                  : "border-rose-200 bg-rose-50"
-              }`}
-            >
-              <p className="m-0 text-sm font-semibold">
-                {index + 1}. {question?.groupName ?? item.groupId}
-                {" — "}
-                {item.correct ? "Correct" : "Incorrect"}
-              </p>
-              {question ? (
-                <p className="mt-1 mb-0 whitespace-pre-wrap">{question.prompt}</p>
-              ) : null}
-              <p className="mb-0 mt-2 text-sm">
-                Correct answer: {item.correctReveal}
-              </p>
-            </li>
-          );
-        })}
-      </ol>
-    </div>
   );
 }

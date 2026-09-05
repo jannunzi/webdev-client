@@ -1,4 +1,5 @@
 import type { QuestionType } from "../question-bank";
+import type { AnswerWindowInfo } from "./schedule";
 
 export type StudentChoice = {
   id: string;
@@ -73,6 +74,7 @@ export type SubmitExamSuccess = {
   persisted: boolean;
   impersonation?: boolean;
   graded: GradedAnswer[];
+  window?: AnswerWindowInfo;
 };
 
 export type SubmitExamFailure = {
@@ -83,7 +85,9 @@ export type SubmitExamFailure = {
     | "not_on_roster"
     | "roster_empty"
     | "invalid"
-    | "unknown_quiz";
+    | "unknown_quiz"
+    | "take_closed"
+    | "already_submitted";
   message: string;
 };
 

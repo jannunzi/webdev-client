@@ -178,6 +178,51 @@ Optional: set `IMPERSONATION_STUDENT_EMAIL` to override the dummy address.
 draw is seeded by Clerk user id + bank id so a refresh keeps the same items.
 Correct answers are stripped from the client payload and graded on submit.
 
+### Answer review windows (same student URL)
+
+After submit, students return to **the same URL** (`/quizzes/take/q1`, etc.).
+Unlock is **class-wide** (wall-clock ET → stored as ISO UTC in
+`lib/quiz-exam/schedule.ts`), not “one week after *your* submit”.
+
+| Phase | What the student sees |
+| --- | --- |
+| Take open, no attempt | Existing exam form. New attempts are blocked after the Sunday 23:59 ET due. |
+| Submitted, before answers open | Score / submitted status. Answers start **{answersOpenAt}**, only for **one week**, until **{answersCloseAt}**, and again one week before the midterm or final. |
+| First answer week | Full review of their drawn attempt with correct answers. Banner: only one week, until **{answersCloseAt}**; reopen one week before the exam. |
+| After that week | Answers hidden. Message that the window ended, plus the next reopen (week before midterm/final) if it is still ahead. |
+| Midterm / final prep week | Answers shown again until the exam instant. |
+
+The server clock decides the phase. `correctReveal` is omitted from HTML and
+from the submit payload unless the phase is `answers_open` or `answers_reopen`.
+
+Fall 2026 first windows (00:00 ET Monday → +7d):
+
+- Q1: 2026-10-05 → 2026-10-12
+- Q2: 2026-10-19 → 2026-10-26
+- Q3: 2026-11-02 → 2026-11-09
+- Q4: 2026-11-16 → 2026-11-23
+- Q5: 2026-11-30 → 2026-12-07
+- Q6: 2026-12-14 → 2026-12-21
+
+Take windows follow Q1’s pattern (Monday 00:00 ET unlock → Sunday 23:59 ET
+due). Q1: unlock 2026-09-28, due 2026-10-04 23:59 ET.
+
+**Exam dates** live in `COURSE_EXAMS` in the same module:
+
+- `midtermAt` — **placeholder** `2026-11-05T05:00:00.000Z` (Thu 2026-11-05
+  00:00 ET). The published syllabus has no midterm.
+- `finalAt` — syllabus **Exam** date `2026-12-03T05:00:00.000Z`
+  (2026-12-03 00:00 ET). University finals are 2026-12-14–20 on the syllabus
+  and are not used for the reopen.
+
+Q1–Q3 reopen `[midtermAt − 7d, midtermAt)` and are labeled “midterm”. Q4–Q6
+reopen `[finalAt − 7d, finalAt)` and are labeled “final”. Edit those two ISO
+strings when Jose publishes a midterm.
+
+Staff **View as student** still does not persist an attempt. Impersonation can
+exercise the form even outside the take window; answers still follow the
+server phase (no leak while waiting/closed).
+
 ### Next step (not in this PR)
 
 Instructor CSV export of `quiz_attempts` for Canvas grade import. Storing
