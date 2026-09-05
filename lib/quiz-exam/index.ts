@@ -14,6 +14,7 @@ export {
   getAnswerRevealPhase,
   getQuizSchedule,
 } from "./schedule";
+export { STUDENT_COPY } from "./student-copy";
 export { runExamSubmit, rosterGateMessage } from "./submit";
 export type {
   GradedAnswer,

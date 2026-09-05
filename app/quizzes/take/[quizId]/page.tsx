@@ -22,6 +22,7 @@ import {
   canvasUserIdFromMetadata,
   collectClerkEmails,
 } from "@/lib/roster/emails";
+import { STUDENT_COPY } from "@/lib/quiz-exam/student-copy";
 import { lookupCanvasRoster } from "@/lib/roster/lookup";
 import {
   effectiveIsStaff,
@@ -123,17 +124,10 @@ export default async function TakeExamPage({ params }: PageProps) {
 
   if (roster.status === "not_on_roster" || roster.status === "not_configured") {
     return (
-      <StatusPanel
-        title="Your account isn’t on the Canvas roster for this course"
-        tone="warn"
-      >
+      <StatusPanel title={STUDENT_COPY.notOnRosterTitle} tone="warn">
+        <p>{STUDENT_COPY.notOnRosterPage}</p>
         <p>
-          Signed-in browsing of the book, syllabus, labs, and practice pages
-          is fine. A graded attempt was not created.
-        </p>
-        <p>
-          Use the same email as your Canvas account (Northeastern login). If
-          that still fails, ask the instructor to refresh the roster.
+          If that still fails, ask the instructor to refresh the roster.
         </p>
       </StatusPanel>
     );

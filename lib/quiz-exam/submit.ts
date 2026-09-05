@@ -1,4 +1,5 @@
 import type { CanvasRosterEntry, RosterLookupResult } from "../roster/types";
+import { STUDENT_COPY } from "./student-copy";
 import { getExamBank } from "./banks";
 import { gradeDrawnQuestions } from "./grade";
 import { findBankQuestion } from "./sample";
@@ -55,10 +56,7 @@ export function rosterGateMessage(roster: RosterLookupResult): SubmitExamFailure
     );
   }
   if (roster.status === "not_on_roster") {
-    return fail(
-      "not_on_roster",
-      "Your account isn’t on the Canvas roster for this course. You can browse the book, but a graded attempt was not created.",
-    );
+    return fail("not_on_roster", STUDENT_COPY.notOnRosterSubmit);
   }
   return null;
 }

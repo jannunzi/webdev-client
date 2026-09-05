@@ -98,7 +98,8 @@ describe("student exam sampling and grading", () => {
     assert.equal(result.ok, false);
     if (!result.ok) {
       assert.equal(result.code, "not_on_roster");
-      assert.match(result.message, /Canvas roster/);
+      assert.match(result.message, /course roster/);
+      assert.equal(/Clerk/i.test(result.message), false);
     }
     assert.equal(stored.length, 0);
   });
