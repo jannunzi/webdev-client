@@ -21,7 +21,7 @@ export default function StaffReviewDenied({
 }) {
   if (access === "not_configured") {
     return (
-      <article className="mx-auto max-w-3xl font-sans">
+      <article className="page-content font-sans">
         <StatusPanel title="This page is for course staff." tone="warn">
           <StudentExamLinks />
         </StatusPanel>
@@ -31,7 +31,7 @@ export default function StaffReviewDenied({
 
   if (access === "signed_out") {
     return (
-      <article className="mx-auto max-w-3xl font-sans">
+      <article className="page-content font-sans">
         <StatusPanel title="Sign in to continue." tone="neutral">
           <p>This page is for course staff.</p>
           <StudentExamLinks />
@@ -41,7 +41,7 @@ export default function StaffReviewDenied({
   }
 
   return (
-    <article className="mx-auto max-w-3xl font-sans">
+    <article className="page-content font-sans">
       <StatusPanel title="403 Forbidden" tone="warn">
         <p>This page is for course staff only.</p>
         <p>

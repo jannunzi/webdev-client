@@ -12,7 +12,7 @@ import {
 
 export default function ProjectPage() {
   return (
-    <article className="mx-auto max-w-4xl">
+    <article className="page-content">
       <CourseInfoHeader
         title="Final Project"
         lede={

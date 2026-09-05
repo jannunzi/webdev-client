@@ -29,8 +29,22 @@ export {
 export {
   assignmentSubmitAccess,
   canPersistAssignmentSubmission,
+  canPersistStaffGrade,
+  canViewStaffGrader,
+  staffGraderAccess,
   supportsUrlSubmission,
 } from "./access";
+export {
+  computeAllOrNothingGrade,
+  formatGradeSummary,
+  proposedGradeFromResults,
+} from "./grade";
+export {
+  adjacentStaffStudentKeys,
+  buildStaffStudentQueue,
+  findStaffStudent,
+} from "./staff";
+export { criterionVerifyUrl } from "./verify-urls";
 export type {
   AssignmentHubItem,
   AssignmentId,

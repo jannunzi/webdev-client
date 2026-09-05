@@ -6,7 +6,7 @@ const PIAZZA_COLUMNS = ["Day", "Time ET", "Who"] as const;
 
 export default function PiazzaHoursPage() {
   return (
-    <article className="mx-auto max-w-4xl">
+    <article className="page-content">
       <CourseInfoHeader
         title="Piazza Hours"
         lede={

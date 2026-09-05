@@ -12,7 +12,7 @@ export const assignments: AssignmentItem[] = [
     title: "HTML user interfaces",
     chapter: "Chapter 1",
     summary:
-      "Prototype Kambaz screens with HTML and the App Router: landing, Account, Dashboard, course Home, Modules, and Assignments. Structure first; visual polish comes in A2.",
+      "Build the Labs HTML work (Lab 1 components and Labs navigation) and prototype Kambaz structure screens with HTML and the App Router: landing, Account, Dashboard, course Home, Modules, and Assignments. Structure first; visual polish comes in A2.",
   },
   {
     id: "A2",

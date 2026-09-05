@@ -16,7 +16,7 @@ export default function AssignmentsLayout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <div className="book-shell min-h-screen">
-      <main className="mx-auto min-w-0 max-w-3xl px-4 py-8 sm:px-6">
+      <main className="page-content min-w-0 px-4 py-8 sm:px-6">
         {isClerkPublishableKeySet() ? <AssignmentAuthBar /> : null}
         {isClerkConfigured() ? <StaffViewModeBar /> : null}
         {children}

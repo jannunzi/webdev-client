@@ -70,6 +70,9 @@ describe("assignment catalog", () => {
     assert.equal(getAssignment("a2")?.dueDate, "2026-10-13");
     assert.equal(getAssignment("a6")?.dueDate, "2026-12-03");
     assert.equal(getAssignment("a1")?.chapterHref, "/book/ch1");
+    assert.match(getAssignment("a1")?.summary ?? "", /Labs/i);
+    assert.match(getAssignment("a1")?.summary ?? "", /Kambaz/i);
+    assert.doesNotMatch(getAssignment("a1")?.summary ?? "", /Best \/ Better/);
     for (const item of items) {
       const chapterNumber = item.id.slice(1);
       assert.equal(item.chapterHref, `/book/ch${chapterNumber}`);

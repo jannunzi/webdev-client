@@ -1,16 +1,20 @@
 import "server-only";
 
+import { normalizeEmail } from "../roster/emails";
 import { getCollection } from "../mongo";
 import type { AssignmentId } from "./types";
 import {
   ASSIGNMENT_SUBMISSIONS_COLLECTION,
+  listAssignmentSubmissions,
   loadAssignmentSubmission,
   upsertAssignmentSubmission,
+  type AssignmentStaffGrade,
   type AssignmentSubmissionDoc,
+  type AssignmentSubmissionIdentity,
   type SubmissionStore,
 } from "./submissions-store";
 
-export type { AssignmentSubmissionDoc, SubmissionStore };
+export type { AssignmentStaffGrade, AssignmentSubmissionDoc, SubmissionStore };
 
 export async function getAssignmentSubmissionsCollection() {
   return getCollection<AssignmentSubmissionDoc>(
@@ -32,6 +36,9 @@ export function mongoSubmissionStore(
         { upsert: true },
       );
     },
+    async listByAssignment(assignmentId) {
+      return collection.find({ assignmentId }).toArray();
+    },
   };
 }
 
@@ -43,6 +50,7 @@ export async function ensureAssignmentSubmissionIndexes(): Promise<void> {
     { clerkUserId: 1, assignmentId: 1 },
     { unique: true },
   );
+  await collection.createIndex({ assignmentId: 1, rosterEmail: 1 });
 }
 
 async function readyStore(): Promise<SubmissionStore> {
@@ -69,6 +77,13 @@ export async function readAssignmentSubmission(
   );
 }
 
+export async function listSubmissionsForAssignment(
+  assignmentId: AssignmentId,
+): Promise<AssignmentSubmissionDoc[]> {
+  const store = await readyStore();
+  return listAssignmentSubmissions(store, assignmentId);
+}
+
 export async function writeAssignmentSubmission(input: {
   clerkUserId: string;
   assignmentId: AssignmentId;
@@ -76,7 +91,26 @@ export async function writeAssignmentSubmission(input: {
   vercelUrl: string;
   checkResults?: AssignmentSubmissionDoc["checkResults"];
   checked?: boolean;
+  identity?: AssignmentSubmissionIdentity;
+  staffGrade?: AssignmentStaffGrade | null;
 }): Promise<AssignmentSubmissionDoc> {
   const store = await readyStore();
   return upsertAssignmentSubmission(store, input);
+}
+
+export async function findSubmissionForStaffStudent(input: {
+  assignmentId: AssignmentId;
+  clerkUserId?: string;
+  email?: string;
+}): Promise<AssignmentSubmissionDoc | null> {
+  if (input.clerkUserId) {
+    return readAssignmentSubmission(input.clerkUserId, input.assignmentId);
+  }
+  if (!input.email) return null;
+  const email = normalizeEmail(input.email);
+  const collection = await getAssignmentSubmissionsCollection();
+  return collection.findOne({
+    assignmentId: input.assignmentId,
+    $or: [{ rosterEmail: email }, { email }],
+  });
 }

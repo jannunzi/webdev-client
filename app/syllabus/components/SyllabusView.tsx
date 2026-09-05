@@ -102,7 +102,7 @@ export default function SyllabusView({
   const agendaRows = agendasBySection[section.id] ?? [];
 
   return (
-    <article className="mx-auto max-w-4xl">
+    <article className="page-content">
       <SectionTabs
         sections={sections}
         activeId={section.id}

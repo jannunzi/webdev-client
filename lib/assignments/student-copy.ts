@@ -18,6 +18,15 @@ export const ASSIGNMENT_STUDENT_COPY = {
     "Impersonation — you can run checks to smoke-test the form. The submission is not saved.",
     saved: "Saved. You can run checks again after you update your Vercel URL.",
   savedButNotPersisted: "Checks finished. This preview was not saved.",
+  checkInstructions:
+    "Paste a public Vercel URL. Checks normalize the deploy origin, fetch Labs and Lab pages, crawl Kambaz screens, and look for wd-* ids and required content markers. A GitHub URL is optional for Run checks.",
+  proposedGradeLabel: "Proposed grade",
+  staffGradeLabel: "Staff grade",
+  acceptProposed: "Accept proposed grade",
+  overrideGrade: "Save override grade",
+  noSubmission: "This student has not submitted a Vercel URL yet.",
+  staffCommentsHint: "Comments are visible to the student.",
+  studentFeedbackHint: "Staff comments on each item, if any, appear below.",
   bothUrlsRequired: "Enter both a GitHub repository URL and a Vercel deployment URL.",
   vercelRequired: "Enter a Vercel deployment URL so checks can open your site.",
   githubFormat:

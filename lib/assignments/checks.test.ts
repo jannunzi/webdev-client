@@ -415,6 +415,32 @@ describe("assignment submission access and store", () => {
     const loaded = await loadAssignmentSubmission(store, "user_1", "a1");
     assert.equal(loaded?.vercelUrl, second.vercelUrl);
     assert.equal(await loadAssignmentSubmission(store, "user_2", "a1"), null);
+
+    const graded = await upsertAssignmentSubmission(store, {
+      clerkUserId: "user_1",
+      assignmentId: "a1",
+      githubUrl: second.githubUrl,
+      vercelUrl: second.vercelUrl,
+      identity: { email: "jane.doe@northeastern.edu", name: "Jane Doe" },
+      staffGrade: {
+        earnedPoints: 8,
+        totalPoints: 101,
+        percent: 8,
+        acceptedProposed: true,
+        comments: { "a1-delivery-vercel": "Looks good." },
+        gradedAt: new Date("2026-09-05T14:00:00.000Z"),
+      },
+    });
+    assert.equal(graded.email, "jane.doe@northeastern.edu");
+    const kept = await upsertAssignmentSubmission(store, {
+      clerkUserId: "user_1",
+      assignmentId: "a1",
+      githubUrl: second.githubUrl,
+      vercelUrl: "https://jane-a1-v3.vercel.app",
+    });
+    assert.equal(kept.staffGrade?.earnedPoints, 8);
+    assert.equal(kept.staffGrade?.comments?.["a1-delivery-vercel"], "Looks good.");
+    assert.equal(kept.email, "jane.doe@northeastern.edu");
   });
 });
 
@@ -423,5 +449,14 @@ describe("student-facing copy", () => {
     for (const value of Object.values(ASSIGNMENT_STUDENT_COPY)) {
       assert.doesNotMatch(value, /Clerk/i);
     }
+  });
+
+  it("describes origin normalize, Labs/Kambaz crawl, and optional GitHub", () => {
+    assert.match(ASSIGNMENT_STUDENT_COPY.checkInstructions, /normalize the deploy origin/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.checkInstructions, /Labs and Lab pages/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.checkInstructions, /Kambaz/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.checkInstructions, /wd-\*/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.checkInstructions, /GitHub URL is optional/i);
+    assert.doesNotMatch(ASSIGNMENT_STUDENT_COPY.checkInstructions, /Best \/ Better/i);
   });
 });

@@ -4,7 +4,7 @@ import { renderStaffReview } from "../components/render-staff-review";
 
 export default async function QuizzesIndexPage() {
   return renderStaffReview(() => (
-    <article className="mx-auto max-w-3xl font-sans">
+    <article className="page-content font-sans">
       <p className="mb-4 text-sm">
         <Link href="/book">Course book</Link>
         {" · "}

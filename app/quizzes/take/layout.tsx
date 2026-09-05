@@ -17,7 +17,7 @@ export default function TakeQuizLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return (
-    <div className="mx-auto max-w-3xl font-sans">
+    <div className="page-content font-sans">
       {isClerkPublishableKeySet() ? <QuizAuthBar /> : null}
       <StaffViewModeBar />
       <InstructorPeopleLink asLine />
