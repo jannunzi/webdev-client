@@ -105,8 +105,7 @@ export default function LectureDeckShell({
   const last = slides.length - 1;
   const slide = slides[index] ?? slides[0];
   const kind = slide?.kind ?? "content";
-  const imageLed = Boolean(slide?.imageSrc);
-  const codeBlocks = slide && !imageLed ? lectureSlideCodeBlocks(slide) : [];
+  const codeBlocks = slide ? lectureSlideCodeBlocks(slide) : [];
 
   const goTo = useCallback(
     (next: number) => {
@@ -246,8 +245,11 @@ export default function LectureDeckShell({
   if (!slide) return null;
 
   const percent = slides.length === 0 ? 0 : ((index + 1) / slides.length) * 100;
-  const titleClass =
-    kind === "title"
+  const titleClass = isFullscreen
+    ? kind === "title"
+      ? "mt-0 font-sans text-5xl font-semibold tracking-tight text-white sm:text-6xl"
+      : "mt-0 font-sans text-4xl font-semibold tracking-tight sm:text-5xl"
+    : kind === "title"
       ? "mt-0 font-sans text-4xl font-semibold tracking-tight text-white sm:text-5xl"
       : "mt-0 font-sans text-3xl font-semibold tracking-tight";
 
@@ -303,65 +305,55 @@ export default function LectureDeckShell({
           ref={stageRef}
           className={
             isFullscreen
-              ? "relative h-full w-full overflow-hidden bg-black p-0"
-              : `relative min-h-0 flex-1 overflow-hidden ${
-                  imageLed
-                    ? "rounded-lg border border-neutral-300 bg-neutral-950"
-                    : `rounded-lg border-2 px-5 py-6 sm:px-8 sm:py-8 ${kindFrame(kind)} overflow-auto`
-                }`
+              ? `h-full w-full overflow-auto px-6 py-8 sm:px-10 sm:py-10 ${kindFrame(kind)}`
+              : `min-h-0 flex-1 overflow-auto rounded-lg border-2 px-5 py-6 sm:px-8 sm:py-8 ${kindFrame(kind)}`
           }
         >
-          {imageLed ? (
-            <>
-              <h2 className="sr-only">{slide.title}</h2>
-              <LectureSlideImage
-                src={slide.imageSrc!}
-                alt={slide.imageAlt ?? slide.title}
-              />
-            </>
-          ) : (
-            <>
-              <p
-                className={`m-0 text-xs font-semibold uppercase tracking-wide ${
-                  kind === "title" ? "text-neutral-300" : "text-neutral-500"
-                }`}
-              >
-                {kindLabel(kind)}
-              </p>
-              <h2 className={`${titleClass} mb-4`}>{slide.title}</h2>
-              {slide.bullets && slide.bullets.length > 0 ? (
-                <ul
-                  className={`m-0 space-y-2 pl-5 text-[1.05rem] leading-relaxed ${
-                    kind === "title" ? "text-neutral-100" : "text-neutral-900"
-                  }`}
-                >
-                  {slide.bullets.map((bullet, bulletIndex) => (
-                    <li key={`${slide.id}-${bulletIndex}`}>
-                      <SlideText text={bullet} />
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
-              {codeBlocks.map((block, blockIndex) => (
-                <LectureCodeBlock
-                  key={`${slide.id}-code-${blockIndex}`}
-                  block={block}
-                />
+          <p
+            className={`m-0 text-xs font-semibold uppercase tracking-wide ${
+              kind === "title" ? "text-neutral-300" : "text-neutral-500"
+            }`}
+          >
+            {kindLabel(kind)}
+          </p>
+          <h2 className={`${titleClass} mb-4`}>{slide.title}</h2>
+          {slide.bullets && slide.bullets.length > 0 ? (
+            <ul
+              className={`m-0 space-y-2 pl-5 text-[1.05rem] leading-relaxed ${
+                kind === "title" ? "text-neutral-100" : "text-neutral-900"
+              }`}
+            >
+              {slide.bullets.map((bullet, bulletIndex) => (
+                <li key={`${slide.id}-${bulletIndex}`}>
+                  <SlideText text={bullet} />
+                </li>
               ))}
-              {slide.interactiveHint ? (
-                <p
-                  className={`mt-6 rounded-md border px-3 py-2 text-sm ${
-                    kind === "title"
-                      ? "border-neutral-600 bg-neutral-800 text-neutral-100"
-                      : "border-neutral-300 bg-white text-neutral-800"
-                  }`}
-                >
-                  <span className="font-semibold">Try this: </span>
-                  <SlideText text={slide.interactiveHint} />
-                </p>
-              ) : null}
-            </>
-          )}
+            </ul>
+          ) : null}
+          {codeBlocks.map((block, blockIndex) => (
+            <LectureCodeBlock
+              key={`${slide.id}-code-${blockIndex}`}
+              block={block}
+            />
+          ))}
+          {slide.imageSrc ? (
+            <LectureSlideImage
+              src={slide.imageSrc}
+              alt={slide.imageAlt ?? slide.title}
+            />
+          ) : null}
+          {slide.interactiveHint ? (
+            <p
+              className={`mt-6 rounded-md border px-3 py-2 text-sm ${
+                kind === "title"
+                  ? "border-neutral-600 bg-neutral-800 text-neutral-100"
+                  : "border-neutral-300 bg-white text-neutral-800"
+              }`}
+            >
+              <span className="font-semibold">Try this: </span>
+              <SlideText text={slide.interactiveHint} />
+            </p>
+          ) : null}
         </article>
 
         {isFullscreen ? null : (
