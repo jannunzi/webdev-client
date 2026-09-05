@@ -158,6 +158,23 @@ describe("lecture decks", () => {
     assert.doesNotMatch(text, /npm create vite/i);
     assert.doesNotMatch(text, /create-vite/);
     assert.doesNotMatch(text, /vite\.config/i);
+    assert.doesNotMatch(text, /Vite SPA leftover/i);
+    assert.doesNotMatch(text, /No Vite SPA setup/i);
+  });
+
+  it("drops Vite SPA leftover phrasing from Lecture 1 decks", () => {
+    for (const deck of listLectureDecks()) {
+      const text = slideText(deck.slug);
+      assert.doesNotMatch(text, /Vite SPA leftover/i);
+      assert.doesNotMatch(text, /No Vite SPA setup/i);
+      assert.doesNotMatch(text, /Vite-only SPA/i);
+    }
+    const creating = getLecture("creating-a-nextjs-react-application");
+    assert.ok(creating);
+    assert.doesNotMatch(creating.summary, /Vite SPA leftover/i);
+    const nextUp = findSlide("installing-nodejs", "next-up");
+    assert.match(nextUp.title, /Next: create the Next\.js app/);
+    assert.ok(!(nextUp.bullets ?? []).some((row) => /vite/i.test(row)));
   });
 
   it("embeds live Ch1 demos instead of UI screenshots", () => {

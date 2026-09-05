@@ -1,5 +1,51 @@
 import DiagramFrame from "./DiagramFrame";
 
+const CLIENT_RIGHT = 250;
+const SERVER_LEFT = 430;
+const REQUEST_Y = 116;
+const RESPONSE_Y = 200;
+const ARROW_INSET = 10;
+const REQUEST_X1 = CLIENT_RIGHT + ARROW_INSET;
+const REQUEST_X2 = SERVER_LEFT - ARROW_INSET;
+const LABEL_W = 148;
+const LABEL_H = 26;
+
+function ArrowLabel({
+  x1,
+  x2,
+  y,
+  text,
+}: {
+  x1: number;
+  x2: number;
+  y: number;
+  text: string;
+}) {
+  const midX = (x1 + x2) / 2;
+  return (
+    <g>
+      <rect
+        x={midX - LABEL_W / 2}
+        y={y - LABEL_H / 2}
+        width={LABEL_W}
+        height={LABEL_H}
+        rx="6"
+        fill="#ffffff"
+      />
+      <text
+        x={midX}
+        y={y + 5}
+        textAnchor="middle"
+        fontSize="16"
+        fontWeight="700"
+        fontFamily="ui-sans-serif, system-ui, sans-serif"
+      >
+        {text}
+      </text>
+    </g>
+  );
+}
+
 export default function ClientServerDiagram() {
   return (
     <DiagramFrame label="Diagram">
@@ -13,6 +59,19 @@ export default function ClientServerDiagram() {
           A React browser client sends an HTTP request to a Node server, which
           reads files or MongoDB and returns an HTTP response
         </title>
+        <defs>
+          <marker
+            id="cs-arrow"
+            markerUnits="userSpaceOnUse"
+            markerWidth="12"
+            markerHeight="12"
+            refX="12"
+            refY="6"
+            orient="auto"
+          >
+            <path d="M0,0 L12,6 L0,12 Z" fill="#171717" />
+          </marker>
+        </defs>
         <rect x="20" y="36" width="230" height="208" rx="12" fill="#fafafa" stroke="#171717" strokeWidth="2.5" />
         <text x="135" y="72" textAnchor="middle" fontSize="16" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">
           Clients
@@ -28,14 +87,26 @@ export default function ClientServerDiagram() {
           Next.js UI
         </text>
 
-        <text x="440" y="92" textAnchor="middle" fontSize="16" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">
-          HTTP request
-        </text>
-        <line x1="268" y1="110" x2="412" y2="110" stroke="#171717" strokeWidth="3" markerEnd="url(#cs-arrow)" />
-        <text x="440" y="186" textAnchor="middle" fontSize="16" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">
-          HTTP response
-        </text>
-        <line x1="412" y1="204" x2="268" y2="204" stroke="#171717" strokeWidth="3" markerEnd="url(#cs-arrow)" />
+        <line
+          x1={REQUEST_X1}
+          y1={REQUEST_Y}
+          x2={REQUEST_X2}
+          y2={REQUEST_Y}
+          stroke="#171717"
+          strokeWidth="3"
+          markerEnd="url(#cs-arrow)"
+        />
+        <ArrowLabel x1={REQUEST_X1} x2={REQUEST_X2} y={REQUEST_Y} text="HTTP request" />
+        <line
+          x1={REQUEST_X2}
+          y1={RESPONSE_Y}
+          x2={REQUEST_X1}
+          y2={RESPONSE_Y}
+          stroke="#171717"
+          strokeWidth="3"
+          markerEnd="url(#cs-arrow)"
+        />
+        <ArrowLabel x1={REQUEST_X1} x2={REQUEST_X2} y={RESPONSE_Y} text="HTTP response" />
 
         <rect x="430" y="36" width="200" height="208" rx="12" fill="#e0f2fe" stroke="#171717" strokeWidth="2.5" />
         <text x="530" y="72" textAnchor="middle" fontSize="16" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">
@@ -63,11 +134,6 @@ export default function ClientServerDiagram() {
         <text x="775" y="176" textAnchor="middle" fontSize="16" fontFamily="ui-sans-serif, system-ui, sans-serif">
           Files · HTML · JSON
         </text>
-        <defs>
-          <marker id="cs-arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-            <path d="M0,0 L8,4 L0,8 Z" fill="#171717" />
-          </marker>
-        </defs>
       </svg>
     </DiagramFrame>
   );

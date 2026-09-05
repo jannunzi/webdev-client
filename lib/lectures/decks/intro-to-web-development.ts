@@ -137,7 +137,7 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
       "Libraries then frameworks: jQuery → Backbone → Angular / **React** / Vue / Svelte",
       "**React**: UI is a function of data. You describe components; React updates the DOM",
       "**Next.js** sits on React: file-system routing, server rendering, and a production toolchain",
-      "This course teaches **React + Next.js App Router** — not a Vite-only SPA, not Pages Router",
+      "This course teaches **React + Next.js App Router**, not Pages Router",
     ],
   },
   {

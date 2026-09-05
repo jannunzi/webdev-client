@@ -218,7 +218,7 @@ app.listen(4000);`,
     kind: "title",
     bullets: [
       "Node is installed. You have seen a one-route Express server",
-      "Deck 3: `npx create-next-app@latest` and the App Router — no Vite SPA leftover",
+      "Deck 3: `npx create-next-app@latest` and the App Router",
     ],
   },
 ];

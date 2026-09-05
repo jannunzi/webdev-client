@@ -7,7 +7,7 @@ export const CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Lecture 1 · Deck 3 — App Router only",
-      "React components + Next.js file-system routing. No Vite SPA setup",
+      "React components + Next.js file-system routing",
     ],
   },
   {
@@ -111,14 +111,14 @@ npm run dev`,
   },
   {
     id: "app-router-only",
-    title: "App Router only — no Vite SPA leftover",
+    title: "App Router only",
     kind: "content",
     bullets: [
-      "Older lecture notes used **Vite** + `createRoot` + `main.tsx` + an `App.tsx` counter",
-      "We **do not** do that here. There is no `index.html` mount point you own",
+      "There is no `index.html` mount point you own",
       "Next.js is the bundler, the server, and the router",
       "You add routes by adding folders under `app/`, not by calling `createRoot`",
-      "If a tutorial starts with Vite + React, close it — it will fight this course",
+      "`page.tsx` is the public route; other `.tsx` files are imported components",
+      "If a tutorial uses Pages Router or mounts React with `createRoot`, close it — it will fight this course",
     ],
   },
   {
@@ -279,7 +279,6 @@ export default function Home() {
     title: "What we are not building",
     kind: "content",
     bullets: [
-      "Not a Vite project",
       "Not `ReactDOM.createRoot(document.getElementById(\"root\")).render(<App />)`",
       "Not a standalone `App.tsx` with `useState` click-counter as the “hello world”",
       "Hello world here is: a `page.tsx`, a second route, and a `Link` between them",
@@ -328,7 +327,7 @@ export default function Home() {
       "`/labs/lab1` renders the Lab 1 heading",
       "Home has a `Link` to Lab 1",
       "`globals.css` is commented out in the root layout",
-      "You did not add a Vite config or a `createRoot` main file",
+      "You did not add a `createRoot` main file",
     ],
   },
   {

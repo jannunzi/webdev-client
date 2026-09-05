@@ -41,7 +41,7 @@ const LECTURE_SUMMARIES: Record<
   "creating-a-nextjs-react-application": {
     title: "Creating a Next.js React Application",
     summary:
-      "Scaffold kambaz-next-js with the App Router, replace the home page, add Lab 1, and link routes — no Vite SPA leftover.",
+      "Scaffold kambaz-next-js with the App Router, replace the home page, add Lab 1, and link routes.",
     slides: CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES,
   },
   "commit-to-github": {
