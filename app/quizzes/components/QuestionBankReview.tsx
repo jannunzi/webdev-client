@@ -9,6 +9,7 @@ import {
   type QuestionGroup,
   type QuestionType,
 } from "@/lib/question-bank/types";
+import PromptMarkup from "./PromptMarkup";
 
 type Stats = {
   groups: number;
@@ -270,9 +271,10 @@ function QuestionBlock({
         <span className="font-medium text-neutral-700">Q{index}</span>
         <span className="font-mono">{question.id}</span>
       </div>
-      <p className="m-0 font-medium whitespace-pre-wrap break-words">
-        {question.prompt}
-      </p>
+      <PromptMarkup
+        text={question.prompt}
+        className="m-0 font-medium whitespace-pre-wrap break-words"
+      />
       {question.code ? (
         <pre className="mt-2 overflow-x-auto rounded border border-neutral-300 bg-white px-3 py-2 font-mono text-[0.8rem] leading-relaxed">
           <code>{question.code}</code>
@@ -295,9 +297,11 @@ function QuestionBlock({
                   <span className="mr-2 font-mono text-xs uppercase text-neutral-500">
                     {choice.id}.
                   </span>
-                  <span className="whitespace-pre-wrap break-words">
-                    {choice.text}
-                  </span>
+                  <PromptMarkup
+                    as="span"
+                    text={choice.text}
+                    className="whitespace-pre-wrap break-words"
+                  />
                   {correct ? (
                     <span className="ml-2 text-xs font-semibold text-emerald-800">
                       Correct
@@ -323,7 +327,10 @@ function QuestionBlock({
       ) : null}
 
       {question.explanation ? (
-        <p className="mb-0 mt-3 text-sm text-neutral-600">{question.explanation}</p>
+        <PromptMarkup
+          text={question.explanation}
+          className="mb-0 mt-3 text-sm text-neutral-600"
+        />
       ) : null}
     </div>
   );

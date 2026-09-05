@@ -6,6 +6,7 @@ import {
 } from "@/lib/quiz-exam/schedule";
 import { formatStudentResponse } from "@/lib/quiz-exam/review";
 import type { GradedAnswer, StudentQuestion } from "@/lib/quiz-exam/types";
+import PromptMarkup from "../../components/PromptMarkup";
 
 export function WindowBanner({
   schedule,
@@ -110,16 +111,24 @@ export function GradedQuestionList({
               {showMark ? ` — ${item.correct ? "Correct" : "Incorrect"}` : ""}
             </p>
             {question ? (
-              <p className="mt-1 mb-0 whitespace-pre-wrap">{question.prompt}</p>
+              <PromptMarkup
+                text={question.prompt}
+                className="mt-1 mb-0 whitespace-pre-wrap"
+              />
             ) : null}
             {question ? (
               <p className="mb-0 mt-2 text-sm">
-                Your answer: {formatStudentResponse(question, item.response)}
+                Your answer:{" "}
+                <PromptMarkup
+                  as="span"
+                  text={formatStudentResponse(question, item.response)}
+                />
               </p>
             ) : null}
             {revealAnswers && item.correctReveal ? (
               <p className="mb-0 mt-2 text-sm">
-                Correct answer: {item.correctReveal}
+                Correct answer:{" "}
+                <PromptMarkup as="span" text={item.correctReveal} />
               </p>
             ) : null}
           </li>

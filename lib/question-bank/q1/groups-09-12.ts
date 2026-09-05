@@ -30,7 +30,7 @@ export const q1Group09: QuestionGroup = {
     ].map((domain, index) =>
       fib(
         `q1-g09-${String(index + 1).padStart(2, "0")}`,
-        `For an uncontrolled ${domain} field in JSX (including <textarea>), put the starting text on the _____ prop — not on children, and not as if placeholder were the submitted value.`,
+        `For an uncontrolled ${domain} field in JSX (including \`<textarea>\`), put the starting text on the _____ prop — not on children, and not as if \`placeholder\` were the submitted value.`,
         DEFAULT_VALUE_ANSWERS,
         "Uncontrolled fields get defaultValue, then the browser owns typing. placeholder is hint text. React 19 throws if textarea children are set.",
       ),
@@ -50,7 +50,7 @@ export const q1Group10: QuestionGroup = {
     mc(
       "q1-g10-01",
       "The browser groups radio buttons that share the same _____ attribute.",
-      ["id", "htmlFor", "name", "placeholder"],
+      ["`id`", "`htmlFor`", "`name`", "`placeholder`"],
       2,
     ),
     mc(
@@ -93,7 +93,7 @@ export const q1Group10: QuestionGroup = {
         "Checkboxes are also mutually exclusive — only one box in the name group can be on",
         "Each checkbox can be selected independently, so Comedy and Drama can both be on",
         "Checkboxes cannot use a label",
-        "Checkboxes ignore id and htmlFor",
+        "Checkboxes ignore `id` and `htmlFor`",
       ],
       1,
     ),

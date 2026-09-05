@@ -47,10 +47,11 @@ export type TrueFalseQuestion = BaseQuestion & {
 /**
  * Fill-in-the-blank with one or more blanks.
  *
- * Matching is combination-based so JSX can accept either
- * `[Java][Script][XML]` or `[JavaScript][XML][""]` (plus normalized case).
- * Independent per-blank accept lists can be encoded as the cartesian
- * product, or as one combination per accepted tuple.
+ * Acronym items use one blank per letter and list the word for each
+ * letter in order (plus normalized case). Alternate spellings are
+ * extra combinations of the same length. Independent per-blank accept
+ * lists can be encoded as the cartesian product, or as one combination
+ * per accepted tuple.
  */
 export type FillInBlankQuestion = BaseQuestion & {
   type: "fill_in_blank";

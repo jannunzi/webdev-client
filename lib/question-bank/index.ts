@@ -27,3 +27,5 @@ export {
   normalizeBlank,
   normalizeTuple,
 } from "./normalize";
+export { parsePromptMarkup } from "./prompt-markup";
+export type { PromptPart } from "./prompt-markup";

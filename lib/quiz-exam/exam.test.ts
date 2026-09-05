@@ -39,15 +39,22 @@ describe("student exam sampling and grading", () => {
     }
   });
 
-  it("grades MC, TF, and FIB including the JSX combination", () => {
+  it("grades MC, TF, and FIB including letter-order JSX blanks", () => {
     const jsx = findBankQuestion(CHAPTER1_BANK, "q1-g01-03");
     assert.ok(jsx && jsx.question.type === "fill_in_blank");
     assert.equal(
       isAnswerCorrect(jsx.question, {
         type: "fill_in_blank",
-        blanks: ["JavaScript", "XML", ""],
+        blanks: ["Java", "Script", "XML"],
       }),
       true,
+    );
+    assert.equal(
+      isAnswerCorrect(jsx.question, {
+        type: "fill_in_blank",
+        blanks: ["JavaScript", "XML", ""],
+      }),
+      false,
     );
 
     const mc = CHAPTER1_BANK.groups
