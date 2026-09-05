@@ -3,11 +3,7 @@
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { getStaffAccess } from "./staff-access";
-import {
-  VIEW_MODE_COOKIE,
-  viewModeCookieUpdate,
-  type ViewMode,
-} from "./view-mode";
+import { VIEW_MODE_COOKIE, viewModeCookieUpdate } from "./view-mode";
 
 function cookieSecure(): boolean {
   return (
@@ -15,17 +11,15 @@ function cookieSecure(): boolean {
   );
 }
 
-export async function setStaffViewMode(
-  requested: ViewMode,
-): Promise<{ ok: boolean }> {
+export async function setStaffViewMode(formData: FormData): Promise<void> {
   const access = await getStaffAccess();
   const update = viewModeCookieUpdate({
     isActualStaff: access === "ok",
-    requested,
+    requested: String(formData.get("mode") ?? ""),
   });
 
   if ("rejected" in update) {
-    return { ok: false };
+    return;
   }
 
   const store = await cookies();
@@ -42,5 +36,4 @@ export async function setStaffViewMode(
   }
 
   revalidatePath("/", "layout");
-  return { ok: true };
 }

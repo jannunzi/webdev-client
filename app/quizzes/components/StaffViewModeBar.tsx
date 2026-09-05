@@ -37,7 +37,8 @@ export default async function StaffViewModeBar() {
           {MODES.map((mode) => {
             const pressed = viewMode === mode.id;
             return (
-              <form key={mode.id} action={setStaffViewMode.bind(null, mode.id)}>
+              <form key={mode.id} action={setStaffViewMode}>
+                <input type="hidden" name="mode" value={mode.id} />
                 <button
                   type="submit"
                   aria-pressed={pressed}
