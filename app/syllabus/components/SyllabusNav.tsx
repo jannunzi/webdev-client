@@ -41,6 +41,10 @@ export default function SyllabusNav() {
         {" · "}
         <Link href="/assignments">Assignments</Link>
         {" · "}
+        <Link href="/lectures">Lectures</Link>
+        {" · "}
+        <Link href="/quizzes/take">Quizzes</Link>
+        {" · "}
         <Link href="/labs">Labs</Link>
         {" · "}
         <Link href="/account/signin">Kambaz</Link>
