@@ -12,6 +12,8 @@ export default function BookHome() {
       <p>
         <Link href="/syllabus">CS 4550 / CS 5610 Fall 2026 Syllabus</Link>
         {" · "}
+        <Link href="/assignments">Assignments</Link>
+        {" · "}
         <Link href="/office-hours">Office Hours</Link>
         {" · "}
         <Link href="/piazza-hours">Piazza Hours</Link>

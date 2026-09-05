@@ -21,6 +21,11 @@ export function isQuizTakingConfigured(): boolean {
   return isClerkConfigured() && isMongoConfigured();
 }
 
+/** Signed-in assignment checklists persist to Mongo when both are set. */
+export function isAssignmentProgressConfigured(): boolean {
+  return isClerkConfigured() && isMongoConfigured();
+}
+
 export function mongoDbName(): string {
   return process.env.MONGODB_DB?.trim() || "webdev";
 }

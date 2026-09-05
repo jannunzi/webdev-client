@@ -46,9 +46,9 @@ a “Search on YouTube” fallback. Results are cached for 24 hours.
 
 ## Graded quizzes (Clerk + MongoDB Atlas)
 
-Anyone may browse the book, syllabus, labs, practice, and terms — signed in or
-not. **Only Canvas-roster students** can start or submit a graded quiz at
-`/quizzes/take/q1`. Author review (answers shown) at `/quizzes` and
+Anyone may browse the book, syllabus, labs, practice, assignments, and terms —
+signed in or not. **Only Canvas-roster students** can start or submit a graded
+quiz at `/quizzes/take/q1`. Author review (answers shown) at `/quizzes` and
 `/quizzes/q1` is **staff only** (`INSTRUCTOR_EMAILS` + `TA_EMAILS`, same as
 `/people`).
 
@@ -65,7 +65,7 @@ If Clerk or Atlas env vars are missing, those take routes show a clear
    entry that allows Vercel (or `0.0.0.0/0` if you prefer allow-all + strong
    user password). Copy the `mongodb+srv://…` connection string. The app uses
    database `webdev` (override with `MONGODB_DB`) and collections
-   `quiz_attempts` and `canvas_roster`.
+   `quiz_attempts`, `canvas_roster`, and `assignment_progress`.
 3. **Vercel** project env (Production + Preview + Development):
    `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`,
    `NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in`,
@@ -227,6 +227,35 @@ server phase (no leak while waiting/closed).
 
 Instructor CSV export of `quiz_attempts` for Canvas grade import. Storing
 impersonation attempts (e.g. `impersonation: true`) is deferred.
+
+## Assignments hub
+
+`/assignments` lists A1–A6 from the syllabus. Each `/assignments/aN` page
+links to the matching book chapter (`/book/ch1` for A1, and so on).
+`/assignments/a1` and `/assignments/a2` include Delivery / Lab / Kambaz
+checklists with section deep links. A3–A6 are syllabus placeholders until
+those rubrics are authored.
+
+Signed-in students persist checkmarks to MongoDB (`assignment_progress`,
+keyed by user + assignment + criterion). Visitors who are not signed in keep
+progress in this browser only. The UI never mentions the auth vendor — the
+button says “Sign in with your school email.” URL submit and auto-grading
+are out of scope for this hub.
+
+Canvas assignment descriptions should **not** paste the website rubric.
+Point students at the live pages and keep Canvas as the submit/grade
+surface. Suggested student copy (HTML helpers in
+`lib/assignments/canvas-copy.ts`):
+
+- https://webdev-client.vercel.app/assignments/a1
+- https://webdev-client.vercel.app/assignments/a2
+- https://webdev-client.vercel.app/assignments/a3
+- https://webdev-client.vercel.app/assignments/a4
+- https://webdev-client.vercel.app/assignments/a5
+- https://webdev-client.vercel.app/assignments/a6
+
+The IMSCC cartridge is not in this repo (Jose’s `canvas-fall` tooling).
+Updating those assignment HTML descriptions is a follow-up package.
 
 ## Learn More
 

@@ -39,6 +39,8 @@ export default function SyllabusNav() {
       <p className="mt-3 border-t border-neutral-200 pt-2 text-neutral-600">
         <Link href="/book">Book</Link>
         {" · "}
+        <Link href="/assignments">Assignments</Link>
+        {" · "}
         <Link href="/labs">Labs</Link>
         {" · "}
         <Link href="/account/signin">Kambaz</Link>
