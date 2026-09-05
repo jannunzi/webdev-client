@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function PracticeNotFound() {
   return (
-    <article className="mx-auto max-w-3xl">
+    <article className="book-content">
       <h1 className="mt-0 font-sans text-3xl font-semibold">
         Practice quiz not found
       </h1>

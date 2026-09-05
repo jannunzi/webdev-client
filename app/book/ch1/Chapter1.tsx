@@ -10,7 +10,7 @@ import ClosingSections from "./sections/ClosingSections";
  */
 export default function Chapter1() {
   return (
-    <article className="mx-auto max-w-3xl">
+    <article className="book-content">
       <IntroAndSetup />
       <HtmlSections />
       <CheckUnderstanding />

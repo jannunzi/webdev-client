@@ -34,7 +34,7 @@ export default function PracticeIndexPage() {
   const groups = groupByChapter(PRACTICE_QUIZZES);
 
   return (
-    <article className="mx-auto max-w-3xl">
+    <article className="book-content">
       <p className="mb-2 font-sans text-xs font-semibold uppercase tracking-wide text-neutral-500">
         Practice
       </p>

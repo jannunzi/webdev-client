@@ -8,6 +8,55 @@
   line-height: 1.55;
 }
 
+/*
+ * Shared book reading column. Tailwind steps ≈ Bootstrap sm/md/lg/xl/xxl
+ * (2xl ≈ xxl). Phones stay a comfortable measure via existing main padding;
+ * xl/2xl use more of the main column on wide monitors.
+ *
+ * Equivalent Tailwind utilities:
+ * mx-auto w-full max-w-xl sm:max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl
+ */
+.book-content {
+  width: 100%;
+  max-width: var(--container-xl, 36rem);
+  margin-inline: auto;
+}
+
+@media (width >= 40rem) {
+  /* sm */
+  .book-content {
+    max-width: var(--container-2xl, 42rem);
+  }
+}
+
+@media (width >= 48rem) {
+  /* md */
+  .book-content {
+    max-width: var(--container-3xl, 48rem);
+  }
+}
+
+@media (width >= 64rem) {
+  /* lg */
+  .book-content {
+    max-width: var(--container-4xl, 56rem);
+  }
+}
+
+@media (width >= 80rem) {
+  /* xl */
+  .book-content {
+    max-width: var(--container-5xl, 64rem);
+  }
+}
+
+@media (width >= 96rem) {
+  /* 2xl ≈ Bootstrap xxl */
+  .book-content {
+    max-width: var(--container-6xl, 72rem);
+  }
+}
+
 .book-shell a {
   color: #1d4ed8;
 }

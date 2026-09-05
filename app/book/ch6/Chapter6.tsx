@@ -14,7 +14,7 @@ import Deliverables from "./sections/Deliverables";
  */
 export default function Chapter6() {
   return (
-    <article className="mx-auto max-w-3xl">
+    <article className="book-content">
       <Intro />
       <LocalMongo />
       <Programming />

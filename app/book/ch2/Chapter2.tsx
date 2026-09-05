@@ -11,7 +11,7 @@ import Delivery from "./sections/Delivery";
  */
 export default function Chapter2() {
   return (
-    <article className="mx-auto max-w-3xl">
+    <article className="book-content">
       <Intro />
       <CssBasics />
       <CssProperties />
