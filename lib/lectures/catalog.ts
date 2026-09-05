@@ -5,6 +5,7 @@ import { INSTALLING_NODEJS_SLIDES } from "./decks/installing-nodejs";
 import { INTRO_TO_WEB_DEVELOPMENT_SLIDES } from "./decks/intro-to-web-development";
 import {
   LECTURE_SLUGS,
+  withLectureSlideImages,
   type LectureDeck,
   type LectureHubItem,
   type LectureSlide,
@@ -86,7 +87,10 @@ export function getLectureDeck(slug: string): LectureDeck | undefined {
   if (!item) return undefined;
   return {
     ...item,
-    slides: LECTURE_SUMMARIES[item.slug].slides,
+    slides: withLectureSlideImages(
+      item.slug,
+      LECTURE_SUMMARIES[item.slug].slides,
+    ),
   };
 }
 

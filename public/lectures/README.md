@@ -11,14 +11,10 @@ Original export counts:
 - commit-to-github (7)
 - deploying-to-vercel (17)
 
-Lecture 1 intro currently wires the diagram-heavy slides:
+The catalog sets `imageSrc` on every slide (`/lectures/<slug>/slide-NN.png`).
+Most decks map 1-based slide index → `slide-NN.png`. Intro maps by content
+so SSR is `slide-09.png` and CSR is `slide-11.png` (the original deck has
+17 slides; we reconstructed 18).
 
-| Slide id | File |
-| --- | --- |
-| `network-of-networks` | `public/lectures/intro-to-web-development/slide-05.png` |
-| `client-server` | `public/lectures/intro-to-web-development/slide-06.png` |
-| `ssr` | `public/lectures/intro-to-web-development/slide-09.png` |
-| `csr` | `public/lectures/intro-to-web-development/slide-11.png` |
-
-Set `imageAlt` when the drawing needs a short description. A missing file
-shows a dashed “not in the repo yet” frame. Do not nest these under `/book`.
+A missing file shows a dashed “not in the repo yet” frame. Do not nest
+these under `/book`.

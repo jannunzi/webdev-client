@@ -143,24 +143,37 @@ describe("lecture decks", () => {
     assert.doesNotMatch(text, /kanbaz/);
   });
 
-  it("wires diagram image slots on the intro deck", () => {
-    const network = findSlide("intro-to-web-development", "network-of-networks");
-    const client = findSlide("intro-to-web-development", "client-server");
-    const ssr = findSlide("intro-to-web-development", "ssr");
-    const csr = findSlide("intro-to-web-development", "csr");
+  it("attaches a public lecture PNG to every slide", () => {
+    for (const deck of listLectureDecks()) {
+      for (const slide of deck.slides) {
+        assert.ok(slide.imageSrc, `${deck.slug} ${slide.id} missing imageSrc`);
+        assert.match(
+          slide.imageSrc,
+          new RegExp(`^/lectures/${deck.slug}/slide-\\d{2}\\.png$`),
+        );
+        assert.ok(slide.imageAlt);
+      }
+    }
     assert.equal(
-      network.imageSrc,
-      "/lectures/intro-to-web-development/slide-05.png",
-    );
-    assert.equal(
-      client.imageSrc,
+      findSlide("intro-to-web-development", "client-server").imageSrc,
       "/lectures/intro-to-web-development/slide-06.png",
     );
-    assert.equal(ssr.imageSrc, "/lectures/intro-to-web-development/slide-09.png");
-    assert.equal(csr.imageSrc, "/lectures/intro-to-web-development/slide-11.png");
-    for (const slide of [network, client, ssr, csr]) {
-      assert.ok(slide.imageAlt && slide.imageAlt.length > 0);
-    }
+    assert.equal(
+      findSlide("intro-to-web-development", "ssr").imageSrc,
+      "/lectures/intro-to-web-development/slide-09.png",
+    );
+    assert.equal(
+      findSlide("intro-to-web-development", "csr").imageSrc,
+      "/lectures/intro-to-web-development/slide-11.png",
+    );
+    assert.equal(
+      findSlide("installing-nodejs", "title").imageSrc,
+      "/lectures/installing-nodejs/slide-01.png",
+    );
+    assert.equal(
+      findSlide("commit-to-github", "from-project").imageSrc,
+      "/lectures/commit-to-github/slide-06.png",
+    );
   });
 
   it("keeps commands and source in code blocks, not bullets", () => {
