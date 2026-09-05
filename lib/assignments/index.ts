@@ -26,6 +26,11 @@ export {
   summarizeProgress,
   upsertCriterionProgress,
 } from "./progress-store";
+export {
+  assignmentSubmitAccess,
+  canPersistAssignmentSubmission,
+  supportsUrlSubmission,
+} from "./access";
 export type {
   AssignmentHubItem,
   AssignmentId,
@@ -36,3 +41,10 @@ export type {
   RubricCriterion,
   RubricGroup,
 } from "./types";
+export type {
+  AssignmentCheckResult,
+} from "./checks";
+export type {
+  AssignmentSubmissionDoc,
+  AssignmentSubmissionView,
+} from "./submissions-store";

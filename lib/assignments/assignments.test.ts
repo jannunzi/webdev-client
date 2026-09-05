@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import { A1_RUBRIC } from "./a1";
 import { A2_RUBRIC } from "./a2";
 import { listCanvasFollowupCopy } from "./canvas-copy";
+import { supportsUrlSubmission } from "./access";
 import {
   COURSE_SITE_ORIGIN,
   findCriterion,
@@ -115,6 +116,8 @@ describe("assignment catalog", () => {
     );
     assert.ok(findCriterion(A1_RUBRIC, "a1-lab-heading-tags"));
     assert.ok(findCriterion(A1_RUBRIC, "a1-kambaz-assignments")?.onYourOwn);
+    assert.equal(supportsUrlSubmission("a1"), true);
+    assert.equal(supportsUrlSubmission("a2"), false);
   });
 });
 

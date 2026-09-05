@@ -60,7 +60,8 @@ export default async function StaffViewModeBar() {
       {student ? (
         <p className="mb-0 mt-2 text-xs">
           Student view — People and answer keys are hidden. Graded exam
-          attempts are not saved. Switch back to Instructor anytime.
+          attempts and A1 URL submissions are not saved. Switch back to
+          Instructor anytime.
         </p>
       ) : null}
     </div>

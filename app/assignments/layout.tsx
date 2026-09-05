@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { isClerkPublishableKeySet } from "@/lib/config";
+import StaffViewModeBar from "@/app/quizzes/components/StaffViewModeBar";
+import { isClerkConfigured, isClerkPublishableKeySet } from "@/lib/config";
 import "../book/book.css";
 import AssignmentAuthBar from "./components/AssignmentAuthBar";
 
@@ -17,6 +18,7 @@ export default function AssignmentsLayout({
     <div className="book-shell min-h-screen">
       <main className="mx-auto min-w-0 max-w-3xl px-4 py-8 sm:px-6">
         {isClerkPublishableKeySet() ? <AssignmentAuthBar /> : null}
+        {isClerkConfigured() ? <StaffViewModeBar /> : null}
         {children}
       </main>
     </div>
