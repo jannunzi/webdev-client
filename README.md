@@ -46,11 +46,24 @@ a “Search on YouTube” fallback. Results are cached for 24 hours.
 
 ## Graded quizzes (Clerk + MongoDB Atlas)
 
-Anyone may browse the book, syllabus, labs, practice, and terms — signed in or
-not. **Only Canvas-roster students** can start or submit a graded quiz at
-`/quizzes/take/q1`. Author review (answers shown) at `/quizzes` and
+Anyone may browse the book, syllabus, labs, practice, assignments, and terms —
+signed in or not. **Only Canvas-roster students** can start or submit a graded
+quiz at `/quizzes/take/q1`. Author review (answers shown) at `/quizzes` and
 `/quizzes/q1` is **staff only** (`INSTRUCTOR_EMAILS` + `TA_EMAILS`, same as
 `/people`).
+
+## Assignments hub
+
+`/assignments` lists A1–A6 from the syllabus. `/assignments/a1` and
+`/assignments/a2` include Delivery / Lab / Kambaz checklists with book
+section links. A3–A6 are syllabus placeholders until those rubrics are
+authored.
+
+Signed-in students persist checkmarks to MongoDB (`assignment_progress`,
+keyed by user + assignment + criterion). Visitors who are not signed in keep
+progress in this browser only. The UI never mentions the auth vendor — the
+button says “Sign in with your school email.” URL submit and auto-grading
+are out of scope for this hub.
 
 If Clerk or Atlas env vars are missing, those take routes show a clear
 “not configured” message. The rest of the site keeps working.
@@ -65,7 +78,7 @@ If Clerk or Atlas env vars are missing, those take routes show a clear
    entry that allows Vercel (or `0.0.0.0/0` if you prefer allow-all + strong
    user password). Copy the `mongodb+srv://…` connection string. The app uses
    database `webdev` (override with `MONGODB_DB`) and collections
-   `quiz_attempts` and `canvas_roster`.
+   `quiz_attempts`, `canvas_roster`, and `assignment_progress`.
 3. **Vercel** project env (Production + Preview + Development):
    `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`,
    `NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in`,

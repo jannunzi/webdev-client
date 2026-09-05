@@ -1,0 +1,153 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { A1_RUBRIC } from "./a1";
+import { A2_RUBRIC } from "./a2";
+import {
+  findCriterion,
+  getAssignment,
+  listAssignmentIds,
+  listAssignments,
+  listRubricCriteria,
+  rubricPointTotal,
+} from "./catalog";
+import {
+  applyCriterionToggle,
+  loadCompletedCriterionIds,
+  mergeCompletedIds,
+  parseLocalProgress,
+  serializeLocalProgress,
+  summarizeProgress,
+  upsertCriterionProgress,
+  type ProgressStore,
+} from "./progress-store";
+import type { AssignmentProgressDoc } from "./types";
+
+function memoryProgressStore(): ProgressStore {
+  const docs: AssignmentProgressDoc[] = [];
+  return {
+    async list(clerkUserId, assignmentId) {
+      return docs.filter(
+        (doc) =>
+          doc.clerkUserId === clerkUserId && doc.assignmentId === assignmentId,
+      );
+    },
+    async upsert(input) {
+      const index = docs.findIndex(
+        (doc) =>
+          doc.clerkUserId === input.clerkUserId &&
+          doc.assignmentId === input.assignmentId &&
+          doc.criterionId === input.criterionId,
+      );
+      const next: AssignmentProgressDoc = {
+        ...input,
+        updatedAt: new Date(),
+      };
+      if (index === -1) docs.push(next);
+      else docs[index] = next;
+    },
+  };
+}
+
+describe("assignment catalog", () => {
+  it("lists A1–A6 from the syllabus and marks A1/A2 ready", () => {
+    const ids = listAssignmentIds();
+    assert.deepEqual(ids, ["a1", "a2", "a3", "a4", "a5", "a6"]);
+    const items = listAssignments();
+    assert.equal(items.length, 6);
+    assert.equal(getAssignment("A1")?.status, "ready");
+    assert.equal(getAssignment("a2")?.status, "ready");
+    assert.equal(getAssignment("a3")?.status, "coming_soon");
+    assert.equal(getAssignment("a1")?.dueDate, "2026-10-01");
+    assert.equal(getAssignment("a2")?.dueDate, "2026-10-13");
+    assert.equal(getAssignment("a6")?.dueDate, "2026-12-03");
+    assert.equal(getAssignment("a1")?.chapterHref, "/book/ch1");
+  });
+
+  it("keeps unique criterion ids and book deep links on A1 and A2", () => {
+    for (const rubric of [A1_RUBRIC, A2_RUBRIC]) {
+      const criteria = listRubricCriteria(rubric);
+      const ids = criteria.map((row) => row.id);
+      assert.equal(new Set(ids).size, ids.length);
+      assert.ok(criteria.length > 0);
+      assert.ok(rubricPointTotal(rubric) > 0);
+      for (const row of criteria) {
+        assert.ok(row.points > 0);
+        assert.ok(row.bookHref, `${row.id} is missing bookHref`);
+        assert.match(row.bookHref ?? "", /^\/book\/ch[1-6]#sec-/);
+      }
+      assert.ok(findCriterion(rubric, criteria[0].id));
+    }
+    assert.equal(
+      A1_RUBRIC.groups.map((group) => group.id).join(","),
+      "delivery,lab,kambaz",
+    );
+    assert.ok(findCriterion(A1_RUBRIC, "a1-lab-heading-tags"));
+    assert.ok(findCriterion(A1_RUBRIC, "a1-kambaz-assignments")?.onYourOwn);
+  });
+});
+
+describe("assignment progress helpers", () => {
+  it("toggles, merges, and summarizes checklist progress", () => {
+    const assignment = getAssignment("a1");
+    assert.ok(assignment?.rubric);
+    let completed = applyCriterionToggle([], "a1-delivery-vercel", true);
+    completed = applyCriterionToggle(completed, "a1-delivery-github", true);
+    completed = applyCriterionToggle(completed, "a1-delivery-github", false);
+    assert.deepEqual(completed, ["a1-delivery-vercel"]);
+    assert.deepEqual(
+      mergeCompletedIds(completed, ["a1-delivery-github", "a1-delivery-vercel"]),
+      ["a1-delivery-github", "a1-delivery-vercel"],
+    );
+    const summary = summarizeProgress(assignment, completed);
+    assert.equal(summary.completedCount, 1);
+    assert.equal(summary.earnedPoints, 3);
+    assert.equal(summary.totalCount, listRubricCriteria(assignment.rubric).length);
+    assert.equal(summary.totalPoints, rubricPointTotal(assignment.rubric));
+  });
+
+  it("round-trips localStorage JSON", () => {
+    const raw = serializeLocalProgress(["a1-lab-tables", "a1-lab-images"]);
+    assert.deepEqual(parseLocalProgress(raw).sort(), [
+      "a1-lab-images",
+      "a1-lab-tables",
+    ]);
+    assert.deepEqual(parseLocalProgress('["a1-lab-forms"]'), ["a1-lab-forms"]);
+    assert.deepEqual(parseLocalProgress("not-json"), []);
+  });
+
+  it("upserts per clerk user + assignment + criterion", async () => {
+    const store = memoryProgressStore();
+    await upsertCriterionProgress(store, {
+      clerkUserId: "user_1",
+      assignmentId: "a1",
+      criterionId: "a1-delivery-vercel",
+      completed: true,
+    });
+    await upsertCriterionProgress(store, {
+      clerkUserId: "user_1",
+      assignmentId: "a1",
+      criterionId: "a1-delivery-github",
+      completed: true,
+    });
+    await upsertCriterionProgress(store, {
+      clerkUserId: "user_2",
+      assignmentId: "a1",
+      criterionId: "a1-delivery-vercel",
+      completed: true,
+    });
+    await upsertCriterionProgress(store, {
+      clerkUserId: "user_1",
+      assignmentId: "a1",
+      criterionId: "a1-delivery-github",
+      completed: false,
+    });
+    assert.deepEqual(
+      await loadCompletedCriterionIds(store, "user_1", "a1"),
+      ["a1-delivery-vercel"],
+    );
+    assert.deepEqual(await loadCompletedCriterionIds(store, "user_2", "a1"), [
+      "a1-delivery-vercel",
+    ]);
+    assert.equal(applyCriterionToggle([], "x", true).includes("x"), true);
+  });
+});

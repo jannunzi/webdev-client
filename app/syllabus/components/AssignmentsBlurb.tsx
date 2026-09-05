@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { AssignmentItem } from "../data/types";
 import SyllabusSection from "./SyllabusSection";
 
@@ -13,6 +14,10 @@ export default function AssignmentsBlurb({
       {intro.map((paragraph) => (
         <p key={paragraph.slice(0, 40)}>{paragraph}</p>
       ))}
+      <p>
+        Track the Delivery / Lab / Kambaz checklist on{" "}
+        <Link href="/assignments">Assignments</Link>.
+      </p>
       <ol className="list-none space-y-3 pl-0">
         {assignments.map((assignment) => (
           <li
@@ -20,7 +25,9 @@ export default function AssignmentsBlurb({
             className="rounded-md border border-neutral-200 bg-white px-4 py-3"
           >
             <p className="font-sans font-semibold">
-              {assignment.id} — {assignment.title}{" "}
+              <Link href={`/assignments/${assignment.id.toLowerCase()}`}>
+                {assignment.id} — {assignment.title}
+              </Link>{" "}
               <span className="font-normal text-neutral-500">
                 ({assignment.chapter})
               </span>

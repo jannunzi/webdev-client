@@ -19,6 +19,8 @@ export default function TakeQuizIndexPage() {
         </StaffOnly>
         <Link href="/book">Course book</Link>
         {" · "}
+        <Link href="/assignments">Assignments</Link>
+        {" · "}
         <Link href="/book/practice">Practice (ungraded)</Link>
       </p>
       <h1 className="mt-0 text-3xl font-semibold tracking-tight">
