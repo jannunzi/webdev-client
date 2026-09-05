@@ -28,7 +28,7 @@ export default async function PeoplePage({ searchParams }: PageProps) {
 
   if (!isClerkConfigured()) {
     return (
-      <article className="mx-auto max-w-3xl font-sans">
+      <article className="page-content font-sans">
         <StatusPanel title="This page is for course staff." tone="warn">
           <p>Sign in to continue.</p>
         </StatusPanel>
@@ -37,7 +37,7 @@ export default async function PeoplePage({ searchParams }: PageProps) {
   }
 
   return (
-    <article className="mx-auto max-w-5xl font-sans">
+    <article className="page-content font-sans">
       {isClerkPublishableKeySet() ? <PeopleAuthBar /> : null}
       <StaffViewModeBar />
       <PeoplePageBody section={section} />

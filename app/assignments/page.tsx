@@ -23,9 +23,9 @@ export default function AssignmentsIndexPage() {
       ))}
       <p className="rounded-lg border border-sky-300 bg-sky-50 px-4 py-3 font-sans text-sm text-sky-950">
         Use the checklists to track Delivery, Lab, and Kambaz work. Due dates
-        are informational — Canvas is still the official calendar. A1 can run
-        auto-checks from a public Vercel URL (GitHub is optional) and mark
-        many rubric rows pass/fail. Canvas is still the official gradebook.
+        are informational — Canvas is still the official calendar. A1 grades
+        on this site are all-or-nothing per criterion from a public Vercel
+        URL (GitHub is optional). Canvas is a grade shell only.
       </p>
       <ul className="mt-6 list-none space-y-3 p-0">
         {items.map((item) => {

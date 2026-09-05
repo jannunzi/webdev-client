@@ -2,13 +2,13 @@
 
 import { useState, useTransition } from "react";
 import type { AssignmentCheckResult } from "@/lib/assignments/checks";
-import { latestResultByCriterion } from "@/lib/assignments/checks";
 import type { AssignmentSubmissionView } from "@/lib/assignments/submissions-store";
 import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
 import {
   runAssignmentChecks,
   saveAssignmentSubmission,
 } from "../submission-actions";
+import { runStaffAssignmentChecks } from "../staff-actions";
 
 export type SubmissionGateReason =
   | "sign_in"
@@ -51,76 +51,22 @@ function formatSavedAt(iso?: string): string | null {
   return date.toLocaleString();
 }
 
-const GROUP_ORDER = ["delivery", "lab", "kambaz"] as const;
-const GROUP_TITLES: Record<string, string> = {
-  delivery: "Delivery",
-  lab: "Lab — HTML components",
-  kambaz: "Kambaz — Chapter 1 screens",
-};
-
-function CheckList({ results }: { results: AssignmentCheckResult[] }) {
-  if (results.length === 0) return null;
-  const byCriterion = latestResultByCriterion(results);
-  const unique = [...byCriterion.values()];
-  const leftover = results.filter((row) => !row.criterionId);
-  const grouped = [...GROUP_ORDER, "other"].map((groupId) => ({
-    groupId,
-    rows:
-      groupId === "other"
-        ? leftover
-        : unique.filter((row) => row.groupId === groupId),
-  }));
-  return (
-    <div className="space-y-3" aria-live="polite">
-      {grouped.map(({ groupId, rows }) =>
-        rows.length === 0 ? null : (
-          <div key={groupId}>
-            <h4 className="mt-0 mb-2 font-sans text-sm font-semibold uppercase tracking-wide text-neutral-600">
-              {GROUP_TITLES[groupId] ?? "Other"}
-            </h4>
-            <ul className="m-0 list-none space-y-2 p-0">
-              {rows.map((row) => (
-                <li
-                  key={row.id}
-                  className={`rounded-md border px-3 py-2 text-sm ${
-                    row.skipped
-                      ? "border-neutral-200 bg-neutral-50 text-neutral-800"
-                      : row.passed
-                        ? "border-emerald-300 bg-emerald-50 text-emerald-950"
-                        : "border-amber-300 bg-amber-50 text-amber-950"
-                  }`}
-                >
-                  <p className="m-0 font-sans font-semibold">
-                    {row.skipped
-                      ? "Manual"
-                      : row.passed
-                        ? "Pass"
-                        : "Needs work"}{" "}
-                    — {row.label}
-                  </p>
-                  <p className="mb-0 mt-1">{row.message}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ),
-      )}
-    </div>
-  );
-}
-
 export default function A1SubmissionForm({
   initialSubmission,
   canSubmit,
   impersonating = false,
   gateReason = null,
+  staffStudentKey,
   onResults,
+  onSubmission,
 }: {
   initialSubmission: AssignmentSubmissionView | null;
   canSubmit: boolean;
   impersonating?: boolean;
   gateReason?: SubmissionGateReason;
+  staffStudentKey?: string;
   onResults?: (results: AssignmentCheckResult[]) => void;
+  onSubmission?: (submission: AssignmentSubmissionView) => void;
 }) {
   const [githubUrl, setGithubUrl] = useState(initialSubmission?.githubUrl ?? "");
   const [vercelUrl, setVercelUrl] = useState(initialSubmission?.vercelUrl ?? "");
@@ -131,13 +77,15 @@ export default function A1SubmissionForm({
     null,
   );
   const [, startTransition] = useTransition();
+  const staffReview = Boolean(staffStudentKey);
 
-  const results = submission?.checkResults ?? [];
   const savedAt = formatSavedAt(submission?.updatedAt);
   const checkedAt = formatSavedAt(submission?.lastCheckedAt);
 
   function applyResult(
-    result: Awaited<ReturnType<typeof saveAssignmentSubmission>>,
+    result:
+      | Awaited<ReturnType<typeof saveAssignmentSubmission>>
+      | Awaited<ReturnType<typeof runStaffAssignmentChecks>>,
     kind: "save" | "check",
   ) {
     if (!result.ok) {
@@ -150,17 +98,14 @@ export default function A1SubmissionForm({
     setVercelUrl(result.submission.vercelUrl);
     setSubmission(result.submission);
     onResults?.(result.submission.checkResults ?? []);
+    onSubmission?.(result.submission);
     if (result.impersonation || !result.persisted) {
-      setNote(
-        kind === "save"
-          ? ASSIGNMENT_STUDENT_COPY.savedButNotPersisted
-          : ASSIGNMENT_STUDENT_COPY.savedButNotPersisted,
-      );
+      setNote(ASSIGNMENT_STUDENT_COPY.savedButNotPersisted);
     } else {
       setNote(
         kind === "save"
           ? ASSIGNMENT_STUDENT_COPY.saved
-          : "Checks finished. Pass/fail results are below.",
+          : "Checks finished. Pass/fail colors are on the checklist below.",
       );
     }
   }
@@ -183,11 +128,18 @@ export default function A1SubmissionForm({
     setPendingAction("check");
     setError(null);
     startTransition(async () => {
-      const result = await runAssignmentChecks({
-        assignmentId: "a1",
-        githubUrl,
-        vercelUrl,
-      });
+      const result = staffStudentKey
+        ? await runStaffAssignmentChecks({
+            assignmentId: "a1",
+            studentKey: staffStudentKey,
+            githubUrl,
+            vercelUrl,
+          })
+        : await runAssignmentChecks({
+            assignmentId: "a1",
+            githubUrl,
+            vercelUrl,
+          });
       applyResult(result, "check");
       setPendingAction(null);
     });
@@ -196,12 +148,10 @@ export default function A1SubmissionForm({
   return (
     <section className="mb-6 rounded-lg border border-neutral-300 bg-white p-4 shadow-sm">
       <h2 className="mt-0 mb-1 font-sans text-xl font-semibold tracking-tight">
-        Submit URLs
+        {staffReview ? "Student URLs" : "Submit URLs"}
       </h2>
       <p className="mt-0 text-neutral-800">
-        Paste a public Vercel URL to run A1 checks. GitHub is optional — you
-        can save it when you have a public repo. Checks open /labs (not just
-        the landing page) and look for the ids from Chapter 1.
+        {ASSIGNMENT_STUDENT_COPY.checkInstructions}
       </p>
 
       {impersonating ? (
@@ -220,7 +170,8 @@ export default function A1SubmissionForm({
           className="space-y-3"
           onSubmit={(event) => {
             event.preventDefault();
-            onSave();
+            if (staffReview) onRunChecks();
+            else onSave();
           }}
         >
           <div>
@@ -242,6 +193,13 @@ export default function A1SubmissionForm({
               onChange={(event) => setGithubUrl(event.target.value)}
               disabled={pendingAction !== null}
             />
+            {githubUrl ? (
+              <p className="mb-0 mt-1 font-sans text-sm">
+                <a href={githubUrl} target="_blank" rel="noreferrer">
+                  Open GitHub
+                </a>
+              </p>
+            ) : null}
           </div>
           <div>
             <label
@@ -262,20 +220,33 @@ export default function A1SubmissionForm({
               onChange={(event) => setVercelUrl(event.target.value)}
               disabled={pendingAction !== null}
             />
+            {vercelUrl ? (
+              <p className="mb-0 mt-1 font-sans text-sm">
+                <a href={vercelUrl} target="_blank" rel="noreferrer">
+                  Open Vercel deploy
+                </a>
+              </p>
+            ) : null}
           </div>
           <div className="flex flex-wrap gap-2">
+            {staffReview ? null : (
+              <button
+                type="submit"
+                className="rounded border border-neutral-800 bg-neutral-800 px-3 py-2 font-sans text-sm text-white hover:bg-neutral-700 disabled:opacity-60"
+                disabled={pendingAction !== null}
+              >
+                {pendingAction === "save" ? "Saving…" : "Save URLs and run checks"}
+              </button>
+            )}
             <button
-              type="submit"
-              className="rounded border border-neutral-800 bg-neutral-800 px-3 py-2 font-sans text-sm text-white hover:bg-neutral-700 disabled:opacity-60"
+              type={staffReview ? "submit" : "button"}
+              className={
+                staffReview
+                  ? "rounded border border-neutral-800 bg-neutral-800 px-3 py-2 font-sans text-sm text-white hover:bg-neutral-700 disabled:opacity-60"
+                  : "rounded border border-neutral-800 bg-white px-3 py-2 font-sans text-sm hover:bg-neutral-50 disabled:opacity-60"
+              }
               disabled={pendingAction !== null}
-            >
-              {pendingAction === "save" ? "Saving…" : "Save URLs and run checks"}
-            </button>
-            <button
-              type="button"
-              className="rounded border border-neutral-800 bg-white px-3 py-2 font-sans text-sm hover:bg-neutral-50 disabled:opacity-60"
-              disabled={pendingAction !== null}
-              onClick={onRunChecks}
+              onClick={staffReview ? undefined : onRunChecks}
             >
               {pendingAction === "check" ? "Checking…" : "Run checks"}
             </button>
@@ -294,14 +265,6 @@ export default function A1SubmissionForm({
       ) : null}
       {error ? (
         <p className="mb-2 mt-2 font-sans text-sm text-amber-800">{error}</p>
-      ) : null}
-      {results.length > 0 ? (
-        <div className="mt-3">
-            <h3 className="mt-0 mb-2 font-sans text-base font-semibold">
-            Auto-checks
-          </h3>
-          <CheckList results={results} />
-        </div>
       ) : null}
     </section>
   );

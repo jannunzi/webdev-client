@@ -3,6 +3,7 @@
 import {
   useEffect,
   useMemo,
+  useRef,
   useState,
   useSyncExternalStore,
   useTransition,
@@ -12,6 +13,7 @@ import type { AssignmentHubItem } from "@/lib/assignments/types";
 import {
   applyCriterionToggle,
   localProgressKey,
+  mergeCompletedIds,
   parseLocalProgress,
   summarizeProgress,
 } from "@/lib/assignments/progress-store";
@@ -24,6 +26,12 @@ import {
 import { isManualA1Criterion } from "@/lib/assignments/a1-rubric";
 import type { AssignmentCheckResult } from "@/lib/assignments/checks";
 import { latestResultByCriterion } from "@/lib/assignments/checks";
+import {
+  autoPassedCriterionIds,
+  type CriterionPassMap,
+} from "@/lib/assignments/grade";
+import { criterionVerifyUrl } from "@/lib/assignments/verify-urls";
+import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
 import { mergeLocalProgress, setCriterionCompleted } from "../actions";
 
 function AutoBadge({ result }: { result: AssignmentCheckResult }) {
@@ -45,31 +53,56 @@ function AutoBadge({ result }: { result: AssignmentCheckResult }) {
   );
 }
 
+function rowTone(result?: AssignmentCheckResult): string {
+  if (!result || result.skipped) return "border-neutral-200 bg-neutral-50";
+  return result.passed
+    ? "border-emerald-300 bg-emerald-50"
+    : "border-amber-300 bg-amber-50";
+}
+
 export default function AssignmentChecklist({
   assignment,
   initialCompletedIds,
   signedIn,
   mongoReady,
   autoResults = [],
+  vercelUrl,
+  persistProgress = true,
+  staffMode = false,
+  staffOverrides = {},
+  staffComments = {},
+  onStaffOverride,
+  onStaffComment,
 }: {
   assignment: AssignmentHubItem;
   initialCompletedIds: string[];
   signedIn: boolean;
   mongoReady: boolean;
   autoResults?: AssignmentCheckResult[];
+  vercelUrl?: string;
+  persistProgress?: boolean;
+  staffMode?: boolean;
+  staffOverrides?: CriterionPassMap;
+  staffComments?: Record<string, string>;
+  onStaffOverride?: (criterionId: string, passed: boolean | null) => void;
+  onStaffComment?: (criterionId: string, comment: string) => void;
 }) {
   const serverIds = useMemo(
     () => serverProgressSnapshot(initialCompletedIds),
     [initialCompletedIds],
   );
   const completedIds = useSyncExternalStore(
-    subscribeLocalProgress,
-    () => readMergedProgress(assignment.id, serverIds),
+    persistProgress ? subscribeLocalProgress : () => () => {},
+    () =>
+      persistProgress
+        ? readMergedProgress(assignment.id, serverIds)
+        : serverIds,
     () => serverIds,
   );
   const [pendingId, setPendingId] = useState<string | null>(null);
   const [syncNote, setSyncNote] = useState<string | null>(null);
   const [, startTransition] = useTransition();
+  const appliedAutoKey = useRef<string>("");
 
   const rubric = assignment.rubric;
   const totals = useMemo(
@@ -82,7 +115,37 @@ export default function AssignmentChecklist({
   );
 
   useEffect(() => {
-    if (!rubric || !signedIn || !mongoReady) return;
+    if (!rubric || !persistProgress) return;
+    const passed = autoPassedCriterionIds(autoResults);
+    const key = passed.join(",");
+    if (!key || key === appliedAutoKey.current) return;
+    const next = mergeCompletedIds(completedIds, passed);
+    if (next.join(",") === completedIds.join(",")) {
+      appliedAutoKey.current = key;
+      return;
+    }
+    appliedAutoKey.current = key;
+    writeLocalProgress(assignment.id, next);
+    if (!signedIn || !mongoReady) return;
+    startTransition(async () => {
+      await mergeLocalProgress({
+        assignmentId: assignment.id,
+        completedCriterionIds: passed,
+      });
+    });
+  }, [
+    assignment.id,
+    autoResults,
+    completedIds,
+    mongoReady,
+    persistProgress,
+    rubric,
+    signedIn,
+    startTransition,
+  ]);
+
+  useEffect(() => {
+    if (!rubric || !signedIn || !mongoReady || !persistProgress) return;
     const local = parseLocalProgress(
       window.localStorage.getItem(localProgressKey(assignment.id)),
     );
@@ -96,11 +159,12 @@ export default function AssignmentChecklist({
         writeLocalProgress(assignment.id, result.completedCriterionIds);
       }
     });
-  }, [assignment.id, mongoReady, rubric, signedIn, startTransition]);
+  }, [assignment.id, mongoReady, persistProgress, rubric, signedIn, startTransition]);
 
   if (!rubric) return null;
 
   function onToggle(criterionId: string, completed: boolean) {
+    if (!persistProgress) return;
     const previous = completedIds;
     const next = applyCriterionToggle(completedIds, criterionId, completed);
     writeLocalProgress(assignment.id, next);
@@ -157,11 +221,15 @@ export default function AssignmentChecklist({
           />
         </div>
         <p className="mb-0 mt-2 text-sm text-neutral-700">
-          {signedIn && mongoReady
-            ? "Checkmarks sync to your signed-in account."
-            : signedIn
-              ? "Checkmarks stay in this browser until progress sync is available."
-              : "Checkmarks stay in this browser. Sign in with your school email to sync across devices."}
+          {staffMode
+            ? ASSIGNMENT_STUDENT_COPY.staffCommentsHint
+            : persistProgress && signedIn && mongoReady
+              ? "Checkmarks sync to your signed-in account. Auto-pass rows are checked for you; you can still change them."
+              : persistProgress && signedIn
+                ? "Checkmarks stay in this browser until progress sync is available."
+                : persistProgress
+                  ? "Checkmarks stay in this browser. Sign in with your school email to sync across devices."
+                  : ASSIGNMENT_STUDENT_COPY.studentFeedbackHint}
         </p>
         {syncNote ? (
           <p className="mb-0 mt-2 text-sm text-amber-800">{syncNote}</p>
@@ -197,10 +265,13 @@ export default function AssignmentChecklist({
               {group.criteria.map((row) => {
                 const checked = completedIds.includes(row.id);
                 const inputId = `criterion-${row.id}`;
+                const auto = autoByCriterion.get(row.id);
+                const verifyHref = criterionVerifyUrl(vercelUrl, row.id);
+                const override = staffOverrides[row.id];
                 return (
                   <li
                     key={row.id}
-                    className="rounded-md border border-neutral-200 bg-neutral-50 px-3 py-3"
+                    className={`rounded-md border px-3 py-3 ${rowTone(auto)}`}
                   >
                     <div className="flex items-start gap-3">
                       <input
@@ -208,7 +279,7 @@ export default function AssignmentChecklist({
                         type="checkbox"
                         className="mt-1 size-4 accent-emerald-700"
                         checked={checked}
-                        disabled={pendingId === row.id}
+                        disabled={!persistProgress || pendingId === row.id}
                         onChange={(event) =>
                           onToggle(row.id, event.target.checked)
                         }
@@ -224,8 +295,8 @@ export default function AssignmentChecklist({
                               On your own
                             </span>
                           ) : null}
-                          {autoByCriterion.has(row.id) ? (
-                            <AutoBadge result={autoByCriterion.get(row.id)!} />
+                          {auto ? (
+                            <AutoBadge result={auto} />
                           ) : assignment.id === "a1" &&
                             isManualA1Criterion(row.id) ? (
                             <AutoBadge
@@ -242,6 +313,11 @@ export default function AssignmentChecklist({
                         <p className="mb-1 mt-1 text-sm text-neutral-800">
                           {row.description}
                         </p>
+                        {auto && !auto.skipped && auto.message ? (
+                          <p className="mb-1 font-sans text-sm text-neutral-800">
+                            {auto.message}
+                          </p>
+                        ) : null}
                         <p className="mb-0 font-sans text-sm text-neutral-600">
                           <span className="font-medium text-neutral-900">
                             {row.points} pts
@@ -254,7 +330,69 @@ export default function AssignmentChecklist({
                               </Link>
                             </>
                           ) : null}
+                          {verifyHref ? (
+                            <>
+                              {" · "}
+                              <a
+                                href={verifyHref}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                Open on deploy
+                              </a>
+                            </>
+                          ) : null}
                         </p>
+                        {staffMode ? (
+                          <div className="mt-3 space-y-2 font-sans">
+                            <div className="flex flex-wrap gap-2 text-sm">
+                              <span className="font-semibold">Staff mark:</span>
+                              <label className="inline-flex items-center gap-1">
+                                <input
+                                  type="radio"
+                                  name={`override-${row.id}`}
+                                  checked={override === undefined}
+                                  onChange={() => onStaffOverride?.(row.id, null)}
+                                />
+                                Auto
+                              </label>
+                              <label className="inline-flex items-center gap-1">
+                                <input
+                                  type="radio"
+                                  name={`override-${row.id}`}
+                                  checked={override === true}
+                                  onChange={() => onStaffOverride?.(row.id, true)}
+                                />
+                                Pass
+                              </label>
+                              <label className="inline-flex items-center gap-1">
+                                <input
+                                  type="radio"
+                                  name={`override-${row.id}`}
+                                  checked={override === false}
+                                  onChange={() => onStaffOverride?.(row.id, false)}
+                                />
+                                Fail
+                              </label>
+                            </div>
+                            <label className="block text-sm">
+                              Feedback
+                              <textarea
+                                className="mt-1 w-full rounded border border-neutral-400 bg-white px-3 py-2 text-sm"
+                                rows={2}
+                                value={staffComments[row.id] ?? ""}
+                                onChange={(event) =>
+                                  onStaffComment?.(row.id, event.target.value)
+                                }
+                              />
+                            </label>
+                          </div>
+                        ) : staffComments[row.id] ? (
+                          <p className="mb-0 mt-2 rounded border border-neutral-200 bg-white px-3 py-2 font-sans text-sm text-neutral-800">
+                            <span className="font-semibold">Staff feedback: </span>
+                            {staffComments[row.id]}
+                          </p>
+                        ) : null}
                       </div>
                     </div>
                   </li>

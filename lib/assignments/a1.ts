@@ -1,11 +1,12 @@
 import type { AssignmentRubric } from "./types";
 
 /**
- * Student checklist for A1, regrouped like the Canvas rubric:
- * Delivery / Lab HTML / Kambaz Ch1.
+ * Student checklist for A1, regrouped Delivery / Lab HTML / Kambaz Ch1.
  *
- * Canvas graders still use Best / Better / Almost / Missing. This module
- * stores only the max points students see beside each row.
+ * Website grades are all-or-nothing per criterion (full points or 0).
+ * Canvas is a grade shell only — do not mention Canvas rubric levels
+ * (Best / Better / Almost / Missing) to students. Rebuilding the IMSCC
+ * Canvas package is a follow-up; this file only documents the website model.
  */
 export const A1_RUBRIC: AssignmentRubric = {
   assignmentId: "a1",

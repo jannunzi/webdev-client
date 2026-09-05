@@ -24,6 +24,12 @@ export function canPersistAssignmentSubmission(impersonating: boolean): boolean 
   return !impersonating;
 }
 
+export {
+  canPersistStaffGrade,
+  canViewStaffGrader,
+  staffGraderAccess,
+} from "./staff";
+
 /**
  * Rostered students and staff (including View as student) may use the form.
  * Persist is decided separately so impersonation can smoke-test without writes.

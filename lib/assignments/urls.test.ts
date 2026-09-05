@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { criterionVerifyUrl } from "./verify-urls";
 import {
   a1SeedUrls,
   deployOriginFromUrl,
@@ -159,5 +160,24 @@ describe("deploy origin normalization", () => {
         "https://kambaz-next-js-sp26-git-a1-kenneth-aldridges-projects.vercel.app/labs/lab1",
       ),
     );
+  });
+});
+
+describe("criterion verify URLs", () => {
+  it("joins the student deploy origin with the criterion path", () => {
+    const origin = "https://jane-a1.vercel.app/account/signin";
+    assert.equal(
+      criterionVerifyUrl(origin, "a1-lab-heading-tags"),
+      "https://jane-a1.vercel.app/labs/lab1",
+    );
+    assert.equal(
+      criterionVerifyUrl(origin, "a1-kambaz-home"),
+      "https://jane-a1.vercel.app/courses/1234/home",
+    );
+    assert.equal(
+      criterionVerifyUrl(origin, "a1-delivery-name-section"),
+      "https://jane-a1.vercel.app/labs",
+    );
+    assert.equal(criterionVerifyUrl("", "a1-lab-heading-tags"), null);
   });
 });

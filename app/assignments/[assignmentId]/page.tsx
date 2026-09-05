@@ -4,18 +4,30 @@ import { notFound } from "next/navigation";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import StatusPanel from "@/app/quizzes/components/StatusPanel";
 import { formatLongDate } from "@/app/syllabus/data/dates";
-import { assignmentSubmitAccess, supportsUrlSubmission } from "@/lib/assignments/access";
+import {
+  assignmentSubmitAccess,
+  canViewStaffGrader,
+  supportsUrlSubmission,
+} from "@/lib/assignments/access";
 import {
   getAssignment,
   listAssignmentIds,
   rubricPointTotal,
 } from "@/lib/assignments/catalog";
 import { readAssignmentProgress } from "@/lib/assignments/progress";
-import { readAssignmentSubmission } from "@/lib/assignments/submissions";
+import {
+  listSubmissionsForAssignment,
+  readAssignmentSubmission,
+} from "@/lib/assignments/submissions";
 import {
   toSubmissionView,
   type AssignmentSubmissionView,
 } from "@/lib/assignments/submissions-store";
+import {
+  buildStaffStudentQueue,
+  findStaffStudent,
+  type StaffStudentRow,
+} from "@/lib/assignments/staff";
 import {
   isAssignmentProgressConfigured,
   isClerkConfigured,
@@ -24,6 +36,7 @@ import {
   canvasUserIdFromMetadata,
   collectClerkEmails,
 } from "@/lib/roster/emails";
+import { listCanvasRoster } from "@/lib/roster/list";
 import { lookupCanvasRoster } from "@/lib/roster/lookup";
 import {
   isActualStaff,
@@ -39,6 +52,7 @@ export const dynamic = "force-dynamic";
 
 type PageProps = {
   params: Promise<{ assignmentId: string }>;
+  searchParams: Promise<{ student?: string }>;
 };
 
 export function generateStaticParams() {
@@ -57,8 +71,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function AssignmentDetailPage({ params }: PageProps) {
+export default async function AssignmentDetailPage({
+  params,
+  searchParams,
+}: PageProps) {
   const { assignmentId } = await params;
+  const { student: studentKey } = await searchParams;
   const assignment = getAssignment(assignmentId);
   if (!assignment) notFound();
 
@@ -69,6 +87,9 @@ export default async function AssignmentDetailPage({ params }: PageProps) {
   let impersonating = false;
   let gateReason: SubmissionGateReason = mongoReady ? "sign_in" : "not_configured";
   let initialSubmission: AssignmentSubmissionView | null = null;
+  let staffQueue: StaffStudentRow[] | undefined;
+  let selectedStudent: StaffStudentRow | null = null;
+  let showStaffGrader = false;
 
   if (isClerkConfigured()) {
     const { userId, isAuthenticated } = await auth();
@@ -77,6 +98,9 @@ export default async function AssignmentDetailPage({ params }: PageProps) {
       const user = await currentUser();
       impersonating = await isImpersonatingStudent();
       const staff = await isActualStaff();
+      showStaffGrader =
+        supportsUrlSubmission(assignment.id) &&
+        canViewStaffGrader(staff, impersonating);
       const canvasUserId = canvasUserIdFromMetadata(user);
       const roster = mongoReady
         ? await lookupCanvasRoster({
@@ -133,6 +157,50 @@ export default async function AssignmentDetailPage({ params }: PageProps) {
           console.error("assignment submission load failed", message);
         }
       }
+
+      if (showStaffGrader && mongoReady) {
+        try {
+          const [rosterList, submissions] = await Promise.all([
+            listCanvasRoster(),
+            listSubmissionsForAssignment(assignment.id),
+          ]);
+          staffQueue = buildStaffStudentQueue(
+            rosterList.status === "ok" ? rosterList.entries : [],
+            submissions,
+          );
+          if (studentKey) {
+            selectedStudent = findStaffStudent(staffQueue, studentKey) ?? null;
+            if (selectedStudent?.clerkUserId) {
+              const doc = await readAssignmentSubmission(
+                selectedStudent.clerkUserId,
+                assignment.id,
+              );
+              initialSubmission = doc ? toSubmissionView(doc) : null;
+              initialCompletedIds = [];
+            } else if (selectedStudent) {
+              initialSubmission = selectedStudent.vercelUrl
+                ? {
+                    githubUrl: selectedStudent.githubUrl ?? "",
+                    vercelUrl: selectedStudent.vercelUrl,
+                    updatedAt: new Date().toISOString(),
+                    lastCheckedAt: selectedStudent.lastCheckedAt,
+                    checkResults: selectedStudent.checkResults,
+                    email: selectedStudent.email,
+                    name: selectedStudent.name,
+                    staffGrade: selectedStudent.staffGrade,
+                  }
+                : null;
+              initialCompletedIds = [];
+            }
+          }
+        } catch (error) {
+          const message =
+            error instanceof Error
+              ? error.message
+              : "Could not load staff submissions.";
+          console.error("assignment staff queue load failed", message);
+        }
+      }
     } else {
       gateReason = mongoReady ? "sign_in" : "not_configured";
     }
@@ -184,21 +252,16 @@ export default async function AssignmentDetailPage({ params }: PageProps) {
           canSubmit={canSubmit}
           impersonating={impersonating}
           gateReason={canSubmit ? null : gateReason}
+          staffQueue={staffQueue}
+          selectedStudent={selectedStudent}
         />
       ) : (
-        <>
-          <p className="rounded-lg border border-neutral-300 bg-white px-4 py-3 font-sans text-sm text-neutral-800">
-            Canvas grades still use Best / Better / Almost / Missing. This
-            checklist only shows the maximum points for each row so you can
-            track what you have finished.
-          </p>
-          <AssignmentChecklist
-            assignment={assignment}
-            initialCompletedIds={initialCompletedIds}
-            signedIn={signedIn}
-            mongoReady={mongoReady}
-          />
-        </>
+        <AssignmentChecklist
+          assignment={assignment}
+          initialCompletedIds={initialCompletedIds}
+          signedIn={signedIn}
+          mongoReady={mongoReady}
+        />
       )}
     </article>
   );

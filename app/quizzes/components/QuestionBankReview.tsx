@@ -71,7 +71,7 @@ export default function QuestionBankReview({
   }
 
   return (
-    <article className="mx-auto max-w-4xl font-sans text-[0.95rem] leading-relaxed text-neutral-900">
+    <article className="page-content font-sans text-[0.95rem] leading-relaxed text-neutral-900">
       <p className="mb-4 text-sm">
         <Link href="/quizzes">Question banks</Link>
         {" · "}

@@ -24,9 +24,11 @@ import { isAssignmentProgressConfigured } from "@/lib/config";
 import {
   canvasUserIdFromMetadata,
   collectClerkEmails,
+  preferredRosterEmail,
 } from "@/lib/roster/emails";
 import { lookupCanvasRoster } from "@/lib/roster/lookup";
 import { isActualStaff, isImpersonatingStudent } from "@/lib/roster/staff-access";
+import type { AssignmentSubmissionIdentity } from "@/lib/assignments/submissions-store";
 
 export type SubmissionActionResult =
   | {
@@ -81,12 +83,27 @@ function nameSourceFromActor(
   };
 }
 
+function identityFromRoster(
+  user: Awaited<ReturnType<typeof currentUser>>,
+  roster: Awaited<ReturnType<typeof lookupCanvasRoster>>,
+): AssignmentSubmissionIdentity {
+  const matched = roster.status === "matched" ? roster.entry : undefined;
+  return {
+    email: preferredRosterEmail(user, matched?.email),
+    rosterEmail: matched?.email,
+    name: matched?.name ?? user?.fullName ?? undefined,
+    canvasUserId: matched?.canvasUserId ?? canvasUserIdFromMetadata(user),
+    section: matched?.section,
+  };
+}
+
 async function authorizeSubmission(assignmentId: string): Promise<
   | {
       ok: true;
       userId: string;
       impersonating: boolean;
       nameSource: NameSource;
+      identity: AssignmentSubmissionIdentity;
     }
   | { ok: false; result: Extract<SubmissionActionResult, { ok: false }> }
 > {
@@ -137,6 +154,7 @@ async function authorizeSubmission(assignmentId: string): Promise<
     userId,
     impersonating,
     nameSource: nameSourceFromActor(user, roster),
+    identity: identityFromRoster(user, roster),
   };
 }
 
@@ -214,6 +232,7 @@ export async function saveAssignmentSubmission(input: {
       vercelUrl,
       checkResults,
       checked: true,
+      identity: authz.identity,
     });
     return {
       ok: true,
@@ -283,6 +302,7 @@ export async function runAssignmentChecks(input: {
           vercelUrl: existing.vercelUrl,
           checkResults,
           checked: true,
+          identity: authz.identity,
         });
         return {
           ok: true,
