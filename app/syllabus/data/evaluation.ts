@@ -17,7 +17,7 @@ export const evaluationItems: EvaluationItem[] = [
     label: "Exams (X1–X2)",
     weight: 30,
     description:
-      "X1 is the week after A3 (unlock Monday 2026-10-26, due Sunday 2026-11-01). X2 is exam week (unlock Monday 2026-11-30, due Wednesday 2026-12-03 with the published Exam). Canvas shells are 100 points each; the website scores as a percent and exports to Canvas out of 100.",
+      "X1 is the week after A3 (unlock Monday 2026-10-26, due Sunday 2026-11-01). X2 is exam week (unlock Monday 2026-11-30, due Thursday 2026-12-03 with the published Exam). Canvas shells are 100 points each; the website scores as a percent and exports to Canvas out of 100.",
   },
   {
     label: "Project",
