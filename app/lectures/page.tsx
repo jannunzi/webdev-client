@@ -59,7 +59,9 @@ export default function LecturesIndexPage() {
                 </p>
               </div>
 
-              {group.canvasLecture === 1 ? <LectureChapterLink /> : null}
+              {group.decks.some((deck) => deck.chapter === 1) ? (
+                <LectureChapterLink lecture={group.decks[0]} />
+              ) : null}
 
               {group.decks.length === 0 ? (
                 <p className="mt-5 rounded-lg border border-dashed border-neutral-300 bg-white px-5 py-8 font-sans text-sm text-neutral-500">
@@ -76,12 +78,12 @@ export default function LecturesIndexPage() {
                           className="group block overflow-hidden rounded-lg border border-neutral-300 bg-white no-underline shadow-sm transition hover:border-neutral-800"
                         >
                           <div className="aspect-video overflow-hidden bg-neutral-100">
-                            {/* Distinctive diagram/screenshot — not the WEB DEV title slide. */}
+                            {/* Authored logo card — not a Google Slides raster. */}
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                               src={thumb}
                               alt=""
-                              className="h-full w-full object-cover object-top"
+                              className="h-full w-full object-cover"
                             />
                           </div>
                           <div className="px-4 py-3">
