@@ -143,7 +143,11 @@ export default function AssignmentChecklist({
       {rubric.groups.map((group) => {
         const groupCompleted = group.criteria.filter((row) =>
           completedIds.includes(row.id),
-        ).length;
+        );
+        const groupEarned = groupCompleted.reduce(
+          (sum, row) => sum + row.points,
+          0,
+        );
         const groupPoints = group.criteria.reduce(
           (sum, row) => sum + row.points,
           0,
@@ -157,7 +161,8 @@ export default function AssignmentChecklist({
               {group.title}
             </h2>
             <p className="mt-0 mb-3 font-sans text-sm text-neutral-600">
-              {groupCompleted} / {group.criteria.length} · {groupPoints} pts
+              {groupCompleted.length} / {group.criteria.length} · {groupEarned}{" "}
+              / {groupPoints} pts
             </p>
             {group.intro ? <p className="mt-0 text-neutral-800">{group.intro}</p> : null}
             <ul className="m-0 list-none space-y-3 p-0">
