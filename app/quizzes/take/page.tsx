@@ -7,6 +7,19 @@ export const metadata: Metadata = {
   title: "Graded quizzes — CS 4550 / CS 5610",
 };
 
+const COMING_SOON_EXAMS = [
+  {
+    id: "x1",
+    title: "X1",
+    window: "Unlock Oct 26 · due Nov 1",
+  },
+  {
+    id: "x2",
+    title: "X2",
+    window: "Unlock Nov 30 · due Dec 3 (exam week)",
+  },
+] as const;
+
 export default function TakeQuizIndexPage() {
   const exams = listExamBanks();
 
@@ -55,6 +68,23 @@ export default function TakeQuizIndexPage() {
               className="book-practice-cta inline-block rounded border border-neutral-800 bg-neutral-800 px-3 py-2 text-sm"
             >
               Take or review {bank.title}
+            </Link>
+          </li>
+        ))}
+        {COMING_SOON_EXAMS.map((exam) => (
+          <li
+            key={exam.id}
+            className="rounded-lg border border-neutral-300 bg-white p-4 shadow-sm"
+          >
+            <h2 className="mt-0 mb-2 text-lg font-semibold">{exam.title}</h2>
+            <p className="mt-0 text-sm text-neutral-700">
+              {exam.window} · Canvas 100-point shell · coming soon
+            </p>
+            <Link
+              href={`/quizzes/take/${exam.id}`}
+              className="book-practice-cta inline-block rounded border border-neutral-800 bg-neutral-800 px-3 py-2 text-sm"
+            >
+              Open {exam.title}
             </Link>
           </li>
         ))}

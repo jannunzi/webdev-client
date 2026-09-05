@@ -55,7 +55,7 @@ describe("Eastern wall-time conversion", () => {
 });
 
 describe("exam prep reopen windows", () => {
-  it("uses the syllabus Exam as finalAt and a documented midterm placeholder", () => {
+  it("uses syllabus Exam · X2 as finalAt and the weekday after X1 as midtermAt", () => {
     assert.equal(COURSE_EXAMS.midtermAt, et(2026, 11, 5).toISOString());
     assert.equal(COURSE_EXAMS.finalAt, et(2026, 12, 3).toISOString());
     const midterm = new Date(COURSE_EXAMS.midtermAt);

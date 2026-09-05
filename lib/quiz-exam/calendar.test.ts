@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { deadlines } from "@/app/syllabus/data/deadlines";
+import { evaluationItems, evaluationNotes } from "@/app/syllabus/data/evaluation";
 import { etWallTimeToUtc, getQuizSchedule } from "./schedule";
 
 const CANVAS_ASSIGNMENT_DUES: Record<string, string> = {
@@ -43,9 +44,19 @@ describe("Fall 2026 Canvas calendar", () => {
   });
 
   it("keeps exam and project dates on the published syllabus days", () => {
-    const exam = deadlines.find((deadline) => deadline.kind === "exam");
+    const x1 = deadlines.find(
+      (deadline) => deadline.kind === "exam" && deadline.label.startsWith("X1"),
+    );
+    const examWeek = deadlines.find(
+      (deadline) =>
+        deadline.kind === "exam" && deadline.date === "2026-12-03",
+    );
     const project = deadlines.find((deadline) => deadline.kind === "project");
-    assert.equal(exam?.date, "2026-12-03");
+    assert.equal(x1?.date, "2026-11-01");
+    assert.match(x1?.label ?? "", /unlock Oct 26/);
+    assert.equal(examWeek?.date, "2026-12-03");
+    assert.match(examWeek?.label ?? "", /X2 due/);
+    assert.match(examWeek?.label ?? "", /unlock Nov 30/);
     assert.equal(project?.date, "2026-12-10");
   });
 
@@ -83,5 +94,22 @@ describe("Fall 2026 Canvas calendar", () => {
       assert.equal(easternIsoDate(schedule.takeUnlockAt), window.unlock);
       assert.equal(easternIsoDate(schedule.takeLockAt), window.due);
     }
+  });
+
+  it("documents 100-point Canvas shells and percent import for Q1–Q6 and X1/X2", () => {
+    const quiz = evaluationItems.find((item) => item.label.includes("Q1"));
+    const exams = evaluationItems.find((item) => item.label.includes("X1"));
+    assert.ok(quiz);
+    assert.ok(exams);
+    assert.match(quiz.description, /100 points/);
+    assert.match(quiz.description, /percent/i);
+    assert.match(exams.description, /100 points/);
+    assert.match(exams.description, /percent/i);
+    const shellNote = evaluationNotes.join(" ");
+    assert.match(shellNote, /Q1–Q6/);
+    assert.match(shellNote, /X1\/X2/);
+    assert.match(shellNote, /100 points/);
+    assert.match(shellNote, /percent/);
+    assert.match(shellNote, /out of 100/);
   });
 });

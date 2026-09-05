@@ -8,6 +8,11 @@ import type { Deadline } from "./types";
  * Monday 00:00 ET after the corresponding assignment due and lock the
  * following Sunday 23:59 ET (same windows as `lib/quiz-exam/schedule.ts`).
  * A2–A6 are assigned on the previous assignment’s due day.
+ *
+ * X1/X2 match Canvas package -20 (ET): X1 unlocks the Monday after A3 due
+ * and locks that Sunday; X2 unlocks exam-week Monday and locks Wednesday
+ * with the published Exam. Canvas shells are 100 points; the site scores
+ * as a percent and exports to Canvas /100.
  */
 export const deadlines: Deadline[] = [
   { date: "2026-09-09", kind: "assignment", label: "A1 assigned — HTML" },
@@ -42,6 +47,11 @@ export const deadlines: Deadline[] = [
     label: "Q3 due — JavaScript (unlock Oct 26)",
   },
   {
+    date: "2026-11-01",
+    kind: "exam",
+    label: "X1 due (unlock Oct 26)",
+  },
+  {
     date: "2026-11-08",
     kind: "assignment",
     label: "A4 due · A5 assigned — REST APIs",
@@ -61,7 +71,11 @@ export const deadlines: Deadline[] = [
     kind: "quiz",
     label: "Q5 due — REST APIs (unlock Nov 23)",
   },
-  { date: "2026-12-03", kind: "exam", label: "Exam" },
+  {
+    date: "2026-12-03",
+    kind: "exam",
+    label: "Exam · X2 due (unlock Nov 30)",
+  },
   { date: "2026-12-06", kind: "assignment", label: "A6 due" },
   { date: "2026-12-10", kind: "project", label: "Project due" },
   {
@@ -72,4 +86,4 @@ export const deadlines: Deadline[] = [
 ];
 
 export const deadlinesNote =
-  "Assignment, quiz, exam, and project dates are one Canvas calendar for every section. Assignments and quizzes are due Sunday 11:59pm ET. CS 5610-02 starts September 14, so it has less runway before A1.";
+  "Assignment, quiz, exam, and project dates are one Canvas calendar for every section. Assignments and chapter quizzes (Q1–Q6) are due Sunday 11:59pm ET. X1 is due Sunday 11:59pm ET the week after A3. X2 is due Wednesday 11:59pm ET of exam week (same day as the published Exam). Canvas quiz and exam shells (Q1–Q6, X1/X2) are 100 points each; the website scores as a percent and exports to Canvas out of 100. CS 5610-02 starts September 14, so it has less runway before A1.";

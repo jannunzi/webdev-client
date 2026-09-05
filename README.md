@@ -210,15 +210,20 @@ due). Q1: unlock 2026-09-28, due 2026-10-04 23:59 ET.
 
 **Exam dates** live in `COURSE_EXAMS` in the same module:
 
-- `midtermAt` — **placeholder** `2026-11-05T05:00:00.000Z` (Thu 2026-11-05
-  00:00 ET). The published syllabus has no midterm.
-- `finalAt` — syllabus **Exam** date `2026-12-03T05:00:00.000Z`
-  (2026-12-03 00:00 ET). University finals are 2026-12-14–20 on the syllabus
-  and are not used for the reopen.
+- `midtermAt` — Q1–Q3 answer-reopen close `2026-11-05T05:00:00.000Z` (Thu
+  2026-11-05 00:00 ET), the first weekday after syllabus **X1** / Q3 due
+  (2026-11-01). `/quizzes/take/x1` is a coming-soon stub.
+- `finalAt` — syllabus **Exam · X2** date `2026-12-03T05:00:00.000Z`
+  (2026-12-03 00:00 ET). `/quizzes/take/x2` is a coming-soon stub.
+  University finals are 2026-12-14–20 on the syllabus and are not used for
+  the reopen.
+
+Canvas package -20 grade shells for Q1–Q6 and X1/X2 are **100 points**
+each. The website scores as a percent and exports to Canvas out of 100.
 
 Q1–Q3 reopen `[midtermAt − 7d, midtermAt)` and are labeled “midterm”. Q4–Q6
 reopen `[finalAt − 7d, finalAt)` and are labeled “final”. Edit those two ISO
-strings when Jose publishes a midterm.
+strings if the answer-reopen exam instants move.
 
 Staff **View as student** still does not persist an attempt. Impersonation can
 exercise the form even outside the take window; answers still follow the

@@ -8,16 +8,16 @@ export const evaluationItems: EvaluationItem[] = [
       "Six incremental implementations of Kambaz, one per book chapter. Each assignment is submitted as a GitHub repository and a deployed Vercel URL.",
   },
   {
-    label: "Quizzes",
+    label: "Quizzes (Q1–Q6)",
     weight: 10,
     description:
-      "Short checks after each chapter. Each quiz unlocks Monday 00:00 ET after the corresponding assignment due and locks Sunday 23:59 ET. Quizzes cannot be submitted late.",
+      "Short checks after each chapter. Each quiz unlocks Monday 00:00 ET after the corresponding assignment due and locks Sunday 23:59 ET. Quizzes cannot be submitted late. Canvas shells are 100 points each; the website scores as a percent and exports to Canvas out of 100.",
   },
   {
-    label: "Exam",
+    label: "Exams (X1–X2)",
     weight: 30,
     description:
-      "One written / practical exam covering HTML through MongoDB. Date is listed on the agenda.",
+      "X1 is the week after A3 (unlock Monday 2026-10-26, due Sunday 2026-11-01). X2 is exam week (unlock Monday 2026-11-30, due Wednesday 2026-12-03 with the published Exam). Canvas shells are 100 points each; the website scores as a percent and exports to Canvas out of 100.",
   },
   {
     label: "Project",
@@ -43,6 +43,6 @@ export const gradeBands: GradeBand[] = [
 ];
 
 export const evaluationNotes = [
-  "Weights sum to 100%. Individual assignment and quiz point values are posted with each handout; the category weight above is what enters the final average.",
+  "Weights sum to 100%. Canvas grade shells for Q1–Q6 and X1/X2 are 100 points each (empty website-linked quizzes). The website scores as a percent and exports that score to Canvas out of 100; the category weights above are what enter the final average.",
   "You must submit every assignment and the project to be eligible for a passing grade, even if a late penalty applies.",
 ];
