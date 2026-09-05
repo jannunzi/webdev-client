@@ -8,13 +8,35 @@ const STEPS = [
   { who: "Browser", detail: "Update the DOM", accent: true },
 ] as const;
 
-const VIEW_W = 1040;
-const BOX_W = 160;
+const VIEW_W = 1080;
+const BOX_W = 152;
 const BOX_H = 132;
 const BOX_Y = 38;
-const GAP = 48;
+const GAP = 58;
 const START_X =
   (VIEW_W - (STEPS.length * BOX_W + (STEPS.length - 1) * GAP)) / 2;
+const ARROW_HEAD = 12;
+const ARROW_PAD = 10;
+
+function Arrow({ x1, x2, y }: { x1: number; x2: number; y: number }) {
+  const base = x2 - ARROW_HEAD;
+  return (
+    <g>
+      <line
+        x1={x1}
+        y1={y}
+        x2={base}
+        y2={y}
+        stroke="#171717"
+        strokeWidth="3"
+      />
+      <polygon
+        points={`${x2},${y} ${base},${y - 6} ${base},${y + 6}`}
+        fill="#171717"
+      />
+    </g>
+  );
+}
 
 export default function CsrDiagram() {
   return (
@@ -29,19 +51,6 @@ export default function CsrDiagram() {
           Client-side rendering: the browser runs JavaScript, fetches JSON, and
           updates the DOM
         </title>
-        <defs>
-          <marker
-            id="csr-arrow"
-            markerUnits="userSpaceOnUse"
-            markerWidth="12"
-            markerHeight="12"
-            refX="12"
-            refY="6"
-            orient="auto"
-          >
-            <path d="M0,0 L12,6 L0,12 Z" fill="#171717" />
-          </marker>
-        </defs>
         {STEPS.map((step, index) => {
           const x = START_X + index * (BOX_W + GAP);
           const prevRight = x - GAP;
@@ -49,14 +58,10 @@ export default function CsrDiagram() {
           return (
             <g key={`${step.who}-${step.detail}`}>
               {index > 0 ? (
-                <line
-                  x1={prevRight + 8}
-                  y1={arrowY}
-                  x2={x}
-                  y2={arrowY}
-                  stroke="#171717"
-                  strokeWidth="3"
-                  markerEnd="url(#csr-arrow)"
+                <Arrow
+                  x1={prevRight + ARROW_PAD}
+                  x2={x - ARROW_PAD}
+                  y={arrowY}
                 />
               ) : null}
               <rect
