@@ -1,7 +1,20 @@
-import { fib, fibMulti, mc, tf } from "../builders";
+import { acronymFib, fib, mc, tf } from "../builders";
 import type { QuestionGroup } from "../types";
 
-const P_ANSWERS = ["p", "<p>", "</p>", "p tag", "paragraph", "<p> tag"];
+const P_ANSWERS = [
+  "p",
+  "<p>",
+  "</p>",
+  "p tag",
+  "p element",
+  "paragraph",
+  "paragraph tag",
+  "paragraph element",
+  "<p> tag",
+  "<p> element",
+  "the p element",
+  "the paragraph element",
+];
 
 export const q1Group01: QuestionGroup = {
   id: "q1-g01-acronyms",
@@ -10,97 +23,79 @@ export const q1Group01: QuestionGroup = {
   type: "fill_in_blank",
   chapter: 1,
   section: "1.3",
-  skill: "Expand core web acronyms from Chapter 1 (mixed stems; JSX multi-blank exception).",
+  skill:
+    "Expand core web acronyms from Chapter 1: one blank per letter, words in letter order.",
   notes:
-    "Only group where each stem may cover a different acronym. JSX accepts [Java][Script][XML] or [JavaScript][XML][blank].",
+    "Each stem is a different acronym. blankCount equals the letter count. Example instruction: CSS → Cascading / Style / Sheets. Alternate spellings are extra same-length combinations.",
   questions: [
-    fib(
+    acronymFib(
       "q1-g01-01",
-      "HTML stands for _____.",
-      [
-        "HyperText Markup Language",
-        "Hyper Text Markup Language",
-        "hypertext markup language",
-      ],
+      "HTML",
+      ["Hyper", "Text", "Markup", "Language"],
       "HTML is HyperText Markup Language, a dialect of XML for structuring documents so browsers can render them.",
+      { extraCombinations: [["HyperText", "Text", "Markup", "Language"]] },
     ),
-    fib(
+    acronymFib(
       "q1-g01-02",
-      "XML stands for _____.",
-      [
-        "eXtensible Markup Language",
-        "Extensible Markup Language",
-        "extensible markup language",
-      ],
+      "XML",
+      ["eXtensible", "Markup", "Language"],
       "XML is eXtensible Markup Language. HTML is a specialized dialect of it for web documents.",
+      { extraCombinations: [["Extensible", "Markup", "Language"]] },
     ),
-    fibMulti(
+    acronymFib(
       "q1-g01-03",
-      "JSX stands for _____ _____ _____ (three blanks). You may put JavaScript in the first blank and XML in the second, leaving the third blank empty.",
-      3,
-      [
-        ["Java", "Script", "XML"],
-        ["JavaScript", "XML", ""],
-        ["Java Script", "XML", ""],
-      ],
-      "JSX is JavaScript XML: HTML-like markup written inside React components. Canvas can accept Java + Script + XML or JavaScript + XML + unused blank.",
+      "JSX",
+      ["Java", "Script", "XML"],
+      "JSX is JavaScript XML: HTML-like markup written inside React components. One blank per letter: Java / Script / XML.",
     ),
-    fib(
+    acronymFib(
       "q1-g01-04",
-      "DOM stands for _____.",
-      ["Document Object Model", "document object model"],
+      "DOM",
+      ["Document", "Object", "Model"],
       "The browser parses HTML/JSX into an in-memory tree called the Document Object Model.",
     ),
-    fib(
+    acronymFib(
       "q1-g01-05",
-      "URL stands for _____.",
-      ["Uniform Resource Locator", "uniform resource locator"],
+      "URL",
+      ["Uniform", "Resource", "Locator"],
       "A URL is a Uniform Resource Locator — the address of a resource on the Web.",
     ),
-    fib(
+    acronymFib(
       "q1-g01-06",
-      "HTTP stands for _____.",
-      [
-        "HyperText Transfer Protocol",
-        "Hyper Text Transfer Protocol",
-        "hypertext transfer protocol",
-      ],
+      "HTTP",
+      ["Hyper", "Text", "Transfer", "Protocol"],
       "HTTP is HyperText Transfer Protocol, the application protocol browsers use to request documents.",
+      { extraCombinations: [["HyperText", "Text", "Transfer", "Protocol"]] },
     ),
-    fib(
+    acronymFib(
       "q1-g01-07",
-      "In this chapter, SPA stands for _____.",
-      ["Single Page Application", "single page application"],
+      "SPA",
+      ["Single", "Page", "Application"],
       "A Single Page Application keeps one HTML shell loaded and updates the UI without a full reload for every in-app route.",
+      { prefix: "In this chapter, " },
     ),
-    fib(
+    acronymFib(
       "q1-g01-08",
-      "API stands for _____.",
-      [
-        "Application Programming Interface",
-        "application programming interface",
-      ],
+      "API",
+      ["Application", "Programming", "Interface"],
       "An API is an Application Programming Interface — a contract other code can call.",
     ),
-    fib(
+    acronymFib(
       "q1-g01-09",
-      "CSS stands for _____.",
-      ["Cascading Style Sheets", "cascading style sheets"],
+      "CSS",
+      ["Cascading", "Style", "Sheets"],
       "CSS is Cascading Style Sheets. This course covers it in Chapter 2; the acronym still appears in Chapter 1 context.",
     ),
-    fib(
+    acronymFib(
       "q1-g01-10",
-      "IDE stands for _____.",
-      [
-        "Integrated Development Environment",
-        "integrated development environment",
-      ],
+      "IDE",
+      ["Integrated", "Development", "Environment"],
       "An IDE (Integrated Development Environment) is the editor/tooling used to write the app, such as VS Code or Cursor.",
     ),
-    fib(
+    acronymFib(
       "q1-g01-11",
-      "npm stands for _____.",
-      ["Node Package Manager", "node package manager"],
+      "npm",
+      ["Node", "Package", "Manager"],
       "npm is the Node Package Manager used to install JavaScript packages. Lowercase npm is accepted after normalization.",
     ),
   ],
@@ -117,7 +112,7 @@ export const q1Group02: QuestionGroup = {
   questions: [
     mc(
       "q1-g02-01",
-      "In <h1>Labs</h1>, what is the textual syntax <h1> called?",
+      "In `<h1>Labs</h1>`, what is the textual syntax `<h1>` called?",
       [
         "An attribute",
         "A tag",
@@ -129,10 +124,10 @@ export const q1Group02: QuestionGroup = {
     ),
     mc(
       "q1-g02-02",
-      "A name/value pair written inside an opening tag (for example id=\"main\") is called a(n) _____.",
+      "A name/value pair written inside an opening tag (for example `id=\"main\"`) is called a(n) _____.",
       ["element", "attribute", "fragment", "void node"],
       1,
-      "Attributes configure an element. The pattern is name=\"value\" on the opening tag.",
+      "Attributes configure an element. The pattern is `name=\"value\"` on the opening tag.",
     ),
     mc(
       "q1-g02-03",
@@ -162,7 +157,7 @@ export const q1Group02: QuestionGroup = {
     ),
     mc(
       "q1-g02-06",
-      "What does the id attribute provide?",
+      "What does the `id` attribute provide?",
       [
         "A CSS class that can be reused on many elements",
         "A unique name for that element on the page",
@@ -170,7 +165,7 @@ export const q1Group02: QuestionGroup = {
         "The destination of a hyperlink",
       ],
       1,
-      "id gives a unique name — useful for styling, testing, labels, and in-page links.",
+      "`id` gives a unique name — useful for styling, testing, labels, and in-page links.",
     ),
     mc(
       "q1-g02-07",
@@ -241,9 +236,9 @@ export const q1Group03: QuestionGroup = {
     ].map((domain, index) =>
       fib(
         `q1-g03-${String(index + 1).padStart(2, "0")}`,
-        `A long ${domain} is written as several sentences in source with blank lines between them. Browsers ignore that extra whitespace and blend the text unless each block is wrapped in the _____ tag.`,
+        `A long ${domain} is written as several sentences of prose, with blank lines between those sentences in the source. Browsers ignore that extra whitespace and blend the text into one stream. Wrap each paragraph of prose in the HTML _____ element — the paragraph element, not a heading and not a generic container.`,
         P_ANSWERS,
-        "Browsers ignore extra spaces, tabs, and newlines. The p tag is a block element that adds vertical space around a paragraph.",
+        "Chapter 1.3.2 teaches the paragraph tag (`<p>`). Browsers ignore extra spaces, tabs, and newlines; wrapping each block of prose in `p` adds vertical space. A `div` is a generic container and `h1`–`h6` are headings — neither is the paragraph element.",
       ),
     ),
   ],

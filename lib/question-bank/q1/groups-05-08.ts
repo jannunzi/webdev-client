@@ -244,7 +244,7 @@ export const q1Group07: QuestionGroup = {
     ...IMG_PATH_DOMAINS.map((domain, index) =>
       fib(
         `q1-g07-${String(index + 1).padStart(2, "0")}`,
-        `A ${domain.label} file is saved as public/images/${domain.file}.jpg. In <img src>, write the path as _____ (do not include the public/ prefix).`,
+        `A ${domain.label} file is saved as public/images/${domain.file}.jpg. In \`<img src>\`, write the path as _____ (do not include the \`public/\` prefix).`,
         [
           `/images/${domain.file}.jpg`,
           `images/${domain.file}.jpg`,
@@ -257,7 +257,7 @@ export const q1Group07: QuestionGroup = {
         `q1-g07-${String(index + 6).padStart(2, "0")}`,
         `The _____ attribute holds a short text description of a ${domain} image when it cannot load, and it matters for accessibility.`,
         ["alt", "alt text", "the alt", "alt attribute", "the alt attribute"],
-        "alt describes the picture for people and tools that cannot see it. src points at the file.",
+        "`alt` describes the picture for people and tools that cannot see it. `src` points at the file.",
       ),
     ),
   ],
@@ -274,14 +274,14 @@ export const q1Group08: QuestionGroup = {
   questions: [
     mc(
       "q1-g08-01",
-      "In JSX, which attribute on a <label> links it to an input’s id?",
-      ["for", "htmlFor", "target", "name"],
+      "In JSX, which attribute on a `<label>` links it to an input’s `id`?",
+      ["`for`", "`htmlFor`", "`target`", "`name`"],
       1,
-      "Plain HTML uses for. In JSX it must be htmlFor because for is a reserved word in JavaScript.",
+      "Plain HTML uses `for`. In JSX it must be `htmlFor` because `for` is a reserved word in JavaScript.",
     ),
     mc(
       "q1-g08-02",
-      "A label has htmlFor=\"email\" and an input has id=\"email\". What happens when the user clicks the label text?",
+      "A label has `htmlFor=\"email\"` and an input has `id=\"email\"`. What happens when the user clicks the label text?",
       [
         "Nothing — only the field itself is clickable",
         "The matching control is focused (or selected, for radios/checkboxes)",
@@ -292,12 +292,12 @@ export const q1Group08: QuestionGroup = {
     ),
     mc(
       "q1-g08-03",
-      "Which label pattern can omit htmlFor and id because nesting creates the association?",
+      "Which label pattern can omit `htmlFor` and `id` because nesting creates the association?",
       [
-        "A sibling <label> before an unlabeled <input>",
-        "<label><input type=\"radio\" name=\"g\" /> Yes</label>",
-        "A <div> wrapped around the input",
-        "A <span> with a title attribute",
+        "A sibling `<label>` before an unlabeled `<input>`",
+        "`<label><input type=\"radio\" name=\"g\" /> Yes</label>`",
+        "A `<div>` wrapped around the input",
+        "A `<span>` with a `title` attribute",
       ],
       1,
     ),
@@ -316,39 +316,39 @@ export const q1Group08: QuestionGroup = {
       "q1-g08-05",
       "Which pairing is correct for the sibling-label style?",
       [
-        '<input id="name" /> <label for="name">Name</label>  (HTML attribute for, written as for in JSX)',
-        '<input id="name" /> <label htmlFor="name">Name</label>',
-        '<input htmlFor="name" /> <label id="name">Name</label>',
-        '<label name="name">Name</label> <input />',
+        '`<input id="name" /> <label for="name">Name</label>`  (HTML attribute `for`, written as `for` in JSX)',
+        '`<input id="name" /> <label htmlFor="name">Name</label>`',
+        '`<input htmlFor="name" /> <label id="name">Name</label>`',
+        '`<label name="name">Name</label> <input />`',
       ],
       1,
     ),
     mc(
       "q1-g08-06",
-      "What should htmlFor match?",
+      "What should `htmlFor` match?",
       [
-        "The input’s name attribute only",
-        "The input’s id",
-        "The form’s id",
-        "The option’s value",
+        "The input’s `name` attribute only",
+        "The input’s `id`",
+        "The form’s `id`",
+        "The option’s `value`",
       ],
       1,
     ),
     mc(
       "q1-g08-07",
-      "The <form> element’s job in this chapter is to _____.",
+      "The `<form>` element’s job in this chapter is to _____.",
       [
         "style headings",
         "wrap controls so users can fill in and submit information as one unit",
-        "replace <table> for tabular data",
+        "replace `<table>` for tabular data",
         "create a new App Router URL by itself",
       ],
       1,
     ),
     mc(
       "q1-g08-08",
-      "Which is a form control you would typically place inside <form>?",
-      ["<html>", "<head>", "<input>", "<title>"],
+      "Which is a form control you would typically place inside `<form>`?",
+      ["`<html>`", "`<head>`", "`<input>`", "`<title>`"],
       2,
     ),
     mc(
@@ -364,10 +364,10 @@ export const q1Group08: QuestionGroup = {
     ),
     mc(
       "q1-g08-10",
-      "Putting htmlFor on the <input> instead of the <label> is _____.",
+      "Putting `htmlFor` on the `<input>` instead of the `<label>` is _____.",
       [
         "the required JSX pattern",
-        "incorrect — htmlFor belongs on the label, matching the input’s id",
+        "incorrect — `htmlFor` belongs on the label, matching the input’s `id`",
         "how you group radio buttons",
         "how you set the submitted value",
       ],

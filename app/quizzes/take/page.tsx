@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import StaffOnly from "../components/StaffOnly";
-import { listExamBanks } from "@/lib/quiz-exam";
+import { listExamBanks, STUDENT_COPY } from "@/lib/quiz-exam";
 
 export const metadata: Metadata = {
   title: "Graded quizzes — CS 4550 / CS 5610",
@@ -25,8 +25,7 @@ export default function TakeQuizIndexPage() {
         Graded quizzes
       </h1>
       <p className="rounded-lg border border-sky-300 bg-sky-50 px-4 py-3 text-sky-950">
-        Anyone can browse the book. Only students on the Canvas roster can
-        start or submit a graded attempt. After you submit, the same URL is
+        {STUDENT_COPY.takeIndexLead} After you submit, the same URL is
         how you come back for your score and — during the class-wide review
         week — the answers. Practice self-checks stay on{" "}
         <Link href="/book/practice">/book/practice</Link>.

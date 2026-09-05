@@ -13,6 +13,7 @@ import {
   type QuizScheduleIso,
 } from "@/lib/quiz-exam/schedule";
 import { submitExamAttempt } from "../actions";
+import PromptMarkup from "../../components/PromptMarkup";
 import { SubmittedAttemptView } from "./AttemptReview";
 
 function readAnswers(
@@ -142,9 +143,10 @@ function QuestionField({
       <legend className="px-1 text-sm font-semibold text-neutral-700">
         {index}. {question.groupName}
       </legend>
-      <p className="mt-1 font-medium whitespace-pre-wrap break-words">
-        {question.prompt}
-      </p>
+      <PromptMarkup
+        text={question.prompt}
+        className="mt-1 font-medium whitespace-pre-wrap break-words"
+      />
       {question.code ? (
         <pre className="mt-2 overflow-x-auto rounded border border-neutral-300 bg-neutral-50 px-3 py-2 font-mono text-[0.8rem] leading-relaxed">
           <code>{question.code}</code>
@@ -166,7 +168,7 @@ function QuestionField({
                   <span className="mr-1 font-mono text-xs uppercase text-neutral-500">
                     {choice.id}.
                   </span>
-                  {choice.text}
+                  <PromptMarkup as="span" text={choice.text} />
                 </span>
               </label>
             </li>

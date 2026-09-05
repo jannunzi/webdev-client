@@ -3,6 +3,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { isQuizTakingConfigured } from "@/lib/config";
 import { findLatestQuizAttempt, insertQuizAttempt } from "@/lib/quiz-exam/attempts";
+import { STUDENT_COPY } from "@/lib/quiz-exam/student-copy";
 import { runExamSubmit } from "@/lib/quiz-exam/submit";
 import type { SubmitExamInput, SubmitExamResult } from "@/lib/quiz-exam/types";
 import {
@@ -30,7 +31,7 @@ export async function submitExamAttempt(
     return {
       ok: false,
       code: "unauthenticated",
-      message: "Sign in to submit a graded quiz.",
+      message: STUDENT_COPY.signInToSubmit,
     };
   }
 

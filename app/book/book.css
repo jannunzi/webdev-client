@@ -113,6 +113,16 @@
   border-radius: 0.2rem;
 }
 
+/* Question-bank / exam prompts: `backticks` → <code class="quiz-prompt-code"> */
+.book-shell :not(pre) > code.quiz-prompt-code,
+code.quiz-prompt-code {
+  color: #c41e3a;
+  background: #eeeeee;
+  padding: 0.12em 0.38em;
+  border-radius: 0.2rem;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
 .book-code-block-body pre {
   margin: 0;
   overflow-x: auto;
