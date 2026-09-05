@@ -43,11 +43,13 @@ export default function ExamForm({
   title,
   questions,
   startedAt,
+  impersonating = false,
 }: {
   quizId: string;
   title: string;
   questions: StudentQuestion[];
   startedAt: string;
+  impersonating?: boolean;
 }) {
   const [result, setResult] = useState<SubmitExamResult | null>(null);
   const [pending, setPending] = useState(false);
@@ -98,7 +100,11 @@ export default function ExamForm({
         disabled={pending}
         className="rounded border border-neutral-800 bg-neutral-800 px-4 py-2 text-white hover:bg-neutral-700 disabled:opacity-60"
       >
-        {pending ? "Submitting…" : "Submit graded attempt"}
+        {pending
+          ? "Submitting…"
+          : impersonating
+            ? "Submit (preview — not saved)"
+            : "Submit graded attempt"}
       </button>
     </form>
   );
@@ -197,15 +203,21 @@ function ScoreSummary({
     <div>
       <div
         role="status"
-        className="mb-6 rounded-lg border-2 border-emerald-600 bg-emerald-50 px-4 py-3 text-emerald-950"
+        className={`mb-6 rounded-lg border-2 px-4 py-3 ${
+          result.impersonation
+            ? "border-amber-500 bg-amber-50 text-amber-950"
+            : "border-emerald-600 bg-emerald-50 text-emerald-950"
+        }`}
       >
         <p className="m-0 text-lg font-semibold">
           {title}: {result.score} / {result.maxScore}
         </p>
         <p className="mb-0 mt-1 text-sm">
-          {result.persisted
-            ? "This attempt was stored in MongoDB Atlas for later Canvas grade import."
-            : "Your score was calculated, but the attempt was not stored. Ask the instructor to check Atlas configuration."}
+          {result.impersonation
+            ? "Impersonation — attempt not saved"
+            : result.persisted
+              ? "This attempt was stored in MongoDB Atlas for later Canvas grade import."
+              : "Your score was calculated, but the attempt was not stored. Ask the instructor to check Atlas configuration."}
         </p>
       </div>
       <ol className="m-0 list-none space-y-3 p-0">

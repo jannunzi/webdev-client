@@ -5,6 +5,7 @@ import { getCollection } from "../mongo";
 import { parseRosterEmailsEnv } from "./emails";
 import { matchRoster } from "./match";
 import type { CanvasRosterEntry, RosterLookupResult } from "./types";
+import { impersonationRosterMatch } from "./view-mode";
 
 export const CANVAS_ROSTER_COLLECTION = "canvas_roster";
 
@@ -15,7 +16,12 @@ export async function getRosterCollection() {
 export async function lookupCanvasRoster(input: {
   emails: string[];
   canvasUserIds?: string[];
+  /** Staff “View as student”: synthetic Demo Student, no Mongo read or write. */
+  impersonating?: boolean;
 }): Promise<RosterLookupResult> {
+  const dummy = impersonationRosterMatch(Boolean(input.impersonating));
+  if (dummy) return dummy;
+
   if (!isMongoConfigured()) {
     return { status: "not_configured" };
   }

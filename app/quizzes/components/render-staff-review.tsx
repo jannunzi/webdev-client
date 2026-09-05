@@ -1,5 +1,8 @@
 import type { ReactNode } from "react";
-import { getStaffAccess } from "@/lib/roster/staff-access";
+import {
+  getEffectiveStaffAccess,
+  isImpersonatingStudent,
+} from "@/lib/roster/staff-access";
 import StaffReviewDenied from "./StaffReviewDenied";
 
 /**
@@ -10,9 +13,14 @@ import StaffReviewDenied from "./StaffReviewDenied";
 export async function renderStaffReview(
   render: () => ReactNode | Promise<ReactNode>,
 ): Promise<ReactNode> {
-  const access = await getStaffAccess();
+  const access = await getEffectiveStaffAccess();
   if (access !== "ok") {
-    return <StaffReviewDenied access={access} />;
+    return (
+      <StaffReviewDenied
+        access={access}
+        impersonating={await isImpersonatingStudent()}
+      />
+    );
   }
   return render();
 }

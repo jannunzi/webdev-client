@@ -17,8 +17,15 @@ import {
   canvasUserIdFromMetadata,
   collectClerkEmails,
 } from "@/lib/roster/emails";
-import { isStaff } from "@/lib/roster/instructors";
 import { lookupCanvasRoster } from "@/lib/roster/lookup";
+import {
+  effectiveIsStaff,
+  isImpersonatingStudent,
+} from "@/lib/roster/staff-access";
+import {
+  IMPERSONATION_STUDENT_NAME,
+  impersonationStudentEmail,
+} from "@/lib/roster/view-mode";
 import ExamForm from "../components/ExamForm";
 
 export const dynamic = "force-dynamic";
@@ -76,9 +83,11 @@ export default async function TakeExamPage({ params }: PageProps) {
   }
   const emails = collectClerkEmails(user);
   const canvasUserId = canvasUserIdFromMetadata(user);
+  const impersonating = await isImpersonatingStudent();
   const roster = await lookupCanvasRoster({
     emails,
     canvasUserIds: canvasUserId ? [canvasUserId] : [],
+    impersonating,
   });
 
   if (roster.status === "empty") {
@@ -119,7 +128,7 @@ export default async function TakeExamPage({ params }: PageProps) {
     <article>
       <p className="mb-4 text-sm">
         <Link href="/quizzes/take">Graded quizzes</Link>
-        {isStaff(emails) ? (
+        {(await effectiveIsStaff()) ? (
           <>
             {" · "}
             <Link href={`/quizzes/${quizId}`}>Author review (answers shown)</Link>
@@ -131,15 +140,24 @@ export default async function TakeExamPage({ params }: PageProps) {
       <h1 className="mt-0 text-3xl font-semibold tracking-tight">
         {bank.title}
       </h1>
-      <p className="rounded-lg border border-sky-300 bg-sky-50 px-4 py-3 text-sky-950">
-        Student exam mode. Correct answers are hidden until you submit. This
-        is not the author review bank.
-      </p>
+      {impersonating ? (
+        <p className="rounded-lg border-2 border-amber-500 bg-amber-50 px-4 py-3 text-amber-950">
+          Impersonation — viewing as {IMPERSONATION_STUDENT_NAME} (
+          {impersonationStudentEmail()}). You can submit to smoke-test the
+          exam UI. The attempt is <strong>not saved</strong>.
+        </p>
+      ) : (
+        <p className="rounded-lg border border-sky-300 bg-sky-50 px-4 py-3 text-sky-950">
+          Student exam mode. Correct answers are hidden until you submit. This
+          is not the author review bank.
+        </p>
+      )}
       <ExamForm
         quizId={quizId}
         title={bank.title}
         questions={questions}
         startedAt={new Date().toISOString()}
+        impersonating={impersonating}
       />
     </article>
   );

@@ -11,6 +11,7 @@ import {
   preferredRosterEmail,
 } from "@/lib/roster/emails";
 import { lookupCanvasRoster } from "@/lib/roster/lookup";
+import { isImpersonatingStudent } from "@/lib/roster/staff-access";
 
 export async function submitExamAttempt(
   input: SubmitExamInput,
@@ -36,9 +37,11 @@ export async function submitExamAttempt(
   const user = await currentUser();
   const emails = collectClerkEmails(user);
   const canvasUserId = canvasUserIdFromMetadata(user);
+  const impersonating = await isImpersonatingStudent();
   const roster = await lookupCanvasRoster({
     emails,
     canvasUserIds: canvasUserId ? [canvasUserId] : [],
+    impersonating,
   });
 
   if (roster.status !== "matched") {
@@ -53,7 +56,7 @@ export async function submitExamAttempt(
   }
 
   try {
-    return await runExamSubmit({
+    const result = await runExamSubmit({
       quizId: input.quizId,
       drawnQuestionIds: input.drawnQuestionIds,
       answers: input.answers,
@@ -64,8 +67,12 @@ export async function submitExamAttempt(
         canvasUserId: canvasUserId ?? roster.entry.canvasUserId,
       },
       roster,
-      persist: insertQuizAttempt,
+      persist: impersonating ? undefined : insertQuizAttempt,
     });
+    if (result.ok && impersonating) {
+      return { ...result, persisted: false, impersonation: true };
+    }
+    return result;
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Could not store the attempt.";

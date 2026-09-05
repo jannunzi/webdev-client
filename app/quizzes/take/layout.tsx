@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { isClerkPublishableKeySet } from "@/lib/config";
 import InstructorPeopleLink from "../components/InstructorPeopleLink";
+import StaffViewModeBar from "../components/StaffViewModeBar";
 import QuizAuthBar from "./components/QuizAuthBar";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Graded quizzes — CS 4550 / CS 5610",
@@ -16,6 +19,7 @@ export default function TakeQuizLayout({
   return (
     <div className="mx-auto max-w-3xl font-sans">
       {isClerkPublishableKeySet() ? <QuizAuthBar /> : null}
+      <StaffViewModeBar />
       <InstructorPeopleLink asLine />
       {children}
     </div>

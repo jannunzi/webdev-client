@@ -4,8 +4,10 @@ import StatusPanel from "./StatusPanel";
 
 export default function StaffReviewDenied({
   access,
+  impersonating = false,
 }: {
   access: Exclude<StaffAccessStatus, "ok">;
+  impersonating?: boolean;
 }) {
   if (access === "not_configured") {
     return (
@@ -66,6 +68,12 @@ export default function StaffReviewDenied({
           Students take the graded exam at{" "}
           <Link href="/quizzes/take/q1">/quizzes/take/q1</Link>.
         </p>
+        {impersonating ? (
+          <p>
+            You are in student view. Use <strong>Viewing as: Instructor</strong>{" "}
+            above to return to author review.
+          </p>
+        ) : null}
       </StatusPanel>
     </article>
   );
