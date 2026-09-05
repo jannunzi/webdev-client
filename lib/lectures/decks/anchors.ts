@@ -15,8 +15,9 @@ export const ANCHORS_SLIDES: LectureSlide[] = [
     title: "ANCHORS",
     kind: "content",
     bullets: [
-      "The `<a>` tag creates a **hyperlink** — navigate to another document, or to a spot in this one",
+      "The `<a>` tag creates a **hyperlink** — another document, or a spot in this one",
       "`href` (hypertext reference) is the destination",
+      "Same tag, different schemes: `https:`, `/relative`, `mailto:`, `tel:`, `#hash`",
       "Lab 1 file: `AnchorTag.tsx` — sample ids `wd-lipsum` and `wd-github`",
     ],
   },

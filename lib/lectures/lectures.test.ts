@@ -284,7 +284,9 @@ describe("lecture decks", () => {
       "single-page-navigation": {
         "link-toc": "labs-index",
         "labs-index-toc": "labs-index",
-        "layout-children": "link-nav",
+        "layout-children": "labs-layout",
+        "lab2-page": "labs-layout",
+        "lab3-page": "labs-layout",
       },
     } as const;
     const used = new Set<string>();
@@ -394,8 +396,14 @@ describe("lecture decks", () => {
     assert.match(spa, /layout\.tsx/);
     assert.match(spa, /app\/labs\/page\.tsx/);
     assert.match(spa, /TOC\.tsx/);
+    assert.match(spa, /app\/labs\/lab2\/page\.tsx/);
+    assert.match(spa, /app\/labs\/lab3\/page\.tsx/);
     assert.match(spa, /\(kambaz\)/);
     assert.match(spa, /#\/lab1/);
+    const tocSlide = findSlide("single-page-navigation", "labs-index-toc");
+    const tocFiles = lectureSlideCodeBlocks(tocSlide).map((block) => block.file);
+    assert.ok(tocFiles.includes("app/labs/page.tsx"));
+    assert.ok(tocFiles.includes("app/labs/TOC.tsx"));
   });
 
   it("uses authored diagrams instead of Google Slides rasters", () => {

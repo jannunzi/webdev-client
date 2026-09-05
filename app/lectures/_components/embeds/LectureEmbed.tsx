@@ -11,6 +11,7 @@ import HeadingTagsEmbed from "./HeadingTagsEmbed";
 import HtmlSkeletonEmbed from "./HtmlSkeletonEmbed";
 import Lab1StubEmbed from "./Lab1StubEmbed";
 import LabsIndexEmbed from "./LabsIndexEmbed";
+import LabsLayoutEmbed from "./LabsLayoutEmbed";
 import LinkNavEmbed from "./LinkNavEmbed";
 import ListTagsEmbed from "./ListTagsEmbed";
 import MailtoTelEmbed from "./MailtoTelEmbed";
@@ -71,6 +72,8 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <AlertButtonEmbed />;
     case "buttons":
       return <ButtonsEmbed />;
+    case "labs-layout":
+      return <LabsLayoutEmbed />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;

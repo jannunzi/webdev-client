@@ -50,6 +50,7 @@ export const LECTURE_EMBED_IDS = [
   "dropdowns",
   "alert-button",
   "buttons",
+  "labs-layout",
 ] as const;
 
 export type LectureEmbedId = (typeof LECTURE_EMBED_IDS)[number];

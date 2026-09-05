@@ -56,8 +56,8 @@ export const SINGLE_PAGE_NAVIGATION_SLIDES: LectureSlide[] = [
     kind: "demo",
     bullets: [
       "The Labs index is `app/labs/page.tsx` — URL `/labs`",
-      "`TOC.tsx` is a small table of contents you can reuse in the layout",
-      "Put `Link`s to Lab 1–3 (and later placeholders) in one list",
+      "`TOC.tsx` is a small table of contents you reuse in the layout — not copied into every lab",
+      "Put `Link`s to Lab 1–3 (and later placeholders) in both files",
     ],
     code: `import Link from "next/link";
 
@@ -81,6 +81,24 @@ export default function Labs() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/page.tsx",
+    codeBlocks: [
+      {
+        file: "app/labs/TOC.tsx",
+        language: "tsx",
+        code: `import Link from "next/link";
+
+export default function TOC() {
+  return (
+    <ul>
+      <li><Link href="/labs">Home</Link></li>
+      <li><Link href="/labs/lab1">Lab 1</Link></li>
+      <li><Link href="/labs/lab2">Lab 2</Link></li>
+      <li><Link href="/labs/lab3">Lab 3</Link></li>
+    </ul>
+  );
+}`,
+      },
+    ],
     embed: "labs-index",
   },
   {
@@ -112,12 +130,15 @@ export default function LabsLayout({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/layout.tsx",
-    embed: "link-nav",
+    embed: "labs-layout",
+    interactiveHint:
+      "Click Lab 2 in the live TOC. The left column stays. Only the page column — {children} — changes.",
   },
   {
     id: "lab2-page",
     title: "Lab 2 is its own page.tsx",
-    kind: "content",
+    kind: "demo",
+    embed: "labs-layout",
     bullets: [
       "Create `app/labs/lab2/page.tsx` — URL `/labs/lab2`",
       "A heading is enough for this week. CSS fills the file in Chapter 2",
@@ -136,7 +157,8 @@ export default function LabsLayout({
   {
     id: "lab3-page",
     title: "Lab 3 is the same pattern",
-    kind: "content",
+    kind: "demo",
+    embed: "labs-layout",
     bullets: [
       "`app/labs/lab3/page.tsx` — URL `/labs/lab3`",
       "Add a `Link` on the Labs index (and in `TOC.tsx`) so the screen is reachable",
