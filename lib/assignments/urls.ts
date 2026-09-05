@@ -25,7 +25,7 @@ export function trimUrlInput(value: string): string {
 export function parseHttpsUrl(raw: string): UrlParseResult {
   const trimmed = trimUrlInput(raw);
   if (!trimmed) {
-    return { ok: false, message: ASSIGNMENT_STUDENT_COPY.bothUrlsRequired };
+    return { ok: false, message: ASSIGNMENT_STUDENT_COPY.vercelRequired };
   }
 
   let parsed: URL;
@@ -181,10 +181,48 @@ export function parseGithubRepoUrl(
   return { ok: true, repo: { owner, repo, href } };
 }
 
+export function deployOriginFromUrl(raw: string): UrlParseResult {
+  const parsed = looksLikeDeployUrl(raw);
+  if (!parsed.ok) return parsed;
+  const originUrl = new URL(parsed.url.origin);
+  return { ok: true, url: originUrl, href: `${originUrl.origin}/` };
+}
+
+export function urlOnDeployOrigin(originHref: string, path: string): string {
+  return new URL(path, originHref).href;
+}
+
+/** Seed paths always fetched after normalizing a student deploy to its origin. */
+export const A1_SEED_PATHS = [
+  "/",
+  "/labs",
+  "/labs/lab1",
+  "/account/signin",
+  "/account/signup",
+  "/account/profile",
+  "/dashboard",
+] as const;
+
+export function a1SeedUrls(deployUrl: string): string[] {
+  const origin = deployOriginFromUrl(deployUrl);
+  if (!origin.ok) return [];
+  const submitted = looksLikeDeployUrl(deployUrl);
+  const urls = A1_SEED_PATHS.map((path) => urlOnDeployOrigin(origin.href, path));
+  if (submitted.ok) urls.unshift(submitted.href);
+  const seen = new Set<string>();
+  const unique: string[] = [];
+  for (const href of urls) {
+    if (seen.has(href)) continue;
+    seen.add(href);
+    unique.push(href);
+  }
+  return unique;
+}
+
 export function labsUrlFromDeploy(deployUrl: string): string | null {
-  const parsed = looksLikeDeployUrl(deployUrl);
-  if (!parsed.ok) return null;
-  return new URL("/labs", parsed.url.origin).href;
+  const origin = deployOriginFromUrl(deployUrl);
+  if (!origin.ok) return null;
+  return urlOnDeployOrigin(origin.href, "/labs");
 }
 
 export function isVercelAuthWallUrl(finalUrl: string): boolean {

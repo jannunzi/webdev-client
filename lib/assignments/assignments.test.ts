@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { A1_RUBRIC } from "./a1";
+import {
+  A1_MANUAL_CRITERION_IDS,
+  a1CriterionCoverage,
+  evaluateRubricSpec,
+} from "./a1-rubric";
 import { A2_RUBRIC } from "./a2";
 import { listCanvasFollowupCopy } from "./canvas-copy";
 import { supportsUrlSubmission } from "./access";
@@ -117,6 +122,46 @@ describe("assignment catalog", () => {
     assert.ok(findCriterion(A1_RUBRIC, "a1-lab-heading-tags"));
     assert.ok(findCriterion(A1_RUBRIC, "a1-kambaz-assignments")?.onYourOwn);
     assert.equal(supportsUrlSubmission("a1"), true);
+
+    const autoIds = listRubricCriteria(A1_RUBRIC)
+      .filter((row) => a1CriterionCoverage(row.id) === "auto")
+      .map((row) => row.id);
+    const manualIds = listRubricCriteria(A1_RUBRIC)
+      .filter((row) => a1CriterionCoverage(row.id) === "manual")
+      .map((row) => row.id);
+    assert.ok(autoIds.includes("a1-delivery-vercel"));
+    assert.ok(autoIds.includes("a1-lab-forms"));
+    assert.ok(autoIds.includes("a1-kambaz-account"));
+    assert.deepEqual(manualIds, [...A1_MANUAL_CRITERION_IDS]);
+
+    const heading = evaluateRubricSpec(
+      {
+        criterionId: "a1-lab-heading-tags",
+        groupId: "lab",
+        label: "HeadingTags",
+        kind: "headings",
+        requireAllIds: ["wd-h-tag"],
+        headingLevels: [1, 2, 3, 4, 5, 6],
+        passMessage: "ok",
+        failMessage: "missing",
+      },
+      "<div id=\"wd-h-tag\"><h1></h1><h2></h2><h3></h3><h4></h4><h5></h5><h6></h6></div>",
+    );
+    assert.equal(heading.passed, true);
+    const headingFail = evaluateRubricSpec(
+      {
+        criterionId: "a1-lab-heading-tags",
+        groupId: "lab",
+        label: "HeadingTags",
+        kind: "headings",
+        requireAllIds: ["wd-h-tag"],
+        headingLevels: [1, 2, 3, 4, 5, 6],
+        passMessage: "ok",
+        failMessage: "missing",
+      },
+      "<div id=\"wd-h-tag\"><h4>Heading Tags</h4></div>",
+    );
+    assert.equal(headingFail.passed, false);
     assert.equal(supportsUrlSubmission("a2"), false);
   });
 });

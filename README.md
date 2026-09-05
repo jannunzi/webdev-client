@@ -242,15 +242,18 @@ keyed by user + assignment + criterion). Visitors who are not signed in keep
 progress in this browser only. The UI never mentions the auth vendor — the
 button says “Sign in with your school email.”
 
-**A1 URL submit (Phase 2A).** Rostered students and staff can save a public
-GitHub repository URL and a public Vercel deployment URL on
-`/assignments/a1`. Documents live in `assignment_submissions` (user +
-`a1`). After save — or via **Run checks** — the server runs a few basic
-checks (https deploy URL, not localhost; GET succeeds; 401/403 called out
-as Deployment Protection; Labs / `wd-` markers; name markers when a
-roster/profile name is available; GitHub URL format, plus a public-repo
-HEAD when possible). This is **not** full rubric auto-grading. Staff
-**View as student** can exercise the form; the submission is not saved.
+**A1 URL submit (Phase 2C).** Rostered students and staff can save a public
+Vercel deployment URL on `/assignments/a1` (GitHub is optional). Documents
+live in `assignment_submissions` (user + `a1`). After save — or via **Run
+checks** — the server normalizes the deploy to its origin, fetches `/`,
+`/labs`, `/labs/lab1`, and Kambaz account/course screens, then maps many
+A1 rubric rows to pass/fail from `wd-*` ids and required routes. GitHub
+format/public checks run only when a GitHub URL is provided. Name checks
+read Labs HTML, not just the submitted landing/signin page. Two On your
+own rows stay manual (`a1-lab-highlighted-paragraph-oyo`,
+`a1-lab-highlighted-box-oyo`). This is still not Canvas grade export.
+Staff **View as student** can exercise the form; the submission is not
+saved.
 
 Canvas assignment descriptions should **not** paste the website rubric.
 Point students at the live pages. Suggested student copy (HTML helpers in

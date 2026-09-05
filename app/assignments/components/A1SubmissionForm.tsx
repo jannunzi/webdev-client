@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import type { AssignmentCheckResult } from "@/lib/assignments/checks";
+import { latestResultByCriterion } from "@/lib/assignments/checks";
 import type { AssignmentSubmissionView } from "@/lib/assignments/submissions-store";
 import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
 import {
@@ -50,26 +51,61 @@ function formatSavedAt(iso?: string): string | null {
   return date.toLocaleString();
 }
 
+const GROUP_ORDER = ["delivery", "lab", "kambaz"] as const;
+const GROUP_TITLES: Record<string, string> = {
+  delivery: "Delivery",
+  lab: "Lab — HTML components",
+  kambaz: "Kambaz — Chapter 1 screens",
+};
+
 function CheckList({ results }: { results: AssignmentCheckResult[] }) {
   if (results.length === 0) return null;
+  const byCriterion = latestResultByCriterion(results);
+  const unique = [...byCriterion.values()];
+  const leftover = results.filter((row) => !row.criterionId);
+  const grouped = [...GROUP_ORDER, "other"].map((groupId) => ({
+    groupId,
+    rows:
+      groupId === "other"
+        ? leftover
+        : unique.filter((row) => row.groupId === groupId),
+  }));
   return (
-    <ul className="m-0 list-none space-y-2 p-0" aria-live="polite">
-      {results.map((row) => (
-        <li
-          key={row.id}
-          className={`rounded-md border px-3 py-2 text-sm ${
-            row.passed
-              ? "border-emerald-300 bg-emerald-50 text-emerald-950"
-              : "border-amber-300 bg-amber-50 text-amber-950"
-          }`}
-        >
-          <p className="m-0 font-sans font-semibold">
-            {row.passed ? "Pass" : "Needs work"} — {row.label}
-          </p>
-          <p className="mb-0 mt-1">{row.message}</p>
-        </li>
-      ))}
-    </ul>
+    <div className="space-y-3" aria-live="polite">
+      {grouped.map(({ groupId, rows }) =>
+        rows.length === 0 ? null : (
+          <div key={groupId}>
+            <h4 className="mt-0 mb-2 font-sans text-sm font-semibold uppercase tracking-wide text-neutral-600">
+              {GROUP_TITLES[groupId] ?? "Other"}
+            </h4>
+            <ul className="m-0 list-none space-y-2 p-0">
+              {rows.map((row) => (
+                <li
+                  key={row.id}
+                  className={`rounded-md border px-3 py-2 text-sm ${
+                    row.skipped
+                      ? "border-neutral-200 bg-neutral-50 text-neutral-800"
+                      : row.passed
+                        ? "border-emerald-300 bg-emerald-50 text-emerald-950"
+                        : "border-amber-300 bg-amber-50 text-amber-950"
+                  }`}
+                >
+                  <p className="m-0 font-sans font-semibold">
+                    {row.skipped
+                      ? "Manual"
+                      : row.passed
+                        ? "Pass"
+                        : "Needs work"}{" "}
+                    — {row.label}
+                  </p>
+                  <p className="mb-0 mt-1">{row.message}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ),
+      )}
+    </div>
   );
 }
 
@@ -78,11 +114,13 @@ export default function A1SubmissionForm({
   canSubmit,
   impersonating = false,
   gateReason = null,
+  onResults,
 }: {
   initialSubmission: AssignmentSubmissionView | null;
   canSubmit: boolean;
   impersonating?: boolean;
   gateReason?: SubmissionGateReason;
+  onResults?: (results: AssignmentCheckResult[]) => void;
 }) {
   const [githubUrl, setGithubUrl] = useState(initialSubmission?.githubUrl ?? "");
   const [vercelUrl, setVercelUrl] = useState(initialSubmission?.vercelUrl ?? "");
@@ -111,6 +149,7 @@ export default function A1SubmissionForm({
     setGithubUrl(result.submission.githubUrl);
     setVercelUrl(result.submission.vercelUrl);
     setSubmission(result.submission);
+    onResults?.(result.submission.checkResults ?? []);
     if (result.impersonation || !result.persisted) {
       setNote(
         kind === "save"
@@ -160,8 +199,9 @@ export default function A1SubmissionForm({
         Submit URLs
       </h2>
       <p className="mt-0 text-neutral-800">
-        Save the public GitHub repository and Vercel deployment graders should
-        open. These checks are a quick sanity pass — not the full A1 rubric.
+        Paste a public Vercel URL to run A1 checks. GitHub is optional — you
+        can save it when you have a public repo. Checks open /labs (not just
+        the landing page) and look for the ids from Chapter 1.
       </p>
 
       {impersonating ? (
@@ -188,7 +228,7 @@ export default function A1SubmissionForm({
               htmlFor="a1-github-url"
               className="font-sans text-sm font-semibold"
             >
-              Public GitHub repository URL
+              Public GitHub repository URL (optional)
             </label>
             <input
               id="a1-github-url"
@@ -257,8 +297,8 @@ export default function A1SubmissionForm({
       ) : null}
       {results.length > 0 ? (
         <div className="mt-3">
-          <h3 className="mt-0 mb-2 font-sans text-base font-semibold">
-            Basic checks
+            <h3 className="mt-0 mb-2 font-sans text-base font-semibold">
+            Auto-checks
           </h3>
           <CheckList results={results} />
         </div>

@@ -182,11 +182,11 @@ export async function saveAssignmentSubmission(input: {
 
   const githubUrl = input.githubUrl.trim();
   const vercelUrl = input.vercelUrl.trim();
-  if (!githubUrl || !vercelUrl) {
+  if (!vercelUrl) {
     return {
       ok: false,
       code: "invalid",
-      message: ASSIGNMENT_STUDENT_COPY.bothUrlsRequired,
+      message: ASSIGNMENT_STUDENT_COPY.vercelRequired,
     };
   }
 
@@ -239,7 +239,7 @@ export async function runAssignmentChecks(input: {
   let githubUrl = input.githubUrl.trim();
   let vercelUrl = input.vercelUrl.trim();
 
-  if ((!githubUrl || !vercelUrl) && canPersistAssignmentSubmission(authz.impersonating)) {
+  if (!vercelUrl && canPersistAssignmentSubmission(authz.impersonating)) {
     try {
       const existing = await readAssignmentSubmission(
         authz.userId,
@@ -254,11 +254,11 @@ export async function runAssignmentChecks(input: {
     }
   }
 
-  if (!githubUrl || !vercelUrl) {
+  if (!vercelUrl) {
     return {
       ok: false,
       code: "invalid",
-      message: ASSIGNMENT_STUDENT_COPY.bothUrlsRequired,
+      message: ASSIGNMENT_STUDENT_COPY.vercelRequired,
     };
   }
 

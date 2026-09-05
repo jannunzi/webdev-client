@@ -29,9 +29,8 @@ import {
   isActualStaff,
   isImpersonatingStudent,
 } from "@/lib/roster/staff-access";
-import A1SubmissionForm, {
-  type SubmissionGateReason,
-} from "../components/A1SubmissionForm";
+import A1WorkArea from "../components/A1WorkArea";
+import type { SubmissionGateReason } from "../components/A1SubmissionForm";
 import AssignmentChapterLink from "../components/AssignmentChapterLink";
 import AssignmentChecklist from "../components/AssignmentChecklist";
 import AssignmentHubNav from "../components/AssignmentHubNav";
@@ -165,15 +164,6 @@ export default async function AssignmentDetailPage({ params }: PageProps) {
       <p>{assignment.summary}</p>
       <AssignmentChapterLink assignment={assignment} />
 
-      {supportsUrlSubmission(assignment.id) ? (
-        <A1SubmissionForm
-          initialSubmission={initialSubmission}
-          canSubmit={canSubmit}
-          impersonating={impersonating}
-          gateReason={canSubmit ? null : gateReason}
-        />
-      ) : null}
-
       {assignment.status === "coming_soon" || !assignment.rubric ? (
         <StatusPanel title="Checklist coming soon" tone="neutral">
           <p>
@@ -184,6 +174,17 @@ export default async function AssignmentDetailPage({ params }: PageProps) {
             in the meantime.
           </p>
         </StatusPanel>
+      ) : supportsUrlSubmission(assignment.id) ? (
+        <A1WorkArea
+          assignment={assignment}
+          initialSubmission={initialSubmission}
+          initialCompletedIds={initialCompletedIds}
+          signedIn={signedIn}
+          mongoReady={mongoReady}
+          canSubmit={canSubmit}
+          impersonating={impersonating}
+          gateReason={canSubmit ? null : gateReason}
+        />
       ) : (
         <>
           <p className="rounded-lg border border-neutral-300 bg-white px-4 py-3 font-sans text-sm text-neutral-800">

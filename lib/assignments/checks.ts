@@ -1,258 +1,237 @@
-import { ASSIGNMENT_STUDENT_COPY } from "./student-copy";
-import { hasUsableNameQuery, htmlHasStudentName, type NameQuery } from "./names";
 import {
-  htmlLooksLikeVercelAuthWall,
-  isVercelAuthWallUrl,
-  labsUrlFromDeploy,
-  looksLikeDeployUrl,
-  parseGithubRepoUrl,
-} from "./urls";
+  A1_RUBRIC_AUTO_SPECS,
+  evaluateRubricSpec,
+} from "./a1-rubric";
+import { classifyDeployFetch } from "./fetch-classify";
+import type {
+  AssignmentCheckProbes,
+  AssignmentCheckResult,
+} from "./check-types";
+import { crawlA1Deploy, submittedUrlOpens } from "./crawl";
+import { htmlHasId } from "./html";
+import { hasUsableNameQuery, htmlHasStudentName, type NameQuery } from "./names";
+import { ASSIGNMENT_STUDENT_COPY } from "./student-copy";
+import { looksLikeDeployUrl, parseGithubRepoUrl } from "./urls";
 
-export type AssignmentCheckResult = {
-  id: string;
-  label: string;
-  passed: boolean;
-  message: string;
-};
+export type {
+  AssignmentCheckProbes,
+  AssignmentCheckResult,
+  HtmlFetchResult,
+  UrlProbeResult,
+} from "./check-types";
 
-export type HtmlFetchResult =
-  | { ok: true; status: number; finalUrl: string; html: string }
-  | {
-      ok: false;
-      status?: number;
-      finalUrl?: string;
-      html?: string;
-      code: "auth_wall" | "http_error" | "network";
-      message: string;
-    };
+export {
+  htmlHasA1LabMarkers,
+  htmlHasLabsNavigation,
+  htmlHasWdHooks,
+} from "./markers";
 
-export type UrlProbeResult =
-  | { ok: true; status: number }
-  | { ok: false; status?: number; message: string };
-
-export type AssignmentCheckProbes = {
-  getHtml: (url: string) => Promise<HtmlFetchResult>;
-  probeUrl?: (url: string) => Promise<UrlProbeResult>;
-};
-
-const WD_ID_RE = /id=["']wd-[a-z0-9-]+["']/i;
-
-export function htmlHasWdHooks(html: string): boolean {
-  return WD_ID_RE.test(html);
-}
-
-export function htmlHasLabsNavigation(html: string): boolean {
-  const lower = html.toLowerCase();
-  return (
-    lower.includes('id="wd-lab1-link"') ||
-    lower.includes("id='wd-lab1-link'") ||
-    lower.includes('id="wd-labs"') ||
-    lower.includes("id='wd-labs'") ||
-    lower.includes('id="wd-kambaz-link"') ||
-    lower.includes("id='wd-kambaz-link'") ||
-    lower.includes('href="/labs/lab1"') ||
-    lower.includes("href='/labs/lab1'")
-  );
-}
-
-export function htmlHasA1LabMarkers(html: string): boolean {
-  const lower = html.toLowerCase();
-  if (
-    lower.includes('id="wd-github"') ||
-    lower.includes("id='wd-github'") ||
-    htmlHasLabsNavigation(html)
-  ) {
-    return true;
-  }
-  return htmlHasWdHooks(html);
-}
-
-export function classifyDeployFetch(result: HtmlFetchResult): HtmlFetchResult {
-  if (!result.ok) {
-    if (result.code === "auth_wall") return result;
-    if (
-      result.status === 401 ||
-      result.status === 403 ||
-      (result.finalUrl && isVercelAuthWallUrl(result.finalUrl)) ||
-      (result.html && htmlLooksLikeVercelAuthWall(result.html))
-    ) {
-      return {
-        ok: false,
-        status: result.status,
-        finalUrl: result.finalUrl,
-        html: result.html,
-        code: "auth_wall",
-        message: ASSIGNMENT_STUDENT_COPY.vercelAuthWall,
-      };
-    }
-    return result;
-  }
-
-  if (
-    result.status === 401 ||
-    result.status === 403 ||
-    isVercelAuthWallUrl(result.finalUrl) ||
-    htmlLooksLikeVercelAuthWall(result.html)
-  ) {
-    return {
-      ok: false,
-      status: result.status,
-      finalUrl: result.finalUrl,
-      html: result.html,
-      code: "auth_wall",
-      message: ASSIGNMENT_STUDENT_COPY.vercelAuthWall,
-    };
-  }
-
-  return result;
-}
+export { classifyDeployFetch } from "./fetch-classify";
 
 function check(
   id: string,
   label: string,
   passed: boolean,
   message: string,
+  extra: Partial<AssignmentCheckResult> = {},
 ): AssignmentCheckResult {
-  return { id, label, passed, message };
+  return { id, label, passed, message, ...extra };
 }
 
 export async function runA1Checks(input: {
-  githubUrl: string;
+  githubUrl?: string;
   vercelUrl: string;
   nameQuery?: NameQuery;
   probes: AssignmentCheckProbes;
 }): Promise<AssignmentCheckResult[]> {
   const results: AssignmentCheckResult[] = [];
+  const githubRaw = input.githubUrl?.trim() ?? "";
 
-  const github = parseGithubRepoUrl(input.githubUrl);
-  results.push(
-    check(
-      "github-url",
-      "GitHub repository URL",
-      github.ok,
-      github.ok ? ASSIGNMENT_STUDENT_COPY.githubOk : github.message,
-    ),
-  );
-
-  if (github.ok && input.probes.probeUrl) {
-    const probe = await input.probes.probeUrl(github.repo.href);
+  if (githubRaw) {
+    const github = parseGithubRepoUrl(githubRaw);
     results.push(
       check(
-        "github-public",
-        "GitHub repository is public",
-        probe.ok,
-        probe.ok
-          ? ASSIGNMENT_STUDENT_COPY.githubOk
-          : probe.status === 404
-            ? ASSIGNMENT_STUDENT_COPY.githubPrivate
-            : (probe.message || ASSIGNMENT_STUDENT_COPY.githubUnreachable),
+        "github-url",
+        "GitHub repository URL",
+        github.ok,
+        github.ok ? ASSIGNMENT_STUDENT_COPY.githubOk : github.message,
+        { criterionId: "a1-delivery-github", groupId: "delivery" },
       ),
     );
-  } else if (github.ok) {
-    results.push(
-      check(
-        "github-public",
-        "GitHub repository is public",
-        true,
-        "GitHub URL format is valid. Public-repo reachability was not probed.",
-      ),
-    );
+    if (github.ok && input.probes.probeUrl) {
+      const probe = await input.probes.probeUrl(github.repo.href);
+      results.push(
+        check(
+          "github-public",
+          "GitHub repository is public",
+          probe.ok,
+          probe.ok
+            ? ASSIGNMENT_STUDENT_COPY.githubOk
+            : probe.status === 404
+              ? ASSIGNMENT_STUDENT_COPY.githubPrivate
+              : probe.message || ASSIGNMENT_STUDENT_COPY.githubUnreachable,
+          { criterionId: "a1-delivery-github", groupId: "delivery" },
+        ),
+      );
+    }
   }
 
   const vercel = looksLikeDeployUrl(input.vercelUrl);
   results.push(
     check(
-      "vercel-url",
-      "Vercel deployment URL",
+      "a1-delivery-vercel",
+      "Vercel deployment",
       vercel.ok,
       vercel.ok ? ASSIGNMENT_STUDENT_COPY.vercelOk : vercel.message,
+      { criterionId: "a1-delivery-vercel", groupId: "delivery" },
     ),
   );
 
   if (!vercel.ok) {
+    return results;
+  }
+
+  const crawled = await crawlA1Deploy({
+    deployUrl: vercel.href,
+    getHtml: async (url) => classifyDeployFetch(await input.probes.getHtml(url)),
+  });
+  if ("ok" in crawled && crawled.ok === false) {
     results.push(
       check(
-        "vercel-open",
+        "a1-delivery-vercel-open",
         "Deployment opens without signing in",
         false,
-        ASSIGNMENT_STUDENT_COPY.vercelUnreachable,
-      ),
-      check(
-        "labs-markers",
-        "Labs page markers",
-        false,
-        ASSIGNMENT_STUDENT_COPY.labsUnread,
+        crawled.message,
+        { criterionId: "a1-delivery-vercel", groupId: "delivery" },
       ),
     );
     return results;
   }
 
-  const landing = classifyDeployFetch(await input.probes.getHtml(vercel.href));
-  if (!landing.ok) {
-    results.push(
-      check(
-        "vercel-open",
-        "Deployment opens without signing in",
-        false,
-        landing.code === "auth_wall"
-          ? ASSIGNMENT_STUDENT_COPY.vercelAuthWall
-          : landing.status
-            ? `The deployment returned HTTP ${landing.status}.`
-            : landing.message || ASSIGNMENT_STUDENT_COPY.vercelUnreachable,
-      ),
-      check(
-        "labs-markers",
-        "Labs page markers",
-        false,
-        ASSIGNMENT_STUDENT_COPY.labsUnread,
-      ),
-    );
-    return results;
-  }
-
+  const opened = submittedUrlOpens(vercel.href, crawled.pages);
+  const openedOk = Boolean(opened?.ok);
   results.push(
     check(
-      "vercel-open",
+      "a1-delivery-vercel-open",
       "Deployment opens without signing in",
-      true,
-      "The deployment responded successfully.",
+      openedOk,
+      openedOk
+        ? "The deployment responded successfully."
+        : opened && !opened.ok && opened.code === "auth_wall"
+          ? ASSIGNMENT_STUDENT_COPY.vercelAuthWall
+          : opened && !opened.ok && opened.status
+            ? `The deployment returned HTTP ${opened.status}.`
+            : ASSIGNMENT_STUDENT_COPY.vercelUnreachable,
+      { criterionId: "a1-delivery-vercel", groupId: "delivery" },
     ),
   );
 
-  let htmlForMarkers = landing.html;
-  if (!htmlHasA1LabMarkers(htmlForMarkers)) {
-    const labsHref = labsUrlFromDeploy(vercel.href);
-    if (labsHref && labsHref !== landing.finalUrl) {
-      const labs = classifyDeployFetch(await input.probes.getHtml(labsHref));
-      if (labs.ok) htmlForMarkers = `${htmlForMarkers}\n${labs.html}`;
-    }
+  if (!openedOk) {
+    return results;
   }
 
-  const labsFound = htmlHasA1LabMarkers(htmlForMarkers);
+  const labsNav =
+    htmlHasId(crawled.labsHtml, "wd-lab1-link") ||
+    htmlHasId(crawled.labsHtml, "wd-labs") ||
+    htmlHasId(crawled.labsHtml, "wd-kambaz-link") ||
+    htmlHasId(crawled.labsHtml, "wd-home-link");
   results.push(
     check(
-      "labs-markers",
-      "Labs page markers",
-      labsFound,
-      labsFound
+      "a1-delivery-labs-nav",
+      "Labs navigation",
+      labsNav,
+      labsNav
         ? ASSIGNMENT_STUDENT_COPY.labsOk
         : ASSIGNMENT_STUDENT_COPY.labsMissing,
+      { criterionId: "a1-delivery-labs-nav", groupId: "delivery" },
+    ),
+  );
+
+  const githubHook = htmlHasId(crawled.labsHtml, "wd-github");
+  results.push(
+    check(
+      "a1-delivery-github-link",
+      "GitHub link on Labs",
+      githubHook,
+      githubHook
+        ? "Found a wd-github link on Labs."
+        : "Add a public repo link with id wd-github on Labs.",
+      { criterionId: "a1-delivery-github", groupId: "delivery" },
     ),
   );
 
   if (input.nameQuery && hasUsableNameQuery(input.nameQuery)) {
-    const named = htmlHasStudentName(htmlForMarkers, input.nameQuery);
+    const named = htmlHasStudentName(crawled.labsHtml, input.nameQuery);
     results.push(
       check(
-        "name-markers",
-        "Your name on Labs",
+        "a1-delivery-name-section",
+        "Name and section",
         named,
         named
           ? ASSIGNMENT_STUDENT_COPY.nameOk
           : ASSIGNMENT_STUDENT_COPY.nameMissing,
+        { criterionId: "a1-delivery-name-section", groupId: "delivery" },
       ),
     );
   }
 
+  for (const spec of A1_RUBRIC_AUTO_SPECS) {
+    const html =
+      spec.groupId === "lab" ? crawled.labsHtml || crawled.allHtml : crawled.allHtml;
+    const judged = evaluateRubricSpec(spec, html);
+    results.push(
+      check(spec.criterionId, spec.label, judged.passed, judged.message, {
+        criterionId: spec.criterionId,
+        groupId: spec.groupId,
+      }),
+    );
+  }
+
+  results.push(
+    check(
+      "a1-lab-highlighted-paragraph-oyo",
+      "HighlightedParagraph — On your own",
+      false,
+      "This On your own row stays manual — there is no required extra id to look for.",
+      {
+        criterionId: "a1-lab-highlighted-paragraph-oyo",
+        groupId: "lab",
+        skipped: true,
+      },
+    ),
+    check(
+      "a1-lab-highlighted-box-oyo",
+      "HighlightedBox — On your own",
+      false,
+      "This On your own row stays manual — there is no required extra id to look for.",
+      {
+        criterionId: "a1-lab-highlighted-box-oyo",
+        groupId: "lab",
+        skipped: true,
+      },
+    ),
+  );
+
   return results;
+}
+
+export function latestResultByCriterion(
+  results: readonly AssignmentCheckResult[],
+): Map<string, AssignmentCheckResult> {
+  const map = new Map<string, AssignmentCheckResult>();
+  for (const row of results) {
+    if (!row.criterionId) continue;
+    const existing = map.get(row.criterionId);
+    if (!existing) {
+      map.set(row.criterionId, row);
+      continue;
+    }
+    if (existing.skipped) {
+      map.set(row.criterionId, row);
+      continue;
+    }
+    if (row.skipped) continue;
+    if (existing.passed && !row.passed) map.set(row.criterionId, row);
+  }
+  return map;
 }

@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
+  a1SeedUrls,
+  deployOriginFromUrl,
   htmlLooksLikeVercelAuthWall,
   isBlockedHostname,
   isCourseSiteUrl,
@@ -109,6 +111,53 @@ describe("auth-wall helpers", () => {
       labsUrlFromDeploy("https://my-app.vercel.app/"),
       "https://my-app.vercel.app/labs",
     );
+    assert.equal(
+      labsUrlFromDeploy(
+        "https://kambaz-next-js-sp26-git-a1-kenneth-aldridges-projects.vercel.app/account/signin",
+      ),
+      "https://kambaz-next-js-sp26-git-a1-kenneth-aldridges-projects.vercel.app/labs",
+    );
     assert.equal(labsUrlFromDeploy("http://localhost:3000"), null);
+  });
+});
+
+describe("deploy origin normalization", () => {
+  it("strips the submitted path down to the origin", () => {
+    const origin = deployOriginFromUrl(
+      "https://kambaz-next-js-sp26-git-a1-kenneth-aldridges-projects.vercel.app/account/signin",
+    );
+    assert.equal(origin.ok, true);
+    if (origin.ok) {
+      assert.equal(
+        origin.href,
+        "https://kambaz-next-js-sp26-git-a1-kenneth-aldridges-projects.vercel.app/",
+      );
+    }
+  });
+
+  it("always seeds /, /labs, /labs/lab1, and account screens", () => {
+    const seeds = a1SeedUrls(
+      "https://kambaz-next-js-sp26-git-a1-kenneth-aldridges-projects.vercel.app/account/signin",
+    );
+    assert.ok(
+      seeds.includes(
+        "https://kambaz-next-js-sp26-git-a1-kenneth-aldridges-projects.vercel.app/account/signin",
+      ),
+    );
+    assert.ok(
+      seeds.includes(
+        "https://kambaz-next-js-sp26-git-a1-kenneth-aldridges-projects.vercel.app/",
+      ),
+    );
+    assert.ok(
+      seeds.includes(
+        "https://kambaz-next-js-sp26-git-a1-kenneth-aldridges-projects.vercel.app/labs",
+      ),
+    );
+    assert.ok(
+      seeds.includes(
+        "https://kambaz-next-js-sp26-git-a1-kenneth-aldridges-projects.vercel.app/labs/lab1",
+      ),
+    );
   });
 });

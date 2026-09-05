@@ -21,18 +21,42 @@ import {
   subscribeLocalProgress,
   writeLocalProgress,
 } from "@/lib/assignments/local-progress";
+import { isManualA1Criterion } from "@/lib/assignments/a1-rubric";
+import type { AssignmentCheckResult } from "@/lib/assignments/checks";
+import { latestResultByCriterion } from "@/lib/assignments/checks";
 import { mergeLocalProgress, setCriterionCompleted } from "../actions";
+
+function AutoBadge({ result }: { result: AssignmentCheckResult }) {
+  const tone = result.skipped
+    ? "bg-neutral-200 text-neutral-800"
+    : result.passed
+      ? "bg-emerald-100 text-emerald-900"
+      : "bg-amber-100 text-amber-900";
+  return (
+    <span
+      className={`ml-2 font-sans text-xs font-medium uppercase tracking-wide ${tone}`}
+    >
+      {result.skipped
+        ? "Manual check"
+        : result.passed
+          ? "Auto pass"
+          : "Auto needs work"}
+    </span>
+  );
+}
 
 export default function AssignmentChecklist({
   assignment,
   initialCompletedIds,
   signedIn,
   mongoReady,
+  autoResults = [],
 }: {
   assignment: AssignmentHubItem;
   initialCompletedIds: string[];
   signedIn: boolean;
   mongoReady: boolean;
+  autoResults?: AssignmentCheckResult[];
 }) {
   const serverIds = useMemo(
     () => serverProgressSnapshot(initialCompletedIds),
@@ -51,6 +75,10 @@ export default function AssignmentChecklist({
   const totals = useMemo(
     () => summarizeProgress(assignment, completedIds),
     [assignment, completedIds],
+  );
+  const autoByCriterion = useMemo(
+    () => latestResultByCriterion(autoResults),
+    [autoResults],
   );
 
   useEffect(() => {
@@ -195,6 +223,20 @@ export default function AssignmentChecklist({
                             <span className="ml-2 font-sans text-xs font-medium uppercase tracking-wide text-amber-800">
                               On your own
                             </span>
+                          ) : null}
+                          {autoByCriterion.has(row.id) ? (
+                            <AutoBadge result={autoByCriterion.get(row.id)!} />
+                          ) : assignment.id === "a1" &&
+                            isManualA1Criterion(row.id) ? (
+                            <AutoBadge
+                              result={{
+                                id: row.id,
+                                label: row.label,
+                                passed: false,
+                                message: "",
+                                skipped: true,
+                              }}
+                            />
                           ) : null}
                         </label>
                         <p className="mb-1 mt-1 text-sm text-neutral-800">

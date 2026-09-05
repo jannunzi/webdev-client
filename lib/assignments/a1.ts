@@ -14,7 +14,7 @@ export const A1_RUBRIC: AssignmentRubric = {
       id: "delivery",
       title: "Delivery",
       intro:
-        "Submit a public GitHub repository and a Vercel URL that graders can open without signing in.",
+        "Submit a Vercel URL that graders can open without signing in. A public GitHub repository is optional for auto-checks, but graders still look for the repo and a wd-github link on Labs.",
       criteria: [
         {
           id: "a1-delivery-vercel",

@@ -6,6 +6,7 @@ import {
   htmlHasA1LabMarkers,
   htmlHasLabsNavigation,
   htmlHasWdHooks,
+  latestResultByCriterion,
   runA1Checks,
 } from "./checks";
 import { htmlHasStudentName, resolveNameQuery } from "./names";
@@ -88,6 +89,69 @@ describe("name markers", () => {
   });
 });
 
+const KENNETH_ORIGIN =
+  "https://kambaz-next-js-sp26-git-a1-kenneth-aldridges-projects.vercel.app";
+const SIGNIN_HTML = `
+  <div id="wd-signin-screen">
+    <button id="wd-signin-btn">Sign in</button>
+  </div>
+`;
+const KENNETH_LABS_HTML = `
+  <div id="wd-labs">
+    <h2>Kenneth Aldridge</h2>
+    <a id="wd-lab1-link" href="/labs/lab1">Lab 1</a>
+    <a id="wd-github" href="https://github.com/kenneth/webdev">GitHub</a>
+  </div>
+`;
+
+function htmlForPath(url: string): string {
+  if (url.includes("/labs/lab1")) {
+    return `
+      <div id="wd-lab1">
+        <div id="wd-h-tag"><h1></h1><h2></h2><h3></h3><h4></h4><h5></h5><h6></h6></div>
+        <div id="wd-your-heading"><span id="wd-your-span">hi</span></div>
+        <div id="wd-p-tag"><p id="wd-p-1"></p></div>
+        <p id="wd-p-your-1"></p><p id="wd-p-your-2"></p>
+        <div id="wd-lists"><ol id="wd-pancakes"></ol></div>
+        <ol id="wd-your-favorite-recipe"></ol><ul id="wd-your-books"></ul>
+        <div id="wd-tables"></div><table id="wd-your-table"></table>
+        <div id="wd-images"><img id="wd-starship" /></div>
+        <img id="wd-your-image" />
+        <div id="wd-forms"><input id="wd-text-fields-username" /></div>
+        <form id="wd-your-form"></form>
+        <div id="wd-highlighted-paragraph"></div>
+        <div id="wd-highlighted-box"></div>
+        <a id="wd-lipsum" href="https://www.lipsum.com">lipsum</a>
+        <a id="wd-your-link" href="#"></a><a id="wd-your-github" href="#"></a>
+        <a id="wd-home-link" href="/labs"></a>
+        <a id="wd-lab4-link" href="/labs/lab4"></a>
+      </div>
+    `;
+  }
+  if (url.endsWith("/labs") || url.includes("/labs?")) return LABS_HTML;
+  if (url.includes("/account/signin")) return SIGNIN_HTML;
+  if (url.includes("/dashboard")) {
+    return '<div id="wd-dashboard"></div><nav id="wd-kambaz-navigation"></nav>';
+  }
+  if (url.includes("/account/signup")) return '<div id="wd-signup-screen"></div>';
+  if (url.includes("/account/profile")) {
+    return '<div id="wd-profile-screen"></div><div id="wd-account-navigation"></div>';
+  }
+  if (/\/courses\/[^/]+\/home/i.test(url)) {
+    return '<div id="wd-home"></div><div id="wd-courses-navigation"></div>';
+  }
+  if (/\/courses\/[^/]+\/modules/i.test(url)) {
+    return '<ul id="wd-modules"></ul>';
+  }
+  if (/\/courses\/[^/]+\/assignments\/[^/]+/i.test(url)) {
+    return '<div id="wd-assignments-editor"><input id="wd-name" /></div>';
+  }
+  if (/\/courses\/[^/]+\/assignments/i.test(url)) {
+    return '<div id="wd-assignments"></div>';
+  }
+  return "<html><body>Home</body></html>";
+}
+
 describe("runA1Checks", () => {
   it("validates URLs and reads Labs HTML from /labs when needed", async () => {
     const calls: string[] = [];
@@ -98,15 +162,7 @@ describe("runA1Checks", () => {
       probes: {
         async getHtml(url) {
           calls.push(url);
-          if (url.endsWith("/labs")) {
-            return { ok: true, status: 200, finalUrl: url, html: LABS_HTML };
-          }
-          return {
-            ok: true,
-            status: 200,
-            finalUrl: url,
-            html: "<html><body>Syllabus</body></html>",
-          };
+          return { ok: true, status: 200, finalUrl: url, html: htmlForPath(url) };
         },
         async probeUrl() {
           return { ok: true, status: 200 };
@@ -116,14 +172,108 @@ describe("runA1Checks", () => {
     const byId = Object.fromEntries(results.map((row) => [row.id, row]));
     assert.equal(byId["github-url"]?.passed, true);
     assert.equal(byId["github-public"]?.passed, true);
-    assert.equal(byId["vercel-url"]?.passed, true);
-    assert.equal(byId["vercel-open"]?.passed, true);
-    assert.equal(byId["labs-markers"]?.passed, true);
-    assert.equal(byId["name-markers"]?.passed, true);
-    assert.deepEqual(calls, [
-      "https://jane-a1.vercel.app/",
-      "https://jane-a1.vercel.app/labs",
-    ]);
+    assert.equal(byId["a1-delivery-vercel"]?.passed, true);
+    assert.equal(byId["a1-delivery-vercel-open"]?.passed, true);
+    assert.equal(byId["a1-delivery-labs-nav"]?.passed, true);
+    assert.equal(byId["a1-delivery-name-section"]?.passed, true);
+    assert.ok(calls.includes("https://jane-a1.vercel.app/labs"));
+    assert.ok(calls.includes("https://jane-a1.vercel.app/labs/lab1"));
+    const byCriterion = latestResultByCriterion(results);
+    assert.equal(byCriterion.get("a1-lab-heading-tags")?.passed, true);
+    assert.equal(byCriterion.get("a1-kambaz-account")?.passed, true);
+    assert.equal(byCriterion.get("a1-lab-highlighted-paragraph-oyo")?.skipped, true);
+  });
+
+  it("runs HTML checks from a Vercel URL alone and skips GitHub format", async () => {
+    const results = await runA1Checks({
+      vercelUrl: "https://jane-a1.vercel.app",
+      nameQuery: resolveNameQuery({ firstName: "Jane", lastName: "Doe" }),
+      probes: {
+        async getHtml(url) {
+          return { ok: true, status: 200, finalUrl: url, html: htmlForPath(url) };
+        },
+      },
+    });
+    assert.equal(
+      results.some((row) => row.id === "github-url"),
+      false,
+    );
+    assert.equal(
+      results.find((row) => row.id === "a1-delivery-vercel")?.passed,
+      true,
+    );
+    assert.equal(
+      results.find((row) => row.id === "a1-delivery-name-section")?.passed,
+      true,
+    );
+  });
+
+  it("finds the student name on /labs after a sign-in URL (Jose trial)", async () => {
+    const calls: string[] = [];
+    const results = await runA1Checks({
+      vercelUrl: `${KENNETH_ORIGIN}/account/signin`,
+      nameQuery: resolveNameQuery({
+        firstName: "Kenneth",
+        lastName: "Aldridge",
+      }),
+      probes: {
+        async getHtml(url) {
+          calls.push(url);
+          const html = url.includes("/labs") && !url.includes("/labs/lab1")
+            ? KENNETH_LABS_HTML
+            : htmlForPath(url);
+          return { ok: true, status: 200, finalUrl: url, html };
+        },
+      },
+    });
+    assert.ok(calls.includes(`${KENNETH_ORIGIN}/labs`));
+    assert.ok(calls.includes(`${KENNETH_ORIGIN}/`));
+    assert.ok(calls.includes(`${KENNETH_ORIGIN}/labs/lab1`));
+    const name = results.find((row) => row.id === "a1-delivery-name-section");
+    assert.equal(name?.passed, true);
+    assert.equal(
+      results.find((row) => row.id === "a1-delivery-labs-nav")?.passed,
+      true,
+    );
+  });
+
+  it("does not treat a sign-in page as Labs when /labs is available", async () => {
+    const results = await runA1Checks({
+      vercelUrl: `${KENNETH_ORIGIN}/account/signin`,
+      nameQuery: resolveNameQuery({
+        firstName: "Kenneth",
+        lastName: "Aldridge",
+      }),
+      probes: {
+        async getHtml(url) {
+          if (url.includes("/account/signin")) {
+            return {
+              ok: true,
+              status: 200,
+              finalUrl: url,
+              html: `${SIGNIN_HTML}<h2>Kenneth Aldridge</h2>`,
+            };
+          }
+          if (url.includes("/labs") && !url.includes("/labs/lab1")) {
+            return {
+              ok: true,
+              status: 200,
+              finalUrl: url,
+              html: '<div id="wd-labs"><a id="wd-lab1-link" href="/labs/lab1">Lab 1</a></div>',
+            };
+          }
+          return { ok: true, status: 200, finalUrl: url, html: "<p>Hi</p>" };
+        },
+      },
+    });
+    assert.equal(
+      results.find((row) => row.id === "a1-delivery-name-section")?.passed,
+      false,
+    );
+    assert.equal(
+      results.find((row) => row.id === "a1-delivery-labs-nav")?.passed,
+      true,
+    );
   });
 
   it("fails localhost, auth walls, and missing labs markers", async () => {
@@ -137,7 +287,7 @@ describe("runA1Checks", () => {
       },
     });
     assert.equal(
-      localhost.find((row) => row.id === "vercel-url")?.passed,
+      localhost.find((row) => row.id === "a1-delivery-vercel")?.passed,
       false,
     );
 
@@ -155,7 +305,7 @@ describe("runA1Checks", () => {
         },
       },
     });
-    const authOpen = auth.find((row) => row.id === "vercel-open");
+    const authOpen = auth.find((row) => row.id === "a1-delivery-vercel-open");
     assert.equal(authOpen?.passed, false);
     assert.match(authOpen?.message ?? "", /Deployment Protection/i);
 
@@ -169,7 +319,10 @@ describe("runA1Checks", () => {
       },
     });
     assert.equal(missing.find((row) => row.id === "github-url")?.passed, false);
-    assert.equal(missing.find((row) => row.id === "labs-markers")?.passed, false);
+    assert.equal(
+      missing.find((row) => row.id === "a1-delivery-labs-nav")?.passed,
+      false,
+    );
   });
 
   it("classifies 403 and Vercel SSO redirects as auth walls", () => {

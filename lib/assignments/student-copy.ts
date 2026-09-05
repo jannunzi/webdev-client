@@ -16,9 +16,10 @@ export const ASSIGNMENT_STUDENT_COPY = {
   unknownAssignment: "URL submit is only available for A1 right now.",
   impersonationBanner:
     "Impersonation — you can run checks to smoke-test the form. The submission is not saved.",
-  saved: "Your GitHub and Vercel URLs are saved.",
+    saved: "Saved. You can run checks again after you update your Vercel URL.",
   savedButNotPersisted: "Checks finished. This preview was not saved.",
   bothUrlsRequired: "Enter both a GitHub repository URL and a Vercel deployment URL.",
+  vercelRequired: "Enter a Vercel deployment URL so checks can open your site.",
   githubFormat:
     "Enter a public GitHub repository URL such as https://github.com/yourname/webdev-client.",
   githubOfficial:
