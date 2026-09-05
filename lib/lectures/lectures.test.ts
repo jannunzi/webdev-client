@@ -18,14 +18,17 @@ import {
 import {
   LECTURE_1_SLUGS,
   LECTURE_2_SLUGS,
+  LECTURE_3_SLUGS,
   LECTURE_DIAGRAM_IDS,
   LECTURE_EMBED_IDS,
   LECTURE_SLUGS,
+  LECTURE_TITLE_MAX_CHARS,
   lectureSlideAssetPath,
   lectureSlideDensity,
   lectureSlideCodeBlocks,
   lectureThumbPath,
 } from "./types";
+import { slidePaneOverflows, slidePaneScrollStep } from "./slide-pane";
 
 function slideText(deckSlug: string): string {
   const deck = getLectureDeck(deckSlug);
@@ -49,14 +52,16 @@ function findSlide(deckSlug: string, id: string) {
 }
 
 describe("lecture catalog", () => {
-  it("lists Lecture 1 then Lecture 2 slugs in locked order", () => {
+  it("lists Lecture 1 then 2 then 3 slugs in locked order", () => {
     assert.deepEqual(listLectureSlugs(), [
       ...LECTURE_1_SLUGS,
       ...LECTURE_2_SLUGS,
+      ...LECTURE_3_SLUGS,
     ]);
     assert.deepEqual(listLectureSlugs(), [...LECTURE_SLUGS]);
     assert.equal(LECTURE_1_SLUGS.length, 5);
     assert.equal(LECTURE_2_SLUGS.length, 6);
+    assert.equal(LECTURE_3_SLUGS.length, 7);
   });
 
   it("marks Lecture 1 entries as Canvas Lecture 1 / Chapter 1", () => {
@@ -100,7 +105,22 @@ describe("lecture catalog", () => {
     assert.equal(isLectureSlug("intro"), false);
   });
 
-  it("groups Lecture 1 and Lecture 2 decks; later weeks stay empty", () => {
+  it("marks Lecture 3 entries as Canvas Lecture 3 / Chapter 1", () => {
+    const items = listLectures().filter((item) => item.canvasLecture === 3);
+    assert.equal(items.length, 7);
+    assert.deepEqual(
+      items.map((item) => item.slug),
+      [...LECTURE_3_SLUGS],
+    );
+    for (const item of items) {
+      assert.equal(item.chapter, 1);
+      assert.equal(item.canvasLecture, 3);
+      assert.equal(item.chapterHref, "/book/ch1");
+      assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
+    }
+  });
+
+  it("groups Lecture 1–3 decks; later weeks stay empty", () => {
     const groups = listCanvasLectureGroups();
     assert.ok(groups.length >= 11);
     assert.equal(groups[0]?.title, "Lecture 1");
@@ -137,22 +157,36 @@ describe("lecture catalog", () => {
       const disk = join(process.cwd(), thumb.replace(/^\//, "public/"));
       assert.ok(existsSync(disk), `${thumb} is missing on disk`);
     }
-    for (const group of groups.slice(2)) {
+    assert.equal(groups[2]?.title, "Lecture 3");
+    assert.equal(groups[2]?.canvasLecture, 3);
+    assert.equal(groups[2]?.decks.length, 7);
+    assert.deepEqual(
+      groups[2]?.decks.map((deck) => deck.slug),
+      [...LECTURE_3_SLUGS],
+    );
+    assert.equal(
+      lectureDeckThumbnail("kambaz-overview"),
+      "/lectures/thumbs/kambaz-overview.svg",
+    );
+    for (const group of groups.slice(3)) {
       assert.equal(group.title, `Lecture ${group.canvasLecture}`);
       assert.equal(group.decks.length, 0);
     }
   });
 
-  it("walks adjacent decks across Lecture 1 into Lecture 2", () => {
+  it("walks adjacent decks across Lecture 1 into Lecture 3", () => {
     const first = adjacentLectureSlugs("intro-to-web-development");
     assert.equal(first.prev, undefined);
     assert.equal(first.next?.slug, "installing-nodejs");
     const lastLecture1 = adjacentLectureSlugs("deploying-to-vercel");
     assert.equal(lastLecture1.next?.slug, "html-and-dom");
     assert.equal(lastLecture1.prev?.slug, "commit-to-github");
-    const last = adjacentLectureSlugs("single-page-navigation");
+    const lastLecture2 = adjacentLectureSlugs("single-page-navigation");
+    assert.equal(lastLecture2.next?.slug, "kambaz-overview");
+    assert.equal(lastLecture2.prev?.slug, "anchors");
+    const last = adjacentLectureSlugs("kambaz-assignments");
     assert.equal(last.next, undefined);
-    assert.equal(last.prev?.slug, "anchors");
+    assert.equal(last.prev?.slug, "kambaz-modules");
   });
 });
 
@@ -174,12 +208,23 @@ describe("lecture decks", () => {
     assert.equal(counts["web-forms"], 21);
     assert.equal(counts["anchors"], 5);
     assert.equal(counts["single-page-navigation"], 14);
+    assert.equal(counts["kambaz-overview"], 8);
+    assert.equal(counts["kambaz-account"], 9);
+    assert.equal(counts["kambaz-dashboard"], 7);
+    assert.equal(counts["kambaz-navigation"], 6);
+    assert.equal(counts["kambaz-courses"], 7);
+    assert.equal(counts["kambaz-modules"], 8);
+    assert.equal(counts["kambaz-assignments"], 9);
     for (const deck of decks) {
       const ids = deck.slides.map((slide) => slide.id);
       assert.equal(new Set(ids).size, ids.length, `${deck.slug} duplicate slide id`);
       for (const slide of deck.slides) {
         assert.ok(slide.id);
         assert.ok(slide.title);
+        assert.ok(
+          slide.title.length <= LECTURE_TITLE_MAX_CHARS,
+          `${deck.slug} ${slide.id} title is ${slide.title.length} chars: ${slide.title}`,
+        );
       }
     }
   });
@@ -288,6 +333,21 @@ describe("lecture decks", () => {
         "lab2-page": "labs-layout",
         "lab3-page": "labs-layout",
       },
+      "kambaz-overview": { landing: "kambaz-landing" },
+      "kambaz-account": {
+        signin: "kambaz-signin",
+        signup: "kambaz-signup",
+        profile: "kambaz-profile",
+        "account-layout": "kambaz-account-nav",
+      },
+      "kambaz-dashboard": { "dashboard-page": "kambaz-dashboard" },
+      "kambaz-navigation": { layout: "kambaz-navigation" },
+      "kambaz-courses": { layout: "kambaz-courses" },
+      "kambaz-modules": { "modules-page": "kambaz-modules", home: "kambaz-home" },
+      "kambaz-assignments": {
+        "list-screen": "kambaz-assignments",
+        editor: "kambaz-assignment-editor",
+      },
     } as const;
     const used = new Set<string>();
     for (const [slug, slides] of Object.entries(expected)) {
@@ -331,6 +391,9 @@ describe("lecture decks", () => {
       assert.doesNotMatch(text, /CS 4550/);
       assert.doesNotMatch(text, /CS 5610/);
       assert.doesNotMatch(text, /2026\/fall/);
+      assert.doesNotMatch(text, /Kanbas/);
+      assert.doesNotMatch(text, /HashRouter/);
+      assert.doesNotMatch(text, /src\/Kanbas/);
     }
   });
 
@@ -404,6 +467,74 @@ describe("lecture decks", () => {
     const tocFiles = lectureSlideCodeBlocks(tocSlide).map((block) => block.file);
     assert.ok(tocFiles.includes("app/labs/page.tsx"));
     assert.ok(tocFiles.includes("app/labs/TOC.tsx"));
+  });
+
+  it("teaches Chapter 1 Kambaz A1 screens in the Lecture 3 decks", () => {
+    const overview = slideText("kambaz-overview");
+    assert.match(overview, /app\/\(kambaz\)\/page\.tsx/);
+    assert.match(overview, /wd-kambaz/);
+    assert.match(overview, /wd-kambaz-link/);
+    assert.match(overview, /next\/navigation/);
+    assert.match(overview, /redirect\("\/account\/signin"\)/);
+    assert.doesNotMatch(overview, /HashRouter/);
+    assert.doesNotMatch(overview, /src\/Kanbas/);
+
+    const account = slideText("kambaz-account");
+    assert.match(account, /wd-signin-screen/);
+    assert.match(account, /wd-signin-btn/);
+    assert.match(account, /\/account\/signin/);
+    assert.match(account, /wd-password-verify/);
+    assert.match(account, /wd-firstname/);
+    assert.match(account, /wd-kambaz-account/);
+    assert.match(account, /app\/\(kambaz\)\/account\/layout\.tsx/);
+    assert.doesNotMatch(account, /next\/dist\/client/);
+    assert.doesNotMatch(account, /href=\{?"signin"/);
+
+    const dashboard = slideText("kambaz-dashboard");
+    assert.match(dashboard, /CourseCard/);
+    assert.match(dashboard, /next\/image/);
+    assert.match(dashboard, /\/courses\/\$\{id\}\/home/);
+    assert.match(dashboard, /wd-dashboard/);
+    assert.match(dashboard, /Published Courses \(3\)/);
+    assert.match(dashboard, /wd-signin-btn/);
+    assert.doesNotMatch(dashboard, /#\/Kanbas/);
+
+    const navigation = slideText("kambaz-navigation");
+    assert.match(navigation, /wd-kambaz-navigation/);
+    assert.match(navigation, /wd-neu-link/);
+    assert.match(navigation, /app\/not-found\.tsx/);
+    assert.match(navigation, /wd-not-found-dashboard-link/);
+
+    const courses = slideText("kambaz-courses");
+    assert.match(courses, /\/courses\/\[cid\]\/home/);
+    assert.match(courses, /wd-courses-navigation/);
+    assert.match(courses, /await params/);
+    assert.match(courses, /wd-course-people-link/);
+    assert.match(courses, /people\/table/);
+
+    const modules = slideText("kambaz-modules");
+    assert.match(modules, /wd-modules/);
+    assert.match(modules, /wd-module/);
+    assert.match(modules, /LEARNING OBJECTIVES/);
+    assert.match(modules, /wd-course-status/);
+    assert.match(modules, /import Modules from "\.\.\/modules\/page"/);
+
+    const assignments = slideText("kambaz-assignments");
+    assert.match(assignments, /wd-search-assignment/);
+    assert.match(assignments, /wd-assignment-link/);
+    assert.match(assignments, /AssignmentItem/);
+    assert.match(assignments, /defaultValue/);
+    assert.match(assignments, /wd-assignments-editor/);
+    assert.match(assignments, /wd-cancel/);
+    assert.doesNotMatch(assignments, /<a href="\/courses/);
+  });
+
+  it("scrolls the slide pane with Up\/Down only when content overflows", () => {
+    assert.equal(slidePaneOverflows(null), false);
+    assert.equal(slidePaneOverflows({ scrollHeight: 400, clientHeight: 400 }), false);
+    assert.equal(slidePaneOverflows({ scrollHeight: 401, clientHeight: 400 }), false);
+    assert.equal(slidePaneOverflows({ scrollHeight: 480, clientHeight: 400 }), true);
+    assert.equal(slidePaneScrollStep(400), 280);
   });
 
   it("uses authored diagrams instead of Google Slides rasters", () => {

@@ -23,7 +23,7 @@ export const SINGLE_PAGE_NAVIGATION_SLIDES: LectureSlide[] = [
   },
   {
     id: "lab-screens",
-    title: "Lab 1, Lab 2, Lab 3 are separate screens",
+    title: "Lab 1–3 are separate screens",
     kind: "content",
     bullets: [
       "`/labs/lab1` — HTML examples (this week)",
@@ -34,7 +34,7 @@ export const SINGLE_PAGE_NAVIGATION_SLIDES: LectureSlide[] = [
   },
   {
     id: "link-toc",
-    title: "Next.js Link TOC — no full reload",
+    title: "Link TOC — no full reload",
     kind: "demo",
     embed: "labs-index",
     bullets: [
@@ -103,7 +103,7 @@ export default function TOC() {
   },
   {
     id: "layout-children",
-    title: "layout.tsx keeps the TOC; children swap",
+    title: "layout.tsx keeps TOC; children swap",
     kind: "demo",
     bullets: [
       "`page.tsx` creates a URL. `layout.tsx` does **not**",
@@ -187,7 +187,7 @@ export default function LabsLayout({
   },
   {
     id: "kambaz-group",
-    title: "Move Kambaz into app/(kambaz)/",
+    title: "Move Kambaz into (kambaz)",
     kind: "content",
     bullets: [
       "Parentheses make a **route group**. `app/(kambaz)/dashboard/page.tsx` is still `/dashboard`",
@@ -202,7 +202,7 @@ app/(kambaz)/account/signin/page.tsx →  /account/signin`,
   },
   {
     id: "kambaz-default",
-    title: "(kambaz) can own the site root",
+    title: "(kambaz) can own /",
     kind: "content",
     bullets: [
       "`app/(kambaz)/page.tsx` is the `/` route — not `/(kambaz)`",
@@ -213,7 +213,7 @@ app/(kambaz)/account/signin/page.tsx →  /account/signin`,
   },
   {
     id: "table-layout-temp",
-    title: "Tables for layout are temporary",
+    title: "Table layouts are temporary",
     kind: "content",
     bullets: [
       "The labs (and Kambaz) layouts still use a `<table>` to sit nav beside content",
@@ -224,7 +224,7 @@ app/(kambaz)/account/signin/page.tsx →  /account/signin`,
   },
   {
     id: "checklist",
-    title: "Before you leave Chapter 1 HTML",
+    title: "Before leaving Chapter 1 HTML",
     kind: "content",
     bullets: [
       "Lab 1 covers headings, paragraphs, lists, tables, images, forms, and anchors",

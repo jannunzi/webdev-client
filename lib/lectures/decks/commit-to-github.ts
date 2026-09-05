@@ -26,7 +26,7 @@ export const COMMIT_TO_GITHUB_SLIDES: LectureSlide[] = [
   },
   {
     id: "gitignore",
-    title: ".gitignore must ignore node_modules",
+    title: ".gitignore ignores node_modules",
     kind: "content",
     bullets: [
       "`create-next-app` already wrote a `.gitignore`. Open it before the first commit",
@@ -60,7 +60,7 @@ export const COMMIT_TO_GITHUB_SLIDES: LectureSlide[] = [
   },
   {
     id: "empty-repo-commands",
-    title: "Empty-repo starter commands (GitHub)",
+    title: "Empty-repo starter commands",
     kind: "content",
     bullets: [
       "GitHub shows a “…or push an existing repository” block. That is us",

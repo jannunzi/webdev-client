@@ -15,10 +15,24 @@ export const LECTURE_2_SLUGS = [
   "single-page-navigation",
 ] as const;
 
+export const LECTURE_3_SLUGS = [
+  "kambaz-overview",
+  "kambaz-account",
+  "kambaz-dashboard",
+  "kambaz-navigation",
+  "kambaz-courses",
+  "kambaz-modules",
+  "kambaz-assignments",
+] as const;
+
 export const LECTURE_SLUGS = [
   ...LECTURE_1_SLUGS,
   ...LECTURE_2_SLUGS,
+  ...LECTURE_3_SLUGS,
 ] as const;
+
+/** Slide headings stay on one line — keep titles at or under this length. */
+export const LECTURE_TITLE_MAX_CHARS = 42;
 
 export type LectureSlug = (typeof LECTURE_SLUGS)[number];
 
@@ -51,6 +65,18 @@ export const LECTURE_EMBED_IDS = [
   "alert-button",
   "buttons",
   "labs-layout",
+  "kambaz-landing",
+  "kambaz-signin",
+  "kambaz-signup",
+  "kambaz-profile",
+  "kambaz-account-nav",
+  "kambaz-dashboard",
+  "kambaz-navigation",
+  "kambaz-courses",
+  "kambaz-modules",
+  "kambaz-home",
+  "kambaz-assignments",
+  "kambaz-assignment-editor",
 ] as const;
 
 export type LectureEmbedId = (typeof LECTURE_EMBED_IDS)[number];

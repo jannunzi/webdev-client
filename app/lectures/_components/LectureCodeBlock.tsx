@@ -45,7 +45,7 @@ export default function LectureCodeBlock({
   }
 
   return (
-    <div className="book-code-block relative my-5 w-full max-w-full overflow-hidden rounded border border-neutral-300">
+    <div className="book-code-block relative my-3 w-full max-w-full overflow-hidden rounded border border-neutral-300">
       <div className="book-code-block-header flex items-center justify-between gap-2 border-b border-neutral-700 bg-[#161b22] px-3 py-2 font-sans">
         <span className="truncate font-mono text-sm text-neutral-400 md:text-base">
           {block.file ?? language}
@@ -69,7 +69,7 @@ export default function LectureCodeBlock({
       <p className="sr-only" aria-live="polite">
         {copied ? "Copied to clipboard" : ""}
       </p>
-      <pre className="book-code-block-body book-code-block-plain m-0 overflow-x-auto bg-[#0d1117] p-5 leading-relaxed text-neutral-100 !text-[1.4rem] md:!text-[1.65rem] [&_code]:!text-[1em]">
+      <pre className="book-code-block-body book-code-block-plain m-0 overflow-x-auto bg-[#0d1117] p-3 leading-snug text-neutral-100 !text-[1.05rem] md:!text-[1.2rem] [&_code]:!text-[1em]">
         <code>{block.code}</code>
       </pre>
     </div>

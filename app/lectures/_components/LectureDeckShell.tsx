@@ -8,6 +8,10 @@ import {
   type LectureHubItem,
   type LectureSlide,
 } from "@/lib/lectures/types";
+import {
+  slidePaneOverflows,
+  slidePaneScrollStep,
+} from "@/lib/lectures/slide-pane";
 import LectureCodeBlock from "./LectureCodeBlock";
 import LectureDiagram from "./diagrams/LectureDiagram";
 import LectureEmbed from "./embeds/LectureEmbed";
@@ -15,8 +19,8 @@ import LectureFilmstrip from "./LectureFilmstrip";
 import LectureSlideImage from "./LectureSlideImage";
 import SlideText from "./SlideText";
 
-const NEXT_KEYS = new Set(["ArrowRight", "ArrowDown", "PageDown", " ", "n", "N"]);
-const PREV_KEYS = new Set(["ArrowLeft", "ArrowUp", "PageUp", "Backspace", "p", "P"]);
+const NEXT_SLIDE_KEYS = new Set(["ArrowRight", "PageDown", " ", "n", "N"]);
+const PREV_SLIDE_KEYS = new Set(["ArrowLeft", "PageUp", "Backspace", "p", "P"]);
 
 function kindLabel(kind: LectureSlide["kind"]): string {
   if (kind === "demo") return "Demo";
@@ -90,33 +94,12 @@ function replaceLocation({
 }
 
 function titleClasses({
-  density,
-  isFullscreen,
   kind,
 }: {
-  density: ReturnType<typeof lectureSlideDensity>;
-  isFullscreen: boolean;
   kind: LectureSlide["kind"];
 }): string {
-  const spacious = density === "spacious";
-  if (isFullscreen) {
-    if (kind === "title") {
-      return spacious
-        ? "mt-0 font-sans text-7xl font-semibold tracking-tight text-white sm:text-8xl"
-        : "mt-0 font-sans text-6xl font-semibold tracking-tight text-white sm:text-7xl";
-    }
-    return spacious
-      ? "mt-0 font-sans text-6xl font-semibold leading-tight tracking-tight sm:text-7xl"
-      : "mt-0 font-sans text-5xl font-semibold leading-tight tracking-tight sm:text-6xl";
-  }
-  if (kind === "title") {
-    return spacious
-      ? "mt-0 font-sans text-6xl font-semibold tracking-tight text-white sm:text-7xl"
-      : "mt-0 font-sans text-5xl font-semibold tracking-tight text-white sm:text-6xl";
-  }
-  return spacious
-    ? "mt-0 font-sans text-5xl font-semibold leading-tight tracking-tight sm:text-6xl lg:text-7xl"
-    : "mt-0 font-sans text-4xl font-semibold leading-tight tracking-tight sm:text-5xl lg:text-6xl";
+  const hero = kind === "title" ? " lecture-slide-title-hero text-white" : "";
+  return `lecture-slide-title${hero}`;
 }
 
 function bulletClasses({
@@ -128,9 +111,9 @@ function bulletClasses({
 }): string {
   const color = kind === "title" ? "text-neutral-100" : "text-neutral-900";
   if (density === "spacious") {
-    return `m-0 space-y-6 pl-10 text-4xl leading-snug sm:text-[2.75rem] lg:text-5xl ${color}`;
+    return `m-0 space-y-3 pl-8 text-2xl leading-snug sm:text-[1.85rem] lg:text-[2.1rem] ${color}`;
   }
-  return `m-0 space-y-4 pl-8 text-2xl leading-snug sm:text-[1.75rem] lg:text-3xl ${color}`;
+  return `m-0 space-y-2 pl-7 text-xl leading-snug sm:text-[1.35rem] lg:text-2xl ${color}`;
 }
 
 export default function LectureDeckShell({
@@ -215,6 +198,8 @@ export default function LectureDeckShell({
       slideNumber: index + 1,
       fullscreenQuery: isFullscreen ? true : undefined,
     });
+    const pane = stageRef.current;
+    if (pane) pane.scrollTop = 0;
   }, [index, isFullscreen]);
 
   useEffect(() => {
@@ -269,12 +254,32 @@ export default function LectureDeckShell({
         }
         return;
       }
-      if (NEXT_KEYS.has(event.key)) {
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        const pane = stageRef.current;
+        if (slidePaneOverflows(pane) && pane) {
+          pane.scrollBy({ top: slidePaneScrollStep(pane.clientHeight) });
+          return;
+        }
+        goTo(index + 1);
+        return;
+      }
+      if (event.key === "ArrowUp") {
+        event.preventDefault();
+        const pane = stageRef.current;
+        if (slidePaneOverflows(pane) && pane) {
+          pane.scrollBy({ top: -slidePaneScrollStep(pane.clientHeight) });
+          return;
+        }
+        goTo(index - 1);
+        return;
+      }
+      if (NEXT_SLIDE_KEYS.has(event.key)) {
         event.preventDefault();
         goTo(index + 1);
         return;
       }
-      if (PREV_KEYS.has(event.key)) {
+      if (PREV_SLIDE_KEYS.has(event.key)) {
         event.preventDefault();
         goTo(index - 1);
         return;
@@ -296,11 +301,11 @@ export default function LectureDeckShell({
   if (!slide) return null;
 
   const percent = slides.length === 0 ? 0 : ((index + 1) / slides.length) * 100;
-  const titleClass = titleClasses({ density, isFullscreen, kind });
+  const titleClass = titleClasses({ kind });
   const hintSize =
     density === "spacious"
-      ? "mt-6 rounded-md border px-4 py-3 text-2xl sm:text-3xl"
-      : "mt-6 rounded-md border px-4 py-3 text-lg sm:text-xl";
+      ? "mt-4 rounded-md border px-3 py-2 text-lg sm:text-xl"
+      : "mt-3 rounded-md border px-3 py-2 text-base sm:text-lg";
 
   return (
     <section
@@ -353,10 +358,11 @@ export default function LectureDeckShell({
         <article
           ref={stageRef}
           data-slide-density={density}
+          data-slide-kind={kind}
           className={
             isFullscreen
-              ? `lecture-slide lecture-slide-${density} h-full w-full overflow-auto px-6 py-8 sm:px-10 sm:py-10 ${kindFrame(kind)}`
-              : `lecture-slide lecture-slide-${density} min-h-0 flex-1 overflow-auto rounded-lg border-2 px-5 py-6 sm:px-8 sm:py-8 ${kindFrame(kind)}`
+              ? `lecture-slide lecture-slide-${density} h-full w-full overflow-x-hidden overflow-y-auto px-5 py-6 sm:px-8 sm:py-7 ${kindFrame(kind)}`
+              : `lecture-slide lecture-slide-${density} min-h-0 flex-1 overflow-x-hidden overflow-y-auto rounded-lg border-2 px-4 py-4 sm:px-6 sm:py-5 ${kindFrame(kind)}`
           }
         >
           <p
@@ -366,7 +372,7 @@ export default function LectureDeckShell({
           >
             {kindLabel(kind)}
           </p>
-          <h2 className={`${titleClass} mb-5`}>{slide.title}</h2>
+          <h2 className={titleClass}>{slide.title}</h2>
           {slide.bullets && slide.bullets.length > 0 ? (
             <ul className={bulletClasses({ density, kind })}>
               {slide.bullets.map((bullet, bulletIndex) => (
@@ -416,7 +422,7 @@ export default function LectureDeckShell({
                 Previous slide
               </button>
               <p className="m-0 font-sans text-xs text-neutral-500">
-                ← → or space · f fullscreen · Esc exits · Home / End
+                ← → change slides · ↑ ↓ scroll if the slide overflows · space · f fullscreen · Esc · Home / End
               </p>
               <button
                 type="button"

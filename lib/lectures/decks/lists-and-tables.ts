@@ -39,7 +39,7 @@ export const LISTS_AND_TABLES_SLIDES: LectureSlide[] = [
   },
   {
     id: "pancakes-after",
-    title: "Pancakes after ol / li — wd-pancakes",
+    title: "Pancakes after ol/li — wd-pancakes",
     kind: "demo",
     bullets: [
       "Wrap the list in `ol` and each step in `li`",
@@ -83,7 +83,7 @@ My favorite books (in no particular order)
   },
   {
     id: "tables-not-layout",
-    title: "Tables are for tabular data — not layout",
+    title: "Tables are for data — not layout",
     kind: "content",
     bullets: [
       "`<table>` organizes **rows and columns of data**",
@@ -149,7 +149,7 @@ My favorite books (in no particular order)
   },
   {
     id: "quiz-table",
-    title: "Quiz table — thead, tbody, tfoot",
+    title: "Quiz table — thead/tbody/tfoot",
     kind: "demo",
     bullets: [
       "Keep the sample small. Alignment attributes (`align`) are old HTML — fine for Lab 1",

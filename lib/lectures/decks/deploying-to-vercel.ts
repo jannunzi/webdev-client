@@ -100,7 +100,7 @@ export const DEPLOYING_TO_VERCEL_SLIDES: LectureSlide[] = [
   },
   {
     id: "congratulations",
-    title: "Congratulations — the dashboard",
+    title: "Congratulations — dashboard",
     kind: "content",
     bullets: [
       "Vercel shows a congratulations screen and a screenshot of `/`",
@@ -124,7 +124,7 @@ export const DEPLOYING_TO_VERCEL_SLIDES: LectureSlide[] = [
   },
   {
     id: "protections",
-    title: "Deployment Settings / Protections",
+    title: "Deployment Settings",
     kind: "demo",
     bullets: [
       "Project → **Settings** → **Deployment Protection** (wording can be under Security)",

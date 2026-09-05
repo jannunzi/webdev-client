@@ -64,7 +64,7 @@ export const HEADINGS_AND_PARAGRAPHS_SLIDES: LectureSlide[] = [
   },
   {
     id: "whitespace-without-p",
-    title: "Without p, the browser ignores your blank lines",
+    title: "Without p, the browser ignores blank lines",
     kind: "content",
     bullets: [
       "These three chunks look like separate paragraphs in the file",
@@ -84,7 +84,7 @@ export const HEADINGS_AND_PARAGRAPHS_SLIDES: LectureSlide[] = [
   },
   {
     id: "wrap-p",
-    title: "Wrap sample paragraphs — wd-p-2 … wd-p-4",
+    title: "Wrap sample paragraphs — wd-p-2…4",
     kind: "demo",
     bullets: [
       "Give the intro sample `id=\"wd-p-1\"`",

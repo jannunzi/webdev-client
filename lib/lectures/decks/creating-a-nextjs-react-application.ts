@@ -3,7 +3,7 @@ import type { LectureSlide } from "../types";
 export const CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES: LectureSlide[] = [
   {
     id: "title",
-    title: "Creating a Next.js React application",
+    title: "Creating a Next.js React app",
     kind: "title",
     bullets: [
       "Lecture 1 · Deck 3 — App Router only",
@@ -123,7 +123,7 @@ npm run dev`,
   },
   {
     id: "comment-globals",
-    title: "Comment out globals.css in the layout",
+    title: "Comment out globals.css",
     kind: "demo",
     bullets: [
       "The starter imports Tailwind via `app/globals.css` (or `src/app/globals.css`)",
@@ -173,7 +173,7 @@ npm run dev`,
   },
   {
     id: "why-page-tsx",
-    title: "Why the file is named page.tsx",
+    title: "Why the file is page.tsx",
     kind: "content",
     bullets: [
       "`page.tsx` is reserved. Next.js exposes that folder as a public route",
@@ -239,7 +239,7 @@ export default function Home() {
   },
   {
     id: "devtools",
-    title: "DevTools: see what React rendered",
+    title: "DevTools: what React rendered",
     kind: "demo",
     bullets: [
       "Chrome → More Tools → Developer Tools (or F12 / ⌥⌘I)",
@@ -252,7 +252,7 @@ export default function Home() {
   },
   {
     id: "dom-parse",
-    title: "How the browser parses the page",
+    title: "How the browser parses HTML",
     kind: "content",
     bullets: [
       "Next.js sends HTML for the route. The browser **parses** it into the DOM",
@@ -340,7 +340,7 @@ export default function Home() {
   },
   {
     id: "browser-parses-dom",
-    title: "Browser parses HTML into the DOM",
+    title: "Browser parses HTML into DOM",
     kind: "demo",
     bullets: [
       "Open `/labs/lab1`, then Elements",

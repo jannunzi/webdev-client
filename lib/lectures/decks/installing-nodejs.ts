@@ -61,7 +61,7 @@ export const INSTALLING_NODEJS_SLIDES: LectureSlide[] = [
   },
   {
     id: "what-is-node",
-    title: "Node = JavaScript outside the browser",
+    title: "Node = JS outside the browser",
     kind: "content",
     bullets: [
       "Browsers sandbox JS: no raw filesystem, no arbitrary sockets, no Mongo driver",
