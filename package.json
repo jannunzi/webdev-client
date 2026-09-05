@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test app/book/terms/*.test.ts && tsx --test lib/question-bank/*.test.ts lib/roster/*.test.ts lib/quiz-exam/*.test.ts lib/assignments/assignments.test.ts",
+    "test": "node --experimental-strip-types --test app/book/terms/*.test.ts && tsx --test lib/question-bank/*.test.ts lib/roster/*.test.ts lib/quiz-exam/*.test.ts lib/assignments/assignments.test.ts lib/lectures/lectures.test.ts",
     "roster:import": "tsx scripts/import-canvas-roster.ts",
     "server": "npm start --prefix webdev-server",
     "server:dev": "npm run dev --prefix webdev-server"
