@@ -95,7 +95,7 @@ export async function runA1Checks(input: {
     deployUrl: vercel.href,
     getHtml: async (url) => classifyDeployFetch(await input.probes.getHtml(url)),
   });
-  if ("ok" in crawled && crawled.ok === false) {
+  if (!crawled.ok) {
     results.push(
       check(
         "a1-delivery-vercel-open",

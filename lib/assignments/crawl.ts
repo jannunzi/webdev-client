@@ -22,6 +22,7 @@ export type PageSnapshot = {
 };
 
 export type DeployCorpus = {
+  ok: true;
   origin: string;
   pages: PageSnapshot[];
   allHtml: string;
@@ -122,6 +123,7 @@ export async function crawlA1Deploy(input: {
 
   const pages = [...first, ...second];
   return {
+    ok: true,
     origin: origin.href,
     pages,
     allHtml: successfulHtml(pages),
