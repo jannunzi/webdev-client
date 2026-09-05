@@ -319,9 +319,9 @@ export default function LectureDeckShell({
         ) : null}
         {slide.bullets && slide.bullets.length > 0 ? (
           <ul
-            className={`m-0 space-y-2 pl-5 text-[1.05rem] leading-relaxed ${
-              kind === "title" ? "text-neutral-100" : "text-neutral-900"
-            }`}
+            className={`m-0 space-y-2 pl-5 leading-relaxed ${
+              slide.imageSrc ? "text-[0.95rem]" : "text-[1.05rem]"
+            } ${kind === "title" ? "text-neutral-100" : "text-neutral-900"}`}
           >
             {slide.bullets.map((bullet, bulletIndex) => (
               <li key={`${slide.id}-${bulletIndex}`}>

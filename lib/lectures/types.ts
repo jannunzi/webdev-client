@@ -49,6 +49,60 @@ export type LectureDeck = LectureHubItem & {
   slides: LectureSlide[];
 };
 
+export function lectureSlideAssetPath(
+  slug: LectureSlug,
+  slideNumber: number,
+): string {
+  return `/lectures/${slug}/slide-${String(slideNumber).padStart(2, "0")}.png`;
+}
+
+/** Original Google Slides index when our reconstructed deck is not 1:1. */
+const INTRO_SLIDE_ASSET: Partial<Record<string, number>> = {
+  title: 1,
+  internet: 2,
+  web: 3,
+  "browsers-urls": 4,
+  "network-of-networks": 5,
+  "client-server": 6,
+  http: 6,
+  milestones: 7,
+  "server-frameworks": 8,
+  ssr: 9,
+  "client-frameworks": 10,
+  csr: 11,
+  "web-app-se": 13,
+  teams: 14,
+  "large-projects": 15,
+  architecture: 16,
+  patterns: 17,
+};
+
+export function lectureSlideImageNumber(
+  slug: LectureSlug,
+  slide: LectureSlide,
+  index: number,
+): number | undefined {
+  if (slug === "intro-to-web-development") {
+    return INTRO_SLIDE_ASSET[slide.id] ?? index + 1;
+  }
+  return index + 1;
+}
+
+export function withLectureSlideImages(
+  slug: LectureSlug,
+  slides: LectureSlide[],
+): LectureSlide[] {
+  return slides.map((slide, index) => {
+    const number = lectureSlideImageNumber(slug, slide, index);
+    if (number == null) return slide;
+    return {
+      ...slide,
+      imageSrc: slide.imageSrc ?? lectureSlideAssetPath(slug, number),
+      imageAlt: slide.imageAlt ?? slide.title,
+    };
+  });
+}
+
 export function lectureSlideCodeBlocks(slide: LectureSlide): LectureCodeBlock[] {
   const blocks: LectureCodeBlock[] = [];
   if (slide.code) {

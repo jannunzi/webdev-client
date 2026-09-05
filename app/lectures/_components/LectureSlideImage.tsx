@@ -37,7 +37,7 @@ export default function LectureSlideImage({
           src={src}
           alt={alt}
           className={`mx-auto h-auto w-full max-w-full rounded border border-neutral-200 bg-white object-contain ${
-            fullscreen ? "max-h-[min(70vh,40rem)]" : "max-h-80"
+            fullscreen ? "max-h-[min(78vh,46rem)]" : "max-h-[min(56vh,32rem)]"
           }`}
           onError={() => setFailed(true)}
         />
