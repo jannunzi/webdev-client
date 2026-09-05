@@ -8,7 +8,7 @@ import LectureChapterLink from "./_components/LectureChapterLink";
 import LectureHubNav from "./_components/LectureHubNav";
 
 export const metadata: Metadata = {
-  title: "Lectures — CS 4550 / CS 5610",
+  title: "Lectures — Web Dev",
 };
 
 export default function LecturesIndexPage() {
@@ -22,10 +22,9 @@ export default function LecturesIndexPage() {
           Lectures
         </h1>
         <p className="max-w-3xl">
-          Canvas-style lecture folders for Fall 2026. Open a deck to present
-          slides on a wide stage. Keyboard shortcuts on each deck: next /
-          previous with the arrow keys or space, <kbd>f</kbd> for fullscreen,
-          Esc to exit.
+          Canvas-style lecture folders. Open a deck to present slides on a
+          wide stage. Keyboard shortcuts on each deck: next / previous with
+          the arrow keys or space, <kbd>f</kbd> for fullscreen, Esc to exit.
         </p>
         <p className="rounded-lg border border-sky-300 bg-sky-50 px-4 py-3 font-sans text-sm text-sky-950">
           These slides are the classroom version of the matching book chapter.

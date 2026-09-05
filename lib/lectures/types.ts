@@ -71,6 +71,14 @@ export function lectureSlideAssetPath(
   return `/lectures/${slug}/slide-${String(slideNumber).padStart(2, "0")}.png`;
 }
 
+/** Title-band cropped variant used as a supporting figure (not the slide face). */
+export function lectureSlideFigurePath(
+  slug: LectureSlug,
+  slideNumber: number,
+): string {
+  return `/lectures/${slug}/slide-${String(slideNumber).padStart(2, "0")}-figure.png`;
+}
+
 /** `{slug, slideId} → original Google Slides export number`. Default: no image. */
 export const LECTURE_SLIDE_IMAGE_ALLOWLIST: {
   [K in LectureSlug]?: Partial<Record<string, number>>;
@@ -125,7 +133,7 @@ export function withLectureSlideImages(
     if (number == null) return slide;
     return {
       ...slide,
-      imageSrc: slide.imageSrc ?? lectureSlideAssetPath(slug, number),
+      imageSrc: slide.imageSrc ?? lectureSlideFigurePath(slug, number),
       imageAlt: slide.imageAlt ?? slide.title,
     };
   });

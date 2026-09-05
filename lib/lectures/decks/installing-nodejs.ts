@@ -6,7 +6,6 @@ export const INSTALLING_NODEJS_SLIDES: LectureSlide[] = [
     title: "NODE.JS",
     kind: "title",
     bullets: [
-      "CS 4550 / CS 5610 — Fall 2026",
       "Lecture 1 · Deck 2 — Installing Node.js",
       "The JavaScript runtime that powers both the Next.js UI and the Express API",
     ],
@@ -77,7 +76,7 @@ export const INSTALLING_NODEJS_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "Go to [nodejs.org](https://nodejs.org/) — download the **LTS** installer for your OS",
-      "Fall 2026: prefer **20.9+** (Next.js requirement). 22.x or 24.x LTS is fine",
+      "Prefer **LTS 20.9+** (Next.js requirement). 22.x or 24.x LTS is fine",
       "Run the installer. Restart the terminal (or the machine) if `node` is still “not found”",
       "Installing Node also installs **npm** (packages) and **npx** (one-off commands)",
       "Do not install Node *inside* a project folder. It is a system tool",
@@ -102,25 +101,25 @@ export const INSTALLING_NODEJS_SLIDES: LectureSlide[] = [
   },
   {
     id: "course-folder",
-    title: "Create the Fall 2026 course folder",
+    title: "Create the course folder",
     kind: "demo",
     bullets: [
       "Keep coursework together. From your home directory.",
       "Lowercase, no spaces. Sibling folders later: `webdev-client` and `webdev-server`",
     ],
     code: `cd ~
-mkdir -p 2026/fall/webdev
-cd 2026/fall/webdev`,
+mkdir -p webdev
+cd webdev`,
     codeLanguage: "bash",
     interactiveHint:
-      "This term is **Fall 2026** — use `~/2026/fall/webdev`.",
+      "Use `~/webdev` (or another folder you will reuse all term).",
   },
   {
     id: "demo",
     title: "DEMO",
     kind: "demo",
     bullets: [
-      "Live: folder exists, `node --version` prints, we are in `~/2026/fall/webdev`",
+      "Live: folder exists, `node --version` prints, we are in the course folder",
       "Next we initialize a tiny Node server app — not the Next.js client",
       "Do **not** run this inside an existing `webdev-client` repo",
     ],

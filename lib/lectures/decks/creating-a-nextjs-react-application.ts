@@ -6,7 +6,6 @@ export const CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES: LectureSlide[] = [
     title: "Creating a Next.js React application",
     kind: "title",
     bullets: [
-      "CS 4550 / CS 5610 — Fall 2026",
       "Lecture 1 · Deck 3 — App Router only",
       "React components + Next.js file-system routing. No Vite SPA setup",
     ],
@@ -47,7 +46,7 @@ export const CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES: LectureSlide[] = [
     title: "Scaffold with create-next-app",
     kind: "demo",
     bullets: [
-      "From `~/2026/fall/webdev` (sibling to the Node demo, not inside it)",
+      "From the course folder (sibling to the Node demo, not inside it)",
       "The first run may ask to install the `create-next-app` package — accept",
       "Course spelling: **kambaz-next-js** — same kambaz name as the LMS prototype",
       "This is the client you will later push to GitHub and deploy on Vercel",
