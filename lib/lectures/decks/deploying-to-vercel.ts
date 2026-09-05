@@ -6,7 +6,6 @@ export const DEPLOYING_TO_VERCEL_SLIDES: LectureSlide[] = [
     title: "Deploying to Vercel",
     kind: "title",
     bullets: [
-      "CS 4550 / CS 5610 — Fall 2026",
       "Lecture 1 · Deck 5 — Host the Next.js app on Vercel",
       "GitHub holds the source. Vercel runs the site. TAs need both URLs",
     ],

@@ -7,8 +7,8 @@ export default function LectureNotFound() {
         Lecture deck not found
       </h1>
       <p>
-        That slug is not one of the Fall 2026 Lecture 1 decks. Use the lectures
-        index, or open Chapter 1 in the book.
+        That slug is not one of the Lecture 1 decks. Use the lectures index, or
+        open Chapter 1 in the book.
       </p>
       <p>
         <Link href="/lectures">All lectures</Link>

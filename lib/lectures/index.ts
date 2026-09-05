@@ -21,6 +21,7 @@ export {
   LECTURE_SLIDE_IMAGE_ALLOWLIST,
   LECTURE_SLUGS,
   lectureSlideAssetPath,
+  lectureSlideFigurePath,
   lectureSlideCodeBlocks,
   withLectureSlideImages,
 } from "./types";

@@ -20,6 +20,7 @@ import {
   LECTURE_SLIDE_IMAGE_ALLOWLIST,
   LECTURE_SLUGS,
   lectureSlideAssetPath,
+  lectureSlideFigurePath,
   lectureSlideCodeBlocks,
 } from "./types";
 
@@ -92,16 +93,19 @@ describe("lecture catalog", () => {
     );
     assert.equal(
       lectureDeckThumbnail(groups[0]!.decks[0]!),
-      "/lectures/intro-to-web-development/slide-06.png",
+      "/lectures/intro-to-web-development/slide-06-figure.png",
     );
     assert.equal(
       lectureDeckThumbnail("commit-to-github"),
-      "/lectures/commit-to-github/slide-05.png",
+      "/lectures/commit-to-github/slide-05-figure.png",
     );
     for (const slug of LECTURE_SLUGS) {
       const thumb = lectureDeckThumbnail(slug);
       assert.notEqual(thumb, lectureSlideAssetPath(slug, 1));
-      assert.equal(thumb, lectureSlideAssetPath(slug, LECTURE_DECK_THUMBNAILS[slug]));
+      assert.equal(
+        thumb,
+        lectureSlideFigurePath(slug, LECTURE_DECK_THUMBNAILS[slug]),
+      );
       const disk = join(process.cwd(), thumb.replace(/^\//, "public/"));
       assert.ok(existsSync(disk), `${thumb} is missing on disk`);
     }
@@ -155,15 +159,27 @@ describe("lecture decks", () => {
     assert.doesNotMatch(text, /vite\.config/i);
   });
 
-  it("uses Fall 2026 and kambaz spelling in the Node deck", () => {
+  it("keeps Node deck evergreen and uses kambaz spelling", () => {
     const text = slideText("installing-nodejs");
-    assert.match(text, /Fall 2026/);
-    assert.match(text, /2026\/fall\/webdev/);
+    assert.match(text, /mkdir -p webdev/);
     assert.match(text, /kambaz-node-server-app/);
     assert.match(text, /localhost:4000\/hello/);
+    assert.doesNotMatch(text, /Fall 2026/);
+    assert.doesNotMatch(text, /2026\/fall\/webdev/);
     assert.doesNotMatch(text, /Winter 2034/);
     assert.doesNotMatch(text, /kanbas/);
     assert.doesNotMatch(text, /kanbaz-node/);
+  });
+
+  it("omits semester and course-section strings from authored slides", () => {
+    for (const deck of listLectureDecks()) {
+      const text = slideText(deck.slug);
+      assert.doesNotMatch(text, /Fall 20\d\d/);
+      assert.doesNotMatch(text, /Winter 20\d\d/);
+      assert.doesNotMatch(text, /CS 4550/);
+      assert.doesNotMatch(text, /CS 5610/);
+      assert.doesNotMatch(text, /2026\/fall/);
+    }
   });
 
   it("rewrites deploy notes to Vercel and not Netlify", () => {
@@ -199,7 +215,8 @@ describe("lecture decks", () => {
           );
           continue;
         }
-        assert.equal(slide.imageSrc, lectureSlideAssetPath(deck.slug, number));
+        assert.equal(slide.imageSrc, lectureSlideFigurePath(deck.slug, number));
+        assert.match(slide.imageSrc, /-figure\.png$/);
         assert.ok(slide.imageAlt);
         const disk = join(
           process.cwd(),
@@ -210,15 +227,15 @@ describe("lecture decks", () => {
     }
     assert.equal(
       findSlide("intro-to-web-development", "client-server").imageSrc,
-      "/lectures/intro-to-web-development/slide-06.png",
+      "/lectures/intro-to-web-development/slide-06-figure.png",
     );
     assert.equal(
       findSlide("intro-to-web-development", "ssr").imageSrc,
-      "/lectures/intro-to-web-development/slide-09.png",
+      "/lectures/intro-to-web-development/slide-09-figure.png",
     );
     assert.equal(
       findSlide("intro-to-web-development", "csr").imageSrc,
-      "/lectures/intro-to-web-development/slide-11.png",
+      "/lectures/intro-to-web-development/slide-11-figure.png",
     );
     assert.equal(findSlide("installing-nodejs", "title").imageSrc, undefined);
     assert.equal(
@@ -228,7 +245,7 @@ describe("lecture decks", () => {
     assert.equal(
       findSlide("creating-a-nextjs-react-application", "browser-parses-dom")
         .imageSrc,
-      "/lectures/creating-a-nextjs-react-application/slide-27.png",
+      "/lectures/creating-a-nextjs-react-application/slide-27-figure.png",
     );
     assert.equal(
       findSlide("deploying-to-vercel", "office-hours").imageSrc,

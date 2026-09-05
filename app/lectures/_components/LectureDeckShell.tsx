@@ -247,11 +247,11 @@ export default function LectureDeckShell({
   const percent = slides.length === 0 ? 0 : ((index + 1) / slides.length) * 100;
   const titleClass = isFullscreen
     ? kind === "title"
-      ? "mt-0 font-sans text-5xl font-semibold tracking-tight text-white sm:text-6xl"
-      : "mt-0 font-sans text-4xl font-semibold tracking-tight sm:text-5xl"
+      ? "mt-0 font-sans text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl"
+      : "mt-0 font-sans text-[2.5rem] font-semibold leading-tight tracking-tight sm:text-5xl lg:text-6xl"
     : kind === "title"
-      ? "mt-0 font-sans text-4xl font-semibold tracking-tight text-white sm:text-5xl"
-      : "mt-0 font-sans text-3xl font-semibold tracking-tight";
+      ? "mt-0 font-sans text-5xl font-semibold tracking-tight text-white sm:text-6xl"
+      : "mt-0 font-sans text-[2.25rem] font-semibold leading-tight tracking-tight sm:text-[2.75rem] lg:text-[3.25rem]";
 
   return (
     <section
@@ -310,16 +310,16 @@ export default function LectureDeckShell({
           }
         >
           <p
-            className={`m-0 text-xs font-semibold uppercase tracking-wide ${
+            className={`m-0 text-sm font-semibold uppercase tracking-wide sm:text-base ${
               kind === "title" ? "text-neutral-300" : "text-neutral-500"
             }`}
           >
             {kindLabel(kind)}
           </p>
-          <h2 className={`${titleClass} mb-4`}>{slide.title}</h2>
+          <h2 className={`${titleClass} mb-5`}>{slide.title}</h2>
           {slide.bullets && slide.bullets.length > 0 ? (
             <ul
-              className={`m-0 space-y-2 pl-5 text-[1.05rem] leading-relaxed ${
+              className={`m-0 space-y-3 pl-7 text-[1.35rem] leading-snug sm:space-y-4 sm:text-[1.55rem] lg:text-[1.75rem] ${
                 kind === "title" ? "text-neutral-100" : "text-neutral-900"
               }`}
             >
@@ -344,7 +344,7 @@ export default function LectureDeckShell({
           ) : null}
           {slide.interactiveHint ? (
             <p
-              className={`mt-6 rounded-md border px-3 py-2 text-sm ${
+              className={`mt-6 rounded-md border px-4 py-3 text-lg sm:text-xl ${
                 kind === "title"
                   ? "border-neutral-600 bg-neutral-800 text-neutral-100"
                   : "border-neutral-300 bg-white text-neutral-800"

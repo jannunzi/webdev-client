@@ -6,7 +6,6 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "CS 4550 / CS 5610 — Fall 2026",
       "Lecture 1 · Deck 1 — Introduction to Web Development",
       "Chapter 1 in the course book",
     ],

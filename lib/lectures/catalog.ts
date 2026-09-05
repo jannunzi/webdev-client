@@ -7,7 +7,7 @@ import { INTRO_TO_WEB_DEVELOPMENT_SLIDES } from "./decks/intro-to-web-developmen
 import {
   LECTURE_DECK_THUMBNAILS,
   LECTURE_SLUGS,
-  lectureSlideAssetPath,
+  lectureSlideFigurePath,
   withLectureSlideImages,
   type CanvasLectureGroup,
   type LectureDeck,
@@ -36,7 +36,7 @@ const LECTURE_SUMMARIES: Record<
   "installing-nodejs": {
     title: "Installing Node.js",
     summary:
-      "Install the Node runtime, create the Fall 2026 course folder, and run a one-route Express hello server on port 4000.",
+      "Install the Node runtime, create a course folder, and run a one-route Express hello server on port 4000.",
     slides: INSTALLING_NODEJS_SLIDES,
   },
   "creating-a-nextjs-react-application": {
@@ -83,7 +83,7 @@ export function getLecture(slug: string): LectureHubItem | undefined {
     chapterHref: CHAPTER_1.href,
     chapterTitle: CHAPTER_1.title,
     publicUrl: lecturePublicUrl(slug),
-    thumbnailSrc: lectureSlideAssetPath(slug, LECTURE_DECK_THUMBNAILS[slug]),
+    thumbnailSrc: lectureSlideFigurePath(slug, LECTURE_DECK_THUMBNAILS[slug]),
   };
 }
 
@@ -118,7 +118,7 @@ export function lectureDeckThumbnail(
     return deck.thumbnailSrc;
   }
   const slug = typeof deck === "string" ? deck : deck.slug;
-  return lectureSlideAssetPath(slug, LECTURE_DECK_THUMBNAILS[slug]);
+  return lectureSlideFigurePath(slug, LECTURE_DECK_THUMBNAILS[slug]);
 }
 
 export function listCanvasLectureGroups(): CanvasLectureGroup[] {

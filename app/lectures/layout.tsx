@@ -3,9 +3,9 @@ import type { ReactNode } from "react";
 import "../book/book.css";
 
 export const metadata: Metadata = {
-  title: "Lectures — CS 4550 / CS 5610",
+  title: "Lectures — Web Dev",
   description:
-    "Fall 2026 lecture decks for CS 4550 / CS 5610. Lecture 1 covers the Web, Node.js, Next.js App Router, GitHub, and Vercel.",
+    "Lecture decks for Web Dev. Lecture 1 covers the Web, Node.js, Next.js App Router, GitHub, and Vercel.",
 };
 
 export default function LecturesLayout({
