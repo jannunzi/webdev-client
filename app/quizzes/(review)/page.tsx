@@ -1,8 +1,9 @@
 import Link from "next/link";
-import InstructorPeopleLink from "./components/InstructorPeopleLink";
+import InstructorPeopleLink from "../components/InstructorPeopleLink";
+import { renderStaffReview } from "../components/render-staff-review";
 
-export default function QuizzesIndexPage() {
-  return (
+export default async function QuizzesIndexPage() {
+  return renderStaffReview(() => (
     <article className="mx-auto max-w-3xl font-sans">
       <p className="mb-4 text-sm">
         <Link href="/book">Course book</Link>
@@ -34,5 +35,5 @@ export default function QuizzesIndexPage() {
         </li>
       </ul>
     </article>
-  );
+  ));
 }

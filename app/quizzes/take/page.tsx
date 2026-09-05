@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import StaffOnly from "../components/StaffOnly";
 import { listExamBanks } from "@/lib/quiz-exam";
 
 export const metadata: Metadata = {
@@ -12,8 +13,10 @@ export default function TakeQuizIndexPage() {
   return (
     <article>
       <p className="mb-4 text-sm">
-        <Link href="/quizzes">Question banks</Link>
-        {" · "}
+        <StaffOnly>
+          <Link href="/quizzes">Question banks</Link>
+          {" · "}
+        </StaffOnly>
         <Link href="/book">Course book</Link>
         {" · "}
         <Link href="/book/practice">Practice (ungraded)</Link>
@@ -23,8 +26,13 @@ export default function TakeQuizIndexPage() {
       </h1>
       <p className="rounded-lg border border-sky-300 bg-sky-50 px-4 py-3 text-sky-950">
         Anyone can browse the book. Only students on the Canvas roster can
-        start or submit a graded attempt. Author review banks (answers shown)
-        stay on <Link href="/quizzes">/quizzes</Link>.
+        start or submit a graded attempt. Practice self-checks stay on{" "}
+        <Link href="/book/practice">/book/practice</Link>.
+        <StaffOnly>
+          {" "}
+          Author review banks (answers shown) stay on{" "}
+          <Link href="/quizzes">/quizzes</Link>.
+        </StaffOnly>
       </p>
       <ul className="list-none space-y-3 p-0">
         {exams.map(({ quizId, bank }) => (

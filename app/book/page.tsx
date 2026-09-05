@@ -18,8 +18,6 @@ export default function BookHome() {
         {" · "}
         <Link href="/project">Final Project</Link>
         {" · "}
-        <Link href="/quizzes/q1">Q1 question bank (review draft)</Link>
-        {" · "}
         <Link href="/quizzes/take/q1">Q1 graded quiz</Link>
       </p>
       <h2 className="font-sans text-xl font-semibold">Chapters</h2>

@@ -6,6 +6,7 @@ import {
   isInstructor,
   isStaff,
   isTa,
+  staffAccessFromUser,
   taEmailsFromEnv,
 } from "./instructors";
 
@@ -74,6 +75,25 @@ describe("instructor and TA email allowlists", () => {
       isInstructor(["jane.doe@northeastern.edu"], ["jannunzi@gmail.com"]),
       false,
     );
+  });
+
+  it("staffAccessFromUser requires Clerk, then a signed-in staff email", () => {
+    assert.equal(staffAccessFromUser(false, false, []), "not_configured");
+    assert.equal(
+      staffAccessFromUser(false, true, ["jannunzi@gmail.com"]),
+      "not_configured",
+    );
+    assert.equal(staffAccessFromUser(true, false, []), "signed_out");
+    assert.equal(
+      staffAccessFromUser(true, false, ["jannunzi@gmail.com"]),
+      "signed_out",
+    );
+    assert.equal(
+      staffAccessFromUser(true, true, ["jane.doe@northeastern.edu"]),
+      "forbidden",
+    );
+    assert.equal(staffAccessFromUser(true, true, []), "forbidden");
+    assert.equal(staffAccessFromUser(true, true, ["jannunzi@gmail.com"]), "ok");
   });
 
   it("isStaff is instructor OR TA, and canvas_roster emails are not staff", () => {

@@ -17,6 +17,7 @@ import {
   canvasUserIdFromMetadata,
   collectClerkEmails,
 } from "@/lib/roster/emails";
+import { isStaff } from "@/lib/roster/instructors";
 import { lookupCanvasRoster } from "@/lib/roster/lookup";
 import ExamForm from "../components/ExamForm";
 
@@ -118,8 +119,12 @@ export default async function TakeExamPage({ params }: PageProps) {
     <article>
       <p className="mb-4 text-sm">
         <Link href="/quizzes/take">Graded quizzes</Link>
-        {" · "}
-        <Link href={`/quizzes/${quizId}`}>Author review (answers shown)</Link>
+        {isStaff(emails) ? (
+          <>
+            {" · "}
+            <Link href={`/quizzes/${quizId}`}>Author review (answers shown)</Link>
+          </>
+        ) : null}
         {" · "}
         <Link href="/book">Book</Link>
       </p>

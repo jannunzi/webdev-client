@@ -48,7 +48,9 @@ a “Search on YouTube” fallback. Results are cached for 24 hours.
 
 Anyone may browse the book, syllabus, labs, practice, and terms — signed in or
 not. **Only Canvas-roster students** can start or submit a graded quiz at
-`/quizzes/take/q1`. Author review (answers shown) stays at `/quizzes/q1`.
+`/quizzes/take/q1`. Author review (answers shown) at `/quizzes` and
+`/quizzes/q1` is **staff only** (`INSTRUCTOR_EMAILS` + `TA_EMAILS`, same as
+`/people`).
 
 If Clerk or Atlas env vars are missing, those take routes show a clear
 “not configured” message. The rest of the site keeps working.
@@ -110,16 +112,18 @@ Anyone can Clerk sign in or sign up on the public site. There is **no**
 separate instructor/TA registration. Staff status is **only** the env
 allowlists, matched server-side against the signed-in Clerk emails:
 
-- **`INSTRUCTOR_EMAILS`** — full instructor powers (People now; later admin).
-  Default if unset: `jannunzi@gmail.com`.
-- **`TA_EMAILS`** — TAs see the same People view. Empty by default.
+- **`INSTRUCTOR_EMAILS`** — full instructor powers (People and author-review
+  question banks). Default if unset: `jannunzi@gmail.com`.
+- **`TA_EMAILS`** — TAs see the same People and author-review views. Empty by
+  default.
 
 `canvas_roster` only gates **graded quizzes**. Being on the student roster
-does **not** grant People access.
+does **not** grant People or author-review access.
 
 A signed-out visitor is asked to sign in. A signed-in user who is not staff
-gets 403 and the roster is not queried. A staff-only “People” link appears
-on the question-bank index and the graded-quiz take layout.
+gets 403 and the roster / answer key is not loaded. A staff-only “People”
+link appears on the question-bank index and the graded-quiz take layout.
+Author-review links are hidden from student-facing surfaces.
 
 #### Vercel: Jose (instructor)
 
@@ -150,8 +154,7 @@ Correct answers are stripped from the client payload and graded on submit.
 
 ### Next step (not in this PR)
 
-Instructor CSV export of `quiz_attempts` for Canvas grade import, and optional
-an `instructor` flag on author review routes.
+Instructor CSV export of `quiz_attempts` for Canvas grade import.
 
 ## Learn More
 
