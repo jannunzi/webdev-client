@@ -64,7 +64,7 @@ const INTRO_SLIDE_ASSET: Partial<Record<string, number>> = {
   "browsers-urls": 4,
   "network-of-networks": 5,
   "client-server": 6,
-  http: 6,
+  http: 12,
   milestones: 7,
   "server-frameworks": 8,
   ssr: 9,
@@ -75,6 +75,19 @@ const INTRO_SLIDE_ASSET: Partial<Record<string, number>> = {
   "large-projects": 15,
   architecture: 16,
   patterns: 17,
+  "next-up": 1,
+};
+
+const DEPLOY_SLIDE_ASSET: Partial<Record<string, number>> = {
+  break: 16,
+  "office-hours": 17,
+  recap: 1,
+};
+
+const NEXT_APP_SLIDE_ASSET: Partial<Record<string, number>> = {
+  "developer-tools": 26,
+  "browser-parses-dom": 27,
+  "next-up": 1,
 };
 
 export function lectureSlideImageNumber(
@@ -84,6 +97,12 @@ export function lectureSlideImageNumber(
 ): number | undefined {
   if (slug === "intro-to-web-development") {
     return INTRO_SLIDE_ASSET[slide.id] ?? index + 1;
+  }
+  if (slug === "deploying-to-vercel") {
+    return DEPLOY_SLIDE_ASSET[slide.id] ?? index + 1;
+  }
+  if (slug === "creating-a-nextjs-react-application") {
+    return NEXT_APP_SLIDE_ASSET[slide.id] ?? index + 1;
   }
   return index + 1;
 }

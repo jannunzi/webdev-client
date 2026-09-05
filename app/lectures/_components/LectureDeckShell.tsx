@@ -309,7 +309,15 @@ export default function LectureDeckShell({
         >
           {kindLabel(kind)}
         </p>
-        <h2 className={`${titleClass} mb-4`}>{slide.title}</h2>
+        <h2
+          className={`${titleClass} mb-4 ${
+            slide.imageSrc && (kind === "title" || kind === "break")
+              ? "sr-only"
+              : ""
+          }`}
+        >
+          {slide.title}
+        </h2>
         {slide.imageSrc ? (
           <LectureSlideImage
             src={slide.imageSrc}

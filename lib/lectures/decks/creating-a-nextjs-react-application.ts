@@ -327,6 +327,23 @@ export default function Home() {
     ],
   },
   {
+    id: "developer-tools",
+    title: "DEVELOPER TOOLS",
+    kind: "title",
+    bullets: [
+      "Chrome DevTools — inspect what the browser actually rendered",
+    ],
+  },
+  {
+    id: "browser-parses-dom",
+    title: "Browser parses HTML into the DOM",
+    kind: "demo",
+    bullets: [
+      "Open `/labs/lab1`, then Elements",
+      "The highlighted `h2` is the node React rendered from `page.tsx`",
+    ],
+  },
+  {
     id: "next-up",
     title: "Next: commit to GitHub",
     kind: "title",
