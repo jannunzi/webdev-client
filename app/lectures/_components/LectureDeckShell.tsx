@@ -247,11 +247,11 @@ export default function LectureDeckShell({
   const percent = slides.length === 0 ? 0 : ((index + 1) / slides.length) * 100;
   const titleClass = isFullscreen
     ? kind === "title"
-      ? "mt-0 font-sans text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl"
-      : "mt-0 font-sans text-[2.5rem] font-semibold leading-tight tracking-tight sm:text-5xl lg:text-6xl"
+      ? "mt-0 font-sans text-6xl font-semibold tracking-tight text-white sm:text-7xl"
+      : "mt-0 font-sans text-5xl font-semibold leading-tight tracking-tight sm:text-6xl"
     : kind === "title"
       ? "mt-0 font-sans text-5xl font-semibold tracking-tight text-white sm:text-6xl"
-      : "mt-0 font-sans text-[2.25rem] font-semibold leading-tight tracking-tight sm:text-[2.75rem] lg:text-[3.25rem]";
+      : "mt-0 font-sans text-4xl font-semibold leading-tight tracking-tight sm:text-5xl lg:text-6xl";
 
   return (
     <section
@@ -319,7 +319,7 @@ export default function LectureDeckShell({
           <h2 className={`${titleClass} mb-5`}>{slide.title}</h2>
           {slide.bullets && slide.bullets.length > 0 ? (
             <ul
-              className={`m-0 space-y-3 pl-7 text-[1.35rem] leading-snug sm:space-y-4 sm:text-[1.55rem] lg:text-[1.75rem] ${
+              className={`m-0 space-y-4 pl-8 text-2xl leading-snug sm:text-[1.75rem] lg:text-3xl ${
                 kind === "title" ? "text-neutral-100" : "text-neutral-900"
               }`}
             >
