@@ -286,9 +286,10 @@ under `/book`.
 
 Press **f** (or the Fullscreen button) for presentation mode; **Esc** exits.
 Add `?fullscreen=1` to retry fullscreen after the next click (browsers require
-a gesture). Diagram PNGs go in `public/lectures/<slug>/` — see
-`public/lectures/README.md`. Commands and source live in `LectureSlide.code`
-/ `codeBlocks`, not as bullet items.
+a gesture). Slide figures are authored SVG/React in
+`app/lectures/_components/diagrams/`. Optional index thumbs stay under
+`public/lectures/<slug>/` — see `public/lectures/README.md`. Commands and
+source live in `LectureSlide.code` / `codeBlocks`, not as bullet items.
 
 ## Learn More
 

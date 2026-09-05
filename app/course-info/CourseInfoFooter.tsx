@@ -3,6 +3,9 @@ import Link from "next/link";
 export const COURSE_INFO_LINKS = [
   { href: "/syllabus", label: "Syllabus" },
   { href: "/book", label: "Book" },
+  { href: "/lectures", label: "Lectures" },
+  { href: "/assignments", label: "Assignments" },
+  { href: "/quizzes/take", label: "Quizzes" },
   { href: "/labs", label: "Labs" },
   { href: "/account/signin", label: "Kambaz" },
   { href: "/office-hours", label: "Office Hours" },
