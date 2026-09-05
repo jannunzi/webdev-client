@@ -1,14 +1,24 @@
 import type { ReactNode } from "react";
-import StaffReviewGate from "../components/StaffReviewGate";
+import { isClerkPublishableKeySet } from "@/lib/config";
+import ClerkAuthBar from "../components/ClerkAuthBar";
 
 export const dynamic = "force-dynamic";
 
 /**
- * Gates `/quizzes` and `/quizzes/qN` author review. Lives in a route group
- * so it does not wrap `/quizzes/take` (that path uses the Canvas roster).
+ * Auth chrome for `/quizzes` and `/quizzes/qN` only — this route group
+ * does not wrap `/quizzes/take`. The staff check that hides answers must
+ * live in each page (`renderStaffReview`); a layout cannot prevent the
+ * page RSC payload from being sent.
  */
 export default function QuizReviewLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  return <StaffReviewGate>{children}</StaffReviewGate>;
+  return (
+    <>
+      {isClerkPublishableKeySet() ? (
+        <ClerkAuthBar title="Author review" fallbackRedirect="/quizzes" />
+      ) : null}
+      {children}
+    </>
+  );
 }

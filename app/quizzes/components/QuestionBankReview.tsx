@@ -8,9 +8,16 @@ import {
   type QuestionBank,
   type QuestionGroup,
   type QuestionType,
-} from "@/lib/question-bank";
+} from "@/lib/question-bank/types";
 
-type Stats = ReturnType<typeof import("@/lib/question-bank").bankStats>;
+type Stats = {
+  groups: number;
+  questions: number;
+  byType: Record<
+    QuestionType,
+    { groups: number; questions: number }
+  >;
+};
 
 const FILTERS: { id: "all" | QuestionType; label: string }[] = [
   { id: "all", label: "All types" },
