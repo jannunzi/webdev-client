@@ -4,8 +4,7 @@ import {
   adjacentLectureSlugs,
   getLectureDeck,
   listLectureSlugs,
-} from "@/lib/lectures/catalog";
-import LectureChapterLink from "../_components/LectureChapterLink";
+} from "@/lib/lectures";
 import LectureDeckShell from "../_components/LectureDeckShell";
 import LectureHubNav from "../_components/LectureHubNav";
 
@@ -35,25 +34,24 @@ export default async function LectureDeckPage({ params }: PageProps) {
   const { prev, next } = adjacentLectureSlugs(deck.slug);
 
   return (
-    <article>
-      <LectureHubNav current="deck" />
-      <p className="mb-2 font-sans text-xs font-semibold uppercase tracking-wide text-neutral-500">
-        Canvas Lecture {deck.canvasLecture} · Chapter {deck.chapter}
-      </p>
-      <h1 className="mt-0 font-sans text-3xl font-semibold tracking-tight">
-        {deck.title}
-      </h1>
-      <p className="font-sans text-neutral-700">
-        {deck.slides.length} slides · Fall 2026
-      </p>
-      <p>{deck.summary}</p>
-      <LectureChapterLink lecture={deck} />
+    <div className="flex h-dvh min-h-0 flex-col overflow-hidden px-2 py-2 sm:px-3">
+      <header className="shrink-0 px-1">
+        <LectureHubNav current="deck" />
+        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
+          <h1 className="mt-0 mb-0 font-sans text-xl font-semibold tracking-tight sm:text-2xl">
+            {deck.title}
+          </h1>
+          <p className="mb-0 font-sans text-sm text-neutral-600">
+            Lecture {deck.canvasLecture} · {deck.slides.length} slides
+          </p>
+        </div>
+      </header>
       <LectureDeckShell
         deckTitle={deck.title}
         slides={deck.slides}
         prevDeck={prev}
         nextDeck={next}
       />
-    </article>
+    </div>
   );
 }

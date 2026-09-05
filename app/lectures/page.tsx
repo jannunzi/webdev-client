@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { listLectureDecks } from "@/lib/lectures/catalog";
+import {
+  lectureDeckThumbnail,
+  listCanvasLectureGroups,
+} from "@/lib/lectures";
 import LectureChapterLink from "./_components/LectureChapterLink";
 import LectureHubNav from "./_components/LectureHubNav";
 
@@ -9,71 +12,97 @@ export const metadata: Metadata = {
 };
 
 export default function LecturesIndexPage() {
-  const decks = listLectureDecks();
+  const groups = listCanvasLectureGroups();
 
   return (
-    <article>
-      <LectureHubNav current="index" />
-      <h1 className="mt-0 font-sans text-3xl font-semibold tracking-tight">
-        Lectures
-      </h1>
-      <p>
-        Interactive decks for the Fall 2026 lecture sequence. Start here during
-        class, then continue in the matching book chapter. Keyboard shortcuts
-        on each deck: next / previous with the arrow keys or space,{" "}
-        <kbd>f</kbd> for fullscreen, Esc to exit.
-      </p>
-      <p className="rounded-lg border border-sky-300 bg-sky-50 px-4 py-3 font-sans text-sm text-sky-950">
-        These slides are the classroom version of Chapter 1. They are not a
-        substitute for Lab 1 or the A1 checklist on{" "}
-        <Link href="/assignments">Assignments</Link>.
-      </p>
-
-      <section className="mt-8" aria-labelledby="lecture-1-heading">
-        <p className="mb-1 font-sans text-xs font-semibold uppercase tracking-wide text-neutral-500">
-          Canvas Lecture 1
+    <div className="px-3 py-6 sm:px-5 lg:px-6">
+      <div className="mx-auto w-full max-w-[1600px]">
+        <LectureHubNav current="index" />
+        <h1 className="mt-0 font-sans text-3xl font-semibold tracking-tight">
+          Lectures
+        </h1>
+        <p className="max-w-3xl">
+          Canvas-style lecture folders for Fall 2026. Open a deck to present
+          slides on a wide stage. Keyboard shortcuts on each deck: next /
+          previous with the arrow keys or space, <kbd>f</kbd> for fullscreen,
+          Esc to exit.
         </p>
-        <h2
-          id="lecture-1-heading"
-          className="mt-0 mb-2 font-sans text-xl font-semibold tracking-tight"
-        >
-          Chapter 1 — environment, HTML foundations, GitHub, and Vercel
-        </h2>
-        <LectureChapterLink />
-        <ul className="mt-4 list-none space-y-3 p-0">
-          {decks.map((deck, index) => (
-            <li
-              key={deck.slug}
-              className="rounded-lg border border-neutral-300 bg-white p-4 shadow-sm"
+        <p className="rounded-lg border border-sky-300 bg-sky-50 px-4 py-3 font-sans text-sm text-sky-950">
+          These slides are the classroom version of the matching book chapter.
+          They are not a substitute for labs or the checklists on{" "}
+          <Link href="/assignments">Assignments</Link>.
+        </p>
+
+        <div className="mt-10 space-y-12">
+          {groups.map((group) => (
+            <section
+              key={group.canvasLecture}
+              aria-labelledby={`lecture-${group.canvasLecture}-heading`}
             >
-              <h3 className="mt-0 mb-1 font-sans text-lg font-semibold">
-                <Link href={`/lectures/${deck.slug}`}>
-                  Deck {index + 1} — {deck.title}
-                </Link>
-              </h3>
-              <p className="mt-0 mb-2 font-sans text-sm text-neutral-700">
-                {deck.slides.length} slides · Canvas Lecture {deck.canvasLecture}{" "}
-                · Chapter {deck.chapter}
-              </p>
-              <p className="mb-3 mt-0 text-neutral-800">{deck.summary}</p>
-              <div className="flex flex-wrap gap-2">
-                <Link
-                  href={`/lectures/${deck.slug}`}
-                  className="book-practice-cta inline-block rounded border border-neutral-800 bg-neutral-800 px-3 py-2 text-sm"
-                >
-                  Open deck
-                </Link>
-                <Link
-                  href={deck.chapterHref}
-                  className="inline-block rounded border border-neutral-800 bg-white px-3 py-2 font-sans text-sm"
-                >
-                  Open Chapter 1 in the book
-                </Link>
+              <div className="flex flex-wrap items-end justify-between gap-3 border-b border-neutral-200 pb-3">
+                <div>
+                  <h2
+                    id={`lecture-${group.canvasLecture}-heading`}
+                    className="mt-0 mb-1 font-sans text-2xl font-semibold tracking-tight"
+                  >
+                    {group.title}
+                  </h2>
+                  {group.topic ? (
+                    <p className="mb-0 font-sans text-sm text-neutral-600">
+                      {group.topic}
+                    </p>
+                  ) : null}
+                </div>
+                <p className="mb-0 font-sans text-sm text-neutral-500">
+                  {group.decks.length === 0
+                    ? "Coming soon"
+                    : `${group.decks.length} deck${group.decks.length === 1 ? "" : "s"}`}
+                </p>
               </div>
-            </li>
+
+              {group.canvasLecture === 1 ? <LectureChapterLink /> : null}
+
+              {group.decks.length === 0 ? (
+                <p className="mt-5 rounded-lg border border-dashed border-neutral-300 bg-white px-5 py-8 font-sans text-sm text-neutral-500">
+                  No slide decks published for this lecture yet.
+                </p>
+              ) : (
+                <ul className="mt-5 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  {group.decks.map((deck) => {
+                    const thumb = lectureDeckThumbnail(deck);
+                    return (
+                      <li key={deck.slug}>
+                        <Link
+                          href={`/lectures/${deck.slug}`}
+                          className="group block overflow-hidden rounded-lg border border-neutral-300 bg-white no-underline shadow-sm transition hover:border-neutral-800"
+                        >
+                          <div className="aspect-video overflow-hidden bg-neutral-100">
+                            {/* Public first-slide export; path is locked to slide-01.png. */}
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={thumb}
+                              alt=""
+                              className="h-full w-full object-cover object-top"
+                            />
+                          </div>
+                          <div className="px-4 py-3">
+                            <h3 className="mt-0 mb-1 font-sans text-lg font-semibold text-neutral-900">
+                              {deck.title}
+                            </h3>
+                            <p className="mb-0 line-clamp-2 font-sans text-sm leading-6 text-neutral-700">
+                              {deck.summary}
+                            </p>
+                          </div>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </section>
           ))}
-        </ul>
-      </section>
-    </article>
+        </div>
+      </div>
+    </div>
   );
 }

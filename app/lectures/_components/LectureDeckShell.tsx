@@ -8,6 +8,7 @@ import {
   type LectureSlide,
 } from "@/lib/lectures/types";
 import LectureCodeBlock from "./LectureCodeBlock";
+import LectureFilmstrip from "./LectureFilmstrip";
 import LectureSlideImage from "./LectureSlideImage";
 import SlideText from "./SlideText";
 
@@ -104,7 +105,8 @@ export default function LectureDeckShell({
   const last = slides.length - 1;
   const slide = slides[index] ?? slides[0];
   const kind = slide?.kind ?? "content";
-  const codeBlocks = slide ? lectureSlideCodeBlocks(slide) : [];
+  const imageLed = Boolean(slide?.imageSrc);
+  const codeBlocks = slide && !imageLed ? lectureSlideCodeBlocks(slide) : [];
 
   const goTo = useCallback(
     (next: number) => {
@@ -205,7 +207,7 @@ export default function LectureDeckShell({
       ) {
         return;
       }
-      if (event.key === "f" || event.key === "F") {
+      if (!isFullscreen && (event.key === "f" || event.key === "F")) {
         event.preventDefault();
         toggleFullscreen();
         return;
@@ -239,164 +241,170 @@ export default function LectureDeckShell({
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [exitFullscreen, goTo, index, last, toggleFullscreen]);
+  }, [exitFullscreen, goTo, index, isFullscreen, last, toggleFullscreen]);
 
   if (!slide) return null;
 
   const percent = slides.length === 0 ? 0 : ((index + 1) / slides.length) * 100;
-  const titleClass = isFullscreen
-    ? kind === "title"
-      ? "mt-0 font-sans text-5xl font-semibold tracking-tight text-white sm:text-6xl"
-      : "mt-0 font-sans text-4xl font-semibold tracking-tight sm:text-5xl"
-    : kind === "title"
+  const titleClass =
+    kind === "title"
       ? "mt-0 font-sans text-4xl font-semibold tracking-tight text-white sm:text-5xl"
       : "mt-0 font-sans text-3xl font-semibold tracking-tight";
 
   return (
     <section
-      ref={stageRef}
       aria-labelledby={labelId}
-      className={`font-sans ${
-        isFullscreen
-          ? "flex h-full min-h-full flex-col bg-[#fafafa] p-4 sm:p-6"
-          : ""
-      }`}
+      className="flex min-h-0 min-w-0 flex-1 gap-2 overflow-hidden"
     >
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-2 text-sm text-neutral-600">
-        <p className="m-0" id={labelId}>
+      {isFullscreen ? null : (
+        <LectureFilmstrip
+          slides={slides}
+          currentIndex={index}
+          onSelect={goTo}
+        />
+      )}
+
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+        <p className="sr-only" id={labelId}>
           {deckTitle}
         </p>
-        <div className="flex items-center gap-3">
-          <p className="m-0 tabular-nums" aria-live="polite">
-            {index + 1} / {slides.length}
-          </p>
-          <button
-            type="button"
-            className="rounded border border-neutral-800 bg-white px-3 py-1.5 text-sm"
-            onClick={() => toggleFullscreen()}
-          >
-            {isFullscreen ? "Exit fullscreen" : "Fullscreen"}
-          </button>
-        </div>
-      </div>
-      <div
-        className="mb-4 h-2 overflow-hidden rounded-full bg-neutral-200"
-        role="progressbar"
-        aria-valuemin={1}
-        aria-valuemax={slides.length}
-        aria-valuenow={index + 1}
-        aria-label="Deck progress"
-      >
-        <div
-          className="h-full bg-neutral-800 transition-[width] duration-200"
-          style={{ width: `${percent}%` }}
-        />
-      </div>
+        {isFullscreen ? null : (
+          <div className="mb-2 flex shrink-0 flex-wrap items-center justify-between gap-2 font-sans text-sm text-neutral-600">
+            <p className="m-0 tabular-nums" aria-live="polite">
+              {index + 1} / {slides.length}
+            </p>
+            <button
+              type="button"
+              className="rounded border border-neutral-800 bg-white px-3 py-1.5 text-sm"
+              onClick={() => toggleFullscreen()}
+            >
+              Fullscreen
+            </button>
+          </div>
+        )}
 
-      <article
-        className={`rounded-lg border-2 px-5 py-6 shadow-sm sm:px-8 sm:py-8 ${kindFrame(kind)} ${
-          isFullscreen
-            ? "min-h-0 flex-1 overflow-auto"
-            : "min-h-[22rem]"
-        } ${
-          kind === "title" || kind === "break" ? "flex flex-col justify-center" : ""
-        }`}
-      >
-        <p
-          className={`m-0 text-xs font-semibold uppercase tracking-wide ${
-            kind === "title" ? "text-neutral-300" : "text-neutral-500"
-          }`}
-        >
-          {kindLabel(kind)}
-        </p>
-        <h2
-          className={`${titleClass} mb-4 ${
-            slide.imageSrc && (kind === "title" || kind === "break")
-              ? "sr-only"
-              : ""
-          }`}
-        >
-          {slide.title}
-        </h2>
-        {slide.imageSrc ? (
-          <LectureSlideImage
-            src={slide.imageSrc}
-            alt={slide.imageAlt ?? slide.title}
-            fullscreen={isFullscreen}
-          />
-        ) : null}
-        {slide.bullets && slide.bullets.length > 0 ? (
-          <ul
-            className={`m-0 space-y-2 pl-5 leading-relaxed ${
-              slide.imageSrc ? "text-[0.95rem]" : "text-[1.05rem]"
-            } ${kind === "title" ? "text-neutral-100" : "text-neutral-900"}`}
+        {isFullscreen ? null : (
+          <div
+            className="mb-2 h-1.5 shrink-0 overflow-hidden rounded-full bg-neutral-200"
+            role="progressbar"
+            aria-valuemin={1}
+            aria-valuemax={slides.length}
+            aria-valuenow={index + 1}
+            aria-label="Deck progress"
           >
-            {slide.bullets.map((bullet, bulletIndex) => (
-              <li key={`${slide.id}-${bulletIndex}`}>
-                <SlideText text={bullet} />
-              </li>
-            ))}
-          </ul>
-        ) : null}
-        {codeBlocks.map((block, blockIndex) => (
-          <LectureCodeBlock
-            key={`${slide.id}-code-${blockIndex}`}
-            block={block}
-          />
-        ))}
-        {slide.interactiveHint ? (
-          <p
-            className={`mt-6 rounded-md border px-3 py-2 text-sm ${
-              kind === "title"
-                ? "border-neutral-600 bg-neutral-800 text-neutral-100"
-                : "border-neutral-300 bg-white text-neutral-800"
-            }`}
-          >
-            <span className="font-semibold">Try this: </span>
-            <SlideText text={slide.interactiveHint} />
-          </p>
-        ) : null}
-      </article>
+            <div
+              className="h-full bg-neutral-800 transition-[width] duration-200"
+              style={{ width: `${percent}%` }}
+            />
+          </div>
+        )}
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-        <button
-          type="button"
-          className="rounded border border-neutral-800 bg-white px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-40"
-          onClick={() => goTo(index - 1)}
-          disabled={index === 0}
+        <article
+          ref={stageRef}
+          className={
+            isFullscreen
+              ? "relative h-full w-full overflow-hidden bg-black p-0"
+              : `relative min-h-0 flex-1 overflow-hidden ${
+                  imageLed
+                    ? "rounded-lg border border-neutral-300 bg-neutral-950"
+                    : `rounded-lg border-2 px-5 py-6 sm:px-8 sm:py-8 ${kindFrame(kind)} overflow-auto`
+                }`
+          }
         >
-          Previous slide
-        </button>
-        <p className="m-0 text-xs text-neutral-500">
-          ← → or space · f fullscreen · Esc exits · Home / End
-        </p>
-        <button
-          type="button"
-          className="book-practice-cta rounded border border-neutral-800 bg-neutral-800 px-3 py-2 text-sm text-white disabled:cursor-not-allowed disabled:opacity-40"
-          onClick={() => goTo(index + 1)}
-          disabled={index === last}
-        >
-          Next slide
-        </button>
-      </div>
-
-      {isFullscreen ? null : (
-        <nav
-          aria-label="Other Lecture 1 decks"
-          className="mt-6 flex flex-wrap gap-x-4 gap-y-2 border-t border-neutral-200 pt-4 text-sm"
-        >
-          {prevDeck ? (
-            <Link href={`/lectures/${prevDeck.slug}`}>← {prevDeck.title}</Link>
+          {imageLed ? (
+            <>
+              <h2 className="sr-only">{slide.title}</h2>
+              <LectureSlideImage
+                src={slide.imageSrc!}
+                alt={slide.imageAlt ?? slide.title}
+              />
+            </>
           ) : (
-            <span className="text-neutral-500">Lecture 1 · first deck</span>
+            <>
+              <p
+                className={`m-0 text-xs font-semibold uppercase tracking-wide ${
+                  kind === "title" ? "text-neutral-300" : "text-neutral-500"
+                }`}
+              >
+                {kindLabel(kind)}
+              </p>
+              <h2 className={`${titleClass} mb-4`}>{slide.title}</h2>
+              {slide.bullets && slide.bullets.length > 0 ? (
+                <ul
+                  className={`m-0 space-y-2 pl-5 text-[1.05rem] leading-relaxed ${
+                    kind === "title" ? "text-neutral-100" : "text-neutral-900"
+                  }`}
+                >
+                  {slide.bullets.map((bullet, bulletIndex) => (
+                    <li key={`${slide.id}-${bulletIndex}`}>
+                      <SlideText text={bullet} />
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              {codeBlocks.map((block, blockIndex) => (
+                <LectureCodeBlock
+                  key={`${slide.id}-code-${blockIndex}`}
+                  block={block}
+                />
+              ))}
+              {slide.interactiveHint ? (
+                <p
+                  className={`mt-6 rounded-md border px-3 py-2 text-sm ${
+                    kind === "title"
+                      ? "border-neutral-600 bg-neutral-800 text-neutral-100"
+                      : "border-neutral-300 bg-white text-neutral-800"
+                  }`}
+                >
+                  <span className="font-semibold">Try this: </span>
+                  <SlideText text={slide.interactiveHint} />
+                </p>
+              ) : null}
+            </>
           )}
-          {nextDeck ? (
-            <Link href={`/lectures/${nextDeck.slug}`}>{nextDeck.title} →</Link>
-          ) : (
-            <span className="text-neutral-500">Lecture 1 · last deck</span>
-          )}
-        </nav>
-      )}
+        </article>
+
+        {isFullscreen ? null : (
+          <>
+            <div className="mt-2 flex shrink-0 flex-wrap items-center justify-between gap-3">
+              <button
+                type="button"
+                className="rounded border border-neutral-800 bg-white px-3 py-2 font-sans text-sm disabled:cursor-not-allowed disabled:opacity-40"
+                onClick={() => goTo(index - 1)}
+                disabled={index === 0}
+              >
+                Previous slide
+              </button>
+              <p className="m-0 font-sans text-xs text-neutral-500">
+                ← → or space · f fullscreen · Esc exits · Home / End
+              </p>
+              <button
+                type="button"
+                className="book-practice-cta rounded border border-neutral-800 bg-neutral-800 px-3 py-2 font-sans text-sm text-white disabled:cursor-not-allowed disabled:opacity-40"
+                onClick={() => goTo(index + 1)}
+                disabled={index === last}
+              >
+                Next slide
+              </button>
+            </div>
+            <nav
+              aria-label="Other Lecture 1 decks"
+              className="mt-2 flex shrink-0 flex-wrap gap-x-4 gap-y-1 border-t border-neutral-200 pt-2 font-sans text-sm"
+            >
+              {prevDeck ? (
+                <Link href={`/lectures/${prevDeck.slug}`}>← {prevDeck.title}</Link>
+              ) : (
+                <span className="text-neutral-500">Lecture 1 · first deck</span>
+              )}
+              {nextDeck ? (
+                <Link href={`/lectures/${nextDeck.slug}`}>{nextDeck.title} →</Link>
+              ) : (
+                <span className="text-neutral-500">Lecture 1 · last deck</span>
+              )}
+            </nav>
+          </>
+        )}
+      </div>
     </section>
   );
 }

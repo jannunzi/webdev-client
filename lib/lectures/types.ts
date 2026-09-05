@@ -49,6 +49,13 @@ export type LectureDeck = LectureHubItem & {
   slides: LectureSlide[];
 };
 
+export type CanvasLectureGroup = {
+  canvasLecture: number;
+  title: string;
+  topic?: string;
+  decks: LectureHubItem[];
+};
+
 export function lectureSlideAssetPath(
   slug: LectureSlug,
   slideNumber: number,

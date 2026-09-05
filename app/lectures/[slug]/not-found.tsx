@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function LectureNotFound() {
   return (
-    <article>
+    <article className="px-4 py-8 sm:px-6">
       <h1 className="mt-0 font-sans text-3xl font-semibold">
         Lecture deck not found
       </h1>
