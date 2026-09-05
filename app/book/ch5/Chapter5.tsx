@@ -12,7 +12,7 @@ import Conclusion from "./sections/Conclusion";
  */
 export default function Chapter5() {
   return (
-    <article className="mx-auto max-w-3xl">
+    <article className="book-content">
       <Intro />
       <HttpServer />
       <LabExercises />

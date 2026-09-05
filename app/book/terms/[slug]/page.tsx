@@ -49,7 +49,7 @@ export default async function TermPage({ params, searchParams }: TermPageProps) 
   const result = await searchYouTubeVideos(resolved.searchQuery);
 
   return (
-    <article className="mx-auto max-w-3xl">
+    <article className="book-content">
       <TermBackLink from={from} />
       <header>
         <p className="font-sans text-sm uppercase tracking-wide text-neutral-500">

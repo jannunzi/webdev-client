@@ -13,7 +13,7 @@ import Delivery from "./sections/Delivery";
  */
 export default function Chapter4() {
   return (
-    <article className="mx-auto max-w-3xl">
+    <article className="book-content">
       <Intro />
       <EventsAndState />
       <SharingAndUrl />

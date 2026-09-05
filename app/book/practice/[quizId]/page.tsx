@@ -36,7 +36,7 @@ export default async function PracticeQuizPage({ params }: PageProps) {
   if (!quiz) notFound();
 
   return (
-    <article className="mx-auto max-w-3xl">
+    <article className="book-content">
       <nav
         aria-label="Practice breadcrumb"
         className="mb-4 font-sans text-sm text-neutral-600"
