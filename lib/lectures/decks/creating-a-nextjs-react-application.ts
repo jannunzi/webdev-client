@@ -38,6 +38,7 @@ export const CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "User.tsx",
+    embed: "user-card",
     interactiveHint:
       "Change `name` and watch only the heading text change. The component did not care where the data came from.",
   },
@@ -148,6 +149,7 @@ npm run dev`,
 }`,
     codeLanguage: "tsx",
     codeFile: "app/page.tsx",
+    embed: "welcome-home",
   },
   {
     id: "lab1-route",
@@ -166,6 +168,7 @@ npm run dev`,
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab1/page.tsx",
+    embed: "lab1-stub",
   },
   {
     id: "why-page-tsx",
@@ -199,6 +202,7 @@ export default function Home() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/page.tsx",
+    embed: "link-nav",
     interactiveHint:
       "Use `Link` for routes inside this app. Use `<a>` for GitHub, Canvas, and other sites.",
   },
@@ -230,6 +234,7 @@ export default function Home() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/page.tsx",
+    embed: "user-card",
   },
   {
     id: "devtools",
