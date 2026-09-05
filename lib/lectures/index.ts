@@ -14,8 +14,9 @@ export { CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES } from "./decks/creating-a-n
 export { DEPLOYING_TO_VERCEL_SLIDES } from "./decks/deploying-to-vercel";
 export { INSTALLING_NODEJS_SLIDES } from "./decks/installing-nodejs";
 export { INTRO_TO_WEB_DEVELOPMENT_SLIDES } from "./decks/intro-to-web-development";
-export { LECTURE_SLUGS } from "./types";
+export { LECTURE_SLUGS, lectureSlideCodeBlocks } from "./types";
 export type {
+  LectureCodeBlock,
   LectureDeck,
   LectureHubItem,
   LectureSlide,

@@ -62,6 +62,9 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
     ],
     interactiveHint:
       "On the board (or a notebook): draw five boxes in a line and label each hop. That picture is the whole Internet story.",
+    imageSrc: "/lectures/intro-to-web-development/slide-05.png",
+    imageAlt:
+      "Network of networks: browser, local network, Internet backbone, server network, web server",
   },
   {
     id: "client-server",
@@ -74,6 +77,9 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
       "They talk over **HTTP**: a request (method + URL + headers + optional body) and a response (status + headers + body)",
       "GET `/labs/lab1` → 200 OK + HTML. The browser never opens the server’s files directly",
     ],
+    imageSrc: "/lectures/intro-to-web-development/slide-06.png",
+    imageAlt:
+      "Client–server: a browser (HTML, CSS, JavaScript, React) talking HTTP to a Node server",
   },
   {
     id: "http",
@@ -125,6 +131,9 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
       "Next.js App Router can still render on the server — `page.tsx` is a Server Component by default",
       "You do not have to pick SSR *or* React. Next.js does both",
     ],
+    imageSrc: "/lectures/intro-to-web-development/slide-09.png",
+    imageAlt:
+      "Server-side rendering: the server builds HTML and sends a finished page to the browser",
   },
   {
     id: "client-frameworks",
@@ -149,6 +158,9 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
       "React started as a CSR library. Next.js can hydrate a server-rendered page and then behave like CSR",
       "You will use both: Server Components for the first HTML, client components when you need state and events",
     ],
+    imageSrc: "/lectures/intro-to-web-development/slide-11.png",
+    imageAlt:
+      "Client-side rendering: the browser runs JavaScript to build and update the UI",
   },
   {
     id: "web-app-se",

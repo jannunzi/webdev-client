@@ -32,10 +32,17 @@ export const COMMIT_TO_GITHUB_SLIDES: LectureSlide[] = [
     bullets: [
       "`create-next-app` already wrote a `.gitignore`. Open it before the first commit",
       "`node_modules/` **must** be listed. It is huge and `npm install` can recreate it",
-      "Also typical: `.env*.local`, `.next/`, `*.log`, `.idea/`, `.DS_Store`",
       "Never commit secrets or the Next.js build output",
       "If `node_modules` appears in `git status`, stop and fix `.gitignore` before `git add .`",
     ],
+    code: `node_modules/
+.next/
+.env*.local
+*.log
+.idea/
+.DS_Store`,
+    codeLanguage: "text",
+    codeFile: ".gitignore",
     interactiveHint:
       "Run `git status`. If you see thousands of files under `node_modules`, do not add or commit yet.",
   },
@@ -57,25 +64,27 @@ export const COMMIT_TO_GITHUB_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "GitHub shows a “…or push an existing repository” block. That is us",
-      "Typical lines (usernames differ):",
-      "`git remote add origin https://github.com/<your-username>/kambaz-next-js.git`",
-      "`git branch -M main`",
-      "`git push -u origin main`",
+      "Usernames differ — use yours",
       "If you created the GitHub repo **with** a README, you will need to pull --rebase first. Prefer an empty repo",
     ],
+    code: `git remote add origin https://github.com/<your-username>/kambaz-next-js.git
+git branch -M main
+git push -u origin main`,
+    codeLanguage: "bash",
   },
   {
     id: "from-project",
     title: "From the project folder",
     kind: "demo",
     bullets: [
-      "`cd` into `kambaz-next-js` (or `webdev-client`)",
-      "`git init`",
-      "`git add .`",
-      "`git commit -m \"first commit\"`",
-      "`git remote add origin https://github.com/<your-username>/kambaz-next-js.git`",
-      "`git push -u origin main`",
+      "`cd` into `kambaz-next-js` (or `webdev-client`) first",
     ],
+    code: `git init
+git add .
+git commit -m "first commit"
+git remote add origin https://github.com/<your-username>/kambaz-next-js.git
+git push -u origin main`,
+    codeLanguage: "bash",
     interactiveHint:
       "HTTPS push asks for a password: GitHub wants a **Personal Access Token**, not your account password. Keep the token private.",
   },

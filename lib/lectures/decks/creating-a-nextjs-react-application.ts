@@ -27,16 +27,18 @@ export const CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES: LectureSlide[] = [
     title: "Example: a User component",
     kind: "demo",
     bullets: [
-      "`function User({ name, email }: { name: string; email: string }) {`",
-      "`  return (`",
-      "`    <div>`",
-      "`      <h2>{name}</h2>`",
-      "`      <p>{email}</p>`",
-      "`    </div>`",
-      "`  );`",
-      "`}`",
       "Same function, different props → different UI. That is the whole idea",
     ],
+    code: `function User({ name, email }: { name: string; email: string }) {
+  return (
+    <div>
+      <h2>{name}</h2>
+      <p>{email}</p>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "User.tsx",
     interactiveHint:
       "Change `name` and watch only the heading text change. The component did not care where the data came from.",
   },
@@ -45,12 +47,13 @@ export const CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES: LectureSlide[] = [
     title: "Scaffold with create-next-app",
     kind: "demo",
     bullets: [
-      "From `~/2026/fall/webdev` (sibling to the Node demo, not inside it):",
-      "`npx create-next-app@latest kambaz-next-js`",
+      "From `~/2026/fall/webdev` (sibling to the Node demo, not inside it)",
       "The first run may ask to install the `create-next-app` package — accept",
       "Course spelling: **kambaz-next-js** — same kambaz name as the LMS prototype",
       "This is the client you will later push to GitHub and deploy on Vercel",
     ],
+    code: "npx create-next-app@latest kambaz-next-js",
+    codeLanguage: "bash",
   },
   {
     id: "defaults",
@@ -73,12 +76,13 @@ export const CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES: LectureSlide[] = [
     title: "npm run dev",
     kind: "demo",
     bullets: [
-      "`cd kambaz-next-js`",
-      "`npm run dev`",
       "Next.js prints a local URL — usually `http://localhost:3000`",
       "Open it in **Google Chrome**. You should see the starter page",
       "Stop anytime with Ctrl+C; start again with `npm run dev`",
     ],
+    code: `cd kambaz-next-js
+npm run dev`,
+    codeLanguage: "bash",
   },
   {
     id: "ide",
@@ -124,9 +128,11 @@ export const CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES: LectureSlide[] = [
       "The starter imports Tailwind via `app/globals.css` (or `src/app/globals.css`)",
       "For Chapter 1 HTML exercises we want the browser’s default look",
       "In `app/layout.tsx`, comment out the CSS import. Leave the rest of the file alone",
-      "`// import \"./globals.css\";`",
       "Refresh `/`. The starter page looks unstyled. That is expected",
     ],
+    code: `// import "./globals.css";`,
+    codeLanguage: "tsx",
+    codeFile: "app/layout.tsx",
     interactiveHint:
       "Do not delete `globals.css`. You will turn Tailwind back on in Chapter 2.",
   },
@@ -135,28 +141,32 @@ export const CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES: LectureSlide[] = [
     title: "Replace the home page",
     kind: "demo",
     bullets: [
-      "Open `app/page.tsx` and replace the starter markup with a simple heading:",
-      "`export default function Home() {`",
-      "`  return <h1>Welcome to Web Dev</h1>;`",
-      "`}`",
+      "Open `app/page.tsx` and replace the starter markup with a simple heading",
       "Save. With `npm run dev` running, `/` should show that h1",
     ],
+    code: `export default function Home() {
+  return <h1>Welcome to Web Dev</h1>;
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/page.tsx",
   },
   {
     id: "lab1-route",
     title: "Add a Lab 1 route",
     kind: "demo",
     bullets: [
-      "Create `app/labs/lab1/page.tsx` (make the folders if needed):",
-      "`export default function Lab1() {`",
-      "`  return (`",
-      "`    <div id=\"wd-lab1\">`",
-      "`      <h2>Lab 1</h2>`",
-      "`    </div>`",
-      "`  );`",
-      "`}`",
+      "Create `app/labs/lab1/page.tsx` (make the folders if needed)",
       "File path **is** the URL: `app/labs/lab1/page.tsx` → `/labs/lab1`",
     ],
+    code: `export default function Lab1() {
+  return (
+    <div id="wd-lab1">
+      <h2>Lab 1</h2>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab1/page.tsx",
   },
   {
     id: "why-page-tsx",
@@ -176,12 +186,20 @@ export const CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES: LectureSlide[] = [
     kind: "demo",
     bullets: [
       "In Next.js, in-app navigation uses `Link` from `next/link` — not a raw `<a>` for internal routes",
-      "On `app/page.tsx`:",
-      "`import Link from \"next/link\";`",
-      "`<h1>Welcome to Web Dev</h1>`",
-      "`<Link href=\"/labs/lab1\">Lab 1</Link>`",
-      "Click it. The App Router navigates to `/labs/lab1` without a full classic page reload",
+      "Click the link. The App Router navigates to `/labs/lab1` without a full classic page reload",
     ],
+    code: `import Link from "next/link";
+
+export default function Home() {
+  return (
+    <>
+      <h1>Welcome to Web Dev</h1>
+      <Link href="/labs/lab1">Lab 1</Link>
+    </>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/page.tsx",
     interactiveHint:
       "Use `Link` for routes inside this app. Use `<a>` for GitHub, Canvas, and other sites.",
   },
@@ -203,10 +221,16 @@ export const CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES: LectureSlide[] = [
     kind: "demo",
     bullets: [
       "Create `app/components/User.tsx` with the User function from earlier",
-      "In `app/page.tsx` render `<User name=\"Ada\" email=\"ada@example.com\" />`",
       "You did not register a route. You imported a component",
       "That is App Router composition — not an `App.tsx` tree mounted by hand",
     ],
+    code: `import User from "./components/User";
+
+export default function Home() {
+  return <User name="Ada" email="ada@example.com" />;
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/page.tsx",
   },
   {
     id: "devtools",

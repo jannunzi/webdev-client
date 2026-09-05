@@ -20,7 +20,8 @@ export default function LecturesIndexPage() {
       <p>
         Interactive decks for the Fall 2026 lecture sequence. Start here during
         class, then continue in the matching book chapter. Keyboard shortcuts
-        on each deck: next / previous slide with the arrow keys or space.
+        on each deck: next / previous with the arrow keys or space,{" "}
+        <kbd>f</kbd> for fullscreen, Esc to exit.
       </p>
       <p className="rounded-lg border border-sky-300 bg-sky-50 px-4 py-3 font-sans text-sm text-sky-950">
         These slides are the classroom version of Chapter 1. They are not a
