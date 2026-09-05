@@ -1,13 +1,18 @@
 import { lectureTopics } from "@/app/syllabus/data/topics";
+import { ANCHORS_SLIDES } from "./decks/anchors";
 import { COMMIT_TO_GITHUB_SLIDES } from "./decks/commit-to-github";
 import { CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES } from "./decks/creating-a-nextjs-react-application";
 import { DEPLOYING_TO_VERCEL_SLIDES } from "./decks/deploying-to-vercel";
+import { HEADINGS_AND_PARAGRAPHS_SLIDES } from "./decks/headings-and-paragraphs";
+import { HTML_AND_DOM_SLIDES } from "./decks/html-and-dom";
 import { INSTALLING_NODEJS_SLIDES } from "./decks/installing-nodejs";
 import { INTRO_TO_WEB_DEVELOPMENT_SLIDES } from "./decks/intro-to-web-development";
+import { LISTS_AND_TABLES_SLIDES } from "./decks/lists-and-tables";
+import { SINGLE_PAGE_NAVIGATION_SLIDES } from "./decks/single-page-navigation";
+import { WEB_FORMS_SLIDES } from "./decks/web-forms";
 import {
-  LECTURE_DECK_THUMBNAILS,
   LECTURE_SLUGS,
-  lectureSlideFigurePath,
+  lectureThumbPath,
   type CanvasLectureGroup,
   type LectureDeck,
   type LectureHubItem,
@@ -24,37 +29,101 @@ const CHAPTER_1 = {
 
 const LECTURE_SUMMARIES: Record<
   LectureSlug,
-  { title: string; summary: string; slides: LectureSlide[] }
+  {
+    title: string;
+    summary: string;
+    chapter: number;
+    canvasLecture: number;
+    slides: LectureSlide[];
+  }
 > = {
   "intro-to-web-development": {
     title: "Introduction to Web Development",
     summary:
       "Internet vs Web, browsers and URLs, client–server HTTP, framework history, and how we engineer large web apps in teams.",
+    chapter: 1,
+    canvasLecture: 1,
     slides: INTRO_TO_WEB_DEVELOPMENT_SLIDES,
   },
   "installing-nodejs": {
     title: "Installing Node.js",
     summary:
       "Install the Node runtime, create a course folder, and run a one-route Express hello server on port 4000.",
+    chapter: 1,
+    canvasLecture: 1,
     slides: INSTALLING_NODEJS_SLIDES,
   },
   "creating-a-nextjs-react-application": {
     title: "Creating a Next.js React Application",
     summary:
       "Scaffold kambaz-next-js with the App Router, replace the home page, add Lab 1, and link routes.",
+    chapter: 1,
+    canvasLecture: 1,
     slides: CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES,
   },
   "commit-to-github": {
     title: "Commit to GitHub",
     summary:
       "Install Git, keep node_modules out of the repo, create an empty GitHub.com repository, and push main.",
+    chapter: 1,
+    canvasLecture: 1,
     slides: COMMIT_TO_GITHUB_SLIDES,
   },
   "deploying-to-vercel": {
     title: "Deploying to Vercel",
     summary:
       "Connect GitHub to Vercel, deploy the Next.js app, share the URL, and turn off Vercel Authentication so TAs can open it.",
+    chapter: 1,
+    canvasLecture: 1,
     slides: DEPLOYING_TO_VERCEL_SLIDES,
+  },
+  "html-and-dom": {
+    title: "HTML and the DOM",
+    summary:
+      "Markup, hello.html, DOCTYPE/html/head/body, comments, whitespace, and the Window → Document DOM tree.",
+    chapter: 1,
+    canvasLecture: 2,
+    slides: HTML_AND_DOM_SLIDES,
+  },
+  "headings-and-paragraphs": {
+    title: "Headings and Paragraphs",
+    summary:
+      "h1–h6 sizes, the Lab 1 wd-h-tag nest, and wrapping text in p (wd-p-2…wd-p-4) so vertical gaps stick.",
+    chapter: 1,
+    canvasLecture: 2,
+    slides: HEADINGS_AND_PARAGRAPHS_SLIDES,
+  },
+  "lists-and-tables": {
+    title: "Lists and Tables",
+    summary:
+      "ol vs ul, the pancake recipe, favorite-books ul, and a semantic quiz table (thead/tbody/tfoot/colSpan) — not layout.",
+    chapter: 1,
+    canvasLecture: 2,
+    slides: LISTS_AND_TABLES_SLIDES,
+  },
+  "web-forms": {
+    title: "Web Forms",
+    summary:
+      "Labels, text/password/textarea, buttons, file, radio vs checkbox, select one/many, and number/range/email/date.",
+    chapter: 1,
+    canvasLecture: 2,
+    slides: WEB_FORMS_SLIDES,
+  },
+  anchors: {
+    title: "Anchors",
+    summary:
+      "href to other documents, mailto: and tel:, and same-page TOC hashes that match an element id.",
+    chapter: 1,
+    canvasLecture: 2,
+    slides: ANCHORS_SLIDES,
+  },
+  "single-page-navigation": {
+    title: "Single-page Navigation",
+    summary:
+      "Next.js Link TOC, labs layout children swap, and moving Kambaz into app/(kambaz)/ so it can own /.",
+    chapter: 1,
+    canvasLecture: 2,
+    slides: SINGLE_PAGE_NAVIGATION_SLIDES,
   },
 };
 
@@ -75,14 +144,14 @@ export function getLecture(slug: string): LectureHubItem | undefined {
   const entry = LECTURE_SUMMARIES[slug];
   return {
     slug,
-    chapter: 1,
-    canvasLecture: 1,
+    chapter: entry.chapter,
+    canvasLecture: entry.canvasLecture,
     title: entry.title,
     summary: entry.summary,
     chapterHref: CHAPTER_1.href,
     chapterTitle: CHAPTER_1.title,
     publicUrl: lecturePublicUrl(slug),
-    thumbnailSrc: lectureSlideFigurePath(slug, LECTURE_DECK_THUMBNAILS[slug]),
+    thumbnailSrc: lectureThumbPath(slug),
   };
 }
 
@@ -114,7 +183,7 @@ export function lectureDeckThumbnail(
     return deck.thumbnailSrc;
   }
   const slug = typeof deck === "string" ? deck : deck.slug;
-  return lectureSlideFigurePath(slug, LECTURE_DECK_THUMBNAILS[slug]);
+  return lectureThumbPath(slug);
 }
 
 export function listCanvasLectureGroups(): CanvasLectureGroup[] {
