@@ -11,7 +11,7 @@ import {
   listLectureSlugs,
   listLectures,
 } from "./catalog";
-import { LECTURE_SLUGS } from "./types";
+import { LECTURE_SLUGS, lectureSlideCodeBlocks } from "./types";
 
 function slideText(deckSlug: string): string {
   const deck = getLectureDeck(deckSlug);
@@ -21,8 +21,17 @@ function slideText(deckSlug: string): string {
       slide.title,
       ...(slide.bullets ?? []),
       slide.interactiveHint ?? "",
+      ...lectureSlideCodeBlocks(slide).map((block) => block.code),
     ])
     .join("\n");
+}
+
+function findSlide(deckSlug: string, id: string) {
+  const deck = getLectureDeck(deckSlug);
+  assert.ok(deck);
+  const slide = deck.slides.find((row) => row.id === id);
+  assert.ok(slide, `${deckSlug} missing slide ${id}`);
+  return slide;
 }
 
 describe("lecture catalog", () => {
@@ -132,5 +141,59 @@ describe("lecture decks", () => {
     assert.match(text, /git push -u origin main/);
     assert.doesNotMatch(text, /kanbas/);
     assert.doesNotMatch(text, /kanbaz/);
+  });
+
+  it("wires diagram image slots on the intro deck", () => {
+    const network = findSlide("intro-to-web-development", "network-of-networks");
+    const client = findSlide("intro-to-web-development", "client-server");
+    const ssr = findSlide("intro-to-web-development", "ssr");
+    const csr = findSlide("intro-to-web-development", "csr");
+    assert.equal(
+      network.imageSrc,
+      "/lectures/intro-to-web-development/slide-05.png",
+    );
+    assert.equal(
+      client.imageSrc,
+      "/lectures/intro-to-web-development/slide-06.png",
+    );
+    assert.equal(ssr.imageSrc, "/lectures/intro-to-web-development/slide-09.png");
+    assert.equal(csr.imageSrc, "/lectures/intro-to-web-development/slide-11.png");
+    for (const slide of [network, client, ssr, csr]) {
+      assert.ok(slide.imageAlt && slide.imageAlt.length > 0);
+    }
+  });
+
+  it("keeps commands and source in code blocks, not bullets", () => {
+    const hello = findSlide("installing-nodejs", "hello-js");
+    const express = findSlide("installing-nodejs", "express");
+    const createApp = findSlide(
+      "creating-a-nextjs-react-application",
+      "create-next-app",
+    );
+    const welcome = findSlide(
+      "creating-a-nextjs-react-application",
+      "welcome-page",
+    );
+    const git = findSlide("commit-to-github", "from-project");
+    const ignore = findSlide("commit-to-github", "gitignore");
+
+    assert.match(hello.code ?? "", /console\.log/);
+    assert.ok(!(hello.bullets ?? []).some((row) => row.includes("console.log")));
+
+    const expressCode = lectureSlideCodeBlocks(express)
+      .map((block) => block.code)
+      .join("\n");
+    assert.match(expressCode, /npm install express/);
+    assert.match(expressCode, /app\.listen\(4000\)/);
+    assert.ok(!(express.bullets ?? []).some((row) => row.includes("app.listen")));
+
+    assert.equal(createApp.code, "npx create-next-app@latest kambaz-next-js");
+    assert.equal(createApp.codeLanguage, "bash");
+    assert.match(welcome.code ?? "", /Welcome to Web Dev/);
+    assert.equal(welcome.codeFile, "app/page.tsx");
+    assert.match(git.code ?? "", /git push -u origin main/);
+    assert.ok(!(git.bullets ?? []).some((row) => row.startsWith("`git ")));
+    assert.match(ignore.code ?? "", /node_modules\//);
+    assert.equal(ignore.codeFile, ".gitignore");
   });
 });

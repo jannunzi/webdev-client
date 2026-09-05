@@ -272,6 +272,12 @@ Catalog and slide data live in `lib/lectures/`. The React shell is
 `app/lectures/_components/LectureDeckShell.tsx`. These routes are not nested
 under `/book`.
 
+Press **f** (or the Fullscreen button) for presentation mode; **Esc** exits.
+Add `?fullscreen=1` to retry fullscreen after the next click (browsers require
+a gesture). Diagram PNGs go in `public/lectures/<slug>/` — see
+`public/lectures/README.md`. Commands and source live in `LectureSlide.code`
+/ `codeBlocks`, not as bullet items.
+
 ## Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs)

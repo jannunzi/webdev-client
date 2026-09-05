@@ -90,12 +90,13 @@ export const INSTALLING_NODEJS_SLIDES: LectureSlide[] = [
     title: "Confirm the install",
     kind: "demo",
     bullets: [
-      "In Terminal (macOS) or PowerShell / Command Prompt (Windows):",
-      "`node --version`",
+      "In Terminal (macOS) or PowerShell / Command Prompt (Windows)",
       "You should see something like `v24.19.0` or `v22.11.0` — not an error",
       "`node -v` is the same command (short flag)",
       "Also try `npm --version` so you know the package manager is on the PATH",
     ],
+    code: "node --version",
+    codeLanguage: "bash",
     interactiveHint:
       "If the command is not found: close and reopen the terminal. Still failing? Re-run the installer and restart.",
   },
@@ -104,12 +105,13 @@ export const INSTALLING_NODEJS_SLIDES: LectureSlide[] = [
     title: "Create the Fall 2026 course folder",
     kind: "demo",
     bullets: [
-      "Keep coursework together. From your home directory:",
-      "`cd ~`",
-      "`mkdir -p 2026/fall/webdev`",
-      "`cd 2026/fall/webdev`",
+      "Keep coursework together. From your home directory.",
       "Lowercase, no spaces. Sibling folders later: `webdev-client` and `webdev-server`",
     ],
+    code: `cd ~
+mkdir -p 2026/fall/webdev
+cd 2026/fall/webdev`,
+    codeLanguage: "bash",
     interactiveHint:
       "This term is **Fall 2026** — use `~/2026/fall/webdev`.",
   },
@@ -130,23 +132,28 @@ export const INSTALLING_NODEJS_SLIDES: LectureSlide[] = [
     title: "npm init a Node server app",
     kind: "demo",
     bullets: [
-      "`mkdir kambaz-node-server-app`",
-      "`cd kambaz-node-server-app`",
-      "`npm init -y`",
       "That writes `package.json` — the manifest npm and Node tools read",
       "Course spelling is **kambaz** — the same name as the LMS prototype",
     ],
+    code: `mkdir kambaz-node-server-app
+cd kambaz-node-server-app
+npm init -y`,
+    codeLanguage: "bash",
   },
   {
     id: "hello-js",
     title: "hello.js",
     kind: "demo",
     bullets: [
-      "Create `hello.js` in that folder:",
-      "`console.log(\"Hello World!\");`",
-      "Run it: `node hello.js`",
+      "Create `hello.js` in that folder, then run `node hello.js`",
       "The terminal should print `Hello World!`",
       "This is Node without HTTP — just the runtime. Next we listen on a port",
+    ],
+    code: `console.log("Hello World!");`,
+    codeLanguage: "js",
+    codeFile: "hello.js",
+    codeBlocks: [
+      { code: "node hello.js", language: "bash" },
     ],
     interactiveHint:
       "Use the IDE’s integrated terminal so the file and the command stay in one window.",
@@ -156,12 +163,20 @@ export const INSTALLING_NODEJS_SLIDES: LectureSlide[] = [
     title: "Express: GET /hello on port 4000",
     kind: "demo",
     bullets: [
-      "`npm install express`",
-      "Create `server.js`:",
-      "`import express from \"express\";`",
-      "`const app = express();`",
-      "`app.get(\"/hello\", (req, res) => res.send(\"Hello World!\"));`",
-      "`app.listen(4000);`",
+      "Install Express, then create `server.js` with one GET route",
+    ],
+    codeBlocks: [
+      { code: "npm install express", language: "bash" },
+      {
+        file: "server.js",
+        language: "js",
+        code: `import express from "express";
+const app = express();
+app.get("/hello", (req, res) => {
+  res.send("Hello World!");
+});
+app.listen(4000);`,
+      },
     ],
   },
   {
@@ -174,17 +189,25 @@ export const INSTALLING_NODEJS_SLIDES: LectureSlide[] = [
       "This course’s later `webdev-server` is the real sibling project — today’s folder is the lecture demo",
       "Port **4000** is the lab convention so Next.js can keep **3000**",
     ],
+    code: `{
+  "type": "module"
+}`,
+    codeLanguage: "json",
+    codeFile: "package.json",
   },
   {
     id: "visit",
     title: "Visit localhost:4000/hello",
     kind: "demo",
     bullets: [
-      "Run `node server.js` and leave it running",
-      "In Chrome open `http://localhost:4000/hello`",
+      "Leave the process running, then open the URL in Chrome",
       "You should see `Hello World!` — that body is `res.send`",
       "The browser is the client. Your Node process is the server. HTTP connected them",
       "Stop the server with Ctrl+C when you are done",
+    ],
+    codeBlocks: [
+      { code: "node server.js", language: "bash" },
+      { code: "http://localhost:4000/hello", language: "text" },
     ],
     interactiveHint:
       "404? Check the path is `/hello`, not `/`. Connection refused? The process is not listening — look at the terminal.",
