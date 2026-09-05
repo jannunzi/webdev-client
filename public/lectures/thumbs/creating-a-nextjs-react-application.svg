@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title">
+  <title id="title">Creating a Next.js React App</title>
+  <rect width="1280" height="720" fill="#0B1220"/>
+  <rect x="0" y="0" width="18" height="720" fill="#61DAFB"/>
+  <text x="72" y="64" fill="#CBD5E1" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" letter-spacing="4">WEB DEV · LECTURE 1</text>
+  
+  <g transform="translate(70 80)">
+    <circle cx="150" cy="180" r="28" fill="#61DAFB"/>
+    <ellipse cx="150" cy="180" rx="120" ry="46" fill="none" stroke="#61DAFB" stroke-width="12"/>
+    <ellipse cx="150" cy="180" rx="120" ry="46" fill="none" stroke="#61DAFB" stroke-width="12" transform="rotate(60 150 180)"/>
+    <ellipse cx="150" cy="180" rx="120" ry="46" fill="none" stroke="#61DAFB" stroke-width="12" transform="rotate(-60 150 180)"/>
+    <g transform="translate(300 70)">
+      <circle cx="90" cy="90" r="90" fill="#000"/>
+      <text x="90" y="118" text-anchor="middle" fill="#fff" font-family="ui-sans-serif, system-ui, sans-serif" font-size="72" font-weight="800">N</text>
+    </g>
+  </g>
+  <text x="72" y="640" fill="#F8FAFC" font-family="ui-sans-serif, system-ui, sans-serif" font-size="56" font-weight="800">Creating a Next.js React App</text>
+</svg>

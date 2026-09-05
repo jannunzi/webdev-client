@@ -51,6 +51,7 @@ export default async function LectureDeckPage({ params }: PageProps) {
         slides={deck.slides}
         prevDeck={prev}
         nextDeck={next}
+        canvasLecture={deck.canvasLecture}
       />
     </div>
   );
