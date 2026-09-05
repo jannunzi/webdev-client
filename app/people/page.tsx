@@ -4,8 +4,6 @@ import { currentUser } from "@clerk/nextjs/server";
 import StaffViewModeBar from "@/app/quizzes/components/StaffViewModeBar";
 import StatusPanel from "@/app/quizzes/components/StatusPanel";
 import { isClerkConfigured, isClerkPublishableKeySet } from "@/lib/config";
-import { collectClerkEmails } from "@/lib/roster/emails";
-import { isInstructor } from "@/lib/roster/instructors";
 import { listCanvasRoster } from "@/lib/roster/list";
 import { groupRosterBySection } from "@/lib/roster/sections";
 import {
@@ -31,17 +29,8 @@ export default async function PeoplePage({ searchParams }: PageProps) {
   if (!isClerkConfigured()) {
     return (
       <article className="mx-auto max-w-3xl font-sans">
-        <StatusPanel title="People is not configured yet" tone="warn">
-          <p>
-            Clerk env vars are missing, so this page cannot tell who is signed
-            in. The rest of the course book stays available.
-          </p>
-          <p>
-            Jose: add the keys from <code>.env.example</code> to Vercel,
-            including <code>INSTRUCTOR_EMAILS=jannunzi@gmail.com</code>.
-            TAs go in <code>TA_EMAILS</code> after they create a Clerk
-            account.
-          </p>
+        <StatusPanel title="This page is for course staff." tone="warn">
+          <p>Sign in to continue.</p>
         </StatusPanel>
       </article>
     );
@@ -61,27 +50,16 @@ async function PeoplePageBody({ section }: { section?: string }) {
   const access = await getEffectiveStaffAccess();
   if (access === "signed_out" || !user) {
     return (
-      <StatusPanel title="Sign in to view People" tone="neutral">
-        <p>
-          This page lists Canvas roster students for instructors and TAs.
-          Anyone may create a Clerk account; People access is an email
-          allowlist, not a separate registration. Sign in with the address
-          on <code>INSTRUCTOR_EMAILS</code> or <code>TA_EMAILS</code>.
-        </p>
+      <StatusPanel title="Sign in to continue." tone="neutral">
+        <p>This page is for course staff.</p>
       </StatusPanel>
     );
   }
 
-  const emails = collectClerkEmails(user);
   if (access !== "ok") {
     return (
       <StatusPanel title="403 Forbidden" tone="warn">
-        <p>
-          People is limited to the course instructor and TAs. Being on the
-          Canvas student roster does not grant access. Signed-in browsing of
-          the book, syllabus, labs, and practice pages is fine. The roster was
-          not loaded.
-        </p>
+        <p>This page is for course staff only.</p>
         {(await isImpersonatingStudent()) ? (
           <p>
             You are in student view. Use <strong>Viewing as: Instructor</strong>{" "}
@@ -148,12 +126,6 @@ async function PeoplePageBody({ section }: { section?: string }) {
         Fall 2026 Canvas roster from MongoDB Atlas. Staff only — this is not
         the Kambaz lab People demo.
       </p>
-      {isInstructor(emails) ? (
-        <p className="text-sm text-neutral-500">
-          Add TA emails via <code>TA_EMAILS</code> on Vercel after they sign
-          up with Clerk. No invite UI.
-        </p>
-      ) : null}
       <PeopleRoster groups={groups} selectedSection={selectedSection} />
     </>
   );

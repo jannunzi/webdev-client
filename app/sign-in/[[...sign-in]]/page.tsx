@@ -12,11 +12,9 @@ export default function SignInPage() {
   if (!isClerkConfigured()) {
     return (
       <main className="mx-auto max-w-3xl px-4 py-12 font-sans">
-        <StatusPanel title="Sign-in is not configured yet" tone="warn">
+        <StatusPanel title="Sign-in is not available yet" tone="warn">
           <p>
-            Clerk keys are missing. The course book remains public. Add
-            <code> NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY</code> and
-            <code> CLERK_SECRET_KEY</code> to enable student login.
+            Sign-in is not available yet. The course book remains public.
           </p>
         </StatusPanel>
       </main>

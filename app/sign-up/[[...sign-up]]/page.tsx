@@ -12,10 +12,9 @@ export default function SignUpPage() {
   if (!isClerkConfigured()) {
     return (
       <main className="mx-auto max-w-3xl px-4 py-12 font-sans">
-        <StatusPanel title="Sign-up is not configured yet" tone="warn">
+        <StatusPanel title="Sign-up is not available yet" tone="warn">
           <p>
-            Clerk keys are missing. Anyone can still browse the book. Add
-            Clerk env vars to enable accounts.
+            Sign-up is not available yet. The course book remains public.
           </p>
         </StatusPanel>
       </main>
