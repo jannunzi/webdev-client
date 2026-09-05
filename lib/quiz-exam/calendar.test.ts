@@ -117,8 +117,9 @@ describe("Fall 2026 Canvas calendar", () => {
   it("names X2’s weekday as Thursday to match 2026-12-03", () => {
     assert.equal(weekdayName(isoWeekday("2026-12-03")), "Thursday");
     const exams = evaluationItems.find((item) => item.label.includes("X1"));
-    assert.match(exams?.description ?? "", /Thursday 2026-12-03/);
-    assert.doesNotMatch(exams?.description ?? "", /Wednesday 2026-12-03/);
+    assert.ok(exams, "Exams (X1–X2) evaluation item is missing");
+    assert.match(exams.description, /Thursday 2026-12-03/);
+    assert.doesNotMatch(exams.description, /Wednesday 2026-12-03/);
     assert.match(deadlinesNote, /X2 is due Thursday 11:59pm ET/);
     assert.doesNotMatch(deadlinesNote, /X2 is due Wednesday/);
   });
