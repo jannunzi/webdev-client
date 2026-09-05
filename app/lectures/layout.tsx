@@ -5,7 +5,7 @@ import "../book/book.css";
 export const metadata: Metadata = {
   title: "Lectures — Web Dev",
   description:
-    "Lecture decks for Web Dev. Lecture 1 covers the Web, Node.js, Next.js App Router, GitHub, and Vercel.",
+    "Lecture decks for Web Dev. Lectures 1–3 cover the Web stack, Chapter 1 HTML, and the Kambaz A1 screens.",
 };
 
 export default function LecturesLayout({

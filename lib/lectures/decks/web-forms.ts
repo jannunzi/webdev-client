@@ -90,7 +90,7 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
   },
   {
     id: "buttons",
-    title: "Buttons: type=button vs submit",
+    title: "Buttons: button vs submit",
     kind: "demo",
     embed: "buttons",
     bullets: [
@@ -105,7 +105,7 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
   },
   {
     id: "onclick-alert",
-    title: "onClick can alert — do not submit",
+    title: "onClick can alert — don't submit",
     kind: "demo",
     bullets: [
       "`type=\"button\"` plus `onClick` runs JavaScript without sending the form",

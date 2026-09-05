@@ -11,6 +11,24 @@ import HeadingTagsEmbed from "./HeadingTagsEmbed";
 import HtmlSkeletonEmbed from "./HtmlSkeletonEmbed";
 import Lab1StubEmbed from "./Lab1StubEmbed";
 import LabsIndexEmbed from "./LabsIndexEmbed";
+import {
+  KambazAccountNavEmbed,
+  KambazLandingEmbed,
+  KambazProfileEmbed,
+  KambazSigninEmbed,
+  KambazSignupEmbed,
+} from "./KambazAccountEmbeds";
+import {
+  KambazDashboardEmbed,
+  KambazNavigationEmbed,
+} from "./KambazChromeEmbeds";
+import {
+  KambazAssignmentEditorEmbed,
+  KambazAssignmentsEmbed,
+  KambazCoursesEmbed,
+  KambazHomeEmbed,
+  KambazModulesEmbed,
+} from "./KambazCourseEmbeds";
 import LabsLayoutEmbed from "./LabsLayoutEmbed";
 import LinkNavEmbed from "./LinkNavEmbed";
 import ListTagsEmbed from "./ListTagsEmbed";
@@ -74,6 +92,30 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <ButtonsEmbed />;
     case "labs-layout":
       return <LabsLayoutEmbed />;
+    case "kambaz-landing":
+      return <KambazLandingEmbed />;
+    case "kambaz-signin":
+      return <KambazSigninEmbed />;
+    case "kambaz-signup":
+      return <KambazSignupEmbed />;
+    case "kambaz-profile":
+      return <KambazProfileEmbed />;
+    case "kambaz-account-nav":
+      return <KambazAccountNavEmbed />;
+    case "kambaz-dashboard":
+      return <KambazDashboardEmbed />;
+    case "kambaz-navigation":
+      return <KambazNavigationEmbed />;
+    case "kambaz-courses":
+      return <KambazCoursesEmbed />;
+    case "kambaz-modules":
+      return <KambazModulesEmbed />;
+    case "kambaz-home":
+      return <KambazHomeEmbed />;
+    case "kambaz-assignments":
+      return <KambazAssignmentsEmbed />;
+    case "kambaz-assignment-editor":
+      return <KambazAssignmentEditorEmbed />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;

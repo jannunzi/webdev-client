@@ -23,8 +23,9 @@ export default function LecturesIndexPage() {
         </h1>
         <p className="max-w-3xl">
           Canvas-style lecture folders. Open a deck to present slides on a
-          wide stage. Keyboard shortcuts on each deck: next / previous with
-          the arrow keys or space, <kbd>f</kbd> for fullscreen, Esc to exit.
+          wide stage. Keyboard: Left/Right or space change slides; Up/Down
+          scroll the slide when content overflows (otherwise they also change
+          slides). <kbd>f</kbd> fullscreen, Esc to exit.
         </p>
         <p className="rounded-lg border border-sky-300 bg-sky-50 px-4 py-3 font-sans text-sm text-sky-950">
           These slides are the classroom version of the matching book chapter.

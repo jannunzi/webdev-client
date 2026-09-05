@@ -119,7 +119,7 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
   },
   {
     id: "html-root-xml",
-    title: "html is the root — HTML is XML-ish",
+    title: "html is the root — XML-ish",
     kind: "content",
     bullets: [
       "HTML is a specialized dialect of **XML** (eXtensible Markup Language)",
@@ -157,7 +157,7 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
   },
   {
     id: "the-dom",
-    title: "The DOM: Window → Document → tree",
+    title: "DOM: Window → Document → tree",
     kind: "content",
     bullets: [
       "The browser’s **Window** owns a **Document**. The document’s tree is the **DOM**",

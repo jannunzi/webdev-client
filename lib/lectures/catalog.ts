@@ -8,6 +8,13 @@ import { HTML_AND_DOM_SLIDES } from "./decks/html-and-dom";
 import { INSTALLING_NODEJS_SLIDES } from "./decks/installing-nodejs";
 import { INTRO_TO_WEB_DEVELOPMENT_SLIDES } from "./decks/intro-to-web-development";
 import { LISTS_AND_TABLES_SLIDES } from "./decks/lists-and-tables";
+import { KAMBAZ_ACCOUNT_SLIDES } from "./decks/kambaz-account";
+import { KAMBAZ_ASSIGNMENTS_SLIDES } from "./decks/kambaz-assignments";
+import { KAMBAZ_COURSES_SLIDES } from "./decks/kambaz-courses";
+import { KAMBAZ_DASHBOARD_SLIDES } from "./decks/kambaz-dashboard";
+import { KAMBAZ_MODULES_SLIDES } from "./decks/kambaz-modules";
+import { KAMBAZ_NAVIGATION_SLIDES } from "./decks/kambaz-navigation";
+import { KAMBAZ_OVERVIEW_SLIDES } from "./decks/kambaz-overview";
 import { SINGLE_PAGE_NAVIGATION_SLIDES } from "./decks/single-page-navigation";
 import { WEB_FORMS_SLIDES } from "./decks/web-forms";
 import {
@@ -124,6 +131,62 @@ const LECTURE_SUMMARIES: Record<
     chapter: 1,
     canvasLecture: 2,
     slides: SINGLE_PAGE_NAVIGATION_SLIDES,
+  },
+  "kambaz-overview": {
+    title: "Kambaz Overview",
+    summary:
+      "Route group (kambaz) owns /, a landing page with wd-kambaz, a Labs TOC link, then redirect to Sign in.",
+    chapter: 1,
+    canvasLecture: 3,
+    slides: KAMBAZ_OVERVIEW_SLIDES,
+  },
+  "kambaz-account": {
+    title: "Kambaz Account",
+    summary:
+      "Sign in, Sign up, Profile, Account Navigation, and an account layout that swaps children.",
+    chapter: 1,
+    canvasLecture: 3,
+    slides: KAMBAZ_ACCOUNT_SLIDES,
+  },
+  "kambaz-dashboard": {
+    title: "Kambaz Dashboard",
+    summary:
+      "CourseCard plus next/image, at least three published courses, and Sign in landing on /dashboard.",
+    chapter: 1,
+    canvasLecture: 3,
+    slides: KAMBAZ_DASHBOARD_SLIDES,
+  },
+  "kambaz-navigation": {
+    title: "Kambaz Navigation",
+    summary:
+      "KambazNavigation sidebar, the (kambaz) layout table, and app/not-found.tsx for Calendar and Inbox.",
+    chapter: 1,
+    canvasLecture: 3,
+    slides: KAMBAZ_NAVIGATION_SLIDES,
+  },
+  "kambaz-courses": {
+    title: "Kambaz Courses",
+    summary:
+      "Dynamic [cid], Home at /courses/[cid]/home, Course Navigation, and await params in the layout.",
+    chapter: 1,
+    canvasLecture: 3,
+    slides: KAMBAZ_COURSES_SLIDES,
+  },
+  "kambaz-modules": {
+    title: "Kambaz Modules",
+    summary:
+      "Module and Lesson nested lists for Weeks 1–3, then Home as Modules plus Course Status.",
+    chapter: 1,
+    canvasLecture: 3,
+    slides: KAMBAZ_MODULES_SLIDES,
+  },
+  "kambaz-assignments": {
+    title: "Kambaz Assignments",
+    summary:
+      "Assignments list, AssignmentItem, and the editor form — on your own, matching wd-* ids.",
+    chapter: 1,
+    canvasLecture: 3,
+    slides: KAMBAZ_ASSIGNMENTS_SLIDES,
   },
 };
 

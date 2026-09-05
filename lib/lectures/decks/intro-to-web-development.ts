@@ -105,7 +105,7 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
   },
   {
     id: "server-frameworks",
-    title: "Server frameworks: CGI → Node / Flask",
+    title: "Server frameworks: CGI → Node",
     kind: "content",
     bullets: [
       "**CGI** (1990s): the server launches a new program per request — simple, slow",
@@ -130,7 +130,7 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
   },
   {
     id: "client-frameworks",
-    title: "Client frameworks: JS → React / Next",
+    title: "Client frameworks: JS → React",
     kind: "content",
     bullets: [
       "Plain **JavaScript** can rewrite the DOM (`document.querySelector`, `innerHTML`)",
@@ -155,7 +155,7 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
   },
   {
     id: "web-app-se",
-    title: "Web application software engineering",
+    title: "Web app software engineering",
     kind: "content",
     bullets: [
       "A course site is not a homework file. It is an **application**: UI, data, auth, deploy, iterate",
@@ -191,7 +191,7 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
   },
   {
     id: "architecture",
-    title: "Architecture: separation of concerns / MVC",
+    title: "Architecture: SoC / MVC",
     kind: "content",
     bullets: [
       "**Separation of concerns**: HTML structure, CSS presentation, JS behavior, server data — different jobs",

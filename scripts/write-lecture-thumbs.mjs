@@ -93,6 +93,22 @@ const ANCHORS = `
     <path d="M270 280c-40 40-104 40-144 0s-40-104 0-144l52-52"/>
   </g>`;
 
+const KAMBAZ = `
+  <g transform="translate(70 90)">
+    <rect width="150" height="280" rx="18" fill="#111827"/>
+    <rect x="22" y="28" width="106" height="14" rx="4" fill="#F8FAFC"/>
+    <rect x="22" y="62" width="86" height="10" rx="4" fill="#94A3B8"/>
+    <rect x="22" y="88" width="70" height="10" rx="4" fill="#64748B"/>
+    <rect x="22" y="114" width="78" height="10" rx="4" fill="#64748B"/>
+    <rect x="22" y="140" width="64" height="10" rx="4" fill="#475569"/>
+    <rect x="180" y="0" width="430" height="280" rx="18" fill="#fff" stroke="#0F172A" stroke-width="8"/>
+    <rect x="208" y="32" width="200" height="16" rx="6" fill="#0F172A"/>
+    <rect x="208" y="68" width="370" height="12" rx="6" fill="#94A3B8"/>
+    <rect x="208" y="96" width="330" height="12" rx="6" fill="#CBD5E1"/>
+    <rect x="208" y="140" width="150" height="100" rx="12" fill="#E2E8F0"/>
+    <rect x="372" y="140" width="150" height="100" rx="12" fill="#E2E8F0"/>
+  </g>`;
+
 const SPA = `
   <g transform="translate(80 110)">
     <rect width="240" height="200" rx="20" fill="#fff" stroke="#0F172A" stroke-width="8"/>
@@ -227,6 +243,62 @@ const thumbs = [
     art: SPA,
     titleFill: "#164E63",
     subtitleFill: "#0E7490",
+  },
+  {
+    slug: "kambaz-overview",
+    title: "Kambaz Overview",
+    lecture: 3,
+    bg: "#1C1917",
+    accent: "#F59E0B",
+    art: KAMBAZ,
+  },
+  {
+    slug: "kambaz-account",
+    title: "Kambaz Account",
+    lecture: 3,
+    bg: "#0F172A",
+    accent: "#38BDF8",
+    art: KAMBAZ,
+  },
+  {
+    slug: "kambaz-dashboard",
+    title: "Kambaz Dashboard",
+    lecture: 3,
+    bg: "#14532D",
+    accent: "#86EFAC",
+    art: KAMBAZ,
+  },
+  {
+    slug: "kambaz-navigation",
+    title: "Kambaz Navigation",
+    lecture: 3,
+    bg: "#1E1B4B",
+    accent: "#A78BFA",
+    art: KAMBAZ,
+  },
+  {
+    slug: "kambaz-courses",
+    title: "Kambaz Courses",
+    lecture: 3,
+    bg: "#7C2D12",
+    accent: "#FDBA74",
+    art: KAMBAZ,
+  },
+  {
+    slug: "kambaz-modules",
+    title: "Kambaz Modules",
+    lecture: 3,
+    bg: "#134E4A",
+    accent: "#5EEAD4",
+    art: KAMBAZ,
+  },
+  {
+    slug: "kambaz-assignments",
+    title: "Kambaz Assignments",
+    lecture: 3,
+    bg: "#4C0519",
+    accent: "#FB7185",
+    art: KAMBAZ,
   },
 ];
 

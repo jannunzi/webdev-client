@@ -384,3 +384,58 @@ code.quiz-prompt-code {
   line-height: 1.45;
   color: #1e1b4b;
 }
+
+/* Lecture stage: titles never wrap; type scales with the slide width. */
+.lecture-slide {
+  container-type: inline-size;
+  container-name: lecture-slide;
+}
+
+.lecture-slide-title {
+  margin-top: 0;
+  margin-bottom: 0.55rem;
+  overflow: hidden;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  white-space: nowrap;
+  font-size: clamp(1.15rem, 5.1cqi, 3.15rem);
+}
+
+.lecture-slide-spacious .lecture-slide-title {
+  font-size: clamp(1.25rem, 5.7cqi, 3.55rem);
+}
+
+.lecture-slide-title-hero {
+  font-size: clamp(1.4rem, 6.5cqi, 4.15rem);
+}
+
+.lecture-slide-spacious .lecture-slide-title-hero {
+  font-size: clamp(1.55rem, 7.1cqi, 4.65rem);
+}
+
+.lecture-slide-dense {
+  --lecture-gap: 0.55rem;
+}
+
+.lecture-slide-spacious {
+  --lecture-gap: 0.75rem;
+}
+
+.lecture-slide .book-code-block {
+  margin-block: var(--lecture-gap, 0.65rem);
+}
+
+.lecture-slide .book-code-block-header {
+  padding: 0.35rem 0.65rem;
+}
+
+.lecture-slide .book-code-block-body {
+  padding: 0.7rem 0.85rem;
+  line-height: 1.4;
+}
+
+.lecture-slide figure {
+  margin-block: var(--lecture-gap, 0.65rem);
+}
