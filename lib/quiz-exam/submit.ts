@@ -45,7 +45,7 @@ export function rosterGateMessage(roster: RosterLookupResult): SubmitExamFailure
   if (roster.status === "not_configured") {
     return fail(
       "not_configured",
-      "Graded quizzes are not configured yet (Clerk and MongoDB Atlas env vars are required).",
+      "Graded quizzes are not available yet.",
     );
   }
   if (roster.status === "empty") {

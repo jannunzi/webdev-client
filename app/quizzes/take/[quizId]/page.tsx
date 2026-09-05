@@ -3,11 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import StatusPanel from "../../components/StatusPanel";
-import {
-  isClerkConfigured,
-  isMongoConfigured,
-  isQuizTakingConfigured,
-} from "@/lib/config";
+import { isQuizTakingConfigured } from "@/lib/config";
 import { findLatestQuizAttempt } from "@/lib/quiz-exam/attempts";
 import {
   drawOnePerGroup,
@@ -84,21 +80,11 @@ export default async function TakeExamPage({ params }: PageProps) {
   if (!bank) notFound();
 
   if (!isQuizTakingConfigured()) {
-    const missing = [
-      !isClerkConfigured() ? "Clerk" : null,
-      !isMongoConfigured() ? "MongoDB Atlas" : null,
-    ].filter(Boolean);
     return (
-      <StatusPanel title="Graded quizzes are not configured yet" tone="warn">
+      <StatusPanel title="Graded quizzes are not available yet" tone="warn">
         <p>
-          {missing.join(" and ")} env vars are missing, so this exam cannot
-          start or store an attempt. The rest of the course book stays
+          This exam cannot start right now. The rest of the course book stays
           available.
-        </p>
-        <p>
-          Jose: add the keys from <code>.env.example</code> to Vercel (and
-          <code>.env.local</code> for local work), then import the Canvas
-          roster. See the README section “Graded quizzes”.
         </p>
       </StatusPanel>
     );

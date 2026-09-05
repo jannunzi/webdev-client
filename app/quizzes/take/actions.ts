@@ -21,7 +21,7 @@ export async function submitExamAttempt(
       ok: false,
       code: "not_configured",
       message:
-        "Graded quizzes are not configured yet (Clerk and MongoDB Atlas env vars are required).",
+        "Graded quizzes are not available yet.",
     };
   }
 
