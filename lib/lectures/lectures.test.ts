@@ -17,6 +17,7 @@ import {
 } from "./catalog";
 import {
   LECTURE_DECK_THUMBNAILS,
+  LECTURE_EMBED_IDS,
   LECTURE_SLIDE_IMAGE_ALLOWLIST,
   LECTURE_SLUGS,
   lectureSlideAssetPath,
@@ -157,6 +158,22 @@ describe("lecture decks", () => {
     assert.doesNotMatch(text, /npm create vite/i);
     assert.doesNotMatch(text, /create-vite/);
     assert.doesNotMatch(text, /vite\.config/i);
+  });
+
+  it("embeds live Ch1 demos instead of UI screenshots", () => {
+    const expected = {
+      "user-component": "user-card",
+      "welcome-page": "welcome-home",
+      "lab1-route": "lab1-stub",
+      "link-to-lab1": "link-nav",
+      "user-on-page": "user-card",
+    } as const;
+    for (const [id, embed] of Object.entries(expected)) {
+      const slide = findSlide("creating-a-nextjs-react-application", id);
+      assert.equal(slide.embed, embed);
+      assert.equal(slide.imageSrc, undefined);
+      assert.ok((LECTURE_EMBED_IDS as readonly string[]).includes(embed));
+    }
   });
 
   it("keeps Node deck evergreen and uses kambaz spelling", () => {

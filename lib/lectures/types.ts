@@ -10,6 +10,15 @@ export type LectureSlug = (typeof LECTURE_SLUGS)[number];
 
 export type SlideKind = "title" | "content" | "demo" | "break";
 
+export const LECTURE_EMBED_IDS = [
+  "user-card",
+  "welcome-home",
+  "lab1-stub",
+  "link-nav",
+] as const;
+
+export type LectureEmbedId = (typeof LECTURE_EMBED_IDS)[number];
+
 export type LectureCodeBlock = {
   code: string;
   language?: string;
@@ -32,7 +41,9 @@ export type LectureSlide = {
   codeFile?: string;
   /** Extra snippets when a slide needs more than one block. */
   codeBlocks?: LectureCodeBlock[];
-};
+  /** Live React demo under the authored slide. Prefer this over a UI screenshot. */
+  embed?: LectureEmbedId;
+}
 
 export type LectureHubItem = {
   slug: LectureSlug;

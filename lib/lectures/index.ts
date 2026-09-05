@@ -18,6 +18,7 @@ export { INSTALLING_NODEJS_SLIDES } from "./decks/installing-nodejs";
 export { INTRO_TO_WEB_DEVELOPMENT_SLIDES } from "./decks/intro-to-web-development";
 export {
   LECTURE_DECK_THUMBNAILS,
+  LECTURE_EMBED_IDS,
   LECTURE_SLIDE_IMAGE_ALLOWLIST,
   LECTURE_SLUGS,
   lectureSlideAssetPath,
@@ -29,6 +30,7 @@ export type {
   CanvasLectureGroup,
   LectureCodeBlock,
   LectureDeck,
+  LectureEmbedId,
   LectureHubItem,
   LectureSlide,
   LectureSlug,
