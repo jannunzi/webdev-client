@@ -12,9 +12,9 @@ Original export counts:
 - deploying-to-vercel (17)
 
 The catalog sets `imageSrc` on every slide (`/lectures/<slug>/slide-NN.png`).
-Most decks map 1-based slide index → `slide-NN.png`. Intro maps by content
-so SSR is `slide-09.png` and CSR is `slide-11.png` (the original deck has
-17 slides; we reconstructed 18).
+Most decks map 1-based index → `slide-NN.png`. Intro / Vercel / the last
+Next.js slides remap so drawings land on the matching original export
+(SSR `slide-09`, CSR `slide-11`, office hours `slide-17`).
 
 A missing file shows a dashed “not in the repo yet” frame. Do not nest
 these under `/book`.
