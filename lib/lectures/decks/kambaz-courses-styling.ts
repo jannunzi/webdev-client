@@ -28,6 +28,7 @@ export const KAMBAZ_COURSES_STYLING_SLIDES: LectureSlide[] = [
       "Keep it ~140px — labels only, no icons",
       "Idle links red. Active: black text + 3px left border",
       "`usePathname` + `startsWith` so `/assignments/123` still lights Assignments",
+      "`.list-group` lives in `kambaz.css` — write the selectors; do not import a kit",
     ],
     code: `"use client";
 import Link from "next/link";
@@ -75,6 +76,7 @@ export default function CourseNavigation({ cid }: { cid: string }) {
     title: "list-group rules in kambaz.css",
     kind: "content",
     bullets: [
+      "You write these selectors — they are not imported from a CSS kit",
       "A few app-wide rules beat a pile of utilities on every link",
       "Active item: black, white fill, `border-left: 3px solid black`",
     ],

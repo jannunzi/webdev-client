@@ -17,8 +17,8 @@ export const KAMBAZ_DASHBOARD_STYLING_SLIDES: LectureSlide[] = [
     bullets: [
       "Chapter 1 already extracted `CourseCard` inside `#wd-dashboard-courses`",
       "Those cards still look like plain HTML",
-      "Add border, shadow, cropped image, truncated title, and a Go button",
-      "No Bootstrap `Card` / `Row` / `Col` — same markup, utility classes",
+      "Dress the same markup with Tailwind: border, shadow, crop, truncate, Go",
+      "Wrap the list in `grid` + breakpoint column counts — §2.4.2",
     ],
   },
   {

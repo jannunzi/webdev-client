@@ -90,13 +90,13 @@ export default function TailwindLab() {
   },
   {
     id: "not-bootstrap",
-    title: "Bootstrap is historical here",
+    title: "Bootstrap is optional history",
     kind: "content",
     bullets: [
-      "Older assignments used Bootstrap’s `container` / `row` / `col-*` and `btn-primary`",
-      "This course’s book and labs are **Tailwind first**",
-      "Same ideas — a 12-column grid, spacing scale, responsive prefixes — different class names",
-      "If a Drive deck says `d-flex` or `col-md-6`, translate: `flex`, `md:col-span-6`",
+      "Drive A2 used React-Bootstrap (`d-flex`, `ListGroup`, `Card`). This course does not",
+      "Book path: **Tailwind + React Icons** — `/book/ch2` and `/labs/lab2/tailwind`",
+      "If you see those names: `d-flex` → `flex`, `col-md-6` → `md:col-span-6`",
+      "A Kambaz “list group” is CSS you write in `kambaz.css` — not a kit import",
     ],
   },
   {

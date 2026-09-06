@@ -405,7 +405,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-courses-styling": {
     title: "Courses Chrome",
     summary:
-      "Course Navigation list group, Modules, Home flex, and hide-order — §2.4.3–2.4.5.",
+      "Course Navigation via kambaz.css list-group, Modules, Home flex, and hide-order — §2.4.3–2.4.5.",
     chapter: 2,
     canvasLecture: 7,
     topicId: "kambaz-styling",

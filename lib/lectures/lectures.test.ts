@@ -920,7 +920,9 @@ describe("lecture decks", () => {
     assert.match(intro, /app\/labs\/lab2\/tailwind\/index\.css/);
     assert.match(intro, /Preflight/);
     assert.match(intro, /create-next-app/);
+    assert.match(intro, /\/labs\/lab2\/tailwind/);
     assert.doesNotMatch(intro, /npm install bootstrap/i);
+    assert.doesNotMatch(intro, /from ["']react-bootstrap["']/);
 
     const spacing = slideText("tailwind-spacing");
     assert.match(spacing, /TailwindSpacing/);
@@ -968,13 +970,19 @@ describe("lecture decks", () => {
     assert.match(dash, /wd-dashboard-courses/);
     assert.match(dash, /sm:grid-cols-2/);
     assert.match(dash, /Published Courses \(3\)/);
+    assert.doesNotMatch(dash, /Bootstrap/);
+    assert.doesNotMatch(dash, /react-bootstrap/i);
+    assert.doesNotMatch(dash, /\bd-flex\b/);
 
     const courses = slideText("kambaz-courses-styling");
     assert.match(courses, /wd-courses-navigation/);
     assert.match(courses, /list-group-item/);
+    assert.match(courses, /kambaz\.css/);
     assert.match(courses, /GreenCheckmark/);
     assert.match(courses, /hidden lg:block/);
     assert.match(courses, /wd-course-status/);
+    assert.doesNotMatch(courses, /react-bootstrap/i);
+    assert.doesNotMatch(courses, /\bd-flex\b/);
 
     const assignments = slideText("kambaz-assignments-styling");
     assert.match(assignments, /wd-people-table/);
@@ -988,7 +996,10 @@ describe("lecture decks", () => {
     assert.match(account, /wd-signin-screen/);
     assert.match(account, /wd-signin-btn/);
     assert.match(account, /max-w-sm/);
+    assert.match(account, /kambaz\.css/);
     assert.doesNotMatch(account, /HashRouter/);
+    assert.doesNotMatch(account, /react-bootstrap/i);
+    assert.doesNotMatch(account, /\bd-flex\b/);
   });
 
 

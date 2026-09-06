@@ -16,7 +16,7 @@ export const KAMBAZ_ACCOUNT_STYLING_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "Sign in, Sign up, and Profile from §1.4.2 get Tailwind form classes",
-      "Account Navigation mirrors Course Navigation — list group, active border",
+      "Account Navigation reuses the `kambaz.css` list-group + active border",
       "`/account/signin` stays the first Kambaz screen a visitor sees",
     ],
   },
@@ -73,7 +73,7 @@ export const KAMBAZ_ACCOUNT_STYLING_SLIDES: LectureSlide[] = [
     bullets: [
       "Same full-width inputs and primary / danger buttons",
       "Profile: `wd-firstname` and the rest of the Chapter 1 fields, now labeled",
-      "Account Navigation: `list-group.wd` + active left border, like Course Nav",
+      "Account Navigation: same `kambaz.css` list-group + active left border",
     ],
   },
   {
