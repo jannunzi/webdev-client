@@ -29,6 +29,17 @@ import {
   lectureThumbPath,
 } from "./types";
 import { slidePaneOverflows, slidePaneScrollStep } from "./slide-pane";
+import {
+  LECTURE_PRESENT_STATE,
+  isLecturePresentHistoryState,
+  lecturePresentHref,
+  lectureSearchIsPresent,
+  nativeFullscreenEnabled,
+  nativeFullscreenElement,
+  preferNativeFullscreen,
+  swipeSlideDelta,
+  swipeTargetIsInteractive,
+} from "./present-mode";
 
 function slideText(deckSlug: string): string {
   const deck = getLectureDeck(deckSlug);
@@ -535,6 +546,87 @@ describe("lecture decks", () => {
     assert.equal(slidePaneOverflows({ scrollHeight: 401, clientHeight: 400 }), false);
     assert.equal(slidePaneOverflows({ scrollHeight: 480, clientHeight: 400 }), true);
     assert.equal(slidePaneScrollStep(400), 280);
+  });
+
+  it("treats missing Fullscreen API as unsupported so phones can use CSS present", () => {
+    assert.equal(nativeFullscreenEnabled({}), false);
+    assert.equal(nativeFullscreenEnabled({ fullscreenEnabled: false }), false);
+    assert.equal(nativeFullscreenEnabled({ fullscreenEnabled: true }), true);
+    assert.equal(nativeFullscreenEnabled({ webkitFullscreenEnabled: true }), true);
+    assert.equal(nativeFullscreenElement({}), null);
+    assert.equal(
+      nativeFullscreenElement({ webkitFullscreenElement: null, fullscreenElement: null }),
+      null,
+    );
+    assert.equal(
+      preferNativeFullscreen({
+        fullscreenEnabled: true,
+        coarsePointer: false,
+        viewportWidth: 1280,
+        userAgent: "Mozilla/5.0 Macintosh",
+      }),
+      true,
+    );
+    assert.equal(
+      preferNativeFullscreen({
+        fullscreenEnabled: true,
+        coarsePointer: true,
+        viewportWidth: 1280,
+        userAgent: "Mozilla/5.0 Macintosh",
+      }),
+      false,
+    );
+    assert.equal(
+      preferNativeFullscreen({
+        fullscreenEnabled: true,
+        coarsePointer: false,
+        viewportWidth: 390,
+        userAgent: "Mozilla/5.0 Macintosh",
+      }),
+      false,
+    );
+    assert.equal(
+      preferNativeFullscreen({
+        fullscreenEnabled: true,
+        coarsePointer: false,
+        viewportWidth: 1024,
+        userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)",
+      }),
+      false,
+    );
+  });
+
+  it("maps present-mode URLs and history state for Back-to-exit", () => {
+    assert.equal(lectureSearchIsPresent(""), false);
+    assert.equal(lectureSearchIsPresent("slide=2"), false);
+    assert.equal(lectureSearchIsPresent("fullscreen=1"), true);
+    assert.equal(lectureSearchIsPresent("?fullscreen=1"), true);
+    assert.equal(
+      lecturePresentHref({
+        href: "https://webdev-client.vercel.app/lectures/html-and-dom#slide-2",
+        slideNumber: 3,
+        present: true,
+      }),
+      "/lectures/html-and-dom?fullscreen=1#slide-3",
+    );
+    assert.equal(
+      lecturePresentHref({
+        href: "https://webdev-client.vercel.app/lectures/html-and-dom?fullscreen=1#slide-3",
+        slideNumber: 3,
+        present: false,
+      }),
+      "/lectures/html-and-dom#slide-3",
+    );
+    assert.equal(isLecturePresentHistoryState(null), false);
+    assert.equal(isLecturePresentHistoryState(LECTURE_PRESENT_STATE), true);
+  });
+
+  it("turns horizontal swipes into slide steps and ignores vertical pans", () => {
+    assert.equal(swipeSlideDelta(200, 100, 80, 110), 1);
+    assert.equal(swipeSlideDelta(80, 100, 200, 110), -1);
+    assert.equal(swipeSlideDelta(200, 100, 180, 110), 0);
+    assert.equal(swipeSlideDelta(200, 100, 80, 220), 0);
+    assert.equal(swipeTargetIsInteractive(null), false);
   });
 
   it("uses authored diagrams instead of Google Slides rasters", () => {
