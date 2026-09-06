@@ -1,13 +1,13 @@
 import type { QuizQuestion } from "./types";
 
-/** Curated self-check bank for §2.1. Add items over time; the quiz draws 10. */
+/** Curated self-check bank for CSS fundamentals. The quiz draws 10. */
 export const CH2_SECTION_21_QUESTIONS: QuizQuestion[] = [
   {
     id: "2-1-style-attr-bad",
     section: "2.1.1",
     kind: "concept",
     prompt:
-      "Why does the chapter treat the JSX style attribute as a bad habit for a real project?",
+      "Why is the JSX style attribute a bad habit for a real project?",
     choices: [
       {
         id: "a",
@@ -128,7 +128,7 @@ export const CH2_SECTION_21_QUESTIONS: QuizQuestion[] = [
     section: "2.1.2",
     kind: "syntax",
     prompt:
-      "How do you attach app/labs/lab2/index.css to the Lab 2 page component?",
+      "How do you attach a local index.css stylesheet to a Next.js page component?",
     choices: [
       { id: "a", text: '<link rel="stylesheet" href="index.css" />' },
       { id: "b", text: 'import "./index.css";' },
@@ -137,7 +137,7 @@ export const CH2_SECTION_21_QUESTIONS: QuizQuestion[] = [
     ],
     answer: "b",
     explanation:
-      "In this Next.js lab you import the stylesheet at the top of the component, the same way you import another file: import \"./index.css\";",
+      "In Next.js you import the stylesheet at the top of the component, the same way you import another file: import \"./index.css\";",
   },
   {
     id: "2-1-tag-selector-broad",
@@ -162,31 +162,31 @@ export const CH2_SECTION_21_QUESTIONS: QuizQuestion[] = [
     section: "2.1.3",
     kind: "syntax",
     prompt:
-      "Which selector targets the paragraph whose id is wd-id-selector-1?",
+      "Which selector targets the paragraph whose id is intro?",
     choices: [
-      { id: "a", text: "p.wd-id-selector-1" },
-      { id: "b", text: "p#wd-id-selector-1" },
-      { id: "c", text: "p wd-id-selector-1" },
-      { id: "d", text: "#p.wd-id-selector-1" },
+      { id: "a", text: "p.intro" },
+      { id: "b", text: "p#intro" },
+      { id: "c", text: "p intro" },
+      { id: "d", text: "#p.intro" },
     ],
     answer: "b",
     explanation:
-      "An ID selector is the tag name, a #, and the id value: p#wd-id-selector-1.",
+      "An ID selector is the tag name, a #, and the id value: p#intro.",
   },
   {
     id: "2-1-class-dot",
     section: "2.1.4",
     kind: "syntax",
-    prompt: "Which selector targets every element with class wd-class-selector?",
+    prompt: "Which selector targets every element with class highlight?",
     choices: [
-      { id: "a", text: "#wd-class-selector" },
-      { id: "b", text: "wd-class-selector" },
-      { id: "c", text: ".wd-class-selector" },
-      { id: "d", text: "class.wd-class-selector" },
+      { id: "a", text: "#highlight" },
+      { id: "b", text: "highlight" },
+      { id: "c", text: ".highlight" },
+      { id: "d", text: "class.highlight" },
     ],
     answer: "c",
     explanation:
-      "A class selector is a name prefixed with a dot. The same class can be reused on different tag types (a paragraph and a heading in the lab).",
+      "A class selector is a name prefixed with a dot. The same class can be reused on different tag types, such as a paragraph and a heading.",
   },
   {
     id: "2-1-class-reuse",
@@ -205,19 +205,19 @@ export const CH2_SECTION_21_QUESTIONS: QuizQuestion[] = [
     ],
     answer: "b",
     explanation:
-      "The lab applies .wd-class-selector to both a paragraph and an h4 so they share a look. An id is meant to be unique.",
+      "A class such as .highlight can apply to both a paragraph and an h4 so they share a look. An id is meant to be unique.",
   },
   {
     id: "2-1-descendant-vs-child",
     section: "2.1.5",
     kind: "snippet",
     prompt:
-      "Which selector matches a .wd-selector-3 nested at any depth inside .wd-selector-1?",
+      "Which selector matches a .title nested at any depth inside .outer?",
     choices: [
-      { id: "a", text: ".wd-selector-1 > .wd-selector-3" },
-      { id: "b", text: ".wd-selector-1 .wd-selector-3" },
-      { id: "c", text: ".wd-selector-1 + .wd-selector-3" },
-      { id: "d", text: ".wd-selector-3 > .wd-selector-1" },
+      { id: "a", text: ".outer > .title" },
+      { id: "b", text: ".outer .title" },
+      { id: "c", text: ".outer + .title" },
+      { id: "d", text: ".title > .outer" },
     ],
     answer: "b",
     explanation:
@@ -228,21 +228,21 @@ export const CH2_SECTION_21_QUESTIONS: QuizQuestion[] = [
     section: "2.1.5",
     kind: "puzzle",
     prompt: "Given this markup, which rule colors the span?",
-    code: `<div className="wd-selector-2">
-  <p className="wd-selector-3">
-    <span className="wd-selector-4">…</span>
+    code: `<div className="card">
+  <p className="title">
+    <span className="label">…</span>
   </p>
 </div>`,
     choices: [
-      { id: "a", text: ".wd-selector-2 > .wd-selector-4 { color: red; }" },
+      { id: "a", text: ".card > .label { color: red; }" },
       {
         id: "b",
-        text: ".wd-selector-2 > .wd-selector-3 > .wd-selector-4 { color: red; }",
+        text: ".card > .title > .label { color: red; }",
       },
-      { id: "c", text: ".wd-selector-4 > .wd-selector-3 { color: red; }" },
+      { id: "c", text: ".label > .title { color: red; }" },
       {
         id: "d",
-        text: ".wd-selector-2 + .wd-selector-3 + .wd-selector-4 { color: red; }",
+        text: ".card + .title + .label { color: red; }",
       },
     ],
     answer: "b",
@@ -282,13 +282,13 @@ export const CH2_SECTION_21_QUESTIONS: QuizQuestion[] = [
     ],
     answer: "b",
     explanation:
-      "Equal specificity is resolved by source order: the later rule wins. That is why the id rules in §2.1.3 had to come after (or replace) the blanket p rule.",
+      "Equal specificity is resolved by source order: the later rule wins. An id rule still needs to appear after a same-specificity rival, or replace it.",
   },
   {
     id: "2-1-inherit",
     section: "2.1.6",
     kind: "concept",
-    prompt: "Which statement about inheritance is the one the chapter makes?",
+    prompt: "Which statement about CSS inheritance is correct?",
     choices: [
       {
         id: "a",
@@ -311,8 +311,8 @@ export const CH2_SECTION_21_QUESTIONS: QuizQuestion[] = [
     kind: "puzzle",
     prompt: "An element matches all three of these rules. What color is the text?",
     code: `p { color: green; }
-.wd-note { color: blue; }
-p#wd-title { color: red; }`,
+.note { color: blue; }
+p#title { color: red; }`,
     choices: [
       { id: "a", text: "green" },
       { id: "b", text: "blue" },
@@ -321,7 +321,7 @@ p#wd-title { color: red; }`,
     ],
     answer: "c",
     explanation:
-      "p#wd-title is an id selector, so it beats both the class and the tag rule regardless of source order.",
+      "p#title is an id selector, so it beats both the class and the tag rule regardless of source order.",
   },
   {
     id: "2-1-foreground",
@@ -485,7 +485,7 @@ box-sizing: content-box;`,
     ],
     answer: "b",
     explanation:
-      "display: block makes each span start a new line. Width still applies, so they are 150px rather than full-bleed. That is the third row of the lab demo.",
+      "display: block makes each span start a new line. Width still applies, so they are 150px rather than full-bleed.",
   },
   {
     id: "2-1-div-vs-span",
@@ -556,7 +556,7 @@ box-sizing: content-box;`,
     ],
     answer: "b",
     explanation:
-      "That is why the lab wraps the absolutely positioned boxes in a relative container: they anchor to that container instead of the whole page.",
+      "That is why absolutely positioned boxes are typically wrapped in a relative container: they anchor to that container instead of the whole page.",
   },
   {
     id: "2-1-fixed-viewport",
@@ -571,7 +571,7 @@ box-sizing: content-box;`,
     ],
     answer: "b",
     explanation:
-      "Fixed positioning is relative to the viewport, so the element stays put while the rest of the page scrolls — the pattern used later for Kambaz Navigation.",
+      "Fixed positioning is relative to the viewport, so the element stays put while the rest of the page scrolls — the pattern used for a site-wide navigation bar.",
   },
   {
     id: "2-1-zindex",
@@ -587,7 +587,7 @@ box-sizing: content-box;`,
     ],
     answer: "b",
     explanation:
-      "A higher z-index renders above a lower one, regardless of source order. The lab uses z-index: 10 to bring a box to the front.",
+      "A higher z-index renders above a lower one, regardless of source order. A typical stacking demo uses z-index: 10 to bring a box to the front.",
   },
   {
     id: "2-1-flex-display",
@@ -609,7 +609,7 @@ box-sizing: content-box;`,
     id: "2-1-media-query",
     section: "2.1.20",
     kind: "concept",
-    prompt: "What do media queries mainly give you in this chapter?",
+    prompt: "What do CSS media queries mainly give you?",
     choices: [
       { id: "a", text: "A way to import CSS only on Tuesdays" },
       {
@@ -627,7 +627,7 @@ box-sizing: content-box;`,
     id: "2-1-media-syntax",
     section: "2.1.20",
     kind: "snippet",
-    prompt: "Which snippet is a valid media query like the ones in the lab?",
+    prompt: "Which snippet is a valid media query for a width range?",
     choices: [
       { id: "a", text: "@media screen.width > 750 { … }" },
       { id: "b", text: "@media (min-width: 750px) and (max-width: 1000px) { … }" },
@@ -636,23 +636,23 @@ box-sizing: content-box;`,
     ],
     answer: "b",
     explanation:
-      "The lab uses @media (min-width: …) and (max-width: …) to switch background colors as the window is resized.",
+      "A common pattern is @media (min-width: …) and (max-width: …) to switch styles as the window is resized.",
   },
   {
     id: "2-1-classname-jsx",
     section: "2.1.4",
     kind: "syntax",
     prompt:
-      "In JSX, which attribute puts an element in the CSS class wd-fg-color-red?",
+      "In JSX, which attribute puts an element in the CSS class danger?",
     choices: [
-      { id: "a", text: 'class="wd-fg-color-red"' },
-      { id: "b", text: 'className="wd-fg-color-red"' },
-      { id: "c", text: 'css="wd-fg-color-red"' },
-      { id: "d", text: 'styleName="wd-fg-color-red"' },
+      { id: "a", text: 'class="danger"' },
+      { id: "b", text: 'className="danger"' },
+      { id: "c", text: 'css="danger"' },
+      { id: "d", text: 'styleName="danger"' },
     ],
     answer: "b",
     explanation:
-      "JSX uses className because class is a reserved word in JavaScript. The CSS file still selects with a leading dot: .wd-fg-color-red.",
+      "JSX uses className because class is a reserved word in JavaScript. The CSS file still selects with a leading dot: .danger.",
   },
   {
     id: "2-1-rule-blank",
@@ -663,7 +663,7 @@ box-sizing: content-box;`,
     answer: "rule",
     accept: ["rules", "css rule", "style rule", "stylesheet rule"],
     explanation:
-      "That shape does not change for the rest of the chapter — later sections only introduce new selectors and new properties.",
+      "That shape does not change as you add more CSS — later rules only introduce new selectors and new properties.",
   },
   {
     id: "2-1-button-default-type",
@@ -682,7 +682,7 @@ box-sizing: content-box;`,
     ],
     answer: "b",
     explanation:
-      "A button inside a form defaults to type=\"submit\". Always write type explicitly: submit for Save, button for Cancel and for Kambaz actions that are not sending a form.",
+      "A button inside a form defaults to type=\"submit\". Always write type explicitly: submit for Save, button for Cancel and for other actions that are not sending a form.",
   },
   {
     id: "2-1-button-type-button",
@@ -698,14 +698,14 @@ box-sizing: content-box;`,
     ],
     answer: "b",
     explanation:
-      "type=\"button\" is a clickable control that does not submit. Kambaz uses it for Go, Publish, + Assignment, and similar actions.",
+      "type=\"button\" is a clickable control that does not submit. Use it for Go, Publish, Add, and similar actions that must not send the form.",
   },
   {
     id: "2-1-button-vs-input",
     section: "1.3.6.7",
     kind: "concept",
     prompt:
-      "Why does the lab prefer <button> over <input type=\"submit\">?",
+      "Why prefer <button> over <input type=\"submit\">?",
     choices: [
       {
         id: "a",

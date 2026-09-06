@@ -12,8 +12,11 @@ export {
   rubricPointTotal,
 } from "./catalog";
 export {
+  CANVAS_FALLBACK_PERMISSION_BLURB,
   canvasAssignmentDescriptionHtml,
+  canvasQuizDescriptionHtml,
   listCanvasFollowupCopy,
+  listCanvasQuizFollowupCopy,
 } from "./canvas-copy";
 export {
   applyCriterionToggle,

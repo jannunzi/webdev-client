@@ -60,7 +60,7 @@ export default function BookHome() {
       <h2 className="font-sans text-xl font-semibold">Practice</h2>
       <p>
         Ungraded self-checks for each chapter live on dedicated practice
-        pages — not Canvas exams.{" "}
+        pages and do not count toward your grade.{" "}
         <Link href="/book/practice">Browse practice quizzes</Link>.
       </p>
     </div>

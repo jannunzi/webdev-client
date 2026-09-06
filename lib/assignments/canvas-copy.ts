@@ -10,6 +10,9 @@ import type { AssignmentHubItem, AssignmentId } from "./types";
  * git repo (Jose’s tooling keeps it under canvas-fall). Paste these into A1–A6
  * descriptions in a follow-up package; do not dump the website rubric into
  * Canvas.
+ *
+ * Quiz / exam fallback copy (website take + staff-permission blurb) lives in
+ * `lib/quiz-exam/canvas-copy.ts` and is packed by `npm run canvas:export-qti`.
  */
 export function canvasAssignmentDescriptionHtml(
   assignment: AssignmentHubItem,
@@ -37,3 +40,8 @@ export function listCanvasFollowupCopy(): Array<{
 }
 
 export { COURSE_SITE_ORIGIN, assignmentPublicUrl };
+export {
+  CANVAS_FALLBACK_PERMISSION_BLURB,
+  canvasQuizDescriptionHtml,
+  listCanvasQuizFollowupCopy,
+} from "../quiz-exam/canvas-copy";

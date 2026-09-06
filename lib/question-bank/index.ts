@@ -29,3 +29,8 @@ export {
 } from "./normalize";
 export { parsePromptMarkup } from "./prompt-markup";
 export type { PromptPart } from "./prompt-markup";
+export {
+  renderCanvasAssessmentMeta,
+  renderCanvasQtiAssessment,
+  renderQtiItem,
+} from "./qti";

@@ -212,7 +212,7 @@ export const q1Group11: QuestionGroup = {
     mc(
       "q1-g11-06",
       "Which element contains the list of choices?",
-      ["<input type=\"dropdown\">", "<select> with nested <option> elements", "<ul> with <a> children", "<datalist> is required in this chapter"],
+      ["<input type=\"dropdown\">", "<select> with nested <option> elements", "<ul> with <a> children", "<datalist> is required for every dropdown"],
       1,
     ),
     mc(
@@ -269,7 +269,7 @@ export const q1Group12: QuestionGroup = {
   type: "true_false",
   chapter: 1,
   section: "1.3.6.6",
-  skill: "Core typed inputs from the chapter: email, number, range, date (not exploratory types).",
+  skill: "Core typed inputs: email, number, range, date (not exploratory types).",
   questions: [
     tf(
       "q1-g12-01",
@@ -314,7 +314,7 @@ export const q1Group12: QuestionGroup = {
     ),
     tf(
       "q1-g12-09",
-      "This chapter treats type=\"color\" and type=\"file\" as core required controls that every form must include.",
+      "type=\"color\" and type=\"file\" are core required controls that every form must include.",
       false,
       "Those types are listed as exploratory extras, not the core email/number/range/date set.",
     ),

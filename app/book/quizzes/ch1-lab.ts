@@ -1,6 +1,6 @@
 import type { QuizQuestion } from "./types";
 
-/** Curated self-check bank for Chapter 1 labs. The quiz draws 10. */
+/** Curated self-check bank for Chapter 1 HTML topics. The quiz draws 10. */
 export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
   {
     id: "1-html-acronym",
@@ -30,7 +30,7 @@ export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
     ],
     answer: "b",
     explanation:
-      "JSX is JavaScript XML: HTML-like markup written inside React components. This course uses it in .tsx files.",
+      "JSX is JavaScript XML: HTML-like markup written inside React components. It is typically written in .tsx files.",
   },
   {
     id: "1-xml-acronym",
@@ -66,7 +66,7 @@ export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
     id: "1-spa-acronym",
     section: "1.3.10",
     kind: "acronym",
-    prompt: "What does SPA stand for in this chapter?",
+    prompt: "What does SPA stand for?",
     choices: [
       { id: "a", text: "Server Page Application" },
       { id: "b", text: "Style Property Attribute" },
@@ -91,26 +91,26 @@ export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
     ],
     answer: "c",
     explanation:
-      "A page.tsx file under app/ registers a route. app/labs/lab1/page.tsx is the URL /labs/lab1.",
+      "A page.tsx file under app/ registers a route. app/docs/html/page.tsx is the URL /docs/html.",
   },
   {
     id: "1-forms-folder-no-page",
     section: "1.3.6",
     kind: "concept",
     prompt:
-      "Why must you not put a page.tsx inside app/labs/lab1/forms/?",
+      "Why must you not put a page.tsx inside a folder that only organizes form components?",
     choices: [
       { id: "a", text: "Next.js forbids folders named forms" },
       {
         id: "b",
-        text: "That file would create a /labs/lab1/forms route; the folder is only for organizing components",
+        text: "That file would create a URL for that folder; an organization-only folder should not define a route",
       },
       { id: "c", text: "Forms.tsx cannot import files from a folder that has a page" },
       { id: "d", text: "page.tsx is allowed only at the app/ root" },
     ],
     answer: "b",
     explanation:
-      "Folders with page.tsx become URLs. forms/ is organization so related files sit together. Import Forms from page.tsx with ./forms/Forms.",
+      "Folders with page.tsx become URLs. A forms/ folder can still hold related components. Import them from page.tsx with a relative path such as ./forms/Forms.",
   },
   {
     id: "1-htmlfor",
@@ -164,8 +164,8 @@ export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
     kind: "puzzle",
     prompt:
       "Comedy is selected in radio-genre. The user then picks Weekly in radio-frequency. What is selected?",
-    code: `<input type="radio" name="radio-genre" id="wd-radio-comedy" />
-<input type="radio" name="radio-frequency" id="wd-radio-weekly" />`,
+    code: `<input type="radio" name="radio-genre" id="radio-comedy" />
+<input type="radio" name="radio-frequency" id="radio-weekly" />`,
     choices: [
       { id: "a", text: "Only Weekly — any new radio click clears every radio on the page" },
       { id: "b", text: "Only Comedy — frequency radios do not work" },
@@ -212,15 +212,15 @@ export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
     choices: [
       {
         id: "a",
-        text: "<textarea id=\"wd-textarea\">Lorem ipsum</textarea>",
+        text: "<textarea id=\"bio\">Lorem ipsum</textarea>",
       },
       {
         id: "b",
-        text: "<textarea id=\"wd-textarea\" defaultValue=\"Lorem ipsum\" />",
+        text: "<textarea id=\"bio\" defaultValue=\"Lorem ipsum\" />",
       },
       {
         id: "c",
-        text: "<textarea id=\"wd-textarea\" placeholder=\"Lorem ipsum\" /> with the biography as children",
+        text: "<textarea id=\"bio\" placeholder=\"Lorem ipsum\" /> with the biography as children",
       },
       {
         id: "d",
@@ -235,23 +235,23 @@ export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
     id: "1-link-snippet",
     section: "1.3.10",
     kind: "snippet",
-    prompt: "Which markup navigates from the Labs index to Lab 1 without a full reload?",
+    prompt: "Which markup navigates from /docs to /docs/html without a full reload?",
     choices: [
-      { id: "a", text: '<a href="/labs/lab1">Lab 1</a>' },
-      { id: "b", text: '<Link href="/labs/lab1">Lab 1</Link>' },
-      { id: "c", text: '<a href="#/labs/lab1">Lab 1</a>' },
-      { id: "d", text: '<Link href="app/labs/lab1/page.tsx">Lab 1</Link>' },
+      { id: "a", text: '<a href="/docs/html">HTML examples</a>' },
+      { id: "b", text: '<Link href="/docs/html">HTML examples</Link>' },
+      { id: "c", text: '<a href="#/docs/html">HTML examples</a>' },
+      { id: "d", text: '<Link href="app/docs/html/page.tsx">HTML examples</Link>' },
     ],
     answer: "b",
     explanation:
-      "Import Link from next/link and point href at the route (/labs/lab1), not the file path. A plain <a> still works but reloads the document. Hash routes are not how the App Router works.",
+      "Import Link from next/link and point href at the route (/docs/html), not the file path. A plain <a> still works but reloads the document. Hash routes are not how the App Router works.",
   },
   {
     id: "1-label-htmlfor-id",
     section: "1.3.6.3",
     kind: "concept",
     prompt:
-      "A label has htmlFor=\"wd-radio-comedy\" and a radio has id=\"wd-radio-comedy\". What happens when the user clicks the label text?",
+      "A label has htmlFor=\"comedy\" and a radio has id=\"comedy\". What happens when the user clicks the label text?",
     choices: [
       { id: "a", text: "Nothing — only the circle itself is clickable" },
       { id: "b", text: "The matching radio is selected (or focused)" },
@@ -313,23 +313,23 @@ export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
     section: "1.3.6.4",
     kind: "syntax",
     prompt:
-      "Which markup correctly labels a checkbox in the sibling-label style Lab 1 uses?",
+      "Which markup correctly labels a checkbox in the sibling-label style?",
     choices: [
       {
         id: "a",
-        text: '<input type="checkbox" id="wd-chkbox-comedy" /> <label for="wd-chkbox-comedy">Comedy</label>',
+        text: '<input type="checkbox" id="chk-comedy" /> <label for="chk-comedy">Comedy</label>',
       },
       {
         id: "b",
-        text: '<input type="checkbox" id="wd-chkbox-comedy" /> <label htmlFor="wd-chkbox-comedy">Comedy</label>',
+        text: '<input type="checkbox" id="chk-comedy" /> <label htmlFor="chk-comedy">Comedy</label>',
       },
       {
         id: "c",
-        text: '<input type="checkbox" htmlFor="wd-chkbox-comedy" /> <label id="wd-chkbox-comedy">Comedy</label>',
+        text: '<input type="checkbox" htmlFor="chk-comedy" /> <label id="chk-comedy">Comedy</label>',
       },
       {
         id: "d",
-        text: '<label name="wd-chkbox-comedy">Comedy</label> <input type="checkbox" />',
+        text: '<label name="chk-comedy">Comedy</label> <input type="checkbox" />',
       },
     ],
     answer: "b",
@@ -341,7 +341,7 @@ export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
     section: "1.3.6.1",
     kind: "concept",
     prompt:
-      "For Lab 1 text fields, why use defaultValue instead of value?",
+      "For uncontrolled text fields, why use defaultValue instead of value?",
     choices: [
       {
         id: "a",
@@ -356,14 +356,14 @@ export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
     ],
     answer: "b",
     explanation:
-      "Uncontrolled fields get an initial defaultValue, then the browser owns what the user types. Controlled value needs state and onChange — later chapters.",
+      "Uncontrolled fields get an initial defaultValue, then the browser owns what the user types. Controlled value needs state and onChange.",
   },
   {
     id: "1-textarea-jsx",
     section: "1.3.6.2",
     kind: "puzzle",
     prompt: "What happens in React 19 if you put the starting biography between <textarea> tags?",
-    code: `<textarea id="wd-textarea">Lorem ipsum...</textarea>`,
+    code: `<textarea id="bio">Lorem ipsum...</textarea>`,
     choices: [
       { id: "a", text: "It works — that is the HTML and the JSX pattern" },
       {
@@ -386,7 +386,7 @@ export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
     answer: "defaultValue",
     accept: ["defaultvalue", "default value"],
     explanation:
-      "Lab 1 uses defaultValue for uncontrolled fields. value is the controlled form, saved for later chapters when you wire state.",
+      "Uncontrolled fields use defaultValue. value is the controlled form, used when you wire the field to state.",
   },
   {
     id: "1-img-void",
@@ -491,7 +491,7 @@ export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
     section: "1.3.6.1",
     kind: "syntax",
     prompt:
-      "TextFields returns several sibling tags. Which wrapper groups them without adding an extra DOM node?",
+      "A component returns several sibling tags. Which wrapper groups them without adding an extra DOM node?",
     choices: [
       { id: "a", text: "<div>…</div>" },
       { id: "b", text: "<>…</>" },
@@ -500,7 +500,7 @@ export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
     ],
     answer: "b",
     explanation:
-      "A fragment (<>…</>) groups siblings without inserting a div. Forms.tsx still wraps the assembled fields in a real <form>.",
+      "A fragment (<>…</>) groups siblings without inserting a div. A parent form component can still wrap the assembled fields in a real <form>.",
   },
   {
     id: "1-select-multiple",
@@ -542,7 +542,7 @@ export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
     section: "1.3.7",
     kind: "concept",
     prompt:
-      "In HighlightedParagraph, values such as text and backgroundColor that you pass as attributes are called:",
+      "In a Callout component, values such as text and backgroundColor that you pass as attributes are called:",
     choices: [
       { id: "a", text: "routes" },
       { id: "b", text: "props" },
@@ -558,11 +558,11 @@ export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
     section: "1.3.8",
     kind: "blank",
     prompt:
-      "Content nested between a component’s tags — for example the list inside <HighlightedBox>…</HighlightedBox> — arrives as the _____ prop.",
+      "Content nested between a component’s tags — for example the list inside <Panel>…</Panel> — arrives as the _____ prop.",
     answer: "children",
     accept: ["the children", "children prop", "the children prop"],
     explanation:
-      "children is the nested body. HighlightedBox wraps whatever you put between its tags. Layouts use the same idea.",
+      "children is the nested body. A wrapper component renders whatever you put between its tags. Layouts use the same idea.",
   },
   {
     id: "1-link-vs-a",
@@ -577,11 +577,11 @@ export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
         text: "Link intercepts navigation so React can swap the next route without a full page reload",
       },
       { id: "c", text: "<a> cannot have an href" },
-      { id: "d", text: "Link is only for hash fragments such as #wd-anchor-bottom" },
+      { id: "d", text: "Link is only for hash fragments such as #overview" },
     ],
     answer: "b",
     explanation:
-      "A plain <a href=\"/labs/lab1\"> asks the browser for a new document. Link keeps the SPA shell. Use <a> for true external URLs.",
+      "A plain <a href=\"/docs/html\"> asks the browser for a new document. Link keeps the SPA shell. Use <a> for true external URLs.",
   },
   {
     id: "1-href-hash",
@@ -591,9 +591,9 @@ export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
       "Which href scrolls to an element on the same page without loading a new document?",
     choices: [
       { id: "a", text: "https://www.lipsum.com" },
-      { id: "b", text: "/labs/lab1" },
-      { id: "c", text: "#wd-anchor-bottom" },
-      { id: "d", text: "app/labs/lab1/page.tsx" },
+      { id: "b", text: "/docs/html" },
+      { id: "c", text: "#overview" },
+      { id: "d", text: "app/docs/html/page.tsx" },
     ],
     answer: "c",
     explanation:
@@ -604,18 +604,18 @@ export const CH1_LAB_QUESTIONS: QuizQuestion[] = [
     section: "1.3.11",
     kind: "concept",
     prompt:
-      "What does app/labs/layout.tsx do that page.tsx does not?",
+      "What does app/docs/layout.tsx do that page.tsx does not?",
     choices: [
-      { id: "a", text: "It creates the URL /labs/layout" },
+      { id: "a", text: "It creates the URL /docs/layout" },
       {
         id: "b",
         text: "It wraps page.tsx files in the same folder and below, so shared chrome such as a TOC is not copied into each page",
       },
-      { id: "c", text: "It replaces page.tsx so Lab 1 no longer needs a page file" },
+      { id: "c", text: "It replaces page.tsx so child routes no longer need a page file" },
       { id: "d", text: "It only runs in production" },
     ],
     answer: "b",
     explanation:
-      "layout.tsx does not create its own URL. It receives children — the page (and nested layouts) — and wraps them. app/labs/layout.tsx wraps every /labs route.",
+      "layout.tsx does not create its own URL. It receives children — the page (and nested layouts) — and wraps them. app/docs/layout.tsx wraps every /docs route.",
   },
 ];

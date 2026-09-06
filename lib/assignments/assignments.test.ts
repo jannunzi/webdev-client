@@ -7,7 +7,7 @@ import {
   evaluateRubricSpec,
 } from "./a1-rubric";
 import { A2_RUBRIC } from "./a2";
-import { listCanvasFollowupCopy } from "./canvas-copy";
+import { listCanvasFollowupCopy, listCanvasQuizFollowupCopy } from "./canvas-copy";
 import { supportsUrlSubmission } from "./access";
 import {
   COURSE_SITE_ORIGIN,
@@ -111,6 +111,14 @@ describe("assignment catalog", () => {
       assert.match(row.html, /school email/);
       assert.doesNotMatch(row.html, /Clerk|rubric|Best \/ Better/i);
     }
+  });
+
+  it("re-exports Canvas quiz fallback copy with the website take URL", () => {
+    const quizzes = listCanvasQuizFollowupCopy();
+    assert.equal(quizzes.length, 8);
+    assert.match(quizzes[0]?.html ?? "", /quizzes\/take\/q1/);
+    assert.match(quizzes[0]?.html ?? "", /permission to take this Canvas quiz instead/);
+    assert.doesNotMatch(quizzes[0]?.html ?? "", /Clerk|Kambaz|Lab [0-9]/);
   });
 
   it("keeps unique criterion ids and book deep links on A1 and A2", () => {

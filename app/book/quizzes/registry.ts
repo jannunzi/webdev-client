@@ -21,7 +21,7 @@ export type PracticeQuiz = {
 export const PRACTICE_QUIZZES: PracticeQuiz[] = [
   {
     quizId: "1.lab",
-    title: "Chapter 1 lab — HTML",
+    title: "Chapter 1 — HTML",
     chapterId: "ch1",
     chapterLabel: "Chapter 1 — HTML",
     chapterHref: "/book/ch1",
@@ -32,7 +32,7 @@ export const PRACTICE_QUIZZES: PracticeQuiz[] = [
   },
   {
     quizId: "2.1",
-    title: "§2.1 — CSS",
+    title: "Chapter 2 — CSS",
     chapterId: "ch2",
     chapterLabel: "Chapter 2 — CSS & Tailwind",
     chapterHref: "/book/ch2",
@@ -43,7 +43,7 @@ export const PRACTICE_QUIZZES: PracticeQuiz[] = [
   },
   {
     quizId: "3.lab",
-    title: "Chapter 3 lab — JavaScript",
+    title: "Chapter 3 — JavaScript",
     chapterId: "ch3",
     chapterLabel: "Chapter 3 — JavaScript",
     chapterHref: "/book/ch3",
@@ -54,7 +54,7 @@ export const PRACTICE_QUIZZES: PracticeQuiz[] = [
   },
   {
     quizId: "4.lab",
-    title: "Chapter 4 lab — Client state",
+    title: "Chapter 4 — Client state",
     chapterId: "ch4",
     chapterLabel: "Chapter 4 — Client State",
     chapterHref: "/book/ch4",
@@ -65,7 +65,7 @@ export const PRACTICE_QUIZZES: PracticeQuiz[] = [
   },
   {
     quizId: "5.lab",
-    title: "Chapter 5 lab — Express REST APIs",
+    title: "Chapter 5 — Express REST APIs",
     chapterId: "ch5",
     chapterLabel: "Chapter 5 — Express REST APIs",
     chapterHref: "/book/ch5",
@@ -76,7 +76,7 @@ export const PRACTICE_QUIZZES: PracticeQuiz[] = [
   },
   {
     quizId: "6.lab",
-    title: "Chapter 6 lab — MongoDB",
+    title: "Chapter 6 — MongoDB",
     chapterId: "ch6",
     chapterLabel: "Chapter 6 — MongoDB",
     chapterHref: "/book/ch6",
