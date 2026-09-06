@@ -98,10 +98,26 @@ export { KAMBAZ_COURSES_STORE_SLIDES } from "./decks/kambaz-courses-store";
 export { KAMBAZ_DASHBOARD_CRUD_SLIDES } from "./decks/kambaz-dashboard-crud";
 export { KAMBAZ_MODULES_STORE_SLIDES } from "./decks/kambaz-modules-store";
 export { KAMBAZ_ACCOUNT_CONTEXT_SLIDES } from "./decks/kambaz-account-context";
+export { HTTP_SERVER_SLIDES } from "./decks/http-server";
+export { NODEMON_ES6_ROUTES_SLIDES } from "./decks/nodemon-es6-routes";
+export { LAB5_ENV_SLIDES } from "./decks/lab5-env";
+export { PATH_AND_QUERY_SLIDES } from "./decks/path-and-query";
+export { REMOTE_OBJECTS_SLIDES } from "./decks/remote-objects";
+export { REMOTE_ARRAYS_SLIDES } from "./decks/remote-arrays";
+export { ASYNC_HTTP_SLIDES } from "./decks/async-http";
+export { NEXT_ROUTES_SLIDES } from "./decks/next-routes";
+export { CH5_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch5-check-understanding";
+export { KAMBAZ_MIGRATE_DB_SLIDES } from "./decks/kambaz-migrate-db";
+export { KAMBAZ_ACCOUNT_REST_SLIDES } from "./decks/kambaz-account-rest";
+export { KAMBAZ_SESSIONS_SLIDES } from "./decks/kambaz-sessions";
+export { KAMBAZ_COURSES_API_SLIDES } from "./decks/kambaz-courses-api";
+export { DEPLOY_API_SLIDES } from "./decks/deploy-api";
+export { CH5_CONCLUSION_SLIDES } from "./decks/ch5-conclusion";
 export {
   BOOK_CHAPTERS,
   CHAPTER_3_SLUGS,
   CHAPTER_4_SLUGS,
+  CHAPTER_5_SLUGS,
   LECTURE_1_SLUGS,
   LECTURE_2_SLUGS,
   LECTURE_3_SLUGS,

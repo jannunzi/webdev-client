@@ -76,6 +76,21 @@ import { KAMBAZ_COURSES_STORE_SLIDES } from "./decks/kambaz-courses-store";
 import { KAMBAZ_DASHBOARD_CRUD_SLIDES } from "./decks/kambaz-dashboard-crud";
 import { KAMBAZ_MODULES_STORE_SLIDES } from "./decks/kambaz-modules-store";
 import { KAMBAZ_ACCOUNT_CONTEXT_SLIDES } from "./decks/kambaz-account-context";
+import { HTTP_SERVER_SLIDES } from "./decks/http-server";
+import { NODEMON_ES6_ROUTES_SLIDES } from "./decks/nodemon-es6-routes";
+import { LAB5_ENV_SLIDES } from "./decks/lab5-env";
+import { PATH_AND_QUERY_SLIDES } from "./decks/path-and-query";
+import { REMOTE_OBJECTS_SLIDES } from "./decks/remote-objects";
+import { REMOTE_ARRAYS_SLIDES } from "./decks/remote-arrays";
+import { ASYNC_HTTP_SLIDES } from "./decks/async-http";
+import { NEXT_ROUTES_SLIDES } from "./decks/next-routes";
+import { CH5_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch5-check-understanding";
+import { KAMBAZ_MIGRATE_DB_SLIDES } from "./decks/kambaz-migrate-db";
+import { KAMBAZ_ACCOUNT_REST_SLIDES } from "./decks/kambaz-account-rest";
+import { KAMBAZ_SESSIONS_SLIDES } from "./decks/kambaz-sessions";
+import { KAMBAZ_COURSES_API_SLIDES } from "./decks/kambaz-courses-api";
+import { DEPLOY_API_SLIDES } from "./decks/deploy-api";
+import { CH5_CONCLUSION_SLIDES } from "./decks/ch5-conclusion";
 import {
   BOOK_CHAPTERS,
   LECTURE_SLUGS,
@@ -911,6 +926,156 @@ const LECTURE_SUMMARIES: Record<
     bookSectionId: "sec-4-10-5",
     canvasLecture: 15,
     slides: KAMBAZ_ACCOUNT_CONTEXT_SLIDES,
+  },
+  "http-server": {
+    title: "HTTP Server",
+    summary:
+      "Sibling webdev-server, Hello.js, and Express GET /hello on port 4000 — §5.1.",
+    chapter: 5,
+    topicId: "http-server",
+    bookSectionId: "sec-5-1",
+    canvasLecture: 16,
+    slides: HTTP_SERVER_SLIDES,
+  },
+  "nodemon-es6-routes": {
+    title: "Nodemon, ES6, and Routes",
+    summary:
+      "Nodemon, \"type\": \"module\", npm scripts, then Hello(app) extracted from index.js — §5.1.6–5.1.8.",
+    chapter: 5,
+    topicId: "http-server",
+    bookSectionId: "sec-5-1-6",
+    canvasLecture: 16,
+    slides: NODEMON_ES6_ROUTES_SLIDES,
+  },
+  "lab5-env": {
+    title: "Lab 5 Environment",
+    summary:
+      "Two terminals, /lab5/welcome, NEXT_PUBLIC_HTTP_SERVER, and httpServer() — §5.2.1.",
+    chapter: 5,
+    topicId: "lab5-api",
+    bookSectionId: "sec-5-2-1",
+    canvasLecture: 17,
+    slides: LAB5_ENV_SLIDES,
+  },
+  "path-and-query": {
+    title: "Path and Query Parameters",
+    summary:
+      "req.params vs req.query, .toString() on results, then multiply and divide on your own — §5.2.2.",
+    chapter: 5,
+    topicId: "lab5-api",
+    bookSectionId: "sec-5-2-2",
+    canvasLecture: 17,
+    slides: PATH_AND_QUERY_SLIDES,
+  },
+  "remote-objects": {
+    title: "Remote Objects",
+    summary:
+      "res.json an assignment, GET a property, then mutate title from the path — §5.2.3.",
+    chapter: 5,
+    topicId: "lab5-api",
+    bookSectionId: "sec-5-2-3",
+    canvasLecture: 17,
+    slides: REMOTE_OBJECTS_SLIDES,
+  },
+  "remote-arrays": {
+    title: "Remote Arrays",
+    summary:
+      "CRUD on /lab5/todos — get all, get by id, then create and delete via GET first — §5.2.4.",
+    chapter: 5,
+    topicId: "lab5-api",
+    bookSectionId: "sec-5-2-4",
+    canvasLecture: 18,
+    slides: REMOTE_ARRAYS_SLIDES,
+  },
+  "async-http": {
+    title: "Async HTTP and JSON",
+    summary:
+      "axios, CORS, a client library, express.json(), then POST / PUT / DELETE — §5.2.5–5.2.6.",
+    chapter: 5,
+    topicId: "lab5-api",
+    bookSectionId: "sec-5-2-5",
+    canvasLecture: 18,
+    slides: ASYNC_HTTP_SLIDES,
+  },
+  "next-routes": {
+    title: "Next.js Server Routes",
+    summary:
+      "Same-origin /api/lab5/hello and a calculator Route Handler — not a replacement for Express — §5.3.",
+    chapter: 5,
+    topicId: "next-routes",
+    bookSectionId: "sec-5-3",
+    canvasLecture: 18,
+    slides: NEXT_ROUTES_SLIDES,
+  },
+  "ch5-check-understanding": {
+    title: "Check Your Understanding",
+    summary:
+      "A 10-item self-check on Express setup, CORS, axios, and the Next.js calculator — §5-check.",
+    chapter: 5,
+    topicId: "ch5-check",
+    bookSectionId: "sec-5-check",
+    canvasLecture: 18,
+    slides: CH5_CHECK_UNDERSTANDING_SLIDES,
+  },
+  "kambaz-migrate-db": {
+    title: "Migrating the Database",
+    summary:
+      "Copy Chapter 3 JSON into Kambaz/Database as export default modules — §5.4.1.",
+    chapter: 5,
+    topicId: "kambaz-server",
+    bookSectionId: "sec-5-4-1",
+    canvasLecture: 19,
+    slides: KAMBAZ_MIGRATE_DB_SLIDES,
+  },
+  "kambaz-account-rest": {
+    title: "Account REST APIs",
+    summary:
+      "Users DAO, POST signin/signup/profile/signout, axios, and setCurrentUser — §5.4.2.",
+    chapter: 5,
+    topicId: "kambaz-server",
+    bookSectionId: "sec-5-4-2",
+    canvasLecture: 19,
+    slides: KAMBAZ_ACCOUNT_REST_SLIDES,
+  },
+  "kambaz-sessions": {
+    title: "Sessions and Axios",
+    summary:
+      "express-session, CORS credentials, req.session.currentUser, and axios withCredentials — §5.4.3.",
+    chapter: 5,
+    topicId: "kambaz-server",
+    bookSectionId: "sec-5-4-3",
+    canvasLecture: 19,
+    slides: KAMBAZ_SESSIONS_SLIDES,
+  },
+  "kambaz-courses-api": {
+    title: "Courses API",
+    summary:
+      "Courses DAO, GET enrolled courses, POST that enrolls the creator, modules on your own — §5.4.5.",
+    chapter: 5,
+    topicId: "kambaz-server",
+    bookSectionId: "sec-5-4-5",
+    canvasLecture: 19,
+    slides: KAMBAZ_COURSES_API_SLIDES,
+  },
+  "deploy-api": {
+    title: "Deploy the API",
+    summary:
+      "Second GitHub repo, Render npm start, then Vercel NEXT_PUBLIC_HTTP_SERVER — §5.5.",
+    chapter: 5,
+    topicId: "deploy-api",
+    bookSectionId: "sec-5-5",
+    canvasLecture: 20,
+    slides: DEPLOY_API_SLIDES,
+  },
+  "ch5-conclusion": {
+    title: "Chapter 5 Conclusion",
+    summary:
+      "Sibling Express, Lab 5, Kambaz APIs, then branch a5 in both repos — §5.6–5.7.",
+    chapter: 5,
+    topicId: "ch5-end",
+    bookSectionId: "sec-5-6",
+    canvasLecture: 20,
+    slides: CH5_CONCLUSION_SLIDES,
   },
 };
 

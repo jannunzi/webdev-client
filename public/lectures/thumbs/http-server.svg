@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title">
+  <title id="title">HTTP Server</title>
+  <rect width="1280" height="720" fill="#052E16"/>
+  <rect x="0" y="0" width="18" height="720" fill="#68A063"/>
+  <text x="72" y="64" fill="#CBD5E1" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" letter-spacing="4">WEB DEV · CHAPTER 5</text>
+  
+  <g transform="translate(70 70)">
+    <path d="M180 28 48 104v152l132 76 132-76V104L180 28z" fill="#3C873A"/>
+    <path d="M180 52 78 112v128l102 58 102-58V112L180 52z" fill="#68A063"/>
+    <text x="180" y="200" text-anchor="middle" fill="#fff" font-family="ui-sans-serif, system-ui, sans-serif" font-size="72" font-weight="800">JS</text>
+  </g>
+  <text x="72" y="640" fill="#F8FAFC" font-family="ui-sans-serif, system-ui, sans-serif" font-size="56" font-weight="800">HTTP Server</text>
+</svg>

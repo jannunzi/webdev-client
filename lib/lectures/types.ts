@@ -78,6 +78,25 @@ export const CHAPTER_4_SLUGS = [
   "kambaz-account-context",
 ] as const;
 
+/** Chapter 5 decks — Express HTTP, Lab 5 APIs, Next routes, Kambaz server, deploy (Lab 5 / A5). */
+export const CHAPTER_5_SLUGS = [
+  "http-server",
+  "nodemon-es6-routes",
+  "lab5-env",
+  "path-and-query",
+  "remote-objects",
+  "remote-arrays",
+  "async-http",
+  "next-routes",
+  "ch5-check-understanding",
+  "kambaz-migrate-db",
+  "kambaz-account-rest",
+  "kambaz-sessions",
+  "kambaz-courses-api",
+  "deploy-api",
+  "ch5-conclusion",
+] as const;
+
 /** Chapter 3 decks — JavaScript, data-driven UI, and Kambaz from JSON (Lab 3 / A3). */
 export const CHAPTER_3_SLUGS = [
   "intro-to-javascript",
@@ -114,6 +133,7 @@ export const LECTURE_SLUGS = [
   ...LECTURE_7_SLUGS,
   ...CHAPTER_3_SLUGS,
   ...CHAPTER_4_SLUGS,
+  ...CHAPTER_5_SLUGS,
 ] as const;
 
 /** Book spine used by the slides hub and nav — not Canvas week folders. */
@@ -306,6 +326,48 @@ export const LECTURE_TOPICS = [
     title: "4.10 Adding State to the Kambaz User Interface",
     bookSectionId: "sec-4-10",
   },
+  {
+    topicId: "http-server",
+    chapter: 5,
+    title: "5.1 Installing and Configuring an HTTP Web Server",
+    bookSectionId: "sec-5-1",
+  },
+  {
+    topicId: "lab5-api",
+    chapter: 5,
+    title: "5.2 Lab Exercises",
+    bookSectionId: "sec-5-2",
+  },
+  {
+    topicId: "next-routes",
+    chapter: 5,
+    title: "5.3 Next.js Server Routes",
+    bookSectionId: "sec-5-3",
+  },
+  {
+    topicId: "ch5-check",
+    chapter: 5,
+    title: "Check Your Understanding",
+    bookSectionId: "sec-5-check",
+  },
+  {
+    topicId: "kambaz-server",
+    chapter: 5,
+    title: "5.4 Implementing the Kambaz Node.js HTTP Server",
+    bookSectionId: "sec-5-4",
+  },
+  {
+    topicId: "deploy-api",
+    chapter: 5,
+    title: "5.5 Deploying to a Public Remote Server",
+    bookSectionId: "sec-5-5",
+  },
+  {
+    topicId: "ch5-end",
+    chapter: 5,
+    title: "5.6 Conclusion",
+    bookSectionId: "sec-5-6",
+  },
 ] as const;
 
 export type LectureTopicId = (typeof LECTURE_TOPICS)[number]["topicId"];
@@ -456,6 +518,9 @@ export const LECTURE_EMBED_IDS = [
   "zustand-todos",
   "use-effect",
   "kambaz-courses-crud",
+  "lab5-env",
+  "lab5-hello",
+  "lab5-calculator",
 ] as const;
 
 export type LectureEmbedId = (typeof LECTURE_EMBED_IDS)[number];
