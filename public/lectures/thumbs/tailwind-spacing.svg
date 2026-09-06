@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title">
+  <title id="title">Tailwind Spacing</title>
+  <rect width="1280" height="720" fill="#F0F9FF"/>
+  <rect x="0" y="0" width="18" height="720" fill="#0284C7"/>
+  <text x="72" y="64" fill="#0369A1" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" letter-spacing="4">WEB DEV · CHAPTER 2</text>
+
+  <rect x="90" y="160" width="420" height="220" fill="#BAE6FD" stroke="#0284C7" stroke-width="6"/>
+  <rect x="150" y="210" width="300" height="120" fill="#7DD3FC"/>
+  <rect x="190" y="240" width="220" height="60" fill="#0EA5E9"/>
+  
+  <text x="72" y="640" fill="#0C4A6E" font-family="ui-sans-serif, system-ui, sans-serif" font-size="56" font-weight="800">Tailwind Spacing</text>
+</svg>

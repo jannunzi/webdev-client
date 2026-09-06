@@ -74,11 +74,11 @@ export const CSS_ROTATION_SLIDES: LectureSlide[] = [
   },
   {
     id: "next-up",
-    title: "After Lecture 4",
+    title: "Next: React Icons",
     kind: "title",
     bullets: [
-      "Open Chapter 2 in the book and finish Lab 2 §2.1",
-      "Tailwind utilities and Kambaz styling come later — CSS first so those classes make sense",
+      "Open Chapter 2 and finish Lab 2 §2.1",
+      "Next decks: React Icons, then Tailwind utilities, then Kambaz styling",
     ],
   },
 ];

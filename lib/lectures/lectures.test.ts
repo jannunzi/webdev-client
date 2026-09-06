@@ -23,6 +23,8 @@ import {
   LECTURE_2_SLUGS,
   LECTURE_3_SLUGS,
   LECTURE_4_SLUGS,
+  LECTURE_6_SLUGS,
+  LECTURE_7_SLUGS,
   LECTURE_TOPICS,
   LECTURE_DIAGRAM_IDS,
   LECTURE_EMBED_IDS,
@@ -68,18 +70,22 @@ function findSlide(deckSlug: string, id: string) {
 }
 
 describe("lecture catalog", () => {
-  it("lists slugs in book-spine order (Ch1 intro/setup/HTML/Kambaz, then Ch2 CSS)", () => {
+  it("lists slugs in book-spine order (Ch1, Ch2 CSS, then Tailwind and Kambaz styling)", () => {
     assert.deepEqual(listLectureSlugs(), [
       ...LECTURE_1_SLUGS,
       ...LECTURE_2_SLUGS,
       ...LECTURE_3_SLUGS,
       ...LECTURE_4_SLUGS,
+      ...LECTURE_6_SLUGS,
+      ...LECTURE_7_SLUGS,
     ]);
     assert.deepEqual(listLectureSlugs(), [...LECTURE_SLUGS]);
     assert.equal(LECTURE_1_SLUGS.length, 5);
     assert.equal(LECTURE_2_SLUGS.length, 6);
     assert.equal(LECTURE_3_SLUGS.length, 7);
     assert.equal(LECTURE_4_SLUGS.length, 8);
+    assert.equal(LECTURE_6_SLUGS.length, 7);
+    assert.equal(LECTURE_7_SLUGS.length, 6);
   });
 
   it("marks Lecture 1 entries as Canvas Lecture 1 / Chapter 1", () => {
@@ -129,7 +135,43 @@ describe("lecture catalog", () => {
     assert.equal(isLectureSlug("intro-to-web-development"), true);
     assert.equal(isLectureSlug("html-and-dom"), true);
     assert.equal(isLectureSlug("css-intro"), true);
+    assert.equal(isLectureSlug("react-icons"), true);
+    assert.equal(isLectureSlug("kambaz-styling"), true);
     assert.equal(isLectureSlug("intro"), false);
+  });
+
+  it("marks Tailwind library decks as Canvas Lecture 6 / Chapter 2", () => {
+    const items = listLectures().filter((item) => item.canvasLecture === 6);
+    assert.equal(items.length, 7);
+    assert.deepEqual(
+      items.map((item) => item.slug),
+      [...LECTURE_6_SLUGS],
+    );
+    for (const item of items) {
+      assert.equal(item.chapter, 2);
+      assert.equal(item.topicId, "tailwind");
+      assert.equal(item.topic, "Tailwind");
+      assert.equal(item.canvasLecture, 6);
+      assert.equal(item.chapterHref, "/book/ch2");
+      assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
+    }
+  });
+
+  it("marks Kambaz styling decks as Canvas Lecture 7 / Chapter 2", () => {
+    const items = listLectures().filter((item) => item.canvasLecture === 7);
+    assert.equal(items.length, 6);
+    assert.deepEqual(
+      items.map((item) => item.slug),
+      [...LECTURE_7_SLUGS],
+    );
+    for (const item of items) {
+      assert.equal(item.chapter, 2);
+      assert.equal(item.topicId, "kambaz-styling");
+      assert.equal(item.topic, "Kambaz styling");
+      assert.equal(item.canvasLecture, 7);
+      assert.equal(item.chapterHref, "/book/ch2");
+      assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
+    }
   });
 
   it("marks Lecture 4 entries as Canvas Lecture 4 / Chapter 2", () => {
@@ -215,8 +257,14 @@ describe("lecture catalog", () => {
       groups[1]?.topics[0]?.decks.map((deck) => deck.slug),
       [...LECTURE_4_SLUGS],
     );
-    assert.equal(groups[1]?.topics[1]?.decks.length, 0);
-    assert.equal(groups[1]?.topics[2]?.decks.length, 0);
+    assert.deepEqual(
+      groups[1]?.topics[1]?.decks.map((deck) => deck.slug),
+      [...LECTURE_6_SLUGS],
+    );
+    assert.deepEqual(
+      groups[1]?.topics[2]?.decks.map((deck) => deck.slug),
+      [...LECTURE_7_SLUGS],
+    );
 
     for (const group of groups) {
       assert.doesNotMatch(group.title, /^Lecture \d+$/);
@@ -301,13 +349,34 @@ describe("lecture catalog", () => {
       lectureDeckThumbnail("css-intro"),
       "/lectures/thumbs/css-intro.svg",
     );
-    for (const group of groups.slice(4)) {
+    assert.equal(groups[4]?.title, "Lecture 5");
+    assert.equal(groups[4]?.canvasLecture, 5);
+    assert.equal(groups[4]?.decks.length, 0);
+    assert.equal(groups[5]?.title, "Lecture 6");
+    assert.equal(groups[5]?.canvasLecture, 6);
+    assert.equal(groups[5]?.decks.length, 7);
+    assert.deepEqual(
+      groups[5]?.decks.map((deck) => deck.slug),
+      [...LECTURE_6_SLUGS],
+    );
+    assert.equal(groups[6]?.title, "Lecture 7");
+    assert.equal(groups[6]?.canvasLecture, 7);
+    assert.equal(groups[6]?.decks.length, 6);
+    assert.deepEqual(
+      groups[6]?.decks.map((deck) => deck.slug),
+      [...LECTURE_7_SLUGS],
+    );
+    assert.equal(
+      lectureDeckThumbnail("react-icons"),
+      "/lectures/thumbs/react-icons.svg",
+    );
+    for (const group of groups.slice(7)) {
       assert.equal(group.title, `Lecture ${group.canvasLecture}`);
       assert.equal(group.decks.length, 0);
     }
   });
 
-  it("walks adjacent decks across Lecture 1 into Lecture 4", () => {
+  it("walks adjacent decks across Lecture 1 into Lecture 7", () => {
     const first = adjacentLectureSlugs("intro-to-web-development");
     assert.equal(first.prev, undefined);
     assert.equal(first.next?.slug, "installing-nodejs");
@@ -320,9 +389,14 @@ describe("lecture catalog", () => {
     const lastLecture3 = adjacentLectureSlugs("kambaz-assignments");
     assert.equal(lastLecture3.next?.slug, "css-intro");
     assert.equal(lastLecture3.prev?.slug, "kambaz-modules");
-    const last = adjacentLectureSlugs("css-rotation");
+    const lastLecture4 = adjacentLectureSlugs("css-rotation");
+    assert.equal(lastLecture4.next?.slug, "react-icons");
+    assert.equal(lastLecture4.prev?.slug, "css-flex");
+    const lastLecture6 = adjacentLectureSlugs("tailwind-responsive");
+    assert.equal(lastLecture6.next?.slug, "kambaz-styling");
+    const last = adjacentLectureSlugs("kambaz-account-styling");
     assert.equal(last.next, undefined);
-    assert.equal(last.prev?.slug, "css-flex");
+    assert.equal(last.prev?.slug, "kambaz-assignments-styling");
   });
 });
 
@@ -359,6 +433,19 @@ describe("lecture decks", () => {
     assert.equal(counts["css-float"], 8);
     assert.equal(counts["css-flex"], 7);
     assert.equal(counts["css-rotation"], 6);
+    assert.equal(counts["react-icons"], 8);
+    assert.equal(counts["tailwind-intro"], 9);
+    assert.equal(counts["tailwind-spacing"], 7);
+    assert.equal(counts["tailwind-typography"], 6);
+    assert.equal(counts["tailwind-colors"], 8);
+    assert.equal(counts["tailwind-flex-and-grid"], 8);
+    assert.equal(counts["tailwind-responsive"], 7);
+    assert.equal(counts["kambaz-styling"], 8);
+    assert.equal(counts["kambaz-nav-styling"], 7);
+    assert.equal(counts["kambaz-dashboard-styling"], 7);
+    assert.equal(counts["kambaz-courses-styling"], 13);
+    assert.equal(counts["kambaz-assignments-styling"], 9);
+    assert.equal(counts["kambaz-account-styling"], 7);
     for (const deck of decks) {
       const ids = deck.slides.map((slide) => slide.id);
       assert.equal(new Set(ids).size, ids.length, `${deck.slug} duplicate slide id`);
@@ -552,6 +639,30 @@ describe("lecture decks", () => {
         rotate: "css-rotate",
         gradient: "css-gradient",
       },
+      "react-icons": { sampler: "react-icons" },
+      "tailwind-spacing": { demo: "tw-spacing" },
+      "tailwind-typography": { demo: "tw-typography" },
+      "tailwind-colors": {
+        demo: "tw-backgrounds",
+        "filters-demo": "tw-filters",
+      },
+      "tailwind-flex-and-grid": {
+        "flex-demo": "tw-flex",
+        "grid-demo": "tw-grids",
+      },
+      "tailwind-responsive": { demo: "tw-responsive" },
+      "kambaz-nav-styling": { demo: "kambaz-styled-nav" },
+      "kambaz-dashboard-styling": { demo: "kambaz-styled-dashboard" },
+      "kambaz-courses-styling": {
+        "course-nav-demo": "kambaz-styled-course-nav",
+        "modules-demo": "kambaz-styled-modules",
+        "home-demo": "kambaz-styled-home",
+      },
+      "kambaz-assignments-styling": {
+        "people-demo": "kambaz-styled-people",
+        "assignments-demo": "kambaz-styled-assignments",
+      },
+      "kambaz-account-styling": { demo: "kambaz-styled-signin" },
     } as const;
     const used = new Set<string>();
     for (const [slug, slides] of Object.entries(expected)) {
@@ -796,6 +907,90 @@ describe("lecture decks", () => {
     assert.match(rotation, /Not required for Lab 2/);
   });
 
+  it("teaches Chapter 2 Tailwind and Kambaz styling after Lecture 4", () => {
+    const icons = slideText("react-icons");
+    assert.match(icons, /npm install react-icons/);
+    assert.match(icons, /ReactIconsSampler/);
+    assert.match(icons, /react-icons\/fa/);
+    assert.match(icons, /text-3xl/);
+    assert.doesNotMatch(icons, /kit\.fontawesome/);
+
+    const intro = slideText("tailwind-intro");
+    assert.match(intro, /@import "tailwindcss"/);
+    assert.match(intro, /app\/labs\/lab2\/tailwind\/index\.css/);
+    assert.match(intro, /Preflight/);
+    assert.match(intro, /create-next-app/);
+    assert.doesNotMatch(intro, /npm install bootstrap/i);
+
+    const spacing = slideText("tailwind-spacing");
+    assert.match(spacing, /TailwindSpacing/);
+    assert.match(spacing, /mb-4/);
+    assert.match(spacing, /ms-4 me-8/);
+
+    const type = slideText("tailwind-typography");
+    assert.match(type, /TailwindTypography/);
+    assert.match(type, /text-sm/);
+    assert.match(type, /font-black/);
+
+    const colors = slideText("tailwind-colors");
+    assert.match(colors, /bg-red-500/);
+    assert.match(colors, /yellow-500/);
+    assert.match(colors, /blur-lg/);
+    assert.match(colors, /TailwindFilters/);
+
+    const flexGrid = slideText("tailwind-flex-and-grid");
+    assert.match(flexGrid, /shrink-0/);
+    assert.match(flexGrid, /grid-cols-4/);
+    assert.match(flexGrid, /col-span-4/);
+    assert.match(flexGrid, /wd-tailwind-grid-system/);
+    assert.doesNotMatch(flexGrid, /wd-flex-row-container/);
+
+    const responsive = slideText("tailwind-responsive");
+    assert.match(responsive, /md:flex/);
+    assert.match(responsive, /TailwindResponsiveDesign/);
+    assert.match(responsive, /mobile-first/i);
+
+    const shell = slideText("kambaz-styling");
+    assert.match(shell, /tailwindcss\/theme/);
+    assert.match(shell, /utilities\.css/);
+    assert.match(shell, /kambaz\.css/);
+    assert.match(shell, /wd-main-content-offset/);
+    assert.match(shell, /font-sans/);
+
+    const nav = slideText("kambaz-nav-styling");
+    assert.match(nav, /wd-kambaz-navigation/);
+    assert.match(nav, /hidden md:block/);
+    assert.match(nav, /FaRegCircleUser/);
+    assert.match(nav, /margin-left: 120px/);
+
+    const dash = slideText("kambaz-dashboard-styling");
+    assert.match(dash, /CourseCard/);
+    assert.match(dash, /wd-dashboard-courses/);
+    assert.match(dash, /sm:grid-cols-2/);
+    assert.match(dash, /Published Courses \(3\)/);
+
+    const courses = slideText("kambaz-courses-styling");
+    assert.match(courses, /wd-courses-navigation/);
+    assert.match(courses, /list-group-item/);
+    assert.match(courses, /GreenCheckmark/);
+    assert.match(courses, /hidden lg:block/);
+    assert.match(courses, /wd-course-status/);
+
+    const assignments = slideText("kambaz-assignments-styling");
+    assert.match(assignments, /wd-people-table/);
+    assert.match(assignments, /odd:bg-neutral-50/);
+    assert.match(assignments, /wd-search-assignment/);
+    assert.match(assignments, /AssignmentItem/);
+    assert.match(assignments, /wd-assignments-editor/);
+    assert.match(assignments, /wd-cancel/);
+
+    const account = slideText("kambaz-account-styling");
+    assert.match(account, /wd-signin-screen/);
+    assert.match(account, /wd-signin-btn/);
+    assert.match(account, /max-w-sm/);
+    assert.doesNotMatch(account, /HashRouter/);
+  });
+
 
   it("scrolls the slide pane with Up\/Down only when content overflows", () => {
     assert.equal(slidePaneOverflows(null), false);
@@ -1004,6 +1199,10 @@ describe("lecture decks", () => {
     assert.deepEqual(pancakes.codeAddedLines, [[2, 11]]);
     assert.deepEqual(signup.codeAddedLines, [11]);
     assert.deepEqual(cssImport.codeAddedLines, [1]);
+    const twPage = findSlide("tailwind-intro", "page");
+    const navOffset = findSlide("kambaz-nav-styling", "offset");
+    assert.deepEqual(twPage.codeAddedLines, [1, [5, 6]]);
+    assert.deepEqual(navOffset.codeAddedLines, [[1, 5]]);
     const server = lectureSlideCodeBlocks(express).find((block) =>
       block.file === "server.js",
     );

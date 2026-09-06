@@ -41,12 +41,27 @@ export { CSS_INTRO_SLIDES } from "./decks/css-intro";
 export { CSS_MEDIA_QUERIES_SLIDES } from "./decks/css-media-queries";
 export { CSS_ROTATION_SLIDES } from "./decks/css-rotation";
 export { CSS_SIZE_AND_POSITION_SLIDES } from "./decks/css-size-and-position";
+export { REACT_ICONS_SLIDES } from "./decks/react-icons";
+export { TAILWIND_INTRO_SLIDES } from "./decks/tailwind-intro";
+export { TAILWIND_SPACING_SLIDES } from "./decks/tailwind-spacing";
+export { TAILWIND_TYPOGRAPHY_SLIDES } from "./decks/tailwind-typography";
+export { TAILWIND_COLORS_SLIDES } from "./decks/tailwind-colors";
+export { TAILWIND_FLEX_AND_GRID_SLIDES } from "./decks/tailwind-flex-and-grid";
+export { TAILWIND_RESPONSIVE_SLIDES } from "./decks/tailwind-responsive";
+export { KAMBAZ_STYLING_SLIDES } from "./decks/kambaz-styling";
+export { KAMBAZ_NAV_STYLING_SLIDES } from "./decks/kambaz-nav-styling";
+export { KAMBAZ_DASHBOARD_STYLING_SLIDES } from "./decks/kambaz-dashboard-styling";
+export { KAMBAZ_COURSES_STYLING_SLIDES } from "./decks/kambaz-courses-styling";
+export { KAMBAZ_ASSIGNMENTS_STYLING_SLIDES } from "./decks/kambaz-assignments-styling";
+export { KAMBAZ_ACCOUNT_STYLING_SLIDES } from "./decks/kambaz-account-styling";
 export {
   BOOK_CHAPTERS,
   LECTURE_1_SLUGS,
   LECTURE_2_SLUGS,
   LECTURE_3_SLUGS,
   LECTURE_4_SLUGS,
+  LECTURE_6_SLUGS,
+  LECTURE_7_SLUGS,
   LECTURE_TITLE_MAX_CHARS,
   LECTURE_DIAGRAM_IDS,
   LECTURE_EMBED_IDS,

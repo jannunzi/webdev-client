@@ -25,6 +25,19 @@ import { CSS_INTRO_SLIDES } from "./decks/css-intro";
 import { CSS_MEDIA_QUERIES_SLIDES } from "./decks/css-media-queries";
 import { CSS_ROTATION_SLIDES } from "./decks/css-rotation";
 import { CSS_SIZE_AND_POSITION_SLIDES } from "./decks/css-size-and-position";
+import { REACT_ICONS_SLIDES } from "./decks/react-icons";
+import { TAILWIND_INTRO_SLIDES } from "./decks/tailwind-intro";
+import { TAILWIND_SPACING_SLIDES } from "./decks/tailwind-spacing";
+import { TAILWIND_TYPOGRAPHY_SLIDES } from "./decks/tailwind-typography";
+import { TAILWIND_COLORS_SLIDES } from "./decks/tailwind-colors";
+import { TAILWIND_FLEX_AND_GRID_SLIDES } from "./decks/tailwind-flex-and-grid";
+import { TAILWIND_RESPONSIVE_SLIDES } from "./decks/tailwind-responsive";
+import { KAMBAZ_STYLING_SLIDES } from "./decks/kambaz-styling";
+import { KAMBAZ_NAV_STYLING_SLIDES } from "./decks/kambaz-nav-styling";
+import { KAMBAZ_DASHBOARD_STYLING_SLIDES } from "./decks/kambaz-dashboard-styling";
+import { KAMBAZ_COURSES_STYLING_SLIDES } from "./decks/kambaz-courses-styling";
+import { KAMBAZ_ASSIGNMENTS_STYLING_SLIDES } from "./decks/kambaz-assignments-styling";
+import { KAMBAZ_ACCOUNT_STYLING_SLIDES } from "./decks/kambaz-account-styling";
 import {
   BOOK_CHAPTERS,
   LECTURE_SLUGS,
@@ -298,6 +311,123 @@ const LECTURE_SUMMARIES: Record<
     topicId: "css",
     canvasLecture: 4,
     slides: CSS_ROTATION_SLIDES,
+  },
+  "react-icons": {
+    title: "React Icons",
+    summary:
+      "Install react-icons, import families as components, and size them with className — §2.2 sampler.",
+    chapter: 2,
+    canvasLecture: 6,
+    topicId: "tailwind",
+    slides: REACT_ICONS_SLIDES,
+  },
+  "tailwind-intro": {
+    title: "Tailwind Intro",
+    summary:
+      "Utility-first mental model, Preflight vs scoped import, and the Lab 2 /tailwind route.",
+    chapter: 2,
+    canvasLecture: 6,
+    topicId: "tailwind",
+    slides: TAILWIND_INTRO_SLIDES,
+  },
+  "tailwind-spacing": {
+    title: "Tailwind Spacing",
+    summary:
+      "m-* and p-* with direction letters from TailwindSpacing — §2.3.1.",
+    chapter: 2,
+    canvasLecture: 6,
+    topicId: "tailwind",
+    slides: TAILWIND_SPACING_SLIDES,
+  },
+  "tailwind-typography": {
+    title: "Tailwind Typography",
+    summary:
+      "text-* sizes and font-* weights from TailwindTypography — §2.3.2.",
+    chapter: 2,
+    canvasLecture: 6,
+    topicId: "tailwind",
+    slides: TAILWIND_TYPOGRAPHY_SLIDES,
+  },
+  "tailwind-colors": {
+    title: "Tailwind Colors",
+    summary:
+      "bg-{color}-{shade} bands plus blur filter utilities from Lab 2 — §2.3.3 and §2.3.5.",
+    chapter: 2,
+    canvasLecture: 6,
+    topicId: "tailwind",
+    slides: TAILWIND_COLORS_SLIDES,
+  },
+  "tailwind-flex-and-grid": {
+    title: "Tailwind Flex and Grid",
+    summary:
+      "flex / grow / shrink-0 and grid-cols / col-span — the Tailwind spelling of Lecture 4 layout.",
+    chapter: 2,
+    canvasLecture: 6,
+    topicId: "tailwind",
+    slides: TAILWIND_FLEX_AND_GRID_SLIDES,
+  },
+  "tailwind-responsive": {
+    title: "Tailwind Responsive",
+    summary:
+      "Mobile-first md: prefixes on the Lab 2 card — stacked on phones, row at md — §2.3.4.",
+    chapter: 2,
+    canvasLecture: 6,
+    topicId: "tailwind",
+    slides: TAILWIND_RESPONSIVE_SLIDES,
+  },
+  "kambaz-styling": {
+    title: "Kambaz Styling",
+    summary:
+      "Wire theme + utilities (no Preflight), kambaz.css, and a table-free Kambaz layout.",
+    chapter: 2,
+    canvasLecture: 7,
+    topicId: "kambaz-styling",
+    slides: KAMBAZ_STYLING_SLIDES,
+  },
+  "kambaz-nav-styling": {
+    title: "Kambaz Nav Styling",
+    summary:
+      "Fixed 120px icon sidebar, React Icons tiles, and wd-main-content-offset — §2.4.1.",
+    chapter: 2,
+    canvasLecture: 7,
+    topicId: "kambaz-styling",
+    slides: KAMBAZ_NAV_STYLING_SLIDES,
+  },
+  "kambaz-dashboard-styling": {
+    title: "Dashboard Styling",
+    summary:
+      "CourseCard borders and a 1/2/3/4-column responsive grid — §2.4.2.",
+    chapter: 2,
+    canvasLecture: 7,
+    topicId: "kambaz-styling",
+    slides: KAMBAZ_DASHBOARD_STYLING_SLIDES,
+  },
+  "kambaz-courses-styling": {
+    title: "Courses Chrome",
+    summary:
+      "Course Navigation list group, Modules, Home flex, and hide-order — §2.4.3–2.4.5.",
+    chapter: 2,
+    canvasLecture: 7,
+    topicId: "kambaz-styling",
+    slides: KAMBAZ_COURSES_STYLING_SLIDES,
+  },
+  "kambaz-assignments-styling": {
+    title: "People and Assignments",
+    summary:
+      "People table utilities, AssignmentItem rows, and the On-your-own editor — §2.4.6–2.4.8.",
+    chapter: 2,
+    canvasLecture: 7,
+    topicId: "kambaz-styling",
+    slides: KAMBAZ_ASSIGNMENTS_STYLING_SLIDES,
+  },
+  "kambaz-account-styling": {
+    title: "Account Styling",
+    summary:
+      "Sign in form utilities as the template for Sign up, Profile, and Account Nav — §2.4.9.",
+    chapter: 2,
+    canvasLecture: 7,
+    topicId: "kambaz-styling",
+    slides: KAMBAZ_ACCOUNT_STYLING_SLIDES,
   },
 };
 
