@@ -1,6 +1,6 @@
 import type { QuizQuestion } from "./types";
 
-/** Curated self-check bank for Chapter 3 labs. The quiz draws 10. */
+/** Curated self-check bank for JavaScript topics. The quiz draws 10. */
 export const CH3_LAB_QUESTIONS: QuizQuestion[] = [
   {
     id: "3-var-let-const",
@@ -39,7 +39,7 @@ export const CH3_LAB_QUESTIONS: QuizQuestion[] = [
     section: "3.2.2",
     kind: "concept",
     prompt:
-      "Why does the lab write booleanVariable + \"\" instead of interpolating the boolean alone?",
+      "Why write booleanVariable + \"\" instead of interpolating the boolean alone?",
     choices: [
       { id: "a", text: "JavaScript forbids booleans inside components" },
       {
@@ -122,7 +122,7 @@ export const CH3_LAB_QUESTIONS: QuizQuestion[] = [
     id: "3-spa-acronym",
     section: "3.1",
     kind: "acronym",
-    prompt: "What does SPA stand for in this chapter?",
+    prompt: "What does SPA stand for?",
     choices: [
       { id: "a", text: "Server Page Application" },
       { id: "b", text: "Style Property Attribute" },
@@ -196,7 +196,7 @@ export const CH3_LAB_QUESTIONS: QuizQuestion[] = [
     ],
     answer: "b",
     explanation:
-      "Without a stable key, React warns and can reuse the wrong node. Prefer a unique id from your data; the lab uses key={todo} because those strings are unique.",
+      "Without a stable key, React warns and can reuse the wrong node. Prefer a unique id from your data; a unique string field also works when those strings do not repeat.",
   },
   {
     id: "3-map-vs-filter",
@@ -277,7 +277,7 @@ const obj3 = { ...obj1, b: 4 };`,
       "destructuring assignment",
     ],
     explanation:
-      "The operation is destructuring. Lab files keep the assignment spelling Destructing.tsx.",
+      "The operation is destructuring — unpacking values from an object or array into distinct variables.",
   },
   {
     id: "3-destructure-array",
@@ -383,7 +383,7 @@ const sum = numbers.reduce((total, n) => total + n, 0);`,
     section: "3.6.1",
     kind: "concept",
     prompt:
-      "Which statement matches the chapter’s box of client vs server components?",
+      "Which statement about Next.js client vs server components is correct?",
     choices: [
       {
         id: "a",
@@ -421,7 +421,7 @@ const sum = numbers.reduce((total, n) => total + n, 0);`,
     section: "3.7.3",
     kind: "syntax",
     prompt:
-      "Which hook reads the [a] and [b] segments from /labs/lab3/add/1/2 in a Client Component?",
+      "Which hook reads the [a] and [b] segments from /calc/add/1/2 in a Client Component?",
     choices: [
       { id: "a", text: "usePathname()" },
       { id: "b", text: "useParams()" },
@@ -436,7 +436,7 @@ const sum = numbers.reduce((total, n) => total + n, 0);`,
     id: "3-json-import",
     section: "3.7.4",
     kind: "syntax",
-    prompt: "How does TodoList load the array in todos.json?",
+    prompt: "How does a list component load the array in todos.json?",
     choices: [
       { id: "a", text: "fetch(\"/todos.json\")" },
       { id: "b", text: "import todos from \"./todos.json\"" },
@@ -445,7 +445,7 @@ const sum = numbers.reduce((total, n) => total + n, 0);`,
     ],
     answer: "b",
     explanation:
-      "Next.js lets you import JSON as a value. TodoList then maps that array onto TodoItem with key={todo.title}.",
+      "Next.js lets you import JSON as a value. The list component then maps that array onto an item component with key={todo.title}.",
   },
   {
     id: "3-key-todo",
@@ -486,7 +486,7 @@ const sum = numbers.reduce((total, n) => total + n, 0);`,
     section: "3.7.4",
     kind: "concept",
     prompt:
-      "In TodoItem, what does todo = { title: \"Buy milk\", … } in the parameter list do?",
+      "In a TodoItem function, what does todo = { title: \"Buy milk\", … } in the parameter list do?",
     choices: [
       { id: "a", text: "It always overwrites the todo the parent passes" },
       {
@@ -505,7 +505,7 @@ const sum = numbers.reduce((total, n) => total + n, 0);`,
     section: "3.6.2",
     kind: "concept",
     prompt:
-      "Why does ServerComponentDemo wrap fs.readdirSync in try/catch?",
+      "Why wrap fs.readdirSync in try/catch inside a server component?",
     choices: [
       { id: "a", text: "try/catch is required to import node:fs" },
       {

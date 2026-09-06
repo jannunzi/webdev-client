@@ -6,9 +6,8 @@ export default function CheckUnderstanding() {
   return (
     <Section id="sec-4-9" title="4.9 Check Your Understanding">
       <p>
-        Before wiring Zustand into Kambaz, pause and test what Lab 4
-        actually stuck. The practice quiz draws 10 items from a bank written
-        against this chapter&apos;s exercises —{" "}
+        Pause and test the client-state topics from this chapter. The
+        practice quiz draws 10 items from a standalone bank —{" "}
         <code>&quot;use client&quot;</code>, event wrappers,{" "}
         <code>useState</code>, controlled <code>value</code>/
         <code>onChange</code>, spreading objects and arrays, moving state

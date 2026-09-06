@@ -24,7 +24,7 @@ export const q1Group01: QuestionGroup = {
   chapter: 1,
   section: "1.3",
   skill:
-    "Expand core web acronyms from Chapter 1: one blank per letter, words in letter order.",
+    "Expand core web acronyms: one blank per letter, words in letter order.",
   notes:
     "Each stem is a different acronym. blankCount equals the letter count. Example instruction: CSS → Cascading / Style / Sheets. Alternate spellings are extra same-length combinations.",
   questions: [
@@ -72,7 +72,6 @@ export const q1Group01: QuestionGroup = {
       "SPA",
       ["Single", "Page", "Application"],
       "A Single Page Application keeps one HTML shell loaded and updates the UI without a full reload for every in-app route.",
-      { prefix: "In this chapter, " },
     ),
     acronymFib(
       "q1-g01-08",
@@ -84,7 +83,7 @@ export const q1Group01: QuestionGroup = {
       "q1-g01-09",
       "CSS",
       ["Cascading", "Style", "Sheets"],
-      "CSS is Cascading Style Sheets. This course covers it in Chapter 2; the acronym still appears in Chapter 1 context.",
+      "CSS is Cascading Style Sheets.",
     ),
     acronymFib(
       "q1-g01-10",
@@ -112,7 +111,7 @@ export const q1Group02: QuestionGroup = {
   questions: [
     mc(
       "q1-g02-01",
-      "In `<h1>Labs</h1>`, what is the textual syntax `<h1>` called?",
+      "In `<h1>Welcome</h1>`, what is the textual syntax `<h1>` called?",
       [
         "An attribute",
         "A tag",
@@ -145,7 +144,7 @@ export const q1Group02: QuestionGroup = {
     ),
     mc(
       "q1-g02-05",
-      "Which set is all block-level by default in this chapter’s model?",
+      "Which set is all block-level by default?",
       [
         "span, a, strong",
         "h1, p, div",
@@ -238,7 +237,7 @@ export const q1Group03: QuestionGroup = {
         `q1-g03-${String(index + 1).padStart(2, "0")}`,
         `A long ${domain} is written as several sentences of prose, with blank lines between those sentences in the source. Browsers ignore that extra whitespace and blend the text into one stream. Wrap each paragraph of prose in the HTML _____ element — the paragraph element, not a heading and not a generic container.`,
         P_ANSWERS,
-        "Chapter 1.3.2 teaches the paragraph tag (`<p>`). Browsers ignore extra spaces, tabs, and newlines; wrapping each block of prose in `p` adds vertical space. A `div` is a generic container and `h1`–`h6` are headings — neither is the paragraph element.",
+        "The paragraph tag (`<p>`) adds vertical space. Browsers ignore extra spaces, tabs, and newlines. A `div` is a generic container and `h1`–`h6` are headings — neither is the paragraph element.",
       ),
     ),
   ],
@@ -288,7 +287,7 @@ export const q1Group04: QuestionGroup = {
     ),
     tf(
       "q1-g04-07",
-      "There is no h7 tag in HTML heading levels taught in this chapter; the smallest heading is h6.",
+      "There is no h7 tag in HTML heading levels; the smallest heading is h6.",
       true,
     ),
     tf(

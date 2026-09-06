@@ -5,7 +5,7 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
     id: "5-sibling",
     section: "5.1.3",
     kind: "concept",
-    prompt: "Where should webdev-server live relative to webdev-client?",
+    prompt: "Where should a separate Express API project live relative to a Next.js app?",
     choices: [
       { id: "a", text: "Inside app/ so Next.js can bundle Express" },
       {
@@ -13,11 +13,11 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
         text: "As a sibling directory (same parent) — not inside the Next.js project tree",
       },
       { id: "c", text: "Inside node_modules" },
-      { id: "d", text: "Only on Render, never locally" },
+      { id: "d", text: "Only on a remote host, never locally" },
     ],
     answer: "b",
     explanation:
-      "The PDF is explicit: the Node project is a sibling of the Next.js app, not nested inside it.",
+      "Keep the Node API as a sibling of the Next.js app, not nested inside it. Next.js should not bundle Express.",
   },
   {
     id: "5-express-listen",
@@ -66,7 +66,7 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
     id: "5-send-string",
     section: "5.2.2.1",
     kind: "concept",
-    prompt: "Why does PathParameters call sum.toString() before res.send?",
+    prompt: "Why does a path-parameter adder call sum.toString() before res.send?",
     choices: [
       { id: "a", text: "Express cannot send JSON" },
       {
@@ -100,7 +100,7 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
     id: "5-create-order",
     section: "5.2.4",
     kind: "concept",
-    prompt: "Why register GET /lab5/todos/create before GET /lab5/todos/:id?",
+    prompt: "Why register GET /api/todos/create before GET /api/todos/:id?",
     choices: [
       { id: "a", text: "POST cannot come first" },
       {
@@ -132,16 +132,16 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
     id: "5-route-handler",
     section: "5.3",
     kind: "syntax",
-    prompt: "Which file serves GET /api/lab5/hello inside the Next.js app?",
+    prompt: "Which file serves GET /api/hello inside a Next.js App Router app?",
     choices: [
-      { id: "a", text: "webdev-server/Hello.js" },
-      { id: "b", text: "app/api/lab5/hello/route.ts" },
-      { id: "c", text: "app/labs/lab5/hello.ts" },
+      { id: "a", text: "server/Hello.js" },
+      { id: "b", text: "app/api/hello/route.ts" },
+      { id: "c", text: "app/hello.ts" },
       { id: "d", text: "pages/api/hello.js" },
     ],
     answer: "b",
     explanation:
-      "Route Handlers are a section of this chapter, not the spine. The folder path under app/api is the URL.",
+      "App Router Route Handlers live under app/api. The folder path is the URL.",
   },
   {
     id: "5-credentials",
@@ -161,15 +161,15 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
     id: "5-no-mongo",
     section: "5.6",
     kind: "concept",
-    prompt: "Where does this chapter store courses and todos?",
+    prompt: "Before adding a database, where does an Express REST API typically store courses and todos?",
     choices: [
-      { id: "a", text: "MongoDB Atlas collections created here" },
-      { id: "b", text: "In-memory arrays (and JS copies of the JSON files) on the Express process" },
+      { id: "a", text: "MongoDB Atlas collections created in the same step" },
+      { id: "b", text: "In-memory arrays (and JS copies of JSON seed files) on the Express process" },
       { id: "c", text: "Only in localStorage" },
       { id: "d", text: "Only in Zustand" },
     ],
     answer: "b",
-    explanation: "No MongoDB in Chapter 5. Restarting Node reseeds the arrays. Chapter 6 adds the database.",
+    explanation: "A first Express API often keeps data in memory. Restarting Node reseeds the arrays. A later step can add a database.",
   },
   {
     id: "5-render-env",
@@ -186,17 +186,17 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
     explanation: "Production UI calls the deployed Express host. Local .env.development stays on port 4000.",
   },
   {
-    id: "5-deliverable-branch",
+    id: "5-memory-restart",
     section: "5.7",
     kind: "concept",
-    prompt: "What branch name do both repositories use for this chapter?",
+    prompt: "What happens to in-memory course and todo arrays when the Express process restarts?",
     choices: [
-      { id: "a", text: "main only" },
-      { id: "b", text: "a5" },
-      { id: "c", text: "a4" },
-      { id: "d", text: "render" },
+      { id: "a", text: "They persist automatically in Atlas" },
+      { id: "b", text: "They reset to the seed data loaded into the process" },
+      { id: "c", text: "They survive in localStorage" },
+      { id: "d", text: "They are written to a CSS file" },
     ],
     answer: "b",
-    explanation: "Deliverables: a5 on webdev-client and on webdev-server, plus Vercel and Render URLs.",
+    explanation: "In-memory arrays live only in that Node process. A restart reloads the seed data.",
   },
 ];

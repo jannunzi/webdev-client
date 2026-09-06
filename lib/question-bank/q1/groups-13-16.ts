@@ -35,7 +35,7 @@ export const q1Group13: QuestionGroup = {
     ),
     mc(
       "q1-g13-04",
-      "Why prefer <button> over <input type=\"submit\"> in this chapter?",
+      "Why prefer <button> over <input type=\"submit\">?",
       [
         "input cannot live inside a form",
         "The label is nested text (so you can later put an icon inside) and type says what the click should do",
@@ -85,7 +85,7 @@ export const q1Group13: QuestionGroup = {
     ),
     mc(
       "q1-g13-09",
-      "Which pair is the chapter’s recommended Save / Cancel markup?",
+      "Which pair is the recommended Save / Cancel markup?",
       [
         '<input type="button">Save</input> and <input type="submit">Cancel</input>',
         '<button type="submit">Save</button> and <button type="button">Cancel</button>',
@@ -186,7 +186,7 @@ export const q1Group15: QuestionGroup = {
       "q1-g15-02",
       "Which href is an absolute URL to another site?",
       [
-        "/labs",
+        "/docs",
         "#overview",
         "https://www.lipsum.com",
         "app/page.tsx",
@@ -198,7 +198,7 @@ export const q1Group15: QuestionGroup = {
       "Which href is a relative path on the same site?",
       [
         "https://github.com",
-        "/labs/lab1",
+        "/docs/html",
         "mailto:nobody@example.com",
         "#overview",
       ],
@@ -209,9 +209,9 @@ export const q1Group15: QuestionGroup = {
       "Which href scrolls to an element on the same page without loading a new document?",
       [
         "https://www.lipsum.com",
-        "/labs/lab1",
+        "/docs/html",
         "#overview",
-        "app/labs/page.tsx",
+        "app/docs/page.tsx",
       ],
       2,
     ),
@@ -272,7 +272,7 @@ export const q1Group15: QuestionGroup = {
     ),
     mc(
       "q1-g15-10",
-      "Which markup is the safer external new-tab pattern taught in this chapter?",
+      "Which markup is the safer external new-tab pattern?",
       [
         '<a href="https://example.com">Example</a>',
         '<a href="https://example.com" target="_blank" rel="noreferrer">Example</a>',
@@ -301,12 +301,12 @@ export const q1Group16: QuestionGroup = {
     ),
     mc(
       "q1-g16-02",
-      "A page.tsx file at app/labs/lab1/page.tsx is served at which URL path?",
+      "A page.tsx file at app/docs/html/page.tsx is served at which URL path?",
       [
-        "/app/labs/lab1/page.tsx",
-        "/labs/lab1",
-        "/page/labs/lab1",
-        "#/labs/lab1",
+        "/app/docs/html/page.tsx",
+        "/docs/html",
+        "/page/docs/html",
+        "#/docs/html",
       ],
       1,
     ),
@@ -342,17 +342,17 @@ export const q1Group16: QuestionGroup = {
       "q1-g16-06",
       "Which markup navigates between in-app App Router routes without a full document reload?",
       [
-        '<a href="/labs/lab1">HTML examples</a>',
-        '<Link href="/labs/lab1">HTML examples</Link>',
-        '<a href="#/labs/lab1">HTML examples</a>',
-        '<Link href="app/labs/lab1/page.tsx">HTML examples</Link>',
+        '<a href="/docs/html">HTML examples</a>',
+        '<Link href="/docs/html">HTML examples</Link>',
+        '<a href="#/docs/html">HTML examples</a>',
+        '<Link href="app/docs/html/page.tsx">HTML examples</Link>',
       ],
       1,
       "Import Link from next/link and point href at the route, not the file path. A plain <a> still works but reloads the document.",
     ),
     mc(
       "q1-g16-07",
-      "Where does Link come from in this course’s Next.js app?",
+      "Where does Link come from in a Next.js App Router app?",
       [
         "the browser’s built-in HTML Link tag with a capital L",
         "import Link from \"next/link\"",
@@ -363,10 +363,10 @@ export const q1Group16: QuestionGroup = {
     ),
     mc(
       "q1-g16-08",
-      "Hash URLs such as #/lab1 were a historical SPA trick. In the App Router you should _____.",
+      "Hash URLs such as #/about were a historical SPA trick. In the App Router you should _____.",
       [
         "use hash prefixes for every in-app route",
-        "use History API paths like /labs/lab1, and reserve #fragments for in-page jumps",
+        "use History API paths like /docs/html, and reserve #fragments for in-page jumps",
         "put a # before page.tsx filenames",
         "avoid Link entirely",
       ],
@@ -374,10 +374,10 @@ export const q1Group16: QuestionGroup = {
     ),
     mc(
       "q1-g16-09",
-      "app/layout.tsx wraps _____; app/labs/layout.tsx wraps _____.",
+      "app/layout.tsx wraps _____; app/docs/layout.tsx wraps _____.",
       [
-        "only /labs; the whole app",
-        "the whole app; only routes under /labs",
+        "only /docs; the whole app",
+        "the whole app; only routes under /docs",
         "nothing; nothing",
         "API routes; Mongo collections",
       ],
@@ -388,7 +388,7 @@ export const q1Group16: QuestionGroup = {
       "Link’s href should be _____.",
       [
         "the filesystem path of page.tsx",
-        "the public URL path of the route, for example /labs/lab1",
+        "the public URL path of the route, for example /docs/html",
         "always an https URL",
         "the component function name",
       ],
