@@ -410,20 +410,24 @@ code.quiz-prompt-code {
   letter-spacing: -0.03em;
   line-height: 1.12;
   white-space: nowrap;
-  /* 22 ≈ LECTURE_TITLE_MAX_CHARS (42) * ~0.52em average glyph width. */
-  font-size: min(clamp(1.2rem, 5.6cqi, 3.35rem), calc(100cqi / 22));
+  /*
+   * Floor so a narrow pane (phone + filmstrip) cannot collapse titles to
+   * ~11px. 22 ≈ LECTURE_TITLE_MAX_CHARS (42) * ~0.52em glyph width — on a
+   * wide stage the fit cap shrinks a long title onto one line.
+   */
+  font-size: min(clamp(1.25rem, 5.6cqi, 3.35rem), max(1.25rem, calc(100cqi / 22)));
 }
 
 .lecture-slide-spacious .lecture-slide-title {
-  font-size: min(clamp(1.3rem, 6.2cqi, 3.75rem), calc(100cqi / 22));
+  font-size: min(clamp(1.35rem, 6.2cqi, 3.75rem), max(1.35rem, calc(100cqi / 22)));
 }
 
 .lecture-slide-title-hero {
-  font-size: min(clamp(1.5rem, 7cqi, 4.4rem), calc(100cqi / 12));
+  font-size: min(clamp(1.5rem, 7cqi, 4.4rem), max(1.5rem, calc(100cqi / 12)));
 }
 
 .lecture-slide-spacious .lecture-slide-title-hero {
-  font-size: min(clamp(1.65rem, 7.6cqi, 4.9rem), calc(100cqi / 12));
+  font-size: min(clamp(1.65rem, 7.6cqi, 4.9rem), max(1.65rem, calc(100cqi / 12)));
 }
 
 .lecture-slide-bullets {
