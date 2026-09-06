@@ -30,7 +30,6 @@ import OptionalChaining from "@/app/labs/lab3/OptionalChaining";
 import Classes from "@/app/labs/lab3/Classes";
 import Styles from "@/app/labs/lab3/Styles";
 import ClientComponentDemo from "@/app/labs/lab3/ClientComponentDemo";
-import ServerComponentDemo from "@/app/labs/lab3/ServerComponentDemo";
 import Add from "@/app/labs/lab3/Add";
 import Square from "@/app/labs/lab3/Square";
 import Highlight from "@/app/labs/lab3/Highlight";
@@ -322,9 +321,32 @@ export function JsClientComponentEmbed() {
 }
 
 export function JsServerComponentEmbed() {
+  // LectureDeckShell is a Client Component — do not import ServerComponentDemo
+  // (it uses node:fs). Show the same shape; open /labs/lab3 for live disk/process.
+  const preview = {
+    platform: "linux",
+    nodeVersion: "v22",
+    serverRenderTime: "from process on the server",
+  };
+  const files = [
+    "Add.tsx",
+    "Classes.tsx",
+    "House.tsx",
+    "Math.ts",
+    "ServerComponentDemo.tsx",
+    "page.tsx",
+  ];
   return (
     <Lab3Demo label="ServerComponentDemo.tsx">
-      <ServerComponentDemo />
+      <div id="wd-server-component-demo">
+        <h1>Server Component Demo</h1>
+        <h2>Server Render Time</h2>
+        <p>Rendered on server at: {preview.serverRenderTime}</p>
+        <h2>Server Information</h2>
+        <pre>{JSON.stringify(preview, null, 2)}</pre>
+        <h2>Filesystem Access Demo</h2>
+        <pre>{JSON.stringify(files, null, 2)}</pre>
+      </div>
     </Lab3Demo>
   );
 }
