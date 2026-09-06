@@ -6,6 +6,8 @@ import CheckUnderstanding from "./sections/CheckUnderstanding";
 import KambazServer from "./sections/KambazServer";
 import Deploy from "./sections/Deploy";
 import Conclusion from "./sections/Conclusion";
+import ChapterEndMatter from "../components/ChapterEndMatter";
+import { ch5EndMatter } from "./end-matter";
 
 /**
  * Chapter 5 — Express-first REST (PDF spine) with Ch1–3 LiveDemos.
@@ -21,6 +23,7 @@ export default function Chapter5() {
       <KambazServer />
       <Deploy />
       <Conclusion />
+      <ChapterEndMatter data={ch5EndMatter} />
     </article>
   );
 }

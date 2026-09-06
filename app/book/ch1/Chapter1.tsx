@@ -3,6 +3,8 @@ import HtmlSections from "./sections/HtmlSections";
 import CheckUnderstanding from "./sections/CheckUnderstanding";
 import KambazSections from "./sections/KambazSections";
 import ClosingSections from "./sections/ClosingSections";
+import ChapterEndMatter from "../components/ChapterEndMatter";
+import { ch1EndMatter } from "./end-matter";
 
 /**
  * Chapter 1 book content — same topics as the PDF, with live intermediate
@@ -16,6 +18,7 @@ export default function Chapter1() {
       <CheckUnderstanding />
       <KambazSections />
       <ClosingSections />
+      <ChapterEndMatter data={ch1EndMatter} />
     </article>
   );
 }
