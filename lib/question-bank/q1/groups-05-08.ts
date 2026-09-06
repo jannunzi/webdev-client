@@ -182,7 +182,7 @@ export const q1Group06: QuestionGroup = {
     ),
     mc(
       "q1-g06-08",
-      "What does table border={1} control in this chapter’s HTML-presentational style?",
+      "What does table border={1} control in HTML’s presentational table markup?",
       [
         "The thickness of the grid lines in pixels",
         "How many rows are visible",
@@ -336,7 +336,7 @@ export const q1Group08: QuestionGroup = {
     ),
     mc(
       "q1-g08-07",
-      "The `<form>` element’s job in this chapter is to _____.",
+      "The `<form>` element’s job is to _____.",
       [
         "style headings",
         "wrap controls so users can fill in and submit information as one unit",

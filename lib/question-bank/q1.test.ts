@@ -115,4 +115,28 @@ describe("Chapter 1 question bank", () => {
     assert.equal(/\bwd-/.test(blob), false);
     assert.equal(/preventDefault/.test(blob), false);
   });
+
+  it("keeps student-facing stems independent of the book, labs, and Kambaz", () => {
+    const parts: string[] = [];
+    for (const group of CHAPTER1_BANK.groups) {
+      for (const question of group.questions) {
+        parts.push(question.prompt, question.explanation ?? "", question.code ?? "");
+        if (question.type === "multiple_choice") {
+          for (const choice of question.choices) {
+            parts.push(choice.text);
+          }
+        }
+      }
+    }
+    const blob = parts.join("\n");
+    assert.equal(/\bLab [0-9]/i.test(blob), false);
+    assert.equal(/\bLabs\b/.test(blob), false);
+    assert.equal(/Kambaz/i.test(blob), false);
+    assert.equal(/\bwd-/.test(blob), false);
+    assert.equal(/this chapter/i.test(blob), false);
+    assert.equal(/the chapter/i.test(blob), false);
+    assert.equal(/§\d/.test(blob), false);
+    assert.equal(/\/labs\b/.test(blob), false);
+    assert.equal(/the book/i.test(blob), false);
+  });
 });

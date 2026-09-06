@@ -1,6 +1,6 @@
 import type { QuizQuestion } from "./types";
 
-/** Curated self-check bank for Chapter 4 labs. The quiz draws 10. */
+/** Curated self-check bank for client-state topics. The quiz draws 10. */
 export const CH4_LAB_QUESTIONS: QuizQuestion[] = [
   {
     id: "4-use-client",
@@ -190,7 +190,7 @@ export const CH4_LAB_QUESTIONS: QuizQuestion[] = [
     section: "4.3.3",
     kind: "syntax",
     prompt:
-      "Which hook reads a=5 from /labs/lab4/url-encoding/query-params?a=5&b=10?",
+      "Which hook reads a=5 from /search?a=5&b=10?",
     choices: [
       { id: "a", text: "useParams" },
       { id: "b", text: "useSearchParams" },
@@ -333,11 +333,11 @@ export const CH4_LAB_QUESTIONS: QuizQuestion[] = [
       "[] means no reactive values. The effect runs once after mount. Omit the array and it runs after every paint.",
   },
   {
-    id: "4-kambaz-store",
+    id: "4-shared-store",
     section: "4.10.1",
     kind: "concept",
     prompt:
-      "Why does this chapter put Kambaz courses in Zustand instead of useState on the Dashboard?",
+      "Why put a shared course list in Zustand instead of useState on a Dashboard page?",
     choices: [
       { id: "a", text: "useState cannot store arrays" },
       {
@@ -375,7 +375,7 @@ export const CH4_LAB_QUESTIONS: QuizQuestion[] = [
     section: "4.10.3",
     kind: "concept",
     prompt:
-      "The hamburger that shows and hides Course Navigation should use:",
+      "A hamburger that shows and hides a course sidebar should use:",
     choices: [
       { id: "a", text: "Zustand — all UI flags belong in the app store" },
       {
@@ -387,13 +387,13 @@ export const CH4_LAB_QUESTIONS: QuizQuestion[] = [
     ],
     answer: "b",
     explanation:
-      "A show/hide flag is one-layout UI state. Putting it in Zustand would be replacing useState on a single counter — the table in 4.10 says not to.",
+      "A show/hide flag is one-layout UI state. Putting it in Zustand would be replacing useState on a single counter — local UI flags do not belong in the app store.",
   },
   {
     id: "4-spa-acronym",
     section: "4.1",
     kind: "acronym",
-    prompt: "In this course, SPA stands for:",
+    prompt: "SPA stands for:",
     choices: [
       { id: "a", text: "Server Page Application" },
       { id: "b", text: "Single Page Application" },

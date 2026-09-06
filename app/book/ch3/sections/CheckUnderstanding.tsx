@@ -6,9 +6,8 @@ export default function CheckUnderstanding() {
   return (
     <Section id="sec-3-8" title="3.8 Check Your Understanding">
       <p>
-        Before wiring JSON into Kambaz, pause and test what Lab 3
-        actually stuck. The practice quiz draws 10 items from a bank
-        written against this chapter&apos;s exercises —{" "}
+        Pause and test the JavaScript topics from this chapter. The
+        practice quiz draws 10 items from a standalone bank —{" "}
         <code>var</code>/<code>let</code>/<code>const</code>,{" "}
         <code>===</code>, ternaries, arrows, <code>map</code>/
         <code>filter</code>/<code>find</code>, spread, destructuring,

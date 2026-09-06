@@ -10,9 +10,9 @@ export default function CheckUnderstanding() {
       title="1.3.13 Check Your Understanding"
     >
       <p>
-        Before prototyping Kambaz, pause and test what Lab 1 actually stuck.
-        The practice quiz draws 10 items from a bank written against this
-        chapter&apos;s HTML exercises — App Router{" "}
+        Pause and test the HTML topics from this chapter. The practice
+        quiz draws 10 items from a standalone bank on those topics — App
+        Router{" "}
         <code>page.tsx</code>, headings and paragraphs, lists and tables,
         images, form fields, radio <code>name</code>{" "}groups and mutual
         exclusion, checkbox independence, the two label patterns (

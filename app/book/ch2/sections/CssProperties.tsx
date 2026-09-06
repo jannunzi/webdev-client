@@ -1401,13 +1401,13 @@ export default function MediaQueriesDemo() {
         title="2.1.21 Check Your Understanding"
       >
         <p>
-          Before React Icons and Tailwind, pause and test what §2.1 actually
-          stuck. The practice quiz draws 10 items from a growing bank written
-          against this section&apos;s exercises — concepts (why the{" "}
+          Before React Icons and Tailwind, pause and test the CSS topics
+          from this section. The practice quiz draws 10 items from a
+          standalone bank — concepts (why the{" "}
           <code>style</code>{" "}attribute is a bad habit, padding vs margin, the
           box model, block vs inline), syntax (hyphens vs camelCase,{" "}
           <code>#</code> vs <code>.</code>, <code>box-sizing</code>,{" "}
-          <code>display</code>), button types from Lab 1 (
+          <code>display</code>), button types (
           <SectionLink to="1.3.6.7" />), acronyms, snippets, fill-in-the-blank,
           and short puzzles. It is a self-check, not part of the Canvas grade in{" "}
           <SectionLink to="2.5" />. Misses link back to the subsection you
