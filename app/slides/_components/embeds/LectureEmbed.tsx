@@ -151,6 +151,11 @@ import {
   ZustandCounterEmbed,
   ZustandTodosEmbed,
 } from "./Lab4Embeds";
+import {
+  Lab5CalculatorEmbed,
+  Lab5EnvEmbed,
+  Lab5HelloEmbed,
+} from "./Lab5Embeds";
 
 export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
   switch (id) {
@@ -426,6 +431,12 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <UseEffectEmbed />;
     case "kambaz-courses-crud":
       return <KambazCoursesCrudEmbed />;
+    case "lab5-env":
+      return <Lab5EnvEmbed />;
+    case "lab5-hello":
+      return <Lab5HelloEmbed />;
+    case "lab5-calculator":
+      return <Lab5CalculatorEmbed />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;

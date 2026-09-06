@@ -28,6 +28,7 @@ import {
   LECTURE_7_SLUGS,
   CHAPTER_3_SLUGS,
   CHAPTER_4_SLUGS,
+  CHAPTER_5_SLUGS,
   LECTURE_TOPICS,
   LECTURE_DIAGRAM_IDS,
   LECTURE_EMBED_IDS,
@@ -73,7 +74,7 @@ function findSlide(deckSlug: string, id: string) {
 }
 
 describe("lecture catalog", () => {
-  it("lists slugs in book-spine order (Ch1–Ch3, then Ch4 state decks)", () => {
+  it("lists slugs in book-spine order (Ch1–Ch3, then Ch4–Ch5 decks)", () => {
     assert.deepEqual(listLectureSlugs(), [
       ...LECTURE_1_SLUGS,
       ...LECTURE_2_SLUGS,
@@ -83,6 +84,7 @@ describe("lecture catalog", () => {
       ...LECTURE_7_SLUGS,
       ...CHAPTER_3_SLUGS,
       ...CHAPTER_4_SLUGS,
+      ...CHAPTER_5_SLUGS,
     ]);
     assert.deepEqual(listLectureSlugs(), [...LECTURE_SLUGS]);
     assert.equal(LECTURE_1_SLUGS.length, 5);
@@ -93,6 +95,7 @@ describe("lecture catalog", () => {
     assert.equal(LECTURE_7_SLUGS.length, 6);
     assert.equal(CHAPTER_3_SLUGS.length, 23);
     assert.equal(CHAPTER_4_SLUGS.length, 15);
+    assert.equal(CHAPTER_5_SLUGS.length, 15);
   });
 
   it("marks Lecture 1 entries as Canvas Lecture 1 / Chapter 1", () => {
@@ -154,6 +157,10 @@ describe("lecture catalog", () => {
     assert.equal(isLectureSlug("click-events"), true);
     assert.equal(isLectureSlug("zustand-counter"), true);
     assert.equal(isLectureSlug("kambaz-courses-store"), true);
+    assert.equal(isLectureSlug("http-server"), true);
+    assert.equal(isLectureSlug("next-routes"), true);
+    assert.equal(isLectureSlug("kambaz-account-rest"), true);
+    assert.equal(isLectureSlug("deploy-api"), true);
     assert.equal(isLectureSlug("intro"), false);
   });
 
@@ -238,7 +245,7 @@ describe("lecture catalog", () => {
     const groups = listChapterTopicGroups();
     assert.deepEqual(
       groups.map((group) => group.chapter),
-      [1, 2, 3, 4],
+      [1, 2, 3, 4, 5],
     );
     assert.equal(groups[0]?.href, "/book/ch1");
     assert.equal(
@@ -451,6 +458,72 @@ describe("lecture catalog", () => {
       ],
     );
 
+    assert.equal(groups[4]?.href, "/book/ch5");
+    assert.deepEqual(
+      groups[4]?.topics.map((topic) => topic.topicId),
+      [
+        "http-server",
+        "lab5-api",
+        "next-routes",
+        "ch5-check",
+        "kambaz-server",
+        "deploy-api",
+        "ch5-end",
+      ],
+    );
+    assert.deepEqual(
+      groups[4]?.topics.map((topic) => topic.title),
+      [
+        "5.1 Installing and Configuring an HTTP Web Server",
+        "5.2 Lab Exercises",
+        "5.3 Next.js Server Routes",
+        "Check Your Understanding",
+        "5.4 Implementing the Kambaz Node.js HTTP Server",
+        "5.5 Deploying to a Public Remote Server",
+        "5.6 Conclusion",
+      ],
+    );
+    assert.equal(groups[4]?.topics[0]?.bookHref, "/book/ch5#sec-5-1");
+    assert.deepEqual(
+      groups[4]?.topics[0]?.decks.map((deck) => deck.slug),
+      ["http-server", "nodemon-es6-routes"],
+    );
+    assert.deepEqual(
+      groups[4]?.topics[1]?.decks.map((deck) => deck.slug),
+      [
+        "lab5-env",
+        "path-and-query",
+        "remote-objects",
+        "remote-arrays",
+        "async-http",
+      ],
+    );
+    assert.deepEqual(
+      groups[4]?.topics[2]?.decks.map((deck) => deck.slug),
+      ["next-routes"],
+    );
+    assert.deepEqual(
+      groups[4]?.topics[3]?.decks.map((deck) => deck.slug),
+      ["ch5-check-understanding"],
+    );
+    assert.deepEqual(
+      groups[4]?.topics[4]?.decks.map((deck) => deck.slug),
+      [
+        "kambaz-migrate-db",
+        "kambaz-account-rest",
+        "kambaz-sessions",
+        "kambaz-courses-api",
+      ],
+    );
+    assert.deepEqual(
+      groups[4]?.topics[5]?.decks.map((deck) => deck.slug),
+      ["deploy-api"],
+    );
+    assert.deepEqual(
+      groups[4]?.topics[6]?.decks.map((deck) => deck.slug),
+      ["ch5-conclusion"],
+    );
+
     for (const group of groups) {
       assert.doesNotMatch(group.title, /^Lecture \d+$/);
       for (const topic of group.topics) {
@@ -463,16 +536,17 @@ describe("lecture catalog", () => {
     const chapters = listLectureChapters();
     assert.deepEqual(
       chapters.map((entry) => entry.chapter),
-      [1, 2, 3, 4],
+      [1, 2, 3, 4, 5],
     );
     assert.deepEqual(
       chapters.map((entry) => entry.href),
-      ["/book/ch1", "/book/ch2", "/book/ch3", "/book/ch4"],
+      ["/book/ch1", "/book/ch2", "/book/ch3", "/book/ch4", "/book/ch5"],
     );
     assert.equal(chapters[0]?.title, BOOK_CHAPTERS[0]?.title);
     assert.equal(chapters[1]?.title, BOOK_CHAPTERS[1]?.title);
     assert.equal(chapters[2]?.title, BOOK_CHAPTERS[2]?.title);
     assert.equal(chapters[3]?.title, BOOK_CHAPTERS[3]?.title);
+    assert.equal(chapters[4]?.title, BOOK_CHAPTERS[4]?.title);
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "tailwind"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "kambaz-styling"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "react-icons"));
@@ -482,6 +556,11 @@ describe("lecture catalog", () => {
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "events-state"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "zustand"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "kambaz-state"));
+    assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "http-server"));
+    assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "lab5-api"));
+    assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "next-routes"));
+    assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "kambaz-server"));
+    assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "deploy-api"));
   });
 
   it("maps Ch1–Ch3 decks to book section anchors for bidirectional links", () => {
@@ -517,8 +596,26 @@ describe("lecture catalog", () => {
     assert.equal(getLecture("kambaz-dashboard-crud")?.bookHref, "/book/ch4#sec-4-10-2");
     assert.equal(getLecture("kambaz-modules-store")?.bookHref, "/book/ch4#sec-4-10-4");
     assert.equal(getLecture("kambaz-account-context")?.bookHref, "/book/ch4#sec-4-10-5");
+    assert.equal(getLecture("http-server")?.bookHref, "/book/ch5#sec-5-1");
+    assert.equal(getLecture("nodemon-es6-routes")?.bookHref, "/book/ch5#sec-5-1-6");
+    assert.equal(getLecture("lab5-env")?.bookHref, "/book/ch5#sec-5-2-1");
+    assert.equal(getLecture("path-and-query")?.bookHref, "/book/ch5#sec-5-2-2");
+    assert.equal(getLecture("remote-objects")?.bookHref, "/book/ch5#sec-5-2-3");
+    assert.equal(getLecture("remote-arrays")?.bookHref, "/book/ch5#sec-5-2-4");
+    assert.equal(getLecture("async-http")?.bookHref, "/book/ch5#sec-5-2-5");
+    assert.equal(getLecture("next-routes")?.bookHref, "/book/ch5#sec-5-3");
+    assert.equal(getLecture("ch5-check-understanding")?.bookHref, "/book/ch5#sec-5-check");
+    assert.equal(getLecture("kambaz-migrate-db")?.bookHref, "/book/ch5#sec-5-4-1");
+    assert.equal(getLecture("kambaz-account-rest")?.bookHref, "/book/ch5#sec-5-4-2");
+    assert.equal(getLecture("kambaz-sessions")?.bookHref, "/book/ch5#sec-5-4-3");
+    assert.equal(getLecture("kambaz-courses-api")?.bookHref, "/book/ch5#sec-5-4-5");
+    assert.equal(getLecture("deploy-api")?.bookHref, "/book/ch5#sec-5-5");
+    assert.equal(getLecture("ch5-conclusion")?.bookHref, "/book/ch5#sec-5-6");
     assert.equal(listDecksForBookSection("sec-3-2")[0]?.slug, "intro-to-javascript");
     assert.equal(listDecksForBookSection("sec-4-5-1")[0]?.slug, "zustand-counter");
+    assert.equal(listDecksForBookSection("sec-5-1")[0]?.slug, "http-server");
+    assert.equal(listDecksForBookSection("sec-5-3")[0]?.slug, "next-routes");
+    assert.equal(listDecksForBookSection("sec-5-5")[0]?.slug, "deploy-api");
     assert.equal(listDecksForBookSection("sec-1-2-1")[0]?.slug, "installing-nodejs");
     assert.equal(listDecksForBookSection("sec-2-3")[0]?.slug, "tailwind-intro");
     assert.equal(listDecksForBookSection("sec-2-2")[0]?.slug, "react-icons");
@@ -673,7 +770,47 @@ describe("lecture catalog", () => {
       lectureDeckThumbnail("click-events"),
       "/lectures/thumbs/click-events.svg",
     );
-    for (const group of groups.slice(15)) {
+    assert.equal(groups[15]?.title, "Lecture 16");
+    assert.equal(groups[15]?.canvasLecture, 16);
+    assert.deepEqual(
+      groups[15]?.decks.map((deck) => deck.slug),
+      ["http-server", "nodemon-es6-routes"],
+    );
+    assert.equal(groups[16]?.title, "Lecture 17");
+    assert.deepEqual(
+      groups[16]?.decks.map((deck) => deck.slug),
+      ["lab5-env", "path-and-query", "remote-objects"],
+    );
+    assert.equal(groups[17]?.title, "Lecture 18");
+    assert.deepEqual(
+      groups[17]?.decks.map((deck) => deck.slug),
+      [
+        "remote-arrays",
+        "async-http",
+        "next-routes",
+        "ch5-check-understanding",
+      ],
+    );
+    assert.equal(groups[18]?.title, "Lecture 19");
+    assert.deepEqual(
+      groups[18]?.decks.map((deck) => deck.slug),
+      [
+        "kambaz-migrate-db",
+        "kambaz-account-rest",
+        "kambaz-sessions",
+        "kambaz-courses-api",
+      ],
+    );
+    assert.equal(groups[19]?.title, "Lecture 20");
+    assert.deepEqual(
+      groups[19]?.decks.map((deck) => deck.slug),
+      ["deploy-api", "ch5-conclusion"],
+    );
+    assert.equal(
+      lectureDeckThumbnail("http-server"),
+      "/lectures/thumbs/http-server.svg",
+    );
+    for (const group of groups.slice(20)) {
       assert.equal(group.title, `Lecture ${group.canvasLecture}`);
       assert.equal(group.decks.length, 0);
     }
@@ -709,9 +846,15 @@ describe("lecture catalog", () => {
     const afterZustand = adjacentLectureSlugs("zustand-todos");
     assert.equal(afterZustand.next?.slug, "use-effect");
     assert.equal(afterZustand.prev?.slug, "zustand-counter");
-    const last = adjacentLectureSlugs("kambaz-account-context");
+    const lastCh4 = adjacentLectureSlugs("kambaz-account-context");
+    assert.equal(lastCh4.next?.slug, "http-server");
+    assert.equal(lastCh4.prev?.slug, "kambaz-modules-store");
+    const afterHttp = adjacentLectureSlugs("http-server");
+    assert.equal(afterHttp.next?.slug, "nodemon-es6-routes");
+    assert.equal(afterHttp.prev?.slug, "kambaz-account-context");
+    const last = adjacentLectureSlugs("ch5-conclusion");
     assert.equal(last.next, undefined);
-    assert.equal(last.prev?.slug, "kambaz-modules-store");
+    assert.equal(last.prev?.slug, "deploy-api");
   });
 });
 
@@ -799,6 +942,21 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-dashboard-crud"], 8);
     assert.equal(counts["kambaz-modules-store"], 7);
     assert.equal(counts["kambaz-account-context"], 7);
+    assert.equal(counts["http-server"], 10);
+    assert.equal(counts["nodemon-es6-routes"], 8);
+    assert.equal(counts["lab5-env"], 10);
+    assert.equal(counts["path-and-query"], 9);
+    assert.equal(counts["remote-objects"], 8);
+    assert.equal(counts["remote-arrays"], 8);
+    assert.equal(counts["async-http"], 9);
+    assert.equal(counts["next-routes"], 7);
+    assert.equal(counts["ch5-check-understanding"], 7);
+    assert.equal(counts["kambaz-migrate-db"], 6);
+    assert.equal(counts["kambaz-account-rest"], 9);
+    assert.equal(counts["kambaz-sessions"], 8);
+    assert.equal(counts["kambaz-courses-api"], 9);
+    assert.equal(counts["deploy-api"], 8);
+    assert.equal(counts["ch5-conclusion"], 6);
     for (const deck of decks) {
       const ids = deck.slides.map((slide) => slide.id);
       assert.equal(new Set(ids).size, ids.length, `${deck.slug} duplicate slide id`);
@@ -1120,6 +1278,13 @@ describe("lecture decks", () => {
       },
       "kambaz-modules-store": { demo: "kambaz-styled-modules" },
       "kambaz-account-context": { signin: "kambaz-styled-signin" },
+      "lab5-env": { environment: "lab5-env" },
+      "next-routes": {
+        hello: "lab5-hello",
+        client: "lab5-calculator",
+      },
+      "kambaz-account-rest": { "signin-ui": "kambaz-styled-signin" },
+      "kambaz-courses-api": { client: "kambaz-styled-dashboard" },
     } as const;
     const used = new Set<string>();
     for (const [slug, slides] of Object.entries(expected)) {
@@ -1669,6 +1834,96 @@ describe("lecture decks", () => {
     assert.match(account, /useAccountContext/);
     assert.match(account, /setCurrentUser/);
     assert.match(account, /users.json/);
+  });
+
+  it("teaches Chapter 5 HTTP, Lab 5, Next routes, and Kambaz APIs", () => {
+    const http = slideText("http-server");
+    assert.match(http, /webdev-server/);
+    assert.match(http, /sibling/);
+    assert.match(http, /Hello\.js/);
+    assert.match(http, /app\.get\("\/hello"/);
+    assert.match(http, /localhost:4000\/hello/);
+    assert.doesNotMatch(http, /Kanbas/);
+
+    const nodemon = slideText("nodemon-es6-routes");
+    assert.match(nodemon, /nodemon/);
+    assert.match(nodemon, /"type": "module"/);
+    assert.match(nodemon, /Hello\(app\)/);
+    assert.match(nodemon, /Life is good!/);
+
+    const env = slideText("lab5-env");
+    assert.match(env, /NEXT_PUBLIC_HTTP_SERVER/);
+    assert.match(env, /httpServer\(\)/);
+    assert.match(env, /\/lab5\/welcome/);
+    assert.match(env, /wd-welcome-link/);
+
+    const params = slideText("path-and-query");
+    assert.match(params, /req\.params/);
+    assert.match(params, /req\.query/);
+    assert.match(params, /\.toString\(\)/);
+    assert.match(params, /wd-path-parameter-add/);
+    assert.match(params, /wd-query-parameter-add/);
+
+    const objects = slideText("remote-objects");
+    assert.match(objects, /res\.json/);
+    assert.match(objects, /\/lab5\/assignment/);
+    assert.match(objects, /assignment\.title/);
+
+    const arrays = slideText("remote-arrays");
+    assert.match(arrays, /\/lab5\/todos/);
+    assert.match(arrays, /todos\.splice/);
+    assert.match(arrays, /wd-retrieve-todos/);
+
+    const asyncHttp = slideText("async-http");
+    assert.match(asyncHttp, /axios/);
+    assert.match(asyncHttp, /cors/);
+    assert.match(asyncHttp, /express\.json/);
+    assert.match(asyncHttp, /app\.post/);
+    assert.match(asyncHttp, /app\.delete/);
+
+    const next = slideText("next-routes");
+    assert.match(next, /\/api\/lab5\/hello/);
+    assert.match(next, /\/api\/lab5\/calculator/);
+    assert.match(next, /searchParams/);
+    assert.doesNotMatch(next, /Lecture \d+/);
+
+    const check = slideText("ch5-check-understanding");
+    assert.match(check, /sec-5-check/);
+    assert.match(check, /self-check/);
+    assert.doesNotMatch(check, /Lecture \d+/);
+
+    const migrate = slideText("kambaz-migrate-db");
+    assert.match(migrate, /Kambaz\/Database/);
+    assert.match(migrate, /export default/);
+    assert.match(migrate, /courses\.js/);
+
+    const accountRest = slideText("kambaz-account-rest");
+    assert.match(accountRest, /\/api\/users\/signin/);
+    assert.match(accountRest, /setCurrentUser/);
+    assert.match(accountRest, /findUserByCredentials/);
+    assert.match(accountRest, /axiosWithCredentials/);
+
+    const sessions = slideText("kambaz-sessions");
+    assert.match(sessions, /express-session/);
+    assert.match(sessions, /withCredentials/);
+    assert.match(sessions, /req\.session/);
+    assert.match(sessions, /CLIENT_URL/);
+
+    const courses = slideText("kambaz-courses-api");
+    assert.match(courses, /findCoursesForEnrolledUser/);
+    assert.match(courses, /\/api\/users\/current\/courses/);
+    assert.match(courses, /\/api\/courses\/:courseId\/modules/);
+
+    const deploy = slideText("deploy-api");
+    assert.match(deploy, /Render/);
+    assert.match(deploy, /NEXT_PUBLIC_HTTP_SERVER/);
+    assert.match(deploy, /webdev-server/);
+    assert.doesNotMatch(deploy, /netlify\.com/i);
+
+    const conclusion = slideText("ch5-conclusion");
+    assert.match(conclusion, /git checkout -b a5/);
+    assert.match(conclusion, /MongoDB/);
+    assert.doesNotMatch(conclusion, /Lecture \d+/);
   });
 
   it("does not surface Lecture N as the product name in slide copy", () => {
