@@ -10,7 +10,7 @@ import type { Deadline } from "./types";
  * A2–A6 are assigned on the previous assignment’s due day.
  *
  * X1/X2 match Canvas package -20 (ET): X1 unlocks the Monday after A3 due
- * and locks that Sunday; X2 unlocks exam-week Monday and locks Wednesday
+ * and locks that Sunday; X2 unlocks exam-week Monday and locks Thursday
  * with the published Exam. Canvas shells are 100 points; the site scores
  * as a percent and exports to Canvas /100.
  */
@@ -86,4 +86,4 @@ export const deadlines: Deadline[] = [
 ];
 
 export const deadlinesNote =
-  "Assignment, quiz, exam, and project dates are one Canvas calendar for every section. Assignments and chapter quizzes (Q1–Q6) are due Sunday 11:59pm ET. X1 is due Sunday 11:59pm ET the week after A3. X2 is due Wednesday 11:59pm ET of exam week (same day as the published Exam). Canvas quiz and exam shells (Q1–Q6, X1/X2) are 100 points each; the website scores as a percent and exports to Canvas out of 100. CS 5610-02 starts September 14, so it has less runway before A1.";
+  "Assignment, quiz, exam, and project dates are one Canvas calendar for every section. Assignments and chapter quizzes (Q1–Q6) are due Sunday 11:59pm ET. X1 is due Sunday 11:59pm ET the week after A3. X2 is due Thursday 11:59pm ET of exam week (same day as the published Exam). Canvas quiz and exam shells (Q1–Q6, X1/X2) are 100 points each; the website scores as a percent and exports to Canvas out of 100. CS 5610-02 starts September 14, so it has less runway before A1.";

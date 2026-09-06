@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { deadlines } from "@/app/syllabus/data/deadlines";
+import { deadlines, deadlinesNote } from "@/app/syllabus/data/deadlines";
+import { isoWeekday, weekdayName } from "@/app/syllabus/data/dates";
 import { evaluationItems, evaluationNotes } from "@/app/syllabus/data/evaluation";
 import { etWallTimeToUtc, getQuizSchedule } from "./schedule";
 
@@ -111,5 +112,15 @@ describe("Fall 2026 Canvas calendar", () => {
     assert.match(shellNote, /100 points/);
     assert.match(shellNote, /percent/);
     assert.match(shellNote, /out of 100/);
+  });
+
+  it("names X2’s weekday as Thursday to match 2026-12-03", () => {
+    assert.equal(weekdayName(isoWeekday("2026-12-03")), "Thursday");
+    const exams = evaluationItems.find((item) => item.label.includes("X1"));
+    assert.ok(exams, "Exams (X1–X2) evaluation item is missing");
+    assert.match(exams.description, /Thursday 2026-12-03/);
+    assert.doesNotMatch(exams.description, /Wednesday 2026-12-03/);
+    assert.match(deadlinesNote, /X2 is due Thursday 11:59pm ET/);
+    assert.doesNotMatch(deadlinesNote, /X2 is due Wednesday/);
   });
 });

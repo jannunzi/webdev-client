@@ -11,7 +11,7 @@ export default function TakeX2Page() {
       examId="x2"
       title="X2"
       unlockLabel="Monday, November 30, 2026, 12:00 AM ET"
-      dueLabel="Wednesday, December 3, 2026, 11:59 PM ET"
+      dueLabel="Thursday, December 3, 2026, 11:59 PM ET"
     />
   );
 }
