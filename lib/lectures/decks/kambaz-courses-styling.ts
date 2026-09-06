@@ -204,13 +204,16 @@ export default function GreenCheckmark() {
       "Unpublish / Publish share a two-column `flex` row",
       "The rest are full-width bordered buttons with React Icons",
     ],
-    code: `<div className="flex gap-1">
-  <button type="button" className="inline-flex min-w-0 flex-1 items-center justify-center rounded border border-neutral-300 bg-white px-1.5 py-1.5 text-xs">
-    <MdDoNotDisturbAlt className="me-1 shrink-0 text-base" /> Unpublish
-  </button>
-  <button type="button" className="inline-flex min-w-0 flex-1 items-center justify-center rounded bg-green-600 px-1.5 py-1.5 text-xs text-white">
-    <FaCheckCircle className="me-1 shrink-0 text-base" /> Publish
-  </button>
+    code: `<div id="wd-course-status">
+  <h2 className="mb-3 text-xl font-semibold">Course Status</h2>
+  <div className="flex gap-1">
+    <button type="button" className="inline-flex min-w-0 flex-1 items-center justify-center rounded border border-neutral-300 bg-white px-1.5 py-1.5 text-xs">
+      <MdDoNotDisturbAlt className="me-1 shrink-0 text-base" /> Unpublish
+    </button>
+    <button type="button" className="inline-flex min-w-0 flex-1 items-center justify-center rounded bg-green-600 px-1.5 py-1.5 text-xs text-white">
+      <FaCheckCircle className="me-1 shrink-0 text-base" /> Publish
+    </button>
+  </div>
 </div>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/home/Status.tsx",
