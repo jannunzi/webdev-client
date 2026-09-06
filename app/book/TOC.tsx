@@ -29,6 +29,13 @@ import {
   writeLastPosition,
   writeMobileTocOpen,
 } from "./bookStorage";
+import { chapterEndToc } from "./chapter-end/types";
+import { ch1EndMatter } from "./ch1/end-matter";
+import { ch2EndMatter } from "./ch2/end-matter";
+import { ch3EndMatter } from "./ch3/end-matter";
+import { ch4EndMatter } from "./ch4/end-matter";
+import { ch5EndMatter } from "./ch5/end-matter";
+import { ch6EndMatter } from "./ch6/end-matter";
 
 const TOC_SYNC_PAUSE_MS = 2500;
 const READING_MARKER_PX = 96;
@@ -173,6 +180,7 @@ export const CH1_TOC: TocEntry[] = [
   { id: "sec-1-5", label: "1.5 Committing Code to Source Control" },
   { id: "sec-1-6", label: "1.6 Deploying Next.js Projects to the Web" },
   { id: "sec-1-7", label: "1.7 Conclusion" },
+  ...chapterEndToc(ch1EndMatter),
 ];
 
 export const CH2_TOC: TocEntry[] = [
@@ -235,6 +243,7 @@ export const CH2_TOC: TocEntry[] = [
     ],
   },
   { id: "sec-2-5", label: "2.5 Delivery" },
+  ...chapterEndToc(ch2EndMatter),
 ];
 
 export const CH3_TOC: TocEntry[] = [
@@ -343,6 +352,7 @@ export const CH3_TOC: TocEntry[] = [
     ],
   },
   { id: "sec-3-10", label: "3.10 Delivery" },
+  ...chapterEndToc(ch3EndMatter),
 ];
 
 export const CH4_TOC: TocEntry[] = [
@@ -443,6 +453,7 @@ export const CH4_TOC: TocEntry[] = [
     ],
   },
   { id: "sec-4-12", label: "4.12 Delivery" },
+  ...chapterEndToc(ch4EndMatter),
 ];
 
 export const CH5_TOC: TocEntry[] = [
@@ -514,6 +525,7 @@ export const CH5_TOC: TocEntry[] = [
   },
   { id: "sec-5-6", label: "5.6 Conclusion" },
   { id: "sec-5-7", label: "5.7 Deliverables" },
+  ...chapterEndToc(ch5EndMatter),
 ];
 
 export const CH6_TOC: TocEntry[] = [
@@ -615,6 +627,7 @@ export const CH6_TOC: TocEntry[] = [
     ],
   },
   { id: "sec-6-5", label: "6.5 Deliverables" },
+  ...chapterEndToc(ch6EndMatter),
 ];
 
 export const CHAPTERS: ChapterToc[] = [

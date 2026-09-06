@@ -6,6 +6,8 @@ import Atlas from "./sections/Atlas";
 import CheckUnderstanding from "./sections/CheckUnderstanding";
 import KambazDb from "./sections/KambazDb";
 import Deliverables from "./sections/Deliverables";
+import ChapterEndMatter from "../components/ChapterEndMatter";
+import { ch6EndMatter } from "./end-matter";
 
 /**
  * Chapter 6 — PDF spine (MongoDB + Mongoose + Atlas + Kambaz)
@@ -23,6 +25,7 @@ export default function Chapter6() {
       <CheckUnderstanding />
       <KambazDb />
       <Deliverables />
+      <ChapterEndMatter data={ch6EndMatter} />
     </article>
   );
 }

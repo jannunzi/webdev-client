@@ -6,6 +6,8 @@ import StylingAndComponents from "./sections/StylingAndComponents";
 import CheckUnderstanding from "./sections/CheckUnderstanding";
 import KambazData from "./sections/KambazData";
 import Delivery from "./sections/Delivery";
+import ChapterEndMatter from "../components/ChapterEndMatter";
+import { ch3EndMatter } from "./end-matter";
 
 /**
  * Chapter 3 book content — JavaScript, data-driven React, and Kambaz,
@@ -22,6 +24,7 @@ export default function Chapter3() {
       <CheckUnderstanding />
       <KambazData />
       <Delivery />
+      <ChapterEndMatter data={ch3EndMatter} />
     </article>
   );
 }
