@@ -113,11 +113,22 @@ export { KAMBAZ_SESSIONS_SLIDES } from "./decks/kambaz-sessions";
 export { KAMBAZ_COURSES_API_SLIDES } from "./decks/kambaz-courses-api";
 export { DEPLOY_API_SLIDES } from "./decks/deploy-api";
 export { CH5_CONCLUSION_SLIDES } from "./decks/ch5-conclusion";
+export { LOCAL_MONGO_SLIDES } from "./decks/local-mongo";
+export { MONGOOSE_SLIDES } from "./decks/mongoose";
+export { MONGO_APIS_SLIDES } from "./decks/mongo-apis";
+export { MONGO_USERS_CRUD_SLIDES } from "./decks/mongo-users-crud";
+export { ATLAS_SLIDES } from "./decks/atlas";
+export { CH6_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch6-check-understanding";
+export { KAMBAZ_COURSES_DB_SLIDES } from "./decks/kambaz-courses-db";
+export { KAMBAZ_MODULES_DB_SLIDES } from "./decks/kambaz-modules-db";
+export { KAMBAZ_ENROLLMENTS_DB_SLIDES } from "./decks/kambaz-enrollments-db";
+export { CH6_DELIVERABLES_SLIDES } from "./decks/ch6-deliverables";
 export {
   BOOK_CHAPTERS,
   CHAPTER_3_SLUGS,
   CHAPTER_4_SLUGS,
   CHAPTER_5_SLUGS,
+  CHAPTER_6_SLUGS,
   LECTURE_1_SLUGS,
   LECTURE_2_SLUGS,
   LECTURE_3_SLUGS,

@@ -91,6 +91,16 @@ import { KAMBAZ_SESSIONS_SLIDES } from "./decks/kambaz-sessions";
 import { KAMBAZ_COURSES_API_SLIDES } from "./decks/kambaz-courses-api";
 import { DEPLOY_API_SLIDES } from "./decks/deploy-api";
 import { CH5_CONCLUSION_SLIDES } from "./decks/ch5-conclusion";
+import { LOCAL_MONGO_SLIDES } from "./decks/local-mongo";
+import { MONGOOSE_SLIDES } from "./decks/mongoose";
+import { MONGO_APIS_SLIDES } from "./decks/mongo-apis";
+import { MONGO_USERS_CRUD_SLIDES } from "./decks/mongo-users-crud";
+import { ATLAS_SLIDES } from "./decks/atlas";
+import { CH6_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch6-check-understanding";
+import { KAMBAZ_COURSES_DB_SLIDES } from "./decks/kambaz-courses-db";
+import { KAMBAZ_MODULES_DB_SLIDES } from "./decks/kambaz-modules-db";
+import { KAMBAZ_ENROLLMENTS_DB_SLIDES } from "./decks/kambaz-enrollments-db";
+import { CH6_DELIVERABLES_SLIDES } from "./decks/ch6-deliverables";
 import {
   BOOK_CHAPTERS,
   LECTURE_SLUGS,
@@ -1076,6 +1086,106 @@ const LECTURE_SUMMARIES: Record<
     bookSectionId: "sec-5-6",
     canvasLecture: 20,
     slides: CH5_CONCLUSION_SLIDES,
+  },
+  "local-mongo": {
+    title: "Local MongoDB",
+    summary:
+      "Install Community, Compass on 27017, create kambaz, then import the five JSON files — §6.1.",
+    chapter: 6,
+    topicId: "local-mongo",
+    bookSectionId: "sec-6-1",
+    canvasLecture: 21,
+    slides: LOCAL_MONGO_SLIDES,
+  },
+  mongoose: {
+    title: "Mongoose",
+    summary:
+      "Install mongoose, connect from env, User schema and model, then a promise DAO — §6.2.1–6.2.5.",
+    chapter: 6,
+    topicId: "mongoose",
+    bookSectionId: "sec-6-2",
+    canvasLecture: 22,
+    slides: MONGOOSE_SLIDES,
+  },
+  "mongo-apis": {
+    title: "Mongo APIs",
+    summary:
+      "async account routes, GET /api/users, PeopleTable, and an ADMIN Users screen — §6.2.6.1–6.2.6.2.",
+    chapter: 6,
+    topicId: "mongo-apis",
+    bookSectionId: "sec-6-2-6",
+    canvasLecture: 22,
+    slides: MONGO_APIS_SLIDES,
+  },
+  "mongo-users-crud": {
+    title: "User CRUD",
+    summary:
+      "Filter by role and name, findById, then delete, $set update, and create — §6.2.6.3–6.2.6.7.",
+    chapter: 6,
+    topicId: "mongo-apis",
+    bookSectionId: "sec-6-2-6-3",
+    canvasLecture: 22,
+    slides: MONGO_USERS_CRUD_SLIDES,
+  },
+  atlas: {
+    title: "Atlas",
+    summary:
+      "Free Kambaz cluster, Compass +srv, /kambaz in the path, new Render session env — §6.3.",
+    chapter: 6,
+    topicId: "atlas",
+    bookSectionId: "sec-6-3",
+    canvasLecture: 23,
+    slides: ATLAS_SLIDES,
+  },
+  "ch6-check-understanding": {
+    title: "Check Your Understanding",
+    summary:
+      "A 10-item self-check on schemas, DAOs, async routes, and Atlas — §6-check.",
+    chapter: 6,
+    topicId: "ch6-check",
+    bookSectionId: "sec-6-check",
+    canvasLecture: 23,
+    slides: CH6_CHECK_UNDERSTANDING_SLIDES,
+  },
+  "kambaz-courses-db": {
+    title: "Kambaz Courses DB",
+    summary:
+      "Course schema and model, then find / create / delete / update on Mongo — §6.4.1.",
+    chapter: 6,
+    topicId: "kambaz-db",
+    bookSectionId: "sec-6-4-1",
+    canvasLecture: 24,
+    slides: KAMBAZ_COURSES_DB_SLIDES,
+  },
+  "kambaz-modules-db": {
+    title: "Kambaz Modules 1:N",
+    summary:
+      "One course, many modules — collection plus course foreign key, then CRUD — §6.4.2.",
+    chapter: 6,
+    topicId: "kambaz-db",
+    bookSectionId: "sec-6-4-2",
+    canvasLecture: 24,
+    slides: KAMBAZ_MODULES_DB_SLIDES,
+  },
+  "kambaz-enrollments-db": {
+    title: "Kambaz Enrollments M:N",
+    summary:
+      "Mapping collection, populate, deleteMany, enroll / unenroll, course People — §6.4.3.",
+    chapter: 6,
+    topicId: "kambaz-db",
+    bookSectionId: "sec-6-4-3",
+    canvasLecture: 24,
+    slides: KAMBAZ_ENROLLMENTS_DB_SLIDES,
+  },
+  "ch6-deliverables": {
+    title: "Chapter 6 Deliverables",
+    summary:
+      "Branch a6 in both repos, new Render + Atlas, submit the Vercel URL — §6.5.",
+    chapter: 6,
+    topicId: "ch6-end",
+    bookSectionId: "sec-6-5",
+    canvasLecture: 24,
+    slides: CH6_DELIVERABLES_SLIDES,
   },
 };
 

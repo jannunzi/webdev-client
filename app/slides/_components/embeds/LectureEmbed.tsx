@@ -156,6 +156,11 @@ import {
   Lab5EnvEmbed,
   Lab5HelloEmbed,
 } from "./Lab5Embeds";
+import {
+  Lab6StatusEmbed,
+  Lab6TodosEmbed,
+  Lab6UsersEmbed,
+} from "./Lab6Embeds";
 
 export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
   switch (id) {
@@ -437,6 +442,12 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <Lab5HelloEmbed />;
     case "lab5-calculator":
       return <Lab5CalculatorEmbed />;
+    case "lab6-status":
+      return <Lab6StatusEmbed />;
+    case "lab6-todos":
+      return <Lab6TodosEmbed />;
+    case "lab6-users":
+      return <Lab6UsersEmbed />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;
