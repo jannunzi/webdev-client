@@ -2,6 +2,7 @@ import Section from "../../components/Section";
 import SectionLink from "../../components/SectionLink";
 import CodeBlock from "../../components/CodeBlock";
 import LiveDemo from "../../components/LiveDemo";
+import OfficialLink from "../../components/OfficialLink";
 import { OnYourOwn, WithAI } from "../../components/Practice";
 import Effect from "@/app/labs/lab4/Effect";
 
@@ -10,11 +11,49 @@ export default function EffectsAndExercises() {
     <>
       <Section id="sec-4-7" title="4.7 Side Effects with useEffect">
         <p>
-          Rendering should compute JSX from props and state. Talking to the
-          document, a timer, or a network is a <strong>side effect</strong>
-          — it belongs in <code>useEffect</code>, which runs after React
-          paints. The dependency array lists values that should re-run the
-          effect; an empty array would run only after the first paint.
+          One of the learning objectives for this chapter is to handle
+          side effects with the{" "}
+          <OfficialLink href="https://react.dev/reference/react/useEffect">
+            useEffect
+          </OfficialLink>{" "}
+          hook. Rendering should compute JSX from props and state —
+          that is the transformation from application state into a user
+          interface that <SectionLink to="4.2.4" />{" "}described. Talking
+          to the document, starting a timer, subscribing to a window
+          event, or asking a network for data is a{" "}
+          <strong>side effect</strong>: it reaches outside the
+          component&apos;s return value. Those operations belong in{" "}
+          <code>useEffect</code>, which runs after React paints, not
+          during the render that computes the tree.
+        </p>
+        <p>
+          If you set <code>document.title</code>{" "}or call{" "}
+          <code>fetch</code>{" "}directly in the component body, the work
+          runs every time React renders, including renders that had
+          nothing to do with the title or the request. Putting the same
+          work in <code>useEffect</code>{" "}lets you say when it should
+          run. The dependency array lists values that should re-run the
+          effect; when any of those values change, React runs the
+          function again after the next paint. An empty array would run
+          only after the first paint, which is the pattern later chapters
+          use to load data when a screen first appears. Omitting the
+          array altogether would run after every paint, which is rarely
+          what you want.
+        </p>
+        <p>
+          Kambaz Profile will use the same hook: if there is no current
+          user the screen redirects to Sign in; otherwise it copies the
+          current user into a local form, and a{" "}
+          <code>useEffect</code>{" "}with an empty dependency array calls
+          that fetch-profile function after the first paint. Chapter 5
+          will use the same hook to retrieve welcome messages, objects,
+          and arrays from an HTTP server when a lab component loads. This
+          section practices the hook in isolation so those later calls
+          are not the first time you have seen it. To practice side
+          effects, create the <code>Effect</code>{" "}component below and
+          import it from the Lab 4 page. Confirm the browser displays as
+          shown, then look at the browser tab title as you type and
+          click.
         </p>
         <CodeBlock
           language="tsx"
@@ -58,12 +97,29 @@ export default function Effect() {
   );
 }`}</CodeBlock>
         <p>
-          Type in the field or click the button, then look at the browser
-          tab title. Import <code>Effect</code>{" "}from the Lab 4 page:
+          The effect reads <code>name</code>{" "}and <code>count</code>{" "}
+          and writes a string onto <code>document.title</code>. Because
+          both values are listed in the dependency array, typing in the
+          field or clicking the button schedules a new paint and then a
+          new title. The input is a controlled string; the button is the
+          same integer mutator you have been using since the counter.
+          The new idea is only when the title write runs: after the
+          paint, and only when one of those two values changed. Type in
+          the field or click the button, then look at the browser tab
+          title. Import <code>Effect</code>{" "}from the Lab 4 page and
+          confirm the tab title tracks the field and the click count:
         </p>
         <LiveDemo name="Effect" file="app/labs/lab4/Effect.tsx" mode="styled">
           <Effect />
         </LiveDemo>
+        <p>
+          When you later fetch courses or a profile, the effect will look
+          the same: a function that talks to the outside world, and an
+          array that says when to talk. An empty array means once, after
+          the screen first appears. An array with a course id means again
+          whenever that id changes. Keep the fetch itself out of the
+          render path so a parent rerender does not fire a new request.
+        </p>
         <OnYourOwn>
           Log <code>name</code>{" "}and <code>count</code>{" "}to the console
           from the same effect so you can see when it runs.
@@ -82,7 +138,9 @@ export default function Effect() {
           –<SectionLink to="4.7" />. Each item points back to the section
           where you built the worked example. Build in order as you read —
           this list is for checking coverage, not a substitute for the
-          walkthroughs.
+          walkthroughs. As you read each section, implement the component,
+          import it from the Lab 4 page, and confirm the browser displays
+          as shown before you tick the matching item here.
         </p>
         <ol>
           <li>
