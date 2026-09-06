@@ -83,9 +83,25 @@ export { KAMBAZ_DASHBOARD_DATA_SLIDES } from "./decks/kambaz-dashboard-data";
 export { KAMBAZ_COURSES_DATA_SLIDES } from "./decks/kambaz-courses-data";
 export { KAMBAZ_MODULES_DATA_SLIDES } from "./decks/kambaz-modules-data";
 export { KAMBAZ_ASSIGNMENTS_DATA_SLIDES } from "./decks/kambaz-assignments-data";
+export { CLICK_EVENTS_SLIDES } from "./decks/click-events";
+export { PASSING_DATA_AND_FUNCTIONS_SLIDES } from "./decks/passing-data-and-functions";
+export { USESTATE_COUNTER_SLIDES } from "./decks/usestate-counter";
+export { FORM_STATE_TYPES_SLIDES } from "./decks/form-state-types";
+export { SHARING_PARENT_CHILD_SLIDES } from "./decks/sharing-parent-child";
+export { PROP_DRILLING_AND_URL_SLIDES } from "./decks/prop-drilling-and-url";
+export { REACT_CONTEXT_SLIDES } from "./decks/react-context";
+export { ZUSTAND_COUNTER_SLIDES } from "./decks/zustand-counter";
+export { ZUSTAND_TODOS_SLIDES } from "./decks/zustand-todos";
+export { USE_EFFECT_SLIDES } from "./decks/use-effect";
+export { CH4_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch4-check-understanding";
+export { KAMBAZ_COURSES_STORE_SLIDES } from "./decks/kambaz-courses-store";
+export { KAMBAZ_DASHBOARD_CRUD_SLIDES } from "./decks/kambaz-dashboard-crud";
+export { KAMBAZ_MODULES_STORE_SLIDES } from "./decks/kambaz-modules-store";
+export { KAMBAZ_ACCOUNT_CONTEXT_SLIDES } from "./decks/kambaz-account-context";
 export {
   BOOK_CHAPTERS,
   CHAPTER_3_SLUGS,
+  CHAPTER_4_SLUGS,
   LECTURE_1_SLUGS,
   LECTURE_2_SLUGS,
   LECTURE_3_SLUGS,

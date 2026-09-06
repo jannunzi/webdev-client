@@ -130,6 +130,27 @@ import {
   JsVariablesEmbed,
   Lab3StubEmbed,
 } from "./Lab3Embeds";
+import {
+  ArrayStateEmbed,
+  BooleanStateEmbed,
+  ClickEventEmbed,
+  ContextCounterEmbed,
+  CounterBrokenEmbed,
+  CounterEmbed,
+  DateStateEmbed,
+  KambazCoursesCrudEmbed,
+  Lab4StubEmbed,
+  ObjectStateEmbed,
+  ParentChildStateEmbed,
+  PassingDataEmbed,
+  PassingFunctionsEmbed,
+  PropDrillingEmbed,
+  StringStateEmbed,
+  UrlEncodingEmbed,
+  UseEffectEmbed,
+  ZustandCounterEmbed,
+  ZustandTodosEmbed,
+} from "./Lab4Embeds";
 
 export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
   switch (id) {
@@ -367,6 +388,44 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <JsPathParametersEmbed />;
     case "js-todo-list":
       return <JsTodoListEmbed />;
+    case "lab4-stub":
+      return <Lab4StubEmbed />;
+    case "click-event":
+      return <ClickEventEmbed />;
+    case "passing-data":
+      return <PassingDataEmbed />;
+    case "passing-functions":
+      return <PassingFunctionsEmbed />;
+    case "counter-broken":
+      return <CounterBrokenEmbed />;
+    case "counter":
+      return <CounterEmbed />;
+    case "boolean-state":
+      return <BooleanStateEmbed />;
+    case "string-state":
+      return <StringStateEmbed />;
+    case "date-state":
+      return <DateStateEmbed />;
+    case "object-state":
+      return <ObjectStateEmbed />;
+    case "array-state":
+      return <ArrayStateEmbed />;
+    case "parent-child-state":
+      return <ParentChildStateEmbed />;
+    case "prop-drilling":
+      return <PropDrillingEmbed />;
+    case "url-encoding":
+      return <UrlEncodingEmbed />;
+    case "context-counter":
+      return <ContextCounterEmbed />;
+    case "zustand-counter":
+      return <ZustandCounterEmbed />;
+    case "zustand-todos":
+      return <ZustandTodosEmbed />;
+    case "use-effect":
+      return <UseEffectEmbed />;
+    case "kambaz-courses-crud":
+      return <KambazCoursesCrudEmbed />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;

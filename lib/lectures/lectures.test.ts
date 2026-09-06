@@ -27,6 +27,7 @@ import {
   LECTURE_6_SLUGS,
   LECTURE_7_SLUGS,
   CHAPTER_3_SLUGS,
+  CHAPTER_4_SLUGS,
   LECTURE_TOPICS,
   LECTURE_DIAGRAM_IDS,
   LECTURE_EMBED_IDS,
@@ -72,7 +73,7 @@ function findSlide(deckSlug: string, id: string) {
 }
 
 describe("lecture catalog", () => {
-  it("lists slugs in book-spine order (Ch1, Ch2, then first Ch3 JS decks)", () => {
+  it("lists slugs in book-spine order (Ch1–Ch3, then Ch4 state decks)", () => {
     assert.deepEqual(listLectureSlugs(), [
       ...LECTURE_1_SLUGS,
       ...LECTURE_2_SLUGS,
@@ -81,6 +82,7 @@ describe("lecture catalog", () => {
       ...LECTURE_6_SLUGS,
       ...LECTURE_7_SLUGS,
       ...CHAPTER_3_SLUGS,
+      ...CHAPTER_4_SLUGS,
     ]);
     assert.deepEqual(listLectureSlugs(), [...LECTURE_SLUGS]);
     assert.equal(LECTURE_1_SLUGS.length, 5);
@@ -90,6 +92,7 @@ describe("lecture catalog", () => {
     assert.equal(LECTURE_6_SLUGS.length, 7);
     assert.equal(LECTURE_7_SLUGS.length, 6);
     assert.equal(CHAPTER_3_SLUGS.length, 23);
+    assert.equal(CHAPTER_4_SLUGS.length, 15);
   });
 
   it("marks Lecture 1 entries as Canvas Lecture 1 / Chapter 1", () => {
@@ -148,6 +151,9 @@ describe("lecture catalog", () => {
     assert.equal(isLectureSlug("kambaz-styling"), true);
     assert.equal(isLectureSlug("intro-to-javascript"), true);
     assert.equal(isLectureSlug("javascript-functions"), true);
+    assert.equal(isLectureSlug("click-events"), true);
+    assert.equal(isLectureSlug("zustand-counter"), true);
+    assert.equal(isLectureSlug("kambaz-courses-store"), true);
     assert.equal(isLectureSlug("intro"), false);
   });
 
@@ -232,7 +238,7 @@ describe("lecture catalog", () => {
     const groups = listChapterTopicGroups();
     assert.deepEqual(
       groups.map((group) => group.chapter),
-      [1, 2, 3],
+      [1, 2, 3, 4],
     );
     assert.equal(groups[0]?.href, "/book/ch1");
     assert.equal(
@@ -385,6 +391,66 @@ describe("lecture catalog", () => {
       ],
     );
 
+    assert.equal(groups[3]?.href, "/book/ch4");
+    assert.deepEqual(
+      groups[3]?.topics.map((topic) => topic.topicId),
+      [
+        "events-state",
+        "sharing-url",
+        "react-context",
+        "zustand",
+        "effects",
+        "ch4-check",
+        "kambaz-state",
+      ],
+    );
+    assert.deepEqual(
+      groups[3]?.topics.map((topic) => topic.title),
+      [
+        "4.2 Managing State and User Input with Forms",
+        "4.3 Sharing State, Prop Drilling, and URLs",
+        "4.4 React Context",
+        "4.5 Zustand",
+        "4.7 Side Effects with useEffect",
+        "4.9 Check Your Understanding",
+        "4.10 Adding State to the Kambaz User Interface",
+      ],
+    );
+    assert.equal(groups[3]?.topics[0]?.bookHref, "/book/ch4#sec-4-2");
+    assert.deepEqual(
+      groups[3]?.topics[0]?.decks.map((deck) => deck.slug),
+      CHAPTER_4_SLUGS.slice(0, 4),
+    );
+    assert.deepEqual(
+      groups[3]?.topics[1]?.decks.map((deck) => deck.slug),
+      ["sharing-parent-child", "prop-drilling-and-url"],
+    );
+    assert.deepEqual(
+      groups[3]?.topics[2]?.decks.map((deck) => deck.slug),
+      ["react-context"],
+    );
+    assert.deepEqual(
+      groups[3]?.topics[3]?.decks.map((deck) => deck.slug),
+      ["zustand-counter", "zustand-todos"],
+    );
+    assert.deepEqual(
+      groups[3]?.topics[4]?.decks.map((deck) => deck.slug),
+      ["use-effect"],
+    );
+    assert.deepEqual(
+      groups[3]?.topics[5]?.decks.map((deck) => deck.slug),
+      ["ch4-check-understanding"],
+    );
+    assert.deepEqual(
+      groups[3]?.topics[6]?.decks.map((deck) => deck.slug),
+      [
+        "kambaz-courses-store",
+        "kambaz-dashboard-crud",
+        "kambaz-modules-store",
+        "kambaz-account-context",
+      ],
+    );
+
     for (const group of groups) {
       assert.doesNotMatch(group.title, /^Lecture \d+$/);
       for (const topic of group.topics) {
@@ -397,21 +463,25 @@ describe("lecture catalog", () => {
     const chapters = listLectureChapters();
     assert.deepEqual(
       chapters.map((entry) => entry.chapter),
-      [1, 2, 3],
+      [1, 2, 3, 4],
     );
     assert.deepEqual(
       chapters.map((entry) => entry.href),
-      ["/book/ch1", "/book/ch2", "/book/ch3"],
+      ["/book/ch1", "/book/ch2", "/book/ch3", "/book/ch4"],
     );
     assert.equal(chapters[0]?.title, BOOK_CHAPTERS[0]?.title);
     assert.equal(chapters[1]?.title, BOOK_CHAPTERS[1]?.title);
     assert.equal(chapters[2]?.title, BOOK_CHAPTERS[2]?.title);
+    assert.equal(chapters[3]?.title, BOOK_CHAPTERS[3]?.title);
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "tailwind"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "kambaz-styling"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "react-icons"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "source-control"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "ch3-check"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "js-data"));
+    assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "events-state"));
+    assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "zustand"));
+    assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "kambaz-state"));
   });
 
   it("maps Ch1–Ch3 decks to book section anchors for bidirectional links", () => {
@@ -435,7 +505,20 @@ describe("lecture catalog", () => {
     assert.equal(getLecture("ch3-check-understanding")?.bookHref, "/book/ch3#sec-3-8");
     assert.equal(getLecture("kambaz-database")?.bookHref, "/book/ch3#sec-3-9");
     assert.equal(getLecture("kambaz-dashboard-data")?.bookHref, "/book/ch3#sec-3-9-3");
+    assert.equal(getLecture("click-events")?.bookHref, "/book/ch4#sec-4-2-1");
+    assert.equal(getLecture("usestate-counter")?.bookHref, "/book/ch4#sec-4-2-4");
+    assert.equal(getLecture("sharing-parent-child")?.bookHref, "/book/ch4#sec-4-3-1");
+    assert.equal(getLecture("react-context")?.bookHref, "/book/ch4#sec-4-4");
+    assert.equal(getLecture("zustand-counter")?.bookHref, "/book/ch4#sec-4-5-1");
+    assert.equal(getLecture("zustand-todos")?.bookHref, "/book/ch4#sec-4-5-2");
+    assert.equal(getLecture("use-effect")?.bookHref, "/book/ch4#sec-4-7");
+    assert.equal(getLecture("ch4-check-understanding")?.bookHref, "/book/ch4#sec-4-9");
+    assert.equal(getLecture("kambaz-courses-store")?.bookHref, "/book/ch4#sec-4-10-1");
+    assert.equal(getLecture("kambaz-dashboard-crud")?.bookHref, "/book/ch4#sec-4-10-2");
+    assert.equal(getLecture("kambaz-modules-store")?.bookHref, "/book/ch4#sec-4-10-4");
+    assert.equal(getLecture("kambaz-account-context")?.bookHref, "/book/ch4#sec-4-10-5");
     assert.equal(listDecksForBookSection("sec-3-2")[0]?.slug, "intro-to-javascript");
+    assert.equal(listDecksForBookSection("sec-4-5-1")[0]?.slug, "zustand-counter");
     assert.equal(listDecksForBookSection("sec-1-2-1")[0]?.slug, "installing-nodejs");
     assert.equal(listDecksForBookSection("sec-2-3")[0]?.slug, "tailwind-intro");
     assert.equal(listDecksForBookSection("sec-2-2")[0]?.slug, "react-icons");
@@ -552,7 +635,45 @@ describe("lecture catalog", () => {
       lectureDeckThumbnail("intro-to-javascript"),
       "/lectures/thumbs/intro-to-javascript.svg",
     );
-    for (const group of groups.slice(9)) {
+    assert.equal(groups[9]?.title, "Lecture 10");
+    assert.equal(groups[9]?.canvasLecture, 10);
+    assert.equal(groups[9]?.decks.length, 4);
+    assert.deepEqual(
+      groups[9]?.decks.map((deck) => deck.slug),
+      CHAPTER_4_SLUGS.filter((slug) => getLecture(slug)?.canvasLecture === 10),
+    );
+    assert.equal(groups[10]?.title, "Lecture 11");
+    assert.equal(groups[10]?.canvasLecture, 11);
+    assert.equal(groups[10]?.decks.length, 3);
+    assert.equal(groups[11]?.title, "Lecture 12");
+    assert.equal(groups[11]?.canvasLecture, 12);
+    assert.deepEqual(
+      groups[11]?.decks.map((deck) => deck.slug),
+      ["zustand-counter", "zustand-todos"],
+    );
+    assert.equal(groups[12]?.title, "Lecture 13");
+    assert.equal(groups[12]?.canvasLecture, 13);
+    assert.deepEqual(
+      groups[12]?.decks.map((deck) => deck.slug),
+      ["use-effect", "ch4-check-understanding"],
+    );
+    assert.equal(groups[13]?.title, "Lecture 14");
+    assert.equal(groups[13]?.canvasLecture, 14);
+    assert.deepEqual(
+      groups[13]?.decks.map((deck) => deck.slug),
+      ["kambaz-courses-store", "kambaz-dashboard-crud"],
+    );
+    assert.equal(groups[14]?.title, "Lecture 15");
+    assert.equal(groups[14]?.canvasLecture, 15);
+    assert.deepEqual(
+      groups[14]?.decks.map((deck) => deck.slug),
+      ["kambaz-modules-store", "kambaz-account-context"],
+    );
+    assert.equal(
+      lectureDeckThumbnail("click-events"),
+      "/lectures/thumbs/click-events.svg",
+    );
+    for (const group of groups.slice(15)) {
       assert.equal(group.title, `Lecture ${group.canvasLecture}`);
       assert.equal(group.decks.length, 0);
     }
@@ -582,9 +703,15 @@ describe("lecture catalog", () => {
     const afterFns = adjacentLectureSlugs("javascript-functions");
     assert.equal(afterFns.next?.slug, "javascript-arrays");
     assert.equal(afterFns.prev?.slug, "null-and-undefined");
-    const last = adjacentLectureSlugs("kambaz-assignments-data");
+    const lastCh3 = adjacentLectureSlugs("kambaz-assignments-data");
+    assert.equal(lastCh3.next?.slug, "click-events");
+    assert.equal(lastCh3.prev?.slug, "kambaz-modules-data");
+    const afterZustand = adjacentLectureSlugs("zustand-todos");
+    assert.equal(afterZustand.next?.slug, "use-effect");
+    assert.equal(afterZustand.prev?.slug, "zustand-counter");
+    const last = adjacentLectureSlugs("kambaz-account-context");
     assert.equal(last.next, undefined);
-    assert.equal(last.prev?.slug, "kambaz-modules-data");
+    assert.equal(last.prev?.slug, "kambaz-modules-store");
   });
 });
 
@@ -657,6 +784,21 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-courses-data"], 7);
     assert.equal(counts["kambaz-modules-data"], 6);
     assert.equal(counts["kambaz-assignments-data"], 7);
+    assert.equal(counts["click-events"], 7);
+    assert.equal(counts["passing-data-and-functions"], 8);
+    assert.equal(counts["usestate-counter"], 7);
+    assert.equal(counts["form-state-types"], 9);
+    assert.equal(counts["sharing-parent-child"], 6);
+    assert.equal(counts["prop-drilling-and-url"], 8);
+    assert.equal(counts["react-context"], 7);
+    assert.equal(counts["zustand-counter"], 6);
+    assert.equal(counts["zustand-todos"], 7);
+    assert.equal(counts["use-effect"], 7);
+    assert.equal(counts["ch4-check-understanding"], 7);
+    assert.equal(counts["kambaz-courses-store"], 8);
+    assert.equal(counts["kambaz-dashboard-crud"], 8);
+    assert.equal(counts["kambaz-modules-store"], 7);
+    assert.equal(counts["kambaz-account-context"], 7);
     for (const deck of decks) {
       const ids = deck.slides.map((slide) => slide.id);
       assert.equal(new Set(ids).size, ids.length, `${deck.slug} duplicate slide id`);
@@ -943,6 +1085,41 @@ describe("lecture decks", () => {
         list: "kambaz-styled-assignments",
         people: "kambaz-styled-people",
       },
+      "click-events": {
+        "lab4-stub": "lab4-stub",
+        click: "click-event",
+      },
+      "passing-data-and-functions": {
+        "passing-data": "passing-data",
+        "passing-functions": "passing-functions",
+      },
+      "usestate-counter": {
+        broken: "counter-broken",
+        working: "counter",
+      },
+      "form-state-types": {
+        boolean: "boolean-state",
+        string: "string-state",
+        date: "date-state",
+        object: "object-state",
+        array: "array-state",
+      },
+      "sharing-parent-child": { parent: "parent-child-state" },
+      "prop-drilling-and-url": {
+        drilling: "prop-drilling",
+        "url-form": "url-encoding",
+      },
+      "react-context": { siblings: "context-counter" },
+      "zustand-counter": { component: "zustand-counter" },
+      "zustand-todos": { list: "zustand-todos" },
+      "use-effect": { demo: "use-effect" },
+      "kambaz-courses-store": { demo: "kambaz-courses-crud" },
+      "kambaz-dashboard-crud": {
+        add: "kambaz-courses-crud",
+        edit: "kambaz-styled-dashboard",
+      },
+      "kambaz-modules-store": { demo: "kambaz-styled-modules" },
+      "kambaz-account-context": { signin: "kambaz-styled-signin" },
     } as const;
     const used = new Set<string>();
     for (const [slug, slides] of Object.entries(expected)) {
@@ -1406,6 +1583,92 @@ describe("lecture decks", () => {
     assert.match(people, /assignment.course === cid/);
     assert.match(people, /assignment\?\.title \?\? ""/);
     assert.match(people, /enrollments.some/);
+  });
+
+  it("teaches Chapter 4 events, stores, and Kambaz state", () => {
+    const clicks = slideText("click-events");
+    assert.match(clicks, /"use client"/);
+    assert.match(clicks, /wd-lab4/);
+    assert.match(clicks, /onClick=\{hello\}/);
+    assert.match(clicks, /wd-onclick-hello/);
+    assert.doesNotMatch(clicks, /HashRouter/);
+
+    const passing = slideText("passing-data-and-functions");
+    assert.match(passing, /lifeIs\("Life is Good!"\)/);
+    assert.match(passing, /theFunction/);
+    assert.match(passing, /Hello from Lab 4/);
+
+    const counter = slideText("usestate-counter");
+    assert.match(counter, /useState\(7\)/);
+    assert.match(counter, /let count = 7/);
+    assert.match(counter, /setCount\(count \+ 1\)/);
+    assert.match(counter, /wd-counter/);
+
+    const forms = slideText("form-state-types");
+    assert.match(forms, /wd-boolean-checkbox/);
+    assert.match(forms, /setFirstName\(e.target.value\)/);
+    assert.match(forms, /dateObjectToHtmlDateString/);
+    assert.match(forms, /\.\.\.person/);
+    assert.match(forms, /array.filter/);
+
+    const sharing = slideText("sharing-parent-child");
+    assert.match(sharing, /useState\(123\)/);
+    assert.match(sharing, /setCounter=\{setCounter\}/);
+    assert.match(sharing, /wd-child-state/);
+
+    const drill = slideText("prop-drilling-and-url");
+    assert.match(drill, /only forwards props/);
+    assert.match(drill, /URLSearchParams/);
+    assert.match(drill, /useSearchParams/);
+    assert.match(drill, /encodeURIComponent/);
+
+    const context = slideText("react-context");
+    assert.match(context, /createContext/);
+    assert.match(context, /useCounterContext/);
+    assert.match(context, /CounterProvider/);
+    assert.match(context, /do not put Kambaz courses/i);
+
+    const zustand = slideText("zustand-counter");
+    assert.match(zustand, /from "zustand"/);
+    assert.match(zustand, /useCounterStore/);
+    assert.match(zustand, /wd-zustand-up-click/);
+    assert.doesNotMatch(zustand, /Lecture \d+/);
+
+    const todos = slideText("zustand-todos");
+    assert.match(todos, /crypto.randomUUID/);
+    assert.match(todos, /wd-zustand-todo-title/);
+    assert.match(todos, /ZustandTodoItem/);
+
+    const effect = slideText("use-effect");
+    assert.match(effect, /useEffect/);
+    assert.match(effect, /document.title/);
+    assert.match(effect, /wd-use-effect/);
+
+    const check = slideText("ch4-check-understanding");
+    assert.match(check, /sec-4-9/);
+    assert.match(check, /self-check/);
+    assert.doesNotMatch(check, /Lecture \d+/);
+
+    const store = slideText("kambaz-courses-store");
+    assert.match(store, /useCoursesStore/);
+    assert.match(store, /coursesStore.ts/);
+    assert.match(store, /emptyCourse/);
+
+    const crud = slideText("kambaz-dashboard-crud");
+    assert.match(crud, /wd-add-new-course-click/);
+    assert.match(crud, /preventDefault/);
+    assert.match(crud, /updateCourse\(course\)/);
+
+    const modules = slideText("kambaz-modules-store");
+    assert.match(modules, /ModuleEditor/);
+    assert.match(modules, /wd-add-module-dialog/);
+    assert.match(modules, /useModulesStore/);
+
+    const account = slideText("kambaz-account-context");
+    assert.match(account, /AccountProvider/);
+    assert.match(account, /useAccountContext/);
+    assert.match(account, /setCurrentUser/);
+    assert.match(account, /users.json/);
   });
 
   it("does not surface Lecture N as the product name in slide copy", () => {
