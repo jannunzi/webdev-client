@@ -124,17 +124,17 @@ export default function SelfCheck({
   return (
     <div className="my-4 overflow-hidden rounded border border-neutral-300 bg-white shadow-sm">
       <div className="border-b border-neutral-300 bg-neutral-100 px-3 py-2 font-sans text-sm text-neutral-700">
-        Self-check — {count} questions from a bank of {bank.length}
+        Self-check — {count} questions
       </div>
 
       <div className="space-y-4 p-4 font-sans text-[0.95rem]">
         {phase === "idle" ? (
           <>
             <p className="m-0 text-neutral-800">
-              Ten questions, drawn at random from this section&apos;s bank —
-              a mix of concepts, syntax, acronyms, snippets, fill-in-the-blank,
-              and short puzzles. This is for you, not Canvas: check an answer,
-              read the explanation, then try another draw if you want.
+              {count} questions, drawn at random — a mix of concepts, syntax,
+              acronyms, snippets, fill-in-the-blank, and short puzzles. This is
+              for you: check an answer, read the explanation, then try another
+              draw if you want.
             </p>
             {prior ? (
               <p className="m-0 text-sm text-neutral-600">
@@ -224,7 +224,7 @@ function Summary({
         </div>
       ) : (
         <p className="m-0 text-neutral-800">
-          Clean sweep — try another draw to see a different mix from the bank.
+          Clean sweep — try another draw to see a different mix.
         </p>
       )}
       <button

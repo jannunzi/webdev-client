@@ -26,7 +26,7 @@ export async function generateMetadata({
   }
   return {
     title: `Practice — ${quiz.title}`,
-    description: `Ungraded self-check for ${quiz.sectionLabel}. Not a Canvas exam.`,
+    description: `Ungraded self-check for ${quiz.sectionLabel}. Not part of your course grade.`,
   };
 }
 
@@ -53,9 +53,8 @@ export default async function PracticeQuizPage({ params }: PageProps) {
       </p>
       <h1 className="mt-0 font-sans text-3xl font-semibold">{quiz.title}</h1>
       <p className="rounded border border-amber-300 bg-amber-50 px-3 py-2 font-sans text-sm text-amber-950">
-        This is an ungraded self-check — not a Canvas exam and not part of
-        your course grade. You can retry as often as you like; scores stay on
-        this device.
+        This is an ungraded self-check — not part of your course grade. You
+        can retry as often as you like; scores stay on this device.
       </p>
       <p>
         Drawn from{" "}

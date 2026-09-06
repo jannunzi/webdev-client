@@ -1,5 +1,4 @@
 import Section from "../../components/Section";
-import SectionLink from "../../components/SectionLink";
 import PracticeCard from "../../components/PracticeCard";
 
 export default function CheckUnderstanding() {
@@ -11,17 +10,15 @@ export default function CheckUnderstanding() {
     >
       <p>
         Pause and test the HTML topics from this chapter. The practice
-        quiz draws 10 items from a standalone bank on those topics — App
-        Router{" "}
+        quiz draws 10 items on those topics — App Router{" "}
         <code>page.tsx</code>, headings and paragraphs, lists and tables,
         images, form fields, radio <code>name</code>{" "}groups and mutual
         exclusion, checkbox independence, the two label patterns (
         <code>htmlFor</code>/<code>id</code>{" "}vs wrapping), dropdowns,
         buttons, props and <code>children</code>,{" "}
         <code>Link</code>{" "}vs <code>&lt;a&gt;</code>, and layouts. It is a
-        self-check, not part of the Canvas grade in{" "}
-        <SectionLink to="1.6" />. Misses link back to the subsection you
-        should reread; each new attempt draws a different 10.
+        self-check, not part of your course grade. Misses link back to the
+        subsection you should reread; each new attempt draws a different 10.
       </p>
       <PracticeCard quizId="1.lab" />
     </Section>

@@ -1402,16 +1402,16 @@ export default function MediaQueriesDemo() {
       >
         <p>
           Before React Icons and Tailwind, pause and test the CSS topics
-          from this section. The practice quiz draws 10 items from a
-          standalone bank — concepts (why the{" "}
+          from this section. The practice quiz draws 10 items — concepts
+          (why the{" "}
           <code>style</code>{" "}attribute is a bad habit, padding vs margin, the
           box model, block vs inline), syntax (hyphens vs camelCase,{" "}
           <code>#</code> vs <code>.</code>, <code>box-sizing</code>,{" "}
           <code>display</code>), button types (
           <SectionLink to="1.3.6.7" />), acronyms, snippets, fill-in-the-blank,
-          and short puzzles. It is a self-check, not part of the Canvas grade in{" "}
-          <SectionLink to="2.5" />. Misses link back to the subsection you
-          should reread; each new attempt draws a different 10.
+          and short puzzles. It is a self-check, not part of your course
+          grade. Misses link back to the subsection you should reread; each
+          new attempt draws a different 10.
         </p>
         <PracticeCard quizId="2.1" />
       </Section>

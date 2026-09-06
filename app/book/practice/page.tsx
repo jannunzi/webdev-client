@@ -9,7 +9,7 @@ import {
 export const metadata: Metadata = {
   title: "Practice quizzes",
   description:
-    "Ungraded self-check practice for CS 4550 / CS 5610 book chapters. Not a Canvas exam.",
+    "Ungraded self-check practice for CS 4550 / CS 5610 book chapters. Not part of your course grade.",
 };
 
 function groupByChapter(quizzes: PracticeQuiz[]) {
@@ -42,13 +42,12 @@ export default function PracticeIndexPage() {
         Practice quizzes
       </h1>
       <p className="rounded border border-amber-300 bg-amber-50 px-3 py-2 font-sans text-sm text-amber-950">
-        These are ungraded self-checks. They are not Canvas exams and do not
-        count toward your grade.
+        These are ungraded self-checks. They do not count toward your grade.
       </p>
       <p>
         Each practice page draws {PRACTICE_QUIZZES[0]?.count ?? 10} questions
-        at random from that section&apos;s bank. Misses link back to the
-        subsection to reread. Attempt history stays in this browser.
+        at random. Misses link back to the subsection to reread. Attempt
+        history stays in this browser.
       </p>
       <p>
         <Link href="/book">Back to the book</Link>
@@ -74,7 +73,7 @@ export default function PracticeIndexPage() {
                     {quiz.sectionLabel}
                   </Link>
                   {" — "}
-                  {quiz.count} of {quiz.bank.length} questions.
+                  {quiz.count} questions drawn at random.
                 </p>
                 <Link
                   href={practicePath(quiz.quizId)}
