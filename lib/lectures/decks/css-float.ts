@@ -6,7 +6,7 @@ export const CSS_FLOAT_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Lecture 4 · Deck 6 — Float",
+      "Chapter 2 · Float",
       "Chapter 2 §2.1.17–2.1.18 · wrap text, then a float “grid”",
     ],
   },

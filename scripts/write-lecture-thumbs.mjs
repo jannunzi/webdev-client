@@ -109,6 +109,12 @@ const KAMBAZ = `
     <rect x="372" y="140" width="150" height="100" rx="12" fill="#E2E8F0"/>
   </g>`;
 
+const JS = `
+  <g transform="translate(90 80)">
+    <rect width="360" height="360" rx="48" fill="#F7DF1E"/>
+    <text x="180" y="250" text-anchor="middle" fill="#111827" font-family="ui-sans-serif, system-ui, sans-serif" font-size="160" font-weight="800">JS</text>
+  </g>`;
+
 const SPA = `
   <g transform="translate(80 110)">
     <rect width="240" height="200" rx="20" fill="#fff" stroke="#0F172A" stroke-width="8"/>
@@ -126,6 +132,7 @@ const SPA = `
 function card({
   slug,
   title,
+  chapter,
   lecture,
   bg,
   accent,
@@ -133,12 +140,13 @@ function card({
   titleFill = "#F8FAFC",
   subtitleFill = "#CBD5E1",
 }) {
+  const chapterNumber = chapter ?? lecture;
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title">
   <title id="title">${title}</title>
   <rect width="1280" height="720" fill="${bg}"/>
   <rect x="0" y="0" width="18" height="720" fill="${accent}"/>
-  <text x="72" y="64" fill="${subtitleFill}" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" letter-spacing="4">WEB DEV · LECTURE ${lecture}</text>
+  <text x="72" y="64" fill="${subtitleFill}" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" letter-spacing="4">WEB DEV · CHAPTER ${chapterNumber}</text>
   ${art}
   <text x="72" y="640" fill="${titleFill}" font-family="ui-sans-serif, system-ui, sans-serif" font-size="56" font-weight="800">${title}</text>
 </svg>
@@ -189,7 +197,7 @@ const thumbs = [
   {
     slug: "html-and-dom",
     title: "HTML and the DOM",
-    lecture: 2,
+    chapter: 1,
     bg: "#1C1917",
     accent: "#E44D26",
     art: HTML5,
@@ -197,7 +205,7 @@ const thumbs = [
   {
     slug: "headings-and-paragraphs",
     title: "Headings and Paragraphs",
-    lecture: 2,
+    chapter: 1,
     bg: "#F8FAFC",
     accent: "#E44D26",
     art: HEADINGS,
@@ -207,7 +215,7 @@ const thumbs = [
   {
     slug: "lists-and-tables",
     title: "Lists and Tables",
-    lecture: 2,
+    chapter: 1,
     bg: "#F1F5F9",
     accent: "#0F172A",
     art: LISTS_TABLES,
@@ -217,7 +225,7 @@ const thumbs = [
   {
     slug: "web-forms",
     title: "Web Forms",
-    lecture: 2,
+    chapter: 1,
     bg: "#EEF2FF",
     accent: "#4F46E5",
     art: FORMS,
@@ -227,7 +235,7 @@ const thumbs = [
   {
     slug: "anchors",
     title: "Anchors",
-    lecture: 2,
+    chapter: 1,
     bg: "#FFF7ED",
     accent: "#EA580C",
     art: ANCHORS,
@@ -237,7 +245,7 @@ const thumbs = [
   {
     slug: "single-page-navigation",
     title: "Single-page Navigation",
-    lecture: 2,
+    chapter: 1,
     bg: "#ECFEFF",
     accent: "#0891B2",
     art: SPA,
@@ -247,7 +255,7 @@ const thumbs = [
   {
     slug: "kambaz-overview",
     title: "Kambaz Overview",
-    lecture: 3,
+    chapter: 1,
     bg: "#1C1917",
     accent: "#F59E0B",
     art: KAMBAZ,
@@ -255,7 +263,7 @@ const thumbs = [
   {
     slug: "kambaz-account",
     title: "Kambaz Account",
-    lecture: 3,
+    chapter: 1,
     bg: "#0F172A",
     accent: "#38BDF8",
     art: KAMBAZ,
@@ -263,7 +271,7 @@ const thumbs = [
   {
     slug: "kambaz-dashboard",
     title: "Kambaz Dashboard",
-    lecture: 3,
+    chapter: 1,
     bg: "#14532D",
     accent: "#86EFAC",
     art: KAMBAZ,
@@ -271,7 +279,7 @@ const thumbs = [
   {
     slug: "kambaz-navigation",
     title: "Kambaz Navigation",
-    lecture: 3,
+    chapter: 1,
     bg: "#1E1B4B",
     accent: "#A78BFA",
     art: KAMBAZ,
@@ -279,7 +287,7 @@ const thumbs = [
   {
     slug: "kambaz-courses",
     title: "Kambaz Courses",
-    lecture: 3,
+    chapter: 1,
     bg: "#7C2D12",
     accent: "#FDBA74",
     art: KAMBAZ,
@@ -287,7 +295,7 @@ const thumbs = [
   {
     slug: "kambaz-modules",
     title: "Kambaz Modules",
-    lecture: 3,
+    chapter: 1,
     bg: "#134E4A",
     accent: "#5EEAD4",
     art: KAMBAZ,
@@ -295,10 +303,58 @@ const thumbs = [
   {
     slug: "kambaz-assignments",
     title: "Kambaz Assignments",
-    lecture: 3,
+    chapter: 1,
     bg: "#4C0519",
     accent: "#FB7185",
     art: KAMBAZ,
+  },
+  {
+    slug: "intro-to-javascript",
+    title: "Introduction to JavaScript",
+    chapter: 3,
+    bg: "#111827",
+    accent: "#F7DF1E",
+    art: JS,
+  },
+  {
+    slug: "variables-and-constants",
+    title: "Variables and Constants",
+    chapter: 3,
+    bg: "#1E293B",
+    accent: "#38BDF8",
+    art: JS,
+  },
+  {
+    slug: "variable-types",
+    title: "Variable Types",
+    chapter: 3,
+    bg: "#0F172A",
+    accent: "#A78BFA",
+    art: JS,
+  },
+  {
+    slug: "booleans-and-conditionals",
+    title: "Booleans and Conditionals",
+    chapter: 3,
+    bg: "#14532D",
+    accent: "#86EFAC",
+    art: JS,
+  },
+  {
+    slug: "null-and-undefined",
+    title: "Null and Undefined",
+    chapter: 3,
+    bg: "#4C0519",
+    accent: "#FB7185",
+    art: JS,
+  },
+  {
+    slug: "javascript-functions",
+    title: "JavaScript Functions",
+    chapter: 3,
+    bg: "#1E1B4B",
+    accent: "#C4B5FD",
+    art: JS,
   },
 ];
 

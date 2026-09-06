@@ -38,6 +38,12 @@ import { KAMBAZ_DASHBOARD_STYLING_SLIDES } from "./decks/kambaz-dashboard-stylin
 import { KAMBAZ_COURSES_STYLING_SLIDES } from "./decks/kambaz-courses-styling";
 import { KAMBAZ_ASSIGNMENTS_STYLING_SLIDES } from "./decks/kambaz-assignments-styling";
 import { KAMBAZ_ACCOUNT_STYLING_SLIDES } from "./decks/kambaz-account-styling";
+import { INTRO_TO_JAVASCRIPT_SLIDES } from "./decks/intro-to-javascript";
+import { VARIABLES_AND_CONSTANTS_SLIDES } from "./decks/variables-and-constants";
+import { VARIABLE_TYPES_SLIDES } from "./decks/variable-types";
+import { BOOLEANS_AND_CONDITIONALS_SLIDES } from "./decks/booleans-and-conditionals";
+import { NULL_AND_UNDEFINED_SLIDES } from "./decks/null-and-undefined";
+import { JAVASCRIPT_FUNCTIONS_SLIDES } from "./decks/javascript-functions";
 import {
   BOOK_CHAPTERS,
   LECTURE_SLUGS,
@@ -493,6 +499,66 @@ const LECTURE_SUMMARIES: Record<
     topicId: "kambaz-styling",
     bookSectionId: "sec-2-4-9",
     slides: KAMBAZ_ACCOUNT_STYLING_SLIDES,
+  },
+  "intro-to-javascript": {
+    title: "Introduction to JavaScript",
+    summary:
+      "Why JS belongs in the page, ECMAScript vs TypeScript, and a Lab 3 stub you grow one component at a time.",
+    chapter: 3,
+    topicId: "js-intro",
+    bookSectionId: "sec-3-2",
+    canvasLecture: 8,
+    slides: INTRO_TO_JAVASCRIPT_SLIDES,
+  },
+  "variables-and-constants": {
+    title: "Variables and Constants",
+    summary:
+      "var vs let vs const, interpolating values in JSX, and the first Lab 3 VariablesAndConstants component.",
+    chapter: 3,
+    topicId: "js-intro",
+    bookSectionId: "sec-3-2-1",
+    canvasLecture: 8,
+    slides: VARIABLES_AND_CONSTANTS_SLIDES,
+  },
+  "variable-types": {
+    title: "Variable Types",
+    summary:
+      "number, string, boolean, typeof, and why a bare boolean is invisible in JSX until you coerce it.",
+    chapter: 3,
+    topicId: "js-intro",
+    bookSectionId: "sec-3-2-2",
+    canvasLecture: 8,
+    slides: VARIABLE_TYPES_SLIDES,
+  },
+  "booleans-and-conditionals": {
+    title: "Booleans and Conditionals",
+    summary:
+      "&& || ! and ===, then if/else, the ternary, and two ways to render a welcome vs login heading.",
+    chapter: 3,
+    topicId: "js-intro",
+    bookSectionId: "sec-3-2-3",
+    canvasLecture: 8,
+    slides: BOOLEANS_AND_CONDITIONALS_SLIDES,
+  },
+  "null-and-undefined": {
+    title: "Null and Undefined",
+    summary:
+      "Assigned empty (null) vs never assigned (undefined), typeof quirks, and String() so they print.",
+    chapter: 3,
+    topicId: "js-intro",
+    bookSectionId: "sec-3-2-7",
+    canvasLecture: 8,
+    slides: NULL_AND_UNDEFINED_SLIDES,
+  },
+  "javascript-functions": {
+    title: "JavaScript Functions",
+    summary:
+      "Legacy function add, ES6 arrows, implied return, and template literals with ${} and a ternary.",
+    chapter: 3,
+    topicId: "js-functions",
+    bookSectionId: "sec-3-3",
+    canvasLecture: 8,
+    slides: JAVASCRIPT_FUNCTIONS_SLIDES,
   },
 };
 

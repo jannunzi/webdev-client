@@ -6,7 +6,7 @@ export const LISTS_AND_TABLES_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Lecture 2 · Deck 3 — Lists and Tables",
+      "Chapter 1 · Lists and Tables",
       "Lab 1: ListTags.tsx (`wd-lists`) and Tables.tsx (`wd-tables`)",
     ],
   },

@@ -6,7 +6,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Lecture 4 · Deck 4 — Size and Position",
+      "Chapter 2 · Size and Position",
       "Chapter 2 §2.1.12–2.1.16 · `Dimensions`, `Display`, `Positions`, `Zindex`",
     ],
   },

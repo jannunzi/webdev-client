@@ -6,7 +6,7 @@ export const HEADINGS_AND_PARAGRAPHS_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Lecture 2 · Deck 2 — Headings and Paragraphs",
+      "Chapter 1 · Headings and Paragraphs",
       "Lab 1: HeadingTags.tsx (`wd-h-tag`) and ParagraphTag.tsx (`wd-p-tag`)",
     ],
   },

@@ -6,7 +6,7 @@ export const CSS_FLEX_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Lecture 4 · Deck 7 — Flex",
+      "Chapter 2 · Flex",
       "Chapter 2 §2.1.19 · `Flex.tsx` row, grow, then a pinned column",
     ],
   },

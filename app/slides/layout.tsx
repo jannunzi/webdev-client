@@ -5,7 +5,7 @@ import "../book/book.css";
 export const metadata: Metadata = {
   title: "Slides — Web Dev",
   description:
-    "Classroom slide decks grouped by book chapter and section — HTML, Kambaz, CSS, Tailwind, and Kambaz styling.",
+    "Classroom slide decks grouped by book chapter and section — HTML, Kambaz, CSS, Tailwind, JavaScript, and Kambaz styling.",
 };
 
 export default function SlidesLayout({

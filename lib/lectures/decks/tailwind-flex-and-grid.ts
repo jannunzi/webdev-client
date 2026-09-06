@@ -15,7 +15,7 @@ export const TAILWIND_FLEX_AND_GRID_SLIDES: LectureSlide[] = [
     title: "Same CSS, shorter class names",
     kind: "content",
     bullets: [
-      "Lecture 4 already taught `display: flex` and percentage float columns",
+      "§2.1 already taught `display: flex` and percentage float columns",
       "This deck is the **utility** spelling — skip the raw CSS redo",
       "`flex` → `display: flex`. `grow` → `flex-grow: 1`. `shrink-0` → `flex-shrink: 0`",
       "Grid: `grid grid-cols-4 gap-4`, then `col-span-*` to span",
@@ -106,7 +106,7 @@ export const TAILWIND_FLEX_AND_GRID_SLIDES: LectureSlide[] = [
     kind: "demo",
     bullets: [
       "Four-column wrap, then the 12-column page splits",
-      "Lecture 4’s float “grid” was percentages. This is CSS Grid",
+      "§2.1’s float “grid” was percentages. This is CSS Grid",
     ],
     embed: "tw-grids",
   },

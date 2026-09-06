@@ -6,7 +6,7 @@ export const CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES: LectureSlide[] = [
     title: "Creating a Next.js React app",
     kind: "title",
     bullets: [
-      "Lecture 1 · Deck 3 — App Router only",
+      "Chapter 1 · Creating a Next.js React app",
       "React components + Next.js file-system routing",
     ],
   },

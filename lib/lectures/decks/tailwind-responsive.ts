@@ -17,7 +17,7 @@ export const TAILWIND_RESPONSIVE_SLIDES: LectureSlide[] = [
     bullets: [
       "Tailwind is **mobile-first**: a bare class applies at every width",
       "A prefix like `md:` applies from that breakpoint **and up**",
-      "Lecture 4’s `@media` demo watched the viewport. Same idea, shorter spelling",
+      "§2.1’s `@media` demo watched the viewport. Same idea, shorter spelling",
       "`md:flex` is `display: flex` inside `@media (min-width: 48rem)`",
     ],
   },

@@ -77,7 +77,7 @@ export const TAILWIND_SPACING_SLIDES: LectureSlide[] = [
     title: "Same job as Lab 2 Padding.tsx",
     kind: "content",
     bullets: [
-      "Lecture 4 wrote `.wd-padded-top-left { padding-top: 50px; }`",
+      "§2.1 wrote `.wd-padded-top-left { padding-top: 50px; }`",
       "`pt-4` is the utility version of that idea — a scale, not a one-off pixel",
       "Use custom CSS when you need a value Tailwind does not ship",
     ],

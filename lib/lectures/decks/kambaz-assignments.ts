@@ -6,7 +6,7 @@ export const KAMBAZ_ASSIGNMENTS_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Lecture 3 · Deck 7 — Kambaz Assignments",
+      "Chapter 1 · Kambaz Assignments",
       "List + editor — on your own, match the ids",
     ],
   },

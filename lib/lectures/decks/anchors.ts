@@ -6,7 +6,7 @@ export const ANCHORS_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Lecture 2 · Deck 5 — Anchors",
+      "Chapter 1 · Anchors",
       "The Hyper in HyperText Markup Language",
     ],
   },

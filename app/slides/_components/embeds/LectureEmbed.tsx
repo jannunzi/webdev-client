@@ -89,6 +89,21 @@ import {
   KambazStyledPeopleEmbed,
   KambazStyledSigninEmbed,
 } from "./KambazStylingEmbeds";
+import {
+  JsArrowFunctionsEmbed,
+  JsBooleansEmbed,
+  JsConditionalIfElseEmbed,
+  JsConditionalInlineEmbed,
+  JsIfElseEmbed,
+  JsImpliedReturnEmbed,
+  JsLegacyFunctionsEmbed,
+  JsNullUndefinedEmbed,
+  JsTemplateLiteralsEmbed,
+  JsTernaryEmbed,
+  JsVariableTypesEmbed,
+  JsVariablesEmbed,
+  Lab3StubEmbed,
+} from "./Lab3Embeds";
 
 export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
   switch (id) {
@@ -248,6 +263,32 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <KambazStyledAssignmentsEmbed />;
     case "kambaz-styled-signin":
       return <KambazStyledSigninEmbed />;
+    case "lab3-stub":
+      return <Lab3StubEmbed />;
+    case "js-variables":
+      return <JsVariablesEmbed />;
+    case "js-variable-types":
+      return <JsVariableTypesEmbed />;
+    case "js-booleans":
+      return <JsBooleansEmbed />;
+    case "js-if-else":
+      return <JsIfElseEmbed />;
+    case "js-ternary":
+      return <JsTernaryEmbed />;
+    case "js-conditional-if-else":
+      return <JsConditionalIfElseEmbed />;
+    case "js-conditional-inline":
+      return <JsConditionalInlineEmbed />;
+    case "js-null-undefined":
+      return <JsNullUndefinedEmbed />;
+    case "js-legacy-functions":
+      return <JsLegacyFunctionsEmbed />;
+    case "js-arrow-functions":
+      return <JsArrowFunctionsEmbed />;
+    case "js-implied-return":
+      return <JsImpliedReturnEmbed />;
+    case "js-template-literals":
+      return <JsTemplateLiteralsEmbed />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;

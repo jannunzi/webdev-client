@@ -6,7 +6,7 @@ export const KAMBAZ_OVERVIEW_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Lecture 3 · Deck 1 — Kambaz overview",
+      "Chapter 1 · Kambaz overview",
       "A1: HTML prototype of the LMS screens",
     ],
   },
@@ -65,7 +65,7 @@ app/(kambaz)/account/signin/page.tsx  →  /account/signin`,
       "Add a Kambaz `Link` in `app/labs/TOC.tsx` **and** the Labs index",
       "`href=\"/\"` — the group owns `/`, so the link is the site root",
       "Id `wd-kambaz-link` is what graders look for",
-      "`import Link from \"next/link\"` — same as the Lecture 2 SPA deck",
+      "`import Link from \"next/link\"` — same as the single-page navigation deck",
     ],
     code: `<li>
   <Link href="/" id="wd-kambaz-link">

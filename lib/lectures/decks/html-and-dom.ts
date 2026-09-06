@@ -6,7 +6,7 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Lecture 2 · Deck 1 — HTML and the DOM",
+      "Chapter 1 · HTML and the DOM",
       "Chapter 1 in the course book · Lab 1 starts here",
     ],
   },

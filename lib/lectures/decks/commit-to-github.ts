@@ -6,7 +6,7 @@ export const COMMIT_TO_GITHUB_SLIDES: LectureSlide[] = [
     title: "Commit to GitHub",
     kind: "title",
     bullets: [
-      "Lecture 1 · Deck 4 — Git on your machine, a repo on github.com",
+      "Chapter 1 · Git on your machine, a repo on github.com",
       "Your username will differ from the instructor’s — that is expected",
     ],
   },
