@@ -43,6 +43,56 @@ export const LECTURE_SLUGS = [
   ...LECTURE_4_SLUGS,
 ] as const;
 
+/** Book spine used by the lectures hub and nav — not Canvas lecture folders. */
+export const BOOK_CHAPTERS = [
+  {
+    chapter: 1,
+    href: "/book/ch1",
+    title: "Building Next.js User Interfaces with HTML",
+  },
+  {
+    chapter: 2,
+    href: "/book/ch2",
+    title: "Styling User Interfaces with CSS and Tailwind",
+  },
+  {
+    chapter: 3,
+    href: "/book/ch3",
+    title: "Creating Single Page Applications with JavaScript",
+  },
+  {
+    chapter: 4,
+    href: "/book/ch4",
+    title: "Managing Client State",
+  },
+  {
+    chapter: 5,
+    href: "/book/ch5",
+    title: "Implementing RESTful Web APIs with Express.js",
+  },
+  {
+    chapter: 6,
+    href: "/book/ch6",
+    title: "Integrating React with MongoDB",
+  },
+] as const;
+
+/**
+ * Topic subgroups within a chapter (Jose’s book spine).
+ * Slides: add a row here, then set `topicId` on each new deck.
+ */
+export const LECTURE_TOPICS = [
+  { topicId: "intro", chapter: 1, title: "Intro" },
+  { topicId: "setup", chapter: 1, title: "Setup" },
+  { topicId: "html", chapter: 1, title: "HTML" },
+  { topicId: "kambaz-html", chapter: 1, title: "Kambaz HTML" },
+  { topicId: "css", chapter: 2, title: "CSS fundamentals" },
+  { topicId: "tailwind", chapter: 2, title: "Tailwind" },
+  { topicId: "kambaz-styling", chapter: 2, title: "Kambaz styling" },
+] as const;
+
+export type LectureTopicId = (typeof LECTURE_TOPICS)[number]["topicId"];
+
 /** Slide headings stay on one line — keep titles at or under this length. */
 export const LECTURE_TITLE_MAX_CHARS = 42;
 
@@ -175,6 +225,10 @@ export type LectureSlide = {
 export type LectureHubItem = {
   slug: LectureSlug;
   chapter: number;
+  /** Book-spine topic within the chapter, when set. */
+  topicId?: LectureTopicId;
+  topic?: string;
+  /** Canvas week mapping — metadata / badge only, not a hub heading. */
   canvasLecture: number;
   title: string;
   summary: string;
@@ -189,11 +243,31 @@ export type LectureDeck = LectureHubItem & {
   slides: LectureSlide[];
 };
 
+/** Kept for Canvas sync / tests. The hub groups with `LectureChapterGroup`. */
 export type CanvasLectureGroup = {
   canvasLecture: number;
   title: string;
   topic?: string;
   decks: LectureHubItem[];
+};
+
+export type LectureTopicGroup = {
+  topicId: string;
+  title: string;
+  decks: LectureHubItem[];
+};
+
+export type LectureChapterGroup = {
+  chapter: number;
+  href: string;
+  title: string;
+  topics: LectureTopicGroup[];
+};
+
+export type LectureNavChapter = {
+  chapter: number;
+  href: string;
+  title: string;
 };
 
 /**

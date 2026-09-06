@@ -11,15 +11,19 @@ import {
   lectureDeckThumbnail,
   lecturePublicUrl,
   listCanvasLectureGroups,
+  listChapterTopicGroups,
+  listLectureChapters,
   listLectureDecks,
   listLectureSlugs,
   listLectures,
 } from "./catalog";
 import {
+  BOOK_CHAPTERS,
   LECTURE_1_SLUGS,
   LECTURE_2_SLUGS,
   LECTURE_3_SLUGS,
   LECTURE_4_SLUGS,
+  LECTURE_TOPICS,
   LECTURE_DIAGRAM_IDS,
   LECTURE_EMBED_IDS,
   LECTURE_SLUGS,
@@ -64,7 +68,7 @@ function findSlide(deckSlug: string, id: string) {
 }
 
 describe("lecture catalog", () => {
-  it("lists Lecture 1 then 2 then 3 then 4 slugs in locked order", () => {
+  it("lists slugs in book-spine order (Ch1 intro/setup/HTML/Kambaz, then Ch2 CSS)", () => {
     assert.deepEqual(listLectureSlugs(), [
       ...LECTURE_1_SLUGS,
       ...LECTURE_2_SLUGS,
@@ -94,6 +98,12 @@ describe("lecture catalog", () => {
       assert.doesNotMatch(item.thumbnailSrc, /slide-01/);
       assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
     }
+    assert.equal(items[0]?.topicId, "intro");
+    assert.equal(items[0]?.topic, "Intro");
+    for (const item of items.slice(1)) {
+      assert.equal(item.topicId, "setup");
+      assert.equal(item.topic, "Setup");
+    }
   });
 
   it("marks Lecture 2 entries as Canvas Lecture 2 / Chapter 1", () => {
@@ -105,6 +115,8 @@ describe("lecture catalog", () => {
     );
     for (const item of items) {
       assert.equal(item.chapter, 1);
+      assert.equal(item.topicId, "html");
+      assert.equal(item.topic, "HTML");
       assert.equal(item.canvasLecture, 2);
       assert.equal(item.chapterHref, "/book/ch1");
       assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
@@ -129,6 +141,8 @@ describe("lecture catalog", () => {
     );
     for (const item of items) {
       assert.equal(item.chapter, 2);
+      assert.equal(item.topicId, "css");
+      assert.equal(item.topic, "CSS fundamentals");
       assert.equal(item.canvasLecture, 4);
       assert.equal(item.chapterHref, "/book/ch2");
       assert.equal(
@@ -148,13 +162,87 @@ describe("lecture catalog", () => {
     );
     for (const item of items) {
       assert.equal(item.chapter, 1);
+      assert.equal(item.topicId, "kambaz-html");
+      assert.equal(item.topic, "Kambaz HTML");
       assert.equal(item.canvasLecture, 3);
       assert.equal(item.chapterHref, "/book/ch1");
       assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
     }
   });
 
-  it("groups Lecture 1–4 decks; later weeks stay empty", () => {
+  it("groups the hub by book chapter and topic, not Canvas lecture folders", () => {
+    const groups = listChapterTopicGroups();
+    assert.deepEqual(
+      groups.map((group) => group.chapter),
+      [1, 2],
+    );
+    assert.equal(groups[0]?.href, "/book/ch1");
+    assert.equal(
+      groups[0]?.title,
+      "Building Next.js User Interfaces with HTML",
+    );
+    assert.deepEqual(
+      groups[0]?.topics.map((topic) => topic.topicId),
+      ["intro", "setup", "html", "kambaz-html"],
+    );
+    assert.deepEqual(
+      groups[0]?.topics.map((topic) => topic.title),
+      ["Intro", "Setup", "HTML", "Kambaz HTML"],
+    );
+    assert.deepEqual(
+      groups[0]?.topics[0]?.decks.map((deck) => deck.slug),
+      ["intro-to-web-development"],
+    );
+    assert.deepEqual(
+      groups[0]?.topics[1]?.decks.map((deck) => deck.slug),
+      LECTURE_1_SLUGS.slice(1),
+    );
+    assert.deepEqual(
+      groups[0]?.topics[2]?.decks.map((deck) => deck.slug),
+      [...LECTURE_2_SLUGS],
+    );
+    assert.deepEqual(
+      groups[0]?.topics[3]?.decks.map((deck) => deck.slug),
+      [...LECTURE_3_SLUGS],
+    );
+
+    assert.equal(groups[1]?.href, "/book/ch2");
+    assert.deepEqual(
+      groups[1]?.topics.map((topic) => topic.topicId),
+      ["css", "tailwind", "kambaz-styling"],
+    );
+    assert.deepEqual(
+      groups[1]?.topics[0]?.decks.map((deck) => deck.slug),
+      [...LECTURE_4_SLUGS],
+    );
+    assert.equal(groups[1]?.topics[1]?.decks.length, 0);
+    assert.equal(groups[1]?.topics[2]?.decks.length, 0);
+
+    for (const group of groups) {
+      assert.doesNotMatch(group.title, /^Lecture \d+$/);
+      for (const topic of group.topics) {
+        assert.doesNotMatch(topic.title, /^Lecture \d+$/);
+      }
+    }
+  });
+
+  it("derives hub nav chapters from published decks, not a hardcoded Ch1/Ch2 list", () => {
+    const chapters = listLectureChapters();
+    assert.deepEqual(
+      chapters.map((entry) => entry.chapter),
+      [1, 2],
+    );
+    assert.deepEqual(
+      chapters.map((entry) => entry.href),
+      ["/book/ch1", "/book/ch2"],
+    );
+    assert.equal(chapters[0]?.title, BOOK_CHAPTERS[0]?.title);
+    assert.equal(chapters[1]?.title, BOOK_CHAPTERS[1]?.title);
+    assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "tailwind"));
+    assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "kambaz-styling"));
+  });
+
+  it("keeps canvasLecture metadata grouped for Canvas sync", () => {
     const groups = listCanvasLectureGroups();
     assert.ok(groups.length >= 11);
     assert.equal(groups[0]?.title, "Lecture 1");

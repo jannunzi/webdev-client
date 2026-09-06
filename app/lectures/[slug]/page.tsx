@@ -41,8 +41,15 @@ export default async function LectureDeckPage({ params }: PageProps) {
           <h1 className="mt-0 mb-0 font-sans text-xl font-semibold tracking-tight sm:text-2xl">
             {deck.title}
           </h1>
-          <p className="mb-0 font-sans text-sm text-neutral-600">
-            Lecture {deck.canvasLecture} · {deck.slides.length} slides
+          <p className="mb-0 flex flex-wrap items-center gap-2 font-sans text-sm text-neutral-600">
+            <span>
+              Chapter {deck.chapter}
+              {deck.topic ? ` · ${deck.topic}` : ""} · {deck.slides.length}{" "}
+              slides
+            </span>
+            <span className="rounded border border-neutral-300 bg-neutral-50 px-1.5 py-0.5 text-xs font-medium text-neutral-600">
+              Canvas L{deck.canvasLecture}
+            </span>
           </p>
         </div>
       </header>
@@ -51,7 +58,7 @@ export default async function LectureDeckPage({ params }: PageProps) {
         slides={deck.slides}
         prevDeck={prev}
         nextDeck={next}
-        canvasLecture={deck.canvasLecture}
+        chapter={deck.chapter}
       />
     </div>
   );
