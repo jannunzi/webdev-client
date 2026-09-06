@@ -41,9 +41,11 @@ function typeBadgeClass(type: QuestionType): string {
 export default function QuestionBankReview({
   bank,
   stats,
+  studentDrawNote,
 }: {
   bank: QuestionBank;
   stats: Stats;
+  studentDrawNote?: string;
 }) {
   const [filter, setFilter] = useState<"all" | QuestionType>("all");
   const [openIds, setOpenIds] = useState<string[]>(() =>
@@ -110,6 +112,9 @@ export default function QuestionBankReview({
           {" · "}
           {stats.byType.true_false.groups} TF
         </p>
+        {studentDrawNote ? (
+          <p className="mt-2 mb-0 text-sm text-neutral-700">{studentDrawNote}</p>
+        ) : null}
       </header>
 
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">

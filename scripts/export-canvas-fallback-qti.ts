@@ -17,6 +17,7 @@ import {
   canvasQuizDescriptionHtml,
 } from "../lib/quiz-exam/canvas-copy";
 import { buildCanvasFallbackBanks } from "../lib/quiz-exam/canvas-fallback-banks";
+import { QUIZ_TIME_LIMIT_MINUTES } from "../lib/quiz-exam/draw-counts";
 import {
   renderCanvasAssessmentMeta,
   renderCanvasQtiAssessment,
@@ -66,6 +67,7 @@ function main(): void {
       lockAt: quiz.lockAt,
       pointsPossible: 100,
       allowedAttempts: 1,
+      timeLimitMinutes: QUIZ_TIME_LIMIT_MINUTES[quiz.quizId],
     });
     const fileName = `${quiz.quizId}.xml.qti`;
     write(join(qtiDir, fileName), qti);
@@ -106,6 +108,7 @@ function main(): void {
       title: quiz.canvasTitle,
       ident: canvasFallbackIdent(quiz.quizId),
       groups: banks[quiz.quizId].groups.length,
+      timeLimitMinutes: QUIZ_TIME_LIMIT_MINUTES[quiz.quizId],
       questions: banks[quiz.quizId].groups.reduce(
         (sum, group) => sum + group.questions.length,
         0,

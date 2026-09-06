@@ -91,8 +91,7 @@ export function scheduleFromIso(iso: QuizScheduleIso): QuizSchedule {
  * 2026-12-14–2026-12-20 (`app/syllabus/data/course.ts`).
  *
  * - `midtermAt` — Q1–Q3 answer-reopen close: Thursday 2026-11-05 00:00 ET,
- *   the first weekday after X1 / Q3’s Sunday due. X1 take pages are still
- *   stubs (`/quizzes/take/x1`).
+ *   the first weekday after X1 / Q3’s Sunday due.
  * - `finalAt` — syllabus Exam · X2 date: 2026-12-03 00:00 ET.
  *
  * Edit these two strings if Jose moves the exam instants used for Q1–Q6
@@ -104,9 +103,9 @@ export const COURSE_EXAMS = {
   finalAt: "2026-12-03T05:00:00.000Z",
 } as const;
 
-const PRE_MIDTERM_QUIZZES = new Set(["q1", "q2", "q3"]);
+const PRE_MIDTERM_QUIZZES = new Set(["q1", "q2", "q3", "x1"]);
 
-/** Q1–Q6 take + first answer windows (ISO UTC). */
+/** Q1–Q6 and X1/X2 take + first answer windows (ISO UTC). */
 const QUIZ_WINDOW_ISO: Record<
   string,
   {
@@ -114,6 +113,8 @@ const QUIZ_WINDOW_ISO: Record<
     takeLockAt: string;
     answersOpenAt: string;
     answersCloseAt: string;
+    /** Exams skip the chapter-quiz exam-prep reopen (avoids leaking during the take week). */
+    skipExamPrep?: boolean;
   }
 > = {
   q1: {
@@ -151,6 +152,20 @@ const QUIZ_WINDOW_ISO: Record<
     takeLockAt: "2026-12-14T04:59:00.000Z",
     answersOpenAt: "2026-12-14T05:00:00.000Z",
     answersCloseAt: "2026-12-21T05:00:00.000Z",
+  },
+  x1: {
+    takeUnlockAt: "2026-10-26T04:00:00.000Z",
+    takeLockAt: "2026-11-02T04:59:00.000Z",
+    answersOpenAt: "2026-11-02T05:00:00.000Z",
+    answersCloseAt: "2026-11-09T05:00:00.000Z",
+    skipExamPrep: true,
+  },
+  x2: {
+    takeUnlockAt: "2026-11-30T05:00:00.000Z",
+    takeLockAt: "2026-12-04T04:59:00.000Z",
+    answersOpenAt: "2026-12-04T05:00:00.000Z",
+    answersCloseAt: "2026-12-11T05:00:00.000Z",
+    skipExamPrep: true,
   },
 };
 
@@ -267,13 +282,16 @@ export function getQuizSchedule(quizId: string): QuizSchedule | undefined {
   if (!windows) return undefined;
   const examName = examNameForQuiz(quizId);
   const examPrepCloseAt = examAtForQuiz(quizId);
+  const examPrepOpen = windows.skipExamPrep
+    ? examPrepCloseAt
+    : examPrepOpenAt(examPrepCloseAt);
   return {
     quizId,
     takeUnlockAt: new Date(windows.takeUnlockAt),
     takeLockAt: new Date(windows.takeLockAt),
     answersOpenAt: new Date(windows.answersOpenAt),
     answersCloseAt: new Date(windows.answersCloseAt),
-    examPrepOpenAt: examPrepOpenAt(examPrepCloseAt),
+    examPrepOpenAt: examPrepOpen,
     examPrepCloseAt,
     examName,
   };

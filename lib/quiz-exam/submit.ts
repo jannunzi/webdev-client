@@ -1,6 +1,7 @@
 import type { CanvasRosterEntry, RosterLookupResult } from "../roster/types";
 import { STUDENT_COPY } from "./student-copy";
 import { getExamBank } from "./banks";
+import { quizDrawCount } from "./draw-counts";
 import { gradeDrawnQuestions } from "./grade";
 import { findBankQuestion } from "./sample";
 import { stripCorrectReveals } from "./sanitize";
@@ -86,9 +87,14 @@ export async function runExamSubmit(deps: ExamSubmitDeps): Promise<SubmitExamRes
     drawn.push(found);
   }
 
+  const expectedCount = quizDrawCount(deps.quizId) ?? bank.groups.length;
   const expectedGroupIds = new Set(bank.groups.map((group) => group.id));
   const seenGroups = new Set(drawn.map((item) => item.group.id));
-  if (seenGroups.size !== expectedGroupIds.size) {
+  if (
+    drawn.length !== expectedCount ||
+    seenGroups.size !== expectedCount ||
+    seenGroups.size !== expectedGroupIds.size
+  ) {
     return fail("invalid", "The submitted draw does not include one question per group.");
   }
 

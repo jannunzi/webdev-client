@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import type { FormEvent } from "react";
+import {
+  pointsPerDrawnItem,
+  quizTimeLimitMinutes,
+} from "@/lib/quiz-exam/draw-counts";
 import type {
   StudentAnswer,
   StudentQuestion,
@@ -15,6 +19,12 @@ import {
 import { submitExamAttempt } from "../actions";
 import PromptMarkup from "../../components/PromptMarkup";
 import { SubmittedAttemptView } from "./AttemptReview";
+
+function formatItemPoints(groupCount: number): string {
+  const raw = pointsPerDrawnItem(groupCount);
+  if (Number.isInteger(raw)) return String(raw);
+  return raw.toFixed(2);
+}
 
 function readAnswers(
   questions: StudentQuestion[],
@@ -62,6 +72,8 @@ export default function ExamForm({
 }) {
   const [result, setResult] = useState<SubmitExamResult | null>(null);
   const [pending, setPending] = useState(false);
+  const minutes = quizTimeLimitMinutes(quizId);
+  const timeLimitLabel = minutes ? `, about ${minutes} minutes` : "";
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -107,9 +119,11 @@ export default function ExamForm({
       ) : null}
 
       <p className="text-sm text-neutral-700">
-        One question is drawn from each of {questions.length} groups. Correct
-        answers stay hidden until the class-wide review window — not immediately
-        after you submit. Grading happens on the server.
+        This attempt has {questions.length} questions (one from each topic
+        group){timeLimitLabel}, {formatItemPoints(questions.length)} points each
+        (100 total). Correct answers stay hidden until the class-wide review
+        window — not immediately after you submit. Grading happens on the
+        server.
       </p>
 
       {questions.map((question, index) => (

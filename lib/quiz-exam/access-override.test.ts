@@ -13,7 +13,7 @@ import {
   takeOverrideForRosterSection,
   toOverrideView,
 } from "./access-override";
-import { CHAPTER1_BANK } from "../question-bank";
+import { getExamBank } from "./banks";
 import { drawOnePerGroup } from "./sample";
 import {
   answerWindowCopy,
@@ -173,7 +173,7 @@ describe("per-section take overrides", () => {
     );
   });
 
-  it("covers Q1–Q6 take windows and not the X1/X2 stubs", () => {
+  it("covers Q1–Q6 and X1/X2 take windows", () => {
     assert.deepEqual(listOverridableQuizIds(), [
       "q1",
       "q2",
@@ -181,10 +181,12 @@ describe("per-section take overrides", () => {
       "q4",
       "q5",
       "q6",
+      "x1",
+      "x2",
     ]);
     assert.equal(isOverridableQuizId("q1"), true);
-    assert.equal(isOverridableQuizId("x1"), false);
-    assert.equal(isOverridableQuizId("x2"), false);
+    assert.equal(isOverridableQuizId("x1"), true);
+    assert.equal(isOverridableQuizId("x2"), true);
   });
 
   it("uses section-closed copy instead of the date-window message", () => {
@@ -208,7 +210,9 @@ describe("per-section take overrides", () => {
 });
 
 describe("submit honors the same per-section take override", () => {
-  const drawn = drawOnePerGroup(CHAPTER1_BANK, "override-submit");
+  const q1Bank = getExamBank("q1");
+  assert.ok(q1Bank);
+  const drawn = drawOnePerGroup(q1Bank, "override-submit");
 
   it("accepts a persisted submit when force-open before unlock", async () => {
     const stored: QuizAttemptDoc[] = [];

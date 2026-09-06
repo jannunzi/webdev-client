@@ -1,9 +1,11 @@
 /**
  * Assemble Canvas fallback banks.
  *
- * Q1 uses the graded website bank. Q2–Q6 map practice chapter banks
- * (ch2 CSS … ch6 Mongo) into topic groups until graded banks exist.
- * X1/X2 sample those topics when exam banks are still stubs.
+ * Q1 uses the graded website bank (sampled to `QUIZ_DRAW_COUNTS.q1`
+ * groups). Q2–Q6 map practice chapter banks (ch2 CSS … ch6 Mongo) into
+ * topic groups until graded banks exist, then sample the same count.
+ * X1/X2 take `EXAM_SOURCE_GROUP_TAKE` groups from each of three source
+ * chapters (36 total).
  */
 
 import { PRACTICE_QUIZZES, type PracticeQuiz } from "@/app/book/quizzes/registry";
@@ -16,6 +18,13 @@ import type {
   QuestionType,
 } from "../question-bank/types";
 import type { CanvasFallbackQuizId } from "./canvas-copy";
+import {
+  EXAM_SOURCE_GROUP_TAKE,
+  QUIZ_DRAW_COUNTS,
+} from "./draw-counts";
+import { sampleGroups, sizeBankToDrawCount } from "./sample";
+
+export { sampleGroups } from "./sample";
 
 const PRACTICE_BY_CHAPTER: Record<number, string> = {
   2: "2.1",
@@ -136,23 +145,6 @@ export function practiceChapterBank(chapter: number, quizId: CanvasFallbackQuizI
   };
 }
 
-/** Evenly spaced unique groups so exams cover the chapter without taking every item. */
-export function sampleGroups(groups: QuestionGroup[], count: number): QuestionGroup[] {
-  if (count <= 0 || groups.length === 0) return [];
-  if (groups.length <= count) return groups;
-  const indexes = new Set<number>();
-  for (let index = 0; index < count; index += 1) {
-    indexes.add(Math.round((index * (groups.length - 1)) / (count - 1)));
-  }
-  for (let index = 0; indexes.size < count && index < groups.length; index += 1) {
-    indexes.add(index);
-  }
-  return [...indexes]
-    .sort((a, b) => a - b)
-    .slice(0, count)
-    .map((index) => groups[index]);
-}
-
 function relabelSampledGroups(
   groups: QuestionGroup[],
   prefix: string,
@@ -190,24 +182,36 @@ export function buildExamFallbackBank(
 }
 
 export function buildCanvasFallbackBanks(): Record<CanvasFallbackQuizId, QuestionBank> {
-  const q1 = {
+  const q1Source = {
     ...CHAPTER1_BANK,
     title: CANVAS_FALLBACK_BANK_TITLES.q1,
   };
-  const q2 = practiceChapterBank(2, "q2");
-  const q3 = practiceChapterBank(3, "q3");
-  const q4 = practiceChapterBank(4, "q4");
-  const q5 = practiceChapterBank(5, "q5");
-  const q6 = practiceChapterBank(6, "q6");
-  const x1 = buildExamFallbackBank("x1", [
-    { bank: q1, take: 6, label: "Q1" },
-    { bank: q2, take: 5, label: "Q2" },
-    { bank: q3, take: 5, label: "Q3" },
-  ]);
-  const x2 = buildExamFallbackBank("x2", [
-    { bank: q4, take: 5, label: "Q4" },
-    { bank: q5, take: 5, label: "Q5" },
-    { bank: q6, take: 5, label: "Q6" },
-  ]);
+  const q2Source = practiceChapterBank(2, "q2");
+  const q3Source = practiceChapterBank(3, "q3");
+  const q4Source = practiceChapterBank(4, "q4");
+  const q5Source = practiceChapterBank(5, "q5");
+  const q6Source = practiceChapterBank(6, "q6");
+  const q1 = sizeBankToDrawCount(q1Source, QUIZ_DRAW_COUNTS.q1);
+  const q2 = sizeBankToDrawCount(q2Source, QUIZ_DRAW_COUNTS.q2);
+  const q3 = sizeBankToDrawCount(q3Source, QUIZ_DRAW_COUNTS.q3);
+  const q4 = sizeBankToDrawCount(q4Source, QUIZ_DRAW_COUNTS.q4);
+  const q5 = sizeBankToDrawCount(q5Source, QUIZ_DRAW_COUNTS.q5);
+  const q6 = sizeBankToDrawCount(q6Source, QUIZ_DRAW_COUNTS.q6);
+  const x1 = sizeBankToDrawCount(
+    buildExamFallbackBank("x1", [
+      { bank: q1Source, take: EXAM_SOURCE_GROUP_TAKE, label: "Q1" },
+      { bank: q2Source, take: EXAM_SOURCE_GROUP_TAKE, label: "Q2" },
+      { bank: q3Source, take: EXAM_SOURCE_GROUP_TAKE, label: "Q3" },
+    ]),
+    QUIZ_DRAW_COUNTS.x1,
+  );
+  const x2 = sizeBankToDrawCount(
+    buildExamFallbackBank("x2", [
+      { bank: q4Source, take: EXAM_SOURCE_GROUP_TAKE, label: "Q4" },
+      { bank: q5Source, take: EXAM_SOURCE_GROUP_TAKE, label: "Q5" },
+      { bank: q6Source, take: EXAM_SOURCE_GROUP_TAKE, label: "Q6" },
+    ]),
+    QUIZ_DRAW_COUNTS.x2,
+  );
   return { q1, q2, q3, q4, q5, q6, x1, x2 };
 }

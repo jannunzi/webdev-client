@@ -27,6 +27,60 @@ function mulberry32(seed: number): () => number {
 }
 
 /**
+ * Evenly spaced unique groups so a draw covers the bank without taking
+ * every topic. Used by website take (via a pre-sized bank) and Canvas
+ * fallback export. Does not delete variants — only selects groups.
+ */
+export function sampleGroups(groups: QuestionGroup[], count: number): QuestionGroup[] {
+  if (count <= 0 || groups.length === 0) return [];
+  if (groups.length <= count) return groups;
+  const indexes = new Set<number>();
+  for (let index = 0; index < count; index += 1) {
+    indexes.add(Math.round((index * (groups.length - 1)) / (count - 1)));
+  }
+  for (let index = 0; indexes.size < count && index < groups.length; index += 1) {
+    indexes.add(index);
+  }
+  return [...indexes]
+    .sort((a, b) => a - b)
+    .slice(0, count)
+    .map((index) => groups[index]);
+}
+
+/** Cap a full topic bank to `groupCount` groups. Throws if the bank is too small. */
+export function sizeBankToDrawCount(
+  bank: QuestionBank,
+  groupCount: number,
+): QuestionBank {
+  if (groupCount <= 0) {
+    throw new Error(`Draw count must be positive, got ${groupCount}`);
+  }
+  const groups = sampleGroups(bank.groups, groupCount);
+  if (groups.length !== groupCount) {
+    throw new Error(
+      `Bank ${bank.id} has ${bank.groups.length} groups; need ${groupCount} for a graded draw.`,
+    );
+  }
+  return {
+    ...bank,
+    groups: groups.map((group, index) => ({ ...group, order: index + 1 })),
+  };
+}
+
+/**
+ * Sample `groupCount` topics (default: every group), then draw one
+ * question per selected group. Seed is typically
+ * `${clerkUserId}:${bank.id}` so a refresh keeps the same exam.
+ */
+export function drawExamAttempt(
+  bank: QuestionBank,
+  seed: string,
+  groupCount: number = bank.groups.length,
+): DrawnQuestion[] {
+  return drawOnePerGroup(sizeBankToDrawCount(bank, groupCount), seed);
+}
+
+/**
  * Draw one question from each group. Seed is typically
  * `${clerkUserId}:${bank.id}` so a refresh keeps the same exam.
  */

@@ -76,6 +76,21 @@ describe("exam prep reopen windows", () => {
     assert.equal(getQuizSchedule("q4")?.examName, "final");
     assert.equal(getQuizSchedule("q6")?.examName, "final");
   });
+
+  it("opens X1/X2 take windows and skips exam-prep reopen", () => {
+    const x1 = getQuizSchedule("x1");
+    const x2 = getQuizSchedule("x2");
+    assert.ok(x1);
+    assert.ok(x2);
+    assert.equal(x1.examName, "midterm");
+    assert.equal(x2.examName, "final");
+    assert.equal(x1.takeUnlockAt.toISOString(), et(2026, 10, 26).toISOString());
+    assert.equal(x1.takeLockAt.toISOString(), et(2026, 11, 1, 23, 59).toISOString());
+    assert.equal(x1.examPrepOpenAt.toISOString(), x1.examPrepCloseAt.toISOString());
+    assert.equal(x2.takeUnlockAt.toISOString(), et(2026, 11, 30).toISOString());
+    assert.equal(x2.takeLockAt.toISOString(), et(2026, 12, 3, 23, 59).toISOString());
+    assert.equal(x2.examPrepOpenAt.toISOString(), x2.examPrepCloseAt.toISOString());
+  });
 });
 
 describe("getAnswerRevealPhase boundaries", () => {

@@ -6,7 +6,7 @@
         <selection>
           <selection_number>1</selection_number>
           <selection_extension>
-            <points_per_item>6.25</points_per_item>
+            <points_per_item>10</points_per_item>
           </selection_extension>
         </selection>
       </selection_ordering>
@@ -19,7 +19,7 @@
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>points_possible</fieldlabel>
-            <fieldentry>6.25</fieldentry>
+            <fieldentry>10</fieldentry>
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>original_answer_ids</fieldlabel>
@@ -127,7 +127,7 @@
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>points_possible</fieldlabel>
-            <fieldentry>6.25</fieldentry>
+            <fieldentry>10</fieldentry>
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>original_answer_ids</fieldlabel>
@@ -209,7 +209,7 @@
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>points_possible</fieldlabel>
-            <fieldentry>6.25</fieldentry>
+            <fieldentry>10</fieldentry>
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>original_answer_ids</fieldlabel>
@@ -291,7 +291,7 @@
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>points_possible</fieldlabel>
-            <fieldentry>6.25</fieldentry>
+            <fieldentry>10</fieldentry>
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>original_answer_ids</fieldlabel>
@@ -373,7 +373,7 @@
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>points_possible</fieldlabel>
-            <fieldentry>6.25</fieldentry>
+            <fieldentry>10</fieldentry>
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>original_answer_ids</fieldlabel>
@@ -455,7 +455,7 @@
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>points_possible</fieldlabel>
-            <fieldentry>6.25</fieldentry>
+            <fieldentry>10</fieldentry>
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>original_answer_ids</fieldlabel>
@@ -563,7 +563,7 @@
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>points_possible</fieldlabel>
-            <fieldentry>6.25</fieldentry>
+            <fieldentry>10</fieldentry>
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>original_answer_ids</fieldlabel>
@@ -645,7 +645,7 @@
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>points_possible</fieldlabel>
-            <fieldentry>6.25</fieldentry>
+            <fieldentry>10</fieldentry>
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>original_answer_ids</fieldlabel>
@@ -727,7 +727,7 @@
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>points_possible</fieldlabel>
-            <fieldentry>6.25</fieldentry>
+            <fieldentry>10</fieldentry>
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>original_answer_ids</fieldlabel>
@@ -809,7 +809,7 @@
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>points_possible</fieldlabel>
-            <fieldentry>6.25</fieldentry>
+            <fieldentry>10</fieldentry>
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>original_answer_ids</fieldlabel>
@@ -891,7 +891,7 @@
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>points_possible</fieldlabel>
-            <fieldentry>6.25</fieldentry>
+            <fieldentry>10</fieldentry>
           </qtimetadatafield>
           <qtimetadatafield>
             <fieldlabel>original_answer_ids</fieldlabel>

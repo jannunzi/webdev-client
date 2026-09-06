@@ -81,7 +81,26 @@ describe("Canvas QTI serializer", () => {
     assert.match(meta, /<workflow_state>unpublished<\/workflow_state>/);
     assert.match(meta, /<points_possible>100\.0<\/points_possible>/);
     assert.equal(pointsPerItem(16), "6.25");
+    assert.equal(pointsPerItem(10), "10");
+    assert.equal(pointsPerItem(36), "2.7778");
     assert.equal(qtiItemIdent("q1-g01-01"), "gq1-g01-01");
     assert.equal(qtiGroupIdent("q1-g01-acronyms"), "gq1-g01-acronyms");
+  });
+
+  it("writes time_limit minutes on Canvas assessment_meta when set", () => {
+    const meta = renderCanvasAssessmentMeta({
+      ident: "gwebdev_q1_fallback",
+      title: "Q1 — HTML",
+      descriptionHtml: "<p>Take Q1 on the course site.</p>",
+      timeLimitMinutes: 30,
+    });
+    assert.match(meta, /<time_limit>30<\/time_limit>/);
+    const exam = renderCanvasAssessmentMeta({
+      ident: "gwebdev_x1_fallback",
+      title: "X1 — Midterm",
+      descriptionHtml: "<p>Take X1 on the course site.</p>",
+      timeLimitMinutes: 90,
+    });
+    assert.match(exam, /<time_limit>90<\/time_limit>/);
   });
 });

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { CHAPTER1_BANK } from "../question-bank/q1";
 import { renderCanvasQtiAssessment } from "../question-bank/qti";
+import { getExamBank, listExamBanks } from "./banks";
 import {
   canvasFallbackIdent,
   canvasQuizDescriptionHtml,
@@ -13,35 +14,66 @@ import {
   practiceQuestionToBank,
   sampleGroups,
 } from "./canvas-fallback-banks";
+import {
+  EXAM_SOURCE_GROUP_TAKE,
+  QUIZ_DRAW_COUNTS,
+  QUIZ_TIME_LIMIT_MINUTES,
+} from "./draw-counts";
 
 const FORBIDDEN = /\bLab [0-9]|\bLabs\b|Kambaz|\bwd-|this chapter|the chapter|§\d|\/labs\b|the book/i;
 
 describe("Canvas fallback banks", () => {
-  it("uses the graded Q1 bank and practice banks for Q2–Q6", () => {
+  it("sizes Q1–Q6 to 10 groups and X1/X2 to 36 (12 per source chapter)", () => {
     const banks = buildCanvasFallbackBanks();
-    assert.equal(banks.q1.groups.length, CHAPTER1_BANK.groups.length);
-    assert.deepEqual(
-      banks.q1.groups.map((group) => group.id),
-      CHAPTER1_BANK.groups.map((group) => group.id),
-    );
-    assert.ok(banks.q2.groups.length >= 10);
-    assert.ok(banks.q3.groups.length >= 10);
-    assert.ok(banks.q4.groups.length >= 8);
-    assert.ok(banks.q5.groups.length >= 8);
-    assert.ok(banks.q6.groups.length >= 8);
+    assert.equal(banks.q1.groups.length, QUIZ_DRAW_COUNTS.q1);
+    assert.equal(banks.q1.groups.length, 10);
+    assert.ok(banks.q1.groups.every((group) =>
+      CHAPTER1_BANK.groups.some((source) => source.id === group.id),
+    ));
+    assert.ok(CHAPTER1_BANK.groups.length > banks.q1.groups.length);
+    assert.equal(banks.q2.groups.length, 10);
+    assert.equal(banks.q3.groups.length, 10);
+    assert.equal(banks.q4.groups.length, 10);
+    assert.equal(banks.q5.groups.length, 10);
+    assert.equal(banks.q6.groups.length, 10);
+    assert.equal(banks.x1.groups.length, QUIZ_DRAW_COUNTS.x1);
+    assert.equal(banks.x2.groups.length, QUIZ_DRAW_COUNTS.x2);
+    assert.equal(EXAM_SOURCE_GROUP_TAKE, 12);
+    assert.equal(banks.x1.groups.filter((group) => group.name.startsWith("Q1 ·")).length, 12);
+    assert.equal(banks.x1.groups.filter((group) => group.name.startsWith("Q2 ·")).length, 12);
+    assert.equal(banks.x1.groups.filter((group) => group.name.startsWith("Q3 ·")).length, 12);
+    assert.equal(banks.x2.groups.filter((group) => group.name.startsWith("Q4 ·")).length, 12);
+    assert.equal(banks.x2.groups.filter((group) => group.name.startsWith("Q6 ·")).length, 12);
     assert.equal(banks.q2.id, "q2-practice");
     assert.match(banks.q2.groups[0]?.id ?? "", /^q2-sec-/);
   });
 
-  it("samples Q1–Q3 into X1 and Q4–Q6 into X2", () => {
+  it("keeps website EXAM_BANKS identical to the Canvas fallback banks", () => {
+    const fallback = buildCanvasFallbackBanks();
+    const listed = listExamBanks();
+    assert.deepEqual(
+      listed.map((row) => row.quizId),
+      ["q1", "q2", "q3", "q4", "q5", "q6", "x1", "x2"],
+    );
+    for (const [quizId, bank] of Object.entries(fallback)) {
+      const exam = getExamBank(quizId);
+      assert.ok(exam);
+      assert.deepEqual(
+        exam.groups.map((group) => group.id),
+        bank.groups.map((group) => group.id),
+      );
+      assert.equal(exam.groups.length, QUIZ_DRAW_COUNTS[quizId as keyof typeof QUIZ_DRAW_COUNTS]);
+    }
+  });
+
+  it("emits 10 QTI selection groups at 10 points for Q1 and 36 for X1", () => {
     const banks = buildCanvasFallbackBanks();
-    assert.equal(banks.x1.groups.length, 16);
-    assert.equal(banks.x2.groups.length, 15);
-    assert.ok(banks.x1.groups.some((group) => group.name.startsWith("Q1 ·")));
-    assert.ok(banks.x1.groups.some((group) => group.name.startsWith("Q2 ·")));
-    assert.ok(banks.x1.groups.some((group) => group.name.startsWith("Q3 ·")));
-    assert.ok(banks.x2.groups.some((group) => group.name.startsWith("Q4 ·")));
-    assert.ok(banks.x2.groups.some((group) => group.name.startsWith("Q6 ·")));
+    const q1 = renderCanvasQtiAssessment(banks.q1, canvasFallbackIdent("q1"));
+    assert.equal((q1.match(/<section ident="g/g) ?? []).length, 10);
+    assert.match(q1, /<points_per_item>10<\/points_per_item>/);
+    const x1 = renderCanvasQtiAssessment(banks.x1, canvasFallbackIdent("x1"));
+    assert.equal((x1.match(/<section ident="g/g) ?? []).length, 36);
+    assert.match(x1, /<points_per_item>2\.7778<\/points_per_item>/);
   });
 
   it("keeps exported stems standalone", () => {
@@ -91,7 +123,10 @@ describe("Canvas fallback banks", () => {
     assert.equal(blank?.type, "fill_in_blank");
     const q2 = practiceChapterBank(2, "q2");
     assert.ok(q2.groups.every((group) => group.questions.length >= 1));
-    assert.equal(sampleGroups(q2.groups, 5).length, 5);
+    assert.ok(q2.groups.length > QUIZ_DRAW_COUNTS.q2);
+    assert.equal(sampleGroups(q2.groups, 10).length, 10);
+    assert.equal(QUIZ_TIME_LIMIT_MINUTES.q1, 30);
+    assert.equal(QUIZ_TIME_LIMIT_MINUTES.x1, 90);
   });
 
   it("puts website URL + permission blurb in every quiz meta source", () => {
