@@ -12,18 +12,21 @@ export default function Functions() {
   return (
     <Section id="sec-3-3" title="3.3 JavaScript Functions">
       <p>
-        Markup repeats from page to page; functions let you reuse an
-        algorithm by wrapping it in a named, parameterized block and calling
-        it from JSX the same way you call it from any other JavaScript. The
-        language carries two styles from its history. The older ES5 form is:
+        Functions allow reusing an algorithm by wrapping it in a named,
+        parameterized code block, and you can call that block from JSX the
+        same way you call it from any other JavaScript. JavaScript supports
+        two styles of functions based on the language history. Functions
+        are declared using the following syntax.
       </p>
       <CodeBlock language="ts">{`function <functionName>(<parameterList>) {
   <functionBody>
 }`}</CodeBlock>
       <p>
-        Create <code>LegacyFunctions.tsx</code>, import it into Lab 3, and
-        confirm the sum prints both as a stored result and as a call
-        inlined in JSX:
+        To practice using functions, create a new component called{" "}
+        <code>LegacyFunctions</code>{" "}based on the code below. Import this
+        new component in the Lab 3 component and confirm the browser
+        renders as shown — the sum prints both as a stored result and as a
+        call inlined in JSX:
       </p>
       <CodeBlock
         language="tsx"
@@ -77,12 +80,19 @@ export default function LegacyFunctions() {
         title="3.3.1 Arrow Functions"
       >
         <p>
-          ES6 added a shorter function syntax — the{" "}
-          <strong>arrow function</strong> — that you will use for almost
-          every callback in this course (<code>map</code>, event handlers,
-          predicates). The name is optional; you typically store the
-          function in a <code>const</code>. Create{" "}
-          <code>ArrowFunctions.tsx</code>:
+          A new version of JavaScript was introduced in 2015 and is
+          officially referred to as ECMAScript 6 or ES6. A new syntax for
+          declaring functions was introduced which is less verbose and
+          provides features we will explore throughout this course. This
+          function syntax is often referred to as{" "}
+          <strong>arrow functions</strong>, and you will use it for almost
+          every callback in this course — <code>map</code>, event
+          handlers, and predicates. The name is optional; you typically
+          store the function in a <code>const</code>. To practice using
+          ES6 arrow functions, create a new component called{" "}
+          <code>ArrowFunctions</code>{" "}based on the code below. Import this
+          new component in the Lab 3 component and confirm the browser
+          renders as shown:
         </p>
         <CodeBlock
           language="tsx"
@@ -135,10 +145,14 @@ export default function ArrowFunctions() {
         title="3.3.2 Implied Return"
       >
         <p>
-          When the body is a single expression, ES6 lets you drop the curly
-          braces and the <code>return</code>{" "}— the expression{" "}
-          <em>is</em>{" "}the return value. Create{" "}
-          <code>ImpliedReturn.tsx</code>:
+          One of the new features of the new ES6 functions is implied
+          returns: if the body of the function consists of just returning
+          some value or expression, then the <code>return</code>{" "}
+          statement is optional and can be replaced with just the value or
+          expression. To practice this feature, create a new component
+          called <code>ImpliedReturn</code>{" "}based on the code below.
+          Import this new component in the Lab 3 component and confirm the
+          browser renders as shown:
         </p>
         <CodeBlock
           language="tsx"
@@ -189,12 +203,23 @@ export default function ArrowFunctions() {
         title="3.3.3 Template Literals"
       >
         <p>
-          Building strings with <code>+</code>{" "}gets noisy as soon as you
-          mix numbers, variables, and punctuation. A{" "}
-          <strong>template literal</strong> is a string in backticks that
-          can embed any expression inside <code>{`\${…}`}</code> — including
-          a ternary. Create <code>TemplateLiterals.tsx</code>. Do not hard-code
-          the results; interpolate the variables:
+          Generating dynamic HTML consists of writing code that
+          manipulates and concatenates strings to generate new HTML
+          strings based on some program logic — one language writing code
+          in another language, similar to what a compiler does. Working
+          with strings can be error prone especially if you have to use
+          lots of extra operations and variables to concatenate the
+          resulting string. JavaScript template strings provide a better
+          approach by allowing embedding expressions and algorithms right
+          within strings themselves, including a ternary. To practice,
+          implement a new component called <code>TemplateLiterals</code>{" "}
+          based on the code below. Import this new component in Lab 3 and
+          confirm the browser renders as shown. In your return statement,
+          wrap the HTML output in a <code>div</code>{" "}whose id is{" "}
+          <code>wd-template-literals</code>. Do not hard-code the results{" "}
+          <code>5</code>, Welcome home alice, and so on; interpolate the
+          variables <code>result1</code>, <code>result2</code>, and the
+          rest:
         </p>
         <CodeBlock
           language="tsx"
@@ -224,9 +249,7 @@ export default function ArrowFunctions() {
 }`}</CodeBlock>
         <p>
           <code>result1</code>{" "}and <code>result2</code>{" "}print the same
-          text; the backtick form is the one you will keep using. Wrap the
-          output in a <code>div</code>{" "}whose id is{" "}
-          <code>wd-template-literals</code>:
+          text; the backtick form is the one you will keep using:
         </p>
         <LiveDemo
           name="TemplateLiterals"

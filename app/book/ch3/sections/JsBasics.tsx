@@ -21,13 +21,19 @@ export default function JsBasics() {
         title="3.2.1 Variables and Constants"
       >
         <p>
-          Variables hold application state, such as a username, a course
-          id, or a preference. JavaScript offers three declarations:{" "}
-          <code>var</code>{" "}(function-scoped, the old default),{" "}
-          <code>let</code>{" "}(block-scoped, the usual choice when the value
-          will change), and <code>const</code>{" "}(block-scoped and not
-          reassigned). Create <code>VariablesAndConstants.tsx</code>{" "}and
-          import it from the Lab 3 page:
+          Variables can store state information about applications such as
+          user information, preferences, courses, and enrollments.
+          JavaScript offers three declarations: <code>var</code>{" "}is
+          function-scoped and the old default; <code>let</code>{" "}is
+          block-scoped and the usual choice when the value will change;
+          and <code>const</code>{" "}is block-scoped and not reassigned. To
+          practice declaring variables and constants, create the{" "}
+          <code>VariablesAndConstants</code>{" "}component below and import
+          it from the Lab 3 component. Confirm the browser displays as
+          shown. We will be creating several components to practice
+          various features of the JavaScript language; import them into
+          the Lab 3 page component and confirm the output is as described
+          for each of the lab exercises.
         </p>
         <CodeBlock
           language="tsx"
@@ -88,11 +94,14 @@ export default function JsBasics() {
         title="3.2.2 Variable Types"
       >
         <p>
-          JavaScript values carry a type: numbers (integers and floating
-          point), strings, booleans, and others. The{" "}
-          <code>typeof</code>{" "}operator reports that type as a string. Create{" "}
-          <code>VariableTypes.tsx</code>{" "}and import it at the bottom of Lab
-          3:
+          JavaScript declares several datatypes such as Number, String,
+          Date, and so on. The <code>typeof</code>{" "}operator reports that
+          type as a string. To practice with variable types, create the{" "}
+          <code>VariableTypes</code>{" "}component shown below and import it
+          at the bottom of the Lab 3 component. Confirm that the browser
+          renders as shown. Note that we had to convert the boolean
+          variable into a string type before it could render in the
+          browser — that conversion is explained after the sample.
         </p>
         <CodeBlock
           language="tsx"
@@ -155,12 +164,19 @@ export default function JsBasics() {
         title="3.2.3 Boolean Variables"
       >
         <p>
-          Booleans are the raw material of decisions:{" "}
-          <code>&amp;&amp;</code>{" "}(and), <code>||</code>{" "}(or),{" "}
-          <code>!</code>{" "}(not), and comparisons. Always compare with{" "}
-          <code>===</code>{" "}and <code>!==</code>{" "}— they test value{" "}
-          <em>and</em>{" "}type — not <code>==</code>, which coerces types and
-          hides bugs. Create <code>BooleanVariables.tsx</code>:
+          To practice with Boolean data types, create a component called{" "}
+          <code>BooleanVariables</code>{" "}and import it in the Lab 3
+          component. Use the previous lab exercises as a guide. Booleans
+          are the raw material of decisions: <code>&amp;&amp;</code>{" "}for
+          and, <code>||</code>{" "}for or, <code>!</code>{" "}for not, and
+          comparisons. Always compare with <code>===</code>{" "}and{" "}
+          <code>!==</code>{" "}— they test value <em>and</em>{" "}type — not{" "}
+          <code>==</code>, which coerces types and hides bugs. The new
+          component should add a section called Boolean Variables that
+          displays each of the new variables so that the browser renders
+          as shown. You might need to cast the boolean values to string by
+          concatenating an empty string, for example{" "}
+          <code>{`false3 = {false3 + ""}`}</code>.
         </p>
         <CodeBlock
           language="tsx"
@@ -227,10 +243,20 @@ export default function JsBasics() {
 
       <Section level={3} id="sec-3-2-4" title="3.2.4 Conditionals">
         <p>
-          A predicate is an expression that evaluates to true or false. An{" "}
-          <code>if</code>/<code>else</code>{" "}chooses which block to run; in
-          JSX you more often embed the choice in the tree itself. Create{" "}
-          <code>IfElse.tsx</code>:
+          Conditional expressions allow scripts to make decisions based on
+          predicates that compare values and variables. Scripts can decide
+          to execute different parts of the code based on the result of
+          these predicates using <code>if</code>/<code>else</code>{" "}and
+          other constructs. The most common use is an{" "}
+          <code>if</code>/<code>else</code>{" "}that evaluates a predicate
+          and then runs one of two code blocks depending on whether the
+          predicate is true or false — though in JSX you more often embed
+          that choice in the tree itself. To practice with{" "}
+          <code>if</code>/<code>else</code>, create a component called{" "}
+          <code>IfElse</code>{" "}based on the code shown below. Import it
+          into Lab 3 and confirm it renders a section labeled If Else as
+          shown. The <code>true1</code>{" "}paragraph is only rendered if{" "}
+          <code>true1</code>{" "}is true:
         </p>
         <CodeBlock
           language="tsx"
@@ -278,11 +304,16 @@ export default function JsBasics() {
         title="3.2.5 Ternary Operator"
       >
         <p>
-          A ternary is a compact <code>if</code>/<code>else</code>{" "}that
-          yields a value. It takes three pieces: a predicate, a{" "}
-          <code>?</code>, the value when the predicate is true, a{" "}
-          <code>:</code>, and the value when it is false. Create{" "}
-          <code>TernaryOperator.tsx</code>:
+          Ternary conditional operators are a concise alternative to{" "}
+          <code>if</code>/<code>else</code>{" "}statements. A ternary takes
+          three pieces: a predicate expression that evaluates to true or
+          false followed by a question mark (<code>?</code>); an
+          expression that evaluates if the predicate is true followed by a
+          colon (<code>:</code>); and an expression that evaluates if the
+          predicate is false. To practice the ternary operator, create a
+          new component called <code>TernaryOperator</code>{" "}based on the
+          code shown below, import it into Lab 3, and confirm the browser
+          renders as shown:
         </p>
         <CodeBlock
           language="tsx"
@@ -328,10 +359,17 @@ export default function JsBasics() {
         title="3.2.6 Generating Conditional Output"
       >
         <p>
-          The same logged-in decision can live in the component&apos;s{" "}
-          <code>return</code>{" "}path — two different trees — or inline in
-          one tree. Start with an <code>if</code>/<code>else</code>{" "}that
-          returns a different heading:
+          With boolean expressions we can render content based on some
+          logic. The following example decides rendering one content
+          versus another based on a simple boolean constant{" "}
+          <code>loggedIn</code>. If a user is <code>loggedIn</code>, then
+          the component renders a greeting; otherwise it suggests the user
+          should login. The same decision can live in the
+          component&apos;s <code>return</code>{" "}path — two different trees
+          — or inline in one tree. Implement{" "}
+          <code>ConditionalOutputIfElse</code>{" "}to practice conditional
+          rendering, starting with an <code>if</code>/<code>else</code>{" "}
+          that returns a different heading:
         </p>
         <CodeBlock
           language="tsx"
