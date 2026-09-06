@@ -69,7 +69,7 @@ export default function LectureCodeBlock({
       <p className="sr-only" aria-live="polite">
         {copied ? "Copied to clipboard" : ""}
       </p>
-      <pre className="book-code-block-body book-code-block-plain m-0 overflow-x-auto bg-[#0d1117] p-3 leading-snug text-neutral-100 !text-[1.05rem] md:!text-[1.2rem] [&_code]:!text-[1em]">
+      <pre className="book-code-block-body book-code-block-plain m-0 overflow-x-auto bg-[#0d1117] p-3 leading-snug text-neutral-100 !text-[1.25rem] md:!text-[1.5rem] [&_code]:!text-[1em]">
         <code>{block.code}</code>
       </pre>
     </div>

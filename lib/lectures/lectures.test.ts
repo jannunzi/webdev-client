@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   COURSE_SITE_ORIGIN,
@@ -238,6 +238,25 @@ describe("lecture decks", () => {
         );
       }
     }
+  });
+
+  it("keeps spacious bullets ~50% larger than the crushed post-#31 sizes", () => {
+    const css = readFileSync(join(process.cwd(), "app/book/book.css"), "utf8");
+    assert.match(css, /\.lecture-slide-title\s*\{[^}]*white-space:\s*nowrap/);
+    assert.match(
+      css,
+      /\.lecture-slide-spacious \.lecture-slide-bullets \{[^}]*font-size:\s*2\.25rem/,
+    );
+    assert.match(css, /font-size:\s*2\.75rem/);
+    assert.match(css, /font-size:\s*3\.15rem/);
+    assert.match(
+      css,
+      /\.lecture-slide-dense \.lecture-slide-bullets \{[^}]*font-size:\s*1\.7rem/,
+    );
+    assert.doesNotMatch(
+      css,
+      /\.lecture-slide-spacious \.lecture-slide-bullets \{[^}]*font-size:\s*1\.5rem/,
+    );
   });
 
   it("sizes text-only slides spacious and diagram/embed slides dense", () => {
