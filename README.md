@@ -276,22 +276,14 @@ Updating those assignment HTML descriptions is a follow-up package.
 
 ## Lectures hub
 
-`/lectures` lists Canvas lecture folders. Lecture 1 is environment and
-stack setup. Lecture 2 is Chapter 1 HTML (Lab 1 tags, forms, and
-`next/link` navigation). Each `/lectures/[slug]` page is a keyboard-driven
-slide deck. Slugs:
+`/lectures` groups decks by book chapter and topic (Intro, Setup, HTML,
+Kambaz HTML, CSS fundamentals, with room for Tailwind and Kambaz styling).
+`canvasLecture` stays on each deck as a Canvas mapping badge only. Each
+`/lectures/[slug]` page is a keyboard-driven slide deck. Slugs are
+unchanged — see `LECTURE_SLUGS` in `lib/lectures/types.ts`.
 
-- `/lectures/intro-to-web-development`
-- `/lectures/installing-nodejs`
-- `/lectures/creating-a-nextjs-react-application`
-- `/lectures/commit-to-github`
-- `/lectures/deploying-to-vercel`
-- `/lectures/html-and-dom`
-- `/lectures/headings-and-paragraphs`
-- `/lectures/lists-and-tables`
-- `/lectures/web-forms`
-- `/lectures/anchors`
-- `/lectures/single-page-navigation`
+New decks should set `chapter`, optional `topicId` (from `LECTURE_TOPICS`),
+and `canvasLecture` in `lib/lectures/catalog.ts`.
 
 Catalog and slide data live in `lib/lectures/`. The React shell is
 `app/lectures/_components/LectureDeckShell.tsx`. Text-only slides use

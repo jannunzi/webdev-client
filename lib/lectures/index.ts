@@ -1,12 +1,16 @@
 export {
   COURSE_SITE_ORIGIN,
   adjacentLectureSlugs,
+  bookChapterMeta,
   getLecture,
   getLectureDeck,
   isLectureSlug,
   lectureDeckThumbnail,
   lecturePublicUrl,
+  lectureTopicMeta,
   listCanvasLectureGroups,
+  listChapterTopicGroups,
+  listLectureChapters,
   listLectureDecks,
   listLectureSlugs,
   listLectures,
@@ -38,6 +42,7 @@ export { CSS_MEDIA_QUERIES_SLIDES } from "./decks/css-media-queries";
 export { CSS_ROTATION_SLIDES } from "./decks/css-rotation";
 export { CSS_SIZE_AND_POSITION_SLIDES } from "./decks/css-size-and-position";
 export {
+  BOOK_CHAPTERS,
   LECTURE_1_SLUGS,
   LECTURE_2_SLUGS,
   LECTURE_3_SLUGS,
@@ -46,6 +51,7 @@ export {
   LECTURE_DIAGRAM_IDS,
   LECTURE_EMBED_IDS,
   LECTURE_SLUGS,
+  LECTURE_TOPICS,
   lectureSlideAssetPath,
   lectureSlideDensity,
   lectureSlideFigurePath,
@@ -67,13 +73,17 @@ export {
 } from "./present-mode";
 export type {
   CanvasLectureGroup,
+  LectureChapterGroup,
   LectureCodeBlock,
   LectureDeck,
   LectureDiagramId,
   LectureEmbedId,
   LectureHubItem,
+  LectureNavChapter,
   LectureSlide,
   LectureSlideDensity,
   LectureSlug,
+  LectureTopicGroup,
+  LectureTopicId,
   SlideKind,
 } from "./types";

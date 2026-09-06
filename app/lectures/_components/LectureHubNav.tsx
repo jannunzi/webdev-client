@@ -1,10 +1,13 @@
 import Link from "next/link";
+import { listLectureChapters } from "@/lib/lectures";
 
 export default function LectureHubNav({
   current,
 }: {
   current?: "index" | "deck";
 }) {
+  const chapters = listLectureChapters();
+
   return (
     <p className="mb-3 font-sans text-sm">
       {current === "deck" ? (
@@ -16,10 +19,12 @@ export default function LectureHubNav({
       <Link href="/syllabus">Syllabus</Link>
       {" · "}
       <Link href="/book">Course book</Link>
-      {" · "}
-      <Link href="/book/ch1">Chapter 1</Link>
-      {" · "}
-      <Link href="/book/ch2">Chapter 2</Link>
+      {chapters.map((chapter) => (
+        <span key={chapter.chapter}>
+          {" · "}
+          <Link href={chapter.href}>Chapter {chapter.chapter}</Link>
+        </span>
+      ))}
       {" · "}
       <Link href="/assignments">Assignments</Link>
       {" · "}

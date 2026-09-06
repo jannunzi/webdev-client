@@ -99,13 +99,13 @@ export default function LectureDeckShell({
   slides,
   prevDeck,
   nextDeck,
-  canvasLecture,
+  chapter,
 }: {
   deckTitle: string;
   slides: LectureSlide[];
   prevDeck?: LectureHubItem;
   nextDeck?: LectureHubItem;
-  canvasLecture?: number;
+  chapter?: number;
 }) {
   const labelId = useId();
   const stageRef = useRef<HTMLElement>(null);
@@ -120,7 +120,7 @@ export default function LectureDeckShell({
   const slide = slides[index] ?? slides[0];
   const kind = slide?.kind ?? "content";
   const density = slide ? lectureSlideDensity(slide) : "spacious";
-  const lectureNumber = canvasLecture ?? prevDeck?.canvasLecture ?? nextDeck?.canvasLecture;
+  const chapterNumber = chapter ?? prevDeck?.chapter ?? nextDeck?.chapter;
   const codeBlocks = slide ? lectureSlideCodeBlocks(slide) : [];
   const isPresenting = isNativeFullscreen || fallbackPresent;
   fallbackPresentRef.current = fallbackPresent;
@@ -517,8 +517,8 @@ export default function LectureDeckShell({
             </div>
             <nav
               aria-label={
-                lectureNumber
-                  ? `Other Lecture ${lectureNumber} decks`
+                chapterNumber
+                  ? `Other Chapter ${chapterNumber} decks`
                   : "Other lecture decks"
               }
               className="mt-2 flex shrink-0 flex-wrap gap-x-4 gap-y-1 border-t border-neutral-200 pt-2 font-sans text-sm"
@@ -527,14 +527,14 @@ export default function LectureDeckShell({
                 <Link href={`/lectures/${prevDeck.slug}`}>← {prevDeck.title}</Link>
               ) : (
                 <span className="text-neutral-500">
-                  {lectureNumber ? `Lecture ${lectureNumber} · ` : ""}first deck
+                  {chapterNumber ? `Chapter ${chapterNumber} · ` : ""}first deck
                 </span>
               )}
               {nextDeck ? (
                 <Link href={`/lectures/${nextDeck.slug}`}>{nextDeck.title} →</Link>
               ) : (
                 <span className="text-neutral-500">
-                  {lectureNumber ? `Lecture ${lectureNumber} · ` : ""}last deck
+                  {chapterNumber ? `Chapter ${chapterNumber} · ` : ""}last deck
                 </span>
               )}
             </nav>

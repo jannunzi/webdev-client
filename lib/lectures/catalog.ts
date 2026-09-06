@@ -26,30 +26,32 @@ import { CSS_MEDIA_QUERIES_SLIDES } from "./decks/css-media-queries";
 import { CSS_ROTATION_SLIDES } from "./decks/css-rotation";
 import { CSS_SIZE_AND_POSITION_SLIDES } from "./decks/css-size-and-position";
 import {
+  BOOK_CHAPTERS,
   LECTURE_SLUGS,
+  LECTURE_TOPICS,
   lectureThumbPath,
   type CanvasLectureGroup,
+  type LectureChapterGroup,
   type LectureDeck,
   type LectureHubItem,
+  type LectureNavChapter,
   type LectureSlide,
   type LectureSlug,
+  type LectureTopicGroup,
+  type LectureTopicId,
 } from "./types";
 
 export const COURSE_SITE_ORIGIN = "https://webdev-client.vercel.app";
 
-const CHAPTER_1 = {
-  href: "/book/ch1",
-  title: "Building Next.js User Interfaces with HTML",
-} as const;
+export function bookChapterMeta(chapter: number) {
+  return (
+    BOOK_CHAPTERS.find((entry) => entry.chapter === chapter) ?? BOOK_CHAPTERS[0]
+  );
+}
 
-const CHAPTER_2 = {
-  href: "/book/ch2",
-  title: "Styling User Interfaces with CSS and Tailwind",
-} as const;
-
-function chapterMeta(chapter: number) {
-  if (chapter === 2) return CHAPTER_2;
-  return CHAPTER_1;
+export function lectureTopicMeta(topicId: LectureTopicId | undefined) {
+  if (!topicId) return undefined;
+  return LECTURE_TOPICS.find((entry) => entry.topicId === topicId);
 }
 
 const LECTURE_SUMMARIES: Record<
@@ -58,6 +60,7 @@ const LECTURE_SUMMARIES: Record<
     title: string;
     summary: string;
     chapter: number;
+    topicId?: LectureTopicId;
     canvasLecture: number;
     slides: LectureSlide[];
   }
@@ -67,6 +70,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Internet vs Web, browsers and URLs, client–server HTTP, framework history, and how we engineer large web apps in teams.",
     chapter: 1,
+    topicId: "intro",
     canvasLecture: 1,
     slides: INTRO_TO_WEB_DEVELOPMENT_SLIDES,
   },
@@ -75,6 +79,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Install the Node runtime, create a course folder, and run a one-route Express hello server on port 4000.",
     chapter: 1,
+    topicId: "setup",
     canvasLecture: 1,
     slides: INSTALLING_NODEJS_SLIDES,
   },
@@ -83,6 +88,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Scaffold kambaz-next-js with the App Router, replace the home page, add Lab 1, and link routes.",
     chapter: 1,
+    topicId: "setup",
     canvasLecture: 1,
     slides: CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES,
   },
@@ -91,6 +97,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Install Git, keep node_modules out of the repo, create an empty GitHub.com repository, and push main.",
     chapter: 1,
+    topicId: "setup",
     canvasLecture: 1,
     slides: COMMIT_TO_GITHUB_SLIDES,
   },
@@ -99,6 +106,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Connect GitHub to Vercel, deploy the Next.js app, share the URL, and turn off Vercel Authentication so TAs can open it.",
     chapter: 1,
+    topicId: "setup",
     canvasLecture: 1,
     slides: DEPLOYING_TO_VERCEL_SLIDES,
   },
@@ -107,6 +115,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Markup, hello.html, DOCTYPE/html/head/body, comments, whitespace, and the Window → Document DOM tree.",
     chapter: 1,
+    topicId: "html",
     canvasLecture: 2,
     slides: HTML_AND_DOM_SLIDES,
   },
@@ -115,6 +124,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "h1–h6 sizes, the Lab 1 wd-h-tag nest, and wrapping text in p (wd-p-2…wd-p-4) so vertical gaps stick.",
     chapter: 1,
+    topicId: "html",
     canvasLecture: 2,
     slides: HEADINGS_AND_PARAGRAPHS_SLIDES,
   },
@@ -123,6 +133,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "ol vs ul, the pancake recipe, favorite-books ul, and a semantic quiz table (thead/tbody/tfoot/colSpan) — not layout.",
     chapter: 1,
+    topicId: "html",
     canvasLecture: 2,
     slides: LISTS_AND_TABLES_SLIDES,
   },
@@ -131,6 +142,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Labels, text/password/textarea, buttons, file, radio vs checkbox, select one/many, and number/range/email/date.",
     chapter: 1,
+    topicId: "html",
     canvasLecture: 2,
     slides: WEB_FORMS_SLIDES,
   },
@@ -139,6 +151,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "href to other documents, mailto: and tel:, and same-page TOC hashes that match an element id.",
     chapter: 1,
+    topicId: "html",
     canvasLecture: 2,
     slides: ANCHORS_SLIDES,
   },
@@ -147,6 +160,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Next.js Link TOC, labs layout children swap, and moving Kambaz into app/(kambaz)/ so it can own /.",
     chapter: 1,
+    topicId: "html",
     canvasLecture: 2,
     slides: SINGLE_PAGE_NAVIGATION_SLIDES,
   },
@@ -155,6 +169,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Route group (kambaz) owns /, a landing page with wd-kambaz, a Labs TOC link, then redirect to Sign in.",
     chapter: 1,
+    topicId: "kambaz-html",
     canvasLecture: 3,
     slides: KAMBAZ_OVERVIEW_SLIDES,
   },
@@ -163,6 +178,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Sign in, Sign up, Profile, Account Navigation, and an account layout that swaps children.",
     chapter: 1,
+    topicId: "kambaz-html",
     canvasLecture: 3,
     slides: KAMBAZ_ACCOUNT_SLIDES,
   },
@@ -171,6 +187,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "CourseCard plus next/image, at least three published courses, and Sign in landing on /dashboard.",
     chapter: 1,
+    topicId: "kambaz-html",
     canvasLecture: 3,
     slides: KAMBAZ_DASHBOARD_SLIDES,
   },
@@ -179,6 +196,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "KambazNavigation sidebar, the (kambaz) layout table, and app/not-found.tsx for Calendar and Inbox.",
     chapter: 1,
+    topicId: "kambaz-html",
     canvasLecture: 3,
     slides: KAMBAZ_NAVIGATION_SLIDES,
   },
@@ -187,6 +205,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Dynamic [cid], Home at /courses/[cid]/home, Course Navigation, and await params in the layout.",
     chapter: 1,
+    topicId: "kambaz-html",
     canvasLecture: 3,
     slides: KAMBAZ_COURSES_SLIDES,
   },
@@ -195,6 +214,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Module and Lesson nested lists for Weeks 1–3, then Home as Modules plus Course Status.",
     chapter: 1,
+    topicId: "kambaz-html",
     canvasLecture: 3,
     slides: KAMBAZ_MODULES_SLIDES,
   },
@@ -203,6 +223,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Assignments list, AssignmentItem, and the editor form — on your own, matching wd-* ids.",
     chapter: 1,
+    topicId: "kambaz-html",
     canvasLecture: 3,
     slides: KAMBAZ_ASSIGNMENTS_SLIDES,
   },
@@ -211,6 +232,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Style attribute vs imported CSS, tag / id / class / structure selectors, and how the cascade picks a winner.",
     chapter: 2,
+    topicId: "css",
     canvasLecture: 4,
     slides: CSS_INTRO_SLIDES,
   },
@@ -219,6 +241,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Foreground color, background color, hex and named values, and stacking wd-fg-* / wd-bg-* classes.",
     chapter: 2,
+    topicId: "css",
     canvasLecture: 4,
     slides: CSS_COLORS_SLIDES,
   },
@@ -227,6 +250,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Border, padding, margin, content-box vs border-box, and border-radius — the four layers of every box.",
     chapter: 2,
+    topicId: "css",
     canvasLecture: 4,
     slides: CSS_BOX_MODEL_SLIDES,
   },
@@ -235,6 +259,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Width and height, display, then relative, absolute, fixed, and z-index from Lab 2 Positions.",
     chapter: 2,
+    topicId: "css",
     canvasLecture: 4,
     slides: CSS_SIZE_AND_POSITION_SLIDES,
   },
@@ -243,6 +268,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Lab 2 @media breakpoints that restyle a demo at 750, 1000, and 1250 — CSS first, utilities later.",
     chapter: 2,
+    topicId: "css",
     canvasLecture: 4,
     slides: CSS_MEDIA_QUERIES_SLIDES,
   },
@@ -251,6 +277,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "float left/right, clear both, and percentage columns that fake a grid before flex.",
     chapter: 2,
+    topicId: "css",
     canvasLecture: 4,
     slides: CSS_FLOAT_SLIDES,
   },
@@ -259,6 +286,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "display:flex rows, flex-grow for leftover space, and a pinned column from Lab 2 Flex.tsx.",
     chapter: 2,
+    topicId: "css",
     canvasLecture: 4,
     slides: CSS_FLEX_SLIDES,
   },
@@ -267,6 +295,7 @@ const LECTURE_SUMMARIES: Record<
     summary:
       "Optional extras: transform rotate plus linear and radial gradients. Not required for Lab 2.",
     chapter: 2,
+    topicId: "css",
     canvasLecture: 4,
     slides: CSS_ROTATION_SLIDES,
   },
@@ -287,10 +316,13 @@ export function isLectureSlug(value: string): value is LectureSlug {
 export function getLecture(slug: string): LectureHubItem | undefined {
   if (!isLectureSlug(slug)) return undefined;
   const entry = LECTURE_SUMMARIES[slug];
-  const chapter = chapterMeta(entry.chapter);
+  const chapter = bookChapterMeta(entry.chapter);
+  const topic = lectureTopicMeta(entry.topicId);
   return {
     slug,
     chapter: entry.chapter,
+    topicId: entry.topicId,
+    topic: topic?.title,
     canvasLecture: entry.canvasLecture,
     title: entry.title,
     summary: entry.summary,
@@ -332,6 +364,7 @@ export function lectureDeckThumbnail(
   return lectureThumbPath(slug);
 }
 
+/** Canvas week buckets — keep for tests / future Canvas sync. Hub uses chapters. */
 export function listCanvasLectureGroups(): CanvasLectureGroup[] {
   const items = listLectures();
   const maxFromCatalog = items.reduce(
@@ -351,6 +384,68 @@ export function listCanvasLectureGroups(): CanvasLectureGroup[] {
       decks: groupDecks,
     };
   });
+}
+
+/**
+ * Hub grouping: book chapter, then optional topic sections in spine order.
+ * Empty registered topics stay visible so Slides can drop in new decks.
+ */
+export function listChapterTopicGroups(): LectureChapterGroup[] {
+  const items = listLectures();
+  const chapterNumbers = new Set<number>();
+  for (const item of items) chapterNumbers.add(item.chapter);
+  for (const topic of LECTURE_TOPICS) chapterNumbers.add(topic.chapter);
+
+  return [...chapterNumbers]
+    .sort((a, b) => a - b)
+    .filter((chapter) => {
+      const hasDecks = items.some((item) => item.chapter === chapter);
+      const hasTopics = LECTURE_TOPICS.some((topic) => topic.chapter === chapter);
+      return hasDecks || hasTopics;
+    })
+    .map((chapter) => {
+      const meta = bookChapterMeta(chapter);
+      const decks = items.filter((item) => item.chapter === chapter);
+      const registered = LECTURE_TOPICS.filter((topic) => topic.chapter === chapter);
+      const topics: LectureTopicGroup[] = registered.map((topic) => ({
+        topicId: topic.topicId,
+        title: topic.title,
+        decks: decks.filter((item) => item.topicId === topic.topicId),
+      }));
+      const knownIds = new Set(registered.map((topic) => topic.topicId));
+      const leftovers = decks.filter(
+        (item) => !item.topicId || !knownIds.has(item.topicId),
+      );
+      if (leftovers.length > 0) {
+        topics.push({
+          topicId: "more",
+          title: "More",
+          decks: leftovers,
+        });
+      }
+      return {
+        chapter,
+        href: meta.href,
+        title: meta.title,
+        topics,
+      };
+    });
+}
+
+/** Chapters that already have published decks — drives hub nav. */
+export function listLectureChapters(): LectureNavChapter[] {
+  const seen = new Set<number>();
+  const chapters: LectureNavChapter[] = [];
+  for (const item of listLectures()) {
+    if (seen.has(item.chapter)) continue;
+    seen.add(item.chapter);
+    chapters.push({
+      chapter: item.chapter,
+      href: item.chapterHref,
+      title: item.chapterTitle,
+    });
+  }
+  return chapters.sort((a, b) => a.chapter - b.chapter);
 }
 
 export function adjacentLectureSlugs(slug: LectureSlug): {
