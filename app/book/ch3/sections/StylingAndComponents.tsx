@@ -135,11 +135,19 @@ export default function Classes() {
           title="3.5.2 Working with the Style Attribute"
         >
           <p>
-            The JSX <code>style</code>{" "}attribute takes a JavaScript object
-            of camelCase CSS properties — the same object you used in{" "}
-            <SectionLink to="2.1.1" />. Spread smaller objects into larger
-            ones so padding and color are reused. Create{" "}
-            <code>Styles.tsx</code>:
+            In React, the <code>style</code>{" "}attribute accepts a
+            JavaScript object where the properties are CSS properties —
+            camelCase, the same object you used in{" "}
+            <SectionLink to="2.1.1" /> — and the values are CSS values.
+            Spread smaller objects into larger ones so padding and color
+            are reused. To practice how this works, implement the{" "}
+            <code>Styles</code>{" "}component below and then import it into
+            the Lab 3 component. The component declares constant objects
+            that can be applied to elements using the <code>style</code>{" "}
+            attribute. Alternatively, the <code>style</code>{" "}attribute
+            accepts an object literal, which results in a double
+            curly-bracket syntax. Refresh the browser and confirm it
+            renders as expected:
           </p>
           <CodeBlock
             language="tsx"
@@ -202,13 +210,20 @@ export default function Classes() {
         title="3.6 Client and Server Components"
       >
         <p>
-          Next.js components run on the server by default, so they can
-          read files and environment variables and send HTML to the
-          browser, but they cannot use browser APIs, React state, or hooks
-          such as <code>usePathname</code>. Add{" "}
-          <code>&quot;use client&quot;</code>{" "}at the top of a file to opt
-          into a <strong>Client Component</strong> that runs in the
-          browser.
+          In Next.js, all components are Server Components by default.
+          This means they execute only on the server during rendering,
+          producing HTML that is sent to the browser. Server Components
+          are fast, secure, and can directly access server-only resources
+          such as the filesystem or environment variables, but they cannot
+          use browser-specific features like interactivity, state, or DOM
+          APIs, including hooks such as <code>usePathname</code>. If you
+          need interactivity or browser APIs, you must explicitly turn a
+          component into a <strong>Client Component</strong>{" "}by adding{" "}
+          <code>&quot;use client&quot;</code>{" "}at the top of the file.
+          Client Components run only in the browser, allowing hooks, event
+          handlers, and browser globals — but they lose direct server
+          access. The two simple examples below highlight exactly what
+          each side can and cannot do.
         </p>
 
         <Section
@@ -217,10 +232,21 @@ export default function Classes() {
           title="3.6.1 Client Components"
         >
           <p>
-            The directive must be the first statement in the file. Without
-            it, <code>usePathname</code>{" "}fails at build or render time
-            because that hook is not available on the server. Create{" "}
-            <code>ClientComponentDemo.tsx</code>:
+            This Client Component below is marked with the{" "}
+            <code>&quot;use client&quot;</code>{" "}directive at the top,
+            which forces it to execute exclusively in the browser rather
+            than on the server. The directive must be the first statement
+            in the file. This allows safe use of browser-only features,
+            such as hooks from <code>next/navigation</code>. In this
+            example, the component uses the <code>usePathname()</code>{" "}
+            hook to read the current route. This hook is client-only and
+            would cause a server-side error if the component were treated
+            as a Server Component. Removing the directive would result in
+            a build or runtime failure because{" "}
+            <code>usePathname()</code>{" "}is not available during server
+            rendering. The code renders a simple heading and displays the
+            current pathname. Create <code>ClientComponentDemo.tsx</code>,
+            import it into Lab 3, and confirm it renders as shown:
           </p>
           <CodeBlock
             language="tsx"
@@ -269,11 +295,19 @@ export default function ClientComponentDemo() {
           title="3.6.2 Server Components"
         >
           <p>
-            Omit <code>&quot;use client&quot;</code>{" "}and the file stays a
-            Server Component, which means it can import <code>node:fs</code>{" "}
-            and read <code>process</code> — adding the client directive would
-            make those APIs unavailable. Create{" "}
-            <code>ServerComponentDemo.tsx</code>:
+            By default, Next.js pages and components are Server Components
+            and are marked by omitting the{" "}
+            <code>&quot;use client&quot;</code>{" "}directive, making the
+            file execute exclusively on the server. The server component
+            below demonstrates server-only capabilities by accessing
+            Node.js globals like the <code>process</code>{" "}object and using{" "}
+            <code>fs.readdirSync()</code>{" "}to list files from{" "}
+            <code>app/labs/lab3</code>{" "}on the server&apos;s filesystem.
+            Adding <code>&quot;use client&quot;</code>{" "}would cause a
+            build failure, as APIs like <code>process</code>{" "}and{" "}
+            <code>fs</code>{" "}are unavailable in the browser environment.
+            Create <code>ServerComponentDemo.tsx</code>, import it into
+            Lab 3, and confirm it renders as shown:
           </p>
           <CodeBlock
             language="tsx"
@@ -350,10 +384,18 @@ export default function ServerComponentDemo() {
 
       <Section id="sec-3-7" title="3.7 Parameterizing Components">
         <p>
-          HTML attributes arrive as a props object, so you destructure{" "}
-          <code>a</code>{" "}and <code>b</code>{" "}from that object — the same
-          parameter destructuring as <SectionLink to="3.4.15" />. Create{" "}
-          <code>Add.tsx</code>{" "}and render{" "}
+          React components can be parameterized by using the familiar HTML
+          attribute syntax, which passes attribute values to the
+          component&apos;s function as an object map parameter. The
+          following <code>Add</code>{" "}component can receive properties{" "}
+          <code>a</code>{" "}and <code>b</code>{" "}deconstructed from the
+          attributes — the same parameter destructuring as{" "}
+          <SectionLink to="3.4.15" />. Implement the <code>Add</code>{" "}
+          component below and confirm that passing it{" "}
+          <code>a={"{3}"}</code>{" "}and <code>b={"{4}"}</code>{" "}results in{" "}
+          <code>a + b = 7</code>. Note that the values of <code>a</code>{" "}
+          and <code>b</code>{" "}are destructed from the object parameter in
+          the <code>Add</code>{" "}function parameter list. Render{" "}
           <code>{`<Add a={3} b={4} />`}</code>{" "}from Lab 3:
         </p>
         <CodeBlock
@@ -399,11 +441,22 @@ export default function ServerComponentDemo() {
           title="3.7.1 Child Components"
         >
           <p>
-            Props are not the only channel. Content between a
-            component&apos;s opening and closing tags arrives as{" "}
-            <code>children</code> — the same pattern as wrapping a
-            paragraph in <code>&lt;h1&gt;</code>. Create{" "}
-            <code>Square.tsx</code>{" "}that treats its children as a number:
+            In the previous section we discussed passing data to a
+            component through attributes. Another way to pass data to a
+            component is in its body, that is, between the opening and
+            closing tag of the element. In HTML it is common to wrap
+            content with specific tags to add certain formatting. For
+            instance the tags <code>h1</code>{" "}and <code>p</code>{" "}format
+            the content in their bodies with specific font sizes and
+            margins — they take the content in the body and return a
+            transformed version. We can implement React components the
+            same way. The content in the body of a React component is
+            passed to the component function as a parameter called{" "}
+            <code>children</code>. For instance, the <code>Square</code>{" "}
+            component below takes a number in its body and returns the
+            square of the number. Import the new component, use it to
+            compute the square of 4, and confirm it renders the correct
+            result:
           </p>
           <CodeBlock
             language="tsx"
