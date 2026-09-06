@@ -90,16 +90,42 @@ import {
   KambazStyledSigninEmbed,
 } from "./KambazStylingEmbeds";
 import {
+  JsAddEmbed,
+  JsArrayAddRemoveEmbed,
+  JsArrayIndexEmbed,
   JsArrowFunctionsEmbed,
   JsBooleansEmbed,
+  JsClassesEmbed,
+  JsClientComponentEmbed,
   JsConditionalIfElseEmbed,
   JsConditionalInlineEmbed,
+  JsDestructingEmbed,
+  JsDestructingImportsEmbed,
+  JsFilterEmbed,
+  JsFindEmbed,
+  JsFindIndexEmbed,
+  JsForLoopsEmbed,
+  JsFunctionDestructingEmbed,
+  JsHighlightEmbed,
+  JsHouseEmbed,
   JsIfElseEmbed,
   JsImpliedReturnEmbed,
+  JsIncludesSomeEveryEmbed,
+  JsJsonStringifyEmbed,
   JsLegacyFunctionsEmbed,
+  JsMapEmbed,
   JsNullUndefinedEmbed,
+  JsOptionalChainingEmbed,
+  JsPathParametersEmbed,
+  JsReduceEmbed,
+  JsServerComponentEmbed,
+  JsSimpleArraysEmbed,
+  JsSpreaderEmbed,
+  JsSquareEmbed,
+  JsStylesEmbed,
   JsTemplateLiteralsEmbed,
   JsTernaryEmbed,
+  JsTodoListEmbed,
   JsVariableTypesEmbed,
   JsVariablesEmbed,
   Lab3StubEmbed,
@@ -289,6 +315,58 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <JsImpliedReturnEmbed />;
     case "js-template-literals":
       return <JsTemplateLiteralsEmbed />;
+    case "js-simple-arrays":
+      return <JsSimpleArraysEmbed />;
+    case "js-array-index":
+      return <JsArrayIndexEmbed />;
+    case "js-array-add-remove":
+      return <JsArrayAddRemoveEmbed />;
+    case "js-for-loops":
+      return <JsForLoopsEmbed />;
+    case "js-map":
+      return <JsMapEmbed />;
+    case "js-find":
+      return <JsFindEmbed />;
+    case "js-find-index":
+      return <JsFindIndexEmbed />;
+    case "js-filter":
+      return <JsFilterEmbed />;
+    case "js-includes-some-every":
+      return <JsIncludesSomeEveryEmbed />;
+    case "js-reduce":
+      return <JsReduceEmbed />;
+    case "js-json-stringify":
+      return <JsJsonStringifyEmbed />;
+    case "js-house":
+      return <JsHouseEmbed />;
+    case "js-spreader":
+      return <JsSpreaderEmbed />;
+    case "js-destructing":
+      return <JsDestructingEmbed />;
+    case "js-function-destructing":
+      return <JsFunctionDestructingEmbed />;
+    case "js-destructing-imports":
+      return <JsDestructingImportsEmbed />;
+    case "js-optional-chaining":
+      return <JsOptionalChainingEmbed />;
+    case "js-classes":
+      return <JsClassesEmbed />;
+    case "js-styles":
+      return <JsStylesEmbed />;
+    case "js-client-component":
+      return <JsClientComponentEmbed />;
+    case "js-server-component":
+      return <JsServerComponentEmbed />;
+    case "js-add":
+      return <JsAddEmbed />;
+    case "js-square":
+      return <JsSquareEmbed />;
+    case "js-highlight":
+      return <JsHighlightEmbed />;
+    case "js-path-parameters":
+      return <JsPathParametersEmbed />;
+    case "js-todo-list":
+      return <JsTodoListEmbed />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;

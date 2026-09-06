@@ -1,0 +1,119 @@
+import type { LectureSlide } from "../types";
+
+export const ARRAY_ITERATION_SLIDES: LectureSlide[] = [
+  {
+    id: "title",
+    title: "WEB DEV",
+    kind: "title",
+    bullets: [
+      "Chapter 3 · Array Iteration",
+      "§3.4.3–3.4.4 · for loops, then map",
+    ],
+  },
+  {
+    id: "purpose",
+    title: "Same walk, two spellings",
+    kind: "content",
+    bullets: [
+      "A `for` loop is useful when you need the **index** as well as the value",
+      "Build a **new** array inside the loop rather than mutating the source",
+      "`map` does the same walk and returns the new array for you",
+      "Mapping to JSX is how Kambaz will turn courses into cards",
+    ],
+  },
+  {
+    id: "for-loop",
+    title: "for builds a second array",
+    kind: "demo",
+    bullets: [
+      "`string[]` tells TypeScript the empty array will hold strings",
+      "Each pass pushes an uppercased copy",
+      "JSX still omits commas, so the page shows `STRING1STRING3`",
+    ],
+    code: `export default function ForLoops() {
+  let stringArray1 = ["string1", "string3"];
+  let stringArray2: string[] = [];
+  for (let i = 0; i < stringArray1.length; i++) {
+    const string1 = stringArray1[i];
+    stringArray2.push(string1.toUpperCase());
+  }
+  return (
+    <div id="wd-for-loops">
+      <h4>Looping through arrays</h4>
+      stringArray2 = {stringArray2}
+      <hr />
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/ForLoops.tsx",
+    codeHighlightLines: [[3, 6]],
+    embed: "js-for-loops",
+  },
+  {
+    id: "map",
+    title: "map returns a new array",
+    kind: "demo",
+    bullets: [
+      "Pass a named function, or an implied-return arrow",
+      "`squares` uses `square`. `cubes` inlines `(a) => a * a * a`",
+      "Create `MapFunction` and import it into Lab 3",
+    ],
+    code: `export default function MapFunction() {
+  let numberArray1 = [1, 2, 3, 4, 5, 6];
+  const square = (a: number) => a * a;
+  const todos = ["Buy milk", "Feed the pets"];
+  const squares = numberArray1.map(square);
+  const cubes = numberArray1.map((a) => a * a * a);
+  return (
+    <div id="wd-map-function">
+      <h4>Map Function</h4>
+      squares = {squares}
+      <br />
+      cubes = {cubes}
+      <br />
+      Todos:
+      <ol>
+        {todos.map((todo) => (
+          <li key={todo}>{todo}</li>
+        ))}
+      </ol>
+      <hr />
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/MapFunction.tsx",
+    codeHighlightLines: [5, 6, [16, 18]],
+    embed: "js-map",
+  },
+  {
+    id: "keys",
+    title: "Give each sibling a key",
+    kind: "content",
+    bullets: [
+      "`key={todo}` works here because the strings are unique",
+      "When two titles could collide, use a real id from the data",
+      "Without a key the console warns and updates can reuse the wrong node",
+    ],
+  },
+  {
+    id: "recap",
+    title: "Iteration recap",
+    kind: "content",
+    bullets: [
+      "`for (let i = 0; i < arr.length; i++)` when you need the index",
+      "`arr.map(fn)` returns a new array — named function or implied arrow",
+      "Mapping to `<li key={…}>` is the list pattern the rest of the course uses",
+    ],
+  },
+  {
+    id: "next-up",
+    title: "Next: search and filter",
+    kind: "title",
+    bullets: [
+      "`map` transforms every item. The next tools pick some of them",
+      "§3.4.5–3.4.8: find, findIndex, filter, includes / some / every",
+    ],
+  },
+];
