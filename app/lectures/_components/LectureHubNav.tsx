@@ -19,6 +19,8 @@ export default function LectureHubNav({
       {" · "}
       <Link href="/book/ch1">Chapter 1</Link>
       {" · "}
+      <Link href="/book/ch2">Chapter 2</Link>
+      {" · "}
       <Link href="/assignments">Assignments</Link>
       {" · "}
       <Link href="/quizzes/take">Quizzes</Link>

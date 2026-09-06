@@ -61,7 +61,7 @@ export default function LecturesIndexPage() {
                 </p>
               </div>
 
-              {group.decks.some((deck) => deck.chapter === 1) ? (
+              {group.decks[0] ? (
                 <LectureChapterLink lecture={group.decks[0]} />
               ) : null}
 

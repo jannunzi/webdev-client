@@ -19,6 +19,7 @@ import {
   LECTURE_1_SLUGS,
   LECTURE_2_SLUGS,
   LECTURE_3_SLUGS,
+  LECTURE_4_SLUGS,
   LECTURE_DIAGRAM_IDS,
   LECTURE_EMBED_IDS,
   LECTURE_SLUGS,
@@ -63,16 +64,18 @@ function findSlide(deckSlug: string, id: string) {
 }
 
 describe("lecture catalog", () => {
-  it("lists Lecture 1 then 2 then 3 slugs in locked order", () => {
+  it("lists Lecture 1 then 2 then 3 then 4 slugs in locked order", () => {
     assert.deepEqual(listLectureSlugs(), [
       ...LECTURE_1_SLUGS,
       ...LECTURE_2_SLUGS,
       ...LECTURE_3_SLUGS,
+      ...LECTURE_4_SLUGS,
     ]);
     assert.deepEqual(listLectureSlugs(), [...LECTURE_SLUGS]);
     assert.equal(LECTURE_1_SLUGS.length, 5);
     assert.equal(LECTURE_2_SLUGS.length, 6);
     assert.equal(LECTURE_3_SLUGS.length, 7);
+    assert.equal(LECTURE_4_SLUGS.length, 8);
   });
 
   it("marks Lecture 1 entries as Canvas Lecture 1 / Chapter 1", () => {
@@ -113,7 +116,27 @@ describe("lecture catalog", () => {
     assert.equal(getLectureDeck("vite-spa"), undefined);
     assert.equal(isLectureSlug("intro-to-web-development"), true);
     assert.equal(isLectureSlug("html-and-dom"), true);
+    assert.equal(isLectureSlug("css-intro"), true);
     assert.equal(isLectureSlug("intro"), false);
+  });
+
+  it("marks Lecture 4 entries as Canvas Lecture 4 / Chapter 2", () => {
+    const items = listLectures().filter((item) => item.canvasLecture === 4);
+    assert.equal(items.length, 8);
+    assert.deepEqual(
+      items.map((item) => item.slug),
+      [...LECTURE_4_SLUGS],
+    );
+    for (const item of items) {
+      assert.equal(item.chapter, 2);
+      assert.equal(item.canvasLecture, 4);
+      assert.equal(item.chapterHref, "/book/ch2");
+      assert.equal(
+        item.chapterTitle,
+        "Styling User Interfaces with CSS and Tailwind",
+      );
+      assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
+    }
   });
 
   it("marks Lecture 3 entries as Canvas Lecture 3 / Chapter 1", () => {
@@ -131,7 +154,7 @@ describe("lecture catalog", () => {
     }
   });
 
-  it("groups Lecture 1–3 decks; later weeks stay empty", () => {
+  it("groups Lecture 1–4 decks; later weeks stay empty", () => {
     const groups = listCanvasLectureGroups();
     assert.ok(groups.length >= 11);
     assert.equal(groups[0]?.title, "Lecture 1");
@@ -179,13 +202,24 @@ describe("lecture catalog", () => {
       lectureDeckThumbnail("kambaz-overview"),
       "/lectures/thumbs/kambaz-overview.svg",
     );
-    for (const group of groups.slice(3)) {
+    assert.equal(groups[3]?.title, "Lecture 4");
+    assert.equal(groups[3]?.canvasLecture, 4);
+    assert.equal(groups[3]?.decks.length, 8);
+    assert.deepEqual(
+      groups[3]?.decks.map((deck) => deck.slug),
+      [...LECTURE_4_SLUGS],
+    );
+    assert.equal(
+      lectureDeckThumbnail("css-intro"),
+      "/lectures/thumbs/css-intro.svg",
+    );
+    for (const group of groups.slice(4)) {
       assert.equal(group.title, `Lecture ${group.canvasLecture}`);
       assert.equal(group.decks.length, 0);
     }
   });
 
-  it("walks adjacent decks across Lecture 1 into Lecture 3", () => {
+  it("walks adjacent decks across Lecture 1 into Lecture 4", () => {
     const first = adjacentLectureSlugs("intro-to-web-development");
     assert.equal(first.prev, undefined);
     assert.equal(first.next?.slug, "installing-nodejs");
@@ -195,9 +229,12 @@ describe("lecture catalog", () => {
     const lastLecture2 = adjacentLectureSlugs("single-page-navigation");
     assert.equal(lastLecture2.next?.slug, "kambaz-overview");
     assert.equal(lastLecture2.prev?.slug, "anchors");
-    const last = adjacentLectureSlugs("kambaz-assignments");
+    const lastLecture3 = adjacentLectureSlugs("kambaz-assignments");
+    assert.equal(lastLecture3.next?.slug, "css-intro");
+    assert.equal(lastLecture3.prev?.slug, "kambaz-modules");
+    const last = adjacentLectureSlugs("css-rotation");
     assert.equal(last.next, undefined);
-    assert.equal(last.prev?.slug, "kambaz-modules");
+    assert.equal(last.prev?.slug, "css-flex");
   });
 });
 
@@ -226,6 +263,14 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-courses"], 7);
     assert.equal(counts["kambaz-modules"], 8);
     assert.equal(counts["kambaz-assignments"], 9);
+    assert.equal(counts["css-intro"], 12);
+    assert.equal(counts["css-colors"], 9);
+    assert.equal(counts["css-box-model"], 10);
+    assert.equal(counts["css-size-and-position"], 10);
+    assert.equal(counts["css-media-queries"], 8);
+    assert.equal(counts["css-float"], 8);
+    assert.equal(counts["css-flex"], 7);
+    assert.equal(counts["css-rotation"], 6);
     for (const deck of decks) {
       const ids = deck.slides.map((slide) => slide.id);
       assert.equal(new Set(ids).size, ids.length, `${deck.slug} duplicate slide id`);
@@ -378,6 +423,46 @@ describe("lecture decks", () => {
       "kambaz-assignments": {
         "list-screen": "kambaz-assignments",
         editor: "kambaz-assignment-editor",
+      },
+      "css-intro": {
+        "style-attr": "css-style-attr",
+        "import-css": "css-import",
+        "id-selectors": "css-id-selectors",
+        "class-selectors": "css-class-selectors",
+        structure: "css-structure-selectors",
+      },
+      "css-colors": {
+        "fg-demo": "css-foreground",
+        "bg-demo": "css-background",
+      },
+      "css-box-model": {
+        "borders-demo": "css-borders",
+        padding: "css-padding",
+        margins: "css-margins",
+        "box-model-demo": "css-box-model",
+        corners: "css-corners",
+      },
+      "css-size-and-position": {
+        dimensions: "css-dimensions",
+        "display-demo": "css-display",
+        relative: "css-position-relative",
+        absolute: "css-position-absolute",
+        fixed: "css-position-fixed",
+        zindex: "css-zindex",
+      },
+      "css-media-queries": { demo: "css-media-queries" },
+      "css-float": {
+        "float-demo": "css-float",
+        "grid-demo": "css-grid-layout",
+      },
+      "css-flex": {
+        row: "css-flex-row",
+        grow: "css-flex-grow",
+        pin: "css-flex-width",
+      },
+      "css-rotation": {
+        rotate: "css-rotate",
+        gradient: "css-gradient",
       },
     } as const;
     const used = new Set<string>();
@@ -560,6 +645,70 @@ describe("lecture decks", () => {
     assert.doesNotMatch(assignments, /<a href="\/courses/);
   });
 
+  it("teaches Chapter 2 CSS topics in the Lecture 4 decks", () => {
+    const intro = slideText("css-intro");
+    assert.match(intro, /backgroundColor/);
+    assert.match(intro, /import "\.\/index\.css"/);
+    assert.match(intro, /wd-id-selector-1/);
+    assert.match(intro, /wd-class-selector/);
+    assert.match(intro, /\.wd-selector-1 \.wd-selector-3/);
+    assert.match(intro, /Specificity/);
+    assert.doesNotMatch(intro, /Bootstrap/);
+
+    const colors = slideText("css-colors");
+    assert.match(colors, /wd-fg-color-blue/);
+    assert.match(colors, /wd-bg-color-yellow/);
+    assert.match(colors, /#7070ff/);
+    assert.match(colors, /ForegroundColors\.tsx/);
+    assert.match(colors, /BackgroundColors\.tsx/);
+
+    const box = slideText("css-box-model");
+    assert.match(box, /wd-border-fat/);
+    assert.match(box, /wd-padded-top-left/);
+    assert.match(box, /wd-margin-bottom/);
+    assert.match(box, /border-box/);
+    assert.match(box, /content-box/);
+    assert.match(box, /wd-rounded-corners-top/);
+    const layers = findSlide("css-box-model", "layers");
+    assert.equal(layers.diagram, "box-model");
+
+    const size = slideText("css-size-and-position");
+    assert.match(size, /wd-dimension-portrait/);
+    assert.match(size, /inline-block/);
+    assert.match(size, /wd-pos-relative-nudge-down-right/);
+    assert.match(size, /wd-pos-absolute-10-10/);
+    assert.match(size, /wd-pos-fixed/);
+    assert.match(size, /wd-zindex-bring-to-front/);
+
+    const mq = slideText("css-media-queries");
+    assert.match(mq, /@media/);
+    assert.match(mq, /750px/);
+    assert.match(mq, /MediaQueriesDemo\.tsx/);
+    assert.match(mq, /MediaQueriesDemo\.css/);
+    assert.doesNotMatch(mq, /@screen-sm-min/);
+    assert.doesNotMatch(mq, /min-width: 576px/);
+
+    const float = slideText("css-float");
+    assert.match(float, /wd-float-left/);
+    assert.match(float, /wd-float-done/);
+    assert.match(float, /wd-grid-col-half-page/);
+    assert.doesNotMatch(float, /staradvertiser/i);
+    assert.doesNotMatch(float, /googleusercontent/i);
+
+    const flex = slideText("css-flex");
+    assert.match(flex, /wd-flex-row-container/);
+    assert.match(flex, /wd-flex-grow-1/);
+    assert.match(flex, /wd-width-75px/);
+    assert.match(flex, /Flex\.tsx/);
+
+    const rotation = slideText("css-rotation");
+    assert.match(rotation, /transform: rotate/);
+    assert.match(rotation, /linear-gradient/);
+    assert.match(rotation, /radial-gradient/);
+    assert.match(rotation, /Not required for Lab 2/);
+  });
+
+
   it("scrolls the slide pane with Up\/Down only when content overflows", () => {
     assert.equal(slidePaneOverflows(null), false);
     assert.equal(slidePaneOverflows({ scrollHeight: 400, clientHeight: 400 }), false);
@@ -676,6 +825,9 @@ describe("lecture decks", () => {
       },
       "html-and-dom": {
         "the-dom": "dom-tree",
+      },
+      "css-box-model": {
+        layers: "box-model",
       },
     } as const;
 

@@ -17,6 +17,14 @@ import { KAMBAZ_NAVIGATION_SLIDES } from "./decks/kambaz-navigation";
 import { KAMBAZ_OVERVIEW_SLIDES } from "./decks/kambaz-overview";
 import { SINGLE_PAGE_NAVIGATION_SLIDES } from "./decks/single-page-navigation";
 import { WEB_FORMS_SLIDES } from "./decks/web-forms";
+import { CSS_BOX_MODEL_SLIDES } from "./decks/css-box-model";
+import { CSS_COLORS_SLIDES } from "./decks/css-colors";
+import { CSS_FLEX_SLIDES } from "./decks/css-flex";
+import { CSS_FLOAT_SLIDES } from "./decks/css-float";
+import { CSS_INTRO_SLIDES } from "./decks/css-intro";
+import { CSS_MEDIA_QUERIES_SLIDES } from "./decks/css-media-queries";
+import { CSS_ROTATION_SLIDES } from "./decks/css-rotation";
+import { CSS_SIZE_AND_POSITION_SLIDES } from "./decks/css-size-and-position";
 import {
   LECTURE_SLUGS,
   lectureThumbPath,
@@ -33,6 +41,16 @@ const CHAPTER_1 = {
   href: "/book/ch1",
   title: "Building Next.js User Interfaces with HTML",
 } as const;
+
+const CHAPTER_2 = {
+  href: "/book/ch2",
+  title: "Styling User Interfaces with CSS and Tailwind",
+} as const;
+
+function chapterMeta(chapter: number) {
+  if (chapter === 2) return CHAPTER_2;
+  return CHAPTER_1;
+}
 
 const LECTURE_SUMMARIES: Record<
   LectureSlug,
@@ -188,6 +206,70 @@ const LECTURE_SUMMARIES: Record<
     canvasLecture: 3,
     slides: KAMBAZ_ASSIGNMENTS_SLIDES,
   },
+  "css-intro": {
+    title: "CSS Intro",
+    summary:
+      "Style attribute vs imported CSS, tag / id / class / structure selectors, and how the cascade picks a winner.",
+    chapter: 2,
+    canvasLecture: 4,
+    slides: CSS_INTRO_SLIDES,
+  },
+  "css-colors": {
+    title: "Colors",
+    summary:
+      "Foreground color, background color, hex and named values, and stacking wd-fg-* / wd-bg-* classes.",
+    chapter: 2,
+    canvasLecture: 4,
+    slides: CSS_COLORS_SLIDES,
+  },
+  "css-box-model": {
+    title: "Box Model",
+    summary:
+      "Border, padding, margin, content-box vs border-box, and border-radius — the four layers of every box.",
+    chapter: 2,
+    canvasLecture: 4,
+    slides: CSS_BOX_MODEL_SLIDES,
+  },
+  "css-size-and-position": {
+    title: "Size and Position",
+    summary:
+      "Width and height, display, then relative, absolute, fixed, and z-index from Lab 2 Positions.",
+    chapter: 2,
+    canvasLecture: 4,
+    slides: CSS_SIZE_AND_POSITION_SLIDES,
+  },
+  "css-media-queries": {
+    title: "Media Queries",
+    summary:
+      "Lab 2 @media breakpoints that restyle a demo at 750, 1000, and 1250 — CSS first, utilities later.",
+    chapter: 2,
+    canvasLecture: 4,
+    slides: CSS_MEDIA_QUERIES_SLIDES,
+  },
+  "css-float": {
+    title: "Float",
+    summary:
+      "float left/right, clear both, and percentage columns that fake a grid before flex.",
+    chapter: 2,
+    canvasLecture: 4,
+    slides: CSS_FLOAT_SLIDES,
+  },
+  "css-flex": {
+    title: "Flex",
+    summary:
+      "display:flex rows, flex-grow for leftover space, and a pinned column from Lab 2 Flex.tsx.",
+    chapter: 2,
+    canvasLecture: 4,
+    slides: CSS_FLEX_SLIDES,
+  },
+  "css-rotation": {
+    title: "Rotation and Gradients",
+    summary:
+      "Optional extras: transform rotate plus linear and radial gradients. Not required for Lab 2.",
+    chapter: 2,
+    canvasLecture: 4,
+    slides: CSS_ROTATION_SLIDES,
+  },
 };
 
 export function lecturePublicUrl(slug: LectureSlug): string {
@@ -205,14 +287,15 @@ export function isLectureSlug(value: string): value is LectureSlug {
 export function getLecture(slug: string): LectureHubItem | undefined {
   if (!isLectureSlug(slug)) return undefined;
   const entry = LECTURE_SUMMARIES[slug];
+  const chapter = chapterMeta(entry.chapter);
   return {
     slug,
     chapter: entry.chapter,
     canvasLecture: entry.canvasLecture,
     title: entry.title,
     summary: entry.summary,
-    chapterHref: CHAPTER_1.href,
-    chapterTitle: CHAPTER_1.title,
+    chapterHref: chapter.href,
+    chapterTitle: chapter.title,
     publicUrl: lecturePublicUrl(slug),
     thumbnailSrc: lectureThumbPath(slug),
   };

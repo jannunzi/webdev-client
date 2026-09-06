@@ -7,13 +7,15 @@ export default function LectureNotFound() {
         Lecture deck not found
       </h1>
       <p>
-        That slug is not one of the Lecture 1 decks. Use the lectures index, or
-        open Chapter 1 in the book.
+        That slug is not one of the published lecture decks. Use the lectures
+        index, or open the matching chapter in the book.
       </p>
       <p>
         <Link href="/lectures">All lectures</Link>
         {" · "}
         <Link href="/book/ch1">Chapter 1</Link>
+        {" · "}
+        <Link href="/book/ch2">Chapter 2</Link>
       </p>
     </article>
   );

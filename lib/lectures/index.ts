@@ -29,10 +29,19 @@ export { KAMBAZ_OVERVIEW_SLIDES } from "./decks/kambaz-overview";
 export { LISTS_AND_TABLES_SLIDES } from "./decks/lists-and-tables";
 export { SINGLE_PAGE_NAVIGATION_SLIDES } from "./decks/single-page-navigation";
 export { WEB_FORMS_SLIDES } from "./decks/web-forms";
+export { CSS_BOX_MODEL_SLIDES } from "./decks/css-box-model";
+export { CSS_COLORS_SLIDES } from "./decks/css-colors";
+export { CSS_FLEX_SLIDES } from "./decks/css-flex";
+export { CSS_FLOAT_SLIDES } from "./decks/css-float";
+export { CSS_INTRO_SLIDES } from "./decks/css-intro";
+export { CSS_MEDIA_QUERIES_SLIDES } from "./decks/css-media-queries";
+export { CSS_ROTATION_SLIDES } from "./decks/css-rotation";
+export { CSS_SIZE_AND_POSITION_SLIDES } from "./decks/css-size-and-position";
 export {
   LECTURE_1_SLUGS,
   LECTURE_2_SLUGS,
   LECTURE_3_SLUGS,
+  LECTURE_4_SLUGS,
   LECTURE_TITLE_MAX_CHARS,
   LECTURE_DIAGRAM_IDS,
   LECTURE_EMBED_IDS,

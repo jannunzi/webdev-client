@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title">
+  <title id="title">Media Queries</title>
+  <rect width="1280" height="720" fill="#ECFDF5"/>
+  <rect x="0" y="0" width="18" height="720" fill="#16A34A"/>
+  <text x="72" y="64" fill="#15803D" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" letter-spacing="4">WEB DEV · LECTURE 4</text>
+  <rect x="90" y="150" width="120" height="220" rx="18" fill="#16A34A"/>
+  <rect x="250" y="170" width="200" height="180" rx="12" fill="#EAB308"/>
+  <rect x="490" y="140" width="280" height="240" rx="12" fill="#2563EB"/>
+  <text x="72" y="640" fill="#14532D" font-family="ui-sans-serif, system-ui, sans-serif" font-size="56" font-weight="800">Media Queries</text>
+</svg>

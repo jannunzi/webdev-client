@@ -7,6 +7,7 @@ import GithubCreateRepoMock from "./GithubCreateRepoMock";
 import NetworkOfNetworksDiagram from "./NetworkOfNetworksDiagram";
 import NpmRunDevMock from "./NpmRunDevMock";
 import SsrDiagram from "./SsrDiagram";
+import BoxModelDiagram from "./BoxModelDiagram";
 import VercelAuthMock from "./VercelAuthMock";
 import VercelDeployMock from "./VercelDeployMock";
 import VercelImportMock from "./VercelImportMock";
@@ -41,6 +42,8 @@ export default function LectureDiagram({ id }: { id: LectureDiagramId }) {
       return <VercelProtectMock />;
     case "vercel-auth-mock":
       return <VercelAuthMock />;
+    case "box-model":
+      return <BoxModelDiagram />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;
