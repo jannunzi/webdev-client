@@ -15,6 +15,15 @@ export {
   getQuizSchedule,
 } from "./schedule";
 export { STUDENT_COPY } from "./student-copy";
+export {
+  CANVAS_FALLBACK_PERMISSION_BLURB,
+  CANVAS_FALLBACK_QUIZZES,
+  canvasFallbackIdent,
+  canvasQuizDescriptionHtml,
+  canvasQuizTakeUrl,
+  listCanvasQuizFollowupCopy,
+} from "./canvas-copy";
+export { buildCanvasFallbackBanks } from "./canvas-fallback-banks";
 export { runExamSubmit, rosterGateMessage } from "./submit";
 export type {
   GradedAnswer,

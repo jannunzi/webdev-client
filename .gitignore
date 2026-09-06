@@ -45,3 +45,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# generated Canvas QTI (rebuild with npm run canvas:export-qti)
+/scripts/canvas-fallback/out/

@@ -221,6 +221,11 @@ due). Q1: unlock 2026-09-28, due 2026-10-04 23:59 ET.
 Canvas package -20 grade shells for Q1–Q6 and X1/X2 are **100 points**
 each. The website scores as a percent and exports to Canvas out of 100.
 
+A Canvas **QTI fallback** (real questions, website URL + staff-permission
+blurb) is generated with `npm run canvas:export-qti`. See
+`scripts/canvas-fallback/README.md`. Students still take the website
+unless staff unlock Canvas.
+
 Q1–Q3 reopen `[midtermAt − 7d, midtermAt)` and are labeled “midterm”. Q4–Q6
 reopen `[finalAt − 7d, finalAt)` and are labeled “final”. Edit those two ISO
 strings if the answer-reopen exam instants move.
@@ -273,6 +278,8 @@ Point students at the live pages. Suggested student copy (HTML helpers in
 
 The IMSCC cartridge is not in this repo (Jose’s `canvas-fall` tooling).
 Updating those assignment HTML descriptions is a follow-up package.
+Quiz fallback QTI for package -21 is generated here
+(`scripts/canvas-fallback/`) for Shakespeare to pack from `canvas-fall`.
 
 ## Lectures hub
 
