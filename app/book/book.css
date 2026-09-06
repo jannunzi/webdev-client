@@ -411,23 +411,23 @@ code.quiz-prompt-code {
   line-height: 1.12;
   white-space: nowrap;
   /*
-   * Floor so a narrow pane (phone + filmstrip) cannot collapse titles to
-   * ~11px. 22 ≈ LECTURE_TITLE_MAX_CHARS (42) * ~0.52em glyph width — on a
-   * wide stage the fit cap shrinks a long title onto one line.
+   * Fit cap (100cqi / 24) shrinks a long title onto one line. A 0.95rem
+   * floor only stops the container-query death spiral on a tiny filmstrip
+   * pane — Present on a phone still shrinks enough to show the full title.
    */
-  font-size: min(clamp(1.25rem, 5.6cqi, 3.35rem), max(1.25rem, calc(100cqi / 22)));
+  font-size: min(clamp(1.25rem, 5.6cqi, 3.35rem), max(0.95rem, calc(100cqi / 24)));
 }
 
 .lecture-slide-spacious .lecture-slide-title {
-  font-size: min(clamp(1.35rem, 6.2cqi, 3.75rem), max(1.35rem, calc(100cqi / 22)));
+  font-size: min(clamp(1.35rem, 6.2cqi, 3.75rem), max(0.95rem, calc(100cqi / 24)));
 }
 
 .lecture-slide-title-hero {
-  font-size: min(clamp(1.5rem, 7cqi, 4.4rem), max(1.5rem, calc(100cqi / 12)));
+  font-size: min(clamp(1.5rem, 7cqi, 4.4rem), max(1.1rem, calc(100cqi / 12)));
 }
 
 .lecture-slide-spacious .lecture-slide-title-hero {
-  font-size: min(clamp(1.65rem, 7.6cqi, 4.9rem), max(1.65rem, calc(100cqi / 12)));
+  font-size: min(clamp(1.65rem, 7.6cqi, 4.9rem), max(1.1rem, calc(100cqi / 12)));
 }
 
 .lecture-slide-bullets {

@@ -243,7 +243,7 @@ describe("lecture decks", () => {
   it("keeps spacious bullets ~50% larger than the crushed post-#31 sizes", () => {
     const css = readFileSync(join(process.cwd(), "app/book/book.css"), "utf8");
     assert.match(css, /\.lecture-slide-title\s*\{[^}]*white-space:\s*nowrap/);
-    assert.match(css, /max\(1\.25rem,\s*calc\(100cqi \/ 22\)\)/);
+    assert.match(css, /max\(0\.95rem,\s*calc\(100cqi \/ 24\)\)/);
     assert.match(
       css,
       /\.lecture-slide-spacious \.lecture-slide-bullets \{[^}]*font-size:\s*2\.25rem/,
