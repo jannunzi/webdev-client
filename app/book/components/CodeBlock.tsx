@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { codeToHtml, type BundledLanguage } from "shiki";
+import { highlightCodeToHtml } from "@/lib/code-block/highlight";
+import type { CodeLineMarks } from "@/lib/code-block/lines";
 import CopyButton from "./CopyButton";
 
 function normalizeCode(children: ReactNode): string {
@@ -16,35 +17,36 @@ function normalizeCode(children: ReactNode): string {
 /**
  * File snippets: pass `file` (and optionally `name`) for path header, copy, line numbers.
  * Terminal / illustrative snippets: omit `file` — no title, copy, or line numbers.
+ * Pass `highlightLines` / `addedLines` (1-based) to call out what changed.
  */
 export default async function CodeBlock({
   children,
   language = "tsx",
   name,
   file,
+  highlightLines,
+  addedLines,
 }: {
   children: ReactNode;
-  language?: BundledLanguage | string;
+  language?: string;
   /** Function / component name, e.g. Lab1 */
   name?: string;
   /** Path where students write the code, e.g. app/labs/lab1/page.tsx */
   file?: string;
+  highlightLines?: CodeLineMarks;
+  addedLines?: CodeLineMarks;
 }) {
   const code = normalizeCode(children);
   const isFile = Boolean(file || name);
+  const showLines =
+    isFile || Boolean(highlightLines?.length || addedLines?.length);
 
-  const html = await codeToHtml(code, {
-    lang: language as BundledLanguage,
-    theme: "github-dark",
-    transformers: isFile
-      ? [
-          {
-            line(node, line) {
-              node.properties["data-line"] = String(line);
-            },
-          },
-        ]
-      : [],
+  const html = await highlightCodeToHtml({
+    code,
+    language,
+    lineNumbers: showLines,
+    highlightLines,
+    addedLines,
   });
 
   return (
@@ -68,7 +70,7 @@ export default async function CodeBlock({
       ) : null}
       <div
         className={`book-code-block-body overflow-x-auto text-sm leading-relaxed ${
-          isFile ? "book-code-block-lined" : "book-code-block-plain"
+          showLines ? "book-code-block-lined" : "book-code-block-plain"
         }`}
         dangerouslySetInnerHTML={{ __html: html }}
       />

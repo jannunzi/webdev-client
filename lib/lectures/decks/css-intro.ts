@@ -103,6 +103,7 @@ export default function Lab2() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab2/page.tsx",
+    codeAddedLines: [1],
     embed: "css-import",
   },
   {
@@ -124,6 +125,7 @@ p#wd-id-selector-2 {
 }`,
     codeLanguage: "css",
     codeFile: "app/labs/lab2/index.css",
+    codeAddedLines: [[1, 8]],
     codeBlocks: [
       {
         file: "app/labs/lab2/page.tsx",

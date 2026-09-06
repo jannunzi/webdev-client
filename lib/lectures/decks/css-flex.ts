@@ -56,6 +56,7 @@ export const CSS_FLEX_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "css",
     codeFile: "app/labs/lab2/index.css",
+    codeAddedLines: [[1, 3]],
     embed: "css-flex-grow",
   },
   {
@@ -99,6 +100,7 @@ export const CSS_FLEX_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab2/Flex.tsx",
+    codeAddedLines: [6, 8],
   },
   {
     id: "next-up",

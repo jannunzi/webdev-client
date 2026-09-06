@@ -74,6 +74,7 @@ app/(kambaz)/account/signin/page.tsx  →  /account/signin`,
 </li>`,
     codeLanguage: "tsx",
     codeFile: "app/labs/TOC.tsx",
+    codeAddedLines: [[1, 5]],
   },
   {
     id: "redirect",
@@ -92,6 +93,7 @@ export default function Kambaz() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/page.tsx",
+    codeAddedLines: [1, 4],
   },
   {
     id: "structure-first",

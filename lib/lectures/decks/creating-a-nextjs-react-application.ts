@@ -203,6 +203,7 @@ export default function Home() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/page.tsx",
+    codeAddedLines: [1, 5, [7, 8]],
     embed: "link-nav",
     interactiveHint:
       "Use `Link` for routes inside this app. Use `<a>` for GitHub, Canvas, and other sites.",
@@ -235,6 +236,7 @@ export default function Home() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/page.tsx",
+    codeAddedLines: [1, 4],
     embed: "user-card",
   },
   {

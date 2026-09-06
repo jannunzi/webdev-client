@@ -60,6 +60,7 @@ export const LISTS_AND_TABLES_SLIDES: LectureSlide[] = [
 </ol>`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab1/ListTags.tsx",
+    codeAddedLines: [[2, 11]],
   },
   {
     id: "books-ul",
@@ -179,6 +180,7 @@ My favorite books (in no particular order)
 </table>`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab1/Tables.tsx",
+    codeAddedLines: [[16, 21]],
     embed: "tables",
   },
   {

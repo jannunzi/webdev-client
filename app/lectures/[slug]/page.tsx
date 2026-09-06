@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { withHighlightedLectureCode } from "@/lib/code-block/highlight-lecture";
 import {
   adjacentLectureSlugs,
   getLectureDeck,
@@ -32,6 +33,7 @@ export default async function LectureDeckPage({ params }: PageProps) {
   if (!deck) notFound();
 
   const { prev, next } = adjacentLectureSlugs(deck.slug);
+  const slides = await withHighlightedLectureCode(deck.slides);
 
   return (
     <div className="flex h-dvh min-h-0 flex-col overflow-hidden px-2 py-2 sm:px-3">
@@ -48,7 +50,7 @@ export default async function LectureDeckPage({ params }: PageProps) {
       </header>
       <LectureDeckShell
         deckTitle={deck.title}
-        slides={deck.slides}
+        slides={slides}
         prevDeck={prev}
         nextDeck={next}
         canvasLecture={deck.canvasLecture}

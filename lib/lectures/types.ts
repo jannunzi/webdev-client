@@ -1,3 +1,7 @@
+import type { CodeLineMarks } from "@/lib/code-block/lines";
+
+export type { CodeLineMarks, CodeLineRange } from "@/lib/code-block/lines";
+
 export const LECTURE_1_SLUGS = [
   "intro-to-web-development",
   "installing-nodejs",
@@ -142,6 +146,12 @@ export type LectureCodeBlock = {
   code: string;
   language?: string;
   file?: string;
+  /** 1-based lines to call out (amber). Same API as the book CodeBlock. */
+  highlightLines?: CodeLineMarks;
+  /** 1-based lines added vs the prior example (green). */
+  addedLines?: CodeLineMarks;
+  /** Server-rendered Shiki HTML. Set by `withHighlightedLectureCode`. */
+  html?: string;
 };
 
 export type LectureSlide = {
@@ -158,6 +168,10 @@ export type LectureSlide = {
   codeLanguage?: string;
   /** Optional path shown above `code`, e.g. `app/page.tsx`. */
   codeFile?: string;
+  /** `highlightLines` for `code`. */
+  codeHighlightLines?: CodeLineMarks;
+  /** `addedLines` for `code`. */
+  codeAddedLines?: CodeLineMarks;
   /** Extra snippets when a slide needs more than one block. */
   codeBlocks?: LectureCodeBlock[];
   /** Live React demo under the authored slide. Prefer this over a UI screenshot. */
@@ -235,6 +249,8 @@ export function lectureSlideCodeBlocks(slide: LectureSlide): LectureCodeBlock[] 
       code: slide.code,
       language: slide.codeLanguage,
       file: slide.codeFile,
+      highlightLines: slide.codeHighlightLines,
+      addedLines: slide.codeAddedLines,
     });
   }
   if (slide.codeBlocks) {

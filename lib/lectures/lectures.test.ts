@@ -904,4 +904,22 @@ describe("lecture decks", () => {
     assert.match(lab1.code ?? "", /wd-lab1/);
     assert.equal(lab1.codeFile, "app/labs/lab1/page.tsx");
   });
+
+  it("marks incremental lecture snippets with added or highlight lines", () => {
+    const link = findSlide("creating-a-nextjs-react-application", "link-to-lab1");
+    const pancakes = findSlide("lists-and-tables", "pancakes-after");
+    const signup = findSlide("kambaz-account", "signup");
+    const cssImport = findSlide("css-intro", "import-css");
+    const express = findSlide("installing-nodejs", "express");
+
+    assert.deepEqual(link.codeAddedLines, [1, 5, [7, 8]]);
+    assert.deepEqual(pancakes.codeAddedLines, [[2, 11]]);
+    assert.deepEqual(signup.codeAddedLines, [11]);
+    assert.deepEqual(cssImport.codeAddedLines, [1]);
+    const server = lectureSlideCodeBlocks(express).find((block) =>
+      block.file === "server.js",
+    );
+    assert.ok(server);
+    assert.deepEqual(server.addedLines, [[3, 6]]);
+  });
 });

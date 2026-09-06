@@ -130,6 +130,7 @@ export default function LabsLayout({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/layout.tsx",
+    codeAddedLines: [1, 11, 12],
     embed: "labs-layout",
     interactiveHint:
       "Click Lab 2 in the live TOC. The left column stays. Only the page column — {children} — changes.",
