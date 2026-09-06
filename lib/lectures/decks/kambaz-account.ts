@@ -6,7 +6,7 @@ export const KAMBAZ_ACCOUNT_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Lecture 3 · Deck 2 — Kambaz Account",
+      "Chapter 1 · Kambaz Account",
       "Sign in, Sign up, Profile, account layout",
     ],
   },

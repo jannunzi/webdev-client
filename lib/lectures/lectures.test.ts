@@ -26,6 +26,7 @@ import {
   LECTURE_4_SLUGS,
   LECTURE_6_SLUGS,
   LECTURE_7_SLUGS,
+  CHAPTER_3_SLUGS,
   LECTURE_TOPICS,
   LECTURE_DIAGRAM_IDS,
   LECTURE_EMBED_IDS,
@@ -71,7 +72,7 @@ function findSlide(deckSlug: string, id: string) {
 }
 
 describe("lecture catalog", () => {
-  it("lists slugs in book-spine order (Ch1, Ch2 CSS, then Tailwind and Kambaz styling)", () => {
+  it("lists slugs in book-spine order (Ch1, Ch2, then first Ch3 JS decks)", () => {
     assert.deepEqual(listLectureSlugs(), [
       ...LECTURE_1_SLUGS,
       ...LECTURE_2_SLUGS,
@@ -79,6 +80,7 @@ describe("lecture catalog", () => {
       ...LECTURE_4_SLUGS,
       ...LECTURE_6_SLUGS,
       ...LECTURE_7_SLUGS,
+      ...CHAPTER_3_SLUGS,
     ]);
     assert.deepEqual(listLectureSlugs(), [...LECTURE_SLUGS]);
     assert.equal(LECTURE_1_SLUGS.length, 5);
@@ -87,6 +89,7 @@ describe("lecture catalog", () => {
     assert.equal(LECTURE_4_SLUGS.length, 8);
     assert.equal(LECTURE_6_SLUGS.length, 7);
     assert.equal(LECTURE_7_SLUGS.length, 6);
+    assert.equal(CHAPTER_3_SLUGS.length, 6);
   });
 
   it("marks Lecture 1 entries as Canvas Lecture 1 / Chapter 1", () => {
@@ -143,6 +146,8 @@ describe("lecture catalog", () => {
     assert.equal(isLectureSlug("css-intro"), true);
     assert.equal(isLectureSlug("react-icons"), true);
     assert.equal(isLectureSlug("kambaz-styling"), true);
+    assert.equal(isLectureSlug("intro-to-javascript"), true);
+    assert.equal(isLectureSlug("javascript-functions"), true);
     assert.equal(isLectureSlug("intro"), false);
   });
 
@@ -227,7 +232,7 @@ describe("lecture catalog", () => {
     const groups = listChapterTopicGroups();
     assert.deepEqual(
       groups.map((group) => group.chapter),
-      [1, 2],
+      [1, 2, 3],
     );
     assert.equal(groups[0]?.href, "/book/ch1");
     assert.equal(
@@ -305,6 +310,42 @@ describe("lecture catalog", () => {
       [...LECTURE_7_SLUGS],
     );
 
+    assert.equal(groups[2]?.href, "/book/ch3");
+    assert.deepEqual(
+      groups[2]?.topics.map((topic) => topic.topicId),
+      [
+        "js-intro",
+        "js-functions",
+        "js-data",
+        "dynamic-styling",
+        "client-server",
+        "parameterizing",
+        "kambaz-data",
+      ],
+    );
+    assert.deepEqual(
+      groups[2]?.topics.map((topic) => topic.title),
+      [
+        "3.2 Introduction to JavaScript",
+        "3.3 JavaScript Functions",
+        "3.4 JavaScript Data Structures",
+        "3.5 Dynamic Styling",
+        "3.6 Client and Server Components",
+        "3.7 Parameterizing Components",
+        "3.9 Implementing a Data Driven Kambaz Application",
+      ],
+    );
+    assert.equal(groups[2]?.topics[0]?.bookHref, "/book/ch3#sec-3-2");
+    assert.deepEqual(
+      groups[2]?.topics[0]?.decks.map((deck) => deck.slug),
+      CHAPTER_3_SLUGS.slice(0, 5),
+    );
+    assert.deepEqual(
+      groups[2]?.topics[1]?.decks.map((deck) => deck.slug),
+      ["javascript-functions"],
+    );
+    assert.equal(groups[2]?.topics[2]?.decks.length, 0);
+
     for (const group of groups) {
       assert.doesNotMatch(group.title, /^Lecture \d+$/);
       for (const topic of group.topics) {
@@ -317,21 +358,22 @@ describe("lecture catalog", () => {
     const chapters = listLectureChapters();
     assert.deepEqual(
       chapters.map((entry) => entry.chapter),
-      [1, 2],
+      [1, 2, 3],
     );
     assert.deepEqual(
       chapters.map((entry) => entry.href),
-      ["/book/ch1", "/book/ch2"],
+      ["/book/ch1", "/book/ch2", "/book/ch3"],
     );
     assert.equal(chapters[0]?.title, BOOK_CHAPTERS[0]?.title);
     assert.equal(chapters[1]?.title, BOOK_CHAPTERS[1]?.title);
+    assert.equal(chapters[2]?.title, BOOK_CHAPTERS[2]?.title);
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "tailwind"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "kambaz-styling"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "react-icons"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "source-control"));
   });
 
-  it("maps Ch1–Ch2 decks to book section anchors for bidirectional links", () => {
+  it("maps Ch1–Ch3 decks to book section anchors for bidirectional links", () => {
     assert.equal(getLecture("installing-nodejs")?.bookHref, "/book/ch1#sec-1-2-1");
     assert.equal(
       getLecture("creating-a-nextjs-react-application")?.bookHref,
@@ -343,6 +385,9 @@ describe("lecture catalog", () => {
     assert.equal(getLecture("react-icons")?.bookHref, "/book/ch2#sec-2-2");
     assert.equal(getLecture("tailwind-spacing")?.bookHref, "/book/ch2#sec-2-3-1");
     assert.equal(getLecture("kambaz-nav-styling")?.bookHref, "/book/ch2#sec-2-4-1");
+    assert.equal(getLecture("intro-to-javascript")?.bookHref, "/book/ch3#sec-3-2");
+    assert.equal(getLecture("javascript-functions")?.bookHref, "/book/ch3#sec-3-3");
+    assert.equal(listDecksForBookSection("sec-3-2")[0]?.slug, "intro-to-javascript");
     assert.equal(listDecksForBookSection("sec-1-2-1")[0]?.slug, "installing-nodejs");
     assert.equal(listDecksForBookSection("sec-2-3")[0]?.slug, "tailwind-intro");
     assert.equal(listDecksForBookSection("sec-2-2")[0]?.slug, "react-icons");
@@ -435,13 +480,24 @@ describe("lecture catalog", () => {
       lectureDeckThumbnail("react-icons"),
       "/lectures/thumbs/react-icons.svg",
     );
-    for (const group of groups.slice(7)) {
+    assert.equal(groups[7]?.title, "Lecture 8");
+    assert.equal(groups[7]?.canvasLecture, 8);
+    assert.equal(groups[7]?.decks.length, 6);
+    assert.deepEqual(
+      groups[7]?.decks.map((deck) => deck.slug),
+      [...CHAPTER_3_SLUGS],
+    );
+    assert.equal(
+      lectureDeckThumbnail("intro-to-javascript"),
+      "/lectures/thumbs/intro-to-javascript.svg",
+    );
+    for (const group of groups.slice(8)) {
       assert.equal(group.title, `Lecture ${group.canvasLecture}`);
       assert.equal(group.decks.length, 0);
     }
   });
 
-  it("walks adjacent decks across Lecture 1 into Lecture 7", () => {
+  it("walks adjacent decks across Chapter 1 into Chapter 3", () => {
     const first = adjacentLectureSlugs("intro-to-web-development");
     assert.equal(first.prev, undefined);
     assert.equal(first.next?.slug, "installing-nodejs");
@@ -459,9 +515,12 @@ describe("lecture catalog", () => {
     assert.equal(lastLecture4.prev?.slug, "css-flex");
     const lastLecture6 = adjacentLectureSlugs("tailwind-responsive");
     assert.equal(lastLecture6.next?.slug, "kambaz-styling");
-    const last = adjacentLectureSlugs("kambaz-account-styling");
+    const lastCh2 = adjacentLectureSlugs("kambaz-account-styling");
+    assert.equal(lastCh2.next?.slug, "intro-to-javascript");
+    assert.equal(lastCh2.prev?.slug, "kambaz-assignments-styling");
+    const last = adjacentLectureSlugs("javascript-functions");
     assert.equal(last.next, undefined);
-    assert.equal(last.prev?.slug, "kambaz-assignments-styling");
+    assert.equal(last.prev?.slug, "null-and-undefined");
   });
 });
 
@@ -511,6 +570,12 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-courses-styling"], 13);
     assert.equal(counts["kambaz-assignments-styling"], 9);
     assert.equal(counts["kambaz-account-styling"], 7);
+    assert.equal(counts["intro-to-javascript"], 8);
+    assert.equal(counts["variables-and-constants"], 7);
+    assert.equal(counts["variable-types"], 6);
+    assert.equal(counts["booleans-and-conditionals"], 8);
+    assert.equal(counts["null-and-undefined"], 6);
+    assert.equal(counts["javascript-functions"], 8);
     for (const deck of decks) {
       const ids = deck.slides.map((slide) => slide.id);
       assert.equal(new Set(ids).size, ids.length, `${deck.slug} duplicate slide id`);
@@ -728,6 +793,23 @@ describe("lecture decks", () => {
         "assignments-demo": "kambaz-styled-assignments",
       },
       "kambaz-account-styling": { demo: "kambaz-styled-signin" },
+      "intro-to-javascript": { "lab3-stub": "lab3-stub" },
+      "variables-and-constants": { sample: "js-variables" },
+      "variable-types": { sample: "js-variable-types" },
+      "booleans-and-conditionals": {
+        "boolean-sample": "js-booleans",
+        "if-else": "js-if-else",
+        ternary: "js-ternary",
+        "output-if-else": "js-conditional-if-else",
+        "output-inline": "js-conditional-inline",
+      },
+      "null-and-undefined": { sample: "js-null-undefined" },
+      "javascript-functions": {
+        legacy: "js-legacy-functions",
+        arrow: "js-arrow-functions",
+        implied: "js-implied-return",
+        templates: "js-template-literals",
+      },
     } as const;
     const used = new Set<string>();
     for (const [slug, slides] of Object.entries(expected)) {
@@ -1067,6 +1149,60 @@ describe("lecture decks", () => {
     assert.doesNotMatch(account, /\bd-flex\b/);
   });
 
+  it("teaches Chapter 3 JavaScript in the first Ch3 decks", () => {
+    const intro = slideText("intro-to-javascript");
+    assert.match(intro, /ECMAScript/);
+    assert.match(intro, /TypeScript/);
+    assert.match(intro, /wd-lab3/);
+    assert.match(intro, /app\/labs\/lab3/);
+    const lab3 = findSlide("intro-to-javascript", "lab3-stub");
+    assert.equal(lab3.codeFile, "app/labs/lab3/page.tsx");
+    assert.doesNotMatch(intro, /Zustand/);
+
+    const vars = slideText("variables-and-constants");
+    assert.match(vars, /functionScoped/);
+    assert.match(vars, /VariablesAndConstants/);
+    assert.match(vars, /wd-variables-and-constants/);
+
+    const types = slideText("variable-types");
+    assert.match(types, /typeof/);
+    assert.match(types, /booleanVariable \+ ""/);
+    assert.match(types, /wd-variable-types/);
+
+    const cond = slideText("booleans-and-conditionals");
+    assert.match(cond, /===/);
+    assert.match(cond, /wd-boolean-variables/);
+    assert.match(cond, /wd-if-else/);
+    assert.match(cond, /loggedIn \? <p>Welcome<\/p>/);
+    assert.match(cond, /Welcome If Else/);
+    assert.match(cond, /Welcome Inline/);
+
+    const empty = slideText("null-and-undefined");
+    assert.match(empty, /typeof null/);
+    assert.match(empty, /wd-null-undefined/);
+    assert.match(empty, /String\(null\)/);
+
+    const fns = slideText("javascript-functions");
+    assert.match(fns, /function add/);
+    assert.match(fns, /wd-legacy-functions/);
+    assert.match(fns, /const subtract/);
+    assert.match(fns, /=> a \* b/);
+    assert.match(fns, /Welcome home/);
+    assert.match(fns, /wd-template-literals/);
+  });
+
+  it("does not surface Lecture N as the product name in slide copy", () => {
+    for (const deck of listLectureDecks()) {
+      const text = slideText(deck.slug);
+      assert.doesNotMatch(text, /Lecture \d+ · Deck/);
+      assert.doesNotMatch(text, /Lecture \d+ recap/);
+    }
+    const intro = getLecture("intro-to-javascript");
+    assert.ok(intro);
+    assert.equal(intro.chapter, 3);
+    assert.equal(intro.bookHref, "/book/ch3#sec-3-2");
+    assert.equal(intro.topicId, "js-intro");
+  });
 
   it("scrolls the slide pane with Up\/Down only when content overflows", () => {
     assert.equal(slidePaneOverflows(null), false);

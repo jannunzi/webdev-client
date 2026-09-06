@@ -29,7 +29,7 @@ export const TAILWIND_INTRO_SLIDES: LectureSlide[] = [
       "A class is a tiny CSS rule Tailwind already wrote",
       "`flex gap-3 text-3xl` = display flex + 0.75rem gap + large type",
       "You are not inventing selector names. You are picking utilities",
-      "Plain CSS from Lecture 4 still matters — utilities compile down to the same properties",
+      "Plain CSS from §2.1 still matters — utilities compile down to the same properties",
     ],
   },
   {

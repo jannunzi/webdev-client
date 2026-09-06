@@ -1,4 +1,4 @@
-# Lecture slide assets
+# Slide deck assets
 
 Decks live in `lib/lectures/decks/*.ts` as authored TypeScript — titles,
 bullets, code blocks, live Ch1 `embed`s, and `diagram` ids. The shell

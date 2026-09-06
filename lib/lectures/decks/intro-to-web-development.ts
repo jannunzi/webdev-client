@@ -6,7 +6,7 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Lecture 1 · Deck 1 — Introduction to Web Development",
+      "Chapter 1 · Introduction to Web Development",
       "Chapter 1 in the course book",
     ],
   },

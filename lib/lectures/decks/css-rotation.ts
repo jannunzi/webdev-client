@@ -6,7 +6,7 @@ export const CSS_ROTATION_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Lecture 4 · Deck 8 — Rotation and Gradients",
+      "Chapter 2 · Rotation and Gradients",
       "Optional extras. Not required for Lab 2 checklists",
     ],
   },
@@ -63,7 +63,7 @@ export const CSS_ROTATION_SLIDES: LectureSlide[] = [
   },
   {
     id: "recap",
-    title: "Lecture 4 recap",
+    title: "CSS fundamentals recap",
     kind: "content",
     bullets: [
       "Selectors: tag, `#id`, `.class`, descendant, child — then the cascade",

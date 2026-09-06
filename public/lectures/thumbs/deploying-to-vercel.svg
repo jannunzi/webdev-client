@@ -3,7 +3,7 @@
   <title id="title">Deploying to Vercel</title>
   <rect width="1280" height="720" fill="#111111"/>
   <rect x="0" y="0" width="18" height="720" fill="#FFFFFF"/>
-  <text x="72" y="64" fill="#CBD5E1" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" letter-spacing="4">WEB DEV · LECTURE 1</text>
+  <text x="72" y="64" fill="#CBD5E1" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" letter-spacing="4">WEB DEV · CHAPTER 1</text>
   
   <g transform="translate(90 80)">
     <rect width="360" height="360" rx="48" fill="#000"/>

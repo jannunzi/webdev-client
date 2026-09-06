@@ -6,7 +6,7 @@ export const INSTALLING_NODEJS_SLIDES: LectureSlide[] = [
     title: "NODE.JS",
     kind: "title",
     bullets: [
-      "Lecture 1 · Deck 2 — Installing Node.js",
+      "Chapter 1 · Installing Node.js",
       "The JavaScript runtime that powers both the Next.js UI and the Express API",
     ],
   },

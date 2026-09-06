@@ -59,6 +59,16 @@ export const LECTURE_7_SLUGS = [
   "kambaz-account-styling",
 ] as const;
 
+/** First Chapter 3 decks — JavaScript and data-driven UI (Lab 3). */
+export const CHAPTER_3_SLUGS = [
+  "intro-to-javascript",
+  "variables-and-constants",
+  "variable-types",
+  "booleans-and-conditionals",
+  "null-and-undefined",
+  "javascript-functions",
+] as const;
+
 export const LECTURE_SLUGS = [
   ...LECTURE_1_SLUGS,
   ...LECTURE_2_SLUGS,
@@ -66,6 +76,7 @@ export const LECTURE_SLUGS = [
   ...LECTURE_4_SLUGS,
   ...LECTURE_6_SLUGS,
   ...LECTURE_7_SLUGS,
+  ...CHAPTER_3_SLUGS,
 ] as const;
 
 /** Book spine used by the slides hub and nav — not Canvas week folders. */
@@ -168,6 +179,48 @@ export const LECTURE_TOPICS = [
     title: "2.4 Styling Kambaz with CSS and Tailwind",
     bookSectionId: "sec-2-4",
   },
+  {
+    topicId: "js-intro",
+    chapter: 3,
+    title: "3.2 Introduction to JavaScript",
+    bookSectionId: "sec-3-2",
+  },
+  {
+    topicId: "js-functions",
+    chapter: 3,
+    title: "3.3 JavaScript Functions",
+    bookSectionId: "sec-3-3",
+  },
+  {
+    topicId: "js-data",
+    chapter: 3,
+    title: "3.4 JavaScript Data Structures",
+    bookSectionId: "sec-3-4",
+  },
+  {
+    topicId: "dynamic-styling",
+    chapter: 3,
+    title: "3.5 Dynamic Styling",
+    bookSectionId: "sec-3-5",
+  },
+  {
+    topicId: "client-server",
+    chapter: 3,
+    title: "3.6 Client and Server Components",
+    bookSectionId: "sec-3-6",
+  },
+  {
+    topicId: "parameterizing",
+    chapter: 3,
+    title: "3.7 Parameterizing Components",
+    bookSectionId: "sec-3-7",
+  },
+  {
+    topicId: "kambaz-data",
+    chapter: 3,
+    title: "3.9 Implementing a Data Driven Kambaz Application",
+    bookSectionId: "sec-3-9",
+  },
 ] as const;
 
 export type LectureTopicId = (typeof LECTURE_TOPICS)[number]["topicId"];
@@ -260,6 +313,19 @@ export const LECTURE_EMBED_IDS = [
   "kambaz-styled-people",
   "kambaz-styled-assignments",
   "kambaz-styled-signin",
+  "lab3-stub",
+  "js-variables",
+  "js-variable-types",
+  "js-booleans",
+  "js-if-else",
+  "js-ternary",
+  "js-conditional-if-else",
+  "js-conditional-inline",
+  "js-null-undefined",
+  "js-legacy-functions",
+  "js-arrow-functions",
+  "js-implied-return",
+  "js-template-literals",
 ] as const;
 
 export type LectureEmbedId = (typeof LECTURE_EMBED_IDS)[number];

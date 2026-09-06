@@ -6,7 +6,7 @@ export const CSS_INTRO_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Lecture 4 · Deck 1 — CSS Intro",
+      "Chapter 2 · CSS Intro",
       "Chapter 2 §2.1.1–2.1.6 · Lab 2 starts here",
     ],
   },

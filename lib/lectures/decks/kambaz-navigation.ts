@@ -6,7 +6,7 @@ export const KAMBAZ_NAVIGATION_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Lecture 3 · Deck 4 — Kambaz Navigation",
+      "Chapter 1 · Kambaz Navigation",
       "Global sidebar + Kambaz layout",
     ],
   },

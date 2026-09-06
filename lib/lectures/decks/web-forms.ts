@@ -6,7 +6,7 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Lecture 2 · Deck 4 — Web Forms",
+      "Chapter 1 · Web Forms",
       "Lab 1 folder: app/labs/lab1/forms/ — no page.tsx in that folder",
     ],
   },

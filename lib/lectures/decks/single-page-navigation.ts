@@ -6,7 +6,7 @@ export const SINGLE_PAGE_NAVIGATION_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Lecture 2 · Deck 6 — Single-page Navigation",
+      "Chapter 1 · Single-page Navigation",
       "Move between lab screens without a full reload",
     ],
   },

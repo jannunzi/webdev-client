@@ -60,8 +60,15 @@ export { KAMBAZ_DASHBOARD_STYLING_SLIDES } from "./decks/kambaz-dashboard-stylin
 export { KAMBAZ_COURSES_STYLING_SLIDES } from "./decks/kambaz-courses-styling";
 export { KAMBAZ_ASSIGNMENTS_STYLING_SLIDES } from "./decks/kambaz-assignments-styling";
 export { KAMBAZ_ACCOUNT_STYLING_SLIDES } from "./decks/kambaz-account-styling";
+export { INTRO_TO_JAVASCRIPT_SLIDES } from "./decks/intro-to-javascript";
+export { VARIABLES_AND_CONSTANTS_SLIDES } from "./decks/variables-and-constants";
+export { VARIABLE_TYPES_SLIDES } from "./decks/variable-types";
+export { BOOLEANS_AND_CONDITIONALS_SLIDES } from "./decks/booleans-and-conditionals";
+export { NULL_AND_UNDEFINED_SLIDES } from "./decks/null-and-undefined";
+export { JAVASCRIPT_FUNCTIONS_SLIDES } from "./decks/javascript-functions";
 export {
   BOOK_CHAPTERS,
+  CHAPTER_3_SLUGS,
   LECTURE_1_SLUGS,
   LECTURE_2_SLUGS,
   LECTURE_3_SLUGS,

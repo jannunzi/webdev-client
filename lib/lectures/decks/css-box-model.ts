@@ -6,7 +6,7 @@ export const CSS_BOX_MODEL_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Lecture 4 · Deck 3 — Box Model",
+      "Chapter 2 · Box Model",
       "Chapter 2 §2.1.9–2.1.11 · borders, padding, margin, corners",
     ],
   },
