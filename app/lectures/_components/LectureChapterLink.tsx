@@ -4,8 +4,9 @@ import type { LectureHubItem } from "@/lib/lectures/types";
 export default function LectureChapterLink({
   lecture,
 }: {
-  lecture?: Pick<LectureHubItem, "chapterHref" | "chapterTitle">;
+  lecture?: Pick<LectureHubItem, "chapter" | "chapterHref" | "chapterTitle">;
 }) {
+  const chapter = lecture?.chapter ?? 1;
   const href = lecture?.chapterHref ?? "/book/ch1";
   const chapterTitle =
     lecture?.chapterTitle ?? "Building Next.js User Interfaces with HTML";
@@ -16,13 +17,15 @@ export default function LectureChapterLink({
         Course book
       </p>
       <p className="mb-2 mt-1 text-lg font-semibold tracking-tight">
-        <Link href={href}>Chapter 1 — {chapterTitle}</Link>
+        <Link href={href}>
+          Chapter {chapter} — {chapterTitle}
+        </Link>
       </p>
       <Link
         href={href}
         className="book-practice-cta inline-block rounded border border-neutral-800 bg-neutral-800 px-3 py-2 text-sm"
       >
-        Open Chapter 1 in the book
+        Open Chapter {chapter} in the book
       </Link>
     </div>
   );

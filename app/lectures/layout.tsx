@@ -5,7 +5,7 @@ import "../book/book.css";
 export const metadata: Metadata = {
   title: "Lectures — Web Dev",
   description:
-    "Lecture decks for Web Dev. Lectures 1–3 cover the Web stack, Chapter 1 HTML, and the Kambaz A1 screens.",
+    "Lecture decks for Web Dev. Lectures 1–4 cover the Web stack, Chapter 1 HTML, Kambaz A1 screens, and Chapter 2 CSS.",
 };
 
 export default function LecturesLayout({

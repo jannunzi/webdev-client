@@ -25,10 +25,22 @@ export const LECTURE_3_SLUGS = [
   "kambaz-assignments",
 ] as const;
 
+export const LECTURE_4_SLUGS = [
+  "css-intro",
+  "css-colors",
+  "css-box-model",
+  "css-size-and-position",
+  "css-media-queries",
+  "css-float",
+  "css-flex",
+  "css-rotation",
+] as const;
+
 export const LECTURE_SLUGS = [
   ...LECTURE_1_SLUGS,
   ...LECTURE_2_SLUGS,
   ...LECTURE_3_SLUGS,
+  ...LECTURE_4_SLUGS,
 ] as const;
 
 /** Slide headings stay on one line — keep titles at or under this length. */
@@ -77,6 +89,32 @@ export const LECTURE_EMBED_IDS = [
   "kambaz-home",
   "kambaz-assignments",
   "kambaz-assignment-editor",
+  "css-style-attr",
+  "css-import",
+  "css-id-selectors",
+  "css-class-selectors",
+  "css-structure-selectors",
+  "css-foreground",
+  "css-background",
+  "css-borders",
+  "css-padding",
+  "css-margins",
+  "css-box-model",
+  "css-corners",
+  "css-dimensions",
+  "css-display",
+  "css-position-relative",
+  "css-position-absolute",
+  "css-position-fixed",
+  "css-zindex",
+  "css-float",
+  "css-grid-layout",
+  "css-flex-row",
+  "css-flex-grow",
+  "css-flex-width",
+  "css-media-queries",
+  "css-rotate",
+  "css-gradient",
 ] as const;
 
 export type LectureEmbedId = (typeof LECTURE_EMBED_IDS)[number];
@@ -95,6 +133,7 @@ export const LECTURE_DIAGRAM_IDS = [
   "vercel-success-mock",
   "vercel-protect-mock",
   "vercel-auth-mock",
+  "box-model",
 ] as const;
 
 export type LectureDiagramId = (typeof LECTURE_DIAGRAM_IDS)[number];

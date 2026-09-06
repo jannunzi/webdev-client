@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title">
+  <title id="title">Box Model</title>
+  <rect width="1280" height="720" fill="#FEF2F2"/>
+  <rect x="0" y="0" width="18" height="720" fill="#BE123C"/>
+  <text x="72" y="64" fill="#9F1239" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" letter-spacing="4">WEB DEV · LECTURE 4</text>
+  <rect x="80" y="120" width="560" height="340" fill="#FECACA" rx="12"/>
+  <rect x="140" y="170" width="440" height="240" fill="#FEF08A" stroke="#A16207" stroke-width="16" rx="8"/>
+  <rect x="200" y="220" width="320" height="140" fill="#BFDBFE" rx="6"/>
+  <rect x="260" y="250" width="200" height="80" fill="#86EFAC" rx="4"/>
+  <text x="72" y="640" fill="#881337" font-family="ui-sans-serif, system-ui, sans-serif" font-size="56" font-weight="800">Box Model</text>
+</svg>
