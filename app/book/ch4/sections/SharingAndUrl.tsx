@@ -3,6 +3,7 @@ import SectionLink from "../../components/SectionLink";
 import CodeBlock from "../../components/CodeBlock";
 import LiveDemo from "../../components/LiveDemo";
 import LocalUrl from "../../components/LocalUrl";
+import OfficialLink from "../../components/OfficialLink";
 import { OnYourOwn, WithAI } from "../../components/Practice";
 import ParentStateComponent from "@/app/labs/lab4/ParentStateComponent";
 import PropDrilling from "@/app/labs/lab4/PropDrilling";
@@ -15,21 +16,28 @@ export default function SharingAndUrl() {
         title="4.3 Sharing State, Prop Drilling, and URLs"
     >
       <p>
-        The PDF places sharing state at 4.2.2.8 and URL encoding at
-        4.2.3 (query parameters, then path parameters). Those labs are
-        here as their own section so the problem is visible before
-        Redux, Context, and Zustand offer to solve it.
+        State can be shared between components by passing references to
+        state variables and the functions that update them. The PDF
+        places sharing state at 4.2.2.8 and URL encoding at 4.2.3, first
+        query parameters and then path parameters. Those labs are here as
+        their own section so the problem is visible before Redux, Context,
+        and Zustand offer to solve it.
       </p>
       <p>
-        <code>useState</code>{" "}belongs to the component that calls it,
-        so a sibling or a nested screen cannot read that value on its
-        own. To share it you can move the value and its setter up to a
-        parent both can reach and pass them down as props, encode the
+        The <code>useState</code>{" "}hook belongs to the component that
+        calls it, so a sibling or a nested screen cannot read that value
+        on its own. To share it you can move the value and its setter up
+        to a parent both can reach and pass them down as props, encode the
         data in the URL of the next page, or keep it in a store that any
         Client Component can import. The exercises below work through the
         first two of those — sharing through a parent, and encoding in
         the URL — so that when Context and Zustand show up, you already
-        know the problem they are meant to solve.
+        know the problem they are meant to solve. Although passing
+        references is sufficient as a general approach among a few
+        components, it is fraught with challenges when building larger
+        applications: every rename of the prop touches files that only
+        existed to forward it. That is the moment a store starts to earn
+        its keep.
       </p>
 
       <Section
@@ -40,8 +48,19 @@ export default function SharingAndUrl() {
         <p>
           When two components need the same counter, declare it in the
           parent and pass both the value and the setter down as props.
-          The child does not own the data; it only displays the number
-          and calls the setter the parent provided:
+          The example below demonstrates a{" "}
+          <code>ParentStateComponent</code>{" "}sharing a{" "}
+          <code>counter</code>{" "}state variable and a{" "}
+          <code>setCounter</code>{" "}mutator function with{" "}
+          <code>ChildStateComponent</code>{" "}by passing references to{" "}
+          <code>counter</code>{" "}and <code>setCounter</code>{" "}as
+          attributes. The child does not own the data; it only displays
+          the number and calls the setter the parent provided. The child
+          can use those references to render the state variable and
+          manipulate it through the mutator. To practice sharing state
+          between a parent and a child, create both components below,
+          import <code>ParentStateComponent</code>{" "}into Lab 4, and
+          confirm it works as expected.
         </p>
         <CodeBlock
           language="tsx"
@@ -99,7 +118,11 @@ export default function ChildStateComponent({
 }`}</CodeBlock>
         <p>
           Click Increment in the child and confirm both headings update —
-          parent and child are looking at the same counter:
+          parent and child are looking at the same counter. The child
+          never called <code>useState</code>; it only received a number
+          and a function. That is the smallest form of shared state, and
+          it is the right tool when the two components already sit next to
+          each other:
         </p>
         <LiveDemo
           name="ParentStateComponent"
@@ -125,19 +148,23 @@ export default function ChildStateComponent({
         title="4.3.2 Prop Drilling"
       >
         <p>
-          Passing <code>counter</code> one level is fine. Passing it
+          Passing <code>counter</code>{" "}one level is fine. Passing it
           through a chain of components that do not use it — parent →
           middle → child — is <strong>prop drilling</strong>. Every
           rename of the prop touches files that only existed to forward
-          it. Context and stores exist so the middle components can
-          stay out of that conversation.
+          it. Context and stores exist so the middle components can stay
+          out of that conversation.
         </p>
         <p>
           Passing state down as props works until a component in the
           middle does not care about the value and only forwards it. That
-          forwarding is <strong>prop drilling</strong>. The child below
-          never reads <code>count</code> — it only hands it to a
-          grandchild:
+          forwarding is the drill: the child below never reads{" "}
+          <code>count</code> — it only hands it to a grandchild. To
+          practice seeing the problem, create the{" "}
+          <code>PropDrilling</code>{" "}component below and import it from
+          the Lab 4 page. Confirm the browser displays as shown, then
+          click Increment in the grandchild and watch the parent heading
+          update through a component that never used the number itself.
         </p>
         <CodeBlock
           language="tsx"
@@ -206,11 +233,14 @@ export default function PropDrilling() {
         <p>
           Two extra layers for a counter is already tedious; Dashboard,
           Home, Modules, and Assignments all changing the same courses
-          array would be worse. Context will help when a stable value is
-          needed deep in a subtree, and Zustand when many screens mutate
-          a list. Neither is worth the extra machinery for a single
-          counter in one file — that still belongs in{" "}
-          <code>useState</code>.
+          array would be worse. You would have to move the courses state
+          variable and mutator functions to a component that is parent to
+          all of them — the Kambaz layout, or even the root of the app —
+          and then thread the array through every screen that does not
+          care about it. Context will help when a stable value is needed
+          deep in a subtree, and Zustand when many screens mutate a list.
+          Neither is worth the extra machinery for a single counter in one
+          file — that still belongs in <code>useState</code>.
         </p>
         <OnYourOwn>
           Insert one more middle component between Child and Grandchild
@@ -230,35 +260,74 @@ export default function PropDrilling() {
         title="4.3.3 Encoding State in the URL"
       >
         <p>
-          Components pass data as props, but pages can also pass data by
-          encoding it in the URL that opens the next screen. A URL has a
-          protocol, a domain, a path, and an optional query string:
+          Components can pass data to each other through attributes or as
+          child content in the component&apos;s body. Pages can also pass
+          data to each other by encoding it in the URL that navigates to
+          the page. A{" "}
+          <OfficialLink href="https://url.spec.whatwg.org/">
+            URL
+          </OfficialLink>{" "}
+          is made up of the following parts:
         </p>
         <p>
           <code>http://example.com/path/to/the/page?optional=data&amp;encoded=in-query</code>
         </p>
         <ul>
           <li>
-            Query parameters after <code>?</code>{" "}are a good fit for
-            optional filters, search terms, and other non-structural data.
+            <code>http://</code> — the protocol.
           </li>
           <li>
-            Path parameters in folders named <code>[a]</code>{" "}and{" "}
-            <code>[b]</code>{" "}are a good fit for values that identify the
-            resource — the same idea as <code>[cid]</code>{" "}in Kambaz.
+            <code>example.com</code> — the domain or IP address of the
+            server.
+          </li>
+          <li>
+            <code>/path/to/the/page</code> — the real or virtual path to
+            an actual document, or a path resolved to some virtual
+            computed content.
+          </li>
+          <li>
+            <code>?optional=data&amp;encoded=in-query</code> — an
+            optional query string with name/value pairs delimited with
+            ampersand (<code>&amp;</code>).
           </li>
         </ul>
         <p>
-          Create a query calculator at{" "}
-          <code>app/labs/lab4/url-encoding/query-params/page.tsx</code>.
-          Wrap <code>useSearchParams</code>{" "}in{" "}
-          <code>Suspense</code>{" "}so Next.js can stream the page:
+          There are two strategies to encode data in the URL:{" "}
+          <strong>query parameters</strong> and{" "}
+          <strong>path parameters</strong>. Query parameters after{" "}
+          <code>?</code>{" "}are a good fit for optional filters, search
+          terms, pagination, and other non-structural data. Path
+          parameters in folders named <code>[a]</code>{" "}and{" "}
+          <code>[b]</code>{" "}are a good fit for values that identify the
+          resource — the same idea as <code>[cid]</code>{" "}in Kambaz.
         </p>
-        <CodeBlock
-          language="tsx"
-          name="QueryCalculator"
-          file="app/labs/lab4/url-encoding/query-params/QueryCalculator.tsx"
-        >{`"use client";
+
+        <Section
+          level={3}
+          id="sec-4-3-3-1"
+          title="4.3.3.1 Query Search Parameters"
+        >
+          <p>
+            The <code>QueryCalculator</code>{" "}page demonstrates how to
+            read data from the query string using Next.js{" "}
+            <code>useSearchParams</code>. The hook decodes the names and
+            values from the URL and returns an object map where the keys
+            are the names of the parameters and the values are the
+            parameter values. This strategy is great for optional filters,
+            search terms, pagination, or any non-structural data. Create a
+            query calculator at{" "}
+            <code>app/labs/lab4/url-encoding/query-params/page.tsx</code>.
+            Wrap <code>useSearchParams</code>{" "}in{" "}
+            <code>Suspense</code>{" "}so Next.js can stream the page.
+            Confirm the browser displays as shown when you open the URL
+            with <code>a</code>{" "}and <code>b</code>{" "}in the query
+            string.
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="QueryCalculator"
+            file="app/labs/lab4/url-encoding/query-params/QueryCalculator.tsx"
+          >{`"use client";
 
 import { useSearchParams } from "next/navigation";
 
@@ -283,11 +352,11 @@ export default function QueryCalculator() {
     </div>
   );
 }`}</CodeBlock>
-        <CodeBlock
-          language="tsx"
-          name="QueryCalculatorPage"
-          file="app/labs/lab4/url-encoding/query-params/page.tsx"
-        >{`import { Suspense } from "react";
+          <CodeBlock
+            language="tsx"
+            name="QueryCalculatorPage"
+            file="app/labs/lab4/url-encoding/query-params/page.tsx"
+          >{`import { Suspense } from "react";
 import QueryCalculator from "./QueryCalculator";
 
 export default function QueryCalculatorPage() {
@@ -297,15 +366,47 @@ export default function QueryCalculatorPage() {
     </Suspense>
   );
 }`}</CodeBlock>
-        <p>
-          The path version uses <code>useParams</code>{" "}and lives at{" "}
-          <code>app/labs/lab4/url-encoding/path-params/[a]/[b]/page.tsx</code>:
-        </p>
-        <CodeBlock
-          language="tsx"
-          name="PathCalculator"
-          file="app/labs/lab4/url-encoding/path-params/[a]/[b]/page.tsx"
-        >{`"use client";
+          <p>
+            <code>searchParams.get(&quot;a&quot;)</code>{" "}returns the
+            string after <code>a=</code>, or <code>null</code>{" "}if the
+            name is missing, which is why the sample falls back to{" "}
+            <code>&quot;0&quot;</code>. Next.js has already decoded the
+            values, so you do not call <code>decodeURIComponent</code>{" "}
+            yourself. Parse the strings as floats, add them, and render
+            the sum. Try{" "}
+            <LocalUrl href="/labs/lab4/url-encoding/query-params?a=5&b=10" />{" "}
+            and confirm the page prints a sum of 15.
+          </p>
+        </Section>
+
+        <Section
+          level={3}
+          id="sec-4-3-3-2"
+          title="4.3.3.2 Path Parameters"
+        >
+          <p>
+            The <code>PathCalculator</code>{" "}page demonstrates the same
+            capabilities as the query calculator, but using path
+            parameters where data is encoded as part of the URL path
+            instead of name/value pairs after the <code>?</code>{" "}at the
+            end of the URL. Here we use the <code>useParams</code>{" "}hook
+            instead, which decodes the parameters from the path. Note that
+            the names of the parameters are encoded as part of the
+            physical name of the directory path, for example{" "}
+            <code>[a]</code>{" "}and <code>[b]</code>. The path version
+            lives at{" "}
+            <code>
+              app/labs/lab4/url-encoding/path-params/[a]/[b]/page.tsx
+            </code>
+            . Create that page, import nothing extra into Lab 4 yet, and
+            confirm you can open a URL whose path contains the two
+            numbers.
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="PathCalculator"
+            file="app/labs/lab4/url-encoding/path-params/[a]/[b]/page.tsx"
+          >{`"use client";
 
 import { useParams } from "next/navigation";
 
@@ -330,17 +431,27 @@ export default function PathCalculator() {
     </div>
   );
 }`}</CodeBlock>
-        <p>
-          A parent form can navigate either way:{" "}
-          <code>router.push</code>{" "}for a click handler, or{" "}
-          <code>Link</code>{" "}for a declarative href. Import{" "}
-          <code>UrlEncoding</code>{" "}into Lab 4:
-        </p>
-        <CodeBlock
-          language="tsx"
-          name="UrlEncoding"
-          file="app/labs/lab4/UrlEncoding.tsx"
-        >{`"use client";
+          <p>
+            The pages above read data from the URL using either query or
+            path parameters. The <code>UrlEncoding</code>{" "}component
+            below illustrates how the parameters can be encoded into the
+            URLs and then navigate to either the query calculator or the
+            path calculator accordingly. A parent form can navigate either
+            way: <code>router.push</code>{" "}for a click handler, or{" "}
+            <code>Link</code>{" "}for a declarative href. Programmatic
+            navigation builds a <code>URLSearchParams</code>{" "}object or
+            an encoded path and then asks the router to go there.
+            Declarative navigation puts the same URL on a{" "}
+            <code>Link</code>{" "}so the browser can open it without a
+            click handler. To practice encoding state in the URL, create
+            the <code>UrlEncoding</code>{" "}component below and import it
+            into Lab 4. Confirm the browser displays as shown.
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="UrlEncoding"
+            file="app/labs/lab4/UrlEncoding.tsx"
+          >{`"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -422,32 +533,36 @@ export default function UrlEncoding() {
     </div>
   );
 }`}</CodeBlock>
-        <LiveDemo
-          name="UrlEncoding"
-          file="app/labs/lab4/UrlEncoding.tsx"
-          mode="styled"
-        >
-          <UrlEncoding />
-        </LiveDemo>
-        <p>
-          Try{" "}
-          <LocalUrl href="/labs/lab4/url-encoding/query-params?a=5&b=10" />{" "}
-          and{" "}
-          <LocalUrl href="/labs/lab4/url-encoding/path-params/5/10" />.
-          Both should print a sum of 15. Course ids in Kambaz already use
-          the path strategy from <SectionLink to="3.9.4" />; query strings
-          will matter later for search and filters.
-        </p>
-        <OnYourOwn>
-          Add a third number <code>c</code>{" "}to the form and include it in
-          both the query URL and a new path segment{" "}
-          <code>[c]</code>.
-        </OnYourOwn>
-        <WithAI
-          prompt={`In app/labs/lab4/UrlEncoding.tsx, keep any extra field I added. Add a sample third controlled input id="wd-url-c" with useState("2") and append c to the query string as c=. Do not rename my personal field or change my extra path segment.`}
-        >
-          Ask the assistant to add one extra sample query parameter:
-        </WithAI>
+          <LiveDemo
+            name="UrlEncoding"
+            file="app/labs/lab4/UrlEncoding.tsx"
+            mode="styled"
+          >
+            <UrlEncoding />
+          </LiveDemo>
+          <p>
+            Enter two numbers and try both the programmatic buttons and
+            the declarative links. Try{" "}
+            <LocalUrl href="/labs/lab4/url-encoding/query-params?a=5&b=10" />{" "}
+            and{" "}
+            <LocalUrl href="/labs/lab4/url-encoding/path-params/5/10" />.
+            Both should print a sum of 15. Course ids in Kambaz already
+            use the path strategy from <SectionLink to="3.9.4" />; query
+            strings will matter later for search and filters. The URL is
+            a third place to put state: it survives a refresh, it can be
+            bookmarked, and it does not require a parent to pass props.
+          </p>
+          <OnYourOwn>
+            Add a third number <code>c</code>{" "}to the form and include it in
+            both the query URL and a new path segment{" "}
+            <code>[c]</code>.
+          </OnYourOwn>
+          <WithAI
+            prompt={`In app/labs/lab4/UrlEncoding.tsx, keep any extra field I added. Add a sample third controlled input id="wd-url-c" with useState("2") and append c to the query string as c=. Do not rename my personal field or change my extra path segment.`}
+          >
+            Ask the assistant to add one extra sample query parameter:
+          </WithAI>
+        </Section>
       </Section>
     </Section>
   );

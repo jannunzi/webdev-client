@@ -15,18 +15,29 @@ export default function KambazAccount() {
         title="4.10.5 Account Screens"
       >
         <p>
-          Sign in is how Kambaz learns who is using the app, and Profile
-          is where that person&apos;s fields show up. Account Navigation
-          should hide Sign in and Sign up once someone is signed in, and
-          hide Profile when nobody is. Put the current user in React
-          Context, wrapped around the Kambaz layout, so Dashboard,
-          Account, and Profile all read the same value. We could have
-          used Zustand here as well — and we will for courses and
-          modules — but who is signed in changes rarely, so Context is a
-          fair fit, and it lets you practice the provider you already
-          built in the lab. Local <code>useState</code>{" "}plus Zustand
-          for everything shared would have worked, and would even have
-          been simpler.
+          The Account screens provide users access to their personal
+          information and all related data such as courses they are
+          enrolled in and courses they might be teaching. Users use the
+          Sign in screen to identify themselves and access their Profile
+          screen to view their personal information. This section
+          describes refactoring the Sign in and Profile screens to
+          confirm a user&apos;s identity and display their personal
+          information. Account Navigation should hide Sign in and Sign
+          up once someone is signed in, and hide Profile when nobody is.
+        </p>
+        <p>
+          Put the current user in React Context, wrapped around the
+          Kambaz layout, so Dashboard, Account, and Profile all read the
+          same value. We could have used Zustand here as well — and we
+          will for courses and modules — but who is signed in changes
+          rarely, so Context is a fair fit, and it lets you practice the
+          provider you already built in the lab. Local{" "}
+          <code>useState</code>{" "}plus Zustand for everything shared
+          would have worked, and would even have been simpler. The PDF
+          kept <code>currentUser</code>{" "}in an account reducer next to
+          the course and module lists; this book uses{" "}
+          <code>AccountContext</code>{" "}for that one value and leaves
+          the lists in Zustand.
         </p>
 
         <Section
@@ -35,10 +46,19 @@ export default function KambazAccount() {
           title="4.10.5.1 Account Context"
         >
           <p>
+            Implement an account context to keep track of the currently
+            signed-in user and share it across the entire application.
             The pattern is a context, a provider that holds{" "}
             <code>currentUser</code>{" "}in <code>useState</code>, and a
             hook that throws if you forget the provider — the same shape
-            as the lab counter in <SectionLink to="4.4" />:
+            as the lab counter in <SectionLink to="4.4" />. Seed the
+            type from <code>users.json</code>{" "}so the signed-in object
+            has the same fields the Profile form will display. To
+            practice the context, create{" "}
+            <code>app/(kambaz)/account/AccountContext.tsx</code>{" "}as
+            shown below. Confirm the file compiles and that{" "}
+            <code>currentUser</code>{" "}starts as{" "}
+            <code>null</code>{" "}until someone signs in.
           </p>
           <CodeBlock
             language="tsx"
@@ -75,9 +95,21 @@ export function useAccountContext() {
   return value;
 }`}</CodeBlock>
           <p>
+            <code>setCurrentUser</code>{" "}is the only writer. Sign in
+            will pass a user from <code>users.json</code>. Sign out will
+            pass <code>null</code>. The hook throws if a screen calls it
+            outside the provider so you notice a missing wrap immediately
+            instead of reading a silent{" "}
+            <code>null</code>.
+          </p>
+          <p>
             Wrap the Kambaz layout so every Kambaz screen sits inside the
-            provider. The layout can stay a Server Component; it just
-            renders the client <code>AccountProvider</code>:
+            provider. Import the provider and render it around the
+            existing navigation and main offset. The layout can stay a
+            Server Component; it just renders the client{" "}
+            <code>AccountProvider</code>. Confirm Sign in, Dashboard,
+            and Profile can all call{" "}
+            <code>useAccountContext</code>{" "}without throwing:
           </p>
           <CodeBlock
             language="tsx"
@@ -105,13 +137,22 @@ export default function KambazLayout({
           title="4.10.5.2 Sign in"
         >
           <p>
-            Convert Sign in to a Client Component and keep the typed
-            username and password in <code>useState</code>. On Sign in,
-            look up a user in <code>users.json</code>{" "}whose credentials
-            match: if there is none, do nothing; if there is,{" "}
-            <code>setCurrentUser(user)</code>{" "}and go to Dashboard with{" "}
-            <code>router.push</code>. In a click handler use the router,
-            not the server <code>redirect</code> helper:
+            Refactor the Sign in screen by adding a{" "}
+            <code>credentials</code>{" "}state variable for users to enter
+            their username and password. Convert the page to a Client
+            Component so the fields can be controlled and the click
+            handler can talk to the browser. When users click Sign in,
+            search <code>users.json</code>{" "}for a user whose username
+            and password match. If there is a user that matches, store
+            it in the account context by calling{" "}
+            <code>setCurrentUser(user)</code>. Ignore the sign-in
+            attempt if there is no match — do not navigate and do not
+            write a user. After signing in, navigate to the Dashboard.
+            In a click handler use the router, not the server{" "}
+            <code>redirect</code>{" "}helper. To practice Sign in, update{" "}
+            <code>app/(kambaz)/account/signin/page.tsx</code>{" "}as shown
+            below. Confirm that signing in navigates to the Dashboard
+            only if valid credentials are used.
           </p>
           <CodeBlock
             language="tsx"
@@ -174,11 +215,18 @@ export default function Signin() {
   );
 }`}</CodeBlock>
           <p>
-            Try a user from <code>users.json</code> — for example{" "}
+            Both fields use the object-spread update from{" "}
+            <SectionLink to="4.2.8" />{" "}so typing a username does not
+            erase the password. The password input keeps{" "}
+            <code>type=&quot;password&quot;</code>{" "}so the value is
+            hidden as you type. Try a user from{" "}
+            <code>users.json</code> — for example{" "}
             <code>iron_man</code>{" "}/ <code>stark123</code>. A wrong
             password should stay on Sign in. A match should land on
             Dashboard. Open{" "}
-            <Link href="/account/signin">/account/signin</Link>.
+            <Link href="/account/signin">/account/signin</Link>{" "}and
+            confirm both paths before you filter the dashboard by
+            enrollment.
           </p>
         </Section>
 
@@ -188,10 +236,18 @@ export default function Signin() {
           title="4.10.5.3 Dashboard by Enrollment"
         >
           <p>
-            Once <code>currentUser</code>{" "}is set, Dashboard should list
-            only courses that appear with that user in{" "}
-            <code>enrollments.json</code>. If nobody is signed in, keep
-            showing every course so the Add/Edit/Delete work in{" "}
+            Now that the current user is stored in{" "}
+            <code>AccountContext</code>, the Dashboard can filter the
+            courses and only display the courses in which that user is
+            enrolled. Refactor Dashboard so that it only shows the
+            courses the current user is enrolled in. Sign in as
+            different users and confirm that the Dashboard only displays
+            the courses a user is enrolled in. Note that new courses
+            added will not render now since enrollments would also need
+            to be modified. This will be addressed in{" "}
+            <SectionLink to="4.10.7" />{" "}and in later chapters. If
+            nobody is signed in, keep showing every course so the
+            Add / Edit / Delete work in{" "}
             <SectionLink to="4.10.2" />{" "}still has something to click:
           </p>
           <CodeBlock language="tsx">{`const { currentUser } = useAccountContext();
@@ -204,12 +260,23 @@ const visibleCourses = currentUser
     )
   : courses;`}</CodeBlock>
           <p>
-            Sign in as <code>iron_man</code>{" "}and confirm the published
-            list shrinks to that student&apos;s courses. Sign in as{" "}
-            <code>nick_fury</code>{" "}/ <code>fury123</code>{" "}and compare.
-            A course you Add while signed in will not appear until you
-            enroll in it — that is the <SectionLink to="4.10.7" />{" "}
-            exercise, the same limitation the original chapter called out.
+            The filter uses the same{" "}
+            <code>enrollments.some</code>{" "}pattern{" "}
+            <SectionLink to="3.9.9" />{" "}used on the People table: keep
+            a course when there is an enrollment whose{" "}
+            <code>user</code>{" "}is the signed-in id and whose{" "}
+            <code>course</code>{" "}is that course&apos;s{" "}
+            <code>_id</code>. Map{" "}
+            <code>visibleCourses</code>{" "}instead of the full store
+            array so Add still writes every course but the grid only
+            shows the enrolled subset. Sign in as{" "}
+            <code>iron_man</code>{" "}and confirm the published list
+            shrinks to that student&apos;s courses. Sign in as{" "}
+            <code>nick_fury</code>{" "}/ <code>fury123</code>{" "}and
+            compare. A course you Add while signed in will not appear
+            until you enroll in it — that is the{" "}
+            <SectionLink to="4.10.7" />{" "}exercise, the same limitation
+            the original chapter called out.
           </p>
         </Section>
 
@@ -219,10 +286,19 @@ const visibleCourses = currentUser
           title="4.10.5.4 Account Navigation"
         >
           <p>
-            If <code>currentUser</code>{" "}is set, the Account sidebar
-            should list only Profile. If it is <code>null</code>, list
-            Signin and Signup. The Account landing route should send you
-            to Profile or Sign in the same way:
+            Users can use the Account Navigation sidebar to navigate
+            between Sign in, Sign up, and Profile, but not all of those
+            screens should be available depending on whether a user is
+            logged in. Reimplement the Account Navigation sidebar so
+            that it hides the Sign in and Sign up links if a user is
+            already signed in, and hides the Profile link if a user is
+            not yet signed in. If <code>currentUser</code>{" "}is set, the
+            sidebar should list only Profile. If it is{" "}
+            <code>null</code>, list Signin and Signup. To practice the
+            sidebar, update{" "}
+            <code>app/(kambaz)/account/Navigation.tsx</code>{" "}as shown
+            below. Confirm the links change after a successful sign in
+            and again after sign out.
           </p>
           <CodeBlock
             language="tsx"
@@ -257,6 +333,17 @@ export default function AccountNavigation() {
     </div>
   );
 }`}</CodeBlock>
+          <p>
+            Also refactor the Account landing screen so that the default
+            screen is Sign in if no one is signed in yet, and Profile if
+            someone is already signed in. Confirm that the Account
+            Navigation links are Sign in and Sign up if no one is signed
+            in yet, and Profile if someone is already signed in. Also
+            confirm that clicking the Account link in the Kambaz
+            Navigation sidebar displays the Sign in screen if no one is
+            signed in yet, and displays the Profile screen if someone is
+            already signed in.
+          </p>
           <CodeBlock
             language="tsx"
             name="AccountPage"
@@ -282,12 +369,22 @@ export default function AccountPage() {
           title="4.10.5.5 Profile"
         >
           <p>
-            Profile reads <code>currentUser</code>. If it is missing,
-            navigate to Sign in. If it is present, copy it into a local{" "}
-            <code>profile</code>{" "}state in <code>useEffect</code>{" "}so the
-            form can edit fields without writing the context on every
-            keystroke. Sign out sets <code>currentUser</code>{" "}to{" "}
-            <code>null</code>{" "}and returns to Sign in:
+            The Profile screen displays the current user&apos;s personal
+            information. Refactor Profile to retrieve the current user
+            from <code>AccountContext</code>. If there is no{" "}
+            <code>currentUser</code>, the screen should navigate to Sign
+            in. If there is a <code>currentUser</code>, the screen
+            should populate a form with the user&apos;s information. Copy
+            that user into a local <code>profile</code>{" "}state in{" "}
+            <code>useEffect</code>{" "}so the form can edit fields without
+            writing the context on every keystroke. If the current user
+            clicks Sign out, the current user should be set to{" "}
+            <code>null</code>{" "}and the app should navigate to Sign in.
+            To practice Profile, update{" "}
+            <code>app/(kambaz)/account/profile/page.tsx</code>{" "}as shown
+            below. Confirm the form fills after a successful sign in,
+            and confirm Sign out returns you to Sign in with Account
+            Navigation showing Signin and Signup again.
           </p>
           <CodeBlock
             language="tsx"
@@ -334,10 +431,17 @@ export default function Profile() {
   );
 }`}</CodeBlock>
           <p>
-            Confirm the form fills with <code>iron_man</code>&apos;s name
-            after a successful sign in, and that Sign out returns you to
-            Sign in with Account Navigation showing Signin and Signup
-            again.
+            The sample shows the username field and Sign out; bind the
+            remaining inputs the same way — password, first name, last
+            name, email, and a role select with User, Admin, Faculty,
+            and Student — each spreading{" "}
+            <code>profile</code>{" "}and overwriting one property. Confirm
+            the form fills with <code>iron_man</code>&apos;s name after
+            a successful sign in. Confirm that editing a field does not
+            change the name in Account Navigation until you decide to
+            write the context later. Confirm Sign out clears{" "}
+            <code>currentUser</code>{" "}and that visiting Profile while
+            signed out sends you back to Sign in.
           </p>
           <OnYourOwn>
             Bind the remaining profile fields from{" "}
@@ -358,9 +462,17 @@ export default function Profile() {
         title="4.10.6 Assignments (On Your Own)"
       >
         <p>
-          After Dashboard, Courses, and Modules, faculty should be able to
-          create, update, and remove assignments while students can still
-          view them. The list target looks like{" "}
+          After completing the Dashboard, Courses, and Modules, refactor
+          the Assignments and Assignment Editor screens so that faculty
+          can create, update, and remove assignments as described in
+          this section. Students can still view assignments. Follow the
+          same path you used for modules: seed a Zustand store from{" "}
+          <code>assignments.json</code>, filter the list by the current{" "}
+          <code>cid</code>, and let the editor create or update a row
+          before navigating back to the list. The PDF implemented this
+          list as an assignments reducer; use an{" "}
+          <code>assignmentsStore</code>{" "}the same way you used{" "}
+          <code>modulesStore</code>. The list target looks like{" "}
           <FigureLink to="4.10.6" />; the editor looks like{" "}
           <FigureLink to="4.10.6b" />:
         </p>
@@ -383,12 +495,19 @@ export default function Profile() {
           title="4.10.6.1 Assignments Store"
         >
           <p>
-            Following <code>modulesStore.ts</code>, create{" "}
-            <code>app/(kambaz)/store/assignmentsStore.ts</code>{" "}seeded
-            from <code>assignments.json</code>. Implement{" "}
-            <code>addAssignment</code>, <code>deleteAssignment</code>,{" "}
+            Following <code>modulesStore.ts</code>{" "}as an example, create{" "}
+            <code>app/(kambaz)/store/assignmentsStore.ts</code>{" "}
+            initialized with the assignments from{" "}
+            <code>assignments.json</code>. Implement store functions
+            such as <code>addAssignment</code>,{" "}
+            <code>deleteAssignment</code>,{" "}
             <code>updateAssignment</code>, and any other functions you
-            need.
+            need — for example a helper that finds one assignment by{" "}
+            <code>_id</code>{" "}when the editor opens. Generate new ids
+            with <code>crypto.randomUUID()</code>{" "}the same way the
+            courses and modules stores do. Confirm the store compiles
+            and that the Assignments page can filter the array by the
+            current course before you wire Save and Delete.
           </p>
         </Section>
 
@@ -397,24 +516,23 @@ export default function Profile() {
           id="sec-4-10-6-2"
           title="4.10.6.2 Creating an Assignment"
         >
-          <ul>
-            <li>
-              Clicking + Assignment navigates to the Assignment Editor.
-            </li>
-            <li>
-              The editor should allow editing at least name, description,
-              points, due date, available from, and available until.
-            </li>
-            <li>
-              Save creates the assignment, adds it to the store, and
-              navigates back to the list, which must now contain the new
-              row.
-            </li>
-            <li>
-              Cancel does not create the assignment and returns to the
-              list unchanged.
-            </li>
-          </ul>
+          <p>
+            Refactor your Assignments screen so that creating a row
+            goes through the editor instead of a dialog. Clicking the +
+            Assignment button should navigate to the Assignment Editor,
+            not append an empty title on the list. The editor should
+            allow editing at least the name, description, points, due
+            date, available-from date, and available-until date — the
+            same fields <SectionLink to="3.9.8.1" />{" "}already displayed
+            from JSON. Clicking Save creates the new assignment, adds
+            it to the assignments array in the Zustand store, and
+            navigates back to the Assignments screen, which must now
+            contain the newly created assignment. Clicking Cancel does
+            not create the new assignment and navigates back to the
+            Assignments screen without the new row. Confirm in the
+            browser that Save increases the list by one and that Cancel
+            leaves the list unchanged.
+          </p>
         </Section>
 
         <Section
@@ -422,21 +540,20 @@ export default function Profile() {
           id="sec-4-10-6-3"
           title="4.10.6.3 Editing an Assignment"
         >
-          <ul>
-            <li>
-              Clicking an assignment opens the editor with that
-              assignment&apos;s name, description, points, and dates.
-            </li>
-            <li>The same fields remain editable.</li>
-            <li>
-              Save updates the store and returns to the list with the new
-              values.
-            </li>
-            <li>
-              Cancel leaves the assignment unchanged and returns to the
-              list.
-            </li>
-          </ul>
+          <p>
+            Refactor the Assignment Editor so that clicking an
+            assignment on the list navigates to the editor and displays
+            that assignment&apos;s name, description, points, due date,
+            available-from date, and available-until date. The editor
+            should allow editing those same fields for the corresponding
+            assignment. Clicking Save updates the assignment&apos;s
+            fields in the store and navigates back to the Assignments
+            screen with the updated values. Clicking Cancel does not
+            update the assignment and navigates back to the list, which
+            shows the assignments unchanged. Confirm you can open two
+            different assignments and see different titles, then change
+            one title, Save, and see only that row update.
+          </p>
         </Section>
 
         <Section
@@ -444,23 +561,21 @@ export default function Profile() {
           id="sec-4-10-6-4"
           title="4.10.6.4 Deleting an Assignment"
         >
-          <ul>
-            <li>
-              Using the modules trash as a model, add a Delete control to
-              the right of each assignment.
-            </li>
-            <li>
-              Clicking it asks whether you are sure you want to remove the
-              assignment.
-            </li>
-            <li>
-              Yes or Ok dismisses the dialog, removes the assignment, and
-              updates the list.
-            </li>
-            <li>
-              No or Cancel dismisses the dialog without removing it.
-            </li>
-          </ul>
+          <p>
+            Refactor the Assignments list using the modules trash can
+            as a model: add a Delete button or trash icon to the right
+            of each assignment. Clicking Delete on an assignment should
+            pop up a dialog asking whether you are sure you want to
+            remove the assignment. Clicking Yes or Ok dismisses the
+            dialog, removes the assignment from the store, and updates
+            the Assignments screen without the deleted row. Clicking No
+            or Cancel dismisses the dialog without removing the
+            assignment. Confirm a delete that you confirm removes the
+            row and that a delete you cancel leaves the title in place.
+            Filter every list and every editor save by the current{" "}
+            <code>cid</code>{" "}so an assignment created in RS101 does
+            not appear in RS102.
+          </p>
         </Section>
         <OnYourOwn>
           Implement the store, the editor save/cancel path, and the
@@ -481,37 +596,36 @@ export default function Profile() {
         title="4.10.7 Enrollments (On Your Own)"
       >
         <p>
-          Faculty can Add, Delete, Edit, and Update courses and open a
-          course. Other users currently only see courses they are enrolled
-          in. Refactor Dashboard so a blue Enrollments button at the top
-          right toggles between that enrolled list and every course.
+          Currently the Dashboard allows faculty to Add, Delete, Edit,
+          and Update courses, as well as navigate to the course content.
+          Other users currently only see the courses they are enrolled
+          in. Refactor Dashboard so that there is a new blue Enrollments
+          button at the top right of the screen. Clicking Enrollments
+          displays all the courses. Clicking it again only shows the
+          courses the user is enrolled in. The PDF used a Redux
+          enrollment list for the same toggle; implement{" "}
+          <code>app/(kambaz)/store/enrollmentsStore.ts</code>{" "}seeded
+          from <code>enrollments.json</code>{" "}with{" "}
+          <code>enroll</code>{" "}and <code>unenroll</code>{" "}functions,
+          then wire the Dashboard and the People table to that store.
         </p>
-        <ul>
-          <li>
-            Courses the user is enrolled in show a red Unenroll button.
-          </li>
-          <li>
-            Courses the user is not enrolled in show a green Enroll
-            button.
-          </li>
-          <li>
-            Clicking Enroll or Unenroll must change the enrollment and
-            toggle the button.
-          </li>
-          <li>
-            Sign out and sign in again: the choices should still be there
-            for this session. A full reload may lose them — that is
-            expected until a later chapter persists to a server.
-          </li>
-          <li>
-            Protect the course route so only enrolled users can open it;
-            everyone else stays on Dashboard.
-          </li>
-        </ul>
+        <p>
+          Courses the user is enrolled in should provide a red Unenroll
+          button, and courses the user is not enrolled in should provide
+          a green Enroll button. When a user clicks Unenroll or Enroll,
+          the enrollment status must actually change and the buttons
+          should toggle to reflect the new state. If a user signs out
+          and then signs in again, the enrollment choices should still
+          persist for this session. If a user refreshes or reloads the
+          page, the new enrollments are lost — that is expected until a
+          later chapter persists them on a server. Protect the route to
+          a course so that only users enrolled in that course can
+          navigate to it, and stay on the Dashboard screen otherwise.
+        </p>
         <OnYourOwn>
           Create <code>app/(kambaz)/store/enrollmentsStore.ts</code>{" "}
-          seeded from <code>enrollments.json</code>. Wire the Enrollments
-          toggle and the People table to that store.
+          seeded from <code>enrollments.json</code>. Wire the
+          Enrollments toggle and the People table to that store.
         </OnYourOwn>
         <WithAI
           prompt={`Create app/(kambaz)/store/enrollmentsStore.ts seeded from enrollments.json with enroll and unenroll. In the Dashboard, keep any extra button I added and add a sample button id="wd-enrollments-toggle" that flips a showAllCourses flag. Do not remove my extra button.`}
@@ -524,12 +638,16 @@ export default function Profile() {
       <Section level={3} id="sec-4-11" title="4.11 Exercises">
         <p>
           Use this checklist to confirm the stateful Kambaz prototype
-          covers every screen in <SectionLink to="4.10" />. Each item
-          points back to the section where you wired the worked example.
-          Build in order as you read — this list is for checking coverage,
-          not a substitute for the walkthroughs. Assignments and
-          enrollments stay On your own: match the ids, figures, and
-          bullets in those sections.
+          covers every screen in <SectionLink to="4.10" />. The labs
+          taught events, controlled fields, Context, and Zustand one
+          idea at a time; these items are those ideas applied to the
+          application you keep building. Each item points back to the
+          section where you wired the worked example. Build in order as
+          you read — this list is for checking coverage, not a
+          substitute for the walkthroughs. Create the store, click the
+          buttons, and confirm the browser before you tick a line.
+          Assignments and enrollments stay On your own: match the ids,
+          figures, and steps in those sections.
         </p>
         <ol>
           <li>
@@ -541,8 +659,8 @@ export default function Profile() {
             <SectionLink to="4.10.2" />).
           </li>
           <li>
-            Toggle Course Navigation from the hamburger and read the course
-            name from the store (<SectionLink to="4.10.3" />).
+            Toggle Course Navigation from the hamburger and read the
+            course name from the store (<SectionLink to="4.10.3" />).
           </li>
           <li>
             Add a module from the dialog, delete with trash, rename with
@@ -551,8 +669,8 @@ export default function Profile() {
           </li>
           <li>
             Sign in, filter Dashboard by enrollment, toggle Account
-            Navigation, and fill Profile from the current user in Context
-            ( <SectionLink to="4.10.5" />).
+            Navigation, and fill Profile from the current user in
+            Context (<SectionLink to="4.10.5" />).
           </li>
           <li>
             Implement assignment CRUD in Zustand (

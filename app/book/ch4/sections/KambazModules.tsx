@@ -14,14 +14,29 @@ export default function KambazModules() {
       title="4.10.4 Adding State to the Modules Screen"
     >
       <p>
-        Modules have the same job courses had: create, rename, and remove
-        items, then share that list with Home, which already embeds the
-        Modules page. The walkthrough below starts from the list you
-        already have, adds a dialog for new names, puts trash and pencil
-        on each row, and finishes with a Zustand store so Home sees the
-        same array. Reuse the HTML and CSS
-        from earlier chapters for the list itself — the screenshots show
-        the target controls, not a new visual language.
+        Now do the same with Modules: refactor the component by adding
+        state so that you can create, update, and remove modules. You
+        will discover the same limitation you had with courses — new
+        modules and edits cannot be used outside the Modules screen even
+        though Home already embeds that page and should show the same
+        list. Instead of moving the modules array and functions to a
+        shared parent, we will put them in a Zustand store so the list is
+        available throughout the application. The PDF used a modules
+        reducer for the same array; the screens, dialog, trash can, and
+        pencil below are the ones from that walkthrough.
+      </p>
+      <p>
+        The walkthrough starts from the list you already have, adds a
+        dialog for new names, puts trash and pencil on each row, and
+        finishes with the store so Home sees the same array. Reuse the
+        HTML and CSS from earlier chapters for the list itself — the
+        screenshots show the target controls, not a new visual language.
+        You can begin by converting the modules array into local{" "}
+        <code>useState</code>{" "}seeded from{" "}
+        <code>db.modules</code>{" "}and confirm Modules still renders as
+        expected. That local array is enough to prove the dialog and the
+        row buttons; <SectionLink to="4.10.4.4" />{" "}moves it into the
+        store once the controls work.
       </p>
 
       <Section
@@ -30,15 +45,21 @@ export default function KambazModules() {
         title="4.10.4.1 Creating a Module"
       >
         <p>
-          Clicking the red + Module button should open a dialog where you
-          type a name and confirm. That is a small piece of UI state: a{" "}
-          <code>show</code>{" "}boolean plus the draft{" "}
-          <code>moduleName</code> string. Create{" "}
+          Let us create a dialog where users can type the name of a new
+          module. The <code>ModuleEditor</code>{" "}component below pops up
+          when you click the red + Module button on Modules and on Home.
+          You type the name in an input field. As you type,{" "}
+          <code>setModuleName</code>{" "}updates the draft string, and
+          clicking Add Module calls <code>addModule</code>, which
+          actually appends the module, then closes the dialog. That is a
+          small piece of UI state: a <code>show</code>{" "}boolean plus the
+          draft <code>moduleName</code> string. Create{" "}
           <code>ModuleEditor.tsx</code>{" "}as a dialog with these props —{" "}
           <code>show</code>, <code>handleClose</code>,{" "}
           <code>dialogTitle</code>, <code>moduleName</code>,{" "}
           <code>setModuleName</code>, and <code>addModule</code> — and
-          style it with Tailwind:
+          style it with Tailwind overlays and rounded panels. Confirm
+          the dialog appears, accepts a name, and disappears on Cancel.
         </p>
         <CodeBlock
           language="tsx"
@@ -102,12 +123,27 @@ export default function ModuleEditor({
   );
 }`}</CodeBlock>
         <p>
-          The toolbar that already has Collapse All, View Progress, and
-          Publish All should own that dialog. Move those controls into{" "}
-          <code>ModulesControls.tsx</code>. The red + Module button sets{" "}
-          <code>show</code>{" "}to true; Cancel or the × sets it back to
-          false. The target dialog and toolbar look like{" "}
-          <FigureLink to="4.10.4a" />{" "}and <FigureLink to="4.10.4b" />:
+          When <code>show</code>{" "}is false the component returns{" "}
+          <code>null</code>, so the overlay is not in the document. The
+          name input is a controlled field:{" "}
+          <code>value</code>{" "}is <code>moduleName</code>{" "}and{" "}
+          <code>onChange</code>{" "}calls{" "}
+          <code>setModuleName</code>. Add Module runs{" "}
+          <code>addModule</code>{" "}and then{" "}
+          <code>handleClose</code>{" "}so the dialog does not stay open
+          over an empty name. Cancel and the × only close the dialog —
+          they must not append a module.
+        </p>
+        <p>
+          The + Module button was implemented in{" "}
+          <code>ModulesControls</code>{" "}in a prior chapter. Refactor it
+          so that it displays the <code>ModuleEditor</code>{" "}dialog when
+          clicked. The toolbar that already has Collapse All, View
+          Progress, and Publish All should own that dialog. The red +
+          Module button sets <code>show</code>{" "}to true; Cancel or the ×
+          sets it back to false. The target dialog and toolbar look like{" "}
+          <FigureLink to="4.10.4a" />{" "}and{" "}
+          <FigureLink to="4.10.4b" />:
         </p>
         <BookFigure
           sources={[
@@ -170,14 +206,31 @@ export default function ModulesControls({
   );
 }`}</CodeBlock>
         <p>
-          On the Modules page, keep <code>moduleName</code>{" "}in{" "}
-          <code>useState</code>. Pass it, <code>setModuleName</code>, and
-          an <code>addModule</code>{" "}that appends{" "}
-          <code>{`{ name: moduleName, course: courseId }`}</code>{" "}into the
-          store (or into a local array while you are still proving the
-          dialog). After Add Module, clear the name. Confirm the new row
+          <code>ModulesControls</code>{" "}owns only the dialog visibility.
+          The draft name and the function that appends a module stay on
+          the Modules page so the same{" "}
+          <code>addModule</code>{" "}can later call the Zustand store. Pass{" "}
+          <code>moduleName</code>, <code>setModuleName</code>, and{" "}
+          <code>addModule</code>{" "}down as props; the dialog will invoke{" "}
+          <code>setModuleName</code>{" "}when you edit the text field and{" "}
+          <code>addModule</code>{" "}when you click Add Module.
+        </p>
+        <p>
+          On the Modules page, declare a{" "}
+          <code>moduleName</code>{" "}state variable that keeps track of
+          the name edited in the dialog. Keep that string in{" "}
+          <code>useState</code>. Pass it,{" "}
+          <code>setModuleName</code>, and an{" "}
+          <code>addModule</code>{" "}that appends{" "}
+          <code>{`{ name: moduleName, course: courseId }`}</code>{" "}into
+          the store — or into a local array while you are still proving
+          the dialog. After Add Module, clear the name with{" "}
+          <code>{`setModuleName("")`}</code>{" "}so the next open starts
+          blank. Confirm you can add modules. Confirm the new row
           appears on{" "}
-          <Link href="/courses/RS101/modules">/courses/RS101/modules</Link>.
+          <Link href="/courses/RS101/modules">/courses/RS101/modules</Link>{" "}
+          and that it is tagged with that course&apos;s{" "}
+          <code>cid</code>{" "}so RS102 does not show it.
         </p>
         <OnYourOwn>
           Type a module name that includes your initials and add it from
@@ -197,11 +250,14 @@ export default function ModulesControls({
         title="4.10.4.2 Deleting a Module"
       >
         <p>
-          Add a trash icon to{" "}
-          <code>ModuleControlButtons</code>. Pass{" "}
-          <code>deleteModule</code>{" "}and the row&apos;s{" "}
-          <code>moduleId</code>{" "}so the icon can remove that module. The
-          row with a red trash can looks like{" "}
+          To delete modules, add a trash can icon to the{" "}
+          <code>ModuleControlButtons</code>{" "}you implemented in an
+          earlier chapter. Pass a <code>deleteModule</code>{" "}function
+          you can call when clicking the trash can, and also pass the id
+          of the module to be deleted as{" "}
+          <code>moduleId</code>. The icon should be red so it reads as a
+          destructive control next to the green checkmark and the
+          ellipsis. The row with a red trash can looks like{" "}
           <FigureLink to="4.10.4c" />:
         </p>
         <BookFigure
@@ -210,6 +266,14 @@ export default function ModulesControls({
           alt="Module title row with a red trash can among the control icons"
           caption="Figure 4.10.4c — Deleting a module"
         />
+        <p>
+          To practice the row controls, update{" "}
+          <code>ModuleControlButtons</code>{" "}as shown below. The pencil
+          is included here because the next subsection will call{" "}
+          <code>editModule</code>; you can add both icons now so the
+          row matches the screenshot, then wire the pencil in{" "}
+          <SectionLink to="4.10.4.3" />.
+        </p>
         <CodeBlock
           language="tsx"
           name="ModuleControlButtons"
@@ -246,10 +310,14 @@ export default function ModuleControlButtons({
 }`}</CodeBlock>
         <p>
           <code>deleteModule</code>{" "}filters the modules array by{" "}
-          <code>_id</code>. Pass both the function and{" "}
-          <code>module._id</code>{" "}into <code>ModuleControlButtons</code>{" "}
-          from the map. Confirm a trash click removes that module and
-          leaves the others.
+          <code>_id</code>, the same pattern{" "}
+          <code>deleteCourse</code>{" "}used on the dashboard. Pass both
+          the function and <code>module._id</code>{" "}into{" "}
+          <code>ModuleControlButtons</code>{" "}from the map so each row
+          deletes only itself. Confirm a trash click removes that
+          module and leaves the others. Confirm the lessons nested under
+          that module disappear with it, because they rendered as
+          children of the removed row.
         </p>
       </Section>
 
@@ -259,14 +327,18 @@ export default function ModuleControlButtons({
         title="4.10.4.3 Editing a Module"
       >
         <p>
-          The pencil calls <code>editModule(moduleId)</code>, which sets
-          that module&apos;s <code>editing</code>{" "}flag to true. While the
-          flag is false, render the name. While it is true, render a text
-          field bound to <code>updateModule</code>. Pressing Enter sets{" "}
-          <code>editing</code>{" "}back to false so the name shows again.
-          The pencil on the row looks like <FigureLink to="4.10.4d" />;
-          the field that replaces the title looks like{" "}
-          <FigureLink to="4.10.4e" />:
+          In <code>ModuleControlButtons</code>, the pencil icon should
+          call <code>editModule</code>{" "}with the{" "}
+          <code>moduleId</code>{" "}of the module you want to rename.
+          Clicking the icon sets that module&apos;s{" "}
+          <code>editing</code>{" "}flag to true. While the flag is false,
+          render the name. While it is true, render a text field bound
+          to <code>updateModule</code>{" "}so each keystroke writes the new
+          title back into the array. Pressing Enter sets{" "}
+          <code>editing</code>{" "}back to false so the name shows again
+          and the input is hidden. The pencil on the row looks like{" "}
+          <FigureLink to="4.10.4d" />; the field that replaces the
+          title looks like <FigureLink to="4.10.4e" />:
         </p>
         <BookFigure
           sources={[
@@ -285,7 +357,17 @@ export default function ModuleControlButtons({
           ]}
         />
         <p>
-          In the Modules map, the title is no longer a plain string:
+          On the Modules page, implement{" "}
+          <code>editModule</code>{" "}and <code>updateModule</code>.{" "}
+          <code>editModule</code>{" "}maps the array and sets{" "}
+          <code>editing: true</code>{" "}on the matching id so the input
+          can appear. <code>updateModule</code>{" "}accepts a whole module
+          object and replaces the corresponding object in the array, which
+          is how the input writes the new name and how Enter clears the
+          flag. Pass <code>editModule</code>{" "}to{" "}
+          <code>ModuleControlButtons</code>{" "}so the pencil can turn the
+          flag on. In the Modules map, the title is no longer a plain
+          string:
         </p>
         <CodeBlock language="tsx">{`title={
   module.editing ? (
@@ -304,10 +386,17 @@ export default function ModuleControlButtons({
   )
 }`}</CodeBlock>
         <p>
-          Confirm you can rename a module, press Enter, and see the new
-          name on both Modules and Home — once the store in{" "}
-          <SectionLink to="4.10.4.4" />{" "}is in place. Until then the edit
-          only lives on this page.
+          If <code>module.editing</code>{" "}is not set, the module name
+          is displayed. If the pencil was clicked, the name is replaced
+          by an input whose <code>defaultValue</code>{" "}is the current
+          name. Each <code>onChange</code>{" "}spreads the module and
+          overwrites <code>name</code>. If the Enter key is pressed,{" "}
+          <code>editing</code>{" "}is set to false, the input is hidden,
+          and the name is shown again. Confirm you can edit the names of
+          the modules. Confirm you can rename a module, press Enter, and
+          see the new name on both Modules and Home — once the store in{" "}
+          <SectionLink to="4.10.4.4" />{" "}is in place. Until then the
+          edit only lives on this page.
         </p>
       </Section>
 
@@ -317,14 +406,31 @@ export default function ModuleControlButtons({
         title="4.10.4.4 A Modules Store"
       >
         <p>
-          Local <code>useState</code>{" "}on Modules cannot update Home,
-          because Home is a different screen and does not sit under that
-          component. Move the array into Zustand the same way courses
-          moved in{" "}
-          <SectionLink to="4.10.1" />. Seed from{" "}
-          <code>modules.json</code>. Export{" "}
+          The Modules component seems to be working. You can create new
+          modules, edit modules, and remove modules, but those new
+          modules and edits cannot be used outside the confines of the
+          Modules component even though you want to display the same
+          list elsewhere, such as the Home screen. You could use the
+          same approach as an early Dashboard sketch, by moving the
+          state variables and functions to a higher-level component that
+          could share the state. Instead we will use a Zustand store so
+          you practice application-level state the same way courses
+          moved in <SectionLink to="4.10.1" />. The PDF implemented
+          these four functions as a modules reducer and then wrapped
+          every call with <code>dispatch</code>; the store below keeps
+          the same operations as named functions on the hook.
+        </p>
+        <p>
+          Seed from <code>modules.json</code>. Export{" "}
           <code>addModule</code>, <code>deleteModule</code>,{" "}
-          <code>updateModule</code>, and <code>editModule</code>:
+          <code>updateModule</code>, and <code>editModule</code> —
+          reimplemented so each one calls{" "}
+          <code>set</code>{" "}with a new <code>modules</code>{" "}array.
+          To practice the store, create{" "}
+          <code>app/(kambaz)/store/modulesStore.ts</code>{" "}as shown
+          below. Confirm the file compiles and that the initial array is
+          the same seed Modules already filtered by{" "}
+          <code>cid</code>.
         </p>
         <CodeBlock
           language="tsx"
@@ -381,11 +487,30 @@ export const useModulesStore = create<{
     })),
 }));`}</CodeBlock>
         <p>
-          The Modules page then keeps only the draft name in{" "}
-          <code>useState</code>. Filter the store by <code>cid</code>,
-          pass store functions into <code>ModulesControls</code>{" "}and{" "}
-          <code>ModuleControlButtons</code>, and Home updates for free
-          because it already renders <code>Modules</code>.
+          <code>addModule</code>{" "}builds a new object with a generated{" "}
+          <code>_id</code>, an empty lessons array, and the{" "}
+          <code>name</code>{" "}and <code>course</code>{" "}from the
+          dialog. <code>deleteModule</code>{" "}filters by id.{" "}
+          <code>updateModule</code>{" "}replaces the object whose{" "}
+          <code>_id</code>{" "}matches. <code>editModule</code>{" "}only
+          flips <code>editing</code>{" "}to true so the input appears;
+          saving the name is still{" "}
+          <code>updateModule</code>.
+        </p>
+        <p>
+          Reimplement Modules by removing the local modules array and
+          the local add, delete, update, and edit helpers, and replacing
+          them with store selectors. The page then keeps only the draft
+          name in <code>useState</code>. Filter the store by{" "}
+          <code>cid</code>, pass store functions into{" "}
+          <code>ModulesControls</code>{" "}and{" "}
+          <code>ModuleControlButtons</code>, and wrap each add so it
+          also clears <code>moduleName</code>. Home updates for free
+          because it already renders <code>Modules</code>. Confirm you
+          can still add, remove, and edit modules as before. Also
+          confirm the modules still work on the Home screen: add a
+          module on Modules, switch to Home without reloading, and
+          confirm the new row is there.
         </p>
         <OnYourOwn>
           Add a module on Modules, switch to Home without reloading, and
