@@ -14,6 +14,14 @@ export {
   getAnswerRevealPhase,
   getQuizSchedule,
 } from "./schedule";
+export type { QuizTakeOverrideMode } from "./schedule";
+export {
+  COURSE_SECTION_IDS,
+  activeTakeOverride,
+  describeTakeAccess,
+  takeOverrideForRosterSection,
+} from "./access-override";
+export type { QuizAccessOverrideView } from "./access-override";
 export { STUDENT_COPY } from "./student-copy";
 export { runExamSubmit, rosterGateMessage } from "./submit";
 export type {

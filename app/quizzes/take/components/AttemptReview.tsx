@@ -3,6 +3,7 @@ import {
   formatEasternDateTime,
   type QuizPhase,
   type QuizSchedule,
+  type QuizTakeOverrideMode,
 } from "@/lib/quiz-exam/schedule";
 import { formatStudentResponse } from "@/lib/quiz-exam/review";
 import type { GradedAnswer, StudentQuestion } from "@/lib/quiz-exam/types";
@@ -12,12 +13,14 @@ export function WindowBanner({
   schedule,
   phase,
   now,
+  takeOverride,
 }: {
   schedule: QuizSchedule;
   phase: QuizPhase;
   now?: Date;
+  takeOverride?: QuizTakeOverrideMode | null;
 }) {
-  const copy = answerWindowCopy(schedule, phase, now);
+  const copy = answerWindowCopy(schedule, phase, now, takeOverride);
   const toneClass =
     copy.tone === "ok"
       ? "border-emerald-600 bg-emerald-50 text-emerald-950"

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import StatusPanel from "../../components/StatusPanel";
 import { isQuizTakingConfigured } from "@/lib/config";
+import { loadTakeOverrideForRoster } from "@/lib/quiz-exam/access-overrides";
 import { findLatestQuizAttempt } from "@/lib/quiz-exam/attempts";
 import {
   drawOnePerGroup,
@@ -34,6 +35,7 @@ import {
 } from "@/lib/roster/view-mode";
 import { SubmittedAttemptView, WindowBanner } from "../components/AttemptReview";
 import ExamForm from "../components/ExamForm";
+import QuizAccessOverrides from "../components/QuizAccessOverrides";
 
 export const dynamic = "force-dynamic";
 
@@ -114,34 +116,44 @@ export default async function TakeExamPage({ params }: PageProps) {
 
   if (roster.status === "empty") {
     return (
-      <StatusPanel title="Canvas roster has not been loaded" tone="warn">
-        <p>
-          You are signed in, but this course has no roster yet. Graded
-          attempts are disabled until the instructor imports Canvas student
-          emails.
-        </p>
-      </StatusPanel>
+      <article>
+        <StatusPanel title="Canvas roster has not been loaded" tone="warn">
+          <p>
+            You are signed in, but this course has no roster yet. Graded
+            attempts are disabled until the instructor imports Canvas student
+            emails.
+          </p>
+        </StatusPanel>
+        <QuizAccessOverrides quizId={quizId} />
+      </article>
     );
   }
 
   if (roster.status === "not_on_roster" || roster.status === "not_configured") {
     return (
-      <StatusPanel title={STUDENT_COPY.notOnRosterTitle} tone="warn">
-        <p>{STUDENT_COPY.notOnRosterPage}</p>
-        <p>
-          If that still fails, ask the instructor to refresh the roster.
-        </p>
-      </StatusPanel>
+      <article>
+        <StatusPanel title={STUDENT_COPY.notOnRosterTitle} tone="warn">
+          <p>{STUDENT_COPY.notOnRosterPage}</p>
+          <p>
+            If that still fails, ask the instructor to refresh the roster.
+          </p>
+        </StatusPanel>
+        <QuizAccessOverrides quizId={quizId} />
+      </article>
     );
   }
 
   const now = new Date();
   const schedule = getQuizSchedule(quizId);
+  const takeOverride = await loadTakeOverrideForRoster(
+    quizId,
+    roster.entry.section,
+  );
   const attempt = impersonating
     ? null
     : await findLatestQuizAttempt(user.id, quizId);
   const phase = schedule
-    ? getAnswerRevealPhase(schedule, now, Boolean(attempt))
+    ? getAnswerRevealPhase(schedule, now, Boolean(attempt), takeOverride)
     : attempt
       ? "submitted_waiting"
       : "take_open";
@@ -213,13 +225,19 @@ export default async function TakeExamPage({ params }: PageProps) {
         </>
       ) : schedule ? (
         <div className="mt-4">
-          <WindowBanner schedule={schedule} phase="take_closed" now={now} />
+          <WindowBanner
+            schedule={schedule}
+            phase="take_closed"
+            now={now}
+            takeOverride={takeOverride}
+          />
         </div>
       ) : (
         <StatusPanel title="This quiz is not open" tone="warn">
           <p>No class-wide take window is configured for this quiz.</p>
         </StatusPanel>
       )}
+      <QuizAccessOverrides quizId={quizId} />
     </article>
   );
 }
