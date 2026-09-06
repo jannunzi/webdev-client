@@ -22,8 +22,12 @@ export default function StylingAndComponents() {
       <Section id="sec-3-5" title="3.5 Dynamic Styling">
         <p>
           <ChapterLink to={2} />{" "}styled tags with CSS files and Tailwind
-          classes; now JavaScript can choose those classes, or a style
-          object, at render time so the look follows the data.
+          classes. React can generate content dynamically based on
+          algorithms written in JavaScript, and we can also dynamically
+          style that content by programmatically controlling the classes
+          and styles applied to it so the look follows the data. In the
+          next couple of exercises we first learn to work with classes and
+          then with styles.
         </p>
 
         <Section
@@ -32,10 +36,13 @@ export default function StylingAndComponents() {
           title="3.5.1 Working with HTML Classes"
         >
           <p>
-            Start with static classes, then build the class name from a
-            variable, then pick a class with a ternary. Create{" "}
-            <code>Classes.css</code>{" "}and <code>Classes.tsx</code>{" "}in{" "}
-            <code>app/labs/lab3</code>:
+            Let&apos;s start practicing simple things, like classes and
+            styles. Start with static classes, then build the class name
+            from a variable, then pick a class with a ternary. Under the{" "}
+            <code>app/labs/lab3</code>{" "}folder, create a new component{" "}
+            <code>Classes</code>{" "}with a matching styling file. From the
+            Lab 3 component, import the new <code>Classes</code>{" "}
+            component and confirm it renders as shown:
           </p>
           <CodeBlock
             language="css"

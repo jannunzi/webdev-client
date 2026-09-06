@@ -227,10 +227,20 @@ export default function JsBasics() {
 
       <Section level={3} id="sec-3-2-4" title="3.2.4 Conditionals">
         <p>
-          A predicate is an expression that evaluates to true or false, and
-          an <code>if</code>/<code>else</code>{" "}chooses which block to
-          run — though in JSX you more often embed that choice in the tree
-          itself. Create <code>IfElse.tsx</code>:
+          Conditional expressions allow scripts to make decisions based on
+          predicates that compare values and variables. Scripts can decide
+          to execute different parts of the code based on the result of
+          these predicates using <code>if</code>/<code>else</code>{" "}and
+          other constructs. The most common use is an{" "}
+          <code>if</code>/<code>else</code>{" "}that evaluates a predicate
+          and then runs one of two code blocks depending on whether the
+          predicate is true or false — though in JSX you more often embed
+          that choice in the tree itself. To practice with{" "}
+          <code>if</code>/<code>else</code>, create a component called{" "}
+          <code>IfElse</code>{" "}based on the code shown below. Import it
+          into Lab 3 and confirm it renders a section labeled If Else as
+          shown. The <code>true1</code>{" "}paragraph is only rendered if{" "}
+          <code>true1</code>{" "}is true:
         </p>
         <CodeBlock
           language="tsx"

@@ -27,14 +27,21 @@ export default function DataStructures() {
   return (
     <Section id="sec-3-4" title="3.4 JavaScript Data Structures">
       <p>
-        Numbers, strings, and booleans can be combined into arrays and
-        objects that group values of different types — an array gathers
-        them into a single variable, an object names each one — and those
-        are the structures Kambaz will use for courses, modules, and
-        people. Mixing primitive types in one array is legal but rarely
-        useful; gathering JSX elements is something you will do often, so
-        a todo list can render as HTML. Create{" "}
-        <code>SimpleArrays.tsx</code>:
+        Up to this point we have been discussing primitive datatypes such
+        as strings, numbers, and booleans. These can be combined into
+        complex datatypes such as arrays and objects — an array gathers
+        several values into a single variable, an object names each one —
+        and those are the structures Kambaz will use for courses, modules,
+        and people. Arrays can group values of the same datatype, such as
+        number arrays and string arrays, or even a mix of datatypes in the
+        same array, though you would rarely want a mixed list of
+        primitives. Gathering JSX elements is something you will do often,
+        so a todo list can render as HTML. To practice with arrays, create
+        a component called <code>SimpleArrays</code>{" "}and copy the code
+        below. Import the component into Lab 3 and confirm the browser
+        renders as shown. Note that the arrays render without the commas;
+        this feature will come in handy when the array items are HTML
+        elements.
       </p>
       <CodeBlock
         language="tsx"
@@ -102,11 +109,14 @@ export default function DataStructures() {
         title="3.4.1 Array Index and Length"
       >
         <p>
-          Once values live in an array, <code>length</code>{" "}tells you how
-          many items it holds, and <code>indexOf(value)</code>{" "}tells you
-          where a particular value sits — the first matching index, or{" "}
-          <code>-1</code>{" "}if it is missing. Create{" "}
-          <code>ArrayIndexAndLength.tsx</code>:
+          An array&apos;s length is available as the property{" "}
+          <code>length</code>. The <code>indexOf()</code>{" "}function finds
+          where a particular array member sits — the first matching index,
+          or <code>-1</code>{" "}if that value is missing. To practice with
+          array indices and length, implement a new component called{" "}
+          <code>ArrayIndexAndLength</code>{" "}based on the code below. Import
+          this new component in Lab 3 and confirm the browser renders as
+          shown:
         </p>
         <CodeBlock
           language="tsx"
@@ -155,11 +165,15 @@ export default function DataStructures() {
         title="3.4.2 Adding and Removing From Arrays"
       >
         <p>
-          Unlike many languages, JavaScript arrays grow and shrink as you
-          work: <code>push</code>{" "}appends a value at the end, and{" "}
-          <code>splice(start, deleteCount)</code>{" "}removes items at an
-          index or inserts new ones there. Create{" "}
-          <code>AddingAndRemovingToFromArrays.tsx</code>:
+          In most languages arrays are immutable, whereas in JavaScript
+          elements can easily be added and removed from arrays. The{" "}
+          <code>push()</code>{" "}function appends elements at the end of an
+          array. The <code>splice()</code>{" "}function removes or adds
+          elements anywhere in the array. To practice adding and removing
+          data from arrays, implement component{" "}
+          <code>AddingAndRemovingToFromArrays</code>{" "}based on the code
+          below. Import this new component in Lab 3 and confirm the
+          browser renders as shown:
         </p>
         <CodeBlock
           language="tsx"
@@ -217,10 +231,13 @@ export default function DataStructures() {
 
       <Section level={3} id="sec-3-4-3" title="3.4.3 For Loops">
         <p>
-          A <code>for</code>{" "}loop visits every index and is useful when you
-          need the position as well as the value. Build a new array
-          inside the loop rather than mutating the source. Create{" "}
-          <code>ForLoops.tsx</code>:
+          We can operate on each array value by iterating over them in a{" "}
+          <code>for</code>{" "}loop, which is useful when you need the
+          position as well as the value. Build a new array inside the loop
+          rather than mutating the source. To practice with for loops,
+          implement a new component called <code>ForLoops</code>{" "}based on
+          the code below. Import this new component in Lab 3 and confirm
+          the browser renders as shown:
         </p>
         <CodeBlock
           language="tsx"
@@ -263,10 +280,21 @@ export default function DataStructures() {
 
       <Section level={3} id="sec-3-4-4" title="3.4.4 Map Function">
         <p>
-          <code>map</code>{" "}is the loop you will actually write in React: it
-          walks an array, applies a function to each item, and returns a{" "}
-          <em>new</em>{" "}array of the results. Create{" "}
-          <code>MapFunction.tsx</code>:
+          An array&apos;s <code>map</code>{" "}function can iterate over an
+          array&apos;s values, apply a function to each value, and collate
+          all the results in a <em>new</em>{" "}array. The first example below
+          iterates over <code>numberArray1</code>{" "}and calls the{" "}
+          <code>square</code>{" "}function for each element. The{" "}
+          <code>square</code>{" "}function accepts a parameter and returns the
+          square of that parameter, and <code>map</code>{" "}collates all the
+          squares into a new array called <code>squares</code>. The second
+          example does the same thing, but uses an implied-return arrow
+          that calculates the cubes of all numbers in the same{" "}
+          <code>numberArray1</code>. Mapping to JSX is how Kambaz will
+          turn a courses array into cards. To practice with{" "}
+          <code>map</code>, implement a new component called{" "}
+          <code>MapFunction</code>{" "}based on the code below. Import this
+          new component in Lab 3 and confirm the browser renders as shown:
         </p>
         <CodeBlock
           language="tsx"
@@ -321,10 +349,18 @@ export default function DataStructures() {
 
       <Section level={3} id="sec-3-4-5" title="3.4.5 Find Function">
         <p>
-          <code>find</code>{" "}returns the <em>first</em>{" "}element whose
-          predicate is true, or <code>undefined</code>{" "}if none match — the
-          predicate is an arrow that receives the current item. Create{" "}
-          <code>FindFunction.tsx</code>:
+          An array&apos;s <code>find</code>{" "}function can search for an
+          item in an array and return the element it finds, or{" "}
+          <code>undefined</code>{" "}if none match. The <code>find</code>{" "}
+          function takes a function as an argument that serves as a
+          predicate. The predicate should return true if the element is
+          the one you&apos;re looking for. The predicate function is
+          invoked for each of the elements in the array, and when the
+          function returns true, <code>find</code>{" "}stops because it has
+          found the element it was looking for. To practice, implement a
+          new component called <code>FindFunction</code>{" "}based on the
+          code below. Import this new component in Lab 3 and confirm the
+          browser renders as shown:
         </p>
         <CodeBlock
           language="tsx"
@@ -365,9 +401,11 @@ export default function DataStructures() {
 
       <Section level={3} id="sec-3-4-6" title="3.4.6 Find Index">
         <p>
-          <code>findIndex</code>{" "}is <code>find</code>{" "}that returns a
-          position instead of the element — or <code>-1</code>{" "}when the
-          predicate never matches. Create <code>FindIndex.tsx</code>:
+          Alternatively we can use the <code>findIndex</code>{" "}function to
+          determine the index where an element is located inside an array,
+          or <code>-1</code>{" "}when the predicate never matches. Copy the
+          code below into a <code>FindIndex</code>{" "}component, import it
+          in Lab 3, and confirm the browser renders as shown:
         </p>
         <CodeBlock
           language="tsx"
@@ -411,10 +449,17 @@ export default function DataStructures() {
 
       <Section level={3} id="sec-3-4-7" title="3.4.7 Filter Function">
         <p>
-          <code>filter</code>{" "}keeps every item whose predicate is true and
-          returns them as a new array — the tool Kambaz will use to show
-          only the modules (or assignments, or people) for the current
-          course. Create <code>FilterFunction.tsx</code>:
+          The <code>filter</code>{" "}function can look for elements that meet
+          a criteria and collate them into a new array. For instance, the
+          example below looks through the <code>numberArray1</code>{" "}array
+          for all values that are greater than 2. Then we look for all
+          even numbers and then for all odd numbers. All the results are
+          stored in corresponding arrays with appropriate names. Kambaz
+          will use the same tool to show only the modules, assignments, or
+          people for the current course. To practice, implement a new
+          component called <code>FilterFunction</code>{" "}based on the code
+          below. Import this new component in Lab 3 and confirm the
+          browser renders as shown:
         </p>
         <CodeBlock
           language="tsx"
@@ -465,8 +510,10 @@ export default function DataStructures() {
           <code>includes(value)</code>{" "}asks whether the value is present,{" "}
           <code>some(predicate)</code>{" "}whether <em>at least one</em>{" "}
           item passes, and <code>every(predicate)</code>{" "}whether{" "}
-          <em>all</em>{" "}items pass. Create{" "}
-          <code>IncludesSomeEvery.tsx</code>:
+          <em>all</em>{" "}items pass. To practice, implement a new
+          component called <code>IncludesSomeEvery</code>{" "}based on the
+          code below. Import this new component in Lab 3 and confirm the
+          browser renders as shown:
         </p>
         <CodeBlock
           language="tsx"
@@ -522,7 +569,10 @@ export default function DataStructures() {
           total, a concatenated string, a grouped object. The callback
           receives the accumulator and the current item; the second
           argument to <code>reduce</code>{" "}is the starting accumulator.
-          Create <code>ReduceFunction.tsx</code>:
+          To practice, implement a new component called{" "}
+          <code>ReduceFunction</code>{" "}based on the code below. Import
+          this new component in Lab 3 and confirm the browser renders as
+          shown:
         </p>
         <CodeBlock
           language="tsx"
@@ -563,13 +613,20 @@ export default function DataStructures() {
 
       <Section level={3} id="sec-3-4-10" title="3.4.10 JSON Stringify">
         <p>
-          <strong>JSON</strong>, short for JavaScript Object Notation, is
-          the text format APIs and files use to ship data, and the global{" "}
-          <code>JSON</code>{" "}object turns a value into that text with{" "}
-          <code>stringify</code>{" "}and reads it back with{" "}
-          <code>parse</code>. JSX prints arrays without brackets or
-          commas; <code>JSON.stringify</code>{" "}puts them back so you can
-          see the real structure. Create <code>JsonStringify.tsx</code>:
+          JavaScript has a global object called <strong>JSON</strong>,
+          which stands for JavaScript Object Notation — the text format
+          APIs and files use to ship data. The object provides several
+          useful formatting functions such as <code>stringify()</code>{" "}
+          and <code>parse()</code>. <code>stringify()</code>{" "}converts
+          JavaScript data structures to formatted strings;{" "}
+          <code>parse()</code>{" "}reads that text back into a value. JSX
+          prints arrays without brackets or commas;{" "}
+          <code>JSON.stringify</code>{" "}puts them back so you can see the
+          real structure — the array rendered with square brackets and
+          items separated by commas. To practice, implement a new
+          component called <code>JsonStringify</code>{" "}based on the code
+          below. Import this new component in Lab 3 and confirm the
+          browser renders as shown:
         </p>
         <CodeBlock
           language="tsx"
@@ -607,11 +664,25 @@ export default function DataStructures() {
         title="3.4.11 JavaScript Objects"
       >
         <p>
-          Where an array groups values by position, an{" "}
-          <strong>object</strong> groups named properties whose values can
-          themselves be numbers, strings, arrays, or nested objects, written
-          as curly braces around <code>key: value</code>{" "}pairs — an
-          object literal. Create <code>House.tsx</code>:
+          Multiple values of various datatypes can be combined together to
+          create complex datatypes called <strong>objects</strong>. For
+          example the code below declares a house object collecting
+          several numbers, strings, arrays, and other objects to represent
+          a particular instance of a house. The <code>house</code>{" "}
+          variable is assigned an object literal declared within opening
+          and closing curly braces <code>{"{"}</code>{" "}and{" "}
+          <code>{"}"}</code>. Objects contain pairs of properties and
+          values separated by commas. Values can be of any datatype
+          including Number, String, Boolean, arrays, and other objects. In
+          the example below we declared a house with 4{" "}
+          <code>bedrooms</code>, 2.5 <code>bathrooms</code>, and 2000{" "}
+          <code>squareFeet</code>. The house has a nested object stored in
+          property <code>address</code>{" "}which contains String properties
+          such as <code>street</code>, <code>city</code>, and{" "}
+          <code>state</code>. The <code>owners</code>{" "}String array
+          declares the names of the owners. To practice with objects,
+          create a <code>House</code>{" "}component as shown below, import
+          it into the Lab 3 component, and confirm it renders as shown:
         </p>
         <CodeBlock
           language="tsx"
@@ -737,12 +808,29 @@ export default function DataStructures() {
         title="3.4.13 Spread Operator"
       >
         <p>
-          The spread operator <code>...</code>{" "}copies the items of an array
-          (or the properties of an object) into a new literal. Later
-          properties win if a name collides — that is how you clone an
-          object and override one field. Create <code>Spreader.tsx</code>{" "}
-          (the function inside is named <code>Spreading</code>, matching the
-          lab file):
+          The spread operator <code>...</code>{" "}is used to expand, or copy,
+          an iterable object or array into another object or array. In the
+          example below we declare array <code>arr1</code>{" "}and then copy
+          its content (spread) into array <code>arr2</code>. The resulting
+          array <code>arr2</code>{" "}contains the contents of{" "}
+          <code>arr1</code>, followed by the rest of the items already
+          declared in <code>arr2</code>. The spread operator can also be
+          applied to objects. Below, <code>obj1</code>{" "}declares an object
+          with three properties <code>a</code>, <code>b</code>, and{" "}
+          <code>c</code>. We then spread <code>obj1</code>{" "}onto{" "}
+          <code>obj2</code>{" "}so that <code>obj2</code>{" "}ends up with the
+          properties from both <code>obj1</code>{" "}and{" "}
+          <code>obj2</code>. When declaring <code>obj3</code>, we first
+          spread <code>obj1</code>{" "}and then declare <code>b</code>{" "}with
+          a value of 4. Since <code>obj1</code>{" "}also has a property
+          called <code>b</code>{" "}with a value of <code>2</code>, there is
+          a collision of properties in <code>obj3</code>. The collision is
+          resolved by keeping the last declaration, so{" "}
+          <code>obj3.b</code>{" "}ends up being <code>4</code>. To practice
+          the spread operator, create the <code>Spreader</code>{" "}
+          component as shown below — the function inside is named{" "}
+          <code>Spreading</code>, matching the lab file — import it in the
+          Lab 3 component, and confirm it renders as shown:
         </p>
         <CodeBlock
           language="tsx"
@@ -796,12 +884,31 @@ export default function DataStructures() {
 
       <Section level={3} id="sec-3-4-14" title="3.4.14 Destructing">
         <p>
-          Spread copies properties or items <em>outward</em>{" "}into a new object
-          or array; <strong>destructuring</strong> unpacks{" "}
-          <em>inward</em>: object properties by name, array items by position.
-          The lab file is named <code>Destructing.tsx</code>{" "}— the spelling used
-          in the original assignment — but the operation in prose is
-          destructuring. Create that component:
+          While the spread operator is used to expand an iterable object
+          into a new object or array, the <strong>destructing</strong>{" "}
+          operator unpacks values from arrays, or properties from objects,
+          into distinct variables. The lab file is named{" "}
+          <code>Destructing.tsx</code>{" "}— the spelling used in the original
+          assignment — but the operation in prose is destructuring. In the
+          example below we declare object <code>person</code>{" "}and array{" "}
+          <code>numbers</code>. These can be unpacked, or destructed, into
+          new variables or constants by an object&apos;s property name or
+          an array&apos;s item position. The curly brackets around
+          constants <code>name</code>{" "}and <code>age</code>{" "}destruct the
+          object <code>person</code>{" "}on the right side of the assignment
+          and assign the properties of the same name into the new
+          constants, so <code>name</code>{" "}and <code>age</code>{" "}end up
+          with the values of <code>person.name</code>{" "}and{" "}
+          <code>person.age</code>. While object destructing is based on
+          the names of the properties, destructing arrays is based on the
+          positions of the items: the square brackets unpack{" "}
+          <code>numbers</code>{" "}into <code>first</code>,{" "}
+          <code>second</code>, and <code>third</code>, which end up with
+          the values of <code>numbers[0]</code>, <code>numbers[1]</code>,
+          and <code>numbers[2]</code>. To practice destructing objects and
+          arrays, create component <code>Destructing</code>{" "}as shown
+          below, import it in the Lab 3 component, and confirm it renders
+          as shown:
         </p>
         <CodeBlock
           language="tsx"
@@ -864,9 +971,24 @@ export default function DataStructures() {
         title="3.4.15 Function Destructing"
       >
         <p>
-          React components receive props as one object. Destructuring that
+          The destructing-objects syntax is very popular in React,
+          especially when passing parameters to functions. React
+          components receive props as one object, and destructuring that
           object in the parameter list is the usual way to name each prop.
-          Create <code>FunctionDestructing.tsx</code>:
+          In the example below we declare two functions{" "}
+          <code>add</code>{" "}and <code>subtract</code>{" "}using the new
+          arrow function syntax. The <code>add</code>{" "}function takes two
+          arguments <code>a</code>{" "}and <code>b</code>{" "}and returns the
+          sum of the arguments. The <code>subtract</code>{" "}function takes
+          a single object argument with properties <code>a</code>{" "}and{" "}
+          <code>b</code>{" "}with values 4 and 2. In the argument list
+          declaration, <code>subtract</code>{" "}uses object destructing to
+          declare constants <code>a</code>{" "}and <code>b</code>{" "}which
+          unpack the values 4 and 2 from the object argument with
+          properties of the same name. To practice function destructing,
+          copy the code below into a <code>FunctionDestructing</code>{" "}
+          component, import it into the Lab 3 component, and confirm it
+          renders as shown:
         </p>
         <CodeBlock
           language="tsx"
@@ -938,10 +1060,31 @@ export default function DataStructures() {
         title="3.4.16 Destructing Imports"
       >
         <p>
-          Modules export values; importers unpack them. Build a tiny{" "}
-          <code>Math.ts</code>{" "}library with named exports and a default
-          object, then import it three ways in{" "}
-          <code>DestructingImports.tsx</code>:
+          Let&apos;s create a simple library to illustrate various ways of
+          importing the functions and constants declared in the{" "}
+          <code>Math</code>{" "}library below. The functions{" "}
+          <code>add</code>, <code>subtract</code>, <code>multiply</code>,
+          and <code>divide</code>{" "}are all exported with the{" "}
+          <code>export</code>{" "}keyword so that they can be imported
+          individually. The <code>Math</code>{" "}constant declares an object
+          containing references to the local functions. We export the{" "}
+          <code>Math</code>{" "}object as the default export so that the
+          functions can be imported as a single object map. To demonstrate
+          how the functions can be imported in several ways, create the{" "}
+          <code>DestructingImports</code>{" "}component below. First, the
+          functions can be imported as the single <code>Math</code>{" "}
+          object that contains references to all the functions as{" "}
+          <code>{`import Math from "./Math"`}</code>, then accessed as{" "}
+          <code>Math.add()</code>, <code>Math.subtract()</code>, and so
+          on. An alternative is <code>{`import * as Matematica from "./Math"`}</code>,
+          where <code>Matematica</code>{" "}is a custom local object name, so
+          you invoke <code>Matematica.add()</code>{" "}and{" "}
+          <code>Matematica.subtract()</code>. Finally, the functions can
+          be imported individually by destructing the exported functions as{" "}
+          <code>{`import { add, subtract, multiply, divide } from "./Math"`}</code>.
+          Implement the <code>Math.ts</code>{" "}library and the{" "}
+          <code>DestructingImports</code>{" "}component, import them in Lab
+          3, and confirm the table renders as shown:
         </p>
         <CodeBlock
           language="ts"
