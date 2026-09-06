@@ -16,19 +16,13 @@ function TermItem({ slug }: { slug: string }) {
   );
 }
 
-function ExternalItem({
-  item,
-  withDescription,
-}: {
-  item: ExternalLink;
-  withDescription?: boolean;
-}) {
-  const extra = withDescription ? item.description : item.note;
+function ExternalItem({ item }: { item: ExternalLink }) {
+  const extra = item.description ?? item.note;
   return (
     <li>
-      <a href={item.href} target="_blank" rel="noreferrer">
+      <OfficialLink href={item.href} term={item.term}>
         {item.name}
-      </a>
+      </OfficialLink>
       {extra ? <> — {extra}</> : null}
     </li>
   );
@@ -78,7 +72,7 @@ export default function ChapterEndMatter({
         <p>{aiTools.lead}</p>
         <ul>
           {aiTools.items.map((item) => (
-            <ExternalItem key={item.href} item={item} withDescription />
+            <ExternalItem key={item.href} item={item} />
           ))}
         </ul>
       </Section>

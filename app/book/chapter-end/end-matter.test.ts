@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { getTerm } from "../terms/termRegistry.ts";
-import { termSlug } from "../terms/termSlug.ts";
-import { chapterEndToc } from "./types.ts";
-import { DESIGN_AI_TOOLS } from "./catalog.ts";
+import { termPageHref, termSlug } from "../terms/termSlug.ts";
+import { chapterEndToc, endMatterTermName } from "./types.ts";
+import { AI, DESIGN_AI_TOOLS, TOOL } from "./catalog.ts";
 import { ch1EndMatter } from "../ch1/end-matter.ts";
 import { ch2EndMatter } from "../ch2/end-matter.ts";
 import { ch3EndMatter } from "../ch3/end-matter.ts";
@@ -74,14 +74,12 @@ describe("chapter end matter", () => {
     assert.ok(!ch6EndMatter.references.items.includes("usestate"));
   });
 
-  it("uses https official and AI-tool URLs with one-sentence blurbs", () => {
+  it("uses https official URLs and one-sentence blurbs on Tools and AI Tools", () => {
     for (const chapter of CHAPTERS) {
       assert.ok(chapter.tools.items.length > 0);
       assert.ok(chapter.aiTools.items.length > 0);
       for (const item of [...chapter.tools.items, ...chapter.aiTools.items]) {
         assert.match(item.href, /^https:\/\//);
-      }
-      for (const item of chapter.aiTools.items) {
         assert.ok(item.description && item.description.length > 20);
         assert.ok(!item.description.includes("\n"));
       }
@@ -96,5 +94,36 @@ describe("chapter end matter", () => {
         item.href.includes("mongodb.com/docs/compass"),
       ),
     );
+  });
+
+  it("resolves every Tools and AI Tools entry to a registered term page", () => {
+    for (const chapter of CHAPTERS) {
+      for (const item of [...chapter.tools.items, ...chapter.aiTools.items]) {
+        const label = endMatterTermName(item);
+        const slug = termSlug(label);
+        const entry = getTerm(slug);
+        assert.ok(
+          entry,
+          `missing term for "${item.name}" (slug "${slug}") in ch${chapter.chapter}`,
+        );
+        const href = termPageHref(item.href, label, entry, { term: item.term });
+        assert.match(href, new RegExp(`^/book/terms/${slug}(?:\\?|$)`));
+      }
+    }
+  });
+
+  it("reuses existing term slugs instead of forking CSS, JS, or Route Handlers", () => {
+    assert.equal(termSlug(endMatterTermName(TOOL.css)), "css");
+    assert.equal(termSlug(endMatterTermName(TOOL.javascript)), "javascript");
+    assert.equal(termSlug(endMatterTermName(TOOL.routeHandlers)), "route-handlers");
+    assert.equal(termSlug(endMatterTermName(TOOL.react)), "react");
+    assert.equal(termSlug(endMatterTermName(TOOL.next)), "next-js");
+    assert.equal(termSlug(endMatterTermName(TOOL.node)), "node-js");
+    assert.equal(termSlug(endMatterTermName(TOOL.mongodb)), "mongodb");
+    assert.equal(termSlug(endMatterTermName(AI.cursor)), "cursor");
+    assert.equal(termSlug(endMatterTermName(AI.claude)), "claude");
+    assert.equal(endMatterTermName(TOOL.css), "CSS");
+    assert.equal(endMatterTermName(TOOL.javascript), "JavaScript");
+    assert.equal(endMatterTermName(TOOL.routeHandlers), "Route Handlers");
   });
 });
