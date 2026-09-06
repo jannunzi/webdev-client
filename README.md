@@ -281,26 +281,28 @@ Updating those assignment HTML descriptions is a follow-up package.
 Quiz fallback QTI for package -21 is generated here
 (`scripts/canvas-fallback/`) for Shakespeare to pack from `canvas-fall`.
 
-## Lectures hub
+## Slides hub
 
-`/lectures` groups decks by book chapter and topic (Intro, Setup, HTML,
-Kambaz HTML, CSS fundamentals, with room for Tailwind and Kambaz styling).
-`canvasLecture` stays on each deck as a Canvas mapping badge only. Each
-`/lectures/[slug]` page is a keyboard-driven slide deck. Slugs are
+`/slides` groups decks by book chapter and numbered book section (the same
+spine as the course book). `/lectures` and `/lectures/[slug]` redirect to
+`/slides`. `canvasLecture` stays on each deck as a Canvas mapping badge only.
+Each `/slides/[slug]` page is a keyboard-driven slide deck. Slugs are
 unchanged — see `LECTURE_SLUGS` in `lib/lectures/types.ts`.
 
-New decks should set `chapter`, optional `topicId` (from `LECTURE_TOPICS`),
-and `canvasLecture` in `lib/lectures/catalog.ts`.
+New decks should set `chapter`, `topicId` (from `LECTURE_TOPICS`),
+`bookSectionId` (book TOC anchor such as `sec-2-3-1`), and optional
+`canvasLecture` in `lib/lectures/catalog.ts`. `bookHref` is derived as
+`/book/chN#${bookSectionId}`.
 
 Catalog and slide data live in `lib/lectures/`. The React shell is
-`app/lectures/_components/LectureDeckShell.tsx`. Text-only slides use
+`app/slides/_components/LectureDeckShell.tsx`. Text-only slides use
 `spacious` type (larger titles and bullets); slides with a `diagram` or
 `embed` stay `dense`. These routes are not nested under `/book`.
 
 Press **f** (or the Fullscreen button) for presentation mode; **Esc** exits.
 Add `?fullscreen=1` to retry fullscreen after the next click (browsers require
 a gesture). Slide figures are authored SVG/React in
-`app/lectures/_components/diagrams/`. Index thumbs are branded SVG cards in
+`app/slides/_components/diagrams/`. Index thumbs are branded SVG cards in
 `public/lectures/thumbs/` — see `public/lectures/README.md`. Commands and
 source live in `LectureSlide.code` / `codeBlocks`, not as bullet items.
 

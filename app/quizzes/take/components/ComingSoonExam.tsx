@@ -23,7 +23,7 @@ export default function ComingSoonExam({
         {" · "}
         <Link href="/book">Book</Link>
         {" · "}
-        <Link href="/lectures">Lectures</Link>
+        <Link href="/slides">Slides</Link>
       </p>
       <h1 className="mt-0 text-3xl font-semibold tracking-tight">{title}</h1>
       <div className="mt-4">

@@ -26,7 +26,7 @@ export default function StatusPanel({
         {" · "}
         <Link href="/assignments">Assignments</Link>
         {" · "}
-        <Link href="/lectures">Lectures</Link>
+        <Link href="/slides">Slides</Link>
         {" · "}
         <Link href="/quizzes">Question banks</Link>
         {" · "}

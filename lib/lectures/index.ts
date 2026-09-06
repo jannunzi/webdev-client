@@ -1,19 +1,25 @@
 export {
   COURSE_SITE_ORIGIN,
+  SLIDES_PATH,
   adjacentLectureSlugs,
   bookChapterMeta,
+  bookHrefForSection,
+  bookSectionLabel,
   getLecture,
   getLectureDeck,
   isLectureSlug,
   lectureDeckThumbnail,
   lecturePublicUrl,
+  lectureTopicByBookSection,
   lectureTopicMeta,
   listCanvasLectureGroups,
   listChapterTopicGroups,
+  listDecksForBookSection,
   listLectureChapters,
   listLectureDecks,
   listLectureSlugs,
   listLectures,
+  slidesHref,
 } from "./catalog";
 export { ANCHORS_SLIDES } from "./decks/anchors";
 export { COMMIT_TO_GITHUB_SLIDES } from "./decks/commit-to-github";

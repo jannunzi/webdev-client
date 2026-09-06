@@ -35,7 +35,7 @@ export default function TakeQuizIndexPage() {
         {" · "}
         <Link href="/assignments">Assignments</Link>
         {" · "}
-        <Link href="/lectures">Lectures</Link>
+        <Link href="/slides">Slides</Link>
         {" · "}
         <Link href="/book/practice">Practice (ungraded)</Link>
       </p>
