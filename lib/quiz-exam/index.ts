@@ -1,7 +1,23 @@
 export { EXAM_BANKS, getExamBank, listExamBanks } from "./banks";
+export {
+  EXAM_SOURCE_GROUP_TAKE,
+  QUIZ_DRAW_COUNTS,
+  QUIZ_TIME_LIMIT_MINUTES,
+  QUIZ_TOTAL_POINTS,
+  pointsPerDrawnItem,
+  quizDrawCount,
+  quizTimeLimitMinutes,
+} from "./draw-counts";
+export type { GradedQuizId } from "./draw-counts";
 export { isAnswerCorrect, gradeDrawnQuestions } from "./grade";
 export { buildAttemptReview, formatStudentResponse } from "./review";
-export { drawOnePerGroup, findBankQuestion } from "./sample";
+export {
+  drawExamAttempt,
+  drawOnePerGroup,
+  findBankQuestion,
+  sampleGroups,
+  sizeBankToDrawCount,
+} from "./sample";
 export {
   assertNoAnswerLeak,
   revealCorrectAnswer,

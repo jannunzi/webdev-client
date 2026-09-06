@@ -10,6 +10,7 @@
   <hide_results>always</hide_results>
   <quiz_type>assignment</quiz_type>
   <points_possible>100.0</points_possible>
+  <time_limit>30</time_limit>
   <require_lockdown_browser>false</require_lockdown_browser>
   <allowed_attempts>1</allowed_attempts>
   <one_question_at_a_time>false</one_question_at_a_time>

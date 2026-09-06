@@ -35,6 +35,8 @@ export type CanvasAssessmentMetaInput = {
   lockAt?: string;
   pointsPossible?: number;
   allowedAttempts?: number;
+  /** Canvas quiz timer in minutes. Omit for unlimited. */
+  timeLimitMinutes?: number;
 };
 
 export function escapeXml(value: string): string {
@@ -431,6 +433,9 @@ export function renderCanvasAssessmentMeta(input: CanvasAssessmentMetaInput): st
     "  <hide_results>always</hide_results>",
     "  <quiz_type>assignment</quiz_type>",
     `  <points_possible>${points}</points_possible>`,
+    input.timeLimitMinutes != null
+      ? `  <time_limit>${escapeXml(String(input.timeLimitMinutes))}</time_limit>`
+      : "",
     "  <require_lockdown_browser>false</require_lockdown_browser>",
     `  <allowed_attempts>${escapeXml(attempts)}</allowed_attempts>`,
     "  <one_question_at_a_time>false</one_question_at_a_time>",

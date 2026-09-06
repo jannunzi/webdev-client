@@ -26,10 +26,12 @@ Checked in: `sample/q1-acronyms-group.fragment.xml` (one Q1 group, same XML shap
 
 | Canvas quiz | Bank |
 | --- | --- |
-| Q1 | Graded website bank `lib/question-bank/q1` |
-| Q2–Q6 | Practice banks `app/book/quizzes/` (ch2 CSS … ch6 Mongo), grouped by book section, pick **1** random item per group |
-| X1 | Sample of Q1–Q3 topic groups (6+5+5) |
-| X2 | Sample of Q4–Q6 topic groups (5+5+5) |
+| Q1 | Graded website bank `lib/question-bank/q1` (16 topic groups), **sampled to 10** at export / take time |
+| Q2–Q6 | Practice banks `app/book/quizzes/` (ch2 CSS … ch6 Mongo), grouped by book section, **sampled to 10** groups; pick **1** random item per group |
+| X1 | 36 groups: 12 from each of Q1–Q3 source banks |
+| X2 | 36 groups: 12 from each of Q4–Q6 source banks |
+
+Shared counts live in `lib/quiz-exam/draw-counts.ts` (`QUIZ_DRAW_COUNTS`, `QUIZ_TIME_LIMIT_MINUTES`). Website `/quizzes/take` uses the same sized banks as this exporter.
 
 Stems are the **standalone** wording (no Lab / Kambaz / `wd-*` / book-section framing).
 
@@ -37,7 +39,7 @@ Instructions in `assessment_meta.xml` always include the website take URL **and*
 
 > If the website quiz is unavailable, ask your instructor or TA for permission to take this Canvas quiz instead.
 
-Quizzes are emitted **unpublished** (`available=false`, `workflow_state=unpublished`), 100 points, 1 attempt, answers hidden.
+Quizzes are emitted **unpublished** (`available=false`, `workflow_state=unpublished`), 100 points, 1 attempt, answers hidden. Q1–Q6 have a **30-minute** `time_limit`; X1/X2 have **90 minutes**.
 
 ## QTI shape (do not invent a new one)
 

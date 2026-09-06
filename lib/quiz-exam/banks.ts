@@ -1,9 +1,12 @@
-import { CHAPTER1_BANK, type QuestionBank } from "../question-bank";
+import type { QuestionBank } from "../question-bank";
+import { buildCanvasFallbackBanks } from "./canvas-fallback-banks";
 
-/** Public exam slug → typed question bank. Author review stays on /quizzes/q1 (staff). */
-export const EXAM_BANKS: Record<string, QuestionBank> = {
-  q1: CHAPTER1_BANK,
-};
+/**
+ * Public exam slug → sized question bank (same groups the Canvas
+ * fallback exporter emits). Author review of the full Q1 variant bank
+ * stays on /quizzes/q1 (staff).
+ */
+export const EXAM_BANKS: Record<string, QuestionBank> = buildCanvasFallbackBanks();
 
 export function getExamBank(quizId: string): QuestionBank | undefined {
   return EXAM_BANKS[quizId];

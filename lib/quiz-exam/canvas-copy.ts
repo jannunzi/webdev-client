@@ -1,4 +1,5 @@
 import { COURSE_SITE_ORIGIN } from "../assignments/catalog";
+import type { GradedQuizId } from "./draw-counts";
 
 /**
  * Canvas quiz / exam student copy for Fall 2026 fallback packages.
@@ -10,7 +11,7 @@ import { COURSE_SITE_ORIGIN } from "../assignments/catalog";
 export const CANVAS_FALLBACK_PERMISSION_BLURB =
   "If the website quiz is unavailable, ask your instructor or TA for permission to take this Canvas quiz instead.";
 
-export type CanvasFallbackQuizId = "q1" | "q2" | "q3" | "q4" | "q5" | "q6" | "x1" | "x2";
+export type CanvasFallbackQuizId = GradedQuizId;
 
 export type CanvasFallbackQuizMeta = {
   quizId: CanvasFallbackQuizId;

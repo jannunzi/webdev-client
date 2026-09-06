@@ -1,25 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import StaffOnly from "../components/StaffOnly";
-import { listExamBanks, STUDENT_COPY } from "@/lib/quiz-exam";
+import {
+  listExamBanks,
+  quizDrawCount,
+  quizTimeLimitMinutes,
+  STUDENT_COPY,
+} from "@/lib/quiz-exam";
 import QuizAccessOverrides from "./components/QuizAccessOverrides";
 
 export const metadata: Metadata = {
   title: "Graded quizzes — CS 4550 / CS 5610",
 };
-
-const COMING_SOON_EXAMS = [
-  {
-    id: "x1",
-    title: "X1",
-    window: "Unlock Oct 26 · due Nov 1",
-  },
-  {
-    id: "x2",
-    title: "X2",
-    window: "Unlock Nov 30 · due Dec 3 (exam week)",
-  },
-] as const;
 
 export default function TakeQuizIndexPage() {
   const exams = listExamBanks();
@@ -54,41 +46,29 @@ export default function TakeQuizIndexPage() {
         </StaffOnly>
       </p>
       <ul className="list-none space-y-3 p-0">
-        {exams.map(({ quizId, bank }) => (
-          <li
-            key={quizId}
-            className="rounded-lg border border-neutral-300 bg-white p-4 shadow-sm"
-          >
-            <h2 className="mt-0 mb-2 text-lg font-semibold">{bank.title}</h2>
-            <p className="mt-0 text-sm text-neutral-700">
-              Chapter {bank.chapter} · {bank.groups.length} questions (one from
-              each group)
-            </p>
-            <Link
-              href={`/quizzes/take/${quizId}`}
-              className="book-practice-cta inline-block rounded border border-neutral-800 bg-neutral-800 px-3 py-2 text-sm"
+        {exams.map(({ quizId, bank }) => {
+          const questions = quizDrawCount(quizId) ?? bank.groups.length;
+          const minutes = quizTimeLimitMinutes(quizId);
+          return (
+            <li
+              key={quizId}
+              className="rounded-lg border border-neutral-300 bg-white p-4 shadow-sm"
             >
-              Take or review {bank.title}
-            </Link>
-          </li>
-        ))}
-        {COMING_SOON_EXAMS.map((exam) => (
-          <li
-            key={exam.id}
-            className="rounded-lg border border-neutral-300 bg-white p-4 shadow-sm"
-          >
-            <h2 className="mt-0 mb-2 text-lg font-semibold">{exam.title}</h2>
-            <p className="mt-0 text-sm text-neutral-700">
-              {exam.window} · Canvas 100-point shell · coming soon
-            </p>
-            <Link
-              href={`/quizzes/take/${exam.id}`}
-              className="book-practice-cta inline-block rounded border border-neutral-800 bg-neutral-800 px-3 py-2 text-sm"
-            >
-              Open {exam.title}
-            </Link>
-          </li>
-        ))}
+              <h2 className="mt-0 mb-2 text-lg font-semibold">{bank.title}</h2>
+              <p className="mt-0 text-sm text-neutral-700">
+                {questions} questions (one from each topic group)
+                {minutes ? ` · about ${minutes} minutes` : ""}
+                {" · 100 points"}
+              </p>
+              <Link
+                href={`/quizzes/take/${quizId}`}
+                className="book-practice-cta inline-block rounded border border-neutral-800 bg-neutral-800 px-3 py-2 text-sm"
+              >
+                Take or review {bank.title}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
       <QuizAccessOverrides />
     </article>

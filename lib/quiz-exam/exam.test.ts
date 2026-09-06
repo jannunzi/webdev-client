@@ -2,35 +2,42 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { CHAPTER1_BANK } from "../question-bank";
 import { getExamBank } from "./banks";
+import { QUIZ_DRAW_COUNTS, QUIZ_TOTAL_POINTS } from "./draw-counts";
 import { isAnswerCorrect } from "./grade";
-import { drawOnePerGroup, findBankQuestion } from "./sample";
+import { drawExamAttempt, drawOnePerGroup, findBankQuestion } from "./sample";
 import { buildAttemptReview } from "./review";
 import { assertNoAnswerLeak, stripCorrectReveals, toStudentQuestion } from "./sanitize";
 import { runExamSubmit } from "./submit";
 import type { QuizAttemptDoc, StudentAnswer } from "./types";
 
+const q1Exam = getExamBank("q1");
+assert.ok(q1Exam);
+
 describe("student exam sampling and grading", () => {
-  it("maps q1 to the Chapter 1 bank and draws one question per group", () => {
+  it("maps q1 to a 10-group draw from the Chapter 1 bank", () => {
     const bank = getExamBank("q1");
     assert.equal(bank?.id, CHAPTER1_BANK.id);
-    const first = drawOnePerGroup(CHAPTER1_BANK, "user_a:q1-html");
-    const again = drawOnePerGroup(CHAPTER1_BANK, "user_a:q1-html");
-    const other = drawOnePerGroup(CHAPTER1_BANK, "user_b:q1-html");
-    assert.equal(first.length, CHAPTER1_BANK.groups.length);
+    assert.equal(bank?.groups.length, QUIZ_DRAW_COUNTS.q1);
+    const first = drawOnePerGroup(q1Exam, "user_a:q1-html");
+    const again = drawOnePerGroup(q1Exam, "user_a:q1-html");
+    const other = drawOnePerGroup(q1Exam, "user_b:q1-html");
+    assert.equal(first.length, QUIZ_DRAW_COUNTS.q1);
     assert.deepEqual(
       first.map((item) => item.question.id),
       again.map((item) => item.question.id),
     );
     const groupIds = new Set(first.map((item) => item.group.id));
-    assert.equal(groupIds.size, CHAPTER1_BANK.groups.length);
+    assert.equal(groupIds.size, QUIZ_DRAW_COUNTS.q1);
     assert.notDeepEqual(
       first.map((item) => item.question.id),
       other.map((item) => item.question.id),
     );
+    const fromFull = drawExamAttempt(CHAPTER1_BANK, "user_a:q1-html", QUIZ_DRAW_COUNTS.q1);
+    assert.equal(fromFull.length, QUIZ_DRAW_COUNTS.q1);
   });
 
   it("strips answers from the student payload", () => {
-    const drawn = drawOnePerGroup(CHAPTER1_BANK, "sanitize");
+    const drawn = drawOnePerGroup(q1Exam, "sanitize");
     for (const item of drawn) {
       const student = toStudentQuestion(item);
       assertNoAnswerLeak(student);
@@ -82,7 +89,7 @@ describe("student exam sampling and grading", () => {
 
   it("does not persist when the Clerk user is off the roster", async () => {
     const stored: QuizAttemptDoc[] = [];
-    const drawn = drawOnePerGroup(CHAPTER1_BANK, "off-roster");
+    const drawn = drawOnePerGroup(q1Exam, "off-roster");
     const result = await runExamSubmit({
       quizId: "q1",
       drawnQuestionIds: drawn.map((item) => item.question.id),
@@ -106,7 +113,7 @@ describe("student exam sampling and grading", () => {
 
   it("grades server-side and writes a quiz_attempts document", async () => {
     const stored: QuizAttemptDoc[] = [];
-    const drawn = drawOnePerGroup(CHAPTER1_BANK, "on-roster");
+    const drawn = drawOnePerGroup(q1Exam, "on-roster");
     const answers: Record<string, StudentAnswer> = {};
     for (const { question } of drawn) {
       if (question.type === "multiple_choice") {
@@ -150,14 +157,14 @@ describe("student exam sampling and grading", () => {
       assert.equal(result.persisted, true);
       assert.equal(result.attemptId, "attempt_1");
       assert.equal(result.score, result.maxScore);
-      assert.equal(result.maxScore, CHAPTER1_BANK.groups.length);
+      assert.equal(result.maxScore, QUIZ_TOTAL_POINTS);
     }
     assert.equal(stored.length, 1);
     assert.equal(stored[0]?.clerkUserId, "user_jane");
     assert.equal(stored[0]?.quizId, "q1");
-    assert.equal(stored[0]?.score, CHAPTER1_BANK.groups.length);
+    assert.equal(stored[0]?.score, QUIZ_TOTAL_POINTS);
     assert.equal(stored[0]?.meta.source, "student-exam");
-    assert.equal(stored[0]?.answers.length, CHAPTER1_BANK.groups.length);
+    assert.equal(stored[0]?.answers.length, QUIZ_DRAW_COUNTS.q1);
     if (result.ok) {
       assert.equal(result.window?.phase, "submitted_waiting");
       assert.equal(result.window?.revealAnswers, false);
@@ -169,7 +176,7 @@ describe("student exam sampling and grading", () => {
 
   it("rejects a persisted submit after the class-wide take lock", async () => {
     const stored: QuizAttemptDoc[] = [];
-    const drawn = drawOnePerGroup(CHAPTER1_BANK, "late");
+    const drawn = drawOnePerGroup(q1Exam, "late");
     const result = await runExamSubmit({
       quizId: "q1",
       drawnQuestionIds: drawn.map((item) => item.question.id),
@@ -197,7 +204,7 @@ describe("student exam sampling and grading", () => {
   });
 
   it("includes correctReveal only when the class answer window is open", async () => {
-    const drawn = drawOnePerGroup(CHAPTER1_BANK, "review-open");
+    const drawn = drawOnePerGroup(q1Exam, "review-open");
     const result = await runExamSubmit({
       quizId: "q1",
       drawnQuestionIds: drawn.map((item) => item.question.id),
@@ -219,7 +226,7 @@ describe("student exam sampling and grading", () => {
   });
 
   it("grades in-memory and skips persist for an impersonation dummy roster", async () => {
-    const drawn = drawOnePerGroup(CHAPTER1_BANK, "impersonation");
+    const drawn = drawOnePerGroup(q1Exam, "impersonation");
     const preview = await runExamSubmit({
       quizId: "q1",
       drawnQuestionIds: drawn.map((item) => item.question.id),
@@ -243,7 +250,7 @@ describe("student exam sampling and grading", () => {
   });
 
   it("rebuilds an attempt review without leaking answers when closed", () => {
-    const drawn = drawOnePerGroup(CHAPTER1_BANK, "review-rebuild");
+    const drawn = drawOnePerGroup(q1Exam, "review-rebuild");
     const attempt: QuizAttemptDoc = {
       clerkUserId: "user_jane",
       quizId: "q1",
