@@ -14,6 +14,9 @@
 
 export type ExamName = "midterm" | "final";
 
+/** Staff per-section take gate. `schedule` (or unset) follows the date window. */
+export type QuizTakeOverrideMode = "open" | "closed" | "schedule";
+
 export type QuizPhase =
   | "take_open"
   | "take_closed"
@@ -285,7 +288,10 @@ export function listQuizSchedules(): QuizSchedule[] {
 export function isTakeWindowOpen(
   schedule: QuizSchedule,
   now: Date = new Date(),
+  override?: QuizTakeOverrideMode | null,
 ): boolean {
+  if (override === "open") return true;
+  if (override === "closed") return false;
   const t = now.getTime();
   return t >= schedule.takeUnlockAt.getTime() && t <= schedule.takeLockAt.getTime();
 }
@@ -319,6 +325,7 @@ export function getAnswerRevealPhase(
   quizIdOrSchedule: string | QuizSchedule,
   now: Date = new Date(),
   hasAttempt = false,
+  override?: QuizTakeOverrideMode | null,
 ): QuizPhase | null {
   const schedule =
     typeof quizIdOrSchedule === "string"
@@ -335,7 +342,7 @@ export function getAnswerRevealPhase(
     return "answers_closed";
   }
 
-  return isTakeWindowOpen(schedule, now) ? "take_open" : "take_closed";
+  return isTakeWindowOpen(schedule, now, override) ? "take_open" : "take_closed";
 }
 
 export function canRevealAnswers(phase: QuizPhase | null): boolean {
@@ -385,6 +392,7 @@ export function answerWindowCopy(
   schedule: QuizSchedule,
   phase: QuizPhase,
   now: Date = new Date(),
+  override?: QuizTakeOverrideMode | null,
 ): AnswerWindowCopy {
   const open = formatEasternDateTime(schedule.answersOpenAt);
   const close = formatEasternDateTime(schedule.answersCloseAt);
@@ -443,6 +451,15 @@ export function answerWindowCopy(
   }
 
   if (phase === "take_closed") {
+    if (override === "closed") {
+      return {
+        title: "This quiz is closed for your section",
+        paragraphs: [
+          "New attempts are not being accepted right now. The instructor or a TA closed this quiz for your section.",
+        ],
+        tone: "warn",
+      };
+    }
     if (now.getTime() < schedule.takeUnlockAt.getTime()) {
       return {
         title: "This quiz is not open yet",

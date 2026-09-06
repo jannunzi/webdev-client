@@ -2,6 +2,7 @@
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { isQuizTakingConfigured } from "@/lib/config";
+import { loadTakeOverrideForRoster } from "@/lib/quiz-exam/access-overrides";
 import { findLatestQuizAttempt, insertQuizAttempt } from "@/lib/quiz-exam/attempts";
 import { STUDENT_COPY } from "@/lib/quiz-exam/student-copy";
 import { runExamSubmit } from "@/lib/quiz-exam/submit";
@@ -68,6 +69,11 @@ export async function submitExamAttempt(
     }
   }
 
+  const takeOverride = await loadTakeOverrideForRoster(
+    input.quizId,
+    roster.entry.section,
+  );
+
   try {
     const result = await runExamSubmit({
       quizId: input.quizId,
@@ -80,6 +86,7 @@ export async function submitExamAttempt(
         canvasUserId: canvasUserId ?? roster.entry.canvasUserId,
       },
       roster,
+      takeOverride,
       persist: impersonating ? undefined : insertQuizAttempt,
     });
     if (result.ok && impersonating) {
@@ -101,6 +108,7 @@ export async function submitExamAttempt(
         canvasUserId: canvasUserId ?? roster.entry.canvasUserId,
       },
       roster,
+      takeOverride,
     });
     if (graded.ok) {
       return {

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import StaffOnly from "../components/StaffOnly";
 import { listExamBanks, STUDENT_COPY } from "@/lib/quiz-exam";
+import QuizAccessOverrides from "./components/QuizAccessOverrides";
 
 export const metadata: Metadata = {
   title: "Graded quizzes — CS 4550 / CS 5610",
@@ -89,6 +90,7 @@ export default function TakeQuizIndexPage() {
           </li>
         ))}
       </ul>
+      <QuizAccessOverrides />
     </article>
   );
 }

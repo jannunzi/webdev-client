@@ -10,6 +10,7 @@ import {
   getQuizSchedule,
   isTakeWindowOpen,
   toAnswerWindowInfo,
+  type QuizTakeOverrideMode,
 } from "./schedule";
 import type {
   QuizAttemptDoc,
@@ -33,6 +34,8 @@ export type ExamSubmitDeps = {
   actor: ExamSubmitActor;
   roster: RosterLookupResult;
   persist?: (doc: QuizAttemptDoc) => Promise<{ insertedId: unknown }>;
+  /** Per-section staff override for the take window only. */
+  takeOverride?: QuizTakeOverrideMode | null;
 };
 
 function fail(
@@ -91,7 +94,11 @@ export async function runExamSubmit(deps: ExamSubmitDeps): Promise<SubmitExamRes
 
   const submittedAt = deps.now ?? new Date();
   const schedule = getQuizSchedule(deps.quizId);
-  if (deps.persist && schedule && !isTakeWindowOpen(schedule, submittedAt)) {
+  if (
+    deps.persist &&
+    schedule &&
+    !isTakeWindowOpen(schedule, submittedAt, deps.takeOverride)
+  ) {
     return fail(
       "take_closed",
       "The take window for this quiz is closed. New attempts are not accepted.",
@@ -101,7 +108,7 @@ export async function runExamSubmit(deps: ExamSubmitDeps): Promise<SubmitExamRes
   const startedAt = parseStartedAt(deps.startedAt, submittedAt);
   const graded = gradeDrawnQuestions(drawn, deps.answers);
   const phase = schedule
-    ? getAnswerRevealPhase(schedule, submittedAt, true)
+    ? getAnswerRevealPhase(schedule, submittedAt, true, deps.takeOverride)
     : "submitted_waiting";
   const reveal = canRevealAnswers(phase);
   const publicGraded = reveal ? graded : stripCorrectReveals(graded);
