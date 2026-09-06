@@ -12,7 +12,7 @@ export default function LectureHubNav({
     <p className="mb-3 font-sans text-sm">
       {current === "deck" ? (
         <>
-          <Link href="/lectures">Lectures</Link>
+          <Link href="/slides">Slides</Link>
           {" · "}
         </>
       ) : null}

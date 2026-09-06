@@ -1,4 +1,5 @@
 import Section from "../../components/Section";
+import BookSectionSlidesLink from "../../components/BookSectionSlidesLink";
 import SectionLink from "../../components/SectionLink";
 import LocalUrl from "../../components/LocalUrl";
 import OfficialLink from "../../components/OfficialLink";
@@ -20,6 +21,9 @@ export default function IntroAndSetup() {
           Chapter 1 — Building Next.js User Interfaces with HTML
         </h1>
         <p className="text-neutral-600">Dr. Jose Annunziato</p>
+        <p className="mb-0 mt-2">
+          <BookSectionSlidesLink sectionId="intro" />
+        </p>
       </header>
 
       <section className="space-y-4 text-[1.05rem]">
@@ -355,7 +359,8 @@ export default function IntroAndSetup() {
         </p>
 
         <h3 id="sec-1-2-1" className="scroll-mt-6 font-sans text-xl font-semibold">
-          1.2.1 Installing Node.js
+          1.2.1 Installing Node.js{" "}
+          <BookSectionSlidesLink sectionId="sec-1-2-1" />
         </h3>
         <p>
           <OfficialLink href="https://nodejs.org/">
@@ -553,7 +558,8 @@ v24.19.0`}</CodeBlock>
         </WithAI>
 
         <h3 id="sec-1-2-4" className="scroll-mt-6 font-sans text-xl font-semibold">
-          1.2.4 Creating a Next.js Application
+          1.2.4 Creating a Next.js Application{" "}
+          <BookSectionSlidesLink sectionId="sec-1-2-4" />
         </h3>
         <p>
           With <code>npx</code> — the tool that shipped with your Node.js

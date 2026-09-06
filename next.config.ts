@@ -9,6 +9,16 @@ const nextConfig: NextConfig = {
         destination: "/syllabus",
         permanent: false,
       },
+      {
+        source: "/lectures",
+        destination: "/slides",
+        permanent: true,
+      },
+      {
+        source: "/lectures/:slug",
+        destination: "/slides/:slug",
+        permanent: true,
+      },
     ];
   },
 };

@@ -74,7 +74,7 @@ function TakeNav({
       {" · "}
       <Link href="/book">Book</Link>
       {" · "}
-      <Link href="/lectures">Lectures</Link>
+        <Link href="/slides">Slides</Link>
     </p>
   );
 }

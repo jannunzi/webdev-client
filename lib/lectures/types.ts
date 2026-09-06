@@ -68,7 +68,7 @@ export const LECTURE_SLUGS = [
   ...LECTURE_7_SLUGS,
 ] as const;
 
-/** Book spine used by the lectures hub and nav — not Canvas lecture folders. */
+/** Book spine used by the slides hub and nav — not Canvas week folders. */
 export const BOOK_CHAPTERS = [
   {
     chapter: 1,
@@ -104,16 +104,70 @@ export const BOOK_CHAPTERS = [
 
 /**
  * Topic subgroups within a chapter (Jose’s book spine).
- * Slides: add a row here, then set `topicId` on each new deck.
+ * Slides: add a row here, then set `topicId` and `bookSectionId` on each new deck.
+ * Hub group titles are the book section title + numbering.
  */
 export const LECTURE_TOPICS = [
-  { topicId: "intro", chapter: 1, title: "Intro" },
-  { topicId: "setup", chapter: 1, title: "Setup" },
-  { topicId: "html", chapter: 1, title: "HTML" },
-  { topicId: "kambaz-html", chapter: 1, title: "Kambaz HTML" },
-  { topicId: "css", chapter: 2, title: "CSS fundamentals" },
-  { topicId: "tailwind", chapter: 2, title: "Tailwind" },
-  { topicId: "kambaz-styling", chapter: 2, title: "Kambaz styling" },
+  {
+    topicId: "intro",
+    chapter: 1,
+    title: "Introduction",
+    bookSectionId: "intro",
+  },
+  {
+    topicId: "setup",
+    chapter: 1,
+    title: "1.2 Setting Up the Development Environment",
+    bookSectionId: "sec-1-2",
+  },
+  {
+    topicId: "html",
+    chapter: 1,
+    title: "1.3 Introduction to HTML",
+    bookSectionId: "sec-1-3",
+  },
+  {
+    topicId: "kambaz-html",
+    chapter: 1,
+    title: "1.4 Prototyping the React Kambaz User Interface with HTML",
+    bookSectionId: "sec-1-4",
+  },
+  {
+    topicId: "source-control",
+    chapter: 1,
+    title: "1.5 Committing Code to Source Control",
+    bookSectionId: "sec-1-5",
+  },
+  {
+    topicId: "deploy",
+    chapter: 1,
+    title: "1.6 Deploying Next.js Projects to the Web",
+    bookSectionId: "sec-1-6",
+  },
+  {
+    topicId: "css",
+    chapter: 2,
+    title: "2.1 Styling React Components with CSS",
+    bookSectionId: "sec-2-1",
+  },
+  {
+    topicId: "react-icons",
+    chapter: 2,
+    title: "2.2 Decorating Documents with React Icons",
+    bookSectionId: "sec-2-2",
+  },
+  {
+    topicId: "tailwind",
+    chapter: 2,
+    title: "2.3 Styling Webpages with Tailwind CSS",
+    bookSectionId: "sec-2-3",
+  },
+  {
+    topicId: "kambaz-styling",
+    chapter: 2,
+    title: "2.4 Styling Kambaz with CSS and Tailwind",
+    bookSectionId: "sec-2-4",
+  },
 ] as const;
 
 export type LectureTopicId = (typeof LECTURE_TOPICS)[number]["topicId"];
@@ -279,6 +333,10 @@ export type LectureHubItem = {
   /** Book-spine topic within the chapter, when set. */
   topicId?: LectureTopicId;
   topic?: string;
+  /** Book TOC anchor (`intro` or `sec-1-3-1`) when a section mapping exists. */
+  bookSectionId?: string;
+  /** `/book/chN` or `/book/chN#sec-…` for the deck → book link. */
+  bookHref: string;
   /** Canvas week mapping — metadata / badge only, not a hub heading. */
   canvasLecture: number;
   title: string;
@@ -305,6 +363,8 @@ export type CanvasLectureGroup = {
 export type LectureTopicGroup = {
   topicId: string;
   title: string;
+  bookSectionId?: string;
+  bookHref?: string;
   decks: LectureHubItem[];
 };
 
@@ -340,7 +400,7 @@ export function lectureSlideFigurePath(
   return `/lectures/${slug}/slide-${String(slideNumber).padStart(2, "0")}-figure.png`;
 }
 
-/** Authored 16:9 logo card for the lectures index. */
+/** Authored 16:9 logo card for the slides index. */
 export function lectureThumbPath(slug: LectureSlug): string {
   return `/lectures/thumbs/${slug}.svg`;
 }

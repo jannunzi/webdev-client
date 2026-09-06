@@ -5,6 +5,7 @@
 // app/labs/lab2/tailwind/index.css does — importing that here would leak
 // Tailwind's CSS reset into this chapter's own prose.
 import Section from "../../components/Section";
+import BookSectionSlidesLink from "../../components/BookSectionSlidesLink";
 import SectionLink from "../../components/SectionLink";
 import ChapterLink from "../../components/ChapterLink";
 import LocalUrl from "../../components/LocalUrl";
@@ -155,7 +156,8 @@ export default function TailwindLab() {
           id="sec-2-3-1"
           className="scroll-mt-6 font-sans text-xl font-semibold"
         >
-          2.3.1 Spacing
+          2.3.1 Spacing{" "}
+          <BookSectionSlidesLink sectionId="sec-2-3-1" />
         </h3>
         <p>
           Tailwind&apos;s spacing utilities follow a compact naming
@@ -213,7 +215,8 @@ export default function TailwindLab() {
           id="sec-2-3-2"
           className="scroll-mt-6 font-sans text-xl font-semibold"
         >
-          2.3.2 Typography
+          2.3.2 Typography{" "}
+          <BookSectionSlidesLink sectionId="sec-2-3-2" />
         </h3>
         <p>
           Typography utilities cover font size (<code>text-sm</code>{" "}through{" "}
@@ -263,7 +266,8 @@ export default function TailwindLab() {
           id="sec-2-3-3"
           className="scroll-mt-6 font-sans text-xl font-semibold"
         >
-          2.3.3 Background Colors
+          2.3.3 Background Colors{" "}
+          <BookSectionSlidesLink sectionId="sec-2-3-3" />
         </h3>
         <p>
           Background color utilities follow the pattern{" "}
@@ -313,7 +317,8 @@ export default function TailwindLab() {
           id="sec-2-3-4"
           className="scroll-mt-6 font-sans text-xl font-semibold"
         >
-          2.3.4 Responsive Design
+          2.3.4 Responsive Design{" "}
+          <BookSectionSlidesLink sectionId="sec-2-3-4" />
         </h3>
         <p>
           Tailwind is <strong>mobile-first</strong>: an unprefixed class
@@ -437,7 +442,8 @@ export default function TailwindLab() {
           id="sec-2-3-6"
           className="scroll-mt-6 font-sans text-xl font-semibold"
         >
-          2.3.6 CSS Grid Layout
+          2.3.6 CSS Grid Layout{" "}
+          <BookSectionSlidesLink sectionId="sec-2-3-6" />
         </h3>
         <p>
           Tailwind also wraps CSS Grid in utility classes:{" "}

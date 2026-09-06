@@ -3,12 +3,12 @@ import type { ReactNode } from "react";
 import "../book/book.css";
 
 export const metadata: Metadata = {
-  title: "Lectures — Web Dev",
+  title: "Slides — Web Dev",
   description:
-    "Classroom lecture decks grouped by book chapter and topic — HTML, Kambaz, CSS, Tailwind, and Kambaz styling.",
+    "Classroom slide decks grouped by book chapter and section — HTML, Kambaz, CSS, Tailwind, and Kambaz styling.",
 };
 
-export default function LecturesLayout({
+export default function SlidesLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return <div className="book-shell min-h-dvh">{children}</div>;

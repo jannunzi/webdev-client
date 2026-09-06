@@ -12,6 +12,7 @@ import {
   lecturePublicUrl,
   listCanvasLectureGroups,
   listChapterTopicGroups,
+  listDecksForBookSection,
   listLectureChapters,
   listLectureDecks,
   listLectureSlugs,
@@ -98,18 +99,23 @@ describe("lecture catalog", () => {
       assert.ok(item.chapterTitle.length > 0);
       assert.ok(item.title.length > 0);
       assert.ok(item.summary.length > 0);
-      assert.equal(item.publicUrl, `${COURSE_SITE_ORIGIN}/lectures/${item.slug}`);
+      assert.equal(item.publicUrl, `${COURSE_SITE_ORIGIN}/slides/${item.slug}`);
       assert.equal(lecturePublicUrl(item.slug), item.publicUrl);
       assert.equal(item.thumbnailSrc, lectureDeckThumbnail(item.slug));
       assert.doesNotMatch(item.thumbnailSrc, /slide-01/);
       assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
     }
     assert.equal(items[0]?.topicId, "intro");
-    assert.equal(items[0]?.topic, "Intro");
-    for (const item of items.slice(1)) {
-      assert.equal(item.topicId, "setup");
-      assert.equal(item.topic, "Setup");
-    }
+    assert.equal(items[0]?.topic, "Introduction");
+    assert.equal(items[0]?.bookSectionId, "intro");
+    assert.equal(items[0]?.bookHref, "/book/ch1#intro");
+    assert.equal(items[1]?.topicId, "setup");
+    assert.equal(items[2]?.topicId, "setup");
+    assert.equal(items[3]?.topicId, "source-control");
+    assert.equal(items[3]?.bookSectionId, "sec-1-5");
+    assert.equal(items[3]?.bookHref, "/book/ch1#sec-1-5");
+    assert.equal(items[4]?.topicId, "deploy");
+    assert.equal(items[4]?.bookSectionId, "sec-1-6");
   });
 
   it("marks Lecture 2 entries as Canvas Lecture 2 / Chapter 1", () => {
@@ -122,7 +128,7 @@ describe("lecture catalog", () => {
     for (const item of items) {
       assert.equal(item.chapter, 1);
       assert.equal(item.topicId, "html");
-      assert.equal(item.topic, "HTML");
+      assert.equal(item.topic, "1.3 Introduction to HTML");
       assert.equal(item.canvasLecture, 2);
       assert.equal(item.chapterHref, "/book/ch1");
       assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
@@ -149,8 +155,13 @@ describe("lecture catalog", () => {
     );
     for (const item of items) {
       assert.equal(item.chapter, 2);
-      assert.equal(item.topicId, "tailwind");
-      assert.equal(item.topic, "Tailwind");
+      assert.equal(item.topicId, item.slug === "react-icons" ? "react-icons" : "tailwind");
+      assert.equal(
+        item.topic,
+        item.slug === "react-icons"
+          ? "2.2 Decorating Documents with React Icons"
+          : "2.3 Styling Webpages with Tailwind CSS",
+      );
       assert.equal(item.canvasLecture, 6);
       assert.equal(item.chapterHref, "/book/ch2");
       assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
@@ -167,7 +178,7 @@ describe("lecture catalog", () => {
     for (const item of items) {
       assert.equal(item.chapter, 2);
       assert.equal(item.topicId, "kambaz-styling");
-      assert.equal(item.topic, "Kambaz styling");
+      assert.equal(item.topic, "2.4 Styling Kambaz with CSS and Tailwind");
       assert.equal(item.canvasLecture, 7);
       assert.equal(item.chapterHref, "/book/ch2");
       assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
@@ -184,7 +195,7 @@ describe("lecture catalog", () => {
     for (const item of items) {
       assert.equal(item.chapter, 2);
       assert.equal(item.topicId, "css");
-      assert.equal(item.topic, "CSS fundamentals");
+      assert.equal(item.topic, "2.1 Styling React Components with CSS");
       assert.equal(item.canvasLecture, 4);
       assert.equal(item.chapterHref, "/book/ch2");
       assert.equal(
@@ -205,7 +216,7 @@ describe("lecture catalog", () => {
     for (const item of items) {
       assert.equal(item.chapter, 1);
       assert.equal(item.topicId, "kambaz-html");
-      assert.equal(item.topic, "Kambaz HTML");
+      assert.equal(item.topic, "1.4 Prototyping the React Kambaz User Interface with HTML");
       assert.equal(item.canvasLecture, 3);
       assert.equal(item.chapterHref, "/book/ch1");
       assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
@@ -225,11 +236,18 @@ describe("lecture catalog", () => {
     );
     assert.deepEqual(
       groups[0]?.topics.map((topic) => topic.topicId),
-      ["intro", "setup", "html", "kambaz-html"],
+      ["intro", "setup", "html", "kambaz-html", "source-control", "deploy"],
     );
     assert.deepEqual(
       groups[0]?.topics.map((topic) => topic.title),
-      ["Intro", "Setup", "HTML", "Kambaz HTML"],
+      [
+        "Introduction",
+        "1.2 Setting Up the Development Environment",
+        "1.3 Introduction to HTML",
+        "1.4 Prototyping the React Kambaz User Interface with HTML",
+        "1.5 Committing Code to Source Control",
+        "1.6 Deploying Next.js Projects to the Web",
+      ],
     );
     assert.deepEqual(
       groups[0]?.topics[0]?.decks.map((deck) => deck.slug),
@@ -237,7 +255,7 @@ describe("lecture catalog", () => {
     );
     assert.deepEqual(
       groups[0]?.topics[1]?.decks.map((deck) => deck.slug),
-      LECTURE_1_SLUGS.slice(1),
+      ["installing-nodejs", "creating-a-nextjs-react-application"],
     );
     assert.deepEqual(
       groups[0]?.topics[2]?.decks.map((deck) => deck.slug),
@@ -247,11 +265,28 @@ describe("lecture catalog", () => {
       groups[0]?.topics[3]?.decks.map((deck) => deck.slug),
       [...LECTURE_3_SLUGS],
     );
+    assert.deepEqual(
+      groups[0]?.topics[4]?.decks.map((deck) => deck.slug),
+      ["commit-to-github"],
+    );
+    assert.deepEqual(
+      groups[0]?.topics[5]?.decks.map((deck) => deck.slug),
+      ["deploying-to-vercel"],
+    );
 
     assert.equal(groups[1]?.href, "/book/ch2");
     assert.deepEqual(
       groups[1]?.topics.map((topic) => topic.topicId),
-      ["css", "tailwind", "kambaz-styling"],
+      ["css", "react-icons", "tailwind", "kambaz-styling"],
+    );
+    assert.deepEqual(
+      groups[1]?.topics.map((topic) => topic.title),
+      [
+        "2.1 Styling React Components with CSS",
+        "2.2 Decorating Documents with React Icons",
+        "2.3 Styling Webpages with Tailwind CSS",
+        "2.4 Styling Kambaz with CSS and Tailwind",
+      ],
     );
     assert.deepEqual(
       groups[1]?.topics[0]?.decks.map((deck) => deck.slug),
@@ -259,10 +294,14 @@ describe("lecture catalog", () => {
     );
     assert.deepEqual(
       groups[1]?.topics[1]?.decks.map((deck) => deck.slug),
-      [...LECTURE_6_SLUGS],
+      ["react-icons"],
     );
     assert.deepEqual(
       groups[1]?.topics[2]?.decks.map((deck) => deck.slug),
+      LECTURE_6_SLUGS.filter((slug) => slug !== "react-icons"),
+    );
+    assert.deepEqual(
+      groups[1]?.topics[3]?.decks.map((deck) => deck.slug),
       [...LECTURE_7_SLUGS],
     );
 
@@ -288,6 +327,32 @@ describe("lecture catalog", () => {
     assert.equal(chapters[1]?.title, BOOK_CHAPTERS[1]?.title);
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "tailwind"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "kambaz-styling"));
+    assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "react-icons"));
+    assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "source-control"));
+  });
+
+  it("maps Ch1–Ch2 decks to book section anchors for bidirectional links", () => {
+    assert.equal(getLecture("installing-nodejs")?.bookHref, "/book/ch1#sec-1-2-1");
+    assert.equal(
+      getLecture("creating-a-nextjs-react-application")?.bookHref,
+      "/book/ch1#sec-1-2-4",
+    );
+    assert.equal(getLecture("html-and-dom")?.bookHref, "/book/ch1#sec-1-3");
+    assert.equal(getLecture("headings-and-paragraphs")?.bookHref, "/book/ch1#sec-1-3-1");
+    assert.equal(getLecture("css-intro")?.bookHref, "/book/ch2#sec-2-1");
+    assert.equal(getLecture("react-icons")?.bookHref, "/book/ch2#sec-2-2");
+    assert.equal(getLecture("tailwind-spacing")?.bookHref, "/book/ch2#sec-2-3-1");
+    assert.equal(getLecture("kambaz-nav-styling")?.bookHref, "/book/ch2#sec-2-4-1");
+    assert.equal(listDecksForBookSection("sec-1-2-1")[0]?.slug, "installing-nodejs");
+    assert.equal(listDecksForBookSection("sec-2-3")[0]?.slug, "tailwind-intro");
+    assert.equal(listDecksForBookSection("sec-2-2")[0]?.slug, "react-icons");
+    assert.equal(getLecture("css-rotation")?.bookSectionId, undefined);
+    assert.equal(getLecture("css-rotation")?.bookHref, "/book/ch2");
+    for (const item of listLectures()) {
+      if (item.bookSectionId) {
+        assert.match(item.bookHref, /^\/book\/ch\d#/);
+      }
+    }
   });
 
   it("keeps canvasLecture metadata grouped for Canvas sync", () => {
@@ -1066,19 +1131,19 @@ describe("lecture decks", () => {
     assert.equal(lectureSearchIsPresent("?fullscreen=1"), true);
     assert.equal(
       lecturePresentHref({
-        href: "https://webdev-client.vercel.app/lectures/html-and-dom#slide-2",
+        href: "https://webdev-client.vercel.app/slides/html-and-dom#slide-2",
         slideNumber: 3,
         present: true,
       }),
-      "/lectures/html-and-dom?fullscreen=1#slide-3",
+      "/slides/html-and-dom?fullscreen=1#slide-3",
     );
     assert.equal(
       lecturePresentHref({
-        href: "https://webdev-client.vercel.app/lectures/html-and-dom?fullscreen=1#slide-3",
+        href: "https://webdev-client.vercel.app/slides/html-and-dom?fullscreen=1#slide-3",
         slideNumber: 3,
         present: false,
       }),
-      "/lectures/html-and-dom#slide-3",
+      "/slides/html-and-dom#slide-3",
     );
     assert.equal(isLecturePresentHistoryState(null), false);
     assert.equal(isLecturePresentHistoryState(LECTURE_PRESENT_STATE), true);

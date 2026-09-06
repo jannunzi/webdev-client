@@ -2,6 +2,7 @@ import "@/app/labs/lab2/tailwind/utilities.css";
 import SectionLink from "../../components/SectionLink";
 import ChapterLink from "../../components/ChapterLink";
 import Section from "../../components/Section";
+import BookSectionSlidesLink from "../../components/BookSectionSlidesLink";
 import CodeBlock from "../../components/CodeBlock";
 import LiveDemo from "../../components/LiveDemo";
 import BookFigure from "../../components/BookFigure";
@@ -119,7 +120,8 @@ export default function KambazLayout({ children }) {
         id="sec-2-4-1"
         className="scroll-mt-6 font-sans text-xl font-semibold"
       >
-        2.4.1 Styling the Kambaz Navigation Sidebar
+        2.4.1 Styling the Kambaz Navigation Sidebar{" "}
+        <BookSectionSlidesLink sectionId="sec-2-4-1" />
       </h3>
       <p>
         The Kambaz Navigation sidebar from <SectionLink to="1.4" />{" "}was a plain vertical list of
@@ -263,7 +265,8 @@ export default function KambazNavigation() {
         id="sec-2-4-2"
         className="scroll-mt-6 font-sans text-xl font-semibold"
       >
-        2.4.2 Styling the Kambaz Dashboard Screen
+        2.4.2 Styling the Kambaz Dashboard Screen{" "}
+        <BookSectionSlidesLink sectionId="sec-2-4-2" />
       </h3>
       <p>
         In <SectionLink to="1.4.3" />{" "}a plain{" "}
@@ -447,7 +450,8 @@ export default function Dashboard() {
         id="sec-2-4-3"
         className="scroll-mt-6 font-sans text-xl font-semibold"
       >
-        2.4.3 Styling the Course Navigation Sidebar
+        2.4.3 Styling the Course Navigation Sidebar{" "}
+        <BookSectionSlidesLink sectionId="sec-2-4-3" />
       </h3>
       <p>
         Clicking a course from the Dashboard opens that course&apos;s Home
@@ -923,7 +927,8 @@ export default function CourseStatus() {
         id="sec-2-4-6"
         className="scroll-mt-6 font-sans text-xl font-semibold"
       >
-        2.4.6 Implementing the People Screen
+        2.4.6 Implementing the People Screen{" "}
+        <BookSectionSlidesLink sectionId="sec-2-4-6" />
       </h3>
       <p>
         The People screen lists the students, teaching assistants, and
@@ -1306,7 +1311,8 @@ export default async function Assignments({
         id="sec-2-4-9"
         className="scroll-mt-6 font-sans text-xl font-semibold"
       >
-        2.4.9 Styling the Account Screens (On Your Own)
+        2.4.9 Styling the Account Screens (On Your Own){" "}
+        <BookSectionSlidesLink sectionId="sec-2-4-9" />
       </h3>
       <p>
         The Sign in, Sign up, and Profile screens from <SectionLink to="1.4.2" />, along

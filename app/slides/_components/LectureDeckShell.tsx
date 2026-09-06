@@ -519,19 +519,19 @@ export default function LectureDeckShell({
               aria-label={
                 chapterNumber
                   ? `Other Chapter ${chapterNumber} decks`
-                  : "Other lecture decks"
+                  : "Other slide decks"
               }
               className="mt-2 flex shrink-0 flex-wrap gap-x-4 gap-y-1 border-t border-neutral-200 pt-2 font-sans text-sm"
             >
               {prevDeck ? (
-                <Link href={`/lectures/${prevDeck.slug}`}>← {prevDeck.title}</Link>
+                <Link href={`/slides/${prevDeck.slug}`}>← {prevDeck.title}</Link>
               ) : (
                 <span className="text-neutral-500">
                   {chapterNumber ? `Chapter ${chapterNumber} · ` : ""}first deck
                 </span>
               )}
               {nextDeck ? (
-                <Link href={`/lectures/${nextDeck.slug}`}>{nextDeck.title} →</Link>
+                <Link href={`/slides/${nextDeck.slug}`}>{nextDeck.title} →</Link>
               ) : (
                 <span className="text-neutral-500">
                   {chapterNumber ? `Chapter ${chapterNumber} · ` : ""}last deck

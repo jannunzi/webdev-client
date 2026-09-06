@@ -3,7 +3,7 @@
 Decks live in `lib/lectures/decks/*.ts` as authored TypeScript — titles,
 bullets, code blocks, live Ch1 `embed`s, and `diagram` ids. The shell
 renders an authored SVG/React figure from
-`app/lectures/_components/diagrams/` when `diagram` is set. Default: no
+`app/slides/_components/diagrams/` when `diagram` is set. Default: no
 `imageSrc`. Do not crop Google Slides into slide figures.
 
 `LECTURE_DIAGRAM_IDS` in `lib/lectures/types.ts` is the catalog of
