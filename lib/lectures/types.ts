@@ -59,7 +59,7 @@ export const LECTURE_7_SLUGS = [
   "kambaz-account-styling",
 ] as const;
 
-/** First Chapter 3 decks — JavaScript and data-driven UI (Lab 3). */
+/** Chapter 3 decks — JavaScript, data-driven UI, and Kambaz from JSON (Lab 3 / A3). */
 export const CHAPTER_3_SLUGS = [
   "intro-to-javascript",
   "variables-and-constants",
@@ -67,6 +67,23 @@ export const CHAPTER_3_SLUGS = [
   "booleans-and-conditionals",
   "null-and-undefined",
   "javascript-functions",
+  "javascript-arrays",
+  "array-iteration",
+  "array-search",
+  "reduce-and-json",
+  "javascript-objects",
+  "spread-and-destructuring",
+  "optional-chaining",
+  "dynamic-styling",
+  "client-and-server",
+  "parameterizing-components",
+  "path-params-and-todos",
+  "ch3-check-understanding",
+  "kambaz-database",
+  "kambaz-dashboard-data",
+  "kambaz-courses-data",
+  "kambaz-modules-data",
+  "kambaz-assignments-data",
 ] as const;
 
 export const LECTURE_SLUGS = [
@@ -216,6 +233,12 @@ export const LECTURE_TOPICS = [
     bookSectionId: "sec-3-7",
   },
   {
+    topicId: "ch3-check",
+    chapter: 3,
+    title: "3.8 Check Your Understanding",
+    bookSectionId: "sec-3-8",
+  },
+  {
     topicId: "kambaz-data",
     chapter: 3,
     title: "3.9 Implementing a Data Driven Kambaz Application",
@@ -326,6 +349,32 @@ export const LECTURE_EMBED_IDS = [
   "js-arrow-functions",
   "js-implied-return",
   "js-template-literals",
+  "js-simple-arrays",
+  "js-array-index",
+  "js-array-add-remove",
+  "js-for-loops",
+  "js-map",
+  "js-find",
+  "js-find-index",
+  "js-filter",
+  "js-includes-some-every",
+  "js-reduce",
+  "js-json-stringify",
+  "js-house",
+  "js-spreader",
+  "js-destructing",
+  "js-function-destructing",
+  "js-destructing-imports",
+  "js-optional-chaining",
+  "js-classes",
+  "js-styles",
+  "js-client-component",
+  "js-server-component",
+  "js-add",
+  "js-square",
+  "js-highlight",
+  "js-path-parameters",
+  "js-todo-list",
 ] as const;
 
 export type LectureEmbedId = (typeof LECTURE_EMBED_IDS)[number];

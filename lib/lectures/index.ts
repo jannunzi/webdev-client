@@ -66,6 +66,23 @@ export { VARIABLE_TYPES_SLIDES } from "./decks/variable-types";
 export { BOOLEANS_AND_CONDITIONALS_SLIDES } from "./decks/booleans-and-conditionals";
 export { NULL_AND_UNDEFINED_SLIDES } from "./decks/null-and-undefined";
 export { JAVASCRIPT_FUNCTIONS_SLIDES } from "./decks/javascript-functions";
+export { JAVASCRIPT_ARRAYS_SLIDES } from "./decks/javascript-arrays";
+export { ARRAY_ITERATION_SLIDES } from "./decks/array-iteration";
+export { ARRAY_SEARCH_SLIDES } from "./decks/array-search";
+export { REDUCE_AND_JSON_SLIDES } from "./decks/reduce-and-json";
+export { JAVASCRIPT_OBJECTS_SLIDES } from "./decks/javascript-objects";
+export { SPREAD_AND_DESTRUCTURING_SLIDES } from "./decks/spread-and-destructuring";
+export { OPTIONAL_CHAINING_SLIDES } from "./decks/optional-chaining";
+export { DYNAMIC_STYLING_SLIDES } from "./decks/dynamic-styling";
+export { CLIENT_AND_SERVER_SLIDES } from "./decks/client-and-server";
+export { PARAMETERIZING_COMPONENTS_SLIDES } from "./decks/parameterizing-components";
+export { PATH_PARAMS_AND_TODOS_SLIDES } from "./decks/path-params-and-todos";
+export { CH3_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch3-check-understanding";
+export { KAMBAZ_DATABASE_SLIDES } from "./decks/kambaz-database";
+export { KAMBAZ_DASHBOARD_DATA_SLIDES } from "./decks/kambaz-dashboard-data";
+export { KAMBAZ_COURSES_DATA_SLIDES } from "./decks/kambaz-courses-data";
+export { KAMBAZ_MODULES_DATA_SLIDES } from "./decks/kambaz-modules-data";
+export { KAMBAZ_ASSIGNMENTS_DATA_SLIDES } from "./decks/kambaz-assignments-data";
 export {
   BOOK_CHAPTERS,
   CHAPTER_3_SLUGS,

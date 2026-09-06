@@ -44,6 +44,23 @@ import { VARIABLE_TYPES_SLIDES } from "./decks/variable-types";
 import { BOOLEANS_AND_CONDITIONALS_SLIDES } from "./decks/booleans-and-conditionals";
 import { NULL_AND_UNDEFINED_SLIDES } from "./decks/null-and-undefined";
 import { JAVASCRIPT_FUNCTIONS_SLIDES } from "./decks/javascript-functions";
+import { JAVASCRIPT_ARRAYS_SLIDES } from "./decks/javascript-arrays";
+import { ARRAY_ITERATION_SLIDES } from "./decks/array-iteration";
+import { ARRAY_SEARCH_SLIDES } from "./decks/array-search";
+import { REDUCE_AND_JSON_SLIDES } from "./decks/reduce-and-json";
+import { JAVASCRIPT_OBJECTS_SLIDES } from "./decks/javascript-objects";
+import { SPREAD_AND_DESTRUCTURING_SLIDES } from "./decks/spread-and-destructuring";
+import { OPTIONAL_CHAINING_SLIDES } from "./decks/optional-chaining";
+import { DYNAMIC_STYLING_SLIDES } from "./decks/dynamic-styling";
+import { CLIENT_AND_SERVER_SLIDES } from "./decks/client-and-server";
+import { PARAMETERIZING_COMPONENTS_SLIDES } from "./decks/parameterizing-components";
+import { PATH_PARAMS_AND_TODOS_SLIDES } from "./decks/path-params-and-todos";
+import { CH3_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch3-check-understanding";
+import { KAMBAZ_DATABASE_SLIDES } from "./decks/kambaz-database";
+import { KAMBAZ_DASHBOARD_DATA_SLIDES } from "./decks/kambaz-dashboard-data";
+import { KAMBAZ_COURSES_DATA_SLIDES } from "./decks/kambaz-courses-data";
+import { KAMBAZ_MODULES_DATA_SLIDES } from "./decks/kambaz-modules-data";
+import { KAMBAZ_ASSIGNMENTS_DATA_SLIDES } from "./decks/kambaz-assignments-data";
 import {
   BOOK_CHAPTERS,
   LECTURE_SLUGS,
@@ -559,6 +576,176 @@ const LECTURE_SUMMARIES: Record<
     bookSectionId: "sec-3-3",
     canvasLecture: 8,
     slides: JAVASCRIPT_FUNCTIONS_SLIDES,
+  },
+  "javascript-arrays": {
+    title: "JavaScript Arrays",
+    summary:
+      "Gather values, print them in JSX, then length, indexOf, push, and splice — §3.4–3.4.2.",
+    chapter: 3,
+    topicId: "js-data",
+    bookSectionId: "sec-3-4",
+    canvasLecture: 8,
+    slides: JAVASCRIPT_ARRAYS_SLIDES,
+  },
+  "array-iteration": {
+    title: "Array Iteration",
+    summary:
+      "A for loop builds a second array; map returns one — including a todo list of li — §3.4.3–3.4.4.",
+    chapter: 3,
+    topicId: "js-data",
+    bookSectionId: "sec-3-4-3",
+    canvasLecture: 8,
+    slides: ARRAY_ITERATION_SLIDES,
+  },
+  "array-search": {
+    title: "Array Search",
+    summary:
+      "find, findIndex, filter, then includes / some / every — the questions Kambaz asks of JSON.",
+    chapter: 3,
+    topicId: "js-data",
+    bookSectionId: "sec-3-4-5",
+    canvasLecture: 8,
+    slides: ARRAY_SEARCH_SLIDES,
+  },
+  "reduce-and-json": {
+    title: "Reduce and JSON",
+    summary:
+      "reduce folds an array to one value; JSON.stringify puts brackets and commas back on the page.",
+    chapter: 3,
+    topicId: "js-data",
+    bookSectionId: "sec-3-4-9",
+    canvasLecture: 8,
+    slides: REDUCE_AND_JSON_SLIDES,
+  },
+  "javascript-objects": {
+    title: "JavaScript Objects",
+    summary:
+      "A nested house object, pretty-printed JSON, and console.log in DevTools — §3.4.11–3.4.12.",
+    chapter: 3,
+    topicId: "js-data",
+    bookSectionId: "sec-3-4-11",
+    canvasLecture: 8,
+    slides: JAVASCRIPT_OBJECTS_SLIDES,
+  },
+  "spread-and-destructuring": {
+    title: "Spread and Destructuring",
+    summary:
+      "Spread copies (last write wins); destructing unpacks objects, arrays, props, and imports.",
+    chapter: 3,
+    topicId: "js-data",
+    bookSectionId: "sec-3-4-13",
+    canvasLecture: 8,
+    slides: SPREAD_AND_DESTRUCTURING_SLIDES,
+  },
+  "optional-chaining": {
+    title: "Optional Chaining",
+    summary:
+      "?. stops at missing; ?? fills a default only for null or undefined — §3.4.17.",
+    chapter: 3,
+    topicId: "js-data",
+    bookSectionId: "sec-3-4-17",
+    canvasLecture: 8,
+    slides: OPTIONAL_CHAINING_SLIDES,
+  },
+  "dynamic-styling": {
+    title: "Dynamic Styling",
+    summary:
+      "Build className from a variable or ternary, then apply camelCase style objects — §3.5.",
+    chapter: 3,
+    topicId: "dynamic-styling",
+    bookSectionId: "sec-3-5",
+    canvasLecture: 8,
+    slides: DYNAMIC_STYLING_SLIDES,
+  },
+  "client-and-server": {
+    title: "Client and Server",
+    summary:
+      "\"use client\" for usePathname; omit it to read process and fs on the server — §3.6.",
+    chapter: 3,
+    topicId: "client-server",
+    bookSectionId: "sec-3-6",
+    canvasLecture: 8,
+    slides: CLIENT_AND_SERVER_SLIDES,
+  },
+  "parameterizing-components": {
+    title: "Parameterizing Components",
+    summary:
+      "Destructure props on Add, then children on Square and Highlight — §3.7–3.7.1.",
+    chapter: 3,
+    topicId: "parameterizing",
+    bookSectionId: "sec-3-7",
+    canvasLecture: 8,
+    slides: PARAMETERIZING_COMPONENTS_SLIDES,
+  },
+  "path-params-and-todos": {
+    title: "Path Parameters and Todos",
+    summary:
+      "usePathname on the Labs TOC, [a]/[b] path params, then map todos.json — §3.7.2–3.7.4.",
+    chapter: 3,
+    topicId: "parameterizing",
+    bookSectionId: "sec-3-7-2",
+    canvasLecture: 8,
+    slides: PATH_PARAMS_AND_TODOS_SLIDES,
+  },
+  "ch3-check-understanding": {
+    title: "Check Your Understanding",
+    summary:
+      "A 10-item self-check on Chapter 3 JavaScript before wiring Kambaz to JSON — §3.8.",
+    chapter: 3,
+    topicId: "ch3-check",
+    bookSectionId: "sec-3-8",
+    canvasLecture: 8,
+    slides: CH3_CHECK_UNDERSTANDING_SLIDES,
+  },
+  "kambaz-database": {
+    title: "Kambaz Database",
+    summary:
+      "Map Kambaz Navigation from LINKS, then collect courses and related JSON under database/.",
+    chapter: 3,
+    topicId: "kambaz-data",
+    bookSectionId: "sec-3-9",
+    canvasLecture: 9,
+    slides: KAMBAZ_DATABASE_SLIDES,
+  },
+  "kambaz-dashboard-data": {
+    title: "Dashboard from Data",
+    summary:
+      "Map db.courses onto CourseCard, key by _id, and encode the course in the card href — §3.9.3.",
+    chapter: 3,
+    topicId: "kambaz-data",
+    bookSectionId: "sec-3-9-3",
+    canvasLecture: 9,
+    slides: KAMBAZ_DASHBOARD_DATA_SLIDES,
+  },
+  "kambaz-courses-data": {
+    title: "Courses from Data",
+    summary:
+      "Await [cid], find the course, map course nav, and breadcrumb the last segment — §3.9.4–3.9.6.",
+    chapter: 3,
+    topicId: "kambaz-data",
+    bookSectionId: "sec-3-9-4",
+    canvasLecture: 9,
+    slides: KAMBAZ_COURSES_DATA_SLIDES,
+  },
+  "kambaz-modules-data": {
+    title: "Modules from Data",
+    summary:
+      "Filter modules by cid, map Module and Lesson with keys, optional-chain lessons — §3.9.7.",
+    chapter: 3,
+    topicId: "kambaz-data",
+    bookSectionId: "sec-3-9-7",
+    canvasLecture: 9,
+    slides: KAMBAZ_MODULES_DATA_SLIDES,
+  },
+  "kambaz-assignments-data": {
+    title: "Assignments and People",
+    summary:
+      "Filter assignments, find the editor row, then join users to enrollments with some — §3.9.8–3.9.9.",
+    chapter: 3,
+    topicId: "kambaz-data",
+    bookSectionId: "sec-3-9-8",
+    canvasLecture: 9,
+    slides: KAMBAZ_ASSIGNMENTS_DATA_SLIDES,
   },
 };
 

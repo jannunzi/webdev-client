@@ -165,7 +165,7 @@ export default function ArrowFunctions() {
     kind: "title",
     bullets: [
       "Functions reuse logic. Arrays and objects reuse data",
-      "§3.4: index, map, find, filter, spread — later decks",
+      "§3.4: index, map, find, filter, spread — next decks",
     ],
   },
 ];
