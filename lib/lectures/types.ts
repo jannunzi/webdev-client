@@ -125,7 +125,11 @@ export type LectureSlide = {
   embed?: LectureEmbedId;
   /** Authored SVG/React figure — not a Google Slides raster. */
   diagram?: LectureDiagramId;
-  /** Force dense/spacious type. Default: dense when a diagram or embed is present. */
+  /**
+   * Force dense/spacious type. Default: dense when a diagram or embed is present.
+   * Spacious is for text-only slides (larger bullets). Dense stays a step
+   * tighter so diagrams/embeds still fit, but does not shrink-to-avoid-scroll.
+   */
   density?: LectureSlideDensity;
 };
 

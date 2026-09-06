@@ -86,17 +86,12 @@ function titleClasses({
 }
 
 function bulletClasses({
-  density,
   kind,
 }: {
-  density: ReturnType<typeof lectureSlideDensity>;
   kind: LectureSlide["kind"];
 }): string {
   const color = kind === "title" ? "text-neutral-100" : "text-neutral-900";
-  if (density === "spacious") {
-    return `m-0 space-y-3 pl-8 text-2xl leading-snug sm:text-[1.85rem] lg:text-[2.1rem] ${color}`;
-  }
-  return `m-0 space-y-2 pl-7 text-xl leading-snug sm:text-[1.35rem] lg:text-2xl ${color}`;
+  return `lecture-slide-bullets ${color}`;
 }
 
 export default function LectureDeckShell({
@@ -378,15 +373,12 @@ export default function LectureDeckShell({
 
   const percent = slides.length === 0 ? 0 : ((index + 1) / slides.length) * 100;
   const titleClass = titleClasses({ kind });
-  const hintSize =
-    density === "spacious"
-      ? "mt-4 rounded-md border px-3 py-2 text-lg sm:text-xl"
-      : "mt-3 rounded-md border px-3 py-2 text-base sm:text-lg";
+  const hintSize = "lecture-slide-hint";
   const stageClass = isPresenting
-    ? `lecture-slide lecture-slide-${density} h-full w-full overflow-x-hidden overflow-y-auto px-5 py-6 sm:px-8 sm:py-7 ${kindFrame(kind)}${
+    ? `lecture-slide lecture-slide-${density} h-full w-full min-w-0 overflow-x-hidden overflow-y-auto px-5 py-6 sm:px-8 sm:py-7 ${kindFrame(kind)}${
         fallbackPresent ? " lecture-slide-present-fallback" : ""
       }`
-    : `lecture-slide lecture-slide-${density} min-h-0 flex-1 overflow-x-hidden overflow-y-auto rounded-lg border-2 px-4 py-4 sm:px-6 sm:py-5 ${kindFrame(kind)}`;
+    : `lecture-slide lecture-slide-${density} min-h-0 min-w-0 w-full flex-1 overflow-x-hidden overflow-y-auto rounded-lg border-2 px-4 py-4 sm:px-6 sm:py-5 ${kindFrame(kind)}`;
 
   return (
     <section
@@ -454,7 +446,7 @@ export default function LectureDeckShell({
           </p>
           <h2 className={titleClass}>{slide.title}</h2>
           {slide.bullets && slide.bullets.length > 0 ? (
-            <ul className={bulletClasses({ density, kind })}>
+            <ul className={bulletClasses({ kind })}>
               {slide.bullets.map((bullet, bulletIndex) => (
                 <li key={`${slide.id}-${bulletIndex}`}>
                   <SlideText text={bullet} density={density} />
