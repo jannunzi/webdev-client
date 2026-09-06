@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz identifier="gwebdev_q1_fallback" xmlns="http://canvas.instructure.com/xsd/cccv1p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://canvas.instructure.com/xsd/cccv1p0 https://canvas.instructure.com/xsd/cccv1p0.xsd">
+  <title>Q1 — HTML</title>
+  <description>&lt;p&gt;Take Q1 — HTML on the course site:&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://webdev-client.vercel.app/quizzes/take/q1&quot;&gt;https://webdev-client.vercel.app/quizzes/take/q1&lt;/a&gt;&lt;/p&gt;&lt;p&gt;If the website quiz is unavailable, ask your instructor or TA for permission to take this Canvas quiz instead.&lt;/p&gt;</description>
+  <unlock_at>2026-09-28T00:00:00</unlock_at>
+  <due_at>2026-10-04T23:59:00</due_at>
+  <lock_at>2026-10-04T23:59:00</lock_at>
+  <shuffle_answers>true</shuffle_answers>
+  <scoring_policy>keep_highest</scoring_policy>
+  <hide_results>always</hide_results>
+  <quiz_type>assignment</quiz_type>
+  <points_possible>100.0</points_possible>
+  <require_lockdown_browser>false</require_lockdown_browser>
+  <allowed_attempts>1</allowed_attempts>
+  <one_question_at_a_time>false</one_question_at_a_time>
+  <cant_go_back>false</cant_go_back>
+  <available>false</available>
+  <show_correct_answers>false</show_correct_answers>
+  <anonymous_submissions>false</anonymous_submissions>
+  <could_be_locked>false</could_be_locked>
+  <assignment identifier="gwebdev_q1_fallback_assignment">
+    <title>Q1 — HTML</title>
+    <unlock_at>2026-09-28T00:00:00</unlock_at>
+    <due_at>2026-10-04T23:59:00</due_at>
+    <lock_at>2026-10-04T23:59:00</lock_at>
+    <quiz_identifierref>gwebdev_q1_fallback</quiz_identifierref>
+    <workflow_state>unpublished</workflow_state>
+    <points_possible>100.0</points_possible>
+    <grading_type>points</grading_type>
+    <submission_types>online_quiz</submission_types>
+    <position>1</position>
+  </assignment>
+</quiz>
