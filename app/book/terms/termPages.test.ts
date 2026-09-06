@@ -22,6 +22,10 @@ describe("termSlug", () => {
     assert.equal(termSlug("World Wide Web"), "world-wide-web");
     assert.equal(termSlug("NEXT_PUBLIC_"), "next-public");
     assert.equal(termSlug("git"), "git");
+    assert.equal(termSlug("v0"), "v0");
+    assert.equal(termSlug("shadcn/ui"), "shadcn-ui");
+    assert.equal(termSlug("Rocket.new"), "rocket-new");
+    assert.equal(termSlug("GitHub Copilot"), "github-copilot");
     assert.equal(
       termSlug("Integrated Development Environment (IDE)"),
       "integrated-development-environment-ide",

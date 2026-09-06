@@ -114,6 +114,57 @@ const TERM_LIST: TermEntry[] = [
   { term: "mongodb.com", officialUrl: "https://www.mongodb.com/", searchQuery: "MongoDB explained tutorial", chapters: [6] },
   { term: "MongoDB Atlas", officialUrl: "https://www.mongodb.com/atlas", chapters: [6] },
   { term: "MongoDB Compass", officialUrl: "https://www.mongodb.com/products/tools/compass", chapters: [6] },
+  {
+    term: "MongoDB Community Server",
+    officialUrl: "https://www.mongodb.com/try/download/community",
+    searchQuery: "MongoDB Community Server install explained",
+    chapters: [6],
+  },
+  { term: "v0", officialUrl: "https://v0.app/", searchQuery: "v0 Vercel AI UI generator explained", chapters: [1, 2, 3] },
+  {
+    term: "Stitch",
+    officialUrl: "https://stitch.withgoogle.com/",
+    searchQuery: "Google Stitch AI design tool explained",
+    chapters: [1, 2],
+  },
+  {
+    term: "Rocket.new",
+    officialUrl: "https://www.rocket.new/",
+    searchQuery: "Rocket.new AI web app builder explained",
+    chapters: [1, 2],
+  },
+  { term: "Lucide", officialUrl: "https://lucide.dev/", searchQuery: "Lucide icons React explained", chapters: [1, 2] },
+  {
+    term: "Galileo AI",
+    officialUrl: "https://www.usegalileo.ai/",
+    searchQuery: "Galileo AI UI design tool explained",
+    chapters: [1, 2],
+  },
+  {
+    term: "Google Prompt Gallery",
+    officialUrl: "https://ai.google.dev/gemini-api/prompts",
+    searchQuery: "Google Gemini prompt gallery explained",
+    chapters: [1, 2, 3, 4, 5, 6],
+  },
+  {
+    term: "shadcn/ui",
+    officialUrl: "https://ui.shadcn.com/",
+    searchQuery: "shadcn ui React Tailwind explained",
+    chapters: [1, 2],
+  },
+  { term: "Figma", officialUrl: "https://www.figma.com/", searchQuery: "Figma design tool explained", chapters: [1, 2] },
+  {
+    term: "GitHub Copilot",
+    officialUrl: "https://github.com/features/copilot",
+    searchQuery: "GitHub Copilot AI pair programmer explained",
+    chapters: [3, 4, 5, 6],
+  },
+  {
+    term: "Compass natural-language queries",
+    officialUrl: "https://www.mongodb.com/docs/compass/query-with-natural-language/",
+    searchQuery: "MongoDB Compass natural language query explained",
+    chapters: [6],
+  },
 ];
 
 function indexTerms(entries: TermEntry[]): Record<string, TermEntry> {
