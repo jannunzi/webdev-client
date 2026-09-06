@@ -49,7 +49,7 @@ const lifeIs = (good: string) => {
 </button>`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/PassingDataOnEvent.tsx",
-    codeAddedLines: [[5, 7], [14]],
+    codeAddedLines: [[5, 7], 14],
     embed: "passing-data",
   },
   {
