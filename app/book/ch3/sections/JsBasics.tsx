@@ -227,10 +227,10 @@ export default function JsBasics() {
 
       <Section level={3} id="sec-3-2-4" title="3.2.4 Conditionals">
         <p>
-          A predicate is an expression that evaluates to true or false. An{" "}
-          <code>if</code>/<code>else</code>{" "}chooses which block to run; in
-          JSX you more often embed the choice in the tree itself. Create{" "}
-          <code>IfElse.tsx</code>:
+          A predicate is an expression that evaluates to true or false, and
+          an <code>if</code>/<code>else</code>{" "}chooses which block to
+          run — though in JSX you more often embed that choice in the tree
+          itself. Create <code>IfElse.tsx</code>:
         </p>
         <CodeBlock
           language="tsx"

@@ -27,11 +27,14 @@ export default function DataStructures() {
   return (
     <Section id="sec-3-4" title="3.4 JavaScript Data Structures">
       <p>
-        Numbers, strings, and booleans combine into arrays and objects —
-        the structures Kambaz will use for courses, modules, and people.
-        An array groups values into one variable. The values can be mixed
-        types (you rarely want that) or JSX elements (you often want that).
-        Create <code>SimpleArrays.tsx</code>:
+        Numbers, strings, and booleans can be combined into arrays and
+        objects that group values of different types — an array gathers
+        them into a single variable, an object names each one — and those
+        are the structures Kambaz will use for courses, modules, and
+        people. Mixing primitive types in one array is legal but rarely
+        useful; gathering JSX elements is something you will do often, so
+        a todo list can render as HTML. Create{" "}
+        <code>SimpleArrays.tsx</code>:
       </p>
       <CodeBlock
         language="tsx"
@@ -72,10 +75,10 @@ export default function DataStructures() {
       <p>
         JSX interpolates an array of numbers or strings without commas —
         handy once the items are HTML. Each <code>li</code>{" "}in{" "}
-        <code>htmlArray1</code>{" "}carries a <code>key</code>. React uses that
-        key to match list items across renders; without it, the console
+        <code>htmlArray1</code>{" "}carries a <code>key</code>, which React
+        uses to match list items across renders; without it, the console
         warns and updates can reuse the wrong DOM node. Prefer a stable id
-        from your data. Here the keys are <code>1</code>{" "}and{" "}
+        from your data; here the keys are <code>1</code>{" "}and{" "}
         <code>2</code>{" "}because the list is static:
       </p>
       <LiveDemo name="SimpleArrays" file="app/labs/lab3/SimpleArrays.tsx">
@@ -99,9 +102,10 @@ export default function DataStructures() {
         title="3.4.1 Array Index and Length"
       >
         <p>
-          <code>length</code>{" "}is the number of items.{" "}
-          <code>indexOf(value)</code>{" "}returns the first index of that
-          value, or <code>-1</code>{" "}if it is missing. Create{" "}
+          Once values live in an array, <code>length</code>{" "}tells you how
+          many items it holds, and <code>indexOf(value)</code>{" "}tells you
+          where a particular value sits — the first matching index, or{" "}
+          <code>-1</code>{" "}if it is missing. Create{" "}
           <code>ArrayIndexAndLength.tsx</code>:
         </p>
         <CodeBlock
@@ -151,9 +155,10 @@ export default function DataStructures() {
         title="3.4.2 Adding and Removing From Arrays"
       >
         <p>
-          Unlike many languages, JavaScript arrays grow and shrink.{" "}
-          <code>push</code>{" "}appends; <code>splice(start, deleteCount)</code>{" "}
-          removes (or inserts) at an index. Create{" "}
+          Unlike many languages, JavaScript arrays grow and shrink as you
+          work: <code>push</code>{" "}appends a value at the end, and{" "}
+          <code>splice(start, deleteCount)</code>{" "}removes items at an
+          index or inserts new ones there. Create{" "}
           <code>AddingAndRemovingToFromArrays.tsx</code>:
         </p>
         <CodeBlock
@@ -558,13 +563,13 @@ export default function DataStructures() {
 
       <Section level={3} id="sec-3-4-10" title="3.4.10 JSON Stringify">
         <p>
-          <strong>JSON</strong>{" "}(JavaScript Object Notation) is the text
-          format APIs and files use to ship data. The global{" "}
-          <code>JSON</code>{" "}object provides <code>stringify</code>{" "}
-          (value to text) and <code>parse</code>{" "}(text to value). JSX
-          prints arrays without brackets or commas;{" "}
-          <code>JSON.stringify</code>{" "}puts them back so you can see the
-          real structure. Create <code>JsonStringify.tsx</code>:
+          <strong>JSON</strong>, short for JavaScript Object Notation, is
+          the text format APIs and files use to ship data, and the global{" "}
+          <code>JSON</code>{" "}object turns a value into that text with{" "}
+          <code>stringify</code>{" "}and reads it back with{" "}
+          <code>parse</code>. JSX prints arrays without brackets or
+          commas; <code>JSON.stringify</code>{" "}puts them back so you can
+          see the real structure. Create <code>JsonStringify.tsx</code>:
         </p>
         <CodeBlock
           language="tsx"
@@ -602,10 +607,11 @@ export default function DataStructures() {
         title="3.4.11 JavaScript Objects"
       >
         <p>
-          An <strong>object</strong> groups named properties whose values can
-          be numbers, strings, arrays, or nested objects. Curly braces around
-          <code>key: value</code>{" "}pairs are an object literal. Create{" "}
-          <code>House.tsx</code>:
+          Where an array groups values by position, an{" "}
+          <strong>object</strong> groups named properties whose values can
+          themselves be numbers, strings, arrays, or nested objects, written
+          as curly braces around <code>key: value</code>{" "}pairs — an
+          object literal. Create <code>House.tsx</code>:
         </p>
         <CodeBlock
           language="tsx"

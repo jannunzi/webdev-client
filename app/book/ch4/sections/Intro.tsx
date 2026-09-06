@@ -21,14 +21,15 @@ export default function Intro() {
 
       <section className="space-y-4 text-[1.05rem]">
         <p>
-          <ChapterLink to={3} /> discussed how to render content dynamically from data formatted in JSON.
-          The Dashboard screen is rendered by looping over an array of courses,
-          not eight copies of the same markup. The Course screen is rendered
-          from an object indexed by an ID parsed from the URL.
-          What we cannot do yet is change that data from the UI. The Add, Edit,
-          and Delete buttons are still for decoration. A module you type on one
-          screen never appears on another, because both pages are still reading
-          from static files and are not connected to each other.
+          <ChapterLink to={3} />{" "}showed how to render content dynamically
+          from JSON: the Dashboard loops over an array of courses instead
+          of eight copies of the same markup, and the Course screen reads
+          an object indexed by an ID parsed from the URL. What we cannot
+          do yet is change that data from the UI. The Add, Edit, and
+          Delete buttons are still for decoration. A module you type on
+          one screen never appears on another, because both pages are
+          still reading from static files and are not connected to each
+          other.
         </p>
         <p>
           In an application, <strong>state</strong> is the collection of

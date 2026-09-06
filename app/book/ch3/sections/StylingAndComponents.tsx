@@ -22,8 +22,8 @@ export default function StylingAndComponents() {
       <Section id="sec-3-5" title="3.5 Dynamic Styling">
         <p>
           <ChapterLink to={2} />{" "}styled tags with CSS files and Tailwind
-          classes. JavaScript can choose those classes — or a style object —
-          at render time, so the look follows the data.
+          classes; now JavaScript can choose those classes, or a style
+          object, at render time so the look follows the data.
         </p>
 
         <Section
@@ -195,10 +195,10 @@ export default function Classes() {
         title="3.6 Client and Server Components"
       >
         <p>
-          Next.js components run on the server by default. They can read
-          files and environment variables, then send HTML to the browser.
-          They cannot use browser APIs, React state, or hooks such as{" "}
-          <code>usePathname</code>. Add{" "}
+          Next.js components run on the server by default, so they can
+          read files and environment variables and send HTML to the
+          browser, but they cannot use browser APIs, React state, or hooks
+          such as <code>usePathname</code>. Add{" "}
           <code>&quot;use client&quot;</code>{" "}at the top of a file to opt
           into a <strong>Client Component</strong> that runs in the
           browser.
@@ -343,7 +343,7 @@ export default function ServerComponentDemo() {
 
       <Section id="sec-3-7" title="3.7 Parameterizing Components">
         <p>
-          HTML attributes become a props object. Destructure{" "}
+          HTML attributes arrive as a props object, so you destructure{" "}
           <code>a</code>{" "}and <code>b</code>{" "}from that object — the same
           parameter destructuring as <SectionLink to="3.4.15" />. Create{" "}
           <code>Add.tsx</code>{" "}and render{" "}
