@@ -115,6 +115,19 @@ const JS = `
     <text x="180" y="250" text-anchor="middle" fill="#111827" font-family="ui-sans-serif, system-ui, sans-serif" font-size="160" font-weight="800">JS</text>
   </g>`;
 
+const STATE = `
+  <g transform="translate(90 80)">
+    <rect width="360" height="360" rx="48" fill="#38BDF8"/>
+    <text x="180" y="230" text-anchor="middle" fill="#0F172A" font-family="ui-sans-serif, system-ui, sans-serif" font-size="88" font-weight="800">use</text>
+    <text x="180" y="310" text-anchor="middle" fill="#0F172A" font-family="ui-sans-serif, system-ui, sans-serif" font-size="72" font-weight="800">State</text>
+  </g>`;
+
+const STORE = `
+  <g transform="translate(90 80)">
+    <rect width="360" height="360" rx="48" fill="#111827"/>
+    <text x="180" y="250" text-anchor="middle" fill="#F8FAFC" font-family="ui-sans-serif, system-ui, sans-serif" font-size="96" font-weight="800">Z</text>
+  </g>`;
+
 const SPA = `
   <g transform="translate(80 110)">
     <rect width="240" height="200" rx="20" fill="#fff" stroke="#0F172A" stroke-width="8"/>
@@ -355,6 +368,126 @@ const thumbs = [
     bg: "#1E1B4B",
     accent: "#C4B5FD",
     art: JS,
+  },
+  {
+    slug: "click-events",
+    title: "Click Events",
+    chapter: 4,
+    bg: "#111827",
+    accent: "#F97316",
+    art: STATE,
+  },
+  {
+    slug: "passing-data-and-functions",
+    title: "Passing Data and Functions",
+    chapter: 4,
+    bg: "#1E293B",
+    accent: "#38BDF8",
+    art: STATE,
+  },
+  {
+    slug: "usestate-counter",
+    title: "useState and the Counter",
+    chapter: 4,
+    bg: "#0F172A",
+    accent: "#A78BFA",
+    art: STATE,
+  },
+  {
+    slug: "form-state-types",
+    title: "Form State Types",
+    chapter: 4,
+    bg: "#14532D",
+    accent: "#86EFAC",
+    art: STATE,
+  },
+  {
+    slug: "sharing-parent-child",
+    title: "Sharing Parent and Child",
+    chapter: 4,
+    bg: "#1E1B4B",
+    accent: "#C4B5FD",
+    art: STATE,
+  },
+  {
+    slug: "prop-drilling-and-url",
+    title: "Prop Drilling and URLs",
+    chapter: 4,
+    bg: "#4C0519",
+    accent: "#FB7185",
+    art: STATE,
+  },
+  {
+    slug: "react-context",
+    title: "React Context",
+    chapter: 4,
+    bg: "#0B1220",
+    accent: "#61DAFB",
+    art: STATE,
+  },
+  {
+    slug: "zustand-counter",
+    title: "Zustand Counter",
+    chapter: 4,
+    bg: "#111827",
+    accent: "#F8FAFC",
+    art: STORE,
+  },
+  {
+    slug: "zustand-todos",
+    title: "Zustand Todo List",
+    chapter: 4,
+    bg: "#1C1917",
+    accent: "#F59E0B",
+    art: STORE,
+  },
+  {
+    slug: "use-effect",
+    title: "Side Effects with useEffect",
+    chapter: 4,
+    bg: "#134E4A",
+    accent: "#5EEAD4",
+    art: STATE,
+  },
+  {
+    slug: "ch4-check-understanding",
+    title: "Check Your Understanding",
+    chapter: 4,
+    bg: "#1E1B4B",
+    accent: "#F7DF1E",
+    art: STATE,
+  },
+  {
+    slug: "kambaz-courses-store",
+    title: "A Courses Store",
+    chapter: 4,
+    bg: "#14532D",
+    accent: "#86EFAC",
+    art: KAMBAZ,
+  },
+  {
+    slug: "kambaz-dashboard-crud",
+    title: "Dashboard Create, Edit, Delete",
+    chapter: 4,
+    bg: "#0F172A",
+    accent: "#38BDF8",
+    art: KAMBAZ,
+  },
+  {
+    slug: "kambaz-modules-store",
+    title: "A Modules Store",
+    chapter: 4,
+    bg: "#134E4A",
+    accent: "#5EEAD4",
+    art: KAMBAZ,
+  },
+  {
+    slug: "kambaz-account-context",
+    title: "Account Context",
+    chapter: 4,
+    bg: "#4C0519",
+    accent: "#FB7185",
+    art: KAMBAZ,
   },
 ];
 

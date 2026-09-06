@@ -59,6 +59,25 @@ export const LECTURE_7_SLUGS = [
   "kambaz-account-styling",
 ] as const;
 
+/** Chapter 4 decks — events, useState, Context, Zustand, and Kambaz client state (Lab 4 / A4). */
+export const CHAPTER_4_SLUGS = [
+  "click-events",
+  "passing-data-and-functions",
+  "usestate-counter",
+  "form-state-types",
+  "sharing-parent-child",
+  "prop-drilling-and-url",
+  "react-context",
+  "zustand-counter",
+  "zustand-todos",
+  "use-effect",
+  "ch4-check-understanding",
+  "kambaz-courses-store",
+  "kambaz-dashboard-crud",
+  "kambaz-modules-store",
+  "kambaz-account-context",
+] as const;
+
 /** Chapter 3 decks — JavaScript, data-driven UI, and Kambaz from JSON (Lab 3 / A3). */
 export const CHAPTER_3_SLUGS = [
   "intro-to-javascript",
@@ -94,6 +113,7 @@ export const LECTURE_SLUGS = [
   ...LECTURE_6_SLUGS,
   ...LECTURE_7_SLUGS,
   ...CHAPTER_3_SLUGS,
+  ...CHAPTER_4_SLUGS,
 ] as const;
 
 /** Book spine used by the slides hub and nav — not Canvas week folders. */
@@ -244,6 +264,48 @@ export const LECTURE_TOPICS = [
     title: "3.9 Implementing a Data Driven Kambaz Application",
     bookSectionId: "sec-3-9",
   },
+  {
+    topicId: "events-state",
+    chapter: 4,
+    title: "4.2 Managing State and User Input with Forms",
+    bookSectionId: "sec-4-2",
+  },
+  {
+    topicId: "sharing-url",
+    chapter: 4,
+    title: "4.3 Sharing State, Prop Drilling, and URLs",
+    bookSectionId: "sec-4-3",
+  },
+  {
+    topicId: "react-context",
+    chapter: 4,
+    title: "4.4 React Context",
+    bookSectionId: "sec-4-4",
+  },
+  {
+    topicId: "zustand",
+    chapter: 4,
+    title: "4.5 Zustand",
+    bookSectionId: "sec-4-5",
+  },
+  {
+    topicId: "effects",
+    chapter: 4,
+    title: "4.7 Side Effects with useEffect",
+    bookSectionId: "sec-4-7",
+  },
+  {
+    topicId: "ch4-check",
+    chapter: 4,
+    title: "4.9 Check Your Understanding",
+    bookSectionId: "sec-4-9",
+  },
+  {
+    topicId: "kambaz-state",
+    chapter: 4,
+    title: "4.10 Adding State to the Kambaz User Interface",
+    bookSectionId: "sec-4-10",
+  },
 ] as const;
 
 export type LectureTopicId = (typeof LECTURE_TOPICS)[number]["topicId"];
@@ -375,6 +437,25 @@ export const LECTURE_EMBED_IDS = [
   "js-highlight",
   "js-path-parameters",
   "js-todo-list",
+  "lab4-stub",
+  "click-event",
+  "passing-data",
+  "passing-functions",
+  "counter-broken",
+  "counter",
+  "boolean-state",
+  "string-state",
+  "date-state",
+  "object-state",
+  "array-state",
+  "parent-child-state",
+  "prop-drilling",
+  "url-encoding",
+  "context-counter",
+  "zustand-counter",
+  "zustand-todos",
+  "use-effect",
+  "kambaz-courses-crud",
 ] as const;
 
 export type LectureEmbedId = (typeof LECTURE_EMBED_IDS)[number];

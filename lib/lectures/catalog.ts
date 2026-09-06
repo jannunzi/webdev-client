@@ -61,6 +61,21 @@ import { KAMBAZ_DASHBOARD_DATA_SLIDES } from "./decks/kambaz-dashboard-data";
 import { KAMBAZ_COURSES_DATA_SLIDES } from "./decks/kambaz-courses-data";
 import { KAMBAZ_MODULES_DATA_SLIDES } from "./decks/kambaz-modules-data";
 import { KAMBAZ_ASSIGNMENTS_DATA_SLIDES } from "./decks/kambaz-assignments-data";
+import { CLICK_EVENTS_SLIDES } from "./decks/click-events";
+import { PASSING_DATA_AND_FUNCTIONS_SLIDES } from "./decks/passing-data-and-functions";
+import { USESTATE_COUNTER_SLIDES } from "./decks/usestate-counter";
+import { FORM_STATE_TYPES_SLIDES } from "./decks/form-state-types";
+import { SHARING_PARENT_CHILD_SLIDES } from "./decks/sharing-parent-child";
+import { PROP_DRILLING_AND_URL_SLIDES } from "./decks/prop-drilling-and-url";
+import { REACT_CONTEXT_SLIDES } from "./decks/react-context";
+import { ZUSTAND_COUNTER_SLIDES } from "./decks/zustand-counter";
+import { ZUSTAND_TODOS_SLIDES } from "./decks/zustand-todos";
+import { USE_EFFECT_SLIDES } from "./decks/use-effect";
+import { CH4_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch4-check-understanding";
+import { KAMBAZ_COURSES_STORE_SLIDES } from "./decks/kambaz-courses-store";
+import { KAMBAZ_DASHBOARD_CRUD_SLIDES } from "./decks/kambaz-dashboard-crud";
+import { KAMBAZ_MODULES_STORE_SLIDES } from "./decks/kambaz-modules-store";
+import { KAMBAZ_ACCOUNT_CONTEXT_SLIDES } from "./decks/kambaz-account-context";
 import {
   BOOK_CHAPTERS,
   LECTURE_SLUGS,
@@ -746,6 +761,156 @@ const LECTURE_SUMMARIES: Record<
     bookSectionId: "sec-3-9-8",
     canvasLecture: 9,
     slides: KAMBAZ_ASSIGNMENTS_DATA_SLIDES,
+  },
+  "click-events": {
+    title: "Click Events",
+    summary:
+      "Lab 4 starts with \"use client\". onClick takes a function reference — parentheses fire during render.",
+    chapter: 4,
+    topicId: "events-state",
+    bookSectionId: "sec-4-2-1",
+    canvasLecture: 10,
+    slides: CLICK_EVENTS_SLIDES,
+  },
+  "passing-data-and-functions": {
+    title: "Passing Data and Functions",
+    summary:
+      "Wrap a call in an arrow to pass an argument. Pass a parent function as a prop the child invokes on click.",
+    chapter: 4,
+    topicId: "events-state",
+    bookSectionId: "sec-4-2-2",
+    canvasLecture: 10,
+    slides: PASSING_DATA_AND_FUNCTIONS_SLIDES,
+  },
+  "usestate-counter": {
+    title: "useState and the Counter",
+    summary:
+      "A let stays at 7. useState returns a pair; the setter queues a render so the heading moves.",
+    chapter: 4,
+    topicId: "events-state",
+    bookSectionId: "sec-4-2-4",
+    canvasLecture: 10,
+    slides: USESTATE_COUNTER_SLIDES,
+  },
+  "form-state-types": {
+    title: "Form State Types",
+    summary:
+      "Boolean checked, string and date value/onChange, then spread objects and copy arrays — §4.2.5–4.2.9.",
+    chapter: 4,
+    topicId: "events-state",
+    bookSectionId: "sec-4-2-5",
+    canvasLecture: 10,
+    slides: FORM_STATE_TYPES_SLIDES,
+  },
+  "sharing-parent-child": {
+    title: "Sharing Parent and Child",
+    summary:
+      "Lift the counter to a parent and pass the value plus setter so the child can increment it.",
+    chapter: 4,
+    topicId: "sharing-url",
+    bookSectionId: "sec-4-3-1",
+    canvasLecture: 11,
+    slides: SHARING_PARENT_CHILD_SLIDES,
+  },
+  "prop-drilling-and-url": {
+    title: "Prop Drilling and URLs",
+    summary:
+      "A middle component that only forwards props is drilling. Query and path parameters carry the next page.",
+    chapter: 4,
+    topicId: "sharing-url",
+    bookSectionId: "sec-4-3-2",
+    canvasLecture: 11,
+    slides: PROP_DRILLING_AND_URL_SLIDES,
+  },
+  "react-context": {
+    title: "React Context",
+    summary:
+      "A provider publishes a stable value. Right for who is signed in; wrong for lists every keystroke rewrites.",
+    chapter: 4,
+    topicId: "react-context",
+    bookSectionId: "sec-4-4",
+    canvasLecture: 11,
+    slides: REACT_CONTEXT_SLIDES,
+  },
+  "zustand-counter": {
+    title: "Zustand Counter",
+    summary:
+      "create() returns a hook — no Provider. Select count, up, and down so only that field rerenders.",
+    chapter: 4,
+    topicId: "zustand",
+    bookSectionId: "sec-4-5-1",
+    canvasLecture: 12,
+    slides: ZUSTAND_COUNTER_SLIDES,
+  },
+  "zustand-todos": {
+    title: "Zustand Todo List",
+    summary:
+      "Array plus a draft in the store. Form and item call the hook — add, update, and delete without props.",
+    chapter: 4,
+    topicId: "zustand",
+    bookSectionId: "sec-4-5-2",
+    canvasLecture: 12,
+    slides: ZUSTAND_TODOS_SLIDES,
+  },
+  "use-effect": {
+    title: "Side Effects with useEffect",
+    summary:
+      "Render computes JSX. useEffect runs after paint. The dependency array says when the title updates.",
+    chapter: 4,
+    topicId: "effects",
+    bookSectionId: "sec-4-7",
+    canvasLecture: 13,
+    slides: USE_EFFECT_SLIDES,
+  },
+  "ch4-check-understanding": {
+    title: "Check Your Understanding",
+    summary:
+      "A 10-item self-check on events, useState, Context, Zustand, and useEffect before stateful Kambaz — §4.9.",
+    chapter: 4,
+    topicId: "ch4-check",
+    bookSectionId: "sec-4-9",
+    canvasLecture: 13,
+    slides: CH4_CHECK_UNDERSTANDING_SLIDES,
+  },
+  "kambaz-courses-store": {
+    title: "A Courses Store",
+    summary:
+      "Dashboard useState alone would not name a new course on Home. Zustand holds the published list — §4.10.1.",
+    chapter: 4,
+    topicId: "kambaz-state",
+    bookSectionId: "sec-4-10-1",
+    canvasLecture: 14,
+    slides: KAMBAZ_COURSES_STORE_SLIDES,
+  },
+  "kambaz-dashboard-crud": {
+    title: "Dashboard Create, Edit, Delete",
+    summary:
+      "Select the store, keep a local form draft, Add a copy, Delete with preventDefault, Edit then Update.",
+    chapter: 4,
+    topicId: "kambaz-state",
+    bookSectionId: "sec-4-10-2",
+    canvasLecture: 14,
+    slides: KAMBAZ_DASHBOARD_CRUD_SLIDES,
+  },
+  "kambaz-modules-store": {
+    title: "A Modules Store",
+    summary:
+      "A controlled ModuleEditor dialog, then modulesStore so Home sees the same array as Modules — §4.10.4.",
+    chapter: 4,
+    topicId: "kambaz-state",
+    bookSectionId: "sec-4-10-4",
+    canvasLecture: 15,
+    slides: KAMBAZ_MODULES_STORE_SLIDES,
+  },
+  "kambaz-account-context": {
+    title: "Account Context",
+    summary:
+      "AccountProvider around the Kambaz layout. Sign in writes currentUser; Profile and Account Nav read it.",
+    chapter: 4,
+    topicId: "kambaz-state",
+    bookSectionId: "sec-4-10-5",
+    canvasLecture: 15,
+    slides: KAMBAZ_ACCOUNT_CONTEXT_SLIDES,
   },
 };
 
