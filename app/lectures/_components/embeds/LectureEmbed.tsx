@@ -69,6 +69,26 @@ import {
   CssStyleAttrEmbed,
   CssZindexEmbed,
 } from "./CssLabEmbeds";
+import {
+  ReactIconsEmbed,
+  TailwindBackgroundsEmbed,
+  TailwindFiltersEmbed,
+  TailwindFlexEmbed,
+  TailwindGridsEmbed,
+  TailwindResponsiveEmbed,
+  TailwindSpacingEmbed,
+  TailwindTypographyEmbed,
+} from "./TailwindLabEmbeds";
+import {
+  KambazStyledAssignmentsEmbed,
+  KambazStyledCourseNavEmbed,
+  KambazStyledDashboardEmbed,
+  KambazStyledHomeEmbed,
+  KambazStyledModulesEmbed,
+  KambazStyledNavEmbed,
+  KambazStyledPeopleEmbed,
+  KambazStyledSigninEmbed,
+} from "./KambazStylingEmbeds";
 
 export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
   switch (id) {
@@ -196,6 +216,38 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <CssRotateEmbed />;
     case "css-gradient":
       return <CssGradientEmbed />;
+    case "react-icons":
+      return <ReactIconsEmbed />;
+    case "tw-spacing":
+      return <TailwindSpacingEmbed />;
+    case "tw-typography":
+      return <TailwindTypographyEmbed />;
+    case "tw-backgrounds":
+      return <TailwindBackgroundsEmbed />;
+    case "tw-filters":
+      return <TailwindFiltersEmbed />;
+    case "tw-flex":
+      return <TailwindFlexEmbed />;
+    case "tw-grids":
+      return <TailwindGridsEmbed />;
+    case "tw-responsive":
+      return <TailwindResponsiveEmbed />;
+    case "kambaz-styled-nav":
+      return <KambazStyledNavEmbed />;
+    case "kambaz-styled-dashboard":
+      return <KambazStyledDashboardEmbed />;
+    case "kambaz-styled-course-nav":
+      return <KambazStyledCourseNavEmbed />;
+    case "kambaz-styled-modules":
+      return <KambazStyledModulesEmbed />;
+    case "kambaz-styled-home":
+      return <KambazStyledHomeEmbed />;
+    case "kambaz-styled-people":
+      return <KambazStyledPeopleEmbed />;
+    case "kambaz-styled-assignments":
+      return <KambazStyledAssignmentsEmbed />;
+    case "kambaz-styled-signin":
+      return <KambazStyledSigninEmbed />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;

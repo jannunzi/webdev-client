@@ -40,11 +40,32 @@ export const LECTURE_4_SLUGS = [
   "css-rotation",
 ] as const;
 
+export const LECTURE_6_SLUGS = [
+  "react-icons",
+  "tailwind-intro",
+  "tailwind-spacing",
+  "tailwind-typography",
+  "tailwind-colors",
+  "tailwind-flex-and-grid",
+  "tailwind-responsive",
+] as const;
+
+export const LECTURE_7_SLUGS = [
+  "kambaz-styling",
+  "kambaz-nav-styling",
+  "kambaz-dashboard-styling",
+  "kambaz-courses-styling",
+  "kambaz-assignments-styling",
+  "kambaz-account-styling",
+] as const;
+
 export const LECTURE_SLUGS = [
   ...LECTURE_1_SLUGS,
   ...LECTURE_2_SLUGS,
   ...LECTURE_3_SLUGS,
   ...LECTURE_4_SLUGS,
+  ...LECTURE_6_SLUGS,
+  ...LECTURE_7_SLUGS,
 ] as const;
 
 /** Book spine used by the lectures hub and nav — not Canvas lecture folders. */
@@ -169,6 +190,22 @@ export const LECTURE_EMBED_IDS = [
   "css-media-queries",
   "css-rotate",
   "css-gradient",
+  "react-icons",
+  "tw-spacing",
+  "tw-typography",
+  "tw-backgrounds",
+  "tw-filters",
+  "tw-flex",
+  "tw-grids",
+  "tw-responsive",
+  "kambaz-styled-nav",
+  "kambaz-styled-dashboard",
+  "kambaz-styled-course-nav",
+  "kambaz-styled-modules",
+  "kambaz-styled-home",
+  "kambaz-styled-people",
+  "kambaz-styled-assignments",
+  "kambaz-styled-signin",
 ] as const;
 
 export type LectureEmbedId = (typeof LECTURE_EMBED_IDS)[number];
