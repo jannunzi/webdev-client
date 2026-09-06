@@ -198,6 +198,7 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab1/page.tsx",
+    codeAddedLines: [5],
     embed: "lab1-stub",
   },
   {

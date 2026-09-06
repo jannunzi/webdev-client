@@ -175,6 +175,16 @@ code.quiz-prompt-code {
   display: none;
 }
 
+.book-code-block-lined .line.line-highlight {
+  background: rgba(210, 153, 34, 0.16);
+  box-shadow: inset 3px 0 0 #d29922;
+}
+
+.book-code-block-lined .line.line-added {
+  background: rgba(46, 160, 67, 0.16);
+  box-shadow: inset 3px 0 0 #3fb950;
+}
+
 .book-live-figure {
   margin-left: 0;
   margin-right: 0;
@@ -520,9 +530,18 @@ code.quiz-prompt-code {
 }
 
 .lecture-slide .book-code-block-body {
-  padding: 0.7rem 0.85rem;
+  padding: 0;
   font-size: 1.25rem;
   line-height: 1.4;
+}
+
+.lecture-slide .book-code-block-body pre {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.lecture-slide .book-code-block-lined .line::before {
+  width: 2.75rem;
 }
 
 @media (min-width: 768px) {

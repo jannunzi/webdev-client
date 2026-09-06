@@ -101,6 +101,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "css",
     codeFile: "app/labs/lab2/index.css",
+    codeAddedLines: [2, 8],
     embed: "css-position-relative",
   },
   {
@@ -124,6 +125,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "css",
     codeFile: "app/labs/lab2/index.css",
+    codeAddedLines: [2, 7],
     embed: "css-position-absolute",
   },
   {

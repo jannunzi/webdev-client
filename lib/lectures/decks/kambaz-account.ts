@@ -124,6 +124,7 @@ export default function Signup() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/signup/page.tsx",
+    codeAddedLines: [11],
   },
   {
     id: "profile",
@@ -221,6 +222,7 @@ export default function AccountLayout({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/layout.tsx",
+    codeAddedLines: [2, 12, 15],
     interactiveHint:
       "Click Signup in the live sidebar. Nav stays. Only {children} changes.",
   },

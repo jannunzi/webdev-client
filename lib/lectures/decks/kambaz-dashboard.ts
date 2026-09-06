@@ -113,6 +113,7 @@ export default function Dashboard() {
 </Link>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/signin/page.tsx",
+    codeHighlightLines: [1],
   },
   {
     id: "next-up",

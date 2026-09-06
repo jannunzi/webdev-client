@@ -99,6 +99,7 @@ export const HEADINGS_AND_PARAGRAPHS_SLIDES: LectureSlide[] = [
 <p id="wd-p-4">This is the third sample paragraph.</p>`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab1/ParagraphTag.tsx",
+    codeAddedLines: [1, [3, 6]],
     embed: "paragraph-tag",
   },
   {
@@ -123,6 +124,7 @@ export default function Lab1() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab1/page.tsx",
+    codeAddedLines: [1, 2, 8, 9],
   },
   {
     id: "devtools",

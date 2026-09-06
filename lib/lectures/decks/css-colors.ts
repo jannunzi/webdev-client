@@ -88,6 +88,7 @@ export const CSS_COLORS_SLIDES: LectureSlide[] = [
 .wd-bg-color-gray { background-color: lightgray; }`,
     codeLanguage: "css",
     codeFile: "app/labs/lab2/index.css",
+    codeAddedLines: [[1, 5]],
   },
   {
     id: "bg-tsx",

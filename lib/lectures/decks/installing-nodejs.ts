@@ -176,6 +176,7 @@ app.get("/hello", (req, res) => {
   res.send("Hello World!");
 });
 app.listen(4000);`,
+        addedLines: [[3, 6]],
       },
     ],
   },

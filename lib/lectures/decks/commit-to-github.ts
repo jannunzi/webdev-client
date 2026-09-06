@@ -85,6 +85,7 @@ git commit -m "first commit"
 git remote add origin https://github.com/<your-username>/kambaz-next-js.git
 git push -u origin main`,
     codeLanguage: "bash",
+    codeAddedLines: [1, 2, 3],
     interactiveHint:
       "HTTPS push asks for a password: GitHub wants a **Personal Access Token**, not your account password. Keep the token private.",
   },

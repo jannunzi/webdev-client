@@ -175,6 +175,7 @@ export default function Home() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/home/page.tsx",
+    codeAddedLines: [1, 2, 11, 14],
   },
   {
     id: "next-up",
