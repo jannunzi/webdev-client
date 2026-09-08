@@ -79,15 +79,19 @@ describe("Chapter 1 question bank", () => {
     );
   });
 
-  it("narrows paragraph-whitespace stems to the p element", () => {
+  it("asks for the p element without naming it in the stem", () => {
     const group = CHAPTER1_BANK.groups.find((item) => item.id === "q1-g03-paragraphs");
     assert.ok(group);
+    assert.doesNotMatch(group.name, /paragraph/i);
     for (const question of group.questions) {
       assert.equal(question.type, "fill_in_blank");
       const fib = question as FillInBlankQuestion;
-      assert.match(fib.prompt, /paragraph element/);
+      assert.doesNotMatch(fib.prompt, /paragraph/i);
+      assert.match(fib.prompt, /short element\/tag name/);
+      assert.match(fib.prompt, /not a multi-line HTML document/);
       assert.match(fib.prompt, /not a heading and not a generic container/);
       assert.equal(fib.blankCount, 1);
+      assert.match(fib.explanation ?? "", /`<p>`/);
       for (const combo of fib.acceptedCombinations) {
         const value = combo[0] ?? "";
         assert.equal(/\b(div|h1|span)\b/i.test(value), false, value);
