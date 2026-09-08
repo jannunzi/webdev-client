@@ -215,11 +215,11 @@ export const q1Group02: QuestionGroup = {
 export const q1Group03: QuestionGroup = {
   id: "q1-g03-paragraphs",
   order: 3,
-  name: "Paragraphs and whitespace",
+  name: "Source whitespace and body copy",
   type: "fill_in_blank",
   chapter: 1,
   section: "1.3.2",
-  skill: "Wrap a block of text in p so the browser adds vertical space (source whitespace is ignored).",
+  skill: "Wrap a block of body prose in p so the browser adds vertical space (source whitespace is ignored).",
   questions: [
     ...[
       "Tenured Faculty biography",
@@ -235,9 +235,9 @@ export const q1Group03: QuestionGroup = {
     ].map((domain, index) =>
       fib(
         `q1-g03-${String(index + 1).padStart(2, "0")}`,
-        `A long ${domain} is written as several sentences of prose, with blank lines between those sentences in the source. Browsers ignore that extra whitespace and blend the text into one stream. Wrap each paragraph of prose in the HTML _____ element — the paragraph element, not a heading and not a generic container.`,
+        `A long ${domain} is written as several sentences of body prose, with blank lines between those sentences in the source. Browsers collapse that extra whitespace and display the copy as one run-on block. Wrap each block of ordinary body text in the HTML _____ so the browser adds vertical separation. Fill in one short element/tag name (or its angle-bracket form), not a multi-line HTML document — not a heading and not a generic container.`,
         P_ANSWERS,
-        "The paragraph tag (`<p>`) adds vertical space. Browsers ignore extra spaces, tabs, and newlines. A `div` is a generic container and `h1`–`h6` are headings — neither is the paragraph element.",
+        "The paragraph tag (`<p>`) is the standard element for a block of body prose. It adds vertical space before and after. Browsers ignore extra spaces, tabs, and newlines in the source, so blank lines alone do not separate the copy. A `div` is a generic container and `h1`–`h6` are headings — neither is the paragraph element.",
       ),
     ),
   ],
