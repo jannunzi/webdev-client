@@ -59,12 +59,12 @@ describe("formatSectionMeetsSentence", () => {
     assert.equal(sections.length, 3);
   });
 
-  it("posts Shillman Hall 105 for CS 4550-01 and leaves CS 5610 locations TBA", () => {
+  it("posts Shillman Hall 105 for both in-person sections and leaves the online Zoom TBA", () => {
     const byId = Object.fromEntries(
       sections.map((section) => [section.id, section]),
     );
     assert.equal(byId["cs4550-01"]?.location, "Shillman Hall 105");
-    assert.match(byId["cs5610-02"]?.location ?? "", /TBA/);
+    assert.equal(byId["cs5610-02"]?.location, "Shillman Hall 105");
     assert.match(byId["cs5610-09"]?.location ?? "", /TBA/);
   });
 

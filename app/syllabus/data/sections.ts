@@ -39,8 +39,7 @@ export const sections: CourseSection[] = [
     lastClass: semester.lastDayOfClasses,
     daysOfWeek: [1],
     time: "6:00–9:00pm ET",
-    // TODO(jose): Fill the Boston room when assigned. Do not invent one.
-    location: "TBA — room not posted",
+    location: "Shillman Hall 105",
     tabLabel: "CS 5610-02 · In person",
     notes: [
       "Graduate, in person, Boston. Meets once a week on Mondays, 6:00–9:00pm ET, starting September 14, 2026.",
