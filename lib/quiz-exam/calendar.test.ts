@@ -64,11 +64,13 @@ describe("Fall 2026 Canvas calendar", () => {
     );
     const project = deadlines.find((deadline) => deadline.kind === "project");
     assert.equal(x1?.date, "2026-11-01");
-    assert.match(x1?.label ?? "", /unlock Oct 26/);
+    assert.equal(x1?.label, "X1 due");
     assert.equal(examWeek?.date, "2026-12-20");
-    assert.match(examWeek?.label ?? "", /X2 due/);
-    assert.match(examWeek?.label ?? "", /unlock Dec 14/);
+    assert.equal(examWeek?.label, "X2 due");
     assert.equal(project?.date, "2026-12-06");
+    for (const row of deadlines) {
+      assert.doesNotMatch(row.label, /\(unlock/i);
+    }
   });
 
   it("labels quizzes as end of each chapter’s lecture, not Sunday dues", () => {

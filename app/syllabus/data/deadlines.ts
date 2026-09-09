@@ -51,7 +51,7 @@ export const deadlines: Deadline[] = [
   {
     date: "2026-11-01",
     kind: "exam",
-    label: "X1 due (unlock Oct 26)",
+    label: "X1 due",
   },
   {
     date: "2026-11-02",
@@ -72,7 +72,7 @@ export const deadlines: Deadline[] = [
   {
     date: "2026-12-20",
     kind: "exam",
-    label: "X2 due (unlock Dec 14)",
+    label: "X2 due",
   },
 ];
 
