@@ -75,9 +75,16 @@ export default function SlidesIndexPage() {
                   <div>
                     <h2
                       id={`chapter-${group.chapter}-heading`}
-                      className="mt-0 mb-1 font-sans text-2xl font-semibold tracking-tight"
+                      className="mt-0 mb-1 flex flex-wrap items-baseline gap-x-3 gap-y-1 font-sans text-2xl font-semibold tracking-tight"
                     >
-                      Chapter {group.chapter} — {group.title}
+                      <span>
+                        Chapter {group.chapter} — {group.title}
+                      </span>
+                      {group.weeks ? (
+                        <span className="text-base font-medium text-neutral-500">
+                          {group.weeks}
+                        </span>
+                      ) : null}
                     </h2>
                     <p className="mb-0 font-sans text-sm text-neutral-600">
                       {group.topics

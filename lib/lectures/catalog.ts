@@ -1291,6 +1291,7 @@ export function listChapterTopicGroups(): LectureChapterGroup[] {
         chapter,
         href: meta.href,
         title: meta.title,
+        weeks: meta.weeks,
         topics,
       };
     });
