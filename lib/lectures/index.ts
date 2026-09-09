@@ -116,16 +116,29 @@ export { MONGOOSE_SLIDES } from "./decks/mongoose";
 export { MONGO_APIS_SLIDES } from "./decks/mongo-apis";
 export { MONGO_USERS_CRUD_SLIDES } from "./decks/mongo-users-crud";
 export { ATLAS_SLIDES } from "./decks/atlas";
+export { ATLAS_COMPASS_SLIDES } from "./decks/atlas-compass";
+export { ATLAS_NODE_SLIDES } from "./decks/atlas-node";
+export { ATLAS_SESSIONS_SLIDES } from "./decks/atlas-sessions";
 export { CH6_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch6-check-understanding";
 export { KAMBAZ_COURSES_DB_SLIDES } from "./decks/kambaz-courses-db";
 export { KAMBAZ_MODULES_DB_SLIDES } from "./decks/kambaz-modules-db";
 export { KAMBAZ_ENROLLMENTS_DB_SLIDES } from "./decks/kambaz-enrollments-db";
+export { YOUTUBE_API_SLIDES } from "./decks/youtube-api";
+export { YOUTUBE_SEARCH_SLIDES } from "./decks/youtube-search";
+export { YOUTUBE_DETAILS_SLIDES } from "./decks/youtube-details";
+export { CHATGPT_API_SLIDES } from "./decks/chatgpt-api";
+export { CHATGPT_TEXT_SLIDES } from "./decks/chatgpt-text";
+export { CHATGPT_UI_SLIDES } from "./decks/chatgpt-ui";
+export { GROK_API_SLIDES } from "./decks/grok-api";
+export { GROK_CHAT_SLIDES } from "./decks/grok-chat";
+export { GROK_IMAGES_SLIDES } from "./decks/grok-images";
 export {
   BOOK_CHAPTERS,
   CHAPTER_3_SLUGS,
   CHAPTER_4_SLUGS,
   CHAPTER_5_SLUGS,
   CHAPTER_6_SLUGS,
+  PROJECT_SLUGS,
   LECTURE_1_SLUGS,
   LECTURE_2_SLUGS,
   LECTURE_3_SLUGS,
@@ -137,6 +150,7 @@ export {
   LECTURE_EMBED_IDS,
   LECTURE_SLUGS,
   LECTURE_TOPICS,
+  lectureChapterLabel,
   lectureSlideAssetPath,
   lectureSlideDensity,
   lectureSlideFigurePath,

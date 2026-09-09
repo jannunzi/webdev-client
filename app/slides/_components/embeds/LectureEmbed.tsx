@@ -161,6 +161,11 @@ import {
   Lab6TodosEmbed,
   Lab6UsersEmbed,
 } from "./Lab6Embeds";
+import {
+  GrokSparkleEmbed,
+  OpenAIChatEmbed,
+  YouTubeSearchEmbed,
+} from "./ProjectApiEmbeds";
 
 export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
   switch (id) {
@@ -448,6 +453,12 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <Lab6TodosEmbed />;
     case "lab6-users":
       return <Lab6UsersEmbed />;
+    case "youtube-search":
+      return <YouTubeSearchEmbed />;
+    case "openai-chat":
+      return <OpenAIChatEmbed />;
+    case "grok-sparkle":
+      return <GrokSparkleEmbed />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;

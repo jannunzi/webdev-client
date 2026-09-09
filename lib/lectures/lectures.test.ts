@@ -30,11 +30,13 @@ import {
   CHAPTER_4_SLUGS,
   CHAPTER_5_SLUGS,
   CHAPTER_6_SLUGS,
+  PROJECT_SLUGS,
   LECTURE_TOPICS,
   LECTURE_DIAGRAM_IDS,
   LECTURE_EMBED_IDS,
   LECTURE_SLUGS,
   LECTURE_TITLE_MAX_CHARS,
+  lectureChapterLabel,
   lectureSlideAssetPath,
   lectureSlideDensity,
   lectureSlideCodeBlocks,
@@ -75,7 +77,7 @@ function findSlide(deckSlug: string, id: string) {
 }
 
 describe("lecture catalog", () => {
-  it("lists slugs in book-spine order (Ch1–Ch3, then Ch4–Ch6 decks)", () => {
+  it("lists slugs in book-spine order (Ch1–Ch6, then Project decks)", () => {
     assert.deepEqual(listLectureSlugs(), [
       ...LECTURE_1_SLUGS,
       ...LECTURE_2_SLUGS,
@@ -87,6 +89,7 @@ describe("lecture catalog", () => {
       ...CHAPTER_4_SLUGS,
       ...CHAPTER_5_SLUGS,
       ...CHAPTER_6_SLUGS,
+      ...PROJECT_SLUGS,
     ]);
     assert.deepEqual(listLectureSlugs(), [...LECTURE_SLUGS]);
     assert.equal(LECTURE_1_SLUGS.length, 5);
@@ -98,7 +101,9 @@ describe("lecture catalog", () => {
     assert.equal(CHAPTER_3_SLUGS.length, 22);
     assert.equal(CHAPTER_4_SLUGS.length, 15);
     assert.equal(CHAPTER_5_SLUGS.length, 14);
-    assert.equal(CHAPTER_6_SLUGS.length, 9);
+    assert.equal(CHAPTER_6_SLUGS.length, 12);
+    assert.equal(PROJECT_SLUGS.length, 9);
+    assert.ok(!PROJECT_SLUGS.some((slug) => slug.startsWith("napster")));
   });
 
   it("marks Lecture 1 entries as Canvas Lecture 1 / Chapter 1", () => {
@@ -168,7 +173,14 @@ describe("lecture catalog", () => {
     assert.equal(isLectureSlug("mongoose"), true);
     assert.equal(isLectureSlug("mongo-apis"), true);
     assert.equal(isLectureSlug("atlas"), true);
+    assert.equal(isLectureSlug("atlas-compass"), true);
+    assert.equal(isLectureSlug("atlas-node"), true);
+    assert.equal(isLectureSlug("atlas-sessions"), true);
     assert.equal(isLectureSlug("kambaz-courses-db"), true);
+    assert.equal(isLectureSlug("youtube-api"), true);
+    assert.equal(isLectureSlug("chatgpt-api"), true);
+    assert.equal(isLectureSlug("grok-api"), true);
+    assert.equal(isLectureSlug("napster-api"), false);
     assert.equal(isLectureSlug("intro"), false);
   });
 
@@ -253,7 +265,7 @@ describe("lecture catalog", () => {
     const groups = listChapterTopicGroups();
     assert.deepEqual(
       groups.map((group) => group.chapter),
-      [1, 2, 3, 4, 5, 6],
+      [1, 2, 3, 4, 5, 6, 7],
     );
     assert.equal(groups[0]?.href, "/book/ch1");
     assert.equal(
@@ -269,6 +281,7 @@ describe("lecture catalog", () => {
         "11/2, 11/9",
         "11/16, 11/23",
         "11/30, 12/7",
+        "12/7",
       ],
     );
     assert.deepEqual(
@@ -573,7 +586,7 @@ describe("lecture catalog", () => {
     );
     assert.deepEqual(
       groups[5]?.topics[3]?.decks.map((deck) => deck.slug),
-      ["atlas"],
+      ["atlas", "atlas-compass", "atlas-node", "atlas-sessions"],
     );
     assert.deepEqual(
       groups[5]?.topics[4]?.decks.map((deck) => deck.slug),
@@ -588,6 +601,37 @@ describe("lecture catalog", () => {
       ],
     );
 
+    assert.equal(groups[6]?.href, "/project");
+    assert.equal(groups[6]?.title, "Integrating with External APIs");
+    assert.equal(groups[6]?.weeks, "12/7");
+    assert.deepEqual(
+      groups[6]?.topics.map((topic) => topic.topicId),
+      ["youtube-api", "chatgpt-api", "grok-api"],
+    );
+    assert.deepEqual(
+      groups[6]?.topics.map((topic) => topic.title),
+      [
+        "Integrating with the YouTube Video API",
+        "Integrating with the ChatGPT API",
+        "Integrating with the Grok API",
+      ],
+    );
+    assert.deepEqual(
+      groups[6]?.topics[0]?.decks.map((deck) => deck.slug),
+      ["youtube-api", "youtube-search", "youtube-details"],
+    );
+    assert.deepEqual(
+      groups[6]?.topics[1]?.decks.map((deck) => deck.slug),
+      ["chatgpt-api", "chatgpt-text", "chatgpt-ui"],
+    );
+    assert.deepEqual(
+      groups[6]?.topics[2]?.decks.map((deck) => deck.slug),
+      ["grok-api", "grok-chat", "grok-images"],
+    );
+    for (const topic of groups[6]?.topics ?? []) {
+      assert.equal(topic.bookHref, "/project");
+    }
+
     for (const group of groups) {
       assert.doesNotMatch(group.title, /^Lecture \d+$/);
       for (const topic of group.topics) {
@@ -599,6 +643,7 @@ describe("lecture catalog", () => {
   it("renders Canvas module week dates on hub chapter headers, not L# badges", () => {
     const page = readFileSync(join(process.cwd(), "app/slides/page.tsx"), "utf8");
     assert.match(page, /group\.weeks/);
+    assert.match(page, /lectureChapterLabel\(group\.chapter\)/);
     assert.doesNotMatch(page, /Canvas L/);
     const groups = listChapterTopicGroups();
     assert.ok(groups.every((group) => Boolean(group.weeks)));
@@ -611,11 +656,11 @@ describe("lecture catalog", () => {
     const chapters = listLectureChapters();
     assert.deepEqual(
       chapters.map((entry) => entry.chapter),
-      [1, 2, 3, 4, 5, 6],
+      [1, 2, 3, 4, 5, 6, 7],
     );
     assert.deepEqual(
       chapters.map((entry) => entry.href),
-      ["/book/ch1", "/book/ch2", "/book/ch3", "/book/ch4", "/book/ch5", "/book/ch6"],
+      ["/book/ch1", "/book/ch2", "/book/ch3", "/book/ch4", "/book/ch5", "/book/ch6", "/project"],
     );
     assert.equal(chapters[0]?.title, BOOK_CHAPTERS[0]?.title);
     assert.equal(chapters[1]?.title, BOOK_CHAPTERS[1]?.title);
@@ -623,6 +668,10 @@ describe("lecture catalog", () => {
     assert.equal(chapters[3]?.title, BOOK_CHAPTERS[3]?.title);
     assert.equal(chapters[4]?.title, BOOK_CHAPTERS[4]?.title);
     assert.equal(chapters[5]?.title, BOOK_CHAPTERS[5]?.title);
+    assert.equal(chapters[6]?.title, BOOK_CHAPTERS[6]?.title);
+    assert.equal(lectureChapterLabel(1), "Chapter 1");
+    assert.equal(lectureChapterLabel(6), "Chapter 6");
+    assert.equal(lectureChapterLabel(7), "Project");
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "tailwind"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "kambaz-styling"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "react-icons"));
@@ -642,6 +691,10 @@ describe("lecture catalog", () => {
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "mongo-apis"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "atlas"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "kambaz-db"));
+    assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "youtube-api"));
+    assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "chatgpt-api"));
+    assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "grok-api"));
+    assert.ok(!LECTURE_TOPICS.some((topic) => topic.topicId === "napster-api"));
   });
 
   it("maps Ch1–Ch3 decks to book section anchors for bidirectional links", () => {
@@ -695,10 +748,19 @@ describe("lecture catalog", () => {
     assert.equal(getLecture("mongo-apis")?.bookHref, "/book/ch6#sec-6-2-6");
     assert.equal(getLecture("mongo-users-crud")?.bookHref, "/book/ch6#sec-6-2-6-3");
     assert.equal(getLecture("atlas")?.bookHref, "/book/ch6#sec-6-3");
+    assert.equal(getLecture("atlas-compass")?.bookHref, "/book/ch6#sec-6-3-1-1");
+    assert.equal(getLecture("atlas-node")?.bookHref, "/book/ch6#sec-6-3-1-2");
+    assert.equal(getLecture("atlas-sessions")?.bookHref, "/book/ch6#sec-6-3-2");
     assert.equal(getLecture("ch6-check-understanding")?.bookHref, "/book/ch6#sec-6-check");
     assert.equal(getLecture("kambaz-courses-db")?.bookHref, "/book/ch6#sec-6-4-1");
     assert.equal(getLecture("kambaz-modules-db")?.bookHref, "/book/ch6#sec-6-4-2");
     assert.equal(getLecture("kambaz-enrollments-db")?.bookHref, "/book/ch6#sec-6-4-3");
+    assert.equal(getLecture("youtube-api")?.bookHref, "/project");
+    assert.equal(getLecture("chatgpt-api")?.bookHref, "/project");
+    assert.equal(getLecture("grok-api")?.bookHref, "/project");
+    assert.equal(getLecture("youtube-api")?.bookSectionId, undefined);
+    assert.equal(getLecture("youtube-api")?.chapter, 7);
+    assert.equal(getLecture("youtube-api")?.canvasLecture, 25);
     assert.equal(listDecksForBookSection("sec-3-2")[0]?.slug, "intro-to-javascript");
     assert.equal(listDecksForBookSection("sec-4-5-1")[0]?.slug, "zustand-counter");
     assert.equal(listDecksForBookSection("sec-5-1")[0]?.slug, "http-server");
@@ -707,6 +769,9 @@ describe("lecture catalog", () => {
     assert.equal(listDecksForBookSection("sec-6-1")[0]?.slug, "local-mongo");
     assert.equal(listDecksForBookSection("sec-6-2")[0]?.slug, "mongoose");
     assert.equal(listDecksForBookSection("sec-6-3")[0]?.slug, "atlas");
+    assert.equal(listDecksForBookSection("sec-6-3-1-1")[0]?.slug, "atlas-compass");
+    assert.equal(listDecksForBookSection("sec-6-3-1-2")[0]?.slug, "atlas-node");
+    assert.equal(listDecksForBookSection("sec-6-3-2")[0]?.slug, "atlas-sessions");
     assert.equal(listDecksForBookSection("sec-6-4-1")[0]?.slug, "kambaz-courses-db");
     assert.equal(listDecksForBookSection("sec-1-2-1")[0]?.slug, "installing-nodejs");
     assert.equal(listDecksForBookSection("sec-2-3")[0]?.slug, "tailwind-intro");
@@ -923,7 +988,13 @@ describe("lecture catalog", () => {
     assert.equal(groups[22]?.title, "Lecture 23");
     assert.deepEqual(
       groups[22]?.decks.map((deck) => deck.slug),
-      ["atlas", "ch6-check-understanding"],
+      [
+        "atlas",
+        "atlas-compass",
+        "atlas-node",
+        "atlas-sessions",
+        "ch6-check-understanding",
+      ],
     );
     assert.equal(groups[23]?.title, "Lecture 24");
     assert.deepEqual(
@@ -938,7 +1009,12 @@ describe("lecture catalog", () => {
       lectureDeckThumbnail("local-mongo"),
       "/lectures/thumbs/local-mongo.svg",
     );
-    for (const group of groups.slice(24)) {
+    assert.equal(groups[24]?.title, "Lecture 25");
+    assert.deepEqual(
+      groups[24]?.decks.map((deck) => deck.slug),
+      [...PROJECT_SLUGS],
+    );
+    for (const group of groups.slice(25)) {
       assert.equal(group.title, `Lecture ${group.canvasLecture}`);
       assert.equal(group.decks.length, 0);
     }
@@ -987,8 +1063,11 @@ describe("lecture catalog", () => {
     assert.equal(afterLocal.next?.slug, "mongoose");
     assert.equal(afterLocal.prev?.slug, "deploy-api");
     const last = adjacentLectureSlugs("kambaz-enrollments-db");
-    assert.equal(last.next, undefined);
+    assert.equal(last.next?.slug, "youtube-api");
     assert.equal(last.prev?.slug, "kambaz-modules-db");
+    const lastProject = adjacentLectureSlugs("grok-images");
+    assert.equal(lastProject.next, undefined);
+    assert.equal(lastProject.prev?.slug, "grok-chat");
   });
 });
 
@@ -1093,11 +1172,23 @@ describe("lecture decks", () => {
     assert.equal(counts["mongoose"], 11);
     assert.equal(counts["mongo-apis"], 11);
     assert.equal(counts["mongo-users-crud"], 11);
-    assert.equal(counts["atlas"], 11);
+    assert.equal(counts["atlas"], 9);
+    assert.equal(counts["atlas-compass"], 9);
+    assert.equal(counts["atlas-node"], 10);
+    assert.equal(counts["atlas-sessions"], 12);
     assert.equal(counts["ch6-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-db"], 10);
     assert.equal(counts["kambaz-modules-db"], 9);
     assert.equal(counts["kambaz-enrollments-db"], 10);
+    assert.equal(counts["youtube-api"], 9);
+    assert.equal(counts["youtube-search"], 10);
+    assert.equal(counts["youtube-details"], 10);
+    assert.equal(counts["chatgpt-api"], 11);
+    assert.equal(counts["chatgpt-text"], 11);
+    assert.equal(counts["chatgpt-ui"], 12);
+    assert.equal(counts["grok-api"], 12);
+    assert.equal(counts["grok-chat"], 13);
+    assert.equal(counts["grok-images"], 12);
     for (const deck of decks) {
       const ids = deck.slides.map((slide) => slide.id);
       assert.equal(new Set(ids).size, ids.length, `${deck.slug} duplicate slide id`);
@@ -1432,12 +1523,18 @@ describe("lecture decks", () => {
         "people-table": "kambaz-styled-people",
       },
       "mongo-users-crud": { create: "lab6-users" },
+      "atlas-compass": { import: "kambaz-styled-dashboard" },
+      "atlas-node": { env: "lab6-status" },
+      "atlas-sessions": { client: "kambaz-styled-signin" },
       "kambaz-courses-db": { "delete-update": "kambaz-styled-dashboard" },
       "kambaz-modules-db": { "delete-update": "kambaz-styled-modules" },
       "kambaz-enrollments-db": {
         people: "kambaz-styled-people",
         assignments: "kambaz-styled-assignments",
       },
+      "youtube-search": { field: "youtube-search" },
+      "chatgpt-ui": { page: "openai-chat" },
+      "grok-chat": { sparkle: "grok-sparkle" },
     } as const;
     const used = new Set<string>();
     for (const [slug, slides] of Object.entries(expected)) {
@@ -2106,12 +2203,36 @@ describe("lecture decks", () => {
 
     const atlas = slideText("atlas");
     assert.match(atlas, /mongodb\+srv/);
-    assert.match(atlas, /0\.0\.0\.0\/0/);
-    assert.match(atlas, /\/kambaz\?/);
-    assert.match(atlas, /DATABASE_CONNECTION_STRING/);
-    assert.match(atlas, /SERVER_ENV=production/);
-    assert.match(atlas, /CLIENT_URL/);
+    assert.match(atlas, /127\.0\.0\.1/);
+    assert.match(atlas, /Free/);
+    assert.match(atlas, /Kambaz/);
     assert.doesNotMatch(atlas, /netlify\.com/i);
+    assert.doesNotMatch(atlas, /OMDb|omdb/i);
+    assert.doesNotMatch(atlas, /napster/i);
+    assert.doesNotMatch(atlas, /supersecretpassword/);
+    assert.match(atlas, /<password>/);
+
+    const compass = slideText("atlas-compass");
+    assert.match(compass, /mongodb\+srv/);
+    assert.match(compass, /New Window|new window/i);
+    assert.match(compass, /users|courses|modules/);
+    assert.doesNotMatch(compass, /netlify\.com/i);
+    assert.doesNotMatch(compass, /supersecretpassword/);
+
+    const node = slideText("atlas-node");
+    assert.match(node, /0\.0\.0\.0\/0/);
+    assert.match(node, /\/kambaz\?/);
+    assert.match(node, /DATABASE_CONNECTION_STRING/);
+    assert.match(node, /NEXT_PUBLIC_HTTP_SERVER/);
+    assert.doesNotMatch(node, /netlify\.com/i);
+
+    const sessions = slideText("atlas-sessions");
+    assert.match(sessions, /SERVER_ENV=production/);
+    assert.match(sessions, /CLIENT_URL/);
+    assert.match(sessions, /SESSION_SECRET/);
+    assert.match(sessions, /NEXT_PUBLIC_/);
+    assert.match(sessions, /12\/7/);
+    assert.doesNotMatch(sessions, /netlify\.com/i);
 
     const check = slideText("ch6-check-understanding");
     assert.match(check, /sec-6-check/);
@@ -2137,6 +2258,76 @@ describe("lecture decks", () => {
     assert.match(enrollments, /deleteMany/);
     assert.match(enrollments, /enrollUserInCourse/);
     assert.match(enrollments, /findUsersForCourse/);
+  });
+
+  it("teaches YouTube, ChatGPT, and Grok from the Drive decks — no Napster or OMDb", () => {
+    assert.deepEqual(
+      BOOK_CHAPTERS.map((chapter) => chapter.weeks),
+      ["9/14, 9/21", "9/28, 10/5", "10/12, 10/19", "11/2, 11/9", "11/16, 11/23", "11/30, 12/7", "12/7"],
+    );
+
+    const youtube = slideText("youtube-api");
+    assert.match(youtube, /googleapis/);
+    assert.match(youtube, /NEXT_PUBLIC_YOUTUBE_API/);
+    assert.match(youtube, /YOUR_YOUTUBE_API_KEY/);
+    assert.match(youtube, /YouTube Data API v3/);
+    assert.match(youtube, /youtu\.be\/KSfs9fJW1rY/);
+
+    const search = slideText("youtube-search");
+    assert.match(search, /\/search\?part=snippet/);
+    assert.match(search, /id\.videoId/);
+
+    const details = slideText("youtube-details");
+    assert.match(details, /videos\?part=snippet/);
+    assert.match(details, /youTubeId/);
+    assert.doesNotMatch(details, /napster/i);
+
+    const chatgpt = slideText("chatgpt-api");
+    assert.match(chatgpt, /npm install openai/);
+    assert.match(chatgpt, /OPENAI_API_KEY/);
+    assert.match(chatgpt, /responses\.create/);
+    assert.match(chatgpt, /never NEXT_PUBLIC_/);
+
+    const text = slideText("chatgpt-text");
+    assert.match(text, /zodTextFormat/);
+    assert.match(text, /moderations\.create/);
+    assert.match(text, /CalendarEvent/);
+
+    const ui = slideText("chatgpt-ui");
+    assert.match(ui, /\/api\/openai\/chat/);
+    assert.match(ui, /\/api\/courses\/ai/);
+    assert.match(ui, /\/api\/modules\/ai/);
+    assert.match(ui, /images\.generate/);
+
+    const grok = slideText("grok-api");
+    assert.match(grok, /api\.x\.ai/);
+    assert.match(grok, /XAI_API_KEY/);
+    assert.match(grok, /YOUR_XAI_API_KEY/);
+    assert.match(grok, /generateText/);
+    assert.match(grok, /xai\("grok-4"\)/);
+    assert.match(grok, /grok-4-latest/);
+    assert.match(grok, /youtu\.be\/rwE57Cdk1fA/);
+
+    const chat = slideText("grok-chat");
+    assert.match(chat, /chat\.completions\.create/);
+    assert.match(chat, /\/api\/xai\/course/);
+    assert.match(chat, /PiStarFourFill/);
+
+    const images = slideText("grok-images");
+    assert.match(images, /grok-2-image/);
+    assert.match(images, /image_url/);
+    assert.match(images, /upsertCourse/);
+    assert.match(images, /\/api\/xai\/course\/:cid\/modules/);
+
+    for (const slug of PROJECT_SLUGS) {
+      const copy = slideText(slug);
+      assert.doesNotMatch(copy, /OMDb|omdb/i);
+      assert.doesNotMatch(copy, /napster/i);
+      assert.doesNotMatch(copy, /sk-proj-/);
+      assert.doesNotMatch(copy, /AIzaSy/);
+      assert.doesNotMatch(copy, /xai-W2eC/);
+      assert.doesNotMatch(copy, /Kanbas/);
+    }
   });
 
   it("does not surface Lecture N as the product name in slide copy", () => {

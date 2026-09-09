@@ -103,10 +103,26 @@ export const CHAPTER_6_SLUGS = [
   "mongo-apis",
   "mongo-users-crud",
   "atlas",
+  "atlas-compass",
+  "atlas-node",
+  "atlas-sessions",
   "ch6-check-understanding",
   "kambaz-courses-db",
   "kambaz-modules-db",
   "kambaz-enrollments-db",
+] as const;
+
+/** Project-week decks — YouTube, ChatGPT, and Grok APIs (12/7). */
+export const PROJECT_SLUGS = [
+  "youtube-api",
+  "youtube-search",
+  "youtube-details",
+  "chatgpt-api",
+  "chatgpt-text",
+  "chatgpt-ui",
+  "grok-api",
+  "grok-chat",
+  "grok-images",
 ] as const;
 
 /** Chapter 3 decks — JavaScript, data-driven UI, and Kambaz from JSON (Lab 3 / A3). */
@@ -146,6 +162,7 @@ export const LECTURE_SLUGS = [
   ...CHAPTER_4_SLUGS,
   ...CHAPTER_5_SLUGS,
   ...CHAPTER_6_SLUGS,
+  ...PROJECT_SLUGS,
 ] as const;
 
 /**
@@ -188,6 +205,12 @@ export const BOOK_CHAPTERS = [
     href: "/book/ch6",
     title: "Integrating React with MongoDB",
     weeks: "11/30, 12/7",
+  },
+  {
+    chapter: 7,
+    href: "/project",
+    title: "Integrating with External APIs",
+    weeks: "12/7",
   },
 ] as const;
 
@@ -413,12 +436,35 @@ export const LECTURE_TOPICS = [
     title: "6.4 Integrating the Kambaz Web Application with a Database",
     bookSectionId: "sec-6-4",
   },
+  {
+    topicId: "youtube-api",
+    chapter: 7,
+    title: "Integrating with the YouTube Video API",
+    bookSectionId: undefined,
+  },
+  {
+    topicId: "chatgpt-api",
+    chapter: 7,
+    title: "Integrating with the ChatGPT API",
+    bookSectionId: undefined,
+  },
+  {
+    topicId: "grok-api",
+    chapter: 7,
+    title: "Integrating with the Grok API",
+    bookSectionId: undefined,
+  },
 ] as const;
 
 export type LectureTopicId = (typeof LECTURE_TOPICS)[number]["topicId"];
 
 /** Slide headings stay on one line — keep titles at or under this length. */
 export const LECTURE_TITLE_MAX_CHARS = 42;
+
+/** Hub/nav label — book chapters stay `Chapter N`; chapter 7 is Project. */
+export function lectureChapterLabel(chapter: number): string {
+  return chapter > 6 ? "Project" : `Chapter ${chapter}`;
+}
 
 export type LectureSlug = (typeof LECTURE_SLUGS)[number];
 
@@ -569,6 +615,9 @@ export const LECTURE_EMBED_IDS = [
   "lab6-status",
   "lab6-todos",
   "lab6-users",
+  "youtube-search",
+  "openai-chat",
+  "grok-sparkle",
 ] as const;
 
 export type LectureEmbedId = (typeof LECTURE_EMBED_IDS)[number];

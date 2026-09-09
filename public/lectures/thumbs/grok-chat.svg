@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title">
+  <title id="title">Grok Chat and Sparkle</title>
+  <rect width="1280" height="720" fill="#0B0F14"/>
+  <rect x="0" y="0" width="18" height="720" fill="#1DA1F2"/>
+  <text x="72" y="64" fill="#CBD5E1" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" letter-spacing="4">WEB DEV · PROJECT · GROK</text>
+  <g transform="translate(70 70)">
+    <ellipse cx="180" cy="168" rx="128" ry="132" fill="#1DA1F2" fill-opacity="0.35"/>
+    <ellipse cx="180" cy="168" rx="78" ry="80" fill="#1DA1F2"/>
+    <text x="180" y="188" text-anchor="middle" fill="#FFFFFF" font-family="ui-sans-serif, system-ui, sans-serif" font-size="48" font-weight="800">AI</text>
+  </g>
+  <text x="72" y="640" fill="#F8FAFC" font-family="ui-sans-serif, system-ui, sans-serif" font-size="56" font-weight="800">Grok Chat and Sparkle</text>
+</svg>
