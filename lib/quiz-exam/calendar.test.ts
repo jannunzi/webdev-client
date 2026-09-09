@@ -12,9 +12,9 @@ const CANVAS_ASSIGNMENT_DUES: Record<string, string> = {
   A1: "2026-09-27",
   A2: "2026-10-11",
   A3: "2026-10-25",
-  A4: "2026-11-08",
-  A5: "2026-11-22",
-  A6: "2026-12-06",
+  A4: "2026-11-15",
+  A5: "2026-11-29",
+  A6: "2026-12-13",
 };
 
 const QUIZ_WINDOWS: Record<string, { unlock: string; due: string }> = {

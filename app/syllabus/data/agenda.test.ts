@@ -222,6 +222,27 @@ describe("agenda Week of labels and chapter groups", () => {
     const x2 = mon.find((row) => mondayOfWeek(row.date) === "2026-12-14");
     assert.ok(x1?.deadlines.some((deadline) => deadline.label.startsWith("X1")));
     assert.ok(x2?.deadlines.some((deadline) => deadline.label.startsWith("X2")));
+
+    const assignmentSundays = [
+      { id: "A1", sunday: "2026-09-27", monday: "2026-09-21" },
+      { id: "A2", sunday: "2026-10-11", monday: "2026-10-05" },
+      { id: "A3", sunday: "2026-10-25", monday: "2026-10-19" },
+      { id: "A4", sunday: "2026-11-15", monday: "2026-11-09" },
+      { id: "A5", sunday: "2026-11-29", monday: "2026-11-23" },
+      { id: "A6", sunday: "2026-12-13", monday: "2026-12-07" },
+    ];
+    for (const { id, sunday, monday } of assignmentSundays) {
+      const due = deadlines.find(
+        (deadline) =>
+          deadline.kind === "assignment" && deadline.label.includes(`${id} due`),
+      );
+      assert.equal(due?.date, sunday);
+      const row = mon.find((item) => mondayOfWeek(item.date) === monday);
+      assert.ok(
+        row?.deadlines.some((deadline) => deadline.label.includes(`${id} due`)),
+        `${id} due should appear on the week of ${monday}`,
+      );
+    }
   });
 
   it("keeps CS 4550 Sep 9 as an orientation group before Chapter 1", () => {

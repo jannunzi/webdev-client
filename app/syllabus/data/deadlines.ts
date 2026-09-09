@@ -57,7 +57,7 @@ export const deadlines: Deadline[] = [
     label: "Q4 — Client state (end of Chapter 4 lecture)",
   },
   {
-    date: "2026-11-08",
+    date: "2026-11-15",
     kind: "assignment",
     label: "A4 due · A5 assigned — REST APIs",
   },
@@ -67,22 +67,22 @@ export const deadlines: Deadline[] = [
     label: "Q5 — REST APIs (end of Chapter 5 lecture)",
   },
   {
-    date: "2026-11-22",
+    date: "2026-11-29",
     kind: "assignment",
     label: "A5 due · A6 assigned — MongoDB",
   },
-  {
-    date: "2026-12-20",
-    kind: "exam",
-    label: "X2 due (unlock Dec 14)",
-  },
-  { date: "2026-12-06", kind: "assignment", label: "A6 due" },
   {
     date: "2026-12-07",
     kind: "quiz",
     label: "Q6 — MongoDB (end of Chapter 6 lecture)",
   },
   { date: "2026-12-10", kind: "project", label: "Project due" },
+  { date: "2026-12-13", kind: "assignment", label: "A6 due" },
+  {
+    date: "2026-12-20",
+    kind: "exam",
+    label: "X2 due (unlock Dec 14)",
+  },
 ];
 
 export const deadlinesNote =
