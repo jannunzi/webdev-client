@@ -5,6 +5,7 @@ import type { AssignmentId, AssignmentProgressDoc } from "./types";
 import {
   ASSIGNMENT_PROGRESS_COLLECTION,
   loadCompletedCriterionIds,
+  replaceCompletedCriterionIds,
   upsertCriterionProgress,
   type ProgressStore,
 } from "./progress-store";
@@ -78,4 +79,21 @@ export async function ensureAssignmentProgressIndexes(): Promise<void> {
     { clerkUserId: 1, assignmentId: 1, criterionId: 1 },
     { unique: true },
   );
+}
+
+export async function replaceAssignmentCriterionProgress(input: {
+  clerkUserId: string;
+  assignmentId: AssignmentId;
+  allCriterionIds: readonly string[];
+  completedIds: readonly string[];
+}): Promise<string[]> {
+  const collection = await getAssignmentProgressCollection();
+  progressIndexesPromise ??= ensureAssignmentProgressIndexes().catch(
+    (error) => {
+      progressIndexesPromise = null;
+      console.error("assignment progress index ensure failed", error);
+    },
+  );
+  await progressIndexesPromise;
+  return replaceCompletedCriterionIds(mongoProgressStore(collection), input);
 }

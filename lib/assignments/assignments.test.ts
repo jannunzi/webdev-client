@@ -18,11 +18,14 @@ import {
   listRubricCriteria,
   rubricPointTotal,
 } from "./catalog";
+import type { AssignmentCheckResult } from "./check-types";
 import {
   applyCriterionToggle,
+  completedIdsAfterAutoCheckRun,
   loadCompletedCriterionIds,
   mergeCompletedIds,
   parseLocalProgress,
+  replaceCompletedCriterionIds,
   resolveProgressSnapshot,
   serializeLocalProgress,
   summarizeProgress,
@@ -30,6 +33,21 @@ import {
   type ProgressStore,
 } from "./progress-store";
 import type { AssignmentProgressDoc } from "./types";
+
+function autoResult(
+  criterionId: string,
+  passed: boolean,
+  extra: Partial<AssignmentCheckResult> = {},
+): AssignmentCheckResult {
+  return {
+    id: criterionId,
+    label: criterionId,
+    passed,
+    message: passed ? "ok" : "missing",
+    criterionId,
+    ...extra,
+  };
+}
 
 function memoryProgressStore(): ProgressStore {
   const docs: AssignmentProgressDoc[] = [];
@@ -203,6 +221,73 @@ describe("assignment progress helpers", () => {
     assert.equal(summary.earnedPoints, 3);
     assert.equal(summary.totalCount, listRubricCriteria(assignment.rubric).length);
     assert.equal(summary.totalPoints, rubricPointTotal(assignment.rubric));
+  });
+
+  it("drops a stale completed id when a later auto-check fails or omits it", () => {
+    const previous = [
+      "a1-delivery-vercel",
+      "a1-lab-tables",
+      "a1-lab-highlighted-paragraph-oyo",
+    ];
+    assert.deepEqual(
+      completedIdsAfterAutoCheckRun(previous, [
+        autoResult("a1-delivery-vercel", false),
+        autoResult("a1-lab-tables", true),
+      ]),
+      ["a1-lab-tables"],
+    );
+    assert.deepEqual(
+      completedIdsAfterAutoCheckRun(previous, [
+        autoResult("a1-lab-tables", true),
+      ]),
+      ["a1-lab-tables"],
+    );
+    assert.deepEqual(completedIdsAfterAutoCheckRun(previous, []), []);
+    assert.deepEqual(
+      completedIdsAfterAutoCheckRun(previous, [
+        autoResult("a1-lab-highlighted-paragraph-oyo", false, { skipped: true }),
+      ]),
+      [],
+    );
+  });
+
+  it("replaces stored progress so a later fail unchecks the stale id", async () => {
+    const store = memoryProgressStore();
+    await upsertCriterionProgress(store, {
+      clerkUserId: "user_1",
+      assignmentId: "a1",
+      criterionId: "a1-delivery-vercel",
+      completed: true,
+    });
+    await upsertCriterionProgress(store, {
+      clerkUserId: "user_1",
+      assignmentId: "a1",
+      criterionId: "a1-lab-tables",
+      completed: true,
+    });
+    const afterFail = completedIdsAfterAutoCheckRun(
+      ["a1-delivery-vercel", "a1-lab-tables"],
+      [
+        autoResult("a1-delivery-vercel", false),
+        autoResult("a1-lab-tables", true),
+      ],
+    );
+    assert.deepEqual(
+      await replaceCompletedCriterionIds(store, {
+        clerkUserId: "user_1",
+        assignmentId: "a1",
+        allCriterionIds: [
+          "a1-delivery-vercel",
+          "a1-lab-tables",
+          "a1-lab-highlighted-paragraph-oyo",
+        ],
+        completedIds: afterFail,
+      }),
+      ["a1-lab-tables"],
+    );
+    assert.deepEqual(await loadCompletedCriterionIds(store, "user_1", "a1"), [
+      "a1-lab-tables",
+    ]);
   });
 
   it("round-trips localStorage JSON", () => {

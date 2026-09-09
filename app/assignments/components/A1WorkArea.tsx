@@ -6,6 +6,7 @@ import {
   proposedGradeFromResults,
   type CriterionPassMap,
 } from "@/lib/assignments/grade";
+import { writeLocalProgress } from "@/lib/assignments/local-progress";
 import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
 import type { StaffStudentRow } from "@/lib/assignments/staff";
 import type { AssignmentHubItem } from "@/lib/assignments/types";
@@ -59,7 +60,16 @@ export default function A1WorkArea({
   const [pendingGrade, setPendingGrade] = useState<"accept" | "override" | null>(
     null,
   );
+  const [checkGeneration, setCheckGeneration] = useState(0);
   const [, startTransition] = useTransition();
+
+  function handleCheckRunStart() {
+    if (!staffMode) {
+      writeLocalProgress(assignment.id, []);
+    }
+    setAutoResults([]);
+    setCheckGeneration((current) => current + 1);
+  }
 
   useEffect(() => {
     setSubmission(initialSubmission);
@@ -154,6 +164,7 @@ export default function A1WorkArea({
           impersonating={impersonating}
           gateReason={canSubmit || staffMode ? null : gateReason}
           staffStudentKey={selectedStudent?.key}
+          onCheckRunStart={handleCheckRunStart}
           onResults={setAutoResults}
           onSubmission={(next) => {
             setSubmission(next);
@@ -211,6 +222,7 @@ export default function A1WorkArea({
         signedIn={signedIn}
         mongoReady={mongoReady}
         autoResults={autoResults}
+        checkGeneration={checkGeneration}
         vercelUrl={submission?.vercelUrl}
         persistProgress={!staffMode}
         staffMode={staffMode}

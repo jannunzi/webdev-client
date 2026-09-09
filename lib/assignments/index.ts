@@ -20,10 +20,12 @@ export {
 } from "./canvas-copy";
 export {
   applyCriterionToggle,
+  completedIdsAfterAutoCheckRun,
   loadCompletedCriterionIds,
   localProgressKey,
   mergeCompletedIds,
   parseLocalProgress,
+  replaceCompletedCriterionIds,
   resolveProgressSnapshot,
   serializeLocalProgress,
   summarizeProgress,
