@@ -94,6 +94,9 @@ import { MONGOOSE_SLIDES } from "./decks/mongoose";
 import { MONGO_APIS_SLIDES } from "./decks/mongo-apis";
 import { MONGO_USERS_CRUD_SLIDES } from "./decks/mongo-users-crud";
 import { ATLAS_SLIDES } from "./decks/atlas";
+import { ATLAS_COMPASS_SLIDES } from "./decks/atlas-compass";
+import { ATLAS_NODE_SLIDES } from "./decks/atlas-node";
+import { ATLAS_SESSIONS_SLIDES } from "./decks/atlas-sessions";
 import { CH6_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch6-check-understanding";
 import { KAMBAZ_COURSES_DB_SLIDES } from "./decks/kambaz-courses-db";
 import { KAMBAZ_MODULES_DB_SLIDES } from "./decks/kambaz-modules-db";
@@ -1105,14 +1108,44 @@ const LECTURE_SUMMARIES: Record<
     slides: MONGO_USERS_CRUD_SLIDES,
   },
   atlas: {
-    title: "Atlas",
+    title: "Integrating with Atlas",
     summary:
-      "Free Kambaz cluster, Compass +srv, /kambaz in the path, new Render session env — §6.3.",
+      "Why Render cannot use 127.0.0.1, then a free Kambaz cluster and database user — §6.3–6.3.1.",
     chapter: 6,
     topicId: "atlas",
     bookSectionId: "sec-6-3",
     canvasLecture: 23,
     slides: ATLAS_SLIDES,
+  },
+  "atlas-compass": {
+    title: "Atlas Compass",
+    summary:
+      "Paste the Compass mongodb+srv string, create kambaz, import the five JSON files — §6.3.1.1.",
+    chapter: 6,
+    topicId: "atlas",
+    bookSectionId: "sec-6-3-1-1",
+    canvasLecture: 23,
+    slides: ATLAS_COMPASS_SLIDES,
+  },
+  "atlas-node": {
+    title: "Atlas from Node.js",
+    summary:
+      "0.0.0.0/0, Drivers URI with /kambaz?, new Render service, Vercel origin — §6.3.1.2.",
+    chapter: 6,
+    topicId: "atlas",
+    bookSectionId: "sec-6-3-1-2",
+    canvasLecture: 23,
+    slides: ATLAS_NODE_SLIDES,
+  },
+  "atlas-sessions": {
+    title: "Atlas Remote Sessions",
+    summary:
+      "Five Render keys, secure cookies, then sign in so 12/7 graders read Atlas — §6.3.2.",
+    chapter: 6,
+    topicId: "atlas",
+    bookSectionId: "sec-6-3-2",
+    canvasLecture: 23,
+    slides: ATLAS_SESSIONS_SLIDES,
   },
   "ch6-check-understanding": {
     title: "Check Your Understanding",

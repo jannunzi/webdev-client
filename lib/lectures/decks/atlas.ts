@@ -6,8 +6,8 @@ export const ATLAS_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Chapter 6 · Atlas",
-      "§6.3 · cloud cluster, then remote sessions",
+      "Chapter 6 · Integrating with Atlas",
+      "§6.3 · hosted Mongo, then remote sessions",
     ],
   },
   {
@@ -15,10 +15,31 @@ export const ATLAS_SLIDES: LectureSlide[] = [
     title: "127.0.0.1 is empty on Render",
     kind: "content",
     bullets: [
+      "Local `mongod` lives on your laptop — Compass at `27017`",
       "The remote Express VM has no `kambaz` and no Compass documents",
+      "A public Node process needs a database that is also public",
       "Atlas hosts MongoDB and gives you a connection string",
+    ],
+  },
+  {
+    id: "why",
+    title: "Atlas is the public MongoDB",
+    kind: "content",
+    bullets: [
       "Free cluster, Compass import, Network Access, then a **new** Render service",
+      "Same `DATABASE_CONNECTION_STRING` key you already used on localhost",
       "Do not overwrite the Chapter 5 `a5` URL while TAs are grading",
+      "A6 and the 12/7 project both grade against this hosted cluster",
+    ],
+  },
+  {
+    id: "signup",
+    title: "Sign in at mongodb.com",
+    kind: "content",
+    bullets: [
+      "Google account or email — confirm the validation message if asked",
+      "Answer the signup questions, then **Deploy your cluster**",
+      "Choose the **Free** plan — enough for the course and the project",
     ],
   },
   {
@@ -26,105 +47,53 @@ export const ATLAS_SLIDES: LectureSlide[] = [
     title: "Free cluster named Kambaz",
     kind: "content",
     bullets: [
-      "Sign in at mongodb.com — Google or email",
-      "Deploy your cluster: **Free** plan, name it `Kambaz`",
+      "Name the cluster `Kambaz` so the hostname is easy to recognize",
       "Pick a nearby region — AWS North Virginia is fine",
-      "Create a database user you will remember. Do **not** commit the password",
+      "Click Create Deployment and wait for the cluster to provision",
     ],
   },
   {
-    id: "compass-remote",
-    title: "Connect Compass with +srv",
+    id: "user",
+    title: "A user Mongoose will remember",
+    kind: "content",
+    bullets: [
+      "Create a database user on the Connect screen — Jose used `giuseppi`",
+      "These credentials are how Mongoose logs in from Render",
+      "Store them in a password manager. Do **not** commit the password",
+      "Forget them and you must create a new user later",
+    ],
+  },
+  {
+    id: "scheme",
+    title: "The URI is mongodb+srv",
     kind: "demo",
     bullets: [
-      "Choose Compass, copy the string, Connect → New Window, paste",
-      "Compass is now talking to the cloud — not `127.0.0.1`",
+      "Atlas URIs use `mongodb+srv://`, not `mongodb://127.0.0.1`",
+      "The host will differ. Scheme, username, password, and cluster matter",
+      "Next lecture pastes this into Compass. Later, Drivers add `/kambaz?`",
     ],
     code: `mongodb+srv://giuseppi:supersecretpassword@kambaz.jxui0bc.mongodb.net/`,
     codeLanguage: "text",
     interactiveHint:
-      "The host will differ. Scheme, username, password, and cluster hostname matter.",
-  },
-  {
-    id: "import-remote",
-    title: "Import JSON on the remote DB",
-    kind: "content",
-    bullets: [
-      "Create `kambaz` if Atlas did not, then import all five JSON files",
-      "Confirm counts match localhost. You now have two Compass connections",
-      "Edits on localhost do not appear on Atlas until you import or the app writes",
-    ],
-  },
-  {
-    id: "network",
-    title: "Allow access from anywhere",
-    kind: "content",
-    bullets: [
-      "Network Access → + ADD IP ADDRESS → ALLOW ACCESS FROM ANYWHERE",
-      "That adds `0.0.0.0/0` — free Render outbound IPs change",
-      "Without it, Mongoose on Render hangs even if the password is correct",
-    ],
-  },
-  {
-    id: "drivers",
-    title: "Drivers URI includes /kambaz",
-    kind: "demo",
-    bullets: [
-      "Connect → Drivers → Node.js 5.5+. Copy the application string",
-      "`kambaz` must sit between the last `/` and the `?`",
-      "Omit the path and Mongoose writes to `test` — Dashboard looks empty",
-    ],
-    code: `mongodb+srv://giuseppi:<password>@kambaz.jxui0bc.mongodb.net/kambaz?retryWrites=true&w=majority&appName=Kambaz`,
-    codeLanguage: "text",
-    interactiveHint:
-      "Replace <password>. Do not commit the completed URI.",
-  },
-  {
-    id: "render",
-    title: "New Render service, same key",
-    kind: "content",
-    bullets: [
-      "Push branch `a6`. Deploy a **new** Render (or Heroku) service",
-      "Environment: `DATABASE_CONNECTION_STRING` = the Atlas URI",
-      "Vercel `a6`: `NEXT_PUBLIC_HTTP_SERVER` = new origin, no trailing slash",
-      "Redeploy both so the env vars take effect",
-    ],
-  },
-  {
-    id: "sessions",
-    title: "Remote sessions need five keys",
-    kind: "demo",
-    bullets: [
-      "`CLIENT_URL` is the Vercel `a6` origin — CORS and `sameSite`",
-      "`SERVER_ENV=production` turns on secure cookies",
-      "`SERVER_URL` must **not** start with `https://`",
-      "After env changes: Manual Deploy → Deploy latest commit",
-    ],
-    code: `DATABASE_CONNECTION_STRING=mongodb+srv://USER:PASSWORD@cluster/kambaz?retryWrites=true&w=majority
-CLIENT_URL=https://your-a6-preview.vercel.app
-SERVER_URL=your-webdev-server.onrender.com
-SERVER_ENV=production
-SESSION_SECRET=a long random phrase`,
-    codeLanguage: "bash",
-    codeFile: "Render Environment",
+      "This sample password is fake. Never paste a real Atlas password into a commit or the book.",
   },
   {
     id: "recap",
     title: "Atlas recap",
     kind: "content",
     bullets: [
-      "Free `Kambaz` cluster, Compass `mongodb+srv`, import JSON",
-      "`0.0.0.0/0`, Drivers URI with `/kambaz?`",
-      "New Render service + session env. Do not overwrite `a5`",
+      "Render cannot see localhost Mongo — Atlas is the public cluster",
+      "Free `Kambaz` cluster plus a database user you will remember",
+      "Same pattern for A6 and the project graders open the week of 12/7",
     ],
   },
   {
     id: "next-up",
-    title: "Next: check your understanding",
+    title: "Next: connect Compass",
     kind: "title",
     bullets: [
-      "A 10-item self-check on schemas, DAOs, and Atlas",
-      "§6-check, then migrate Kambaz collections in §6.4",
+      "Paste the Compass `mongodb+srv` string and import the JSON",
+      "§6.3.1.1: a second Compass window, not `127.0.0.1`",
     ],
   },
 ];

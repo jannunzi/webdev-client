@@ -98,7 +98,7 @@ describe("lecture catalog", () => {
     assert.equal(CHAPTER_3_SLUGS.length, 22);
     assert.equal(CHAPTER_4_SLUGS.length, 15);
     assert.equal(CHAPTER_5_SLUGS.length, 14);
-    assert.equal(CHAPTER_6_SLUGS.length, 9);
+    assert.equal(CHAPTER_6_SLUGS.length, 12);
   });
 
   it("marks Lecture 1 entries as Canvas Lecture 1 / Chapter 1", () => {
@@ -168,6 +168,9 @@ describe("lecture catalog", () => {
     assert.equal(isLectureSlug("mongoose"), true);
     assert.equal(isLectureSlug("mongo-apis"), true);
     assert.equal(isLectureSlug("atlas"), true);
+    assert.equal(isLectureSlug("atlas-compass"), true);
+    assert.equal(isLectureSlug("atlas-node"), true);
+    assert.equal(isLectureSlug("atlas-sessions"), true);
     assert.equal(isLectureSlug("kambaz-courses-db"), true);
     assert.equal(isLectureSlug("intro"), false);
   });
@@ -558,7 +561,7 @@ describe("lecture catalog", () => {
     );
     assert.deepEqual(
       groups[5]?.topics[3]?.decks.map((deck) => deck.slug),
-      ["atlas"],
+      ["atlas", "atlas-compass", "atlas-node", "atlas-sessions"],
     );
     assert.deepEqual(
       groups[5]?.topics[4]?.decks.map((deck) => deck.slug),
@@ -669,6 +672,9 @@ describe("lecture catalog", () => {
     assert.equal(getLecture("mongo-apis")?.bookHref, "/book/ch6#sec-6-2-6");
     assert.equal(getLecture("mongo-users-crud")?.bookHref, "/book/ch6#sec-6-2-6-3");
     assert.equal(getLecture("atlas")?.bookHref, "/book/ch6#sec-6-3");
+    assert.equal(getLecture("atlas-compass")?.bookHref, "/book/ch6#sec-6-3-1-1");
+    assert.equal(getLecture("atlas-node")?.bookHref, "/book/ch6#sec-6-3-1-2");
+    assert.equal(getLecture("atlas-sessions")?.bookHref, "/book/ch6#sec-6-3-2");
     assert.equal(getLecture("ch6-check-understanding")?.bookHref, "/book/ch6#sec-6-check");
     assert.equal(getLecture("kambaz-courses-db")?.bookHref, "/book/ch6#sec-6-4-1");
     assert.equal(getLecture("kambaz-modules-db")?.bookHref, "/book/ch6#sec-6-4-2");
@@ -681,6 +687,9 @@ describe("lecture catalog", () => {
     assert.equal(listDecksForBookSection("sec-6-1")[0]?.slug, "local-mongo");
     assert.equal(listDecksForBookSection("sec-6-2")[0]?.slug, "mongoose");
     assert.equal(listDecksForBookSection("sec-6-3")[0]?.slug, "atlas");
+    assert.equal(listDecksForBookSection("sec-6-3-1-1")[0]?.slug, "atlas-compass");
+    assert.equal(listDecksForBookSection("sec-6-3-1-2")[0]?.slug, "atlas-node");
+    assert.equal(listDecksForBookSection("sec-6-3-2")[0]?.slug, "atlas-sessions");
     assert.equal(listDecksForBookSection("sec-6-4-1")[0]?.slug, "kambaz-courses-db");
     assert.equal(listDecksForBookSection("sec-1-2-1")[0]?.slug, "installing-nodejs");
     assert.equal(listDecksForBookSection("sec-2-3")[0]?.slug, "tailwind-intro");
@@ -897,7 +906,13 @@ describe("lecture catalog", () => {
     assert.equal(groups[22]?.title, "Lecture 23");
     assert.deepEqual(
       groups[22]?.decks.map((deck) => deck.slug),
-      ["atlas", "ch6-check-understanding"],
+      [
+        "atlas",
+        "atlas-compass",
+        "atlas-node",
+        "atlas-sessions",
+        "ch6-check-understanding",
+      ],
     );
     assert.equal(groups[23]?.title, "Lecture 24");
     assert.deepEqual(
@@ -1067,7 +1082,10 @@ describe("lecture decks", () => {
     assert.equal(counts["mongoose"], 11);
     assert.equal(counts["mongo-apis"], 11);
     assert.equal(counts["mongo-users-crud"], 11);
-    assert.equal(counts["atlas"], 11);
+    assert.equal(counts["atlas"], 9);
+    assert.equal(counts["atlas-compass"], 9);
+    assert.equal(counts["atlas-node"], 10);
+    assert.equal(counts["atlas-sessions"], 12);
     assert.equal(counts["ch6-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-db"], 10);
     assert.equal(counts["kambaz-modules-db"], 9);
@@ -1406,6 +1424,9 @@ describe("lecture decks", () => {
         "people-table": "kambaz-styled-people",
       },
       "mongo-users-crud": { create: "lab6-users" },
+      "atlas-compass": { import: "kambaz-styled-dashboard" },
+      "atlas-node": { env: "lab6-status" },
+      "atlas-sessions": { client: "kambaz-styled-signin" },
       "kambaz-courses-db": { "delete-update": "kambaz-styled-dashboard" },
       "kambaz-modules-db": { "delete-update": "kambaz-styled-modules" },
       "kambaz-enrollments-db": {
@@ -2080,12 +2101,32 @@ describe("lecture decks", () => {
 
     const atlas = slideText("atlas");
     assert.match(atlas, /mongodb\+srv/);
-    assert.match(atlas, /0\.0\.0\.0\/0/);
-    assert.match(atlas, /\/kambaz\?/);
-    assert.match(atlas, /DATABASE_CONNECTION_STRING/);
-    assert.match(atlas, /SERVER_ENV=production/);
-    assert.match(atlas, /CLIENT_URL/);
+    assert.match(atlas, /127\.0\.0\.1/);
+    assert.match(atlas, /Free/);
+    assert.match(atlas, /Kambaz/);
     assert.doesNotMatch(atlas, /netlify\.com/i);
+    assert.doesNotMatch(atlas, /OMDb|omdb/i);
+
+    const compass = slideText("atlas-compass");
+    assert.match(compass, /mongodb\+srv/);
+    assert.match(compass, /New Window|new window/i);
+    assert.match(compass, /users|courses|modules/);
+    assert.doesNotMatch(compass, /netlify\.com/i);
+
+    const node = slideText("atlas-node");
+    assert.match(node, /0\.0\.0\.0\/0/);
+    assert.match(node, /\/kambaz\?/);
+    assert.match(node, /DATABASE_CONNECTION_STRING/);
+    assert.match(node, /NEXT_PUBLIC_HTTP_SERVER/);
+    assert.doesNotMatch(node, /netlify\.com/i);
+
+    const sessions = slideText("atlas-sessions");
+    assert.match(sessions, /SERVER_ENV=production/);
+    assert.match(sessions, /CLIENT_URL/);
+    assert.match(sessions, /SESSION_SECRET/);
+    assert.match(sessions, /NEXT_PUBLIC_/);
+    assert.match(sessions, /12\/7/);
+    assert.doesNotMatch(sessions, /netlify\.com/i);
 
     const check = slideText("ch6-check-understanding");
     assert.match(check, /sec-6-check/);
