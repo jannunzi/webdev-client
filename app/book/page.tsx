@@ -1,5 +1,10 @@
 import Link from "next/link";
+import BookVideosNote from "./components/BookVideosNote";
 import ResumeReading from "./ResumeReading";
+import {
+  HOW_TO_USE_THE_BOOK_HEADING,
+  HOW_TO_USE_THE_BOOK_INTRO,
+} from "./videosOptional";
 
 export default function BookHome() {
   return (
@@ -8,6 +13,16 @@ export default function BookHome() {
         Developing Full Stack Next.js Web Applications
       </h1>
       <p className="text-neutral-700">Dr. Jose Annunziato</p>
+      <section id="how-to-use" className="mt-5 scroll-mt-6">
+        <h2 className="mt-0 font-sans text-xl font-semibold">
+          {HOW_TO_USE_THE_BOOK_HEADING}
+        </h2>
+        <p>
+          {HOW_TO_USE_THE_BOOK_INTRO}{" "}
+          <Link href="/syllabus#book">Same note on the syllabus</Link>.
+        </p>
+        <BookVideosNote className="mt-3" />
+      </section>
       <ResumeReading />
       <p>
         <Link href="/syllabus">CS 4550 / CS 5610 Fall 2026 Syllabus</Link>

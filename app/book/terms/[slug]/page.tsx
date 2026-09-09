@@ -30,7 +30,7 @@ export async function generateMetadata({
   const resolved = resolveTerm(slug, query);
   return {
     title: `${resolved.term} · Course book`,
-    description: `Official reference and explainer videos for ${resolved.term}.`,
+    description: `Official docs and optional explainer videos for ${resolved.term}.`,
   };
 }
 

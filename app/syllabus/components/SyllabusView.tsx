@@ -26,6 +26,7 @@ import CourseGoals from "./CourseGoals";
 import DeadlinesTable from "./DeadlinesTable";
 import Disabilities from "./Disabilities";
 import Evaluation from "./Evaluation";
+import HowToUseTheBook from "./HowToUseTheBook";
 import LatePolicy from "./LatePolicy";
 import MeetingInfo from "./MeetingInfo";
 import OfficeHours from "./OfficeHours";
@@ -114,6 +115,7 @@ export default function SyllabusView({
         <SyllabusNav />
       </div>
       <CourseGoals goals={courseGoals} />
+      <HowToUseTheBook />
       <MeetingInfo section={section} semester={semester} />
       <AcademicCalendar />
       <OfficeHours

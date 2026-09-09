@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import BookVideosNote from "../../components/BookVideosNote";
 import {
   youtubeEmbedUrl,
   youtubeSearchPageUrl,
@@ -24,10 +25,12 @@ export default function TermVideos({
   return (
     <section className="mt-8" aria-labelledby={headingId}>
       <h2 id={headingId} className="font-sans text-xl font-semibold">
-        Videos that explain {term}
+        Optional videos for {term}
       </h2>
-      <p className="mt-2 text-[1.05rem] text-neutral-700">
-        Click a thumbnail to play it here. Use{" "}
+      <BookVideosNote compact className="mt-3" />
+      <p className="mt-3 text-[1.05rem] text-neutral-700">
+        These clips are extra explainers, not required viewing. Click a
+        thumbnail to play one here. Use{" "}
         <span className="whitespace-nowrap">Open on YouTube</span> to watch on
         youtube.com.
       </p>

@@ -6,7 +6,7 @@ import { childrenToText, termPageHref, termSlug } from "../terms/termSlug";
 
 /**
  * First-use technology term. Navigates in-app to `/book/terms/[slug]`
- * (official site + explainer videos) instead of opening the official URL.
+ * (official site and optional explainer videos) instead of opening the official URL.
  * Optional `term` / `searchQuery` override the label and YouTube query;
  * defaults come from `children` text.
  */
@@ -28,7 +28,7 @@ export default function OfficialLink({
   const path = termPageHref(href, label, getTerm(slug), { term, searchQuery });
 
   return (
-    <Link href={path} className={className} title={`Learn more about ${label}`}>
+    <Link href={path} className={className} title={`Official site for ${label}`}>
       {children}
     </Link>
   );
