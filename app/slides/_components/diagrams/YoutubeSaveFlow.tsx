@@ -61,16 +61,16 @@ export default function YoutubeSaveFlow() {
             </text>
           </g>
         ))}
-        <Arrow x1={242} x2={294} y="88" />
+        <Arrow x1={242} x2={294} y={88} />
         <text x="268" y="76" textAnchor="middle" fontSize="14" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">
           mid, lid, vid
         </text>
-        <Arrow x1={586} x2={638} y="88" />
-        <Arrow x1={638} x2={586} y="148" />
+        <Arrow x1={586} x2={638} y={88} />
+        <Arrow x1={638} x2={586} y={148} />
         <text x="612" y="176" textAnchor="middle" fontSize="14" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">
           saved lesson
         </text>
-        <Arrow x1={294} x2={242} y="148" />
+        <Arrow x1={294} x2={242} y={148} />
         <text x="268" y="176" textAnchor="middle" fontSize="14" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">
           back to Modules
         </text>

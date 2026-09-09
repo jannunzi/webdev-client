@@ -61,9 +61,9 @@ export default function GrokTokenFlow() {
             </text>
           </g>
         ))}
-        <Arrow x1={230} x2={250} y="110" />
-        <Arrow x1={466} x2={486} y="110" />
-        <Arrow x1={702} x2={722} y="110" />
+        <Arrow x1={230} x2={250} y={110} />
+        <Arrow x1={466} x2={486} y={110} />
+        <Arrow x1={702} x2={722} y={110} />
       </svg>
     </DiagramFrame>
   );
