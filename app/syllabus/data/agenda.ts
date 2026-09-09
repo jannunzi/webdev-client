@@ -12,9 +12,11 @@ import { sections } from "./sections";
 import {
   ORIENTATION_TOPIC,
   SHARED_CURRICULUM_START,
+  bookChapterHeading,
   lectureTopics,
 } from "./topics";
 import type {
+  AgendaGroup,
   AgendaRow,
   CourseSection,
   Deadline,
@@ -93,6 +95,79 @@ export function buildAgenda(section: CourseSection): AgendaRow[] {
 
   return rows;
 }
+
+function topicMetaForRow(row: AgendaRow) {
+  if (row.kind === "orientation" || row.lectureNumber == null) return undefined;
+  return lectureTopics[row.lectureNumber - 1];
+}
+
+/**
+ * Groups a section’s rows under book chapter headings, with X1 after
+ * Chapter 3 and X2 as its own last-week group. Date cells still use the
+ * shared Monday (“Week of …”).
+ */
+export function buildAgendaGroups(section: CourseSection): AgendaGroup[] {
+  const groups: AgendaGroup[] = [];
+
+  for (const row of buildAgenda(section)) {
+    if (row.kind === "orientation") {
+      const last = groups[groups.length - 1];
+      if (last?.kind === "orientation") {
+        last.rows.push(row);
+      } else {
+        groups.push({
+          id: `orientation-${section.id}`,
+          kind: "orientation",
+          heading: "Orientation",
+          rows: [row],
+        });
+      }
+      continue;
+    }
+
+    const meta = topicMetaForRow(row);
+    if (meta?.exam) {
+      const last = groups[groups.length - 1];
+      if (last?.kind === "exam" && last.id === meta.exam.toLowerCase()) {
+        last.rows.push(row);
+      } else {
+        groups.push({
+          id: meta.exam.toLowerCase(),
+          kind: "exam",
+          heading: meta.exam,
+          rows: [row],
+        });
+      }
+      continue;
+    }
+
+    const chapter = meta?.chapter;
+    const last = groups[groups.length - 1];
+    if (chapter && last?.kind === "chapter" && last.chapter === chapter) {
+      last.rows.push(row);
+      continue;
+    }
+
+    groups.push({
+      id: `chapter-${chapter ?? "other"}`,
+      kind: "chapter",
+      chapter,
+      heading: chapter ? bookChapterHeading(chapter) : row.topic,
+      rows: [row],
+    });
+  }
+
+  return groups;
+}
+
+export function flattenAgendaGroups(groups: AgendaGroup[]): AgendaRow[] {
+  return groups.flatMap((group) => group.rows);
+}
+
+export const agendaGroupsBySection: Record<string, AgendaGroup[]> =
+  Object.fromEntries(
+    sections.map((section) => [section.id, buildAgendaGroups(section)]),
+  );
 
 export const agendasBySection: Record<string, AgendaRow[]> = Object.fromEntries(
   sections.map((section) => [section.id, buildAgenda(section)]),

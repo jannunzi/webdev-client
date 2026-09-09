@@ -1,4 +1,4 @@
-import { formatAgendaDate } from "../data/dates";
+import { formatAgendaDate, formatWeekOf } from "../data/dates";
 import type { Deadline } from "../data/types";
 import SyllabusSection from "./SyllabusSection";
 
@@ -8,6 +8,16 @@ const KIND_LABEL: Record<Deadline["kind"], string> = {
   exam: "Exam",
   project: "Project",
 };
+
+function formatDeadlineDate(deadline: Deadline): string {
+  if (deadline.kind === "quiz" && deadline.date) {
+    return `${formatWeekOf(deadline.date)} · end of lecture`;
+  }
+  if (deadline.kind === "quiz" || !deadline.date) {
+    return "End of lecture";
+  }
+  return formatAgendaDate(deadline.date);
+}
 
 export default function DeadlinesTable({
   deadlines,
@@ -39,9 +49,7 @@ export default function DeadlinesTable({
                 }
               >
                 <td className="whitespace-nowrap px-3 py-2 font-sans">
-                  {deadline.kind === "quiz" || !deadline.date
-                    ? "End of lecture"
-                    : formatAgendaDate(deadline.date)}
+                  {formatDeadlineDate(deadline)}
                 </td>
                 <td className="px-3 py-2">{KIND_LABEL[deadline.kind]}</td>
                 <td className="px-3 py-2">{deadline.label}</td>

@@ -1,6 +1,6 @@
 import {
   academicIntegrity,
-  agendasBySection,
+  agendaGroupsBySection,
   aiPolicy,
   assignments,
   assignmentsIntro,
@@ -31,7 +31,7 @@ export default function SyllabusPage() {
       semester={semester}
       sections={sections}
       defaultSectionId={defaultSectionId}
-      agendasBySection={agendasBySection}
+      agendaGroupsBySection={agendaGroupsBySection}
       deadlines={deadlines}
       deadlinesNote={deadlinesNote}
       courseGoals={courseGoals}

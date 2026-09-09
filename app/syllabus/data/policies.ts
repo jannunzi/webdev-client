@@ -19,12 +19,15 @@ export const aiPolicy: PolicyBlock = {
   paragraphs: [
     "Working with an AI agent is like asking your expert professional uncle to do your assignment for you. If that would not be allowed with a person, it is not allowed with AI.",
     "You may ask him to explain something and to help you work things out. You may use AI (Cursor, ChatGPT, Copilot, and similar assistants) when the book or an exercise explicitly mentions it. You may not copy code wholesale from an AI tool unless that exercise explicitly allows it.",
-    "You are responsible for the work and are expected to take full responsibility for the code you submit. Quizzes (Q1–Q6) and exams (X1/X2) are closed: do not use AI unless the handout says otherwise.",
+    "You are responsible for the work and are expected to take full responsibility for the code you submit. The intent is for you to acquire the experience and the criteria to create and evaluate quality code.",
+    "Teaching assistants will schedule regularly random audits asking you to explain a random piece of code from your submission. The slightest suspicion that the code is not your own results in a zero for that assignment, unless the instructor or the book explicitly allowed AI for that particular purpose.",
+    "Quizzes (Q1–Q6) and exams (X1/X2) are closed: do not use AI unless the handout says otherwise.",
   ],
   bullets: [
     "Allowed: using AI when the book or an exercise explicitly mentions it; asking AI to explain something and help you work things out.",
     "Not allowed: having AI do the assignment for you; copying generated code wholesale unless the exercise explicitly allows it.",
-    "You take full responsibility for the code you submit. Closed quizzes and exams: no AI unless the handout says otherwise.",
+    "Audits: TAs will schedule regularly random audits. You must explain a random piece of code from your submission. The slightest suspicion that the code is not yours is a zero for that assignment, unless the instructor or book explicitly allowed AI for that particular purpose.",
+    "You take full responsibility for the code you submit. The intent is the experience and criteria to create and evaluate quality code. Closed quizzes and exams: no AI unless the handout says otherwise.",
   ],
 };
 

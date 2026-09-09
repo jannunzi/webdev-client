@@ -72,7 +72,7 @@ describe("assignment catalog", () => {
     assert.equal(getAssignment("a4")?.dueDate, "2026-11-08");
     assert.equal(getAssignment("a5")?.dueDate, "2026-11-22");
     assert.equal(getAssignment("a6")?.dueDate, "2026-12-06");
-    assert.equal(getAssignment("a1")?.assignedDate, "2026-09-09");
+    assert.equal(getAssignment("a1")?.assignedDate, "2026-09-14");
     assert.equal(getAssignment("a2")?.assignedDate, "2026-09-27");
     assert.equal(getAssignment("a3")?.assignedDate, "2026-10-11");
     assert.equal(getAssignment("a4")?.assignedDate, "2026-10-25");

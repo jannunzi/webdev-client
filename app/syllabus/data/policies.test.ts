@@ -3,8 +3,9 @@ import { describe, it } from "node:test";
 import { academicIntegrity, aiPolicy } from "./policies.ts";
 
 describe("AI policy", () => {
+  const text = [...aiPolicy.paragraphs, ...(aiPolicy.bullets ?? [])].join(" ");
+
   it("uses the uncle standard and the book/exercise rules", () => {
-    const text = [...aiPolicy.paragraphs, ...(aiPolicy.bullets ?? [])].join(" ");
     assert.match(text, /expert professional uncle/i);
     assert.match(
       text,
@@ -24,10 +25,28 @@ describe("AI policy", () => {
     assert.doesNotMatch(text, /always OK/i);
   });
 
+  it("covers TA audits, a zero for suspected non-original code, and the learning intent", () => {
+    assert.match(text, /regularly random audits/i);
+    assert.match(text, /explain a random piece of code/i);
+    assert.match(text, /slightest suspicion/i);
+    assert.match(text, /zero for that assignment/i);
+    assert.match(
+      text,
+      /unless the instructor or the book explicitly allowed AI for that particular purpose/i,
+    );
+    assert.match(
+      text,
+      /acquire the experience and the criteria to create and evaluate quality code/i,
+    );
+  });
+
   it("aligns academic integrity with the wholesale-copy rule", () => {
-    const text = academicIntegrity.paragraphs.join(" ");
-    assert.match(text, /copying AI-generated code wholesale/i);
-    assert.match(text, /explicitly allows/i);
-    assert.doesNotMatch(text, /submitting AI-generated work you cannot explain/);
+    const integrity = academicIntegrity.paragraphs.join(" ");
+    assert.match(integrity, /copying AI-generated code wholesale/i);
+    assert.match(integrity, /explicitly allows/i);
+    assert.doesNotMatch(
+      integrity,
+      /submitting AI-generated work you cannot explain/,
+    );
   });
 });

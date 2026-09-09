@@ -50,6 +50,31 @@ export function formatAgendaDate(iso: IsoDate): string {
   });
 }
 
+/** Monday of the ISO date’s week (Sunday belongs to the preceding Monday). */
+export function startOfWeekMonday(iso: IsoDate): IsoDate {
+  const date = fromIso(iso);
+  const day = date.getDay();
+  const offset = day === 0 ? -6 : 1 - day;
+  date.setDate(date.getDate() + offset);
+  return toIso(date);
+}
+
+export function addDays(iso: IsoDate, days: number): IsoDate {
+  const date = fromIso(iso);
+  date.setDate(date.getDate() + days);
+  return toIso(date);
+}
+
+/** Shared student-facing week label, e.g. “Week of Sep 14”. */
+export function formatWeekOf(iso: IsoDate): string {
+  const monday = startOfWeekMonday(iso);
+  const label = fromIso(monday).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
+  return `Week of ${label}`;
+}
+
 export function formatLongDate(iso: IsoDate): string {
   return fromIso(iso).toLocaleDateString("en-US", {
     weekday: "long",
