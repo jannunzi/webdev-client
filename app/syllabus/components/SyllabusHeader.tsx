@@ -38,6 +38,8 @@ export default function SyllabusHeader({
       <p className="mt-4 text-[1.05rem] text-neutral-800">
         Companion to{" "}
         <Link href="/book">{course.bookTitle}</Link>.{" "}
+        <Link href="#book">How to use the book</Link>
+        {" (term videos are optional). "}
         {formatSectionMeetsSentence(section.daysOfWeek, section.firstClass)}
       </p>
     </header>

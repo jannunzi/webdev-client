@@ -3,6 +3,7 @@ import Link from "next/link";
 const SECTIONS = [
   { href: "#overview", label: "Overview" },
   { href: "#goals", label: "Goals" },
+  { href: "#book", label: "Book" },
   { href: "#meetings", label: "Meetings" },
   { href: "#academic-calendar", label: "Calendar" },
   { href: "#office-hours", label: "Office hours" },

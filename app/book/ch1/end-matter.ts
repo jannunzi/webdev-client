@@ -10,7 +10,7 @@ export const ch1EndMatter: ChapterEndMatterData = {
   chapter: 1,
   references: {
     ...sections.references,
-    lead: "The names below are the ones this chapter actually introduced — the Web's history, the HTML you used to prototype screens, the Next.js App Router, and the GitHub and Vercel delivery steps. Each linked term opens the in-book term page, where you will find the official site and explainer videos.",
+    lead: "The names below are the ones this chapter actually introduced — the Web's history, the HTML you used to prototype screens, the Next.js App Router, and the GitHub and Vercel delivery steps. Each linked term opens the in-book term page for the official site. Explainer videos on those pages are optional reference.",
     items: [
       "internet",
       "arpa",
