@@ -17,7 +17,7 @@ export const evaluationItems: EvaluationItem[] = [
     label: "Exams (X1–X2)",
     weight: 30,
     description:
-      "X1 is the week after A3. X2 is exam week. Each exam is ~90 minutes.",
+      "X1 is taken in the second half of lecture the week after A3. X2 is exam week. Each exam is ~90 minutes.",
   },
   {
     label: "Project",
