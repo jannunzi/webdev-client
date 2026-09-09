@@ -158,7 +158,19 @@ export function bookHrefForSection(
   sectionId?: string,
 ): string {
   const href = bookChapterMeta(chapter).href;
-  return sectionId ? `${href}#${sectionId}` : href;
+  // No Integrating chapter in the book yet — do not invent /book/ch7 or #sec-7-*.
+  if (!sectionId || href === "/project") return href;
+  return `${href}#${sectionId}`;
+}
+
+/** Deck chrome label. Project week links to `/project`, not a book chapter. */
+export function lectureCompanionLinkLabel(
+  chapter: number,
+  bookSectionId?: string,
+): string {
+  if (chapter > 6) return "Open the project";
+  if (bookSectionId) return `§${bookSectionLabel(bookSectionId)} in the book`;
+  return "Open in the book";
 }
 
 export function slidesHref(slug: LectureSlug): string {

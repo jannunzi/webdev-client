@@ -14,7 +14,7 @@ export default function LectureChapterLink({
   return (
     <div className="my-4 rounded-lg border-2 border-neutral-800 bg-white px-4 py-3 font-sans shadow-sm">
       <p className="m-0 text-xs font-semibold uppercase tracking-wide text-neutral-500">
-        Course book
+        {chapter > 6 ? "Project" : "Course book"}
       </p>
       <p className="mb-2 mt-1 text-lg font-semibold tracking-tight">
         <Link href={href}>

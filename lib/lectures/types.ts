@@ -207,6 +207,8 @@ export const BOOK_CHAPTERS = [
     weeks: "11/23, 11/30",
   },
   {
+    // Hub grouping for project week — not a book chapter. Book will add
+    // real /book/chN + section anchors when the Integrating chapter lands.
     chapter: 7,
     href: "/project",
     title: "Integrating with External APIs",
@@ -436,6 +438,7 @@ export const LECTURE_TOPICS = [
     title: "6.4 Integrating the Kambaz Web Application with a Database",
     bookSectionId: "sec-6-4",
   },
+  // Project-week topics only. Do not invent sec-7-* until Book lands anchors.
   {
     topicId: "youtube-api",
     chapter: 7,
@@ -706,7 +709,7 @@ export type LectureHubItem = {
   topic?: string;
   /** Book TOC anchor (`intro` or `sec-1-3-1`) when a section mapping exists. */
   bookSectionId?: string;
-  /** `/book/chN` or `/book/chN#sec-…` for the deck → book link. */
+  /** `/book/chN#sec-…` when a book section exists; `/project` for API week. */
   bookHref: string;
   /** Canvas week mapping — metadata / badge only, not a hub heading. */
   canvasLecture: number;

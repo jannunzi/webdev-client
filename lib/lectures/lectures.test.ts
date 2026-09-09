@@ -5,9 +5,11 @@ import { join } from "node:path";
 import {
   COURSE_SITE_ORIGIN,
   adjacentLectureSlugs,
+  bookHrefForSection,
   getLecture,
   getLectureDeck,
   isLectureSlug,
+  lectureCompanionLinkLabel,
   lectureDeckThumbnail,
   lecturePublicUrl,
   listCanvasLectureGroups,
@@ -761,6 +763,35 @@ describe("lecture catalog", () => {
     assert.equal(getLecture("youtube-api")?.bookSectionId, undefined);
     assert.equal(getLecture("youtube-api")?.chapter, 7);
     assert.equal(getLecture("youtube-api")?.canvasLecture, 25);
+    for (const slug of PROJECT_SLUGS) {
+      const item = getLecture(slug);
+      assert.equal(item?.bookSectionId, undefined);
+      assert.equal(item?.bookHref, "/project");
+      assert.equal(item?.chapter, 7);
+      assert.doesNotMatch(item?.bookHref ?? "", /\/book\/ch/);
+    }
+    for (const topic of LECTURE_TOPICS.filter((entry) => entry.chapter === 7)) {
+      assert.equal(topic.bookSectionId, undefined);
+    }
+    assert.equal(bookHrefForSection(7), "/project");
+    assert.equal(bookHrefForSection(7, "sec-7-1"), "/project");
+    assert.equal(lectureCompanionLinkLabel(7), "Open the project");
+    assert.equal(
+      lectureCompanionLinkLabel(3, "sec-3-2"),
+      "§3.2 in the book",
+    );
+    const deckPage = readFileSync(
+      join(process.cwd(), "app/slides/[slug]/page.tsx"),
+      "utf8",
+    );
+    assert.match(deckPage, /lectureCompanionLinkLabel/);
+    assert.doesNotMatch(deckPage, /Open in the book/);
+    const chapterLink = readFileSync(
+      join(process.cwd(), "app/slides/_components/LectureChapterLink.tsx"),
+      "utf8",
+    );
+    assert.match(chapterLink, /Open the project page/);
+    assert.match(chapterLink, /chapter > 6 \? "Project"/);
     assert.equal(listDecksForBookSection("sec-3-2")[0]?.slug, "intro-to-javascript");
     assert.equal(listDecksForBookSection("sec-4-5-1")[0]?.slug, "zustand-counter");
     assert.equal(listDecksForBookSection("sec-5-1")[0]?.slug, "http-server");
@@ -2336,6 +2367,8 @@ describe("lecture decks", () => {
       assert.doesNotMatch(copy, /AIzaSy/);
       assert.doesNotMatch(copy, /xai-W2eC/);
       assert.doesNotMatch(copy, /Kanbas/);
+      assert.doesNotMatch(copy, /\/book\/ch7/);
+      assert.doesNotMatch(copy, /sec-7-/);
     }
   });
 

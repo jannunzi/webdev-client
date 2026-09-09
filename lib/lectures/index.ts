@@ -5,6 +5,7 @@ export {
   bookChapterMeta,
   bookHrefForSection,
   bookSectionLabel,
+  lectureCompanionLinkLabel,
   getLecture,
   getLectureDeck,
   isLectureSlug,
