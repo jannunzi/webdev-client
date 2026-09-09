@@ -11,6 +11,16 @@ export const GROK_API_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "video",
+    title: "Optional Next.js walkthrough",
+    kind: "content",
+    bullets: [
+      "Drive slides are the lecture. This video is stack alignment only",
+      "`https://youtu.be/rwE57Cdk1fA` — Next.js + Grok AI",
+      "Next.js calls Express. The xAI key stays in server `.env`",
+    ],
+  },
+  {
     id: "intro",
     title: "Grok is xAI's family of LLMs",
     kind: "content",

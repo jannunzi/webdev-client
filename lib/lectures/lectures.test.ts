@@ -1180,13 +1180,13 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-courses-db"], 10);
     assert.equal(counts["kambaz-modules-db"], 9);
     assert.equal(counts["kambaz-enrollments-db"], 10);
-    assert.equal(counts["youtube-api"], 8);
+    assert.equal(counts["youtube-api"], 9);
     assert.equal(counts["youtube-search"], 10);
     assert.equal(counts["youtube-details"], 10);
     assert.equal(counts["chatgpt-api"], 11);
     assert.equal(counts["chatgpt-text"], 11);
     assert.equal(counts["chatgpt-ui"], 12);
-    assert.equal(counts["grok-api"], 11);
+    assert.equal(counts["grok-api"], 12);
     assert.equal(counts["grok-chat"], 13);
     assert.equal(counts["grok-images"], 12);
     for (const deck of decks) {
@@ -2209,12 +2209,15 @@ describe("lecture decks", () => {
     assert.doesNotMatch(atlas, /netlify\.com/i);
     assert.doesNotMatch(atlas, /OMDb|omdb/i);
     assert.doesNotMatch(atlas, /napster/i);
+    assert.doesNotMatch(atlas, /supersecretpassword/);
+    assert.match(atlas, /<password>/);
 
     const compass = slideText("atlas-compass");
     assert.match(compass, /mongodb\+srv/);
     assert.match(compass, /New Window|new window/i);
     assert.match(compass, /users|courses|modules/);
     assert.doesNotMatch(compass, /netlify\.com/i);
+    assert.doesNotMatch(compass, /supersecretpassword/);
 
     const node = slideText("atlas-node");
     assert.match(node, /0\.0\.0\.0\/0/);
@@ -2268,6 +2271,7 @@ describe("lecture decks", () => {
     assert.match(youtube, /NEXT_PUBLIC_YOUTUBE_API/);
     assert.match(youtube, /YOUR_YOUTUBE_API_KEY/);
     assert.match(youtube, /YouTube Data API v3/);
+    assert.match(youtube, /youtu\.be\/KSfs9fJW1rY/);
 
     const search = slideText("youtube-search");
     assert.match(search, /\/search\?part=snippet/);
@@ -2302,6 +2306,7 @@ describe("lecture decks", () => {
     assert.match(grok, /generateText/);
     assert.match(grok, /xai\("grok-4"\)/);
     assert.match(grok, /grok-4-latest/);
+    assert.match(grok, /youtu\.be\/rwE57Cdk1fA/);
 
     const chat = slideText("grok-chat");
     assert.match(chat, /chat\.completions\.create/);

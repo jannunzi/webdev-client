@@ -11,6 +11,16 @@ export const YOUTUBE_API_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "video",
+    title: "Optional Next.js walkthrough",
+    kind: "content",
+    bullets: [
+      "Drive slides are the lecture. This video is stack alignment only",
+      "`https://youtu.be/KSfs9fJW1rY` — Next.js + YouTube Web API",
+      "Same App Router, `NEXT_PUBLIC_*`, and axios client as this deck",
+    ],
+  },
+  {
     id: "docs",
     title: "YouTube Data API v3",
     kind: "content",

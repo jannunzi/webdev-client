@@ -7,7 +7,7 @@
   <g transform="translate(70 70)">
     <ellipse cx="180" cy="168" rx="128" ry="132" fill="#1DA1F2" fill-opacity="0.35"/>
     <ellipse cx="180" cy="168" rx="78" ry="80" fill="#1DA1F2"/>
-    <text x="180" y="188" text-anchor="middle" fill="#FFFFFF" font-family="ui-sans-serif, system-ui, sans-serif" font-size="48" font-weight="800">★</text>
+    <text x="180" y="188" text-anchor="middle" fill="#FFFFFF" font-family="ui-sans-serif, system-ui, sans-serif" font-size="48" font-weight="800">AI</text>
   </g>
   <text x="72" y="640" fill="#F8FAFC" font-family="ui-sans-serif, system-ui, sans-serif" font-size="56" font-weight="800">Grok Chat and Sparkle</text>
 </svg>
