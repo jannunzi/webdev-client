@@ -4,6 +4,7 @@ import { assignmentsIntro } from "@/app/syllabus/data/assignments";
 import { deadlines, deadlinesNote } from "@/app/syllabus/data/deadlines";
 import { isoWeekday, weekdayName } from "@/app/syllabus/data/dates";
 import { evaluationItems, evaluationNotes } from "@/app/syllabus/data/evaluation";
+import { projectBlurb } from "@/app/syllabus/data/project";
 import { sections } from "@/app/syllabus/data/sections";
 import { etWallTimeToUtc, getQuizSchedule } from "./schedule";
 
@@ -63,24 +64,29 @@ describe("Fall 2026 Canvas calendar", () => {
     assert.equal(project?.date, "2026-12-10");
   });
 
-  it("labels each quiz on its Sunday due and mentions the Monday unlock", () => {
-    for (const [id, window] of Object.entries(QUIZ_WINDOWS)) {
-      const row = deadlines.find(
-        (deadline) =>
-          deadline.kind === "quiz" && deadline.label.startsWith(`${id} due`),
-      );
-      assert.ok(row, `${id} due is missing from syllabus deadlines`);
-      assert.equal(row.date, window.due);
-      const unlock = new Date(`${window.unlock}T12:00:00`);
-      const unlockLabel = unlock.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-      });
-      assert.match(row.label, new RegExp(`unlock ${unlockLabel}`));
+  it("labels quizzes as end of lecture, not Sunday dues", () => {
+    const expected: Record<string, string> = {
+      Q1: "Q1 — HTML (taken at end of lecture)",
+      Q2: "Q2 — CSS & Tailwind (taken at end of lecture)",
+      Q3: "Q3 — JavaScript (taken at end of lecture)",
+      Q4: "Q4 — Client state (taken at end of lecture)",
+      Q5: "Q5 — REST APIs (taken at end of lecture)",
+      Q6: "Q6 — MongoDB (taken at end of lecture)",
+    };
+    const quizRows = deadlines.filter((deadline) => deadline.kind === "quiz");
+    assert.equal(quizRows.length, 6);
+    for (const [id, label] of Object.entries(expected)) {
+      const row = quizRows.find((deadline) => deadline.label.startsWith(`${id} `));
+      assert.ok(row, `${id} is missing from syllabus deadlines`);
+      assert.equal(row.label, label);
+      assert.equal(row.date, undefined);
+      assert.doesNotMatch(row.label, /\bdue\b/i);
+      assert.doesNotMatch(row.label, /unlock/i);
+      assert.doesNotMatch(row.label, /Sunday/i);
     }
   });
 
-  it("keeps syllabus quiz dues aligned with schedule.ts take windows", () => {
+  it("keeps website take windows in schedule.ts", () => {
     for (const [id, window] of Object.entries(QUIZ_WINDOWS)) {
       const schedule = getQuizSchedule(id.toLowerCase());
       assert.ok(schedule, `${id} is missing from quiz schedule`);
@@ -104,7 +110,10 @@ describe("Fall 2026 Canvas calendar", () => {
     const exams = evaluationItems.find((item) => item.label.includes("X1"));
     assert.ok(quiz);
     assert.ok(exams);
+    assert.match(quiz.description, /end of lecture/i);
     assert.match(quiz.description, /10 questions/);
+    assert.doesNotMatch(quiz.description, /unlocks Monday/);
+    assert.doesNotMatch(quiz.description, /locks Sunday/);
     assert.match(exams.description, /36 questions/);
     assert.doesNotMatch(exams.description, /unlock Monday 2026-10-26/);
     assert.doesNotMatch(exams.description, /due Sunday 2026-11-01/);
@@ -117,6 +126,7 @@ describe("Fall 2026 Canvas calendar", () => {
       ...evaluationNotes,
       deadlinesNote,
       ...assignmentsIntro,
+      ...projectBlurb.paragraphs,
       ...sections.flatMap((section) => section.notes),
     ].join(" ");
     assert.doesNotMatch(studentCopy, /grade shell/i);
@@ -127,9 +137,18 @@ describe("Fall 2026 Canvas calendar", () => {
     assert.doesNotMatch(studentCopy, /less runway/i);
     assert.doesNotMatch(studentCopy, /do not slide/i);
     assert.doesNotMatch(studentCopy, /section starts later/i);
-    assert.match(studentCopy, /taken online on this course website/i);
+    assert.doesNotMatch(studentCopy, /chapter quizzes \(Q1–Q6\) are due Sunday/);
+    assert.match(deadlinesNote, /Quizzes \(Q1–Q6\) are taken at the end of lecture/);
+    assert.doesNotMatch(deadlinesNote, /Quizzes \(Q1–Q6\) are due Sunday/);
+    assert.match(studentCopy, /course website/i);
     assert.match(studentCopy, /staff-approved fallback/i);
     assert.match(studentCopy, /ask your instructor or TA before using it/i);
+    assert.doesNotMatch(studentCopy, /prior written approval/i);
+    assert.match(studentCopy, /up to 5 members/);
+    assert.match(
+      studentCopy,
+      /do not need the instructor.s permission to form a team/,
+    );
   });
 
   it("names X2’s weekday as Thursday to match 2026-12-03", () => {

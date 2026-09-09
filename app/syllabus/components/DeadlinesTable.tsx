@@ -31,7 +31,7 @@ export default function DeadlinesTable({
           <tbody>
             {deadlines.map((deadline) => (
               <tr
-                key={`${deadline.date}-${deadline.kind}-${deadline.label}`}
+                key={`${deadline.date ?? "lecture"}-${deadline.kind}-${deadline.label}`}
                 className={
                   deadline.kind === "exam"
                     ? "border-b border-neutral-200 bg-sky-50"
@@ -39,7 +39,9 @@ export default function DeadlinesTable({
                 }
               >
                 <td className="whitespace-nowrap px-3 py-2 font-sans">
-                  {formatAgendaDate(deadline.date)}
+                  {deadline.kind === "quiz" || !deadline.date
+                    ? "End of lecture"
+                    : formatAgendaDate(deadline.date)}
                 </td>
                 <td className="px-3 py-2">{KIND_LABEL[deadline.kind]}</td>
                 <td className="px-3 py-2">{deadline.label}</td>

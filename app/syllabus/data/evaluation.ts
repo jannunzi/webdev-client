@@ -11,7 +11,7 @@ export const evaluationItems: EvaluationItem[] = [
     label: "Quizzes (Q1–Q6)",
     weight: 10,
     description:
-      "Short checks after each chapter. Each quiz draws 10 questions (~30 minutes), unlocks Monday 00:00 ET after the corresponding assignment due, and locks Sunday 23:59 ET. Quizzes cannot be submitted late.",
+      "Short in-class checks taken at the end of lecture on this course website (~10 questions, about 30 minutes). Canvas is a staff-approved fallback if the site is unavailable — ask your instructor or TA before using it.",
   },
   {
     label: "Exams (X1–X2)",
