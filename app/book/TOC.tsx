@@ -1098,6 +1098,15 @@ function TocPanel({
         <ul className="m-0 mb-3 list-none space-y-0.5 p-0 text-sm">
           <li>
             <Link
+              href="/calendar"
+              onClick={onNavigate}
+              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
+            >
+              Academic Calendar
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/office-hours"
               onClick={onNavigate}
               className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"

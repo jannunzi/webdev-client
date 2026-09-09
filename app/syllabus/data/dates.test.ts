@@ -28,6 +28,8 @@ describe("formatWeekOf", () => {
     assert.equal(formatWeekOf("2026-09-15"), "Week of Sep 14");
     assert.equal(formatWeekOf("2026-09-16"), "Week of Sep 14");
     assert.equal(formatWeekOf("2026-12-07"), "Week of Dec 7");
+    assert.equal(formatWeekOf("2026-12-14"), "Week of Dec 14");
+    assert.equal(formatWeekOf("2026-12-16"), "Week of Dec 14");
   });
 });
 
@@ -59,13 +61,17 @@ describe("formatSectionMeetsSentence", () => {
     assert.equal(sections.length, 3);
   });
 
-  it("posts Shillman Hall 105 for both in-person sections and leaves the online Zoom TBA", () => {
+  it("posts Shillman Hall 105 for both in-person sections and online Tuesdays for CS 5610-09", () => {
     const byId = Object.fromEntries(
       sections.map((section) => [section.id, section]),
     );
     assert.equal(byId["cs4550-01"]?.location, "Shillman Hall 105");
     assert.equal(byId["cs5610-02"]?.location, "Shillman Hall 105");
-    assert.match(byId["cs5610-09"]?.location ?? "", /TBA/);
+    assert.equal(
+      byId["cs5610-09"]?.location,
+      "Online — meets Tuesdays, 6:00–9:00pm ET",
+    );
+    assert.doesNotMatch(byId["cs5610-09"]?.location ?? "", /TBA/);
   });
 
   it("does not use possessive grammar", () => {
@@ -90,5 +96,6 @@ describe("mondayOfWeek and wholeWeeksBetween", () => {
     assert.equal(wholeWeeksBetween("2026-09-14", "2026-10-12"), 4);
     assert.equal(wholeWeeksBetween("2026-09-14", "2026-11-23"), 10);
     assert.equal(wholeWeeksBetween("2026-09-14", "2026-12-07"), 12);
+    assert.equal(wholeWeeksBetween("2026-09-14", "2026-12-14"), 13);
   });
 });

@@ -198,25 +198,24 @@ from the submit payload unless the phase is `answers_open` or `answers_reopen`.
 
 Fall 2026 first windows (00:00 ET Monday → +7d):
 
-- Q1: 2026-10-05 → 2026-10-12
-- Q2: 2026-10-19 → 2026-10-26
+- Q1: 2026-09-28 → 2026-10-05
+- Q2: 2026-10-12 → 2026-10-19
 - Q3: 2026-11-02 → 2026-11-09
-- Q4: 2026-11-16 → 2026-11-23
-- Q5: 2026-11-30 → 2026-12-07
-- Q6: 2026-12-14 → 2026-12-21
+- Q4: 2026-11-09 → 2026-11-16
+- Q5: 2026-11-23 → 2026-11-30
+- Q6: 2026-12-21 → 2026-12-28
 
 Take windows follow Q1’s pattern (Monday 00:00 ET unlock → Sunday 23:59 ET
-due). Q1: unlock 2026-09-28, due 2026-10-04 23:59 ET.
+due). Q1: unlock 2026-09-21, due 2026-09-27 23:59 ET.
 
 **Exam dates** live in `COURSE_EXAMS` in the same module:
 
 - `midtermAt` — Q1–Q3 answer-reopen close `2026-11-05T05:00:00.000Z` (Thu
-  2026-11-05 00:00 ET), the first weekday after syllabus **X1** / Q3 due
+  2026-11-05 00:00 ET), the first weekday after syllabus **X1** due
   (2026-11-01). `/quizzes/take/x1` is a coming-soon stub.
-- `finalAt` — syllabus **Exam · X2** date `2026-12-03T05:00:00.000Z`
-  (2026-12-03 00:00 ET). `/quizzes/take/x2` is a coming-soon stub.
-  University finals are 2026-12-14–20 on the syllabus and are not used for
-  the reopen.
+- `finalAt` — syllabus **X2** week `2026-12-14T05:00:00.000Z`
+  (2026-12-14 00:00 ET). `/quizzes/take/x2` is a coming-soon stub.
+  University finals are 2026-12-14–20 on the syllabus.
 
 Canvas package -20 grade shells for Q1–Q6 and X1/X2 are **100 points**
 each. The website scores as a percent and exports to Canvas out of 100.

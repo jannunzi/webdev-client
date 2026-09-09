@@ -86,13 +86,13 @@ export function scheduleFromIso(iso: QuizScheduleIso): QuizSchedule {
 /**
  * Course exam instants (00:00 America/New_York), stored as ISO UTC.
  *
- * The syllabus lists X1 (due 2026-11-01) and Exam · X2 (due 2026-12-03) in
+ * The syllabus lists X1 (due 2026-11-01) and X2 (due 2026-12-20) in
  * `app/syllabus/data/deadlines.ts`, plus a university final-exam period of
  * 2026-12-14–2026-12-20 (`app/syllabus/data/course.ts`).
  *
  * - `midtermAt` — Q1–Q3 answer-reopen close: Thursday 2026-11-05 00:00 ET,
- *   the first weekday after X1 / Q3’s Sunday due.
- * - `finalAt` — syllabus Exam · X2 date: 2026-12-03 00:00 ET.
+ *   the first weekday after X1’s Sunday due.
+ * - `finalAt` — syllabus X2 unlock / finals week Monday: 2026-12-14 00:00 ET.
  *
  * Edit these two strings if Jose moves the exam instants used for Q1–Q6
  * answer reopen. Q1–Q3 reopen `[midtermAt − 7d, midtermAt)`. Q4–Q6 reopen
@@ -100,7 +100,7 @@ export function scheduleFromIso(iso: QuizScheduleIso): QuizSchedule {
  */
 export const COURSE_EXAMS = {
   midtermAt: "2026-11-05T05:00:00.000Z",
-  finalAt: "2026-12-03T05:00:00.000Z",
+  finalAt: "2026-12-14T05:00:00.000Z",
 } as const;
 
 const PRE_MIDTERM_QUIZZES = new Set(["q1", "q2", "q3", "x1"]);
@@ -118,40 +118,40 @@ const QUIZ_WINDOW_ISO: Record<
   }
 > = {
   q1: {
-    takeUnlockAt: "2026-09-28T04:00:00.000Z",
-    takeLockAt: "2026-10-05T03:59:00.000Z",
-    answersOpenAt: "2026-10-05T04:00:00.000Z",
-    answersCloseAt: "2026-10-12T04:00:00.000Z",
+    takeUnlockAt: "2026-09-21T04:00:00.000Z",
+    takeLockAt: "2026-09-28T03:59:00.000Z",
+    answersOpenAt: "2026-09-28T04:00:00.000Z",
+    answersCloseAt: "2026-10-05T04:00:00.000Z",
   },
   q2: {
-    takeUnlockAt: "2026-10-12T04:00:00.000Z",
-    takeLockAt: "2026-10-19T03:59:00.000Z",
-    answersOpenAt: "2026-10-19T04:00:00.000Z",
-    answersCloseAt: "2026-10-26T04:00:00.000Z",
+    takeUnlockAt: "2026-10-05T04:00:00.000Z",
+    takeLockAt: "2026-10-12T03:59:00.000Z",
+    answersOpenAt: "2026-10-12T04:00:00.000Z",
+    answersCloseAt: "2026-10-19T04:00:00.000Z",
   },
   q3: {
-    takeUnlockAt: "2026-10-26T04:00:00.000Z",
-    takeLockAt: "2026-11-02T04:59:00.000Z",
+    takeUnlockAt: "2026-10-19T04:00:00.000Z",
+    takeLockAt: "2026-10-26T03:59:00.000Z",
     answersOpenAt: "2026-11-02T05:00:00.000Z",
     answersCloseAt: "2026-11-09T05:00:00.000Z",
   },
   q4: {
-    takeUnlockAt: "2026-11-09T05:00:00.000Z",
-    takeLockAt: "2026-11-16T04:59:00.000Z",
-    answersOpenAt: "2026-11-16T05:00:00.000Z",
-    answersCloseAt: "2026-11-23T05:00:00.000Z",
+    takeUnlockAt: "2026-11-02T05:00:00.000Z",
+    takeLockAt: "2026-11-09T04:59:00.000Z",
+    answersOpenAt: "2026-11-09T05:00:00.000Z",
+    answersCloseAt: "2026-11-16T05:00:00.000Z",
   },
   q5: {
-    takeUnlockAt: "2026-11-23T05:00:00.000Z",
-    takeLockAt: "2026-11-30T04:59:00.000Z",
-    answersOpenAt: "2026-11-30T05:00:00.000Z",
-    answersCloseAt: "2026-12-07T05:00:00.000Z",
+    takeUnlockAt: "2026-11-16T05:00:00.000Z",
+    takeLockAt: "2026-11-23T04:59:00.000Z",
+    answersOpenAt: "2026-11-23T05:00:00.000Z",
+    answersCloseAt: "2026-11-30T05:00:00.000Z",
   },
   q6: {
-    takeUnlockAt: "2026-12-07T05:00:00.000Z",
-    takeLockAt: "2026-12-14T04:59:00.000Z",
-    answersOpenAt: "2026-12-14T05:00:00.000Z",
-    answersCloseAt: "2026-12-21T05:00:00.000Z",
+    takeUnlockAt: "2026-11-30T05:00:00.000Z",
+    takeLockAt: "2026-12-07T04:59:00.000Z",
+    answersOpenAt: "2026-12-21T05:00:00.000Z",
+    answersCloseAt: "2026-12-28T05:00:00.000Z",
   },
   x1: {
     takeUnlockAt: "2026-10-26T04:00:00.000Z",
@@ -161,10 +161,10 @@ const QUIZ_WINDOW_ISO: Record<
     skipExamPrep: true,
   },
   x2: {
-    takeUnlockAt: "2026-11-30T05:00:00.000Z",
-    takeLockAt: "2026-12-04T04:59:00.000Z",
-    answersOpenAt: "2026-12-04T05:00:00.000Z",
-    answersCloseAt: "2026-12-11T05:00:00.000Z",
+    takeUnlockAt: "2026-12-14T05:00:00.000Z",
+    takeLockAt: "2026-12-21T04:59:00.000Z",
+    answersOpenAt: "2026-12-21T05:00:00.000Z",
+    answersCloseAt: "2026-12-28T05:00:00.000Z",
     skipExamPrep: true,
   },
 };

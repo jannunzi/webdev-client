@@ -151,37 +151,46 @@ export const LECTURE_SLUGS = [
   ...CHAPTER_6_SLUGS,
 ] as const;
 
-/** Book chapter grouping used by the slides hub and nav. */
+/**
+ * Book chapter grouping used by the slides hub and nav.
+ * `weeks` is the Canvas module Monday dates for that chapter (not lecture numbers).
+ */
 export const BOOK_CHAPTERS = [
   {
     chapter: 1,
     href: "/book/ch1",
     title: "Building Next.js User Interfaces with HTML",
+    weeks: "9/14, 9/21",
   },
   {
     chapter: 2,
     href: "/book/ch2",
     title: "Styling User Interfaces with CSS and Tailwind",
+    weeks: "9/28, 10/5",
   },
   {
     chapter: 3,
     href: "/book/ch3",
     title: "Creating Single Page Applications with JavaScript",
+    weeks: "10/12, 10/19",
   },
   {
     chapter: 4,
     href: "/book/ch4",
     title: "Managing Client State",
+    weeks: "11/2, 11/9",
   },
   {
     chapter: 5,
     href: "/book/ch5",
     title: "Implementing RESTful Web APIs with Express.js",
+    weeks: "11/16, 11/23",
   },
   {
     chapter: 6,
     href: "/book/ch6",
     title: "Integrating React with MongoDB",
+    weeks: "11/30, 12/7",
   },
 ] as const;
 
@@ -675,6 +684,8 @@ export type LectureChapterGroup = {
   chapter: number;
   href: string;
   title: string;
+  /** Canvas module week dates, e.g. `"9/14, 9/21"`. */
+  weeks?: string;
   topics: LectureTopicGroup[];
 };
 

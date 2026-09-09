@@ -15,7 +15,7 @@ export default function MeetingInfo({
       <p className="rounded-md border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm">
         Each section meets once a week at 6:00–9:00pm ET — Monday, Tuesday, or
         Wednesday. In-person sections (CS 4550-01 and CS 5610-02) meet in
-        Shillman Hall 105. The CS 5610-09 Zoom link is TBA.
+        Shillman Hall 105. CS 5610-09 meets online Tuesdays, 6:00–9:00pm ET.
       </p>
       <dl className="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
         <div>
@@ -56,7 +56,10 @@ export default function MeetingInfo({
           </dt>
           <dd>
             {formatLongDate(semester.finalExamPeriod.start)} —{" "}
-            {formatLongDate(semester.finalExamPeriod.end)}
+            {formatLongDate(semester.finalExamPeriod.end)}{" "}
+            <a href="#academic-calendar" className="font-sans text-sm">
+              Academic calendar
+            </a>
           </dd>
         </div>
       </dl>

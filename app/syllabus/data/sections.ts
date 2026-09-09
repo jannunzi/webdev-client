@@ -57,8 +57,7 @@ export const sections: CourseSection[] = [
     lastClass: semester.lastDayOfClasses,
     daysOfWeek: [2],
     time: "6:00–9:00pm ET",
-    // TODO(jose): Fill Canvas / Zoom when posted. Do not invent a link.
-    location: "TBA — online meeting not posted",
+    location: "Online — meets Tuesdays, 6:00–9:00pm ET",
     tabLabel: "CS 5610-09 · Online",
     notes: [
       "Graduate, online. Meets once a week on Tuesdays, 6:00–9:00pm ET, starting September 15, 2026.",

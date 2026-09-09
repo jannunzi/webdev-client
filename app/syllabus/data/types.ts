@@ -38,7 +38,7 @@ export type CourseSection = {
   daysOfWeek: DayOfWeek[];
   /** Locked clock time (ET). */
   time: string;
-  /** Room or Zoom. Use TBA until a room or meeting link is posted. */
+  /** Room or online meeting description. */
   location: string;
   tabLabel: string;
   notes: string[];
@@ -70,9 +70,26 @@ export type Holiday = {
   label: string;
 };
 
+export type AcademicCalendarKind =
+  | "holiday"
+  | "break"
+  | "term"
+  | "deadline"
+  | "exams";
+
+/** Course-relevant university dates (not every Session A/B or third-of-term row). */
+export type AcademicCalendarEvent = {
+  date: IsoDate;
+  endDate?: IsoDate;
+  label: string;
+  kind: AcademicCalendarKind;
+  /** Registrar “no classes” day or break. */
+  noClasses?: boolean;
+};
+
 export type AgendaKind = "lecture" | "orientation";
 
-export type AgendaGroupKind = "chapter" | "exam" | "orientation";
+export type AgendaGroupKind = "chapter" | "exam" | "orientation" | "project";
 
 export type AgendaRow = {
   date: IsoDate;
@@ -99,9 +116,11 @@ export type AgendaGroup = {
 
 export type LectureTopic = {
   topic: string;
-  /** Book chapter for weekly rows. Omitted on X1/X2 exam weeks. */
+  /** Book chapter for weekly rows. Omitted on exam-only (X2) and project weeks. */
   chapter?: number;
   exam?: "X1" | "X2";
+  /** Week of Dec 7: project grading (not Chapter 6). */
+  project?: boolean;
 };
 
 export type CourseGoal = {

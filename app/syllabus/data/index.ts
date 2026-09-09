@@ -2,15 +2,25 @@ export { course, semester } from "./course";
 export { sections, defaultSectionId, findSection, SECTION_STORAGE_KEY } from "./sections";
 export { holidayMeetingNote, holidays, thanksgivingBlackout } from "./holidays";
 export {
+  academicCalendarEvents,
+  academicCalendarIntro,
+  academicCalendarSource,
+} from "./academicCalendar";
+export {
   AGENDA_CURRICULUM_START,
   ORIENTATION_TOPIC,
+  SHARED_CURRICULUM_END,
   SHARED_CURRICULUM_START,
   bookChapterHeading,
+  examModuleHeading,
   lectureTopics,
+  CHAPTER_4_MIDTERM_HEADING,
+  PROJECT_GRADING_HEADING,
 } from "./topics";
 export { deadlines, deadlinesNote } from "./deadlines";
 export {
   agendaGroupsBySection,
+  agendaLastMeeting,
   agendasBySection,
   buildAgenda,
   buildAgendaGroups,
@@ -35,6 +45,7 @@ export {
   officeHoursPlaceholder,
 } from "./officeHours";
 export type {
+  AcademicCalendarEvent,
   AgendaGroup,
   AgendaRow,
   CourseInfo,

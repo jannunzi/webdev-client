@@ -264,6 +264,21 @@ describe("lecture catalog", () => {
       "Building Next.js User Interfaces with HTML",
     );
     assert.deepEqual(
+      groups.map((group) => group.weeks),
+      [
+        "9/14, 9/21",
+        "9/28, 10/5",
+        "10/12, 10/19",
+        "11/2, 11/9",
+        "11/16, 11/23",
+        "11/30, 12/7",
+      ],
+    );
+    assert.deepEqual(
+      BOOK_CHAPTERS.map((chapter) => chapter.weeks),
+      groups.map((group) => group.weeks),
+    );
+    assert.deepEqual(
       groups[0]?.topics.map((topic) => topic.topicId),
       ["intro", "setup", "html", "kambaz-html", "source-control", "deploy"],
     );
@@ -582,6 +597,17 @@ describe("lecture catalog", () => {
         assert.doesNotMatch(topic.title, /^Lecture \d+$/);
       }
     }
+  });
+
+  it("renders Canvas module week dates on hub chapter headers, not L# badges", () => {
+    const page = readFileSync(join(process.cwd(), "app/slides/page.tsx"), "utf8");
+    assert.match(page, /group\.weeks/);
+    assert.doesNotMatch(page, /Canvas L/);
+    const groups = listChapterTopicGroups();
+    assert.ok(groups.every((group) => Boolean(group.weeks)));
+    assert.ok(
+      !groups.some((group) => /midterm|final|\bX1\b|\bX2\b/i.test(group.title)),
+    );
   });
 
   it("derives hub nav chapters from published decks, not a hardcoded Ch1/Ch2 list", () => {

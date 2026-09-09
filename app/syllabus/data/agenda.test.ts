@@ -6,13 +6,17 @@ import {
   buildAgenda,
   buildAgendaGroups,
 } from "./agenda.ts";
+import { deadlines } from "./deadlines.ts";
 import { formatWeekOf, mondayOfWeek } from "./dates.ts";
 import { holidayMeetingNote } from "./holidays.ts";
 import { findSection, sections } from "./sections.ts";
 import {
   ORIENTATION_TOPIC,
+  SHARED_CURRICULUM_END,
   SHARED_CURRICULUM_START,
   bookChapterHeading,
+  CHAPTER_4_MIDTERM_HEADING,
+  examModuleHeading,
   lectureTopics,
 } from "./topics.ts";
 
@@ -32,25 +36,32 @@ const WEEK_MAP = [
   { monday: "2026-11-23", topic: lectureTopics[10]!.topic, lectureNumber: 11 },
   { monday: "2026-11-30", topic: lectureTopics[11]!.topic, lectureNumber: 12 },
   { monday: "2026-12-07", topic: lectureTopics[12]!.topic, lectureNumber: 13 },
+  { monday: "2026-12-14", topic: lectureTopics[13]!.topic, lectureNumber: 14 },
 ] as const;
 
 describe("Fall 2026 lectureTopics", () => {
-  it("is the 13-week book spine with X1 after Chapter 3 and X2 last", () => {
-    assert.equal(lectureTopics.length, 13);
+  it("is the 14-week Canvas spine with X1 merged into Chapter 4 week 1", () => {
+    assert.equal(lectureTopics.length, 14);
     assert.match(lectureTopics[0]!.topic, /Chapter 1 week 1/);
     assert.match(lectureTopics[1]!.topic, /Chapter 1 week 2/);
     assert.match(lectureTopics[2]!.topic, /Chapter 2 week 1/);
     assert.match(lectureTopics[3]!.topic, /Chapter 2 week 2/);
-    assert.match(lectureTopics[4]!.topic, /Chapter 3/);
-    assert.match(lectureTopics[4]!.topic, /chapter wrap/);
-    assert.match(lectureTopics[5]!.topic, /^X1 midterm/);
+    assert.match(lectureTopics[4]!.topic, /Chapter 3 week 1/);
+    assert.match(lectureTopics[5]!.topic, /Chapter 3 week 2/);
     assert.match(lectureTopics[6]!.topic, /Chapter 4 week 1/);
+    assert.match(lectureTopics[6]!.topic, /midterm\/X1/);
+    assert.equal(lectureTopics[6]!.chapter, 4);
+    assert.equal(lectureTopics[6]!.exam, undefined);
     assert.match(lectureTopics[7]!.topic, /Chapter 4 week 2/);
     assert.match(lectureTopics[8]!.topic, /Chapter 5 week 1/);
     assert.match(lectureTopics[9]!.topic, /Chapter 5 week 2/);
     assert.match(lectureTopics[10]!.topic, /Chapter 6 week 1/);
     assert.match(lectureTopics[11]!.topic, /Chapter 6 week 2/);
-    assert.match(lectureTopics[12]!.topic, /^X2 final/);
+    assert.match(lectureTopics[12]!.topic, /^Project grading/);
+    assert.match(lectureTopics[12]!.topic, /Integrating with the/);
+    assert.equal(lectureTopics[12]!.project, true);
+    assert.match(lectureTopics[13]!.topic, /^X2 final/);
+    assert.doesNotMatch(lectureTopics[13]!.topic, /project/i);
   });
 });
 
@@ -106,20 +117,27 @@ describe("buildAgenda shared week index", () => {
     assert.match(veterans?.topic ?? "", /Chapter 5 week 1/);
     assert.match(veterans?.onlineNote ?? "", /Veterans Day/);
 
-    const thanksgiving = mon.find((row) => row.date === "2026-11-23");
-    assert.equal(thanksgiving?.kind, "lecture");
-    assert.equal(thanksgiving?.lectureNumber, 11);
-    assert.match(thanksgiving?.topic ?? "", /Chapter 6 week 1/);
-    assert.match(thanksgiving?.onlineNote ?? "", /Thanksgiving/);
+    const monBeforeBreak = mon.find((row) => row.date === "2026-11-23");
+    assert.equal(monBeforeBreak?.kind, "lecture");
+    assert.equal(monBeforeBreak?.lectureNumber, 11);
+    assert.match(monBeforeBreak?.topic ?? "", /Chapter 6 week 1/);
+    assert.equal(monBeforeBreak?.onlineNote, undefined);
+
+    const fallBreak = wed.find((row) => row.date === "2026-11-25");
+    assert.equal(fallBreak?.kind, "lecture");
+    assert.equal(fallBreak?.lectureNumber, 11);
+    assert.match(fallBreak?.topic ?? "", /Chapter 6 week 1/);
+    assert.match(fallBreak?.onlineNote ?? "", /Fall break/);
+    assert.match(fallBreak?.onlineNote ?? "", /meets online/);
   });
 
-  it("places X2 in the last week of classes", () => {
+  it("places X2 in the week of December 14", () => {
     for (const section of sections) {
       const rows = buildAgenda(section);
       const lastLecture = [...rows].reverse().find((row) => row.kind === "lecture");
-      assert.equal(lastLecture?.lectureNumber, 13);
+      assert.equal(lastLecture?.lectureNumber, 14);
       assert.match(lastLecture?.topic ?? "", /^X2 final/);
-      assert.equal(mondayOfWeek(lastLecture!.date), "2026-12-07");
+      assert.equal(mondayOfWeek(lastLecture!.date), "2026-12-14");
     }
   });
 
@@ -148,11 +166,14 @@ describe("buildAgenda shared week index", () => {
 
 describe("holiday meeting copy", () => {
   it("tells students holidays do not skip the sequence", () => {
-    assert.match(holidayMeetingNote, /Thanksgiving week/);
+    assert.match(holidayMeetingNote, /fall break/);
+    assert.match(holidayMeetingNote, /November 25–29/);
+    assert.match(holidayMeetingNote, /Chapter 6 week 1/);
+    assert.match(holidayMeetingNote, /Chapter 5 week 1/);
     assert.match(holidayMeetingNote, /do not skip a lecture week/);
     assert.match(holidayMeetingNote, /meets online/);
     assert.doesNotMatch(holidayMeetingNote, /blackout/);
-    assert.doesNotMatch(holidayMeetingNote, /no class/);
+    assert.doesNotMatch(holidayMeetingNote, /November 22/);
   });
 });
 
@@ -164,28 +185,111 @@ describe("agenda Week of labels and chapter groups", () => {
     assert.equal(SHARED_CURRICULUM_START, "2026-09-14");
   });
 
-  it("groups weeks under real book titles, X1 after Chapter 3, and X2 last", () => {
+  it("groups weeks under real book titles, merged X1+Ch4, project grading, and X2", () => {
     const groups = buildAgendaGroups(findSection("cs5610-02"));
     assert.deepEqual(
       groups.map((group) => group.kind),
-      ["chapter", "chapter", "chapter", "exam", "chapter", "chapter", "chapter", "exam"],
+      ["chapter", "chapter", "chapter", "chapter", "chapter", "chapter", "project", "exam"],
     );
     assert.equal(groups[0]?.heading, bookChapterHeading(1));
     assert.match(groups[0]?.heading ?? "", /^Chapter 1: /);
     assert.match(groups[0]?.heading ?? "", /HTML/);
     assert.equal(groups[1]?.heading, bookChapterHeading(2));
     assert.equal(groups[2]?.heading, bookChapterHeading(3));
-    assert.equal(groups[3]?.heading, "X1");
-    assert.equal(groups[4]?.heading, bookChapterHeading(4));
-    assert.equal(groups[5]?.heading, bookChapterHeading(5));
-    assert.equal(groups[6]?.heading, bookChapterHeading(6));
-    assert.equal(groups[7]?.heading, "X2");
+    assert.equal(groups[3]?.heading, CHAPTER_4_MIDTERM_HEADING);
+    assert.equal(groups[3]?.kind, "chapter");
+    assert.equal(groups[3]?.chapter, 4);
+    assert.equal(groups[4]?.heading, bookChapterHeading(5));
+    assert.equal(groups[5]?.heading, bookChapterHeading(6));
+    assert.equal(groups[6]?.heading, "Project grading");
+    assert.equal(groups[7]?.heading, examModuleHeading("X2"));
+    assert.equal(groups.filter((group) => group.kind === "exam").length, 1);
+    assert.equal(
+      groups.some((group) => /^Midterm/i.test(group.heading ?? "")),
+      false,
+    );
 
     assert.equal(groups[0]?.rows.length, 2);
     assert.equal(mondayOfWeek(groups[0]!.rows[0]!.date), "2026-09-14");
-    assert.equal(groups[2]?.rows.length, 1);
-    assert.match(groups[3]?.rows[0]?.topic ?? "", /^X1/);
-    assert.equal(mondayOfWeek(groups[7]!.rows[0]!.date), "2026-12-07");
+    assert.equal(groups[2]?.rows.length, 2);
+    assert.equal(mondayOfWeek(groups[2]!.rows[0]!.date), "2026-10-12");
+    assert.equal(mondayOfWeek(groups[2]!.rows[1]!.date), "2026-10-19");
+    assert.equal(groups[3]?.rows.length, 2);
+    assert.match(groups[3]?.rows[0]?.topic ?? "", /Chapter 4 week 1/);
+    assert.match(groups[3]?.rows[0]?.topic ?? "", /midterm\/X1/);
+    assert.equal(mondayOfWeek(groups[3]!.rows[0]!.date), "2026-10-26");
+    assert.match(groups[3]?.rows[1]?.topic ?? "", /Chapter 4 week 2/);
+    assert.equal(mondayOfWeek(groups[3]!.rows[1]!.date), "2026-11-02");
+    assert.equal(mondayOfWeek(groups[4]!.rows[0]!.date), "2026-11-09");
+    assert.equal(mondayOfWeek(groups[5]!.rows[0]!.date), "2026-11-23");
+    assert.equal(mondayOfWeek(groups[6]!.rows[0]!.date), "2026-12-07");
+    assert.match(groups[6]?.rows[0]?.topic ?? "", /Project grading/);
+    assert.match(groups[6]?.rows[0]?.topic ?? "", /Integrating with the/);
+    assert.equal(mondayOfWeek(groups[7]!.rows[0]!.date), "2026-12-14");
+    assert.equal(SHARED_CURRICULUM_END, "2026-12-14");
+  });
+
+  it("puts chapter-end quizzes on the second Monday of each chapter", () => {
+    const mon = buildAgenda(BY_ID["cs5610-02"]!);
+    const quizById = (id: string) =>
+      deadlines.find((deadline) => deadline.label.startsWith(`${id} `));
+    const expected = [
+      { id: "Q1", monday: "2026-09-21" },
+      { id: "Q2", monday: "2026-10-05" },
+      { id: "Q3", monday: "2026-10-19" },
+      { id: "Q4", monday: "2026-11-02" },
+      { id: "Q5", monday: "2026-11-16" },
+      { id: "Q6", monday: "2026-11-30" },
+    ];
+    for (const { id, monday } of expected) {
+      const quiz = quizById(id);
+      assert.equal(quiz?.date, monday);
+      const row = mon.find((item) => mondayOfWeek(item.date) === monday);
+      assert.ok(row, `missing agenda row for ${id} week ${monday}`);
+      assert.ok(
+        row.deadlines.some((deadline) => deadline.label.startsWith(`${id} `)),
+        `${id} should appear on the week of ${monday}`,
+      );
+    }
+    const x1 = mon.find((row) => mondayOfWeek(row.date) === "2026-10-26");
+    const x2 = mon.find((row) => mondayOfWeek(row.date) === "2026-12-14");
+    assert.ok(x1?.deadlines.some((deadline) => deadline.label.startsWith("X1")));
+    assert.ok(x2?.deadlines.some((deadline) => deadline.label.startsWith("X2")));
+
+    const assignmentSundays = [
+      { id: "A1", sunday: "2026-09-27", monday: "2026-09-21" },
+      { id: "A2", sunday: "2026-10-11", monday: "2026-10-05" },
+      { id: "A3", sunday: "2026-10-25", monday: "2026-10-19" },
+    ];
+    for (const { id, sunday, monday } of assignmentSundays) {
+      const due = deadlines.find(
+        (deadline) =>
+          deadline.kind === "assignment" && deadline.label.includes(`${id} due`),
+      );
+      assert.equal(due?.date, sunday);
+      const row = mon.find((item) => mondayOfWeek(item.date) === monday);
+      assert.ok(
+        row?.deadlines.some((deadline) => deadline.label.includes(`${id} due`)),
+        `${id} due should appear on the week of ${monday}`,
+      );
+    }
+    for (const id of ["A4", "A5", "A6"]) {
+      assert.equal(
+        deadlines.some(
+          (deadline) =>
+            deadline.kind === "assignment" && deadline.label.includes(`${id} due`),
+        ),
+        false,
+        `${id} Sunday due should stay unset until Jose settles Canvas`,
+      );
+    }
+    const project = deadlines.find((deadline) => deadline.kind === "project");
+    assert.equal(project?.date, "2026-12-06");
+    const projectWeek = mon.find((item) => mondayOfWeek(item.date) === "2026-11-30");
+    assert.ok(
+      projectWeek?.deadlines.some((deadline) => deadline.kind === "project"),
+      "project due Sunday should appear on the week of Nov 30",
+    );
   });
 
   it("keeps CS 4550 Sep 9 as an orientation group before Chapter 1", () => {

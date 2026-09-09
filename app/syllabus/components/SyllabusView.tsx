@@ -16,6 +16,7 @@ import type {
   PolicyBlock,
   SemesterDates,
 } from "../data/types";
+import AcademicCalendar from "./AcademicCalendar";
 import AcademicIntegrity from "./AcademicIntegrity";
 import AgendaTable from "./AgendaTable";
 import AiPolicy from "./AiPolicy";
@@ -114,6 +115,7 @@ export default function SyllabusView({
       </div>
       <CourseGoals goals={courseGoals} />
       <MeetingInfo section={section} semester={semester} />
+      <AcademicCalendar />
       <OfficeHours
         rows={officeHourRows}
         columns={officeHourColumns}
