@@ -616,8 +616,13 @@ export const LECTURE_EMBED_IDS = [
   "lab6-todos",
   "lab6-users",
   "youtube-search",
+  "youtube-details",
+  "youtube-lesson",
   "openai-chat",
+  "openai-images",
+  "openai-vision",
   "grok-sparkle",
+  "grok-modules",
 ] as const;
 
 export type LectureEmbedId = (typeof LECTURE_EMBED_IDS)[number];
@@ -637,6 +642,14 @@ export const LECTURE_DIAGRAM_IDS = [
   "vercel-protect-mock",
   "vercel-auth-mock",
   "box-model",
+  "google-cloud-key-mock",
+  "youtube-enable-api-mock",
+  "youtube-search-flow",
+  "youtube-save-flow",
+  "openai-project-key-mock",
+  "openai-roles-flow",
+  "xai-key-mock",
+  "grok-token-flow",
 ] as const;
 
 export type LectureDiagramId = (typeof LECTURE_DIAGRAM_IDS)[number];

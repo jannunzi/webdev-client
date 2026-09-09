@@ -6,57 +6,110 @@ export const GROK_API_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Project · Integrating with Grok",
-      "xAI · tokens · grok-4-latest",
+      "Integrating with **Grok**",
+      "xAI · tokens · **grok-4-latest**",
     ],
   },
   {
-    id: "video",
-    title: "Optional Next.js walkthrough",
-    kind: "content",
+    id: "grok",
+    title: "GROK",
+    kind: "title",
     bullets: [
-      "Drive slides are the lecture. This video is stack alignment only",
-      "`https://youtu.be/rwE57Cdk1fA` — Next.js + Grok AI",
-      "Next.js calls Express. The xAI key stays in server `.env`",
+      "A family of LLMs by **xAI**",
+      "Optional walkthrough: [youtu.be/rwE57Cdk1fA](https://youtu.be/rwE57Cdk1fA)",
     ],
   },
   {
     id: "intro",
-    title: "Grok is xAI's family of LLMs",
+    title: "Introduction",
     kind: "content",
     bullets: [
-      "Inspired by the Hitchhiker's Guide — maximally truth-seeking",
-      "The same models power Grok.com, the apps, and Grok on X",
-      "Developers call `https://api.x.ai/v1`",
+      "Inspired by the **Hitchhiker's Guide** — maximally truth-seeking",
+      "xAI offers an API at **`https://api.x.ai/v1`**",
+      "The same models power Grok.com, the apps, and Grok on **X**",
+    ],
+  },
+  {
+    id: "pricing",
+    title: "Model Pricing",
+    kind: "content",
+    bullets: [
+      "You pay for **input tokens** plus **completion tokens**",
+      "Check current prices on the xAI console before class demos",
+    ],
+  },
+  {
+    id: "tokens-title",
+    title: "TOKENS",
+    kind: "title",
+    bullets: [
+      "The **base unit** of prompt size and price",
     ],
   },
   {
     id: "tokens",
-    title: "Tokens and tokenizers",
+    title: "Tokens",
     kind: "content",
     bullets: [
-      "A token is one or more characters — the unit of price",
-      "A tokenizer splits the prompt before inference",
-      "Common words are often one token; rarer words split",
-      "`Flint` can be two tokens; `Michigan` can be one",
+      "One or more **character(s)/symbol(s)**",
+      "A **tokenizer** decomposes the prompt before inference",
+      "The model generates **completion tokens**, then aggregates a response",
+    ],
+    diagram: "grok-token-flow",
+  },
+  {
+    id: "text-tokens",
+    title: "Text Tokens",
+    kind: "content",
+    bullets: [
+      "A whole word, or smaller **chunks**",
+      "The more common a word, the more likely it is **one token**",
+      "**Flint** can be two tokens. **Michigan** can be one",
+    ],
+  },
+  {
+    id: "tokenizers",
+    title: "Tokenizers",
+    kind: "content",
+    bullets: [
+      "`drafter` → **`dra`** + **`fter`**. `postmaster` → **`post`** + **`master`**",
+      "Different Grok models may share or use different tokenizers",
+      "Token count is approximately **linear** to sequence length",
+    ],
+  },
+  {
+    id: "key-title",
+    title: "API KEY",
+    kind: "title",
+    bullets: [
+      "Name it, copy it once, add **paid credits**",
     ],
   },
   {
     id: "key",
-    title: "Create an xAI API key",
+    title: "Create API Key",
+    kind: "demo",
+    bullets: [
+      "**Name the key**. Create API key. Copy it",
+      "Test with **curl** from your laptop before writing Node",
+    ],
+    diagram: "xai-key-mock",
+  },
+  {
+    id: "credits",
+    title: "Add Paid Credits",
     kind: "content",
     bullets: [
-      "Name the key, create it, copy it once",
-      "Add paid credits — the free quota is not enough for class",
-      "Test from your laptop with curl before writing Node",
+      "Purchase credits in the xAI console",
+      "The free quota is **not enough** for class",
     ],
   },
   {
     id: "curl",
-    title: "curl chat/completions",
+    title: "API CURL Test",
     kind: "demo",
     bullets: [
-      "Model `grok-4-latest`. Bearer is the key — use a placeholder",
+      "Model **`grok-4-latest`**. Bearer is the key — use a placeholder",
     ],
     code: `curl https://api.x.ai/v1/chat/completions \\
   -H "Content-Type: application/json" \\
@@ -75,9 +128,9 @@ export const GROK_API_SLIDES: LectureSlide[] = [
   },
   {
     id: "response",
-    title: "Typical curl response",
+    title: "API Response",
     kind: "demo",
-    bullets: ["`choices[0].message.content` is `hi and hello world`"],
+    bullets: ["`choices[0].message.content` is **`hi and hello world`**"],
     code: `{
   "id": "84c41e00-0642-f911-0382-8044e4127378",
   "object": "chat.completion",
@@ -95,13 +148,19 @@ export const GROK_API_SLIDES: LectureSlide[] = [
     codeHighlightLines: [[7, 10]],
   },
   {
-    id: "install",
-    title: "Install the xAI libraries",
-    kind: "demo",
+    id: "api",
+    title: "API",
+    kind: "title",
     bullets: [
-      "`ai` plus `@ai-sdk/xai` for `generateText`",
-      "`openai` plus `zod` for chat and structured output later",
+      "`ai` + `@ai-sdk/xai` for **`generateText`**",
+      "`openai` + `zod` for chat later",
     ],
+  },
+  {
+    id: "install",
+    title: "Install xAI Libraries",
+    kind: "demo",
+    bullets: ["Install on **`webdev-server`**"],
     code: `cd webdev-server
 npm install ai
 npm install @ai-sdk/xai
@@ -111,10 +170,10 @@ npm install zod`,
   },
   {
     id: "env",
-    title: "Add XAI keys to server .env",
+    title: "Add Key to .env",
     kind: "demo",
     bullets: [
-      "Server-only. Never `NEXT_PUBLIC_XAI_API_KEY`",
+      "Server-only. **Never** `NEXT_PUBLIC_XAI_API_KEY`",
     ],
     code: `XAI_BASE_URL=https://api.x.ai/v1
 XAI_API_KEY=YOUR_XAI_API_KEY`,
@@ -126,10 +185,10 @@ XAI_API_KEY=YOUR_XAI_API_KEY`,
   },
   {
     id: "meaning",
-    title: "generateText — meaning of life",
+    title: "Meaning Of Life",
     kind: "demo",
     bullets: [
-      "`xai(\"grok-4\")` plus a system line and a prompt",
+      "`xai(\"grok-4\")` plus a **system** line and a **prompt**",
     ],
     code: `import "dotenv/config";
 import { xai } from "@ai-sdk/xai";
@@ -147,22 +206,12 @@ console.log(result.text);`,
     codeAddedLines: [2, 3, [5, 9], 11],
   },
   {
-    id: "recap",
-    title: "Grok key recap",
+    id: "meaning-out",
+    title: "Response",
     kind: "content",
     bullets: [
-      "Tokens, a key, and paid credits",
-      "curl `https://api.x.ai/v1/chat/completions`",
-      "`generateText` with `xai(\"grok-4\")`",
-    ],
-  },
-  {
-    id: "next-up",
-    title: "Next: chat completions",
-    kind: "title",
-    bullets: [
-      "OpenAI SDK pointed at `api.x.ai`",
-      "Then a Dashboard sparkle for course copy",
+      "`node xai/meaning.js` — Grok answers **42**",
+      "Hitchhiker's Guide, then a short philosophical aside",
     ],
   },
 ];

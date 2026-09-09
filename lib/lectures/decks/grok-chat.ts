@@ -3,28 +3,28 @@ import type { LectureSlide } from "../types";
 export const GROK_CHAT_SLIDES: LectureSlide[] = [
   {
     id: "title",
-    title: "WEB DEV",
+    title: "CHAT",
     kind: "title",
     bullets: [
-      "Project · Grok chat",
-      "completions · sparkle · title",
+      "Text in, text out · **completions** · sparkle",
     ],
   },
   {
     id: "chat-intro",
-    title: "Chat is text in, text out",
+    title: "Introduction",
     kind: "content",
     bullets: [
-      "Summarize, write, answer, support, or help with code",
-      "You POST a request; the API returns a complete response",
+      "Chat is the most popular feature on the **xAI API**",
+      "Summarize, write, answer, support, or help with **code**",
+      "You POST a request. The API returns a **complete** response",
     ],
   },
   {
     id: "openai-client",
-    title: "OpenAI SDK pointed at xAI",
+    title: "Completion API",
     kind: "demo",
     bullets: [
-      "`baseURL` is `https://api.x.ai/v1` — same shapes as OpenAI",
+      "`baseURL` is **`https://api.x.ai/v1`** — same shapes as OpenAI",
     ],
     code: `import "dotenv/config";
 import OpenAI from "openai";
@@ -40,10 +40,10 @@ const client = new OpenAI({
   },
   {
     id: "completion",
-    title: "chat.completions.create",
+    title: "Completion API",
     kind: "demo",
     bullets: [
-      "Model `grok-4`. Read `choices[0].message`",
+      "Model **`grok-4`**. Read `choices[0].message`",
     ],
     code: `const completion = await client.chat.completions.create({
   model: "grok-4",
@@ -61,16 +61,23 @@ const client = new OpenAI({
 console.log(completion.choices[0].message);`,
     codeLanguage: "javascript",
     codeFile: "webdev-server/xai/chat.ts",
-    codeAddedLines: [[1, 13]],
+    codeAddedLines: [[1, 14]],
   },
   {
     id: "stateless",
-    title: "The xAI API is stateless",
-    kind: "demo",
+    title: "Conversations",
+    kind: "content",
     bullets: [
-      "Resend prior turns if you want context",
-      "Roles: system (policy), user (request), assistant (history)",
+      "The xAI API is **stateless**",
+      "It does **not** remember the previous request",
+      "Resend prior prompts and results if you want **context**",
     ],
+  },
+  {
+    id: "sample",
+    title: "Sample Conversation",
+    kind: "demo",
+    bullets: ["Roles: **system**, **user**, **assistant**"],
     code: `{ "role": "system", "content": [{ "type": "text", "text": "You are a helpful and funny assistant." }] }
 { "role": "user", "content": [{ "type": "text", "text": "Why don't eggs tell jokes?" }] }
 { "role": "assistant", "content": [{ "type": "text", "text": "They'd crack up!" }] }
@@ -78,20 +85,54 @@ console.log(completion.choices[0].message);`,
     codeLanguage: "json",
   },
   {
-    id: "order",
-    title: "Role order is flexible",
+    id: "roles",
+    title: "Roles",
     kind: "content",
     bullets: [
-      "Unlike some providers, xAI lets you mix roles in any order",
-      "Two `system` messages, or `user` before `system`, both work",
+      "**system** — instructive tone for how the model should respond",
+      "**user** — requests or data sent to the model",
+      "**assistant** — the model's reply, or history you feed back in",
+    ],
+  },
+  {
+    id: "order",
+    title: "Message Role Order Flexibility",
+    kind: "content",
+    bullets: [
+      "Unlike some providers, xAI lets you **mix roles in any order**",
+      "Two `system` messages, or `user` **before** `system`, both work",
+    ],
+  },
+  {
+    id: "course-ai",
+    title: "COURSE AI DESCRIPTION",
+    kind: "title",
+    bullets: [
+      "Sparkle button suggests a description from the **title**",
     ],
   },
   {
     id: "server-client",
-    title: "Suggest a course description",
+    title: "Create the Client Instance",
+    kind: "demo",
+    bullets: ["OpenAI SDK pointed at **`XAI_BASE_URL`**"],
+    code: `import "dotenv/config";
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.XAI_API_KEY,
+  baseURL: process.env.XAI_BASE_URL,
+});`,
+    codeLanguage: "javascript",
+    codeFile: "webdev-server/xai/client.js",
+    codeAddedLines: [[4, 7]],
+  },
+  {
+    id: "suggest-desc",
+    title: "Describe the System's Purpose",
     kind: "demo",
     bullets: [
-      "Faculty system prompt. Return only one short paragraph",
+      "Faculty system prompt. Return **only one short paragraph**",
     ],
     code: `export const suggestCourseDescription = async (courseName) => {
   const completion = await client.chat.completions.create({
@@ -112,11 +153,9 @@ console.log(completion.choices[0].message);`,
   },
   {
     id: "route",
-    title: "POST /api/xai/course",
+    title: "Suggest Course Content Route",
     kind: "demo",
-    bullets: [
-      "`name` → description. Later, `description` → title",
-    ],
+    bullets: ["**`name`** → description"],
     code: `import { suggestCourseDescription } from "./client.js";
 
 export default function XaiRoutes(app) {
@@ -133,11 +172,9 @@ export default function XaiRoutes(app) {
   },
   {
     id: "next-client",
-    title: "Next.js posts the course name",
+    title: "Post Course Name From UI",
     kind: "demo",
-    bullets: [
-      "`NEXT_PUBLIC_HTTP_SERVER` plus `/api/xai`",
-    ],
+    bullets: ["`NEXT_PUBLIC_HTTP_SERVER` plus **`/api/xai`**"],
     code: `import axios from "axios";
 
 const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
@@ -152,17 +189,32 @@ export const suggestCourseDescription = async (courseName: string) => {
     codeAddedLines: [[6, 9]],
   },
   {
+    id: "spinner",
+    title: "Animate Spinner",
+    kind: "demo",
+    bullets: ["Jose used `.wd-spinner`. Tailwind: **`animate-spin`**"],
+    code: `.wd-spinner {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}`,
+    codeLanguage: "css",
+    codeFile: "app/(kambaz)/styles.css",
+  },
+  {
     id: "sparkle",
-    title: "Dashboard sparkle + spinner",
+    title: "Add AI Sparkle Button to Description",
     kind: "demo",
     bullets: [
-      "`PiStarFourFill` while idle. `ImSpinner3` while waiting",
+      "`PiStarFourFill` while idle. **`ImSpinner3`** while waiting",
     ],
     code: `const [loadingDescription, setLoadingDescription] = useState(false);
 
 <button className="rounded bg-sky-500 px-2 py-2 text-white">
   {loadingDescription ? (
-    <ImSpinner3 className="animate-spin" />
+    <ImSpinner3 className="wd-spinner animate-spin" />
   ) : (
     <PiStarFourFill
       onClick={async (event) => {
@@ -176,16 +228,24 @@ export const suggestCourseDescription = async (courseName: string) => {
   )}
 </button>`,
     codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/Dashboard/page.tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
     codeAddedLines: [1, [7, 15]],
     embed: "grok-sparkle",
   },
   {
+    id: "title-ai",
+    title: "COURSE AI NAME",
+    kind: "title",
+    bullets: [
+      "Sparkle a **title** from the description",
+    ],
+  },
+  {
     id: "title-suggest",
-    title: "Sparkle a title from description",
+    title: "Request Only the Title",
     kind: "demo",
     bullets: [
-      "Same route: send `{ description }` when `name` is empty",
+      "Same route: send **`{ description }`** when `name` is empty",
     ],
     code: `export const suggestCourseTitle = async (courseTopic) => {
   const completion = await client.chat.completions.create({
@@ -203,24 +263,5 @@ export const suggestCourseDescription = async (courseName: string) => {
     codeLanguage: "javascript",
     codeFile: "webdev-server/xai/client.js",
     codeAddedLines: [[1, 13]],
-  },
-  {
-    id: "recap",
-    title: "Chat recap",
-    kind: "content",
-    bullets: [
-      "`chat.completions.create` model `grok-4`",
-      "Stateless — resend roles; order is flexible",
-      "`POST /api/xai/course` plus a Dashboard sparkle",
-    ],
-  },
-  {
-    id: "next-up",
-    title: "Next: images and vision",
-    kind: "title",
-    bullets: [
-      "`grok-2-image`, then `image_url` vision",
-      "Zod course structure and upsert",
-    ],
   },
 ];

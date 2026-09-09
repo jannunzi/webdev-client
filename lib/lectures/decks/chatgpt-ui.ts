@@ -3,222 +3,359 @@ import type { LectureSlide } from "../types";
 export const CHATGPT_UI_SLIDES: LectureSlide[] = [
   {
     id: "title",
-    title: "WEB DEV",
+    title: "OPENAI USER INTERFACE",
     kind: "title",
     bullets: [
-      "Project · ChatGPT UI",
-      "Chat · vision · TTS · course AI",
+      "Chat · images · vision · TTS · **course AI**",
     ],
   },
   {
-    id: "routes",
-    title: "Express chat route",
+    id: "screen",
+    title: "OpenAI Screen",
     kind: "demo",
     bullets: [
-      "The browser never holds `OPENAI_API_KEY`",
+      "App Router stub — **not** React Router",
     ],
-    code: `export default function (app) {
-  app.post("/api/openai/chat", async (req, res) => {
-    const { messages } = req.body;
-    const response = await client.responses.create({
-      model: "gpt-4.1",
-      input: messages,
-    });
-    res.json({ text: response.output_text });
-  });
+    code: `export default function OpenAI() {
+  return (
+    <div>
+      <h1>OpenAI</h1>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/openai/page.tsx",
+  },
+  {
+    id: "nav",
+    title: "Add OpenAI to Your Navigator",
+    kind: "demo",
+    bullets: ["Kambaz nav already lists Account and Dashboard"],
+    code: `{
+  segment: "openai",
+  id: "wd-openai-link",
+  label: "OpenAI",
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/Navigation.tsx",
+    codeAddedLines: [[1, 5]],
+  },
+  {
+    id: "chatbot",
+    title: "CREATING A CHAT BOT",
+    kind: "title",
+    bullets: [
+      "In-memory **conversation** on Express",
+      "Next.js never holds **`OPENAI_API_KEY`**",
+    ],
+  },
+  {
+    id: "get-chat",
+    title: "Get Chat",
+    kind: "demo",
+    bullets: ["**GET** returns the transcript so far"],
+    code: `import OpenAI from "openai";
+const openai = new OpenAI();
+const conversation = [];
+
+export default function ChatRoutes(app) {
+  const getConversation = (req, res) => res.json(conversation);
+  app.get("/api/openai/conversation", getConversation);
 }`,
     codeLanguage: "javascript",
-    codeFile: "webdev-server/openai/routes.js",
-    codeAddedLines: [2, [4, 7], 8],
+    codeFile: "webdev-server/openai/chat/routes.js",
+    codeAddedLines: [7],
+  },
+  {
+    id: "post-chat",
+    title: "Post Chat",
+    kind: "demo",
+    bullets: [
+      "Push the user turn, call the model, push the **assistant** turn",
+    ],
+    code: `const postMessage = async (req, res) => {
+  const userMessage = req.body;
+  conversation.push(userMessage);
+  const completion = await openai.chat.completions.create({
+    messages: conversation, model: "gpt-4o",
+  });
+  const choice = completion.choices[0];
+  conversation.push(choice.message);
+  res.json(choice.message);
+};
+app.post("/api/openai/conversation", postMessage);`,
+    codeLanguage: "javascript",
+    codeFile: "webdev-server/openai/chat/routes.js",
+    codeAddedLines: [[4, 9], 11],
   },
   {
     id: "client",
-    title: "Next.js client — httpServer()",
+    title: "Chat Client",
     kind: "demo",
     bullets: [
-      "`NEXT_PUBLIC_REMOTE_SERVER` is the Express origin, not the key",
+      "`NEXT_PUBLIC_HTTP_SERVER` is the Express origin, **not** the key",
     ],
-    code: `"use client";
+    code: `import axios from "axios";
+const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 
-import axios from "axios";
-const http = axios.create({
-  baseURL: \`\${process.env.NEXT_PUBLIC_REMOTE_SERVER}/api/openai\`,
-});
+export const getConversation = async () => {
+  const response = await axios.get(\`\${HTTP_SERVER}/api/openai/conversation\`);
+  return response.data;
+};
 
-export const chat = async (
-  messages: { role: string; content: string }[],
-) => {
-  const { data } = await http.post("/chat", { messages });
-  return data;
+export const postMessage = async (message: { role: string; content: string }) => {
+  const response = await axios.post(
+    \`\${HTTP_SERVER}/api/openai/conversation\`, message,
+  );
+  return response.data;
 };`,
     codeLanguage: "ts",
-    codeFile: "app/(kambaz)/openai/client.ts",
-    codeAddedLines: [[4, 6], [8, 13]],
+    codeFile: "app/(kambaz)/openai/chat/client.ts",
+    codeAddedLines: [[4, 7], [9, 14]],
   },
   {
     id: "page",
-    title: "Chat page posts the transcript",
+    title: "Chat UI",
     kind: "demo",
     bullets: [
-      "Append the user turn, POST, then append the assistant turn",
+      "Append the user turn, **POST**, then append the assistant turn",
     ],
     code: `"use client";
 import { useState } from "react";
-import { chat } from "./client";
+import * as client from "./client";
 
-export default function OpenAIChat() {
-  const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<
-    { role: string; content: string }[]
-  >([]);
+interface Message { role: string; content: string }
 
-  const send = async () => {
-    const next = [...messages, { role: "user", content: input }];
-    const { text } = await chat(next);
-    setMessages([...next, { role: "assistant", content: text }]);
-    setInput("");
+export default function Chat() {
+  const [conversation, setConversation] = useState<Message[]>([]);
+  const [message, setMessage] = useState("");
+  const sendMessage = async () => {
+    const userMessage = { role: "user", content: message };
+    const response = await client.postMessage(userMessage);
+    setConversation([...conversation, userMessage, response]);
+    setMessage("");
   };`,
     codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/openai/page.tsx",
-    codeAddedLines: [[11, 16]],
+    codeFile: "app/(kambaz)/openai/chat/page.tsx",
+    codeAddedLines: [[10, 15]],
     embed: "openai-chat",
   },
   {
-    id: "image",
-    title: "Image generation on Express",
+    id: "render-chat",
+    title: "Render Messages",
     kind: "demo",
-    bullets: ["`images.generate` returns `b64_json` you can render as a data URL"],
-    code: `app.post("/api/openai/image", async (req, res) => {
-  const image = await client.images.generate({
-    model: "gpt-image-1",
-    prompt: req.body.prompt,
+    bullets: ["**user** = primary. **assistant** = success"],
+    code: `{conversation.map((message, index) => (
+  <li key={index}
+      className={message.role === "user" ? "bg-sky-50" : "bg-emerald-50"}>
+    <strong>{message.role}</strong>: {message.content}
+  </li>
+))}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/openai/chat/page.tsx",
+    codeHighlightLines: [3],
+  },
+  {
+    id: "images",
+    title: "CREATING AN IMAGE UI",
+    kind: "title",
+    bullets: [
+      "**POST** `/api/openai/conversation/images`",
+      "Shape map: square · portrait · landscape",
+    ],
+  },
+  {
+    id: "image-route",
+    title: "Request Image Route",
+    kind: "demo",
+    bullets: [
+      "Jose used **`dall-e-3`**. Current generate model: **`gpt-image-1`**",
+    ],
+    code: `const shapeMap = {
+  square: "1024x1024", portrait: "1024x1792", landscape: "1792x1024",
+};
+const requestImage = async (req, res) => {
+  const promptAndShape = req.body;
+  const image = await openai.images.generate({
+    prompt: promptAndShape.content,
+    model: "gpt-image-1", n: 1, size: shapeMap[promptAndShape.shape],
   });
-  res.json({ b64: image.data[0].b64_json });
-});`,
+  const response = {
+    ...promptAndShape,
+    revisedPrompt: image.data[0].revised_prompt,
+    imageUrl: image.data[0].url,
+  };
+  conversation.push(response);
+  res.json(response);
+};
+app.post("/api/openai/conversation/images", requestImage);`,
     codeLanguage: "javascript",
-    codeFile: "webdev-server/openai/routes.js",
-    codeAddedLines: [[2, 5]],
+    codeFile: "webdev-server/openai/chat/routes.js",
+    codeAddedLines: [[6, 9], 18],
+    embed: "openai-images",
+  },
+  {
+    id: "vision-title",
+    title: "VISION",
+    kind: "title",
+    bullets: [
+      "Paste a URL. Express calls **vision**. UI shows the description",
+    ],
   },
   {
     id: "vision",
-    title: "Vision — send an image_url",
+    title: "Vision Routes",
     kind: "demo",
-    bullets: [
-      "`input_text` plus `input_image` in the same user turn",
-    ],
-    code: `const response = await client.responses.create({
-  model: "gpt-4.1",
-  input: [{
-    role: "user",
-    content: [
-      { type: "input_text", text: "what is in this image?" },
-      {
-        type: "input_image",
-        image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg",
-      },
-    ],
-  }],
-});`,
+    bullets: ["`image_url` plus **Describe this image**"],
+    code: `const describe = async (req, res) => {
+  const { imageUrl } = req.body;
+  const response = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [{
+      role: "user",
+      content: [
+        { type: "text", text: "Describe this image" },
+        { type: "image_url", image_url: { url: imageUrl } },
+      ],
+    }],
+  });
+  res.send(response.choices[0].message.content);
+};
+app.post("/api/openai/vision", describe);`,
     codeLanguage: "javascript",
-    codeFile: "webdev-server/openai/vision.js",
-    codeAddedLines: [[5, 10]],
+    codeFile: "webdev-server/openai/vision/routes.js",
+    codeHighlightLines: [9],
+    embed: "openai-vision",
+  },
+  {
+    id: "tts-title",
+    title: "TEXT TO SPEECH",
+    kind: "title",
+    bullets: [
+      "Write an **mp3** on Express. Play it from Next.js",
+    ],
   },
   {
     id: "tts",
-    title: "Text to speech writes an mp3",
+    title: "Convert Text to Speech Route",
     kind: "demo",
     bullets: [
-      "`fs` is server-only — never import it from a client component",
+      "Static `/speech` serves the files. **`fs` stays on the server**",
     ],
-    code: `import fs from "fs";
-import path from "path";
-
-const mp3 = await client.audio.speech.create({
-  model: "gpt-4o-mini-tts",
-  voice: "coral",
-  input: "Today is a wonderful day to build something people love!",
-});
-const buffer = Buffer.from(await mp3.arrayBuffer());
-await fs.promises.writeFile(path.resolve("./speech.mp3"), buffer);`,
+    code: `const convertText2Speech = async (req, res) => {
+  const { text } = req.body;
+  const mp3 = await openai.audio.speech.create({
+    model: "gpt-4o-mini-tts", voice: "alloy", input: text,
+  });
+  const speech = \`speech-\${Date.now()}.mp3\`;
+  await fs.promises.writeFile(join(__dirname, speech),
+    Buffer.from(await mp3.arrayBuffer()));
+  conversation.push({ text, speech });
+  res.json(conversation);
+};
+app.post("/api/openai/tts", convertText2Speech);`,
     codeLanguage: "javascript",
-    codeFile: "webdev-server/openai/tts.js",
-    codeAddedLines: [1, [4, 8], 10],
+    codeFile: "webdev-server/openai/tts/routes.js",
+    codeAddedLines: [[3, 5], 11],
+  },
+  {
+    id: "stt-title",
+    title: "SPEECH TO TEXT",
+    kind: "title",
+    bullets: [
+      "List mp3s, then **transcribe** one file",
+    ],
   },
   {
     id: "stt",
-    title: "Speech to text",
+    title: "Transcribe Route",
     kind: "demo",
-    bullets: ["`createReadStream` stays on Express"],
-    code: `import fs from "fs";
-
-const transcription = await client.audio.transcriptions.create({
-  file: fs.createReadStream("speech.mp3"),
-  model: "gpt-4o-mini-transcribe",
-});
-console.log(transcription.text);`,
+    bullets: ["Jose used **`whisper-1`**. Current: **`gpt-4o-transcribe`**"],
+    code: `const transcribe = async (req, res) => {
+  const { audioFile } = req.params;
+  const transcription = await openai.audio.transcriptions.create({
+    file: fs.createReadStream(join("openai", "tts", audioFile)),
+    model: "gpt-4o-transcribe",
+  });
+  res.send(transcription.text);
+};
+app.get("/api/openai/audio/transcribe/:audioFile", transcribe);`,
     codeLanguage: "javascript",
-    codeFile: "webdev-server/openai/stt.js",
-    codeAddedLines: [[3, 6]],
+    codeFile: "webdev-server/openai/stt/routes.js",
+    codeAddedLines: [[3, 6], 9],
   },
   {
     id: "course-ai",
-    title: "Suggest a course from a description",
+    title: "KAMBAZ SUGGEST COURSE",
+    kind: "title",
+    bullets: [
+      "Dashboard **sparkle** → `POST /api/courses/ai`",
+    ],
+  },
+  {
+    id: "suggest-course",
+    title: "Add suggestCourse Route",
     kind: "demo",
     bullets: [
-      "Parse into `CourseSchema`, then `dao.createCourse`",
+      "Respond **JSON only** — name and description",
     ],
     code: `app.post("/api/courses/ai", async (req, res) => {
-  const { description } = req.body;
-  const response = await client.responses.parse({
-    model: "gpt-4.1",
-    input: \`Suggest a course title and number for: \${description}\`,
-    text: { format: zodTextFormat(CourseSchema, "course") },
+  const { name, description } = req.body;
+  const response = await openai.chat.completions.create({
+    model: "gpt-4o",
+    messages: [
+      { role: "system", content: "You are a Web API that only responds in JSON objects with properties name and description." },
+      { role: "user", content: \`Give me a course for "\${name}" / "\${description}".\` },
+    ],
   });
-  const course = await dao.createCourse(response.output_parsed);
-  res.json(course);
+  res.json(response.choices[0].message.content);
 });`,
     codeLanguage: "javascript",
     codeFile: "webdev-server/Kambaz/Courses/routes.js",
-    codeAddedLines: [1, [3, 7], 8],
+    codeAddedLines: [1, [3, 9]],
+  },
+  {
+    id: "suggest-button",
+    title: "Suggest Course Button",
+    kind: "demo",
+    bullets: [
+      "`IoSparkles` on the Dashboard **New Course** form",
+    ],
+    code: `const suggestCourse = async () => {
+  const suggestedCourse = await courseClient.suggestCourse(
+    course.name, course.description,
+  );
+  setCourse(JSON.parse(suggestedCourse));
+};
+
+<button onClick={suggestCourse}
+  className="float-right ms-2 rounded bg-sky-500 px-3 py-2 text-white">
+  <IoSparkles />
+</button>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeAddedLines: [[1, 6], [8, 11]],
   },
   {
     id: "module-ai",
-    title: "Suggest a module for a course",
+    title: "KAMBAZ SUGGEST MODULE",
     kind: "demo",
-    bullets: ["Same parse pattern on `/api/modules/ai`"],
+    bullets: [
+      "Next module name given the course and **existing modules**",
+    ],
     code: `app.post("/api/modules/ai", async (req, res) => {
-  const { cid, topic } = req.body;
-  const response = await client.responses.parse({
-    model: "gpt-4.1",
-    input: \`Suggest a module about \${topic} for course \${cid}\`,
-    text: { format: zodTextFormat(ModuleSchema, "module") },
+  const { courseName, courseDescription, modules } = req.body;
+  const response = await openai.chat.completions.create({
+    model: "gpt-4o",
+    messages: [
+      { role: "system", content: "Respond with only the name of a new module." },
+      { role: "user", content: \`Follow \${modules.join(", ")} for \${courseName}.\` },
+    ],
   });
-  res.json(await dao.createModule({
-    ...response.output_parsed,
-    course: cid,
-  }));
+  res.json(response.choices[0].message.content);
 });`,
     codeLanguage: "javascript",
     codeFile: "webdev-server/Kambaz/Modules/routes.js",
     codeAddedLines: [1],
-  },
-  {
-    id: "recap",
-    title: "ChatGPT UI recap",
-    kind: "content",
-    bullets: [
-      "POST `/api/openai/chat` from Next.js",
-      "Images, vision, TTS, and STT stay on Express",
-      "`POST /api/courses/ai` and `/api/modules/ai`",
-    ],
-  },
-  {
-    id: "next-up",
-    title: "Next: Grok on xAI",
-    kind: "title",
-    bullets: [
-      "Same chat idea, now `https://api.x.ai/v1`",
-      "curl, then `generateText` with `grok-4`",
-    ],
   },
 ];
