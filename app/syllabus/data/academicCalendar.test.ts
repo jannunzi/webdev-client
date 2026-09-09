@@ -103,7 +103,11 @@ describe("Fall 2026 academic calendar", () => {
     assert.equal(fallBreak?.end, "2026-11-29");
     assert.match(holidayMeetingNote, /November 25–29/);
     assert.match(holidayMeetingNote, /November 30/);
-    assert.match(holidayMeetingNote, /meets online/);
+    assert.match(holidayMeetingNote, /not required to attend/);
+    assert.match(holidayMeetingNote, /recording of the lecture will be posted/);
+    assert.match(holidayMeetingNote, /responsible for that content/);
     assert.match(holidayMeetingNote, /do not skip a lecture week/);
+    assert.doesNotMatch(holidayMeetingNote, /meets online/);
+    assert.doesNotMatch(holidayMeetingNote, /stays on track/);
   });
 });
