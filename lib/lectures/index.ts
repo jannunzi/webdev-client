@@ -77,7 +77,6 @@ export { DYNAMIC_STYLING_SLIDES } from "./decks/dynamic-styling";
 export { CLIENT_AND_SERVER_SLIDES } from "./decks/client-and-server";
 export { PARAMETERIZING_COMPONENTS_SLIDES } from "./decks/parameterizing-components";
 export { PATH_PARAMS_AND_TODOS_SLIDES } from "./decks/path-params-and-todos";
-export { CH3_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch3-check-understanding";
 export { KAMBAZ_DATABASE_SLIDES } from "./decks/kambaz-database";
 export { KAMBAZ_DASHBOARD_DATA_SLIDES } from "./decks/kambaz-dashboard-data";
 export { KAMBAZ_COURSES_DATA_SLIDES } from "./decks/kambaz-courses-data";
@@ -112,7 +111,6 @@ export { KAMBAZ_ACCOUNT_REST_SLIDES } from "./decks/kambaz-account-rest";
 export { KAMBAZ_SESSIONS_SLIDES } from "./decks/kambaz-sessions";
 export { KAMBAZ_COURSES_API_SLIDES } from "./decks/kambaz-courses-api";
 export { DEPLOY_API_SLIDES } from "./decks/deploy-api";
-export { CH5_CONCLUSION_SLIDES } from "./decks/ch5-conclusion";
 export { LOCAL_MONGO_SLIDES } from "./decks/local-mongo";
 export { MONGOOSE_SLIDES } from "./decks/mongoose";
 export { MONGO_APIS_SLIDES } from "./decks/mongo-apis";
@@ -122,7 +120,6 @@ export { CH6_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch6-check-understanding"
 export { KAMBAZ_COURSES_DB_SLIDES } from "./decks/kambaz-courses-db";
 export { KAMBAZ_MODULES_DB_SLIDES } from "./decks/kambaz-modules-db";
 export { KAMBAZ_ENROLLMENTS_DB_SLIDES } from "./decks/kambaz-enrollments-db";
-export { CH6_DELIVERABLES_SLIDES } from "./decks/ch6-deliverables";
 export {
   BOOK_CHAPTERS,
   CHAPTER_3_SLUGS,

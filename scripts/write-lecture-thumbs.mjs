@@ -88,9 +88,25 @@ const FORMS = `
   </g>`;
 
 const ANCHORS = `
-  <g transform="translate(120 90)" fill="none" stroke="#0F172A" stroke-width="22" stroke-linecap="round">
-    <path d="M210 120c40-40 104-40 144 0s40 104 0 144l-52 52"/>
-    <path d="M270 280c-40 40-104 40-144 0s-40-104 0-144l52-52"/>
+  <g transform="translate(150 150) rotate(-32 260 140)" fill="none" stroke="#0F172A" stroke-width="32" stroke-linejoin="round">
+    <rect x="40" y="90" width="230" height="100" rx="50"/>
+    <rect x="210" y="90" width="230" height="100" rx="50"/>
+  </g>`;
+
+/** Official Tailwind CSS mark (https://tailwindcss.com/brand), 54×33 viewBox. */
+const TAILWIND = `
+  <g transform="translate(90 170) scale(8.2)">
+    <path fill="#38BDF8" fill-rule="evenodd" clip-rule="evenodd" d="M27 0c-7.2 0-11.7 3.6-13.5 10.8 2.7-3.6 5.85-4.95 9.45-4.05 2.054.513 3.522 2.004 5.147 3.653C30.744 13.09 33.808 16.2 40.5 16.2c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.054-.513-3.522-2.004-5.147-3.653C36.756 3.11 33.692 0 27 0zM13.5 16.2C6.3 16.2 1.8 19.8 0 27c2.7-3.6 5.85-4.95 9.45-4.05 2.054.514 3.522 2.004 5.147 3.653C17.244 29.29 20.308 32.4 27 32.4c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.054-.513-3.522-2.004-5.147-3.653C23.256 19.31 20.192 16.2 13.5 16.2z"/>
+  </g>`;
+
+const PARAMS = `
+  <g transform="translate(90 90)">
+    <rect width="220" height="88" rx="20" fill="#C4B5FD"/>
+    <text x="110" y="58" text-anchor="middle" fill="#111827" font-family="ui-sans-serif, system-ui, sans-serif" font-size="40" font-weight="800">{ props }</text>
+    <path d="M110 88v36" stroke="#C4B5FD" stroke-width="12" stroke-linecap="round"/>
+    <polygon points="98,124 122,124 110,146" fill="#C4B5FD"/>
+    <rect y="146" width="400" height="200" rx="36" fill="#DDD6FE"/>
+    <text x="200" y="268" text-anchor="middle" fill="#111827" font-family="ui-sans-serif, system-ui, sans-serif" font-size="64" font-weight="800">&lt;Add /&gt;</text>
   </g>`;
 
 const KAMBAZ = `
@@ -254,6 +270,23 @@ const thumbs = [
     art: ANCHORS,
     titleFill: "#7C2D12",
     subtitleFill: "#C2410C",
+  },
+  {
+    slug: "tailwind-intro",
+    title: "Tailwind Intro",
+    chapter: 2,
+    bg: "#0F172A",
+    accent: "#38BDF8",
+    art: TAILWIND,
+    subtitleFill: "#7DD3FC",
+  },
+  {
+    slug: "parameterizing-components",
+    title: "Parameterizing Components",
+    chapter: 3,
+    bg: "#111827",
+    accent: "#C4B5FD",
+    art: PARAMS,
   },
   {
     slug: "single-page-navigation",
@@ -600,14 +633,6 @@ const thumbs = [
     bg: "#111111",
     accent: "#FFFFFF",
     art: VERCEL,
-  },
-  {
-    slug: "ch5-conclusion",
-    title: "Chapter 5 Conclusion",
-    chapter: 5,
-    bg: "#052E16",
-    accent: "#F7DF1E",
-    art: NODE,
   },
 ];
 

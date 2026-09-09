@@ -55,7 +55,6 @@ import { DYNAMIC_STYLING_SLIDES } from "./decks/dynamic-styling";
 import { CLIENT_AND_SERVER_SLIDES } from "./decks/client-and-server";
 import { PARAMETERIZING_COMPONENTS_SLIDES } from "./decks/parameterizing-components";
 import { PATH_PARAMS_AND_TODOS_SLIDES } from "./decks/path-params-and-todos";
-import { CH3_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch3-check-understanding";
 import { KAMBAZ_DATABASE_SLIDES } from "./decks/kambaz-database";
 import { KAMBAZ_DASHBOARD_DATA_SLIDES } from "./decks/kambaz-dashboard-data";
 import { KAMBAZ_COURSES_DATA_SLIDES } from "./decks/kambaz-courses-data";
@@ -90,7 +89,6 @@ import { KAMBAZ_ACCOUNT_REST_SLIDES } from "./decks/kambaz-account-rest";
 import { KAMBAZ_SESSIONS_SLIDES } from "./decks/kambaz-sessions";
 import { KAMBAZ_COURSES_API_SLIDES } from "./decks/kambaz-courses-api";
 import { DEPLOY_API_SLIDES } from "./decks/deploy-api";
-import { CH5_CONCLUSION_SLIDES } from "./decks/ch5-conclusion";
 import { LOCAL_MONGO_SLIDES } from "./decks/local-mongo";
 import { MONGOOSE_SLIDES } from "./decks/mongoose";
 import { MONGO_APIS_SLIDES } from "./decks/mongo-apis";
@@ -100,7 +98,6 @@ import { CH6_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch6-check-understanding"
 import { KAMBAZ_COURSES_DB_SLIDES } from "./decks/kambaz-courses-db";
 import { KAMBAZ_MODULES_DB_SLIDES } from "./decks/kambaz-modules-db";
 import { KAMBAZ_ENROLLMENTS_DB_SLIDES } from "./decks/kambaz-enrollments-db";
-import { CH6_DELIVERABLES_SLIDES } from "./decks/ch6-deliverables";
 import {
   BOOK_CHAPTERS,
   LECTURE_SLUGS,
@@ -727,16 +724,6 @@ const LECTURE_SUMMARIES: Record<
     canvasLecture: 8,
     slides: PATH_PARAMS_AND_TODOS_SLIDES,
   },
-  "ch3-check-understanding": {
-    title: "Check Your Understanding",
-    summary:
-      "A 10-item self-check on Chapter 3 JavaScript before wiring Kambaz to JSON — §3.8.",
-    chapter: 3,
-    topicId: "ch3-check",
-    bookSectionId: "sec-3-8",
-    canvasLecture: 8,
-    slides: CH3_CHECK_UNDERSTANDING_SLIDES,
-  },
   "kambaz-database": {
     title: "Kambaz Database",
     summary:
@@ -1077,16 +1064,6 @@ const LECTURE_SUMMARIES: Record<
     canvasLecture: 20,
     slides: DEPLOY_API_SLIDES,
   },
-  "ch5-conclusion": {
-    title: "Chapter 5 Conclusion",
-    summary:
-      "Sibling Express, Lab 5, Kambaz APIs, then branch a5 in both repos — §5.6–5.7.",
-    chapter: 5,
-    topicId: "ch5-end",
-    bookSectionId: "sec-5-6",
-    canvasLecture: 20,
-    slides: CH5_CONCLUSION_SLIDES,
-  },
   "local-mongo": {
     title: "Local MongoDB",
     summary:
@@ -1176,16 +1153,6 @@ const LECTURE_SUMMARIES: Record<
     bookSectionId: "sec-6-4-3",
     canvasLecture: 24,
     slides: KAMBAZ_ENROLLMENTS_DB_SLIDES,
-  },
-  "ch6-deliverables": {
-    title: "Chapter 6 Deliverables",
-    summary:
-      "Branch a6 in both repos, new Render + Atlas, submit the Vercel URL — §6.5.",
-    chapter: 6,
-    topicId: "ch6-end",
-    bookSectionId: "sec-6-5",
-    canvasLecture: 24,
-    slides: CH6_DELIVERABLES_SLIDES,
   },
 };
 
