@@ -86,4 +86,4 @@ export const deadlines: Deadline[] = [
 ];
 
 export const deadlinesNote =
-  "Assignment, quiz, exam, and project dates are one Canvas calendar for every section. Assignments and chapter quizzes (Q1–Q6) are due Sunday 11:59pm ET. X1 is due Sunday 11:59pm ET the week after A3. X2 is due Thursday 11:59pm ET of exam week (same day as the published Exam). CS 5610-02 starts September 14, so it has less runway before A1.";
+  "Assignment, quiz, exam, and project dates are one Canvas calendar for every section. Assignments and chapter quizzes (Q1–Q6) are due Sunday 11:59pm ET. X1 is due Sunday 11:59pm ET the week after A3. X2 is due Thursday 11:59pm ET of exam week (same day as the published Exam).";

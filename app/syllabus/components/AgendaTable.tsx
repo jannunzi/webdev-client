@@ -27,7 +27,7 @@ export default function AgendaTable({
         weekday from its first class. Thanksgiving week is a calendar blackout
         — that week’s meeting is labeled and does not consume a lecture number.
         Due dates in the last column are the shared Canvas dates when they fall
-        on a meeting day; they do not slide with the section start.
+        on a meeting day.
       </p>
       <p className="font-sans text-sm text-neutral-600">
         Showing {section.tabLabel}. Use the section buttons at the top of the

@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { assignmentsIntro } from "@/app/syllabus/data/assignments";
 import { deadlines, deadlinesNote } from "@/app/syllabus/data/deadlines";
 import { isoWeekday, weekdayName } from "@/app/syllabus/data/dates";
 import { evaluationItems, evaluationNotes } from "@/app/syllabus/data/evaluation";
+import { sections } from "@/app/syllabus/data/sections";
 import { etWallTimeToUtc, getQuizSchedule } from "./schedule";
 
 const CANVAS_ASSIGNMENT_DUES: Record<string, string> = {
@@ -114,12 +116,17 @@ describe("Fall 2026 Canvas calendar", () => {
       exams.description,
       ...evaluationNotes,
       deadlinesNote,
+      ...assignmentsIntro,
+      ...sections.flatMap((section) => section.notes),
     ].join(" ");
     assert.doesNotMatch(studentCopy, /grade shell/i);
     assert.doesNotMatch(studentCopy, /empty website-linked/i);
     assert.doesNotMatch(studentCopy, /website-linked quizzes/i);
     assert.doesNotMatch(studentCopy, /100 points each/i);
     assert.doesNotMatch(studentCopy, /exports? (that score )?to Canvas/i);
+    assert.doesNotMatch(studentCopy, /less runway/i);
+    assert.doesNotMatch(studentCopy, /do not slide/i);
+    assert.doesNotMatch(studentCopy, /section starts later/i);
     assert.match(studentCopy, /taken online on this course website/i);
     assert.match(studentCopy, /staff-approved fallback/i);
     assert.match(studentCopy, /ask your instructor or TA before using it/i);
