@@ -12,7 +12,9 @@ import { deadlines } from "./deadlines";
 import { holidays } from "./holidays";
 import { sections } from "./sections";
 import {
+  CHAPTER_4_MIDTERM_HEADING,
   ORIENTATION_TOPIC,
+  PROJECT_GRADING_HEADING,
   SHARED_CURRICULUM_END,
   SHARED_CURRICULUM_START,
   bookChapterHeading,
@@ -115,15 +117,21 @@ export function buildAgenda(section: CourseSection): AgendaRow[] {
   return rows;
 }
 
+function chapterHeading(chapter: number | undefined, fallback: string): string {
+  if (chapter === 4) return CHAPTER_4_MIDTERM_HEADING;
+  return chapter ? bookChapterHeading(chapter) : fallback;
+}
+
 function topicMetaForRow(row: AgendaRow) {
   if (row.kind === "orientation" || row.lectureNumber == null) return undefined;
   return lectureTopics[row.lectureNumber - 1];
 }
 
 /**
- * Groups a section’s rows under book chapter headings, with X1 after
- * Chapter 3 and X2 as its own last-week group. Date cells still use the
- * shared Monday (“Week of …”).
+ * Groups a section’s rows under book chapter headings. Chapter 4 is one
+ * block (weeks of 10/26 and 11/2) — no separate Midterm module. Project
+ * grading is its own week. X2 is the last-week exam group. Date cells
+ * still use the shared Monday (“Week of …”).
  */
 export function buildAgendaGroups(section: CourseSection): AgendaGroup[] {
   const groups: AgendaGroup[] = [];
@@ -145,7 +153,23 @@ export function buildAgendaGroups(section: CourseSection): AgendaGroup[] {
     }
 
     const meta = topicMetaForRow(row);
-    if (meta?.exam) {
+    if (meta?.project) {
+      const last = groups[groups.length - 1];
+      if (last?.kind === "project") {
+        last.rows.push(row);
+      } else {
+        groups.push({
+          id: "project-grading",
+          kind: "project",
+          heading: PROJECT_GRADING_HEADING,
+          rows: [row],
+        });
+      }
+      continue;
+    }
+
+    // Exam-only week (X2). X1 is not its own module — it sits in Chapter 4.
+    if (meta?.exam && !meta.chapter) {
       const last = groups[groups.length - 1];
       if (last?.kind === "exam" && last.id === meta.exam.toLowerCase()) {
         last.rows.push(row);
@@ -171,7 +195,7 @@ export function buildAgendaGroups(section: CourseSection): AgendaGroup[] {
       id: `chapter-${chapter ?? "other"}`,
       kind: "chapter",
       chapter,
-      heading: chapter ? bookChapterHeading(chapter) : row.topic,
+      heading: chapterHeading(chapter, row.topic),
       rows: [row],
     });
   }

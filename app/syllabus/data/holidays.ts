@@ -31,4 +31,4 @@ export const holidays: Holiday[] = [
 export const thanksgivingBlackout = holidays[holidays.length - 1];
 
 export const holidayMeetingNote =
-  "University holidays — including Labor Day, Indigenous Peoples’ Day, Veterans Day, and fall break (November 25–29; classes resume November 30) — do not skip a lecture week. If a holiday falls on your meeting day, that section meets online so the chapter sequence stays on track.";
+  "University holidays — including Labor Day, Indigenous Peoples’ Day, Veterans Day, and fall break (November 25–29; classes resume November 30) — do not skip a lecture week. Fall break sits in Chapter 6 week 1 (week of Nov 23); Veterans Day sits in Chapter 5 week 1 (week of Nov 9). If a holiday falls on your meeting day, that section meets online so the chapter sequence stays on track.";
