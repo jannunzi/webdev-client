@@ -99,8 +99,8 @@ export type AgendaRow = {
   /** Absolute Canvas dues that happen to fall on this calendar day. */
   deadlines: Deadline[];
   /**
-   * When the meeting date falls on a university holiday. Class still meets
-   * online that week; the chapter sequence does not skip.
+   * When the meeting date falls on a university holiday. Attendance is not
+   * required; a lecture recording is posted. The chapter sequence does not skip.
    */
   onlineNote?: string;
 };

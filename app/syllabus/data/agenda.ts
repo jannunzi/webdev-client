@@ -57,7 +57,7 @@ export function agendaLastMeeting(section: CourseSection): IsoDate {
 function onlineNoteFor(iso: IsoDate): string | undefined {
   const holiday = holidayOn(iso, holidays);
   return holiday
-    ? `${holiday.label} — class meets online if campus is closed`
+    ? `${holiday.label} — not required to attend; a lecture recording will be posted`
     : undefined;
 }
 
@@ -79,7 +79,8 @@ export function collectMeetingDates(section: CourseSection): IsoDate[] {
  * Projects the shared book sequence onto one section’s weekday.
  * All sections use the same chapter week from the week of Sep 14.
  * Meetings before that date are orientation and do not start Chapter 1.
- * Holidays still consume the week’s topic; class meets online if needed.
+ * Holidays still consume the week’s topic; attendance is not required and
+ * a lecture recording is posted.
  */
 export function buildAgenda(section: CourseSection): AgendaRow[] {
   const rows: AgendaRow[] = [];
