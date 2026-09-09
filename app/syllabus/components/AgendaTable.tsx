@@ -36,14 +36,15 @@ export default function AgendaTable({
   return (
     <SyllabusSection id="agenda" title="Agenda">
       <p>
-        Every section follows the same book-aligned sequence from the week of
+        Every section follows the same Canvas module sequence from the week of
         September 14, 2026, grouped by chapter. Dates are the shared Monday —
-        Week of Sep 14, Week of Sep 21, and so on — so Monday, Tuesday, and
+        Week of Sep 14 through Week of Dec 14 — so Monday, Tuesday, and
         Wednesday tabs show the same labels. CS 4550’s September 9 meeting is
         orientation only and does not start Chapter 1. Each chapter spans two
-        weeks, except Chapter 3, which is one combined week so X1 can follow
-        Chapter 3 and X2 can fall in the last week of classes. Quizzes are
-        taken at the end of lecture at the end of each chapter.
+        weeks. The midterm (X1) is the week of Oct 26; X2 and the final
+        project are the week of Dec 14, even though the last day of classes
+        is Dec 13. Quizzes are taken at the end of lecture at the end of
+        each chapter.
       </p>
       <p>{holidayMeetingNote}</p>
       <p className="font-sans text-sm text-neutral-600">

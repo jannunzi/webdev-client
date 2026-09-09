@@ -28,6 +28,8 @@ describe("formatWeekOf", () => {
     assert.equal(formatWeekOf("2026-09-15"), "Week of Sep 14");
     assert.equal(formatWeekOf("2026-09-16"), "Week of Sep 14");
     assert.equal(formatWeekOf("2026-12-07"), "Week of Dec 7");
+    assert.equal(formatWeekOf("2026-12-14"), "Week of Dec 14");
+    assert.equal(formatWeekOf("2026-12-16"), "Week of Dec 14");
   });
 });
 
@@ -90,5 +92,6 @@ describe("mondayOfWeek and wholeWeeksBetween", () => {
     assert.equal(wholeWeeksBetween("2026-09-14", "2026-10-12"), 4);
     assert.equal(wholeWeeksBetween("2026-09-14", "2026-11-23"), 10);
     assert.equal(wholeWeeksBetween("2026-09-14", "2026-12-07"), 12);
+    assert.equal(wholeWeeksBetween("2026-09-14", "2026-12-14"), 13);
   });
 });
