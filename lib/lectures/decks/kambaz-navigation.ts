@@ -18,7 +18,7 @@ export const KAMBAZ_NAVIGATION_SLIDES: LectureSlide[] = [
       "`app/(kambaz)/Navigation.tsx` — wrapper `wd-kambaz-navigation`",
       "Northeastern stays an external `<a>` with `target=\"_blank\"`",
       "In-app destinations use `Link` from `next/link`",
-      "Courses can point at `/dashboard` for now",
+      "Courses can point at `/dashboard` for now — **static HTML**, not a data array",
     ],
     code: `import Link from "next/link";
 
