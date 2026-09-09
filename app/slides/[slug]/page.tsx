@@ -6,6 +6,7 @@ import {
   adjacentLectureSlugs,
   bookSectionLabel,
   getLectureDeck,
+  lectureChapterLabel,
   listLectureSlugs,
 } from "@/lib/lectures";
 import LectureDeckShell from "../_components/LectureDeckShell";
@@ -50,7 +51,7 @@ export default async function SlideDeckPage({ params }: PageProps) {
           </h1>
           <p className="mb-0 flex flex-wrap items-center gap-2 font-sans text-sm text-neutral-600">
             <span>
-              Chapter {deck.chapter}
+              {lectureChapterLabel(deck.chapter)}
               {deck.topic ? ` · ${deck.topic}` : ""} · {deck.slides.length}{" "}
               slides
             </span>

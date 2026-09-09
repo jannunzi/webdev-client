@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { listLectureChapters } from "@/lib/lectures";
+import { lectureChapterLabel, listLectureChapters } from "@/lib/lectures";
 
 export default function LectureHubNav({
   current,
@@ -22,7 +22,7 @@ export default function LectureHubNav({
       {chapters.map((chapter) => (
         <span key={chapter.chapter}>
           {" · "}
-          <Link href={chapter.href}>Chapter {chapter.chapter}</Link>
+          <Link href={chapter.href}>{lectureChapterLabel(chapter.chapter)}</Link>
         </span>
       ))}
       {" · "}

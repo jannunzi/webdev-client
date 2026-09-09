@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { LectureHubItem } from "@/lib/lectures/types";
+import { lectureChapterLabel, type LectureHubItem } from "@/lib/lectures/types";
 
 export default function LectureChapterLink({
   lecture,
@@ -18,14 +18,16 @@ export default function LectureChapterLink({
       </p>
       <p className="mb-2 mt-1 text-lg font-semibold tracking-tight">
         <Link href={href}>
-          Chapter {chapter} — {chapterTitle}
+          {lectureChapterLabel(chapter)} — {chapterTitle}
         </Link>
       </p>
       <Link
         href={href}
         className="book-practice-cta inline-block rounded border border-neutral-800 bg-neutral-800 px-3 py-2 text-sm"
       >
-        Open Chapter {chapter} in the book
+        {chapter > 6
+          ? "Open the project page"
+          : `Open Chapter ${chapter} in the book`}
       </Link>
     </div>
   );

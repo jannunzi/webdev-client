@@ -101,6 +101,15 @@ import { CH6_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch6-check-understanding"
 import { KAMBAZ_COURSES_DB_SLIDES } from "./decks/kambaz-courses-db";
 import { KAMBAZ_MODULES_DB_SLIDES } from "./decks/kambaz-modules-db";
 import { KAMBAZ_ENROLLMENTS_DB_SLIDES } from "./decks/kambaz-enrollments-db";
+import { YOUTUBE_API_SLIDES } from "./decks/youtube-api";
+import { YOUTUBE_SEARCH_SLIDES } from "./decks/youtube-search";
+import { YOUTUBE_DETAILS_SLIDES } from "./decks/youtube-details";
+import { CHATGPT_API_SLIDES } from "./decks/chatgpt-api";
+import { CHATGPT_TEXT_SLIDES } from "./decks/chatgpt-text";
+import { CHATGPT_UI_SLIDES } from "./decks/chatgpt-ui";
+import { GROK_API_SLIDES } from "./decks/grok-api";
+import { GROK_CHAT_SLIDES } from "./decks/grok-chat";
+import { GROK_IMAGES_SLIDES } from "./decks/grok-images";
 import {
   BOOK_CHAPTERS,
   LECTURE_SLUGS,
@@ -1186,6 +1195,87 @@ const LECTURE_SUMMARIES: Record<
     bookSectionId: "sec-6-4-3",
     canvasLecture: 24,
     slides: KAMBAZ_ENROLLMENTS_DB_SLIDES,
+  },
+  "youtube-api": {
+    title: "YouTube Data API Key",
+    summary:
+      "Google Cloud project, restrict a key, enable Data API v3, then NEXT_PUBLIC_YOUTUBE_* — no live keys.",
+    chapter: 7,
+    topicId: "youtube-api",
+    canvasLecture: 25,
+    slides: YOUTUBE_API_SLIDES,
+  },
+  "youtube-search": {
+    title: "YouTube Search",
+    summary:
+      "GET /search?part=snippet, axios client, then Kambaz search cards.",
+    chapter: 7,
+    topicId: "youtube-api",
+    canvasLecture: 25,
+    slides: YOUTUBE_SEARCH_SLIDES,
+  },
+  "youtube-details": {
+    title: "YouTube Details",
+    summary:
+      "videos.list, iframe embed, ?search= URL state, then youTubeId on the lesson.",
+    chapter: 7,
+    topicId: "youtube-api",
+    canvasLecture: 25,
+    slides: YOUTUBE_DETAILS_SLIDES,
+  },
+  "chatgpt-api": {
+    title: "ChatGPT SDK and Tokens",
+    summary:
+      "GPT-4, tokens, npm install openai, server OPENAI_API_KEY, then responses.create.",
+    chapter: 7,
+    topicId: "chatgpt-api",
+    canvasLecture: 25,
+    slides: CHATGPT_API_SLIDES,
+  },
+  "chatgpt-text": {
+    title: "ChatGPT Roles and Parse",
+    summary:
+      "Instructions, developer/user/assistant, zodTextFormat, then moderations.create.",
+    chapter: 7,
+    topicId: "chatgpt-api",
+    canvasLecture: 25,
+    slides: CHATGPT_TEXT_SLIDES,
+  },
+  "chatgpt-ui": {
+    title: "ChatGPT UI and Course AI",
+    summary:
+      "Express chat/vision/TTS, Next.js client, then POST /api/courses/ai and /api/modules/ai.",
+    chapter: 7,
+    topicId: "chatgpt-api",
+    canvasLecture: 25,
+    slides: CHATGPT_UI_SLIDES,
+  },
+  "grok-api": {
+    title: "Grok xAI Key",
+    summary:
+      "Tokens, curl api.x.ai chat/completions, XAI_API_KEY, then generateText grok-4.",
+    chapter: 7,
+    topicId: "grok-api",
+    canvasLecture: 25,
+    slides: GROK_API_SLIDES,
+  },
+  "grok-chat": {
+    title: "Grok Chat and Sparkle",
+    summary:
+      "OpenAI SDK at api.x.ai, stateless roles, POST /api/xai/course, Dashboard sparkle.",
+    chapter: 7,
+    topicId: "grok-api",
+    canvasLecture: 25,
+    slides: GROK_CHAT_SLIDES,
+  },
+  "grok-images": {
+    title: "Grok Images and Structure",
+    summary:
+      "grok-2-image, vision image_url, Zod invoice, then upsertCourse modules.",
+    chapter: 7,
+    topicId: "grok-api",
+    canvasLecture: 25,
+    slides: GROK_IMAGES_SLIDES,
   },
 };
 

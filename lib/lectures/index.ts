@@ -123,12 +123,22 @@ export { CH6_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch6-check-understanding"
 export { KAMBAZ_COURSES_DB_SLIDES } from "./decks/kambaz-courses-db";
 export { KAMBAZ_MODULES_DB_SLIDES } from "./decks/kambaz-modules-db";
 export { KAMBAZ_ENROLLMENTS_DB_SLIDES } from "./decks/kambaz-enrollments-db";
+export { YOUTUBE_API_SLIDES } from "./decks/youtube-api";
+export { YOUTUBE_SEARCH_SLIDES } from "./decks/youtube-search";
+export { YOUTUBE_DETAILS_SLIDES } from "./decks/youtube-details";
+export { CHATGPT_API_SLIDES } from "./decks/chatgpt-api";
+export { CHATGPT_TEXT_SLIDES } from "./decks/chatgpt-text";
+export { CHATGPT_UI_SLIDES } from "./decks/chatgpt-ui";
+export { GROK_API_SLIDES } from "./decks/grok-api";
+export { GROK_CHAT_SLIDES } from "./decks/grok-chat";
+export { GROK_IMAGES_SLIDES } from "./decks/grok-images";
 export {
   BOOK_CHAPTERS,
   CHAPTER_3_SLUGS,
   CHAPTER_4_SLUGS,
   CHAPTER_5_SLUGS,
   CHAPTER_6_SLUGS,
+  PROJECT_SLUGS,
   LECTURE_1_SLUGS,
   LECTURE_2_SLUGS,
   LECTURE_3_SLUGS,
@@ -140,6 +150,7 @@ export {
   LECTURE_EMBED_IDS,
   LECTURE_SLUGS,
   LECTURE_TOPICS,
+  lectureChapterLabel,
   lectureSlideAssetPath,
   lectureSlideDensity,
   lectureSlideFigurePath,

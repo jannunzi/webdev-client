@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
+  lectureChapterLabel,
   lectureDeckThumbnail,
   listChapterTopicGroups,
   slidesHref,
@@ -78,7 +79,7 @@ export default function SlidesIndexPage() {
                       className="mt-0 mb-1 flex flex-wrap items-baseline gap-x-3 gap-y-1 font-sans text-2xl font-semibold tracking-tight"
                     >
                       <span>
-                        Chapter {group.chapter} — {group.title}
+                        {lectureChapterLabel(group.chapter)} — {group.title}
                       </span>
                       {group.weeks ? (
                         <span className="text-base font-medium text-neutral-500">

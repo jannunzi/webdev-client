@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { listLectureChapters } from "@/lib/lectures";
+import { lectureChapterLabel, listLectureChapters } from "@/lib/lectures";
 
 export default function SlideDeckNotFound() {
   const chapters = listLectureChapters();
@@ -18,7 +18,7 @@ export default function SlideDeckNotFound() {
         {chapters.map((chapter) => (
           <span key={chapter.chapter}>
             {" · "}
-            <Link href={chapter.href}>Chapter {chapter.chapter}</Link>
+            <Link href={chapter.href}>{lectureChapterLabel(chapter.chapter)}</Link>
           </span>
         ))}
       </p>
