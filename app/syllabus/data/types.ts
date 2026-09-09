@@ -38,7 +38,7 @@ export type CourseSection = {
   daysOfWeek: DayOfWeek[];
   /** Locked clock time (ET). */
   time: string;
-  /** Room or Zoom — leave TBA; do not invent a room. */
+  /** Room or Zoom. Use TBA until a room or meeting link is posted. */
   location: string;
   tabLabel: string;
   notes: string[];

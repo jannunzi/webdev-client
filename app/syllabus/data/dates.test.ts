@@ -59,6 +59,15 @@ describe("formatSectionMeetsSentence", () => {
     assert.equal(sections.length, 3);
   });
 
+  it("posts Shillman Hall 105 for CS 4550-01 and leaves CS 5610 locations TBA", () => {
+    const byId = Object.fromEntries(
+      sections.map((section) => [section.id, section]),
+    );
+    assert.equal(byId["cs4550-01"]?.location, "Shillman Hall 105");
+    assert.match(byId["cs5610-02"]?.location ?? "", /TBA/);
+    assert.match(byId["cs5610-09"]?.location ?? "", /TBA/);
+  });
+
   it("does not use possessive grammar", () => {
     const sentence = formatSectionMeetsSentence([3], "2026-09-09");
     assert.match(sentence, /^This section meets /);

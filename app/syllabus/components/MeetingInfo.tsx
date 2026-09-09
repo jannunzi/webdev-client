@@ -14,7 +14,8 @@ export default function MeetingInfo({
     <SyllabusSection id="meetings" title="Meeting information">
       <p className="rounded-md border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm">
         Each section meets once a week at 6:00–9:00pm ET — Monday, Tuesday, or
-        Wednesday. Rooms and the online Zoom link are TBA.
+        Wednesday. CS 4550-01 meets in Shillman Hall 105. The CS 5610 Boston
+        room and online Zoom link are TBA.
       </p>
       <dl className="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
         <div>

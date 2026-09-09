@@ -5,7 +5,7 @@ export const SECTION_STORAGE_KEY = "syllabus-section-id";
 
 /**
  * Official Fall 2026 sections. Every section meets once per week.
- * Meeting days and clock times are locked. Rooms / Zoom stay TBA.
+ * Meeting days and clock times are locked. Fill rooms / Zoom only when posted.
  */
 export const sections: CourseSection[] = [
   {
@@ -20,8 +20,7 @@ export const sections: CourseSection[] = [
     lastClass: semester.lastDayOfClasses,
     daysOfWeek: [3],
     time: "6:00–9:00pm ET",
-    // TODO(jose): Fill the Boston room when assigned. Do not invent one.
-    location: "TBA — room not posted",
+    location: "Shillman Hall 105",
     tabLabel: "CS 4550-01 · In person",
     notes: [
       "Undergraduate, in person, Boston. Meets once a week on Wednesdays, 6:00–9:00pm ET, starting September 9, 2026.",
