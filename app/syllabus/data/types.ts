@@ -38,7 +38,7 @@ export type CourseSection = {
   daysOfWeek: DayOfWeek[];
   /** Locked clock time (ET). */
   time: string;
-  /** Room or Zoom — leave TBA; do not invent a room. */
+  /** Room or Zoom. Use TBA until a room or meeting link is posted. */
   location: string;
   tabLabel: string;
   notes: string[];
@@ -47,7 +47,10 @@ export type CourseSection = {
 export type DeadlineKind = "assignment" | "quiz" | "exam" | "project";
 
 export type Deadline = {
-  /** Shared calendar date. Omit for in-lecture quizzes. */
+  /**
+   * Shared calendar date. Quizzes use the Monday of that chapter’s closing
+   * week (end of lecture), not a Sunday Canvas due.
+   */
   date?: IsoDate;
   kind: DeadlineKind;
   label: string;
@@ -67,11 +70,9 @@ export type Holiday = {
   label: string;
 };
 
-export type LectureTopic = {
-  topic: string;
-};
-
 export type AgendaKind = "lecture" | "orientation";
+
+export type AgendaGroupKind = "chapter" | "exam" | "orientation";
 
 export type AgendaRow = {
   date: IsoDate;
@@ -85,6 +86,22 @@ export type AgendaRow = {
    * online that week; the chapter sequence does not skip.
    */
   onlineNote?: string;
+};
+
+export type AgendaGroup = {
+  id: string;
+  kind: AgendaGroupKind;
+  /** Chapter heading such as “Chapter 1: Building Next.js User Interfaces with HTML”. */
+  heading?: string;
+  chapter?: number;
+  rows: AgendaRow[];
+};
+
+export type LectureTopic = {
+  topic: string;
+  /** Book chapter for weekly rows. Omitted on X1/X2 exam weeks. */
+  chapter?: number;
+  exam?: "X1" | "X2";
 };
 
 export type CourseGoal = {

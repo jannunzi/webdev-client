@@ -1,12 +1,18 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { agendasBySection, buildAgenda } from "./agenda.ts";
-import { mondayOfWeek } from "./dates.ts";
+import {
+  agendaGroupsBySection,
+  agendasBySection,
+  buildAgenda,
+  buildAgendaGroups,
+} from "./agenda.ts";
+import { formatWeekOf, mondayOfWeek } from "./dates.ts";
 import { holidayMeetingNote } from "./holidays.ts";
-import { sections } from "./sections.ts";
+import { findSection, sections } from "./sections.ts";
 import {
   ORIENTATION_TOPIC,
   SHARED_CURRICULUM_START,
+  bookChapterHeading,
   lectureTopics,
 } from "./topics.ts";
 
@@ -147,5 +153,48 @@ describe("holiday meeting copy", () => {
     assert.match(holidayMeetingNote, /meets online/);
     assert.doesNotMatch(holidayMeetingNote, /blackout/);
     assert.doesNotMatch(holidayMeetingNote, /no class/);
+  });
+});
+
+describe("agenda Week of labels and chapter groups", () => {
+  it("uses the same Week of Monday for Mon/Tue/Wed dates", () => {
+    assert.equal(formatWeekOf("2026-09-14"), "Week of Sep 14");
+    assert.equal(formatWeekOf("2026-09-15"), "Week of Sep 14");
+    assert.equal(formatWeekOf("2026-09-16"), "Week of Sep 14");
+    assert.equal(SHARED_CURRICULUM_START, "2026-09-14");
+  });
+
+  it("groups weeks under real book titles, X1 after Chapter 3, and X2 last", () => {
+    const groups = buildAgendaGroups(findSection("cs5610-02"));
+    assert.deepEqual(
+      groups.map((group) => group.kind),
+      ["chapter", "chapter", "chapter", "exam", "chapter", "chapter", "chapter", "exam"],
+    );
+    assert.equal(groups[0]?.heading, bookChapterHeading(1));
+    assert.match(groups[0]?.heading ?? "", /^Chapter 1: /);
+    assert.match(groups[0]?.heading ?? "", /HTML/);
+    assert.equal(groups[1]?.heading, bookChapterHeading(2));
+    assert.equal(groups[2]?.heading, bookChapterHeading(3));
+    assert.equal(groups[3]?.heading, "X1");
+    assert.equal(groups[4]?.heading, bookChapterHeading(4));
+    assert.equal(groups[5]?.heading, bookChapterHeading(5));
+    assert.equal(groups[6]?.heading, bookChapterHeading(6));
+    assert.equal(groups[7]?.heading, "X2");
+
+    assert.equal(groups[0]?.rows.length, 2);
+    assert.equal(mondayOfWeek(groups[0]!.rows[0]!.date), "2026-09-14");
+    assert.equal(groups[2]?.rows.length, 1);
+    assert.match(groups[3]?.rows[0]?.topic ?? "", /^X1/);
+    assert.equal(mondayOfWeek(groups[7]!.rows[0]!.date), "2026-12-07");
+  });
+
+  it("keeps CS 4550 Sep 9 as an orientation group before Chapter 1", () => {
+    const groups = buildAgendaGroups(findSection("cs4550-01"));
+    assert.equal(groups[0]?.kind, "orientation");
+    assert.equal(groups[0]?.rows[0]?.date, "2026-09-09");
+    assert.equal(groups[1]?.kind, "chapter");
+    assert.equal(groups[1]?.chapter, 1);
+    assert.equal(mondayOfWeek(groups[1]!.rows[0]!.date), "2026-09-14");
+    assert.equal(Object.keys(agendaGroupsBySection).length, sections.length);
   });
 });

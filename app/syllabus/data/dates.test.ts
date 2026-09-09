@@ -4,7 +4,9 @@ import {
   formatMeetingWeekdays,
   formatMonthDayYear,
   formatSectionMeetsSentence,
+  formatWeekOf,
   mondayOfWeek,
+  startOfWeekMonday,
   wholeWeeksBetween,
 } from "./dates.ts";
 import { sections } from "./sections.ts";
@@ -14,6 +16,18 @@ describe("formatMonthDayYear", () => {
     assert.equal(formatMonthDayYear("2026-09-09"), "September 9, 2026");
     assert.equal(formatMonthDayYear("2026-09-14"), "September 14, 2026");
     assert.equal(formatMonthDayYear("2026-09-15"), "September 15, 2026");
+  });
+});
+
+describe("formatWeekOf", () => {
+  it("labels the shared Monday for Mon/Tue/Wed dates in the same week", () => {
+    assert.equal(startOfWeekMonday("2026-09-14"), "2026-09-14");
+    assert.equal(startOfWeekMonday("2026-09-15"), "2026-09-14");
+    assert.equal(startOfWeekMonday("2026-09-16"), "2026-09-14");
+    assert.equal(formatWeekOf("2026-09-14"), "Week of Sep 14");
+    assert.equal(formatWeekOf("2026-09-15"), "Week of Sep 14");
+    assert.equal(formatWeekOf("2026-09-16"), "Week of Sep 14");
+    assert.equal(formatWeekOf("2026-12-07"), "Week of Dec 7");
   });
 });
 
@@ -43,6 +57,15 @@ describe("formatSectionMeetsSentence", () => {
       );
     }
     assert.equal(sections.length, 3);
+  });
+
+  it("posts Shillman Hall 105 for both in-person sections and leaves the online Zoom TBA", () => {
+    const byId = Object.fromEntries(
+      sections.map((section) => [section.id, section]),
+    );
+    assert.equal(byId["cs4550-01"]?.location, "Shillman Hall 105");
+    assert.equal(byId["cs5610-02"]?.location, "Shillman Hall 105");
+    assert.match(byId["cs5610-09"]?.location ?? "", /TBA/);
   });
 
   it("does not use possessive grammar", () => {

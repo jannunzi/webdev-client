@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { SECTION_STORAGE_KEY, findSection } from "../data/sections";
 import { projectBlurb } from "../data/project";
 import type {
-  AgendaRow,
+  AgendaGroup,
   AssignmentItem,
   CourseGoal,
   CourseInfo,
@@ -39,7 +39,7 @@ export default function SyllabusView({
   semester,
   sections,
   defaultSectionId,
-  agendasBySection,
+  agendaGroupsBySection,
   deadlines,
   deadlinesNote,
   courseGoals,
@@ -62,7 +62,7 @@ export default function SyllabusView({
   semester: SemesterDates;
   sections: CourseSection[];
   defaultSectionId: string;
-  agendasBySection: Record<string, AgendaRow[]>;
+  agendaGroupsBySection: Record<string, AgendaGroup[]>;
   deadlines: Deadline[];
   deadlinesNote: string;
   courseGoals: CourseGoal;
@@ -99,7 +99,7 @@ export default function SyllabusView({
     () => findSection(sectionId),
     [sectionId],
   );
-  const agendaRows = agendasBySection[section.id] ?? [];
+  const agendaGroups = agendaGroupsBySection[section.id] ?? [];
 
   return (
     <article className="page-content">
@@ -128,7 +128,7 @@ export default function SyllabusView({
       <AssignmentsBlurb intro={assignmentsIntro} assignments={assignments} />
       <DeadlinesTable deadlines={deadlines} note={deadlinesNote} />
       <ProjectBlurb project={projectBlurb} />
-      <AgendaTable section={section} rows={agendaRows} />
+      <AgendaTable section={section} groups={agendaGroups} />
       <AiPolicy policy={aiPolicy} />
       <AcademicIntegrity policy={academicIntegrity} />
       <ClassroomEnvironment policy={classroomEnvironment} />
