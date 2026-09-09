@@ -3,14 +3,16 @@ import type { IsoDate, LectureTopic } from "./types";
 
 /**
  * Shared Fall 2026 lecture sequence, aligned to Jose’s Canvas modules.
- * Fourteen Monday-weeks from 2026-09-14 through 2026-12-14
- * (Ch1–Ch6 × 2 weeks + X1 + X2). Chapter 3 is two weeks. Holidays do
- * not skip a slot. The week of Dec 14 is X2 even though lastDayOfClasses
- * is Dec 13.
+ * Fourteen Monday-weeks from 2026-09-14 through 2026-12-14. Chapter 3
+ * is two weeks. X1 shares the week of Oct 26 with Chapter 4 week 1
+ * (not an X1-only slot). Ch5/Ch6 sit on 11/9–11/16 and 11/23–11/30.
+ * The week of Dec 7 is project grading (due 2026-12-06), with room for
+ * the “Integrating with the …” lecture slides. The week of Dec 14 is
+ * X2 even though lastDayOfClasses is Dec 13. Holidays do not skip a slot.
  */
 export const SHARED_CURRICULUM_START: IsoDate = "2026-09-14";
 
-/** Final shared Monday (X2 + project), inclusive. */
+/** Final shared Monday (X2), inclusive. */
 export const SHARED_CURRICULUM_END: IsoDate = "2026-12-14";
 
 /** Alias used by Week-of / deadline tests. */
@@ -26,9 +28,11 @@ export function bookChapterHeading(chapter: number): string {
 
 export function examModuleHeading(exam: "X1" | "X2"): string {
   return exam === "X1"
-    ? "Midterm — review + X1"
-    : "Final — X2 + final project";
+    ? "Midterm — X1 + Chapter 4 week 1"
+    : "Final — X2";
 }
+
+export const PROJECT_GRADING_HEADING = "Project grading";
 
 export const lectureTopics: LectureTopic[] = [
   {
@@ -61,13 +65,10 @@ export const lectureTopics: LectureTopic[] = [
       "Chapter 3 week 2 — Data-driven UI and chapter wrap (A3)",
   },
   {
-    exam: "X1",
-    topic: "X1 midterm — review + Chapters 1–3",
-  },
-  {
     chapter: 4,
+    exam: "X1",
     topic:
-      "Chapter 4 week 1 — Managing client state: events, forms, useState, and React Context",
+      "X1 midterm + Chapter 4 week 1 — Managing client state: events, forms, useState, and React Context",
   },
   {
     chapter: 4,
@@ -95,7 +96,12 @@ export const lectureTopics: LectureTopic[] = [
       "Chapter 6 week 2 — Atlas, sessions, and wiring Kambaz to a database",
   },
   {
+    project: true,
+    topic:
+      "Project grading — Integrating with the MongoDB hosted in Atlas (lecture slides as needed)",
+  },
+  {
     exam: "X2",
-    topic: "X2 final + project — Chapters 4–6",
+    topic: "X2 final — Chapters 4–6",
   },
 ];

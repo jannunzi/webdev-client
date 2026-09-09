@@ -13,6 +13,7 @@ import { holidays } from "./holidays";
 import { sections } from "./sections";
 import {
   ORIENTATION_TOPIC,
+  PROJECT_GRADING_HEADING,
   SHARED_CURRICULUM_END,
   SHARED_CURRICULUM_START,
   bookChapterHeading,
@@ -121,9 +122,10 @@ function topicMetaForRow(row: AgendaRow) {
 }
 
 /**
- * Groups a section’s rows under book chapter headings, with X1 after
- * Chapter 3 and X2 as its own last-week group. Date cells still use the
- * shared Monday (“Week of …”).
+ * Groups a section’s rows under book chapter headings. X1 shares Chapter 4
+ * week 1 (grouped under Chapter 4). Project grading is its own week. X2 is
+ * the last-week exam group. Date cells still use the shared Monday
+ * (“Week of …”).
  */
 export function buildAgendaGroups(section: CourseSection): AgendaGroup[] {
   const groups: AgendaGroup[] = [];
@@ -145,7 +147,23 @@ export function buildAgendaGroups(section: CourseSection): AgendaGroup[] {
     }
 
     const meta = topicMetaForRow(row);
-    if (meta?.exam) {
+    if (meta?.project) {
+      const last = groups[groups.length - 1];
+      if (last?.kind === "project") {
+        last.rows.push(row);
+      } else {
+        groups.push({
+          id: "project-grading",
+          kind: "project",
+          heading: PROJECT_GRADING_HEADING,
+          rows: [row],
+        });
+      }
+      continue;
+    }
+
+    // Exam-only weeks (X2). X1 is merged into Chapter 4 week 1.
+    if (meta?.exam && !meta.chapter) {
       const last = groups[groups.length - 1];
       if (last?.kind === "exam" && last.id === meta.exam.toLowerCase()) {
         last.rows.push(row);
