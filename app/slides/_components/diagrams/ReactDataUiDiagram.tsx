@@ -48,7 +48,7 @@ export default function ReactDataUiDiagram() {
           {"}"}
         </text>
 
-        <Arrow x1="276" x2="368" y="140" />
+        <Arrow x1={276} x2={368} y={140} />
         <text x="322" y="126" textAnchor="middle" fontSize="14" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">
           React
         </text>
@@ -61,7 +61,7 @@ export default function ReactDataUiDiagram() {
           data → JSX
         </text>
 
-        <Arrow x1="584" x2="676" y="140" />
+        <Arrow x1={584} x2={676} y={140} />
 
         <rect x="686" y="28" width="258" height="224" rx="14" fill="#e0f2fe" stroke="#171717" strokeWidth="2.5" />
         <text x="815" y="58" textAnchor="middle" fontSize="16" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">

@@ -55,11 +55,11 @@ export default function CourseStackDiagram() {
           1st
         </text>
 
-        <HArrow x1="276" x2="368" y="118" />
+        <HArrow x1={276} x2={368} y={118} />
         <text x="322" y="104" textAnchor="middle" fontSize="13" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">
           HTTP REQUEST
         </text>
-        <HArrow x1="368" x2="276" y="202" />
+        <HArrow x1={368} x2={276} y={202} />
         <text x="322" y="188" textAnchor="middle" fontSize="13" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">
           HTTP RESPONSE
         </text>
@@ -76,8 +76,8 @@ export default function CourseStackDiagram() {
           HTTP · Ajax · REST
         </text>
 
-        <HArrow x1="618" x2="700" y="140" />
-        <HArrow x1="700" x2="618" y="168" />
+        <HArrow x1={618} x2={700} y={140} />
+        <HArrow x1={700} x2={618} y={168} />
 
         <rect x="710" y="28" width="234" height="224" rx="14" fill="#fafafa" stroke="#171717" strokeWidth="2.5" />
         <text x="827" y="56" textAnchor="middle" fontSize="16" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">

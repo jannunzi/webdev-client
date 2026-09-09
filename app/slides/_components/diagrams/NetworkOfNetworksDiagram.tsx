@@ -114,10 +114,10 @@ export default function NetworkOfNetworksDiagram() {
         >
           THE INTERNET
         </text>
-        <NetworkCluster x="36" label="Network" />
-        <NetworkCluster x="274" label="Network" />
-        <NetworkCluster x="512" label="Network" />
-        <NetworkCluster x="750" label="Network" />
+        <NetworkCluster x={36} label="Network" />
+        <NetworkCluster x={274} label="Network" />
+        <NetworkCluster x={512} label="Network" />
+        <NetworkCluster x={750} label="Network" />
       </svg>
     </DiagramFrame>
   );
