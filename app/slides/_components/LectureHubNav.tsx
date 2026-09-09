@@ -22,7 +22,9 @@ export default function LectureHubNav({
       {chapters.map((chapter) => (
         <span key={chapter.chapter}>
           {" · "}
-          <Link href={chapter.href}>{lectureChapterLabel(chapter.chapter)}</Link>
+          <Link href={`/slides#chapter-${chapter.chapter}-heading`}>
+            {lectureChapterLabel(chapter.chapter)}
+          </Link>
         </span>
       ))}
       {" · "}

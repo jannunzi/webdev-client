@@ -233,18 +233,6 @@ export const LECTURE_TOPICS = [
     bookSectionId: "sec-1-2",
   },
   {
-    topicId: "html",
-    chapter: 1,
-    title: "1.3 Introduction to HTML",
-    bookSectionId: "sec-1-3",
-  },
-  {
-    topicId: "kambaz-html",
-    chapter: 1,
-    title: "1.4 Prototyping the React Kambaz User Interface with HTML",
-    bookSectionId: "sec-1-4",
-  },
-  {
     topicId: "source-control",
     chapter: 1,
     title: "1.5 Committing Code to Source Control",
@@ -255,6 +243,18 @@ export const LECTURE_TOPICS = [
     chapter: 1,
     title: "1.6 Deploying Next.js Projects to the Web",
     bookSectionId: "sec-1-6",
+  },
+  {
+    topicId: "html",
+    chapter: 1,
+    title: "1.3 Introduction to HTML",
+    bookSectionId: "sec-1-3",
+  },
+  {
+    topicId: "kambaz-html",
+    chapter: 1,
+    title: "1.4 Prototyping the React Kambaz User Interface with HTML",
+    bookSectionId: "sec-1-4",
   },
   {
     topicId: "css",
@@ -628,6 +628,7 @@ export const LECTURE_DIAGRAM_IDS = [
   "ssr",
   "csr",
   "course-stack",
+  "react-data-ui",
   "dom-tree",
   "npm-run-dev-mock",
   "github-create-repo-mock",

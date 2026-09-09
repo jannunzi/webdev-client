@@ -1,5 +1,85 @@
 import DiagramFrame from "./DiagramFrame";
 
+function NetworkCluster({
+  x,
+  label,
+}: {
+  x: number;
+  label: string;
+}) {
+  const clients = [0, 1, 2].map((i) => ({
+    cx: x + 36 + (i % 2) * 70,
+    cy: 92 + Math.floor(i / 2) * 48,
+  }));
+  return (
+    <g>
+      <rect
+        x={x}
+        y="64"
+        width="176"
+        height="188"
+        rx="14"
+        fill="#fafafa"
+        stroke="#171717"
+        strokeWidth="2.5"
+      />
+      <text
+        x={x + 88}
+        y="88"
+        textAnchor="middle"
+        fontSize="16"
+        fontWeight="700"
+        fontFamily="ui-sans-serif, system-ui, sans-serif"
+      >
+        {label}
+      </text>
+      {clients.map((c) => (
+        <g key={`${c.cx}-${c.cy}`}>
+          <rect
+            x={c.cx}
+            y={c.cy}
+            width="56"
+            height="36"
+            rx="6"
+            fill="#fff"
+            stroke="#171717"
+            strokeWidth="2"
+          />
+          <text
+            x={c.cx + 28}
+            y={c.cy + 24}
+            textAnchor="middle"
+            fontSize="12"
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+          >
+            Client
+          </text>
+        </g>
+      ))}
+      <rect
+        x={x + 50}
+        y="196"
+        width="76"
+        height="38"
+        rx="6"
+        fill="#fee2e2"
+        stroke="#171717"
+        strokeWidth="2"
+      />
+      <text
+        x={x + 88}
+        y="221"
+        textAnchor="middle"
+        fontSize="13"
+        fontWeight="700"
+        fontFamily="ui-sans-serif, system-ui, sans-serif"
+      >
+        Server
+      </text>
+    </g>
+  );
+}
+
 export default function NetworkOfNetworksDiagram() {
   return (
     <DiagramFrame label="Diagram">
@@ -10,73 +90,35 @@ export default function NetworkOfNetworksDiagram() {
         aria-labelledby="network-of-networks-title"
       >
         <title id="network-of-networks-title">
-          The Internet is independently operated networks that interconnect:
-          home and campus clients on the left, the Internet in the middle, and
-          a web server on the right
+          The Internet is a network of networks. Each network has clients and a
+          server
         </title>
-        <defs>
-          <marker
-            id="net-arrow"
-            markerWidth="8"
-            markerHeight="8"
-            refX="6"
-            refY="4"
-            orient="auto"
-          >
-            <path d="M0,0 L8,4 L0,8 Z" fill="#171717" />
-          </marker>
-        </defs>
-
-        <rect x="16" y="28" width="250" height="224" rx="14" fill="#fafafa" stroke="#171717" strokeWidth="2.5" />
-        <text x="141" y="58" textAnchor="middle" fontSize="16" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">
-          Your networks
+        <rect
+          x="10"
+          y="10"
+          width="940"
+          height="260"
+          rx="18"
+          fill="#e0f2fe"
+          stroke="#171717"
+          strokeWidth="3"
+        />
+        <text
+          x="480"
+          y="42"
+          textAnchor="middle"
+          fontSize="26"
+          fontWeight="800"
+          letterSpacing="2"
+          fontFamily="ui-sans-serif, system-ui, sans-serif"
+        >
+          THE INTERNET
         </text>
-        <rect x="36" y="76" width="210" height="72" rx="10" fill="#fff" stroke="#171717" strokeWidth="2" />
-        <text x="141" y="106" textAnchor="middle" fontSize="20" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">
-          Home
-        </text>
-        <text x="141" y="132" textAnchor="middle" fontSize="16" fontFamily="ui-sans-serif, system-ui, sans-serif">
-          Laptop · client
-        </text>
-        <rect x="36" y="160" width="210" height="72" rx="10" fill="#fff" stroke="#171717" strokeWidth="2" />
-        <text x="141" y="190" textAnchor="middle" fontSize="20" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">
-          Campus
-        </text>
-        <text x="141" y="216" textAnchor="middle" fontSize="16" fontFamily="ui-sans-serif, system-ui, sans-serif">
-          Phone · client
-        </text>
-
-        <line x1="266" y1="112" x2="318" y2="140" stroke="#171717" strokeWidth="3" markerEnd="url(#net-arrow)" />
-        <line x1="266" y1="196" x2="318" y2="160" stroke="#171717" strokeWidth="3" markerEnd="url(#net-arrow)" />
-
-        <rect x="328" y="56" width="304" height="168" rx="16" fill="#e0f2fe" stroke="#171717" strokeWidth="3" />
-        <text x="480" y="118" textAnchor="middle" fontSize="28" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">
-          Internet
-        </text>
-        <text x="480" y="154" textAnchor="middle" fontSize="16" fontFamily="ui-sans-serif, system-ui, sans-serif">
-          ISPs · routers · many networks
-        </text>
-        <text x="480" y="184" textAnchor="middle" fontSize="16" fontFamily="ui-sans-serif, system-ui, sans-serif">
-          No one owner
-        </text>
-
-        <line x1="632" y1="140" x2="684" y2="140" stroke="#171717" strokeWidth="3" markerEnd="url(#net-arrow)" />
-
-        <rect x="694" y="56" width="250" height="168" rx="14" fill="#fafafa" stroke="#171717" strokeWidth="2.5" />
-        <text x="819" y="92" textAnchor="middle" fontSize="16" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">
-          Server network
-        </text>
-        <rect x="714" y="112" width="210" height="84" rx="10" fill="#fee2e2" stroke="#171717" strokeWidth="2" />
-        <text x="819" y="148" textAnchor="middle" fontSize="22" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">
-          Web server
-        </text>
-        <text x="819" y="178" textAnchor="middle" fontSize="16" fontFamily="ui-sans-serif, system-ui, sans-serif">
-          Hosts the site
-        </text>
+        <NetworkCluster x={36} label="Network" />
+        <NetworkCluster x={274} label="Network" />
+        <NetworkCluster x={512} label="Network" />
+        <NetworkCluster x={750} label="Network" />
       </svg>
-      <p className="mb-0 mt-3 text-center font-sans text-lg text-neutral-700">
-        Each hop is its own network. If one path fails, routing can take another.
-      </p>
     </DiagramFrame>
   );
 }

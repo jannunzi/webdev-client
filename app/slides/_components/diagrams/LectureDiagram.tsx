@@ -6,6 +6,7 @@ import DomTreeDiagram from "./DomTreeDiagram";
 import GithubCreateRepoMock from "./GithubCreateRepoMock";
 import NetworkOfNetworksDiagram from "./NetworkOfNetworksDiagram";
 import NpmRunDevMock from "./NpmRunDevMock";
+import ReactDataUiDiagram from "./ReactDataUiDiagram";
 import SsrDiagram from "./SsrDiagram";
 import BoxModelDiagram from "./BoxModelDiagram";
 import VercelAuthMock from "./VercelAuthMock";
@@ -26,6 +27,8 @@ export default function LectureDiagram({ id }: { id: LectureDiagramId }) {
       return <CsrDiagram />;
     case "course-stack":
       return <CourseStackDiagram />;
+    case "react-data-ui":
+      return <ReactDataUiDiagram />;
     case "dom-tree":
       return <DomTreeDiagram />;
     case "npm-run-dev-mock":

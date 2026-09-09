@@ -290,17 +290,17 @@ describe("lecture catalog", () => {
     );
     assert.deepEqual(
       groups[0]?.topics.map((topic) => topic.topicId),
-      ["intro", "setup", "html", "kambaz-html", "source-control", "deploy"],
+      ["intro", "setup", "source-control", "deploy", "html", "kambaz-html"],
     );
     assert.deepEqual(
       groups[0]?.topics.map((topic) => topic.title),
       [
         "Introduction",
         "1.2 Setting Up the Development Environment",
-        "1.3 Introduction to HTML",
-        "1.4 Prototyping the React Kambaz User Interface with HTML",
         "1.5 Committing Code to Source Control",
         "1.6 Deploying Next.js Projects to the Web",
+        "1.3 Introduction to HTML",
+        "1.4 Prototyping the React Kambaz User Interface with HTML",
       ],
     );
     assert.deepEqual(
@@ -313,19 +313,19 @@ describe("lecture catalog", () => {
     );
     assert.deepEqual(
       groups[0]?.topics[2]?.decks.map((deck) => deck.slug),
-      [...LECTURE_2_SLUGS],
-    );
-    assert.deepEqual(
-      groups[0]?.topics[3]?.decks.map((deck) => deck.slug),
-      [...LECTURE_3_SLUGS],
-    );
-    assert.deepEqual(
-      groups[0]?.topics[4]?.decks.map((deck) => deck.slug),
       ["commit-to-github"],
     );
     assert.deepEqual(
-      groups[0]?.topics[5]?.decks.map((deck) => deck.slug),
+      groups[0]?.topics[3]?.decks.map((deck) => deck.slug),
       ["deploying-to-vercel"],
+    );
+    assert.deepEqual(
+      groups[0]?.topics[4]?.decks.map((deck) => deck.slug),
+      [...LECTURE_2_SLUGS],
+    );
+    assert.deepEqual(
+      groups[0]?.topics[5]?.decks.map((deck) => deck.slug),
+      [...LECTURE_3_SLUGS],
     );
 
     assert.equal(groups[1]?.href, "/book/ch2");
@@ -640,6 +640,28 @@ describe("lecture catalog", () => {
     }
   });
 
+  it("lists Lecture 1 setup decks before HTML on the Ch1 hub", () => {
+    const ch1 = listChapterTopicGroups()[0];
+    assert.ok(ch1);
+    const slugs = ch1.topics.flatMap((topic) => topic.decks.map((deck) => deck.slug));
+    const intro = slugs.indexOf("intro-to-web-development");
+    const node = slugs.indexOf("installing-nodejs");
+    const next = slugs.indexOf("creating-a-nextjs-react-application");
+    const github = slugs.indexOf("commit-to-github");
+    const vercel = slugs.indexOf("deploying-to-vercel");
+    const html = slugs.indexOf("html-and-dom");
+    assert.ok(intro >= 0 && node > intro && next > node);
+    assert.ok(github > next && vercel > github);
+    assert.ok(html > vercel);
+    const nav = readFileSync(
+      join(process.cwd(), "app/slides/_components/LectureHubNav.tsx"),
+      "utf8",
+    );
+    assert.match(nav, /\/slides#chapter-\$\{chapter\.chapter\}-heading/);
+    const page = readFileSync(join(process.cwd(), "app/slides/page.tsx"), "utf8");
+    assert.match(page, /Lecture 1 setup first/);
+  });
+
   it("renders Canvas module week dates on hub chapter headers, not L# badges", () => {
     const page = readFileSync(join(process.cwd(), "app/slides/page.tsx"), "utf8");
     assert.match(page, /group\.weeks/);
@@ -695,6 +717,35 @@ describe("lecture catalog", () => {
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "chatgpt-api"));
     assert.ok(LECTURE_TOPICS.some((topic) => topic.topicId === "grok-api"));
     assert.ok(!LECTURE_TOPICS.some((topic) => topic.topicId === "napster-api"));
+  });
+
+  it("keeps Book’s preferred Ch1 bookSectionId anchors", () => {
+    const preferred = {
+      "intro-to-web-development": "/book/ch1#intro",
+      "installing-nodejs": "/book/ch1#sec-1-2-1",
+      "creating-a-nextjs-react-application": "/book/ch1#sec-1-2-4",
+      "commit-to-github": "/book/ch1#sec-1-5",
+      "deploying-to-vercel": "/book/ch1#sec-1-6",
+      "html-and-dom": "/book/ch1#sec-1-3",
+      "headings-and-paragraphs": "/book/ch1#sec-1-3-1",
+      "lists-and-tables": "/book/ch1#sec-1-3-3",
+      "web-forms": "/book/ch1#sec-1-3-6",
+      anchors: "/book/ch1#sec-1-3-9",
+      "single-page-navigation": "/book/ch1#sec-1-3-10",
+      "kambaz-overview": "/book/ch1#sec-1-4-1",
+      "kambaz-account": "/book/ch1#sec-1-4-2",
+      "kambaz-dashboard": "/book/ch1#sec-1-4-3",
+      "kambaz-navigation": "/book/ch1#sec-1-4-3-1",
+      "kambaz-courses": "/book/ch1#sec-1-4-4",
+      "kambaz-modules": "/book/ch1#sec-1-4-5",
+      "kambaz-assignments": "/book/ch1#sec-1-4-7",
+    } as const;
+    for (const [slug, href] of Object.entries(preferred)) {
+      const item = getLecture(slug);
+      assert.ok(item, slug);
+      assert.equal(item.bookHref, href, slug);
+      assert.equal(item.bookSectionId, href.split("#")[1], slug);
+    }
   });
 
   it("maps Ch1–Ch3 decks to book section anchors for bidirectional links", () => {
@@ -1077,9 +1128,9 @@ describe("lecture decks", () => {
     const counts = Object.fromEntries(
       decks.map((deck) => [deck.slug, deck.slides.length]),
     );
-    assert.equal(counts["intro-to-web-development"], 18);
+    assert.equal(counts["intro-to-web-development"], 16);
     assert.ok((counts["installing-nodejs"] ?? 0) >= 16);
-    assert.equal(counts["creating-a-nextjs-react-application"], 27);
+    assert.equal(counts["creating-a-nextjs-react-application"], 17);
     assert.equal(counts["commit-to-github"], 7);
     assert.ok((counts["deploying-to-vercel"] ?? 0) >= 14);
     assert.ok((counts["deploying-to-vercel"] ?? 0) <= 17);
@@ -1556,6 +1607,18 @@ describe("lecture decks", () => {
       [...used].sort(),
       "every embed id should be wired to a slide",
     );
+  });
+
+  it("summarizes Installing Node.js as install + hello.js, not Express", () => {
+    const item = getLecture("installing-nodejs");
+    assert.ok(item);
+    assert.match(item.summary, /hello\.js/);
+    assert.match(item.summary, /Node/);
+    assert.doesNotMatch(item.summary, /Express/i);
+    assert.doesNotMatch(item.summary, /4000/);
+    assert.equal(item.bookHref, "/book/ch1#sec-1-2-1");
+    const text = slideText("installing-nodejs");
+    assert.match(text, /localhost:4000\/hello/);
   });
 
   it("keeps Node deck evergreen and uses kambaz spelling", () => {
@@ -2444,6 +2507,7 @@ describe("lecture decks", () => {
         "course-stack": "course-stack",
       },
       "creating-a-nextjs-react-application": {
+        "react-transform": "react-data-ui",
         "npm-run-dev": "npm-run-dev-mock",
         "browser-parses-dom": "dom-tree",
       },
@@ -2546,7 +2610,7 @@ describe("lecture decks", () => {
     const cssImport = findSlide("css-intro", "import-css");
     const express = findSlide("installing-nodejs", "express");
 
-    assert.deepEqual(link.codeAddedLines, [1, 5, [7, 8]]);
+    assert.deepEqual(link.codeAddedLines, [1, [6, 7]]);
     assert.deepEqual(pancakes.codeAddedLines, [[2, 11]]);
     assert.deepEqual(signup.codeAddedLines, [11]);
     assert.deepEqual(cssImport.codeAddedLines, [1]);
