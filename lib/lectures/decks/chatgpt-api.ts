@@ -3,131 +3,168 @@ import type { LectureSlide } from "../types";
 export const CHATGPT_API_SLIDES: LectureSlide[] = [
   {
     id: "title",
-    title: "WEB DEV",
+    title: "OPENAI",
     kind: "title",
     bullets: [
-      "Project · Integrating with ChatGPT",
+      "Integrating with the **ChatGPT API**",
       "GPT-4 · tokens · OpenAI SDK",
     ],
   },
   {
     id: "gpt",
-    title: "GPT-4 is a large language model",
+    title: "GPT-4",
     kind: "content",
     bullets: [
-      "Generative Pre-trained Transformer — next-token prediction",
-      "You send a prompt; the model returns a completion",
-      "Use it for chat, extraction, classification, and code",
-      "Docs: `https://platform.openai.com/docs/overview`",
+      "A large **multimodal** model — text or image in, text out",
+      "Broader knowledge, advanced **reasoning**, better accuracy",
+      "Available in the OpenAI API to paying customers. Optimized for **chat**",
+      "[platform.openai.com/docs/overview](https://platform.openai.com/docs/overview)",
+    ],
+  },
+  {
+    id: "text-models",
+    title: "Text generation models",
+    kind: "content",
+    bullets: [
+      "Generative Pre-trained Transformers — **\"GPT\"**",
+      "Inputs are **prompts**. Designing prompts is how you **\"program\" GPT-4**",
+      "Instructions or **examples** of how to complete a task",
+      "Content, code, summarization, conversation, creative writing",
+      "**Prompt engineering**",
+    ],
+  },
+  {
+    id: "assistants",
+    title: "Assistants",
+    kind: "content",
+    bullets: [
+      "Assistants powered by **GPT-4**, performing tasks for users",
+      "Operate from **instructions** in the context window",
+      "Tools let them run code or retrieve information from a file",
     ],
   },
   {
     id: "tokens",
-    title: "Tokens are the unit you pay for",
+    title: "Tokens",
     kind: "content",
     bullets: [
-      "A token is a chunk of text — not always a whole word",
-      "`hello world!` can be tokens `hello`, ` world`, `!`",
-      "A tokenizer splits the prompt before inference",
-      "You pay for input tokens plus output tokens",
+      "Models process text in chunks — **\"tokens\"**",
+      "`tokenization` is two tokens: **`token`** and **`ization`**. `the` is one",
+      "Rule of thumb: **1 token ≈ 4 characters** or **0.75 words** in English",
+      "Prompt + output must stay under the model's **maximum context length**",
     ],
   },
   {
-    id: "prompts",
-    title: "Prompt strategies",
+    id: "models",
+    title: "Models",
     kind: "content",
     bullets: [
-      "Zero-shot — just ask; no examples",
-      "Few-shot — include a couple of input/output examples",
-      "Chain of thought — ask the model to reason step by step",
-      "Designing the prompt is how you program GPT-4",
+      "[platform.openai.com/docs/models](https://platform.openai.com/docs/models)",
+      "This deck uses **`gpt-4o`** — Jose’s hello-world model",
+      "Mini / reasoning models trade **speed, cost, and intelligence**",
+      "Cookbooks: [cookbook.openai.com](https://cookbook.openai.com/)",
+    ],
+  },
+  {
+    id: "prompt-strategies",
+    title: "Prompt engineering strategies",
+    kind: "content",
+    bullets: [
+      "**Write clear instructions**",
+      "Provide **reference text**",
+      "Split complex tasks into simpler **subtasks**",
+      "Give the model time to **\"think\"**",
+      "Use **external tools**. Test changes systematically",
+    ],
+  },
+  {
+    id: "clear-instructions",
+    title: "Write clear instructions",
+    kind: "content",
+    bullets: [
+      "Include **details** to get more relevant answers",
+      "Ask the model to adopt a **persona**",
+      "Use **delimiters** for distinct parts of the input",
+      "Specify **steps**, **examples**, and the desired **length**",
+    ],
+  },
+  {
+    id: "configuring",
+    title: "CONFIGURING OPENAI",
+    kind: "title",
+    bullets: [
+      "Install the SDK on **`webdev-server`**",
+      "The key stays in Express — **never NEXT_PUBLIC_**",
     ],
   },
   {
     id: "install",
-    title: "Install the official OpenAI SDK",
+    title: "Step 1: Install OpenAI API",
     kind: "demo",
     bullets: [
-      "The SDK lives on `webdev-server`, not in the Next.js app",
+      "Install OpenAI Library — on the **server**, not in Next.js",
+      "[platform.openai.com/docs/quickstart](https://platform.openai.com/docs/quickstart)",
     ],
     code: `cd webdev-server
 npm install openai`,
     codeLanguage: "bash",
   },
   {
-    id: "env",
-    title: "Server .env — never NEXT_PUBLIC_",
+    id: "project",
+    title: "Step 2: Create a New Project",
     kind: "demo",
     bullets: [
-      "A public prefix would ship the key to every browser",
-      "Replace the placeholder. Never paste a live `sk-` key",
+      "Create a project, then **Create new secret key**",
+      "Copy once. Store in server **`.env`**",
     ],
-    code: `OPENAI_API_KEY=your-api-key-here`,
+    diagram: "openai-project-key-mock",
+  },
+  {
+    id: "env",
+    title: "Step 3: Set up your API key",
+    kind: "demo",
+    bullets: [
+      "Course stack: **`webdev-server/.env`**, not `~/.zshrc`",
+      "A public prefix would ship the key to every **browser**",
+    ],
+    code: `OPENAI_API=https://api.openai.com/v1
+OPENAI_API_KEY=your-api-key-here`,
     codeLanguage: "bash",
     codeFile: "webdev-server/.env",
+    codeAddedLines: [[1, 2]],
     interactiveHint:
       "Jose's Drive deck includes a live-looking secret. Do not copy any real key into the repo.",
   },
   {
     id: "hello",
-    title: "Hello ChatGPT — responses.create",
+    title: "Step 4: Hello World!",
     kind: "demo",
-    bullets: [
-      "`output_text` is the completion string",
-    ],
+    bullets: ["**`output_text`** aggregates the completion string"],
     code: `import OpenAI from "openai";
-
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const client = new OpenAI();
 
 const response = await client.responses.create({
-  model: "gpt-4.1",
-  input: "Hello, ChatGPT",
+  model: "gpt-4o",
+  input: "Write a one-sentence bedtime story about a unicorn.",
 });
 
 console.log(response.output_text);`,
     codeLanguage: "javascript",
     codeFile: "webdev-server/openai/hello.js",
-    codeAddedLines: [1, [3, 5], [7, 10], 12],
+    codeAddedLines: [1, [4, 7], 9],
   },
   {
     id: "run",
-    title: "Run the hello script",
+    title: "Running Hello World!",
     kind: "demo",
-    bullets: ["Typical output: `Hello! How can I help you today?`"],
+    bullets: [
+      "Typical output: a one-sentence **unicorn** bedtime story",
+    ],
     code: `cd webdev-server
-node openai/hello.js`,
+node openai/hello.js
+# In a meadow where moonbeams danced like whispers on water,
+# a brave unicorn named Luna discovered a hidden grove
+# where dreams blossomed into stars.`,
     codeLanguage: "bash",
-  },
-  {
-    id: "why-server",
-    title: "Why the key stays on Express",
-    kind: "content",
-    bullets: [
-      "Browser `NEXT_PUBLIC_OPENAI_API_KEY` is extractable",
-      "Anyone with the key can spend your tokens",
-      "Next.js calls `/api/openai/...`; Express holds `OPENAI_API_KEY`",
-      "You control rate limits and moderation on the server",
-    ],
-  },
-  {
-    id: "recap",
-    title: "ChatGPT key recap",
-    kind: "content",
-    bullets: [
-      "Tokens = input plus output chunks you pay for",
-      "`npm install openai` on the server",
-      "`client.responses.create` plus `output_text`",
-    ],
-  },
-  {
-    id: "next-up",
-    title: "Next: roles and structured JSON",
-    kind: "title",
-    bullets: [
-      "Instructions, developer/user/assistant, then zod",
-      "Moderation before you store a prompt",
-    ],
   },
 ];

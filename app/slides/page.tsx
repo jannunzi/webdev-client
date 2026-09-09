@@ -119,7 +119,7 @@ export default function SlidesIndexPage() {
                           id={`chapter-${group.chapter}-${topic.topicId}-heading`}
                           className="mt-0 mb-0 font-sans text-xl font-semibold tracking-tight"
                         >
-                          {topic.bookHref ? (
+                          {topic.bookSectionId && topic.bookHref ? (
                             <Link href={topic.bookHref}>{topic.title}</Link>
                           ) : (
                             topic.title

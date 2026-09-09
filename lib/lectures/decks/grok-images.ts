@@ -3,29 +3,28 @@ import type { LectureSlide } from "../types";
 export const GROK_IMAGES_SLIDES: LectureSlide[] = [
   {
     id: "title",
-    title: "WEB DEV",
+    title: "GENERATING IMAGES",
     kind: "title",
     bullets: [
-      "Project · Grok images",
-      "grok-2-image · vision · zod",
+      "**grok-2-image** · vision · zod",
     ],
   },
   {
     id: "endpoint",
-    title: "Image generation is a new path",
+    title: "Image Generation Endpoint",
     kind: "content",
     bullets: [
       "`https://api.x.ai/v1/images/generations`",
-      "Chat stays on `/v1/chat/completions`",
-      "Same `baseURL` `https://api.x.ai/v1` — model `grok-2-image`",
-      "The result is a JPG URL",
+      "Chat stays on **`/v1/chat/completions`**",
+      "Same `baseURL` `https://api.x.ai/v1` — model **`grok-2-image`**",
+      "The result is a **JPG** URL",
     ],
   },
   {
     id: "generate",
-    title: "images.generate — a cat in a tree",
+    title: "Image Generation API",
     kind: "demo",
-    bullets: ["`response.data[0].url` is the hosted JPG"],
+    bullets: ["`response.data[0].url` is the hosted **JPG**"],
     code: `import "dotenv/config";
 import OpenAI from "openai";
 
@@ -44,10 +43,18 @@ console.log(response.data[0].url);`,
     codeAddedLines: [[9, 12]],
   },
   {
+    id: "course-image",
+    title: "COURSE AI IMAGE",
+    kind: "title",
+    bullets: [
+      "Sparkle suggests a course image from **title + description**",
+    ],
+  },
+  {
     id: "schema",
-    title: "Add an image field on Course",
+    title: "Add New Course image Field",
     kind: "demo",
-    bullets: ["Dashboard can store the generated URL"],
+    bullets: ["Dashboard can store the generated **URL**"],
     code: `const courseSchema = new mongoose.Schema(
   {
     _id: String,
@@ -65,10 +72,10 @@ console.log(response.data[0].url);`,
   },
   {
     id: "suggest-image",
-    title: "Suggest an image from title",
+    title: "Describe Prompt",
     kind: "demo",
     bullets: [
-      "POST `{ name, description }` when both are present",
+      "POST **`{ name, description }`** when both are present",
     ],
     code: `export const suggestAnImageForCourse = async (courseName, courseDescription) => {
   const response = await client.images.generate({
@@ -82,12 +89,20 @@ console.log(response.data[0].url);`,
     codeAddedLines: [[1, 7]],
   },
   {
+    id: "vision-title",
+    title: "UNDERSTANDING IMAGES",
+    kind: "title",
+    bullets: [
+      "Same chat path. Content is **`image_url`** plus text",
+    ],
+  },
+  {
     id: "vision",
-    title: "Vision uses image_url + detail",
+    title: "Image Understanding Endpoint",
     kind: "demo",
     bullets: [
-      "`detail`: `auto`, `low`, or `high` (more tokens, more nuance)",
-      "JPG/PNG, 20MiB max. Same chat/completions path",
+      "`detail`: **`auto`**, **`low`**, or **`high`** (more tokens, more nuance)",
+      "JPG/PNG, **20MiB** max. Same `/v1/chat/completions`",
     ],
     code: `const completion = await openai.chat.completions.create({
   model: "grok-4",
@@ -105,11 +120,39 @@ console.log(completion.choices[0].message.content);`,
     codeAddedLines: [6],
   },
   {
+    id: "vision-xai",
+    title: "Understanding Images with xAI API",
+    kind: "demo",
+    bullets: ["`generateText` with `{ type: \"image\" }`"],
+    code: `const result = await generateText({
+  model: xai("grok-4"),
+  messages: [{
+    role: "user",
+    content: [
+      { type: "image", image: imageUrl },
+      { type: "text", text: "What's in this image?" },
+    ],
+  }],
+});
+console.log(result.text);`,
+    codeLanguage: "javascript",
+    codeFile: "webdev-server/xai/image-understand-xai.js",
+    codeAddedLines: [6],
+  },
+  {
+    id: "structured-title",
+    title: "STRUCTURED OUTPUT",
+    kind: "title",
+    bullets: [
+      "JSON that matches a **Zod** schema",
+    ],
+  },
+  {
     id: "invoice",
-    title: "Structured invoice with Zod",
+    title: "Declare Schema with ZOD",
     kind: "demo",
     bullets: [
-      "`chat.completions.parse` plus `zodResponseFormat`",
+      "`chat.completions.parse` plus **`zodResponseFormat`**",
     ],
     code: `import { zodResponseFormat } from "openai/helpers/zod";
 import { z } from "zod";
@@ -135,14 +178,22 @@ const invoice = completion.choices[0].message.parsed;`,
     codeAddedLines: [1, 2, [4, 9], 11, 17],
   },
   {
+    id: "course-struct",
+    title: "STRUCTURED COURSE",
+    kind: "title",
+    bullets: [
+      "Suggest **modules and lessons** for a course",
+    ],
+  },
+  {
     id: "course-schema",
-    title: "Zod course + module + lesson",
+    title: "Declare Zod Course Schema",
     kind: "demo",
-    bullets: ["Same shapes you already store in Mongo"],
+    bullets: ["Same shapes you already store in **Mongo**"],
     code: `const LessonSchema = z.object({
-  _id: z.string(),
-  name: z.string(),
-  description: z.string(),
+  _id: z.string().describe("Unique identifier for the lesson"),
+  name: z.string().describe("Title of the lesson"),
+  description: z.string().describe("Description of the lesson"),
 });
 const ModuleSchema = z.object({
   _id: z.string(),
@@ -163,10 +214,10 @@ const CourseSchema = z.object({
   },
   {
     id: "upsert",
-    title: "upsertCourse writes the parse",
+    title: "Add upsertCourse DAO",
     kind: "demo",
     bullets: [
-      "`findOneAndUpdate` with `upsert: true`",
+      "`findOneAndUpdate` with **`upsert: true`**",
     ],
     code: `async function upsertCourse(course) {
   const query = { _id: course._id };
@@ -183,17 +234,16 @@ const CourseSchema = z.object({
   },
   {
     id: "modules-route",
-    title: "GET course modules from Grok",
+    title: "Create Course Structure Route",
     kind: "demo",
     bullets: [
-      "Load the course, parse a structure, upsert, return it",
+      "Load the course, parse a structure, **upsert**, return it",
     ],
     code: `app.get("/api/xai/course/:cid/modules", async (req, res) => {
   const { cid } = req.params;
   const course = await courseDao.findCourseById(cid);
   const courseStructure = await suggestCourseStructure(
-    course.name,
-    course.description,
+    course.name, course.description,
   );
   const updated = await courseDao.upsertCourse({
     ...courseStructure.choices[0].message.parsed,
@@ -203,18 +253,17 @@ const CourseSchema = z.object({
 });`,
     codeLanguage: "javascript",
     codeFile: "webdev-server/xai/routes.js",
-    codeAddedLines: [1, [8, 11]],
+    codeAddedLines: [1, [7, 10]],
   },
   {
     id: "modules-ui",
-    title: "Suggest Course Structure button",
+    title: "Add Suggest Button",
     kind: "demo",
     bullets: [
-      "Modules page calls GET, then `setModules` on the Zustand store",
+      "Modules page calls GET, then **`setModules`** on the store",
     ],
     code: `const [loading, setLoading] = useState(false);
 const { cid } = useParams();
-const setModules = useModulesStore((s) => s.setModules);
 
 const onSuggestCourseStructure = async () => {
   setLoading(true);
@@ -224,7 +273,7 @@ const onSuggestCourseStructure = async () => {
 };
 
 <button
-  className="float-end rounded bg-green-600 px-3 py-2 text-white"
+  className="float-right rounded bg-green-600 px-3 py-2 text-white"
   onClick={onSuggestCourseStructure}
 >
   {loading && <ImSpinner3 className="me-2 animate-spin" />}
@@ -232,16 +281,7 @@ const onSuggestCourseStructure = async () => {
 </button>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/page.tsx",
-    codeAddedLines: [[5, 10], [16, 17]],
-  },
-  {
-    id: "recap",
-    title: "Images recap",
-    kind: "content",
-    bullets: [
-      "`images.generate` model `grok-2-image`",
-      "Vision: `image_url` plus `detail`",
-      "Zod parse, `upsertCourse`, then Suggest Course Structure",
-    ],
+    codeAddedLines: [[4, 9], [15, 16]],
+    embed: "grok-modules",
   },
 ];

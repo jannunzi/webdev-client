@@ -3,73 +3,106 @@ import type { LectureSlide } from "../types";
 export const YOUTUBE_SEARCH_SLIDES: LectureSlide[] = [
   {
     id: "title",
-    title: "WEB DEV",
+    title: "SEARCH SCREEN",
     kind: "title",
     bullets: [
-      "Project · YouTube search",
-      "GET /search · then render cards",
+      "**Keyword search**, axios client, then cards",
+      "Kambaz course nav gets a **YouTube** link",
     ],
   },
   {
     id: "endpoint",
-    title: "Search needs q, key, and part",
+    title: "Search API",
     kind: "demo",
     bullets: [
       "URL: `https://www.googleapis.com/youtube/v3/search`",
-      "`q` is the keyword. `part=snippet` includes title and thumbs",
+      "Required: **q** — search keyword · **key** — API key · **part** — e.g. `snippet`",
     ],
     code: `https://www.googleapis.com/youtube/v3/search?q=boats&key=YOUR_KEY&part=snippet`,
     codeLanguage: "text",
   },
   {
     id: "response",
-    title: "items hold videoId and snippet",
+    title: "Sample Response",
     kind: "demo",
     bullets: [
       "`kind` is `youtube#searchListResponse`",
-      "Each item: `id.videoId` plus `snippet.title` and thumbnails",
+      "`items` are on the **next slide**",
     ],
     code: `{
   "kind": "youtube#searchListResponse",
+  "etag": "l1AScKaPwzdjB63pqQ9_CJvdBS0",
+  "nextPageToken": "CAUQAA",
+  "regionCode": "US",
   "pageInfo": { "totalResults": 467105, "resultsPerPage": 5 },
-  "items": [
-    {
-      "id": { "kind": "youtube#video", "videoId": "PQ-GWgMnifE" },
-      "snippet": {
-        "title": "BENETEAU Swift Trawler 54: ...",
-        "description": "Welcome aboard the Swift Trawler 54 ...",
-        "thumbnails": {
-          "high": { "url": "https://i.ytimg.com/vi/PQ-GWgMnifE/hqdefault.jpg" }
-        }
-      }
-    }
-  ]
+  "items": [ ... ]
 }`,
     codeLanguage: "json",
-    codeHighlightLines: [5, [6, 12]],
+    codeHighlightLines: [7],
+  },
+  {
+    id: "items",
+    title: "Sample Response Items",
+    kind: "demo",
+    bullets: [
+      "Each item: **`id.videoId`** plus `snippet.title` and thumbnails",
+    ],
+    code: `{
+  "kind": "youtube#searchResult",
+  "id": { "kind": "youtube#video", "videoId": "PQ-GWgMnifE" },
+  "snippet": {
+    "publishedAt": "2024-10-08T13:40:01Z",
+    "title": "BENETEAU Swift Trawler 54: ...",
+    "description": "Welcome aboard the Swift Trawler 54 ...",
+    "thumbnails": {
+      "default": { "width": 120, "height": 90,
+        "url": "https://i.ytimg.com/vi/PQ-GWgMnifE/default.jpg" },
+      "medium": { }, "high": { }
+    },
+    "channelTitle": "BENETEAU America"
+  }
+}`,
+    codeLanguage: "json",
+    codeHighlightLines: [3, [6, 10]],
   },
   {
     id: "nav",
-    title: "Add a YouTube link to Kambaz",
+    title: "Add a New YouTube Link to Kambaz",
     kind: "demo",
     bullets: [
       "Course nav already lists Home, Modules, Assignments",
-      "Path is `YouTube/Search` under the course id",
+      "Path is **`youtube/search`** under the course id",
     ],
     code: `{
+  segment: "youtube/search",
+  id: "wd-course-youtube-link",
   label: "YouTube",
-  path: "YouTube/Search",
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/Navigation.tsx",
-    codeAddedLines: [[1, 4]],
+    codeAddedLines: [[1, 5]],
+  },
+  {
+    id: "placeholder",
+    title: "Add a YouTube Screen Placeholder",
+    kind: "demo",
+    bullets: ["Stub the route before the client exists"],
+    code: `export default function YouTubeSearch() {
+  return (
+    <div>
+      <h2>YouTube Search</h2>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/youtube/search/page.tsx",
   },
   {
     id: "client",
-    title: "Create a YouTube API client",
+    title: "Create a YouTube API Client",
     kind: "demo",
     bullets: [
-      "Read the env base and key. Return `response.data.items`",
+      "Read the env base and key. Return **`response.data.items`**",
     ],
     code: `import axios from "axios";
 const YOUTUBE_API = process.env.NEXT_PUBLIC_YOUTUBE_API;
@@ -84,14 +117,15 @@ export const search = async (query: string) => {
     codeLanguage: "ts",
     codeFile: "app/(kambaz)/courses/[cid]/youtube/client.ts",
     codeAddedLines: [[5, 10]],
+    diagram: "youtube-search-flow",
   },
   {
     id: "screen",
-    title: "Search screen holds query state",
+    title: "Create Search Screen",
     kind: "demo",
     bullets: [
-      "`\"use client\"` because `useState` and the click handler",
-      "`searchVideos` calls the client and `setVideos`",
+      `**"use client"** because \`useState\` and the click handler`,
+      "`searchVideos` calls the client and **`setVideos`**",
     ],
     code: `"use client";
 import { useState } from "react";
@@ -113,10 +147,10 @@ export default function YouTubeSearch() {
   },
   {
     id: "field",
-    title: "A field and a Search button",
+    title: "Create a Search Field",
     kind: "demo",
     bullets: [
-      "Controlled input. Button calls `searchVideos`",
+      "Controlled input. Button calls **`searchVideos`**",
       "Tailwind instead of Bootstrap `form-control`",
     ],
     code: `return (
@@ -139,46 +173,42 @@ export default function YouTubeSearch() {
   },
   {
     id: "cards",
-    title: "Map items to thumbnail cards",
+    title: "Iterate Over Videos showing Videos",
     kind: "demo",
     bullets: [
-      "Key is `video.id.videoId`. Thumb is `snippet.thumbnails.high.url`",
-      "Watch opens YouTube. Details stays in Kambaz",
+      "Key is **`video.id.videoId`**. Thumb is `snippet.thumbnails.high.url`",
     ],
-    code: `{videos.map((video) => (
-  <div key={video.id.videoId} className="w-1/3 p-2">
-    <img src={video.snippet.thumbnails.high.url} alt={video.snippet.title} />
-    <h5>{video.snippet.title}</h5>
-    <p>{video.snippet.description}</p>
-    <a href={\`https://www.youtube.com/watch?v=\${video.id.videoId}\`} target="_blank">
-      Watch Video
-    </a>
-    <Link href={\`/courses/\${cid}/youtube/details/\${video.id.videoId}\`}>
-      View Details
-    </Link>
-  </div>
-))}`,
+    code: `{videos && videos.length > 0 && (
+  <div className="grid grid-cols-3 gap-4">
+    {videos.map((video) => (
+      <div key={video.id.videoId}>
+        <img
+          src={video.snippet.thumbnails.high.url}
+          alt={video.snippet.title}
+          className="w-full"
+        />`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/youtube/search/page.tsx",
-    codeHighlightLines: [1, 3, [9, 11]],
+    codeHighlightLines: [3, 5],
   },
   {
-    id: "recap",
-    title: "Search recap",
-    kind: "content",
+    id: "links",
+    title: "Render Video Title, Description and Link",
+    kind: "demo",
     bullets: [
-      "`GET /search?part=snippet&q=&key=` returns `items`",
-      "axios client, then `useState` for query and videos",
-      "Cards link to `/youtube/details/[vid]` next",
+      "**Watch** opens YouTube. **Details** stays in Kambaz",
     ],
-  },
-  {
-    id: "next-up",
-    title: "Next: video details",
-    kind: "title",
-    bullets: [
-      "`GET /videos` by id, embed the player, encode search",
-      "Then save a `youTubeId` on the lesson",
-    ],
+    code: `<h5>{video.snippet.title}</h5>
+<p>{video.snippet.description}</p>
+<a href={\`https://www.youtube.com/watch?v=\${video.id.videoId}\`}
+   target="_blank">
+  Watch Video
+</a>
+<Link href={\`/courses/\${cid}/youtube/details/\${video.id.videoId}\`}>
+  View Details
+</Link>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/youtube/search/page.tsx",
+    codeHighlightLines: [[3, 6], [7, 9]],
   },
 ];

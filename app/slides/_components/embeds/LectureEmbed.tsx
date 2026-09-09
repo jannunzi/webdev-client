@@ -162,8 +162,13 @@ import {
   Lab6UsersEmbed,
 } from "./Lab6Embeds";
 import {
+  GrokModulesEmbed,
   GrokSparkleEmbed,
   OpenAIChatEmbed,
+  OpenAIImagesEmbed,
+  OpenAIVisionEmbed,
+  YouTubeDetailsEmbed,
+  YouTubeLessonEmbed,
   YouTubeSearchEmbed,
 } from "./ProjectApiEmbeds";
 
@@ -455,10 +460,20 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <Lab6UsersEmbed />;
     case "youtube-search":
       return <YouTubeSearchEmbed />;
+    case "youtube-details":
+      return <YouTubeDetailsEmbed />;
+    case "youtube-lesson":
+      return <YouTubeLessonEmbed />;
     case "openai-chat":
       return <OpenAIChatEmbed />;
+    case "openai-images":
+      return <OpenAIImagesEmbed />;
+    case "openai-vision":
+      return <OpenAIVisionEmbed />;
     case "grok-sparkle":
       return <GrokSparkleEmbed />;
+    case "grok-modules":
+      return <GrokModulesEmbed />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;

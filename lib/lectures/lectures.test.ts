@@ -5,9 +5,11 @@ import { join } from "node:path";
 import {
   COURSE_SITE_ORIGIN,
   adjacentLectureSlugs,
+  bookHrefForSection,
   getLecture,
   getLectureDeck,
   isLectureSlug,
+  lectureCompanionLinkLabel,
   lectureDeckThumbnail,
   lecturePublicUrl,
   listCanvasLectureGroups,
@@ -812,6 +814,35 @@ describe("lecture catalog", () => {
     assert.equal(getLecture("youtube-api")?.bookSectionId, undefined);
     assert.equal(getLecture("youtube-api")?.chapter, 7);
     assert.equal(getLecture("youtube-api")?.canvasLecture, 25);
+    for (const slug of PROJECT_SLUGS) {
+      const item = getLecture(slug);
+      assert.equal(item?.bookSectionId, undefined);
+      assert.equal(item?.bookHref, "/project");
+      assert.equal(item?.chapter, 7);
+      assert.doesNotMatch(item?.bookHref ?? "", /\/book\/ch/);
+    }
+    for (const topic of LECTURE_TOPICS.filter((entry) => entry.chapter === 7)) {
+      assert.equal(topic.bookSectionId, undefined);
+    }
+    assert.equal(bookHrefForSection(7), "/project");
+    assert.equal(bookHrefForSection(7, "sec-7-1"), "/project");
+    assert.equal(lectureCompanionLinkLabel(7), "Open the project");
+    assert.equal(
+      lectureCompanionLinkLabel(3, "sec-3-2"),
+      "§3.2 in the book",
+    );
+    const deckPage = readFileSync(
+      join(process.cwd(), "app/slides/[slug]/page.tsx"),
+      "utf8",
+    );
+    assert.match(deckPage, /lectureCompanionLinkLabel/);
+    assert.doesNotMatch(deckPage, /Open in the book/);
+    const chapterLink = readFileSync(
+      join(process.cwd(), "app/slides/_components/LectureChapterLink.tsx"),
+      "utf8",
+    );
+    assert.match(chapterLink, /Open the project page/);
+    assert.match(chapterLink, /chapter > 6 \? "Project"/);
     assert.equal(listDecksForBookSection("sec-3-2")[0]?.slug, "intro-to-javascript");
     assert.equal(listDecksForBookSection("sec-4-5-1")[0]?.slug, "zustand-counter");
     assert.equal(listDecksForBookSection("sec-5-1")[0]?.slug, "http-server");
@@ -1231,15 +1262,15 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-courses-db"], 10);
     assert.equal(counts["kambaz-modules-db"], 9);
     assert.equal(counts["kambaz-enrollments-db"], 10);
-    assert.equal(counts["youtube-api"], 9);
-    assert.equal(counts["youtube-search"], 10);
-    assert.equal(counts["youtube-details"], 10);
-    assert.equal(counts["chatgpt-api"], 11);
-    assert.equal(counts["chatgpt-text"], 11);
-    assert.equal(counts["chatgpt-ui"], 12);
-    assert.equal(counts["grok-api"], 12);
-    assert.equal(counts["grok-chat"], 13);
-    assert.equal(counts["grok-images"], 12);
+    assert.equal(counts["youtube-api"], 11);
+    assert.equal(counts["youtube-search"], 11);
+    assert.equal(counts["youtube-details"], 23);
+    assert.equal(counts["chatgpt-api"], 14);
+    assert.equal(counts["chatgpt-text"], 22);
+    assert.equal(counts["chatgpt-ui"], 21);
+    assert.equal(counts["grok-api"], 18);
+    assert.equal(counts["grok-chat"], 17);
+    assert.equal(counts["grok-images"], 16);
     for (const deck of decks) {
       const ids = deck.slides.map((slide) => slide.id);
       assert.equal(new Set(ids).size, ids.length, `${deck.slug} duplicate slide id`);
@@ -1584,8 +1615,17 @@ describe("lecture decks", () => {
         assignments: "kambaz-styled-assignments",
       },
       "youtube-search": { field: "youtube-search" },
-      "chatgpt-ui": { page: "openai-chat" },
+      "youtube-details": {
+        embed: "youtube-details",
+        "lesson-icon": "youtube-lesson",
+      },
+      "chatgpt-ui": {
+        page: "openai-chat",
+        "image-route": "openai-images",
+        vision: "openai-vision",
+      },
       "grok-chat": { sparkle: "grok-sparkle" },
+      "grok-images": { "modules-ui": "grok-modules" },
     } as const;
     const used = new Set<string>();
     for (const [slug, slides] of Object.entries(expected)) {
@@ -2357,7 +2397,7 @@ describe("lecture decks", () => {
     assert.match(text, /CalendarEvent/);
 
     const ui = slideText("chatgpt-ui");
-    assert.match(ui, /\/api\/openai\/chat/);
+    assert.match(ui, /\/api\/openai\/conversation/);
     assert.match(ui, /\/api\/courses\/ai/);
     assert.match(ui, /\/api\/modules\/ai/);
     assert.match(ui, /images\.generate/);
@@ -2390,6 +2430,8 @@ describe("lecture decks", () => {
       assert.doesNotMatch(copy, /AIzaSy/);
       assert.doesNotMatch(copy, /xai-W2eC/);
       assert.doesNotMatch(copy, /Kanbas/);
+      assert.doesNotMatch(copy, /\/book\/ch7/);
+      assert.doesNotMatch(copy, /sec-7-/);
     }
   });
 
@@ -2527,6 +2569,15 @@ describe("lecture decks", () => {
       "css-box-model": {
         layers: "box-model",
       },
+      "youtube-api": {
+        credentials: "google-cloud-key-mock",
+        enable: "youtube-enable-api-mock",
+      },
+      "youtube-search": { client: "youtube-search-flow" },
+      "youtube-details": { dao: "youtube-save-flow" },
+      "chatgpt-api": { project: "openai-project-key-mock" },
+      "chatgpt-text": { "roles-code": "openai-roles-flow" },
+      "grok-api": { tokens: "grok-token-flow", key: "xai-key-mock" },
     } as const;
 
     const used = new Set<string>();

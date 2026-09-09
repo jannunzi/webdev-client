@@ -9,11 +9,19 @@ import NpmRunDevMock from "./NpmRunDevMock";
 import ReactDataUiDiagram from "./ReactDataUiDiagram";
 import SsrDiagram from "./SsrDiagram";
 import BoxModelDiagram from "./BoxModelDiagram";
+import GoogleCloudKeyMock from "./GoogleCloudKeyMock";
+import GrokTokenFlow from "./GrokTokenFlow";
+import OpenaiProjectKeyMock from "./OpenaiProjectKeyMock";
+import OpenaiRolesFlow from "./OpenaiRolesFlow";
 import VercelAuthMock from "./VercelAuthMock";
 import VercelDeployMock from "./VercelDeployMock";
 import VercelImportMock from "./VercelImportMock";
 import VercelProtectMock from "./VercelProtectMock";
 import VercelSuccessMock from "./VercelSuccessMock";
+import XaiKeyMock from "./XaiKeyMock";
+import YoutubeEnableApiMock from "./YoutubeEnableApiMock";
+import YoutubeSaveFlow from "./YoutubeSaveFlow";
+import YoutubeSearchFlow from "./YoutubeSearchFlow";
 
 export default function LectureDiagram({ id }: { id: LectureDiagramId }) {
   switch (id) {
@@ -47,6 +55,22 @@ export default function LectureDiagram({ id }: { id: LectureDiagramId }) {
       return <VercelAuthMock />;
     case "box-model":
       return <BoxModelDiagram />;
+    case "google-cloud-key-mock":
+      return <GoogleCloudKeyMock />;
+    case "youtube-enable-api-mock":
+      return <YoutubeEnableApiMock />;
+    case "youtube-search-flow":
+      return <YoutubeSearchFlow />;
+    case "youtube-save-flow":
+      return <YoutubeSaveFlow />;
+    case "openai-project-key-mock":
+      return <OpenaiProjectKeyMock />;
+    case "openai-roles-flow":
+      return <OpenaiRolesFlow />;
+    case "xai-key-mock":
+      return <XaiKeyMock />;
+    case "grok-token-flow":
+      return <GrokTokenFlow />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;

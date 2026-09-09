@@ -158,7 +158,19 @@ export function bookHrefForSection(
   sectionId?: string,
 ): string {
   const href = bookChapterMeta(chapter).href;
-  return sectionId ? `${href}#${sectionId}` : href;
+  // No Integrating chapter in the book yet — do not invent /book/ch7 or #sec-7-*.
+  if (!sectionId || href === "/project") return href;
+  return `${href}#${sectionId}`;
+}
+
+/** Deck chrome label. Project week links to `/project`, not a book chapter. */
+export function lectureCompanionLinkLabel(
+  chapter: number,
+  bookSectionId?: string,
+): string {
+  if (chapter > 6) return "Open the project";
+  if (bookSectionId) return `§${bookSectionLabel(bookSectionId)} in the book`;
+  return "Open in the book";
 }
 
 export function slidesHref(slug: LectureSlug): string {
@@ -1199,7 +1211,7 @@ const LECTURE_SUMMARIES: Record<
   "youtube-api": {
     title: "YouTube Data API Key",
     summary:
-      "Google Cloud project, restrict a key, enable Data API v3, then NEXT_PUBLIC_YOUTUBE_* — no live keys.",
+      "Jose’s API / API Key sequence: Cloud project, credentials, .env, enable Data API v3 — no live keys.",
     chapter: 7,
     topicId: "youtube-api",
     canvasLecture: 25,
@@ -1208,7 +1220,7 @@ const LECTURE_SUMMARIES: Record<
   "youtube-search": {
     title: "YouTube Search",
     summary:
-      "GET /search?part=snippet, axios client, then Kambaz search cards.",
+      "SEARCH SCREEN: q/key/part, sample items, course nav, axios client, then cards.",
     chapter: 7,
     topicId: "youtube-api",
     canvasLecture: 25,
@@ -1217,7 +1229,7 @@ const LECTURE_SUMMARIES: Record<
   "youtube-details": {
     title: "YouTube Details",
     summary:
-      "videos.list, iframe embed, ?search= URL state, then youTubeId on the lesson.",
+      "DETAILS SCREEN, encode ?search=, VIDEO LESSONS, then STORE VIDEOS IN DB.",
     chapter: 7,
     topicId: "youtube-api",
     canvasLecture: 25,
@@ -1226,7 +1238,7 @@ const LECTURE_SUMMARIES: Record<
   "chatgpt-api": {
     title: "ChatGPT SDK and Tokens",
     summary:
-      "GPT-4, tokens, npm install openai, server OPENAI_API_KEY, then responses.create.",
+      "GPT-4, tokens, prompt strategies, CONFIGURING OPENAI, then Hello World responses.create.",
     chapter: 7,
     topicId: "chatgpt-api",
     canvasLecture: 25,
@@ -1235,7 +1247,7 @@ const LECTURE_SUMMARIES: Record<
   "chatgpt-text": {
     title: "ChatGPT Roles and Parse",
     summary:
-      "Instructions, developer/user/assistant, zodTextFormat, then moderations.create.",
+      "Pirate instructions, roles, vision, TTS, Structured Outputs, then moderation.",
     chapter: 7,
     topicId: "chatgpt-api",
     canvasLecture: 25,
@@ -1244,7 +1256,7 @@ const LECTURE_SUMMARIES: Record<
   "chatgpt-ui": {
     title: "ChatGPT UI and Course AI",
     summary:
-      "Express chat/vision/TTS, Next.js client, then POST /api/courses/ai and /api/modules/ai.",
+      "Chat bot, image UI, vision, TTS/STT, then Kambaz suggest course and module.",
     chapter: 7,
     topicId: "chatgpt-api",
     canvasLecture: 25,
@@ -1253,7 +1265,7 @@ const LECTURE_SUMMARIES: Record<
   "grok-api": {
     title: "Grok xAI Key",
     summary:
-      "Tokens, curl api.x.ai chat/completions, XAI_API_KEY, then generateText grok-4.",
+      "TOKENS, API KEY, curl grok-4-latest, then generateText meaning-of-life.",
     chapter: 7,
     topicId: "grok-api",
     canvasLecture: 25,
@@ -1262,7 +1274,7 @@ const LECTURE_SUMMARIES: Record<
   "grok-chat": {
     title: "Grok Chat and Sparkle",
     summary:
-      "OpenAI SDK at api.x.ai, stateless roles, POST /api/xai/course, Dashboard sparkle.",
+      "CHAT completions, stateless roles, COURSE AI DESCRIPTION, then title sparkle.",
     chapter: 7,
     topicId: "grok-api",
     canvasLecture: 25,
@@ -1271,7 +1283,7 @@ const LECTURE_SUMMARIES: Record<
   "grok-images": {
     title: "Grok Images and Structure",
     summary:
-      "grok-2-image, vision image_url, Zod invoice, then upsertCourse modules.",
+      "GENERATING IMAGES, COURSE AI IMAGE, vision, STRUCTURED OUTPUT, then course modules.",
     chapter: 7,
     topicId: "grok-api",
     canvasLecture: 25,

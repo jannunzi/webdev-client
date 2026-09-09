@@ -4,9 +4,9 @@ import { notFound } from "next/navigation";
 import { withHighlightedLectureCode } from "@/lib/code-block/highlight-lecture";
 import {
   adjacentLectureSlugs,
-  bookSectionLabel,
   getLectureDeck,
   lectureChapterLabel,
+  lectureCompanionLinkLabel,
   listLectureSlugs,
 } from "@/lib/lectures";
 import LectureDeckShell from "../_components/LectureDeckShell";
@@ -37,9 +37,6 @@ export default async function SlideDeckPage({ params }: PageProps) {
 
   const { prev, next } = adjacentLectureSlugs(deck.slug);
   const slides = await withHighlightedLectureCode(deck.slides);
-  const sectionLabel = deck.bookSectionId
-    ? bookSectionLabel(deck.bookSectionId)
-    : null;
 
   return (
     <div className="flex h-dvh min-h-0 flex-col overflow-hidden px-2 py-2 sm:px-3">
@@ -56,7 +53,7 @@ export default async function SlideDeckPage({ params }: PageProps) {
               slides
             </span>
             <Link href={deck.bookHref}>
-              {sectionLabel ? `§${sectionLabel} in the book` : "Open in the book"}
+              {lectureCompanionLinkLabel(deck.chapter, deck.bookSectionId)}
             </Link>
           </p>
         </div>
