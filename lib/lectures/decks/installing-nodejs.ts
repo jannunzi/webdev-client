@@ -37,9 +37,8 @@ export const INSTALLING_NODEJS_SLIDES: LectureSlide[] = [
     title: "First Client User Interface",
     kind: "content",
     bullets: [
-      "This week’s **1st** deliverable is the **client** — a Next.js React UI",
-      "Same stack. Node on the laptop runs the Next.js dev server",
-      "The Express API comes later. Today we only need **Node.js** installed",
+      "The **1st** UI we build is the **client** — React.js & Node.js",
+      "Same architecture drawing. **Node.js** is the runtime on your laptop",
     ],
     diagram: "course-stack",
   },
@@ -120,7 +119,6 @@ cd webdev`,
     kind: "demo",
     bullets: [
       "Live: `node --version` prints, we are in the course folder",
-      "Next: initialize a tiny Node server — not the Next.js client",
     ],
   },
   {
@@ -189,7 +187,7 @@ app.listen(4000);`,
     title: "Next: create the Next.js app",
     kind: "title",
     bullets: [
-      "Node is installed. You have seen a one-route Express server",
+      "**Node.js** is installed. You ran `hello.js` outside the browser",
       "Next deck: `npx create-next-app@latest` and the **App Router**",
     ],
   },

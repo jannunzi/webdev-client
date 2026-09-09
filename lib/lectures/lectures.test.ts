@@ -1580,6 +1580,18 @@ describe("lecture decks", () => {
     );
   });
 
+  it("summarizes Installing Node.js as install + hello.js, not Express", () => {
+    const item = getLecture("installing-nodejs");
+    assert.ok(item);
+    assert.match(item.summary, /hello\.js/);
+    assert.match(item.summary, /Node/);
+    assert.doesNotMatch(item.summary, /Express/i);
+    assert.doesNotMatch(item.summary, /4000/);
+    assert.equal(item.bookHref, "/book/ch1#sec-1-2-1");
+    const text = slideText("installing-nodejs");
+    assert.match(text, /localhost:4000\/hello/);
+  });
+
   it("keeps Node deck evergreen and uses kambaz spelling", () => {
     const text = slideText("installing-nodejs");
     assert.match(text, /mkdir -p webdev/);

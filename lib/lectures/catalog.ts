@@ -190,7 +190,7 @@ const LECTURE_SUMMARIES: Record<
   "installing-nodejs": {
     title: "Installing Node.js",
     summary:
-      "Install the Node runtime, create a course folder, and run a one-route Express hello server on port 4000.",
+      "Install the Node LTS runtime, confirm node --version, create a course folder, and run hello.js.",
     chapter: 1,
     topicId: "setup",
     bookSectionId: "sec-1-2-1",
