@@ -116,7 +116,7 @@ export type AgendaGroup = {
 
 export type LectureTopic = {
   topic: string;
-  /** Book chapter for weekly rows. Omitted on exam-only and project weeks. */
+  /** Book chapter for weekly rows. Omitted on exam-only (X2) and project weeks. */
   chapter?: number;
   exam?: "X1" | "X2";
   /** Week of Dec 7: project grading (not Chapter 6). */

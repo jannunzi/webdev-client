@@ -48,9 +48,10 @@ describe("Fall 2026 lectureTopics", () => {
     assert.match(lectureTopics[3]!.topic, /Chapter 2 week 2/);
     assert.match(lectureTopics[4]!.topic, /Chapter 3 week 1/);
     assert.match(lectureTopics[5]!.topic, /Chapter 3 week 2/);
-    assert.match(lectureTopics[6]!.topic, /^X1 midterm \+ Chapter 4 week 1/);
+    assert.match(lectureTopics[6]!.topic, /Chapter 4 week 1/);
+    assert.match(lectureTopics[6]!.topic, /midterm\/X1/);
     assert.equal(lectureTopics[6]!.chapter, 4);
-    assert.equal(lectureTopics[6]!.exam, "X1");
+    assert.equal(lectureTopics[6]!.exam, undefined);
     assert.match(lectureTopics[7]!.topic, /Chapter 4 week 2/);
     assert.match(lectureTopics[8]!.topic, /Chapter 5 week 1/);
     assert.match(lectureTopics[9]!.topic, /Chapter 5 week 2/);
@@ -196,10 +197,17 @@ describe("agenda Week of labels and chapter groups", () => {
     assert.equal(groups[1]?.heading, bookChapterHeading(2));
     assert.equal(groups[2]?.heading, bookChapterHeading(3));
     assert.equal(groups[3]?.heading, CHAPTER_4_MIDTERM_HEADING);
+    assert.equal(groups[3]?.kind, "chapter");
+    assert.equal(groups[3]?.chapter, 4);
     assert.equal(groups[4]?.heading, bookChapterHeading(5));
     assert.equal(groups[5]?.heading, bookChapterHeading(6));
     assert.equal(groups[6]?.heading, "Project grading");
     assert.equal(groups[7]?.heading, examModuleHeading("X2"));
+    assert.equal(groups.filter((group) => group.kind === "exam").length, 1);
+    assert.equal(
+      groups.some((group) => /^Midterm/i.test(group.heading ?? "")),
+      false,
+    );
 
     assert.equal(groups[0]?.rows.length, 2);
     assert.equal(mondayOfWeek(groups[0]!.rows[0]!.date), "2026-09-14");
@@ -207,7 +215,8 @@ describe("agenda Week of labels and chapter groups", () => {
     assert.equal(mondayOfWeek(groups[2]!.rows[0]!.date), "2026-10-12");
     assert.equal(mondayOfWeek(groups[2]!.rows[1]!.date), "2026-10-19");
     assert.equal(groups[3]?.rows.length, 2);
-    assert.match(groups[3]?.rows[0]?.topic ?? "", /^X1 midterm \+ Chapter 4 week 1/);
+    assert.match(groups[3]?.rows[0]?.topic ?? "", /Chapter 4 week 1/);
+    assert.match(groups[3]?.rows[0]?.topic ?? "", /midterm\/X1/);
     assert.equal(mondayOfWeek(groups[3]!.rows[0]!.date), "2026-10-26");
     assert.match(groups[3]?.rows[1]?.topic ?? "", /Chapter 4 week 2/);
     assert.equal(mondayOfWeek(groups[3]!.rows[1]!.date), "2026-11-02");

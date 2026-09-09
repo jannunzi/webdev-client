@@ -128,10 +128,10 @@ function topicMetaForRow(row: AgendaRow) {
 }
 
 /**
- * Groups a section’s rows under book chapter headings. X1 shares Chapter 4
- * week 1 (grouped under Chapter 4). Project grading is its own week. X2 is
- * the last-week exam group. Date cells still use the shared Monday
- * (“Week of …”).
+ * Groups a section’s rows under book chapter headings. Chapter 4 is one
+ * block (weeks of 10/26 and 11/2) — no separate Midterm module. Project
+ * grading is its own week. X2 is the last-week exam group. Date cells
+ * still use the shared Monday (“Week of …”).
  */
 export function buildAgendaGroups(section: CourseSection): AgendaGroup[] {
   const groups: AgendaGroup[] = [];
@@ -168,7 +168,7 @@ export function buildAgendaGroups(section: CourseSection): AgendaGroup[] {
       continue;
     }
 
-    // Exam-only weeks (X2). X1 is merged into Chapter 4 week 1.
+    // Exam-only week (X2). X1 is not its own module — it sits in Chapter 4.
     if (meta?.exam && !meta.chapter) {
       const last = groups[groups.length - 1];
       if (last?.kind === "exam" && last.id === meta.exam.toLowerCase()) {

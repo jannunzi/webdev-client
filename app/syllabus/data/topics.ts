@@ -4,8 +4,9 @@ import type { IsoDate, LectureTopic } from "./types";
 /**
  * Shared Fall 2026 lecture sequence, aligned to Jose’s Canvas modules.
  * Fourteen Monday-weeks from 2026-09-14 through 2026-12-14. Chapter 3
- * is two weeks. X1 shares the week of Oct 26 with Chapter 4 week 1
- * (not an X1-only slot). Ch5/Ch6 sit on 11/9–11/16 and 11/23–11/30.
+ * is two weeks. There is no separate Midterm module: X1 falls in the
+ * Chapter 4 window (weeks of 10/26 and 11/2). Ch5/Ch6 sit on 11/9–11/16
+ * and 11/23–11/30.
  * The week of Dec 7 is project grading (due 2026-12-06), with room for
  * the “Integrating with the …” lecture slides. The week of Dec 14 is
  * X2 even though lastDayOfClasses is Dec 13. Holidays do not skip a slot.
@@ -27,9 +28,7 @@ export function bookChapterHeading(chapter: number): string {
 }
 
 export function examModuleHeading(exam: "X1" | "X2"): string {
-  return exam === "X1"
-    ? "Midterm — X1 + Chapter 4 week 1"
-    : "Final — X2";
+  return exam === "X2" ? "Final — X2" : "Ch 4 — Client state, Midterm/X1";
 }
 
 export const PROJECT_GRADING_HEADING = "Project grading";
@@ -69,9 +68,8 @@ export const lectureTopics: LectureTopic[] = [
   },
   {
     chapter: 4,
-    exam: "X1",
     topic:
-      "X1 midterm + Chapter 4 week 1 — Managing client state: events, forms, useState, and React Context",
+      "Chapter 4 week 1 — Managing client state: events, forms, useState, and React Context; midterm/X1 this week",
   },
   {
     chapter: 4,
