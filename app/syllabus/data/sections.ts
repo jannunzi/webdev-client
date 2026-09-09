@@ -44,7 +44,6 @@ export const sections: CourseSection[] = [
     tabLabel: "CS 5610-02 · In person",
     notes: [
       "Graduate, in person, Boston. Meets once a week on Mondays, 6:00–9:00pm ET, starting September 14, 2026.",
-      "Canvas assignment, quiz, exam, and project dates are the same as every other section. This section has less runway before the earliest deadlines.",
     ],
   },
   {

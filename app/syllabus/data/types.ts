@@ -47,7 +47,8 @@ export type CourseSection = {
 export type DeadlineKind = "assignment" | "quiz" | "exam" | "project";
 
 export type Deadline = {
-  date: IsoDate;
+  /** Shared calendar date. Omit for in-lecture quizzes. */
+  date?: IsoDate;
   kind: DeadlineKind;
   label: string;
 };
