@@ -6,43 +6,42 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Chapter 1 · HTML and the DOM",
-      "Chapter 1 in the course book · Lab 1 starts here",
+      "HTML",
+      "Chapter 1 · HyperText Markup Language and the DOM",
     ],
   },
   {
     id: "html-means",
-    title: "HTML = HyperText Markup Language",
+    title: "What is HTML?",
     kind: "content",
     bullets: [
-      "**HyperText** — documents linked to other documents (the next decks: anchors, then in-app `Link`)",
-      "**Markup** — tags wrap plain text so the browser knows what each piece *is*",
-      "**Language** — a small vocabulary of tags, not a programming language",
-      "You write `.html` files on the classic Web. In this course you write the same tags as **JSX** in `.tsx` components",
+      "**HTML** stands for **HyperText Markup Language**",
+      "A language browsers understand so they can **format** webpages",
+      "We **mark up** plain text with **tags** — special symbols that name each piece",
+      "Not a programming language. A vocabulary of tags",
     ],
   },
   {
     id: "tags",
-    title: "Tags mark up plain text",
+    title: "Tags format the text",
     kind: "content",
     bullets: [
-      "`<h1>Labs</h1>` — opening tag, **body** (`Labs`), closing tag",
+      "These tags format the text as **bold**",
+      "Opening tag, **body**, closing tag",
       "A **tag** is the syntax. An **element** is the tag + attributes + body + the DOM node",
-      "Browsers style `h1` large and bold because the tag is **semantic** — it means “top-level heading”",
-      "Without tags, “Labs” is just characters. With tags, it is a heading in the tree",
     ],
-    code: `<h1>Labs</h1>`,
+    code: `<b>This text is bold</b>`,
     codeLanguage: "html",
   },
   {
     id: "plain-text",
-    title: "Start from plain text",
+    title: "Creating an HTML Webpage",
     kind: "content",
     bullets: [
-      "A `.html` file is a text file. You can open it in any editor",
-      "The browser does not run it as a program. It **parses** the tags and paints a page",
-      "Save `hello.html`, double-click it (or drag it onto Chrome). That is still how the Web began",
-      "Next.js later serves the same idea at a URL — but first, know the document",
+      "Page format is **plain text** — not a proprietary binary format",
+      "Save a new file with the **`.html`** extension. That file is an HTML **document**",
+      "Some text can trigger an action. We call that **hypertext** to distinguish it from inert text",
+      "Open `hello.html` in an editor, then open the same file in a browser",
     ],
   },
   {
@@ -51,16 +50,16 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
     kind: "demo",
     bullets: [
       "The smallest useful page: a document type, an `html` root, a `head`, and a `body`",
-      "`<!DOCTYPE html>` tells the browser this is HTML5 — not a 1990s quirk mode",
-      "Save this as `hello.html` and open it in Chrome. You should see “Hello” as a heading",
+      "Save this as `hello.html` and open it in Chrome",
     ],
     code: `<!DOCTYPE html>
 <html>
   <head>
-    <title>Hello</title>
+    <title>This is the Page Title</title>
+    <link href="style.css" rel="stylesheet" />
   </head>
   <body>
-    <h1>Hello</h1>
+    Hello World!
   </body>
 </html>`,
     codeLanguage: "html",
@@ -69,101 +68,129 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
   },
   {
     id: "doctype-skeleton",
-    title: "DOCTYPE, html, head, body",
+    title: "The document type",
     kind: "content",
     bullets: [
-      "`<!DOCTYPE html>` — first line. Not a tag. A declaration",
-      "`<html>` — the **root**. Everything else nests inside it",
-      "`<head>` — metadata the user does not see as page content (`title`, `link` to CSS, later `script`)",
-      "`<body>` — what the user sees: headings, paragraphs, forms, images",
+      "`<!DOCTYPE html>` declares the type of the document as **html**",
+      "Helps browsers open the **right** type of document — HTML5, not a 1990s quirk mode",
+      "First line. **Not** a tag. A declaration",
     ],
+    code: `<!DOCTYPE html>
+<html>
+  <head>
+    <title>This is the Page Title</title>
+  </head>
+  <body>
+    Hello World!
+  </body>
+</html>`,
+    codeLanguage: "html",
+    codeFile: "hello.html",
   },
   {
     id: "comments",
-    title: "Comments: HTML vs JSX",
+    title: "HTML Comments",
     kind: "content",
     bullets: [
-      "HTML comments: `<!-- this is ignored -->` — they do not appear on the page",
-      "JSX comments: `{/* this is ignored */}` — JavaScript expression comments inside the tree",
-      "Do not paste `<!-- -->` inside a `.tsx` return. The parser wants `{/* */}`",
-      "In a raw `.html` file, use `<!-- -->`. In Lab 1 components, use `{/* */}`",
+      "Comments are short notes for **developers**. Browsers **ignore** them",
+      "HTML: `<!-- this is ignored -->`",
+      "In React / JSX use `{/* */}` instead — do not paste `<!-- -->` inside a `.tsx` return",
     ],
-    code: `<!-- HTML file -->
-<h1>Labs</h1>
+    code: `<!-- This is a short one line comment -->
 
-{/* JSX in a .tsx component */}
-<h1>Labs</h1>`,
+{/* This is a comment in JSX files */}`,
     codeLanguage: "tsx",
   },
   {
     id: "body",
-    title: "body holds the visible page",
+    title: "The body tag",
     kind: "content",
     bullets: [
-      "Put headings, paragraphs, lists, tables, forms, and images in `body`",
-      "In Next.js you rarely write `<body>` yourself — `app/layout.tsx` already has the document shell",
-      "Your `page.tsx` return is **body content**. Lab 1’s `<div id=\"wd-lab1\">` lives there",
-      "Inspect a Next.js page: Elements still shows `html` → `head` + `body`",
+      "`<body>` holds the **main content** of the page — where we spend most of our time",
+      "Headings, paragraphs, lists, tables, forms, and images go here",
+      "In Next.js, `app/layout.tsx` already owns the document shell. Your `page.tsx` return is **body content**",
     ],
+    code: `<body>
+  Hello World!
+</body>`,
+    codeLanguage: "html",
   },
   {
     id: "structure",
-    title: "Structure is nesting",
+    title: "The structure of HTML documents",
     kind: "content",
     bullets: [
-      "Parent / child is indentation in the source and nesting in the tree",
-      "`html` contains `head` and `body`. `body` contains your Lab 1 `div`. The `div` contains an `h2`",
-      "Close tags in reverse order. A missing `</div>` breaks the tree",
-      "Indent children. You are drawing the DOM on the page",
+      "HTML documents nest: `html` → `head` + `body`",
+      "Rewrite `hello.html` so visible copy lives in **`body`**",
+      "Close tags in reverse order. Indent children — you are drawing the tree",
     ],
+    code: `<!DOCTYPE html>
+<html>
+  <head>
+    <title>This is the Page Title</title>
+    <link href="style.css" rel="stylesheet" />
+  </head>
+  <body>
+    Hello World!
+  </body>
+</html>`,
+    codeLanguage: "html",
+    codeFile: "hello.html",
   },
   {
     id: "html-root-xml",
-    title: "html is the root — XML-ish",
+    title: "The HTML root tag",
     kind: "content",
     bullets: [
-      "HTML is a specialized dialect of **XML** (eXtensible Markup Language)",
+      "HTML documents are **XML** (eXtensible Markup Language) documents with root tag **`html`**",
       "XML: every element has a name, optional attributes, optional children",
       "HTML adds a fixed vocabulary (`h1`, `p`, `form`, …) and browser default styles",
-      "JSX is stricter than casual HTML: self-close voids (`<img />`), quote attributes, `className` not `class`",
     ],
   },
   {
     id: "head-title-link",
-    title: "head: title and link",
+    title: "The head tag",
     kind: "content",
     bullets: [
-      "`<title>` is the tab label and the default bookmark name — not an `h1` on the page",
-      "`<link rel=\"stylesheet\" href=\"…\">` attaches CSS. Next.js often does this via `import \"./globals.css\"`",
-      "Keep user-visible copy out of `head`. Put it in `body`",
-      "In the App Router, `export const metadata = { title: \"…\" }` fills the document title",
+      "`<head>` configures **meta** information: author, document **title**, scripts, styling",
+      "`<title>` is the tab label — not an `h1` on the page",
+      "`<link rel=\"stylesheet\" href=\"…\">` attaches CSS",
     ],
     code: `<head>
-  <title>Lab 1</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>This is the Page Title</title>
+  <link href="style.css" rel="stylesheet" />
 </head>`,
     codeLanguage: "html",
   },
   {
     id: "whitespace",
-    title: "Browsers ignore extra whitespace",
+    title: "White spaces are ignored",
     kind: "content",
     bullets: [
-      "Spaces, tabs, and newlines in the source collapse to a single space in the page",
-      "Blank lines between chunks do **not** become vertical gaps — that is why you need `p` (next deck)",
-      "Indentation is for *you*. The browser does not paint your tabs",
-      "Use tags for structure. Do not fight the file with extra Enter keys",
+      "We use whitespace to structure documents **visually** in the file",
+      "Browsers only respect **single spaces**. Tabs and newlines are ignored",
+      "This whole `body` renders as **one** paragraph — wrap later with `p`",
     ],
+    code: `<body>
+Hello World!
+
+    Consider this paragraph of text. It's separated
+visually from the text above by a new line.
+
+    Also these paragraphs are indented with tabs.
+Tabs and newlines are ignored so this whole
+content will render as a single paragraph.
+</body>`,
+    codeLanguage: "html",
   },
   {
     id: "the-dom",
-    title: "DOM: Window → Document → tree",
+    title: "Document Object Model (DOM)",
     kind: "content",
     bullets: [
-      "The browser’s **Window** owns a **Document**. The document’s tree is the **DOM**",
-      "Each tag becomes a **node**. Nesting in the file is parent/child in memory",
-      "The DOM is what the browser paints. JavaScript — including React — updates nodes later",
-      "Your source is a file. The DOM is the live tree. DevTools → Elements shows the live one",
+      "The **DOM** is a **tree** browsers use to represent and render the page",
+      "A browser **parses** HTML and creates an equivalent DOM instance",
+      "The browser’s **Window** owns a **Document**. The document’s tree is the DOM",
     ],
     diagram: "dom-tree",
   },
@@ -172,10 +199,9 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
     title: "HTML, CSS, and JavaScript",
     kind: "content",
     bullets: [
-      "**HTML** — structure. What is on the page (this week)",
-      "**CSS** — presentation. How it looks (Chapter 2 / Lab 2)",
-      "**JavaScript** — behavior and data (Chapter 3 / Lab 3). React is JavaScript with JSX",
-      "Keep the jobs separate. Do not fake layout with extra `table`s forever — CSS comes next",
+      "**HTML** controls the DOM’s **content** and **structure**",
+      "**CSS** controls the DOM’s **styling** — look and feel",
+      "**JavaScript** can add, remove, and modify the DOM from algorithms and events",
     ],
   },
   {
@@ -183,10 +209,9 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
     title: "Lab 1 delivers HTML as JSX",
     kind: "demo",
     bullets: [
-      "A Lab 1 topic is a **component**: a function that returns JSX",
+      "In this course you write the same tags as **JSX** in `.tsx` components",
       "Keep each HTML topic in its own file under `app/labs/lab1/`, then import it into `page.tsx`",
-      "Lab 1 stays one URL (`/labs/lab1`) while the file list grows",
-      "Give wrappers `id`s that start with `wd-` so graders and DevTools Find land on the same node",
+      "Wrapper id `wd-lab1` so graders and DevTools Find land on the same node",
     ],
     code: `export default function Lab1() {
   return (
@@ -203,11 +228,19 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
   },
   {
     id: "next-up",
-    title: "Next: headings and paragraphs",
-    kind: "title",
+    title: "Example DOM",
+    kind: "content",
     bullets: [
-      "You have a document: DOCTYPE, html, head, body, and a DOM the browser builds",
-      "Deck 2: `h1`–`h6`, then `p` so whitespace becomes real vertical gaps",
+      "This HTML becomes a tree: **Window** → **Document** → **Heading** and **Link**",
+      "The `href` and the link text are properties on the Link node",
+      "Next deck: `h1`–`h6`, then `p` so whitespace becomes real vertical gaps",
     ],
+    code: `<body>
+  <h1>Read about the DOM</h1>
+  <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model">
+    DOM on MDN
+  </a>
+</body>`,
+    codeLanguage: "html",
   },
 ];

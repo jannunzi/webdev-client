@@ -6,8 +6,8 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Chapter 1 · Web Forms",
-      "Lab 1 folder: app/labs/lab1/forms/ — no page.tsx in that folder",
+      "FORMS",
+      "Lab 1 folder: app/labs/lab1/forms/",
     ],
   },
   {
@@ -15,29 +15,35 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
     title: "Forms collect data",
     kind: "content",
     bullets: [
-      "Headings, lists, and tables **display**. A `form` is **input**",
       "A `<form>` wraps controls so they submit as one unit",
       "Lab 1 wrapper id: `wd-forms`. Sample form id: `wd-text-fields`",
       "Do **not** let the sample form reload the page — `onSubmit` + `preventDefault()`",
+      "Default submit behavior will **not** be used in this course",
     ],
   },
   {
     id: "labels",
-    title: "label + htmlFor",
+    title: "Input fields and labels",
     kind: "content",
     bullets: [
       "`<label htmlFor=\"the-id\">` points at the control’s `id` (JSX: `htmlFor`, HTML: `for`)",
-      "Clicking the label focuses the field. Screen readers announce the name",
-      "Placeholder text is a hint, not a label. Do not skip `label`",
-      "Lab 1 uses the sibling-label style: label and input next to each other",
+      "Clicking the label focuses the field. **Match** `id` and `htmlFor`",
+      "Placeholder text is a hint, not a label",
     ],
-    code: `<label htmlFor="wd-text-fields-username">Username:</label>
-<input id="wd-text-fields-username" />`,
+    code: `<label htmlFor="usernameFld">
+  Username
+</label>
+<input
+  id="usernameFld"
+  type="text"
+  title="Username"
+  placeholder="alice"
+/>`,
     codeLanguage: "tsx",
   },
   {
     id: "text",
-    title: "Text fields",
+    title: "Text Fields",
     kind: "content",
     bullets: [
       "`<input>` default `type` is `text` — short strings: username, first name",
@@ -65,99 +71,121 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
   },
   {
     id: "text-fields-demo",
-    title: "Text + password live",
+    title: "Text Fields",
     kind: "demo",
     bullets: [
-      "Type in the fields. The browser owns the text — that is uncontrolled",
       "Lab 1 ids: `wd-text-fields-username`, `-password`, `-first-name`, `-last-name`",
+      "Type in the fields. The browser owns the text — that is **uncontrolled**",
     ],
     embed: "text-fields",
+    code: `<div id="wd-forms">
+  <h4>Form Elements</h4>
+  <form id="wd-text-fields">
+    <h5>Text Fields</h5>
+    <label htmlFor="wd-text-fields-username">Username:</label>
+    <input id="wd-text-fields-username" placeholder="jdoe" />
+  </form>
+</div>`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab1/forms/TextFields.tsx",
   },
   {
     id: "textarea",
-    title: "textarea",
+    title: "Text Areas",
     kind: "demo",
     embed: "textarea",
     bullets: [
       "`<textarea>` is for longer text: bios, comments",
-      "It has an opening and closing tag. Prefer `defaultValue` in React",
+      "Opening and closing tag. Prefer `defaultValue` in React",
       "Lab 1 id: `wd-textarea`",
     ],
-    code: `<label htmlFor="wd-textarea">Biography:</label>
-<textarea id="wd-textarea" cols={30} rows={4} defaultValue="I am a student." />`,
+    code: `<h5>Text boxes</h5>
+<label>Biography:</label><br />
+<textarea id="wd-textarea" cols={30} rows={10}
+  defaultValue="Lorem ipsum dolor sit amet..." />`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab1/forms/Textarea.tsx",
   },
   {
     id: "buttons",
-    title: "Buttons: button vs submit",
+    title: "Buttons",
     kind: "demo",
     embed: "buttons",
     bullets: [
-      "A `<button>` inside a form defaults to `type=\"submit\"` — it sends the form",
-      "Save can be the default submit. Cancel is `type=\"button\"` so it does not submit",
+      "`type=\"button\"` does **not** submit. `type=\"submit\"` sends the form",
+      "Default submit behavior will **not** be used in this course",
       "Lab 1 ids: `wd-html-button-save`, `wd-html-button-cancel`",
     ],
-    code: `<button id="wd-html-button-save" type="submit">Save</button>
-<button id="wd-html-button-cancel" type="button">Cancel</button>`,
+    code: `<button type="button">Delete</button>
+<button type="button">Edit</button>
+<button type="submit">Update</button>`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab1/forms/Buttons.tsx",
   },
   {
     id: "onclick-alert",
-    title: "onClick can alert — don't submit",
+    title: "On Click Event Handlers",
     kind: "demo",
     bullets: [
       "`type=\"button\"` plus `onClick` runs JavaScript without sending the form",
-      "Classroom demo: `alert(\"Hello\")` — later you will set React state instead",
-      "The live button below uses `type=\"button\"`. It does not reload this slide",
+      "Classroom demo: `alert(\"Life is Good!\")`",
     ],
     embed: "alert-button",
-    code: `<button
+    code: `<h5 id="wd-buttons">Buttons</h5>
+<button
+  id="wd-all-good"
   type="button"
-  id="wd-alert-demo"
-  onClick={() => alert("Hello from a button")}
+  onClick={() => alert("Life is Good!")}
 >
-  Say hello
+  Hello World!
 </button>`,
     codeLanguage: "tsx",
   },
   {
     id: "file",
-    title: "File input",
+    title: "File Upload",
     kind: "demo",
     bullets: [
       "`type=\"file\"` lets the user pick a file. The browser draws the control",
-      "Still pair it with a `label` and an `id`",
-      "Do not submit the form. This week we only render the control",
+      "Lab 1 can use `id=\"wd-upload\"` or `wd-file` — still pair it with a `label`",
     ],
-    code: `<label htmlFor="wd-file">Upload:</label>
-<input type="file" id="wd-file" />`,
+    code: `<h5>File upload</h5>
+<input id="wd-upload" type="file" />`,
     codeLanguage: "tsx",
     embed: "file-field",
   },
   {
     id: "radio-vs-checkbox",
-    title: "Radio vs checkbox",
+    title: "Checkbox and radio buttons",
     kind: "content",
     bullets: [
       "**Radio** — one choice in a group. Checking one unchecks the others",
-      "**Checkbox** — each box is independent. Check none, some, or all",
-      "`defaultChecked` marks the initial selection (uncontrolled)",
+      "**Checkbox** — each box is independent",
+      "Wrap with `label` to increase the click area",
     ],
+    code: `<label>
+  <input name="b" type="checkbox" /> Tenured
+</label>
+Tenured:
+<label>
+  <input name="a" type="radio" /> Yes
+</label>
+<label>
+  <input name="a" type="radio" defaultChecked /> No
+</label>`,
+    codeLanguage: "tsx",
   },
   {
     id: "radio-same-name",
-    title: "Radios share a name",
+    title: "Radio Buttons with Labels",
     kind: "demo",
     bullets: [
-      "Same `name` means they compete. Different `name`s are different groups",
-      "Lab 1: `name=\"radio-genre\"` and `name=\"radio-frequency\"` in `RadioButtons.tsx`",
-      "Each radio still needs its own `id` and a `label htmlFor`",
+      "Match `id` and `htmlFor` to associate label and input",
+      "Use the **same `name`** to group mutually exclusive buttons — Lab 1: `name=\"radio-genre\"`",
     ],
-    code: `<input type="radio" name="radio-genre" id="wd-radio-comedy" />
+    code: `<input id="wd-radio-comedy" type="radio" name="radio-genre" />
 <label htmlFor="wd-radio-comedy">Comedy</label>
-<input type="radio" name="radio-genre" id="wd-radio-drama" />
+<input id="wd-radio-drama" type="radio" name="radio-genre" />
 <label htmlFor="wd-radio-drama">Drama</label>`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab1/forms/RadioButtons.tsx",
@@ -165,22 +193,21 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
   },
   {
     id: "checkboxes-multi",
-    title: "Checkboxes are multi-select",
+    title: "Check Boxes",
     kind: "demo",
     embed: "checkboxes",
     bullets: [
       "Each checkbox can stay on while others are on",
-      "They may share a `name` for grouping, but they do not exclude each other",
-      "Lab 1 ids: `wd-chkbox-comedy`, `-drama`, `-scifi`, `-fantasy`",
+      "They may share a `name` for grouping, but they do **not** exclude each other",
     ],
-    code: `<input type="checkbox" name="check-genre" id="wd-chkbox-comedy" />
+    code: `<input id="wd-chkbox-comedy" type="checkbox" name="check-genre" />
 <label htmlFor="wd-chkbox-comedy">Comedy</label>`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab1/forms/Checkboxes.tsx",
   },
   {
     id: "select-one",
-    title: "select one",
+    title: "Select One Option",
     kind: "demo",
     embed: "dropdowns",
     bullets: [
@@ -197,7 +224,7 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
   },
   {
     id: "select-many",
-    title: "select many",
+    title: "Select Many",
     kind: "demo",
     embed: "dropdowns",
     bullets: [
@@ -205,18 +232,30 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
       "Hold Cmd (macOS) or Ctrl (Windows) to pick more than one",
       "Lab 1 id: `wd-select-many-genre`",
     ],
+    code: `<select id="wd-select-many-genre" multiple
+  defaultValue={["COMEDY", "SCIFI"]}>
+  <option value="COMEDY">Comedy</option>
+  <option value="SCIFI">Science Fiction</option>
+</select>`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab1/forms/Dropdowns.tsx",
   },
   {
     id: "number",
-    title: "type=number",
+    title: "Range and Numbers",
     kind: "demo",
     embed: "typed-fields",
     bullets: [
-      "Numeric keyboard / stepper where the browser supports it",
-      "`min`, `max`, `step` constrain the value",
+      "`type=\"number\"` — numeric keyboard / stepper",
       "Lab 1: starting salary `wd-text-fields-salary-start`",
     ],
-    code: `<input type="number" defaultValue="100000" min={0} id="wd-text-fields-salary-start" />`,
+    code: `<label htmlFor="wd-text-fields-salary-start">
+  Starting salary:
+</label>
+<input type="number"
+  id="wd-text-fields-salary-start"
+  placeholder="1000"
+  defaultValue="100000" />`,
     codeLanguage: "tsx",
   },
   {
@@ -226,36 +265,40 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
     embed: "typed-fields",
     bullets: [
       "A slider. Pair it with a label so the value’s meaning is clear",
-      "Lab 1: rating `wd-text-fields-rating` — `min=\"1\"` `max=\"5\"`",
+      "Lab 1: rating `wd-text-fields-rating` — `max=\"5\"`",
     ],
+    code: `<label htmlFor="wd-text-fields-rating">Rating:</label>
+<input type="range" id="wd-text-fields-rating"
+  max="5" defaultValue="4" />`,
+    codeLanguage: "tsx",
   },
   {
     id: "email",
-    title: "type=email",
+    title: "Emails and Dates",
     kind: "demo",
     embed: "typed-fields",
     bullets: [
-      "The browser can hint a keyboard and do a basic format check",
-      "Still uncontrolled with `placeholder` / `defaultValue`",
+      "`type=\"email\"` — the browser can hint a keyboard and do a basic format check",
       "Lab 1 id: `wd-text-fields-email`",
     ],
+    code: `<label htmlFor="wd-text-fields-email">Email:</label>
+<input type="email"
+  placeholder="jdoe@somewhere.com"
+  id="wd-text-fields-email" />`,
+    codeLanguage: "tsx",
   },
   {
     id: "date",
-    title: "type=date",
+    title: "Date input fields",
     kind: "demo",
     bullets: [
-      "A date picker where the browser supports it",
-      "`min` / `max` keep the range sane",
+      "`type=\"date\"` — a date picker where the browser supports it",
       "Lab 1 id: `wd-text-fields-dob`",
     ],
-    code: `<input
-  type="date"
-  defaultValue="2000-01-21"
-  min="1900-01-01"
-  max="2025-12-31"
+    code: `<label htmlFor="wd-text-fields-dob">Date of birth:</label>
+<input type="date"
   id="wd-text-fields-dob"
-/>`,
+  defaultValue="2000-01-21" />`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab1/forms/OtherFieldTypes.tsx",
     embed: "typed-fields",
@@ -265,9 +308,9 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
     title: "defaultValue, not value",
     kind: "content",
     bullets: [
-      "Lab 1 stays **uncontrolled**. The browser owns what the user types",
-      "`value` without `onChange` + state freezes the field",
-      "Controlled inputs return when you learn `useState`",
+      "Drive samples often write `value=`. In React Lab 1 use **`defaultValue`**",
+      "`value` without `onChange` + state **freezes** the field",
+      "Lab 1 stays **uncontrolled**. Controlled inputs return when you learn `useState`",
     ],
   },
   {
@@ -276,7 +319,7 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "You can collect data without reloading the slide",
-      "Deck 5: `href`, `mailto:`, `tel:`, and in-page `#hash` TOC",
+      "Next: `href`, `mailto:`, `tel:`, and in-page `#hash` TOC",
     ],
   },
 ];

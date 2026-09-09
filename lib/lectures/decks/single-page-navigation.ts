@@ -6,7 +6,7 @@ export const SINGLE_PAGE_NAVIGATION_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Chapter 1 · Single-page Navigation",
+      "REACT NAVIGATION",
       "Move between lab screens without a full reload",
     ],
   },
@@ -16,32 +16,50 @@ export const SINGLE_PAGE_NAVIGATION_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "A **SPA** keeps one HTML shell loaded and updates the UI as the user moves around",
-      "Next.js does that for in-app routes: Labs → Lab 1 should feel instant",
-      "A raw `<a href=\"/labs/lab1\">` still works — and tells the browser to fetch a new document",
       "Prefer `Link` from `next/link` for routes you created with `page.tsx`",
+      "A raw `<a href=\"/labs/lab1\">` still works — and tells the browser to fetch a **new** document",
     ],
   },
   {
     id: "lab-screens",
-    title: "Lab 1–3 are separate screens",
+    title: "Implement Some Screens",
     kind: "content",
     bullets: [
-      "`/labs/lab1` — HTML examples (this week)",
-      "`/labs/lab2` — CSS (next chapter). A heading is enough as a placeholder today",
-      "`/labs/lab3` — JavaScript. Same idea: a real route, even if the page is still a stub",
-      "Each screen is a `page.tsx`. Navigation is how the user *moves between* those files",
+      "Stub Lab 2 and Lab 3 so the TOC has somewhere to go",
+      "Each screen is a `page.tsx`. CSS and JavaScript fill these files in later chapters",
+    ],
+    code: `export default function Lab2() {
+  return (
+    <div>
+      <h2>Lab 2</h2>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab2/page.tsx",
+    codeBlocks: [
+      {
+        file: "app/labs/lab3/page.tsx",
+        language: "tsx",
+        code: `export default function Lab3() {
+  return (
+    <div>
+      <h2>Lab 3</h2>
+    </div>
+  );
+}`,
+      },
     ],
   },
   {
     id: "link-toc",
-    title: "Link TOC — no full reload",
+    title: "Add Table of Content",
     kind: "demo",
     embed: "labs-index",
     bullets: [
       "`import Link from \"next/link\"`",
       "`<Link href=\"/labs/lab1\">Lab 1</Link>` — `href` is the path, not a file path",
       "`Link` still renders an anchor. It intercepts the click so React can swap the page",
-      "Use `<a>` for true external URLs (`mailto:`, GitHub, lipsum)",
     ],
     code: `import Link from "next/link";
 
@@ -52,12 +70,11 @@ export const SINGLE_PAGE_NAVIGATION_SLIDES: LectureSlide[] = [
   },
   {
     id: "labs-index-toc",
-    title: "app/labs/page.tsx and TOC.tsx",
+    title: "Create a Table of Content",
     kind: "demo",
     bullets: [
       "The Labs index is `app/labs/page.tsx` — URL `/labs`",
-      "`TOC.tsx` is a small table of contents you reuse in the layout — not copied into every lab",
-      "Put `Link`s to Lab 1–3 (and later placeholders) in both files",
+      "`TOC.tsx` is the reusable table of contents — not copied into every lab",
     ],
     code: `import Link from "next/link";
 
@@ -103,25 +120,24 @@ export default function TOC() {
   },
   {
     id: "layout-children",
-    title: "layout.tsx keeps TOC; children swap",
+    title: "LAYOUTS",
     kind: "demo",
     bullets: [
+      "`layout.tsx` keeps the TOC. `{children}` is the page that **swaps**",
       "`page.tsx` creates a URL. `layout.tsx` does **not**",
-      "The labs layout renders `TOC` beside `{children}`",
-      "Click Lab 1 → Lab 2: the TOC stays. Only the page column changes",
     ],
-    code: `import TOC from "./TOC";
+    code: `import { ReactNode } from "react";
+import TOC from "./TOC";
 
-export default function LabsLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function LabsLayout({ children }:
+  Readonly<{ children: ReactNode }>) {
   return (
     <table>
       <tbody>
         <tr>
-          <td valign="top"><TOC /></td>
+          <td valign="top" width="100px">
+            <TOC />
+          </td>
           <td valign="top">{children}</td>
         </tr>
       </tbody>
@@ -130,7 +146,7 @@ export default function LabsLayout({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/layout.tsx",
-    codeAddedLines: [1, 11, 12],
+    codeAddedLines: [2, [11, 13]],
     embed: "labs-layout",
     interactiveHint:
       "Click Lab 2 in the live TOC. The left column stays. Only the page column — {children} — changes.",
@@ -143,7 +159,6 @@ export default function LabsLayout({
     bullets: [
       "Create `app/labs/lab2/page.tsx` — URL `/labs/lab2`",
       "A heading is enough for this week. CSS fills the file in Chapter 2",
-      "The labs layout still wraps it. You do not copy the TOC into Lab 2",
     ],
     code: `export default function Lab2() {
   return (
@@ -163,7 +178,6 @@ export default function LabsLayout({
     bullets: [
       "`app/labs/lab3/page.tsx` — URL `/labs/lab3`",
       "Add a `Link` on the Labs index (and in `TOC.tsx`) so the screen is reachable",
-      "Three routes, one layout, one TOC",
     ],
     code: `export default function Lab3() {
   return (
@@ -188,61 +202,70 @@ export default function LabsLayout({
   },
   {
     id: "kambaz-group",
-    title: "Move Kambaz into (kambaz)",
+    title: "KAMBAZ",
     kind: "content",
     bullets: [
-      "Parentheses make a **route group**. `app/(kambaz)/dashboard/page.tsx` is still `/dashboard`",
-      "The group name does **not** appear in the URL. It is for organization and a shared layout",
-      "Do Kambaz work under `app/(kambaz)` — Account, Dashboard, courses",
-      "A1 starts that prototype. Structure first; CSS is Chapter 2",
+      "Create the Kambaz screen under a **route group**: `app/(kambaz)/page.tsx`",
+      "Parentheses are for organization. The group name does **not** appear in the URL",
+      "Drive leftovers say `app/Kambaz/page.tsx` — this course uses **`(kambaz)`**",
     ],
-    code: `app/(kambaz)/page.tsx              →  /
-app/(kambaz)/dashboard/page.tsx    →  /dashboard
-app/(kambaz)/account/signin/page.tsx →  /account/signin`,
-    codeLanguage: "text",
+    code: `export default function Kambaz() {
+  return (
+    <div id="wd-kambaz">
+      <h1>Kambaz</h1>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/page.tsx",
   },
   {
     id: "kambaz-default",
-    title: "(kambaz) can own /",
+    title: "DEFAULT SCREEN",
     kind: "content",
     bullets: [
-      "`app/(kambaz)/page.tsx` is the `/` route — not `/(kambaz)`",
-      "That is how Kambaz becomes the default home instead of a leftover `app/page.tsx`",
-      "If two `page.tsx` files both claim `/`, Next.js errors. Keep one",
-      "This course site currently sends `/` to the syllabus. Your student app can send `/` to Kambaz",
+      "Rename the folder to **`(kambaz)`**. Remove a leftover `app/page.tsx` if it also claims `/`",
+      "`app/(kambaz)/page.tsx` **is** the `/` route — not `/(kambaz)`",
+      "Point the Labs TOC at `/` so Kambaz is the default landing screen",
     ],
+    code: `<Link href="/" id="wd-kambaz-link">Kambaz</Link>`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/TOC.tsx",
   },
   {
     id: "table-layout-temp",
-    title: "Table layouts are temporary",
+    title: "Add New Link to New Screen",
     kind: "content",
     bullets: [
-      "The labs (and Kambaz) layouts still use a `<table>` to sit nav beside content",
-      "That is a 1990s trick so you can finish HTML before CSS",
-      "Chapter 2 / Lab 2 replace it with Flex, Grid, and Tailwind",
-      "Do not invent a new table layout language. Borrow this one, then delete it",
+      "Add a Kambaz `Link` to `TOC.tsx` once the screen exists",
+      "The labs (and Kambaz) layouts still use a `<table>` to sit nav beside content — temporary until CSS",
     ],
+    code: `<li>
+  <Link href="/" id="wd-kambaz-link">
+    Kambaz
+  </Link>
+</li>`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/TOC.tsx",
   },
   {
     id: "checklist",
-    title: "Before leaving Chapter 1 HTML",
+    title: "Make Kambaz the landing screen",
     kind: "content",
     bullets: [
       "Lab 1 covers headings, paragraphs, lists, tables, images, forms, and anchors",
       "Labs index + TOC use `Link` to Lab 1–3",
       "A labs layout keeps navigation visible while `{children}` swap",
-      "The book’s §1.3.12 checklist is the written version of this list",
+      "`(kambaz)` can own `/` after you remove the extra `app/page.tsx`",
     ],
-    interactiveHint:
-      "Click Lab 1 on /labs. The URL becomes /labs/lab1 and the TOC should stay. That is the SPA.",
   },
   {
     id: "next-up",
-    title: "Next: start the Kambaz prototype",
-    kind: "title",
+    title: "OFFICE HOURS",
+    kind: "break",
     bullets: [
-      "HTML structure is in place. A1 applies the same tags under `app/(kambaz)`",
-      "Visual polish is Chapter 2 / A2. This week: structure first",
+      "Bring the Lab 1 URL and the DevTools Elements panel if a `wd-` id is missing",
+      "Hours and links: the course Office Hours page and the syllabus",
     ],
   },
 ];

@@ -6,29 +6,74 @@ export const LISTS_AND_TABLES_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Chapter 1 · Lists and Tables",
-      "Lab 1: ListTags.tsx (`wd-lists`) and Tables.tsx (`wd-tables`)",
+      "LISTS",
+      "Lab 1: ListTags.tsx (`wd-lists`) then Tables.tsx (`wd-tables`)",
     ],
   },
   {
     id: "ol-vs-ul",
-    title: "ol vs ul",
+    title: "Lists",
     kind: "content",
     bullets: [
-      "`<ol>` — **ordered**. Sequence matters: recipe steps, ranked results. The browser numbers the items",
       "`<ul>` — **unordered**. Order does not change the meaning. The browser uses bullets",
-      "Each item is an `<li>`. Typed “1. 2. 3.” without list tags still blends into a paragraph",
-      "Both `ol` / `ul` and `li` are **block** elements, so items stack",
+      "`<ol>` — **ordered**. Sequence matters. The browser numbers the items",
+      "Each item is an `<li>`",
     ],
+    code: `<h2>Topics</h2>
+<ul>
+  <li>HTML</li>
+  <li>CSS</li>
+  <li>JavaScript</li>
+</ul>
+<h2>Steps</h2>
+<ol>
+  <li>Learn HTML</li>
+  <li>Learn JavaScript</li>
+  <li>Build cool stuff</li>
+</ol>`,
+    codeLanguage: "html",
+  },
+  {
+    id: "ordered-lists",
+    title: "Ordered lists",
+    kind: "content",
+    bullets: [
+      "Ordered lists **enumerate** line items",
+      "Use `ol` when the sequence is the point: steps, ranked results",
+    ],
+    code: `<h2>Ordered lists</h2>
+Follow these steps
+<ol>
+  <li>Learn HTML</li>
+  <li>Learn JavaScript</li>
+  <li>Build cool stuff</li>
+</ol>`,
+    codeLanguage: "html",
+  },
+  {
+    id: "unordered-lists",
+    title: "Unordered lists",
+    kind: "content",
+    bullets: [
+      "Unordered lists render as **bullet points**",
+      "Same `li` children. Change the parent from `ol` to `ul`",
+    ],
+    code: `<h2>Unordered lists</h2>
+Follow these steps
+<ul>
+  <li>Learn HTML</li>
+  <li>Learn JavaScript</li>
+  <li>Build cool stuff</li>
+</ul>`,
+    codeLanguage: "html",
   },
   {
     id: "pancakes-before",
-    title: "Pancakes before ol — not a list",
+    title: "Example",
     kind: "content",
     bullets: [
-      "Start ListTags.tsx with the pancake steps as plain text — no `ol` yet",
-      "The numbers look like a list in the source and fail in the browser",
-      "Same lesson as unwrapped paragraphs",
+      "Start with the pancake steps as **plain text** — no `ol` yet",
+      "Browsers **ignore** white spaces. The numbers look like a list in the file and fail on the page",
     ],
     code: `How to make pancakes:
 1. Mix dry ingredients.
@@ -39,12 +84,11 @@ export const LISTS_AND_TABLES_SLIDES: LectureSlide[] = [
   },
   {
     id: "pancakes-after",
-    title: "Pancakes after ol/li — wd-pancakes",
+    title: "Add ol and li for ordered list",
     kind: "demo",
     bullets: [
       "Wrap the list in `ol` and each step in `li`",
-      "The browser numbers them. Add or remove a step — the sequence stays correct",
-      "Lab 1 sample id: `wd-pancakes` inside `div#wd-lists`",
+      "The browser numbers them. Lab 1 sample id: `wd-pancakes`",
     ],
     embed: "list-tags",
     code: `How to make pancakes:
@@ -64,12 +108,11 @@ export const LISTS_AND_TABLES_SLIDES: LectureSlide[] = [
   },
   {
     id: "books-ul",
-    title: "Favorite books — ul",
+    title: "Use ul for unordered lists",
     kind: "demo",
     bullets: [
-      "Same `li` children. Change the parent from `ol` to `ul`",
-      "Use `ul` when order is not the point",
-      "Lab 1 sample id: `wd-my-books`. Personal list: `wd-your-books`",
+      "Favorite books — order is **not** the point",
+      "Lab 1 sample id: `wd-my-books`",
     ],
     code: `<h5>Unordered List Tag</h5>
 My favorite books (in no particular order)
@@ -77,6 +120,8 @@ My favorite books (in no particular order)
   <li>Dune</li>
   <li>Lord of the Rings</li>
   <li>Ender&apos;s Game</li>
+  <li>Red Mars</li>
+  <li>The Forever War</li>
 </ul>`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab1/ListTags.tsx",
@@ -84,51 +129,57 @@ My favorite books (in no particular order)
   },
   {
     id: "tables-not-layout",
-    title: "Tables are for data — not layout",
+    title: "Tables",
     kind: "content",
     bullets: [
-      "`<table>` organizes **rows and columns of data**",
-      "Quiz grades, rosters, assignment lists — yes. A two-column page chrome — not forever",
-      "Labs layout may still use a table to sit the TOC beside `{children}`. That is temporary until CSS chapters",
-      "Lab 1 sample id: `wd-tables`",
+      "Use tables to display **tabular data** — each row is a record, each column has the same type",
+      "Do **not** use tables to layout content. Use `div`s and CSS instead",
     ],
+    code: `<table>
+  <thead></thead>
+  <tbody></tbody>
+</table>`,
+    codeLanguage: "html",
   },
   {
     id: "thead-th",
-    title: "thead and th",
+    title: "Table headings and rows",
     kind: "content",
     bullets: [
-      "`thead` groups the header row(s)",
-      "`th` is a **header cell** — browsers bold it; screen readers use it as the column name",
-      "Put Quiz, Topic, Date, Grade in `th` cells, not `td`",
+      "`thead` contains table heading content",
+      "`tr` is a row. `th` is a **header cell**",
+      "`border` sets border width — old HTML, fine for Lab 1",
     ],
-    code: `<thead>
-  <tr>
-    <th>Quiz</th>
-    <th>Topic</th>
-    <th>Date</th>
-    <th>Grade</th>
-  </tr>
-</thead>`,
+    code: `<table border="1">
+  <thead>
+    <tr>
+      <th>Quiz</th>
+      <th>Topic</th>
+      <th>Date</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+</table>`,
     codeLanguage: "html",
   },
   {
     id: "tbody-td",
-    title: "tbody and td",
+    title: "Table body, rows, and data",
     kind: "content",
     bullets: [
       "`tbody` groups the data rows",
-      "`tr` is a row. `td` is a data cell",
-      "One `tr` per quiz. Keep the column order aligned with the `th` headers",
+      "`td` is a data cell. One `tr` per record",
     ],
-    code: `<tbody>
-  <tr>
-    <td>Q1</td>
-    <td>HTML</td>
-    <td>2/3/21</td>
-    <td>85</td>
-  </tr>
-</tbody>`,
+    code: `<table border="1">
+  <tbody>
+    <tr>
+      <td>Q1</td>
+      <td>HTML</td>
+      <td>2/3/21</td>
+      <td>85</td>
+    </tr>
+  </tbody>
+</table>`,
     codeLanguage: "html",
   },
   {
@@ -138,7 +189,6 @@ My favorite books (in no particular order)
     bullets: [
       "`tfoot` is the summary row — Average, totals, notes",
       "`colSpan` stretches a cell across columns. In JSX it is camelCase: `colSpan={3}`",
-      "HTML’s `colspan` attribute becomes `colSpan` in React",
     ],
     code: `<tfoot>
   <tr>
@@ -150,11 +200,11 @@ My favorite books (in no particular order)
   },
   {
     id: "quiz-table",
-    title: "Quiz table — thead/tbody/tfoot",
+    title: "Example",
     kind: "demo",
     bullets: [
-      "Keep the sample small. Alignment attributes (`align`) are old HTML — fine for Lab 1",
-      "Chapter 2 will move alignment into CSS",
+      "Lab 1 sample id: `wd-tables` — `thead` / `tbody` / `tfoot`",
+      "Alignment attributes (`align`) are old HTML. Chapter 2 moves that into CSS",
     ],
     code: `<table id="wd-tables" border={1} width="100%">
   <thead>
@@ -184,32 +234,12 @@ My favorite books (in no particular order)
     embed: "tables",
   },
   {
-    id: "images-note",
-    title: "img is content, not a table",
-    kind: "content",
-    bullets: [
-      "Lab 1 also has `Images.tsx` — `wd-images`, `wd-starship`, `wd-teslabot`",
-      "`<img>` is empty. In JSX write `<img … />` with `src` and `alt`",
-      "Do not wrap the whole page in a table just to place an image",
-    ],
-  },
-  {
-    id: "lab1-ids",
-    title: "Lab 1 ids for this deck",
-    kind: "content",
-    bullets: [
-      "`wd-lists` — wrapper. `wd-pancakes` — ordered recipe",
-      "`wd-my-books` — sample unordered list. `wd-your-books` — yours",
-      "`wd-tables` — the quiz table",
-    ],
-  },
-  {
     id: "next-up",
     title: "Next: web forms",
     kind: "title",
     bullets: [
-      "Lists and tables structure collections. Tables are data, not chrome",
-      "Deck 4: labels, text, buttons, file, radio vs checkbox, select, typed inputs",
+      "Lists and tables structure collections. Tables are data, **not layout**",
+      "Next: labels, text, buttons, file, radio vs checkbox, select, typed inputs",
     ],
   },
 ];
