@@ -1,3 +1,5 @@
+import type { AssignmentCheckResult } from "./check-types";
+import { autoPassedCriterionIds } from "./grade";
 import type {
   AssignmentHubItem,
   AssignmentId,
@@ -74,6 +76,55 @@ export function mergeCompletedIds(
     }
   }
   return [...next].sort();
+}
+
+/**
+ * Run Checks forgets remembered checklist progress and keeps only items that
+ * auto-pass on this run. Previous completed IDs — stale auto-passes and
+ * manual toggles — are dropped. A missing or failing result unchecks the row.
+ */
+export function completedIdsAfterAutoCheckRun(
+  _previousCompletedIds: readonly string[],
+  autoResults: readonly AssignmentCheckResult[],
+): string[] {
+  return autoPassedCriterionIds(autoResults);
+}
+
+export async function replaceCompletedCriterionIds(
+  store: ProgressStore,
+  input: {
+    clerkUserId: string;
+    assignmentId: AssignmentId;
+    allCriterionIds: readonly string[];
+    completedIds: readonly string[];
+  },
+): Promise<string[]> {
+  const valid = new Set(input.allCriterionIds.filter((id) => id));
+  const want = new Set(
+    input.completedIds.filter((id) => valid.has(id)),
+  );
+  const existing = new Set(
+    await loadCompletedCriterionIds(
+      store,
+      input.clerkUserId,
+      input.assignmentId,
+    ),
+  );
+  for (const criterionId of valid) {
+    const completed = want.has(criterionId);
+    if (completed === existing.has(criterionId)) continue;
+    await store.upsert({
+      clerkUserId: input.clerkUserId,
+      assignmentId: input.assignmentId,
+      criterionId,
+      completed,
+    });
+  }
+  return loadCompletedCriterionIds(
+    store,
+    input.clerkUserId,
+    input.assignmentId,
+  );
 }
 
 /** localStorage is the full completed set once written; otherwise use server. */

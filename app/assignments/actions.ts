@@ -6,9 +6,11 @@ import {
   findCriterion,
   getAssignment,
   isAssignmentId,
+  listRubricCriteria,
 } from "@/lib/assignments/catalog";
 import {
   readAssignmentProgress,
+  replaceAssignmentCriterionProgress,
   writeCriterionProgress,
 } from "@/lib/assignments/progress";
 import type { AssignmentId } from "@/lib/assignments/types";
@@ -132,6 +134,52 @@ export async function mergeLocalProgress(input: {
     const message =
       error instanceof Error ? error.message : "Could not merge progress.";
     console.error("assignment progress merge failed", message);
+    return { ok: false, code: "persist_failed", message };
+  }
+}
+
+export async function replaceAssignmentProgress(input: {
+  assignmentId: string;
+  completedCriterionIds: string[];
+}): Promise<ProgressWriteResult> {
+  if (!isAssignmentProgressConfigured()) {
+    return {
+      ok: false,
+      code: "not_configured",
+      message: "Progress sync is not configured yet.",
+    };
+  }
+
+  if (!isAssignmentId(input.assignmentId)) {
+    return { ok: false, code: "invalid", message: "Unknown assignment." };
+  }
+
+  const assignment = getAssignment(input.assignmentId);
+  if (!assignment?.rubric) {
+    return { ok: false, code: "invalid", message: "Unknown assignment." };
+  }
+
+  const { userId, isAuthenticated } = await auth();
+  if (!isAuthenticated || !userId) {
+    return {
+      ok: false,
+      code: "unauthenticated",
+      message: "Sign in with your school email to sync progress.",
+    };
+  }
+
+  try {
+    const completedCriterionIds = await replaceAssignmentCriterionProgress({
+      clerkUserId: userId,
+      assignmentId: input.assignmentId as AssignmentId,
+      allCriterionIds: listRubricCriteria(assignment.rubric).map((row) => row.id),
+      completedIds: input.completedCriterionIds,
+    });
+    return { ok: true, completedCriterionIds, persisted: "mongo" };
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Could not replace progress.";
+    console.error("assignment progress replace failed", message);
     return { ok: false, code: "persist_failed", message };
   }
 }

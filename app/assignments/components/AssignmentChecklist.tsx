@@ -12,8 +12,8 @@ import Link from "next/link";
 import type { AssignmentHubItem } from "@/lib/assignments/types";
 import {
   applyCriterionToggle,
+  completedIdsAfterAutoCheckRun,
   localProgressKey,
-  mergeCompletedIds,
   parseLocalProgress,
   summarizeProgress,
 } from "@/lib/assignments/progress-store";
@@ -26,13 +26,29 @@ import {
 import { isManualA1Criterion } from "@/lib/assignments/a1-rubric";
 import type { AssignmentCheckResult } from "@/lib/assignments/checks";
 import { latestResultByCriterion } from "@/lib/assignments/checks";
-import {
-  autoPassedCriterionIds,
-  type CriterionPassMap,
-} from "@/lib/assignments/grade";
+import type { CriterionPassMap } from "@/lib/assignments/grade";
 import { criterionVerifyUrl } from "@/lib/assignments/verify-urls";
 import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
-import { mergeLocalProgress, setCriterionCompleted } from "../actions";
+import {
+  mergeLocalProgress,
+  replaceAssignmentProgress,
+  setCriterionCompleted,
+} from "../actions";
+
+function autoCheckRunKey(
+  checkGeneration: number,
+  results: readonly AssignmentCheckResult[],
+): string {
+  const fingerprint = results
+    .map((row) => {
+      const id = row.criterionId ?? row.id;
+      const state = row.skipped ? "s" : row.passed ? "p" : "f";
+      return `${id}:${state}`;
+    })
+    .sort()
+    .join("|");
+  return `${checkGeneration}:${fingerprint}`;
+}
 
 function AutoBadge({ result }: { result: AssignmentCheckResult }) {
   const tone = result.skipped
@@ -66,6 +82,7 @@ export default function AssignmentChecklist({
   signedIn,
   mongoReady,
   autoResults = [],
+  checkGeneration = 0,
   vercelUrl,
   persistProgress = true,
   staffMode = false,
@@ -79,6 +96,7 @@ export default function AssignmentChecklist({
   signedIn: boolean;
   mongoReady: boolean;
   autoResults?: AssignmentCheckResult[];
+  checkGeneration?: number;
   vercelUrl?: string;
   persistProgress?: boolean;
   staffMode?: boolean;
@@ -116,26 +134,28 @@ export default function AssignmentChecklist({
 
   useEffect(() => {
     if (!rubric || !persistProgress) return;
-    const passed = autoPassedCriterionIds(autoResults);
-    const key = passed.join(",");
-    if (!key || key === appliedAutoKey.current) return;
-    const next = mergeCompletedIds(completedIds, passed);
-    if (next.join(",") === completedIds.join(",")) {
-      appliedAutoKey.current = key;
-      return;
-    }
+    if (autoResults.length === 0) return;
+    const key = autoCheckRunKey(checkGeneration, autoResults);
+    if (key === appliedAutoKey.current) return;
     appliedAutoKey.current = key;
-    writeLocalProgress(assignment.id, next);
+    const next = completedIdsAfterAutoCheckRun(completedIds, autoResults);
+    if (next.join(",") !== completedIds.join(",")) {
+      writeLocalProgress(assignment.id, next);
+    }
     if (!signedIn || !mongoReady) return;
     startTransition(async () => {
-      await mergeLocalProgress({
+      const result = await replaceAssignmentProgress({
         assignmentId: assignment.id,
-        completedCriterionIds: passed,
+        completedCriterionIds: next,
       });
+      if (result.ok) {
+        writeLocalProgress(assignment.id, result.completedCriterionIds);
+      }
     });
   }, [
     assignment.id,
     autoResults,
+    checkGeneration,
     completedIds,
     mongoReady,
     persistProgress,
@@ -146,6 +166,7 @@ export default function AssignmentChecklist({
 
   useEffect(() => {
     if (!rubric || !signedIn || !mongoReady || !persistProgress) return;
+    if (autoResults.length > 0) return;
     const local = parseLocalProgress(
       window.localStorage.getItem(localProgressKey(assignment.id)),
     );
@@ -159,7 +180,15 @@ export default function AssignmentChecklist({
         writeLocalProgress(assignment.id, result.completedCriterionIds);
       }
     });
-  }, [assignment.id, mongoReady, persistProgress, rubric, signedIn, startTransition]);
+  }, [
+    assignment.id,
+    autoResults.length,
+    mongoReady,
+    persistProgress,
+    rubric,
+    signedIn,
+    startTransition,
+  ]);
 
   if (!rubric) return null;
 
@@ -224,7 +253,7 @@ export default function AssignmentChecklist({
           {staffMode
             ? ASSIGNMENT_STUDENT_COPY.staffCommentsHint
             : persistProgress && signedIn && mongoReady
-              ? "Checkmarks sync to your signed-in account. Auto-pass rows are checked for you; you can still change them."
+              ? "Checkmarks sync to your signed-in account. Run checks clears remembered checkmarks and checks only items that pass on this run."
               : persistProgress && signedIn
                 ? "Checkmarks stay in this browser until progress sync is available."
                 : persistProgress

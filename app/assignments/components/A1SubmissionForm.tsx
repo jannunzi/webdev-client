@@ -57,6 +57,7 @@ export default function A1SubmissionForm({
   impersonating = false,
   gateReason = null,
   staffStudentKey,
+  onCheckRunStart,
   onResults,
   onSubmission,
 }: {
@@ -65,6 +66,7 @@ export default function A1SubmissionForm({
   impersonating?: boolean;
   gateReason?: SubmissionGateReason;
   staffStudentKey?: string;
+  onCheckRunStart?: () => void;
   onResults?: (results: AssignmentCheckResult[]) => void;
   onSubmission?: (submission: AssignmentSubmissionView) => void;
 }) {
@@ -113,6 +115,7 @@ export default function A1SubmissionForm({
   function onSave() {
     setPendingAction("save");
     setError(null);
+    onCheckRunStart?.();
     startTransition(async () => {
       const result = await saveAssignmentSubmission({
         assignmentId: "a1",
@@ -127,6 +130,7 @@ export default function A1SubmissionForm({
   function onRunChecks() {
     setPendingAction("check");
     setError(null);
+    onCheckRunStart?.();
     startTransition(async () => {
       const result = staffStudentKey
         ? await runStaffAssignmentChecks({
