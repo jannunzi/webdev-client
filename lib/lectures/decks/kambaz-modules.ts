@@ -6,18 +6,17 @@ export const KAMBAZ_MODULES_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Chapter 1 · Kambaz Modules",
+      "KAMBAZ MODULES",
       "Nested lists, then Home + Course Status",
     ],
   },
   {
     id: "nesting",
-    title: "Modules are nested lists",
+    title: "Creating the Modules Screen",
     kind: "content",
     bullets: [
       "Opening a course lands on **Home**. Home shows the same module list",
       "Build **Modules** first, then reuse that page on Home",
-      "Three columns of chrome: Kambaz nav, Course nav, then the list",
       "Top-level **modules** → nested **lessons** → **content items**",
     ],
   },
@@ -50,66 +49,38 @@ export default function Module({
     codeFile: "app/(kambaz)/courses/[cid]/modules/Module.tsx",
   },
   {
-    id: "lesson",
-    title: "Lesson is one section",
-    kind: "content",
-    bullets: [
-      "Title is LEARNING OBJECTIVES, READING, or SLIDES",
-      "Always render the `wd-content` list — even if empty — so you stay with `{children}`",
-      "Avoid new JavaScript conditionals this week",
-    ],
-    code: `import type { ReactNode } from "react";
-
-export default function Lesson({
-  title,
-  children,
-}: {
-  title: string;
-  children?: ReactNode;
-}) {
-  return (
-    <li className="wd-lesson">
-      <span className="wd-title">{title}</span>
-      <ul className="wd-content">{children}</ul>
-    </li>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/courses/[cid]/modules/Lesson.tsx",
-  },
-  {
     id: "modules-page",
-    title: "Weeks 1–3 on the Modules page",
+    title: "Create Modules Screen",
     kind: "demo",
     embed: "kambaz-modules",
     bullets: [
-      "Toolbar: Collapse All, View Progress, Publish All, + Module",
-      "List id `wd-modules`. Expand Week 1 with LEARNING OBJECTIVES, READING, SLIDES",
+      "List id `wd-modules`. Expand Week 1 with **LEARNING OBJECTIVES**",
       "Weeks 2–3 can start thin. Content items use `wd-content-item`",
-      "Keep the markup unstyled — Tailwind is Chapter 2",
+      "Extract `Lesson` the same way — title plus `{children}`",
     ],
-    code: `import Module from "./Module";
-import Lesson from "./Lesson";
-
-export default function Modules() {
+    code: `export default function Modules() {
   return (
     <div>
-      <button>Collapse All</button> <button>View Progress</button>{" "}
-      <select defaultValue="publish-all">
-        <option value="publish-all">Publish All</option>
-      </select>{" "}
-      <button>+ Module</button>
+      {/* Collapse All, View Progress, Publish All, + Module */}
       <ul id="wd-modules">
-        <Module title="Week 1, Lecture 1 - Course Introduction, Syllabus, Agenda">
-          <Lesson title="LEARNING OBJECTIVES">
-            <li className="wd-content-item">Introduction to the course</li>
-            <li className="wd-content-item">Learn what is Web Development</li>
-          </Lesson>
-          <Lesson title="READING">{/* chapter rows */}</Lesson>
-          <Lesson title="SLIDES">{/* slide rows */}</Lesson>
-        </Module>
-        <Module title="Week 2">{/* Expand lessons on your own */}</Module>
-        <Module title="Week 3" />
+        <li className="wd-module">
+          <div className="wd-title">Week 1</div>
+          <ul className="wd-lessons">
+            <li className="wd-lesson">
+              <span className="wd-title">LEARNING OBJECTIVES</span>
+              <ul className="wd-content">
+                <li className="wd-content-item">Introduction to the course</li>
+                <li className="wd-content-item">Learn what is Web Development</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li className="wd-module">
+          <div className="wd-title">Week 2</div>
+        </li>
+        <li className="wd-module">
+          <div className="wd-title">Week 3</div>
+        </li>
       </ul>
     </div>
   );
@@ -119,12 +90,10 @@ export default function Modules() {
   },
   {
     id: "status",
-    title: "Course Status sidebar",
+    title: "Implement Course Status Sidebar",
     kind: "content",
     bullets: [
       "`app/(kambaz)/courses/[cid]/home/Status.tsx` — wrapper `wd-course-status`",
-      "Labels matter: Unpublish, Publish, Import Existing Content, Import from Commons",
-      "Also: Choose Home Page, View Course Stream, New Announcement, New Analytics, View Course Notifications",
       "Start from the stub; complete the remaining buttons on your own",
     ],
     code: `export default function CourseStatus() {
@@ -132,8 +101,7 @@ export default function Modules() {
     <div id="wd-course-status">
       <h2>Course Status</h2>
       <button>Unpublish</button> <button>Publish</button>
-      <br /><br />
-      {/* Complete the remaining status actions on your own */}
+      {/* Complete on your own */}
       <button>View Course Notifications</button>
     </div>
   );
@@ -143,11 +111,10 @@ export default function Modules() {
   },
   {
     id: "home",
-    title: "Home = Modules + Status",
+    title: "Implementing the Home Screen",
     kind: "demo",
     embed: "kambaz-home",
     bullets: [
-      "Kambaz nav and Course nav already come from outer layouts",
       "Home only needs Modules (70%) beside Course Status",
       "Import the Modules **page** — `import Modules from \"../modules/page\"`",
       "Delete any leftover `page.tsx` directly under `courses/[cid]/`",
@@ -161,12 +128,8 @@ export default function Home() {
       <table>
         <tbody>
           <tr>
-            <td valign="top" width="70%">
-              <Modules />
-            </td>
-            <td valign="top">
-              <CourseStatus />
-            </td>
+            <td valign="top" width="70%"> <Modules /> </td>
+            <td valign="top"> <CourseStatus /> </td>
           </tr>
         </tbody>
       </table>
@@ -175,15 +138,14 @@ export default function Home() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/home/page.tsx",
-    codeAddedLines: [1, 2, 11, 14],
+    codeAddedLines: [1, 2, 10, 11],
   },
   {
     id: "next-up",
-    title: "Next: Assignments (on your own)",
+    title: "Next: Assignments",
     kind: "title",
     bullets: [
-      "Match the book LiveDemo and `wd-*` ids — no line-by-line walkthrough",
-      "List plus editor placeholders. `defaultValue`, not `value`",
+      "On your own — match the book LiveDemo and `wd-*` ids",
     ],
   },
 ];

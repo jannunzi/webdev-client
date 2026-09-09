@@ -6,41 +6,30 @@ export const KAMBAZ_DASHBOARD_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Chapter 1 · Kambaz Dashboard",
+      "KAMBAZ DASHBOARD",
       "Course cards that open `/courses/[cid]/home`",
     ],
   },
   {
     id: "purpose",
-    title: "Dashboard lists courses",
+    title: "Creating the Dashboard Screen",
     kind: "content",
     bullets: [
-      "Students see courses they are enrolled in; faculty see courses they teach",
-      "Clicking a course goes to that course’s Home route",
+      "Lists courses a student is **enrolled** in and a faculty is **teaching**",
+      "Clicking a course opens that course’s Home",
       "Include **at least three** courses",
       "File: `app/(kambaz)/dashboard/page.tsx` — URL `/dashboard`",
     ],
   },
   {
-    id: "image",
-    title: "Use next/image, not img",
-    kind: "content",
-    bullets: [
-      "`import Image from \"next/image\"`",
-      "Still needs `src`, `alt`, `width`, and `height`",
-      "Put course photos under `public/images/`",
-      "Look images up or generate placeholders. The book uses `reactjs.jpg`, `nodejs.jpg`, `mongodb.jpg`",
-    ],
-  },
-  {
     id: "course-card",
-    title: "Extract a CourseCard",
+    title: "The Dashboard Component",
     kind: "content",
     bullets: [
-      "Each card repeats image, title, subtitle, and Go — that is a component",
-      "Props: `id`, `title`, `subtitle`, `image`",
+      "Each card repeats image, title, subtitle, and Go — extract **`CourseCard`**",
+      "`import Image from \"next/image\"` — not a raw `<img>`",
       "`Link` to `/courses/${id}/home` with class `wd-dashboard-course-link`",
-      "`type=\"button\"` on Go so the click does not submit a form",
+      "Put course photos under `public/images/`",
     ],
     code: `import Link from "next/link";
 import Image from "next/image";
@@ -68,13 +57,13 @@ export default function CourseCard({
   },
   {
     id: "dashboard-page",
-    title: "Mount at least three cards",
+    title: "The Dashboard Component",
     kind: "demo",
     embed: "kambaz-dashboard",
     bullets: [
-      "Ids: `wd-dashboard`, `wd-dashboard-title`, `wd-dashboard-published`, `wd-dashboard-courses`",
-      "Published Courses (3) matches the three cards in the book",
-      "Home is `/courses/[cid]/home` — not `/courses/1234` and not a hash route",
+      "Ids: `wd-dashboard`, `wd-dashboard-title`, `wd-dashboard-published`",
+      "**Published Courses (3)** matches the three cards",
+      "Home is `/courses/[cid]/home` — not `/courses/1234`",
     ],
     code: `import CourseCard from "./CourseCard";
 
@@ -101,12 +90,11 @@ export default function Dashboard() {
   },
   {
     id: "signin-to-dashboard",
-    title: "Sign in lands on Dashboard",
+    title: "Navigate to Dashboard on Signin",
     kind: "content",
     bullets: [
       "Point the Sign in button at `/dashboard`",
       "Keep id `wd-signin-btn` so the grader still finds it",
-      "There is no real auth yet — the `Link` is the “success” path",
     ],
     code: `<Link href="/dashboard" id="wd-signin-btn">
   Sign in
@@ -121,7 +109,6 @@ export default function Dashboard() {
     kind: "title",
     bullets: [
       "A global sidebar so Account, Dashboard, Calendar, Inbox, and Labs stay visible",
-      "Calendar and Inbox 404 until `app/not-found.tsx` exists",
     ],
   },
 ];

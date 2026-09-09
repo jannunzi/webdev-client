@@ -6,30 +6,19 @@ export const KAMBAZ_NAVIGATION_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Chapter 1 · Kambaz Navigation",
+      "KAMBAZ NAV SIDEBAR",
       "Global sidebar + Kambaz layout",
     ],
   },
   {
-    id: "purpose",
-    title: "Chrome stays while screens swap",
-    kind: "content",
-    bullets: [
-      "Account, Dashboard, Calendar, Inbox, and Labs should stay visible",
-      "Same layout idea as Labs: nav is not copied into every page",
-      "Northeastern can stay an external `<a>` with `target=\"_blank\"`",
-      "In-app destinations use `Link` from `next/link`",
-    ],
-  },
-  {
     id: "nav-component",
-    title: "KambazNavigation + wd-* ids",
+    title: "Kambaz Navigation Sidebar",
     kind: "content",
     bullets: [
       "`app/(kambaz)/Navigation.tsx` — wrapper `wd-kambaz-navigation`",
-      "Ids: `wd-neu-link`, `wd-account-link`, `wd-dashboard-link`, `wd-course-link`, `wd-calendar-link`, `wd-inbox-link`, `wd-labs-link`",
-      "Courses can point at `/dashboard` for now — there is no `/courses` index",
-      "Keep the `rel=\"noreferrer\"` on the Northeastern tab",
+      "Northeastern stays an external `<a>` with `target=\"_blank\"`",
+      "In-app destinations use `Link` from `next/link`",
+      "Courses can point at `/dashboard` for now",
     ],
     code: `import Link from "next/link";
 
@@ -38,19 +27,13 @@ export default function KambazNavigation() {
     <div id="wd-kambaz-navigation">
       <a href="https://www.northeastern.edu/" id="wd-neu-link" target="_blank" rel="noreferrer">
         Northeastern
-      </a>
-      <br />
-      <Link href="/account" id="wd-account-link">Account</Link>
-      <br />
-      <Link href="/dashboard" id="wd-dashboard-link">Dashboard</Link>
-      <br />
-      <Link href="/dashboard" id="wd-course-link">Courses</Link>
-      <br />
-      <Link href="/calendar" id="wd-calendar-link">Calendar</Link>
-      <br />
-      <Link href="/inbox" id="wd-inbox-link">Inbox</Link>
-      <br />
-      <Link href="/labs" id="wd-labs-link">Labs</Link>
+      </a><br/>
+      <Link href="/account"   id="wd-account-link">Account</Link><br/>
+      <Link href="/dashboard" id="wd-dashboard-link">Dashboard</Link><br/>
+      <Link href="/dashboard" id="wd-course-link">Courses</Link><br/>
+      <Link href="/calendar"  id="wd-calendar-link">Calendar</Link><br/>
+      <Link href="/inbox"     id="wd-inbox-link">Inbox</Link><br/>
+      <Link href="/labs"      id="wd-labs-link">Labs</Link>
     </div>
   );
 }`,
@@ -59,14 +42,13 @@ export default function KambazNavigation() {
   },
   {
     id: "layout",
-    title: "layout.tsx: nav left, children right",
+    title: "Layout Sidebar on Left Column",
     kind: "demo",
     embed: "kambaz-navigation",
     bullets: [
       "`app/(kambaz)/layout.tsx` wraps every Kambaz route",
       "Temporary `<table>`: nav `width=\"200\"`, content `width=\"100%\"`",
       "Click Account / Dashboard / Calendar in the live chrome",
-      "Chapter 2 replaces the table with Flex / Grid / Tailwind",
     ],
     code: `import { ReactNode } from "react";
 import KambazNavigation from "./Navigation";
@@ -78,12 +60,8 @@ export default function KambazLayout({
     <table>
       <tbody>
         <tr>
-          <td valign="top" width="200">
-            <KambazNavigation />
-          </td>
-          <td valign="top" width="100%">
-            {children}
-          </td>
+          <td valign="top" width="200">  <KambazNavigation /> </td>
+          <td valign="top" width="100%"> {children}           </td>
         </tr>
       </tbody>
     </table>
@@ -100,9 +78,8 @@ export default function KambazLayout({
     kind: "content",
     bullets: [
       "Calendar and Inbox have no `page.tsx` yet — they 404",
-      "`app/not-found.tsx` is a reserved App Router filename, like `page.tsx` and `layout.tsx`",
+      "`app/not-found.tsx` is a reserved App Router filename",
       "Id `wd-not-found`. Link `wd-not-found-dashboard-link` back to `/dashboard`",
-      "Keep the markup simple. Fancy `className` values can wait for Chapter 2",
     ],
     code: `import Link from "next/link";
 
