@@ -97,6 +97,8 @@ export type AgendaRow = {
   kind: AgendaKind;
   lectureNumber?: number;
   topic: string;
+  /** Optional student-facing link (project-week slides hub, etc.). */
+  href?: string;
   /** Absolute Canvas dues that happen to fall on this calendar day. */
   deadlines: Deadline[];
   /**
@@ -117,6 +119,8 @@ export type AgendaGroup = {
 
 export type LectureTopic = {
   topic: string;
+  /** Optional syllabus link, e.g. `/slides` for the project-week decks. */
+  href?: string;
   /** Book chapter for weekly rows. Omitted on exam-only (X2) and project weeks. */
   chapter?: number;
   exam?: "X1" | "X2";

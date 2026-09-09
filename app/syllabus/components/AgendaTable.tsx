@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { holidayMeetingNote } from "../data/holidays";
 import { formatAgendaDate, formatWeekOf } from "../data/dates";
 import type { AgendaGroup, AgendaRow, CourseSection } from "../data/types";
@@ -46,8 +47,13 @@ export default function AgendaTable({
         in the second half of lecture the week of Oct 26, not a separate
         midterm module. Chapter 5 is Nov 9 and Nov
         16; Chapter 6 is Nov 23 and Nov 30. Project grading is the week of
-        Dec 7 (project due Dec 6), with room for the Integrating with the
-        Atlas lecture slides. X2 is the week of Dec 14, even though the last
+        Dec 7 (project due Dec 6), with room for the{" "}
+        <Link href="/slides">Project — Integrating with External APIs</Link>{" "}
+        lecture slides (
+        <Link href="/slides/youtube-api">YouTube API</Link>,{" "}
+        <Link href="/slides/chatgpt-api">ChatGPT API</Link>, and{" "}
+        <Link href="/slides/grok-api">Grok API</Link>
+        ). X2 is the week of Dec 14, even though the last
         day of classes is Dec 13. Quizzes are taken at the end of lecture at
         the end of each chapter.
       </p>
@@ -99,6 +105,8 @@ export default function AgendaTable({
                   <td className="px-3 py-2">
                     {row.kind === "orientation" ? (
                       <span className="font-medium italic">{row.topic}</span>
+                    ) : row.href ? (
+                      <Link href={row.href}>{row.topic}</Link>
                     ) : (
                       row.topic
                     )}

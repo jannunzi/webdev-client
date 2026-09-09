@@ -8,8 +8,9 @@ import type { IsoDate, LectureTopic } from "./types";
  * Chapter 4 window (weeks of 10/26 and 11/2). Ch5/Ch6 sit on 11/9–11/16
  * and 11/23–11/30.
  * The week of Dec 7 is project grading (due 2026-12-06), with room for
- * the “Integrating with the …” lecture slides. The week of Dec 14 is
- * X2 even though lastDayOfClasses is Dec 13. Holidays do not skip a slot.
+ * the Project — Integrating with External APIs lecture slides on /slides
+ * (YouTube, ChatGPT, Grok). Atlas stays in Chapter 6. The week of Dec 14
+ * is X2 even though lastDayOfClasses is Dec 13. Holidays do not skip a slot.
  */
 export const SHARED_CURRICULUM_START: IsoDate = "2026-09-14";
 
@@ -32,6 +33,12 @@ export function examModuleHeading(exam: "X1" | "X2"): string {
 }
 
 export const PROJECT_GRADING_HEADING = "Project grading";
+
+/** Hub index; decks are /slides/youtube-api, /slides/chatgpt-api, /slides/grok-api. */
+export const PROJECT_GRADING_SLIDES_HREF = "/slides";
+
+export const PROJECT_GRADING_TOPIC =
+  "Project grading — Integrating with external APIs (YouTube, ChatGPT, Grok slides)";
 
 /** Single agenda group for the merged X1 + Chapter 4 weeks (10/26 + 11/2). */
 export const CHAPTER_4_MIDTERM_HEADING = "Ch 4 — Client state, Midterm/X1";
@@ -98,8 +105,8 @@ export const lectureTopics: LectureTopic[] = [
   },
   {
     project: true,
-    topic:
-      "Project grading — Integrating with the MongoDB hosted in Atlas (lecture slides as needed)",
+    topic: PROJECT_GRADING_TOPIC,
+    href: PROJECT_GRADING_SLIDES_HREF,
   },
   {
     exam: "X2",

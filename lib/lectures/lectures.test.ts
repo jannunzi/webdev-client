@@ -278,9 +278,9 @@ describe("lecture catalog", () => {
         "9/14, 9/21",
         "9/28, 10/5",
         "10/12, 10/19",
-        "11/2, 11/9",
-        "11/16, 11/23",
-        "11/30, 12/7",
+        "10/26, 11/2",
+        "11/9, 11/16",
+        "11/23, 11/30",
         "12/7",
       ],
     );
@@ -2263,7 +2263,7 @@ describe("lecture decks", () => {
   it("teaches YouTube, ChatGPT, and Grok from the Drive decks — no Napster or OMDb", () => {
     assert.deepEqual(
       BOOK_CHAPTERS.map((chapter) => chapter.weeks),
-      ["9/14, 9/21", "9/28, 10/5", "10/12, 10/19", "11/2, 11/9", "11/16, 11/23", "11/30, 12/7", "12/7"],
+      ["9/14, 9/21", "9/28, 10/5", "10/12, 10/19", "10/26, 11/2", "11/9, 11/16", "11/23, 11/30", "12/7"],
     );
 
     const youtube = slideText("youtube-api");
