@@ -94,7 +94,6 @@ export const CHAPTER_5_SLUGS = [
   "kambaz-sessions",
   "kambaz-courses-api",
   "deploy-api",
-  "ch5-conclusion",
 ] as const;
 
 /** Chapter 6 decks — local Mongo, Mongoose, Atlas, Kambaz DB (Lab 6 / A6). */
@@ -108,7 +107,6 @@ export const CHAPTER_6_SLUGS = [
   "kambaz-courses-db",
   "kambaz-modules-db",
   "kambaz-enrollments-db",
-  "ch6-deliverables",
 ] as const;
 
 /** Chapter 3 decks — JavaScript, data-driven UI, and Kambaz from JSON (Lab 3 / A3). */
@@ -130,7 +128,6 @@ export const CHAPTER_3_SLUGS = [
   "client-and-server",
   "parameterizing-components",
   "path-params-and-todos",
-  "ch3-check-understanding",
   "kambaz-database",
   "kambaz-dashboard-data",
   "kambaz-courses-data",
@@ -288,12 +285,6 @@ export const LECTURE_TOPICS = [
     bookSectionId: "sec-3-7",
   },
   {
-    topicId: "ch3-check",
-    chapter: 3,
-    title: "3.8 Check Your Understanding",
-    bookSectionId: "sec-3-8",
-  },
-  {
     topicId: "kambaz-data",
     chapter: 3,
     title: "3.9 Implementing a Data Driven Kambaz Application",
@@ -378,12 +369,6 @@ export const LECTURE_TOPICS = [
     bookSectionId: "sec-5-5",
   },
   {
-    topicId: "ch5-end",
-    chapter: 5,
-    title: "5.6 Conclusion",
-    bookSectionId: "sec-5-6",
-  },
-  {
     topicId: "local-mongo",
     chapter: 6,
     title: "6.1 Working with a Local MongoDB Instance",
@@ -418,12 +403,6 @@ export const LECTURE_TOPICS = [
     chapter: 6,
     title: "6.4 Integrating the Kambaz Web Application with a Database",
     bookSectionId: "sec-6-4",
-  },
-  {
-    topicId: "ch6-end",
-    chapter: 6,
-    title: "6.5 Deliverables",
-    bookSectionId: "sec-6-5",
   },
 ] as const;
 

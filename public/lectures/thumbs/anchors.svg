@@ -5,9 +5,9 @@
   <rect x="0" y="0" width="18" height="720" fill="#EA580C"/>
   <text x="72" y="64" fill="#C2410C" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" letter-spacing="4">WEB DEV · CHAPTER 1</text>
   
-  <g transform="translate(120 90)" fill="none" stroke="#0F172A" stroke-width="22" stroke-linecap="round">
-    <path d="M210 120c40-40 104-40 144 0s40 104 0 144l-52 52"/>
-    <path d="M270 280c-40 40-104 40-144 0s-40-104 0-144l52-52"/>
+  <g transform="translate(150 150) rotate(-32 260 140)" fill="none" stroke="#0F172A" stroke-width="32" stroke-linejoin="round">
+    <rect x="40" y="90" width="230" height="100" rx="50"/>
+    <rect x="210" y="90" width="230" height="100" rx="50"/>
   </g>
   <text x="72" y="640" fill="#7C2D12" font-family="ui-sans-serif, system-ui, sans-serif" font-size="56" font-weight="800">Anchors</text>
 </svg>
