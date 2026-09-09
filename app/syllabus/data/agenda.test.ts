@@ -261,7 +261,13 @@ describe("agenda Week of labels and chapter groups", () => {
     }
     const x1 = mon.find((row) => mondayOfWeek(row.date) === "2026-10-26");
     const x2 = mon.find((row) => mondayOfWeek(row.date) === "2026-12-14");
-    assert.ok(x1?.deadlines.some((deadline) => deadline.label.startsWith("X1")));
+    const x1Deadline = x1?.deadlines.find((deadline) =>
+      deadline.label.startsWith("X1"),
+    );
+    assert.equal(x1Deadline?.date, "2026-10-26");
+    assert.match(x1Deadline?.label ?? "", /2nd half of lecture/);
+    assert.doesNotMatch(x1Deadline?.label ?? "", /\bdue\b/i);
+    assert.doesNotMatch(x1Deadline?.label ?? "", /unlock/i);
     assert.ok(x2?.deadlines.some((deadline) => deadline.label.startsWith("X2")));
 
     const assignmentSundays = [

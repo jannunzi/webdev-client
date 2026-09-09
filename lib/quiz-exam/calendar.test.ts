@@ -63,8 +63,9 @@ describe("Fall 2026 Canvas calendar", () => {
         deadline.kind === "exam" && deadline.label.includes("X2"),
     );
     const project = deadlines.find((deadline) => deadline.kind === "project");
-    assert.equal(x1?.date, "2026-11-01");
-    assert.equal(x1?.label, "X1 due");
+    assert.equal(x1?.date, "2026-10-26");
+    assert.equal(x1?.label, "X1 — Midterm (2nd half of lecture)");
+    assert.doesNotMatch(x1?.label ?? "", /\bdue\b/i);
     assert.equal(examWeek?.date, "2026-12-20");
     assert.equal(examWeek?.label, "X2 due");
     assert.equal(project?.date, "2026-12-06");
@@ -159,6 +160,7 @@ describe("Fall 2026 Canvas calendar", () => {
     assert.doesNotMatch(quiz.description, /unlocks Monday/);
     assert.doesNotMatch(quiz.description, /locks Sunday/);
     assert.match(exams.description, /~90 minutes/);
+    assert.match(exams.description, /second half of lecture/);
     assert.doesNotMatch(exams.description, /36 questions/);
     assert.doesNotMatch(exams.description, /unlock Monday 2026-10-26/);
     assert.doesNotMatch(exams.description, /due Sunday 2026-11-01/);
@@ -185,6 +187,8 @@ describe("Fall 2026 Canvas calendar", () => {
     assert.doesNotMatch(studentCopy, /section starts later/i);
     assert.doesNotMatch(studentCopy, /chapter quizzes \(Q1–Q6\) are due Sunday/);
     assert.match(deadlinesNote, /Quizzes \(Q1–Q6\) are taken at the end of lecture at the end of each chapter/);
+    assert.match(deadlinesNote, /X1 is taken in the second half of lecture the week of October 26/);
+    assert.doesNotMatch(deadlinesNote, /X1 is due Sunday/);
     assert.doesNotMatch(deadlinesNote, /Quizzes \(Q1–Q6\) are due Sunday/);
     assert.match(studentCopy, /course website/i);
     assert.match(studentCopy, /staff-approved fallback/i);

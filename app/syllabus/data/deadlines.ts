@@ -12,9 +12,11 @@ import type { Deadline } from "./types";
  * quiz `date` is the shared Monday of that chapter’s closing week. Website
  * take windows stay in `lib/quiz-exam/schedule.ts`.
  *
- * X1 unlocks the week of Oct 26 and locks that Sunday. X2 is the week of
- * Dec 14 (finals) and locks that Sunday. Project due is 2026-12-06;
- * grading begins the week of Dec 7.
+ * X1 is taken in the second half of lecture the week of Oct 26 (Chapter 4
+ * week 1 / midterm week), same pattern as chapter-end quizzes. The `date`
+ * is that shared Monday. X2 is finals week (week of Dec 14) and locks
+ * Sunday Dec 20. Project due is 2026-12-06; grading begins the week of
+ * Dec 7.
  */
 export const deadlines: Deadline[] = [
   { date: "2026-09-14", kind: "assignment", label: "A1 assigned — HTML" },
@@ -49,9 +51,9 @@ export const deadlines: Deadline[] = [
     label: "A3 due · A4 assigned — Client state",
   },
   {
-    date: "2026-11-01",
+    date: "2026-10-26",
     kind: "exam",
-    label: "X1 due",
+    label: "X1 — Midterm (2nd half of lecture)",
   },
   {
     date: "2026-11-02",
@@ -77,4 +79,4 @@ export const deadlines: Deadline[] = [
 ];
 
 export const deadlinesNote =
-  "Assignment, exam, and project dates are one Canvas calendar for every section. Assignments are due Sunday 11:59pm ET. Quizzes (Q1–Q6) are taken at the end of lecture at the end of each chapter. X1 is due Sunday 11:59pm ET the week of October 26. The project is due Sunday, December 6; grading begins the week of December 7. X2 is due Sunday 11:59pm ET the week of December 14 (finals week). A4–A6 due dates will be posted on Canvas.";
+  "Assignment, exam, and project dates are one Canvas calendar for every section. Assignments are due Sunday 11:59pm ET. Quizzes (Q1–Q6) are taken at the end of lecture at the end of each chapter. X1 is taken in the second half of lecture the week of October 26. The project is due Sunday, December 6; grading begins the week of December 7. X2 is due Sunday 11:59pm ET the week of December 14 (finals week). A4–A6 due dates will be posted on Canvas.";

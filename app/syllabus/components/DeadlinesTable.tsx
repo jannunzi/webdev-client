@@ -13,6 +13,13 @@ function formatDeadlineDate(deadline: Deadline): string {
   if (deadline.kind === "quiz" && deadline.date) {
     return `${formatWeekOf(deadline.date)} · end of lecture`;
   }
+  if (
+    deadline.kind === "exam" &&
+    deadline.date &&
+    /2nd half of lecture/i.test(deadline.label)
+  ) {
+    return `${formatWeekOf(deadline.date)} · 2nd half of lecture`;
+  }
   if (deadline.kind === "quiz" || !deadline.date) {
     return "End of lecture";
   }
