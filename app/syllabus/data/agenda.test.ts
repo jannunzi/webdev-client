@@ -110,11 +110,18 @@ describe("buildAgenda shared week index", () => {
     assert.match(veterans?.topic ?? "", /Chapter 4 week 2/);
     assert.match(veterans?.onlineNote ?? "", /Veterans Day/);
 
-    const thanksgiving = mon.find((row) => row.date === "2026-11-23");
-    assert.equal(thanksgiving?.kind, "lecture");
-    assert.equal(thanksgiving?.lectureNumber, 11);
-    assert.match(thanksgiving?.topic ?? "", /Chapter 5 week 2/);
-    assert.match(thanksgiving?.onlineNote ?? "", /Thanksgiving/);
+    const monBeforeBreak = mon.find((row) => row.date === "2026-11-23");
+    assert.equal(monBeforeBreak?.kind, "lecture");
+    assert.equal(monBeforeBreak?.lectureNumber, 11);
+    assert.match(monBeforeBreak?.topic ?? "", /Chapter 5 week 2/);
+    assert.equal(monBeforeBreak?.onlineNote, undefined);
+
+    const fallBreak = wed.find((row) => row.date === "2026-11-25");
+    assert.equal(fallBreak?.kind, "lecture");
+    assert.equal(fallBreak?.lectureNumber, 11);
+    assert.match(fallBreak?.topic ?? "", /Chapter 5 week 2/);
+    assert.match(fallBreak?.onlineNote ?? "", /Fall break/);
+    assert.match(fallBreak?.onlineNote ?? "", /meets online/);
   });
 
   it("places X2 in the week of December 14", () => {
@@ -152,11 +159,12 @@ describe("buildAgenda shared week index", () => {
 
 describe("holiday meeting copy", () => {
   it("tells students holidays do not skip the sequence", () => {
-    assert.match(holidayMeetingNote, /Thanksgiving week/);
+    assert.match(holidayMeetingNote, /fall break/);
+    assert.match(holidayMeetingNote, /November 25–29/);
     assert.match(holidayMeetingNote, /do not skip a lecture week/);
     assert.match(holidayMeetingNote, /meets online/);
     assert.doesNotMatch(holidayMeetingNote, /blackout/);
-    assert.doesNotMatch(holidayMeetingNote, /no class/);
+    assert.doesNotMatch(holidayMeetingNote, /November 22/);
   });
 });
 

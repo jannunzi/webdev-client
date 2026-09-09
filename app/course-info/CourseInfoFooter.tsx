@@ -2,6 +2,7 @@ import Link from "next/link";
 
 export const COURSE_INFO_LINKS = [
   { href: "/syllabus", label: "Syllabus" },
+  { href: "/calendar", label: "Calendar" },
   { href: "/book", label: "Book" },
   { href: "/slides", label: "Slides" },
   { href: "/assignments", label: "Assignments" },

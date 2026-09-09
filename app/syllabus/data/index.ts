@@ -2,6 +2,11 @@ export { course, semester } from "./course";
 export { sections, defaultSectionId, findSection, SECTION_STORAGE_KEY } from "./sections";
 export { holidayMeetingNote, holidays, thanksgivingBlackout } from "./holidays";
 export {
+  academicCalendarEvents,
+  academicCalendarIntro,
+  academicCalendarSource,
+} from "./academicCalendar";
+export {
   AGENDA_CURRICULUM_START,
   ORIENTATION_TOPIC,
   SHARED_CURRICULUM_END,
@@ -38,6 +43,7 @@ export {
   officeHoursPlaceholder,
 } from "./officeHours";
 export type {
+  AcademicCalendarEvent,
   AgendaGroup,
   AgendaRow,
   CourseInfo,
