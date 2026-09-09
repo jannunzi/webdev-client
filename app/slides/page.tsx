@@ -54,8 +54,7 @@ export default function SlidesIndexPage() {
         </h1>
         <p className="max-w-3xl">
           Classroom version of the book, grouped by chapter and numbered book
-          section — the same spine as the course book, not Canvas week folders.
-          Open a deck to present slides on a wide stage. Keyboard: Left/Right or
+          section. Open a deck to present slides on a wide stage. Keyboard: Left/Right or
           space change slides; Up/Down scroll the slide when content overflows
           (otherwise they also change slides). <kbd>f</kbd> or Present for
           fullscreen (phones use a viewport present mode). Esc or Back exits.

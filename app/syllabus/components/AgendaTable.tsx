@@ -1,12 +1,17 @@
+import { holidayMeetingNote } from "../data/holidays";
 import { formatAgendaDate } from "../data/dates";
 import type { AgendaRow, CourseSection } from "../data/types";
 import SyllabusSection from "./SyllabusSection";
 
 function rowClass(row: AgendaRow): string {
-  if (row.kind === "holiday") {
+  if (row.onlineNote) {
     return "border-b border-amber-200 bg-amber-50 text-neutral-700";
   }
-  if (row.deadlines.some((deadline) => deadline.kind === "exam")) {
+  if (
+    row.topic.startsWith("X1") ||
+    row.topic.startsWith("X2") ||
+    row.deadlines.some((deadline) => deadline.kind === "exam")
+  ) {
     return "border-b border-neutral-200 bg-sky-50";
   }
   return "border-b border-neutral-200";
@@ -22,17 +27,18 @@ export default function AgendaTable({
   return (
     <SyllabusSection id="agenda" title="Agenda">
       <p>
-        Every section follows the same lecture sequence (Lecture 1, 2, 3…) and
-        meets once a week. Tabs project that sequence onto this section’s
-        weekday from its first class. Thanksgiving week is a calendar blackout
-        — that week’s meeting is labeled and does not consume a lecture number.
-        Due dates in the last column are the shared Canvas dates when they fall
-        on a meeting day.
+        Every section follows the same book-aligned sequence from the week of
+        September 14, 2026. Monday, Tuesday, and Wednesday sections are on the
+        same chapter that calendar week. CS 4550’s September 9 meeting is
+        orientation only and does not start Chapter 1. Each chapter spans two
+        weeks, except Chapter 3, which is one combined week so X1 can follow
+        Chapter 3 and X2 can fall in the last week of classes.
       </p>
+      <p>{holidayMeetingNote}</p>
       <p className="font-sans text-sm text-neutral-600">
         Showing {section.tabLabel}. Use the section buttons at the top of the
-        page to switch. Early in the term, sections are on different lecture
-        numbers in the same calendar week — that is intended.
+        page to switch. Due dates in the last column are the shared Canvas
+        dates when they fall on a meeting day.
       </p>
       <div
         id="syllabus-agenda-panel"
@@ -56,14 +62,19 @@ export default function AgendaTable({
                   {formatAgendaDate(row.date)}
                 </td>
                 <td className="px-3 py-2 tabular-nums text-neutral-600">
-                  {row.kind === "holiday" ? "—" : row.lectureNumber}
+                  {row.kind === "orientation" ? "—" : row.lectureNumber}
                 </td>
                 <td className="px-3 py-2">
-                  {row.kind === "holiday" ? (
+                  {row.kind === "orientation" ? (
                     <span className="font-medium italic">{row.topic}</span>
                   ) : (
                     row.topic
                   )}
+                  {row.onlineNote ? (
+                    <div className="mt-1 font-medium italic text-amber-900">
+                      {row.onlineNote}
+                    </div>
+                  ) : null}
                 </td>
                 <td className="px-3 py-2">
                   {row.deadlines.map((deadline) => deadline.label).join(" · ")}

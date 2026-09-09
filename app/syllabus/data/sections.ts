@@ -25,6 +25,7 @@ export const sections: CourseSection[] = [
     tabLabel: "CS 4550-01 · In person",
     notes: [
       "Undergraduate, in person, Boston. Meets once a week on Wednesdays, 6:00–9:00pm ET, starting September 9, 2026.",
+      "The September 9 meeting is orientation and syllabus only. Shared Chapter 1 begins the week of September 14.",
     ],
   },
   {

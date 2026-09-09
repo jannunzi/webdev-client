@@ -151,7 +151,7 @@ export const LECTURE_SLUGS = [
   ...CHAPTER_6_SLUGS,
 ] as const;
 
-/** Book spine used by the slides hub and nav — not Canvas week folders. */
+/** Book chapter grouping used by the slides hub and nav. */
 export const BOOK_CHAPTERS = [
   {
     chapter: 1,
