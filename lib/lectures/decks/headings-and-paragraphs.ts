@@ -6,36 +6,47 @@ export const HEADINGS_AND_PARAGRAPHS_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Chapter 1 · Headings and Paragraphs",
+      "HEADINGS & PARAGRAPHS",
       "Lab 1: HeadingTags.tsx (`wd-h-tag`) and ParagraphTag.tsx (`wd-p-tag`)",
     ],
   },
   {
     id: "heading-scale",
-    title: "h1 through h6",
+    title: "Headings",
     kind: "demo",
     bullets: [
-      "`<h1>` is the largest heading. `<h6>` is the smallest",
-      "Use the outline for **structure**, not decoration. Do not pick `h3` only because you like the size",
-      "A page usually has one `h1`. Lab 1’s route already uses `h2` (“Lab 1”). Topic blocks often start at `h4`",
+      "Use headings as **titles** to introduce distinct sections",
+      "Six sizes: `h1`, `h2`, through `h6`",
+      "**`h1`** is the largest. **`h6`** is the smallest",
     ],
-    code: `<h1>Labs</h1>
-<h2>Lab 1</h2>
-<h3>HTML Examples</h3>
-<h4>Heading Tags</h4>
-<h5>A subsection</h5>
-<h6>A smaller note</h6>`,
+    code: `<h1>This is the largest heading</h1>
+<h2>This is the second largest heading</h2>
+<h6>This is the smallest heading</h6>`,
     codeLanguage: "html",
     embed: "heading-scale",
   },
   {
+    id: "import-lab1",
+    title: "Using headings",
+    kind: "content",
+    bullets: [
+      "Use headings to introduce the topics you have covered so far",
+      "A page usually has one `h1`. Nested topics step down (`h2`, `h3`, …)",
+    ],
+    code: `<h1>HTML</h1>
+<h2>Paragraphs</h2>
+{/* content discussing paragraphs */}
+<h2>Headings</h2>
+{/* content discussing headings */}`,
+    codeLanguage: "tsx",
+  },
+  {
     id: "lab1-nest",
-    title: "Lab 1 heading nest — wd-h-tag",
+    title: "Example",
     kind: "demo",
     bullets: [
-      "Create `app/labs/lab1/HeadingTags.tsx` with `id=\"wd-h-tag\"` on the wrapper",
-      "An `h4` titles the sample. A `span` with `id=\"wd-inline-span\"` stays in the sentence",
-      "Import the component into `app/labs/lab1/page.tsx` under the Lab 1 heading",
+      "Create `app/labs/lab1/HeadingTags.tsx` with `id=\"wd-h-tag\"`",
+      "An `h4` titles the sample. Import the component into `app/labs/lab1/page.tsx`",
     ],
     code: `export default function HeadingTags() {
   return (
@@ -53,43 +64,70 @@ export const HEADINGS_AND_PARAGRAPHS_SLIDES: LectureSlide[] = [
   },
   {
     id: "paragraph-why",
-    title: "p is for vertical spacing",
+    title: "Paragraphs",
     kind: "content",
     bullets: [
-      "The `<p>` tag wraps a block of text so the browser adds margin above and below",
-      "Headings and `p` are **block** elements — they take the full width of their parent",
+      "Use `<p>` to **explicitly** add **vertical spacing** between portions of text",
       "Without `p`, leftover text inside a `div` flows as one stream",
-      "Lab 1 wrapper id: `wd-p-tag`",
+      "Lab 1 wrapper id: `wd-p-tag`. Intro sample: `wd-p-1`",
     ],
+    code: `<p>
+  Lorem Ipsum is simply dummy text of the printing
+  and typesetting industry.
+</p>
+<p>
+  Lorem Ipsum has been the industry's standard dummy
+  text ever since the 1500s.
+</p>`,
+    codeLanguage: "html",
   },
   {
-    id: "whitespace-without-p",
-    title: "Without p, the browser ignores blank lines",
+    id: "devtools",
+    title: "Example",
     kind: "content",
     bullets: [
-      "These three chunks look like separate paragraphs in the file",
-      "The browser still paints them as one flowing block",
-      "Same rule as the last deck: extra whitespace in the source is not structure",
+      "The intro sample is `id=\"wd-p-1\"` — one wrapped paragraph so far",
+      "Find `wd-p-tag` in DevTools → Elements",
     ],
     code: `<div id="wd-p-tag">
   <h4>Paragraph Tag</h4>
-  This is the first paragraph.
+  <p id="wd-p-1">
+    This is a paragraph. We often separate a long set
+    of sentences with vertical spaces to make the text
+    easier to read.
+  </p>
+</div>`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab1/ParagraphTag.tsx",
+  },
+  {
+    id: "whitespace-without-p",
+    title: "Browser ignores white spaces",
+    kind: "content",
+    bullets: [
+      "These three chunks look like separate paragraphs in the file",
+      "The browser still paints them as **one** contiguous block",
+      "Tabs and newlines are **not** structure",
+    ],
+    code: `<div id="wd-p-tag">
+  <h4>Paragraph Tag</h4>
+  <p id="wd-p-1"> ... </p>
+This is the first paragraph.
 
-  This is the second paragraph.
+This is the second paragraph.
 
-  This is the third paragraph.
+This is the third paragraph.
 </div>`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab1/ParagraphTag.tsx",
   },
   {
     id: "wrap-p",
-    title: "Wrap sample paragraphs — wd-p-2…4",
+    title: "Add Paragraph Tags for Vertical Spacing",
     kind: "demo",
     bullets: [
-      "Give the intro sample `id=\"wd-p-1\"`",
+      "Wrap each chunk so the browser **keeps** the vertical gaps",
       "The three demonstration paragraphs are `wd-p-2`, `wd-p-3`, and `wd-p-4`",
-      "Personal paragraphs later use `wd-p-your-1` and `wd-p-your-2` — not these sample ids",
     ],
     code: `<p id="wd-p-1">
   Wrap text in p so the browser keeps a vertical gap.
@@ -103,48 +141,12 @@ export const HEADINGS_AND_PARAGRAPHS_SLIDES: LectureSlide[] = [
     embed: "paragraph-tag",
   },
   {
-    id: "import-lab1",
-    title: "Import both into Lab 1",
-    kind: "content",
-    bullets: [
-      "One file per topic. Lab 1 only composes them",
-      "After headings and paragraphs, the next files are lists and tables",
-    ],
-    code: `import HeadingTags from "./HeadingTags";
-import ParagraphTag from "./ParagraphTag";
-
-export default function Lab1() {
-  return (
-    <div id="wd-lab1">
-      <h2>Lab 1</h2>
-      <HeadingTags />
-      <ParagraphTag />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab1/page.tsx",
-    codeAddedLines: [1, 2, 8, 9],
-  },
-  {
-    id: "devtools",
-    title: "Find wd-h-tag and wd-p-tag",
-    kind: "content",
-    bullets: [
-      "Open Lab 1, then DevTools → Elements",
-      "Search for `wd-h-tag`, then `wd-p-tag`",
-      "Expand the paragraph wrapper: you should see `p#wd-p-1` through `p#wd-p-4`",
-    ],
-    interactiveHint:
-      "If the three sample chunks still run together, you have not wrapped wd-p-2 through wd-p-4 yet.",
-  },
-  {
     id: "next-up",
     title: "Next: lists and tables",
     kind: "title",
     bullets: [
       "You can outline a page and keep paragraphs from blending",
-      "Deck 3: `ol` / `ul` / `li`, then a semantic `table` — not a layout trick",
+      "Next: `ol` / `ul` / `li`, then a semantic `table` — not a layout trick",
     ],
   },
 ];

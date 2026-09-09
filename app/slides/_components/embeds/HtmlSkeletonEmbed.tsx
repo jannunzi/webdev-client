@@ -5,9 +5,9 @@ export default function HtmlSkeletonEmbed() {
     <LectureDemoFrame label="hello.html">
       <div className="font-sans">
         <p className="mt-0 mb-2 font-mono text-sm text-neutral-500">
-          Document title in the tab: Hello
+          Document title in the tab: This is the Page Title
         </p>
-        <h1 className="mt-0 mb-0 text-4xl font-semibold">Hello</h1>
+        <p className="mt-0 mb-0 text-4xl">Hello World!</p>
       </div>
     </LectureDemoFrame>
   );
