@@ -34,6 +34,9 @@ export function examModuleHeading(exam: "X1" | "X2"): string {
 
 export const PROJECT_GRADING_HEADING = "Project grading";
 
+/** Single agenda group for the merged X1 + Chapter 4 weeks (10/26 + 11/2). */
+export const CHAPTER_4_MIDTERM_HEADING = "Ch 4 — Client state, Midterm/X1";
+
 export const lectureTopics: LectureTopic[] = [
   {
     chapter: 1,

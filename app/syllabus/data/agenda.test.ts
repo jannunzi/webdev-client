@@ -15,6 +15,7 @@ import {
   SHARED_CURRICULUM_END,
   SHARED_CURRICULUM_START,
   bookChapterHeading,
+  CHAPTER_4_MIDTERM_HEADING,
   examModuleHeading,
   lectureTopics,
 } from "./topics.ts";
@@ -194,7 +195,7 @@ describe("agenda Week of labels and chapter groups", () => {
     assert.match(groups[0]?.heading ?? "", /HTML/);
     assert.equal(groups[1]?.heading, bookChapterHeading(2));
     assert.equal(groups[2]?.heading, bookChapterHeading(3));
-    assert.equal(groups[3]?.heading, bookChapterHeading(4));
+    assert.equal(groups[3]?.heading, CHAPTER_4_MIDTERM_HEADING);
     assert.equal(groups[4]?.heading, bookChapterHeading(5));
     assert.equal(groups[5]?.heading, bookChapterHeading(6));
     assert.equal(groups[6]?.heading, "Project grading");

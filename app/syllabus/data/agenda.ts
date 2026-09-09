@@ -12,6 +12,7 @@ import { deadlines } from "./deadlines";
 import { holidays } from "./holidays";
 import { sections } from "./sections";
 import {
+  CHAPTER_4_MIDTERM_HEADING,
   ORIENTATION_TOPIC,
   PROJECT_GRADING_HEADING,
   SHARED_CURRICULUM_END,
@@ -116,6 +117,11 @@ export function buildAgenda(section: CourseSection): AgendaRow[] {
   return rows;
 }
 
+function chapterHeading(chapter: number | undefined, fallback: string): string {
+  if (chapter === 4) return CHAPTER_4_MIDTERM_HEADING;
+  return chapter ? bookChapterHeading(chapter) : fallback;
+}
+
 function topicMetaForRow(row: AgendaRow) {
   if (row.kind === "orientation" || row.lectureNumber == null) return undefined;
   return lectureTopics[row.lectureNumber - 1];
@@ -189,7 +195,7 @@ export function buildAgendaGroups(section: CourseSection): AgendaGroup[] {
       id: `chapter-${chapter ?? "other"}`,
       kind: "chapter",
       chapter,
-      heading: chapter ? bookChapterHeading(chapter) : row.topic,
+      heading: chapterHeading(chapter, row.topic),
       rows: [row],
     });
   }

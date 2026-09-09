@@ -14,6 +14,7 @@ export {
   bookChapterHeading,
   examModuleHeading,
   lectureTopics,
+  CHAPTER_4_MIDTERM_HEADING,
   PROJECT_GRADING_HEADING,
 } from "./topics";
 export { deadlines, deadlinesNote } from "./deadlines";
