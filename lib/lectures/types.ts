@@ -192,19 +192,19 @@ export const BOOK_CHAPTERS = [
     chapter: 4,
     href: "/book/ch4",
     title: "Managing Client State",
-    weeks: "11/2, 11/9",
+    weeks: "10/26, 11/2",
   },
   {
     chapter: 5,
     href: "/book/ch5",
     title: "Implementing RESTful Web APIs with Express.js",
-    weeks: "11/16, 11/23",
+    weeks: "11/9, 11/16",
   },
   {
     chapter: 6,
     href: "/book/ch6",
     title: "Integrating React with MongoDB",
-    weeks: "11/30, 12/7",
+    weeks: "11/23, 11/30",
   },
   {
     chapter: 7,

@@ -110,6 +110,7 @@ export function buildAgenda(section: CourseSection): AgendaRow[] {
       kind: "lecture",
       lectureNumber: topicIndex + 1,
       topic: topic?.topic ?? "Project workshop / catch-up",
+      href: topic?.href,
       deadlines: deadlinesInWeek(date),
       onlineNote,
     });
