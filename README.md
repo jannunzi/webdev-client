@@ -285,7 +285,8 @@ Quiz fallback QTI for package -21 is generated here
 
 `/slides` groups decks by book chapter and numbered book section (the same
 spine as the course book). `/lectures` and `/lectures/[slug]` redirect to
-`/slides`. `canvasLecture` stays on each deck as a Canvas mapping badge only.
+`/slides`. `canvasLecture` stays on each deck as unused Canvas mapping metadata
+and is not shown in the hub or deck chrome.
 Each `/slides/[slug]` page is a keyboard-driven slide deck. Slugs are
 unchanged — see `LECTURE_SLUGS` in `lib/lectures/types.ts`.
 

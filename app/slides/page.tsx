@@ -26,14 +26,9 @@ function DeckCard({ deck }: { deck: LectureHubItem }) {
         <img src={thumb} alt="" className="h-full w-full object-cover" />
       </div>
       <div className="px-4 py-3">
-        <div className="mb-1 flex flex-wrap items-center gap-2">
-          <h3 className="mt-0 mb-0 font-sans text-lg font-semibold text-neutral-900">
-            {deck.title}
-          </h3>
-          <span className="rounded border border-neutral-300 bg-neutral-50 px-1.5 py-0.5 font-sans text-xs font-medium text-neutral-600">
-            Canvas L{deck.canvasLecture}
-          </span>
-        </div>
+        <h3 className="mt-0 mb-1 font-sans text-lg font-semibold text-neutral-900">
+          {deck.title}
+        </h3>
         <p className="mb-0 line-clamp-2 font-sans text-sm leading-6 text-neutral-700">
           {deck.summary}
         </p>

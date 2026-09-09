@@ -54,9 +54,6 @@ export default async function SlideDeckPage({ params }: PageProps) {
               {deck.topic ? ` · ${deck.topic}` : ""} · {deck.slides.length}{" "}
               slides
             </span>
-            <span className="rounded border border-neutral-300 bg-neutral-50 px-1.5 py-0.5 text-xs font-medium text-neutral-600">
-              Canvas L{deck.canvasLecture}
-            </span>
             <Link href={deck.bookHref}>
               {sectionLabel ? `§${sectionLabel} in the book` : "Open in the book"}
             </Link>
