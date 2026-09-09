@@ -302,7 +302,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-overview": {
     title: "Kambaz Overview",
     summary:
-      "Kambaz landing in app/(kambaz)/page.tsx, Labs TOC link, route group URLs, then redirect / to Sign in.",
+      "Route group (kambaz) owns /, a landing page with wd-kambaz, a Labs TOC link, then redirect to Sign in.",
     chapter: 1,
     topicId: "kambaz-html",
     bookSectionId: "sec-1-4-1",
@@ -332,7 +332,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-navigation": {
     title: "Kambaz Navigation",
     summary:
-      "Kambaz Navigation sidebar, layout sidebar on the left, and app/not-found.tsx for Calendar and Inbox.",
+      "KambazNavigation sidebar, the (kambaz) layout table, and app/not-found.tsx for Calendar and Inbox.",
     chapter: 1,
     topicId: "kambaz-html",
     bookSectionId: "sec-1-4-3-1",

@@ -6,30 +6,43 @@ export const KAMBAZ_OVERVIEW_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "KAMBAZ HTML UI",
-      "A1: prototype the LMS screens in `app/(kambaz)`",
+      "Chapter 1 · Kambaz overview",
+      "A1: HTML prototype of the LMS screens",
     ],
   },
   {
     id: "what",
-    title: "Kambaz User Interface",
+    title: "Kambaz is an LMS prototype",
     kind: "content",
     bullets: [
-      "Build **Kambaz**, a site inspired by a popular Online Learning Management System",
-      "Start with **simple prototype** versions of common screens",
-      "Improve iteratively over later assignments",
-      "Do all Kambaz work in `app/(kambaz)`",
+      "**Kambaz** is inspired by a popular online learning management system",
+      "Chapter 1 builds **plain HTML structure**. CSS is Chapter 2 / A2",
+      "Do all Kambaz work under `app/(kambaz)` — folders plus `page.tsx`",
     ],
   },
   {
+    id: "route-group",
+    title: "(kambaz) is a route group",
+    kind: "content",
+    bullets: [
+      "Parentheses make a **route group**. The name does **not** appear in the URL",
+      "`app/(kambaz)/dashboard/page.tsx` is still `/dashboard`",
+      "The group is for organization and a shared layout",
+    ],
+    code: `app/(kambaz)/page.tsx                 →  /
+app/(kambaz)/dashboard/page.tsx       →  /dashboard
+app/(kambaz)/account/signin/page.tsx  →  /account/signin`,
+    codeLanguage: "text",
+  },
+  {
     id: "landing",
-    title: "Create the Kambaz Landing Page",
+    title: "Landing page owns /",
     kind: "demo",
     embed: "kambaz-landing",
     bullets: [
       "A **landing page** is the screen for `/`",
-      "Put it in the route group: `app/(kambaz)/page.tsx` — not a leftover `app/page.tsx`",
-      "Wrapper id `wd-kambaz`",
+      "Put it inside the group: `app/(kambaz)/page.tsx` — not a leftover `app/page.tsx`",
+      "Wrapper id: `wd-kambaz`",
     ],
     code: `export default function Kambaz() {
   return (
@@ -42,25 +55,11 @@ export const KAMBAZ_OVERVIEW_SLIDES: LectureSlide[] = [
     codeFile: "app/(kambaz)/page.tsx",
   },
   {
-    id: "route-group",
-    title: "(kambaz) is a route group",
-    kind: "content",
-    bullets: [
-      "Parentheses make a **route group**. The name does **not** appear in the URL",
-      "`app/(kambaz)/dashboard/page.tsx` is still `/dashboard`",
-      "Same App Router rule as Labs: a folder with `page.tsx` is a route",
-    ],
-    code: `app/(kambaz)/page.tsx                 →  /
-app/(kambaz)/dashboard/page.tsx       →  /dashboard
-app/(kambaz)/account/signin/page.tsx  →  /account/signin`,
-    codeLanguage: "text",
-  },
-  {
     id: "labs-link",
-    title: "Add Kambaz to TOC",
+    title: "Link Labs TOC to Kambaz",
     kind: "content",
     bullets: [
-      "Add a Kambaz `Link` in `app/labs/TOC.tsx`",
+      "Add a Kambaz `Link` in `app/labs/TOC.tsx` **and** the Labs index",
       "`href=\"/\"` — the group owns `/`",
       "Id `wd-kambaz-link` is what graders look for",
     ],
@@ -75,7 +74,7 @@ app/(kambaz)/account/signin/page.tsx  →  /account/signin`,
   },
   {
     id: "redirect",
-    title: "Navigate to Signin by Default",
+    title: "Then redirect / to Sign in",
     kind: "content",
     bullets: [
       "After the heading works, Sign in becomes the default entry",
@@ -92,12 +91,22 @@ export default function Kambaz() {
     codeAddedLines: [1, 4],
   },
   {
+    id: "structure-first",
+    title: "Structure first — CSS later",
+    kind: "content",
+    bullets: [
+      "These screens use browser-default HTML: inputs, `Link`s, a `<table>` for chrome",
+      "Keep the given `id` and `className` values (`wd-*`) so graders can find them",
+      "Chapter 2 / Lab 2 add Tailwind. Do not invent a new layout language this week",
+    ],
+  },
+  {
     id: "next-up",
     title: "Next: Account screens",
     kind: "title",
     bullets: [
-      "Sign in, Sign up, Profile, then an account layout",
-      "Absolute paths: `/account/signin`, not `href=\"signin\"`",
+      "Sign in, Sign up, Profile, then an account layout that keeps nav visible",
+      "Absolute paths: `/account/signin`, not a relative `href=\"signin\"`",
     ],
   },
 ];

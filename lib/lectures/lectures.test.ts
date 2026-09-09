@@ -1171,10 +1171,10 @@ describe("lecture decks", () => {
     assert.equal(counts["web-forms"], 21);
     assert.equal(counts["anchors"], 5);
     assert.equal(counts["single-page-navigation"], 14);
-    assert.equal(counts["kambaz-overview"], 7);
+    assert.equal(counts["kambaz-overview"], 8);
     assert.equal(counts["kambaz-account"], 9);
     assert.equal(counts["kambaz-dashboard"], 6);
-    assert.equal(counts["kambaz-navigation"], 5);
+    assert.equal(counts["kambaz-navigation"], 6);
     assert.equal(counts["kambaz-courses"], 6);
     assert.equal(counts["kambaz-modules"], 7);
     assert.equal(counts["kambaz-assignments"], 8);
