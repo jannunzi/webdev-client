@@ -18,9 +18,9 @@ const CANVAS_ASSIGNMENT_DUES: Record<string, string> = {
 };
 
 const QUIZ_WINDOWS: Record<string, { unlock: string; due: string }> = {
-  Q1: { unlock: "2026-09-28", due: "2026-10-04" },
-  Q2: { unlock: "2026-10-12", due: "2026-10-18" },
-  Q3: { unlock: "2026-10-26", due: "2026-11-01" },
+  Q1: { unlock: "2026-09-21", due: "2026-09-27" },
+  Q2: { unlock: "2026-10-05", due: "2026-10-11" },
+  Q3: { unlock: "2026-10-19", due: "2026-10-25" },
   Q4: { unlock: "2026-11-09", due: "2026-11-15" },
   Q5: { unlock: "2026-11-23", due: "2026-11-29" },
   Q6: { unlock: "2026-12-07", due: "2026-12-13" },
@@ -53,14 +53,14 @@ describe("Fall 2026 Canvas calendar", () => {
     );
     const examWeek = deadlines.find(
       (deadline) =>
-        deadline.kind === "exam" && deadline.date === "2026-12-03",
+        deadline.kind === "exam" && deadline.label.includes("X2"),
     );
     const project = deadlines.find((deadline) => deadline.kind === "project");
     assert.equal(x1?.date, "2026-11-01");
     assert.match(x1?.label ?? "", /unlock Oct 26/);
-    assert.equal(examWeek?.date, "2026-12-03");
+    assert.equal(examWeek?.date, "2026-12-20");
     assert.match(examWeek?.label ?? "", /X2 due/);
-    assert.match(examWeek?.label ?? "", /unlock Nov 30/);
+    assert.match(examWeek?.label ?? "", /unlock Dec 14/);
     assert.equal(project?.date, "2026-12-10");
   });
 
@@ -76,15 +76,15 @@ describe("Fall 2026 Canvas calendar", () => {
       },
       Q3: {
         label: "Q3 — JavaScript (end of Chapter 3 lecture)",
-        date: "2026-10-12",
+        date: "2026-10-19",
       },
       Q4: {
         label: "Q4 — Client state (end of Chapter 4 lecture)",
-        date: "2026-11-02",
+        date: "2026-11-09",
       },
       Q5: {
         label: "Q5 — REST APIs (end of Chapter 5 lecture)",
-        date: "2026-11-16",
+        date: "2026-11-23",
       },
       Q6: {
         label: "Q6 — MongoDB (end of Chapter 6 lecture)",
@@ -155,6 +155,7 @@ describe("Fall 2026 Canvas calendar", () => {
     assert.doesNotMatch(exams.description, /due Sunday 2026-11-01/);
     assert.doesNotMatch(exams.description, /unlock Monday 2026-11-30/);
     assert.doesNotMatch(exams.description, /due Thursday 2026-12-03/);
+    assert.doesNotMatch(exams.description, /due Sunday 2026-12-20/);
 
     const studentCopy = [
       quiz.description,
@@ -187,12 +188,12 @@ describe("Fall 2026 Canvas calendar", () => {
     );
   });
 
-  it("names X2’s weekday as Thursday to match 2026-12-03", () => {
-    assert.equal(weekdayName(isoWeekday("2026-12-03")), "Thursday");
+  it("names X2’s weekday as Sunday to match 2026-12-20", () => {
+    assert.equal(weekdayName(isoWeekday("2026-12-20")), "Sunday");
     const exams = evaluationItems.find((item) => item.label.includes("X1"));
     assert.ok(exams, "Exams (X1–X2) evaluation item is missing");
-    assert.doesNotMatch(exams.description, /Wednesday 2026-12-03/);
-    assert.match(deadlinesNote, /X2 is due Thursday 11:59pm ET/);
-    assert.doesNotMatch(deadlinesNote, /X2 is due Wednesday/);
+    assert.doesNotMatch(exams.description, /Thursday 2026-12-03/);
+    assert.match(deadlinesNote, /X2 is due Sunday 11:59pm ET/);
+    assert.doesNotMatch(deadlinesNote, /X2 is due Thursday/);
   });
 });

@@ -11,8 +11,8 @@ import type { Deadline } from "./types";
  * quiz `date` is the shared Monday of that chapter’s closing week. Website
  * take windows stay in `lib/quiz-exam/schedule.ts`.
  *
- * X1/X2 match Canvas package -20 (ET): X1 locks the Sunday after A3; X2
- * locks Thursday with the published Exam.
+ * X1 unlocks the week of Oct 26 and locks that Sunday. X2 is the week of
+ * Dec 14 (finals) and locks that Sunday.
  */
 export const deadlines: Deadline[] = [
   { date: "2026-09-14", kind: "assignment", label: "A1 assigned — HTML" },
@@ -37,7 +37,7 @@ export const deadlines: Deadline[] = [
     label: "A2 due · A3 assigned — JavaScript",
   },
   {
-    date: "2026-10-12",
+    date: "2026-10-19",
     kind: "quiz",
     label: "Q3 — JavaScript (end of Chapter 3 lecture)",
   },
@@ -52,7 +52,7 @@ export const deadlines: Deadline[] = [
     label: "X1 due (unlock Oct 26)",
   },
   {
-    date: "2026-11-02",
+    date: "2026-11-09",
     kind: "quiz",
     label: "Q4 — Client state (end of Chapter 4 lecture)",
   },
@@ -62,7 +62,7 @@ export const deadlines: Deadline[] = [
     label: "A4 due · A5 assigned — REST APIs",
   },
   {
-    date: "2026-11-16",
+    date: "2026-11-23",
     kind: "quiz",
     label: "Q5 — REST APIs (end of Chapter 5 lecture)",
   },
@@ -72,9 +72,9 @@ export const deadlines: Deadline[] = [
     label: "A5 due · A6 assigned — MongoDB",
   },
   {
-    date: "2026-12-03",
+    date: "2026-12-20",
     kind: "exam",
-    label: "Exam · X2 due (unlock Nov 30)",
+    label: "X2 due (unlock Dec 14)",
   },
   { date: "2026-12-06", kind: "assignment", label: "A6 due" },
   {
@@ -86,4 +86,4 @@ export const deadlines: Deadline[] = [
 ];
 
 export const deadlinesNote =
-  "Assignment, exam, and project dates are one Canvas calendar for every section. Assignments are due Sunday 11:59pm ET. Quizzes (Q1–Q6) are taken at the end of lecture at the end of each chapter. X1 is due Sunday 11:59pm ET the week after A3. X2 is due Thursday 11:59pm ET of exam week (same day as the published Exam).";
+  "Assignment, exam, and project dates are one Canvas calendar for every section. Assignments are due Sunday 11:59pm ET. Quizzes (Q1–Q6) are taken at the end of lecture at the end of each chapter. X1 is due Sunday 11:59pm ET the week of October 26. X2 is due Sunday 11:59pm ET the week of December 14 (finals week).";

@@ -2,13 +2,16 @@ import { BOOK_CHAPTERS } from "@/lib/lectures/types";
 import type { IsoDate, LectureTopic } from "./types";
 
 /**
- * Shared Fall 2026 lecture sequence, aligned to the book.
- * Chapter 1 starts the week of Monday 2026-09-14 for every section.
- * Ideal spine is 14 slots (Ch1–Ch6 × 2 weeks + X1 + X2). The term has 13
- * shared Monday-weeks through last day of classes, so Chapter 3 weeks 1–2
- * are combined into one meeting. Holidays do not skip a slot.
+ * Shared Fall 2026 lecture sequence, aligned to Jose’s Canvas modules.
+ * Fourteen Monday-weeks from 2026-09-14 through 2026-12-14
+ * (Ch1–Ch6 × 2 weeks + X1 + X2). Chapter 3 is two weeks. Holidays do
+ * not skip a slot. The week of Dec 14 is X2 even though lastDayOfClasses
+ * is Dec 13.
  */
 export const SHARED_CURRICULUM_START: IsoDate = "2026-09-14";
+
+/** Final shared Monday (X2 + project), inclusive. */
+export const SHARED_CURRICULUM_END: IsoDate = "2026-12-14";
 
 /** Alias used by Week-of / deadline tests. */
 export const AGENDA_CURRICULUM_START = SHARED_CURRICULUM_START;
@@ -19,6 +22,12 @@ export const ORIENTATION_TOPIC =
 export function bookChapterHeading(chapter: number): string {
   const meta = BOOK_CHAPTERS.find((entry) => entry.chapter === chapter);
   return `Chapter ${chapter}: ${meta?.title ?? ""}`;
+}
+
+export function examModuleHeading(exam: "X1" | "X2"): string {
+  return exam === "X1"
+    ? "Midterm — review + X1"
+    : "Final — X2 + final project";
 }
 
 export const lectureTopics: LectureTopic[] = [
@@ -44,11 +53,16 @@ export const lectureTopics: LectureTopic[] = [
   {
     chapter: 3,
     topic:
-      "Chapter 3 — Creating single-page applications with JavaScript: language, data-driven UI, and chapter wrap (A3)",
+      "Chapter 3 week 1 — Creating single-page applications with JavaScript: language, functions, arrays, and JSON",
+  },
+  {
+    chapter: 3,
+    topic:
+      "Chapter 3 week 2 — Data-driven UI and chapter wrap (A3)",
   },
   {
     exam: "X1",
-    topic: "X1 midterm — Chapters 1–3",
+    topic: "X1 midterm — review + Chapters 1–3",
   },
   {
     chapter: 4,
@@ -82,6 +96,6 @@ export const lectureTopics: LectureTopic[] = [
   },
   {
     exam: "X2",
-    topic: "X2 final — Chapters 4–6",
+    topic: "X2 final + project — Chapters 4–6",
   },
 ];

@@ -50,9 +50,9 @@ describe("course section ids for quiz overrides", () => {
 });
 
 describe("per-section take overrides", () => {
-  const beforeUnlock = et(2026, 9, 27, 12);
-  const duringWindow = et(2026, 9, 29, 12);
-  const afterLock = et(2026, 10, 6, 12);
+  const beforeUnlock = et(2026, 9, 20, 12);
+  const duringWindow = et(2026, 9, 23, 12);
+  const afterLock = et(2026, 9, 28, 12);
 
   it("follows the date window when mode is schedule or unset", () => {
     assert.equal(isTakeWindowOpen(q1, beforeUnlock), false);

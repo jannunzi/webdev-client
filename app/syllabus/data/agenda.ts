@@ -1,9 +1,11 @@
 import {
+  addDays,
   compareIso,
   dateInInclusiveRange,
   eachDateInclusive,
   isoWeekday,
   mondayOfWeek,
+  startOfWeekMonday,
   wholeWeeksBetween,
 } from "./dates";
 import { deadlines } from "./deadlines";
@@ -11,8 +13,10 @@ import { holidays } from "./holidays";
 import { sections } from "./sections";
 import {
   ORIENTATION_TOPIC,
+  SHARED_CURRICULUM_END,
   SHARED_CURRICULUM_START,
   bookChapterHeading,
+  examModuleHeading,
   lectureTopics,
 } from "./topics";
 import type {
@@ -30,8 +34,22 @@ function holidayOn(iso: IsoDate, list: Holiday[]): Holiday | undefined {
   );
 }
 
-function deadlinesOn(iso: IsoDate): Deadline[] {
-  return deadlines.filter((deadline) => deadline.date === iso);
+function deadlinesInWeek(iso: IsoDate): Deadline[] {
+  const monday = mondayOfWeek(iso);
+  return deadlines.filter(
+    (deadline) => deadline.date && mondayOfWeek(deadline.date) === monday,
+  );
+}
+
+/** Last meeting date so the week of Dec 14 (X2) is included. */
+export function agendaLastMeeting(section: CourseSection): IsoDate {
+  const endMonday = startOfWeekMonday(SHARED_CURRICULUM_END);
+  const meetingDow = section.daysOfWeek[0] ?? 1;
+  const offset = meetingDow === 0 ? 6 : meetingDow - 1;
+  const meetingInFinalWeek = addDays(endMonday, offset);
+  return compareIso(meetingInFinalWeek, section.lastClass) > 0
+    ? meetingInFinalWeek
+    : section.lastClass;
 }
 
 function onlineNoteFor(iso: IsoDate): string | undefined {
@@ -42,11 +60,12 @@ function onlineNoteFor(iso: IsoDate): string | undefined {
 }
 
 /**
- * Meeting dates for one section: firstClass through lastClass on the
- * configured weekday (once per week). firstClass is always included.
+ * Meeting dates for one section: firstClass through the later of
+ * lastClass and the section weekday in the week of SHARED_CURRICULUM_END.
+ * firstClass is always included.
  */
 export function collectMeetingDates(section: CourseSection): IsoDate[] {
-  const patterned = eachDateInclusive(section.firstClass, section.lastClass)
+  const patterned = eachDateInclusive(section.firstClass, agendaLastMeeting(section))
     .filter((iso) => section.daysOfWeek.includes(isoWeekday(iso)));
 
   const dates = new Set(patterned);
@@ -71,7 +90,7 @@ export function buildAgenda(section: CourseSection): AgendaRow[] {
         date,
         kind: "orientation",
         topic: ORIENTATION_TOPIC,
-        deadlines: deadlinesOn(date),
+        deadlines: deadlinesInWeek(date),
         onlineNote,
       });
       continue;
@@ -88,7 +107,7 @@ export function buildAgenda(section: CourseSection): AgendaRow[] {
       kind: "lecture",
       lectureNumber: topicIndex + 1,
       topic: topic?.topic ?? "Project workshop / catch-up",
-      deadlines: deadlinesOn(date),
+      deadlines: deadlinesInWeek(date),
       onlineNote,
     });
   }
@@ -134,7 +153,7 @@ export function buildAgendaGroups(section: CourseSection): AgendaGroup[] {
         groups.push({
           id: meta.exam.toLowerCase(),
           kind: "exam",
-          heading: meta.exam,
+          heading: examModuleHeading(meta.exam),
           rows: [row],
         });
       }

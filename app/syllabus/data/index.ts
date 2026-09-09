@@ -4,13 +4,16 @@ export { holidayMeetingNote, holidays, thanksgivingBlackout } from "./holidays";
 export {
   AGENDA_CURRICULUM_START,
   ORIENTATION_TOPIC,
+  SHARED_CURRICULUM_END,
   SHARED_CURRICULUM_START,
   bookChapterHeading,
+  examModuleHeading,
   lectureTopics,
 } from "./topics";
 export { deadlines, deadlinesNote } from "./deadlines";
 export {
   agendaGroupsBySection,
+  agendaLastMeeting,
   agendasBySection,
   buildAgenda,
   buildAgendaGroups,
