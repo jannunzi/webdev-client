@@ -114,7 +114,8 @@ describe("Fall 2026 Canvas calendar", () => {
     assert.match(quiz.description, /10 questions/);
     assert.doesNotMatch(quiz.description, /unlocks Monday/);
     assert.doesNotMatch(quiz.description, /locks Sunday/);
-    assert.match(exams.description, /36 questions/);
+    assert.match(exams.description, /~90 minutes/);
+    assert.doesNotMatch(exams.description, /36 questions/);
     assert.doesNotMatch(exams.description, /unlock Monday 2026-10-26/);
     assert.doesNotMatch(exams.description, /due Sunday 2026-11-01/);
     assert.doesNotMatch(exams.description, /unlock Monday 2026-11-30/);
