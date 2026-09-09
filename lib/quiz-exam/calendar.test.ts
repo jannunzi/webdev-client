@@ -97,28 +97,38 @@ describe("Fall 2026 Canvas calendar", () => {
     }
   });
 
-  it("documents 100-point Canvas shells and percent import for Q1–Q6 and X1/X2", () => {
+  it("keeps quiz and exam syllabus copy student-facing", () => {
     const quiz = evaluationItems.find((item) => item.label.includes("Q1"));
     const exams = evaluationItems.find((item) => item.label.includes("X1"));
     assert.ok(quiz);
     assert.ok(exams);
-    assert.match(quiz.description, /100 points/);
-    assert.match(quiz.description, /percent/i);
-    assert.match(exams.description, /100 points/);
-    assert.match(exams.description, /percent/i);
-    const shellNote = evaluationNotes.join(" ");
-    assert.match(shellNote, /Q1–Q6/);
-    assert.match(shellNote, /X1\/X2/);
-    assert.match(shellNote, /100 points/);
-    assert.match(shellNote, /percent/);
-    assert.match(shellNote, /out of 100/);
+    assert.match(quiz.description, /10 questions/);
+    assert.match(exams.description, /36 questions/);
+    assert.doesNotMatch(exams.description, /unlock Monday 2026-10-26/);
+    assert.doesNotMatch(exams.description, /due Sunday 2026-11-01/);
+    assert.doesNotMatch(exams.description, /unlock Monday 2026-11-30/);
+    assert.doesNotMatch(exams.description, /due Thursday 2026-12-03/);
+
+    const studentCopy = [
+      quiz.description,
+      exams.description,
+      ...evaluationNotes,
+      deadlinesNote,
+    ].join(" ");
+    assert.doesNotMatch(studentCopy, /grade shell/i);
+    assert.doesNotMatch(studentCopy, /empty website-linked/i);
+    assert.doesNotMatch(studentCopy, /website-linked quizzes/i);
+    assert.doesNotMatch(studentCopy, /100 points each/i);
+    assert.doesNotMatch(studentCopy, /exports? (that score )?to Canvas/i);
+    assert.match(studentCopy, /taken online on this course website/i);
+    assert.match(studentCopy, /staff-approved fallback/i);
+    assert.match(studentCopy, /ask your instructor or TA before using it/i);
   });
 
   it("names X2’s weekday as Thursday to match 2026-12-03", () => {
     assert.equal(weekdayName(isoWeekday("2026-12-03")), "Thursday");
     const exams = evaluationItems.find((item) => item.label.includes("X1"));
     assert.ok(exams, "Exams (X1–X2) evaluation item is missing");
-    assert.match(exams.description, /Thursday 2026-12-03/);
     assert.doesNotMatch(exams.description, /Wednesday 2026-12-03/);
     assert.match(deadlinesNote, /X2 is due Thursday 11:59pm ET/);
     assert.doesNotMatch(deadlinesNote, /X2 is due Wednesday/);

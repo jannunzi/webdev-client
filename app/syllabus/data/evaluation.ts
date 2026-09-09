@@ -11,13 +11,13 @@ export const evaluationItems: EvaluationItem[] = [
     label: "Quizzes (Q1–Q6)",
     weight: 10,
     description:
-      "Short checks after each chapter. Each quiz draws 10 questions (~30 minutes), unlocks Monday 00:00 ET after the corresponding assignment due, and locks Sunday 23:59 ET. Quizzes cannot be submitted late. Canvas shells are 100 points each; the website scores as a percent and exports to Canvas out of 100.",
+      "Short checks after each chapter. Each quiz draws 10 questions (~30 minutes), unlocks Monday 00:00 ET after the corresponding assignment due, and locks Sunday 23:59 ET. Quizzes cannot be submitted late.",
   },
   {
     label: "Exams (X1–X2)",
     weight: 30,
     description:
-      "X1 is the week after A3 (unlock Monday 2026-10-26, due Sunday 2026-11-01). X2 is exam week (unlock Monday 2026-11-30, due Thursday 2026-12-03 with the published Exam). Each exam draws 36 questions (~90 minutes). Canvas shells are 100 points each; the website scores as a percent and exports to Canvas out of 100.",
+      "X1 is the week after A3. X2 is exam week. Each exam draws 36 questions (~90 minutes).",
   },
   {
     label: "Project",
@@ -43,6 +43,7 @@ export const gradeBands: GradeBand[] = [
 ];
 
 export const evaluationNotes = [
-  "Weights sum to 100%. Canvas grade shells for Q1–Q6 and X1/X2 are 100 points each (empty website-linked quizzes). The website scores as a percent and exports that score to Canvas out of 100; the category weights above are what enter the final average.",
+  "Weights sum to 100%. The category weights above are what enter the final average.",
+  "Graded quizzes and exams are taken online on this course website. Canvas is a staff-approved fallback if the site is unavailable — ask your instructor or TA before using it.",
   "You must submit every assignment and the project to be eligible for a passing grade, even if a late penalty applies.",
 ];
