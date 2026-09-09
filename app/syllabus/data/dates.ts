@@ -97,3 +97,21 @@ export function eachDateInclusive(start: IsoDate, end: IsoDate): IsoDate[] {
   }
   return dates;
 }
+
+/** Monday of the calendar week containing `iso` (local date, not UTC). */
+export function mondayOfWeek(iso: IsoDate): IsoDate {
+  const date = fromIso(iso);
+  const day = date.getDay();
+  const daysFromMonday = day === 0 ? 6 : day - 1;
+  date.setDate(date.getDate() - daysFromMonday);
+  return toIso(date);
+}
+
+/**
+ * Whole weeks between two dates, typically Mondays from `mondayOfWeek`.
+ * Negative when `end` is before `start`.
+ */
+export function wholeWeeksBetween(start: IsoDate, end: IsoDate): number {
+  const ms = fromIso(end).getTime() - fromIso(start).getTime();
+  return Math.round(ms / (7 * 24 * 60 * 60 * 1000));
+}

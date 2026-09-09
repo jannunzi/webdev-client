@@ -17,21 +17,21 @@ export const latePolicy: PolicyBlock = {
 
 export const aiPolicy: PolicyBlock = {
   paragraphs: [
-    "Generative AI tools — Cursor, ChatGPT, Copilot, and similar assistants — are allowed as learning aids in this course. The book itself includes guided “with AI” exercises. Using a tool does not transfer authorship. You are responsible for every line you submit.",
-    "You must be able to explain, modify, and debug your submission without the tool in the room. If you cannot, the work is not yours yet. Submitting generated code, prose, or configuration that you do not understand is an academic-integrity violation, the same as copying from another student.",
-    "Do not paste unpublished assignment text or classmates’ code into public models. Do not submit a tool’s output as a substitute for the labs or the project write-up.",
+    "Working with an AI agent is like asking your expert professional uncle to do your assignment for you. If that would not be allowed with a person, it is not allowed with AI.",
+    "You may ask him to explain something and to help you work things out. You may use AI (Cursor, ChatGPT, Copilot, and similar assistants) when the book or an exercise explicitly mentions it. You may not copy code wholesale from an AI tool unless that exercise explicitly allows it.",
+    "You are responsible for the work and are expected to take full responsibility for the code you submit. Quizzes (Q1–Q6) and exams (X1/X2) are closed: do not use AI unless the handout says otherwise.",
   ],
   bullets: [
-    "Allowed: using AI to learn an API, draft a first attempt, or refactor code you then rewrite and can defend.",
-    "Not allowed: submitting generated work you cannot explain; sharing solutions; using AI on closed quizzes or exams (X1/X2) unless the handout says otherwise.",
-    "When in doubt, disclose how you used the tool in a short comment on the assignment.",
+    "Allowed: using AI when the book or an exercise explicitly mentions it; asking AI to explain something and help you work things out.",
+    "Not allowed: having AI do the assignment for you; copying generated code wholesale unless the exercise explicitly allows it.",
+    "You take full responsibility for the code you submit. Closed quizzes and exams: no AI unless the handout says otherwise.",
   ],
 };
 
 export const academicIntegrity: PolicyBlock = {
   paragraphs: [
     "Northeastern expects every assignment, quiz, exam, and project in this course to meet the university Academic Integrity Policy. Instructors are required to cite that policy on the syllabus. Cheating, plagiarism, fabrication, unauthorized collaboration, and facilitating dishonesty are violations.",
-    "In this course, that includes copying another student’s Kambaz or lab code (current or past semester), publishing solutions where others can turn them in, and submitting AI-generated work you cannot explain. You may discuss ideas with classmates; the code and write-up you turn in must be your own unless the assignment explicitly allows a team.",
+    "In this course, that includes copying another student’s Kambaz or lab code (current or past semester), publishing solutions where others can turn them in, and copying AI-generated code wholesale unless an exercise explicitly allows it. You may discuss ideas with classmates; the code and write-up you turn in must be your own unless the assignment explicitly allows a team.",
     "A violation may be reported to the Office of Student Conduct and Conflict Resolution (OSCCR) and may also receive an academic penalty in the course, up to a failing grade, at the instructor’s discretion.",
   ],
   links: [

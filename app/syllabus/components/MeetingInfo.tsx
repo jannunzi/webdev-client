@@ -1,4 +1,5 @@
 import { formatLongDate, formatMeetingPattern } from "../data/dates";
+import { holidayMeetingNote } from "../data/holidays";
 import type { CourseSection, SemesterDates } from "../data/types";
 import SyllabusSection from "./SyllabusSection";
 
@@ -58,6 +59,7 @@ export default function MeetingInfo({
           </dd>
         </div>
       </dl>
+      <p>{holidayMeetingNote}</p>
       {section.notes.map((note) => (
         <p key={note.slice(0, 40)}>{note}</p>
       ))}

@@ -1,48 +1,65 @@
-import type { LectureTopic } from "./types";
+import type { IsoDate, LectureTopic } from "./types";
 
 /**
- * Shared weekly lecture sequence (one 3-hour meeting per week).
- * Projected onto each section’s weekday. Due dates live in `deadlines.ts`.
+ * Shared Fall 2026 lecture sequence, aligned to the book.
+ * Chapter 1 starts the week of Monday 2026-09-14 for every section.
+ * Ideal spine is 14 slots (Ch1–Ch6 × 2 weeks + X1 + X2). The term has 13
+ * shared Monday-weeks through last day of classes, so Chapter 3 weeks 1–2
+ * are combined into one meeting. Holidays do not skip a slot.
  */
+export const SHARED_CURRICULUM_START: IsoDate = "2026-09-14";
+
+export const ORIENTATION_TOPIC =
+  "Orientation and syllabus — Chapter 1 begins the week of September 14";
+
 export const lectureTopics: LectureTopic[] = [
   {
     topic:
-      "Course introduction, syllabus, environment, and HTML foundations (Chapter 1)",
+      "Chapter 1 week 1 — Building Next.js user interfaces with HTML: introduction, environment, and HTML foundations",
   },
   {
     topic:
-      "HTML forms, navigation, and layouts; start the Kambaz prototype (A1)",
+      "Chapter 1 week 2 — HTML forms, navigation, and layouts; prototyping Kambaz (A1)",
   },
   {
     topic:
-      "CSS fundamentals and Tailwind — selectors, box model, utilities (Chapter 2, A2)",
+      "Chapter 2 week 1 — Styling user interfaces with CSS and Tailwind (A2)",
   },
   {
-    topic: "Styling Kambaz with Tailwind and React Icons",
-  },
-  {
-    topic:
-      "JavaScript and data-driven UI — functions, arrays, JSON rendering (Chapter 3, A3)",
-  },
-  {
-    topic: "Events, forms, useState, and React Context (Chapter 4)",
+    topic: "Chapter 2 week 2 — Styling Kambaz with CSS and Tailwind",
   },
   {
     topic:
-      "Zustand stores and Kambaz client state — courses, modules, account (A4)",
+      "Chapter 3 — Creating single-page applications with JavaScript: language, data-driven UI, and chapter wrap (A3)",
   },
   {
-    topic: "Node.js HTTP servers and Express REST APIs (Chapter 5, A5)",
-  },
-  {
-    topic:
-      "HTTP clients, the Kambaz Node server, and Next.js route handlers",
+    topic: "X1 midterm — Chapters 1–3",
   },
   {
     topic:
-      "MongoDB locally — Compass, collections, and Mongoose (Chapter 6, A6)",
+      "Chapter 4 week 1 — Managing client state: events, forms, useState, and React Context",
   },
   {
-    topic: "Atlas, sessions, and wiring Kambaz to a database; exam / project prep",
+    topic:
+      "Chapter 4 week 2 — Zustand stores and adding state to Kambaz (A4)",
+  },
+  {
+    topic:
+      "Chapter 5 week 1 — Implementing RESTful Web APIs with Express.js; Next.js route handlers (A5)",
+  },
+  {
+    topic:
+      "Chapter 5 week 2 — The Kambaz Node.js HTTP server and HTTP clients",
+  },
+  {
+    topic:
+      "Chapter 6 week 1 — Integrating React with MongoDB: Compass, collections, and Mongoose (A6)",
+  },
+  {
+    topic:
+      "Chapter 6 week 2 — Atlas, sessions, and wiring Kambaz to a database",
+  },
+  {
+    topic: "X2 final — Chapters 4–6",
   },
 ];

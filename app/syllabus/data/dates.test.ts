@@ -4,6 +4,8 @@ import {
   formatMeetingWeekdays,
   formatMonthDayYear,
   formatSectionMeetsSentence,
+  mondayOfWeek,
+  wholeWeeksBetween,
 } from "./dates.ts";
 import { sections } from "./sections.ts";
 
@@ -48,5 +50,22 @@ describe("formatSectionMeetsSentence", () => {
     assert.match(sentence, /^This section meets /);
     assert.doesNotMatch(sentence, /section['’]s/);
     assert.doesNotMatch(sentence, /first class is/);
+  });
+});
+
+describe("mondayOfWeek and wholeWeeksBetween", () => {
+  it("maps midweek dates to the Monday of that week", () => {
+    assert.equal(mondayOfWeek("2026-09-14"), "2026-09-14");
+    assert.equal(mondayOfWeek("2026-09-15"), "2026-09-14");
+    assert.equal(mondayOfWeek("2026-09-16"), "2026-09-14");
+    assert.equal(mondayOfWeek("2026-09-20"), "2026-09-14");
+    assert.equal(mondayOfWeek("2026-10-12"), "2026-10-12");
+  });
+
+  it("counts shared curriculum weeks from September 14", () => {
+    assert.equal(wholeWeeksBetween("2026-09-14", "2026-09-14"), 0);
+    assert.equal(wholeWeeksBetween("2026-09-14", "2026-10-12"), 4);
+    assert.equal(wholeWeeksBetween("2026-09-14", "2026-11-23"), 10);
+    assert.equal(wholeWeeksBetween("2026-09-14", "2026-12-07"), 12);
   });
 });

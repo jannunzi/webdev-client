@@ -71,7 +71,7 @@ export type LectureTopic = {
   topic: string;
 };
 
-export type AgendaKind = "lecture" | "holiday";
+export type AgendaKind = "lecture" | "orientation";
 
 export type AgendaRow = {
   date: IsoDate;
@@ -80,6 +80,11 @@ export type AgendaRow = {
   topic: string;
   /** Absolute Canvas dues that happen to fall on this calendar day. */
   deadlines: Deadline[];
+  /**
+   * When the meeting date falls on a university holiday. Class still meets
+   * online that week; the chapter sequence does not skip.
+   */
+  onlineNote?: string;
 };
 
 export type CourseGoal = {

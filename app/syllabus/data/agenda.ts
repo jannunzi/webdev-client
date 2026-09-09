@@ -3,11 +3,17 @@ import {
   dateInInclusiveRange,
   eachDateInclusive,
   isoWeekday,
+  mondayOfWeek,
+  wholeWeeksBetween,
 } from "./dates";
 import { deadlines } from "./deadlines";
 import { holidays } from "./holidays";
 import { sections } from "./sections";
-import { lectureTopics } from "./topics";
+import {
+  ORIENTATION_TOPIC,
+  SHARED_CURRICULUM_START,
+  lectureTopics,
+} from "./topics";
 import type {
   AgendaRow,
   CourseSection,
@@ -26,6 +32,13 @@ function deadlinesOn(iso: IsoDate): Deadline[] {
   return deadlines.filter((deadline) => deadline.date === iso);
 }
 
+function onlineNoteFor(iso: IsoDate): string | undefined {
+  const holiday = holidayOn(iso, holidays);
+  return holiday
+    ? `${holiday.label} — class meets online if campus is closed`
+    : undefined;
+}
+
 /**
  * Meeting dates for one section: firstClass through lastClass on the
  * configured weekday (once per week). firstClass is always included.
@@ -40,37 +53,41 @@ export function collectMeetingDates(section: CourseSection): IsoDate[] {
 }
 
 /**
- * Projects the shared lecture sequence onto one section’s calendar.
- * Blackout dates are labeled and do not consume a lecture number.
- * Deadline labels are attached only when the Canvas date equals the row date.
+ * Projects the shared book sequence onto one section’s weekday.
+ * All sections use the same chapter week from the week of Sep 14.
+ * Meetings before that date are orientation and do not start Chapter 1.
+ * Holidays still consume the week’s topic; class meets online if needed.
  */
 export function buildAgenda(section: CourseSection): AgendaRow[] {
   const rows: AgendaRow[] = [];
-  let topicIndex = 0;
-  let lectureNumber = 0;
 
   for (const date of collectMeetingDates(section)) {
-    const holiday = holidayOn(date, holidays);
-    if (holiday) {
+    const onlineNote = onlineNoteFor(date);
+
+    if (compareIso(date, SHARED_CURRICULUM_START) < 0) {
       rows.push({
         date,
-        kind: "holiday",
-        topic: holiday.label,
+        kind: "orientation",
+        topic: ORIENTATION_TOPIC,
         deadlines: deadlinesOn(date),
+        onlineNote,
       });
       continue;
     }
 
+    const topicIndex = wholeWeeksBetween(
+      SHARED_CURRICULUM_START,
+      mondayOfWeek(date),
+    );
     const topic = lectureTopics[topicIndex];
-    topicIndex += 1;
-    lectureNumber += 1;
 
     rows.push({
       date,
       kind: "lecture",
-      lectureNumber,
+      lectureNumber: topicIndex + 1,
       topic: topic?.topic ?? "Project workshop / catch-up",
       deadlines: deadlinesOn(date),
+      onlineNote,
     });
   }
 
