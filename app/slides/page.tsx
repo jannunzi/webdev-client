@@ -88,9 +88,9 @@ export default function SlidesIndexPage() {
                       ) : null}
                     </h2>
                     <p className="mb-0 font-sans text-sm text-neutral-600">
-                      {group.topics
-                        .map((topic) => topic.title)
-                        .join(" · ")}
+                      {group.chapter === 1
+                        ? "Lecture 1 setup first: Intro, Node.js, Next.js, GitHub, then Vercel. HTML and Kambaz follow."
+                        : group.topics.map((topic) => topic.title).join(" · ")}
                     </p>
                   </div>
                   <p className="mb-0 font-sans text-sm text-neutral-500">

@@ -3,82 +3,86 @@ import type { LectureSlide } from "../types";
 export const CREATING_A_NEXTJS_REACT_APPLICATION_SLIDES: LectureSlide[] = [
   {
     id: "title",
-    title: "Creating a Next.js React app",
+    title: "NEXT.JS REACT APPLICATIONS",
     kind: "title",
     bullets: [
-      "Chapter 1 · Creating a Next.js React app",
-      "React components + Next.js file-system routing",
+      "Jose Annunziato",
     ],
   },
   {
     id: "react-is",
-    title: "React = data → UI",
+    title: "React",
     kind: "content",
     bullets: [
-      "A **component** is a function that turns **data** (props, state) into **UI** (JSX)",
-      "You describe what the screen should look like. React updates the DOM to match",
-      "Compose small components into pages. Pages are just components that own a URL",
-      "This course writes components as TypeScript functions in `.tsx` files",
+      "JavaScript library for creating Web **user interface**",
+      "Applications consist of JavaScript functions, AKA **components**",
+      "Implement an algorithm to calculate user interfaces in the browser",
+      "Functions transform **user inputs**, **data structures**, and **server resources** into a UI",
+      "**Web applications** — HTML, CSS, JavaScript, interacting with HTTP servers",
     ],
   },
   {
+    id: "react-transform",
+    title: "React Transforms Data into UI",
+    kind: "content",
+    bullets: [
+      "React programs are functions that transform **data** into a visual representation in a **browser**",
+    ],
+    diagram: "react-data-ui",
+  },
+  {
     id: "user-component",
-    title: "Example: a User component",
+    title: "A User component",
     kind: "demo",
     bullets: [
-      "Same function, different props → different UI. That is the whole idea",
+      "Same function, different data → different UI",
     ],
-    code: `function User({ name, email }: { name: string; email: string }) {
+    code: `import user from "./user.json";
+
+function User() {
   return (
     <div>
-      <h2>{name}</h2>
-      <p>{email}</p>
+      Username: {user.username}<br/>
+      First: {user.first}<br/>
+      Last: {user.last}<br/>
     </div>
   );
 }`,
     codeLanguage: "tsx",
     codeFile: "User.tsx",
     embed: "user-card",
-    interactiveHint:
-      "Change `name` and watch only the heading text change. The component did not care where the data came from.",
   },
   {
     id: "create-next-app",
-    title: "Scaffold with create-next-app",
+    title: "Create a Next.js Application",
     kind: "demo",
     bullets: [
-      "From the course folder (sibling to the Node demo, not inside it)",
-      "The first run may ask to install the `create-next-app` package — accept",
-      "Course spelling: **kambaz-next-js** — same kambaz name as the LMS prototype",
-      "This is the client you will later push to GitHub and deploy on Vercel",
+      "Creating a React application requires **Node.js**",
+      "At the command line — **App Router**, not a Vite SPA",
     ],
     code: "npx create-next-app@latest kambaz-next-js",
     codeLanguage: "bash",
   },
   {
     id: "defaults",
-    title: "Accept the App Router defaults",
+    title: "Name the project kambaz-next-js",
     kind: "content",
     bullets: [
-      "**TypeScript** — Yes",
-      "**ESLint** — Yes",
-      "**Tailwind CSS** — Yes",
-      "**`src/` directory** — Yes (default). The book’s screenshots also work if you chose No and use top-level `app/`",
-      "**App Router** — Yes (required for this course)",
-      "**Turbopack** for `next dev` — Yes",
-      "**`@/*` import alias** — keep the default (do not customize)",
+      "What is your project named? › **kambaz-next-js**",
+      "**TypeScript** — Yes · **ESLint** — Yes · **Tailwind CSS** — Yes",
+      "`src/` directory — **No** · **App Router** — **Yes** (required)",
+      "**Turbopack** for `next dev` — Yes · import alias `@/*` — keep default",
     ],
     interactiveHint:
       "If a prompt offers Pages Router, say no. This course is App Router only.",
   },
   {
     id: "npm-run-dev",
-    title: "npm run dev",
+    title: "Running a React Application",
     kind: "demo",
     bullets: [
-      "Next.js prints a local URL — usually `http://localhost:3000`",
-      "Open it in **Google Chrome**. You should see the starter page",
-      "Stop anytime with Ctrl+C; start again with `npm run dev`",
+      "Once created, navigate to the folder and run",
+      "The default Next.js app appears in a browser window — usually `http://localhost:3000`",
     ],
     code: `cd kambaz-next-js
 npm run dev`,
@@ -87,66 +91,58 @@ npm run dev`,
   },
   {
     id: "ide",
-    title: "Open the folder in the IDE",
+    title: "Editing React.js with an IDE",
     kind: "content",
     bullets: [
-      "File → Open Folder → `kambaz-next-js` (VS Code or Cursor)",
-      "Use **Terminal → New Terminal** inside the IDE so commands run in the project root",
-      "Explorer should show `app/` (or `src/app/`), `public/`, `package.json`",
-      "This course assumes Chrome + VS Code or Cursor",
+      "Open the new project with an IDE such as **VS Code** or **Cursor**",
+      "**File → Open** · navigate to the folder · select **kambaz-next-js**",
+      "Use **Terminal → New Terminal** so commands run in the project root",
     ],
   },
   {
     id: "structure",
-    title: "What just got created",
+    title: "Project File Structure",
     kind: "content",
     bullets: [
-      "`node_modules/` — installed packages. Never commit this",
-      "`public/` — static files (images) served as `/filename`",
-      "`app/` — **routes**. A folder + `page.tsx` becomes a URL",
-      "`app/layout.tsx` — the root shell (`<html>`, `<body>`, fonts, CSS import)",
-      "`app/page.tsx` — the home route `/`",
-      "`package.json` — scripts (`dev`, `build`, `start`) and dependencies",
-    ],
-  },
-  {
-    id: "app-router-only",
-    title: "App Router only",
-    kind: "content",
-    bullets: [
-      "There is no `index.html` mount point you own",
-      "Next.js is the bundler, the server, and the router",
-      "You add routes by adding folders under `app/`, not by calling `createRoot`",
-      "`page.tsx` is the public route; other `.tsx` files are imported components",
-      "If a tutorial uses Pages Router or mounts React with `createRoot`, close it — it will fight this course",
+      "A Next.js project content",
+      "`node_modules` — libraries. Never commit this",
+      "`public` — static files served as `/filename`",
+      "`app` — **App Router** root. A folder + `page.tsx` becomes a URL",
+      "`.gitignore` — files to ignore",
+      "`package.json` — project description",
     ],
   },
   {
     id: "comment-globals",
-    title: "Comment out globals.css",
+    title: "Remove Default Styling",
     kind: "demo",
     bullets: [
-      "The starter imports Tailwind via `app/globals.css` (or `src/app/globals.css`)",
-      "For Chapter 1 HTML exercises we want the browser’s default look",
-      "In `app/layout.tsx`, comment out the CSS import. Leave the rest of the file alone",
-      "Refresh `/`. The starter page looks unstyled. That is expected",
+      "For Chapter 1 HTML we want the browser’s default look",
+      "In `app/layout.tsx`, comment out the CSS import. Leave the rest alone",
     ],
-    code: `// import "./globals.css";`,
+    code: `import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+// import "./globals.css";`,
     codeLanguage: "tsx",
     codeFile: "app/layout.tsx",
+    codeAddedLines: [3],
     interactiveHint:
       "Do not delete `globals.css`. You will turn Tailwind back on in Chapter 2.",
   },
   {
     id: "welcome-page",
-    title: "Replace the home page",
+    title: "Pages are Just Functions",
     kind: "demo",
     bullets: [
-      "Open `app/page.tsx` and replace the starter markup with a simple heading",
-      "Save. With `npm run dev` running, `/` should show that h1",
+      "`app/page.tsx` — React pages **compute** the user interface",
+      "Replace the starter markup. Save. `/` shows the heading",
     ],
     code: `export default function Home() {
-  return <h1>Welcome to Web Dev</h1>;
+  return (
+    <div>
+      <h1>Welcome to Web Dev</h1>
+    </div>
+  );
 }`,
     codeLanguage: "tsx",
     codeFile: "app/page.tsx",
@@ -154,10 +150,10 @@ npm run dev`,
   },
   {
     id: "lab1-route",
-    title: "Add a Lab 1 route",
+    title: "Create Pages to Practice",
     kind: "demo",
     bullets: [
-      "Create `app/labs/lab1/page.tsx` (make the folders if needed)",
+      "Create pages to practice Web skills",
       "File path **is** the URL: `app/labs/lab1/page.tsx` → `/labs/lab1`",
     ],
     code: `export default function Lab1() {
@@ -172,52 +168,36 @@ npm run dev`,
     embed: "lab1-stub",
   },
   {
-    id: "why-page-tsx",
-    title: "Why the file is page.tsx",
-    kind: "content",
-    bullets: [
-      "`page.tsx` is reserved. Next.js exposes that folder as a public route",
-      "`app/page.tsx` → `/`",
-      "`app/labs/page.tsx` → `/labs` (you can add this later as a table of contents)",
-      "`app/labs/lab1/page.tsx` → `/labs/lab1`",
-      "Other `.tsx` files are components you **import**. Only `page.tsx` creates a URL",
-    ],
-  },
-  {
     id: "link-to-lab1",
-    title: "Link home to Lab 1",
+    title: "Use Links to Navigate",
     kind: "demo",
     bullets: [
-      "In Next.js, in-app navigation uses `Link` from `next/link` — not a raw `<a>` for internal routes",
-      "Click the link. The App Router navigates to `/labs/lab1` without a full classic page reload",
+      "Use **Links** to navigate between pages",
+      "`Link` from `next/link` — not a raw `<a>` for in-app routes",
     ],
     code: `import Link from "next/link";
-
 export default function Home() {
   return (
-    <>
+    <div>
       <h1>Welcome to Web Dev</h1>
-      <Link href="/labs/lab1">Lab 1</Link>
-    </>
+      <Link href="./labs/lab1">
+            Lab 1 - HTML</Link>
+    </div>
   );
 }`,
     codeLanguage: "tsx",
     codeFile: "app/page.tsx",
-    codeAddedLines: [1, 5, [7, 8]],
+    codeAddedLines: [1, [6, 7]],
     embed: "link-nav",
-    interactiveHint:
-      "Use `Link` for routes inside this app. Use `<a>` for GitHub, Canvas, and other sites.",
   },
   {
     id: "compose",
-    title: "Components compose",
+    title: "Components Import Components",
     kind: "content",
     bullets: [
-      "Keep `page.tsx` thin. Import smaller components for each exercise",
-      "`HeadingTags.tsx` is a component, not a route — no `page.tsx` in that file’s folder",
-      "Lab 1 stays one URL (`/labs/lab1`) while the file list grows",
-      "Composition: `<Lab1>` renders `<HeadingTags />`, `<AnchorTag />`, …",
-      "Same idea as `<User />`: pages assemble components; components assemble HTML",
+      "Components can **aggregate** other components for more complex UIs",
+      "Keep `page.tsx` thin. Import `HeadingTags.tsx` — a component, not a route",
+      "Only `page.tsx` creates a URL. Other `.tsx` files are imported",
     ],
   },
   {
@@ -225,9 +205,7 @@ export default function Home() {
     title: "Drop User onto a page",
     kind: "demo",
     bullets: [
-      "Create `app/components/User.tsx` with the User function from earlier",
-      "You did not register a route. You imported a component",
-      "That is App Router composition — not an `App.tsx` tree mounted by hand",
+      "Create `app/components/User.tsx`. Import it — you did not register a route",
     ],
     code: `import User from "./components/User";
 
@@ -240,99 +218,6 @@ export default function Home() {
     embed: "user-card",
   },
   {
-    id: "devtools",
-    title: "DevTools: what React rendered",
-    kind: "demo",
-    bullets: [
-      "Chrome → More Tools → Developer Tools (or F12 / ⌥⌘I)",
-      "Elements panel: the **DOM** — the in-memory tree the browser paints",
-      "Find your `<h1>Welcome to Web Dev</h1>` and the Lab 1 `div#wd-lab1`",
-      "The HTML source and the live DOM can differ after React hydrates. Elements shows the live tree",
-    ],
-    interactiveHint:
-      "Right-click the heading → Inspect. Confirm the node matches the JSX you wrote.",
-  },
-  {
-    id: "dom-parse",
-    title: "How the browser parses HTML",
-    kind: "content",
-    bullets: [
-      "Next.js sends HTML for the route. The browser **parses** it into the DOM",
-      "CSS (when we turn it back on) attaches styles to those nodes",
-      "JavaScript/React can add, replace, or update nodes after the first parse",
-      "Inspecting the DOM is how you debug “I saved the file but the page looks wrong”",
-      "If the file is saved and `npm run dev` is running, a refresh should show the new markup",
-    ],
-  },
-  {
-    id: "routing-rules",
-    title: "Routing rules to remember",
-    kind: "content",
-    bullets: [
-      "Folders under `app/` are path segments",
-      "A route exists only when that folder contains `page.tsx`",
-      "`layout.tsx` wraps child routes (root layout wraps everything)",
-      "Dynamic segments like `[slug]` come later — we will use one for these lecture decks",
-      "There is no `main.tsx` entry you edit. Next.js owns the bootstrap",
-    ],
-  },
-  {
-    id: "not-vite-counter",
-    title: "What we are not building",
-    kind: "content",
-    bullets: [
-      "Not `ReactDOM.createRoot(document.getElementById(\"root\")).render(<App />)`",
-      "Not a standalone `App.tsx` with `useState` click-counter as the “hello world”",
-      "Hello world here is: a `page.tsx`, a second route, and a `Link` between them",
-      "State and events arrive in Chapter 4. HTML structure is Chapter 1",
-    ],
-  },
-  {
-    id: "src-vs-app",
-    title: "src/app vs app/",
-    kind: "content",
-    bullets: [
-      "If you accepted `src/`, your files live in `src/app/page.tsx` and `src/app/labs/lab1/page.tsx`",
-      "URLs do **not** include `src` — it is only a disk folder",
-      "The course book often shows `app/` at the repo root (No to `src/`). Both are App Router",
-      "Pick one layout and stay consistent so import paths and screenshots match your disk",
-    ],
-  },
-  {
-    id: "kambaz-name",
-    title: "Naming: kambaz",
-    kind: "content",
-    bullets: [
-      "The LMS prototype is **Kambaz** — that is the spelling in the book and repos",
-      "Project folder: `kambaz-next-js` (or `webdev-client` if you follow the book’s repo name)",
-      "Use that spelling in the folder name so it matches the book and Kambaz screens",
-    ],
-  },
-  {
-    id: "layout-wraps",
-    title: "layout.tsx wraps every route",
-    kind: "content",
-    bullets: [
-      "`app/layout.tsx` is the root shell: `<html>`, `<body>`, fonts, and the CSS import",
-      "Every `page.tsx` renders as `{children}` inside that layout",
-      "You do not mount the tree yourself — Next.js calls the layout, then the page",
-      "Commenting out `globals.css` in the layout is how we turn off starter styles for Lab 1",
-      "Nested `layout.tsx` files (later) wrap only that folder’s routes",
-    ],
-  },
-  {
-    id: "check",
-    title: "Check before you sit down",
-    kind: "content",
-    bullets: [
-      "`npm run dev` serves `/` with **Welcome to Web Dev**",
-      "`/labs/lab1` renders the Lab 1 heading",
-      "Home has a `Link` to Lab 1",
-      "`globals.css` is commented out in the root layout",
-      "You did not add a `createRoot` main file",
-    ],
-  },
-  {
     id: "developer-tools",
     title: "DEVELOPER TOOLS",
     kind: "title",
@@ -342,21 +227,14 @@ export default function Home() {
   },
   {
     id: "browser-parses-dom",
-    title: "Browser parses HTML into DOM",
+    title: "Browser Parses HTML Into DOM",
     kind: "demo",
     bullets: [
-      "Open `/labs/lab1`, then Elements",
-      "The highlighted `h2` is the node React rendered from `page.tsx`",
+      "The browser **parses** HTML into the **DOM**",
+      "Open `/labs/lab1`, then **Elements**. The `h2` is what `page.tsx` rendered",
     ],
     diagram: "dom-tree",
-  },
-  {
-    id: "next-up",
-    title: "Next: commit to GitHub",
-    kind: "title",
-    bullets: [
-      "The app runs only on your machine until Git sees it",
-      "Deck 4: `.gitignore`, a GitHub repo, `git push -u origin main`",
-    ],
+    interactiveHint:
+      "Right-click the heading → Inspect. Confirm the node matches the JSX.",
   },
 ];

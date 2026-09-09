@@ -3,36 +3,31 @@ import type { LectureSlide } from "../types";
 export const COMMIT_TO_GITHUB_SLIDES: LectureSlide[] = [
   {
     id: "title",
-    title: "Commit to GitHub",
+    title: "GITHUB",
     kind: "title",
     bullets: [
-      "Chapter 1 · Git on your machine, a repo on github.com",
-      "Your username will differ from the instructor’s — that is expected",
+      "Jose Annunziato",
     ],
   },
   {
     id: "install-git",
-    title: "Install Git",
+    title: "Install GitHub Client",
     kind: "content",
     bullets: [
-      "**macOS**: Terminal already has `git` on recent systems. Confirm with `git --version`",
-      "If missing: install Xcode Command Line Tools (`xcode-select --install`) or Git from git-scm.com",
-      "**Windows**: download Git from [git-scm.com](https://git-scm.com/). Use Git Bash or PowerShell",
-      "Optional GUI: **SourceTree** (or GitHub Desktop). This course demos the terminal so everyone shares the same commands",
-      "You need Git **before** the GitHub website can receive your project",
+      "**macOS** already has a **git** client in Terminal",
+      "On **Windows**, download and install from [https://git-scm.com/download/win](https://git-scm.com/download/win)",
+      "Optionally, a graphical git client — [https://www.sourcetreeapp.com](https://www.sourcetreeapp.com)",
     ],
     interactiveHint:
-      "If `git` is not found, install it and open a **new** terminal. Then `git --version` again.",
+      "Confirm with `git --version`. Not found? Install, then open a **new** terminal.",
   },
   {
     id: "gitignore",
-    title: ".gitignore ignores node_modules",
+    title: "Ignoring Files",
     kind: "content",
     bullets: [
-      "`create-next-app` already wrote a `.gitignore`. Open it before the first commit",
-      "`node_modules/` **must** be listed. It is huge and `npm install` can recreate it",
-      "Never commit secrets or the Next.js build output",
-      "If `node_modules` appears in `git status`, stop and fix `.gitignore` before `git add .`",
+      "In `.gitignore`, add files and directories Git should ignore",
+      "Make sure to ignore **node_modules**",
     ],
     code: `node_modules/
 .next/
@@ -43,41 +38,41 @@ export const COMMIT_TO_GITHUB_SLIDES: LectureSlide[] = [
     codeLanguage: "text",
     codeFile: ".gitignore",
     interactiveHint:
-      "Run `git status`. If you see thousands of files under `node_modules`, do not add or commit yet.",
+      "`create-next-app` already wrote a `.gitignore`. If `git status` lists `node_modules`, stop and fix it.",
   },
   {
     id: "create-repo",
-    title: "Create the repo on GitHub.com",
+    title: "Create a Remote Repository",
     kind: "demo",
     bullets: [
-      "Sign in at **github.com** — use your personal GitHub account, **not** a school GitLab / Bitbucket unless the staff say so",
-      "New repository. Name it `kambaz-next-js` or `webdev-client` (match your folder)",
-      "Public. **Do not** add a README, `.gitignore`, or license if the project already exists on disk (empty repo)",
-      "Copy the HTTPS URL: `https://github.com/<your-username>/kambaz-next-js.git`",
-      "`<your-username>` is yours. Do not paste the instructor’s username",
+      "Use **GitHub.com** instead of the school's GitHub",
+      "Create an account at GitHub.com and create a new **kambaz-next-js** repo",
+      "Public. **Empty** — do not add a README, `.gitignore`, or license",
     ],
     diagram: "github-create-repo-mock",
   },
   {
     id: "empty-repo-commands",
-    title: "Empty-repo starter commands",
+    title: "Empty Repository",
     kind: "content",
     bullets: [
-      "GitHub shows a “…or push an existing repository” block. That is us",
-      "Usernames differ — use yours",
-      "If you created the GitHub repo **with** a README, you will need to pull --rebase first. Prefer an empty repo",
+      "When you create a new repository it contains commands to push your code",
+      "**Your username will be different**",
     ],
-    code: `git remote add origin https://github.com/<your-username>/kambaz-next-js.git
-git branch -M main
+    code: `git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/<your-username>/kambaz-next-js.git
 git push -u origin main`,
     codeLanguage: "bash",
   },
   {
     id: "from-project",
-    title: "From the project folder",
+    title: "Add and Commit Your Source",
     kind: "demo",
     bullets: [
-      "`cd` into `kambaz-next-js` (or `webdev-client`) first",
+      "From the **root directory** of your project",
+      "**Your username will be different**",
     ],
     code: `git init
 git add .
@@ -87,16 +82,15 @@ git push -u origin main`,
     codeLanguage: "bash",
     codeAddedLines: [1, 2, 3],
     interactiveHint:
-      "HTTPS push asks for a password: GitHub wants a **Personal Access Token**, not your account password. Keep the token private.",
+      "HTTPS push asks for a password: GitHub wants a **Personal Access Token**, not your account password.",
   },
   {
     id: "naming-and-next",
-    title: "kambaz — then deploy",
+    title: "Then deploy",
     kind: "title",
     bullets: [
-      "Spell the app **kambaz** — the course name for the LMS prototype",
-      "Confirm GitHub shows your source (and not `node_modules`)",
-      "Deck 5: import that same GitHub repo into **Vercel** (not Netlify) and share the URL",
+      "Confirm GitHub shows your source — and not `node_modules`",
+      "Next: import that same repo into **Vercel** and share the URL",
     ],
   },
 ];
