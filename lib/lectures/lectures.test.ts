@@ -719,6 +719,35 @@ describe("lecture catalog", () => {
     assert.ok(!LECTURE_TOPICS.some((topic) => topic.topicId === "napster-api"));
   });
 
+  it("keeps Book’s preferred Ch1 bookSectionId anchors", () => {
+    const preferred = {
+      "intro-to-web-development": "/book/ch1#intro",
+      "installing-nodejs": "/book/ch1#sec-1-2-1",
+      "creating-a-nextjs-react-application": "/book/ch1#sec-1-2-4",
+      "commit-to-github": "/book/ch1#sec-1-5",
+      "deploying-to-vercel": "/book/ch1#sec-1-6",
+      "html-and-dom": "/book/ch1#sec-1-3",
+      "headings-and-paragraphs": "/book/ch1#sec-1-3-1",
+      "lists-and-tables": "/book/ch1#sec-1-3-3",
+      "web-forms": "/book/ch1#sec-1-3-6",
+      anchors: "/book/ch1#sec-1-3-9",
+      "single-page-navigation": "/book/ch1#sec-1-3-10",
+      "kambaz-overview": "/book/ch1#sec-1-4-1",
+      "kambaz-account": "/book/ch1#sec-1-4-2",
+      "kambaz-dashboard": "/book/ch1#sec-1-4-3",
+      "kambaz-navigation": "/book/ch1#sec-1-4-3-1",
+      "kambaz-courses": "/book/ch1#sec-1-4-4",
+      "kambaz-modules": "/book/ch1#sec-1-4-5",
+      "kambaz-assignments": "/book/ch1#sec-1-4-7",
+    } as const;
+    for (const [slug, href] of Object.entries(preferred)) {
+      const item = getLecture(slug);
+      assert.ok(item, slug);
+      assert.equal(item.bookHref, href, slug);
+      assert.equal(item.bookSectionId, href.split("#")[1], slug);
+    }
+  });
+
   it("maps Ch1–Ch3 decks to book section anchors for bidirectional links", () => {
     assert.equal(getLecture("installing-nodejs")?.bookHref, "/book/ch1#sec-1-2-1");
     assert.equal(
