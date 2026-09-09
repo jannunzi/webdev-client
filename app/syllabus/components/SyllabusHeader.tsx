@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatLongDate } from "../data/dates";
+import { formatSectionMeetsSentence } from "../data/dates";
 import type { CourseInfo, CourseSection } from "../data/types";
 
 function levelLabel(level: CourseSection["level"]): string {
@@ -37,8 +37,8 @@ export default function SyllabusHeader({
       </p>
       <p className="mt-4 text-[1.05rem] text-neutral-800">
         Companion to{" "}
-        <Link href="/book">{course.bookTitle}</Link>. This
-        section’s first class is {formatLongDate(section.firstClass)}.
+        <Link href="/book">{course.bookTitle}</Link>.{" "}
+        {formatSectionMeetsSentence(section.daysOfWeek, section.firstClass)}
       </p>
     </header>
   );

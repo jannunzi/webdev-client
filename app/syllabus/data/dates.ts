@@ -19,6 +19,12 @@ export function formatMeetingPattern(days: DayOfWeek[]): string {
   return days.map(weekdayName).join(" / ");
 }
 
+/** Plural weekday names for copy such as “meets Wednesdays”. */
+export function formatMeetingWeekdays(days: DayOfWeek[]): string {
+  if (days.length === 0) return "TBA";
+  return days.map((day) => `${weekdayName(day)}s`).join(" / ");
+}
+
 export function isoWeekday(iso: IsoDate): DayOfWeek {
   return fromIso(iso).getDay() as DayOfWeek;
 }
@@ -51,6 +57,22 @@ export function formatLongDate(iso: IsoDate): string {
     day: "numeric",
     year: "numeric",
   });
+}
+
+/** Month D, YYYY — no leading weekday (e.g. September 9, 2026). */
+export function formatMonthDayYear(iso: IsoDate): string {
+  return fromIso(iso).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+export function formatSectionMeetsSentence(
+  days: DayOfWeek[],
+  firstClass: IsoDate,
+): string {
+  return `This section meets ${formatMeetingWeekdays(days)}, starting ${formatMonthDayYear(firstClass)}.`;
 }
 
 export function compareIso(a: IsoDate, b: IsoDate): number {
