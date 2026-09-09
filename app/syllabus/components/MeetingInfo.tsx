@@ -56,7 +56,10 @@ export default function MeetingInfo({
           </dt>
           <dd>
             {formatLongDate(semester.finalExamPeriod.start)} —{" "}
-            {formatLongDate(semester.finalExamPeriod.end)}
+            {formatLongDate(semester.finalExamPeriod.end)}{" "}
+            <a href="#academic-calendar" className="font-sans text-sm">
+              Academic calendar
+            </a>
           </dd>
         </div>
       </dl>

@@ -70,6 +70,23 @@ export type Holiday = {
   label: string;
 };
 
+export type AcademicCalendarKind =
+  | "holiday"
+  | "break"
+  | "term"
+  | "deadline"
+  | "exams";
+
+/** Course-relevant university dates (not every Session A/B or third-of-term row). */
+export type AcademicCalendarEvent = {
+  date: IsoDate;
+  endDate?: IsoDate;
+  label: string;
+  kind: AcademicCalendarKind;
+  /** Registrar “no classes” day or break. */
+  noClasses?: boolean;
+};
+
 export type AgendaKind = "lecture" | "orientation";
 
 export type AgendaGroupKind = "chapter" | "exam" | "orientation";

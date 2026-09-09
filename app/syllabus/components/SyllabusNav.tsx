@@ -4,6 +4,7 @@ const SECTIONS = [
   { href: "#overview", label: "Overview" },
   { href: "#goals", label: "Goals" },
   { href: "#meetings", label: "Meetings" },
+  { href: "#academic-calendar", label: "Calendar" },
   { href: "#office-hours", label: "Office hours" },
   { href: "#evaluation", label: "Evaluation" },
   { href: "#late-policy", label: "Late policy" },
@@ -48,6 +49,8 @@ export default function SyllabusNav() {
         <Link href="/labs">Labs</Link>
         {" · "}
         <Link href="/account/signin">Kambaz</Link>
+        {" · "}
+        <Link href="/calendar">Calendar</Link>
         {" · "}
         <Link href="/office-hours">Office Hours</Link>
         {" · "}
