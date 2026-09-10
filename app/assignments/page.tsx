@@ -3,6 +3,7 @@ import Link from "next/link";
 import { formatLongDate } from "@/app/syllabus/data/dates";
 import { assignmentsIntro } from "@/app/syllabus/data/assignments";
 import { listAssignments, rubricPointTotal } from "@/lib/assignments/catalog";
+import { COURSE_WEBSITE_ACCOUNT_COPY } from "@/lib/course-site/account-copy";
 import AssignmentHubNav from "./components/AssignmentHubNav";
 
 export const metadata: Metadata = {
@@ -26,6 +27,12 @@ export default function AssignmentsIndexPage() {
         are informational — Canvas is still the official calendar. A1 grades
         on this site are all-or-nothing per criterion from a public Vercel
         URL (GitHub is optional). Canvas is a grade shell only.
+      </p>
+      <p className="rounded-lg border-2 border-sky-400 bg-sky-50 px-4 py-3 font-sans text-sm text-sky-950">
+        <span className="font-semibold">
+          {COURSE_WEBSITE_ACCOUNT_COPY.heading}.{" "}
+        </span>
+        {COURSE_WEBSITE_ACCOUNT_COPY.assignmentAuthHint}
       </p>
       <ul className="mt-6 list-none space-y-3 p-0">
         {items.map((item) => {

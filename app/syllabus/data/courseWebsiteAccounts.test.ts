@@ -28,7 +28,7 @@ describe("syllabus course website accounts placement", () => {
   });
 
   it("links the section from the syllabus nav and header", () => {
-    assert.match(syllabusNav, /href="#accounts"/);
+    assert.match(syllabusNav, /href: "#accounts"/);
     assert.match(syllabusHeader, /href="#accounts"/);
     assert.match(syllabusHeader, /Course website accounts/);
     assert.match(syllabusHeader, /Sign up first/);

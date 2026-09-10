@@ -13,6 +13,7 @@ export default function SignInPage() {
   if (!isClerkConfigured()) {
     return (
       <main className="mx-auto max-w-3xl px-4 py-12 font-sans">
+        <CourseWebsiteAccountNote variant="sign-in" />
         <StatusPanel title="Sign-in is not available yet" tone="warn">
           <p>
             Sign-in is not available yet. The course book remains public.

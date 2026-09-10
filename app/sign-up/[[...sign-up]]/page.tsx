@@ -13,6 +13,7 @@ export default function SignUpPage() {
   if (!isClerkConfigured()) {
     return (
       <main className="mx-auto max-w-3xl px-4 py-12 font-sans">
+        <CourseWebsiteAccountNote variant="sign-up" />
         <StatusPanel title="Sign-up is not available yet" tone="warn">
           <p>
             Sign-up is not available yet. The course book remains public.
