@@ -15,4 +15,21 @@ describe("student-facing quiz copy", () => {
     assert.match(STUDENT_COPY.notOnRosterSubmit, /school email/i);
     assert.match(STUDENT_COPY.notOnRosterSubmit, /course roster/i);
   });
+
+  it("keeps Sign up first separate from roster match for taking a quiz", () => {
+    assert.match(STUDENT_COPY.takeIndexLead, /Sign up first/i);
+    assert.match(STUDENT_COPY.takeIndexLead, /not pre-provisioned/i);
+    assert.match(STUDENT_COPY.takeIndexLead, /this site is not Canvas/i);
+    assert.match(STUDENT_COPY.takeIndexLead, /email on the course roster/i);
+    assert.match(STUDENT_COPY.takeMetaDescription, /Sign up if you don['’]t have/i);
+    assert.match(STUDENT_COPY.signInPageHint, /Sign up first/i);
+    assert.doesNotMatch(
+      STUDENT_COPY.signInPageHint,
+      /email on the course roster/i,
+    );
+    assert.match(
+      STUDENT_COPY.signUpPageHint,
+      /taking a graded quiz still requires your Canvas roster email/i,
+    );
+  });
 });

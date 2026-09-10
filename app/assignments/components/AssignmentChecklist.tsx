@@ -218,7 +218,7 @@ export default function AssignmentChecklist({
       writeLocalProgress(assignment.id, previous);
       setSyncNote(
         result.code === "unauthenticated"
-          ? "Sign in with your school email to sync progress."
+          ? ASSIGNMENT_STUDENT_COPY.syncProgress
           : "Could not sync that checkmark. It is still saved in this browser.",
       );
     });
@@ -257,7 +257,7 @@ export default function AssignmentChecklist({
               : persistProgress && signedIn
                 ? "Checkmarks stay in this browser until progress sync is available."
                 : persistProgress
-                  ? "Checkmarks stay in this browser. Sign in with your school email to sync across devices."
+                  ? ASSIGNMENT_STUDENT_COPY.syncAcrossDevices
                   : ASSIGNMENT_STUDENT_COPY.studentFeedbackHint}
         </p>
         {syncNote ? (

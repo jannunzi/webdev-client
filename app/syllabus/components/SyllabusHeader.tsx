@@ -40,6 +40,8 @@ export default function SyllabusHeader({
         <Link href="/book">{course.bookTitle}</Link>.{" "}
         <Link href="#book">How to use the book</Link>
         {" (term videos are optional). "}
+        <Link href="#accounts">Course website accounts</Link>
+        {" (Sign up first — this site is not Canvas). "}
         {formatSectionMeetsSentence(section.daysOfWeek, section.firstClass)}
       </p>
     </header>

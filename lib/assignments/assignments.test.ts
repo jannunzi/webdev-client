@@ -127,6 +127,9 @@ describe("assignment catalog", () => {
     );
     for (const row of copy) {
       assert.match(row.html, /school email/);
+      assert.match(row.html, /Sign up on the course site/i);
+      assert.match(row.html, /not pre-provisioned/i);
+      assert.match(row.html, /This site is not Canvas/i);
       assert.doesNotMatch(row.html, /Clerk|rubric|Best \/ Better/i);
     }
   });
