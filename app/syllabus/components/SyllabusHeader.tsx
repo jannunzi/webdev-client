@@ -41,7 +41,7 @@ export default function SyllabusHeader({
         <Link href="#book">How to use the book</Link>
         {" (term videos are optional). "}
         <Link href="#accounts">Course website accounts</Link>
-        {" (Sign up first — this site is not Canvas). "}
+        {" (Sign up first with your Canvas email — this site is not Canvas). "}
         {formatSectionMeetsSentence(section.daysOfWeek, section.firstClass)}
       </p>
     </header>

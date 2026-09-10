@@ -2,22 +2,24 @@
  * Student-facing assignment submit copy. Do not name the auth vendor
  * (Clerk) here — staff pages and the README still can.
  *
- * Creating a course-website account is open and is not Canvas. Roster
- * match, when mentioned, is only for URL submit — not for Sign up.
+ * Creating a course-website account is not Canvas. Students Sign up
+ * with the same Northeastern email they use on Canvas so progress can
+ * be mapped to the roster. Roster match is still required for URL
+ * submit.
  */
 import { COURSE_WEBSITE_ACCOUNT_COPY } from "../course-site/account-copy";
 
 export const ASSIGNMENT_STUDENT_COPY = {
   signInToSubmit:
-    "Sign up if you don’t have a course-website account yet, then Sign in with your school email to submit your GitHub and Vercel URLs.",
+    "Sign up if you don’t have a course-website account yet, then Sign in with the same Northeastern email you use on Canvas to submit your GitHub and Vercel URLs.",
   signInHint: COURSE_WEBSITE_ACCOUNT_COPY.assignmentSignInHint,
   syncProgress:
-    "Sign up if you don’t have a course-website account yet, then Sign in with your school email to sync progress.",
+    "Sign up if you don’t have a course-website account yet, then Sign in with the same Northeastern email you use on Canvas to sync progress.",
   syncAcrossDevices:
-    "Checkmarks stay in this browser. Sign up if you don’t have a course-website account yet, then Sign in with your school email to sync across devices.",
+    "Checkmarks stay in this browser. Sign up if you don’t have a course-website account yet, then Sign in with the same Northeastern email you use on Canvas to sync across devices.",
   notOnRosterTitle: "This email isn’t on the course roster",
   notOnRoster:
-    "This email isn’t on the Canvas course roster. You can still use the checklist in this browser. URL submit stays closed until you Sign in with the school email on the roster. Creating a site account is open; roster match is only for submitting URLs.",
+    "This email isn’t on the Canvas course roster. You can still use the checklist in this browser. URL submit stays closed until you Sign in with the same Northeastern email you use on Canvas. Creating a site account does not enroll you on the roster; use your Canvas email so we can map progress.",
   rosterEmpty:
     "The course roster has not been loaded yet. URL submit is closed until the instructor imports the roster.",
   notConfigured: "Assignment URL submit is not available yet.",

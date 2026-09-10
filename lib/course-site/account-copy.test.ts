@@ -46,10 +46,6 @@ describe("course website account copy", () => {
     );
     assert.match(COURSE_WEBSITE_ACCOUNT_COPY.signUpThenSignIn, /Sign up/);
     assert.match(COURSE_WEBSITE_ACCOUNT_COPY.signUpThenSignIn, /Sign in/);
-    assert.match(
-      COURSE_WEBSITE_ACCOUNT_COPY.signUpThenSignIn,
-      /school email is fine/i,
-    );
     assert.match(COURSE_WEBSITE_ACCOUNT_COPY.signInPageHint, /Sign up first/i);
     assert.match(
       COURSE_WEBSITE_ACCOUNT_COPY.signInPageHint,
@@ -69,15 +65,36 @@ describe("course website account copy", () => {
     );
   });
 
-  it("keeps graded-quiz roster gating separate from creating a site account", () => {
-    assert.match(COURSE_WEBSITE_ACCOUNT_COPY.quizRosterSeparate, /Sign-up is open/i);
+  it("requires the same Northeastern email used on Canvas so progress can be mapped", () => {
+    const canvasEmail = /same Northeastern email you use on Canvas/i;
+    const mapProgress = /map site progress back to the Canvas roster/i;
+    assert.match(COURSE_WEBSITE_ACCOUNT_COPY.signUpThenSignIn, canvasEmail);
+    assert.match(COURSE_WEBSITE_ACCOUNT_COPY.signUpThenSignIn, mapProgress);
+    assert.match(COURSE_WEBSITE_ACCOUNT_COPY.signInPageHint, canvasEmail);
+    assert.match(COURSE_WEBSITE_ACCOUNT_COPY.signInPageHint, mapProgress);
+    assert.match(COURSE_WEBSITE_ACCOUNT_COPY.signUpPageHint, canvasEmail);
+    assert.match(COURSE_WEBSITE_ACCOUNT_COPY.signUpPageHint, mapProgress);
+    assert.match(COURSE_WEBSITE_ACCOUNT_COPY.assignmentAuthHint, canvasEmail);
+    assert.match(COURSE_WEBSITE_ACCOUNT_COPY.assignmentSignInHint, canvasEmail);
+    assert.match(
+      COURSE_WEBSITE_ACCOUNT_COPY.signInWithCanvasEmail,
+      /Canvas email/i,
+    );
+    assert.match(
+      COURSE_WEBSITE_ACCOUNT_COPY.signUpWithCanvasEmail,
+      /Canvas email/i,
+    );
+    assert.doesNotMatch(ALL_COPY, /school email is fine/i);
+  });
+
+  it("keeps graded-quiz roster gating on the Canvas email", () => {
     assert.match(
       COURSE_WEBSITE_ACCOUNT_COPY.quizRosterSeparate,
-      /Taking a graded quiz is different/i,
+      /same Northeastern email you use on Canvas/i,
     );
     assert.match(
       COURSE_WEBSITE_ACCOUNT_COPY.quizRosterSeparate,
-      /Canvas course roster/i,
+      /Taking a graded quiz still requires that Canvas email/i,
     );
     assert.match(
       COURSE_WEBSITE_ACCOUNT_COPY.quizRosterSeparate,
@@ -87,12 +104,9 @@ describe("course website account copy", () => {
       COURSE_WEBSITE_ACCOUNT_COPY.signUpPageHint,
       /taking a graded quiz still requires your Canvas roster email/i,
     );
-    assert.doesNotMatch(
-      COURSE_WEBSITE_ACCOUNT_COPY.signInPageHint,
-      /email on the course roster/i,
-    );
     assert.doesNotMatch(ALL_COPY, /pre-created/i);
     assert.doesNotMatch(ALL_COPY, /Canvas login/i);
     assert.doesNotMatch(ALL_COPY, /Northeastern login/i);
+    assert.doesNotMatch(ALL_COPY, /sign (?:in|up) with (?:Northeastern )?SSO/i);
   });
 });

@@ -126,10 +126,12 @@ describe("assignment catalog", () => {
       ],
     );
     for (const row of copy) {
-      assert.match(row.html, /school email/);
+      assert.match(row.html, /same Northeastern email you use on Canvas/);
       assert.match(row.html, /Sign up on the course site/i);
       assert.match(row.html, /not pre-provisioned/i);
       assert.match(row.html, /This site is not Canvas/i);
+      assert.match(row.html, /map site progress back to the roster/i);
+      assert.doesNotMatch(row.html, /school email is fine/i);
       assert.doesNotMatch(row.html, /Clerk|rubric|Best \/ Better/i);
     }
   });

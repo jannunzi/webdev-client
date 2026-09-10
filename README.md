@@ -249,7 +249,7 @@ those rubrics are authored.
 Signed-in students persist checkmarks to MongoDB (`assignment_progress`,
 keyed by user + assignment + criterion). Visitors who are not signed in keep
 progress in this browser only. The UI never mentions the auth vendor — the
-button says “Sign in with your school email.”
+button says “Sign in with your Canvas email.”
 
 **A1 URL submit (Phase 2C).** Rostered students and staff can save a public
 Vercel deployment URL on `/assignments/a1` (GitHub is optional). Documents
