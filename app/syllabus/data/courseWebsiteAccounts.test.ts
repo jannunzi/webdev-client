@@ -31,7 +31,7 @@ describe("syllabus course website accounts placement", () => {
     assert.match(syllabusNav, /href: "#accounts"/);
     assert.match(syllabusHeader, /href="#accounts"/);
     assert.match(syllabusHeader, /Course website accounts/);
-    assert.match(syllabusHeader, /Sign up first/);
+    assert.match(syllabusHeader, /Sign up first with your Canvas email/);
     assert.equal(
       COURSE_WEBSITE_ACCOUNT_COPY.heading,
       "Course website accounts",

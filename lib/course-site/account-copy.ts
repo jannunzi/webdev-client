@@ -1,7 +1,9 @@
 /**
  * Student-facing course-website account copy.
- * Piazza CS5610-09 Post 12: students tried school email, got
- * “couldn’t find your account,” and thought they needed roster access.
+ * Piazza CS5610-09 Post 12 + Jose follow-up: this site is not Canvas /
+ * Northeastern SSO; accounts are not pre-provisioned. Students Sign up
+ * with the same Northeastern email they use on Canvas so site progress
+ * can be mapped back to the roster, then Sign in.
  * Do not name the auth vendor (Clerk) here.
  */
 export const COURSE_WEBSITE_ACCOUNT_COPY = {
@@ -11,17 +13,19 @@ export const COURSE_WEBSITE_ACCOUNT_COPY = {
   notPreProvisioned:
     "Accounts are not pre-provisioned. If Sign in says it couldn’t find your account, you do not need roster access — you still need to register.",
   signUpThenSignIn:
-    "Use Sign up to create your own account (school email is fine if the form asks for it), then Sign in.",
+    "Use Sign up to create your own account with the same Northeastern email you use on Canvas, then Sign in. That email lets us map site progress back to the Canvas roster.",
   quizRosterSeparate:
-    "Sign-up is open. Taking a graded quiz is different: that still requires the email on the Canvas course roster. Creating a site account does not enroll you on the roster, and roster match is not required to Sign up.",
+    "Sign up with the same Northeastern email you use on Canvas so site progress can be mapped back to the roster. Taking a graded quiz still requires that Canvas email to be on the course roster. Creating a site account does not enroll you on the roster.",
   signInPageHint:
-    "This site is separate from Canvas and Northeastern SSO. Accounts are not created for you. If you don’t have an account yet, Sign up first (school email is fine), then Sign in. “Couldn’t find your account” means you still need to Sign up — not that you need roster access.",
+    "This site is separate from Canvas and Northeastern SSO. Accounts are not created for you. If you don’t have an account yet, Sign up first with the same Northeastern email you use on Canvas, then Sign in. That email lets us map site progress back to the Canvas roster. “Couldn’t find your account” means you still need to Sign up — not that you need roster access.",
   signUpPageHint:
-    "This site is separate from Canvas and Northeastern SSO. Sign up to create your own account — nothing is pre-provisioned. School email is fine if the form asks for it. After you register, Sign in. Sign-up is open; taking a graded quiz still requires your Canvas roster email.",
+    "This site is separate from Canvas and Northeastern SSO. Sign up with the same Northeastern email you use on Canvas — nothing is pre-provisioned. That email lets us map site progress back to the Canvas roster. After you register, Sign in. Taking a graded quiz still requires your Canvas roster email.",
   assignmentAuthHint:
-    "Need an account? Sign up first (school email is fine), then Sign in. This site is not Canvas, and accounts are not pre-provisioned.",
+    "Need an account? Sign up first with the same Northeastern email you use on Canvas, then Sign in. This site is not Canvas, and accounts are not pre-provisioned. Using your Canvas email lets us map site progress back to the roster.",
   assignmentSignInHint:
-    "This site is separate from Canvas. Accounts are not created for you — Sign up first (school email is fine), then Sign in to save URLs across devices.",
+    "This site is separate from Canvas. Accounts are not created for you — Sign up first with the same Northeastern email you use on Canvas, then Sign in to save URLs across devices.",
+  signInWithCanvasEmail: "Sign in with your Canvas email",
+  signUpWithCanvasEmail: "Sign up with your Canvas email",
   signUpCtaSuffix: "if you do not have an account yet.",
   signInCtaSuffix: "after you create your account.",
 } as const;

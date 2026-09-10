@@ -8,8 +8,8 @@ export default function AssignmentAuthBar() {
     <ClerkAuthBar
       title="Assignments"
       fallbackRedirect="/assignments"
-      signInLabel="Sign in with your school email"
-      signUpLabel="Sign up"
+      signInLabel={COURSE_WEBSITE_ACCOUNT_COPY.signInWithCanvasEmail}
+      signUpLabel={COURSE_WEBSITE_ACCOUNT_COPY.signUpWithCanvasEmail}
       hint={COURSE_WEBSITE_ACCOUNT_COPY.assignmentAuthHint}
     />
   );

@@ -21,7 +21,7 @@ export function canvasAssignmentDescriptionHtml(
   return [
     `<p>Complete ${assignment.canvasId} — ${assignment.title} on the course site:</p>`,
     `<p><a href="${url}">${url}</a></p>`,
-    `<p>Sign up on the course site if you do not have an account yet (school email is fine), then Sign in if you want the checklist to sync across devices. This site is not Canvas and accounts are not pre-provisioned. Submit your GitHub repository and Vercel URL here in Canvas.</p>`,
+    `<p>Sign up on the course site if you do not have an account yet with the same Northeastern email you use on Canvas, then Sign in if you want the checklist to sync across devices. This site is not Canvas and accounts are not pre-provisioned. Using your Canvas email lets us map site progress back to the roster. Submit your GitHub repository and Vercel URL here in Canvas.</p>`,
   ].join("");
 }
 

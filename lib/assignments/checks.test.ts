@@ -460,20 +460,27 @@ describe("student-facing copy", () => {
     assert.doesNotMatch(ASSIGNMENT_STUDENT_COPY.checkInstructions, /Best \/ Better/i);
   });
 
-  it("tells students to Sign up first and does not imply a pre-created Canvas account", () => {
+  it("tells students to Sign up first with their Canvas email", () => {
     assert.match(ASSIGNMENT_STUDENT_COPY.signInHint, /Sign up first/i);
     assert.match(ASSIGNMENT_STUDENT_COPY.signInHint, /separate from Canvas/i);
-    assert.match(ASSIGNMENT_STUDENT_COPY.signInHint, /school email is fine/i);
-    assert.doesNotMatch(
+    assert.match(
       ASSIGNMENT_STUDENT_COPY.signInHint,
-      /email on the course roster/i,
+      /same Northeastern email you use on Canvas/i,
     );
+    assert.doesNotMatch(ASSIGNMENT_STUDENT_COPY.signInHint, /school email is fine/i);
     assert.match(ASSIGNMENT_STUDENT_COPY.signInToSubmit, /Sign up if you don['’]t have/i);
+    assert.match(
+      ASSIGNMENT_STUDENT_COPY.signInToSubmit,
+      /same Northeastern email you use on Canvas/i,
+    );
     assert.match(ASSIGNMENT_STUDENT_COPY.syncProgress, /Sign up if you don['’]t have/i);
-    assert.match(ASSIGNMENT_STUDENT_COPY.notOnRoster, /Creating a site account is open/i);
     assert.match(
       ASSIGNMENT_STUDENT_COPY.notOnRoster,
-      /roster match is only for submitting URLs/i,
+      /same Northeastern email you use on Canvas/i,
+    );
+    assert.match(
+      ASSIGNMENT_STUDENT_COPY.notOnRoster,
+      /use your Canvas email so we can map progress/i,
     );
   });
 });
