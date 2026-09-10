@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test app/book/terms/*.test.ts && tsx --test app/book/quizzes/*.test.ts app/book/chapter-end/*.test.ts app/syllabus/data/*.test.ts lib/question-bank/*.test.ts lib/roster/*.test.ts lib/quiz-exam/*.test.ts lib/assignments/*.test.ts lib/code-block/*.test.ts lib/lectures/lectures.test.ts",
+    "test": "node --experimental-strip-types --test app/book/terms/*.test.ts && tsx --test app/book/quizzes/*.test.ts app/book/chapter-end/*.test.ts app/syllabus/data/*.test.ts lib/question-bank/*.test.ts lib/roster/*.test.ts lib/quiz-exam/*.test.ts lib/assignments/*.test.ts lib/course-site/*.test.ts lib/code-block/*.test.ts lib/lectures/lectures.test.ts",
     "roster:import": "tsx scripts/import-canvas-roster.ts",
     "canvas:export-qti": "tsx scripts/export-canvas-fallback-qti.ts",
     "server": "npm start --prefix webdev-server",

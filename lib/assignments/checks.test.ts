@@ -459,4 +459,21 @@ describe("student-facing copy", () => {
     assert.match(ASSIGNMENT_STUDENT_COPY.checkInstructions, /GitHub URL is optional/i);
     assert.doesNotMatch(ASSIGNMENT_STUDENT_COPY.checkInstructions, /Best \/ Better/i);
   });
+
+  it("tells students to Sign up first and does not imply a pre-created Canvas account", () => {
+    assert.match(ASSIGNMENT_STUDENT_COPY.signInHint, /Sign up first/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.signInHint, /separate from Canvas/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.signInHint, /school email is fine/i);
+    assert.doesNotMatch(
+      ASSIGNMENT_STUDENT_COPY.signInHint,
+      /email on the course roster/i,
+    );
+    assert.match(ASSIGNMENT_STUDENT_COPY.signInToSubmit, /Sign up if you don['’]t have/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.syncProgress, /Sign up if you don['’]t have/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.notOnRoster, /Creating a site account is open/i);
+    assert.match(
+      ASSIGNMENT_STUDENT_COPY.notOnRoster,
+      /roster match is only for submitting URLs/i,
+    );
+  });
 });

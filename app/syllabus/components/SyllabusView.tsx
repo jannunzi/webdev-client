@@ -23,6 +23,7 @@ import AiPolicy from "./AiPolicy";
 import AssignmentsBlurb from "./AssignmentsBlurb";
 import ClassroomEnvironment from "./ClassroomEnvironment";
 import CourseGoals from "./CourseGoals";
+import CourseWebsiteAccounts from "./CourseWebsiteAccounts";
 import DeadlinesTable from "./DeadlinesTable";
 import Disabilities from "./Disabilities";
 import Evaluation from "./Evaluation";
@@ -116,6 +117,7 @@ export default function SyllabusView({
       </div>
       <CourseGoals goals={courseGoals} />
       <HowToUseTheBook />
+      <CourseWebsiteAccounts />
       <MeetingInfo section={section} semester={semester} />
       <AcademicCalendar />
       <OfficeHours

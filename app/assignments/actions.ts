@@ -8,6 +8,7 @@ import {
   isAssignmentId,
   listRubricCriteria,
 } from "@/lib/assignments/catalog";
+import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
 import {
   readAssignmentProgress,
   replaceAssignmentCriterionProgress,
@@ -50,7 +51,7 @@ export async function setCriterionCompleted(input: {
     return {
       ok: false,
       code: "unauthenticated",
-      message: "Sign in with your school email to sync progress.",
+      message: ASSIGNMENT_STUDENT_COPY.syncProgress,
     };
   }
 
@@ -100,7 +101,7 @@ export async function mergeLocalProgress(input: {
     return {
       ok: false,
       code: "unauthenticated",
-      message: "Sign in with your school email to sync progress.",
+      message: ASSIGNMENT_STUDENT_COPY.syncProgress,
     };
   }
 
@@ -164,7 +165,7 @@ export async function replaceAssignmentProgress(input: {
     return {
       ok: false,
       code: "unauthenticated",
-      message: "Sign in with your school email to sync progress.",
+      message: ASSIGNMENT_STUDENT_COPY.syncProgress,
     };
   }
 

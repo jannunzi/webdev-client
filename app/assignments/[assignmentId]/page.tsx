@@ -45,6 +45,7 @@ import {
   isActualStaff,
   isImpersonatingStudent,
 } from "@/lib/roster/staff-access";
+import { COURSE_WEBSITE_ACCOUNT_COPY } from "@/lib/course-site/account-copy";
 import A1WorkArea from "../components/A1WorkArea";
 import type { SubmissionGateReason } from "../components/A1SubmissionForm";
 import AssignmentChapterLink from "../components/AssignmentChapterLink";
@@ -242,6 +243,12 @@ export default async function AssignmentDetailPage({
           : null}
       </p>
       <p>{assignment.summary}</p>
+      <p className="rounded-lg border-2 border-sky-400 bg-sky-50 px-4 py-3 font-sans text-sm text-sky-950">
+        <span className="font-semibold">
+          {COURSE_WEBSITE_ACCOUNT_COPY.heading}.{" "}
+        </span>
+        {COURSE_WEBSITE_ACCOUNT_COPY.assignmentAuthHint}
+      </p>
       <AssignmentChapterLink assignment={assignment} />
 
       {assignment.status === "coming_soon" || !assignment.rubric ? (
