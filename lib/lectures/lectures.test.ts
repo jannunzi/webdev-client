@@ -1163,8 +1163,7 @@ describe("lecture decks", () => {
     assert.ok((counts["installing-nodejs"] ?? 0) >= 16);
     assert.equal(counts["creating-a-nextjs-react-application"], 17);
     assert.equal(counts["commit-to-github"], 7);
-    assert.ok((counts["deploying-to-vercel"] ?? 0) >= 14);
-    assert.ok((counts["deploying-to-vercel"] ?? 0) <= 17);
+    assert.equal(counts["deploying-to-vercel"], 13);
     assert.equal(counts["html-and-dom"], 16);
     assert.equal(counts["headings-and-paragraphs"], 9);
     assert.equal(counts["lists-and-tables"], 13);
@@ -1692,10 +1691,16 @@ describe("lecture decks", () => {
     assert.match(text, /Vercel/);
     assert.match(text, /Deployment Protection/);
     assert.match(text, /Vercel Authentication/);
+    assert.match(text, /kambaz-next-js/);
     assert.match(text, /OFFICE HOURS/);
     assert.match(text, /BREAK/);
+    assert.match(text, /Jose Annunziato/);
     assert.doesNotMatch(text, /netlify\.com/i);
+    assert.doesNotMatch(text, /Netlify/);
     assert.doesNotMatch(text, /Deploy to Netlify/);
+    assert.doesNotMatch(text, /kanbas/);
+    assert.doesNotMatch(text, /Push to update/);
+    assert.doesNotMatch(text, /Install Vercel on GitHub/);
   });
 
   it("normalizes kambaz naming in the GitHub deck", () => {
@@ -2557,9 +2562,13 @@ describe("lecture decks", () => {
         "create-repo": "github-create-repo-mock",
       },
       "deploying-to-vercel": {
+        account: "vercel-login-mock",
+        "new-project": "vercel-add-project-mock",
+        permissions: "vercel-git-provider-mock",
         "select-repo": "vercel-import-mock",
         deploy: "vercel-deploy-mock",
         congratulations: "vercel-success-mock",
+        "share-url": "vercel-dashboard-mock",
         protections: "vercel-protect-mock",
         "disable-auth": "vercel-auth-mock",
       },

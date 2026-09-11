@@ -5,16 +5,16 @@ export default function VercelProtectMock() {
     <UiMockFrame product="Vercel" url="Project → Settings">
       <div className="rounded-lg border-2 border-neutral-800 bg-neutral-900 p-5 text-white">
         <p className="mt-0 mb-4 font-sans text-2xl font-semibold">
-          Deployment Protection
+          Deployment Settings
         </p>
         <ul className="m-0 list-none space-y-2 p-0 font-sans text-lg">
-          <li className="rounded border border-sky-400 bg-sky-950 px-3 py-2">
-            Deployment Settings
+          <li className="rounded border border-neutral-600 px-3 py-2 text-neutral-300">
+            Build Settings
           </li>
-          <li className="rounded border border-neutral-600 px-3 py-2">
-            Deployment Protections
+          <li className="rounded border-2 border-sky-400 bg-sky-950 px-3 py-2 font-semibold">
+            Deployment Protection
           </li>
-          <li className="rounded border border-neutral-600 px-3 py-2">
+          <li className="ml-4 rounded border border-sky-400 px-3 py-2">
             Standard Protection
           </li>
         </ul>

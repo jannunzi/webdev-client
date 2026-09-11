@@ -8,12 +8,12 @@ export default function VercelAuthMock() {
           Vercel Authentication
         </p>
         <p className="mb-5 font-sans text-lg text-neutral-300">
-          Turn this off so TAs can open the production URL.
+          Visitors must not be asked to log in to Vercel.
         </p>
-        <div className="flex items-center justify-between gap-4 rounded border border-neutral-600 px-3 py-3">
+        <div className="flex items-center justify-between gap-4 rounded border-2 border-sky-400 bg-sky-950 px-3 py-3">
           <span className="font-sans text-lg">Vercel Authentication</span>
-          <span className="rounded bg-neutral-600 px-3 py-1 font-sans text-base">
-            Off
+          <span className="rounded bg-white px-3 py-1 font-sans text-base font-semibold text-neutral-900">
+            Disabled
           </span>
         </div>
         <p className="mb-0 mt-5">

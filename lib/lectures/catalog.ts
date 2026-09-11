@@ -232,7 +232,7 @@ const LECTURE_SUMMARIES: Record<
   "deploying-to-vercel": {
     title: "Deploying to Vercel",
     summary:
-      "Create a Vercel account, import the GitHub repo, deploy, share the URL, and turn off Vercel Authentication.",
+      "Vercel.com account, import kambaz-next-js from GitHub, Deploy, share the URL, turn off Vercel Authentication.",
     chapter: 1,
     topicId: "deploy",
     bookSectionId: "sec-1-6",

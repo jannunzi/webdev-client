@@ -7,7 +7,11 @@ export default function VercelDeployMock() {
         <p className="mt-0 mb-4 font-sans text-2xl font-semibold">New Project</p>
         <dl className="m-0 grid gap-2 font-sans text-lg">
           <div className="flex justify-between gap-4">
-            <dt className="text-neutral-400">Framework</dt>
+            <dt className="text-neutral-400">GitHub</dt>
+            <dd className="m-0 font-mono">you/kambaz-next-js</dd>
+          </div>
+          <div className="flex justify-between gap-4">
+            <dt className="text-neutral-400">Framework Preset</dt>
             <dd className="m-0 font-semibold">Next.js</dd>
           </div>
           <div className="flex justify-between gap-4">

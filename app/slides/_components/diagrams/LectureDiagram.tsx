@@ -13,9 +13,13 @@ import GoogleCloudKeyMock from "./GoogleCloudKeyMock";
 import GrokTokenFlow from "./GrokTokenFlow";
 import OpenaiProjectKeyMock from "./OpenaiProjectKeyMock";
 import OpenaiRolesFlow from "./OpenaiRolesFlow";
+import VercelAddProjectMock from "./VercelAddProjectMock";
 import VercelAuthMock from "./VercelAuthMock";
+import VercelDashboardMock from "./VercelDashboardMock";
 import VercelDeployMock from "./VercelDeployMock";
+import VercelGitProviderMock from "./VercelGitProviderMock";
 import VercelImportMock from "./VercelImportMock";
+import VercelLoginMock from "./VercelLoginMock";
 import VercelProtectMock from "./VercelProtectMock";
 import VercelSuccessMock from "./VercelSuccessMock";
 import XaiKeyMock from "./XaiKeyMock";
@@ -43,12 +47,20 @@ export default function LectureDiagram({ id }: { id: LectureDiagramId }) {
       return <NpmRunDevMock />;
     case "github-create-repo-mock":
       return <GithubCreateRepoMock />;
+    case "vercel-login-mock":
+      return <VercelLoginMock />;
+    case "vercel-add-project-mock":
+      return <VercelAddProjectMock />;
+    case "vercel-git-provider-mock":
+      return <VercelGitProviderMock />;
     case "vercel-import-mock":
       return <VercelImportMock />;
     case "vercel-deploy-mock":
       return <VercelDeployMock />;
     case "vercel-success-mock":
       return <VercelSuccessMock />;
+    case "vercel-dashboard-mock":
+      return <VercelDashboardMock />;
     case "vercel-protect-mock":
       return <VercelProtectMock />;
     case "vercel-auth-mock":
