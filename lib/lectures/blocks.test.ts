@@ -24,7 +24,7 @@ import {
   writeHubDraft,
   type SlidesStorage,
 } from "./draft-storage";
-import { applyHubOverlay } from "./hub-overlay";
+import { applyHubOverlay, overlayThumb } from "./hub-overlay";
 import { htmlToSlideText, lectureEditHref, lectureSearchIsEdit } from "./slide-markup";
 import { listChapterTopicGroups } from "./catalog";
 import type { LectureSlide } from "./types";
@@ -126,10 +126,9 @@ describe("slide drafts and hub overlay", () => {
     );
     const drafts = ch1.topics.find((topic) => topic.topicId === "draft");
     assert.ok(drafts);
-    assert.equal(
-      drafts.decks.some((deck) => String(deck.slug) === "office-hours"),
-      true,
-    );
+    const office = drafts.decks.find((deck) => String(deck.slug) === "office-hours");
+    assert.ok(office);
+    assert.equal(overlayThumb(office), "/lectures/thumbs/draft.svg");
     assert.deepEqual(
       applySlugOrder([{ slug: "b" }, { slug: "a" }], ["a", "b"]).map((row) => row.slug),
       ["a", "b"],

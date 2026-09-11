@@ -2,6 +2,7 @@ import {
   bookChapterMeta,
   bookHrefForSection,
   COURSE_SITE_ORIGIN,
+  isLectureSlug,
   lectureTopicMeta,
 } from "./catalog";
 import {
@@ -101,10 +102,7 @@ export function flattenHubDecks(
 }
 
 export function overlayThumb(item: LectureHubItem): string {
+  if (!isLectureSlug(item.slug)) return HUB_DRAFT_THUMB;
   if (item.thumbnailSrc) return item.thumbnailSrc;
-  try {
-    return lectureThumbPath(item.slug);
-  } catch {
-    return HUB_DRAFT_THUMB;
-  }
+  return lectureThumbPath(item.slug);
 }
