@@ -3,8 +3,10 @@ import { lectureChapterLabel, listLectureChapters } from "@/lib/lectures";
 
 export default function LectureHubNav({
   current,
+  editMode = false,
 }: {
   current?: "index" | "deck";
+  editMode?: boolean;
 }) {
   const chapters = listLectureChapters();
 
@@ -12,7 +14,7 @@ export default function LectureHubNav({
     <p className="mb-3 font-sans text-sm">
       {current === "deck" ? (
         <>
-          <Link href="/slides">Slides</Link>
+          <Link href={editMode ? "/slides?edit=1" : "/slides"}>Slides</Link>
           {" · "}
         </>
       ) : null}

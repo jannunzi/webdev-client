@@ -3,6 +3,13 @@ import { describe, it } from "node:test";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
+  authoredSlideBullets,
+  authoredSlideTextParts,
+  deckUsesBlockModel,
+  isBlockSlide,
+  toBlockSlide,
+} from "./blocks";
+import {
   COURSE_SITE_ORIGIN,
   adjacentLectureSlugs,
   bookHrefForSection,
@@ -61,12 +68,7 @@ function slideText(deckSlug: string): string {
   const deck = getLectureDeck(deckSlug);
   assert.ok(deck);
   return deck.slides
-    .flatMap((slide) => [
-      slide.title,
-      ...(slide.bullets ?? []),
-      slide.interactiveHint ?? "",
-      ...lectureSlideCodeBlocks(slide).map((block) => block.code),
-    ])
+    .flatMap((slide) => [slide.title, ...authoredSlideTextParts(slide)])
     .join("\n");
 }
 
@@ -660,12 +662,18 @@ describe("lecture catalog", () => {
       "utf8",
     );
     assert.match(nav, /\/slides#chapter-\$\{chapter\.chapter\}-heading/);
-    const page = readFileSync(join(process.cwd(), "app/slides/page.tsx"), "utf8");
+    const page = readFileSync(
+      join(process.cwd(), "app/slides/_components/SlidesHub.tsx"),
+      "utf8",
+    );
     assert.match(page, /Lecture 1 setup first/);
   });
 
   it("renders Canvas module week dates on hub chapter headers, not L# badges", () => {
-    const page = readFileSync(join(process.cwd(), "app/slides/page.tsx"), "utf8");
+    const page = readFileSync(
+      join(process.cwd(), "app/slides/_components/SlidesHub.tsx"),
+      "utf8",
+    );
     assert.match(page, /group\.weeks/);
     assert.match(page, /lectureChapterLabel\(group\.chapter\)/);
     assert.doesNotMatch(page, /Canvas L/);
@@ -832,7 +840,7 @@ describe("lecture catalog", () => {
       "§3.2 in the book",
     );
     const deckPage = readFileSync(
-      join(process.cwd(), "app/slides/[slug]/page.tsx"),
+      join(process.cwd(), "app/slides/_components/LectureDeckApp.tsx"),
       "utf8",
     );
     assert.match(deckPage, /lectureCompanionLinkLabel/);
@@ -1349,7 +1357,7 @@ describe("lecture decks", () => {
     assert.doesNotMatch(creating.summary, /Vite SPA leftover/i);
     const nextUp = findSlide("installing-nodejs", "next-up");
     assert.match(nextUp.title, /Next: create the Next\.js app/);
-    assert.ok(!(nextUp.bullets ?? []).some((row) => /vite/i.test(row)));
+    assert.ok(!authoredSlideBullets(nextUp).some((row) => /vite/i.test(row)));
   });
 
   it("embeds live Ch1 demos instead of UI screenshots", () => {
@@ -1646,6 +1654,17 @@ describe("lecture decks", () => {
       [...used].sort(),
       "every embed id should be wired to a slide",
     );
+  });
+
+  it("authors Installing Node.js on the block slide model", () => {
+    const deck = getLectureDeck("installing-nodejs");
+    assert.ok(deck);
+    assert.equal(deckUsesBlockModel(deck.slides), true);
+    const hello = findSlide("installing-nodejs", "hello-js");
+    assert.equal(isBlockSlide(hello), true);
+    const adapted = toBlockSlide(findSlide("html-and-dom", "hello-html"));
+    assert.equal(adapted.blocks.some((block) => block.type === "code"), true);
+    assert.equal(adapted.blocks.some((block) => block.type === "component"), true);
   });
 
   it("summarizes Installing Node.js as install + hello.js, not Express", () => {
@@ -2641,15 +2660,18 @@ describe("lecture decks", () => {
     const ignore = findSlide("commit-to-github", "gitignore");
     const lab1 = findSlide("html-and-dom", "jsx-lab1");
 
-    assert.match(hello.code ?? "", /console\.log/);
-    assert.ok(!(hello.bullets ?? []).some((row) => row.includes("console.log")));
+    assert.match(
+      lectureSlideCodeBlocks(hello).map((block) => block.code).join("\n"),
+      /console\.log/,
+    );
+    assert.ok(!authoredSlideBullets(hello).some((row) => row.includes("console.log")));
 
     const expressCode = lectureSlideCodeBlocks(express)
       .map((block) => block.code)
       .join("\n");
     assert.match(expressCode, /npm install express/);
     assert.match(expressCode, /app\.listen\(4000\)/);
-    assert.ok(!(express.bullets ?? []).some((row) => row.includes("app.listen")));
+    assert.ok(!authoredSlideBullets(express).some((row) => row.includes("app.listen")));
 
     assert.equal(createApp.code, "npx create-next-app@latest kambaz-next-js");
     assert.equal(createApp.codeLanguage, "bash");

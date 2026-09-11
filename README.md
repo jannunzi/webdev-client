@@ -306,6 +306,32 @@ a gesture). Slide figures are authored SVG/React in
 `public/lectures/thumbs/` — see `public/lectures/README.md`. Commands and
 source live in `LectureSlide.code` / `codeBlocks`, not as bullet items.
 
+### Instructor edit mode (MVP)
+
+Add `?edit=1` to the hub (`/slides?edit=1`) or a deck
+(`/slides/installing-nodejs?edit=1`). A discreet **Edit** control does the
+same. Students without the query keep the read-only experience.
+
+**Pilot deck.** `installing-nodejs` is authored on the typed block model
+(`slide.blocks`: `bullets` | `code` | `component`). Other decks stay on the
+legacy shape; the shell adapts them for read-only rendering.
+
+**Blocks.** In edit mode: select, add, remove, reorder (Up/Down). Font size
+(`sm` / `md` / `lg` / `xl`) on bullets and code. Frame size (`sm` / `md` /
+`lg`) on code and live embeds. Component blocks pick from a registry — Ch1
+book embeds plus existing lecture embeds — never an arbitrary component
+string.
+
+**Hub.** New deck creates a slug + starter blocks deck. New decks land in
+**Chapter 1 → Draft decks** (overlay topic, not a book TOC section). Up/Down
+reorders cards in a topic. Deck titles are editable (hub card + deck chrome).
+New decks use `/lectures/thumbs/draft.svg`.
+
+**Drafts.** Save writes JSON to `localStorage` (`webdev.slides.deck.<slug>`
+and `webdev.slides.hub.v1`). Reset to authored clears that draft. After
+save, the same browser sees the draft in normal mode too. There is no CMS.
+**Commit to the repo / PR is a follow-up.**
+
 ## Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs)

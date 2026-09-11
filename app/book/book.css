@@ -554,6 +554,81 @@ code.quiz-prompt-code {
   margin-block: var(--lecture-gap, 0.65rem);
 }
 
+.lecture-block + .lecture-block {
+  margin-top: var(--lecture-gap, 0.65rem);
+}
+
+.lecture-block-size-sm {
+  max-width: 36rem;
+}
+
+.lecture-block-size-md {
+  max-width: 56rem;
+}
+
+.lecture-block-size-lg {
+  max-width: 100%;
+}
+
+.lecture-block-font-sm .lecture-slide-bullets {
+  font-size: 0.75em;
+}
+
+.lecture-block-font-md .lecture-slide-bullets {
+  font-size: 1em;
+}
+
+.lecture-block-font-lg .lecture-slide-bullets {
+  font-size: 1.15em;
+}
+
+.lecture-block-font-xl .lecture-slide-bullets {
+  font-size: 1.35em;
+}
+
+.lecture-block-font-sm .book-code-block-body {
+  font-size: 1rem;
+}
+
+.lecture-block-font-md .book-code-block-body {
+  font-size: inherit;
+}
+
+.lecture-block-font-lg .book-code-block-body {
+  font-size: 1.65rem;
+}
+
+.lecture-block-font-xl .book-code-block-body {
+  font-size: 1.85rem;
+}
+
+.lecture-slide-block-title {
+  font-size: 0.85em;
+}
+
+.lecture-block-edit {
+  outline: 1px dashed #a3a3a3;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.6rem 0.65rem;
+}
+
+.lecture-block-edit[data-selected="true"] {
+  outline: 2px solid #171717;
+}
+
+.lecture-block-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.4rem;
+}
+
+.lecture-block [contenteditable="true"]:empty:before {
+  content: attr(data-placeholder);
+  color: #a3a3a3;
+}
+
 /*
  * iOS Safari (and some Android WebViews) do not fullscreen arbitrary elements.
  * When the Fullscreen API is missing or rejects, the stage uses this overlay

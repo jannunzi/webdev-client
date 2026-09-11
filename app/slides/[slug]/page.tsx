@@ -1,20 +1,18 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { notFound } from "next/navigation";
 import { withHighlightedLectureCode } from "@/lib/code-block/highlight-lecture";
 import {
   adjacentLectureSlugs,
   getLectureDeck,
-  lectureChapterLabel,
-  lectureCompanionLinkLabel,
   listLectureSlugs,
 } from "@/lib/lectures";
-import LectureDeckShell from "../_components/LectureDeckShell";
-import LectureHubNav from "../_components/LectureHubNav";
+import LectureDeckApp from "../_components/LectureDeckApp";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ edit?: string }>;
 };
+
+export const dynamicParams = true;
 
 export function generateStaticParams() {
   return listLectureSlugs().map((slug) => ({ slug }));
@@ -30,41 +28,42 @@ export async function generateMetadata({
   };
 }
 
-export default async function SlideDeckPage({ params }: PageProps) {
+export default async function SlideDeckPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
+  const { edit } = await searchParams;
+  const editMode = edit === "1";
   const deck = getLectureDeck(slug);
-  if (!deck) notFound();
+
+  if (!deck) {
+    return (
+      <LectureDeckApp
+        slug={slug}
+        editMode={editMode}
+        authored={null}
+        highlightedSlides={null}
+      />
+    );
+  }
 
   const { prev, next } = adjacentLectureSlugs(deck.slug);
   const slides = await withHighlightedLectureCode(deck.slides);
 
   return (
-    <div className="flex h-dvh min-h-0 flex-col overflow-hidden px-2 py-2 sm:px-3">
-      <header className="shrink-0 px-1" data-lecture-deck-chrome>
-        <LectureHubNav current="deck" />
-        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
-          <h1 className="mt-0 mb-0 font-sans text-xl font-semibold tracking-tight sm:text-2xl">
-            {deck.title}
-          </h1>
-          <p className="mb-0 flex flex-wrap items-center gap-2 font-sans text-sm text-neutral-600">
-            <span>
-              {lectureChapterLabel(deck.chapter)}
-              {deck.topic ? ` · ${deck.topic}` : ""} · {deck.slides.length}{" "}
-              slides
-            </span>
-            <Link href={deck.bookHref}>
-              {lectureCompanionLinkLabel(deck.chapter, deck.bookSectionId)}
-            </Link>
-          </p>
-        </div>
-      </header>
-      <LectureDeckShell
-        deckTitle={deck.title}
-        slides={slides}
-        prevDeck={prev}
-        nextDeck={next}
-        chapter={deck.chapter}
-      />
-    </div>
+    <LectureDeckApp
+      slug={deck.slug}
+      editMode={editMode}
+      authored={{
+        title: deck.title,
+        chapter: deck.chapter,
+        topic: deck.topic,
+        bookHref: deck.bookHref,
+        bookSectionId: deck.bookSectionId,
+        slides: deck.slides,
+      }}
+      highlightedSlides={slides}
+      prevDeck={prev}
+      nextDeck={next}
+      chapter={deck.chapter}
+    />
   );
 }
