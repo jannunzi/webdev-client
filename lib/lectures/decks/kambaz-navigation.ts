@@ -28,8 +28,7 @@ export const KAMBAZ_NAVIGATION_SLIDES: LectureSlide[] = [
     bullets: [
       "`app/(kambaz)/Navigation.tsx` — wrapper `wd-kambaz-navigation`",
       "Ids: `wd-neu-link`, `wd-account-link`, `wd-dashboard-link`, `wd-course-link`, `wd-calendar-link`, `wd-inbox-link`, `wd-labs-link`",
-      "Courses can point at `/dashboard` for now — there is no `/courses` index",
-      "Keep the `rel=\"noreferrer\"` on the Northeastern tab",
+      "Courses can point at `/dashboard` for now — **static HTML**, not a data array",
     ],
     code: `import Link from "next/link";
 
@@ -66,7 +65,6 @@ export default function KambazNavigation() {
       "`app/(kambaz)/layout.tsx` wraps every Kambaz route",
       "Temporary `<table>`: nav `width=\"200\"`, content `width=\"100%\"`",
       "Click Account / Dashboard / Calendar in the live chrome",
-      "Chapter 2 replaces the table with Flex / Grid / Tailwind",
     ],
     code: `import { ReactNode } from "react";
 import KambazNavigation from "./Navigation";
@@ -100,9 +98,8 @@ export default function KambazLayout({
     kind: "content",
     bullets: [
       "Calendar and Inbox have no `page.tsx` yet — they 404",
-      "`app/not-found.tsx` is a reserved App Router filename, like `page.tsx` and `layout.tsx`",
+      "`app/not-found.tsx` is a reserved App Router filename",
       "Id `wd-not-found`. Link `wd-not-found-dashboard-link` back to `/dashboard`",
-      "Keep the markup simple. Fancy `className` values can wait for Chapter 2",
     ],
     code: `import Link from "next/link";
 

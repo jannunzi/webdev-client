@@ -17,8 +17,7 @@ export const KAMBAZ_OVERVIEW_SLIDES: LectureSlide[] = [
     bullets: [
       "**Kambaz** is inspired by a popular online learning management system",
       "Chapter 1 builds **plain HTML structure**. CSS is Chapter 2 / A2",
-      "Do all Kambaz work under `app/(kambaz)` — App Router folders plus `page.tsx`",
-      "The book’s §1.4.9 checklist is coverage, not a substitute for building as you read",
+      "Do all Kambaz work under `app/(kambaz)` — folders plus `page.tsx`",
     ],
   },
   {
@@ -27,9 +26,8 @@ export const KAMBAZ_OVERVIEW_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "Parentheses make a **route group**. The name does **not** appear in the URL",
-      "`app/(kambaz)/dashboard/page.tsx` is still `/dashboard`, not `/(kambaz)/dashboard`",
+      "`app/(kambaz)/dashboard/page.tsx` is still `/dashboard`",
       "The group is for organization and a shared layout",
-      "Same App Router rule as Labs: a folder with `page.tsx` is a route",
     ],
     code: `app/(kambaz)/page.tsx                 →  /
 app/(kambaz)/dashboard/page.tsx       →  /dashboard
@@ -42,9 +40,8 @@ app/(kambaz)/account/signin/page.tsx  →  /account/signin`,
     kind: "demo",
     embed: "kambaz-landing",
     bullets: [
-      "A **landing page** is the screen for `/`. In the App Router that is a `page.tsx` at the root",
-      "Put it inside the group: `app/(kambaz)/page.tsx` — not a leftover `app/page.tsx` beside it",
-      "If two `page.tsx` files both claim `/`, Next.js errors. Keep one",
+      "A **landing page** is the screen for `/`",
+      "Put it inside the group: `app/(kambaz)/page.tsx` — not a leftover `app/page.tsx`",
       "Wrapper id: `wd-kambaz`",
     ],
     code: `export default function Kambaz() {
@@ -63,9 +60,8 @@ app/(kambaz)/account/signin/page.tsx  →  /account/signin`,
     kind: "content",
     bullets: [
       "Add a Kambaz `Link` in `app/labs/TOC.tsx` **and** the Labs index",
-      "`href=\"/\"` — the group owns `/`, so the link is the site root",
+      "`href=\"/\"` — the group owns `/`",
       "Id `wd-kambaz-link` is what graders look for",
-      "`import Link from \"next/link\"` — same as the single-page navigation deck",
     ],
     code: `<li>
   <Link href="/" id="wd-kambaz-link">
@@ -82,9 +78,8 @@ app/(kambaz)/account/signin/page.tsx  →  /account/signin`,
     kind: "content",
     bullets: [
       "After the heading works, Sign in becomes the default entry",
-      "`redirect` from `next/navigation` runs when the route renders — the user does not click",
+      "`redirect` from `next/navigation` runs when the route **renders**",
       "Replace the landing `h1` with a redirect to `/account/signin`",
-      "`/account` will do the same in the next deck",
     ],
     code: `import { redirect } from "next/navigation";
 
@@ -101,8 +96,7 @@ export default function Kambaz() {
     kind: "content",
     bullets: [
       "These screens use browser-default HTML: inputs, `Link`s, a `<table>` for chrome",
-      "Keep the given `id` and `className` values (`wd-*`) so graders and later chapters can find them",
-      "`className` in JSX is HTML `class`. `htmlFor` is HTML `for`",
+      "Keep the given `id` and `className` values (`wd-*`) so graders can find them",
       "Chapter 2 / Lab 2 add Tailwind. Do not invent a new layout language this week",
     ],
   },

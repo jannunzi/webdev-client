@@ -1173,11 +1173,11 @@ describe("lecture decks", () => {
     assert.equal(counts["single-page-navigation"], 14);
     assert.equal(counts["kambaz-overview"], 8);
     assert.equal(counts["kambaz-account"], 9);
-    assert.equal(counts["kambaz-dashboard"], 7);
+    assert.equal(counts["kambaz-dashboard"], 6);
     assert.equal(counts["kambaz-navigation"], 6);
-    assert.equal(counts["kambaz-courses"], 7);
-    assert.equal(counts["kambaz-modules"], 8);
-    assert.equal(counts["kambaz-assignments"], 9);
+    assert.equal(counts["kambaz-courses"], 6);
+    assert.equal(counts["kambaz-modules"], 7);
+    assert.equal(counts["kambaz-assignments"], 8);
     assert.equal(counts["css-intro"], 12);
     assert.equal(counts["css-colors"], 9);
     assert.equal(counts["css-box-model"], 10);

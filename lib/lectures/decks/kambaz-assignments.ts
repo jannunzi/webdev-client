@@ -6,32 +6,52 @@ export const KAMBAZ_ASSIGNMENTS_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Chapter 1 · Kambaz Assignments",
+      "KAMBAZ ASSIGNMENTS",
       "List + editor — on your own, match the ids",
     ],
   },
   {
     id: "on-your-own",
-    title: "On your own — match the book",
+    title: "Creating the Assignments Screen",
     kind: "content",
     bullets: [
-      "From the Dashboard, open a course, then Assignments in Course Navigation",
-      "No line-by-line walkthrough. Match the plain HTML LiveDemo in §1.4.7–1.4.8",
-      "Keep the given `id` and `className` values so graders can find them",
-      "Styling is Chapter 2. Exact due dates may differ",
+      "Lists assignments students must complete throughout a course",
+      "From the Dashboard, open a course, then **Assignments** in Course Navigation",
+      "Grouped as ASSIGNMENTS, QUIZZES, EXAMS, and PROJECT",
+      "No line-by-line walkthrough. Match the LiveDemo and `wd-*` ids",
     ],
   },
   {
     id: "list-screen",
-    title: "Assignments list + search",
+    title: "Create Assignments Screen",
     kind: "demo",
     embed: "kambaz-assignments",
     bullets: [
-      "Route: `app/(kambaz)/courses/[cid]/assignments/page.tsx`",
-      "Search: `id=\"wd-search-assignment\"`, placeholder `Search for Assignments`",
-      "Buttons: `+ Group` (`wd-add-assignment-group`) and `+ Assignment` (`wd-add-assignment`)",
-      "Heading `wd-assignments-title` — text like `ASSIGNMENTS 40% of Total`",
+      "`app/(kambaz)/courses/[cid]/assignments/page.tsx`",
+      "Search: `id=\"wd-search-assignment\"`",
+      "Buttons: `+ Group` and `+ Assignment`",
+      "Heading `wd-assignments-title` — `ASSIGNMENTS 40% of Total`",
     ],
+    code: `export default function Assignments() {
+  return (
+    <div id="wd-assignments">
+      <input placeholder="Search for Assignments"
+             id="wd-search-assignment" />
+      <button id="wd-add-assignment-group">+ Group</button>
+      <button id="wd-add-assignment">+ Assignment</button>
+      <h3 id="wd-assignments-title">
+        ASSIGNMENTS 40% of Total <button>+</button>
+      </h3>
+      <ul id="wd-assignment-list">
+        <li className="wd-assignment-list-item">
+          {/* Link title with wd-assignment-link */}
+        </li>
+      </ul>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/assignments/page.tsx",
   },
   {
     id: "assignment-item",
@@ -39,9 +59,8 @@ export const KAMBAZ_ASSIGNMENTS_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "List id `wd-assignment-list` with **at least three** rows",
-      "A1 ENV + HTML, A2 CSS + TAILWIND, A3 JS + REACT are fine examples",
-      "Each row: `wd-assignment-list-item`, title `Link` with `wd-assignment-link`",
-      "Href: `` `/courses/${cid}/assignments/${aid}` `` — `Link` from `next/link`, not `<a>`",
+      "A1 ENV + HTML, A2 CSS + TAILWIND, A3 JS + REACT",
+      "`Link` from `next/link` — not `<a>` — class `wd-assignment-link`",
     ],
     code: `import Link from "next/link";
 
@@ -66,44 +85,14 @@ export default function AssignmentItem({
     codeFile: "app/(kambaz)/courses/[cid]/assignments/AssignmentItem.tsx",
   },
   {
-    id: "await-params",
-    title: "Page awaits cid from params",
-    kind: "content",
-    bullets: [
-      "Same `async` / `await params` shape as the courses layout",
-      "Copy for now; Chapter 3 explains it",
-      "Wrapper id `wd-assignments`",
-    ],
-    code: `import AssignmentItem from "./AssignmentItem";
-
-export default async function Assignments({
-  params,
-}: {
-  params: Promise<{ cid: string }>;
-}) {
-  const { cid } = await params;
-  return (
-    <div id="wd-assignments">
-      {/* search, + Group, + Assignment, h3 wd-assignments-title */}
-      <ul id="wd-assignment-list">
-        {/* at least three AssignmentItems using cid */}
-      </ul>
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/courses/[cid]/assignments/page.tsx",
-  },
-  {
     id: "editor",
-    title: "Assignment Editor at [aid]",
+    title: "Create Assignment Editor Screen",
     kind: "demo",
     embed: "kambaz-assignment-editor",
     bullets: [
       "`app/(kambaz)/courses/[cid]/assignments/[aid]/page.tsx`",
       "Wrapper `wd-assignments-editor`. Use **`defaultValue`**, not `value`",
-      "Start from name (`wd-name`), description (`wd-description`), points (`wd-points`)",
-      "Every assignment can show the same editor content this week",
+      "Start from name (`wd-name`), description, points (`wd-points`)",
     ],
     code: `export default function AssignmentEditor() {
   return (
@@ -115,8 +104,17 @@ export default async function Assignments({
         The assignment is available online Submit a link to the landing page of
       </textarea>
       <br />
-      <label htmlFor="wd-points">Points</label>
-      <input id="wd-points" defaultValue={100} />
+      <table>
+        <tr>
+          <td align="right" valign="top">
+            <label htmlFor="wd-points">Points</label>
+          </td>
+          <td>
+            <input id="wd-points" defaultValue={100} />
+          </td>
+        </tr>
+        {/* Complete on your own */}
+      </table>
     </div>
   );
 }`,
@@ -130,9 +128,9 @@ export default async function Assignments({
     bullets: [
       "Group `wd-group` — ASSIGNMENTS, QUIZZES, EXAMS, PROJECT",
       "`wd-display-grade-as`, `wd-submission-type`",
-      "Checkboxes: `wd-text-entry`, `wd-website-url`, `wd-media-recordings`, `wd-student-annotation`, `wd-file-upload`",
+      "Checkboxes: `wd-text-entry`, `wd-website-url`, `wd-media-recordings`",
       "Assign: `wd-assign-to`, `wd-due-date`, `wd-available-from`, `wd-available-until`",
-      "Cancel `wd-cancel` and Save `wd-save` — `Link`s back to the assignments list",
+      "Cancel `wd-cancel` and Save `wd-save` — `Link`s back to the list",
     ],
   },
   {
@@ -141,23 +139,35 @@ export default async function Assignments({
     kind: "content",
     bullets: [
       "Same Lab 1 rule: `htmlFor` on the label matches `id` on the control",
-      "Clicking a label next to a text field focuses that field",
-      "Clicking a label next to a checkbox toggles the checkbox",
-      "Clicking a label above a date input focuses the date field",
+      "Clicking a label next to a text field **focuses** that field",
+      "Clicking a label next to a checkbox **toggles** the checkbox",
     ],
   },
   {
-    id: "checklist",
-    title: "A1 Kambaz coverage",
+    id: "await-params",
+    title: "Page awaits cid from params",
     kind: "content",
     bullets: [
-      "Landing + Labs `wd-kambaz-link`; `/` and `/account` redirect to Sign in",
-      "Account screens + layout; Dashboard `CourseCard`s → `/courses/[cid]/home`",
-      "Kambaz nav + `not-found`; Course nav + placeholders",
-      "Modules nested lists; Home = Modules + Status; Assignments + editor",
-      "The written list is book §1.4.9",
+      "Same `async` / `await params` shape as the courses layout",
+      "Use `cid` so each `AssignmentItem` links to the right course",
     ],
-    interactiveHint:
-      "Open /account/signin, sign in to /dashboard, then a course Home. That is the A1 path.",
+    code: `import AssignmentItem from "./AssignmentItem";
+
+export default async function Assignments({
+  params,
+}: {
+  params: Promise<{ cid: string }>;
+}) {
+  const { cid } = await params;
+  return (
+    <div id="wd-assignments">
+      <ul id="wd-assignment-list">
+        {/* at least three AssignmentItems using cid */}
+      </ul>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/assignments/page.tsx",
   },
 ];

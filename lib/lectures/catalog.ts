@@ -232,7 +232,7 @@ const LECTURE_SUMMARIES: Record<
   "deploying-to-vercel": {
     title: "Deploying to Vercel",
     summary:
-      "Connect GitHub to Vercel, deploy the Next.js app, share the URL, and turn off Vercel Authentication so TAs can open it.",
+      "Create a Vercel account, import the GitHub repo, deploy, share the URL, and turn off Vercel Authentication.",
     chapter: 1,
     topicId: "deploy",
     bookSectionId: "sec-1-6",
@@ -312,7 +312,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-account": {
     title: "Kambaz Account",
     summary:
-      "Sign in, Sign up, Profile, Account Navigation, and an account layout that swaps children.",
+      "Sign in, redirects, Profile, Sign up, Account Navigation, and a layout that keeps nav on the left.",
     chapter: 1,
     topicId: "kambaz-html",
     bookSectionId: "sec-1-4-2",
@@ -322,7 +322,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-dashboard": {
     title: "Kambaz Dashboard",
     summary:
-      "CourseCard plus next/image, at least three published courses, and Sign in landing on /dashboard.",
+      "Dashboard course cards with next/image, at least three published courses, and Sign in → /dashboard.",
     chapter: 1,
     topicId: "kambaz-html",
     bookSectionId: "sec-1-4-3",
@@ -342,7 +342,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-courses": {
     title: "Kambaz Courses",
     summary:
-      "Dynamic [cid], Home at /courses/[cid]/home, Course Navigation, and await params in the layout.",
+      "Course screen at /courses/[cid]/home, Course Navigation sidebar, and await params in the layout.",
     chapter: 1,
     topicId: "kambaz-html",
     bookSectionId: "sec-1-4-4",
@@ -352,7 +352,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-modules": {
     title: "Kambaz Modules",
     summary:
-      "Module and Lesson nested lists for Weeks 1–3, then Home as Modules plus Course Status.",
+      "Create the Modules nested list, Course Status sidebar, then Home as Modules plus Status.",
     chapter: 1,
     topicId: "kambaz-html",
     bookSectionId: "sec-1-4-5",
@@ -362,7 +362,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-assignments": {
     title: "Kambaz Assignments",
     summary:
-      "Assignments list, AssignmentItem, and the editor form — on your own, matching wd-* ids.",
+      "Create the Assignments list and Assignment Editor — on your own, matching wd-* ids.",
     chapter: 1,
     topicId: "kambaz-html",
     bookSectionId: "sec-1-4-7",
