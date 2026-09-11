@@ -13,6 +13,8 @@ heading, Lab 1 stub, Link nav, plus Lab 1 HTML previews).
 
 Index thumbnails are authored 16:9 logo cards in `public/lectures/thumbs/`
 (`lectureThumbPath(slug)`). They are not Google Slides `slide-01` rasters.
+Instructor-created draft decks use the shared `draft.svg` placeholder until
+a real thumb is authored.
 Regenerate with `node scripts/write-lecture-thumbs.mjs`. Do not nest these
 assets under `/book`.
 

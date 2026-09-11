@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import {
+  authoredSlideDensity,
+  type BlockSlide,
+} from "@/lib/lectures/blocks";
+import {
   lectureChapterLabel,
-  lectureSlideCodeBlocks,
-  lectureSlideDensity,
   type LectureHubItem,
-  type LectureSlide,
 } from "@/lib/lectures/types";
 import {
   LECTURE_PRESENT_STATE,
@@ -26,24 +27,23 @@ import {
   slidePaneOverflows,
   slidePaneScrollStep,
 } from "@/lib/lectures/slide-pane";
-import LectureCodeBlock from "./LectureCodeBlock";
 import LectureDiagram from "./diagrams/LectureDiagram";
-import LectureEmbed from "./embeds/LectureEmbed";
 import LectureFilmstrip from "./LectureFilmstrip";
 import LectureSlideImage from "./LectureSlideImage";
+import { SlideBlockEditor, SlideBlockView } from "./SlideBlocks";
 import SlideText from "./SlideText";
 
 const NEXT_SLIDE_KEYS = new Set(["ArrowRight", "PageDown", " ", "n", "N"]);
 const PREV_SLIDE_KEYS = new Set(["ArrowLeft", "PageUp", "Backspace", "p", "P"]);
 
-function kindLabel(kind: LectureSlide["kind"]): string {
+function kindLabel(kind: BlockSlide["kind"]): string {
   if (kind === "demo") return "Demo";
   if (kind === "break") return "Break";
   if (kind === "title") return "Title";
   return "Slide";
 }
 
-function kindFrame(kind: LectureSlide["kind"]): string {
+function kindFrame(kind: BlockSlide["kind"]): string {
   if (kind === "demo") {
     return "border-amber-400 bg-amber-50";
   }
@@ -80,19 +80,10 @@ function replaceLocation({
 function titleClasses({
   kind,
 }: {
-  kind: LectureSlide["kind"];
+  kind: BlockSlide["kind"];
 }): string {
   const hero = kind === "title" ? " lecture-slide-title-hero text-white" : "";
   return `lecture-slide-title${hero}`;
-}
-
-function bulletClasses({
-  kind,
-}: {
-  kind: LectureSlide["kind"];
-}): string {
-  const color = kind === "title" ? "text-neutral-100" : "text-neutral-900";
-  return `lecture-slide-bullets ${color}`;
 }
 
 export default function LectureDeckShell({
@@ -101,12 +92,18 @@ export default function LectureDeckShell({
   prevDeck,
   nextDeck,
   chapter,
+  editMode = false,
+  onSlideChange,
+  onRemoveSlide,
 }: {
   deckTitle: string;
-  slides: LectureSlide[];
+  slides: BlockSlide[];
   prevDeck?: LectureHubItem;
   nextDeck?: LectureHubItem;
   chapter?: number;
+  editMode?: boolean;
+  onSlideChange?: (index: number, slide: BlockSlide) => void;
+  onRemoveSlide?: (index: number) => void;
 }) {
   const labelId = useId();
   const stageRef = useRef<HTMLElement>(null);
@@ -120,9 +117,8 @@ export default function LectureDeckShell({
   const last = slides.length - 1;
   const slide = slides[index] ?? slides[0];
   const kind = slide?.kind ?? "content";
-  const density = slide ? lectureSlideDensity(slide) : "spacious";
+  const density = slide ? authoredSlideDensity(slide) : "spacious";
   const chapterNumber = chapter ?? prevDeck?.chapter ?? nextDeck?.chapter;
-  const codeBlocks = slide ? lectureSlideCodeBlocks(slide) : [];
   const isPresenting = isNativeFullscreen || fallbackPresent;
   fallbackPresentRef.current = fallbackPresent;
   indexRef.current = index;
@@ -277,6 +273,7 @@ export default function LectureDeckShell({
         target instanceof HTMLElement &&
         (target.tagName === "INPUT" ||
           target.tagName === "TEXTAREA" ||
+          target.tagName === "SELECT" ||
           target.isContentEditable)
       ) {
         return;
@@ -403,13 +400,25 @@ export default function LectureDeckShell({
             <p className="m-0 tabular-nums" aria-live="polite">
               {index + 1} / {slides.length}
             </p>
-            <button
-              type="button"
-              className="rounded border border-neutral-800 bg-white px-3 py-1.5 text-sm"
-              onClick={() => togglePresent()}
-            >
-              Present
-            </button>
+            <div className="flex flex-wrap items-center gap-2">
+              {editMode && onRemoveSlide ? (
+                <button
+                  type="button"
+                  className="rounded border border-neutral-400 bg-white px-3 py-1.5 text-sm disabled:opacity-40"
+                  onClick={() => onRemoveSlide(index)}
+                  disabled={slides.length <= 1}
+                >
+                  Remove slide
+                </button>
+              ) : null}
+              <button
+                type="button"
+                className="rounded border border-neutral-800 bg-white px-3 py-1.5 text-sm"
+                onClick={() => togglePresent()}
+              >
+                Present
+              </button>
+            </div>
           </div>
         )}
 
@@ -445,23 +454,27 @@ export default function LectureDeckShell({
           >
             {kindLabel(kind)}
           </p>
-          <h2 className={titleClass}>{slide.title}</h2>
-          {slide.bullets && slide.bullets.length > 0 ? (
-            <ul className={bulletClasses({ kind })}>
-              {slide.bullets.map((bullet, bulletIndex) => (
-                <li key={`${slide.id}-${bulletIndex}`}>
-                  <SlideText text={bullet} density={density} />
-                </li>
-              ))}
-            </ul>
-          ) : null}
-          {codeBlocks.map((block, blockIndex) => (
-            <LectureCodeBlock
-              key={`${slide.id}-code-${blockIndex}`}
-              block={block}
+          {editMode && onSlideChange ? (
+            <input
+              className={`${titleClass} w-full border-0 bg-transparent outline-none`}
+              value={slide.title}
+              onChange={(event) =>
+                onSlideChange(index, { ...slide, title: event.target.value })
+              }
+              aria-label="Slide title"
             />
-          ))}
-          {slide.embed ? <LectureEmbed id={slide.embed} /> : null}
+          ) : (
+            <h2 className={titleClass}>{slide.title}</h2>
+          )}
+          {editMode && onSlideChange ? (
+            <SlideBlockEditor
+              slide={slide}
+              density={density}
+              onChange={(next) => onSlideChange(index, next)}
+            />
+          ) : (
+            <SlideBlockView slide={slide} density={density} />
+          )}
           {slide.diagram ? <LectureDiagram id={slide.diagram} /> : null}
           {slide.imageSrc ? (
             <LectureSlideImage

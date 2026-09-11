@@ -724,6 +724,7 @@ export type LectureHubItem = {
 };
 
 export type LectureDeck = LectureHubItem & {
+  /** Legacy `LectureSlide` or block-model slides (`lib/lectures/blocks.ts`). */
   slides: LectureSlide[];
 };
 
@@ -782,15 +783,61 @@ export function lectureThumbPath(slug: LectureSlug): string {
   return `/lectures/thumbs/${slug}.svg`;
 }
 
+type SlideDensityInput = Pick<
+  LectureSlide,
+  "density" | "diagram" | "embed" | "imageSrc"
+> & {
+  id?: string;
+  title?: string;
+  blocks?: { type: string }[];
+};
+
 export function lectureSlideDensity(
-  slide: LectureSlide,
+  slide: SlideDensityInput,
 ): LectureSlideDensity {
   if (slide.density) return slide.density;
   if (slide.diagram || slide.embed || slide.imageSrc) return "dense";
+  if (slide.blocks?.some((block) => block.type === "component")) return "dense";
   return "spacious";
 }
 
-export function lectureSlideCodeBlocks(slide: LectureSlide): LectureCodeBlock[] {
+type SlideCodeInput = Pick<
+  LectureSlide,
+  | "code"
+  | "codeLanguage"
+  | "codeFile"
+  | "codeHighlightLines"
+  | "codeAddedLines"
+  | "codeBlocks"
+> & {
+  blocks?: Array<{
+    type: string;
+    code?: string;
+    language?: string;
+    file?: string;
+    highlightLines?: CodeLineMarks;
+    addedLines?: CodeLineMarks;
+    html?: string;
+  }>;
+};
+
+export function lectureSlideCodeBlocks(slide: SlideCodeInput): LectureCodeBlock[] {
+  if (slide.blocks) {
+    return slide.blocks.flatMap((block) =>
+      block.type === "code" && typeof block.code === "string"
+        ? [
+            {
+              code: block.code,
+              language: block.language,
+              file: block.file,
+              highlightLines: block.highlightLines,
+              addedLines: block.addedLines,
+              html: block.html,
+            },
+          ]
+        : [],
+    );
+  }
   const blocks: LectureCodeBlock[] = [];
   if (slide.code) {
     blocks.push({

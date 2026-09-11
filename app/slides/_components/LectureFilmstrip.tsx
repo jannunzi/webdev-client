@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import type { LectureSlide } from "@/lib/lectures/types";
-
 export default function LectureFilmstrip({
   slides,
   currentIndex,
   onSelect,
 }: {
-  slides: LectureSlide[];
+  slides: Array<{ id: string; title: string; imageSrc?: string }>;
   currentIndex: number;
   onSelect: (index: number) => void;
 }) {

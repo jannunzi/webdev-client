@@ -160,6 +160,53 @@ export {
 } from "./types";
 export { slidePaneOverflows, slidePaneScrollStep } from "./slide-pane";
 export {
+  authoredSlideBullets,
+  authoredSlideCodeBlocks,
+  authoredSlideDensity,
+  authoredSlideDiagram,
+  authoredSlideEmbed,
+  authoredSlideTextParts,
+  createBlockSlide,
+  createBulletsBlock,
+  createCodeBlock,
+  createComponentBlock,
+  createStarterDeckSlides,
+  deckUsesBlockModel,
+  isBlockSlide,
+  moveItem,
+  toBlockSlide,
+  toBlockSlides,
+} from "./blocks";
+export type {
+  AuthoredSlide,
+  BlockFontSize,
+  BlockFrameSize,
+  BlockSlide,
+  BulletsBlock,
+  CodeContentBlock,
+  ComponentBlock,
+  SlideBlock,
+} from "./blocks";
+export {
+  isSlideComponentId,
+  listSlideComponentOptions,
+  SLIDE_COMPONENT_IDS,
+} from "./component-registry";
+export type { SlideComponentId } from "./component-registry";
+export {
+  applySlugOrder,
+  HUB_DRAFT_THUMB,
+  HUB_DRAFT_TOPIC_ID,
+  HUB_DRAFT_TOPIC_TITLE,
+  parseDeckDraft,
+  readDeckDraft,
+  readHubDraft,
+  slugifyDeckTitle,
+  uniqueDraftSlug,
+} from "./draft-storage";
+export { applyHubOverlay, flattenHubDecks } from "./hub-overlay";
+export { htmlToSlideText, lectureEditHref, lectureSearchIsEdit, slideTextToHtml } from "./slide-markup";
+export {
   LECTURE_PRESENT_STATE,
   SWIPE_MIN_PX,
   isLecturePresentHistoryState,

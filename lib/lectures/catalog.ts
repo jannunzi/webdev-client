@@ -110,6 +110,7 @@ import { CHATGPT_UI_SLIDES } from "./decks/chatgpt-ui";
 import { GROK_API_SLIDES } from "./decks/grok-api";
 import { GROK_CHAT_SLIDES } from "./decks/grok-chat";
 import { GROK_IMAGES_SLIDES } from "./decks/grok-images";
+import type { AuthoredSlide } from "./blocks";
 import {
   BOOK_CHAPTERS,
   LECTURE_SLUGS,
@@ -120,7 +121,6 @@ import {
   type LectureDeck,
   type LectureHubItem,
   type LectureNavChapter,
-  type LectureSlide,
   type LectureSlug,
   type LectureTopicGroup,
   type LectureTopicId,
@@ -186,7 +186,7 @@ const LECTURE_SUMMARIES: Record<
     topicId?: LectureTopicId;
     bookSectionId?: string;
     canvasLecture: number;
-    slides: LectureSlide[];
+    slides: AuthoredSlide[];
   }
 > = {
   "intro-to-web-development": {
@@ -1335,7 +1335,7 @@ export function getLectureDeck(slug: string): LectureDeck | undefined {
   if (!item) return undefined;
   return {
     ...item,
-    slides: LECTURE_SUMMARIES[item.slug].slides,
+    slides: LECTURE_SUMMARIES[item.slug].slides as LectureDeck["slides"],
   };
 }
 
