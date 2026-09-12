@@ -3,6 +3,14 @@ import type { CourseSection } from "./types";
 
 export const SECTION_STORAGE_KEY = "syllabus-section-id";
 
+/** Student-facing correction when Banner/Canvas shows TR or a multi-day pattern. */
+export const CS5610_02_BANNER_MEETING_NOTE =
+  "Banner/Canvas may show BOS-1-TR or a multi-day pattern, but this section meets once weekly on Mondays only, 6:00–9:00pm ET, Shillman Hall 105 (first class Monday September 14, 2026).";
+
+export function isBannerMeetingLabelNote(note: string): boolean {
+  return /Banner\/Canvas/i.test(note) && /BOS-1-TR/i.test(note);
+}
+
 /**
  * Official Fall 2026 sections. Every section meets once per week.
  * Meeting days and clock times are locked. Fill rooms / Zoom only when posted.
@@ -43,6 +51,7 @@ export const sections: CourseSection[] = [
     tabLabel: "CS 5610-02 · In person",
     notes: [
       "Graduate, in person, Boston. Meets once a week on Mondays, 6:00–9:00pm ET, starting September 14, 2026.",
+      CS5610_02_BANNER_MEETING_NOTE,
     ],
   },
   {
