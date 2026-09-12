@@ -31,6 +31,8 @@ export default function BookHome() {
         {" · "}
         <Link href="/assignments">Assignments</Link>
         {" · "}
+        <Link href="/blog">Blog</Link>
+        {" · "}
         <Link href="/slides">Slides</Link>
         {" · "}
         <Link href="/office-hours">Office Hours</Link>

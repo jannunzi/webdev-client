@@ -18,6 +18,8 @@ export default function AssignmentHubNav({
       {" · "}
       <Link href="/book">Course book</Link>
       {" · "}
+      <Link href="/blog">Blog</Link>
+      {" · "}
       <Link href="/slides">Slides</Link>
       {" · "}
       <Link href="/quizzes/take">Graded quizzes</Link>

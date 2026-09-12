@@ -24,6 +24,8 @@ export default function StatusPanel({
       <p className="mb-0 mt-3 text-sm">
         <Link href="/book">Course book</Link>
         {" · "}
+        <Link href="/blog">Blog</Link>
+        {" · "}
         <Link href="/assignments">Assignments</Link>
         {" · "}
         <Link href="/slides">Slides</Link>

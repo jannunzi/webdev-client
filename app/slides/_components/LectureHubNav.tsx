@@ -21,6 +21,8 @@ export default function LectureHubNav({
       <Link href="/syllabus">Syllabus</Link>
       {" · "}
       <Link href="/book">Course book</Link>
+      {" · "}
+      <Link href="/blog">Blog</Link>
       {chapters.map((chapter) => (
         <span key={chapter.chapter}>
           {" · "}
