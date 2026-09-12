@@ -8,6 +8,7 @@ import {
   amazonImageUrl,
   amazonProductUrl,
   chapterFromPathname,
+  isUsableAmazonCover,
   productAtIndex,
   productsForChapter,
 } from "../affiliate/catalog";
@@ -102,6 +103,12 @@ export default function BookAffiliateBanner() {
                 height={72}
                 className="h-[4.5rem] w-12 rounded border border-neutral-200 bg-neutral-50 object-cover"
                 onError={() => setImageFailed(true)}
+                onLoad={(event) => {
+                  const img = event.currentTarget;
+                  if (!isUsableAmazonCover(img.naturalWidth, img.naturalHeight)) {
+                    setImageFailed(true);
+                  }
+                }}
               />
             )}
           </a>

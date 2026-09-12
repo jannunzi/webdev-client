@@ -6,8 +6,10 @@ import {
   DEFAULT_ASSOCIATE_TAG,
   FALLBACK_BESTSELLERS,
   amazonAssociateTag,
+  amazonImageUrl,
   amazonProductUrl,
   chapterFromPathname,
+  isUsableAmazonCover,
   isBookChapterPath,
   productAtIndex,
   productsForChapter,
@@ -120,6 +122,11 @@ describe("Amazon associate links", () => {
       amazonProductUrl(AFFILIATE_BOOKS.mongoGuide.asin),
       `https://www.amazon.com/dp/${AFFILIATE_BOOKS.mongoGuide.asin}?tag=${DEFAULT_ASSOCIATE_TAG}`,
     );
+    const cover = amazonImageUrl("1492051721", "jannunzi04-20");
+    assert.match(cover, /ASIN=1492051721/);
+    assert.match(cover, /tag=jannunzi04-20/);
+    assert.equal(isUsableAmazonCover(1, 1), false);
+    assert.equal(isUsableAmazonCover(160, 240), true);
   });
 
   it("tags every curated bestseller with the default associate id", () => {

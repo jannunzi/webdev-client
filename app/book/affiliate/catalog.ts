@@ -131,8 +131,26 @@ export function amazonProductUrl(
   return `https://www.amazon.com/dp/${asin}?tag=${encodeURIComponent(tag)}`;
 }
 
-export function amazonImageUrl(asin: string): string {
-  return `https://images-na.ssl-images-amazon.com/images/P/${asin}.01._SX160_SCLZZZZZZZ_.jpg`;
+export function amazonImageUrl(
+  asin: string,
+  tag: string = amazonAssociateTag(),
+): string {
+  const params = new URLSearchParams({
+    _encoding: "UTF8",
+    ASIN: asin,
+    Format: "_SL160_",
+    ID: "AsinImage",
+    MarketPlace: "US",
+    ServiceVersion: "20070822",
+    WS: "1",
+    tag,
+  });
+  return `https://ws-na.amazon-adsystem.com/widgets/q?${params.toString()}`;
+}
+
+/** Amazon often serves a 1×1 spacer instead of a 404 for unknown covers. */
+export function isUsableAmazonCover(width: number, height: number): boolean {
+  return width >= 40 && height >= 40;
 }
 
 export function chapterFromPathname(pathname: string): number | null {
