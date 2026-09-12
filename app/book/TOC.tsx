@@ -1047,6 +1047,15 @@ function TocPanel({
           </li>
           <li>
             <Link
+              href="/blog"
+              onClick={onNavigate}
+              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
+            >
+              Blog
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/slides"
               onClick={onNavigate}
               className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"

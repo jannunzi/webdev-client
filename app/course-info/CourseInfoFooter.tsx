@@ -4,6 +4,7 @@ export const COURSE_INFO_LINKS = [
   { href: "/syllabus", label: "Syllabus" },
   { href: "/calendar", label: "Calendar" },
   { href: "/book", label: "Book" },
+  { href: "/blog", label: "Blog" },
   { href: "/slides", label: "Slides" },
   { href: "/assignments", label: "Assignments" },
   { href: "/quizzes/take", label: "Quizzes" },

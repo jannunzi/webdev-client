@@ -25,6 +25,8 @@ export default function TakeQuizIndexPage() {
         </StaffOnly>
         <Link href="/book">Course book</Link>
         {" · "}
+        <Link href="/blog">Blog</Link>
+        {" · "}
         <Link href="/assignments">Assignments</Link>
         {" · "}
         <Link href="/slides">Slides</Link>
