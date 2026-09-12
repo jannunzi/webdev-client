@@ -1,5 +1,12 @@
 export { course, semester } from "./course";
-export { sections, defaultSectionId, findSection, SECTION_STORAGE_KEY } from "./sections";
+export {
+  sections,
+  defaultSectionId,
+  findSection,
+  SECTION_STORAGE_KEY,
+  CS5610_02_BANNER_MEETING_NOTE,
+  isBannerMeetingLabelNote,
+} from "./sections";
 export { holidayMeetingNote, holidays, thanksgivingBlackout } from "./holidays";
 export {
   academicCalendarEvents,
