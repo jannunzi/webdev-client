@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import BookTOC from "./TOC";
+import BookAffiliateBanner from "./components/BookAffiliateBanner";
 import "./book.css";
 import { AccountProvider } from "@/app/(kambaz)/account/AccountContext";
 
@@ -13,6 +14,7 @@ export default function BookLayout({
         <main className="min-w-0 w-full flex-1 overflow-x-auto px-4 py-6 md:p-6">
           {children}
         </main>
+        <BookAffiliateBanner />
       </div>
     </AccountProvider>
   );
