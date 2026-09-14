@@ -56,9 +56,7 @@ export async function lookupCanvasRoster(input: {
       mongoCount,
     });
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "canvas roster lookup failed";
-    console.error("canvas roster lookup failed", message);
+    console.error("canvas roster lookup failed", error);
     return { status: "not_configured" };
   }
 }

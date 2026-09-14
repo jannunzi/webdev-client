@@ -119,11 +119,7 @@ export default async function AssignmentDetailPage({
               impersonating,
             });
           } catch (error) {
-            const message =
-              error instanceof Error
-                ? error.message
-                : "Could not look up the course roster.";
-            console.error("assignment roster lookup failed", message);
+            console.error("assignment roster lookup failed", error);
             mongoReady = false;
           }
         }
@@ -151,11 +147,7 @@ export default async function AssignmentDetailPage({
               assignment.id,
             );
           } catch (error) {
-            const message =
-              error instanceof Error
-                ? error.message
-                : "Could not load progress.";
-            console.error("assignment progress load failed", message);
+            console.error("assignment progress load failed", error);
             mongoReady = false;
           }
         }
@@ -170,11 +162,7 @@ export default async function AssignmentDetailPage({
             const doc = await readAssignmentSubmission(userId, assignment.id);
             initialSubmission = doc ? toSubmissionView(doc) : null;
           } catch (error) {
-            const message =
-              error instanceof Error
-                ? error.message
-                : "Could not load submission.";
-            console.error("assignment submission load failed", message);
+            console.error("assignment submission load failed", error);
           }
         }
 
@@ -222,19 +210,11 @@ export default async function AssignmentDetailPage({
               }
             }
           } catch (error) {
-            const message =
-              error instanceof Error
-                ? error.message
-                : "Could not load staff submissions.";
-            console.error("assignment staff queue load failed", message);
+            console.error("assignment staff queue load failed", error);
           }
         }
       } catch (error) {
-        const message =
-          error instanceof Error
-            ? error.message
-            : "Could not load the assignment page.";
-        console.error("assignment detail load failed", message);
+        console.error("assignment detail load failed", error);
         mongoReady = false;
         canSubmit = false;
         if (gateReason === null) gateReason = "not_configured";
