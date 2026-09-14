@@ -86,7 +86,7 @@ export function lecturePresentHref({
   return `${url.pathname}${url.search}${url.hash}`;
 }
 
-/** Next-deck URL. Carry `fullscreen=1` when already presenting. */
+/** Next-deck path. Carry `?fullscreen=1` when already presenting. */
 export function lectureDeckHref({
   slug,
   slideNumber = 1,
@@ -96,11 +96,8 @@ export function lectureDeckHref({
   slideNumber?: number;
   present?: boolean;
 }): string {
-  return lecturePresentHref({
-    href: `https://webdev.local/slides/${slug}`,
-    slideNumber,
-    present,
-  });
+  const search = present ? "?fullscreen=1" : "";
+  return `/slides/${slug}${search}#slide-${slideNumber}`;
 }
 
 /**

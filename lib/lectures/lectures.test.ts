@@ -2650,6 +2650,11 @@ describe("lecture decks", () => {
     const css = readFileSync(join(process.cwd(), "app/book/book.css"), "utf8");
     assert.match(css, /\.lecture-slide-continue-link/);
     assert.match(css, /\.lecture-slide-continue-link-hero/);
+    const presentMode = readFileSync(
+      join(process.cwd(), "lib/lectures/present-mode.ts"),
+      "utf8",
+    );
+    assert.doesNotMatch(presentMode, /webdev\.local/);
   });
 
   it("turns horizontal swipes into slide steps and ignores vertical pans", () => {
