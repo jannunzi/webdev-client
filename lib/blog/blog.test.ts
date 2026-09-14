@@ -19,11 +19,25 @@ import {
 } from "./index.ts";
 import { BLOG_POSTS } from "./posts.ts";
 
-const REQUIRED_SOURCES = [
+const REQUIRED_SEED_SOURCES = [
   "https://nextjs.org/blog/next-16-3",
   "https://nextjs.org/blog/next-16-3-ai-improvements",
   "https://nextjs.org/blog/august-2026-security-release",
 ] as const;
+
+const REQUIRED_CATCHUP_SOURCES = [
+  "https://react.dev/blog/2026/09/09/react-19-3",
+  "https://vercel.com/blog/ai-sdk-7",
+  "https://www.isyncevolution.com/blog/nextjs-security-best-practices",
+] as const;
+
+const REQUIRED_SOURCES = [
+  ...REQUIRED_SEED_SOURCES,
+  ...REQUIRED_CATCHUP_SOURCES,
+] as const;
+
+const ALLOWED_SOURCE_URL =
+  /^https:\/\/(nextjs\.org\/blog\/|react\.dev\/blog\/|vercel\.com\/blog\/|www\.isyncevolution\.com\/blog\/)/;
 
 const BLOG_APP = join(process.cwd(), "app/blog");
 const KAMBAZ_APP = join(process.cwd(), "app/(kambaz)");
@@ -43,10 +57,17 @@ function walkTsx(dir: string): string[] {
 }
 
 describe("blog posts", () => {
-  it("seeds exactly three posts with required source URLs and no empty sources", () => {
-    assert.equal(BLOG_POSTS.length, 3);
-    const urls = BLOG_POSTS.map((post) => post.source.url).sort();
-    assert.deepEqual(urls, [...REQUIRED_SOURCES].sort());
+  it("keeps required seed and catch-up source URLs with no empty sources", () => {
+    assert.equal(BLOG_POSTS.length, REQUIRED_SOURCES.length);
+    const urls = BLOG_POSTS.map((post) => post.source.url);
+    assert.equal(new Set(urls).size, urls.length, "source URLs must be unique");
+    assert.deepEqual([...urls].sort(), [...REQUIRED_SOURCES].sort());
+    for (const required of REQUIRED_SEED_SOURCES) {
+      assert.ok(urls.includes(required), required);
+    }
+    for (const required of REQUIRED_CATCHUP_SOURCES) {
+      assert.ok(urls.includes(required), required);
+    }
 
     for (const post of BLOG_POSTS) {
       assert.ok(post.slug.length > 0, "slug");
@@ -59,31 +80,40 @@ describe("blog posts", () => {
       }
       assert.ok(post.source.title.trim(), `source.title ${post.slug}`);
       assert.ok(post.source.publisher.trim(), `source.publisher ${post.slug}`);
-      assert.match(post.source.url, /^https:\/\/nextjs\.org\/blog\//);
+      assert.match(post.source.url, ALLOWED_SOURCE_URL);
     }
   });
 
   it("lists newest first and looks up by slug", () => {
     const listed = listBlogPosts();
-    assert.equal(listed.length, 3);
+    assert.equal(listed.length, REQUIRED_SOURCES.length);
     const times = listed.map((post) => Date.parse(post.publishedAt));
     assert.deepEqual(
       times,
       [...times].sort((a, b) => b - a),
     );
-    assert.equal(listed[0]?.slug, "august-2026-nextjs-security-release");
-    assert.equal(listed[1]?.slug, "nextjs-16-3-instant-navigations");
-    assert.equal(listed[2]?.slug, "nextjs-16-3-ai-improvements");
+    assert.deepEqual(
+      listed.slice(0, 3).map((post) => post.source.url).sort(),
+      [...REQUIRED_CATCHUP_SOURCES].sort(),
+    );
+    assert.equal(listed[3]?.slug, "august-2026-nextjs-security-release");
+    assert.equal(listed[4]?.slug, "nextjs-16-3-instant-navigations");
+    assert.equal(listed[5]?.slug, "nextjs-16-3-ai-improvements");
 
-    assert.equal(listBlogSlugs().length, 3);
+    assert.equal(listBlogSlugs().length, REQUIRED_SOURCES.length);
     assert.equal(
       getBlogPost("nextjs-16-3-instant-navigations")?.source.url,
       "https://nextjs.org/blog/next-16-3",
+    );
+    assert.equal(
+      getBlogPost("react-19-3")?.source.url,
+      "https://react.dev/blog/2026/09/09/react-19-3",
     );
     assert.equal(getBlogPost("does-not-exist"), undefined);
   });
 
   it("formats published dates in UTC and maps related chapters", () => {
+    assert.equal(formatBlogDate("2026-09-14T16:00:00.000Z"), "September 14, 2026");
     assert.equal(formatBlogDate("2026-08-25T18:00:00.000Z"), "August 25, 2026");
     assert.equal(formatBlogDate("2026-08-03T17:00:00.000Z"), "August 3, 2026");
     assert.equal(formatBlogDate("2026-06-26T15:00:00.000Z"), "June 26, 2026");
@@ -107,6 +137,36 @@ describe("blog posts", () => {
     const ai = getBlogPost("nextjs-16-3-ai-improvements");
     assert.match(ai?.intro.join(" ") ?? "", /AGENTS\.md/);
     assert.match(ai?.intro.join(" ") ?? "", /next-dev-loop/);
+
+    const react = getBlogPost("react-19-3");
+    assert.match(react?.intro.join(" ") ?? "", /View Transition/);
+    assert.match(react?.intro.join(" ") ?? "", /FragmentInstance/);
+    assert.match(react?.intro.join(" ") ?? "", /use\(browser\(\)\)/);
+    assert.match(react?.intro.join(" ") ?? "", /Trusted Types/);
+    const sdk = getBlogPost("ai-sdk-7-agent-platform");
+    assert.match(sdk?.intro.join(" ") ?? "", /WorkflowAgent/);
+    assert.match(sdk?.intro.join(" ") ?? "", /realtime/);
+    const proxy = getBlogPost("nextjs-security-middleware-proxy");
+    assert.match(proxy?.intro.join(" ") ?? "", /CVE-2025-29927/);
+    assert.match(proxy?.intro.join(" ") ?? "", /proxy\.ts/);
+  });
+
+  it("dates the September 14 catch-up posts in America/New_York", () => {
+    const nyDate = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "America/New_York",
+    });
+    for (const slug of [
+      "react-19-3",
+      "ai-sdk-7-agent-platform",
+      "nextjs-security-middleware-proxy",
+    ]) {
+      const post = getBlogPost(slug);
+      assert.ok(post, slug);
+      assert.equal(nyDate.format(new Date(post.publishedAt)), "September 14, 2026");
+    }
   });
 });
 
