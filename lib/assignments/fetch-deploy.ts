@@ -90,7 +90,10 @@ export async function fetchDeployHtml(url: string): Promise<HtmlFetchResult> {
         finalUrl,
         html,
         code: "http_error",
-        message: `The deployment returned HTTP ${res.status}.`,
+        message:
+          res.status === 404
+            ? ASSIGNMENT_STUDENT_COPY.vercelNotFound
+            : `${ASSIGNMENT_STUDENT_COPY.vercelHttpError} (HTTP ${res.status}).`,
       };
     }
 

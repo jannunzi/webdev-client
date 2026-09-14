@@ -138,7 +138,16 @@ export function submittedUrlOpens(
   const parsed = looksLikeDeployUrl(deployUrl);
   if (!parsed.ok) return null;
   const exact = pages.find((page) => page.url === parsed.href);
-  if (exact) return exact.result;
-  const originHome = pages.find((page) => page.path === "/");
-  return originHome?.result ?? pages[0]?.result ?? null;
+  if (exact?.result.ok) return exact.result;
+
+  const home = pages.find((page) => page.path === "/" && page.result.ok);
+  if (home) return home.result;
+  const labs = pages.find(
+    (page) => page.result.ok && isLabsPath(page.path),
+  );
+  if (labs) return labs.result;
+  const anyOk = pages.find((page) => page.result.ok);
+  if (anyOk) return anyOk.result;
+
+  return exact?.result ?? pages[0]?.result ?? null;
 }

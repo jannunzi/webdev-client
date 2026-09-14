@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { rosterEntriesFromCsv, rosterEntriesFromJson } from "./csv";
-import { matchRoster } from "./match";
+import { matchRoster, rosterEmailMatchFilter } from "./match";
 
 const csv = `Student,ID,SIS User ID,SIS Login ID,Email,Section
 Points Possible,,,,,
@@ -21,6 +21,38 @@ describe("roster matching", () => {
       assert.equal(result.entry.email, "jane.doe@northeastern.edu");
       assert.equal(result.entry.canvasUserId, "12345");
     }
+  });
+
+  it("matches roster emails that still have Canvas casing or padding", () => {
+    const result = matchRoster({
+      emails: ["bhatti.t@northeastern.edu"],
+      mongoEntries: [
+        {
+          email: "  Bhatti.T@northeastern.edu ",
+          section: "CS4550 CRN 11464",
+          sisUserId: "002587545",
+        },
+      ],
+      envEmails: [],
+      mongoCount: 1,
+    });
+    assert.equal(result.status, "matched");
+    if (result.status === "matched") {
+      assert.equal(result.entry.email, "bhatti.t@northeastern.edu");
+    }
+  });
+
+  it("builds a case-insensitive Mongo email filter", () => {
+    const filter = rosterEmailMatchFilter([
+      "  Bhatti.T@northeastern.edu ",
+      "bhatti.t@northeastern.edu",
+    ]);
+    assert.ok(filter);
+    const expr = filter.$expr as {
+      $in: [unknown, string[]];
+    };
+    assert.deepEqual(expr.$in[1], ["bhatti.t@northeastern.edu"]);
+    assert.equal(rosterEmailMatchFilter(["", "   "]), null);
   });
 
   it("matches optional Canvas user ids", () => {

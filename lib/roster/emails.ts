@@ -1,6 +1,7 @@
 import type { ClerkEmailLike, ClerkUserLike } from "./types";
 
-export function normalizeEmail(value: string): string {
+export function normalizeEmail(value: unknown): string {
+  if (typeof value !== "string") return "";
   return value.trim().toLowerCase();
 }
 

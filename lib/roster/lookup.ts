@@ -3,7 +3,7 @@ import "server-only";
 import { isMongoConfigured } from "../config";
 import { getCollection } from "../mongo";
 import { parseRosterEmailsEnv } from "./emails";
-import { matchRoster } from "./match";
+import { matchRoster, rosterEmailMatchFilter } from "./match";
 import type { CanvasRosterEntry, RosterLookupResult } from "./types";
 import { impersonationRosterMatch } from "./view-mode";
 
@@ -26,32 +26,39 @@ export async function lookupCanvasRoster(input: {
     return { status: "not_configured" };
   }
 
-  const envEmails = parseRosterEmailsEnv(process.env.CANVAS_ROSTER_EMAILS);
-  const collection = await getRosterCollection();
+  try {
+    const envEmails = parseRosterEmailsEnv(process.env.CANVAS_ROSTER_EMAILS);
+    const collection = await getRosterCollection();
 
-  const or: Record<string, unknown>[] = [];
-  if (input.emails.length > 0) {
-    or.push({ email: { $in: input.emails } });
+    const or: Record<string, unknown>[] = [];
+    const emailFilter = rosterEmailMatchFilter(input.emails);
+    if (emailFilter) or.push(emailFilter);
+    const canvasUserIds = (input.canvasUserIds ?? [])
+      .map((id) => id.trim())
+      .filter(Boolean);
+    if (canvasUserIds.length > 0) {
+      or.push({ canvasUserId: { $in: canvasUserIds } });
+    }
+
+    const mongoEntries =
+      or.length > 0 ? await collection.find({ $or: or }).toArray() : [];
+
+    let mongoCount = mongoEntries.length;
+    if (mongoCount === 0) {
+      mongoCount = await collection.countDocuments();
+    }
+
+    return matchRoster({
+      emails: input.emails,
+      canvasUserIds: input.canvasUserIds,
+      mongoEntries,
+      envEmails,
+      mongoCount,
+    });
+  } catch (error) {
+    console.error("canvas roster lookup failed", error);
+    return { status: "not_configured" };
   }
-  if (input.canvasUserIds && input.canvasUserIds.length > 0) {
-    or.push({ canvasUserId: { $in: input.canvasUserIds } });
-  }
-
-  const mongoEntries =
-    or.length > 0 ? await collection.find({ $or: or }).toArray() : [];
-
-  let mongoCount = mongoEntries.length;
-  if (mongoCount === 0) {
-    mongoCount = await collection.countDocuments();
-  }
-
-  return matchRoster({
-    emails: input.emails,
-    canvasUserIds: input.canvasUserIds,
-    mongoEntries,
-    envEmails,
-    mongoCount,
-  });
 }
 
 export async function ensureRosterIndexes(): Promise<void> {

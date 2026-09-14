@@ -2,7 +2,10 @@ import {
   A1_RUBRIC_AUTO_SPECS,
   evaluateRubricSpec,
 } from "./a1-rubric";
-import { classifyDeployFetch } from "./fetch-classify";
+import {
+  classifyDeployFetch,
+  deployOpenFailureMessage,
+} from "./fetch-classify";
 import type {
   AssignmentCheckProbes,
   AssignmentCheckResult,
@@ -26,7 +29,7 @@ export {
   htmlHasWdHooks,
 } from "./markers";
 
-export { classifyDeployFetch } from "./fetch-classify";
+export { classifyDeployFetch, deployOpenFailureMessage } from "./fetch-classify";
 
 function check(
   id: string,
@@ -117,11 +120,7 @@ export async function runA1Checks(input: {
       openedOk,
       openedOk
         ? "The deployment responded successfully."
-        : opened && !opened.ok && opened.code === "auth_wall"
-          ? ASSIGNMENT_STUDENT_COPY.vercelAuthWall
-          : opened && !opened.ok && opened.status
-            ? `The deployment returned HTTP ${opened.status}.`
-            : ASSIGNMENT_STUDENT_COPY.vercelUnreachable,
+        : deployOpenFailureMessage(opened),
       { criterionId: "a1-delivery-vercel", groupId: "delivery" },
     ),
   );

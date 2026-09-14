@@ -10,6 +10,9 @@ import {
 describe("roster emails", () => {
   it("normalizes and parses env allowlists", () => {
     assert.equal(normalizeEmail("  A@Edu "), "a@edu");
+    assert.equal(normalizeEmail(undefined), "");
+    assert.equal(normalizeEmail(null), "");
+    assert.equal(normalizeEmail(12), "");
     assert.deepEqual(
       parseRosterEmailsEnv("jane@northeastern.edu, Alex@Northeastern.edu; skip"),
       ["jane@northeastern.edu", "alex@northeastern.edu"],
@@ -35,6 +38,10 @@ describe("roster emails", () => {
           id: "idn_unverified",
           emailAddress: "alias@gmail.com",
           verification: { status: "unverified" },
+        },
+        {
+          id: "idn_empty",
+          emailAddress: undefined as unknown as string,
         },
       ],
     });

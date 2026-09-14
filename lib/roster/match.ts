@@ -1,6 +1,34 @@
 import { normalizeEmail } from "./emails";
 import type { CanvasRosterEntry, RosterLookupResult } from "./types";
 
+/**
+ * Case- and whitespace-insensitive match on `canvas_roster.email`.
+ * Manual Atlas inserts often keep Canvas casing (`Bhatti.T@…`) or padding;
+ * Clerk emails are already normalized before lookup.
+ */
+export function rosterEmailMatchFilter(
+  emails: readonly string[],
+): Record<string, unknown> | null {
+  const normalized = [
+    ...new Set(emails.map((email) => normalizeEmail(email)).filter(Boolean)),
+  ];
+  if (normalized.length === 0) return null;
+  return {
+    $expr: {
+      $in: [
+        {
+          $toLower: {
+            $trim: {
+              input: { $toString: { $ifNull: ["$email", ""] } },
+            },
+          },
+        },
+        normalized,
+      ],
+    },
+  };
+}
+
 export function matchRoster(input: {
   emails: string[];
   canvasUserIds?: string[];

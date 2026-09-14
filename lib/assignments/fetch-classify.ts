@@ -2,6 +2,18 @@ import type { HtmlFetchResult } from "./check-types";
 import { ASSIGNMENT_STUDENT_COPY } from "./student-copy";
 import { htmlLooksLikeVercelAuthWall, isVercelAuthWallUrl } from "./urls";
 
+export function deployOpenFailureMessage(
+  opened: HtmlFetchResult | null,
+): string {
+  if (!opened || opened.ok) return ASSIGNMENT_STUDENT_COPY.vercelUnreachable;
+  if (opened.code === "auth_wall") return ASSIGNMENT_STUDENT_COPY.vercelAuthWall;
+  if (opened.status === 404) return ASSIGNMENT_STUDENT_COPY.vercelNotFound;
+  if (opened.status) {
+    return `${ASSIGNMENT_STUDENT_COPY.vercelHttpError} (HTTP ${opened.status}).`;
+  }
+  return opened.message || ASSIGNMENT_STUDENT_COPY.vercelUnreachable;
+}
+
 export function classifyDeployFetch(result: HtmlFetchResult): HtmlFetchResult {
   if (!result.ok) {
     if (result.code === "auth_wall") return result;
