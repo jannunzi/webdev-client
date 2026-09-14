@@ -111,6 +111,23 @@
   background: #404040;
 }
 
+.book-shell a.lecture-slide-continue-link {
+  color: #fff;
+  text-decoration: none;
+}
+
+.book-shell a.lecture-slide-continue-link:hover {
+  color: #fff;
+}
+
+.book-shell a.lecture-slide-continue-link-hero {
+  color: #171717;
+}
+
+.book-shell a.lecture-slide-continue-link-hero:hover {
+  color: #171717;
+}
+
 .book-shell .sr-only {
   position: absolute;
   width: 1px;
@@ -685,5 +702,47 @@ html.lecture-presenting body {
   font-family: ui-sans-serif, system-ui, sans-serif;
   font-size: 0.8rem;
   line-height: 1.2;
+  color: #171717;
+}
+
+.lecture-slide-continue {
+  margin-top: 1.25rem;
+}
+
+.lecture-slide-continue-link {
+  display: inline-block;
+  border: 2px solid #171717;
+  border-radius: 0.375rem;
+  background: #171717;
+  color: #fff;
+  text-decoration: none;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  padding: 0.7rem 1.35rem;
+  font-size: 1.55rem;
+}
+
+.lecture-slide-spacious .lecture-slide-continue-link {
+  font-size: 1.95rem;
+  padding: 0.85rem 1.6rem;
+}
+
+.lecture-slide-continue-link:hover {
+  background: #404040;
+  border-color: #404040;
+  color: #fff;
+}
+
+.lecture-slide-continue-link-hero {
+  border-color: #fff;
+  background: #fff;
+  color: #171717;
+}
+
+.lecture-slide-continue-link-hero:hover {
+  background: #e5e5e5;
+  border-color: #e5e5e5;
   color: #171717;
 }

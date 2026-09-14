@@ -86,6 +86,48 @@ export function lecturePresentHref({
   return `${url.pathname}${url.search}${url.hash}`;
 }
 
+/** Next-deck path. Carry `?fullscreen=1` when already presenting. */
+export function lectureDeckHref({
+  slug,
+  slideNumber = 1,
+  present = false,
+}: {
+  slug: string;
+  slideNumber?: number;
+  present?: boolean;
+}): string {
+  const search = present ? "?fullscreen=1" : "";
+  return `/slides/${slug}${search}#slide-${slideNumber}`;
+}
+
+/**
+ * End-of-deck “Next” slide: authored `next-up` id, or a last-slide title
+ * like `Next: colors` (not `Next.js …`).
+ */
+export function isLectureNextUpSlide(slide: {
+  id?: string;
+  title?: string;
+}): boolean {
+  if (slide.id === "next-up") return true;
+  const title = slide.title?.trim() ?? "";
+  return /^Next(?:\s*:|\s*$)/i.test(title);
+}
+
+export function lectureShouldShowContinue({
+  slide,
+  index,
+  last,
+  hasNextDeck,
+}: {
+  slide: { id?: string; title?: string };
+  index: number;
+  last: number;
+  hasNextDeck: boolean;
+}): boolean {
+  if (!hasNextDeck) return false;
+  return index === last || isLectureNextUpSlide(slide);
+}
+
 export function isLecturePresentHistoryState(state: unknown): boolean {
   return Boolean(
     state &&

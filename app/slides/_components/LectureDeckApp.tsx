@@ -340,6 +340,7 @@ export default function LectureDeckApp({
         ) : null}
       </header>
       <LectureDeckShell
+        key={slug}
         deckTitle={title}
         slides={slides}
         prevDeck={prevDeck}
