@@ -1,7 +1,6 @@
 import CourseInfoFooter from "@/app/course-info/CourseInfoFooter";
 import CourseInfoHeader from "@/app/course-info/CourseInfoHeader";
-import CourseInfoSection from "@/app/course-info/CourseInfoSection";
-import { StaffOfficeHoursContent } from "@/app/syllabus/components/OfficeHours";
+import OfficeHoursView from "./OfficeHoursView";
 
 export default function OfficeHoursPage() {
   return (
@@ -10,17 +9,13 @@ export default function OfficeHoursPage() {
         title="Staff and office hours"
         lede={
           <p className="mt-4 text-[1.05rem] text-neutral-800">
-            Instructor and teaching-assistant contacts for CS 4550 and CS 5610.
-            Posted Khoury hours are America/New_York (Eastern Time). Phone
-            numbers and Zoom links were not posted — none are listed here.
+            Choose your section. Each view shows only that section’s instructor
+            and TAs. Shared staff appear in every section. Phone numbers and
+            Zoom links were not posted — none are listed here.
           </p>
         }
       />
-
-      <CourseInfoSection id="staff" title="Contacts and hours">
-        <StaffOfficeHoursContent showPageLinks={false} />
-      </CourseInfoSection>
-
+      <OfficeHoursView />
       <CourseInfoFooter current="/office-hours" />
     </article>
   );

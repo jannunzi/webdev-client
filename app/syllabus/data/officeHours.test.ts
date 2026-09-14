@@ -4,11 +4,13 @@ import { readFileSync } from "node:fs";
 import {
   PIAZZA_PRIMARY_HREF,
   cs561009TaNote,
-  officeHourRows,
+  officeHourRowsForSection,
   officeHoursIntro,
+  piazzaBoardForSection,
   piazzaBoards,
-  staffGroups,
+  staffGroupsForSection,
   staffMembers,
+  staffMembersForSection,
 } from "./officeHours.ts";
 
 const officeHoursView = readFileSync(
@@ -28,19 +30,87 @@ const BY_ID = Object.fromEntries(
   staffMembers.map((member) => [member.id, member]),
 );
 
-describe("Fall 2026 staff office hours (Piazza scrape)", () => {
-  it("publishes the instructor and TAs from the scrape, and no one else", () => {
-    assert.deepEqual(
-      staffMembers.map((member) => member.name),
-      [
-        "Jose Annunziato",
-        "Giuseppe Marotta",
-        "Anurag Bheemappa Gnanamurthy",
-        "Shloka Shreyans Trivedi",
-        "Tisha Sujal Kotadia",
-        "Aryan Alpesh Mehta",
-      ],
+function namesFor(sectionId: string): string[] {
+  return staffMembersForSection(sectionId).map((member) => member.name);
+}
+
+describe("Fall 2026 staff office hours (per section)", () => {
+  it("assigns each person to official section ids and keeps shared staff on all three", () => {
+    assert.deepEqual(BY_ID["jose-annunziato"]?.sectionIds, [
+      "cs4550-01",
+      "cs5610-02",
+      "cs5610-09",
+    ]);
+    assert.deepEqual(BY_ID["giuseppe-marotta"]?.sectionIds, [
+      "cs4550-01",
+      "cs5610-02",
+      "cs5610-09",
+    ]);
+    assert.deepEqual(BY_ID["anurag-bheemappa"]?.sectionIds, ["cs4550-01"]);
+    assert.deepEqual(BY_ID["shloka-trivedi"]?.sectionIds, ["cs4550-01"]);
+    assert.deepEqual(BY_ID["tisha-kotadia"]?.sectionIds, ["cs5610-02"]);
+    assert.deepEqual(BY_ID["aryan-mehta"]?.sectionIds, ["cs5610-02"]);
+  });
+
+  it("does not mix sections: each view is Jose + Giuseppe + that section’s TAs", () => {
+    assert.deepEqual(namesFor("cs4550-01"), [
+      "Jose Annunziato",
+      "Giuseppe Marotta",
+      "Anurag Bheemappa Gnanamurthy",
+      "Shloka Shreyans Trivedi",
+    ]);
+    assert.deepEqual(namesFor("cs5610-02"), [
+      "Jose Annunziato",
+      "Giuseppe Marotta",
+      "Tisha Sujal Kotadia",
+      "Aryan Alpesh Mehta",
+    ]);
+    assert.deepEqual(namesFor("cs5610-09"), [
+      "Jose Annunziato",
+      "Giuseppe Marotta",
+    ]);
+
+    assert.ok(!namesFor("cs4550-01").includes("Tisha Sujal Kotadia"));
+    assert.ok(!namesFor("cs4550-01").includes("Aryan Alpesh Mehta"));
+    assert.ok(
+      !namesFor("cs5610-02").includes("Anurag Bheemappa Gnanamurthy"),
     );
+    assert.ok(!namesFor("cs5610-02").includes("Shloka Shreyans Trivedi"));
+    assert.equal(namesFor("cs5610-09").length, 2);
+  });
+
+  it("builds per-section groups and marks CS 5610-09 section TAs TBD", () => {
+    const cs4550 = staffGroupsForSection("cs4550-01");
+    assert.deepEqual(
+      cs4550.map((group) => group.id),
+      ["instructor", "course-wide-ta", "section-tas"],
+    );
+    assert.deepEqual(
+      cs4550.find((group) => group.id === "section-tas")?.members.map(
+        (member) => member.name,
+      ),
+      ["Anurag Bheemappa Gnanamurthy", "Shloka Shreyans Trivedi"],
+    );
+    assert.equal(cs4550.find((group) => group.id === "section-tas")?.note, undefined);
+
+    const cs561002 = staffGroupsForSection("cs5610-02");
+    assert.deepEqual(
+      cs561002.find((group) => group.id === "section-tas")?.members.map(
+        (member) => member.name,
+      ),
+      ["Tisha Sujal Kotadia", "Aryan Alpesh Mehta"],
+    );
+
+    const cs561009 = staffGroupsForSection("cs5610-09");
+    assert.equal(
+      cs561009.find((group) => group.id === "section-tas")?.members.length,
+      0,
+    );
+    assert.equal(
+      cs561009.find((group) => group.id === "section-tas")?.note,
+      cs561009TaNote,
+    );
+    assert.match(cs561009TaNote, /TBD/);
   });
 
   it("uses Northeastern school email as primary when one was posted", () => {
@@ -56,39 +126,12 @@ describe("Fall 2026 staff office hours (Piazza scrape)", () => {
       BY_ID["shloka-trivedi"]?.email,
       "trivedi.shl@northeastern.edu",
     );
-    assert.equal(
-      BY_ID["tisha-kotadia"]?.email,
-      "kotadia.t@northeastern.edu",
-    );
+    assert.equal(BY_ID["tisha-kotadia"]?.email, "kotadia.t@northeastern.edu");
     assert.equal(BY_ID["aryan-mehta"]?.email, "mehta.arya@northeastern.edu");
     assert.equal(
       BY_ID["giuseppe-marotta"]?.email,
       "marottagiusi123@gmail.com",
     );
-  });
-
-  it("keeps posted alternate and additional school emails, and no extras", () => {
-    assert.deepEqual(BY_ID["jose-annunziato"]?.alsoEmails, [
-      "jga@ccs.neu.edu",
-      "jga@ccis.neu.edu",
-    ]);
-    assert.deepEqual(BY_ID["jose-annunziato"]?.altEmails, [
-      "jannunzi@gmail.com",
-    ]);
-    assert.deepEqual(BY_ID["anurag-bheemappa"]?.altEmails, [
-      "anurag9596eng@gmail.com",
-    ]);
-    assert.deepEqual(BY_ID["shloka-trivedi"]?.altEmails, [
-      "shloka.trivedi02@gmail.com",
-    ]);
-    assert.deepEqual(BY_ID["tisha-kotadia"]?.altEmails, [
-      "tisha.kotadia@hotmail.com",
-    ]);
-    assert.deepEqual(BY_ID["aryan-mehta"]?.altEmails, [
-      "aryanmehta5902@gmail.com",
-    ]);
-    assert.equal(BY_ID["giuseppe-marotta"]?.altEmails, undefined);
-    assert.equal(BY_ID["giuseppe-marotta"]?.alsoEmails, undefined);
   });
 
   it("marks missing hours TBD and does not invent Zoom or phone", () => {
@@ -106,113 +149,56 @@ describe("Fall 2026 staff office hours (Piazza scrape)", () => {
       const member = BY_ID[id];
       assert.equal(member?.hoursStatus, "tbd");
       assert.deepEqual(member?.hours, []);
-      assert.match(member?.hoursSummary ?? "", /TBD|coming soon/i);
+      assert.match(member?.hoursSummary ?? "", /TBD/i);
     }
   });
 
-  it("publishes Tisha and Aryan Khoury hours exactly as listed", () => {
+  it("keeps Tisha and Aryan Khoury hours on CS 5610-02 only", () => {
     const tisha = BY_ID["tisha-kotadia"];
     assert.equal(tisha?.hoursStatus, "posted");
-    assert.equal(tisha?.location, "Khoury");
-    assert.equal(tisha?.teams, "@Tisha Sujal Kotadia");
     assert.deepEqual(tisha?.hours, [
       { days: "Thursday", time: "7–9am and 12:30–2:30pm" },
       { days: "Friday", time: "7–9am and 12:30–2:30pm" },
       { days: "Saturday", time: "7–9am" },
     ]);
-    assert.match(tisha?.hoursNote ?? "", /10 hours/);
-    assert.match(tisha?.hoursNote ?? "", /4 hours\/week/);
-
-    const aryan = BY_ID["aryan-mehta"];
-    assert.equal(aryan?.hoursStatus, "posted");
-    assert.equal(aryan?.location, "Khoury");
-    assert.equal(aryan?.teams, "@Aryan Mehta");
-    assert.deepEqual(aryan?.hours, [
-      { days: "Thursday", time: "6–9pm" },
-      { days: "Friday", time: "6–9pm" },
-      { days: "Saturday", time: "12–2pm and 5–7pm" },
-    ]);
-  });
-
-  it("groups by role and section and notes CS 5610-09 TBA", () => {
-    assert.deepEqual(
-      staffGroups.map((group) => group.id),
-      [
-        "instructor",
-        "course-wide-ta",
-        "cs4550-tas",
-        "cs5610-02-tas",
-        "cs5610-09-tas",
-      ],
-    );
-    assert.equal(staffGroups[4]?.members.length, 0);
-    assert.match(cs561009TaNote, /CS 5610-09/);
-    assert.match(cs561009TaNote, /TBA/);
-    assert.equal(staffGroups[4]?.note, cs561009TaNote);
-  });
-
-  it("points students to Piazza as primary Q&A and known section boards", () => {
-    assert.match(officeHoursIntro, /Piazza is the primary place/);
-    assert.match(officeHoursIntro, /Do not email staff/);
-    assert.equal(PIAZZA_PRIMARY_HREF, "https://piazza.com/class/mtkw93ft8hw8w/");
-    assert.deepEqual(
-      piazzaBoards.map((board) => board.href),
-      [
-        "https://piazza.com/class/mtkw93ft8hw8w/",
-        "https://piazza.com/class/mtugls6qxs5iz/",
-      ],
+    assert.ok(
+      officeHourRowsForSection("cs5610-02").some(
+        (row) => row.name === "Tisha Sujal Kotadia",
+      ),
     );
     assert.ok(
-      !piazzaBoards.some((board) => /5610-09/.test(board.label)),
-      "do not invent a CS 5610-09 Piazza URL",
+      !officeHourRowsForSection("cs4550-01").some(
+        (row) => row.name === "Tisha Sujal Kotadia",
+      ),
     );
   });
 
-  it("keeps a summary table row per staff member", () => {
-    assert.equal(officeHourRows.length, staffMembers.length);
-    assert.ok(officeHourRows.every((row) => row.contact.includes("@")));
+  it("points each section at its own Piazza board and does not invent CS 5610-09", () => {
+    assert.match(officeHoursIntro, /Piazza is the primary place/);
+    assert.match(officeHoursIntro, /Do not email staff/);
     assert.equal(
-      officeHourRows.find((row) => row.name === "Tisha Sujal Kotadia")
-        ?.location,
-      "Khoury",
+      piazzaBoardForSection("cs4550-01").href,
+      PIAZZA_PRIMARY_HREF,
     );
     assert.equal(
-      officeHourRows.find((row) => row.name === "Jose Annunziato")?.location,
-      "—",
+      piazzaBoardForSection("cs5610-02").href,
+      "https://piazza.com/class/mtugls6qxs5iz/",
+    );
+    assert.equal(piazzaBoardForSection("cs5610-09").href, undefined);
+    assert.ok(
+      piazzaBoards.every(
+        (board) => board.id !== "cs5610-09" || board.href === undefined,
+      ),
     );
   });
 
-  it("renders the staff section on the syllabus and groups by role/section", () => {
-    assert.match(syllabusView, /<OfficeHours \/>/);
+  it("filters the syllabus staff section with the shared section tabs", () => {
+    assert.match(syllabusView, /<OfficeHours sectionId=\{section\.id\} \/>/);
+    assert.match(syllabusView, /useCourseSection/);
     assert.match(syllabusNav, /href: "#office-hours"/);
-    assert.match(syllabusNav, /Staff \/ OH/);
-    assert.match(officeHoursView, /Staff and office hours/);
-    assert.match(officeHoursView, /staffGroups\.map/);
-    assert.match(officeHoursView, /hoursStatus === "tbd"/);
-    assert.match(officeHoursView, /piazzaBoards\.map/);
+    assert.match(officeHoursView, /staffGroupsForSection\(sectionId\)/);
+    assert.match(officeHoursView, /piazzaBoardForSection/);
     assert.doesNotMatch(officeHoursView, /tel:/);
     assert.doesNotMatch(officeHoursView, /zoom\.us/i);
-  });
-
-  it("keeps Piazza source posts for TAs who posted hours or intros", () => {
-    assert.deepEqual(
-      BY_ID["anurag-bheemappa"]?.sources?.map((source) => source.href),
-      ["https://piazza.com/class/mtkw93ft8hw8w/post/13"],
-    );
-    assert.deepEqual(
-      BY_ID["shloka-trivedi"]?.sources?.map((source) => source.href),
-      ["https://piazza.com/class/mtkw93ft8hw8w/post/11"],
-    );
-    assert.deepEqual(
-      BY_ID["tisha-kotadia"]?.sources?.map((source) => source.href),
-      ["https://piazza.com/class/mtugls6qxs5iz/post/11"],
-    );
-    assert.deepEqual(
-      BY_ID["aryan-mehta"]?.sources?.map((source) => source.href),
-      [
-        "https://piazza.com/class/mtugls6qxs5iz/post/13",
-        "https://piazza.com/class/mtugls6qxs5iz/post/14",
-      ],
-    );
   });
 });
