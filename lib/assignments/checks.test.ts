@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import { assignmentSubmitAccess, canPersistAssignmentSubmission, supportsUrlSubmission } from "./access";
 import {
   classifyDeployFetch,
+  deployOpenFailureMessage,
   htmlHasA1LabMarkers,
   htmlHasLabsNavigation,
   htmlHasWdHooks,
@@ -325,6 +326,62 @@ describe("runA1Checks", () => {
     );
   });
 
+  it("still opens the deploy when only the pasted path 404s", async () => {
+    const results = await runA1Checks({
+      vercelUrl: "https://jane-a1.vercel.app/missing",
+      nameQuery: resolveNameQuery({ firstName: "Jane", lastName: "Doe" }),
+      probes: {
+        async getHtml(url) {
+          if (url.includes("/missing")) {
+            return {
+              ok: false,
+              status: 404,
+              code: "http_error",
+              message: ASSIGNMENT_STUDENT_COPY.vercelNotFound,
+            };
+          }
+          return { ok: true, status: 200, finalUrl: url, html: htmlForPath(url) };
+        },
+      },
+    });
+    assert.equal(
+      results.find((row) => row.id === "a1-delivery-vercel-open")?.passed,
+      true,
+    );
+    assert.equal(
+      results.find((row) => row.id === "a1-delivery-name-section")?.passed,
+      true,
+    );
+  });
+
+  it("explains a 404 when no deploy page opens", async () => {
+    const results = await runA1Checks({
+      vercelUrl: "https://gone.vercel.app",
+      probes: {
+        async getHtml() {
+          return {
+            ok: false,
+            status: 404,
+            code: "http_error",
+            message: ASSIGNMENT_STUDENT_COPY.vercelNotFound,
+          };
+        },
+      },
+    });
+    const open = results.find((row) => row.id === "a1-delivery-vercel-open");
+    assert.equal(open?.passed, false);
+    assert.match(open?.message ?? "", /cannot be loaded/i);
+    assert.match(
+      deployOpenFailureMessage({
+        ok: false,
+        status: 502,
+        code: "http_error",
+        message: "bad gateway",
+      }),
+      /private\/incognito window/i,
+    );
+  });
+
   it("classifies 403 and Vercel SSO redirects as auth walls", () => {
     const classified = classifyDeployFetch({
       ok: true,
@@ -449,6 +506,13 @@ describe("student-facing copy", () => {
     for (const value of Object.values(ASSIGNMENT_STUDENT_COPY)) {
       assert.doesNotMatch(value, /Clerk/i);
     }
+  });
+
+  it("tells students a failed Vercel URL cannot be loaded", () => {
+    assert.match(ASSIGNMENT_STUDENT_COPY.vercelNotFound, /cannot be loaded/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.vercelNotFound, /private window/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.vercelUnreachable, /private\/incognito/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.vercelHttpError, /cannot load the page/i);
   });
 
   it("describes origin normalize, Labs/Kambaz crawl, and optional GitHub", () => {

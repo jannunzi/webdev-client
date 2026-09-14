@@ -100,119 +100,144 @@ export default async function AssignmentDetailPage({
     const { userId, isAuthenticated } = await auth();
     signedIn = Boolean(isAuthenticated && userId);
     if (signedIn && userId) {
-      const user = await currentUser();
-      impersonating = await isImpersonatingStudent();
-      const staff = await isActualStaff();
-      showStaffGrader =
-        supportsUrlSubmission(assignment.id) &&
-        canViewStaffGrader(staff, impersonating);
-      const canvasUserId = canvasUserIdFromMetadata(user);
-      const roster = mongoReady
-        ? await lookupCanvasRoster({
-            emails: collectClerkEmails(user),
-            canvasUserIds: canvasUserId ? [canvasUserId] : [],
-            impersonating,
-          })
-        : { status: "not_configured" as const };
-      const access = assignmentSubmitAccess({
-        signedIn: true,
-        configured: mongoReady,
-        isActualStaff: staff,
-        roster,
-      });
-      canSubmit = access.ok && supportsUrlSubmission(assignment.id);
-      gateReason = access.ok
-        ? null
-        : access.code === "unauthenticated"
-          ? "sign_in"
-          : access.code === "not_on_roster"
-            ? "not_on_roster"
-            : access.code === "roster_empty"
-              ? "roster_empty"
-              : "not_configured";
-
-      if (mongoReady) {
-        try {
-          initialCompletedIds = await readAssignmentProgress(
-            userId,
-            assignment.id,
-          );
-        } catch (error) {
-          const message =
-            error instanceof Error ? error.message : "Could not load progress.";
-          console.error("assignment progress load failed", message);
-          mongoReady = false;
-        }
-      }
-
-      if (
-        mongoReady &&
-        canSubmit &&
-        !impersonating &&
-        supportsUrlSubmission(assignment.id)
-      ) {
-        try {
-          const doc = await readAssignmentSubmission(userId, assignment.id);
-          initialSubmission = doc ? toSubmissionView(doc) : null;
-        } catch (error) {
-          const message =
-            error instanceof Error
-              ? error.message
-              : "Could not load submission.";
-          console.error("assignment submission load failed", message);
-        }
-      }
-
-      if (showStaffGrader && mongoReady) {
-        try {
-          const [rosterList, submissions] = await Promise.all([
-            listCanvasRoster(),
-            listSubmissionsForAssignment(assignment.id),
-          ]);
-          staffQueue = buildStaffStudentQueue(
-            rosterList.status === "ok" ? rosterList.entries : [],
-            submissions,
-          );
-          selectedSection = resolveStaffSectionFilter(
-            sectionParam,
-            listStaffQueueSections(staffQueue),
-          );
-          if (studentKey) {
-            selectedStudent =
-              findStaffStudent(
-                staffQueueForSection(staffQueue, selectedSection),
-                studentKey,
-              ) ?? null;
-            if (selectedStudent?.clerkUserId) {
-              const doc = await readAssignmentSubmission(
-                selectedStudent.clerkUserId,
-                assignment.id,
-              );
-              initialSubmission = doc ? toSubmissionView(doc) : null;
-              initialCompletedIds = [];
-            } else if (selectedStudent) {
-              initialSubmission = selectedStudent.vercelUrl
-                ? {
-                    githubUrl: selectedStudent.githubUrl ?? "",
-                    vercelUrl: selectedStudent.vercelUrl,
-                    updatedAt: new Date().toISOString(),
-                    lastCheckedAt: selectedStudent.lastCheckedAt,
-                    checkResults: selectedStudent.checkResults,
-                    email: selectedStudent.email,
-                    name: selectedStudent.name,
-                    staffGrade: selectedStudent.staffGrade,
-                  }
-                : null;
-              initialCompletedIds = [];
-            }
+      try {
+        const user = await currentUser();
+        impersonating = await isImpersonatingStudent();
+        const staff = await isActualStaff();
+        showStaffGrader =
+          supportsUrlSubmission(assignment.id) &&
+          canViewStaffGrader(staff, impersonating);
+        const canvasUserId = canvasUserIdFromMetadata(user);
+        let roster: Awaited<ReturnType<typeof lookupCanvasRoster>> = {
+          status: "not_configured",
+        };
+        if (mongoReady) {
+          try {
+            roster = await lookupCanvasRoster({
+              emails: collectClerkEmails(user),
+              canvasUserIds: canvasUserId ? [canvasUserId] : [],
+              impersonating,
+            });
+          } catch (error) {
+            const message =
+              error instanceof Error
+                ? error.message
+                : "Could not look up the course roster.";
+            console.error("assignment roster lookup failed", message);
+            mongoReady = false;
           }
-        } catch (error) {
-          const message =
-            error instanceof Error
-              ? error.message
-              : "Could not load staff submissions.";
-          console.error("assignment staff queue load failed", message);
         }
+        const access = assignmentSubmitAccess({
+          signedIn: true,
+          configured: mongoReady,
+          isActualStaff: staff,
+          roster,
+        });
+        canSubmit = access.ok && supportsUrlSubmission(assignment.id);
+        gateReason = access.ok
+          ? null
+          : access.code === "unauthenticated"
+            ? "sign_in"
+            : access.code === "not_on_roster"
+              ? "not_on_roster"
+              : access.code === "roster_empty"
+                ? "roster_empty"
+                : "not_configured";
+
+        if (mongoReady) {
+          try {
+            initialCompletedIds = await readAssignmentProgress(
+              userId,
+              assignment.id,
+            );
+          } catch (error) {
+            const message =
+              error instanceof Error
+                ? error.message
+                : "Could not load progress.";
+            console.error("assignment progress load failed", message);
+            mongoReady = false;
+          }
+        }
+
+        if (
+          mongoReady &&
+          canSubmit &&
+          !impersonating &&
+          supportsUrlSubmission(assignment.id)
+        ) {
+          try {
+            const doc = await readAssignmentSubmission(userId, assignment.id);
+            initialSubmission = doc ? toSubmissionView(doc) : null;
+          } catch (error) {
+            const message =
+              error instanceof Error
+                ? error.message
+                : "Could not load submission.";
+            console.error("assignment submission load failed", message);
+          }
+        }
+
+        if (showStaffGrader && mongoReady) {
+          try {
+            const [rosterList, submissions] = await Promise.all([
+              listCanvasRoster(),
+              listSubmissionsForAssignment(assignment.id),
+            ]);
+            staffQueue = buildStaffStudentQueue(
+              rosterList.status === "ok" ? rosterList.entries : [],
+              submissions,
+            );
+            selectedSection = resolveStaffSectionFilter(
+              sectionParam,
+              listStaffQueueSections(staffQueue),
+            );
+            if (studentKey) {
+              selectedStudent =
+                findStaffStudent(
+                  staffQueueForSection(staffQueue, selectedSection),
+                  studentKey,
+                ) ?? null;
+              if (selectedStudent?.clerkUserId) {
+                const doc = await readAssignmentSubmission(
+                  selectedStudent.clerkUserId,
+                  assignment.id,
+                );
+                initialSubmission = doc ? toSubmissionView(doc) : null;
+                initialCompletedIds = [];
+              } else if (selectedStudent) {
+                initialSubmission = selectedStudent.vercelUrl
+                  ? {
+                      githubUrl: selectedStudent.githubUrl ?? "",
+                      vercelUrl: selectedStudent.vercelUrl,
+                      updatedAt: new Date().toISOString(),
+                      lastCheckedAt: selectedStudent.lastCheckedAt,
+                      checkResults: selectedStudent.checkResults,
+                      email: selectedStudent.email,
+                      name: selectedStudent.name,
+                      staffGrade: selectedStudent.staffGrade,
+                    }
+                  : null;
+                initialCompletedIds = [];
+              }
+            }
+          } catch (error) {
+            const message =
+              error instanceof Error
+                ? error.message
+                : "Could not load staff submissions.";
+            console.error("assignment staff queue load failed", message);
+          }
+        }
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Could not load the assignment page.";
+        console.error("assignment detail load failed", message);
+        mongoReady = false;
+        canSubmit = false;
+        if (gateReason === null) gateReason = "not_configured";
       }
     } else {
       gateReason = mongoReady ? "sign_in" : "not_configured";
