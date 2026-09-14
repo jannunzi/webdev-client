@@ -1,17 +1,219 @@
-import type { OfficeHourRow } from "./types";
+import type {
+  OfficeHourRow,
+  PiazzaBoard,
+  StaffGroup,
+  StaffMember,
+} from "./types";
 
 /**
- * Teaching assistants and office hours — left empty on purpose.
- * Add rows here when staff are assigned. Do not invent names.
+ * Staff contacts and office hours from Fall 2026 Piazza intros.
+ * Do not invent phone numbers, Zoom links, rooms, or hours.
  */
-export const officeHoursPlaceholder =
-  "Teaching assistants and office hours will be posted here when they are assigned. Until then this table is empty — TBA.";
 
-export const officeHourRows: OfficeHourRow[] = [];
+export const PIAZZA_PRIMARY_HREF = "https://piazza.com/class/mtkw93ft8hw8w/";
+
+export const piazzaBoards: PiazzaBoard[] = [
+  {
+    id: "cs4550",
+    label: "CS 4550 Piazza",
+    href: PIAZZA_PRIMARY_HREF,
+  },
+  {
+    id: "cs5610-02",
+    label: "CS 5610-02 Piazza",
+    href: "https://piazza.com/class/mtugls6qxs5iz/",
+  },
+];
+
+export const officeHoursIntro =
+  "Piazza is the primary place for course questions — homework, labs, the book, and the project. Do not email staff for those. Office hours below are subject to update; check this page and Piazza if something looks stale.";
+
+export const officeHoursPlaceholder =
+  "Office hours that were not posted on Piazza are marked TBD. CS 5610-09 does not yet have section-specific TA hours beyond the course-wide TA.";
+
+export const cs561009TaNote =
+  "No CS 5610-09 TA intros with hours were posted beyond Giuseppe. Section-specific teaching-assistant office hours for CS 5610-09 are TBA.";
+
+const jose: StaffMember = {
+  id: "jose-annunziato",
+  name: "Jose Annunziato",
+  role: "Instructor",
+  sectionLabel: "All sections (CS 4550-01, CS 5610-02, CS 5610-09)",
+  email: "j.annunziato@northeastern.edu",
+  alsoEmails: ["jga@ccs.neu.edu", "jga@ccis.neu.edu"],
+  altEmails: ["jannunzi@gmail.com"],
+  hoursStatus: "tbd",
+  hours: [],
+  hoursSummary: "TBD — see Piazza",
+  piazzaNote:
+    "Office hours and Piazza hours are not posted yet. See Piazza for updates.",
+};
+
+const giuseppe: StaffMember = {
+  id: "giuseppe-marotta",
+  name: "Giuseppe Marotta",
+  role: "TA",
+  sectionLabel: "All sections (CS 4550-01, CS 5610-02, CS 5610-09)",
+  email: "marottagiusi123@gmail.com",
+  hoursStatus: "tbd",
+  hours: [],
+  hoursSummary: "Piazza coverage; fixed OH TBD",
+  piazzaNote:
+    "Monitors Piazza frequently (24×7-style coverage). No fixed office-hour windows posted.",
+};
+
+const anurag: StaffMember = {
+  id: "anurag-bheemappa",
+  name: "Anurag Bheemappa Gnanamurthy",
+  role: "TA",
+  sectionLabel: "CS 4550",
+  email: "bheemappagnanamurt.a@northeastern.edu",
+  altEmails: ["anurag9596eng@gmail.com"],
+  contactMethod: "Microsoft Teams",
+  hoursStatus: "tbd",
+  hours: [],
+  hoursSummary: "Coming soon / TBD",
+  piazzaNote: "Office hours coming soon.",
+  sources: [
+    {
+      label: "Piazza post 13",
+      href: "https://piazza.com/class/mtkw93ft8hw8w/post/13",
+    },
+  ],
+};
+
+const shloka: StaffMember = {
+  id: "shloka-trivedi",
+  name: "Shloka Shreyans Trivedi",
+  role: "TA",
+  sectionLabel: "CS 4550",
+  email: "trivedi.shl@northeastern.edu",
+  altEmails: ["shloka.trivedi02@gmail.com"],
+  contactMethod: "Microsoft Teams",
+  hoursStatus: "tbd",
+  hours: [],
+  hoursSummary: "Not finalized / TBD",
+  piazzaNote: "Office hours are not finalized yet.",
+  sources: [
+    {
+      label: "Piazza post 11",
+      href: "https://piazza.com/class/mtkw93ft8hw8w/post/11",
+    },
+  ],
+};
+
+const tisha: StaffMember = {
+  id: "tisha-kotadia",
+  name: "Tisha Sujal Kotadia",
+  role: "TA",
+  sectionLabel: "CS 5610-02",
+  email: "kotadia.t@northeastern.edu",
+  altEmails: ["tisha.kotadia@hotmail.com"],
+  contactMethod: "Microsoft Teams",
+  teams: "@Tisha Sujal Kotadia",
+  hoursStatus: "posted",
+  hours: [
+    { days: "Thursday", time: "7–9am and 12:30–2:30pm" },
+    { days: "Friday", time: "7–9am and 12:30–2:30pm" },
+    { days: "Saturday", time: "7–9am" },
+  ],
+  hoursSummary:
+    "Thu 7–9am + 12:30–2:30pm; Fri 7–9am + 12:30–2:30pm; Sat 7–9am (ET)",
+  hoursNote:
+    "Posted as 10 hours. Course target is 4 hours/week over 2–4 days.",
+  location: "Khoury",
+  sources: [
+    {
+      label: "Piazza post 11",
+      href: "https://piazza.com/class/mtugls6qxs5iz/post/11",
+    },
+  ],
+};
+
+const aryan: StaffMember = {
+  id: "aryan-mehta",
+  name: "Aryan Alpesh Mehta",
+  role: "TA",
+  sectionLabel: "CS 5610-02",
+  email: "mehta.arya@northeastern.edu",
+  altEmails: ["aryanmehta5902@gmail.com"],
+  contactMethod: "Microsoft Teams",
+  teams: "@Aryan Mehta",
+  hoursStatus: "posted",
+  hours: [
+    { days: "Thursday", time: "6–9pm" },
+    { days: "Friday", time: "6–9pm" },
+    { days: "Saturday", time: "12–2pm and 5–7pm" },
+  ],
+  hoursSummary: "Thu 6–9pm; Fri 6–9pm; Sat 12–2pm + 5–7pm (ET)",
+  location: "Khoury",
+  sources: [
+    {
+      label: "Piazza post 13",
+      href: "https://piazza.com/class/mtugls6qxs5iz/post/13",
+    },
+    {
+      label: "Piazza post 14",
+      href: "https://piazza.com/class/mtugls6qxs5iz/post/14",
+    },
+  ],
+};
+
+export const staffMembers: StaffMember[] = [
+  jose,
+  giuseppe,
+  anurag,
+  shloka,
+  tisha,
+  aryan,
+];
+
+export const staffGroups: StaffGroup[] = [
+  {
+    id: "instructor",
+    title: "Instructor",
+    members: [jose],
+  },
+  {
+    id: "course-wide-ta",
+    title: "Course-wide teaching assistant",
+    members: [giuseppe],
+  },
+  {
+    id: "cs4550-tas",
+    title: "CS 4550 teaching assistants",
+    members: [anurag, shloka],
+  },
+  {
+    id: "cs5610-02-tas",
+    title: "CS 5610-02 teaching assistants",
+    members: [tisha, aryan],
+  },
+  {
+    id: "cs5610-09-tas",
+    title: "CS 5610-09 teaching assistants",
+    members: [],
+    note: cs561009TaNote,
+  },
+];
+
+function tableLocation(member: StaffMember): string {
+  return member.location ?? "—";
+}
+
+export const officeHourRows: OfficeHourRow[] = staffMembers.map((member) => ({
+  name: member.name,
+  role: member.role,
+  sections: member.sectionLabel,
+  hours: member.hoursSummary,
+  location: tableLocation(member),
+  contact: member.email,
+}));
 
 export const officeHourColumns = [
   "Name",
   "Role",
+  "Sections",
   "Hours",
   "Location",
   "Contact",

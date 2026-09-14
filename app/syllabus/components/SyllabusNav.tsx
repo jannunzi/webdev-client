@@ -7,7 +7,7 @@ const SECTIONS = [
   { href: "#accounts", label: "Accounts" },
   { href: "#meetings", label: "Meetings" },
   { href: "#academic-calendar", label: "Calendar" },
-  { href: "#office-hours", label: "Office hours" },
+  { href: "#office-hours", label: "Staff / OH" },
   { href: "#evaluation", label: "Evaluation" },
   { href: "#late-policy", label: "Late policy" },
   { href: "#assignments", label: "Assignments" },

@@ -1,8 +1,12 @@
+import Link from "next/link";
 import CourseInfoFooter from "@/app/course-info/CourseInfoFooter";
 import CourseInfoHeader from "@/app/course-info/CourseInfoHeader";
 import CourseInfoSection from "@/app/course-info/CourseInfoSection";
+import { PiazzaBoardLinks } from "@/app/syllabus/components/OfficeHours";
+import { staffMembers } from "@/app/syllabus/data/officeHours";
 
-const PIAZZA_COLUMNS = ["Day", "Time ET", "Who"] as const;
+const giuseppe = staffMembers.find((member) => member.id === "giuseppe-marotta");
+const jose = staffMembers.find((member) => member.id === "jose-annunziato");
 
 export default function PiazzaHoursPage() {
   return (
@@ -11,10 +15,21 @@ export default function PiazzaHoursPage() {
         title="Piazza Hours"
         lede={
           <p className="mt-4 text-[1.05rem] text-neutral-800">
-            All times are America/New_York (Eastern Time).
+            Piazza is the primary Q&A forum. Use it for homework, labs, the
+            book, and the project — not email. All times, when posted, are
+            America/New_York (Eastern Time).
           </p>
         }
       />
+
+      <CourseInfoSection id="boards" title="Class boards">
+        <PiazzaBoardLinks />
+        <p>
+          Staff contacts and Khoury office hours are on{" "}
+          <Link href="/office-hours">Staff and office hours</Link> and the{" "}
+          <Link href="/syllabus#office-hours">syllabus</Link>.
+        </p>
+      </CourseInfoSection>
 
       <CourseInfoSection id="about" title="What Piazza hours are">
         <p>
@@ -24,43 +39,32 @@ export default function PiazzaHoursPage() {
         </p>
         <p>
           <strong>Piazza hours</strong> are the windows when course staff
-          actively monitor the forum and aim to reply. Those windows are TBA
-          until teaching assistants are assigned. Students may post at any time;
-          a same-day reply is more likely during posted hours.
+          actively monitor the forum and aim to reply. A same-day reply is more
+          likely when someone is watching; students may still post at any time.
         </p>
       </CourseInfoSection>
 
-      <CourseInfoSection id="schedule" title="Staff monitoring schedule">
+      <CourseInfoSection id="coverage" title="Who is monitoring">
         <p>
-          The schedule below is a placeholder. Hours will be posted here when
-          staff are assigned. Until then every cell is TBA — no Zoom rooms or
-          names are implied.
+          A fixed day-by-day Piazza monitoring grid has not been posted. Until
+          one appears, treat coverage as follows — do not assume Zoom rooms or
+          clock windows that are not listed.
         </p>
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse text-left text-sm">
-            <thead>
-              <tr className="border-b border-neutral-300 bg-neutral-100 font-sans">
-                {PIAZZA_COLUMNS.map((column) => (
-                  <th key={column} className="px-3 py-2 font-semibold">
-                    {column}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-neutral-200">
-                {PIAZZA_COLUMNS.map((column) => (
-                  <td
-                    key={column}
-                    className="px-3 py-3 text-neutral-500 italic"
-                  >
-                    TBA
-                  </td>
-                ))}
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <ul className="list-disc space-y-2 pl-6">
+          <li>
+            <strong>{giuseppe?.name}</strong> (all sections):{" "}
+            {giuseppe?.piazzaNote} Fixed office hours: TBD.
+          </li>
+          <li>
+            <strong>{jose?.name}</strong> (instructor): {jose?.piazzaNote}
+          </li>
+          <li>
+            Section TAs answer on their boards when they can. Posted Khoury
+            hours are on the{" "}
+            <Link href="/office-hours">staff page</Link>, not a Piazza clock
+            grid.
+          </li>
+        </ul>
       </CourseInfoSection>
 
       <CourseInfoSection id="how-to-post" title="How to post a useful question">
