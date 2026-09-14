@@ -8,6 +8,7 @@ import {
   deckUsesBlockModel,
   isBlockSlide,
   toBlockSlide,
+  toBlockSlides,
 } from "./blocks";
 import {
   COURSE_SITE_ORIGIN,
@@ -1310,6 +1311,32 @@ describe("lecture decks", () => {
       css,
       /\.lecture-slide-spacious \.lecture-slide-bullets \{[^}]*font-size:\s*1\.5rem/,
     );
+    assert.match(css, /--lecture-block-font-scale:\s*1/);
+    assert.doesNotMatch(
+      css,
+      /\.lecture-block-font-md \.lecture-slide-bullets \{[^}]*font-size:\s*1em/,
+    );
+    assert.doesNotMatch(
+      css,
+      /\.lecture-block-font-sm \.lecture-slide-bullets \{[^}]*font-size:\s*0\.75em/,
+    );
+  });
+
+  it("leaves Chapter 1 authored bullets on the CSS default (no sm/md fontSize)", () => {
+    for (const deck of listLectureDecks()) {
+      if (deck.chapter !== 1) continue;
+      for (const slide of toBlockSlides(deck.slides)) {
+        for (const block of slide.blocks) {
+          if (block.type === "bullets" || block.type === "code") {
+            assert.equal(
+              block.fontSize,
+              undefined,
+              `${deck.slug} ${slide.id} ${block.id} should omit fontSize`,
+            );
+          }
+        }
+      }
+    }
   });
 
   it("sizes text-only slides spacious and diagram/embed slides dense", () => {

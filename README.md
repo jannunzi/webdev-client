@@ -317,10 +317,11 @@ same. Students without the query keep the read-only experience.
 legacy shape; the shell adapts them for read-only rendering.
 
 **Blocks.** In edit mode: select, add, remove, reorder (Up/Down). Font size
-(`sm` / `md` / `lg` / `xl`) on bullets and code. Frame size (`sm` / `md` /
-`lg`) on code and live embeds. Component blocks pick from a registry — Ch1
-book embeds plus existing lecture embeds — never an arbitrary component
-string.
+(`sm` / `md` / `lg` / `xl`) on bullets and code — `md` (and unset) keep the
+pre-editor lecture rem defaults so student/presenter view stays large
+enough to teach from. Frame size (`sm` / `md` / `lg`) on code and live
+embeds. Component blocks pick from a registry — Ch1 book embeds plus
+existing lecture embeds — never an arbitrary component string.
 
 **Hub.** New deck creates a slug + starter blocks deck. New decks land in
 **Chapter 1 → Draft decks** (overlay topic, not a book TOC section). Up/Down

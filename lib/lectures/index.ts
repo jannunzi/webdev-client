@@ -166,6 +166,7 @@ export {
   authoredSlideDiagram,
   authoredSlideEmbed,
   authoredSlideTextParts,
+  blockFontClass,
   createBlockSlide,
   createBulletsBlock,
   createCodeBlock,
