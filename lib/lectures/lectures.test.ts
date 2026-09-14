@@ -1299,13 +1299,13 @@ describe("lecture decks", () => {
     assert.match(css, /max\(0\.95rem,\s*calc\(100cqi \/ 24\)\)/);
     assert.match(
       css,
-      /\.lecture-slide-spacious \.lecture-slide-bullets \{[^}]*font-size:\s*2\.25rem/,
+      /\.lecture-slide-spacious \.lecture-slide-bullets \{[^}]*font-size:\s*calc\(2\.25rem/,
     );
-    assert.match(css, /font-size:\s*2\.75rem/);
-    assert.match(css, /font-size:\s*3\.15rem/);
+    assert.match(css, /font-size:\s*calc\(2\.75rem/);
+    assert.match(css, /font-size:\s*calc\(3\.15rem/);
     assert.match(
       css,
-      /\.lecture-slide-dense \.lecture-slide-bullets \{[^}]*font-size:\s*1\.7rem/,
+      /\.lecture-slide-dense \.lecture-slide-bullets \{[^}]*font-size:\s*calc\(1\.7rem/,
     );
     assert.doesNotMatch(
       css,
