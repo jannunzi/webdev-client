@@ -161,7 +161,59 @@ export type AssignmentItem = {
 export type OfficeHourRow = {
   name: string;
   role: string;
+  sections: string;
   hours: string;
   location: string;
   contact: string;
+};
+
+export type StaffRole = "Instructor" | "TA";
+
+/** Posted Piazza / Khoury window. Times are America/New_York (ET). */
+export type OfficeHourSlot = {
+  days: string;
+  time: string;
+};
+
+export type PiazzaBoard = {
+  id: string;
+  label: string;
+  href: string;
+};
+
+export type PiazzaSource = {
+  label: string;
+  href: string;
+};
+
+export type StaffMember = {
+  id: string;
+  name: string;
+  role: StaffRole;
+  /** Student-facing section coverage, e.g. “All sections”. */
+  sectionLabel: string;
+  /** Northeastern / Khoury email when posted; otherwise the only posted address. */
+  email: string;
+  /** Additional school addresses already listed on Piazza. */
+  alsoEmails?: string[];
+  /** Personal addresses already listed as alternate contacts. */
+  altEmails?: string[];
+  /** Preferred contact channel when posted (no invented Zoom/phone). */
+  contactMethod?: string;
+  teams?: string;
+  hoursStatus: "posted" | "tbd";
+  hours: OfficeHourSlot[];
+  hoursSummary: string;
+  hoursNote?: string;
+  /** Posted location only (e.g. Khoury). Omit when not listed. */
+  location?: string;
+  piazzaNote?: string;
+  sources?: PiazzaSource[];
+};
+
+export type StaffGroup = {
+  id: string;
+  title: string;
+  members: StaffMember[];
+  note?: string;
 };

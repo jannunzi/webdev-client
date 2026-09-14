@@ -124,7 +124,11 @@ async function PeoplePageBody({ section }: { section?: string }) {
       <h1 className="mt-0 text-3xl font-semibold tracking-tight">People</h1>
       <p className="text-neutral-700">
         Fall 2026 Canvas roster from MongoDB Atlas. Staff only — this is not
-        the Kambaz lab People demo.
+        the Kambaz lab People demo. Student-facing instructor and TA contacts
+        are on{" "}
+        <Link href="/office-hours">Staff and office hours</Link>
+        {" "}and the{" "}
+        <Link href="/syllabus#office-hours">syllabus</Link>.
       </p>
       <PeopleRoster groups={groups} selectedSection={selectedSection} />
     </>

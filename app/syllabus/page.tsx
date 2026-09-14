@@ -15,9 +15,6 @@ import {
   evaluationNotes,
   gradeBands,
   latePolicy,
-  officeHourColumns,
-  officeHourRows,
-  officeHoursPlaceholder,
   sections,
   semester,
   titleIX,
@@ -41,9 +38,6 @@ export default function SyllabusPage() {
       latePolicy={latePolicy}
       assignmentsIntro={assignmentsIntro}
       assignments={assignments}
-      officeHourRows={officeHourRows}
-      officeHourColumns={officeHourColumns}
-      officeHoursPlaceholder={officeHoursPlaceholder}
       aiPolicy={aiPolicy}
       academicIntegrity={academicIntegrity}
       classroomEnvironment={classroomEnvironment}

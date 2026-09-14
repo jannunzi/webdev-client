@@ -12,7 +12,6 @@ import type {
   Deadline,
   EvaluationItem,
   GradeBand,
-  OfficeHourRow,
   PolicyBlock,
   SemesterDates,
 } from "../data/types";
@@ -52,9 +51,6 @@ export default function SyllabusView({
   latePolicy,
   assignmentsIntro,
   assignments,
-  officeHourRows,
-  officeHourColumns,
-  officeHoursPlaceholder,
   aiPolicy,
   academicIntegrity,
   classroomEnvironment,
@@ -75,9 +71,6 @@ export default function SyllabusView({
   latePolicy: PolicyBlock;
   assignmentsIntro: string[];
   assignments: AssignmentItem[];
-  officeHourRows: OfficeHourRow[];
-  officeHourColumns: readonly string[];
-  officeHoursPlaceholder: string;
   aiPolicy: PolicyBlock;
   academicIntegrity: PolicyBlock;
   classroomEnvironment: PolicyBlock;
@@ -120,11 +113,7 @@ export default function SyllabusView({
       <CourseWebsiteAccounts />
       <MeetingInfo section={section} semester={semester} />
       <AcademicCalendar />
-      <OfficeHours
-        rows={officeHourRows}
-        columns={officeHourColumns}
-        placeholder={officeHoursPlaceholder}
-      />
+      <OfficeHours />
       <Evaluation
         items={evaluationItems}
         bands={gradeBands}
