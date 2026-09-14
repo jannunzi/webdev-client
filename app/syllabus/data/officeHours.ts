@@ -8,8 +8,8 @@ import type {
 
 /**
  * Per-section staff contacts and office hours.
- * The first Piazza scrape was a draft — keep missing hours/contacts TBD
- * until a Piazza thread confirms them. Do not invent phone, Zoom, or boards.
+ * Confirmed windows from Piazza replies on 2026-09-14. Leave unknown
+ * hours/contacts TBD. Do not invent Zoom links.
  */
 
 export const ALL_SECTION_IDS = sections.map((section) => section.id);
@@ -34,13 +34,13 @@ export const piazzaBoards: PiazzaBoard[] = [
 ];
 
 export const officeHoursIntro =
-  "Piazza is the primary place for course questions — homework, labs, the book, and the project. Do not email staff for those. Office hours below are subject to update; check this page and Piazza if something looks stale.";
+  "Piazza is the primary place for course questions — homework, labs, the book, and the project. Do not email staff for those. Posted office hours are walk-up / Microsoft Teams windows with a live check-in line — not calendar booking. Check this page and Piazza if something looks stale.";
 
 export const officeHoursPlaceholder =
-  "Office hours and contacts that are not confirmed on Piazza are marked TBD. Do not assume a phone number or Zoom link.";
+  "Hours and contacts that are not confirmed on Piazza stay TBD. Confirmed phone numbers and Teams names are listed. Do not assume a Zoom link.";
 
 export const cs561009TaNote =
-  "No CS 5610-09 TA intros with hours were posted beyond Giuseppe. Section-specific teaching-assistant office hours for CS 5610-09 are TBD.";
+  "Giuseppe is Piazza-only (no bookable or queue office hours). Section-specific teaching-assistant office hours for CS 5610-09 are TBA.";
 
 const jose: StaffMember = {
   id: "jose-annunziato",
@@ -67,9 +67,10 @@ const giuseppe: StaffMember = {
   email: "marottagiusi123@gmail.com",
   hoursStatus: "tbd",
   hours: [],
-  hoursSummary: "Piazza coverage; fixed OH TBD",
+  hoursSummary: "Piazza only — no walk-up or Teams line",
+  piazzaOnly: true,
   piazzaNote:
-    "Monitors Piazza frequently (24×7-style coverage). No fixed office-hour windows posted.",
+    "Piazza-only. Monitors the forum frequently. No bookable office hours and no live check-in queue.",
 };
 
 const anurag: StaffMember = {
@@ -102,10 +103,23 @@ const shloka: StaffMember = {
   email: "trivedi.shl@northeastern.edu",
   altEmails: ["shloka.trivedi02@gmail.com"],
   contactMethod: "Microsoft Teams",
-  hoursStatus: "tbd",
-  hours: [],
-  hoursSummary: "TBD",
-  piazzaNote: "Office hours are TBD until posted on Piazza.",
+  teams: "trivedi.shl@northeastern.edu",
+  phone: "+1 857-427-7547",
+  hoursStatus: "posted",
+  hours: [
+    { days: "Tuesday", time: "11am–12pm" },
+    { days: "Wednesday", time: "11am–12pm" },
+    { days: "Thursday", time: "11am–1pm" },
+  ],
+  hoursSummary: "Tue 11am–12pm; Wed 11am–12pm; Thu 11am–1pm (ET)",
+  hoursNote: "Confirmed on Piazza 2026-09-14. Microsoft Teams (same as email).",
+  location: "Microsoft Teams",
+  piazzaHours: [
+    { days: "Tuesday", time: "9–11am" },
+    { days: "Wednesday", time: "9–11am" },
+  ],
+  piazzaHoursSummary: "Tue/Wed 9–11am (ET)",
+  piazzaNote: "Piazza hours: Tue/Wed 9–11am ET.",
   sources: [
     {
       label: "Piazza post 11",
@@ -124,17 +138,23 @@ const tisha: StaffMember = {
   altEmails: ["tisha.kotadia@hotmail.com"],
   contactMethod: "Microsoft Teams",
   teams: "@Tisha Sujal Kotadia",
+  phone: "+1 857-605-9277",
   hoursStatus: "posted",
   hours: [
-    { days: "Thursday", time: "7–9am and 12:30–2:30pm" },
-    { days: "Friday", time: "7–9am and 12:30–2:30pm" },
-    { days: "Saturday", time: "7–9am" },
+    { days: "Monday", time: "8–10am" },
+    { days: "Thursday", time: "8–10am" },
   ],
-  hoursSummary:
-    "Thu 7–9am + 12:30–2:30pm; Fri 7–9am + 12:30–2:30pm; Sat 7–9am (ET)",
-  hoursNote:
-    "Posted as 10 hours. Course target is 4 hours/week over 2–4 days.",
-  location: "Khoury",
+  hoursSummary: "Mon/Thu 8–10am (ET, Teams)",
+  hoursNote: "Confirmed on Piazza 2026-09-14. Microsoft Teams.",
+  location: "Microsoft Teams",
+  piazzaHours: [
+    { days: "Tuesday", time: "3–5pm" },
+    { days: "Wednesday", time: "3–5pm" },
+    { days: "Friday", time: "3–5pm" },
+    { days: "Saturday", time: "3–5pm" },
+  ],
+  piazzaHoursSummary: "Tue/Wed/Fri/Sat 3–5pm (ET)",
+  piazzaNote: "Piazza hours: Tue/Wed/Fri/Sat 3–5pm ET.",
   sources: [
     {
       label: "Piazza post 11",
@@ -153,14 +173,23 @@ const aryan: StaffMember = {
   altEmails: ["aryanmehta5902@gmail.com"],
   contactMethod: "Microsoft Teams",
   teams: "@Aryan Mehta",
+  phone: "857-507-0827",
   hoursStatus: "posted",
   hours: [
-    { days: "Thursday", time: "6–9pm" },
-    { days: "Friday", time: "6–9pm" },
-    { days: "Saturday", time: "12–2pm and 5–7pm" },
+    { days: "Friday", time: "9–11am" },
+    { days: "Saturday", time: "9–11am" },
   ],
-  hoursSummary: "Thu 6–9pm; Fri 6–9pm; Sat 12–2pm + 5–7pm (ET)",
-  location: "Khoury",
+  hoursSummary: "Fri/Sat 9–11am (ET, Teams)",
+  hoursNote: "Confirmed on Piazza 2026-09-14. Microsoft Teams.",
+  location: "Microsoft Teams",
+  piazzaHours: [
+    { days: "Monday", time: "7–9am" },
+    { days: "Tuesday", time: "7–9am" },
+    { days: "Wednesday", time: "7–9am" },
+    { days: "Thursday", time: "7–9am" },
+  ],
+  piazzaHoursSummary: "Mon–Thu 7–9am (ET)",
+  piazzaNote: "Piazza hours: Mon–Thu 7–9am ET.",
   sources: [
     {
       label: "Piazza post 13",
@@ -193,6 +222,16 @@ export function staffMembersForSection(sectionId: string): StaffMember[] {
   return staffMembers.filter((member) =>
     memberCoversSection(member, sectionId),
   );
+}
+
+export function findStaffMember(id: string | undefined | null): StaffMember | undefined {
+  if (!id) return undefined;
+  return staffMembers.find((member) => member.id === id);
+}
+
+/** True unless the person is Piazza-only (Giuseppe). */
+export function queueEnabledForMember(member: StaffMember): boolean {
+  return member.piazzaOnly !== true;
 }
 
 function isSharedStaff(member: StaffMember): boolean {
@@ -241,6 +280,7 @@ export function piazzaBoardForSection(sectionId: string): PiazzaBoard {
 }
 
 function tableLocation(member: StaffMember): string {
+  if (member.piazzaOnly) return "Piazza only";
   return member.location ?? "—";
 }
 
@@ -271,3 +311,11 @@ export const officeHourColumns = [
   "Location",
   "Contact",
 ] as const;
+
+export function officeHoursQueueHref(
+  taId: string,
+  sectionId: string,
+): string {
+  const params = new URLSearchParams({ section: sectionId });
+  return `/office-hours/queue/${taId}?${params.toString()}`;
+}

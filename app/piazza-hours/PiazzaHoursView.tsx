@@ -51,10 +51,9 @@ export default function PiazzaHoursView() {
 
         <CourseInfoSection id="coverage" title="Who is monitoring">
           <p>
-            A fixed day-by-day Piazza monitoring grid has not been posted for{" "}
-            {section.code}-{section.sectionNumber}. Until one appears on Piazza,
-            treat coverage as follows — do not assume Zoom rooms or clock
-            windows that are not listed.
+            Posted Piazza hours below are when staff aim to watch the forum.
+            Students may still post at any time. Giuseppe is Piazza-only — no
+            walk-up or Teams check-in queue. Do not assume Zoom rooms.
           </p>
           <ul className="list-disc space-y-2 pl-6">
             <li>
@@ -62,20 +61,31 @@ export default function PiazzaHoursView() {
             </li>
             <li>
               <strong>{giuseppe?.name}</strong> (course-wide TA):{" "}
-              {giuseppe?.piazzaNote} Fixed office hours: TBD.
+              {giuseppe?.piazzaNote}
             </li>
             {sectionTas.length === 0 ? (
               <li>
                 Section-specific TA Piazza coverage is{" "}
                 <span className="italic text-amber-900">TBD</span> until posted
-                on Piazza.
+                on Piazza. Section TA office hours for this section are TBA.
               </li>
             ) : (
               sectionTas.map((member) => (
                 <li key={member.id}>
                   <strong>{member.name}</strong> ({section.code}-
                   {section.sectionNumber} TA):{" "}
-                  {member.piazzaNote ?? "Piazza hours TBD."}
+                  {member.piazzaHoursSummary
+                    ? `Piazza hours ${member.piazzaHoursSummary}.`
+                    : (member.piazzaNote ?? "Piazza hours TBD.")}
+                  {member.piazzaHours && member.piazzaHours.length > 0 ? (
+                    <ul className="mt-1 list-disc pl-5">
+                      {member.piazzaHours.map((slot) => (
+                        <li key={`${member.id}-${slot.days}-${slot.time}`}>
+                          {slot.days}: {slot.time}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
                 </li>
               ))
             )}

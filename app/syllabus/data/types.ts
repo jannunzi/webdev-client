@@ -202,16 +202,26 @@ export type StaffMember = {
   alsoEmails?: string[];
   /** Personal addresses already listed as alternate contacts. */
   altEmails?: string[];
-  /** Preferred contact channel when posted (no invented Zoom/phone). */
+  /** Preferred contact channel when posted (no invented Zoom). */
   contactMethod?: string;
   teams?: string;
+  /** Posted phone only. Omit when not confirmed. */
+  phone?: string;
   hoursStatus: "posted" | "tbd";
   hours: OfficeHourSlot[];
   hoursSummary: string;
   hoursNote?: string;
-  /** Posted location only (e.g. Khoury). Omit when not listed. */
+  /** Posted location only (e.g. Microsoft Teams). Omit when not listed. */
   location?: string;
+  /** Piazza monitoring windows when posted separately from walk-up/Teams OH. */
+  piazzaHours?: OfficeHourSlot[];
+  piazzaHoursSummary?: string;
   piazzaNote?: string;
+  /**
+   * Piazza-only staff: no walk-up/Teams office hours and no live check-in
+   * queue. Giuseppe is the only person marked this way.
+   */
+  piazzaOnly?: boolean;
   sources?: PiazzaSource[];
 };
 

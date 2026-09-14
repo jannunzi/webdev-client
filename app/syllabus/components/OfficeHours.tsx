@@ -4,7 +4,9 @@ import {
   officeHourRowsForSection,
   officeHoursIntro,
   officeHoursPlaceholder,
+  officeHoursQueueHref,
   piazzaBoardForSection,
+  queueEnabledForMember,
   staffGroupsForSection,
 } from "../data/officeHours";
 import type { PiazzaBoard, StaffMember } from "../data/types";
@@ -14,7 +16,19 @@ function EmailLink({ email }: { email: string }) {
   return <a href={`mailto:${email}`}>{email}</a>;
 }
 
-function StaffMemberCard({ member }: { member: StaffMember }) {
+function phoneHref(phone: string): string {
+  const digits = phone.replace(/[^\d+]/g, "");
+  if (digits.startsWith("+")) return `tel:${digits}`;
+  return `tel:+1${digits}`;
+}
+
+function StaffMemberCard({
+  member,
+  sectionId,
+}: {
+  member: StaffMember;
+  sectionId: string;
+}) {
   return (
     <article className="rounded-lg border border-neutral-200 bg-white px-4 py-3">
       <header className="font-sans">
@@ -76,6 +90,16 @@ function StaffMemberCard({ member }: { member: StaffMember }) {
             </dd>
           </div>
         ) : null}
+        {member.phone ? (
+          <div>
+            <dt className="font-sans text-xs font-semibold uppercase tracking-wide text-neutral-500">
+              Phone
+            </dt>
+            <dd>
+              <a href={phoneHref(member.phone)}>{member.phone}</a>
+            </dd>
+          </div>
+        ) : null}
         <div className={member.hoursStatus === "posted" ? "sm:col-span-2" : ""}>
           <dt className="font-sans text-xs font-semibold uppercase tracking-wide text-neutral-500">
             Office hours
@@ -86,7 +110,7 @@ function StaffMemberCard({ member }: { member: StaffMember }) {
             ) : (
               <>
                 {member.location ? (
-                  <p className="mb-1">{member.location} office hours (ET)</p>
+                  <p className="mb-1">{member.location} (ET)</p>
                 ) : null}
                 <ul className="list-disc pl-5">
                   {member.hours.map((slot) => (
@@ -102,6 +126,22 @@ function StaffMemberCard({ member }: { member: StaffMember }) {
             ) : null}
           </dd>
         </div>
+        {member.piazzaHours && member.piazzaHours.length > 0 ? (
+          <div className="sm:col-span-2">
+            <dt className="font-sans text-xs font-semibold uppercase tracking-wide text-neutral-500">
+              Piazza hours
+            </dt>
+            <dd>
+              <ul className="list-disc pl-5">
+                {member.piazzaHours.map((slot) => (
+                  <li key={`piazza-${slot.days}-${slot.time}`}>
+                    {slot.days}: {slot.time}
+                  </li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        ) : null}
       </dl>
 
       {member.piazzaNote ? (
@@ -120,6 +160,18 @@ function StaffMemberCard({ member }: { member: StaffMember }) {
           ))}
         </p>
       ) : null}
+      {queueEnabledForMember(member) ? (
+        <p className="mt-3 font-sans text-sm">
+          Live check-in line (walk-up / Teams — not a booking calendar):{" "}
+          <Link href={officeHoursQueueHref(member.id, sectionId)}>Join line</Link>
+          {" · "}
+          <Link href={officeHoursQueueHref(member.id, sectionId)}>View line</Link>
+        </p>
+      ) : (
+        <p className="mt-3 text-sm text-neutral-700">
+          Piazza only — no live office-hour line.
+        </p>
+      )}
     </article>
   );
 }
@@ -196,7 +248,11 @@ export function StaffOfficeHoursContent({
             </p>
           ) : null}
           {group.members.map((member) => (
-            <StaffMemberCard key={member.id} member={member} />
+            <StaffMemberCard
+              key={member.id}
+              member={member}
+              sectionId={sectionId}
+            />
           ))}
         </section>
       ))}

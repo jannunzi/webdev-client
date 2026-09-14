@@ -10,8 +10,10 @@ export default function OfficeHoursPage() {
         lede={
           <p className="mt-4 text-[1.05rem] text-neutral-800">
             Choose your section. Each view shows only that section’s instructor
-            and TAs. Shared staff appear in every section. Phone numbers and
-            Zoom links were not posted — none are listed here.
+            and TAs. Jose appears in every section. Giuseppe is Piazza-only
+            (no live line). Confirmed Teams hours and phones are listed; Zoom
+            links are not invented. The live line is walk-up / Teams check-in,
+            not calendar booking.
           </p>
         }
       />

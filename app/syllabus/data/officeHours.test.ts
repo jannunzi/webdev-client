@@ -6,8 +6,10 @@ import {
   cs561009TaNote,
   officeHourRowsForSection,
   officeHoursIntro,
+  officeHoursQueueHref,
   piazzaBoardForSection,
   piazzaBoards,
+  queueEnabledForMember,
   staffGroupsForSection,
   staffMembers,
   staffMembersForSection,
@@ -23,6 +25,14 @@ const syllabusNav = readFileSync(
 );
 const syllabusView = readFileSync(
   new URL("../components/SyllabusView.tsx", import.meta.url),
+  "utf8",
+);
+const piazzaHoursView = readFileSync(
+  new URL("../../piazza-hours/PiazzaHoursView.tsx", import.meta.url),
+  "utf8",
+);
+const officeHoursPage = readFileSync(
+  new URL("../../office-hours/page.tsx", import.meta.url),
   "utf8",
 );
 
@@ -110,7 +120,8 @@ describe("Fall 2026 staff office hours (per section)", () => {
       cs561009.find((group) => group.id === "section-tas")?.note,
       cs561009TaNote,
     );
-    assert.match(cs561009TaNote, /TBD/);
+    assert.match(cs561009TaNote, /TBA/);
+    assert.match(cs561009TaNote, /Piazza-only/i);
   });
 
   it("uses Northeastern school email as primary when one was posted", () => {
@@ -134,32 +145,47 @@ describe("Fall 2026 staff office hours (per section)", () => {
     );
   });
 
-  it("marks missing hours TBD and does not invent Zoom or phone", () => {
+  it("keeps Jose and Anurag TBD, Giuseppe Piazza-only, and does not invent Zoom", () => {
     const json = JSON.stringify(staffMembers);
-    assert.doesNotMatch(json, /zoom/i);
-    assert.doesNotMatch(json, /\bphone\b/i);
-    assert.doesNotMatch(json, /\+\d/);
+    assert.doesNotMatch(json, /zoom\.us/i);
+    assert.doesNotMatch(json, /zoom\.com/i);
 
-    for (const id of [
-      "jose-annunziato",
-      "giuseppe-marotta",
-      "anurag-bheemappa",
-      "shloka-trivedi",
-    ]) {
-      const member = BY_ID[id];
-      assert.equal(member?.hoursStatus, "tbd");
-      assert.deepEqual(member?.hours, []);
-      assert.match(member?.hoursSummary ?? "", /TBD/i);
-    }
+    assert.equal(BY_ID["jose-annunziato"]?.hoursStatus, "tbd");
+    assert.deepEqual(BY_ID["jose-annunziato"]?.hours, []);
+    assert.match(BY_ID["jose-annunziato"]?.hoursSummary ?? "", /TBD/i);
+
+    assert.equal(BY_ID["anurag-bheemappa"]?.hoursStatus, "tbd");
+    assert.deepEqual(BY_ID["anurag-bheemappa"]?.hours, []);
+    assert.match(BY_ID["anurag-bheemappa"]?.hoursSummary ?? "", /TBD/i);
+
+    assert.equal(BY_ID["giuseppe-marotta"]?.piazzaOnly, true);
+    assert.equal(queueEnabledForMember(BY_ID["giuseppe-marotta"]!), false);
+    assert.match(BY_ID["giuseppe-marotta"]?.hoursSummary ?? "", /Piazza only/i);
   });
 
-  it("keeps Tisha and Aryan Khoury hours on CS 5610-02 only", () => {
+  it("publishes confirmed 2026-09-14 hours, phones, and Teams names", () => {
+    const shloka = BY_ID["shloka-trivedi"];
+    assert.equal(shloka?.hoursStatus, "posted");
+    assert.equal(shloka?.email, "trivedi.shl@northeastern.edu");
+    assert.equal(shloka?.phone, "+1 857-427-7547");
+    assert.equal(shloka?.teams, "trivedi.shl@northeastern.edu");
+    assert.deepEqual(shloka?.hours, [
+      { days: "Tuesday", time: "11am–12pm" },
+      { days: "Wednesday", time: "11am–12pm" },
+      { days: "Thursday", time: "11am–1pm" },
+    ]);
+    assert.deepEqual(shloka?.piazzaHours, [
+      { days: "Tuesday", time: "9–11am" },
+      { days: "Wednesday", time: "9–11am" },
+    ]);
+
     const tisha = BY_ID["tisha-kotadia"];
     assert.equal(tisha?.hoursStatus, "posted");
+    assert.equal(tisha?.phone, "+1 857-605-9277");
+    assert.equal(tisha?.teams, "@Tisha Sujal Kotadia");
     assert.deepEqual(tisha?.hours, [
-      { days: "Thursday", time: "7–9am and 12:30–2:30pm" },
-      { days: "Friday", time: "7–9am and 12:30–2:30pm" },
-      { days: "Saturday", time: "7–9am" },
+      { days: "Monday", time: "8–10am" },
+      { days: "Thursday", time: "8–10am" },
     ]);
     assert.ok(
       officeHourRowsForSection("cs5610-02").some(
@@ -171,6 +197,14 @@ describe("Fall 2026 staff office hours (per section)", () => {
         (row) => row.name === "Tisha Sujal Kotadia",
       ),
     );
+
+    const aryan = BY_ID["aryan-mehta"];
+    assert.equal(aryan?.phone, "857-507-0827");
+    assert.equal(aryan?.teams, "@Aryan Mehta");
+    assert.deepEqual(aryan?.hours, [
+      { days: "Friday", time: "9–11am" },
+      { days: "Saturday", time: "9–11am" },
+    ]);
   });
 
   it("points each section at its own Piazza board and does not invent CS 5610-09", () => {
@@ -198,7 +232,18 @@ describe("Fall 2026 staff office hours (per section)", () => {
     assert.match(syllabusNav, /href: "#office-hours"/);
     assert.match(officeHoursView, /staffGroupsForSection\(sectionId\)/);
     assert.match(officeHoursView, /piazzaBoardForSection/);
-    assert.doesNotMatch(officeHoursView, /tel:/);
+    assert.match(officeHoursView, /Join line/);
+    assert.match(officeHoursView, /View line/);
+    assert.match(officeHoursView, /officeHoursQueueHref/);
     assert.doesNotMatch(officeHoursView, /zoom\.us/i);
+    assert.equal(
+      officeHoursQueueHref("shloka-trivedi", "cs4550-01"),
+      "/office-hours/queue/shloka-trivedi?section=cs4550-01",
+    );
+    assert.match(piazzaHoursView, /staffMembersForSection/);
+    assert.match(piazzaHoursView, /piazzaHoursSummary/);
+    assert.match(piazzaHoursView, /Piazza-only/);
+    assert.match(officeHoursPage, /OfficeHoursView/);
+    assert.match(officeHoursPage, /Giuseppe is Piazza-only/);
   });
 });
