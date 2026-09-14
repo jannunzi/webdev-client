@@ -426,6 +426,7 @@ code.quiz-prompt-code {
 .lecture-slide {
   container-type: inline-size;
   container-name: lecture-slide;
+  --lecture-block-font-scale: 1;
 }
 
 .lecture-slide-title {
@@ -468,7 +469,7 @@ code.quiz-prompt-code {
 
 .lecture-slide-spacious .lecture-slide-bullets {
   padding-left: 2rem;
-  font-size: 2.25rem;
+  font-size: calc(2.25rem * var(--lecture-block-font-scale, 1));
 }
 
 .lecture-slide-spacious .lecture-slide-bullets > li + li {
@@ -477,7 +478,7 @@ code.quiz-prompt-code {
 
 .lecture-slide-dense .lecture-slide-bullets {
   padding-left: 1.75rem;
-  font-size: 1.7rem;
+  font-size: calc(1.7rem * var(--lecture-block-font-scale, 1));
 }
 
 .lecture-slide-dense .lecture-slide-bullets > li + li {
@@ -486,21 +487,21 @@ code.quiz-prompt-code {
 
 @media (min-width: 640px) {
   .lecture-slide-spacious .lecture-slide-bullets {
-    font-size: 2.75rem;
+    font-size: calc(2.75rem * var(--lecture-block-font-scale, 1));
   }
 
   .lecture-slide-dense .lecture-slide-bullets {
-    font-size: 1.95rem;
+    font-size: calc(1.95rem * var(--lecture-block-font-scale, 1));
   }
 }
 
 @media (min-width: 1024px) {
   .lecture-slide-spacious .lecture-slide-bullets {
-    font-size: 3.15rem;
+    font-size: calc(3.15rem * var(--lecture-block-font-scale, 1));
   }
 
   .lecture-slide-dense .lecture-slide-bullets {
-    font-size: 2.2rem;
+    font-size: calc(2.2rem * var(--lecture-block-font-scale, 1));
   }
 }
 
@@ -549,7 +550,7 @@ code.quiz-prompt-code {
 
 .lecture-slide .book-code-block-body {
   padding: 0;
-  font-size: 1.25rem;
+  font-size: calc(1.25rem * var(--lecture-block-font-scale, 1));
   line-height: 1.4;
 }
 
@@ -564,7 +565,7 @@ code.quiz-prompt-code {
 
 @media (min-width: 768px) {
   .lecture-slide .book-code-block-body {
-    font-size: 1.5rem;
+    font-size: calc(1.5rem * var(--lecture-block-font-scale, 1));
   }
 }
 
@@ -588,36 +589,26 @@ code.quiz-prompt-code {
   max-width: 100%;
 }
 
-.lecture-block-font-sm .lecture-slide-bullets {
-  font-size: 0.75em;
+/*
+ * Instructor font-size is a scale on the restored rem defaults — never a
+ * replacement with body-relative em. #83's md=1em / sm=0.75em rules won
+ * specificity over spacious 2.25–3.15rem and crushed student/presenter
+ * bullets on every adapted deck.
+ */
+.lecture-block-font-sm {
+  --lecture-block-font-scale: 0.72;
 }
 
-.lecture-block-font-md .lecture-slide-bullets {
-  font-size: 1em;
+.lecture-block-font-md {
+  --lecture-block-font-scale: 1;
 }
 
-.lecture-block-font-lg .lecture-slide-bullets {
-  font-size: 1.15em;
+.lecture-block-font-lg {
+  --lecture-block-font-scale: 1.15;
 }
 
-.lecture-block-font-xl .lecture-slide-bullets {
-  font-size: 1.35em;
-}
-
-.lecture-block-font-sm .book-code-block-body {
-  font-size: 1rem;
-}
-
-.lecture-block-font-md .book-code-block-body {
-  font-size: inherit;
-}
-
-.lecture-block-font-lg .book-code-block-body {
-  font-size: 1.65rem;
-}
-
-.lecture-block-font-xl .book-code-block-body {
-  font-size: 1.85rem;
+.lecture-block-font-xl {
+  --lecture-block-font-scale: 1.35;
 }
 
 .lecture-slide-block-title {

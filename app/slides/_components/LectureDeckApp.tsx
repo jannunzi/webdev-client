@@ -288,14 +288,12 @@ export default function LectureDeckApp({
             ) : (
               <span>Browser draft — not in the repo yet</span>
             )}
-            {blockModel || isDraftDeck ? (
-              <Link
-                href={editHref}
-                className="text-neutral-500 no-underline hover:underline"
-              >
-                {editMode ? "Done" : "Edit"}
-              </Link>
-            ) : null}
+            <Link
+              href={editHref}
+              className="text-neutral-500 no-underline hover:underline"
+            >
+              {editMode ? "Done" : "Edit"}
+            </Link>
           </p>
         </div>
         {editMode ? (

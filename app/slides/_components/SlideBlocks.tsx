@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   BLOCK_FONT_SIZES,
   BLOCK_FRAME_SIZES,
+  blockFontClass,
   createBulletsBlock,
   createCodeBlock,
   createComponentBlock,
@@ -38,7 +39,7 @@ const CODE_LANGUAGES = [
 const COMPONENT_OPTIONS = listSlideComponentOptions();
 
 function fontClass(size?: BlockFontSize): string {
-  return size ? `lecture-block-font-${size}` : "lecture-block-font-md";
+  return blockFontClass(size);
 }
 
 function frameClass(size?: BlockFrameSize): string {
@@ -219,7 +220,10 @@ function BlockEditor({
 }) {
   function setFont(fontSize: BlockFontSize) {
     if (block.type === "component") return;
-    onChange({ ...block, fontSize });
+    onChange({
+      ...block,
+      fontSize: fontSize === "md" ? undefined : fontSize,
+    });
   }
 
   function setSize(size: BlockFrameSize) {

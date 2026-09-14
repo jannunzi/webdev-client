@@ -327,6 +327,15 @@ export function isBlockFontSize(value: unknown): value is BlockFontSize {
   );
 }
 
+/**
+ * Student/presenter view uses the restored lecture rem defaults when
+ * `fontSize` is omitted. `md` is that same default — do not wrap every
+ * block in `lecture-block-font-md` or the #83 em overrides win.
+ */
+export function blockFontClass(size?: BlockFontSize): string {
+  return size ? `lecture-block-font-${size}` : "";
+}
+
 export function isBlockFrameSize(value: unknown): value is BlockFrameSize {
   return value === "sm" || value === "md" || value === "lg";
 }

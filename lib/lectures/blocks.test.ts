@@ -8,6 +8,7 @@ import {
   deckUsesBlockModel,
   isBlockSlide,
   moveItem,
+  blockFontClass,
   toBlockSlide,
   toBlockSlides,
 } from "./blocks";
@@ -62,6 +63,22 @@ describe("slide block model", () => {
     if (block.blocks[2]?.type === "component") {
       assert.equal(block.blocks[2].componentId, "html-skeleton");
     }
+  });
+
+  it("omits a font class until the instructor picks a non-default size", () => {
+    const adapted = toBlockSlide({
+      id: "legacy",
+      title: "Legacy",
+      bullets: ["Talking point"],
+    });
+    const bullets = adapted.blocks[0];
+    assert.equal(bullets?.type, "bullets");
+    if (bullets?.type === "bullets") {
+      assert.equal(bullets.fontSize, undefined);
+    }
+    assert.equal(blockFontClass(undefined), "");
+    assert.equal(blockFontClass("md"), "lecture-block-font-md");
+    assert.equal(blockFontClass("sm"), "lecture-block-font-sm");
   });
 
   it("leaves already-block slides unchanged and starter decks on the block model", () => {
