@@ -210,9 +210,12 @@ export { htmlToSlideText, lectureEditHref, lectureSearchIsEdit, slideTextToHtml 
 export {
   LECTURE_PRESENT_STATE,
   SWIPE_MIN_PX,
+  isLectureNextUpSlide,
   isLecturePresentHistoryState,
+  lectureDeckHref,
   lecturePresentHref,
   lectureSearchIsPresent,
+  lectureShouldShowContinue,
   nativeFullscreenEnabled,
   nativeFullscreenElement,
   preferNativeFullscreen,

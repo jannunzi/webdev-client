@@ -14,8 +14,10 @@ import {
   LECTURE_PRESENT_STATE,
   exitNativeFullscreen,
   isLecturePresentHistoryState,
+  lectureDeckHref,
   lecturePresentHref,
   lectureSearchIsPresent,
+  lectureShouldShowContinue,
   nativeFullscreenElement,
   preferNativeFullscreen,
   readPresentEnvironment,
@@ -372,6 +374,19 @@ export default function LectureDeckShell({
   const percent = slides.length === 0 ? 0 : ((index + 1) / slides.length) * 100;
   const titleClass = titleClasses({ kind });
   const hintSize = "lecture-slide-hint";
+  const showContinue = lectureShouldShowContinue({
+    slide,
+    index,
+    last,
+    hasNextDeck: Boolean(nextDeck),
+  });
+  const continueHref = nextDeck
+    ? lectureDeckHref({
+        slug: nextDeck.slug,
+        slideNumber: 1,
+        present: isPresenting,
+      })
+    : undefined;
   const stageClass = isPresenting
     ? `lecture-slide lecture-slide-${density} h-full w-full min-w-0 overflow-x-hidden overflow-y-auto px-5 py-6 sm:px-8 sm:py-7 ${kindFrame(kind)}${
         fallbackPresent ? " lecture-slide-present-fallback" : ""
@@ -492,6 +507,19 @@ export default function LectureDeckShell({
             >
               <span className="font-semibold">Try this: </span>
               <SlideText text={slide.interactiveHint} density={density} />
+            </p>
+          ) : null}
+          {showContinue && continueHref && nextDeck ? (
+            <p className="lecture-slide-continue">
+              <Link
+                href={continueHref}
+                className={`lecture-slide-continue-link${
+                  kind === "title" ? " lecture-slide-continue-link-hero" : ""
+                }`}
+                aria-label={`Continue to ${nextDeck.title}`}
+              >
+                Continue
+              </Link>
             </p>
           ) : null}
         </article>

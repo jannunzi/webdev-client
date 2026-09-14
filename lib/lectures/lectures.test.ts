@@ -55,9 +55,12 @@ import {
 import { slidePaneOverflows, slidePaneScrollStep } from "./slide-pane";
 import {
   LECTURE_PRESENT_STATE,
+  isLectureNextUpSlide,
   isLecturePresentHistoryState,
+  lectureDeckHref,
   lecturePresentHref,
   lectureSearchIsPresent,
+  lectureShouldShowContinue,
   nativeFullscreenEnabled,
   nativeFullscreenElement,
   preferNativeFullscreen,
@@ -2578,6 +2581,75 @@ describe("lecture decks", () => {
     );
     assert.equal(isLecturePresentHistoryState(null), false);
     assert.equal(isLecturePresentHistoryState(LECTURE_PRESENT_STATE), true);
+  });
+
+  it("builds a Continue href that keeps presenter mode across decks", () => {
+    assert.equal(
+      lectureDeckHref({ slug: "creating-a-nextjs-react-application" }),
+      "/slides/creating-a-nextjs-react-application#slide-1",
+    );
+    assert.equal(
+      lectureDeckHref({
+        slug: "creating-a-nextjs-react-application",
+        slideNumber: 1,
+        present: true,
+      }),
+      "/slides/creating-a-nextjs-react-application?fullscreen=1#slide-1",
+    );
+    assert.equal(isLectureNextUpSlide({ id: "next-up", title: "Example DOM" }), true);
+    assert.equal(isLectureNextUpSlide({ id: "next-up", title: "Next: colors" }), true);
+    assert.equal(isLectureNextUpSlide({ id: "cascade", title: "Next: colors" }), true);
+    assert.equal(
+      isLectureNextUpSlide({ id: "recap", title: "Next.js routes recap" }),
+      false,
+    );
+    assert.equal(
+      lectureShouldShowContinue({
+        slide: { id: "next-up", title: "Next: colors" },
+        index: 8,
+        last: 8,
+        hasNextDeck: true,
+      }),
+      true,
+    );
+    assert.equal(
+      lectureShouldShowContinue({
+        slide: { id: "next-up", title: "Next: A6 deliverables" },
+        index: 10,
+        last: 10,
+        hasNextDeck: false,
+      }),
+      false,
+    );
+    assert.equal(
+      lectureShouldShowContinue({
+        slide: { id: "patterns", title: "Design Patterns" },
+        index: 12,
+        last: 12,
+        hasNextDeck: true,
+      }),
+      true,
+    );
+    assert.equal(
+      lectureShouldShowContinue({
+        slide: { id: "title", title: "GENERATING IMAGES" },
+        index: 0,
+        last: 8,
+        hasNextDeck: true,
+      }),
+      false,
+    );
+    const shell = readFileSync(
+      join(process.cwd(), "app/slides/_components/LectureDeckShell.tsx"),
+      "utf8",
+    );
+    assert.match(shell, /lectureShouldShowContinue/);
+    assert.match(shell, /lectureDeckHref/);
+    assert.match(shell, />\s*Continue\s*</);
+    assert.match(shell, /present: isPresenting/);
+    const css = readFileSync(join(process.cwd(), "app/book/book.css"), "utf8");
+    assert.match(css, /\.lecture-slide-continue-link/);
+    assert.match(css, /\.lecture-slide-continue-link-hero/);
   });
 
   it("turns horizontal swipes into slide steps and ignores vertical pans", () => {
