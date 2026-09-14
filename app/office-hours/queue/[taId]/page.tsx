@@ -106,7 +106,9 @@ export default async function OfficeHourQueuePage({
   const member = resolved.member;
   const previewRole =
     isOfficeHourQueuePreview() &&
-    (previewParam === "student" || previewParam === "ta")
+    (previewParam === "student" ||
+      previewParam === "ta" ||
+      previewParam === "join")
       ? previewParam
       : undefined;
 
@@ -155,7 +157,7 @@ export default async function OfficeHourQueuePage({
     joinBlockedReason = joinReason("unauthenticated");
   }
 
-  if (previewRole === "student") {
+  if (previewRole === "student" || previewRole === "join") {
     canJoin = true;
     canManage = false;
     joinBlockedReason = undefined;

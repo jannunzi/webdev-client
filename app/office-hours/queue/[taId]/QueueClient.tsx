@@ -47,7 +47,7 @@ function LineList({
   }
 
   return (
-    <ol className="space-y-2">
+    <ul className="list-none space-y-2 p-0">
       {line.map((item, index) => (
         <li
           key={item.id}
@@ -121,7 +121,7 @@ function LineList({
           </div>
         </li>
       ))}
-    </ol>
+    </ul>
   );
 }
 
@@ -294,9 +294,24 @@ export default function QueueClient({
             </button>
           )}
         </div>
-      ) : joinBlockedReason ? (
-        <p className="text-sm text-neutral-700">{joinBlockedReason}</p>
-      ) : null}
+      ) : canManage ? (
+        joinBlockedReason ? (
+          <p className="text-sm text-neutral-700">{joinBlockedReason}</p>
+        ) : null
+      ) : (
+        <div className="space-y-2">
+          <button
+            type="button"
+            disabled
+            className="rounded border border-neutral-800 bg-neutral-800 px-3 py-1.5 text-sm text-white opacity-50"
+          >
+            Join line
+          </button>
+          {joinBlockedReason ? (
+            <p className="text-sm text-neutral-700">{joinBlockedReason}</p>
+          ) : null}
+        </div>
+      )}
 
       <section aria-labelledby="live-line-heading">
         <h3

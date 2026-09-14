@@ -1,7 +1,9 @@
 import { ESTIMATE_MINUTES_PER_STUDENT, type QueueView } from "./queue";
 
+export type QueuePreviewRole = "student" | "ta" | "join";
+
 /** Fixture line used only when `OH_QUEUE_PREVIEW=1` (non-production). */
-export function previewQueueView(role: "student" | "ta"): QueueView {
+export function previewQueueView(role: QueuePreviewRole): QueueView {
   const line = [
     {
       id: "preview-1",
