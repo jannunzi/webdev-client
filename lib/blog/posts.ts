@@ -6,6 +6,57 @@ import type { BlogPost } from "./types";
  */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "react-19-3",
+    title: "React 19.3: View Transitions, Fragment Refs, browser(), and Trusted Types",
+    publishedAt: "2026-09-14T16:00:00.000Z",
+    tags: ["react", "course"],
+    relatedChapters: ["ch1", "ch3"],
+    intro: [
+      "On September 9, 2026, the React Team announced that React 19.3 is on npm. View Transitions and Fragment Refs, shared as experimental APIs last year, are stable in this release.",
+      "The ViewTransition component animates elements as they enter, exit, move, or resize using the browser View Transition API. You can pass a ref to a Fragment to get a FragmentInstance for working with sibling DOM children as a group. A component can call use(browser()) to opt out of server-side rendering: the nearest Suspense fallback shows on the server, then the component renders after hydration. React 19.3 also passes Trusted Types values through without string coercion so a Content-Security-Policy require-trusted-types-for policy can protect injection sinks such as innerHTML.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. Stay on the React version this repo already pins unless you are experimenting, and follow the original post for APIs and examples.",
+    ],
+    source: {
+      title: "React 19.3",
+      url: "https://react.dev/blog/2026/09/09/react-19-3",
+      publisher: "React",
+    },
+  },
+  {
+    slug: "ai-sdk-7-agent-platform",
+    title: "AI SDK 7: agents, tools, and realtime beyond text",
+    publishedAt: "2026-09-14T16:00:00.000Z",
+    tags: ["ai", "course"],
+    relatedChapters: ["ch1"],
+    intro: [
+      "On June 25, 2026, Vercel published AI SDK 7, the TypeScript SDK they describe as the layer for building AI applications, features, frameworks, and agents across model providers. The post frames the release as production depth for agent work: developing agents (reasoning control, typed tool and runtime context, provider file and skill uploads, MCP Apps, and a terminal UI), running them (tool approvals, durable WorkflowAgent, timeouts, and sandbox sessions), integrating established harnesses, and observing runs with telemetry and lifecycle events.",
+      "The same announcement also covers experimental provider-agnostic realtime voice sessions and generateVideo. A v7 codemod is mentioned for upgrades from AI SDK 6.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. If you try the SDK, start from the original post rather than assuming last year's AI SDK APIs.",
+    ],
+    source: {
+      title: "AI SDK 7",
+      url: "https://vercel.com/blog/ai-sdk-7",
+      publisher: "Vercel",
+    },
+  },
+  {
+    slug: "nextjs-security-middleware-proxy",
+    title: "Next.js security: Middleware and Proxy are not the only authorization layer",
+    publishedAt: "2026-09-14T16:00:00.000Z",
+    tags: ["nextjs", "security", "course"],
+    relatedChapters: ["ch1", "ch5"],
+    intro: [
+      "On September 14, 2026, iSyncEvolution published a CTO-oriented guide to Next.js Middleware and Proxy authorization risk. It reviews CVE-2025-29927, a critical Middleware authorization bypass (CVSS 9.1) patched in releases including 12.3.5, 13.5.9, 14.2.25, and 15.2.3, plus later 2026 Middleware/Proxy bypasses disclosed in May (App Router segment-prefetch, Pages Router i18n, dynamic route parameters) and July (certain App Router apps using Turbopack and a single i18n locale in the 16.0.x–16.2.x range).",
+      "The through-line is architectural: do not treat Middleware or, in Next.js 16, proxy.ts as the only authorization layer. The guide repeats the recommended workaround — enforce authorization in server-side page, Route Handler, Server Action, or data-access logic — and notes that renaming middleware.ts to proxy.ts is not itself a security migration.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. This course site already uses a proxy file for request handling; that does not replace checks at protected operations. Read the original article and the linked Next.js advisories before changing lab auth.",
+    ],
+    source: {
+      title: "Next.js Security Best Practices: CTO Guide to Middleware & Proxy Risks",
+      url: "https://www.isyncevolution.com/blog/nextjs-security-best-practices",
+      publisher: "iSyncEvolution",
+    },
+  },
+  {
     slug: "august-2026-nextjs-security-release",
     title: "August 2026 Next.js security release: patch 16.3.3",
     publishedAt: "2026-08-25T18:00:00.000Z",
