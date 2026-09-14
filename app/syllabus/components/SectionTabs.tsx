@@ -4,10 +4,12 @@ export default function SectionTabs({
   sections,
   activeId,
   onSelect,
+  controlsId = "section-panel",
 }: {
   sections: CourseSection[];
   activeId: string;
   onSelect: (id: string) => void;
+  controlsId?: string;
 }) {
   return (
     <div className="sticky top-0 z-10 mb-6 border-b border-neutral-200 bg-[#fafafa]/95 py-3 backdrop-blur-sm">
@@ -28,7 +30,7 @@ export default function SectionTabs({
               role="tab"
               id={`syllabus-tab-${section.id}`}
               aria-selected={selected}
-              aria-controls="syllabus-agenda-panel"
+              aria-controls={controlsId}
               onClick={() => onSelect(section.id)}
               className={
                 selected

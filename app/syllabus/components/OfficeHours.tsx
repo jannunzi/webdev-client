@@ -1,13 +1,13 @@
 import Link from "next/link";
 import {
   officeHourColumns,
-  officeHourRows,
+  officeHourRowsForSection,
   officeHoursIntro,
   officeHoursPlaceholder,
-  piazzaBoards,
-  staffGroups,
+  piazzaBoardForSection,
+  staffGroupsForSection,
 } from "../data/officeHours";
-import type { StaffMember } from "../data/types";
+import type { PiazzaBoard, StaffMember } from "../data/types";
 import SyllabusSection from "./SyllabusSection";
 
 function EmailLink({ email }: { email: string }) {
@@ -124,35 +124,44 @@ function StaffMemberCard({ member }: { member: StaffMember }) {
   );
 }
 
-export function PiazzaBoardLinks() {
+export function PiazzaBoardLinks({ sectionId }: { sectionId: string }) {
+  const board: PiazzaBoard = piazzaBoardForSection(sectionId);
+  if (!board.href) {
+    return (
+      <p>
+        Piazza is the primary Q&A for this section. The CS 5610-09 class board
+        URL is <span className="italic text-amber-900">TBD</span> — use the
+        board posted on Canvas/Piazza. Ask course questions there, not email.
+      </p>
+    );
+  }
   return (
     <p>
-      Course Q&A:{" "}
-      {piazzaBoards.map((board, index) => (
-        <span key={board.id}>
-          {index > 0 ? " · " : null}
-          <a href={board.href} target="_blank" rel="noreferrer">
-            {board.label}
-          </a>
-        </span>
-      ))}
-      . CS 5610-09 should use the board posted for that section on Canvas/Piazza
-      — a separate class URL was not listed on this site.
+      Course Q&A for this section:{" "}
+      <a href={board.href} target="_blank" rel="noreferrer">
+        {board.label}
+      </a>
+      . Ask course questions on Piazza, not email.
     </p>
   );
 }
 
 export function StaffOfficeHoursContent({
+  sectionId,
   showPageLinks = true,
 }: {
+  sectionId: string;
   showPageLinks?: boolean;
 }) {
+  const groups = staffGroupsForSection(sectionId);
+  const rows = officeHourRowsForSection(sectionId);
+
   return (
     <>
       <p className="rounded-md border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm">
         {officeHoursIntro}
       </p>
-      <PiazzaBoardLinks />
+      <PiazzaBoardLinks sectionId={sectionId} />
       {showPageLinks ? (
         <p>
           Dedicated pages: <Link href="/office-hours">Office Hours</Link>
@@ -169,7 +178,7 @@ export function StaffOfficeHoursContent({
       )}
       <p>{officeHoursPlaceholder}</p>
 
-      {staffGroups.map((group) => (
+      {groups.map((group) => (
         <section
           key={group.id}
           aria-labelledby={`staff-group-${group.id}`}
@@ -207,7 +216,7 @@ export function StaffOfficeHoursContent({
             </tr>
           </thead>
           <tbody>
-            {officeHourRows.map((row) => (
+            {rows.map((row) => (
               <tr key={row.name} className="border-b border-neutral-200 align-top">
                 <td className="px-3 py-2">{row.name}</td>
                 <td className="px-3 py-2">{row.role}</td>
@@ -226,10 +235,10 @@ export function StaffOfficeHoursContent({
   );
 }
 
-export default function OfficeHours() {
+export default function OfficeHours({ sectionId }: { sectionId: string }) {
   return (
     <SyllabusSection id="office-hours" title="Staff and office hours">
-      <StaffOfficeHoursContent />
+      <StaffOfficeHoursContent sectionId={sectionId} />
     </SyllabusSection>
   );
 }

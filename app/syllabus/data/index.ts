@@ -47,15 +47,19 @@ export {
 export { assignments, assignmentsIntro } from "./assignments";
 export { projectBlurb } from "./project";
 export {
+  ALL_SECTION_IDS,
   PIAZZA_PRIMARY_HREF,
   cs561009TaNote,
   officeHourColumns,
   officeHourRows,
+  officeHourRowsForSection,
   officeHoursIntro,
   officeHoursPlaceholder,
+  piazzaBoardForSection,
   piazzaBoards,
-  staffGroups,
+  staffGroupsForSection,
   staffMembers,
+  staffMembersForSection,
 } from "./officeHours";
 export type {
   AcademicCalendarEvent,

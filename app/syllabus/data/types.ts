@@ -176,9 +176,11 @@ export type OfficeHourSlot = {
 };
 
 export type PiazzaBoard = {
+  /** Course section id (`cs4550-01`, `cs5610-02`, `cs5610-09`). */
   id: string;
   label: string;
-  href: string;
+  /** Official class URL when posted. Omit when the board is still TBD. */
+  href?: string;
 };
 
 export type PiazzaSource = {
@@ -190,6 +192,8 @@ export type StaffMember = {
   id: string;
   name: string;
   role: StaffRole;
+  /** Official section ids this person covers (`cs4550-01`, …). */
+  sectionIds: string[];
   /** Student-facing section coverage, e.g. “All sections”. */
   sectionLabel: string;
   /** Northeastern / Khoury email when posted; otherwise the only posted address. */
