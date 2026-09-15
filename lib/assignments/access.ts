@@ -32,7 +32,10 @@ export {
 
 /**
  * Rostered students and staff (including View as student) may use the form.
- * Persist is decided separately so impersonation can smoke-test without writes.
+ * Sign-in and a roster match (including built-in Ada / Bob) are checked
+ * before the Clerk+Mongo env gate so those reasons are not mislabeled as
+ * “not configured.” Persist is decided separately so impersonation can
+ * smoke-test without writes.
  */
 export function assignmentSubmitAccess(input: {
   signedIn: boolean;
@@ -40,10 +43,10 @@ export function assignmentSubmitAccess(input: {
   isActualStaff: boolean;
   roster: RosterLookupResult;
 }): AssignmentSubmitGate {
-  if (!input.configured) return { ok: false, code: "not_configured" };
   if (!input.signedIn) return { ok: false, code: "unauthenticated" };
   if (input.isActualStaff) return { ok: true };
   if (input.roster.status === "matched") return { ok: true };
+  if (!input.configured) return { ok: false, code: "not_configured" };
   if (input.roster.status === "empty") return { ok: false, code: "roster_empty" };
   if (input.roster.status === "not_configured") {
     return { ok: false, code: "not_configured" };

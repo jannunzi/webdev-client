@@ -42,6 +42,7 @@ export {
 export {
   a1SubmissionFormState,
   gateReasonFromAccess,
+  resolveA1SubmitVisibility,
   submissionGateCopy,
 } from "./submission-form";
 export type { SubmissionGateReason } from "./submission-form";

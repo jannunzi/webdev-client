@@ -39,3 +39,21 @@ export function demoRosterStudentByEmail(
   const email = normalizeEmail(value);
   return DEMO_ROSTER_STUDENTS.find((row) => normalizeEmail(row.email) === email);
 }
+
+/**
+ * Append Ada / Bob when Atlas does not already have those emails so People
+ * and in-memory matching stay consistent without a required seed step.
+ */
+export function mergeDemoRosterEntries(
+  entries: readonly CanvasRosterEntry[],
+): CanvasRosterEntry[] {
+  const keys = new Set(
+    entries
+      .map((row) => normalizeEmail(row.email))
+      .filter(Boolean),
+  );
+  const missing = DEMO_ROSTER_STUDENTS.filter(
+    (row) => !keys.has(normalizeEmail(row.email)),
+  );
+  return missing.length === 0 ? [...entries] : [...entries, ...missing];
+}

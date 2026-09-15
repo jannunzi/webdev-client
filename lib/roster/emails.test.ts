@@ -3,7 +3,9 @@ import { describe, it } from "node:test";
 import {
   canonicalEmailKey,
   collectClerkEmails,
+  collectSessionClaimEmails,
   emailMatchKeys,
+  mergeRosterLookupEmails,
   normalizeEmail,
   parseRosterEmailsEnv,
   preferredRosterEmail,
@@ -64,6 +66,47 @@ describe("roster emails", () => {
         "Jane.Doe@northeastern.edu",
       ),
       "jane.doe@northeastern.edu",
+    );
+  });
+
+  it("reads a top-level Clerk email string and session JWT claims", () => {
+    assert.deepEqual(
+      collectClerkEmails({
+        id: "user_ada",
+        email: "Ada@Ada.com",
+        emailAddresses: [],
+      }),
+      ["ada@ada.com"],
+    );
+    assert.deepEqual(collectSessionClaimEmails({ email: "ADA@ADA.COM" }), [
+      "ada@ada.com",
+    ]);
+    assert.deepEqual(
+      collectSessionClaimEmails({
+        email_address: "bob@bob.com",
+        primaryEmailAddress: { emailAddress: "Bob@Bob.com" },
+      }),
+      ["bob@bob.com"],
+    );
+    assert.deepEqual(
+      mergeRosterLookupEmails(["Ada@Ada.com"], ["ada@ada.com", "bob@bob.com"]),
+      ["ada@ada.com", "bob@bob.com"],
+    );
+    assert.deepEqual(
+      collectClerkEmails({
+        id: "user_raw",
+        emailAddresses: [],
+        raw: {
+          email_addresses: [{ email_address: "ada@ada.com" }],
+        },
+      }),
+      ["ada@ada.com"],
+    );
+    assert.deepEqual(
+      collectSessionClaimEmails({
+        user: { primary_email_address: "Bob@Bob.com" },
+      }),
+      ["bob@bob.com"],
     );
   });
 
