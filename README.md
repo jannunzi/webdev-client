@@ -93,9 +93,43 @@ npm run roster:import -- --replace path/to/canvas-people.csv
 JSON also works: `[{ "email": "jane.doe@northeastern.edu", "canvasUserId": "12345", "name": "Jane Doe" }]`.
 A sample file lives at `scripts/fixtures/canvas-roster.example.csv`.
 
+Matching is case-insensitive and treats Northeastern mailbox aliases as the
+same person (`northeastern.edu`, `husky.neu.edu`, `neu.edu`), including
+plus-address tags. Clerk primary, verified, remaining, and SSO/external
+account emails are all considered.
+
 While testing a single account, you can set `CANVAS_ROSTER_EMAILS` instead of
-importing. Matching uses Clerk emails (primary and verified first, then
-others), case-insensitive.
+importing.
+
+### Demo students (staff A1 testing)
+
+Two fake `canvas_roster` rows exist so staff can Sign up / Sign in and see
+the A1 GitHub + Vercel fields without using real student PII. Roster
+matching is the email string only — these are **not** `@northeastern.edu`
+addresses.
+
+| Name | Email | Section |
+| --- | --- | --- |
+| Ada Lovelace | ada@ada.com | CS4550 CRN 11464 |
+| Bob Marley | bob@bob.com | CS4550 CRN 11464 |
+
+They live in MongoDB Atlas (`canvas_roster`), not in the git checkout.
+The Next.js deploy does **not** write them automatically.
+
+```bash
+# Local or CI machine that can reach the same Atlas cluster as Vercel:
+npm run roster:seed-demo
+```
+
+Or, signed in as staff on `/people`, click **Ensure demo students**.
+Then create course-website accounts with those exact emails (`ada@ada.com`
+/ `bob@bob.com`) and open `/assignments/a1`. JSON fixture:
+`scripts/fixtures/demo-roster.json`.
+
+If Atlas already has the old `ada.lovelace@northeastern.edu` /
+`bob.marley@northeastern.edu` demo rows, run the seed (or the People
+button) again — it upserts `ada@ada.com` and `bob@bob.com`. Delete the
+old Northeastern demo docs in Atlas if they are still listed on People.
 
 A signed-in visitor who is **not** on the roster sees
 “Your account isn’t on the Canvas roster for this course” and **no** graded
@@ -172,6 +206,15 @@ requires a signed-in staff email, so a forged client cookie does nothing
 for students. Switch back with the same bar on every gated surface.
 
 Optional: set `IMPERSONATION_STUDENT_EMAIL` to override the dummy address.
+
+### Enable graded quizzes (staff only)
+
+Syllabus unlock/due dates are **display only**. A graded quiz does **not**
+open because “now” is inside that window. Staff (`INSTRUCTOR_EMAILS` /
+`TA_EMAILS`) enable or disable each quiz **per section** on `/quizzes/take`
+(Enable / Disable / Off). While disabled, students see the dates and cannot
+start or submit. Enable CS4550 to test with `ada@ada.com` / `bob@bob.com`,
+then Disable again.
 
 ### Exam sampling
 
@@ -251,8 +294,10 @@ keyed by user + assignment + criterion). Visitors who are not signed in keep
 progress in this browser only. The UI never mentions the auth vendor — the
 button says “Sign in with your Canvas email.”
 
-**A1 URL submit (Phase 2C).** Rostered students and staff can save a public
-Vercel deployment URL on `/assignments/a1` (GitHub is optional). Documents
+**A1 URL submit (Phase 2C).** Rostered students (matched by Canvas email,
+including Northeastern aliases) and staff can save a public
+Vercel deployment URL on `/assignments/a1` (GitHub is optional). Off-roster
+signed-in users see an explicit message instead of a blank form. Documents
 live in `assignment_submissions` (user + `a1`). After save — or via **Run
 checks** — the server normalizes the deploy to its origin, fetches `/`,
 `/labs`, `/labs/lab1`, and Kambaz account/course screens, then maps many

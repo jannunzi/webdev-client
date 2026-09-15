@@ -10,6 +10,10 @@ import {
   supportsUrlSubmission,
 } from "@/lib/assignments/access";
 import {
+  gateReasonFromAccess,
+  type SubmissionGateReason,
+} from "@/lib/assignments/submission-form";
+import {
   getAssignment,
   listAssignmentIds,
   rubricPointTotal,
@@ -47,7 +51,6 @@ import {
 } from "@/lib/roster/staff-access";
 import { COURSE_WEBSITE_ACCOUNT_COPY } from "@/lib/course-site/account-copy";
 import A1WorkArea from "../components/A1WorkArea";
-import type { SubmissionGateReason } from "../components/A1SubmissionForm";
 import AssignmentChapterLink from "../components/AssignmentChapterLink";
 import AssignmentChecklist from "../components/AssignmentChecklist";
 import AssignmentHubNav from "../components/AssignmentHubNav";
@@ -130,15 +133,7 @@ export default async function AssignmentDetailPage({
           roster,
         });
         canSubmit = access.ok && supportsUrlSubmission(assignment.id);
-        gateReason = access.ok
-          ? null
-          : access.code === "unauthenticated"
-            ? "sign_in"
-            : access.code === "not_on_roster"
-              ? "not_on_roster"
-              : access.code === "roster_empty"
-                ? "roster_empty"
-                : "not_configured";
+        gateReason = canSubmit ? null : gateReasonFromAccess(access);
 
         if (mongoReady) {
           try {

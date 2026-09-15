@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Ada Lovelace",
+    "email": "ada@ada.com",
+    "section": "CS4550 CRN 11464",
+    "canvasUserId": "demo-ada-lovelace",
+    "sisUserId": "demo-ada-lovelace",
+    "source": "demo"
+  },
+  {
+    "name": "Bob Marley",
+    "email": "bob@bob.com",
+    "section": "CS4550 CRN 11464",
+    "canvasUserId": "demo-bob-marley",
+    "sisUserId": "demo-bob-marley",
+    "source": "demo"
+  }
+]

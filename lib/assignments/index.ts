@@ -40,6 +40,12 @@ export {
   supportsUrlSubmission,
 } from "./access";
 export {
+  a1SubmissionFormState,
+  gateReasonFromAccess,
+  submissionGateCopy,
+} from "./submission-form";
+export type { SubmissionGateReason } from "./submission-form";
+export {
   computeAllOrNothingGrade,
   formatGradeSummary,
   proposedGradeFromResults,

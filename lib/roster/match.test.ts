@@ -48,11 +48,27 @@ describe("roster matching", () => {
       "bhatti.t@northeastern.edu",
     ]);
     assert.ok(filter);
-    const expr = filter.$expr as {
-      $in: [unknown, string[]];
-    };
-    assert.deepEqual(expr.$in[1], ["bhatti.t@northeastern.edu"]);
+    const clauses = filter.$or as { email: { $regex: string; $options: string } }[];
+    assert.ok(clauses.length >= 1);
+    assert.equal(clauses[0]?.email.$options, "i");
+    assert.match(clauses[0]?.email.$regex ?? "", /bhatti\\.t@northeastern\\.edu/);
     assert.equal(rosterEmailMatchFilter(["", "   "]), null);
+  });
+
+  it("matches Northeastern husky.neu.edu aliases and SIS-login emails", () => {
+    const result = matchRoster({
+      emails: ["jane.doe@husky.neu.edu"],
+      mongoEntries: [
+        {
+          email: "Jane.Doe@northeastern.edu",
+          sisUserId: "jane.doe@northeastern.edu",
+          section: "CS4550 CRN 11464",
+        },
+      ],
+      envEmails: [],
+      mongoCount: 1,
+    });
+    assert.equal(result.status, "matched");
   });
 
   it("matches optional Canvas user ids", () => {

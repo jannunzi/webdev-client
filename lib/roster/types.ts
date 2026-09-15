@@ -4,21 +4,31 @@ export type CanvasRosterEntry = {
   sisUserId?: string;
   name?: string;
   section?: string;
-  source?: "mongo" | "env" | "csv" | "json" | "impersonation";
+  source?: "mongo" | "env" | "csv" | "json" | "impersonation" | "demo";
   importedAt?: Date;
 };
 
 export type ClerkEmailLike = {
   id?: string;
-  emailAddress: string;
+  emailAddress?: string;
+  email_address?: string;
   verification?: { status?: string | null } | null;
 };
 
+export type ClerkExternalAccountLike = {
+  emailAddress?: string;
+  email_address?: string;
+};
+
 export type ClerkUserLike = {
-  id: string;
+  id?: string;
   primaryEmailAddressId?: string | null;
   primaryEmailAddress?: ClerkEmailLike | null;
-  emailAddresses: ClerkEmailLike[];
+  emailAddresses?: ClerkEmailLike[] | { data?: ClerkEmailLike[] };
+  email_addresses?: ClerkEmailLike[] | { data?: ClerkEmailLike[] };
+  externalAccounts?: ClerkExternalAccountLike[];
+  external_accounts?: ClerkExternalAccountLike[];
+  username?: string | null;
   publicMetadata?: Record<string, unknown> | null;
 };
 

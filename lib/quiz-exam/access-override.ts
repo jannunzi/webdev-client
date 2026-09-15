@@ -6,6 +6,7 @@ import {
 } from "../roster/sections";
 import {
   getQuizSchedule,
+  isScheduledTakeWindow,
   isTakeWindowOpen,
   listQuizSchedules,
   type QuizSchedule,
@@ -39,7 +40,7 @@ export function listOverridableQuizIds(): string[] {
   return listQuizSchedules().map((schedule) => schedule.quizId);
 }
 
-/** `open` / `closed` override the date window; `schedule` or unset follows dates. */
+/** `open` enables taking. `closed` / `schedule` / unset stay disabled. */
 export function activeTakeOverride(
   mode: QuizTakeOverrideMode | undefined | null,
 ): QuizTakeOverrideMode | undefined {
@@ -82,7 +83,7 @@ export function describeTakeAccess(
   return {
     open: isTakeWindowOpen(schedule, now, mode),
     mode,
-    scheduledOpen: isTakeWindowOpen(schedule, now),
+    scheduledOpen: isScheduledTakeWindow(schedule, now),
   };
 }
 

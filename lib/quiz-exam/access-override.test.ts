@@ -20,6 +20,7 @@ import {
   etWallTimeToUtc,
   getAnswerRevealPhase,
   getQuizSchedule,
+  isScheduledTakeWindow,
   isTakeWindowOpen,
 } from "./schedule";
 import { runExamSubmit } from "./submit";
@@ -54,22 +55,23 @@ describe("per-section take overrides", () => {
   const duringWindow = et(2026, 9, 23, 12);
   const afterLock = et(2026, 9, 28, 12);
 
-  it("follows the date window when mode is schedule or unset", () => {
+  it("keeps taking closed on the date window unless staff Enable", () => {
+    assert.equal(isScheduledTakeWindow(q1, duringWindow), true);
     assert.equal(isTakeWindowOpen(q1, beforeUnlock), false);
     assert.equal(isTakeWindowOpen(q1, beforeUnlock, "schedule"), false);
     assert.equal(isTakeWindowOpen(q1, beforeUnlock, undefined), false);
-    assert.equal(isTakeWindowOpen(q1, duringWindow), true);
-    assert.equal(isTakeWindowOpen(q1, duringWindow, "schedule"), true);
+    assert.equal(isTakeWindowOpen(q1, duringWindow), false);
+    assert.equal(isTakeWindowOpen(q1, duringWindow, "schedule"), false);
     assert.equal(isTakeWindowOpen(q1, afterLock, "schedule"), false);
     assert.equal(getAnswerRevealPhase(q1, beforeUnlock, false), "take_closed");
     assert.equal(
       getAnswerRevealPhase(q1, duringWindow, false, "schedule"),
-      "take_open",
+      "take_closed",
     );
     assert.equal(activeTakeOverride("schedule"), undefined);
     assert.equal(activeTakeOverride(undefined), undefined);
     assert.deepEqual(describeTakeAccess(q1, "schedule", duringWindow), {
-      open: true,
+      open: false,
       mode: "schedule",
       scheduledOpen: true,
     });
@@ -143,17 +145,21 @@ describe("per-section take overrides", () => {
     );
   });
 
-  it("clear / schedule restores the date window", () => {
+  it("Disable / Off (dates only) both block taking; Enable is required", () => {
     assert.equal(isTakeWindowOpen(q1, beforeUnlock, "open"), true);
     assert.equal(isTakeWindowOpen(q1, beforeUnlock, "schedule"), false);
     assert.equal(isTakeWindowOpen(q1, duringWindow, "closed"), false);
-    assert.equal(isTakeWindowOpen(q1, duringWindow, "schedule"), true);
+    assert.equal(isTakeWindowOpen(q1, duringWindow, "schedule"), false);
     assert.equal(
       getAnswerRevealPhase(q1, beforeUnlock, false, "schedule"),
       "take_closed",
     );
     assert.equal(
       getAnswerRevealPhase(q1, duringWindow, false, "schedule"),
+      "take_closed",
+    );
+    assert.equal(
+      getAnswerRevealPhase(q1, duringWindow, false, "open"),
       "take_open",
     );
   });
@@ -191,8 +197,9 @@ describe("per-section take overrides", () => {
 
   it("uses section-closed copy instead of the date-window message", () => {
     const copy = answerWindowCopy(q1, "take_closed", duringWindow, "closed");
-    assert.match(copy.title, /closed for your section/i);
+    assert.match(copy.title, /disabled for your section/i);
     assert.match(copy.paragraphs.join(" "), /your section/);
+    assert.match(copy.paragraphs.join(" "), /Syllabus window/);
   });
 
   it("serializes override audit fields for the staff panel", () => {
@@ -238,6 +245,33 @@ describe("submit honors the same per-section take override", () => {
     });
     assert.equal(result.ok, true);
     assert.equal(stored.length, 1);
+  });
+
+  it("rejects a persisted submit when staff never enabled (schedule during the window)", async () => {
+    const stored: QuizAttemptDoc[] = [];
+    const result = await runExamSubmit({
+      quizId: "q1",
+      drawnQuestionIds: drawn.map((item) => item.question.id),
+      answers: {},
+      startedAt: "2026-09-23T16:00:00.000Z",
+      now: et(2026, 9, 23, 12),
+      takeOverride: "schedule",
+      actor: { clerkUserId: "user_dates", email: "dates@northeastern.edu" },
+      roster: {
+        status: "matched",
+        entry: {
+          email: "dates@northeastern.edu",
+          section: "CS4550 CRN 11464",
+        },
+      },
+      persist: async (doc) => {
+        stored.push(doc);
+        return { insertedId: "nope-dates" };
+      },
+    });
+    assert.equal(result.ok, false);
+    if (!result.ok) assert.equal(result.code, "take_closed");
+    assert.equal(stored.length, 0);
   });
 
   it("rejects a persisted submit when force-closed during the window", async () => {

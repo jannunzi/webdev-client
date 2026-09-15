@@ -3,16 +3,33 @@ import "server-only";
 import { isMongoConfigured } from "../config";
 import { getCollection } from "../mongo";
 import { parseRosterEmailsEnv } from "./emails";
-import { matchRoster, rosterEmailMatchFilter } from "./match";
+import { matchRoster } from "./match";
 import type { CanvasRosterEntry, RosterLookupResult } from "./types";
 import { impersonationRosterMatch } from "./view-mode";
 
 export const CANVAS_ROSTER_COLLECTION = "canvas_roster";
 
+const ROSTER_MATCH_PROJECTION = {
+  email: 1,
+  canvasUserId: 1,
+  sisUserId: 1,
+  name: 1,
+  section: 1,
+  source: 1,
+} as const;
+
 export async function getRosterCollection() {
   return getCollection<CanvasRosterEntry>(CANVAS_ROSTER_COLLECTION);
 }
 
+/**
+ * Match a signed-in Clerk user to canvas_roster.
+ *
+ * Loads the course-sized roster and matches in memory so Atlas rows with
+ * mixed case, padding, husky.neu.edu aliases, or SIS-login emails still
+ * unlock A1. `$expr` queries are not used — they can miss or fail on Atlas
+ * and hide the Submit URLs fields.
+ */
 export async function lookupCanvasRoster(input: {
   emails: string[];
   canvasUserIds?: string[];
@@ -29,31 +46,17 @@ export async function lookupCanvasRoster(input: {
   try {
     const envEmails = parseRosterEmailsEnv(process.env.CANVAS_ROSTER_EMAILS);
     const collection = await getRosterCollection();
-
-    const or: Record<string, unknown>[] = [];
-    const emailFilter = rosterEmailMatchFilter(input.emails);
-    if (emailFilter) or.push(emailFilter);
-    const canvasUserIds = (input.canvasUserIds ?? [])
-      .map((id) => id.trim())
-      .filter(Boolean);
-    if (canvasUserIds.length > 0) {
-      or.push({ canvasUserId: { $in: canvasUserIds } });
-    }
-
-    const mongoEntries =
-      or.length > 0 ? await collection.find({ $or: or }).toArray() : [];
-
-    let mongoCount = mongoEntries.length;
-    if (mongoCount === 0) {
-      mongoCount = await collection.countDocuments();
-    }
+    const mongoEntries = await collection
+      .find({})
+      .project<CanvasRosterEntry>(ROSTER_MATCH_PROJECTION)
+      .toArray();
 
     return matchRoster({
       emails: input.emails,
       canvasUserIds: input.canvasUserIds,
       mongoEntries,
       envEmails,
-      mongoCount,
+      mongoCount: mongoEntries.length,
     });
   } catch (error) {
     console.error("canvas roster lookup failed", error);

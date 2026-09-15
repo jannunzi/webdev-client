@@ -29,6 +29,8 @@ export {
   formatEasternDateTime,
   getAnswerRevealPhase,
   getQuizSchedule,
+  isScheduledTakeWindow,
+  isTakeWindowOpen,
 } from "./schedule";
 export type { QuizTakeOverrideMode } from "./schedule";
 export {

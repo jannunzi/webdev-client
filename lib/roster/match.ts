@@ -1,32 +1,47 @@
-import { normalizeEmail } from "./emails";
+import {
+  canonicalEmailKey,
+  escapeRegex,
+  isLikelyEmail,
+  normalizeEmail,
+  uniqueEmailMatchKeys,
+} from "./emails";
 import type { CanvasRosterEntry, RosterLookupResult } from "./types";
 
 /**
- * Case- and whitespace-insensitive match on `canvas_roster.email`.
- * Manual Atlas inserts often keep Canvas casing (`Bhatti.T@…`) or padding;
- * Clerk emails are already normalized before lookup.
+ * Case-insensitive Mongo filter for `canvas_roster.email`.
+ * Matches Canvas casing/padding and Northeastern mailbox aliases.
+ * Lookup prefers an in-memory scan; this remains for targeted upserts.
  */
 export function rosterEmailMatchFilter(
   emails: readonly string[],
 ): Record<string, unknown> | null {
-  const normalized = [
-    ...new Set(emails.map((email) => normalizeEmail(email)).filter(Boolean)),
-  ];
-  if (normalized.length === 0) return null;
+  const keys = uniqueEmailMatchKeys(emails);
+  if (keys.length === 0) return null;
   return {
-    $expr: {
-      $in: [
-        {
-          $toLower: {
-            $trim: {
-              input: { $toString: { $ifNull: ["$email", ""] } },
-            },
-          },
-        },
-        normalized,
-      ],
-    },
+    $or: keys.map((email) => ({
+      email: {
+        $regex: `^\\s*${escapeRegex(email)}\\s*$`,
+        $options: "i",
+      },
+    })),
   };
+}
+
+function indexRosterEmails(
+  entries: CanvasRosterEntry[],
+): Map<string, CanvasRosterEntry> {
+  const byEmail = new Map<string, CanvasRosterEntry>();
+  for (const entry of entries) {
+    if (entry.email) {
+      const key = canonicalEmailKey(entry.email);
+      if (key) byEmail.set(key, entry);
+    }
+    if (entry.sisUserId && isLikelyEmail(normalizeEmail(entry.sisUserId))) {
+      const key = canonicalEmailKey(entry.sisUserId);
+      if (key && !byEmail.has(key)) byEmail.set(key, entry);
+    }
+  }
+  return byEmail;
 }
 
 export function matchRoster(input: {
@@ -37,18 +52,21 @@ export function matchRoster(input: {
   mongoCount: number;
 }): RosterLookupResult {
   const emails = input.emails.map(normalizeEmail).filter(Boolean);
-  const canvasUserIds = (input.canvasUserIds ?? []).map((id) => id.trim()).filter(Boolean);
+  const canvasUserIds = (input.canvasUserIds ?? [])
+    .map((id) => id.trim())
+    .filter(Boolean);
 
-  const byEmail = new Map<string, CanvasRosterEntry>();
+  const byEmail = indexRosterEmails(input.mongoEntries);
   const byCanvasId = new Map<string, CanvasRosterEntry>();
   for (const entry of input.mongoEntries) {
-    if (entry.email) byEmail.set(normalizeEmail(entry.email), entry);
     if (entry.canvasUserId) byCanvasId.set(entry.canvasUserId.trim(), entry);
   }
 
   for (const email of emails) {
-    const entry = byEmail.get(email);
-    if (entry) return { status: "matched", entry: { ...entry, email } };
+    const entry = byEmail.get(canonicalEmailKey(email));
+    if (entry) {
+      return { status: "matched", entry: { ...entry, email: normalizeEmail(email) } };
+    }
   }
 
   for (const canvasUserId of canvasUserIds) {
@@ -56,17 +74,17 @@ export function matchRoster(input: {
     if (entry) return { status: "matched", entry };
   }
 
-  const envSet = new Set(input.envEmails.map(normalizeEmail));
+  const envKeys = new Set(input.envEmails.map(canonicalEmailKey).filter(Boolean));
   for (const email of emails) {
-    if (envSet.has(email)) {
+    if (envKeys.has(canonicalEmailKey(email))) {
       return {
         status: "matched",
-        entry: { email, source: "env" },
+        entry: { email: normalizeEmail(email), source: "env" },
       };
     }
   }
 
-  if (input.mongoCount === 0 && envSet.size === 0) {
+  if (input.mongoCount === 0 && envKeys.size === 0) {
     return { status: "empty" };
   }
 

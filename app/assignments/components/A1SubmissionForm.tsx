@@ -5,44 +5,17 @@ import type { AssignmentCheckResult } from "@/lib/assignments/checks";
 import type { AssignmentSubmissionView } from "@/lib/assignments/submissions-store";
 import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
 import {
+  a1SubmissionFormState,
+  submissionGateCopy,
+  type SubmissionGateReason,
+} from "@/lib/assignments/submission-form";
+import {
   runAssignmentChecks,
   saveAssignmentSubmission,
 } from "../submission-actions";
 import { runStaffAssignmentChecks } from "../staff-actions";
 
-export type SubmissionGateReason =
-  | "sign_in"
-  | "not_on_roster"
-  | "roster_empty"
-  | "not_configured"
-  | null;
-
-function gateCopy(reason: SubmissionGateReason): { title: string; body: string } {
-  switch (reason) {
-    case "sign_in":
-      return {
-        title: "Sign in to submit URLs",
-        body: ASSIGNMENT_STUDENT_COPY.signInHint,
-      };
-    case "not_on_roster":
-      return {
-        title: ASSIGNMENT_STUDENT_COPY.notOnRosterTitle,
-        body: ASSIGNMENT_STUDENT_COPY.notOnRoster,
-      };
-    case "roster_empty":
-      return {
-        title: "Course roster has not been loaded",
-        body: ASSIGNMENT_STUDENT_COPY.rosterEmpty,
-      };
-    case "not_configured":
-      return {
-        title: "URL submit is not available yet",
-        body: ASSIGNMENT_STUDENT_COPY.notConfigured,
-      };
-    default:
-      return { title: "", body: "" };
-  }
-}
+export type { SubmissionGateReason };
 
 function formatSavedAt(iso?: string): string | null {
   if (!iso) return null;
@@ -80,6 +53,7 @@ export default function A1SubmissionForm({
   );
   const [, startTransition] = useTransition();
   const staffReview = Boolean(staffStudentKey);
+  const formState = a1SubmissionFormState({ canSubmit, gateReason });
 
   const savedAt = formatSavedAt(submission?.updatedAt);
   const checkedAt = formatSavedAt(submission?.lastCheckedAt);
@@ -164,10 +138,17 @@ export default function A1SubmissionForm({
         </p>
       ) : null}
 
-      {!canSubmit && gateReason ? (
-        <div className="rounded-lg border border-amber-400 bg-amber-50 px-4 py-3 font-sans text-sm text-amber-950">
-          <p className="m-0 font-semibold">{gateCopy(gateReason).title}</p>
-          <p className="mb-0 mt-1">{gateCopy(gateReason).body}</p>
+      {formState.mode === "gate" ? (
+        <div
+          role="status"
+          className="rounded-lg border border-amber-400 bg-amber-50 px-4 py-3 font-sans text-sm text-amber-950"
+        >
+          <p className="m-0 font-semibold">
+            {submissionGateCopy(formState.gateReason).title}
+          </p>
+          <p className="mb-0 mt-1">
+            {submissionGateCopy(formState.gateReason).body}
+          </p>
         </div>
       ) : (
         <form
