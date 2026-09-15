@@ -34,8 +34,9 @@ export default function EnsureDemoStudents() {
       </h2>
       <p className="mt-0 text-sm text-neutral-800">
         Upserts two fake <code>canvas_roster</code> rows so staff can Sign up
-        with those Northeastern emails and see the A1 GitHub / Vercel fields.
-        Not real students.
+        with <code>ada@ada.com</code> / <code>bob@bob.com</code> and see the
+        A1 GitHub / Vercel fields. Matching is the email string only — these
+        are not Northeastern addresses. Not real students.
       </p>
       <ul className="mb-3 text-sm text-neutral-800">
         {DEMO_ROSTER_STUDENTS.map((student) => (

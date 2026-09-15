@@ -1,5 +1,7 @@
 /**
- * Upsert staff-test canvas_roster rows (Ada Lovelace, Bob Marley).
+ * Upsert staff-test canvas_roster rows:
+ *   Ada Lovelace — ada@ada.com — CS4550 CRN 11464
+ *   Bob Marley — bob@bob.com — CS4550 CRN 11464
  *
  * Usage:
  *   npm run roster:seed-demo
@@ -63,7 +65,7 @@ async function main(): Promise<void> {
       `Upserted ${result.upserts} demo roster row(s) (${result.emails.join(", ")}). canvas_roster now has ${count} document(s).`,
     );
     console.log(
-      "Sign up / Sign in on the course site with those Northeastern emails to exercise A1 URL submit.",
+      "Sign up / Sign in on the course site with ada@ada.com or bob@bob.com to exercise A1 URL submit.",
     );
   } finally {
     await client.close();

@@ -137,6 +137,7 @@ describe("student exam sampling and grading", () => {
       answers,
       startedAt: "2026-09-23T16:00:00.000Z",
       now: new Date("2026-09-23T16:10:00.000Z"),
+      takeOverride: "open",
       actor: {
         clerkUserId: "user_jane",
         email: "jane.doe@northeastern.edu",

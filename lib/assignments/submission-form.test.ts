@@ -15,7 +15,7 @@ describe("A1 submission form visibility", () => {
   it("shows GitHub and Vercel fields for a signed-in rostered student", () => {
     const ada = DEMO_ROSTER_STUDENTS[0];
     const roster = matchRoster({
-      emails: ["  Ada.Lovelace@Northeastern.EDU "],
+      emails: ["  ADA@ADA.COM "],
       mongoEntries: [...DEMO_ROSTER_STUDENTS],
       envEmails: [],
       mongoCount: DEMO_ROSTER_STUDENTS.length,

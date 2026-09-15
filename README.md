@@ -104,12 +104,14 @@ importing.
 ### Demo students (staff A1 testing)
 
 Two fake `canvas_roster` rows exist so staff can Sign up / Sign in and see
-the A1 GitHub + Vercel fields without using real student PII:
+the A1 GitHub + Vercel fields without using real student PII. Roster
+matching is the email string only — these are **not** `@northeastern.edu`
+addresses.
 
 | Name | Email | Section |
 | --- | --- | --- |
-| Ada Lovelace | ada.lovelace@northeastern.edu | CS4550 CRN 11464 |
-| Bob Marley | bob.marley@northeastern.edu | CS5610-02 CRN 17395 |
+| Ada Lovelace | ada@ada.com | CS4550 CRN 11464 |
+| Bob Marley | bob@bob.com | CS4550 CRN 11464 |
 
 They live in MongoDB Atlas (`canvas_roster`), not in the git checkout.
 The Next.js deploy does **not** write them automatically.
@@ -120,9 +122,14 @@ npm run roster:seed-demo
 ```
 
 Or, signed in as staff on `/people`, click **Ensure demo students**.
-Then create course-website accounts with those exact Northeastern emails
-and open `/assignments/a1`. JSON fixture:
+Then create course-website accounts with those exact emails (`ada@ada.com`
+/ `bob@bob.com`) and open `/assignments/a1`. JSON fixture:
 `scripts/fixtures/demo-roster.json`.
+
+If Atlas already has the old `ada.lovelace@northeastern.edu` /
+`bob.marley@northeastern.edu` demo rows, run the seed (or the People
+button) again — it upserts `ada@ada.com` and `bob@bob.com`. Delete the
+old Northeastern demo docs in Atlas if they are still listed on People.
 
 A signed-in visitor who is **not** on the roster sees
 “Your account isn’t on the Canvas roster for this course” and **no** graded
@@ -199,6 +206,15 @@ requires a signed-in staff email, so a forged client cookie does nothing
 for students. Switch back with the same bar on every gated surface.
 
 Optional: set `IMPERSONATION_STUDENT_EMAIL` to override the dummy address.
+
+### Enable graded quizzes (staff only)
+
+Syllabus unlock/due dates are **display only**. A graded quiz does **not**
+open because “now” is inside that window. Staff (`INSTRUCTOR_EMAILS` /
+`TA_EMAILS`) enable or disable each quiz **per section** on `/quizzes/take`
+(Enable / Disable / Off). While disabled, students see the dates and cannot
+start or submit. Enable CS4550 to test with `ada@ada.com` / `bob@bob.com`,
+then Disable again.
 
 ### Exam sampling
 

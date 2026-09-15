@@ -14,7 +14,11 @@
 
 export type ExamName = "midterm" | "final";
 
-/** Staff per-section take gate. `schedule` (or unset) follows the date window. */
+/**
+ * Staff per-section take gate. Taking is allowed only when mode is `open`.
+ * `closed`, `schedule`, and unset keep the quiz disabled. Syllabus dates
+ * are still shown; they do not open the quiz by themselves.
+ */
 export type QuizTakeOverrideMode = "open" | "closed" | "schedule";
 
 export type QuizPhase =
@@ -303,15 +307,24 @@ export function listQuizSchedules(): QuizSchedule[] {
     .filter((schedule): schedule is QuizSchedule => Boolean(schedule));
 }
 
-export function isTakeWindowOpen(
+/** Syllabus unlock→due window. Display only — does not enable taking. */
+export function isScheduledTakeWindow(
   schedule: QuizSchedule,
   now: Date = new Date(),
-  override?: QuizTakeOverrideMode | null,
 ): boolean {
-  if (override === "open") return true;
-  if (override === "closed") return false;
   const t = now.getTime();
   return t >= schedule.takeUnlockAt.getTime() && t <= schedule.takeLockAt.getTime();
+}
+
+/**
+ * Graded take is staff-enabled only. Calendar dates never open a quiz.
+ */
+export function isTakeWindowOpen(
+  _schedule: QuizSchedule,
+  _now: Date = new Date(),
+  override?: QuizTakeOverrideMode | null,
+): boolean {
+  return override === "open";
 }
 
 export function isInFirstAnswerWindow(
@@ -469,28 +482,24 @@ export function answerWindowCopy(
   }
 
   if (phase === "take_closed") {
+    const unlock = formatEasternDateTime(schedule.takeUnlockAt);
+    const lock = formatEasternDateTime(schedule.takeLockAt);
+    const dates = `Syllabus window: opens ${unlock} and is due ${lock}. Those dates do not open the quiz by themselves.`;
     if (override === "closed") {
       return {
-        title: "This quiz is closed for your section",
+        title: "This quiz is disabled for your section",
         paragraphs: [
-          "New attempts are not being accepted right now. The instructor or a TA closed this quiz for your section.",
-        ],
-        tone: "warn",
-      };
-    }
-    if (now.getTime() < schedule.takeUnlockAt.getTime()) {
-      return {
-        title: "This quiz is not open yet",
-        paragraphs: [
-          `New attempts open ${formatEasternDateTime(schedule.takeUnlockAt)} and are due ${formatEasternDateTime(schedule.takeLockAt)}.`,
+          "New attempts are not being accepted. The instructor or a TA turned this quiz off for your section.",
+          dates,
         ],
         tone: "warn",
       };
     }
     return {
-      title: "The take window has closed",
+      title: "This quiz is not enabled yet",
       paragraphs: [
-        `New attempts were due ${formatEasternDateTime(schedule.takeLockAt)}. This page is the same URL you will use later to review answers, once the class-wide window opens.`,
+        "Graded quizzes stay closed until the instructor or a TA enables them for your section.",
+        dates,
       ],
       tone: "warn",
     };

@@ -10,6 +10,7 @@ import {
   getAnswerRevealPhase,
   getQuizSchedule,
   isEasternDaylightTime,
+  isScheduledTakeWindow,
   isTakeWindowOpen,
   nthWeekdayOfMonth,
 } from "./schedule";
@@ -97,12 +98,19 @@ describe("getAnswerRevealPhase boundaries", () => {
   const q1 = getQuizSchedule("q1");
   assert.ok(q1);
 
-  it("is take_open only with no attempt during the take window (inclusive lock)", () => {
-    assert.equal(getAnswerRevealPhase("q1", et(2026, 9, 20, 23, 59), false), "take_closed");
-    assert.equal(getAnswerRevealPhase("q1", et(2026, 9, 21), false), "take_open");
-    assert.equal(getAnswerRevealPhase("q1", et(2026, 9, 27, 23, 59), false), "take_open");
-    assert.equal(getAnswerRevealPhase("q1", et(2026, 9, 28), false), "take_closed");
-    assert.equal(isTakeWindowOpen(q1, et(2026, 9, 27, 23, 59)), true);
+  it("is take_open only when staff Enable, not from the syllabus window", () => {
+    assert.equal(isScheduledTakeWindow(q1, et(2026, 9, 20, 23, 59)), false);
+    assert.equal(isScheduledTakeWindow(q1, et(2026, 9, 21)), true);
+    assert.equal(isScheduledTakeWindow(q1, et(2026, 9, 27, 23, 59)), true);
+    assert.equal(isScheduledTakeWindow(q1, et(2026, 9, 28)), false);
+    assert.equal(getAnswerRevealPhase("q1", et(2026, 9, 21), false), "take_closed");
+    assert.equal(getAnswerRevealPhase("q1", et(2026, 9, 27, 23, 59), false), "take_closed");
+    assert.equal(
+      getAnswerRevealPhase("q1", et(2026, 9, 21), false, "open"),
+      "take_open",
+    );
+    assert.equal(isTakeWindowOpen(q1, et(2026, 9, 27, 23, 59)), false);
+    assert.equal(isTakeWindowOpen(q1, et(2026, 9, 27, 23, 59), "open"), true);
     assert.equal(isTakeWindowOpen(q1, et(2026, 9, 28)), false);
   });
 

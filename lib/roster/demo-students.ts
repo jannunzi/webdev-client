@@ -2,13 +2,17 @@ import { normalizeEmail } from "./emails";
 import type { CanvasRosterEntry } from "./types";
 
 /**
- * Synthetic canvas_roster rows for staff A1 testing.
+ * Synthetic canvas_roster rows for staff A1 / quiz testing.
  * Not real students — do not treat as PII.
+ *
+ * Roster matching is by email string only. These are not Northeastern
+ * addresses; Jose chose them so staff can Sign up without using student
+ * or @northeastern.edu mailboxes.
  */
 export const DEMO_ROSTER_STUDENTS: readonly CanvasRosterEntry[] = [
   {
     name: "Ada Lovelace",
-    email: "ada.lovelace@northeastern.edu",
+    email: "ada@ada.com",
     section: "CS4550 CRN 11464",
     canvasUserId: "demo-ada-lovelace",
     sisUserId: "demo-ada-lovelace",
@@ -16,8 +20,8 @@ export const DEMO_ROSTER_STUDENTS: readonly CanvasRosterEntry[] = [
   },
   {
     name: "Bob Marley",
-    email: "bob.marley@northeastern.edu",
-    section: "CS5610-02 CRN 17395",
+    email: "bob@bob.com",
+    section: "CS4550 CRN 11464",
     canvasUserId: "demo-bob-marley",
     sisUserId: "demo-bob-marley",
     source: "demo",

@@ -16,9 +16,9 @@ import {
 import { setQuizAccessOverride } from "../override-actions";
 
 const MODES: { id: QuizTakeOverrideMode; label: string }[] = [
-  { id: "open", label: "Open" },
-  { id: "closed", label: "Closed" },
-  { id: "schedule", label: "Schedule" },
+  { id: "open", label: "Enable" },
+  { id: "closed", label: "Disable" },
+  { id: "schedule", label: "Off (dates only)" },
 ];
 
 export type OverrideQuizRow = {
@@ -106,12 +106,13 @@ export default function QuizAccessOverridePanel({
       aria-label="Quiz take overrides"
     >
       <h2 className="mt-0 mb-1 text-lg font-semibold tracking-tight">
-        Section take overrides
+        Enable graded quizzes
       </h2>
       <p className="mt-0 mb-3 text-sm text-neutral-700">
-        Force one section open or closed right now. Other sections keep their
-        date windows. Schedule clears the override. Practice quizzes are
-        unchanged.
+        Quizzes stay closed until you <strong>Enable</strong> a section.
+        Syllabus unlock/due dates are shown to students but do not open the
+        quiz. <strong>Disable</strong> turns it off again after a test.
+        Off (dates only) is the default. Practice quizzes are unchanged.
       </p>
       {error ? (
         <p role="alert" className="mb-3 rounded border border-amber-500 bg-amber-50 px-3 py-2 text-sm text-amber-950">
@@ -173,10 +174,10 @@ export default function QuizAccessOverridePanel({
                           {effective.open ? "open" : "closed"}
                         </strong>
                         {effective.mode === "schedule"
-                          ? " (schedule)"
+                          ? " (dates only — not enabled)"
                           : effective.mode === "open"
-                            ? " (forced open)"
-                            : " (forced closed)"}
+                            ? " (enabled by staff)"
+                            : " (disabled by staff)"}
                         {saved?.updatedBy || saved?.updatedAt
                           ? ` · last ${saved.updatedBy ?? "staff"} ${formatEasternDateTime(saved.updatedAt)}`
                           : null}
