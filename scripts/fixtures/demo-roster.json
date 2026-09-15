@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Ada Lovelace",
+    "email": "ada.lovelace@northeastern.edu",
+    "section": "CS4550 CRN 11464",
+    "canvasUserId": "demo-ada-lovelace",
+    "sisUserId": "demo-ada-lovelace",
+    "source": "demo"
+  },
+  {
+    "name": "Bob Marley",
+    "email": "bob.marley@northeastern.edu",
+    "section": "CS5610-02 CRN 17395",
+    "canvasUserId": "demo-bob-marley",
+    "sisUserId": "demo-bob-marley",
+    "source": "demo"
+  }
+]

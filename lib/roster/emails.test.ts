@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
+  canonicalEmailKey,
   collectClerkEmails,
+  emailMatchKeys,
   normalizeEmail,
   parseRosterEmailsEnv,
   preferredRosterEmail,
@@ -10,9 +12,15 @@ import {
 describe("roster emails", () => {
   it("normalizes and parses env allowlists", () => {
     assert.equal(normalizeEmail("  A@Edu "), "a@edu");
+    assert.equal(normalizeEmail("Ada.Lovelace@Northeastern.EDU\u00a0"), "ada.lovelace@northeastern.edu");
     assert.equal(normalizeEmail(undefined), "");
     assert.equal(normalizeEmail(null), "");
     assert.equal(normalizeEmail(12), "");
+    assert.equal(
+      canonicalEmailKey("ada.lovelace+test@husky.neu.edu"),
+      "ada.lovelace@northeastern.edu",
+    );
+    assert.ok(emailMatchKeys("bob.marley@northeastern.edu").includes("bob.marley@husky.neu.edu"));
     assert.deepEqual(
       parseRosterEmailsEnv("jane@northeastern.edu, Alex@Northeastern.edu; skip"),
       ["jane@northeastern.edu", "alex@northeastern.edu"],
@@ -56,6 +64,20 @@ describe("roster emails", () => {
         "Jane.Doe@northeastern.edu",
       ),
       "jane.doe@northeastern.edu",
+    );
+  });
+
+  it("reads Clerk backend, paginated, and SSO email shapes", () => {
+    assert.deepEqual(
+      collectClerkEmails({
+        id: "user_2",
+        email_addresses: {
+          data: [{ id: "idn_1", email_address: "Ada.Lovelace@northeastern.edu" }],
+        },
+        external_accounts: [{ email_address: "ada.lovelace@husky.neu.edu" }],
+        username: "not-an-email",
+      }),
+      ["ada.lovelace@northeastern.edu", "ada.lovelace@husky.neu.edu"],
     );
   });
 });

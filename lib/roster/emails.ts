@@ -1,8 +1,24 @@
 import type { ClerkEmailLike, ClerkUserLike } from "./types";
 
+/** Student mailbox aliases that Canvas and Clerk treat as the same person. */
+export const NORTHEASTERN_EMAIL_DOMAINS = [
+  "northeastern.edu",
+  "husky.neu.edu",
+  "neu.edu",
+] as const;
+
+const NORTHEASTERN_DOMAIN_SET = new Set<string>(NORTHEASTERN_EMAIL_DOMAINS);
+
+const UNICODE_SPACE = /[\u00A0\u1680\u2000-\u200B\u202F\u205F\u3000\uFEFF]/g;
+const CONTROL_CHARS = /[\u0000-\u001F\u007F-\u009F]/g;
+
 export function normalizeEmail(value: unknown): string {
   if (typeof value !== "string") return "";
-  return value.trim().toLowerCase();
+  return value
+    .replace(CONTROL_CHARS, "")
+    .replace(UNICODE_SPACE, " ")
+    .trim()
+    .toLowerCase();
 }
 
 export function isLikelyEmail(value: string): boolean {
@@ -22,19 +38,114 @@ export function parseRosterEmailsEnv(value: string | undefined): string[] {
   return emails;
 }
 
+export function splitEmail(
+  value: string,
+): { local: string; domain: string } | null {
+  const normalized = normalizeEmail(value);
+  const at = normalized.lastIndexOf("@");
+  if (at <= 0 || at === normalized.length - 1) return null;
+  const localRaw = normalized.slice(0, at);
+  const domain = normalized.slice(at + 1);
+  const plus = localRaw.indexOf("+");
+  const local = (plus === -1 ? localRaw : localRaw.slice(0, plus)).trim();
+  if (!local || !domain || !isLikelyEmail(`${local}@${domain}`)) return null;
+  return { local, domain };
+}
+
+/**
+ * One key per mailbox so Canvas `northeastern.edu` matches Clerk
+ * `husky.neu.edu` / `neu.edu` and plus-address tags.
+ */
+export function canonicalEmailKey(value: string): string {
+  const parts = splitEmail(value);
+  if (!parts) return normalizeEmail(value);
+  const domain = NORTHEASTERN_DOMAIN_SET.has(parts.domain)
+    ? "northeastern.edu"
+    : parts.domain;
+  return `${parts.local}@${domain}`;
+}
+
+export function emailMatchKeys(value: string): string[] {
+  const parts = splitEmail(value);
+  if (!parts) {
+    const normalized = normalizeEmail(value);
+    return normalized ? [normalized] : [];
+  }
+  const keys = new Set<string>([`${parts.local}@${parts.domain}`]);
+  if (NORTHEASTERN_DOMAIN_SET.has(parts.domain)) {
+    for (const domain of NORTHEASTERN_EMAIL_DOMAINS) {
+      keys.add(`${parts.local}@${domain}`);
+    }
+  }
+  return [...keys];
+}
+
+export function uniqueEmailMatchKeys(emails: readonly string[]): string[] {
+  const seen = new Set<string>();
+  const keys: string[] = [];
+  for (const email of emails) {
+    for (const key of emailMatchKeys(email)) {
+      if (seen.has(key)) continue;
+      seen.add(key);
+      keys.push(key);
+    }
+  }
+  return keys;
+}
+
+export function escapeRegex(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 function isVerified(email: ClerkEmailLike): boolean {
   return email.verification?.status === "verified";
 }
 
+function emailAddressOf(item: ClerkEmailLike | null | undefined): string {
+  if (!item) return "";
+  return normalizeEmail(item.emailAddress ?? item.email_address);
+}
+
+function asEmailList(value: unknown): ClerkEmailLike[] {
+  if (Array.isArray(value)) return value as ClerkEmailLike[];
+  if (
+    value &&
+    typeof value === "object" &&
+    Array.isArray((value as { data?: unknown }).data)
+  ) {
+    return (value as { data: ClerkEmailLike[] }).data;
+  }
+  return [];
+}
+
+function clerkEmailRows(user: ClerkUserLike): ClerkEmailLike[] {
+  return [
+    ...asEmailList(user.emailAddresses),
+    ...asEmailList(user.email_addresses),
+  ];
+}
+
+function externalAccountEmails(user: ClerkUserLike): string[] {
+  const accounts = [
+    ...(user.externalAccounts ?? []),
+    ...(user.external_accounts ?? []),
+  ];
+  return accounts
+    .map((account) => normalizeEmail(account.emailAddress ?? account.email_address))
+    .filter((email) => email && isLikelyEmail(email));
+}
+
 /**
  * Ordered unique emails for roster matching.
- * Primary first, then other verified, then remaining addresses.
+ * Primary first, then other verified, then remaining addresses, then
+ * Google/SSO external accounts and an email-shaped username.
  */
 export function collectClerkEmails(user: ClerkUserLike | null | undefined): string[] {
   if (!user) return [];
 
+  const rows = clerkEmailRows(user);
   const byId = new Map<string, ClerkEmailLike>();
-  for (const email of user.emailAddresses ?? []) {
+  for (const email of rows) {
     if (email.id) byId.set(email.id, email);
   }
 
@@ -46,20 +157,23 @@ export function collectClerkEmails(user: ClerkUserLike | null | undefined): stri
       : undefined);
   if (primary) ordered.push(primary);
 
-  const rest = (user.emailAddresses ?? []).filter(
-    (email) => email.emailAddress !== primary?.emailAddress,
-  );
+  const primaryAddress = emailAddressOf(primary);
+  const rest = rows.filter((email) => emailAddressOf(email) !== primaryAddress);
   rest.sort((a, b) => Number(isVerified(b)) - Number(isVerified(a)));
   ordered.push(...rest);
 
   const seen = new Set<string>();
   const emails: string[] = [];
-  for (const item of ordered) {
-    const email = normalizeEmail(item.emailAddress);
-    if (!email || !isLikelyEmail(email) || seen.has(email)) continue;
+  function push(raw: string): void {
+    const email = normalizeEmail(raw);
+    if (!email || !isLikelyEmail(email) || seen.has(email)) return;
     seen.add(email);
     emails.push(email);
   }
+
+  for (const item of ordered) push(emailAddressOf(item));
+  for (const email of externalAccountEmails(user)) push(email);
+  if (user.username) push(user.username);
   return emails;
 }
 

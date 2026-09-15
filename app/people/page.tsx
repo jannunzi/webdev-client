@@ -10,6 +10,7 @@ import {
   getEffectiveStaffAccess,
   isImpersonatingStudent,
 } from "@/lib/roster/staff-access";
+import EnsureDemoStudents from "./components/EnsureDemoStudents";
 import PeopleAuthBar from "./components/PeopleAuthBar";
 import PeopleRoster from "./components/PeopleRoster";
 
@@ -98,12 +99,16 @@ async function PeoplePageBody({ section }: { section?: string }) {
   const groups = groupRosterBySection(roster.entries);
   if (groups.length === 0) {
     return (
-      <StatusPanel title="Canvas roster has not been loaded" tone="warn">
-        <p>
-          There are no documents in <code>canvas_roster</code>. Import a
-          Canvas People CSV with <code>npm run roster:import</code>.
-        </p>
-      </StatusPanel>
+      <>
+        <StatusPanel title="Canvas roster has not been loaded" tone="warn">
+          <p>
+            There are no documents in <code>canvas_roster</code>. Import a
+            Canvas People CSV with <code>npm run roster:import</code>, or
+            add the Ada / Bob test rows below so staff can exercise A1.
+          </p>
+        </StatusPanel>
+        <EnsureDemoStudents />
+      </>
     );
   }
 
@@ -126,6 +131,7 @@ async function PeoplePageBody({ section }: { section?: string }) {
         Fall 2026 Canvas roster from MongoDB Atlas. Staff only — this is not
         the Kambaz lab People demo.
       </p>
+      <EnsureDemoStudents />
       <PeopleRoster groups={groups} selectedSection={selectedSection} />
     </>
   );

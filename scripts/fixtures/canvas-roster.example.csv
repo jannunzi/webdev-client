@@ -1,3 +1,5 @@
 Student,ID,SIS User ID,SIS Login ID,Email,Section
 Jane Doe,12345,jane.doe,jane.doe@northeastern.edu,jane.doe@northeastern.edu,CS4550
 Alex Rivera,12346,alex.rivera,alex.rivera@northeastern.edu,alex.rivera@northeastern.edu,CS5610
+Ada Lovelace,demo-ada-lovelace,demo-ada-lovelace,ada.lovelace@northeastern.edu,ada.lovelace@northeastern.edu,CS4550 CRN 11464
+Bob Marley,demo-bob-marley,demo-bob-marley,bob.marley@northeastern.edu,bob.marley@northeastern.edu,CS5610-02 CRN 17395

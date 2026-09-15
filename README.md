@@ -93,9 +93,36 @@ npm run roster:import -- --replace path/to/canvas-people.csv
 JSON also works: `[{ "email": "jane.doe@northeastern.edu", "canvasUserId": "12345", "name": "Jane Doe" }]`.
 A sample file lives at `scripts/fixtures/canvas-roster.example.csv`.
 
+Matching is case-insensitive and treats Northeastern mailbox aliases as the
+same person (`northeastern.edu`, `husky.neu.edu`, `neu.edu`), including
+plus-address tags. Clerk primary, verified, remaining, and SSO/external
+account emails are all considered.
+
 While testing a single account, you can set `CANVAS_ROSTER_EMAILS` instead of
-importing. Matching uses Clerk emails (primary and verified first, then
-others), case-insensitive.
+importing.
+
+### Demo students (staff A1 testing)
+
+Two fake `canvas_roster` rows exist so staff can Sign up / Sign in and see
+the A1 GitHub + Vercel fields without using real student PII:
+
+| Name | Email | Section |
+| --- | --- | --- |
+| Ada Lovelace | ada.lovelace@northeastern.edu | CS4550 CRN 11464 |
+| Bob Marley | bob.marley@northeastern.edu | CS5610-02 CRN 17395 |
+
+They live in MongoDB Atlas (`canvas_roster`), not in the git checkout.
+The Next.js deploy does **not** write them automatically.
+
+```bash
+# Local or CI machine that can reach the same Atlas cluster as Vercel:
+npm run roster:seed-demo
+```
+
+Or, signed in as staff on `/people`, click **Ensure demo students**.
+Then create course-website accounts with those exact Northeastern emails
+and open `/assignments/a1`. JSON fixture:
+`scripts/fixtures/demo-roster.json`.
 
 A signed-in visitor who is **not** on the roster sees
 “Your account isn’t on the Canvas roster for this course” and **no** graded
@@ -251,8 +278,10 @@ keyed by user + assignment + criterion). Visitors who are not signed in keep
 progress in this browser only. The UI never mentions the auth vendor — the
 button says “Sign in with your Canvas email.”
 
-**A1 URL submit (Phase 2C).** Rostered students and staff can save a public
-Vercel deployment URL on `/assignments/a1` (GitHub is optional). Documents
+**A1 URL submit (Phase 2C).** Rostered students (matched by Canvas email,
+including Northeastern aliases) and staff can save a public
+Vercel deployment URL on `/assignments/a1` (GitHub is optional). Off-roster
+signed-in users see an explicit message instead of a blank form. Documents
 live in `assignment_submissions` (user + `a1`). After save — or via **Run
 checks** — the server normalizes the deploy to its origin, fetches `/`,
 `/labs`, `/labs/lab1`, and Kambaz account/course screens, then maps many
