@@ -31,13 +31,20 @@ const REQUIRED_CATCHUP_SOURCES = [
   "https://www.isyncevolution.com/blog/nextjs-security-best-practices",
 ] as const;
 
+const REQUIRED_DIGEST_2026_09_15 = [
+  "https://vercel.com/blog/how-we-cut-cdn-metadata-lookup-latency-by-91-percent",
+  "https://cursor.com/blog/projects",
+  "https://expressjs.com/en/blog/2026-08-31-security-releases/",
+] as const;
+
 const REQUIRED_SOURCES = [
   ...REQUIRED_SEED_SOURCES,
   ...REQUIRED_CATCHUP_SOURCES,
+  ...REQUIRED_DIGEST_2026_09_15,
 ] as const;
 
 const ALLOWED_SOURCE_URL =
-  /^https:\/\/(nextjs\.org\/blog\/|react\.dev\/blog\/|vercel\.com\/blog\/|www\.isyncevolution\.com\/blog\/)/;
+  /^https:\/\/(nextjs\.org\/blog\/|react\.dev\/blog\/|vercel\.com\/blog\/|www\.isyncevolution\.com\/blog\/|cursor\.com\/blog\/|expressjs\.com\/en\/blog\/)/;
 
 const BLOG_APP = join(process.cwd(), "app/blog");
 const KAMBAZ_APP = join(process.cwd(), "app/(kambaz)");
@@ -57,7 +64,7 @@ function walkTsx(dir: string): string[] {
 }
 
 describe("blog posts", () => {
-  it("keeps required seed and catch-up source URLs with no empty sources", () => {
+  it("keeps required seed, catch-up, and digest source URLs with no empty sources", () => {
     assert.equal(BLOG_POSTS.length, REQUIRED_SOURCES.length);
     const urls = BLOG_POSTS.map((post) => post.source.url);
     assert.equal(new Set(urls).size, urls.length, "source URLs must be unique");
@@ -66,6 +73,9 @@ describe("blog posts", () => {
       assert.ok(urls.includes(required), required);
     }
     for (const required of REQUIRED_CATCHUP_SOURCES) {
+      assert.ok(urls.includes(required), required);
+    }
+    for (const required of REQUIRED_DIGEST_2026_09_15) {
       assert.ok(urls.includes(required), required);
     }
 
@@ -93,12 +103,24 @@ describe("blog posts", () => {
       [...times].sort((a, b) => b - a),
     );
     assert.deepEqual(
+      listed.slice(0, 3).map((post) => post.slug),
+      [
+        "cursor-projects-coordinator",
+        "express-august-2026-security-releases",
+        "vercel-cdn-metadata-shards-91",
+      ],
+    );
+    assert.deepEqual(
       listed.slice(0, 3).map((post) => post.source.url).sort(),
+      [...REQUIRED_DIGEST_2026_09_15].sort(),
+    );
+    assert.deepEqual(
+      listed.slice(3, 6).map((post) => post.source.url).sort(),
       [...REQUIRED_CATCHUP_SOURCES].sort(),
     );
-    assert.equal(listed[3]?.slug, "august-2026-nextjs-security-release");
-    assert.equal(listed[4]?.slug, "nextjs-16-3-instant-navigations");
-    assert.equal(listed[5]?.slug, "nextjs-16-3-ai-improvements");
+    assert.equal(listed[6]?.slug, "august-2026-nextjs-security-release");
+    assert.equal(listed[7]?.slug, "nextjs-16-3-instant-navigations");
+    assert.equal(listed[8]?.slug, "nextjs-16-3-ai-improvements");
 
     assert.equal(listBlogSlugs().length, REQUIRED_SOURCES.length);
     assert.equal(
@@ -113,6 +135,7 @@ describe("blog posts", () => {
   });
 
   it("formats published dates in UTC and maps related chapters", () => {
+    assert.equal(formatBlogDate("2026-09-15T12:00:00.000Z"), "September 15, 2026");
     assert.equal(formatBlogDate("2026-09-14T16:00:00.000Z"), "September 14, 2026");
     assert.equal(formatBlogDate("2026-08-25T18:00:00.000Z"), "August 25, 2026");
     assert.equal(formatBlogDate("2026-08-03T17:00:00.000Z"), "August 3, 2026");
@@ -149,6 +172,16 @@ describe("blog posts", () => {
     const proxy = getBlogPost("nextjs-security-middleware-proxy");
     assert.match(proxy?.intro.join(" ") ?? "", /CVE-2025-29927/);
     assert.match(proxy?.intro.join(" ") ?? "", /proxy\.ts/);
+
+    const cdn = getBlogPost("vercel-cdn-metadata-shards-91");
+    assert.match(cdn?.intro.join(" ") ?? "", /91%/);
+    assert.match(cdn?.intro.join(" ") ?? "", /indexed shards/);
+    const projects = getBlogPost("cursor-projects-coordinator");
+    assert.match(projects?.intro.join(" ") ?? "", /Projects coordinator/);
+    assert.match(projects?.intro.join(" ") ?? "", /Cursor reports/);
+    const express = getBlogPost("express-august-2026-security-releases");
+    assert.match(express?.intro.join(" ") ?? "", /multer 2\.3\.0/);
+    assert.match(express?.intro.join(" ") ?? "", /CVE-2026-77078/);
   });
 
   it("dates the September 14 catch-up posts in America/New_York", () => {
@@ -166,6 +199,25 @@ describe("blog posts", () => {
       const post = getBlogPost(slug);
       assert.ok(post, slug);
       assert.equal(nyDate.format(new Date(post.publishedAt)), "September 14, 2026");
+    }
+  });
+
+  it("dates the September 15 digest posts in America/New_York", () => {
+    const nyDate = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "America/New_York",
+    });
+    for (const slug of [
+      "vercel-cdn-metadata-shards-91",
+      "cursor-projects-coordinator",
+      "express-august-2026-security-releases",
+    ]) {
+      const post = getBlogPost(slug);
+      assert.ok(post, slug);
+      assert.equal(post.publishedAt, "2026-09-15T12:00:00.000Z");
+      assert.equal(nyDate.format(new Date(post.publishedAt)), "September 15, 2026");
     }
   });
 });
