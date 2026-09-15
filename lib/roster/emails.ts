@@ -101,8 +101,11 @@ function isVerified(email: ClerkEmailLike): boolean {
   return email.verification?.status === "verified";
 }
 
-function emailAddressOf(item: ClerkEmailLike | null | undefined): string {
+function emailAddressOf(
+  item: ClerkEmailLike | string | null | undefined,
+): string {
   if (!item) return "";
+  if (typeof item === "string") return normalizeEmail(item);
   return normalizeEmail(item.emailAddress ?? item.email_address);
 }
 
@@ -152,10 +155,11 @@ export function collectClerkEmails(user: ClerkUserLike | null | undefined): stri
   const ordered: ClerkEmailLike[] = [];
   const primary =
     user.primaryEmailAddress ??
+    user.primary_email_address ??
     (user.primaryEmailAddressId
       ? byId.get(user.primaryEmailAddressId)
       : undefined);
-  if (primary) ordered.push(primary);
+  if (primary && typeof primary !== "string") ordered.push(primary);
 
   const primaryAddress = emailAddressOf(primary);
   const rest = rows.filter((email) => emailAddressOf(email) !== primaryAddress);
@@ -172,8 +176,55 @@ export function collectClerkEmails(user: ClerkUserLike | null | undefined): stri
   }
 
   for (const item of ordered) push(emailAddressOf(item));
+  if (typeof primary === "string") push(primary);
+  if (user.email) push(user.email);
   for (const email of externalAccountEmails(user)) push(email);
   if (user.username) push(user.username);
+  return emails;
+}
+
+/**
+ * Emails from a Clerk session JWT. currentUser() can omit address arrays
+ * while the session still carries `email` / `email_address`.
+ */
+export function collectSessionClaimEmails(claims: unknown): string[] {
+  if (!claims || typeof claims !== "object") return [];
+  const record = claims as Record<string, unknown>;
+  const emails: string[] = [];
+  const seen = new Set<string>();
+  function push(raw: unknown): void {
+    if (typeof raw !== "string") return;
+    const email = normalizeEmail(raw);
+    if (!email || !isLikelyEmail(email) || seen.has(email)) return;
+    seen.add(email);
+    emails.push(email);
+  }
+  push(record.email);
+  push(record.email_address);
+  push(record.emailAddress);
+  push(record.primary_email_address);
+  push(record.primaryEmailAddress);
+  const nested = record.primaryEmailAddress;
+  if (nested && typeof nested === "object") {
+    push((nested as { emailAddress?: unknown }).emailAddress);
+    push((nested as { email_address?: unknown }).email_address);
+  }
+  return emails;
+}
+
+export function mergeRosterLookupEmails(
+  ...lists: Array<readonly string[] | undefined>
+): string[] {
+  const seen = new Set<string>();
+  const emails: string[] = [];
+  for (const list of lists) {
+    for (const raw of list ?? []) {
+      const email = normalizeEmail(raw);
+      if (!email || !isLikelyEmail(email) || seen.has(email)) continue;
+      seen.add(email);
+      emails.push(email);
+    }
+  }
   return emails;
 }
 

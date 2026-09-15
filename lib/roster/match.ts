@@ -1,3 +1,4 @@
+import { DEMO_ROSTER_STUDENTS } from "./demo-students";
 import {
   canonicalEmailKey,
   escapeRegex,
@@ -56,9 +57,12 @@ export function matchRoster(input: {
     .map((id) => id.trim())
     .filter(Boolean);
 
-  const byEmail = indexRosterEmails(input.mongoEntries);
+  // Built-in Ada / Bob first; Atlas rows overwrite the same email key so a
+  // seeded document wins. Demo students do not require a prior Atlas write.
+  const entries = [...DEMO_ROSTER_STUDENTS, ...input.mongoEntries];
+  const byEmail = indexRosterEmails(entries);
   const byCanvasId = new Map<string, CanvasRosterEntry>();
-  for (const entry of input.mongoEntries) {
+  for (const entry of entries) {
     if (entry.canvasUserId) byCanvasId.set(entry.canvasUserId.trim(), entry);
   }
 

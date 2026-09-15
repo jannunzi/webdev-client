@@ -9,9 +9,9 @@
  * Loads `.env.local` if present. Requires MONGODB_URI. Safe to re-run.
  * Does not replace the real Canvas roster.
  *
- * Atlas / Vercel: run this locally against the same MONGODB_URI used in
- * Production (or click “Ensure demo students” on /people while signed in
- * as staff). The app does not write these rows at deploy time.
+ * Atlas / Vercel: optional. A1 already matches ada@ada.com / bob@bob.com
+ * in memory. This script (or People → Ensure demo students, or the first
+ * Ada/Bob A1 visit) writes the same rows to Atlas so they show on People.
  */
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";

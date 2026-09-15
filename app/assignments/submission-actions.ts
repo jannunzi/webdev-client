@@ -24,6 +24,8 @@ import { isAssignmentProgressConfigured } from "@/lib/config";
 import {
   canvasUserIdFromMetadata,
   collectClerkEmails,
+  collectSessionClaimEmails,
+  mergeRosterLookupEmails,
   preferredRosterEmail,
 } from "@/lib/roster/emails";
 import { lookupCanvasRoster } from "@/lib/roster/lookup";
@@ -102,6 +104,7 @@ async function authorizeSubmission(assignmentId: string): Promise<
       ok: true;
       userId: string;
       impersonating: boolean;
+      canPersist: boolean;
       nameSource: NameSource;
       identity: AssignmentSubmissionIdentity;
     }
@@ -115,15 +118,24 @@ async function authorizeSubmission(assignmentId: string): Promise<
   }
 
   const configured = isAssignmentProgressConfigured();
-  const { userId, isAuthenticated } = await auth();
-  const signedIn = Boolean(isAuthenticated && userId);
-  if (!configured || !signedIn || !userId) {
-    const code = !configured ? "not_configured" : "unauthenticated";
-    return { ok: false, result: { ok: false, code, message: gateMessage(code) } };
+  const { userId, sessionClaims } = await auth();
+  const signedIn = Boolean(userId);
+  if (!signedIn || !userId) {
+    return {
+      ok: false,
+      result: {
+        ok: false,
+        code: "unauthenticated",
+        message: gateMessage("unauthenticated"),
+      },
+    };
   }
 
   const user = await currentUser();
-  const emails = collectClerkEmails(user);
+  const emails = mergeRosterLookupEmails(
+    collectClerkEmails(user),
+    collectSessionClaimEmails(sessionClaims),
+  );
   const canvasUserId = canvasUserIdFromMetadata(user);
   const impersonating = await isImpersonatingStudent();
   const staff = await isActualStaff();
@@ -134,7 +146,7 @@ async function authorizeSubmission(assignmentId: string): Promise<
   });
   const access = assignmentSubmitAccess({
     signedIn: true,
-    configured: true,
+    configured,
     isActualStaff: staff,
     roster,
   });
@@ -153,6 +165,8 @@ async function authorizeSubmission(assignmentId: string): Promise<
     ok: true,
     userId,
     impersonating,
+    canPersist:
+      configured && canPersistAssignmentSubmission(impersonating),
     nameSource: nameSourceFromActor(user, roster),
     identity: identityFromRoster(user, roster),
   };
@@ -213,13 +227,13 @@ export async function saveAssignmentSubmission(input: {
     vercelUrl,
     nameSource: authz.nameSource,
   });
-  const persist = canPersistAssignmentSubmission(authz.impersonating);
+  const persist = authz.canPersist;
 
   if (!persist) {
     return {
       ok: true,
       persisted: false,
-      impersonation: true,
+      impersonation: authz.impersonating || undefined,
       submission: viewFromInputs({ githubUrl, vercelUrl, checkResults }),
     };
   }
@@ -258,7 +272,7 @@ export async function runAssignmentChecks(input: {
   let githubUrl = input.githubUrl.trim();
   let vercelUrl = input.vercelUrl.trim();
 
-  if (!vercelUrl && canPersistAssignmentSubmission(authz.impersonating)) {
+  if (!vercelUrl && authz.canPersist) {
     try {
       const existing = await readAssignmentSubmission(
         authz.userId,
@@ -286,7 +300,7 @@ export async function runAssignmentChecks(input: {
     vercelUrl,
     nameSource: authz.nameSource,
   });
-  const persist = canPersistAssignmentSubmission(authz.impersonating);
+  const persist = authz.canPersist;
 
   if (persist) {
     try {

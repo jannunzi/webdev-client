@@ -39,7 +39,8 @@ export function gateReasonFromAccess(
       return "not_on_roster";
     case "roster_empty":
       return "roster_empty";
-    default:
+    case "not_configured":
+    case "invalid":
       return "not_configured";
   }
 }

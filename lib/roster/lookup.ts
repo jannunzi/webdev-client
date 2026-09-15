@@ -2,7 +2,9 @@ import "server-only";
 
 import { isMongoConfigured } from "../config";
 import { getCollection } from "../mongo";
+import { isDemoRosterEmail } from "./demo-students";
 import { parseRosterEmailsEnv } from "./emails";
+import { upsertDemoRosterStudents } from "./ensure-demo";
 import { matchRoster } from "./match";
 import type { CanvasRosterEntry, RosterLookupResult } from "./types";
 import { impersonationRosterMatch } from "./view-mode";
@@ -29,7 +31,27 @@ export async function getRosterCollection() {
  * mixed case, padding, husky.neu.edu aliases, or SIS-login emails still
  * unlock A1. `$expr` queries are not used — they can miss or fail on Atlas
  * and hide the Submit URLs fields.
+ *
+ * Ada Lovelace (`ada@ada.com`) and Bob Marley (`bob@bob.com`) are built-in
+ * demo rows. They match even when Atlas is empty or the `find` throws, so
+ * staff testing is not blocked on a prior seed. A successful Ada/Bob lookup
+ * also upserts those rows when Mongo is reachable.
  */
+function matchBuiltInAllowlists(input: {
+  emails: string[];
+  canvasUserIds?: string[];
+}): RosterLookupResult {
+  const result = matchRoster({
+    emails: input.emails,
+    canvasUserIds: input.canvasUserIds,
+    mongoEntries: [],
+    envEmails: parseRosterEmailsEnv(process.env.CANVAS_ROSTER_EMAILS),
+    mongoCount: 0,
+  });
+  if (result.status === "matched") return result;
+  return { status: "not_configured" };
+}
+
 export async function lookupCanvasRoster(input: {
   emails: string[];
   canvasUserIds?: string[];
@@ -40,12 +62,19 @@ export async function lookupCanvasRoster(input: {
   if (dummy) return dummy;
 
   if (!isMongoConfigured()) {
-    return { status: "not_configured" };
+    return matchBuiltInAllowlists(input);
   }
 
   try {
     const envEmails = parseRosterEmailsEnv(process.env.CANVAS_ROSTER_EMAILS);
     const collection = await getRosterCollection();
+    if (input.emails.some((email) => isDemoRosterEmail(email))) {
+      try {
+        await upsertDemoRosterStudents(collection);
+      } catch (error) {
+        console.error("demo roster upsert during lookup failed", error);
+      }
+    }
     const mongoEntries = await collection
       .find({})
       .project<CanvasRosterEntry>(ROSTER_MATCH_PROJECTION)
@@ -60,7 +89,7 @@ export async function lookupCanvasRoster(input: {
     });
   } catch (error) {
     console.error("canvas roster lookup failed", error);
-    return { status: "not_configured" };
+    return matchBuiltInAllowlists(input);
   }
 }
 

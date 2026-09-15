@@ -1,6 +1,7 @@
 import "server-only";
 
 import { isMongoConfigured } from "../config";
+import { mergeDemoRosterEntries } from "./demo-students";
 import { getRosterCollection } from "./lookup";
 import type { CanvasRosterEntry } from "./types";
 
@@ -32,5 +33,5 @@ export async function listCanvasRoster(): Promise<CanvasRosterListResult> {
     .project<CanvasRosterEntry>(ROSTER_LIST_PROJECTION)
     .toArray();
 
-  return { status: "ok", entries };
+  return { status: "ok", entries: mergeDemoRosterEntries(entries) };
 }

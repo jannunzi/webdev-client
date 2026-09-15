@@ -4,6 +4,7 @@ import {
   DEMO_ROSTER_STUDENTS,
   demoRosterStudentByEmail,
   isDemoRosterEmail,
+  mergeDemoRosterEntries,
 } from "./demo-students";
 import { canonicalEmailKey, normalizeEmail } from "./emails";
 import { upsertDemoRosterStudents } from "./ensure-demo";
@@ -28,6 +29,57 @@ describe("demo roster students", () => {
     assert.equal(isDemoRosterEmail("Ada@Ada.com"), true);
     assert.equal(isDemoRosterEmail("ada.lovelace@northeastern.edu"), false);
     assert.equal(demoRosterStudentByEmail(" BOB@BOB.COM ")?.name, "Bob Marley");
+  });
+
+  it("matches Ada and Bob with no Atlas rows and no env allowlist", () => {
+    const ada = matchRoster({
+      emails: ["ADA@ADA.COM"],
+      mongoEntries: [],
+      envEmails: [],
+      mongoCount: 0,
+    });
+    assert.equal(ada.status, "matched");
+    if (ada.status === "matched") {
+      assert.equal(ada.entry.name, "Ada Lovelace");
+      assert.equal(ada.entry.email, "ada@ada.com");
+      assert.equal(ada.entry.source, "demo");
+    }
+
+    const bob = matchRoster({
+      emails: ["bob+staff@bob.com"],
+      mongoEntries: [],
+      envEmails: [],
+      mongoCount: 0,
+    });
+    assert.equal(bob.status, "matched");
+    if (bob.status === "matched") {
+      assert.equal(bob.entry.name, "Bob Marley");
+    }
+  });
+
+  it("still reports empty for a non-demo email when Atlas has no rows", () => {
+    assert.equal(
+      matchRoster({
+        emails: ["stranger@northeastern.edu"],
+        mongoEntries: [],
+        envEmails: [],
+        mongoCount: 0,
+      }).status,
+      "empty",
+    );
+  });
+
+  it("merges missing demo students into a People roster list", () => {
+    const merged = mergeDemoRosterEntries([
+      { email: "jane.doe@northeastern.edu", name: "Jane Doe" },
+    ]);
+    assert.equal(merged.length, 3);
+    assert.ok(merged.some((row) => row.email === "ada@ada.com"));
+    assert.ok(merged.some((row) => row.email === "bob@bob.com"));
+    assert.equal(
+      mergeDemoRosterEntries([...DEMO_ROSTER_STUDENTS]).length,
+      DEMO_ROSTER_STUDENTS.length,
+    );
   });
 
   it("matches dummy emails against canvas_roster rows after normalize", () => {

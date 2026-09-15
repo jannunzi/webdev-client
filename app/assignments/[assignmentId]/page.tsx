@@ -42,9 +42,12 @@ import {
 import {
   canvasUserIdFromMetadata,
   collectClerkEmails,
+  collectSessionClaimEmails,
+  mergeRosterLookupEmails,
 } from "@/lib/roster/emails";
 import { listCanvasRoster } from "@/lib/roster/list";
 import { lookupCanvasRoster } from "@/lib/roster/lookup";
+import { matchRoster } from "@/lib/roster/match";
 import {
   isActualStaff,
   isImpersonatingStudent,
@@ -100,8 +103,8 @@ export default async function AssignmentDetailPage({
   let showStaffGrader = false;
 
   if (isClerkConfigured()) {
-    const { userId, isAuthenticated } = await auth();
-    signedIn = Boolean(isAuthenticated && userId);
+    const { userId, sessionClaims } = await auth();
+    signedIn = Boolean(userId);
     if (signedIn && userId) {
       try {
         const user = await currentUser();
@@ -111,20 +114,32 @@ export default async function AssignmentDetailPage({
           supportsUrlSubmission(assignment.id) &&
           canViewStaffGrader(staff, impersonating);
         const canvasUserId = canvasUserIdFromMetadata(user);
+        const emails = mergeRosterLookupEmails(
+          collectClerkEmails(user),
+          collectSessionClaimEmails(sessionClaims),
+        );
         let roster: Awaited<ReturnType<typeof lookupCanvasRoster>> = {
           status: "not_configured",
         };
-        if (mongoReady) {
-          try {
-            roster = await lookupCanvasRoster({
-              emails: collectClerkEmails(user),
-              canvasUserIds: canvasUserId ? [canvasUserId] : [],
-              impersonating,
-            });
-          } catch (error) {
-            console.error("assignment roster lookup failed", error);
-            mongoReady = false;
-          }
+        try {
+          roster = await lookupCanvasRoster({
+            emails,
+            canvasUserIds: canvasUserId ? [canvasUserId] : [],
+            impersonating,
+          });
+        } catch (error) {
+          console.error("assignment roster lookup failed", error);
+          const fallback = matchRoster({
+            emails,
+            canvasUserIds: canvasUserId ? [canvasUserId] : [],
+            mongoEntries: [],
+            envEmails: [],
+            mongoCount: 0,
+          });
+          roster =
+            fallback.status === "matched"
+              ? fallback
+              : { status: "not_configured" };
         }
         const access = assignmentSubmitAccess({
           signedIn: true,
@@ -133,7 +148,7 @@ export default async function AssignmentDetailPage({
           roster,
         });
         canSubmit = access.ok && supportsUrlSubmission(assignment.id);
-        gateReason = canSubmit ? null : gateReasonFromAccess(access);
+        gateReason = access.ok ? null : gateReasonFromAccess(access);
 
         if (mongoReady) {
           try {

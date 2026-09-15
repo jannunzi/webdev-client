@@ -22,8 +22,10 @@ export type ClerkExternalAccountLike = {
 
 export type ClerkUserLike = {
   id?: string;
+  email?: string | null;
   primaryEmailAddressId?: string | null;
-  primaryEmailAddress?: ClerkEmailLike | null;
+  primaryEmailAddress?: ClerkEmailLike | string | null;
+  primary_email_address?: ClerkEmailLike | string | null;
   emailAddresses?: ClerkEmailLike[] | { data?: ClerkEmailLike[] };
   email_addresses?: ClerkEmailLike[] | { data?: ClerkEmailLike[] };
   externalAccounts?: ClerkExternalAccountLike[];

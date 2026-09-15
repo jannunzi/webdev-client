@@ -113,8 +113,13 @@ addresses.
 | Ada Lovelace | ada@ada.com | CS4550 CRN 11464 |
 | Bob Marley | bob@bob.com | CS4550 CRN 11464 |
 
-They live in MongoDB Atlas (`canvas_roster`), not in the git checkout.
-The Next.js deploy does **not** write them automatically.
+A1 URL submit matches these emails in memory (same path as
+`CANVAS_ROSTER_EMAILS`). Staff do **not** have to seed Atlas before Ada or
+Bob can see the GitHub / Vercel fields. Opening `/assignments/a1` while
+signed in as either address also upserts the rows when Mongo is reachable.
+
+They can still be written to Atlas (`canvas_roster`) so they appear on
+People like imported students:
 
 ```bash
 # Local or CI machine that can reach the same Atlas cluster as Vercel:
