@@ -199,9 +199,16 @@ export default async function TakeExamPage({ params }: PageProps) {
         </StatusPanel>
       ) : showForm && schedule ? (
         <>
-          {impersonating && schedule && !isTakeWindowOpen(schedule, now) ? (
+          {impersonating &&
+          schedule &&
+          !isTakeWindowOpen(schedule, now, takeOverride) ? (
             <div className="mt-4">
-              <WindowBanner schedule={schedule} phase="take_closed" now={now} />
+              <WindowBanner
+                schedule={schedule}
+                phase="take_closed"
+                now={now}
+                takeOverride={takeOverride}
+              />
               <p className="text-sm text-neutral-700">
                 Students cannot start a new attempt right now. Impersonation
                 still shows the form so you can smoke-test the UI (not saved).
