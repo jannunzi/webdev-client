@@ -5,6 +5,7 @@ export {
   findSection,
   SECTION_STORAGE_KEY,
   CS5610_02_BANNER_MEETING_NOTE,
+  CS5610_09_ZOOM_URL,
   isBannerMeetingLabelNote,
 } from "./sections";
 export { holidayMeetingNote, holidays, thanksgivingBlackout } from "./holidays";

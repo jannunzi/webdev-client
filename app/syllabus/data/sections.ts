@@ -11,6 +11,9 @@ export function isBannerMeetingLabelNote(note: string): boolean {
   return /Banner\/Canvas/i.test(note) && /BOS-1-TR/i.test(note);
 }
 
+/** Standing CS 5610-09 class Zoom. Piazza Post 16 / Canvas Zoom was broken. */
+export const CS5610_09_ZOOM_URL = "https://northeastern.zoom.us/j/95309089469";
+
 /**
  * Official Fall 2026 sections. Every section meets once per week.
  * Meeting days and clock times are locked. Fill rooms / Zoom only when posted.
@@ -67,6 +70,7 @@ export const sections: CourseSection[] = [
     daysOfWeek: [2],
     time: "6:00–9:00pm ET",
     location: "Online — meets Tuesdays, 6:00–9:00pm ET",
+    zoomUrl: CS5610_09_ZOOM_URL,
     tabLabel: "CS 5610-09 · Online",
     notes: [
       "Graduate, online. Meets once a week on Tuesdays, 6:00–9:00pm ET, starting September 15, 2026.",

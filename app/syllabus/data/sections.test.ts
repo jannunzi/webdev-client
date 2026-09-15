@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import {
   CS5610_02_BANNER_MEETING_NOTE,
+  CS5610_09_ZOOM_URL,
   findSection,
   isBannerMeetingLabelNote,
   sections,
@@ -56,5 +57,30 @@ describe("CS 5610-02 Banner/Canvas meeting label note", () => {
     assert.match(meetingInfo, /section\.notes\.map/);
     assert.match(meetingInfo, /isBannerMeetingLabelNote/);
     assert.match(meetingInfo, /bg-amber-50/);
+  });
+});
+
+describe("CS 5610-09 standing Zoom link", () => {
+  it("posts the standing Zoom URL only on CS 5610-09", () => {
+    const section = findSection("cs5610-09");
+    assert.equal(section.zoomUrl, CS5610_09_ZOOM_URL);
+    assert.equal(section.zoomUrl, "https://northeastern.zoom.us/j/95309089469");
+    assert.equal(section.time, "6:00–9:00pm ET");
+    assert.match(section.location, /Tuesdays, 6:00–9:00pm ET/);
+    assert.match(
+      section.notes[0] ?? "",
+      /Meets once a week on Tuesdays, 6:00–9:00pm ET, starting September 15, 2026/,
+    );
+
+    for (const other of sections.filter((section) => section.id !== "cs5610-09")) {
+      assert.equal(other.zoomUrl, undefined);
+    }
+  });
+
+  it("renders a labeled external Zoom link from section.zoomUrl", () => {
+    assert.match(meetingInfo, /section\.zoomUrl/);
+    assert.match(meetingInfo, /Join class \(Zoom\)/);
+    assert.match(meetingInfo, /target="_blank"/);
+    assert.match(meetingInfo, /rel="noopener noreferrer"/);
   });
 });
