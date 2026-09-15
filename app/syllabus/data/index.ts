@@ -47,9 +47,19 @@ export {
 export { assignments, assignmentsIntro } from "./assignments";
 export { projectBlurb } from "./project";
 export {
+  ALL_SECTION_IDS,
+  PIAZZA_PRIMARY_HREF,
+  cs561009TaNote,
   officeHourColumns,
   officeHourRows,
+  officeHourRowsForSection,
+  officeHoursIntro,
   officeHoursPlaceholder,
+  piazzaBoardForSection,
+  piazzaBoards,
+  staffGroupsForSection,
+  staffMembers,
+  staffMembersForSection,
 } from "./officeHours";
 export type {
   AcademicCalendarEvent,
@@ -62,4 +72,8 @@ export type {
   Holiday,
   IsoDate,
   LectureTopic,
+  OfficeHourRow,
+  PiazzaBoard,
+  StaffGroup,
+  StaffMember,
 } from "./types";
