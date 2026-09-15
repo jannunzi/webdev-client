@@ -31,6 +31,24 @@ export function isAssignmentSubmissionConfigured(): boolean {
   return isAssignmentProgressConfigured();
 }
 
+/** Dev/agent-only in-memory queue when Mongo is unset. */
+export function isOfficeHourQueueMemory(): boolean {
+  return process.env.OH_QUEUE_MEMORY === "1";
+}
+
+export function isOfficeHourQueueConfigured(): boolean {
+  return (
+    isClerkConfigured() && (isMongoConfigured() || isOfficeHourQueueMemory())
+  );
+}
+
+/** Local/agent screenshots of student and TA line chrome. Off in production. */
+export function isOfficeHourQueuePreview(): boolean {
+  return (
+    process.env.OH_QUEUE_PREVIEW === "1" && process.env.NODE_ENV !== "production"
+  );
+}
+
 export function mongoDbName(): string {
   return process.env.MONGODB_DB?.trim() || "webdev";
 }
