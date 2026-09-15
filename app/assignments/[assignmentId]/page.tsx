@@ -10,7 +10,7 @@ import {
   supportsUrlSubmission,
 } from "@/lib/assignments/access";
 import {
-  gateReasonFromAccess,
+  resolveA1SubmitVisibility,
   type SubmissionGateReason,
 } from "@/lib/assignments/submission-form";
 import {
@@ -39,13 +39,9 @@ import {
   isAssignmentProgressConfigured,
   isClerkConfigured,
 } from "@/lib/config";
-import {
-  canvasUserIdFromMetadata,
-  collectClerkEmails,
-  collectSessionClaimEmails,
-  mergeRosterLookupEmails,
-} from "@/lib/roster/emails";
+import { canvasUserIdFromMetadata } from "@/lib/roster/emails";
 import { listCanvasRoster } from "@/lib/roster/list";
+import { loadClerkRosterEmails } from "@/lib/roster/load-clerk-emails";
 import { lookupCanvasRoster } from "@/lib/roster/lookup";
 import { matchRoster } from "@/lib/roster/match";
 import {
@@ -106,128 +102,141 @@ export default async function AssignmentDetailPage({
     const { userId, sessionClaims } = await auth();
     signedIn = Boolean(userId);
     if (signedIn && userId) {
+      let staff = false;
+      let user = null;
+      let emails: string[] = [];
       try {
-        const user = await currentUser();
+        user = await currentUser();
         impersonating = await isImpersonatingStudent();
-        const staff = await isActualStaff();
+        staff = await isActualStaff();
         showStaffGrader =
           supportsUrlSubmission(assignment.id) &&
           canViewStaffGrader(staff, impersonating);
-        const canvasUserId = canvasUserIdFromMetadata(user);
-        const emails = mergeRosterLookupEmails(
-          collectClerkEmails(user),
-          collectSessionClaimEmails(sessionClaims),
-        );
-        let roster: Awaited<ReturnType<typeof lookupCanvasRoster>> = {
-          status: "not_configured",
-        };
-        try {
-          roster = await lookupCanvasRoster({
-            emails,
-            canvasUserIds: canvasUserId ? [canvasUserId] : [],
-            impersonating,
-          });
-        } catch (error) {
-          console.error("assignment roster lookup failed", error);
-          const fallback = matchRoster({
-            emails,
-            canvasUserIds: canvasUserId ? [canvasUserId] : [],
-            mongoEntries: [],
-            envEmails: [],
-            mongoCount: 0,
-          });
-          roster =
-            fallback.status === "matched"
-              ? fallback
-              : { status: "not_configured" };
-        }
-        const access = assignmentSubmitAccess({
+      } catch (error) {
+        console.error("assignment auth context failed", error);
+      }
+
+      try {
+        emails = await loadClerkRosterEmails({
+          user,
+          sessionClaims,
+          userId,
+        });
+      } catch (error) {
+        console.error("assignment clerk emails failed", error);
+      }
+
+      const canvasUserId = canvasUserIdFromMetadata(user);
+      let roster: Awaited<ReturnType<typeof lookupCanvasRoster>> = {
+        status: "not_configured",
+      };
+      try {
+        roster = await lookupCanvasRoster({
+          emails,
+          canvasUserIds: canvasUserId ? [canvasUserId] : [],
+          impersonating,
+        });
+      } catch (error) {
+        console.error("assignment roster lookup failed", error);
+        const fallback = matchRoster({
+          emails,
+          canvasUserIds: canvasUserId ? [canvasUserId] : [],
+          mongoEntries: [],
+          envEmails: [],
+          mongoCount: 0,
+        });
+        roster =
+          fallback.status === "matched"
+            ? fallback
+            : { status: "not_configured" };
+      }
+
+      // Gate is computed here and never rewritten by checklist / staff extras.
+      // “The page loaded” (Tania) is not the same as canSubmit (URL fields).
+      const visibility = resolveA1SubmitVisibility({
+        assignmentId: assignment.id,
+        access: assignmentSubmitAccess({
           signedIn: true,
-          configured: mongoReady,
+          configured: isAssignmentProgressConfigured(),
           isActualStaff: staff,
           roster,
-        });
-        canSubmit = access.ok && supportsUrlSubmission(assignment.id);
-        gateReason = access.ok ? null : gateReasonFromAccess(access);
+        }),
+      });
+      canSubmit = visibility.canSubmit;
+      gateReason = visibility.gateReason;
 
+      try {
         if (mongoReady) {
-          try {
-            initialCompletedIds = await readAssignmentProgress(
-              userId,
-              assignment.id,
-            );
-          } catch (error) {
-            console.error("assignment progress load failed", error);
-            mongoReady = false;
-          }
+          initialCompletedIds = await readAssignmentProgress(
+            userId,
+            assignment.id,
+          );
         }
+      } catch (error) {
+        console.error("assignment progress load failed", error);
+        mongoReady = false;
+      }
 
+      try {
         if (
           mongoReady &&
           canSubmit &&
           !impersonating &&
           supportsUrlSubmission(assignment.id)
         ) {
-          try {
-            const doc = await readAssignmentSubmission(userId, assignment.id);
-            initialSubmission = doc ? toSubmissionView(doc) : null;
-          } catch (error) {
-            console.error("assignment submission load failed", error);
-          }
+          const doc = await readAssignmentSubmission(userId, assignment.id);
+          initialSubmission = doc ? toSubmissionView(doc) : null;
         }
+      } catch (error) {
+        console.error("assignment submission load failed", error);
+      }
 
+      try {
         if (showStaffGrader && mongoReady) {
-          try {
-            const [rosterList, submissions] = await Promise.all([
-              listCanvasRoster(),
-              listSubmissionsForAssignment(assignment.id),
-            ]);
-            staffQueue = buildStaffStudentQueue(
-              rosterList.status === "ok" ? rosterList.entries : [],
-              submissions,
-            );
-            selectedSection = resolveStaffSectionFilter(
-              sectionParam,
-              listStaffQueueSections(staffQueue),
-            );
-            if (studentKey) {
-              selectedStudent =
-                findStaffStudent(
-                  staffQueueForSection(staffQueue, selectedSection),
-                  studentKey,
-                ) ?? null;
-              if (selectedStudent?.clerkUserId) {
-                const doc = await readAssignmentSubmission(
-                  selectedStudent.clerkUserId,
-                  assignment.id,
-                );
-                initialSubmission = doc ? toSubmissionView(doc) : null;
-                initialCompletedIds = [];
-              } else if (selectedStudent) {
-                initialSubmission = selectedStudent.vercelUrl
-                  ? {
-                      githubUrl: selectedStudent.githubUrl ?? "",
-                      vercelUrl: selectedStudent.vercelUrl,
-                      updatedAt: new Date().toISOString(),
-                      lastCheckedAt: selectedStudent.lastCheckedAt,
-                      checkResults: selectedStudent.checkResults,
-                      email: selectedStudent.email,
-                      name: selectedStudent.name,
-                      staffGrade: selectedStudent.staffGrade,
-                    }
-                  : null;
-                initialCompletedIds = [];
-              }
+          const [rosterList, submissions] = await Promise.all([
+            listCanvasRoster(),
+            listSubmissionsForAssignment(assignment.id),
+          ]);
+          staffQueue = buildStaffStudentQueue(
+            rosterList.status === "ok" ? rosterList.entries : [],
+            submissions,
+          );
+          selectedSection = resolveStaffSectionFilter(
+            sectionParam,
+            listStaffQueueSections(staffQueue),
+          );
+          if (studentKey) {
+            selectedStudent =
+              findStaffStudent(
+                staffQueueForSection(staffQueue, selectedSection),
+                studentKey,
+              ) ?? null;
+            if (selectedStudent?.clerkUserId) {
+              const doc = await readAssignmentSubmission(
+                selectedStudent.clerkUserId,
+                assignment.id,
+              );
+              initialSubmission = doc ? toSubmissionView(doc) : null;
+              initialCompletedIds = [];
+            } else if (selectedStudent) {
+              initialSubmission = selectedStudent.vercelUrl
+                ? {
+                    githubUrl: selectedStudent.githubUrl ?? "",
+                    vercelUrl: selectedStudent.vercelUrl,
+                    updatedAt: new Date().toISOString(),
+                    lastCheckedAt: selectedStudent.lastCheckedAt,
+                    checkResults: selectedStudent.checkResults,
+                    email: selectedStudent.email,
+                    name: selectedStudent.name,
+                    staffGrade: selectedStudent.staffGrade,
+                  }
+                : null;
+              initialCompletedIds = [];
             }
-          } catch (error) {
-            console.error("assignment staff queue load failed", error);
           }
         }
       } catch (error) {
-        console.error("assignment detail load failed", error);
-        mongoReady = false;
-        canSubmit = false;
-        if (gateReason === null) gateReason = "not_configured";
+        console.error("assignment staff queue load failed", error);
       }
     } else {
       gateReason = mongoReady ? "sign_in" : "not_configured";

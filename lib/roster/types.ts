@@ -32,6 +32,10 @@ export type ClerkUserLike = {
   external_accounts?: ClerkExternalAccountLike[];
   username?: string | null;
   publicMetadata?: Record<string, unknown> | null;
+  raw?: {
+    email_addresses?: ClerkEmailLike[] | { data?: ClerkEmailLike[] };
+    email?: string | null;
+  } | null;
 };
 
 export type RosterLookupStatus =

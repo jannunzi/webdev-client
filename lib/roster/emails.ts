@@ -125,6 +125,7 @@ function clerkEmailRows(user: ClerkUserLike): ClerkEmailLike[] {
   return [
     ...asEmailList(user.emailAddresses),
     ...asEmailList(user.email_addresses),
+    ...asEmailList(user.raw?.email_addresses),
   ];
 }
 
@@ -178,6 +179,7 @@ export function collectClerkEmails(user: ClerkUserLike | null | undefined): stri
   for (const item of ordered) push(emailAddressOf(item));
   if (typeof primary === "string") push(primary);
   if (user.email) push(user.email);
+  if (user.raw?.email) push(user.raw.email);
   for (const email of externalAccountEmails(user)) push(email);
   if (user.username) push(user.username);
   return emails;
@@ -208,6 +210,13 @@ export function collectSessionClaimEmails(claims: unknown): string[] {
   if (nested && typeof nested === "object") {
     push((nested as { emailAddress?: unknown }).emailAddress);
     push((nested as { email_address?: unknown }).email_address);
+  }
+  const user = record.user;
+  if (user && typeof user === "object") {
+    const nestedUser = user as Record<string, unknown>;
+    push(nestedUser.email);
+    push(nestedUser.email_address);
+    push(nestedUser.primary_email_address);
   }
   return emails;
 }

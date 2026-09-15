@@ -2,8 +2,8 @@ import "server-only";
 
 import { isMongoConfigured } from "../config";
 import { getCollection } from "../mongo";
-import { isDemoRosterEmail } from "./demo-students";
-import { parseRosterEmailsEnv } from "./emails";
+import { DEMO_ROSTER_STUDENTS, isDemoRosterEmail } from "./demo-students";
+import { normalizeEmail, parseRosterEmailsEnv } from "./emails";
 import { upsertDemoRosterStudents } from "./ensure-demo";
 import { matchRoster } from "./match";
 import type { CanvasRosterEntry, RosterLookupResult } from "./types";
@@ -40,7 +40,7 @@ export async function getRosterCollection() {
 function matchBuiltInAllowlists(input: {
   emails: string[];
   canvasUserIds?: string[];
-}): RosterLookupResult {
+}): Extract<RosterLookupResult, { status: "matched" }> | null {
   const result = matchRoster({
     emails: input.emails,
     canvasUserIds: input.canvasUserIds,
@@ -48,8 +48,17 @@ function matchBuiltInAllowlists(input: {
     envEmails: parseRosterEmailsEnv(process.env.CANVAS_ROSTER_EMAILS),
     mongoCount: 0,
   });
-  if (result.status === "matched") return result;
-  return { status: "not_configured" };
+  return result.status === "matched" ? result : null;
+}
+
+async function persistDemoRosterIfConfigured(): Promise<void> {
+  if (!isMongoConfigured()) return;
+  try {
+    const collection = await getRosterCollection();
+    await upsertDemoRosterStudents(collection);
+  } catch (error) {
+    console.error("demo roster upsert during lookup failed", error);
+  }
 }
 
 export async function lookupCanvasRoster(input: {
@@ -61,24 +70,41 @@ export async function lookupCanvasRoster(input: {
   const dummy = impersonationRosterMatch(Boolean(input.impersonating));
   if (dummy) return dummy;
 
+  // Ada / Bob (and CANVAS_ROSTER_EMAILS) match before any Atlas read so a
+  // find({}) failure cannot relabel them as not_configured.
+  const builtIn = matchBuiltInAllowlists(input);
+  if (builtIn) {
+    if (input.emails.some((email) => isDemoRosterEmail(email))) {
+      await persistDemoRosterIfConfigured();
+    }
+    return builtIn;
+  }
+
   if (!isMongoConfigured()) {
-    return matchBuiltInAllowlists(input);
+    return { status: "not_configured" };
   }
 
   try {
     const envEmails = parseRosterEmailsEnv(process.env.CANVAS_ROSTER_EMAILS);
     const collection = await getRosterCollection();
-    if (input.emails.some((email) => isDemoRosterEmail(email))) {
+    const mongoEntries = await collection
+      .find({})
+      .project<CanvasRosterEntry>(ROSTER_MATCH_PROJECTION)
+      .toArray();
+    const missingDemo = DEMO_ROSTER_STUDENTS.some(
+      (demo) =>
+        !mongoEntries.some(
+          (row) =>
+            normalizeEmail(row.email) === normalizeEmail(demo.email),
+        ),
+    );
+    if (missingDemo) {
       try {
         await upsertDemoRosterStudents(collection);
       } catch (error) {
         console.error("demo roster upsert during lookup failed", error);
       }
     }
-    const mongoEntries = await collection
-      .find({})
-      .project<CanvasRosterEntry>(ROSTER_MATCH_PROJECTION)
-      .toArray();
 
     return matchRoster({
       emails: input.emails,
@@ -89,7 +115,7 @@ export async function lookupCanvasRoster(input: {
     });
   } catch (error) {
     console.error("canvas roster lookup failed", error);
-    return matchBuiltInAllowlists(input);
+    return matchBuiltInAllowlists(input) ?? { status: "not_configured" };
   }
 }
 

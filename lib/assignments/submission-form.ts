@@ -1,5 +1,8 @@
 import { ASSIGNMENT_STUDENT_COPY } from "./student-copy";
-import type { AssignmentSubmitGate } from "./access";
+import {
+  supportsUrlSubmission,
+  type AssignmentSubmitGate,
+} from "./access";
 
 export type SubmissionGateReason =
   | "sign_in"
@@ -70,4 +73,24 @@ export function submissionGateCopy(
         body: ASSIGNMENT_STUDENT_COPY.notConfigured,
       };
   }
+}
+
+export type A1SubmitVisibility = {
+  canSubmit: boolean;
+  gateReason: SubmissionGateReason;
+};
+
+/**
+ * Single source for A1 URL-field visibility. Checklist / progress / staff
+ * extras must not rewrite this — “the page loaded” is not canSubmit.
+ */
+export function resolveA1SubmitVisibility(input: {
+  assignmentId: string;
+  access: AssignmentSubmitGate;
+}): A1SubmitVisibility {
+  const canSubmit = input.access.ok && supportsUrlSubmission(input.assignmentId);
+  return {
+    canSubmit,
+    gateReason: canSubmit ? null : gateReasonFromAccess(input.access),
+  };
 }

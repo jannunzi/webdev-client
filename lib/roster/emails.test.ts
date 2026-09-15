@@ -92,6 +92,22 @@ describe("roster emails", () => {
       mergeRosterLookupEmails(["Ada@Ada.com"], ["ada@ada.com", "bob@bob.com"]),
       ["ada@ada.com", "bob@bob.com"],
     );
+    assert.deepEqual(
+      collectClerkEmails({
+        id: "user_raw",
+        emailAddresses: [],
+        raw: {
+          email_addresses: [{ email_address: "ada@ada.com" }],
+        },
+      }),
+      ["ada@ada.com"],
+    );
+    assert.deepEqual(
+      collectSessionClaimEmails({
+        user: { primary_email_address: "Bob@Bob.com" },
+      }),
+      ["bob@bob.com"],
+    );
   });
 
   it("reads Clerk backend, paginated, and SSO email shapes", () => {

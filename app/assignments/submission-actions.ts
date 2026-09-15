@@ -23,11 +23,9 @@ import type { AssignmentId } from "@/lib/assignments/types";
 import { isAssignmentProgressConfigured } from "@/lib/config";
 import {
   canvasUserIdFromMetadata,
-  collectClerkEmails,
-  collectSessionClaimEmails,
-  mergeRosterLookupEmails,
   preferredRosterEmail,
 } from "@/lib/roster/emails";
+import { loadClerkRosterEmails } from "@/lib/roster/load-clerk-emails";
 import { lookupCanvasRoster } from "@/lib/roster/lookup";
 import { isActualStaff, isImpersonatingStudent } from "@/lib/roster/staff-access";
 import type { AssignmentSubmissionIdentity } from "@/lib/assignments/submissions-store";
@@ -132,10 +130,11 @@ async function authorizeSubmission(assignmentId: string): Promise<
   }
 
   const user = await currentUser();
-  const emails = mergeRosterLookupEmails(
-    collectClerkEmails(user),
-    collectSessionClaimEmails(sessionClaims),
-  );
+  const emails = await loadClerkRosterEmails({
+    user,
+    sessionClaims,
+    userId,
+  });
   const canvasUserId = canvasUserIdFromMetadata(user);
   const impersonating = await isImpersonatingStudent();
   const staff = await isActualStaff();

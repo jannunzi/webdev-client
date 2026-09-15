@@ -5,6 +5,7 @@ import { ASSIGNMENT_STUDENT_COPY } from "./student-copy";
 import {
   a1SubmissionFormState,
   gateReasonFromAccess,
+  resolveA1SubmitVisibility,
   submissionGateCopy,
   type SubmissionGateReason,
 } from "./submission-form";
@@ -212,6 +213,72 @@ describe("A1 submission form visibility", () => {
       assert.equal(copy.title, ASSIGNMENT_STUDENT_COPY.notOnRosterTitle);
       assert.match(copy.body, /isn.t on the Canvas course roster/i);
       assert.notEqual(copy.title, "URL submit is not available yet");
+    }
+  });
+
+  it("treats a loaded A1 checklist as insufficient — fields follow canSubmit only", () => {
+    const ada = matchRoster({
+      emails: ["ada@ada.com"],
+      mongoEntries: [],
+      envEmails: [],
+      mongoCount: 0,
+    });
+    const allowed = resolveA1SubmitVisibility({
+      assignmentId: "a1",
+      access: assignmentSubmitAccess({
+        signedIn: true,
+        configured: true,
+        isActualStaff: false,
+        roster: ada,
+      }),
+    });
+    assert.equal(allowed.canSubmit, true);
+    assert.equal(allowed.gateReason, null);
+    assert.equal(a1SubmissionFormState(allowed).mode, "fields");
+
+    const laterPageErrorMustNotHideFields = {
+      ...allowed,
+    };
+    assert.equal(laterPageErrorMustNotHideFields.canSubmit, true);
+    assert.notEqual(
+      submissionGateCopy("not_configured").title,
+      "Sign in to submit URLs",
+    );
+
+    const pageOpenButOffRoster = resolveA1SubmitVisibility({
+      assignmentId: "a1",
+      access: assignmentSubmitAccess({
+        signedIn: true,
+        configured: true,
+        isActualStaff: false,
+        roster: { status: "not_on_roster" },
+      }),
+    });
+    assert.equal(pageOpenButOffRoster.canSubmit, false);
+    assert.equal(pageOpenButOffRoster.gateReason, "not_on_roster");
+    if (pageOpenButOffRoster.gateReason) {
+      assert.notEqual(
+        submissionGateCopy(pageOpenButOffRoster.gateReason).title,
+        "URL submit is not available yet",
+      );
+    }
+
+    const signedInUnmatchedUnconfigured = resolveA1SubmitVisibility({
+      assignmentId: "a1",
+      access: assignmentSubmitAccess({
+        signedIn: true,
+        configured: false,
+        isActualStaff: false,
+        roster: { status: "not_configured" },
+      }),
+    });
+    assert.equal(signedInUnmatchedUnconfigured.canSubmit, false);
+    assert.equal(signedInUnmatchedUnconfigured.gateReason, "not_configured");
+    if (signedInUnmatchedUnconfigured.gateReason) {
+      assert.equal(
+        submissionGateCopy(signedInUnmatchedUnconfigured.gateReason).title,
+        "URL submit is not available yet",
+      );
     }
   });
 
