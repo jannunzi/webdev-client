@@ -45,6 +45,22 @@ export default function MeetingInfo({
           </dt>
           <dd>{section.location}</dd>
         </div>
+        {section.zoomUrl ? (
+          <div>
+            <dt className="font-sans text-sm font-semibold uppercase tracking-wide text-neutral-500">
+              Zoom
+            </dt>
+            <dd>
+              <a
+                href={section.zoomUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Join class (Zoom)
+              </a>
+            </dd>
+          </div>
+        ) : null}
         <div>
           <dt className="font-sans text-sm font-semibold uppercase tracking-wide text-neutral-500">
             First class

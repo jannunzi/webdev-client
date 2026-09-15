@@ -40,6 +40,8 @@ export type CourseSection = {
   time: string;
   /** Room or online meeting description. */
   location: string;
+  /** Standing Zoom join URL. Only set for online sections when posted. */
+  zoomUrl?: string;
   tabLabel: string;
   notes: string[];
 };
