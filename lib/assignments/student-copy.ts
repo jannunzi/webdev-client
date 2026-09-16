@@ -3,9 +3,10 @@
  * (Clerk) here — staff pages and the README still can.
  *
  * Creating a course-website account is not Canvas. Students Sign up
- * with the same Northeastern email they use on Canvas so progress can
- * be mapped to the roster. Roster match is still required for URL
- * submit.
+ * with the same Northeastern email they use on Canvas/FACT so progress
+ * can be mapped to the roster. Roster match is still required for URL
+ * submit. Fields are not unlocked by a calendar date. Do not name
+ * demo students in this file.
  */
 import { COURSE_WEBSITE_ACCOUNT_COPY } from "../course-site/account-copy";
 
@@ -17,12 +18,16 @@ export const ASSIGNMENT_STUDENT_COPY = {
     "Sign up if you don’t have a course-website account yet, then Sign in with the same Northeastern email you use on Canvas to sync progress.",
   syncAcrossDevices:
     "Checkmarks stay in this browser. Sign up if you don’t have a course-website account yet, then Sign in with the same Northeastern email you use on Canvas to sync across devices.",
+  urlSubmitWhen:
+    "URL submit and test fields are not unlocked by a calendar date. They appear when you are signed in with the same Northeastern email as your Canvas/FACT roster, and that email is on the course site roster.",
   notOnRosterTitle: "This email isn’t on the course roster",
   notOnRoster:
-    "This email isn’t on the Canvas course roster. You can still use the checklist in this browser. URL submit stays closed until you Sign in with the same Northeastern email you use on Canvas. Creating a site account does not enroll you on the roster; use your Canvas email so we can map progress.",
+    "This email isn’t on the Canvas/FACT course roster. You can still use the checklist in this browser. URL submit stays closed until you Sign in with the same Northeastern email you use on Canvas. Creating a site account does not enroll you on the roster; use your Canvas email so we can map progress. If you already did that, hard-refresh. If you are still blocked, ask staff on Piazza to check the roster.",
   rosterEmpty:
-    "The course roster has not been loaded yet. URL submit is closed until the instructor imports the roster.",
-  notConfigured: "Assignment URL submit is not available yet.",
+    "The course roster has not been loaded yet. This is not a date lock — URL submit stays closed until the instructor imports the roster.",
+  notConfiguredTitle: "URL submit is not available yet",
+  notConfigured:
+    "This is not a date lock. URL submit and test fields appear when you are signed in with the same Northeastern email as your Canvas/FACT roster, and that email is on the course site roster. Hard-refresh this page and confirm the email you signed in with matches Canvas. If you are still blocked, ask staff on Piazza to check the roster.",
   unknownAssignment: "URL submit is only available for A1 right now.",
   impersonationBanner:
     "Impersonation — you can run checks to smoke-test the form. The submission is not saved.",

@@ -128,6 +128,11 @@ export default function A1SubmissionForm({
       <h2 className="mt-0 mb-1 font-sans text-xl font-semibold tracking-tight">
         {staffReview ? "Student URLs" : "Submit URLs"}
       </h2>
+      {staffReview ? null : (
+        <p className="mt-0 mb-2 text-neutral-800">
+          {ASSIGNMENT_STUDENT_COPY.urlSubmitWhen}
+        </p>
+      )}
       <p className="mt-0 text-neutral-800">
         {ASSIGNMENT_STUDENT_COPY.checkInstructions}
       </p>
