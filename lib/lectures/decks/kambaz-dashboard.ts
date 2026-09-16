@@ -22,6 +22,18 @@ export const KAMBAZ_DASHBOARD_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "target-dashboard",
+    title: "Canvas target: Dashboard",
+    kind: "content",
+    bullets: [
+      "Book Figure 1.4.3a — course cards are the Canvas-inspired target",
+      "This week is **plain HTML**. Chapter 2 styles the cards",
+    ],
+    imageSrc: "/images/book/kambaz/dashboard.png",
+    imageAlt: "Target Kambaz Dashboard with course cards",
+    imageCaption: "Figure 1.4.3a — Dashboard Screen",
+  },
+  {
     id: "course-card",
     title: "The Dashboard Component",
     kind: "content",
@@ -58,8 +70,7 @@ export default function CourseCard({
   {
     id: "dashboard-page",
     title: "The Dashboard Component",
-    kind: "demo",
-    embed: "kambaz-dashboard",
+    kind: "content",
     bullets: [
       "Ids: `wd-dashboard`, `wd-dashboard-title`, `wd-dashboard-published`",
       "**Published Courses (3)** matches the three cards",
@@ -87,6 +98,12 @@ export default function Dashboard() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/page.tsx",
+  },
+  {
+    id: "dashboard-page-live",
+    title: "Dashboard: live demo",
+    kind: "demo",
+    embed: "kambaz-dashboard",
   },
   {
     id: "signin-to-dashboard",

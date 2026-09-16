@@ -49,10 +49,21 @@ export default function Module({
     codeFile: "app/(kambaz)/courses/[cid]/modules/Module.tsx",
   },
   {
+    id: "target-modules",
+    title: "Canvas target: Modules",
+    kind: "content",
+    bullets: [
+      "Book Figure 1.4.5a — weeks → lessons → content items",
+      "This week is the **nested list**. Chapter 2 styles the bars",
+    ],
+    imageSrc: "/images/book/kambaz/modules.png",
+    imageAlt: "Target Kambaz Modules screen",
+    imageCaption: "Figure 1.4.5a — Modules Screen",
+  },
+  {
     id: "modules-page",
     title: "Create Modules Screen",
-    kind: "demo",
-    embed: "kambaz-modules",
+    kind: "content",
     bullets: [
       "List id `wd-modules`. Expand Week 1 with **LEARNING OBJECTIVES**",
       "Weeks 2–3 can start thin. Content items use `wd-content-item`",
@@ -89,6 +100,12 @@ export default function Module({
     codeFile: "app/(kambaz)/courses/[cid]/modules/page.tsx",
   },
   {
+    id: "modules-page-live",
+    title: "Modules: live demo",
+    kind: "demo",
+    embed: "kambaz-modules",
+  },
+  {
     id: "status",
     title: "Implement Course Status Sidebar",
     kind: "content",
@@ -110,10 +127,21 @@ export default function Module({
     codeFile: "app/(kambaz)/courses/[cid]/home/Status.tsx",
   },
   {
+    id: "target-home",
+    title: "Canvas target: Home",
+    kind: "content",
+    bullets: [
+      "Book Figure 1.4.6a — Modules beside Course Status",
+      "Kambaz + Course nav already come from the outer layouts",
+    ],
+    imageSrc: "/images/book/kambaz/home.png",
+    imageAlt: "Target Kambaz Home screen with Course Status",
+    imageCaption: "Figure 1.4.6a — Home Screen",
+  },
+  {
     id: "home",
     title: "Implementing the Home Screen",
-    kind: "demo",
-    embed: "kambaz-home",
+    kind: "content",
     bullets: [
       "Home only needs Modules (70%) beside Course Status",
       "Import the Modules **page** — `import Modules from \"../modules/page\"`",
@@ -139,6 +167,12 @@ export default function Home() {
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/home/page.tsx",
     codeAddedLines: [1, 2, 10, 11],
+  },
+  {
+    id: "home-live",
+    title: "Home: live demo",
+    kind: "demo",
+    embed: "kambaz-home",
   },
   {
     id: "next-up",

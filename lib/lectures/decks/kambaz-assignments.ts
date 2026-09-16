@@ -22,10 +22,21 @@ export const KAMBAZ_ASSIGNMENTS_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "target-assignments",
+    title: "Canvas target: Assignments",
+    kind: "content",
+    bullets: [
+      "Book Figure 1.4.7a — grouped list students see in Canvas-style LMS",
+      "This week: **plain HTML**. Match the ids; Tailwind is Chapter 2",
+    ],
+    imageSrc: "/images/book/kambaz/assignments.png",
+    imageAlt: "Target Kambaz Assignments screen",
+    imageCaption: "Figure 1.4.7a — Assignments Screen",
+  },
+  {
     id: "list-screen",
     title: "Create Assignments Screen",
-    kind: "demo",
-    embed: "kambaz-assignments",
+    kind: "content",
     bullets: [
       "`app/(kambaz)/courses/[cid]/assignments/page.tsx`",
       "Search: `id=\"wd-search-assignment\"`",
@@ -52,6 +63,12 @@ export const KAMBAZ_ASSIGNMENTS_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/assignments/page.tsx",
+  },
+  {
+    id: "list-screen-live",
+    title: "Assignments: live demo",
+    kind: "demo",
+    embed: "kambaz-assignments",
   },
   {
     id: "assignment-item",
@@ -85,10 +102,21 @@ export default function AssignmentItem({
     codeFile: "app/(kambaz)/courses/[cid]/assignments/AssignmentItem.tsx",
   },
   {
+    id: "target-editor",
+    title: "Canvas target: Assignment editor",
+    kind: "content",
+    bullets: [
+      "Book Figure 1.4.8a — faculty edit name, points, dates, and assign",
+      "Start from name / description / points, then complete on your own",
+    ],
+    imageSrc: "/images/book/kambaz/assignment-editor.png",
+    imageAlt: "Target Kambaz Assignment Editor screen",
+    imageCaption: "Figure 1.4.8a — Assignment Editor",
+  },
+  {
     id: "editor",
     title: "Create Assignment Editor Screen",
-    kind: "demo",
-    embed: "kambaz-assignment-editor",
+    kind: "content",
     bullets: [
       "`app/(kambaz)/courses/[cid]/assignments/[aid]/page.tsx`",
       "Wrapper `wd-assignments-editor`. Use **`defaultValue`**, not `value`",
@@ -120,6 +148,12 @@ export default function AssignmentItem({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/assignments/[aid]/page.tsx",
+  },
+  {
+    id: "editor-live",
+    title: "Assignment editor: live",
+    kind: "demo",
+    embed: "kambaz-assignment-editor",
   },
   {
     id: "editor-rest",

@@ -682,6 +682,8 @@ export type LectureSlide = {
   interactiveHint?: string;
   imageSrc?: string;
   imageAlt?: string;
+  /** Caption under a book target screenshot (`imageSrc`). */
+  imageCaption?: string;
   /** Single snippet. Prefer this (or `codeBlocks`) over putting source in `bullets`. */
   code?: string;
   /** Highlight hint for `code`. Defaults to `tsx` in the shell. */
@@ -780,6 +782,13 @@ export function lectureSlideFigurePath(
   slideNumber: number,
 ): string {
   return `/lectures/${slug}/slide-${String(slideNumber).padStart(2, "0")}-figure.png`;
+}
+
+/** Book Kambaz / Canvas target screenshots under `/public/images/book`. */
+export const BOOK_KAMBAZ_TARGET_PREFIX = "/images/book/kambaz/";
+
+export function isBookKambazTargetSrc(src: string | undefined): boolean {
+  return Boolean(src?.startsWith(BOOK_KAMBAZ_TARGET_PREFIX));
 }
 
 /** Authored 16:9 logo card for the slides index. */

@@ -194,6 +194,8 @@ function parseBlockSlide(raw: unknown): BlockSlide | null {
     diagram: typeof row.diagram === "string" ? (row.diagram as BlockSlide["diagram"]) : undefined,
     imageSrc: typeof row.imageSrc === "string" ? row.imageSrc : undefined,
     imageAlt: typeof row.imageAlt === "string" ? row.imageAlt : undefined,
+    imageCaption:
+      typeof row.imageCaption === "string" ? row.imageCaption : undefined,
     density: row.density === "dense" || row.density === "spacious" ? row.density : undefined,
   };
 }

@@ -64,6 +64,7 @@ export type BlockSlide = {
   diagram?: LectureDiagramId;
   imageSrc?: string;
   imageAlt?: string;
+  imageCaption?: string;
   density?: LectureSlideDensity;
 };
 
@@ -132,6 +133,7 @@ export function createBlockSlide(
     diagram: partial?.diagram,
     imageSrc: partial?.imageSrc,
     imageAlt: partial?.imageAlt,
+    imageCaption: partial?.imageCaption,
     density: partial?.density,
   };
 }
@@ -260,6 +262,7 @@ export function toBlockSlide(slide: AuthoredSlide): BlockSlide {
     diagram: slide.diagram,
     imageSrc: slide.imageSrc,
     imageAlt: slide.imageAlt,
+    imageCaption: slide.imageCaption,
     density: slide.density,
   };
 }
@@ -371,4 +374,19 @@ export function lectureDemoSourceLabel(label: string): {
     ...(path.includes("/") ? { path } : {}),
     ...(note ? { note } : {}),
   };
+}
+
+/** Live embed owns the stage — no code sharing the slide. */
+export function isDemoStageSlide(slide: BlockSlide): boolean {
+  const hasComponent = slide.blocks.some((block) => block.type === "component");
+  const hasCode = slide.blocks.some((block) => block.type === "code");
+  return hasComponent && !hasCode;
+}
+
+/** Book target screenshot owns the stage — no code or live embed. */
+export function isTargetFigureSlide(slide: BlockSlide): boolean {
+  if (!slide.imageSrc) return false;
+  return !slide.blocks.some(
+    (block) => block.type === "code" || block.type === "component",
+  );
 }

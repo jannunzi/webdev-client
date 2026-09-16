@@ -22,10 +22,33 @@ export const KAMBAZ_ACCOUNT_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "target-signin",
+    title: "Canvas target: Sign in",
+    kind: "content",
+    bullets: [
+      "Book Figure 2.4.9a — the Canvas-inspired Account Sign in we match",
+      "This week is **structure**. Chapter 2 / A2 add the Tailwind look",
+    ],
+    imageSrc: "/images/book/kambaz/account-signin.png",
+    imageAlt: "Target Account Sign in screen with NEU chrome and Account nav",
+    imageCaption: "Figure 2.4.9a — Account Sign in",
+  },
+  {
+    id: "target-profile",
+    title: "Canvas target: Profile",
+    kind: "content",
+    bullets: [
+      "Book Figure 2.4.9b — Profile fields we will stub in HTML this week",
+      "No Sign up screenshot in the book — same form pattern as Sign in",
+    ],
+    imageSrc: "/images/book/kambaz/account-profile.png",
+    imageAlt: "Target Account Profile screen",
+    imageCaption: "Figure 2.4.9b — Account Profile",
+  },
+  {
     id: "signin",
     title: "Implementing the Sign In Screen",
-    kind: "demo",
-    embed: "kambaz-signin",
+    kind: "content",
     bullets: [
       "`app/(kambaz)/account/signin/page.tsx` — URL `/account/signin`",
       "Wrapper `wd-signin-screen`. Classes `wd-username` and `wd-password`",
@@ -50,6 +73,12 @@ export default function Signin() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/signin/page.tsx",
+  },
+  {
+    id: "signin-live",
+    title: "Sign in: live demo",
+    kind: "demo",
+    embed: "kambaz-signin",
   },
   {
     id: "redirects",
@@ -82,8 +111,7 @@ export default function Kambaz() {
   {
     id: "profile",
     title: "Implementing the Profile Screen",
-    kind: "demo",
-    embed: "kambaz-profile",
+    kind: "content",
     bullets: [
       "`app/(kambaz)/account/profile/page.tsx`",
       "Ids: `wd-firstname`, `wd-lastname`, `wd-dob`, `wd-email`, `wd-role`",
@@ -117,10 +145,15 @@ export default function Kambaz() {
     codeFile: "app/(kambaz)/account/profile/page.tsx",
   },
   {
+    id: "profile-live",
+    title: "Profile: live demo",
+    kind: "demo",
+    embed: "kambaz-profile",
+  },
+  {
     id: "signup",
     title: "Implementing the Sign Up Screen",
-    kind: "demo",
-    embed: "kambaz-signup",
+    kind: "content",
     bullets: [
       "`app/(kambaz)/account/signup/page.tsx` — URL `/account/signup`",
       "Adds **verify password** — class `wd-password-verify`",
@@ -150,6 +183,12 @@ export default function Signup() {
     codeAddedLines: [11],
   },
   {
+    id: "signup-live",
+    title: "Sign up: live demo",
+    kind: "demo",
+    embed: "kambaz-signup",
+  },
+  {
     id: "account-nav",
     title: "Account Navigation Sidebar",
     kind: "content",
@@ -175,8 +214,7 @@ export default function AccountNavigation() {
   {
     id: "account-layout",
     title: "Layout Sidebar in Left Column",
-    kind: "demo",
-    embed: "kambaz-account-nav",
+    kind: "content",
     bullets: [
       "`app/(kambaz)/account/layout.tsx` does **not** create a URL",
       "Two-column `<table>`: navigation left, `{children}` right",
@@ -204,6 +242,12 @@ export default function AccountLayout({
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/layout.tsx",
     codeAddedLines: [2, 12, 13],
+  },
+  {
+    id: "account-layout-live",
+    title: "Account layout: live demo",
+    kind: "demo",
+    embed: "kambaz-account-nav",
     interactiveHint:
       "Click Signup in the live sidebar. Nav stays. Only {children} changes.",
   },
