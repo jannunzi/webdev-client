@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import "../book/book.css";
+import CourseChromeShell from "@/app/course-info/CourseChromeShell";
 
 export const metadata: Metadata = {
   title: "Slides — Web Dev",
@@ -11,5 +11,5 @@ export const metadata: Metadata = {
 export default function SlidesLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  return <div className="book-shell min-h-dvh">{children}</div>;
+  return <CourseChromeShell>{children}</CourseChromeShell>;
 }

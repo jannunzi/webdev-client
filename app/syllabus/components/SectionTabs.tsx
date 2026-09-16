@@ -10,7 +10,7 @@ export default function SectionTabs({
   onSelect: (id: string) => void;
 }) {
   return (
-    <div className="sticky top-0 z-10 mb-6 border-b border-neutral-200 bg-[#fafafa]/95 py-3 backdrop-blur-sm">
+    <div className="sticky top-[var(--course-site-header-height)] z-10 mb-6 border-b border-neutral-200 bg-[#fafafa]/95 py-3 backdrop-blur-sm">
       <p className="mb-2 font-sans text-sm font-medium text-neutral-600">
         Choose your section
       </p>

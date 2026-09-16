@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { COURSE_INFO_LINKS } from "@/app/course-info/course-nav";
 
 const SECTIONS = [
   { href: "#overview", label: "Overview" },
@@ -40,27 +41,16 @@ export default function SyllabusNav() {
         ))}
       </ul>
       <p className="mt-3 border-t border-neutral-200 pt-2 text-neutral-600">
-        <Link href="/book">Book</Link>
-        {" · "}
-        <Link href="/blog">Blog</Link>
-        {" · "}
-        <Link href="/assignments">Assignments</Link>
-        {" · "}
-        <Link href="/slides">Slides</Link>
-        {" · "}
-        <Link href="/quizzes/take">Quizzes</Link>
-        {" · "}
-        <Link href="/labs">Labs</Link>
-        {" · "}
-        <Link href="/account/signin">Kambaz</Link>
-        {" · "}
-        <Link href="/calendar">Calendar</Link>
-        {" · "}
-        <Link href="/office-hours">Office Hours</Link>
-        {" · "}
-        <Link href="/piazza-hours">Piazza Hours</Link>
-        {" · "}
-        <Link href="/project">Project</Link>
+        {COURSE_INFO_LINKS.map((link, index) => (
+          <span key={link.href}>
+            {index > 0 ? " · " : null}
+            {link.href === "/syllabus" ? (
+              <span className="text-neutral-800">{link.label}</span>
+            ) : (
+              <Link href={link.href}>{link.label}</Link>
+            )}
+          </span>
+        ))}
       </p>
     </nav>
   );

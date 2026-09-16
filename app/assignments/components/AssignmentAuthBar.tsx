@@ -11,6 +11,7 @@ export default function AssignmentAuthBar() {
       signInLabel={COURSE_WEBSITE_ACCOUNT_COPY.signInWithCanvasEmail}
       signUpLabel={COURSE_WEBSITE_ACCOUNT_COPY.signUpWithCanvasEmail}
       hint={COURSE_WEBSITE_ACCOUNT_COPY.assignmentAuthHint}
+      showAuth={false}
     />
   );
 }

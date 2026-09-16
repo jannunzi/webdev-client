@@ -1,24 +1,12 @@
 import Link from "next/link";
+import { COURSE_INFO_LINKS, type CourseInfoHref } from "./course-nav";
 
-export const COURSE_INFO_LINKS = [
-  { href: "/syllabus", label: "Syllabus" },
-  { href: "/calendar", label: "Calendar" },
-  { href: "/book", label: "Book" },
-  { href: "/blog", label: "Blog" },
-  { href: "/slides", label: "Slides" },
-  { href: "/assignments", label: "Assignments" },
-  { href: "/quizzes/take", label: "Quizzes" },
-  { href: "/labs", label: "Labs" },
-  { href: "/account/signin", label: "Kambaz" },
-  { href: "/office-hours", label: "Office Hours" },
-  { href: "/piazza-hours", label: "Piazza Hours" },
-  { href: "/project", label: "Project" },
-] as const;
+export { COURSE_INFO_LINKS };
 
 export default function CourseInfoFooter({
   current,
 }: {
-  current?: (typeof COURSE_INFO_LINKS)[number]["href"];
+  current?: CourseInfoHref;
 }) {
   return (
     <nav

@@ -1047,42 +1047,6 @@ function TocPanel({
           </li>
           <li>
             <Link
-              href="/blog"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Blog
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/slides"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Slides
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/syllabus"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Syllabus
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/labs"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Labs
-            </Link>
-          </li>
-          <li>
-            <Link
               href="/book/practice"
               onClick={onNavigate}
               className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
@@ -1092,53 +1056,11 @@ function TocPanel({
           </li>
           <li>
             <Link
-              href="/account/signin"
+              href="/syllabus"
               onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
+              className="block rounded px-2 py-1 font-medium no-underline hover:bg-neutral-200"
             >
-              Kambaz
-            </Link>
-          </li>
-        </ul>
-
-        <h3 className="mb-2 mt-1 px-2 text-xs font-semibold uppercase tracking-wide text-neutral-500">
-          Resources
-        </h3>
-        <ul className="m-0 mb-3 list-none space-y-0.5 p-0 text-sm">
-          <li>
-            <Link
-              href="/calendar"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Academic Calendar
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/office-hours"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Office Hours
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/piazza-hours"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Piazza Hours
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/project"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Final Project
+              Syllabus
             </Link>
           </li>
         </ul>
@@ -1569,7 +1491,7 @@ export default function BookTOC() {
       {showDesktopAside && !panelOpen ? (
         <aside
           id="wd-book-toc"
-          className="sticky top-0 hidden h-screen w-10 shrink-0 flex-col border-r border-neutral-300 bg-neutral-50 font-sans md:flex"
+          className="sticky top-[var(--course-site-header-height)] hidden h-[calc(100dvh-var(--course-site-header-height))] w-10 shrink-0 flex-col border-r border-neutral-300 bg-neutral-50 font-sans md:flex"
         >
           <div className="min-h-0 flex-1" />
           <div className="flex items-center justify-center border-t border-neutral-300 bg-neutral-100 p-2">
@@ -1589,7 +1511,7 @@ export default function BookTOC() {
       {showDesktopAside && panelOpen ? (
         <aside
           id="wd-book-toc"
-          className="sticky top-0 hidden h-screen w-72 shrink-0 flex-col border-r border-neutral-300 bg-neutral-50 font-sans text-neutral-900 md:flex"
+          className="sticky top-[var(--course-site-header-height)] hidden h-[calc(100dvh-var(--course-site-header-height))] w-72 shrink-0 flex-col border-r border-neutral-300 bg-neutral-50 font-sans text-neutral-900 md:flex"
         >
           {panel}
           <div className="flex items-center justify-center border-t border-neutral-300 bg-neutral-100 p-2">

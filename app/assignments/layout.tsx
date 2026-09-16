@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import CourseChromeShell from "@/app/course-info/CourseChromeShell";
 import StaffViewModeBar from "@/app/quizzes/components/StaffViewModeBar";
 import { isClerkConfigured, isClerkPublishableKeySet } from "@/lib/config";
-import "../book/book.css";
 import AssignmentAuthBar from "./components/AssignmentAuthBar";
 
 export const metadata: Metadata = {
@@ -15,12 +15,10 @@ export default function AssignmentsLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return (
-    <div className="book-shell min-h-screen">
-      <main className="page-content min-w-0 px-4 py-8 sm:px-6">
-        {isClerkPublishableKeySet() ? <AssignmentAuthBar /> : null}
-        {isClerkConfigured() ? <StaffViewModeBar /> : null}
-        {children}
-      </main>
-    </div>
+    <CourseChromeShell mainClassName="page-content min-w-0 px-4 py-8 sm:px-6">
+      {isClerkPublishableKeySet() ? <AssignmentAuthBar /> : null}
+      {isClerkConfigured() ? <StaffViewModeBar /> : null}
+      {children}
+    </CourseChromeShell>
   );
 }

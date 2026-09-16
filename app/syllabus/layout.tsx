@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import "../book/book.css";
+import CourseChromeShell from "@/app/course-info/CourseChromeShell";
 
 export const metadata: Metadata = {
   title: "CS 4550 / CS 5610 Web Development — Syllabus",
@@ -12,8 +12,8 @@ export default function SyllabusLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return (
-    <div className="book-shell min-h-screen">
-      <main className="min-w-0 px-4 py-8 sm:px-6">{children}</main>
-    </div>
+    <CourseChromeShell mainClassName="min-w-0 px-4 py-8 sm:px-6">
+      {children}
+    </CourseChromeShell>
   );
 }

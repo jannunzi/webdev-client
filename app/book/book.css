@@ -1,6 +1,10 @@
 @import "tailwindcss/theme" layer(theme);
 @import "tailwindcss/utilities" layer(utilities);
 
+:root {
+  --course-site-header-height: 3.25rem;
+}
+
 .book-shell {
   color: #1a1a1a;
   background: #fafafa;

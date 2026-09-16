@@ -16,7 +16,7 @@ export default async function StaffViewModeBar() {
     <div
       role="region"
       aria-label="Staff view mode"
-      className={`sticky top-0 z-40 mb-4 rounded-lg border px-3 py-2 font-sans text-sm shadow-sm ${
+      className={`sticky top-[var(--course-site-header-height)] z-40 mb-4 rounded-lg border px-3 py-2 font-sans text-sm shadow-sm ${
         student
           ? "border-amber-500 bg-amber-50 text-amber-950"
           : "border-neutral-300 bg-neutral-50 text-neutral-800"

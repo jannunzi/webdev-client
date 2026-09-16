@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, it } from "node:test";
-import { COURSE_INFO_LINKS } from "../../app/course-info/CourseInfoFooter.tsx";
+import { COURSE_INFO_LINKS } from "../../app/course-info/course-nav.ts";
 import {
   ASSOCIATES_DISCLOSURE,
   BLOG_AFFILIATE_BOOKS,
@@ -294,7 +294,7 @@ describe("blog routes and nav", () => {
     );
     assert.match(
       read(join(process.cwd(), "app/syllabus/components/SyllabusNav.tsx")),
-      /href="\/blog">Blog</,
+      /COURSE_INFO_LINKS/,
     );
   });
 
