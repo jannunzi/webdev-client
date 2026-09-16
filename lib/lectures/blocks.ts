@@ -368,7 +368,7 @@ export function lectureDemoSourceLabel(label: string): {
     .trim();
   return {
     file,
-    path: path.includes("/") ? path : undefined,
-    note: note || undefined,
+    ...(path.includes("/") ? { path } : {}),
+    ...(note ? { note } : {}),
   };
 }
