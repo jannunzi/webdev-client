@@ -28,6 +28,7 @@ import type { AssignmentCheckResult } from "@/lib/assignments/checks";
 import { latestResultByCriterion } from "@/lib/assignments/checks";
 import type { CriterionPassMap } from "@/lib/assignments/grade";
 import { criterionVerifyUrl } from "@/lib/assignments/verify-urls";
+import { supportsUrlSubmission } from "@/lib/assignments/access";
 import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
 import {
   mergeLocalProgress,
@@ -226,6 +227,11 @@ export default function AssignmentChecklist({
 
   return (
     <div>
+      {supportsUrlSubmission(assignment.id) && !staffMode ? (
+        <p className="mb-3 rounded-lg border border-neutral-300 bg-white px-4 py-3 font-sans text-sm text-neutral-800">
+          {ASSIGNMENT_STUDENT_COPY.urlSubmitWhen}
+        </p>
+      ) : null}
       <div className="mb-4 rounded-lg border border-neutral-300 bg-white px-4 py-3 font-sans shadow-sm">
         <p className="m-0 text-base font-semibold tracking-tight">
           {totals.completedCount} of {totals.totalCount} items ·{" "}

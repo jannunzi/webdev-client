@@ -69,7 +69,7 @@ export function submissionGateCopy(
       };
     case "not_configured":
       return {
-        title: "URL submit is not available yet",
+        title: ASSIGNMENT_STUDENT_COPY.notConfiguredTitle,
         body: ASSIGNMENT_STUDENT_COPY.notConfigured,
       };
   }

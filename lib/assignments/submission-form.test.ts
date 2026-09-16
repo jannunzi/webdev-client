@@ -109,11 +109,24 @@ describe("A1 submission form visibility", () => {
     assert.equal(titles[0], "Sign in to submit URLs");
     assert.equal(titles[1], ASSIGNMENT_STUDENT_COPY.notOnRosterTitle);
     assert.match(titles[2] ?? "", /roster has not been loaded/i);
+    assert.equal(titles[3], ASSIGNMENT_STUDENT_COPY.notConfiguredTitle);
     assert.equal(titles[3], "URL submit is not available yet");
     assert.equal(
       submissionGateCopy("not_configured").body,
       ASSIGNMENT_STUDENT_COPY.notConfigured,
     );
+    assert.match(
+      submissionGateCopy("not_configured").body,
+      /not a date lock/i,
+    );
+    assert.match(
+      submissionGateCopy("not_configured").body,
+      /Canvas\/FACT roster/i,
+    );
+    assert.match(submissionGateCopy("not_configured").body, /hard-refresh/i);
+    assert.match(submissionGateCopy("not_configured").body, /Piazza/i);
+    assert.doesNotMatch(submissionGateCopy("not_configured").body, /ada@/i);
+    assert.doesNotMatch(submissionGateCopy("not_configured").body, /\bClerk\b/i);
   });
 
   it("does not use not_configured when a more specific access code applies", () => {
@@ -211,7 +224,7 @@ describe("A1 submission form visibility", () => {
       assert.equal(state.gateReason, "not_on_roster");
       const copy = submissionGateCopy(state.gateReason);
       assert.equal(copy.title, ASSIGNMENT_STUDENT_COPY.notOnRosterTitle);
-      assert.match(copy.body, /isn.t on the Canvas course roster/i);
+      assert.match(copy.body, /isn.t on the Canvas\/FACT course roster/i);
       assert.notEqual(copy.title, "URL submit is not available yet");
     }
   });

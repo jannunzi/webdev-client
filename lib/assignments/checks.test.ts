@@ -508,6 +508,40 @@ describe("student-facing copy", () => {
     }
   });
 
+  it("never names demo students or demo emails", () => {
+    for (const value of Object.values(ASSIGNMENT_STUDENT_COPY)) {
+      assert.doesNotMatch(value, /\bAda\b/i);
+      assert.doesNotMatch(value, /\bBob\b/i);
+      assert.doesNotMatch(value, /ada@ada\.com/i);
+      assert.doesNotMatch(value, /bob@bob\.com/i);
+    }
+  });
+
+  it("says URL fields are roster-gated, not date-gated", () => {
+    assert.match(ASSIGNMENT_STUDENT_COPY.urlSubmitWhen, /not unlocked by a calendar date/i);
+    assert.match(
+      ASSIGNMENT_STUDENT_COPY.urlSubmitWhen,
+      /same Northeastern email as your Canvas\/FACT roster/i,
+    );
+    assert.match(
+      ASSIGNMENT_STUDENT_COPY.urlSubmitWhen,
+      /on the course site roster/i,
+    );
+    assert.match(ASSIGNMENT_STUDENT_COPY.notConfigured, /not a date lock/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.notConfigured, /hard-refresh/i);
+    assert.match(
+      ASSIGNMENT_STUDENT_COPY.notConfigured,
+      /email you signed in with matches Canvas/i,
+    );
+    assert.match(ASSIGNMENT_STUDENT_COPY.notConfigured, /Piazza to check the roster/i);
+    assert.equal(
+      ASSIGNMENT_STUDENT_COPY.notConfiguredTitle,
+      "URL submit is not available yet",
+    );
+    assert.match(ASSIGNMENT_STUDENT_COPY.notOnRoster, /hard-refresh/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.notOnRoster, /Piazza to check the roster/i);
+  });
+
   it("tells students a failed Vercel URL cannot be loaded", () => {
     assert.match(ASSIGNMENT_STUDENT_COPY.vercelNotFound, /cannot be loaded/i);
     assert.match(ASSIGNMENT_STUDENT_COPY.vercelNotFound, /private window/i);
@@ -546,5 +580,6 @@ describe("student-facing copy", () => {
       ASSIGNMENT_STUDENT_COPY.notOnRoster,
       /use your Canvas email so we can map progress/i,
     );
+    assert.match(ASSIGNMENT_STUDENT_COPY.notOnRoster, /Canvas\/FACT/i);
   });
 });
