@@ -42,7 +42,10 @@ export default function SyllabusHeader({
         {" (term videos are optional). "}
         <Link href="#accounts">Course website accounts</Link>
         {" (Sign up first with your Canvas email — this site is not Canvas). "}
-        {formatSectionMeetsSentence(section.daysOfWeek, section.firstClass)}
+        {formatSectionMeetsSentence(section.daysOfWeek, section.firstClass)}{" "}
+        <Link href="#meetings">Lecture recordings</Link> are available to
+        enrolled students for a legitimate absence — not as a replacement for
+        class.
       </p>
     </header>
   );

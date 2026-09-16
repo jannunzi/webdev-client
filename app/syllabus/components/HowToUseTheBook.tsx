@@ -14,6 +14,11 @@ export default function HowToUseTheBook() {
         <Link href="/book#how-to-use">Open the book</Link>.
       </p>
       <BookVideosNote />
+      <p>
+        Optional book videos are not the same as lecture recordings. For
+        attendance and lecture recordings, see{" "}
+        <Link href="#meetings">Meeting information</Link>.
+      </p>
     </SyllabusSection>
   );
 }

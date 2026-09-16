@@ -1,5 +1,5 @@
 import { formatLongDate, formatMeetingPattern } from "../data/dates";
-import { holidayMeetingNote } from "../data/holidays";
+import { holidayMeetingNote, lectureRecordingNote } from "../data/holidays";
 import { isBannerMeetingLabelNote } from "../data/sections";
 import type { CourseSection, SemesterDates } from "../data/types";
 import SyllabusSection from "./SyllabusSection";
@@ -80,6 +80,7 @@ export default function MeetingInfo({
           </dd>
         </div>
       </dl>
+      <p>{lectureRecordingNote}</p>
       <p>{holidayMeetingNote}</p>
       {section.notes.map((note) =>
         isBannerMeetingLabelNote(note) ? (

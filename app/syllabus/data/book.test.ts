@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import { ch1EndMatter } from "../../book/ch1/end-matter.ts";
 import {
@@ -7,6 +8,11 @@ import {
   HOW_TO_USE_THE_BOOK_HEADING,
   HOW_TO_USE_THE_BOOK_INTRO,
 } from "../../book/videosOptional.ts";
+
+const howToUseTheBook = readFileSync(
+  new URL("../components/HowToUseTheBook.tsx", import.meta.url),
+  "utf8",
+);
 
 describe("how to use the book / optional videos", () => {
   it("states that term videos are optional reference, not required viewing", () => {
@@ -35,5 +41,11 @@ describe("how to use the book / optional videos", () => {
       ch1EndMatter.references.lead,
       /you will find the official site and explainer videos/i,
     );
+  });
+
+  it("cross-links lecture recordings from How to use the book", () => {
+    assert.match(howToUseTheBook, /href="#meetings"/);
+    assert.match(howToUseTheBook, /Meeting information/);
+    assert.match(howToUseTheBook, /not the same as lecture recordings/);
   });
 });

@@ -84,3 +84,11 @@ describe("CS 5610-09 standing Zoom link", () => {
     assert.match(meetingInfo, /rel="noopener noreferrer"/);
   });
 });
+
+describe("shared lecture recording policy", () => {
+  it("renders the shared recording note in Meeting information", () => {
+    assert.match(meetingInfo, /lectureRecordingNote/);
+    assert.match(meetingInfo, /holidayMeetingNote/);
+    assert.doesNotMatch(meetingInfo, /section\.lectureRecording/);
+  });
+});
