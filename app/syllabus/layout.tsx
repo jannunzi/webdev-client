@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import "../book/book.css";
+import CourseInfoLayout from "@/app/course-info/CourseInfoLayout";
 
 export const metadata: Metadata = {
   title: "CS 4550 / CS 5610 Web Development — Syllabus",
@@ -11,9 +11,5 @@ export const metadata: Metadata = {
 export default function SyllabusLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  return (
-    <div className="book-shell min-h-screen">
-      <main className="min-w-0 px-4 py-8 sm:px-6">{children}</main>
-    </div>
-  );
+  return <CourseInfoLayout>{children}</CourseInfoLayout>;
 }

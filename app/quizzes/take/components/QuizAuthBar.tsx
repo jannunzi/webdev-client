@@ -11,6 +11,7 @@ export default function QuizAuthBar() {
       signInLabel={STUDENT_COPY.signInWithSchoolEmail}
       signUpLabel={STUDENT_COPY.signUpWithSchoolEmail}
       hint={STUDENT_COPY.useRosterEmail}
+      showActions={false}
     />
   );
 }

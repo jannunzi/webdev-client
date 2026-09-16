@@ -25,23 +25,8 @@ export default function BookHome() {
       </section>
       <ResumeReading />
       <p>
-        <Link href="/syllabus">CS 4550 / CS 5610 Fall 2026 Syllabus</Link>
-        {" · "}
-        <Link href="/calendar">Academic Calendar</Link>
-        {" · "}
-        <Link href="/assignments">Assignments</Link>
-        {" · "}
-        <Link href="/blog">Blog</Link>
-        {" · "}
-        <Link href="/slides">Slides</Link>
-        {" · "}
-        <Link href="/office-hours">Office Hours</Link>
-        {" · "}
-        <Link href="/piazza-hours">Piazza Hours</Link>
-        {" · "}
-        <Link href="/project">Final Project</Link>
-        {" · "}
-        <Link href="/quizzes/take/q1">Q1 graded quiz</Link>
+        <Link href="/syllabus">Syllabus</Link>
+        {" — leave the book for course pages (assignments, quizzes, slides)."}
       </p>
       <h2 className="font-sans text-xl font-semibold">Chapters</h2>
       <ul>
