@@ -163,7 +163,73 @@ export type AssignmentItem = {
 export type OfficeHourRow = {
   name: string;
   role: string;
+  sections: string;
   hours: string;
   location: string;
   contact: string;
+};
+
+export type StaffRole = "Instructor" | "TA";
+
+/** Posted Piazza / Khoury window. Times are America/New_York (ET). */
+export type OfficeHourSlot = {
+  days: string;
+  time: string;
+};
+
+export type PiazzaBoard = {
+  /** Course section id (`cs4550-01`, `cs5610-02`, `cs5610-09`). */
+  id: string;
+  label: string;
+  /** Official class URL when posted. Omit when the board is still TBD. */
+  href?: string;
+};
+
+export type PiazzaSource = {
+  label: string;
+  href: string;
+};
+
+export type StaffMember = {
+  id: string;
+  name: string;
+  role: StaffRole;
+  /** Official section ids this person covers (`cs4550-01`, …). */
+  sectionIds: string[];
+  /** Student-facing section coverage, e.g. “All sections”. */
+  sectionLabel: string;
+  /** Northeastern / Khoury email when posted; otherwise the only posted address. */
+  email: string;
+  /** Additional school addresses already listed on Piazza. */
+  alsoEmails?: string[];
+  /** Personal addresses already listed as alternate contacts. */
+  altEmails?: string[];
+  /** Preferred contact channel when posted (no invented Zoom). */
+  contactMethod?: string;
+  teams?: string;
+  /** Posted phone only. Omit when not confirmed. */
+  phone?: string;
+  hoursStatus: "posted" | "tbd";
+  hours: OfficeHourSlot[];
+  hoursSummary: string;
+  hoursNote?: string;
+  /** Posted location only (e.g. Microsoft Teams). Omit when not listed. */
+  location?: string;
+  /** Piazza monitoring windows when posted separately from walk-up/Teams OH. */
+  piazzaHours?: OfficeHourSlot[];
+  piazzaHoursSummary?: string;
+  piazzaNote?: string;
+  /**
+   * Piazza-only staff: no walk-up/Teams office hours and no live check-in
+   * queue. Giuseppe is the only person marked this way.
+   */
+  piazzaOnly?: boolean;
+  sources?: PiazzaSource[];
+};
+
+export type StaffGroup = {
+  id: string;
+  title: string;
+  members: StaffMember[];
+  note?: string;
 };

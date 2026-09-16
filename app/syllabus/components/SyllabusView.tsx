@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { SECTION_STORAGE_KEY, findSection } from "../data/sections";
 import { projectBlurb } from "../data/project";
+import { useCourseSection } from "./useCourseSection";
 import type {
   AgendaGroup,
   AssignmentItem,
@@ -12,7 +11,6 @@ import type {
   Deadline,
   EvaluationItem,
   GradeBand,
-  OfficeHourRow,
   PolicyBlock,
   SemesterDates,
 } from "../data/types";
@@ -52,9 +50,6 @@ export default function SyllabusView({
   latePolicy,
   assignmentsIntro,
   assignments,
-  officeHourRows,
-  officeHourColumns,
-  officeHoursPlaceholder,
   aiPolicy,
   academicIntegrity,
   classroomEnvironment,
@@ -75,33 +70,13 @@ export default function SyllabusView({
   latePolicy: PolicyBlock;
   assignmentsIntro: string[];
   assignments: AssignmentItem[];
-  officeHourRows: OfficeHourRow[];
-  officeHourColumns: readonly string[];
-  officeHoursPlaceholder: string;
   aiPolicy: PolicyBlock;
   academicIntegrity: PolicyBlock;
   classroomEnvironment: PolicyBlock;
   titleIX: PolicyBlock;
   disabilities: PolicyBlock;
 }) {
-  const [sectionId, setSectionId] = useState(defaultSectionId);
-
-  useEffect(() => {
-    const stored = window.localStorage.getItem(SECTION_STORAGE_KEY);
-    if (stored && sections.some((section) => section.id === stored)) {
-      setSectionId(stored);
-    }
-  }, [sections]);
-
-  function selectSection(id: string) {
-    setSectionId(id);
-    window.localStorage.setItem(SECTION_STORAGE_KEY, id);
-  }
-
-  const section = useMemo(
-    () => findSection(sectionId),
-    [sectionId],
-  );
+  const { section, selectSection } = useCourseSection(defaultSectionId);
   const agendaGroups = agendaGroupsBySection[section.id] ?? [];
 
   return (
@@ -110,6 +85,7 @@ export default function SyllabusView({
         sections={sections}
         activeId={section.id}
         onSelect={selectSection}
+        controlsId="syllabus-agenda-panel"
       />
       <SyllabusHeader course={course} section={section} />
       <div className="mt-6">
@@ -120,11 +96,7 @@ export default function SyllabusView({
       <CourseWebsiteAccounts />
       <MeetingInfo section={section} semester={semester} />
       <AcademicCalendar />
-      <OfficeHours
-        rows={officeHourRows}
-        columns={officeHourColumns}
-        placeholder={officeHoursPlaceholder}
-      />
+      <OfficeHours sectionId={section.id} />
       <Evaluation
         items={evaluationItems}
         bands={gradeBands}
