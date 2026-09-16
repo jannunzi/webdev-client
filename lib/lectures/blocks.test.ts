@@ -9,6 +9,8 @@ import {
   isBlockSlide,
   moveItem,
   blockFontClass,
+  blockFrameClass,
+  lectureDemoSourceLabel,
   toBlockSlide,
   toBlockSlides,
 } from "./blocks";
@@ -79,6 +81,33 @@ describe("slide block model", () => {
     assert.equal(blockFontClass(undefined), "");
     assert.equal(blockFontClass("md"), "lecture-block-font-md");
     assert.equal(blockFontClass("sm"), "lecture-block-font-sm");
+    assert.equal(blockFrameClass(undefined), "lecture-block-size-lg");
+    assert.equal(blockFrameClass("lg"), "lecture-block-size-lg");
+    assert.equal(blockFrameClass("md"), "lecture-block-size-md");
+    assert.equal(blockFrameClass("sm"), "lecture-block-size-sm");
+  });
+
+  it("shows the component filename on live lecture embeds", () => {
+    assert.deepEqual(
+      lectureDemoSourceLabel("app/book/ch1/embeds/AccountScreensDemo.tsx"),
+      {
+        file: "AccountScreensDemo.tsx",
+        path: "app/book/ch1/embeds/AccountScreensDemo.tsx",
+      },
+    );
+    assert.deepEqual(lectureDemoSourceLabel("TextFields.tsx"), {
+      file: "TextFields.tsx",
+    });
+    assert.deepEqual(
+      lectureDemoSourceLabel("User.tsx — same component, different data"),
+      {
+        file: "User.tsx",
+        note: "same component, different data",
+      },
+    );
+    assert.deepEqual(lectureDemoSourceLabel("Wikipedia-style #hash TOC"), {
+      file: "Wikipedia-style #hash TOC",
+    });
   });
 
   it("leaves already-block slides unchanged and starter decks on the block model", () => {
