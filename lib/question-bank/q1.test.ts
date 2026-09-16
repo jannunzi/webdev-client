@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { CHAPTER1_BANK } from "./q1/index";
+import { CHAPTER1_BANK, CHAPTER1_REVIEW_BANK } from "./q1/index";
+import { CHAPTER1_CODING_BANK } from "./q1/coding";
 import { isFibCombinationCorrect } from "./normalize";
-import { bankStats, validateBank } from "./validate";
+import { bankStats, validateBank, validateCodingPool } from "./validate";
 import type { FillInBlankQuestion } from "./types";
 
 describe("Chapter 1 question bank", () => {
@@ -112,8 +113,26 @@ describe("Chapter 1 question bank", () => {
     assert.match(htmlFor.prompt, /`htmlFor`/);
   });
 
+  it("keeps a valid HTML coding pool separate from the 16 traditional groups", () => {
+    assert.deepEqual(validateCodingPool(CHAPTER1_CODING_BANK), []);
+    assert.equal(CHAPTER1_CODING_BANK.groups.length, 6);
+    assert.ok(CHAPTER1_CODING_BANK.groups.every((group) => group.type === "coding"));
+    assert.equal(CHAPTER1_REVIEW_BANK.groups.length, 22);
+    assert.equal(bankStats(CHAPTER1_REVIEW_BANK).byType.coding.groups, 6);
+    for (const group of CHAPTER1_CODING_BANK.groups) {
+      assert.ok(group.questions.length >= 3);
+      for (const question of group.questions) {
+        assert.equal(question.type, "coding");
+        if (question.type === "coding") {
+          assert.ok(question.referenceSolution.split("\n").length <= 10);
+          assert.ok(question.rubric.length > 20);
+        }
+      }
+    }
+  });
+
   it("does not mention lab-specific stems", () => {
-    const blob = JSON.stringify(CHAPTER1_BANK);
+    const blob = JSON.stringify(CHAPTER1_BANK) + JSON.stringify(CHAPTER1_CODING_BANK);
     assert.equal(/Lab 1/i.test(blob), false);
     assert.equal(/Kambaz/i.test(blob), false);
     assert.equal(/\bwd-/.test(blob), false);
@@ -122,13 +141,16 @@ describe("Chapter 1 question bank", () => {
 
   it("keeps student-facing stems independent of the book, labs, and Kambaz", () => {
     const parts: string[] = [];
-    for (const group of CHAPTER1_BANK.groups) {
+    for (const group of [...CHAPTER1_BANK.groups, ...CHAPTER1_CODING_BANK.groups]) {
       for (const question of group.questions) {
         parts.push(question.prompt, question.explanation ?? "", question.code ?? "");
         if (question.type === "multiple_choice") {
           for (const choice of question.choices) {
             parts.push(choice.text);
           }
+        }
+        if (question.type === "coding") {
+          parts.push(question.referenceSolution, question.rubric);
         }
       }
     }

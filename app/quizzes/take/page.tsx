@@ -58,7 +58,9 @@ export default function TakeQuizIndexPage() {
             >
               <h2 className="mt-0 mb-2 text-lg font-semibold">{bank.title}</h2>
               <p className="mt-0 text-sm text-neutral-700">
-                {questions} questions (one from each topic group)
+                {quizId === "q1"
+                  ? `${questions} questions (8 topic-group items plus 2 short HTML coding items)`
+                  : `${questions} questions (one from each topic group)`}
                 {minutes ? ` · about ${minutes} minutes` : ""}
                 {" · 100 points"}
               </p>

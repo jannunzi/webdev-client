@@ -1,6 +1,8 @@
 export { EXAM_BANKS, getExamBank, listExamBanks } from "./banks";
 export {
   EXAM_SOURCE_GROUP_TAKE,
+  Q1_CODING_DRAW_COUNT,
+  Q1_TRADITIONAL_DRAW_COUNT,
   QUIZ_DRAW_COUNTS,
   QUIZ_TIME_LIMIT_MINUTES,
   QUIZ_TOTAL_POINTS,
@@ -9,15 +11,28 @@ export {
   quizTimeLimitMinutes,
 } from "./draw-counts";
 export type { GradedQuizId } from "./draw-counts";
-export { isAnswerCorrect, gradeDrawnQuestions } from "./grade";
+export { isAnswerCorrect, gradeCodingItems, gradeDrawnQuestions } from "./grade";
+export {
+  gradeCodingQuestion,
+  parseCodingGradePayload,
+  xaiApiKey,
+} from "./coding-grade";
 export { buildAttemptReview, formatStudentResponse } from "./review";
 export {
   drawExamAttempt,
+  drawOneFromGroup,
   drawOnePerGroup,
   findBankQuestion,
+  pickDistinctGroups,
   sampleGroups,
   sizeBankToDrawCount,
 } from "./sample";
+export {
+  drawQ1WebsiteAttempt,
+  drawWebsiteAttempt,
+  findQuizQuestion,
+  invalidWebsiteDrawReason,
+} from "./website-draw";
 export {
   assertNoAnswerLeak,
   revealCorrectAnswer,

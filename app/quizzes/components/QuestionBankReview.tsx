@@ -25,6 +25,7 @@ const FILTERS: { id: "all" | QuestionType; label: string }[] = [
   { id: "fill_in_blank", label: "Fill in the blank" },
   { id: "multiple_choice", label: "Multiple choice" },
   { id: "true_false", label: "True / false" },
+  { id: "coding", label: "Coding" },
 ];
 
 function typeBadgeClass(type: QuestionType): string {
@@ -35,6 +36,8 @@ function typeBadgeClass(type: QuestionType): string {
       return "bg-violet-50 text-violet-900 ring-violet-200";
     case "true_false":
       return "bg-teal-50 text-teal-900 ring-teal-200";
+    case "coding":
+      return "bg-amber-50 text-amber-900 ring-amber-200";
   }
 }
 
@@ -111,6 +114,9 @@ export default function QuestionBankReview({
           {stats.byType.multiple_choice.groups} MC
           {" · "}
           {stats.byType.true_false.groups} TF
+          {stats.byType.coding.groups
+            ? ` · ${stats.byType.coding.groups} coding`
+            : ""}
         </p>
         {studentDrawNote ? (
           <p className="mt-2 mb-0 text-sm text-neutral-700">{studentDrawNote}</p>
@@ -329,6 +335,23 @@ function QuestionBlock({
 
       {question.type === "fill_in_blank" ? (
         <FibAnswers question={question} />
+      ) : null}
+
+      {question.type === "coding" ? (
+        <div className="mt-3 space-y-2">
+          <div className="rounded border border-emerald-600 bg-emerald-50 px-3 py-2">
+            <p className="mt-0 mb-2 text-xs font-semibold uppercase tracking-wide text-emerald-900">
+              Reference solution (server-only)
+            </p>
+            <pre className="m-0 overflow-x-auto font-mono text-[0.8rem] leading-relaxed">
+              <code>{question.referenceSolution}</code>
+            </pre>
+          </div>
+          <p className="mb-0 text-sm text-neutral-700">
+            <span className="font-semibold">Rubric: </span>
+            {question.rubric}
+          </p>
+        </div>
       ) : null}
 
       {question.explanation ? (

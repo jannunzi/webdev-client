@@ -1,10 +1,10 @@
 import type { CanvasRosterEntry, RosterLookupResult } from "../roster/types";
 import { STUDENT_COPY } from "./student-copy";
 import { getExamBank } from "./banks";
-import { quizDrawCount } from "./draw-counts";
-import { gradeDrawnQuestions } from "./grade";
-import { findBankQuestion } from "./sample";
+import type { CodingLlmComplete } from "./coding-grade";
+import { gradeCodingItems, gradeDrawnQuestions } from "./grade";
 import { stripCorrectReveals } from "./sanitize";
+import { findQuizQuestion, invalidWebsiteDrawReason } from "./website-draw";
 import {
   canRevealAnswers,
   getAnswerRevealPhase,
@@ -37,6 +37,8 @@ export type ExamSubmitDeps = {
   persist?: (doc: QuizAttemptDoc) => Promise<{ insertedId: unknown }>;
   /** Per-section staff override for the take window only. */
   takeOverride?: QuizTakeOverrideMode | null;
+  /** Tests inject a mock so Q1 coding items never call the network. */
+  gradeCodingComplete?: CodingLlmComplete;
 };
 
 function fail(
@@ -80,22 +82,16 @@ export async function runExamSubmit(deps: ExamSubmitDeps): Promise<SubmitExamRes
 
   const drawn = [];
   for (const questionId of deps.drawnQuestionIds) {
-    const found = findBankQuestion(bank, questionId);
+    const found = findQuizQuestion(deps.quizId, questionId);
     if (!found) {
       return fail("invalid", `Question ${questionId} is not part of this exam.`);
     }
     drawn.push(found);
   }
 
-  const expectedCount = quizDrawCount(deps.quizId) ?? bank.groups.length;
-  const expectedGroupIds = new Set(bank.groups.map((group) => group.id));
-  const seenGroups = new Set(drawn.map((item) => item.group.id));
-  if (
-    drawn.length !== expectedCount ||
-    seenGroups.size !== expectedCount ||
-    seenGroups.size !== expectedGroupIds.size
-  ) {
-    return fail("invalid", "The submitted draw does not include one question per group.");
+  const drawError = invalidWebsiteDrawReason(deps.quizId, drawn);
+  if (drawError) {
+    return fail("invalid", drawError);
   }
 
   const submittedAt = deps.now ?? new Date();
@@ -112,7 +108,10 @@ export async function runExamSubmit(deps: ExamSubmitDeps): Promise<SubmitExamRes
   }
 
   const startedAt = parseStartedAt(deps.startedAt, submittedAt);
-  const graded = gradeDrawnQuestions(drawn, deps.answers);
+  const codingResults = await gradeCodingItems(drawn, deps.answers, {
+    complete: deps.gradeCodingComplete,
+  });
+  const graded = gradeDrawnQuestions(drawn, deps.answers, codingResults);
   const phase = schedule
     ? getAnswerRevealPhase(schedule, submittedAt, true, deps.takeOverride)
     : "submitted_waiting";
@@ -139,6 +138,9 @@ export async function runExamSubmit(deps: ExamSubmitDeps): Promise<SubmitExamRes
       response: item.response,
       correct: item.correct,
       points: item.points,
+      scoreRatio: item.scoreRatio,
+      feedback: item.feedback,
+      gradingError: item.gradingError,
     })),
     meta: {
       drawnQuestionIds: deps.drawnQuestionIds,

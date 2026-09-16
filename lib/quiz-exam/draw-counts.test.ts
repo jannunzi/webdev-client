@@ -3,6 +3,8 @@ import { describe, it } from "node:test";
 import {
   EXAM_SOURCE_GROUP_TAKE,
   GRADED_QUIZ_IDS,
+  Q1_CODING_DRAW_COUNT,
+  Q1_TRADITIONAL_DRAW_COUNT,
   QUIZ_DRAW_COUNTS,
   QUIZ_TIME_LIMIT_MINUTES,
   QUIZ_TOTAL_POINTS,
@@ -32,5 +34,6 @@ describe("shared graded-quiz draw counts", () => {
     assert.equal(QUIZ_TIME_LIMIT_MINUTES.x1, 90);
     assert.equal(QUIZ_TIME_LIMIT_MINUTES.x2, 90);
     assert.equal(pointsPerDrawnItem(36) * 36, QUIZ_TOTAL_POINTS);
+    assert.equal(Q1_TRADITIONAL_DRAW_COUNT + Q1_CODING_DRAW_COUNT, QUIZ_DRAW_COUNTS.q1);
   });
 });

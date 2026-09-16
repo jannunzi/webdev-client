@@ -3,11 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import StatusPanel from "../../components/StatusPanel";
-import { isQuizTakingConfigured } from "@/lib/config";
+import { isQuizTakingConfigured, isXaiConfigured } from "@/lib/config";
 import { loadTakeOverrideForRoster } from "@/lib/quiz-exam/access-overrides";
 import { findLatestQuizAttempt } from "@/lib/quiz-exam/attempts";
 import {
-  drawOnePerGroup,
+  drawWebsiteAttempt,
   getExamBank,
   toStudentQuestion,
 } from "@/lib/quiz-exam";
@@ -165,7 +165,7 @@ export default async function TakeExamPage({ params }: PageProps) {
     !attempt &&
     (impersonating || phase === "take_open");
   const questions = showForm
-    ? drawOnePerGroup(bank, `${user.id}:${bank.id}`).map(toStudentQuestion)
+    ? drawWebsiteAttempt(quizId, `${user.id}:${bank.id}`).map(toStudentQuestion)
     : [];
 
   return (
@@ -179,6 +179,18 @@ export default async function TakeExamPage({ params }: PageProps) {
           Impersonation — viewing as {IMPERSONATION_STUDENT_NAME} (
           {impersonationStudentEmail()}). You can submit to smoke-test the
           exam UI. The attempt is <strong>not saved</strong>.
+        </p>
+      ) : null}
+      {showAuthorReview && quizId === "q1" && !isXaiConfigured() ? (
+        <p
+          role="status"
+          className="rounded-lg border-2 border-amber-500 bg-amber-50 px-4 py-3 text-amber-950"
+        >
+          Staff: <code>XAI_API_KEY</code> is not set on this deployment. Q1
+          coding items will not be auto-graded (students see a short “could
+          not be scored automatically” note; their HTML is still stored). Set
+          the same env name SnapTools uses on the Vercel project for
+          webdev-client.
         </p>
       ) : null}
 

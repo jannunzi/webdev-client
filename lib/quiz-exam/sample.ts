@@ -103,3 +103,28 @@ export function findBankQuestion(
   }
   return undefined;
 }
+
+/** Seeded unique group pick (Fisher–Yates). Used for Q1 coding topic pools. */
+export function pickDistinctGroups(
+  groups: QuestionGroup[],
+  count: number,
+  seed: string,
+): QuestionGroup[] {
+  if (count <= 0 || groups.length === 0) return [];
+  const pool = [...groups];
+  const random = mulberry32(hashSeed(seed));
+  for (let index = pool.length - 1; index > 0; index -= 1) {
+    const swap = Math.floor(random() * (index + 1));
+    const current = pool[index];
+    pool[index] = pool[swap] ?? current;
+    pool[swap] = current;
+  }
+  return pool.slice(0, Math.min(count, pool.length));
+}
+
+export function drawOneFromGroup(group: QuestionGroup, seed: string): DrawnQuestion {
+  const random = mulberry32(hashSeed(`${seed}:${group.id}`));
+  const index = Math.floor(random() * group.questions.length);
+  const question = group.questions[index] ?? group.questions[0];
+  return { group, question };
+}

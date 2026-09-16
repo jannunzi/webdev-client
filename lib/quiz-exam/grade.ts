@@ -1,4 +1,9 @@
 import { isFibCombinationCorrect, type BankQuestion } from "../question-bank";
+import {
+  gradeCodingQuestion,
+  type CodingGradeResult,
+  type CodingLlmComplete,
+} from "./coding-grade";
 import { pointsPerDrawnItem, QUIZ_TOTAL_POINTS } from "./draw-counts";
 import { revealCorrectAnswer } from "./sanitize";
 import type { DrawnQuestion } from "./sample";
@@ -23,13 +28,54 @@ export function isAnswerCorrect(
   return false;
 }
 
+export async function gradeCodingItems(
+  drawn: DrawnQuestion[],
+  answers: Record<string, StudentAnswer>,
+  deps?: { complete?: CodingLlmComplete },
+): Promise<Record<string, CodingGradeResult>> {
+  const tasks = drawn
+    .filter((item) => item.question.type === "coding")
+    .map(async ({ question }) => {
+      if (question.type !== "coding") {
+        throw new Error(`Expected a coding question, got ${question.type}`);
+      }
+      const response = answers[question.id];
+      const code = response?.type === "coding" ? response.code : "";
+      const result = await gradeCodingQuestion(question, code, deps);
+      return [question.id, result] as const;
+    });
+  const entries = await Promise.all(tasks);
+  return Object.fromEntries(entries);
+}
+
 export function gradeDrawnQuestions(
   drawn: DrawnQuestion[],
   answers: Record<string, StudentAnswer>,
+  codingResults: Record<string, CodingGradeResult> = {},
 ): GradedAnswer[] {
   const maxPoints = pointsPerDrawnItem(drawn.length || QUIZ_TOTAL_POINTS);
   return drawn.map(({ group, question }) => {
     const response = answers[question.id] ?? null;
+    if (question.type === "coding") {
+      const result = codingResults[question.id] ?? {
+        score: 0,
+        feedback: "No code submitted.",
+      };
+      const points = result.score * maxPoints;
+      return {
+        questionId: question.id,
+        groupId: group.id,
+        type: question.type,
+        response,
+        correct: result.score >= 0.999,
+        points,
+        maxPoints,
+        scoreRatio: result.score,
+        feedback: result.feedback,
+        gradingError: result.error,
+        correctReveal: revealCorrectAnswer(question),
+      };
+    }
     const correct = isAnswerCorrect(question, response ?? undefined);
     return {
       questionId: question.id,

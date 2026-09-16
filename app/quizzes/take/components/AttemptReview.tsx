@@ -9,6 +9,11 @@ import { formatStudentResponse } from "@/lib/quiz-exam/review";
 import type { GradedAnswer, StudentQuestion } from "@/lib/quiz-exam/types";
 import PromptMarkup from "../../components/PromptMarkup";
 
+function formatPoints(value: number): string {
+  if (Number.isInteger(value)) return String(value);
+  return value.toFixed(1).replace(/\.0$/, "");
+}
+
 export function WindowBanner({
   schedule,
   phase,
@@ -98,6 +103,13 @@ export function GradedQuestionList({
       {graded.map((item, index) => {
         const question = byId.get(item.questionId);
         const showMark = revealAnswers;
+        const markLabel = item.correct
+          ? "Correct"
+          : item.scoreRatio && item.scoreRatio > 0
+            ? `Partial credit (${formatPoints(item.points)} / ${formatPoints(item.maxPoints)})`
+            : "Incorrect";
+        const codingResponse =
+          item.response?.type === "coding" ? item.response.code : null;
         return (
           <li
             key={item.questionId}
@@ -105,13 +117,15 @@ export function GradedQuestionList({
               showMark
                 ? item.correct
                   ? "border-emerald-300 bg-emerald-50"
-                  : "border-rose-200 bg-rose-50"
+                  : item.scoreRatio && item.scoreRatio > 0
+                    ? "border-amber-300 bg-amber-50"
+                    : "border-rose-200 bg-rose-50"
                 : "border-neutral-300 bg-white"
             }`}
           >
             <p className="m-0 text-sm font-semibold">
               {index + 1}. {question?.groupName ?? item.groupId}
-              {showMark ? ` — ${item.correct ? "Correct" : "Incorrect"}` : ""}
+              {showMark ? ` — ${markLabel}` : ""}
             </p>
             {question ? (
               <PromptMarkup
@@ -119,7 +133,11 @@ export function GradedQuestionList({
                 className="mt-1 mb-0 whitespace-pre-wrap"
               />
             ) : null}
-            {question ? (
+            {question && codingResponse !== null ? (
+              <pre className="mt-2 overflow-x-auto rounded border border-neutral-300 bg-white px-3 py-2 font-mono text-[0.8rem] leading-relaxed">
+                <code>{codingResponse.trim() ? codingResponse : "No answer"}</code>
+              </pre>
+            ) : question ? (
               <p className="mb-0 mt-2 text-sm">
                 Your answer:{" "}
                 <PromptMarkup
@@ -128,11 +146,26 @@ export function GradedQuestionList({
                 />
               </p>
             ) : null}
-            {revealAnswers && item.correctReveal ? (
-              <p className="mb-0 mt-2 text-sm">
-                Correct answer:{" "}
-                <PromptMarkup as="span" text={item.correctReveal} />
+            {item.gradingError ? (
+              <p className="mb-0 mt-2 text-sm text-amber-900">
+                This coding item could not be scored automatically. Staff can
+                review your submitted code.
               </p>
+            ) : null}
+            {revealAnswers && item.feedback ? (
+              <p className="mb-0 mt-2 text-sm">{item.feedback}</p>
+            ) : null}
+            {revealAnswers && item.correctReveal ? (
+              item.type === "coding" ? (
+                <pre className="mt-2 overflow-x-auto rounded border border-emerald-600 bg-emerald-50 px-3 py-2 font-mono text-[0.8rem] leading-relaxed">
+                  <code>{item.correctReveal}</code>
+                </pre>
+              ) : (
+                <p className="mb-0 mt-2 text-sm">
+                  Correct answer:{" "}
+                  <PromptMarkup as="span" text={item.correctReveal} />
+                </p>
+              )
             ) : null}
           </li>
         );

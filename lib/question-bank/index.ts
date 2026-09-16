@@ -2,6 +2,7 @@ export type {
   BankQuestion,
   BankStatus,
   Choice,
+  CodingQuestion,
   FillInBlankQuestion,
   MultipleChoiceQuestion,
   QuestionBank,
@@ -14,11 +15,13 @@ export {
   QUESTION_TYPE_LABEL,
   QTI_ITEM_TYPE,
 } from "./types";
-export { CHAPTER1_BANK } from "./q1";
+export { CHAPTER1_BANK, CHAPTER1_REVIEW_BANK } from "./q1";
+export { CHAPTER1_CODING_BANK, CHAPTER1_CODING_GROUPS } from "./q1/coding";
 export {
   assertBankValid,
   bankStats,
   validateBank,
+  validateCodingPool,
   validateGroup,
   validateQuestion,
 } from "./validate";
