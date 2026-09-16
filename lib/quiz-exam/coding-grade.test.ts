@@ -30,8 +30,8 @@ describe("AI coding grader", () => {
     assert.match(prompt.system, /Be lenient/);
     assert.match(prompt.system, /partial credit/i);
     assert.match(prompt.user, /Reference solution/);
-    assert.match(prompt.user, sample.referenceSolution);
-    assert.match(prompt.user, sample.rubric);
+    assert.ok(prompt.user.includes(sample.referenceSolution));
+    assert.ok(prompt.user.includes(sample.rubric));
     assert.doesNotMatch(prompt.system, /Lab |Kambaz|the book/i);
   });
 
