@@ -283,7 +283,7 @@ export default function LectureDeckShell({
           target.tagName === "SELECT" ||
           target.tagName === "BUTTON" ||
           target.isContentEditable ||
-          Boolean(target.closest("button"))))
+          Boolean(target.closest("button")))
       ) {
         return;
       }
