@@ -4,10 +4,15 @@ import { A1_RUBRIC } from "./a1";
 import { listRubricCriteria, rubricPointTotal } from "./catalog";
 import type { AssignmentCheckResult } from "./check-types";
 import {
+  CANVAS_GRADE_SHELL_POINTS,
+  canvasPostedScore,
   computeAllOrNothingGrade,
   effectivePassedIds,
+  formatGradePercent,
+  formatGradePoints,
   formatGradeSummary,
   gradeFromResultsAndOverrides,
+  pointsPercent,
   proposedGradeFromResults,
   proposedPassedIdsFromResults,
 } from "./grade";
@@ -48,15 +53,29 @@ describe("all-or-nothing grade calculation", () => {
     assert.equal(failed.passedCount, 0);
   });
 
-  it("sums only passed criteria and formats earned / total (%)", () => {
+  it("sums only passed criteria and formats percent first", () => {
     const ids = ["a1-delivery-vercel", "a1-kambaz-dashboard"];
     const grade = computeAllOrNothingGrade(A1_RUBRIC, ids);
     assert.equal(grade.earnedPoints, 3 + 5);
+    assert.equal(grade.totalPoints, 125);
+    assert.equal(grade.percent, Math.round((8 / 125) * 100));
     assert.equal(grade.passedIds.join(","), ids.join(","));
+    assert.equal(formatGradePercent(grade), `${grade.percent}%`);
+    assert.equal(formatGradePoints(grade), `8 / ${grade.totalPoints} pts`);
     assert.equal(
       formatGradeSummary(grade),
-      `8 / ${grade.totalPoints} pts (${grade.percent}%)`,
+      `${grade.percent}% (8 / ${grade.totalPoints} pts)`,
     );
+    assert.equal(canvasPostedScore(grade), grade.percent);
+    assert.notEqual(canvasPostedScore(grade), grade.earnedPoints);
+    assert.equal(CANVAS_GRADE_SHELL_POINTS, 100);
+  });
+
+  it("posts 80 to Canvas for 100 / 125, not the raw point total", () => {
+    assert.equal(pointsPercent(100, 125), 80);
+    assert.equal(canvasPostedScore({ percent: 80 }), 80);
+    assert.notEqual(canvasPostedScore({ percent: 80 }), 100);
+    assert.notEqual(canvasPostedScore({ percent: 80 }), 125);
   });
 
   it("builds a proposed grade from auto-pass results only", () => {

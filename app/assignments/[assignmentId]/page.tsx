@@ -263,7 +263,7 @@ export default async function AssignmentDetailPage({
           ? `Due ${formatLongDate(assignment.dueDate)}`
           : null}
         {points != null
-          ? `${assignment.dueDate ? " · " : ""}${points} pts`
+          ? `${assignment.dueDate ? " · " : ""}${points} pts (shown as %)`
           : null}
       </p>
       <p>{assignment.summary}</p>

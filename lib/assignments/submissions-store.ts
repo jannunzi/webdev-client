@@ -7,6 +7,7 @@ export const ASSIGNMENT_SUBMISSIONS_COLLECTION = "assignment_submissions";
 export type AssignmentStaffGrade = {
   earnedPoints: number;
   totalPoints: number;
+  /** 0–100. Posted to the 100-point Canvas assignment shell. */
   percent: number;
   acceptedProposed: boolean;
   criterionOverrides?: CriterionPassMap;

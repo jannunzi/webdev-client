@@ -3,13 +3,21 @@ import {
   assignmentPublicUrl,
   listAssignments,
 } from "./catalog";
+import { CANVAS_GRADE_SHELL_POINTS } from "./grade";
 import type { AssignmentHubItem, AssignmentId } from "./types";
+
+export { CANVAS_GRADE_SHELL_POINTS };
 
 /**
  * Minimal Canvas assignment description. The IMSCC cartridge is not in this
  * git repo (Jose’s tooling keeps it under canvas-fall). Paste these into A1–A6
  * descriptions in a follow-up package; do not dump the website rubric into
  * Canvas.
+ *
+ * Canvas teammate: keep each assignment shell at
+ * {@link CANVAS_GRADE_SHELL_POINTS} points (100). Website A1 is 125
+ * checklist points; grade CSV imports post the percentage, not raw
+ * 125-point scores.
  *
  * Quiz / exam fallback copy (website take + staff-permission blurb) lives in
  * `lib/quiz-exam/canvas-copy.ts` and is packed by `npm run canvas:export-qti`.
@@ -22,6 +30,7 @@ export function canvasAssignmentDescriptionHtml(
     `<p>Complete ${assignment.canvasId} — ${assignment.title} on the course site:</p>`,
     `<p><a href="${url}">${url}</a></p>`,
     `<p>Sign up on the course site if you do not have an account yet with the same Northeastern email you use on Canvas, then Sign in if you want the checklist to sync across devices. This site is not Canvas and accounts are not pre-provisioned. Using your Canvas email lets us map site progress back to the roster. Submit your GitHub repository and Vercel URL here in Canvas.</p>`,
+    `<p>Your grade is recorded in Canvas as a percentage on this ${CANVAS_GRADE_SHELL_POINTS}-point assignment.</p>`,
   ].join("");
 }
 
