@@ -24,6 +24,14 @@ export function htmlHasAnyId(html: string, ids: readonly string[]): boolean {
   return ids.some((id) => htmlHasId(html, id));
 }
 
+export function htmlHasAllSnippets(
+  html: string,
+  snippets: readonly string[],
+): { ok: boolean; missing: string[] } {
+  const missing = snippets.filter((snippet) => !html.includes(snippet));
+  return { ok: missing.length === 0, missing };
+}
+
 export function htmlHasTag(html: string, tag: string): boolean {
   return new RegExp(`<${escapeRegExp(tag)}\\b`, "i").test(html);
 }

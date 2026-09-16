@@ -11,6 +11,7 @@ export type RubricCriterion = {
   bookHref?: string;
   bookLabel?: string;
   onYourOwn?: boolean;
+  withAI?: boolean;
 };
 
 export type RubricGroup = {

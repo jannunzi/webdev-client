@@ -1,3 +1,4 @@
+import { a1LabVerifyPaths } from "./a1-lab-exercises";
 import { deployOriginFromUrl, urlOnDeployOrigin } from "./urls";
 
 /**
@@ -8,27 +9,7 @@ export const A1_CRITERION_VERIFY_PATHS: Record<string, string> = {
   "a1-delivery-vercel": "/",
   "a1-delivery-name-section": "/labs",
   "a1-delivery-github": "/labs",
-  "a1-delivery-labs-nav": "/labs",
-  "a1-lab-heading-tags": "/labs/lab1",
-  "a1-lab-heading-tags-oyo": "/labs/lab1",
-  "a1-lab-paragraph": "/labs/lab1",
-  "a1-lab-paragraph-oyo": "/labs/lab1",
-  "a1-lab-lists": "/labs/lab1",
-  "a1-lab-lists-oyo": "/labs/lab1",
-  "a1-lab-tables": "/labs/lab1",
-  "a1-lab-tables-oyo": "/labs/lab1",
-  "a1-lab-images": "/labs/lab1",
-  "a1-lab-images-oyo": "/labs/lab1",
-  "a1-lab-forms": "/labs/lab1",
-  "a1-lab-forms-oyo": "/labs/lab1",
-  "a1-lab-highlighted-paragraph": "/labs/lab1",
-  "a1-lab-highlighted-paragraph-oyo": "/labs/lab1",
-  "a1-lab-highlighted-box": "/labs/lab1",
-  "a1-lab-highlighted-box-oyo": "/labs/lab1",
-  "a1-lab-anchor": "/labs/lab1",
-  "a1-lab-anchor-oyo": "/labs/lab1",
-  "a1-lab-toc": "/labs",
-  "a1-lab-toc-oyo": "/labs",
+  ...a1LabVerifyPaths(),
   "a1-kambaz-account": "/account/signin",
   "a1-kambaz-dashboard": "/dashboard",
   "a1-kambaz-nav": "/dashboard",

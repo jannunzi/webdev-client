@@ -35,6 +35,9 @@ import LabsIndexDemo from "@/app/labs/lab1/intermediates/1-3-11-LabsIndex";
 import LabsLayoutDemo from "@/app/labs/lab1/intermediates/1-3-12-LabsLayout";
 import AnchorHrefPatterns from "@/app/labs/lab1/intermediates/1-3-10b-AnchorHrefPatterns";
 import { OnYourOwn, WithAI } from "../../components/Practice";
+import A1LabExerciseList, {
+  A1LabExerciseIntroLink,
+} from "./A1LabExerciseList";
 
 export default function HtmlSections() {
   return (
@@ -2372,164 +2375,24 @@ export default function LabsLayout({
 
       <Section level={3} id="sec-1-3-12" title="1.3.12 Exercises">
         <p>
-          Use this checklist to confirm Lab 1 covers every HTML topic in <SectionLink to="1.3" />.
-          Each item points back to the section where you built the worked
-          example. When you are done, <code>app/labs/lab1/page.tsx</code>{" "}should
-          import and render the components in order so the page matches the live
-          demo below. Complete each section&apos;s{" "}
-          <strong>On your own</strong>{" "}and <strong>With AI</strong>{" "}blocks as
-          well — personal pieces and assistant-generated extras are listed after
-          the core checklist.
+          Use this checklist to confirm Lab 1 covers every HTML topic in{" "}
+          <SectionLink to="1.3" />
+          . It is the same list, in the same order, as the{" "}
+          <A1LabExerciseIntroLink />{" "}on A1 — create the component, then that
+          section&apos;s <strong>On your own</strong>, then its{" "}
+          <strong>With AI</strong>{" "}extra, walking <SectionLink to="1.3.1" />–
+          <SectionLink to="1.3.11" />{" "}as you read. Each item points back to
+          the section where you built the worked example. When you are done,{" "}
+          <code>app/labs/lab1/page.tsx</code>{" "}should import and render the
+          components in order so the page matches the live demo below.
         </p>
-        <ol>
-          <li>
-            Create <code>HeadingTags.tsx</code>{" "}and import it into{" "}
-            <code>page.tsx</code>{" "}(1.3.1).
-          </li>
-          <li>
-            Create <code>ParagraphTag.tsx</code>, import it, and wrap the sample
-            text in paragraph tags for vertical spacing (1.3.2).
-          </li>
-          <li>
-            Create <code>ListTags.tsx</code>, import it, and build the pancake
-            ordered list plus the sample book unordered list (1.3.3).
-          </li>
-          <li>
-            Create <code>Tables.tsx</code>, import it, and build the quiz grades
-            table with Q1–Q3 and an average row (1.3.4).
-          </li>
-          <li>
-            Create <code>Images.tsx</code>, import it, and embed the remote
-            Starship image plus the local teslabot image (1.3.5).
-          </li>
-          <li>
-            Create the form components under{" "}
-            <code>app/labs/lab1/forms/</code>{" "}(<code>TextFields.tsx</code>,{" "}
-            <code>Textarea.tsx</code>, <code>RadioButtons.tsx</code>,{" "}
-            <code>Checkboxes.tsx</code>, <code>Dropdowns.tsx</code>,{" "}
-            <code>OtherFieldTypes.tsx</code>, <code>Buttons.tsx</code>), assemble
-            them in{" "}
-            <code>forms/Forms.tsx</code>, and import <code>Forms</code>{" "}into{" "}
-            <code>page.tsx</code>{" "}with <code>./forms/Forms</code>{" "}(1.3.6).
-          </li>
-          <li>
-            Create <code>HighlightedParagraph.tsx</code>{" "}with{" "}
-            <code>text</code>{" "}and style props (attributes only), show a few
-            variations, and import it into <code>page.tsx</code>{" "}(1.3.7).
-          </li>
-          <li>
-            Create <code>HighlightedBox.tsx</code>{" "}that wraps nested{" "}
-            <code>children</code>{" "}with the same style props, and import it
-            (1.3.8).
-          </li>
-          <li>
-            Create <code>AnchorTag.tsx</code>, import it, and add lipsum plus
-            GitHub anchors (1.3.9).
-          </li>
-          <li>
-            Set up Lab 1–3 navigation with <code>Link</code>{" "}in{" "}
-            <code>app/labs/page.tsx</code>{" "}(1.3.10).
-          </li>
-          <li>
-            Create <code>app/labs/TOC.tsx</code>{" "}and{" "}
-            <code>app/labs/layout.tsx</code>{" "}so the TOC wraps lab pages via{" "}
-            <code>children</code>{" "}(1.3.11).
-          </li>
-        </ol>
-        <p>
-          <strong>On your own</strong>{" "}(from each section — personal content
-          inside the same files):
-        </p>
-        <ol>
-          <li>
-            Heading with your name under <code>wd-your-heading</code>, including
-            a <code>span</code>{" "}with id <code>wd-your-span</code>{" "}(1.3.1).
-          </li>
-          <li>
-            Two personal paragraphs <code>wd-p-your-1</code>{" "}and{" "}
-            <code>wd-p-your-2</code>{" "}(1.3.2).
-          </li>
-          <li>
-            Favorite recipe ordered list{" "}
-            <code>wd-your-favorite-recipe</code>{" "}and favorites unordered list{" "}
-            <code>wd-your-books</code>{" "}(1.3.3).
-          </li>
-          <li>
-            Second personal table <code>wd-your-table</code>{" "}(1.3.4).
-          </li>
-          <li>
-            Your image <code>wd-your-image</code>{" "}(1.3.5).
-          </li>
-          <li>
-            Student Profile form in <code>forms/YourForm.tsx</code>{" "}(
-            <code>wd-your-form</code>) covering text fields, textarea, two
-            radio name groups, checkboxes, single and multiple dropdowns,
-            email, number, date, and range, plus Save (
-            <code>type=&quot;submit&quot;</code>) and Cancel (
-            <code>type=&quot;button&quot;</code>) (1.3.6).
-          </li>
-          <li>
-            Extra <code>HighlightedParagraph</code>{" "}with your text and colors
-            (1.3.7).
-          </li>
-          <li>
-            Extra <code>HighlightedBox</code>{" "}wrapping your goals list (1.3.8).
-          </li>
-          <li>
-            Personal anchors <code>wd-your-link</code>{" "}and{" "}
-            <code>wd-your-github</code>{" "}(1.3.9).
-          </li>
-          <li>
-            Create Lab 4 and link to it from the Labs index (1.3.10).
-          </li>
-          <li>
-            Personal note or link in the labs <code>TOC</code>{" "}(1.3.11).
-          </li>
-        </ol>
-        <p>
-          <strong>With AI</strong>{" "}(from each section — extra sample content;
-          read it before you keep it):
-        </p>
-        <ol>
-          <li>
-            Sample outline <code>wd-ai-headings</code>{" "}(1.3.1).
-          </li>
-          <li>
-            Extra sample paragraph <code>wd-ai-p</code>{" "}(1.3.2).
-          </li>
-          <li>
-            Sample HTML-tags list <code>wd-ai-html-tags</code>{" "}(1.3.3).
-          </li>
-          <li>
-            Quiz rows Q4–Q10 and a recalculated average (1.3.4).
-          </li>
-          <li>
-            Extra sample image <code>wd-ai-image</code>{" "}(1.3.5).
-          </li>
-          <li>
-            Scaffold <code>YourForm.tsx</code>, then replace sample defaults
-            with your details (1.3.6).
-          </li>
-          <li>
-            Extra sample <code>HighlightedParagraph</code>{" "}(1.3.7).
-          </li>
-          <li>
-            Extra sample <code>HighlightedBox</code>{" "}(1.3.8).
-          </li>
-          <li>
-            Sample docs link <code>wd-ai-link</code>{" "}(1.3.9).
-          </li>
-          <li>
-            Lab 5 placeholder and index link (1.3.10).
-          </li>
-          <li>
-            Chapter 1 link in the labs TOC (1.3.11).
-          </li>
-        </ol>
+        <A1LabExerciseList />
         <p>
           When the checklist is done, Lab 1 should match the core HTML examples
           below. Your On your own additions and With AI extras appear in the
-          same page (and Labs chrome) beyond what this demo shows.
+          same page (and Labs chrome) beyond what this demo shows. Delivery
+          (Vercel, name, GitHub) and Kambaz screens stay on the A1 page — see{" "}
+          <SectionLink to="1.4.9" />{" "}for the Kambaz recap.
         </p>
         <LiveDemo name="Lab1" file="app/labs/lab1/page.tsx">
           <Lab1 />

@@ -163,6 +163,17 @@ describe("assignment catalog", () => {
       "delivery,lab,kambaz",
     );
     assert.ok(findCriterion(A1_RUBRIC, "a1-lab-heading-tags"));
+    assert.ok(findCriterion(A1_RUBRIC, "a1-lab-heading-tags-ai")?.withAI);
+    assert.ok(findCriterion(A1_RUBRIC, "a1-delivery-labs-nav"));
+    assert.equal(
+      A1_RUBRIC.groups.find((group) => group.id === "delivery")?.criteria.length,
+      3,
+    );
+    assert.ok(
+      A1_RUBRIC.groups
+        .find((group) => group.id === "lab")
+        ?.criteria.some((row) => row.id === "a1-delivery-labs-nav"),
+    );
     assert.ok(findCriterion(A1_RUBRIC, "a1-kambaz-assignments")?.onYourOwn);
     assert.equal(supportsUrlSubmission("a1"), true);
 

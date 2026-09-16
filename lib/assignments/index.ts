@@ -1,4 +1,5 @@
 export { A1_RUBRIC } from "./a1";
+export { A1_LAB_EXERCISES } from "./a1-lab-exercises";
 export { A2_RUBRIC } from "./a2";
 export {
   COURSE_SITE_ORIGIN,
