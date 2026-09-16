@@ -19,6 +19,11 @@ const nextConfig: NextConfig = {
         destination: "/slides/:slug",
         permanent: true,
       },
+      {
+        source: "/project/piazza",
+        destination: "/project/pazza",
+        permanent: false,
+      },
     ];
   },
 };

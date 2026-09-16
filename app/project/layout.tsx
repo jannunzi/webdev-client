@@ -5,7 +5,7 @@ import CourseInfoLayout from "@/app/course-info/CourseInfoLayout";
 export const metadata: Metadata = {
   title: "Final Project — CS 4550 / CS 5610 Web Development",
   description:
-    "Final project options for CS 4550 and CS 5610: Kambaz Quizzes, Kambaz Pazza, or an open-ended full-stack application.",
+    "Final project options for CS 4550 and CS 5610: Kambaz Quizzes, Kambaz Pazza, or an open-ended full-stack application. Full requirements live on this site.",
 };
 
 export default function ProjectLayout({
