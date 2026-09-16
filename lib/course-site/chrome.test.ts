@@ -47,6 +47,8 @@ describe("course site chrome", () => {
     assert.match(header, /isClerkPublishableKeySet/);
     assert.match(chrome, /CourseAuthControls/);
     assert.match(chrome, /COURSE_INFO_LINKS/);
+    assert.match(chrome, /href="\/sign-in"/);
+    assert.match(chrome, /href="\/sign-up"/);
     assert.match(auth, /SignInButton/);
     assert.match(auth, /SignUpButton/);
     assert.match(auth, /UserButton/);
