@@ -20,8 +20,8 @@ export default function ProjectFigure({
           sizes="(max-width: 64rem) 100vw, 56rem"
           className={
             compact
-              ? "mx-auto h-auto w-full max-w-full bg-white object-contain"
-              : "mx-auto h-auto w-full max-w-full rounded border border-neutral-200 bg-white object-contain"
+              ? "mx-auto h-auto w-auto max-w-full bg-white object-contain"
+              : "mx-auto h-auto w-auto max-w-full rounded border border-neutral-200 bg-white object-contain"
           }
         />
       </div>
