@@ -1006,6 +1006,83 @@ function TocPanel({
         />
       </div>
 
+      <ul className="m-0 list-none space-y-0.5 border-b border-neutral-300 px-2 py-2 text-sm">
+        {resumeHref ? (
+          <li>
+            <Link
+              href={resumeHref}
+              onClick={onNavigate}
+              className="block rounded px-2 py-1 font-medium no-underline hover:bg-neutral-200"
+            >
+              Resume reading
+              {resumeLabel ? (
+                <span className="mt-0.5 block text-xs font-normal text-neutral-500">
+                  {resumeLabel}
+                </span>
+              ) : null}
+            </Link>
+          </li>
+        ) : null}
+        <li>
+          <Link
+            href="/book"
+            onClick={onNavigate}
+            className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
+          >
+            Book Home
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/syllabus"
+            onClick={onNavigate}
+            className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
+          >
+            Syllabus
+            <span className="mt-0.5 block text-xs font-normal text-neutral-500">
+              Exit book
+            </span>
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/book/practice"
+            onClick={onNavigate}
+            className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
+          >
+            Practice quizzes
+          </Link>
+        </li>
+        {prevChapter ? (
+          <li>
+            <Link
+              href={prevChapter.href}
+              onClick={onNavigate}
+              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
+            >
+              Previous chapter
+              <span className="mt-0.5 block text-xs font-normal text-neutral-500">
+                {prevChapter.label}
+              </span>
+            </Link>
+          </li>
+        ) : null}
+        {nextChapter ? (
+          <li>
+            <Link
+              href={nextChapter.href}
+              onClick={onNavigate}
+              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
+            >
+              Next chapter
+              <span className="mt-0.5 block text-xs font-normal text-neutral-500">
+                {nextChapter.label}
+              </span>
+            </Link>
+          </li>
+        ) : null}
+      </ul>
+
       <div
         ref={scrollContainerRef}
         className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-2 py-3"
@@ -1023,82 +1100,6 @@ function TocPanel({
         onWheel={pauseSync}
         onPointerDown={pauseSync}
       >
-        <ul className="m-0 mb-3 list-none space-y-0.5 p-0 text-sm">
-          {resumeHref ? (
-            <li>
-              <Link
-                href={resumeHref}
-                onClick={onNavigate}
-                className="block rounded px-2 py-1 font-medium no-underline hover:bg-neutral-200"
-              >
-                Resume reading
-                {resumeLabel ? (
-                  <span className="mt-0.5 block text-xs font-normal text-neutral-500">
-                    {resumeLabel}
-                  </span>
-                ) : null}
-              </Link>
-            </li>
-          ) : null}
-          <li>
-            <Link
-              href="/book"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Book Home
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/syllabus"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Syllabus
-              <span className="mt-0.5 block text-xs font-normal text-neutral-500">
-                Exit book
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/book/practice"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Practice quizzes
-            </Link>
-          </li>
-          {prevChapter ? (
-            <li>
-              <Link
-                href={prevChapter.href}
-                onClick={onNavigate}
-                className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-              >
-                Previous chapter
-                <span className="mt-0.5 block text-xs font-normal text-neutral-500">
-                  {prevChapter.label}
-                </span>
-              </Link>
-            </li>
-          ) : null}
-          {nextChapter ? (
-            <li>
-              <Link
-                href={nextChapter.href}
-                onClick={onNavigate}
-                className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-              >
-                Next chapter
-                <span className="mt-0.5 block text-xs font-normal text-neutral-500">
-                  {nextChapter.label}
-                </span>
-              </Link>
-            </li>
-          ) : null}
-        </ul>
 
         <h3 className="mb-2 mt-2 px-2 text-xs font-semibold uppercase tracking-wide text-neutral-500">
           Chapters
