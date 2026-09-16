@@ -8,7 +8,12 @@ export {
   CS5610_09_ZOOM_URL,
   isBannerMeetingLabelNote,
 } from "./sections";
-export { holidayMeetingNote, holidays, thanksgivingBlackout } from "./holidays";
+export {
+  holidayMeetingNote,
+  holidays,
+  lectureRecordingNote,
+  thanksgivingBlackout,
+} from "./holidays";
 export {
   academicCalendarEvents,
   academicCalendarIntro,

@@ -37,4 +37,11 @@ describe("syllabus course website accounts placement", () => {
       "Course website accounts",
     );
   });
+
+  it("cross-links lecture recordings from the header how-to-use blurb", () => {
+    assert.match(syllabusHeader, /href="#meetings"/);
+    assert.match(syllabusHeader, /Lecture recordings/);
+    assert.match(syllabusHeader, /legitimate absence/);
+    assert.match(syllabusHeader, /not as a replacement for\s+class/);
+  });
 });

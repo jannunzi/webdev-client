@@ -7,7 +7,7 @@ import {
   academicCalendarIntro,
   academicCalendarSource,
 } from "./academicCalendar.ts";
-import { holidayMeetingNote, holidays } from "./holidays.ts";
+import { holidayMeetingNote, holidays, lectureRecordingNote } from "./holidays.ts";
 import { isoWeekday, weekdayName } from "./dates.ts";
 import { semester } from "./course.ts";
 
@@ -109,5 +109,19 @@ describe("Fall 2026 academic calendar", () => {
     assert.match(holidayMeetingNote, /do not skip a lecture week/);
     assert.doesNotMatch(holidayMeetingNote, /meets online/);
     assert.doesNotMatch(holidayMeetingNote, /stays on track/);
+  });
+});
+
+describe("lecture recording policy", () => {
+  it("allows a legitimate absence via the recording, not as a class replacement", () => {
+    assert.match(lectureRecordingNote, /All lectures are recorded/);
+    assert.match(lectureRecordingNote, /available to enrolled students/);
+    assert.match(lectureRecordingNote, /legitimate reason/);
+    assert.match(lectureRecordingNote, /not a general replacement/);
+    assert.match(lectureRecordingNote, /live lectures/);
+    assert.doesNotMatch(lectureRecordingNote, /https?:\/\//);
+    assert.doesNotMatch(lectureRecordingNote, /Zoom/i);
+    assert.doesNotMatch(lectureRecordingNote, /Panopto/i);
+    assert.doesNotMatch(lectureRecordingNote, /Canvas/i);
   });
 });
