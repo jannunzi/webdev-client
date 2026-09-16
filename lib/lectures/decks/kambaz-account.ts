@@ -61,13 +61,26 @@ export default function Signin() {
   return (
     <div id="wd-signin-screen">
       <h3>Sign in</h3>
-      <input placeholder="username" className="wd-username" defaultValue="ada" />
+      <input
+        placeholder="username"
+        className="wd-username"
+        defaultValue="ada"
+      />{" "}
       <br />
-      <input placeholder="password" type="password" className="wd-password" defaultValue="123" />
+      <input
+        placeholder="password"
+        type="password"
+        className="wd-password"
+        defaultValue="123"
+      />{" "}
       <br />
-      <Link href="/account/profile" id="wd-signin-btn"> Sign in </Link>
+      <Link href="/account/profile" id="wd-signin-btn">
+        Sign in
+      </Link>{" "}
       <br />
-      <Link href="/account/signup" id="wd-signup-link"> Sign up </Link>
+      <Link href="/account/signup" id="wd-signup-link">
+        Sign up
+      </Link>
     </div>
   );
 }`,
@@ -118,29 +131,48 @@ export default function Kambaz() {
       "Reuse `date`, `email`, and a `select` from Lab 1",
       "Labels would have been nice",
     ],
-    code: `<div id="wd-profile-screen">
-  <h3>Profile</h3>
-  <input defaultValue="alice" placeholder="username" className="wd-username" />
-  <br />
-  <input defaultValue="123" placeholder="password" type="password" className="wd-password" />
-  <br />
-  <input defaultValue="Alice" placeholder="First Name" id="wd-firstname" />
-  <br />
-  <input defaultValue="Wonderland" placeholder="Last Name" id="wd-lastname" />
-  <br />
-  <input defaultValue="2000-01-01" type="date" id="wd-dob" />
-  <br />
-  <input defaultValue="alice@wonderland" type="email" id="wd-email" />
-  <br />
-  <select defaultValue="FACULTY" id="wd-role">
-    <option value="USER">User</option>
-    <option value="ADMIN">Admin</option>
-    <option value="FACULTY">Faculty</option>
-    <option value="STUDENT">Student</option>
-  </select>
-  <br />
-  <Link href="/account/signin"> Sign out </Link>
-</div>`,
+    code: `import Link from "next/link";
+
+export default function Profile() {
+  return (
+    <div id="wd-profile-screen">
+      <h3>Profile</h3>
+      <input
+        defaultValue="alice"
+        placeholder="username"
+        className="wd-username"
+      />
+      <br />
+      <input
+        defaultValue="123"
+        placeholder="password"
+        type="password"
+        className="wd-password"
+      />
+      <br />
+      <input defaultValue="Alice" placeholder="First Name" id="wd-firstname" />
+      <br />
+      <input
+        defaultValue="Wonderland"
+        placeholder="Last Name"
+        id="wd-lastname"
+      />
+      <br />
+      <input defaultValue="2000-01-01" type="date" id="wd-dob" />
+      <br />
+      <input defaultValue="alice@wonderland" type="email" id="wd-email" />
+      <br />
+      <select defaultValue="FACULTY" id="wd-role">
+        <option value="USER">User</option>
+        <option value="ADMIN">Admin</option>
+        <option value="FACULTY">Faculty</option>
+        <option value="STUDENT">Student</option>
+      </select>
+      <br />
+      <Link href="/account/signin">Sign out</Link>
+    </div>
+  );
+}`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/profile/page.tsx",
   },
@@ -166,21 +198,34 @@ export default function Signup() {
   return (
     <div id="wd-signup-screen">
       <h3>Sign up</h3>
-      <input placeholder="username" className="wd-username" defaultValue="ada" />
+      <input
+        placeholder="username"
+        className="wd-username"
+        defaultValue="ada"
+      />
       <br />
-      <input placeholder="password" type="password" className="wd-password" defaultValue="123" />
+      <input
+        placeholder="password"
+        type="password"
+        className="wd-password"
+        defaultValue="123"
+      />
       <br />
-      <input placeholder="verify password" type="password" className="wd-password-verify" />
+      <input
+        placeholder="verify password"
+        type="password"
+        className="wd-password-verify"
+      />
       <br />
-      <Link href="/account/profile"> Sign up </Link>
+      <Link href="/account/profile">Sign up</Link>
       <br />
-      <Link href="/account/signin"> Sign in </Link>
+      <Link href="/account/signin">Sign in</Link>
     </div>
   );
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/signup/page.tsx",
-    codeAddedLines: [11],
+    codeAddedLines: [[21, 24]],
   },
   {
     id: "signup-live",
@@ -202,9 +247,9 @@ export default function Signup() {
 export default function AccountNavigation() {
   return (
     <div id="wd-account-navigation">
-      <Link href="/account/signin">  Signin  </Link> <br />
-      <Link href="/account/signup">  Signup  </Link> <br />
-      <Link href="/account/profile"> Profile </Link> <br />
+      <Link href="/account/signin">Signin</Link> <br />
+      <Link href="/account/signup">Signup</Link> <br />
+      <Link href="/account/profile">Profile</Link> <br />
     </div>
   );
 }`,
@@ -231,8 +276,12 @@ export default function AccountLayout({
       <table>
         <tbody>
           <tr>
-            <td valign="top"><AccountNavigation /></td>
-            <td valign="top" width="100%">{children}</td>
+            <td valign="top">
+              <AccountNavigation />
+            </td>
+            <td valign="top" width="100%">
+              {children}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -241,7 +290,7 @@ export default function AccountLayout({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/layout.tsx",
-    codeAddedLines: [2, 12, 13],
+    codeAddedLines: [2, 13, 16],
   },
   {
     id: "account-layout-live",
