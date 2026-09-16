@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import CourseSiteHeader from "@/app/course-info/CourseSiteHeader";
 import StaffViewModeBar from "@/app/quizzes/components/StaffViewModeBar";
-import { isClerkConfigured, isClerkPublishableKeySet } from "@/lib/config";
+import { isClerkConfigured } from "@/lib/config";
 import "../book/book.css";
-import AssignmentAuthBar from "./components/AssignmentAuthBar";
 
 export const metadata: Metadata = {
   title: "Assignments — CS 4550 / CS 5610",
@@ -16,8 +16,8 @@ export default function AssignmentsLayout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <div className="book-shell min-h-screen">
+      <CourseSiteHeader />
       <main className="page-content min-w-0 px-4 py-8 sm:px-6">
-        {isClerkPublishableKeySet() ? <AssignmentAuthBar /> : null}
         {isClerkConfigured() ? <StaffViewModeBar /> : null}
         {children}
       </main>

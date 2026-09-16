@@ -8,6 +8,13 @@
   line-height: 1.55;
 }
 
+@media (width >= 48rem) {
+  .book-shell:has(.course-site-header) #wd-book-toc {
+    top: 2.75rem;
+    height: calc(100dvh - 2.75rem);
+  }
+}
+
 /*
  * Overlay so the reading column does not jump. Instant when the reader
  * prefers reduced motion; otherwise slide up from the bottom.

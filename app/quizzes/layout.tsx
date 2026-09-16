@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import CourseSiteHeader from "@/app/course-info/CourseSiteHeader";
 import "../book/book.css";
 
 export const metadata: Metadata = {
@@ -13,6 +14,7 @@ export default function QuizzesLayout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <div className="book-shell min-h-screen">
+      <CourseSiteHeader />
       <main className="min-w-0 px-4 py-8 sm:px-6">{children}</main>
     </div>
   );

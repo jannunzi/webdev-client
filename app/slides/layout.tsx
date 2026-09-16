@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import CourseSiteHeader from "@/app/course-info/CourseSiteHeader";
 import "../book/book.css";
 
 export const metadata: Metadata = {
@@ -11,5 +12,10 @@ export const metadata: Metadata = {
 export default function SlidesLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  return <div className="book-shell min-h-dvh">{children}</div>;
+  return (
+    <div className="book-shell min-h-dvh">
+      <CourseSiteHeader />
+      {children}
+    </div>
+  );
 }

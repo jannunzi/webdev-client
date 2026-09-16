@@ -17,7 +17,11 @@ export default function QuizReviewLayout({
   return (
     <>
       {isClerkPublishableKeySet() ? (
-        <ClerkAuthBar title="Author review" fallbackRedirect="/quizzes" />
+        <ClerkAuthBar
+          title="Author review"
+          fallbackRedirect="/quizzes"
+          showActions={false}
+        />
       ) : null}
       <StaffViewModeBar />
       {children}

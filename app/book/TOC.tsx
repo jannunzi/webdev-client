@@ -955,6 +955,8 @@ type TocPanelProps = {
   suppressScrollPauseRef: MutableRefObject<boolean>;
   resumeHref: string | null;
   resumeLabel: string | null;
+  prevChapter: ChapterToc | null;
+  nextChapter: ChapterToc | null;
   onNavigate: () => void;
   filteredChapters: ChapterToc[];
   effectiveOpenChapters: Set<string>;
@@ -976,6 +978,8 @@ function TocPanel({
   suppressScrollPauseRef,
   resumeHref,
   resumeLabel,
+  prevChapter,
+  nextChapter,
   onNavigate,
   filteredChapters,
   effectiveOpenChapters,
@@ -1047,38 +1051,14 @@ function TocPanel({
           </li>
           <li>
             <Link
-              href="/blog"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Blog
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/slides"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Slides
-            </Link>
-          </li>
-          <li>
-            <Link
               href="/syllabus"
               onClick={onNavigate}
               className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
             >
               Syllabus
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/labs"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Labs
+              <span className="mt-0.5 block text-xs font-normal text-neutral-500">
+                Exit book
+              </span>
             </Link>
           </li>
           <li>
@@ -1090,57 +1070,34 @@ function TocPanel({
               Practice quizzes
             </Link>
           </li>
-          <li>
-            <Link
-              href="/account/signin"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Kambaz
-            </Link>
-          </li>
-        </ul>
-
-        <h3 className="mb-2 mt-1 px-2 text-xs font-semibold uppercase tracking-wide text-neutral-500">
-          Resources
-        </h3>
-        <ul className="m-0 mb-3 list-none space-y-0.5 p-0 text-sm">
-          <li>
-            <Link
-              href="/calendar"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Academic Calendar
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/office-hours"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Office Hours
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/piazza-hours"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Piazza Hours
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/project"
-              onClick={onNavigate}
-              className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
-            >
-              Final Project
-            </Link>
-          </li>
+          {prevChapter ? (
+            <li>
+              <Link
+                href={prevChapter.href}
+                onClick={onNavigate}
+                className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
+              >
+                Previous chapter
+                <span className="mt-0.5 block text-xs font-normal text-neutral-500">
+                  {prevChapter.label}
+                </span>
+              </Link>
+            </li>
+          ) : null}
+          {nextChapter ? (
+            <li>
+              <Link
+                href={nextChapter.href}
+                onClick={onNavigate}
+                className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
+              >
+                Next chapter
+                <span className="mt-0.5 block text-xs font-normal text-neutral-500">
+                  {nextChapter.label}
+                </span>
+              </Link>
+            </li>
+          ) : null}
         </ul>
 
         <h3 className="mb-2 mt-2 px-2 text-xs font-semibold uppercase tracking-wide text-neutral-500">
@@ -1243,6 +1200,14 @@ export default function BookTOC() {
     () => CHAPTERS.find((c) => pathname === c.href || pathname.startsWith(`${c.href}/`)),
     [pathname],
   );
+  const chapterIndex = currentChapter
+    ? CHAPTERS.findIndex((chapter) => chapter.id === currentChapter.id)
+    : -1;
+  const prevChapter = chapterIndex > 0 ? CHAPTERS[chapterIndex - 1]! : null;
+  const nextChapter =
+    chapterIndex >= 0 && chapterIndex < CHAPTERS.length - 1
+      ? CHAPTERS[chapterIndex + 1]!
+      : null;
 
   const sectionIds = useMemo(
     () => (currentChapter ? collectSectionIds(currentChapter.sections) : []),
@@ -1505,6 +1470,8 @@ export default function BookTOC() {
       suppressScrollPauseRef={suppressScrollPauseRef}
       resumeHref={resume?.href ?? null}
       resumeLabel={resume?.label ?? null}
+      prevChapter={prevChapter}
+      nextChapter={nextChapter}
       onNavigate={onNavigate}
       filteredChapters={filteredChapters}
       effectiveOpenChapters={effectiveOpenChapters}
