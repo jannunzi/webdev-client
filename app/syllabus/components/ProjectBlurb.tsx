@@ -18,8 +18,8 @@ export default function ProjectBlurb({
         ))}
       </ul>
       <p>
-        Option overviews (Quizzes, Pazza, or open-ended) are on the{" "}
-        <Link href="/project">Final Project</Link> page.
+        Full requirements for Quizzes, Pazza, and the open-ended option are on
+        the <Link href="/project">Final Project</Link> page.
       </p>
     </SyllabusSection>
   );
