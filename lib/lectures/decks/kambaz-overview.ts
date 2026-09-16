@@ -63,14 +63,28 @@ app/(kambaz)/account/signin/page.tsx  →  /account/signin`,
       "`href=\"/\"` — the group owns `/`",
       "Id `wd-kambaz-link` is what graders look for",
     ],
-    code: `<li>
-  <Link href="/" id="wd-kambaz-link">
-    Kambaz
-  </Link>
-</li>`,
+    code: `import Link from "next/link";
+
+export default function TOC() {
+  return (
+    <ul>
+      <li>
+        <Link href="/labs" id="wd-lab1-link">
+          Home
+        </Link>
+      </li>
+      {/* ... lab links ... */}
+      <li>
+        <Link href="/" id="wd-kambaz-link">
+          Kambaz
+        </Link>
+      </li>
+    </ul>
+  );
+}`,
     codeLanguage: "tsx",
     codeFile: "app/labs/TOC.tsx",
-    codeAddedLines: [[1, 5]],
+    codeAddedLines: [[12, 16]],
   },
   {
     id: "redirect",

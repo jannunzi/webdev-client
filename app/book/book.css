@@ -574,7 +574,37 @@ code.quiz-prompt-code {
 
 .lecture-slide .book-code-block-header {
   padding: 0.35rem 0.65rem;
+  /* Room for the overlay Copy control — does not change code body size/width. */
+  padding-right: 5.75rem;
   font-size: calc(1.1rem * var(--lecture-block-font-scale, 1));
+}
+
+/*
+ * Overlay Copy in the header corner. Fixed control size — do not inherit
+ * the ~25% larger lecture code type (#105).
+ */
+.lecture-code-copy {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.4rem;
+  z-index: 6;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0.28rem 0.7rem;
+  border: 1px solid #737373;
+  border-radius: 0.25rem;
+  background: #262626;
+  color: #f5f5f5;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.2;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.lecture-code-copy:hover {
+  background: #404040;
 }
 
 .lecture-slide .book-code-block-body {

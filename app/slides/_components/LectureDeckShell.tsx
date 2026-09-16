@@ -228,7 +228,8 @@ export default function LectureDeckShell({
   useEffect(() => {
     const pane = stageRef.current;
     if (!pane) return;
-    function tryNativeUpgrade() {
+    function tryNativeUpgrade(event: PointerEvent) {
+      if (swipeTargetIsInteractive(event.target)) return;
       if (!pendingNativeUpgrade.current || nativeFullscreenElement(document)) {
         return;
       }
@@ -280,7 +281,9 @@ export default function LectureDeckShell({
         (target.tagName === "INPUT" ||
           target.tagName === "TEXTAREA" ||
           target.tagName === "SELECT" ||
-          target.isContentEditable)
+          target.tagName === "BUTTON" ||
+          target.isContentEditable ||
+          Boolean(target.closest("button"))))
       ) {
         return;
       }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import CopyButton from "@/app/book/components/CopyButton";
 import type { LectureCodeBlock as LectureCodeBlockData } from "@/lib/lectures/types";
 
 export default function LectureCodeBlock({
@@ -9,66 +9,20 @@ export default function LectureCodeBlock({
   block: LectureCodeBlockData;
 }) {
   const language = block.language ?? "tsx";
-  const [copied, setCopied] = useState(false);
-
-  function fallbackCopy(text: string) {
-    const field = document.createElement("textarea");
-    field.value = text;
-    field.setAttribute("readonly", "");
-    field.style.position = "fixed";
-    field.style.left = "-9999px";
-    document.body.appendChild(field);
-    field.select();
-    const ok = document.execCommand("copy");
-    document.body.removeChild(field);
-    if (!ok) throw new Error("copy failed");
-  }
-
-  async function copyCode() {
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(block.code);
-      } else {
-        fallbackCopy(block.code);
-      }
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1600);
-    } catch {
-      try {
-        fallbackCopy(block.code);
-        setCopied(true);
-        window.setTimeout(() => setCopied(false), 1600);
-      } catch {
-        setCopied(false);
-      }
-    }
-  }
 
   return (
     <div className="book-code-block relative my-3 w-full max-w-full overflow-hidden rounded border border-neutral-300">
       <div className="book-code-block-header flex items-center justify-between gap-2 border-b border-neutral-700 bg-[#161b22] px-3 py-2 font-sans">
-        <span className="truncate font-mono text-neutral-400">
+        <span className="min-w-0 truncate font-mono text-neutral-400">
           {block.file ?? language}
         </span>
-        <div className="flex shrink-0 items-center gap-2">
-          {block.file ? (
-            <span className="font-mono text-[0.85em] uppercase tracking-wide text-neutral-500">
-              {language}
-            </span>
-          ) : null}
-          <button
-            type="button"
-            className="rounded border border-neutral-500 bg-neutral-800 px-2.5 py-1 font-sans text-neutral-100 hover:bg-neutral-700"
-            onClick={() => void copyCode()}
-            aria-label={copied ? "Copied to clipboard" : "Copy code"}
-          >
-            {copied ? "Copied" : "Copy"}
-          </button>
-        </div>
+        {block.file ? (
+          <span className="shrink-0 font-mono text-[0.85em] uppercase tracking-wide text-neutral-500">
+            {language}
+          </span>
+        ) : null}
       </div>
-      <p className="sr-only" aria-live="polite">
-        {copied ? "Copied to clipboard" : ""}
-      </p>
+      <CopyButton code={block.code} variant="lecture" />
       {block.html ? (
         <div
           className="book-code-block-body book-code-block-lined overflow-x-auto leading-snug"

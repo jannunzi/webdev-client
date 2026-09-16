@@ -35,21 +35,39 @@ export const KAMBAZ_NAVIGATION_SLIDES: LectureSlide[] = [
 export default function KambazNavigation() {
   return (
     <div id="wd-kambaz-navigation">
-      <a href="https://www.northeastern.edu/" id="wd-neu-link" target="_blank" rel="noreferrer">
+      <a
+        href="https://www.northeastern.edu/"
+        id="wd-neu-link"
+        target="_blank"
+        rel="noreferrer"
+      >
         Northeastern
       </a>
       <br />
-      <Link href="/account" id="wd-account-link">Account</Link>
+      <Link href="/account" id="wd-account-link">
+        Account
+      </Link>
       <br />
-      <Link href="/dashboard" id="wd-dashboard-link">Dashboard</Link>
+      <Link href="/dashboard" id="wd-dashboard-link">
+        Dashboard
+      </Link>
       <br />
-      <Link href="/dashboard" id="wd-course-link">Courses</Link>
+      <Link href="/dashboard" id="wd-course-link">
+        Courses
+      </Link>
       <br />
-      <Link href="/calendar" id="wd-calendar-link">Calendar</Link>
+      <Link href="/calendar" id="wd-calendar-link">
+        Calendar
+      </Link>
       <br />
-      <Link href="/inbox" id="wd-inbox-link">Inbox</Link>
+      <Link href="/inbox" id="wd-inbox-link">
+        Inbox
+      </Link>
       <br />
-      <Link href="/labs" id="wd-labs-link">Labs</Link>
+      <Link href="/labs" id="wd-labs-link">
+        Labs
+      </Link>
+      <br />
     </div>
   );
 }`,

@@ -1188,7 +1188,7 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-dashboard"], 8);
     assert.equal(counts["kambaz-navigation"], 8);
     assert.equal(counts["kambaz-courses"], 8);
-    assert.equal(counts["kambaz-modules"], 11);
+    assert.equal(counts["kambaz-modules"], 12);
     assert.equal(counts["kambaz-assignments"], 12);
     assert.equal(counts["css-intro"], 12);
     assert.equal(counts["css-colors"], 9);
@@ -1357,6 +1357,40 @@ describe("lecture decks", () => {
     );
     assert.match(blocks, /blockFrameClass/);
     assert.doesNotMatch(blocks, /lecture-block-size-md"/);
+  });
+
+  it("gives every lecture code block a one-click Copy overlay", () => {
+    const codeBlock = readFileSync(
+      join(process.cwd(), "app/slides/_components/LectureCodeBlock.tsx"),
+      "utf8",
+    );
+    assert.match(codeBlock, /CopyButton/);
+    assert.match(codeBlock, /variant="lecture"/);
+    const copyButton = readFileSync(
+      join(process.cwd(), "app/book/components/CopyButton.tsx"),
+      "utf8",
+    );
+    assert.match(copyButton, /navigator\.clipboard/);
+    assert.match(copyButton, /execCommand\("copy"\)/);
+    assert.match(copyButton, /stopPropagation/);
+    assert.match(copyButton, /variant === "lecture"/);
+    const shell = readFileSync(
+      join(process.cwd(), "app/slides/_components/LectureDeckShell.tsx"),
+      "utf8",
+    );
+    assert.match(shell, /tagName === "BUTTON"/);
+    assert.match(shell, /swipeTargetIsInteractive\(event\.target\)/);
+    const css = readFileSync(join(process.cwd(), "app/book/book.css"), "utf8");
+    assert.match(css, /\.lecture-code-copy\s*\{/);
+    assert.match(css, /\.lecture-code-copy\s*\{[^}]*position:\s*absolute/);
+    assert.match(
+      css,
+      /\.lecture-slide \.book-code-block-body \{[^}]*font-size:\s*calc\(1\.5625rem/,
+    );
+    assert.doesNotMatch(
+      css,
+      /\.lecture-code-copy\s*\{[^}]*font-size:\s*calc\(1\.5625rem/,
+    );
   });
 
   it("leaves Chapter 1 authored bullets on the CSS default (no sm/md fontSize)", () => {
@@ -1897,8 +1931,20 @@ describe("lecture decks", () => {
     assert.match(modules, /wd-modules/);
     assert.match(modules, /wd-module/);
     assert.match(modules, /LEARNING OBJECTIVES/);
+    assert.match(modules, /import Module from "\.\/Module"/);
+    assert.match(modules, /import Lesson from "\.\/Lesson"/);
+    assert.match(modules, /app\/\(kambaz\)\/courses\/\[cid\]\/modules\/Lesson\.tsx/);
     assert.match(modules, /wd-course-status/);
     assert.match(modules, /import Modules from "\.\.\/modules\/page"/);
+    const modulesCode = findSlide("kambaz-modules", "modules-page");
+    assert.ok(
+      lectureSlideCodeBlocks(modulesCode).some((block) =>
+        block.code.includes("<Module title="),
+      ),
+    );
+    const modulesDemo = findSlide("kambaz-modules", "modules-page-live");
+    assert.equal(modulesDemo.embed, "kambaz-modules");
+    assert.equal(lectureSlideCodeBlocks(modulesDemo).length, 0);
 
     const assignments = slideText("kambaz-assignments");
     assert.match(assignments, /wd-search-assignment/);
@@ -2928,7 +2974,7 @@ describe("lecture decks", () => {
 
     assert.deepEqual(link.codeAddedLines, [1, [6, 7]]);
     assert.deepEqual(pancakes.codeAddedLines, [[2, 11]]);
-    assert.deepEqual(signup.codeAddedLines, [11]);
+    assert.deepEqual(signup.codeAddedLines, [[21, 24]]);
     assert.deepEqual(cssImport.codeAddedLines, [1]);
     const twPage = findSlide("tailwind-intro", "page");
     const navOffset = findSlide("kambaz-nav-styling", "offset");

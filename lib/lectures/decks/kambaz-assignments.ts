@@ -82,19 +82,20 @@ export const KAMBAZ_ASSIGNMENTS_SLIDES: LectureSlide[] = [
     code: `import Link from "next/link";
 
 export default function AssignmentItem({
-  cid, aid, title, details,
+  cid,
+  aid,
+  title,
+  details,
 }: {
-  cid: string; aid: string; title: string; details: string;
+  cid: string;
+  aid: string;
+  title: string;
+  details: string;
 }) {
   return (
     <li className="wd-assignment-list-item">
-      <Link
-        href={\`/courses/\${cid}/assignments/\${aid}\`}
-        className="wd-assignment-link"
-      >
-        {title}
-      </Link>
-      <div>{details}</div>
+      {/* Link the title to /courses/\${cid}/assignments/\${aid}
+          (className wd-assignment-link), then show details underneath */}
     </li>
   );
 }`,
@@ -133,15 +134,17 @@ export default function AssignmentItem({
       </textarea>
       <br />
       <table>
-        <tr>
-          <td align="right" valign="top">
-            <label htmlFor="wd-points">Points</label>
-          </td>
-          <td>
-            <input id="wd-points" defaultValue={100} />
-          </td>
-        </tr>
-        {/* Complete on your own */}
+        <tbody>
+          <tr>
+            <td align="right" valign="top">
+              <label htmlFor="wd-points">Points</label>
+            </td>
+            <td>
+              <input id="wd-points" defaultValue={100} />
+            </td>
+          </tr>
+          {/* Complete on your own — see checklist below */}
+        </tbody>
       </table>
     </div>
   );

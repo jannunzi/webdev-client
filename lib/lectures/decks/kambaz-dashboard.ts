@@ -47,9 +47,15 @@ export const KAMBAZ_DASHBOARD_SLIDES: LectureSlide[] = [
 import Image from "next/image";
 
 export default function CourseCard({
-  id, title, subtitle, image,
+  id,
+  title,
+  subtitle,
+  image,
 }: {
-  id: string; title: string; subtitle: string; image: string;
+  id: string;
+  title: string;
+  subtitle: string;
+  image: string;
 }) {
   return (
     <div className="wd-dashboard-course">
@@ -90,8 +96,18 @@ export default function Dashboard() {
           subtitle="Full Stack software developer"
           image="/images/reactjs.jpg"
         />
-        <CourseCard id="2345" title="CS2345 Node JS" subtitle="Server side JavaScript" image="/images/nodejs.jpg" />
-        <CourseCard id="3456" title="CS3456 MongoDB" subtitle="NoSQL Databases" image="/images/mongodb.jpg" />
+        <CourseCard
+          id="2345"
+          title="CS2345 Node JS"
+          subtitle="Server side JavaScript"
+          image="/images/nodejs.jpg"
+        />
+        <CourseCard
+          id="3456"
+          title="CS3456 MongoDB"
+          subtitle="NoSQL Databases"
+          image="/images/mongodb.jpg"
+        />
       </div>
     </div>
   );
