@@ -641,6 +641,35 @@ code.quiz-prompt-code {
   font-size: 1.40625rem;
 }
 
+/*
+ * Demo-only slides (no code sharing the stage): grow the live embed and
+ * form controls ~30% so Signup/Signin/Profile fields read from the back.
+ */
+.lecture-slide[data-demo-stage="true"] .lecture-demo-frame {
+  margin-block: 0.85rem;
+}
+
+.lecture-slide[data-demo-stage="true"] .lecture-demo-frame-caption {
+  padding: 0.55rem 0.85rem;
+}
+
+.lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body {
+  font-size: 1.3em;
+  padding: 1.15rem 1.35rem;
+}
+
+.lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body input,
+.lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body select,
+.lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body textarea {
+  padding: 0.45em 0.65em;
+  min-height: 2.35em;
+  min-width: min(100%, 22rem);
+}
+
+.lecture-slide[data-target-figure="true"] .lecture-target-figure {
+  margin-block: 0.75rem;
+}
+
 .lecture-block + .lecture-block {
   margin-top: var(--lecture-gap, 0.65rem);
 }

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import {
   authoredSlideDensity,
+  isDemoStageSlide,
+  isTargetFigureSlide,
   type BlockSlide,
 } from "@/lib/lectures/blocks";
 import {
@@ -120,6 +122,8 @@ export default function LectureDeckShell({
   const slide = slides[index] ?? slides[0];
   const kind = slide?.kind ?? "content";
   const density = slide ? authoredSlideDensity(slide) : "spacious";
+  const demoStage = slide ? isDemoStageSlide(slide) : false;
+  const targetFigure = slide ? isTargetFigureSlide(slide) : false;
   const chapterNumber = chapter ?? prevDeck?.chapter ?? nextDeck?.chapter;
   const isPresenting = isNativeFullscreen || fallbackPresent;
   fallbackPresentRef.current = fallbackPresent;
@@ -457,6 +461,8 @@ export default function LectureDeckShell({
           ref={stageRef}
           data-slide-density={density}
           data-slide-kind={kind}
+          data-demo-stage={demoStage ? "true" : undefined}
+          data-target-figure={targetFigure ? "true" : undefined}
           data-lecture-present={
             fallbackPresent ? "fallback" : isNativeFullscreen ? "native" : undefined
           }
@@ -495,6 +501,8 @@ export default function LectureDeckShell({
             <LectureSlideImage
               src={slide.imageSrc}
               alt={slide.imageAlt ?? slide.title}
+              caption={slide.imageCaption}
+              stage={targetFigure}
             />
           ) : null}
           {slide.interactiveHint ? (

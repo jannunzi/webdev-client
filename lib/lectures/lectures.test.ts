@@ -46,6 +46,7 @@ import {
   LECTURE_EMBED_IDS,
   LECTURE_SLUGS,
   LECTURE_TITLE_MAX_CHARS,
+  isBookKambazTargetSrc,
   lectureChapterLabel,
   lectureSlideAssetPath,
   lectureSlideDensity,
@@ -1183,12 +1184,12 @@ describe("lecture decks", () => {
     assert.equal(counts["anchors"], 5);
     assert.equal(counts["single-page-navigation"], 14);
     assert.equal(counts["kambaz-overview"], 8);
-    assert.equal(counts["kambaz-account"], 9);
-    assert.equal(counts["kambaz-dashboard"], 6);
-    assert.equal(counts["kambaz-navigation"], 6);
-    assert.equal(counts["kambaz-courses"], 6);
-    assert.equal(counts["kambaz-modules"], 7);
-    assert.equal(counts["kambaz-assignments"], 8);
+    assert.equal(counts["kambaz-account"], 15);
+    assert.equal(counts["kambaz-dashboard"], 8);
+    assert.equal(counts["kambaz-navigation"], 8);
+    assert.equal(counts["kambaz-courses"], 8);
+    assert.equal(counts["kambaz-modules"], 11);
+    assert.equal(counts["kambaz-assignments"], 12);
     assert.equal(counts["css-intro"], 12);
     assert.equal(counts["css-colors"], 9);
     assert.equal(counts["css-box-model"], 10);
@@ -1315,6 +1316,8 @@ describe("lecture decks", () => {
       /\.lecture-slide-spacious \.lecture-slide-bullets \{[^}]*font-size:\s*1\.5rem/,
     );
     assert.match(css, /--lecture-block-font-scale:\s*1/);
+    assert.match(css, /\[data-demo-stage="true"\] \.lecture-demo-frame-body/);
+    assert.match(css, /font-size:\s*1\.3em/);
     assert.doesNotMatch(
       css,
       /\.lecture-block-font-md \.lecture-slide-bullets \{[^}]*font-size:\s*1em/,
@@ -1479,18 +1482,21 @@ describe("lecture decks", () => {
       },
       "kambaz-overview": { landing: "kambaz-landing" },
       "kambaz-account": {
-        signin: "kambaz-signin",
-        signup: "kambaz-signup",
-        profile: "kambaz-profile",
-        "account-layout": "kambaz-account-nav",
+        "signin-live": "kambaz-signin",
+        "signup-live": "kambaz-signup",
+        "profile-live": "kambaz-profile",
+        "account-layout-live": "kambaz-account-nav",
       },
-      "kambaz-dashboard": { "dashboard-page": "kambaz-dashboard" },
-      "kambaz-navigation": { layout: "kambaz-navigation" },
-      "kambaz-courses": { layout: "kambaz-courses" },
-      "kambaz-modules": { "modules-page": "kambaz-modules", home: "kambaz-home" },
+      "kambaz-dashboard": { "dashboard-page-live": "kambaz-dashboard" },
+      "kambaz-navigation": { "layout-live": "kambaz-navigation" },
+      "kambaz-courses": { "layout-live": "kambaz-courses" },
+      "kambaz-modules": {
+        "modules-page-live": "kambaz-modules",
+        "home-live": "kambaz-home",
+      },
       "kambaz-assignments": {
-        "list-screen": "kambaz-assignments",
-        editor: "kambaz-assignment-editor",
+        "list-screen-live": "kambaz-assignments",
+        "editor-live": "kambaz-assignment-editor",
       },
       "css-intro": {
         "style-attr": "css-style-attr",
@@ -1902,6 +1908,94 @@ describe("lecture decks", () => {
     assert.match(assignments, /wd-assignments-editor/);
     assert.match(assignments, /wd-cancel/);
     assert.doesNotMatch(assignments, /<a href="\/courses/);
+  });
+
+  it("shows book Canvas target screenshots before Ch1 Kambaz screen sequences", () => {
+    const expected = {
+      "kambaz-account": {
+        "target-signin": "/images/book/kambaz/account-signin.png",
+        "target-profile": "/images/book/kambaz/account-profile.png",
+      },
+      "kambaz-dashboard": {
+        "target-dashboard": "/images/book/kambaz/dashboard.png",
+      },
+      "kambaz-navigation": {
+        "target-navigation": "/images/book/kambaz/navigation.png",
+      },
+      "kambaz-courses": {
+        "target-course-nav": "/images/book/kambaz/course-navigation.png",
+      },
+      "kambaz-modules": {
+        "target-modules": "/images/book/kambaz/modules.png",
+        "target-home": "/images/book/kambaz/home.png",
+      },
+      "kambaz-assignments": {
+        "target-assignments": "/images/book/kambaz/assignments.png",
+        "target-editor": "/images/book/kambaz/assignment-editor.png",
+      },
+    } as const;
+
+    for (const [slug, slides] of Object.entries(expected)) {
+      const deck = getLectureDeck(slug);
+      assert.ok(deck);
+      const ids = deck.slides.map((slide) => slide.id);
+      for (const [id, src] of Object.entries(slides)) {
+        const slide = findSlide(slug, id);
+        assert.equal(slide.imageSrc, src);
+        assert.ok(isBookKambazTargetSrc(slide.imageSrc));
+        assert.equal(slide.embed, undefined);
+        assert.ok(
+          existsSync(join(process.cwd(), "public", src.replace(/^\//, ""))),
+          `${src} should exist`,
+        );
+        const targetIndex = ids.indexOf(id);
+        const liveId = {
+          "target-signin": "signin-live",
+          "target-profile": "profile-live",
+          "target-dashboard": "dashboard-page-live",
+          "target-navigation": "layout-live",
+          "target-course-nav": "layout-live",
+          "target-modules": "modules-page-live",
+          "target-home": "home-live",
+          "target-assignments": "list-screen-live",
+          "target-editor": "editor-live",
+        }[id];
+        assert.ok(liveId);
+        assert.ok(
+          targetIndex < ids.indexOf(liveId),
+          `${slug} ${id} should appear before ${liveId}`,
+        );
+      }
+    }
+  });
+
+  it("splits Ch1 Kambaz code and live demos onto adjacent slides", () => {
+    const pairs = [
+      ["kambaz-account", "signin", "signin-live"],
+      ["kambaz-account", "signup", "signup-live"],
+      ["kambaz-account", "profile", "profile-live"],
+      ["kambaz-account", "account-layout", "account-layout-live"],
+      ["kambaz-dashboard", "dashboard-page", "dashboard-page-live"],
+      ["kambaz-navigation", "layout", "layout-live"],
+      ["kambaz-courses", "layout", "layout-live"],
+      ["kambaz-modules", "modules-page", "modules-page-live"],
+      ["kambaz-modules", "home", "home-live"],
+      ["kambaz-assignments", "list-screen", "list-screen-live"],
+      ["kambaz-assignments", "editor", "editor-live"],
+    ] as const;
+
+    for (const [slug, codeId, liveId] of pairs) {
+      const deck = getLectureDeck(slug);
+      assert.ok(deck);
+      const ids = deck.slides.map((slide) => slide.id);
+      const code = findSlide(slug, codeId);
+      const live = findSlide(slug, liveId);
+      assert.ok(lectureSlideCodeBlocks(code).length > 0, `${slug} ${codeId} needs code`);
+      assert.equal(code.embed, undefined, `${slug} ${codeId} should not share an embed`);
+      assert.ok(live.embed, `${slug} ${liveId} needs a live embed`);
+      assert.equal(lectureSlideCodeBlocks(live).length, 0, `${slug} ${liveId} is demo-only`);
+      assert.equal(ids.indexOf(liveId), ids.indexOf(codeId) + 1);
+    }
   });
 
   it("teaches Chapter 2 CSS topics in the Lecture 4 decks", () => {
@@ -2766,11 +2860,16 @@ describe("lecture decks", () => {
 
     for (const deck of listLectureDecks()) {
       for (const slide of deck.slides) {
-        assert.equal(
-          slide.imageSrc,
-          undefined,
-          `${deck.slug} ${slide.id} should not auto-attach a PNG`,
-        );
+        if (slide.imageSrc) {
+          assert.ok(
+            isBookKambazTargetSrc(slide.imageSrc),
+            `${deck.slug} ${slide.id} may only use a book Kambaz target PNG, got ${slide.imageSrc}`,
+          );
+          assert.ok(
+            existsSync(join(process.cwd(), "public", slide.imageSrc.replace(/^\//, ""))),
+            `${deck.slug} ${slide.id} missing ${slide.imageSrc}`,
+          );
+        }
         if (slide.diagram) {
           assert.ok(
             (LECTURE_DIAGRAM_IDS as readonly string[]).includes(slide.diagram),

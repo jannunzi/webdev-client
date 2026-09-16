@@ -6,6 +6,11 @@ renders an authored SVG/React figure from
 `app/slides/_components/diagrams/` when `diagram` is set. Default: no
 `imageSrc`. Do not crop Google Slides into slide figures.
 
+Exception: Chapter 1 Kambaz decks may set `imageSrc` to a book Canvas /
+Kambaz **target** screenshot under `/images/book/kambaz/` (the same
+`BookFigure` assets as `app/book`). Place those slides **before** the
+code + live-demo pair for that screen. Do not invent UI mockups.
+
 `LECTURE_DIAGRAM_IDS` in `lib/lectures/types.ts` is the catalog of
 diagrams and product-UI mocks (browser chrome + key labels, not
 screenshots). Live React demos stay on `embed` (User card, Welcome

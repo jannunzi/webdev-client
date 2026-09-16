@@ -59,10 +59,21 @@ export default function CourseNavigation({ cid }: { cid: string }) {
     codeFile: "app/(kambaz)/courses/[cid]/Navigation.tsx",
   },
   {
+    id: "target-course-nav",
+    title: "Canvas target: Course nav",
+    kind: "content",
+    bullets: [
+      "Book Figure 2.4.3 — Course Navigation beside the course content",
+      "This week: a **plain list**. Active-route styling is Chapter 2",
+    ],
+    imageSrc: "/images/book/kambaz/course-navigation.png",
+    imageAlt: "Target Course Navigation sidebar",
+    imageCaption: "Figure 2.4.3 — Course Navigation",
+  },
+  {
     id: "layout",
     title: "Layout Navigation on Left",
-    kind: "demo",
-    embed: "kambaz-courses",
+    kind: "content",
     bullets: [
       "`params` is a Promise — mark the layout `async` and `await params`",
       "Wrapper `wd-courses`. Heading shows `Courses {cid}`",
@@ -95,6 +106,12 @@ export default async function CoursesLayout({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/layout.tsx",
+  },
+  {
+    id: "layout-live",
+    title: "Course layout: live demo",
+    kind: "demo",
+    embed: "kambaz-courses",
     interactiveHint:
       "Click Piazza or Zoom. Placeholder heading pages are enough this week.",
   },

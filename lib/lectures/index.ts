@@ -157,6 +157,8 @@ export {
   lectureSlideFigurePath,
   lectureSlideCodeBlocks,
   lectureThumbPath,
+  BOOK_KAMBAZ_TARGET_PREFIX,
+  isBookKambazTargetSrc,
 } from "./types";
 export { slidePaneOverflows, slidePaneScrollStep } from "./slide-pane";
 export {
@@ -176,6 +178,8 @@ export {
   createStarterDeckSlides,
   deckUsesBlockModel,
   isBlockSlide,
+  isDemoStageSlide,
+  isTargetFigureSlide,
   moveItem,
   toBlockSlide,
   toBlockSlides,

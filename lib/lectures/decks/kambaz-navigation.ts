@@ -57,14 +57,25 @@ export default function KambazNavigation() {
     codeFile: "app/(kambaz)/Navigation.tsx",
   },
   {
+    id: "target-navigation",
+    title: "Canvas target: Navigation",
+    kind: "content",
+    bullets: [
+      "Book Figure 2.4.1 — the finished black icon column we are aiming at",
+      "This week: a **plain list** of links. Tailwind comes in Chapter 2",
+    ],
+    imageSrc: "/images/book/kambaz/navigation.png",
+    imageAlt: "Target Kambaz Navigation sidebar with Dashboard",
+    imageCaption: "Figure 2.4.1 — Kambaz Navigation",
+  },
+  {
     id: "layout",
     title: "layout.tsx: nav left, children right",
-    kind: "demo",
-    embed: "kambaz-navigation",
+    kind: "content",
     bullets: [
       "`app/(kambaz)/layout.tsx` wraps every Kambaz route",
       "Temporary `<table>`: nav `width=\"200\"`, content `width=\"100%\"`",
-      "Click Account / Dashboard / Calendar in the live chrome",
+      "Account, Dashboard, and Calendar stay in the left column",
     ],
     code: `import { ReactNode } from "react";
 import KambazNavigation from "./Navigation";
@@ -89,6 +100,12 @@ export default function KambazLayout({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/layout.tsx",
+  },
+  {
+    id: "layout-live",
+    title: "Kambaz layout: live demo",
+    kind: "demo",
+    embed: "kambaz-navigation",
     interactiveHint:
       "Click Calendar or Inbox. Those routes 404 until not-found.tsx exists.",
   },

@@ -13,6 +13,8 @@ import {
   lectureDemoSourceLabel,
   toBlockSlide,
   toBlockSlides,
+  isDemoStageSlide,
+  isTargetFigureSlide,
 } from "./blocks";
 import { isSlideComponentId, listSlideComponentOptions } from "./component-registry";
 import {
@@ -126,6 +128,36 @@ describe("slide block model", () => {
     assert.ok(createCodeBlock({ language: "bash" }).type === "code");
     assert.ok(createBulletsBlock().items.length > 0);
     assert.ok(createComponentBlock().componentId);
+  });
+
+  it("treats book target screenshots and demo-only embeds as full-stage slides", () => {
+    const target = toBlockSlide({
+      id: "target-signin",
+      title: "Canvas target: Sign in",
+      imageSrc: "/images/book/kambaz/account-signin.png",
+      imageCaption: "Figure 2.4.9a — Account Sign in",
+    });
+    assert.equal(target.imageCaption, "Figure 2.4.9a — Account Sign in");
+    assert.equal(isTargetFigureSlide(target), true);
+    assert.equal(isDemoStageSlide(target), false);
+
+    const live = toBlockSlide({
+      id: "signin-live",
+      title: "Sign in: live demo",
+      kind: "demo",
+      embed: "kambaz-signin",
+    });
+    assert.equal(isDemoStageSlide(live), true);
+    assert.equal(isTargetFigureSlide(live), false);
+
+    const crowded = toBlockSlide({
+      id: "crowded",
+      title: "Code plus demo",
+      kind: "demo",
+      code: "export default function Signin() { return null; }",
+      embed: "kambaz-signin",
+    });
+    assert.equal(isDemoStageSlide(crowded), false);
   });
 });
 
