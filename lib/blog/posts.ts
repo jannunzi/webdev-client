@@ -6,6 +6,57 @@ import type { BlogPost } from "./types";
  */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "vercel-flat-rate-cdn",
+    title: "Vercel Flat Rate CDN: predictable Pro billing for traffic spikes",
+    publishedAt: "2026-09-16T12:00:00.000Z",
+    tags: ["nextjs", "course"],
+    relatedChapters: ["ch1"],
+    intro: [
+      "On September 8, 2026, Jas Garcha and Eric Dodds announced Flat Rate CDN for Vercel Pro teams: a fixed monthly CDN bill with spike protection instead of pure usage-based CDN charges. New Pro teams get Flat Rate CDN by default; existing Pro teams can opt in. Usage is tracked at the team level across all projects.",
+      "One fixed monthly fee covers CDN Requests, Fast Data Transfer, Blob Data Transfer, and Observability events from CDN requests. Example tiers in the post include Flat Rate CDN 1M (included with Pro: 1M requests / 1 TB), 10M ($20), 50M ($100), and 150M ($300). The post says temporary spikes do not raise the bill, and that Vercel rightsizes the tier from sustained usage rather than capping or degrading the site when traffic goes viral. Teams can still opt out to pay-as-you-go CDN.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. This course site ships on Vercel; the digest is about billing predictability for student and staff deploys, not a change to App Router code. Follow the original Vercel post for tiers and opt-in steps.",
+    ],
+    source: {
+      title: "Introducing Flat Rate CDN",
+      url: "https://vercel.com/blog/introducing-flat-rate-cdn",
+      publisher: "Vercel",
+    },
+  },
+  {
+    slug: "openai-agents-api",
+    title: "OpenAI Agents API: Codex harness for cloud agents in public beta",
+    publishedAt: "2026-09-16T12:00:00.000Z",
+    tags: ["ai", "course"],
+    relatedChapters: ["ch1"],
+    intro: [
+      "On September 10, 2026, OpenAI introduced the Agents API in public beta. It exposes the same harness and infrastructure that powers Codex so developers can create cloud agents through an API: specify the task, model, tools, and environment, then let OpenAI host and maintain the harness.",
+      "You choose where the agent runs — an OpenAI-hosted sandbox, your own infrastructure, or partner sandboxes (the post names providers including Blaxel, Cloudflare, Daytona, DigitalOcean, E2B, Modal, Oracle, Runloop, and Vercel). The harness covers long-session context compaction, tool search and programmatic tool calling (including MCP, custom functions, and web search), and optional multi-agent subagent delegation. The post says the API is powered by the open-source Codex harness, with no extra fee beyond tokens and tools used.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. If you experiment with agent APIs alongside Next.js labs, do not treat agent output as a substitute for understanding the React and Node code you submit.",
+    ],
+    source: {
+      title: "Introducing the Agents API",
+      url: "https://openai.com/index/introducing-the-agents-api/",
+      publisher: "OpenAI",
+    },
+  },
+  {
+    slug: "vercel-run-sdk",
+    title: "Vercel Run SDK: sandboxed JavaScript for agent-generated code",
+    publishedAt: "2026-09-16T12:00:00.000Z",
+    tags: ["ai", "security", "course"],
+    relatedChapters: ["ch1", "ch5"],
+    intro: [
+      "On August 25, 2026, Aayush Kapoor published Introducing Run SDK on the Vercel blog. The package runs untrusted JavaScript or type-stripped TypeScript in a fresh QuickJS context inside a worker thread, with no direct route to Node.js or the network. Applications expose narrow hostFunctions that become callable globals inside the sandbox; credentials and service clients stay in the host.",
+      "Host functions can interrupt a run for human approval or authentication via getHostFunctionContext().interrupt, then resume with a signed token so settled host calls are not repeated. createRunner() sets shared limits such as timeoutMs and memoryLimitBytes. The post states the Run SDK powers code-mode tool execution in the AI SDK, supports Node.js 22.13+ and Bun (install with pnpm add run), and that OS-level isolation still belongs in Vercel Sandbox rather than this in-process QuickJS boundary.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. For Chapter 5 server work and any agent features that eval generated code, the lesson is to keep secrets out of the sandbox and authorize inside host functions. Follow the original post for API details.",
+    ],
+    source: {
+      title: "Introducing Run SDK: secure eval for your agents",
+      url: "https://vercel.com/blog/introducing-run",
+      publisher: "Vercel",
+    },
+  },
+  {
     slug: "vercel-cdn-metadata-shards-91",
     title: "Vercel CDN: indexed metadata shards cut P99 lookup latency 91%",
     publishedAt: "2026-09-15T12:00:00.000Z",

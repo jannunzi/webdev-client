@@ -37,14 +37,21 @@ const REQUIRED_DIGEST_2026_09_15 = [
   "https://expressjs.com/en/blog/2026-08-31-security-releases/",
 ] as const;
 
+const REQUIRED_DIGEST_2026_09_16 = [
+  "https://vercel.com/blog/introducing-flat-rate-cdn",
+  "https://openai.com/index/introducing-the-agents-api/",
+  "https://vercel.com/blog/introducing-run",
+] as const;
+
 const REQUIRED_SOURCES = [
   ...REQUIRED_SEED_SOURCES,
   ...REQUIRED_CATCHUP_SOURCES,
   ...REQUIRED_DIGEST_2026_09_15,
+  ...REQUIRED_DIGEST_2026_09_16,
 ] as const;
 
 const ALLOWED_SOURCE_URL =
-  /^https:\/\/(nextjs\.org\/blog\/|react\.dev\/blog\/|vercel\.com\/blog\/|www\.isyncevolution\.com\/blog\/|cursor\.com\/blog\/|expressjs\.com\/en\/blog\/)/;
+  /^https:\/\/(nextjs\.org\/blog\/|react\.dev\/blog\/|vercel\.com\/blog\/|www\.isyncevolution\.com\/blog\/|cursor\.com\/blog\/|expressjs\.com\/en\/blog\/|openai\.com\/index\/)/;
 
 const BLOG_APP = join(process.cwd(), "app/blog");
 const KAMBAZ_APP = join(process.cwd(), "app/(kambaz)");
@@ -78,6 +85,9 @@ describe("blog posts", () => {
     for (const required of REQUIRED_DIGEST_2026_09_15) {
       assert.ok(urls.includes(required), required);
     }
+    for (const required of REQUIRED_DIGEST_2026_09_16) {
+      assert.ok(urls.includes(required), required);
+    }
 
     for (const post of BLOG_POSTS) {
       assert.ok(post.slug.length > 0, "slug");
@@ -105,22 +115,26 @@ describe("blog posts", () => {
     assert.deepEqual(
       listed.slice(0, 3).map((post) => post.slug),
       [
-        "cursor-projects-coordinator",
-        "express-august-2026-security-releases",
-        "vercel-cdn-metadata-shards-91",
+        "openai-agents-api",
+        "vercel-flat-rate-cdn",
+        "vercel-run-sdk",
       ],
     );
     assert.deepEqual(
       listed.slice(0, 3).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_15].sort(),
+      [...REQUIRED_DIGEST_2026_09_16].sort(),
     );
     assert.deepEqual(
       listed.slice(3, 6).map((post) => post.source.url).sort(),
+      [...REQUIRED_DIGEST_2026_09_15].sort(),
+    );
+    assert.deepEqual(
+      listed.slice(6, 9).map((post) => post.source.url).sort(),
       [...REQUIRED_CATCHUP_SOURCES].sort(),
     );
-    assert.equal(listed[6]?.slug, "august-2026-nextjs-security-release");
-    assert.equal(listed[7]?.slug, "nextjs-16-3-instant-navigations");
-    assert.equal(listed[8]?.slug, "nextjs-16-3-ai-improvements");
+    assert.equal(listed[9]?.slug, "august-2026-nextjs-security-release");
+    assert.equal(listed[10]?.slug, "nextjs-16-3-instant-navigations");
+    assert.equal(listed[11]?.slug, "nextjs-16-3-ai-improvements");
 
     assert.equal(listBlogSlugs().length, REQUIRED_SOURCES.length);
     assert.equal(
@@ -135,6 +149,7 @@ describe("blog posts", () => {
   });
 
   it("formats published dates in UTC and maps related chapters", () => {
+    assert.equal(formatBlogDate("2026-09-16T12:00:00.000Z"), "September 16, 2026");
     assert.equal(formatBlogDate("2026-09-15T12:00:00.000Z"), "September 15, 2026");
     assert.equal(formatBlogDate("2026-09-14T16:00:00.000Z"), "September 14, 2026");
     assert.equal(formatBlogDate("2026-08-25T18:00:00.000Z"), "August 25, 2026");
@@ -182,6 +197,16 @@ describe("blog posts", () => {
     const express = getBlogPost("express-august-2026-security-releases");
     assert.match(express?.intro.join(" ") ?? "", /multer 2\.3\.0/);
     assert.match(express?.intro.join(" ") ?? "", /CVE-2026-77078/);
+
+    const flatRate = getBlogPost("vercel-flat-rate-cdn");
+    assert.match(flatRate?.intro.join(" ") ?? "", /Flat Rate CDN/);
+    assert.match(flatRate?.intro.join(" ") ?? "", /Jas Garcha/);
+    const agentsApi = getBlogPost("openai-agents-api");
+    assert.match(agentsApi?.intro.join(" ") ?? "", /Agents API/);
+    assert.match(agentsApi?.intro.join(" ") ?? "", /Codex harness/);
+    const runSdk = getBlogPost("vercel-run-sdk");
+    assert.match(runSdk?.intro.join(" ") ?? "", /QuickJS/);
+    assert.match(runSdk?.intro.join(" ") ?? "", /hostFunctions/);
   });
 
   it("dates the September 14 catch-up posts in America/New_York", () => {
@@ -199,6 +224,25 @@ describe("blog posts", () => {
       const post = getBlogPost(slug);
       assert.ok(post, slug);
       assert.equal(nyDate.format(new Date(post.publishedAt)), "September 14, 2026");
+    }
+  });
+
+  it("dates the September 16 digest posts in America/New_York", () => {
+    const nyDate = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "America/New_York",
+    });
+    for (const slug of [
+      "vercel-flat-rate-cdn",
+      "openai-agents-api",
+      "vercel-run-sdk",
+    ]) {
+      const post = getBlogPost(slug);
+      assert.ok(post, slug);
+      assert.equal(post.publishedAt, "2026-09-16T12:00:00.000Z");
+      assert.equal(nyDate.format(new Date(post.publishedAt)), "September 16, 2026");
     }
   });
 
