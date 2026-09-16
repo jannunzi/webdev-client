@@ -167,6 +167,8 @@ export {
   authoredSlideEmbed,
   authoredSlideTextParts,
   blockFontClass,
+  blockFrameClass,
+  lectureDemoSourceLabel,
   createBlockSlide,
   createBulletsBlock,
   createCodeBlock,

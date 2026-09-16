@@ -1325,6 +1325,37 @@ describe("lecture decks", () => {
     );
   });
 
+  it("keeps lecture code and live embeds full-slide-width with ~25% larger type", () => {
+    const css = readFileSync(join(process.cwd(), "app/book/book.css"), "utf8");
+    assert.match(
+      css,
+      /\.lecture-slide \.book-code-block-body \{[^}]*font-size:\s*calc\(1\.5625rem/,
+    );
+    assert.match(css, /font-size:\s*calc\(1\.875rem/);
+    assert.doesNotMatch(
+      css,
+      /\.lecture-slide \.book-code-block-body \{[^}]*font-size:\s*calc\(1\.25rem/,
+    );
+    assert.match(
+      css,
+      /\.lecture-slide figure \{[^}]*margin-inline:\s*0/,
+    );
+    assert.match(
+      css,
+      /\.lecture-slide \.lecture-demo-frame \{[^}]*max-width:\s*100%/,
+    );
+    assert.match(
+      css,
+      /\.lecture-block-size-lg \{[^}]*max-width:\s*100%/,
+    );
+    const blocks = readFileSync(
+      join(process.cwd(), "app/slides/_components/SlideBlocks.tsx"),
+      "utf8",
+    );
+    assert.match(blocks, /blockFrameClass/);
+    assert.doesNotMatch(blocks, /lecture-block-size-md"/);
+  });
+
   it("leaves Chapter 1 authored bullets on the CSS default (no sm/md fontSize)", () => {
     for (const deck of listLectureDecks()) {
       if (deck.chapter !== 1) continue;

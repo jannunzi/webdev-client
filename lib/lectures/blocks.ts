@@ -339,3 +339,36 @@ export function blockFontClass(size?: BlockFontSize): string {
 export function isBlockFrameSize(value: unknown): value is BlockFrameSize {
   return value === "sm" || value === "md" || value === "lg";
 }
+
+/**
+ * Code and live embeds default to the slide stage width (lg). Instructors
+ * can still pick sm/md for a narrower teaching column.
+ */
+export function blockFrameClass(size?: BlockFrameSize): string {
+  return size && size !== "lg"
+    ? `lecture-block-size-${size}`
+    : "lecture-block-size-lg";
+}
+
+/** Filename shown on live lecture embeds (basename, or the whole label). */
+export function lectureDemoSourceLabel(label: string): {
+  file: string;
+  path?: string;
+  note?: string;
+} {
+  const match = label.match(
+    /([\w.@()[\]/-]+\.(?:tsx|ts|jsx|js|html|css))\b/i,
+  );
+  if (!match) return { file: label };
+  const path = match[1];
+  const file = path.split("/").pop() || path;
+  const note = label
+    .replace(path, "")
+    .replace(/^[—\-\s,]+|[—\-\s,]+$/g, "")
+    .trim();
+  return {
+    file,
+    ...(path.includes("/") ? { path } : {}),
+    ...(note ? { note } : {}),
+  };
+}

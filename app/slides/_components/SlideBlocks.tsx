@@ -5,6 +5,7 @@ import {
   BLOCK_FONT_SIZES,
   BLOCK_FRAME_SIZES,
   blockFontClass,
+  blockFrameClass,
   createBulletsBlock,
   createCodeBlock,
   createComponentBlock,
@@ -43,7 +44,7 @@ function fontClass(size?: BlockFontSize): string {
 }
 
 function frameClass(size?: BlockFrameSize): string {
-  return size ? `lecture-block-size-${size}` : "lecture-block-size-md";
+  return blockFrameClass(size);
 }
 
 function BulletView({
@@ -278,7 +279,7 @@ function BlockEditor({
             {BLOCK_FRAME_SIZES.map((size) => (
               <ToolbarButton
                 key={size}
-                pressed={block.size === size || (!block.size && size === "md")}
+                pressed={block.size === size || (!block.size && size === "lg")}
                 onClick={() => setSize(size)}
               >
                 {size}

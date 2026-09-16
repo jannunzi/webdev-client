@@ -566,15 +566,21 @@ code.quiz-prompt-code {
 
 .lecture-slide .book-code-block {
   margin-block: var(--lecture-gap, 0.65rem);
+  margin-inline: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .lecture-slide .book-code-block-header {
   padding: 0.35rem 0.65rem;
+  font-size: calc(1.1rem * var(--lecture-block-font-scale, 1));
 }
 
 .lecture-slide .book-code-block-body {
   padding: 0;
-  font-size: calc(1.25rem * var(--lecture-block-font-scale, 1));
+  /* ~25% larger than the prior 1.25rem lecture code size */
+  font-size: calc(1.5625rem * var(--lecture-block-font-scale, 1));
   line-height: 1.4;
 }
 
@@ -589,12 +595,50 @@ code.quiz-prompt-code {
 
 @media (min-width: 768px) {
   .lecture-slide .book-code-block-body {
-    font-size: calc(1.5rem * var(--lecture-block-font-scale, 1));
+    /* 1.5rem * 1.25 */
+    font-size: calc(1.875rem * var(--lecture-block-font-scale, 1));
   }
 }
 
 .lecture-slide figure {
   margin-block: var(--lecture-gap, 0.65rem);
+  /* Browser figure defaults keep 40px side margins; reset so live embeds
+   * share the same stage width as titles, bullets, and code blocks. */
+  margin-inline: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.lecture-slide .lecture-demo-frame {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: 0;
+  box-sizing: border-box;
+}
+
+.lecture-slide .lecture-demo-frame-caption {
+  font-size: calc(1.1rem * var(--lecture-block-font-scale, 1));
+}
+
+.lecture-slide .lecture-demo-frame-body {
+  font-size: calc(1.25rem * var(--lecture-block-font-scale, 1));
+}
+
+.lecture-slide .lecture-demo-frame-body .text-xs {
+  font-size: 0.9375rem;
+}
+
+.lecture-slide .lecture-demo-frame-body .text-sm {
+  font-size: 1.09375rem;
+}
+
+.lecture-slide .lecture-demo-frame-body .text-base {
+  font-size: 1.25rem;
+}
+
+.lecture-slide .lecture-demo-frame-body .text-lg {
+  font-size: 1.40625rem;
 }
 
 .lecture-block + .lecture-block {
@@ -602,15 +646,21 @@ code.quiz-prompt-code {
 }
 
 .lecture-block-size-sm {
+  width: 100%;
   max-width: 36rem;
+  box-sizing: border-box;
 }
 
 .lecture-block-size-md {
+  width: 100%;
   max-width: 56rem;
+  box-sizing: border-box;
 }
 
 .lecture-block-size-lg {
+  width: 100%;
   max-width: 100%;
+  box-sizing: border-box;
 }
 
 /*
