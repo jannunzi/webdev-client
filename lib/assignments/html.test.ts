@@ -4,6 +4,7 @@ import {
   extractAssignmentIds,
   extractCourseIds,
   htmlHasAllIds,
+  htmlHasAllSnippets,
   htmlHasAnyId,
   htmlHasHeadingLevels,
   htmlHasId,
@@ -36,6 +37,18 @@ describe("html id and heading helpers", () => {
     });
     assert.equal(htmlHasAnyId(html, ["wd-p-2", "wd-p-1"]), true);
     assert.equal(htmlHasAnyId(html, ["wd-p-2", "wd-p-3"]), false);
+  });
+
+  it("requires all text snippets", () => {
+    const html = "<table><tr><td>Q4</td></tr><tr><td>Q10</td></tr></table>";
+    assert.deepEqual(htmlHasAllSnippets(html, ["Q4", "Q10"]), {
+      ok: true,
+      missing: [],
+    });
+    assert.deepEqual(htmlHasAllSnippets(html, ["Q4", "Q11"]), {
+      ok: false,
+      missing: ["Q11"],
+    });
   });
 
   it("detects heading levels", () => {

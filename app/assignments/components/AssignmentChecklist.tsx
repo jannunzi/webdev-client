@@ -330,6 +330,11 @@ export default function AssignmentChecklist({
                               On your own
                             </span>
                           ) : null}
+                          {row.withAI ? (
+                            <span className="ml-2 font-sans text-xs font-medium uppercase tracking-wide text-violet-800">
+                              With AI
+                            </span>
+                          ) : null}
                           {auto ? (
                             <AutoBadge result={auto} />
                           ) : assignment.id === "a1" &&

@@ -46,6 +46,9 @@ const LABS_HTML = `
   <div id="wd-labs">
     <h2>Jane Doe</h2>
     <a id="wd-lab1-link" href="/labs/lab1">Lab 1</a>
+    <a id="wd-lab4-link" href="/labs/lab4">Lab 4</a>
+    <a href="/labs/lab5">Lab 5</a>
+    <a id="wd-toc-book-link" href="/book/ch1">Chapter 1</a>
     <a id="wd-github" href="https://github.com/jane-doe/webdev-client">GitHub</a>
   </div>
 `;
@@ -126,6 +129,12 @@ function htmlForPath(url: string): string {
         <a id="wd-your-link" href="#"></a><a id="wd-your-github" href="#"></a>
         <a id="wd-home-link" href="/labs"></a>
         <a id="wd-lab4-link" href="/labs/lab4"></a>
+        <div id="wd-ai-headings"></div>
+        <p id="wd-ai-p"></p>
+        <ul id="wd-ai-html-tags"></ul>
+        <table><tr><td>Q4</td></tr><tr><td>Q10</td></tr></table>
+        <img id="wd-ai-image" />
+        <a id="wd-ai-link" href="https://developer.mozilla.org">MDN</a>
       </div>
     `;
   }
@@ -181,8 +190,12 @@ describe("runA1Checks", () => {
     assert.ok(calls.includes("https://jane-a1.vercel.app/labs/lab1"));
     const byCriterion = latestResultByCriterion(results);
     assert.equal(byCriterion.get("a1-lab-heading-tags")?.passed, true);
+    assert.equal(byCriterion.get("a1-lab-heading-tags-ai")?.passed, true);
+    assert.equal(byCriterion.get("a1-lab-tables-ai")?.passed, true);
+    assert.equal(byCriterion.get("a1-lab-toc-ai")?.passed, true);
     assert.equal(byCriterion.get("a1-kambaz-account")?.passed, true);
     assert.equal(byCriterion.get("a1-lab-highlighted-paragraph-oyo")?.skipped, true);
+    assert.equal(byCriterion.get("a1-lab-forms-ai")?.skipped, true);
   });
 
   it("runs HTML checks from a Vercel URL alone and skips GitHub format", async () => {

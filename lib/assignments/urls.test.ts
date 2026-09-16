@@ -171,6 +171,14 @@ describe("criterion verify URLs", () => {
       "https://jane-a1.vercel.app/labs/lab1",
     );
     assert.equal(
+      criterionVerifyUrl(origin, "a1-lab-heading-tags-ai"),
+      "https://jane-a1.vercel.app/labs/lab1",
+    );
+    assert.equal(
+      criterionVerifyUrl(origin, "a1-lab-toc-ai"),
+      "https://jane-a1.vercel.app/labs",
+    );
+    assert.equal(
       criterionVerifyUrl(origin, "a1-kambaz-home"),
       "https://jane-a1.vercel.app/courses/1234/home",
     );

@@ -1,4 +1,8 @@
 import {
+  A1_LAB_EXERCISES,
+  A1_LAB_SPECIAL_AUTO_IDS,
+} from "./a1-lab-exercises";
+import {
   A1_RUBRIC_AUTO_SPECS,
   evaluateRubricSpec,
 } from "./a1-rubric";
@@ -142,7 +146,7 @@ export async function runA1Checks(input: {
       labsNav
         ? ASSIGNMENT_STUDENT_COPY.labsOk
         : ASSIGNMENT_STUDENT_COPY.labsMissing,
-      { criterionId: "a1-delivery-labs-nav", groupId: "delivery" },
+      { criterionId: "a1-delivery-labs-nav", groupId: "lab" },
     ),
   );
 
@@ -186,30 +190,27 @@ export async function runA1Checks(input: {
     );
   }
 
-  results.push(
-    check(
-      "a1-lab-highlighted-paragraph-oyo",
-      "HighlightedParagraph — On your own",
-      false,
-      "This On your own row stays manual — there is no required extra id to look for.",
-      {
-        criterionId: "a1-lab-highlighted-paragraph-oyo",
-        groupId: "lab",
-        skipped: true,
-      },
-    ),
-    check(
-      "a1-lab-highlighted-box-oyo",
-      "HighlightedBox — On your own",
-      false,
-      "This On your own row stays manual — there is no required extra id to look for.",
-      {
-        criterionId: "a1-lab-highlighted-box-oyo",
-        groupId: "lab",
-        skipped: true,
-      },
-    ),
-  );
+  for (const exercise of A1_LAB_EXERCISES) {
+    if (exercise.auto) continue;
+    if ((A1_LAB_SPECIAL_AUTO_IDS as readonly string[]).includes(exercise.id)) {
+      continue;
+    }
+    const kindLabel =
+      exercise.kind === "ai" ? "With AI" : "On your own";
+    results.push(
+      check(
+        exercise.id,
+        exercise.label,
+        false,
+        `This ${kindLabel} row stays manual — there is no required extra id to look for.`,
+        {
+          criterionId: exercise.id,
+          groupId: "lab",
+          skipped: true,
+        },
+      ),
+    );
+  }
 
   return results;
 }

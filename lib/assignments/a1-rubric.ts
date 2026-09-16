@@ -4,210 +4,26 @@
  * Auto (ids / headings / delivery probes):
  *   a1-delivery-vercel, a1-delivery-name-section, a1-delivery-github,
  *   a1-delivery-labs-nav, plus every criterion in A1_RUBRIC_AUTO_SPECS.
- * Manual (no extra required id):
- *   a1-lab-highlighted-paragraph-oyo, a1-lab-highlighted-box-oyo
+ * Manual (no extra required id): lab With AI / On your own rows without a
+ *   stable extra id — see a1LabManualIds().
  */
-import type { RubricGroupId } from "./types";
+import {
+  A1_LAB_SPECIAL_AUTO_IDS,
+  a1LabAutoSpecs,
+  a1LabManualIds,
+} from "./a1-lab-exercises";
+import type { A1RubricAutoSpec } from "./a1-rubric-types";
 import {
   htmlHasAllIds,
+  htmlHasAllSnippets,
   htmlHasAnyId,
   htmlHasHeadingLevels,
   htmlHasId,
 } from "./html";
 
-export type RubricAutoKind = "ids" | "headings" | "manual";
+export type { A1RubricAutoSpec, RubricAutoKind } from "./a1-rubric-types";
 
-export type A1RubricAutoSpec = {
-  criterionId: string;
-  groupId: RubricGroupId;
-  label: string;
-  kind: RubricAutoKind;
-  requireAllIds?: string[];
-  requireAnyIds?: string[];
-  headingLevels?: number[];
-  passMessage: string;
-  failMessage: string;
-};
-
-export const A1_MANUAL_CRITERION_IDS = [
-  "a1-lab-highlighted-paragraph-oyo",
-  "a1-lab-highlighted-box-oyo",
-] as const;
-
-export const A1_RUBRIC_AUTO_SPECS: A1RubricAutoSpec[] = [
-  {
-    criterionId: "a1-lab-heading-tags",
-    groupId: "lab",
-    label: "HeadingTags",
-    kind: "headings",
-    requireAllIds: ["wd-h-tag"],
-    headingLevels: [1, 2, 3, 4, 5, 6],
-    passMessage: "Found wd-h-tag and heading tags h1–h6.",
-    failMessage: "Lab 1 should include wd-h-tag and sample h1–h6 tags.",
-  },
-  {
-    criterionId: "a1-lab-heading-tags-oyo",
-    groupId: "lab",
-    label: "HeadingTags — On your own",
-    kind: "ids",
-    requireAllIds: ["wd-your-heading", "wd-your-span"],
-    passMessage: "Found wd-your-heading and wd-your-span.",
-    failMessage: "Add a personal heading with ids wd-your-heading and wd-your-span.",
-  },
-  {
-    criterionId: "a1-lab-paragraph",
-    groupId: "lab",
-    label: "ParagraphTag",
-    kind: "ids",
-    requireAllIds: ["wd-p-tag"],
-    requireAnyIds: ["wd-p-1", "wd-p-2"],
-    passMessage: "Found paragraph sample ids on Lab 1.",
-    failMessage: "Lab 1 should include wd-p-tag and sample paragraph ids.",
-  },
-  {
-    criterionId: "a1-lab-paragraph-oyo",
-    groupId: "lab",
-    label: "ParagraphTag — On your own",
-    kind: "ids",
-    requireAllIds: ["wd-p-your-1", "wd-p-your-2"],
-    passMessage: "Found wd-p-your-1 and wd-p-your-2.",
-    failMessage: "Add personal paragraphs with ids wd-p-your-1 and wd-p-your-2.",
-  },
-  {
-    criterionId: "a1-lab-lists",
-    groupId: "lab",
-    label: "ListTags",
-    kind: "ids",
-    requireAllIds: ["wd-lists", "wd-pancakes"],
-    passMessage: "Found wd-lists and the pancake sample list.",
-    failMessage: "Lab 1 should include wd-lists and wd-pancakes.",
-  },
-  {
-    criterionId: "a1-lab-lists-oyo",
-    groupId: "lab",
-    label: "ListTags — On your own",
-    kind: "ids",
-    requireAllIds: ["wd-your-favorite-recipe", "wd-your-books"],
-    passMessage: "Found wd-your-favorite-recipe and wd-your-books.",
-    failMessage:
-      "Add personal lists with ids wd-your-favorite-recipe and wd-your-books.",
-  },
-  {
-    criterionId: "a1-lab-tables",
-    groupId: "lab",
-    label: "Tables",
-    kind: "ids",
-    requireAllIds: ["wd-tables"],
-    passMessage: "Found wd-tables.",
-    failMessage: "Lab 1 should include a table with id wd-tables.",
-  },
-  {
-    criterionId: "a1-lab-tables-oyo",
-    groupId: "lab",
-    label: "Tables — On your own",
-    kind: "ids",
-    requireAllIds: ["wd-your-table"],
-    passMessage: "Found wd-your-table.",
-    failMessage: "Add a personal table with id wd-your-table.",
-  },
-  {
-    criterionId: "a1-lab-images",
-    groupId: "lab",
-    label: "Images",
-    kind: "ids",
-    requireAllIds: ["wd-images"],
-    requireAnyIds: ["wd-starship", "wd-teslabot"],
-    passMessage: "Found wd-images and a sample image id.",
-    failMessage: "Lab 1 should include wd-images plus wd-starship or wd-teslabot.",
-  },
-  {
-    criterionId: "a1-lab-images-oyo",
-    groupId: "lab",
-    label: "Images — On your own",
-    kind: "ids",
-    requireAllIds: ["wd-your-image"],
-    passMessage: "Found wd-your-image.",
-    failMessage: "Add a personal image with id wd-your-image.",
-  },
-  {
-    criterionId: "a1-lab-forms",
-    groupId: "lab",
-    label: "Forms",
-    kind: "ids",
-    requireAllIds: ["wd-forms"],
-    requireAnyIds: [
-      "wd-text-fields-username",
-      "wd-textarea",
-      "wd-radio-comedy",
-      "wd-select-one-genre",
-    ],
-    passMessage: "Found wd-forms and sample form field ids.",
-    failMessage:
-      "Lab 1 should include wd-forms and the sample text, textarea, radio, or select ids.",
-  },
-  {
-    criterionId: "a1-lab-forms-oyo",
-    groupId: "lab",
-    label: "Forms — On your own",
-    kind: "ids",
-    requireAllIds: ["wd-your-form"],
-    passMessage: "Found wd-your-form.",
-    failMessage: "Add a Student Profile form with id wd-your-form.",
-  },
-  {
-    criterionId: "a1-lab-highlighted-paragraph",
-    groupId: "lab",
-    label: "HighlightedParagraph",
-    kind: "ids",
-    requireAllIds: ["wd-highlighted-paragraph"],
-    passMessage: "Found wd-highlighted-paragraph.",
-    failMessage: "Lab 1 should include wd-highlighted-paragraph.",
-  },
-  {
-    criterionId: "a1-lab-highlighted-box",
-    groupId: "lab",
-    label: "HighlightedBox",
-    kind: "ids",
-    requireAllIds: ["wd-highlighted-box"],
-    passMessage: "Found wd-highlighted-box.",
-    failMessage: "Lab 1 should include wd-highlighted-box.",
-  },
-  {
-    criterionId: "a1-lab-anchor",
-    groupId: "lab",
-    label: "AnchorTag",
-    kind: "ids",
-    requireAnyIds: ["wd-lipsum", "wd-github"],
-    passMessage: "Found Lab 1 anchor ids (wd-lipsum or wd-github).",
-    failMessage: "Lab 1 should include wd-lipsum and/or wd-github anchors.",
-  },
-  {
-    criterionId: "a1-lab-anchor-oyo",
-    groupId: "lab",
-    label: "AnchorTag — On your own",
-    kind: "ids",
-    requireAllIds: ["wd-your-link", "wd-your-github"],
-    passMessage: "Found wd-your-link and wd-your-github.",
-    failMessage: "Add personal anchors wd-your-link and wd-your-github.",
-  },
-  {
-    criterionId: "a1-lab-toc",
-    groupId: "lab",
-    label: "Labs TOC and layout",
-    kind: "ids",
-    requireAnyIds: ["wd-home-link", "wd-lab1-link", "wd-lab2-link"],
-    passMessage: "Found Labs TOC / navigation ids.",
-    failMessage: "Labs TOC should include wd-home-link or wd-lab1-link.",
-  },
-  {
-    criterionId: "a1-lab-toc-oyo",
-    groupId: "lab",
-    label: "Labs TOC — On your own",
-    kind: "ids",
-    requireAnyIds: ["wd-lab4-link"],
-    passMessage: "Found a Lab 4 link (wd-lab4-link).",
-    failMessage: "Link Lab 4 from Labs (id wd-lab4-link).",
-  },
+const A1_KAMBAZ_AUTO_SPECS: A1RubricAutoSpec[] = [
   {
     criterionId: "a1-kambaz-account",
     groupId: "kambaz",
@@ -290,6 +106,13 @@ export const A1_RUBRIC_AUTO_SPECS: A1RubricAutoSpec[] = [
   },
 ];
 
+export const A1_MANUAL_CRITERION_IDS = a1LabManualIds();
+
+export const A1_RUBRIC_AUTO_SPECS: A1RubricAutoSpec[] = [
+  ...a1LabAutoSpecs(),
+  ...A1_KAMBAZ_AUTO_SPECS,
+];
+
 export function evaluateRubricSpec(
   spec: A1RubricAutoSpec,
   html: string,
@@ -312,13 +135,19 @@ export function evaluateRubricSpec(
       missing.push(`h${headings.missing.join("/h")}`);
     }
   }
+  if (spec.requireHtmlIncludes?.length) {
+    const snippets = htmlHasAllSnippets(html, spec.requireHtmlIncludes);
+    missing.push(...snippets.missing);
+  }
 
   if (missing.length === 0 && spec.requireAllIds?.length) {
     return { passed: true, message: spec.passMessage };
   }
   if (
     missing.length === 0 &&
-    (spec.requireAnyIds?.length || spec.headingLevels?.length)
+    (spec.requireAnyIds?.length ||
+      spec.headingLevels?.length ||
+      spec.requireHtmlIncludes?.length)
   ) {
     return { passed: true, message: spec.passMessage };
   }
@@ -332,14 +161,14 @@ export function evaluateRubricSpec(
 }
 
 export function isManualA1Criterion(criterionId: string): boolean {
-  return (A1_MANUAL_CRITERION_IDS as readonly string[]).includes(criterionId);
+  return A1_MANUAL_CRITERION_IDS.includes(criterionId);
 }
 
 const DELIVERY_AUTO_IDS = [
   "a1-delivery-vercel",
   "a1-delivery-name-section",
   "a1-delivery-github",
-  "a1-delivery-labs-nav",
+  ...A1_LAB_SPECIAL_AUTO_IDS,
 ] as const;
 
 export function a1CriterionCoverage(
