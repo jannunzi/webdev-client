@@ -9,7 +9,7 @@ import {
   useTransition,
 } from "react";
 import Link from "next/link";
-import type { AssignmentHubItem } from "@/lib/assignments/types";
+import type { AssignmentHubItem, RubricCriterion } from "@/lib/assignments/types";
 import {
   applyCriterionToggle,
   completedIdsAfterAutoCheckRun,
@@ -75,6 +75,32 @@ function rowTone(result?: AssignmentCheckResult): string {
   return result.passed
     ? "border-emerald-300 bg-emerald-50"
     : "border-amber-300 bg-amber-50";
+}
+
+type CriterionCluster = {
+  nestUnder?: string;
+  items: RubricCriterion[];
+};
+
+function clusterCriteriaByNestUnder(
+  criteria: readonly RubricCriterion[],
+): CriterionCluster[] {
+  const clusters: CriterionCluster[] = [];
+  for (const row of criteria) {
+    const last = clusters.at(-1);
+    if (row.nestUnder && last?.nestUnder === row.nestUnder) {
+      last.items.push(row);
+      continue;
+    }
+    clusters.push({ nestUnder: row.nestUnder, items: [row] });
+  }
+  return clusters;
+}
+
+function nestedTaskLabel(row: RubricCriterion): string {
+  if (row.withAI) return "With AI";
+  if (row.onYourOwn) return "On your own";
+  return "Lab component";
 }
 
 export default function AssignmentChecklist({
@@ -297,144 +323,170 @@ export default function AssignmentChecklist({
             </p>
             {group.intro ? <p className="mt-0 text-neutral-800">{group.intro}</p> : null}
             <ul className="m-0 list-none space-y-3 p-0">
-              {group.criteria.map((row) => {
-                const checked = completedIds.includes(row.id);
-                const inputId = `criterion-${row.id}`;
-                const auto = autoByCriterion.get(row.id);
-                const verifyHref = criterionVerifyUrl(vercelUrl, row.id);
-                const override = staffOverrides[row.id];
-                return (
-                  <li
-                    key={row.id}
-                    className={`rounded-md border px-3 py-3 ${rowTone(auto)}`}
-                  >
-                    <div className="flex items-start gap-3">
-                      <input
-                        id={inputId}
-                        type="checkbox"
-                        className="mt-1 size-4 accent-emerald-700"
-                        checked={checked}
-                        disabled={!persistProgress || pendingId === row.id}
-                        onChange={(event) =>
-                          onToggle(row.id, event.target.checked)
-                        }
-                      />
-                      <div className="min-w-0 flex-1">
-                        <label
-                          htmlFor={inputId}
-                          className="font-sans text-base font-semibold"
-                        >
-                          {row.label}
-                          {row.onYourOwn ? (
-                            <span className="ml-2 font-sans text-xs font-medium uppercase tracking-wide text-amber-800">
-                              On your own
-                            </span>
-                          ) : null}
-                          {row.withAI ? (
-                            <span className="ml-2 font-sans text-xs font-medium uppercase tracking-wide text-violet-800">
-                              With AI
-                            </span>
-                          ) : null}
-                          {auto ? (
-                            <AutoBadge result={auto} />
-                          ) : assignment.id === "a1" &&
-                            isManualA1Criterion(row.id) ? (
-                            <AutoBadge
-                              result={{
-                                id: row.id,
-                                label: row.label,
-                                passed: false,
-                                message: "",
-                                skipped: true,
-                              }}
-                            />
-                          ) : null}
-                        </label>
-                        <p className="mb-1 mt-1 text-sm text-neutral-800">
-                          {row.description}
-                        </p>
-                        {auto && !auto.skipped && auto.message ? (
-                          <p className="mb-1 font-sans text-sm text-neutral-800">
-                            {auto.message}
+              {clusterCriteriaByNestUnder(group.criteria).map((cluster) => {
+                const nested =
+                  Boolean(cluster.nestUnder) && cluster.items.length > 1;
+                const rows = cluster.items.map((row) => {
+                  const checked = completedIds.includes(row.id);
+                  const inputId = `criterion-${row.id}`;
+                  const auto = autoByCriterion.get(row.id);
+                  const verifyHref = criterionVerifyUrl(vercelUrl, row.id);
+                  const override = staffOverrides[row.id];
+                  const title = nested ? nestedTaskLabel(row) : row.label;
+                  return (
+                    <li
+                      key={row.id}
+                      className={`rounded-md border px-3 py-3 ${rowTone(auto)}`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <input
+                          id={inputId}
+                          type="checkbox"
+                          className="mt-1 size-4 accent-emerald-700"
+                          checked={checked}
+                          disabled={!persistProgress || pendingId === row.id}
+                          onChange={(event) =>
+                            onToggle(row.id, event.target.checked)
+                          }
+                        />
+                        <div className="min-w-0 flex-1">
+                          <label
+                            htmlFor={inputId}
+                            className="font-sans text-base font-semibold"
+                          >
+                            {title}
+                            {!nested && row.onYourOwn ? (
+                              <span className="ml-2 font-sans text-xs font-medium uppercase tracking-wide text-amber-800">
+                                On your own
+                              </span>
+                            ) : null}
+                            {!nested && row.withAI ? (
+                              <span className="ml-2 font-sans text-xs font-medium uppercase tracking-wide text-violet-800">
+                                With AI
+                              </span>
+                            ) : null}
+                            {auto ? (
+                              <AutoBadge result={auto} />
+                            ) : assignment.id === "a1" &&
+                              isManualA1Criterion(row.id) ? (
+                              <AutoBadge
+                                result={{
+                                  id: row.id,
+                                  label: row.label,
+                                  passed: false,
+                                  message: "",
+                                  skipped: true,
+                                }}
+                              />
+                            ) : null}
+                          </label>
+                          <p className="mb-1 mt-1 text-sm text-neutral-800">
+                            {row.description}
                           </p>
-                        ) : null}
-                        <p className="mb-0 font-sans text-sm text-neutral-600">
-                          <span className="font-medium text-neutral-900">
-                            {row.points} pts
-                          </span>
-                          {row.bookHref ? (
-                            <>
-                              {" · "}
-                              <Link href={row.bookHref}>
-                                {row.bookLabel ?? "Book section"}
-                              </Link>
-                            </>
+                          {auto && !auto.skipped && auto.message ? (
+                            <p className="mb-1 font-sans text-sm text-neutral-800">
+                              {auto.message}
+                            </p>
                           ) : null}
-                          {verifyHref ? (
-                            <>
-                              {" · "}
-                              <a
-                                href={verifyHref}
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                Open on deploy
-                              </a>
-                            </>
-                          ) : null}
-                        </p>
-                        {staffMode ? (
-                          <div className="mt-3 space-y-2 font-sans">
-                            <div className="flex flex-wrap gap-2 text-sm">
-                              <span className="font-semibold">Staff mark:</span>
-                              <label className="inline-flex items-center gap-1">
-                                <input
-                                  type="radio"
-                                  name={`override-${row.id}`}
-                                  checked={override === undefined}
-                                  onChange={() => onStaffOverride?.(row.id, null)}
+                          <p className="mb-0 font-sans text-sm text-neutral-600">
+                            <span className="font-medium text-neutral-900">
+                              {row.points} pts
+                            </span>
+                            {row.bookHref ? (
+                              <>
+                                {" · "}
+                                <Link href={row.bookHref}>
+                                  {row.bookLabel ?? "Book section"}
+                                </Link>
+                              </>
+                            ) : null}
+                            {verifyHref ? (
+                              <>
+                                {" · "}
+                                <a
+                                  href={verifyHref}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  Open on deploy
+                                </a>
+                              </>
+                            ) : null}
+                          </p>
+                          {staffMode ? (
+                            <div className="mt-3 space-y-2 font-sans">
+                              <div className="flex flex-wrap gap-2 text-sm">
+                                <span className="font-semibold">Staff mark:</span>
+                                <label className="inline-flex items-center gap-1">
+                                  <input
+                                    type="radio"
+                                    name={`override-${row.id}`}
+                                    checked={override === undefined}
+                                    onChange={() =>
+                                      onStaffOverride?.(row.id, null)
+                                    }
+                                  />
+                                  Auto
+                                </label>
+                                <label className="inline-flex items-center gap-1">
+                                  <input
+                                    type="radio"
+                                    name={`override-${row.id}`}
+                                    checked={override === true}
+                                    onChange={() =>
+                                      onStaffOverride?.(row.id, true)
+                                    }
+                                  />
+                                  Pass
+                                </label>
+                                <label className="inline-flex items-center gap-1">
+                                  <input
+                                    type="radio"
+                                    name={`override-${row.id}`}
+                                    checked={override === false}
+                                    onChange={() =>
+                                      onStaffOverride?.(row.id, false)
+                                    }
+                                  />
+                                  Fail
+                                </label>
+                              </div>
+                              <label className="block text-sm">
+                                Feedback
+                                <textarea
+                                  className="mt-1 w-full rounded border border-neutral-400 bg-white px-3 py-2 text-sm"
+                                  rows={2}
+                                  value={staffComments[row.id] ?? ""}
+                                  onChange={(event) =>
+                                    onStaffComment?.(row.id, event.target.value)
+                                  }
                                 />
-                                Auto
-                              </label>
-                              <label className="inline-flex items-center gap-1">
-                                <input
-                                  type="radio"
-                                  name={`override-${row.id}`}
-                                  checked={override === true}
-                                  onChange={() => onStaffOverride?.(row.id, true)}
-                                />
-                                Pass
-                              </label>
-                              <label className="inline-flex items-center gap-1">
-                                <input
-                                  type="radio"
-                                  name={`override-${row.id}`}
-                                  checked={override === false}
-                                  onChange={() => onStaffOverride?.(row.id, false)}
-                                />
-                                Fail
                               </label>
                             </div>
-                            <label className="block text-sm">
-                              Feedback
-                              <textarea
-                                className="mt-1 w-full rounded border border-neutral-400 bg-white px-3 py-2 text-sm"
-                                rows={2}
-                                value={staffComments[row.id] ?? ""}
-                                onChange={(event) =>
-                                  onStaffComment?.(row.id, event.target.value)
-                                }
-                              />
-                            </label>
-                          </div>
-                        ) : staffComments[row.id] ? (
-                          <p className="mb-0 mt-2 rounded border border-neutral-200 bg-white px-3 py-2 font-sans text-sm text-neutral-800">
-                            <span className="font-semibold">Staff feedback: </span>
-                            {staffComments[row.id]}
-                          </p>
-                        ) : null}
+                          ) : staffComments[row.id] ? (
+                            <p className="mb-0 mt-2 rounded border border-neutral-200 bg-white px-3 py-2 font-sans text-sm text-neutral-800">
+                              <span className="font-semibold">
+                                Staff feedback:{" "}
+                              </span>
+                              {staffComments[row.id]}
+                            </p>
+                          ) : null}
+                        </div>
                       </div>
-                    </div>
+                    </li>
+                  );
+                });
+                if (!nested) {
+                  return rows;
+                }
+                return (
+                  <li key={cluster.nestUnder} className="list-none">
+                    <h3 className="mt-0 mb-2 font-sans text-base font-semibold tracking-tight">
+                      {cluster.nestUnder}
+                    </h3>
+                    <ol type="a" className="mb-0 mt-0 space-y-3 pl-6">
+                      {rows}
+                    </ol>
                   </li>
                 );
               })}

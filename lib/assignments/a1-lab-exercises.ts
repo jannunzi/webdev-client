@@ -3,7 +3,8 @@
  *
  * Order is chronological: the sequence students meet while reading
  * Chapter 1.3 (create the component, On your own, With AI, next section).
- * A1's Lab checklist and the §1.3.12 recap both render this list.
+ * A1's Lab checklist and the §1.3.12 recap both render this list as one
+ * parent item per section with nested a/b/c tasks.
  */
 import type { RubricCriterion } from "./types";
 import type { A1RubricAutoSpec } from "./a1-rubric-types";
@@ -31,6 +32,40 @@ export type A1LabExercise = {
   /** Present when auto-check can look at Lab HTML. Omitted = manual. */
   auto?: A1LabExerciseAuto;
 };
+
+/** One Lab section (1.3.1–1.3.11) with its create / On your own / With AI tasks. */
+export type A1LabExerciseGroup = {
+  section: string;
+  label: string;
+  tasks: readonly A1LabExercise[];
+};
+
+export function labExerciseKindLabel(kind: LabExerciseKind): string {
+  if (kind === "core") return "Lab component";
+  if (kind === "oyo") return "On your own";
+  return "With AI";
+}
+
+export function groupA1LabExercises(
+  exercises: readonly A1LabExercise[],
+): A1LabExerciseGroup[] {
+  const order: string[] = [];
+  const tasksBySection = new Map<string, A1LabExercise[]>();
+  for (const exercise of exercises) {
+    const existing = tasksBySection.get(exercise.section);
+    if (!existing) {
+      order.push(exercise.section);
+      tasksBySection.set(exercise.section, [exercise]);
+    } else {
+      existing.push(exercise);
+    }
+  }
+  return order.map((section) => {
+    const tasks = tasksBySection.get(section)!;
+    const core = tasks.find((task) => task.kind === "core") ?? tasks[0];
+    return { section, label: core.label, tasks };
+  });
+}
 
 export const A1_LAB_EXERCISES: readonly A1LabExercise[] = [
   {
@@ -527,6 +562,15 @@ export const A1_LAB_EXERCISES: readonly A1LabExercise[] = [
   },
 ];
 
+export const A1_LAB_EXERCISE_GROUPS: readonly A1LabExerciseGroup[] =
+  groupA1LabExercises(A1_LAB_EXERCISES);
+
+const LAB_NEST_UNDER_BY_ID: Readonly<Record<string, string>> = Object.fromEntries(
+  A1_LAB_EXERCISE_GROUPS.flatMap((group) =>
+    group.tasks.map((task) => [task.id, group.label]),
+  ),
+);
+
 export function bookHrefForSection(section: string): string {
   return `/book/ch1#sec-${section.split(".").join("-")}`;
 }
@@ -545,6 +589,7 @@ export function labExerciseToCriterion(exercise: A1LabExercise): RubricCriterion
     bookLabel: bookLabelForSection(exercise.section),
     onYourOwn: exercise.kind === "oyo" || undefined,
     withAI: exercise.kind === "ai" || undefined,
+    nestUnder: LAB_NEST_UNDER_BY_ID[exercise.id],
   };
 }
 

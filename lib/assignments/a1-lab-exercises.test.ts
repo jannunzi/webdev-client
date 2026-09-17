@@ -2,9 +2,11 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { A1_RUBRIC } from "./a1";
 import {
+  A1_LAB_EXERCISE_GROUPS,
   A1_LAB_EXERCISES,
   a1LabCriteria,
   a1LabManualIds,
+  labExerciseKindLabel,
 } from "./a1-lab-exercises";
 import { A1_MANUAL_CRITERION_IDS, evaluateRubricSpec } from "./a1-rubric";
 
@@ -34,6 +36,70 @@ describe("A1 Lab catalog / §1.3.12 parity", () => {
         `${section} should be create, On your own, With AI`,
       );
     }
+  });
+
+  it("nests 1.3.1–1.3.11 as one parent with a/b/c tasks, not three sibling titles", () => {
+    assert.equal(A1_LAB_EXERCISE_GROUPS.length, 11);
+    assert.deepEqual(
+      A1_LAB_EXERCISE_GROUPS.map((group) => group.section),
+      [
+        "1.3.1",
+        "1.3.2",
+        "1.3.3",
+        "1.3.4",
+        "1.3.5",
+        "1.3.6",
+        "1.3.7",
+        "1.3.8",
+        "1.3.9",
+        "1.3.10",
+        "1.3.11",
+      ],
+    );
+    assert.deepEqual(
+      A1_LAB_EXERCISE_GROUPS.map((group) => group.label),
+      [
+        "HeadingTags",
+        "ParagraphTag",
+        "ListTags",
+        "Tables",
+        "Images",
+        "Forms",
+        "HighlightedParagraph",
+        "HighlightedBox",
+        "AnchorTag",
+        "Labs navigation",
+        "Labs TOC and layout",
+      ],
+    );
+    assert.equal(
+      new Set(A1_LAB_EXERCISE_GROUPS.map((group) => group.label)).size,
+      11,
+    );
+    assert.deepEqual(
+      A1_LAB_EXERCISE_GROUPS.flatMap((group) => group.tasks),
+      [...A1_LAB_EXERCISES],
+    );
+    for (const group of A1_LAB_EXERCISE_GROUPS) {
+      assert.deepEqual(
+        group.tasks.map((task) => task.kind),
+        ["core", "oyo", "ai"],
+        `${group.section} should nest Lab component, On your own, With AI`,
+      );
+      assert.deepEqual(
+        group.tasks.map((task) => labExerciseKindLabel(task.kind)),
+        ["Lab component", "On your own", "With AI"],
+      );
+    }
+    const labCriteria = a1LabCriteria();
+    assert.deepEqual(
+      labCriteria.map((row) => row.nestUnder),
+      A1_LAB_EXERCISES.map(
+        (row) =>
+          A1_LAB_EXERCISE_GROUPS.find((group) => group.section === row.section)
+            ?.label,
+      ),
+    );
   });
 
   it("keeps A1 Lab checklist labels and ids identical to the catalog, in order", () => {

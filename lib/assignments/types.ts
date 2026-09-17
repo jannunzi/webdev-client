@@ -12,6 +12,11 @@ export type RubricCriterion = {
   bookLabel?: string;
   onYourOwn?: boolean;
   withAI?: boolean;
+  /**
+   * Consecutive Lab rows that share this parent nest as a/b/c under one
+   * heading (e.g. HeadingTags) instead of repeating it as sibling bullets.
+   */
+  nestUnder?: string;
 };
 
 export type RubricGroup = {
