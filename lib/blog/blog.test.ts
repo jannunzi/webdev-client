@@ -43,15 +43,22 @@ const REQUIRED_DIGEST_2026_09_16 = [
   "https://vercel.com/blog/introducing-run",
 ] as const;
 
+const REQUIRED_DIGEST_2026_09_17 = [
+  "https://vercel.com/blog/fluid-compute-takes-any-shape",
+  "https://www.geekygoo.com/blog/claude-code-vs-github-copilot-vs-cursor/",
+  "https://www.aikido.dev/blog/shai-hulud-npm-resurfaces",
+] as const;
+
 const REQUIRED_SOURCES = [
   ...REQUIRED_SEED_SOURCES,
   ...REQUIRED_CATCHUP_SOURCES,
   ...REQUIRED_DIGEST_2026_09_15,
   ...REQUIRED_DIGEST_2026_09_16,
+  ...REQUIRED_DIGEST_2026_09_17,
 ] as const;
 
 const ALLOWED_SOURCE_URL =
-  /^https:\/\/(nextjs\.org\/blog\/|react\.dev\/blog\/|vercel\.com\/blog\/|www\.isyncevolution\.com\/blog\/|cursor\.com\/blog\/|expressjs\.com\/en\/blog\/|openai\.com\/index\/)/;
+  /^https:\/\/(nextjs\.org\/blog\/|react\.dev\/blog\/|vercel\.com\/blog\/|www\.isyncevolution\.com\/blog\/|cursor\.com\/blog\/|expressjs\.com\/en\/blog\/|openai\.com\/index\/|www\.geekygoo\.com\/blog\/|www\.aikido\.dev\/blog\/)/;
 
 const BLOG_APP = join(process.cwd(), "app/blog");
 const KAMBAZ_APP = join(process.cwd(), "app/(kambaz)");
@@ -88,6 +95,9 @@ describe("blog posts", () => {
     for (const required of REQUIRED_DIGEST_2026_09_16) {
       assert.ok(urls.includes(required), required);
     }
+    for (const required of REQUIRED_DIGEST_2026_09_17) {
+      assert.ok(urls.includes(required), required);
+    }
 
     for (const post of BLOG_POSTS) {
       assert.ok(post.slug.length > 0, "slug");
@@ -115,26 +125,30 @@ describe("blog posts", () => {
     assert.deepEqual(
       listed.slice(0, 3).map((post) => post.slug),
       [
-        "openai-agents-api",
-        "vercel-flat-rate-cdn",
-        "vercel-run-sdk",
+        "claude-code-vs-copilot-vs-cursor-2026",
+        "shai-hulud-npm-resurfaces-111-days",
+        "vercel-fluid-compute-any-shape",
       ],
     );
     assert.deepEqual(
       listed.slice(0, 3).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_16].sort(),
+      [...REQUIRED_DIGEST_2026_09_17].sort(),
     );
     assert.deepEqual(
       listed.slice(3, 6).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_15].sort(),
+      [...REQUIRED_DIGEST_2026_09_16].sort(),
     );
     assert.deepEqual(
       listed.slice(6, 9).map((post) => post.source.url).sort(),
+      [...REQUIRED_DIGEST_2026_09_15].sort(),
+    );
+    assert.deepEqual(
+      listed.slice(9, 12).map((post) => post.source.url).sort(),
       [...REQUIRED_CATCHUP_SOURCES].sort(),
     );
-    assert.equal(listed[9]?.slug, "august-2026-nextjs-security-release");
-    assert.equal(listed[10]?.slug, "nextjs-16-3-instant-navigations");
-    assert.equal(listed[11]?.slug, "nextjs-16-3-ai-improvements");
+    assert.equal(listed[12]?.slug, "august-2026-nextjs-security-release");
+    assert.equal(listed[13]?.slug, "nextjs-16-3-instant-navigations");
+    assert.equal(listed[14]?.slug, "nextjs-16-3-ai-improvements");
 
     assert.equal(listBlogSlugs().length, REQUIRED_SOURCES.length);
     assert.equal(
@@ -149,6 +163,7 @@ describe("blog posts", () => {
   });
 
   it("formats published dates in UTC and maps related chapters", () => {
+    assert.equal(formatBlogDate("2026-09-17T12:00:00.000Z"), "September 17, 2026");
     assert.equal(formatBlogDate("2026-09-16T12:00:00.000Z"), "September 16, 2026");
     assert.equal(formatBlogDate("2026-09-15T12:00:00.000Z"), "September 15, 2026");
     assert.equal(formatBlogDate("2026-09-14T16:00:00.000Z"), "September 14, 2026");
@@ -207,6 +222,19 @@ describe("blog posts", () => {
     const runSdk = getBlogPost("vercel-run-sdk");
     assert.match(runSdk?.intro.join(" ") ?? "", /QuickJS/);
     assert.match(runSdk?.intro.join(" ") ?? "", /hostFunctions/);
+
+    const fluid = getBlogPost("vercel-fluid-compute-any-shape");
+    assert.match(fluid?.intro.join(" ") ?? "", /Luke Phillips-Sheard/);
+    assert.match(fluid?.intro.join(" ") ?? "", /Active CPU/);
+    const codingTools = getBlogPost("claude-code-vs-copilot-vs-cursor-2026");
+    assert.match(codingTools?.intro.join(" ") ?? "", /Claude Code/);
+    assert.match(codingTools?.intro.join(" ") ?? "", /GitHub Copilot/);
+    const shaiHulud = getBlogPost("shai-hulud-npm-resurfaces-111-days");
+    assert.match(shaiHulud?.intro.join(" ") ?? "", /111 days/);
+    assert.match(
+      shaiHulud?.intro.join(" ") ?? "",
+      /e37e3ddeeaaa9e0c4fdbcb829b4895a6521031c80053fc436625b61e6ee5b1a6/,
+    );
   });
 
   it("dates the September 14 catch-up posts in America/New_York", () => {
@@ -224,6 +252,25 @@ describe("blog posts", () => {
       const post = getBlogPost(slug);
       assert.ok(post, slug);
       assert.equal(nyDate.format(new Date(post.publishedAt)), "September 14, 2026");
+    }
+  });
+
+  it("dates the September 17 digest posts in America/New_York", () => {
+    const nyDate = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "America/New_York",
+    });
+    for (const slug of [
+      "vercel-fluid-compute-any-shape",
+      "claude-code-vs-copilot-vs-cursor-2026",
+      "shai-hulud-npm-resurfaces-111-days",
+    ]) {
+      const post = getBlogPost(slug);
+      assert.ok(post, slug);
+      assert.equal(post.publishedAt, "2026-09-17T12:00:00.000Z");
+      assert.equal(nyDate.format(new Date(post.publishedAt)), "September 17, 2026");
     }
   });
 
