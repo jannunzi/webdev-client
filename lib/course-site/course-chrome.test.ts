@@ -62,6 +62,29 @@ describe("shared course chrome", () => {
     assert.match(read("app/course-info/CourseSiteHeader.tsx"), /CourseSiteNav/);
   });
 
+  it("keeps assignment hub nav and chapter link in the shared page-content column", () => {
+    const header = read("app/course-info/CourseSiteHeader.tsx");
+    const layout = read("app/assignments/layout.tsx");
+    const index = read("app/assignments/page.tsx");
+    const detail = read("app/assignments/[assignmentId]/page.tsx");
+    assert.match(header, /constrain/);
+    assert.match(header, /page-content/);
+    assert.match(layout, /<CourseSiteHeader constrain/);
+    assert.match(layout, /page-content/);
+    assert.match(index, /<article className="page-content">/);
+    assert.match(index, /<AssignmentHubNav current="index"/);
+    assert.match(detail, /<article className="page-content">/);
+    assert.match(detail, /<AssignmentHubNav current="detail"/);
+    assert.match(detail, /<AssignmentChapterLink assignment=\{assignment\}/);
+    const hubIndex = detail.indexOf("<AssignmentHubNav");
+    const chapterIndex = detail.indexOf("<AssignmentChapterLink");
+    const articleOpen = detail.indexOf("<article className=\"page-content\">");
+    const articleClose = detail.lastIndexOf("</article>");
+    assert.ok(articleOpen !== -1 && articleClose !== -1);
+    assert.ok(hubIndex > articleOpen && hubIndex < articleClose);
+    assert.ok(chapterIndex > articleOpen && chapterIndex < articleClose);
+  });
+
   it("keeps Sign in / Sign up on shared chrome and does not name Clerk", () => {
     const buttons = read("app/course-info/CourseAuthButtons.tsx");
     const fallback = read("app/course-info/CourseAuthFallback.tsx");

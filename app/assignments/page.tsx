@@ -14,7 +14,7 @@ export default function AssignmentsIndexPage() {
   const items = listAssignments();
 
   return (
-    <article>
+    <article className="page-content">
       <AssignmentHubNav current="index" />
       <h1 className="mt-0 font-sans text-3xl font-semibold tracking-tight">
         Assignments
