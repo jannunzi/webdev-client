@@ -297,7 +297,7 @@ export default async function AssignmentDetailPage({
     : null;
 
   return (
-    <article>
+    <article className="page-content">
       <AssignmentHubNav current="detail" />
       <p className="mb-2 font-sans text-xs font-semibold uppercase tracking-wide text-neutral-500">
         {assignment.canvasId}

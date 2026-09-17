@@ -16,10 +16,12 @@ export default function AssignmentsLayout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <div className="book-shell min-h-screen">
-      <CourseSiteHeader />
-      <main className="page-content min-w-0 px-4 py-8 sm:px-6">
-        {isClerkConfigured() ? <StaffViewModeBar /> : null}
-        {children}
+      <CourseSiteHeader constrain />
+      <main className="min-w-0 py-8">
+        <div className="page-content px-4 sm:px-6">
+          {isClerkConfigured() ? <StaffViewModeBar /> : null}
+          {children}
+        </div>
       </main>
     </div>
   );
