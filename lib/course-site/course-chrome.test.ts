@@ -21,8 +21,14 @@ describe("shared course chrome", () => {
     assert.ok(hrefs.includes("/assignments"));
     assert.ok(hrefs.includes("/quizzes/take"));
     assert.ok(hrefs.includes("/office-hours"));
-    assert.ok(hrefs.includes("/piazza-hours"));
     assert.ok(hrefs.includes("/slides"));
+    assert.ok(!hrefs.includes("/calendar"));
+    assert.ok(!hrefs.includes("/piazza-hours"));
+    assert.match(read("app/syllabus/components/SyllabusNav.tsx"), /href="\/calendar"/);
+    assert.match(
+      read("app/syllabus/components/SyllabusNav.tsx"),
+      /href="\/piazza-hours"/,
+    );
   });
 
   it("treats nested book and quiz-take paths as current", () => {

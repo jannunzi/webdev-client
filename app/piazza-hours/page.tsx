@@ -79,7 +79,7 @@ export default function PiazzaHoursPage() {
         </p>
       </CourseInfoSection>
 
-      <CourseInfoFooter current="/piazza-hours" />
+      <CourseInfoFooter />
     </article>
   );
 }
