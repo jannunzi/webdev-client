@@ -15,6 +15,8 @@ import PathParameters from "@/app/labs/lab3/PathParameters";
 import TodoList from "@/app/labs/lab3/todos/TodoList";
 import Link from "next/link";
 import { OnYourOwn, WithAI } from "../../components/Practice";
+import NestedExerciseList from "../../components/NestedExerciseList";
+import { CH3_LAB_EXERCISES } from "../../exercise-lists/catalogs";
 
 export default function StylingAndComponents() {
   return (
@@ -808,70 +810,12 @@ export default function TodoList() {
             Use this checklist to confirm Lab 3 covers every JavaScript
             topic in <SectionLink to="3.2" />–<SectionLink to="3.7" />.
             Import each component into <code>app/labs/lab3/page.tsx</code>{" "}
-            in order. Complete each section&apos;s{" "}
-            <strong>On your own</strong>{" "}and <strong>With AI</strong>{" "}
-            blocks as well. Give every mapped JSX sibling a{" "}
+            in order. Each topic is listed once, with Lab,{" "}
+            <strong>On your own</strong>, and <strong>With AI</strong>{" "}
+            nested as a/b/c. Give every mapped JSX sibling a{" "}
             <code>key</code>.
           </p>
-          <ol>
-            <li>
-              Create <code>VariablesAndConstants.tsx</code>,{" "}
-              <code>VariableTypes.tsx</code>,{" "}
-              <code>BooleanVariables.tsx</code>, <code>IfElse.tsx</code>,{" "}
-              <code>TernaryOperator.tsx</code>,{" "}
-              <code>ConditionalOutputIfElse.tsx</code>,{" "}
-              <code>ConditionalOutputInline.tsx</code>, and{" "}
-              <code>NullUndefined.tsx</code>{" "}(<SectionLink to="3.2" />).
-            </li>
-            <li>
-              Create <code>LegacyFunctions.tsx</code>,{" "}
-              <code>ArrowFunctions.tsx</code>,{" "}
-              <code>ImpliedReturn.tsx</code>, and{" "}
-              <code>TemplateLiterals.tsx</code>{" "}(<SectionLink to="3.3" />).
-            </li>
-            <li>
-              Create the array samples through{" "}
-              <code>ReduceFunction.tsx</code>{" "}(<SectionLink to="3.4.1" />–
-              <SectionLink to="3.4.9" />).
-            </li>
-            <li>
-              Create <code>JsonStringify.tsx</code>, <code>House.tsx</code>,{" "}
-              <code>Spreader.tsx</code>, <code>Destructing.tsx</code>,{" "}
-              <code>FunctionDestructing.tsx</code>, <code>Math.ts</code>,{" "}
-              <code>DestructingImports.tsx</code>, and{" "}
-              <code>OptionalChaining.tsx</code>{" "}(<SectionLink to="3.4.10" />–
-              <SectionLink to="3.4.17" />).
-            </li>
-            <li>
-              Create <code>Classes.css</code>, <code>Classes.tsx</code>, and{" "}
-              <code>Styles.tsx</code>{" "}(<SectionLink to="3.5" />).
-            </li>
-            <li>
-              Create <code>ClientComponentDemo.tsx</code>{" "}with{" "}
-              <code>&quot;use client&quot;</code>{" "}and{" "}
-              <code>ServerComponentDemo.tsx</code>{" "}without it (
-              <SectionLink to="3.6" />).
-            </li>
-            <li>
-              Create <code>Add.tsx</code>, <code>Square.tsx</code>, and{" "}
-              <code>Highlight.tsx</code>{" "}(<SectionLink to="3.7" />–
-              <SectionLink to="3.7.1" />).
-            </li>
-            <li>
-              Highlight the active lab in <code>app/labs/TOC.tsx</code>{" "}
-              with <code>usePathname</code>{" "}(<SectionLink to="3.7.2" />).
-            </li>
-            <li>
-              Create the <code>add/[a]/[b]</code>{" "}page and{" "}
-              <code>PathParameters.tsx</code>{" "}(<SectionLink to="3.7.3" />).
-            </li>
-            <li>
-              Create <code>todos/TodoItem.tsx</code>,{" "}
-              <code>todos/todos.json</code>, and{" "}
-              <code>todos/TodoList.tsx</code>{" "}that maps with{" "}
-              <code>key={"{todo.title}"}</code>{" "}(<SectionLink to="3.7.4" />).
-            </li>
-          </ol>
+          <NestedExerciseList groups={CH3_LAB_EXERCISES} />
         </Section>
       </Section>
     </>

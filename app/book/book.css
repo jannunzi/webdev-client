@@ -88,6 +88,13 @@
   }
 }
 
+.book-content ol.book-nested-exercises > li > ol {
+  list-style-type: lower-alpha;
+  margin-top: 0.4rem;
+  margin-bottom: 0.65rem;
+  padding-left: 1.4rem;
+}
+
 .book-shell a {
   color: #1d4ed8;
 }

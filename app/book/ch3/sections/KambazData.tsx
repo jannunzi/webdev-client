@@ -9,6 +9,8 @@ import LocalUrl from "../../components/LocalUrl";
 import Dashboard from "@/app/(kambaz)/dashboard/page";
 import Link from "next/link";
 import { OnYourOwn, WithAI } from "../../components/Practice";
+import NestedExerciseList from "../../components/NestedExerciseList";
+import { CH3_KAMBAZ_EXERCISES } from "../../exercise-lists/catalogs";
 
 export default function KambazData() {
   return (
@@ -970,47 +972,11 @@ export default async function PeopleTable({
           order as you read — this list is for checking coverage, not a
           substitute for the walkthroughs. Course Navigation, Assignments,
           and the Assignment Editor stay On your own: match the ids and
-          LiveDemos in those sections.
+          LiveDemos in those sections. Each screen is listed once, with
+          Lab, <strong>On your own</strong>, and <strong>With AI</strong>{" "}
+          nested as a/b/c.
         </p>
-        <ol>
-          <li>
-            Drive Kambaz Navigation from data (
-            <SectionLink to="3.9.1" />).
-          </li>
-          <li>
-            Add the JSON database under <code>app/(kambaz)/database/</code>{" "}
-            (<SectionLink to="3.9.2" />).
-          </li>
-          <li>
-            Render the Dashboard from courses JSON (
-            <SectionLink to="3.9.3" />).
-          </li>
-          <li>
-            Drive the Courses screen from the URL course id (
-            <SectionLink to="3.9.4" />).
-          </li>
-          <li>
-            Drive Course Navigation from data (
-            <SectionLink to="3.9.5" />).
-          </li>
-          <li>
-            Implement the breadcrumb (<SectionLink to="3.9.6" />).
-          </li>
-          <li>
-            Drive Modules from JSON (<SectionLink to="3.9.7" />).
-          </li>
-          <li>
-            Drive Assignments from JSON (<SectionLink to="3.9.8" />).
-          </li>
-          <li>
-            Drive the Assignment Editor from JSON (
-            <SectionLink to="3.9.8.1" />).
-          </li>
-          <li>
-            Drive the People table from users and enrollments (
-            <SectionLink to="3.9.9" />).
-          </li>
-        </ol>
+        <NestedExerciseList groups={CH3_KAMBAZ_EXERCISES} />
       </Section>
     </Section>
   );

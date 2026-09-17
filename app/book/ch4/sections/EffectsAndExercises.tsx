@@ -4,6 +4,8 @@ import CodeBlock from "../../components/CodeBlock";
 import LiveDemo from "../../components/LiveDemo";
 import OfficialLink from "../../components/OfficialLink";
 import { OnYourOwn, WithAI } from "../../components/Practice";
+import NestedExerciseList from "../../components/NestedExerciseList";
+import { CH4_LAB_EXERCISES } from "../../exercise-lists/catalogs";
 import Effect from "@/app/labs/lab4/Effect";
 
 export default function EffectsAndExercises() {
@@ -140,62 +142,12 @@ export default function Effect() {
           this list is for checking coverage, not a substitute for the
           walkthroughs. As you read each section, implement the component,
           import it from the Lab 4 page, and confirm the browser displays
-          as shown before you tick the matching item here.
+          as shown before you tick the matching item here. Each topic is
+          listed once, with Lab, <strong>On your own</strong>, and{" "}
+          <strong>With AI</strong>{" "}nested as a/b/c when that section
+          has those blocks.
         </p>
-        <ol>
-          <li>
-            Create the Lab 4 Client Component page and link it from Labs
-            and the Labs TOC (<SectionLink to="4.2" />).
-          </li>
-          <li>
-            Handle a click with <code>onClick</code>{" "}and{" "}
-            <code>&quot;use client&quot;</code> (
-            <SectionLink to="4.2.1" />).
-          </li>
-          <li>
-            Pass data into an event with an arrow wrapper (
-            <SectionLink to="4.2.2" />).
-          </li>
-          <li>
-            Pass a function from parent to child (
-            <SectionLink to="4.2.3" />).
-          </li>
-          <li>
-            Contrast a broken <code>let</code>{" "}counter with{" "}
-            <code>useState</code> (<SectionLink to="4.2.4" />).
-          </li>
-          <li>
-            Bind boolean, string, date, object, and array state (
-            <SectionLink to="4.2.5" />
-            –<SectionLink to="4.2.9" />).
-          </li>
-          <li>
-            Move shared state to a parent and show prop drilling (
-            <SectionLink to="4.3.1" />
-            –<SectionLink to="4.3.2" />).
-          </li>
-          <li>
-            Encode two numbers as query parameters and as path parameters (
-            <SectionLink to="4.3.3" />).
-          </li>
-          <li>
-            Share a counter with React Context (
-            <SectionLink to="4.4" />).
-          </li>
-          <li>
-            Rebuild the counter and a todo list with Zustand (
-            <SectionLink to="4.5" />).
-          </li>
-          <li>
-            Rebuild Hello, the counter, Add with a payload, and a
-            todo list with Redux Toolkit (
-            <SectionLink to="4.6" />).
-          </li>
-          <li>
-            Update the document title with <code>useEffect</code> (
-            <SectionLink to="4.7" />).
-          </li>
-        </ol>
+        <NestedExerciseList groups={CH4_LAB_EXERCISES} />
       </Section>
     </>
   );
