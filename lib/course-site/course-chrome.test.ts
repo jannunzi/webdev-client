@@ -62,6 +62,50 @@ describe("shared course chrome", () => {
     assert.match(read("app/course-info/CourseSiteHeader.tsx"), /CourseSiteNav/);
   });
 
+  it("constrains CourseSiteHeader to the shared page-content column by default", () => {
+    const header = read("app/course-info/CourseSiteHeader.tsx");
+    assert.match(header, /constrain = true/);
+    assert.match(header, /page-content/);
+    assert.match(header, /course-site-header-align/);
+  });
+
+  it("keeps course layouts on the same centered header / reading column", () => {
+    const info = read("app/course-info/CourseInfoLayout.tsx");
+    const book = read("app/book/layout.tsx");
+    const quizzes = read("app/quizzes/layout.tsx");
+    const people = read("app/people/layout.tsx");
+    const assignments = read("app/assignments/layout.tsx");
+    const slides = read("app/slides/layout.tsx");
+    const toc = read("app/book/TOC.tsx");
+    const css = read("app/book/book.css");
+
+    for (const [file, source] of [
+      ["CourseInfoLayout", info],
+      ["book layout", book],
+      ["quizzes layout", quizzes],
+      ["people layout", people],
+      ["assignments layout", assignments],
+    ] as const) {
+      assert.match(source, /page-content/, file);
+      assert.doesNotMatch(
+        source,
+        /<main className="[^"]*px-4/,
+        `${file} should not pad main outside the shared column`,
+      );
+    }
+
+    assert.match(info, /<CourseSiteHeader/);
+    assert.match(book, /<CourseSiteHeader/);
+    assert.match(quizzes, /<CourseSiteHeader/);
+    assert.match(people, /<CourseSiteHeader/);
+    assert.match(assignments, /<CourseSiteHeader/);
+    assert.match(slides, /<CourseSiteHeader/);
+    assert.match(toc, /data-expanded="true"/);
+    assert.match(toc, /data-expanded="false"/);
+    assert.match(css, /course-site-header-align/);
+    assert.match(css, /\.page-content \.book-content/);
+  });
+
   it("keeps assignment hub nav and chapter link in the shared page-content column", () => {
     const header = read("app/course-info/CourseSiteHeader.tsx");
     const layout = read("app/assignments/layout.tsx");

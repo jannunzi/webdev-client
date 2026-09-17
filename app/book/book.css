@@ -13,6 +13,19 @@
     top: 2.75rem;
     height: calc(100dvh - 2.75rem);
   }
+
+  /*
+   * Header bar stays full-bleed over the TOC. Shift the constrained
+   * `.page-content` row into the reading column so links line up with
+   * chapter/home copy (same leftover width as `main` beside the aside).
+   */
+  .book-shell:has(#wd-book-toc[data-expanded="true"]) .course-site-header-align {
+    padding-left: 18rem;
+  }
+
+  .book-shell:has(#wd-book-toc[data-expanded="false"]) .course-site-header-align {
+    padding-left: 2.5rem;
+  }
 }
 
 /*
@@ -43,9 +56,23 @@
  */
 .book-content,
 .page-content {
+  box-sizing: border-box;
   width: 100%;
+  min-width: 0;
   max-width: var(--container-xl, 36rem);
   margin-inline: auto;
+}
+
+/*
+ * Layouts already wrap main in `.page-content`. Nested article columns
+ * should fill that gutter instead of re-centering or growing past it.
+ */
+.page-content .page-content,
+.page-content .book-content,
+.book-content .page-content,
+.book-content .book-content {
+  max-width: none;
+  margin-inline: 0;
 }
 
 @media (width >= 40rem) {

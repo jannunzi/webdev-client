@@ -1537,6 +1537,7 @@ export default function BookTOC() {
       {showDesktopAside && !panelOpen ? (
         <aside
           id="wd-book-toc"
+          data-expanded="false"
           className="sticky top-0 hidden h-screen w-10 shrink-0 flex-col border-r border-neutral-300 bg-neutral-50 font-sans md:flex"
         >
           <div className="min-h-0 flex-1" />
@@ -1557,6 +1558,7 @@ export default function BookTOC() {
       {showDesktopAside && panelOpen ? (
         <aside
           id="wd-book-toc"
+          data-expanded="true"
           className="sticky top-0 hidden h-screen w-72 shrink-0 flex-col border-r border-neutral-300 bg-neutral-50 font-sans text-neutral-900 md:flex"
         >
           {panel}

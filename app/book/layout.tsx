@@ -14,8 +14,8 @@ export default function BookLayout({
         <CourseSiteHeader />
         <div className="flex min-h-0 flex-1">
           <BookTOC />
-          <main className="min-w-0 w-full flex-1 overflow-x-auto px-4 py-6 md:p-6">
-            {children}
+          <main className="min-w-0 w-full flex-1 overflow-x-auto py-6">
+            <div className="page-content px-4 sm:px-6">{children}</div>
           </main>
         </div>
         <BookAffiliateBanner />
