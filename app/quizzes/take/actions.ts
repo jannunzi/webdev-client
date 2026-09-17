@@ -9,9 +9,9 @@ import { runExamSubmit } from "@/lib/quiz-exam/submit";
 import type { SubmitExamInput, SubmitExamResult } from "@/lib/quiz-exam/types";
 import {
   canvasUserIdFromMetadata,
-  collectClerkEmails,
   preferredRosterEmail,
 } from "@/lib/roster/emails";
+import { loadClerkRosterEmails } from "@/lib/roster/load-clerk-emails";
 import { lookupCanvasRoster } from "@/lib/roster/lookup";
 import { isImpersonatingStudent } from "@/lib/roster/staff-access";
 
@@ -27,7 +27,7 @@ export async function submitExamAttempt(
     };
   }
 
-  const { userId, isAuthenticated } = await auth();
+  const { userId, isAuthenticated, sessionClaims } = await auth();
   if (!isAuthenticated || !userId) {
     return {
       ok: false,
@@ -37,7 +37,11 @@ export async function submitExamAttempt(
   }
 
   const user = await currentUser();
-  const emails = collectClerkEmails(user);
+  const emails = await loadClerkRosterEmails({
+    user,
+    sessionClaims,
+    userId,
+  });
   const canvasUserId = canvasUserIdFromMetadata(user);
   const impersonating = await isImpersonatingStudent();
   const roster = await lookupCanvasRoster({

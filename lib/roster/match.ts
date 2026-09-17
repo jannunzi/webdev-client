@@ -2,16 +2,28 @@ import { DEMO_ROSTER_STUDENTS } from "./demo-students";
 import {
   canonicalEmailKey,
   escapeRegex,
-  isLikelyEmail,
   normalizeEmail,
+  ROSTER_DOCUMENT_EMAIL_FIELDS,
+  rosterDocumentEmails,
   uniqueEmailMatchKeys,
 } from "./emails";
 import type { CanvasRosterEntry, RosterLookupResult } from "./types";
 
+function emailFieldRegexClause(
+  field: string,
+  email: string,
+): Record<string, unknown> {
+  return {
+    [field]: {
+      $regex: `^\\s*${escapeRegex(email)}\\s*$`,
+      $options: "i",
+    },
+  };
+}
+
 /**
- * Case-insensitive Mongo filter for `canvas_roster.email`.
- * Matches Canvas casing/padding and Northeastern mailbox aliases.
- * Lookup prefers an in-memory scan; this remains for targeted upserts.
+ * Case-insensitive Mongo filter for roster mailbox fields.
+ * Matches Canvas casing/padding, SIS login, and Northeastern aliases.
  */
 export function rosterEmailMatchFilter(
   emails: readonly string[],
@@ -19,13 +31,30 @@ export function rosterEmailMatchFilter(
   const keys = uniqueEmailMatchKeys(emails);
   if (keys.length === 0) return null;
   return {
-    $or: keys.map((email) => ({
-      email: {
-        $regex: `^\\s*${escapeRegex(email)}\\s*$`,
-        $options: "i",
-      },
-    })),
+    $or: keys.flatMap((email) =>
+      ROSTER_DOCUMENT_EMAIL_FIELDS.map((field) =>
+        emailFieldRegexClause(field, email),
+      ),
+    ),
   };
+}
+
+/** Targeted Atlas filter: emails plus optional Canvas user ids. */
+export function rosterIdentityMatchFilter(input: {
+  emails: readonly string[];
+  canvasUserIds?: readonly string[];
+}): Record<string, unknown> | null {
+  const clauses: Record<string, unknown>[] = [];
+  const emailFilter = rosterEmailMatchFilter(input.emails);
+  if (emailFilter?.$or && Array.isArray(emailFilter.$or)) {
+    clauses.push(...(emailFilter.$or as Record<string, unknown>[]));
+  }
+  for (const raw of input.canvasUserIds ?? []) {
+    const canvasUserId = raw.trim();
+    if (canvasUserId) clauses.push({ canvasUserId });
+  }
+  if (clauses.length === 0) return null;
+  return { $or: clauses };
 }
 
 function indexRosterEmails(
@@ -33,12 +62,8 @@ function indexRosterEmails(
 ): Map<string, CanvasRosterEntry> {
   const byEmail = new Map<string, CanvasRosterEntry>();
   for (const entry of entries) {
-    if (entry.email) {
-      const key = canonicalEmailKey(entry.email);
-      if (key) byEmail.set(key, entry);
-    }
-    if (entry.sisUserId && isLikelyEmail(normalizeEmail(entry.sisUserId))) {
-      const key = canonicalEmailKey(entry.sisUserId);
+    for (const email of rosterDocumentEmails(entry)) {
+      const key = canonicalEmailKey(email);
       if (key && !byEmail.has(key)) byEmail.set(key, entry);
     }
   }

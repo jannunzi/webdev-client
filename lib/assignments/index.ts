@@ -46,6 +46,8 @@ export {
   resolveA1SubmitVisibility,
   submissionGateCopy,
 } from "./submission-form";
+export { buildA1GateDiagnostics } from "./diagnostics";
+export type { A1GateDiagnostics } from "./diagnostics";
 export type { SubmissionGateReason } from "./submission-form";
 export {
   computeAllOrNothingGrade,

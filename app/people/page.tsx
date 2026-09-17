@@ -3,8 +3,14 @@ import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
 import StaffViewModeBar from "@/app/quizzes/components/StaffViewModeBar";
 import StatusPanel from "@/app/quizzes/components/StatusPanel";
-import { isClerkConfigured, isClerkPublishableKeySet } from "@/lib/config";
+import {
+  isClerkConfigured,
+  isClerkPublishableKeySet,
+  isMongoConfigured,
+  mongoDbName,
+} from "@/lib/config";
 import { listCanvasRoster } from "@/lib/roster/list";
+import { CANVAS_ROSTER_COLLECTION } from "@/lib/roster/lookup";
 import { groupRosterBySection } from "@/lib/roster/sections";
 import {
   getEffectiveStaffAccess,
@@ -129,7 +135,15 @@ async function PeoplePageBody({ section }: { section?: string }) {
       <h1 className="mt-0 text-3xl font-semibold tracking-tight">People</h1>
       <p className="text-neutral-700">
         Fall 2026 Canvas roster from MongoDB Atlas. Staff only — this is not
-        the Kambaz lab People demo.
+        the Kambaz lab People demo. Reading{" "}
+        <code>
+          {mongoDbName()}.{CANVAS_ROSTER_COLLECTION}
+        </code>
+        {isMongoConfigured()
+          ? ` (${roster.entries.length} row${roster.entries.length === 1 ? "" : "s"} the app can see)`
+          : " (MONGODB_URI is not set on this deployment)"}
+        . If Compass shows a student who is missing here, the app is on a
+        different database than the one you imported.
       </p>
       <EnsureDemoStudents />
       <PeopleRoster groups={groups} selectedSection={selectedSection} />

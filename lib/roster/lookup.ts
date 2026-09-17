@@ -5,7 +5,7 @@ import { getCollection } from "../mongo";
 import { DEMO_ROSTER_STUDENTS, isDemoRosterEmail } from "./demo-students";
 import { normalizeEmail, parseRosterEmailsEnv } from "./emails";
 import { upsertDemoRosterStudents } from "./ensure-demo";
-import { matchRoster } from "./match";
+import { matchRoster, rosterIdentityMatchFilter } from "./match";
 import type { CanvasRosterEntry, RosterLookupResult } from "./types";
 import { impersonationRosterMatch } from "./view-mode";
 
@@ -13,8 +13,14 @@ export const CANVAS_ROSTER_COLLECTION = "canvas_roster";
 
 const ROSTER_MATCH_PROJECTION = {
   email: 1,
+  Email: 1,
   canvasUserId: 1,
   sisUserId: 1,
+  sis_user_id: 1,
+  sisLoginId: 1,
+  sis_login_id: 1,
+  loginId: 1,
+  login_id: 1,
   name: 1,
   section: 1,
   source: 1,
@@ -27,10 +33,9 @@ export async function getRosterCollection() {
 /**
  * Match a signed-in Clerk user to canvas_roster.
  *
- * Loads the course-sized roster and matches in memory so Atlas rows with
- * mixed case, padding, husky.neu.edu aliases, or SIS-login emails still
- * unlock A1. `$expr` queries are not used — they can miss or fail on Atlas
- * and hide the Submit URLs fields.
+ * Real students are matched with a targeted Atlas read (email / SIS login
+ * / Canvas id). find({}) is only a fallback. `$expr` is not used — it can
+ * miss or fail on Atlas and hide the Submit URLs fields.
  *
  * Ada Lovelace (`ada@ada.com`) and Bob Marley (`bob@bob.com`) are built-in
  * demo rows. They match even when Atlas is empty or the `find` throws, so
@@ -84,9 +89,47 @@ export async function lookupCanvasRoster(input: {
     return { status: "not_configured" };
   }
 
+  const envEmails = parseRosterEmailsEnv(process.env.CANVAS_ROSTER_EMAILS);
+
   try {
-    const envEmails = parseRosterEmailsEnv(process.env.CANVAS_ROSTER_EMAILS);
     const collection = await getRosterCollection();
+
+    // Targeted read first. find({}) can time out or fail on Atlas and then
+    // relabel a rostered student (chen.rya@…) as not_configured. Ada/Bob
+    // already returned above; real students need this query to succeed.
+    const identityFilter = rosterIdentityMatchFilter({
+      emails: input.emails,
+      canvasUserIds: input.canvasUserIds,
+    });
+    if (identityFilter) {
+      try {
+        const hits = await collection
+          .find(identityFilter)
+          .project<CanvasRosterEntry>(ROSTER_MATCH_PROJECTION)
+          .toArray();
+        const targeted = matchRoster({
+          emails: input.emails,
+          canvasUserIds: input.canvasUserIds,
+          mongoEntries: hits,
+          envEmails,
+          mongoCount: Math.max(hits.length, 1),
+        });
+        if (targeted.status === "matched") return targeted;
+        if (hits.length === 0) {
+          return matchRoster({
+            emails: input.emails,
+            canvasUserIds: input.canvasUserIds,
+            mongoEntries: [],
+            envEmails,
+            mongoCount: await countRosterDocuments(collection),
+          });
+        }
+        return targeted;
+      } catch (error) {
+        console.error("canvas roster targeted lookup failed", error);
+      }
+    }
+
     const mongoEntries = await collection
       .find({})
       .project<CanvasRosterEntry>(ROSTER_MATCH_PROJECTION)
@@ -115,7 +158,23 @@ export async function lookupCanvasRoster(input: {
     });
   } catch (error) {
     console.error("canvas roster lookup failed", error);
+    if (input.emails.length > 0) {
+      return matchBuiltInAllowlists(input) ?? { status: "not_on_roster" };
+    }
     return matchBuiltInAllowlists(input) ?? { status: "not_configured" };
+  }
+}
+
+async function countRosterDocuments(
+  collection: Awaited<ReturnType<typeof getRosterCollection>>,
+): Promise<number> {
+  try {
+    return await collection.countDocuments();
+  } catch (error) {
+    console.error("canvas roster count failed", error);
+    // We attempted a read against a configured roster. Treat as a miss
+    // (not empty / not_configured) so the student sees the roster message.
+    return 1;
   }
 }
 

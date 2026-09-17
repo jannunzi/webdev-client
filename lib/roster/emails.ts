@@ -106,7 +106,17 @@ function emailAddressOf(
 ): string {
   if (!item) return "";
   if (typeof item === "string") return normalizeEmail(item);
-  return normalizeEmail(item.emailAddress ?? item.email_address);
+  if (typeof item !== "object") return "";
+  const record = item as ClerkEmailLike & {
+    email?: string;
+    address?: string;
+  };
+  return normalizeEmail(
+    record.emailAddress ??
+      record.email_address ??
+      record.email ??
+      record.address,
+  );
 }
 
 function asEmailList(value: unknown): ClerkEmailLike[] {
@@ -189,23 +199,49 @@ export function collectClerkEmails(user: ClerkUserLike | null | undefined): stri
  * Emails from a Clerk session JWT. currentUser() can omit address arrays
  * while the session still carries `email` / `email_address`.
  */
+function pushEmailFromUnknown(
+  raw: unknown,
+  push: (email: string) => void,
+): void {
+  if (typeof raw === "string") {
+    for (const part of raw.split(/[\s,;]+/)) {
+      const email = normalizeEmail(part);
+      if (email && isLikelyEmail(email)) push(email);
+    }
+    return;
+  }
+  if (Array.isArray(raw)) {
+    for (const item of raw) pushEmailFromUnknown(item, push);
+    return;
+  }
+  if (raw && typeof raw === "object") {
+    const email = emailAddressOf(raw as ClerkEmailLike);
+    if (email) push(email);
+  }
+}
+
 export function collectSessionClaimEmails(claims: unknown): string[] {
   if (!claims || typeof claims !== "object") return [];
   const record = claims as Record<string, unknown>;
   const emails: string[] = [];
   const seen = new Set<string>();
   function push(raw: unknown): void {
-    if (typeof raw !== "string") return;
-    const email = normalizeEmail(raw);
-    if (!email || !isLikelyEmail(email) || seen.has(email)) return;
-    seen.add(email);
-    emails.push(email);
+    pushEmailFromUnknown(raw, (email) => {
+      if (seen.has(email)) return;
+      seen.add(email);
+      emails.push(email);
+    });
   }
   push(record.email);
   push(record.email_address);
   push(record.emailAddress);
+  push(record.emails);
+  push(record.email_addresses);
+  push(record.emailAddresses);
   push(record.primary_email_address);
   push(record.primaryEmailAddress);
+  push(record.primary_email);
+  push(record.primaryEmail);
   const nested = record.primaryEmailAddress;
   if (nested && typeof nested === "object") {
     push((nested as { emailAddress?: unknown }).emailAddress);
@@ -217,6 +253,8 @@ export function collectSessionClaimEmails(claims: unknown): string[] {
     push(nestedUser.email);
     push(nestedUser.email_address);
     push(nestedUser.primary_email_address);
+    push(nestedUser.email_addresses);
+    push(nestedUser.emailAddresses);
   }
   return emails;
 }
@@ -235,6 +273,55 @@ export function mergeRosterLookupEmails(
     }
   }
   return emails;
+}
+
+/**
+ * Session JWT users are often slim (id only). Merge currentUser(), JWT
+ * claims, and the Backend API user so a secondary Canvas email still
+ * unlocks A1.
+ */
+export function mergeClerkRosterEmailSources(input: {
+  sessionUser?: ClerkUserLike | null;
+  sessionClaims?: unknown;
+  backendUser?: ClerkUserLike | null;
+}): string[] {
+  return mergeRosterLookupEmails(
+    collectClerkEmails(input.sessionUser),
+    collectSessionClaimEmails(input.sessionClaims),
+    collectClerkEmails(input.backendUser),
+  );
+}
+
+/** Atlas / CSV field names that may hold the student’s mailbox. */
+export const ROSTER_DOCUMENT_EMAIL_FIELDS = [
+  "email",
+  "Email",
+  "sisUserId",
+  "sis_user_id",
+  "sisLoginId",
+  "sis_login_id",
+  "loginId",
+  "login_id",
+] as const;
+
+/**
+ * Email-shaped values on a canvas_roster document. Jose may import Email,
+ * SIS Login ID, or login_id depending on the Canvas export.
+ */
+export function rosterDocumentEmails(entry: object | null | undefined): string[] {
+  if (!entry || typeof entry !== "object") return [];
+  const record = entry as Record<string, unknown>;
+  const values: unknown[] = ROSTER_DOCUMENT_EMAIL_FIELDS.map(
+    (field) => record[field],
+  );
+  if (Array.isArray(record.emails)) values.push(...record.emails);
+  const emails: string[] = [];
+  for (const value of values) {
+    if (typeof value !== "string") continue;
+    const email = normalizeEmail(value);
+    if (email && isLikelyEmail(email)) emails.push(email);
+  }
+  return mergeRosterLookupEmails(emails);
 }
 
 export function preferredRosterEmail(

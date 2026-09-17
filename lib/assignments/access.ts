@@ -46,8 +46,13 @@ export function assignmentSubmitAccess(input: {
   if (!input.signedIn) return { ok: false, code: "unauthenticated" };
   if (input.isActualStaff) return { ok: true };
   if (input.roster.status === "matched") return { ok: true };
-  if (!input.configured) return { ok: false, code: "not_configured" };
+  // A known miss is never “not configured” — students must see the
+  // off-roster message, not “URL submit is not available yet.”
+  if (input.roster.status === "not_on_roster") {
+    return { ok: false, code: "not_on_roster" };
+  }
   if (input.roster.status === "empty") return { ok: false, code: "roster_empty" };
+  if (!input.configured) return { ok: false, code: "not_configured" };
   if (input.roster.status === "not_configured") {
     return { ok: false, code: "not_configured" };
   }
