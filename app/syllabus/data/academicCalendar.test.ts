@@ -119,9 +119,11 @@ describe("lecture recording policy", () => {
     assert.match(lectureRecordingNote, /legitimate reason/);
     assert.match(lectureRecordingNote, /not a general replacement/);
     assert.match(lectureRecordingNote, /live lectures/);
+    assert.match(lectureRecordingNote, /Canvas course/);
+    assert.match(lectureRecordingNote, /Zoom Meetings/);
+    assert.match(lectureRecordingNote, /Recordings tab/);
+    assert.match(lectureRecordingNote, /not under Piazza Resources/);
     assert.doesNotMatch(lectureRecordingNote, /https?:\/\//);
-    assert.doesNotMatch(lectureRecordingNote, /Zoom/i);
     assert.doesNotMatch(lectureRecordingNote, /Panopto/i);
-    assert.doesNotMatch(lectureRecordingNote, /Canvas/i);
   });
 });
