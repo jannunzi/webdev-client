@@ -12,6 +12,11 @@ export type RubricCriterion = {
   bookLabel?: string;
   onYourOwn?: boolean;
   withAI?: boolean;
+  /**
+   * When set, the checklist nests this row under the parent title
+   * (e.g. HeadingTags) with lettered a/b/c sub-tasks.
+   */
+  parentLabel?: string;
 };
 
 export type RubricGroup = {

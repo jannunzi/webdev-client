@@ -51,7 +51,7 @@ export const A1_RUBRIC: AssignmentRubric = {
       id: "lab",
       title: "Lab — HTML components",
       intro:
-        "Same list and order as book §1.3.12: create each Lab 1 component, then that section's On your own row, then its With AI extra, walking 1.3.1–1.3.11 in reading order.",
+        "Same nested list as book §1.3.12: one row per Lab 1 section (1.3.1–1.3.11), with lettered a/b/c for the Lab component, On your own, and With AI extra.",
       criteria: a1LabCriteria(),
     },
     {

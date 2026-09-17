@@ -1,5 +1,8 @@
 export { A1_RUBRIC } from "./a1";
-export { A1_LAB_EXERCISES } from "./a1-lab-exercises";
+export {
+  A1_LAB_EXERCISES,
+  A1_LAB_EXERCISE_SECTIONS,
+} from "./a1-lab-exercises";
 export { A2_RUBRIC } from "./a2";
 export {
   COURSE_SITE_ORIGIN,
@@ -10,6 +13,7 @@ export {
   listAssignmentIds,
   listAssignments,
   listRubricCriteria,
+  nestRubricCriteria,
   rubricPointTotal,
 } from "./catalog";
 export {
