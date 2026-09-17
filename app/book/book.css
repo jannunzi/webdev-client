@@ -13,6 +13,19 @@
     top: 2.75rem;
     height: calc(100dvh - 2.75rem);
   }
+
+  /*
+   * Header bar stays full-bleed over the TOC. Shift the constrained
+   * `.page-content` row into the reading column so links line up with
+   * chapter/home copy (same leftover width as `main` beside the aside).
+   */
+  .book-shell:has(#wd-book-toc[data-expanded="true"]) .course-site-header-align {
+    padding-left: 18rem;
+  }
+
+  .book-shell:has(#wd-book-toc[data-expanded="false"]) .course-site-header-align {
+    padding-left: 2.5rem;
+  }
 }
 
 /*
