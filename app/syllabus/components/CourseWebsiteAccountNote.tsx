@@ -26,6 +26,10 @@ export default function CourseWebsiteAccountNote({
           </p>
         </aside>
         <p className="rounded-md border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm">
+          <span className="font-sans font-semibold">A1 URL submit. </span>
+          {COURSE_WEBSITE_ACCOUNT_COPY.a1UrlSubmitWhen}
+        </p>
+        <p className="rounded-md border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm">
           <span className="font-sans font-semibold">Graded quizzes. </span>
           {COURSE_WEBSITE_ACCOUNT_COPY.quizRosterSeparate}
         </p>

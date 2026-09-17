@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { ASSIGNMENT_STUDENT_COPY } from "../assignments/student-copy";
 import { COURSE_WEBSITE_ACCOUNT_COPY } from "./account-copy";
 
 const ALL_COPY = Object.values(COURSE_WEBSITE_ACCOUNT_COPY).join(" ");
@@ -108,5 +109,37 @@ describe("course website account copy", () => {
     assert.doesNotMatch(ALL_COPY, /Canvas login/i);
     assert.doesNotMatch(ALL_COPY, /Northeastern login/i);
     assert.doesNotMatch(ALL_COPY, /sign (?:in|up) with (?:Northeastern )?SSO/i);
+  });
+
+  it("says A1 URL fields appear after roster mapping, not a calendar unlock", () => {
+    assert.equal(
+      COURSE_WEBSITE_ACCOUNT_COPY.a1UrlSubmitWhen,
+      ASSIGNMENT_STUDENT_COPY.urlSubmitWhen,
+    );
+    assert.match(
+      COURSE_WEBSITE_ACCOUNT_COPY.a1UrlSubmitWhen,
+      /not unlocked by a calendar date/i,
+    );
+    assert.match(
+      COURSE_WEBSITE_ACCOUNT_COPY.a1UrlSubmitWhen,
+      /successful course-site roster mapping/i,
+    );
+    assert.match(
+      COURSE_WEBSITE_ACCOUNT_COPY.a1UrlSubmitWhen,
+      /same Northeastern email as your Canvas\/FACT roster/i,
+    );
+    assert.match(
+      COURSE_WEBSITE_ACCOUNT_COPY.a1UrlSubmitWhen,
+      /on the course site roster/i,
+    );
+    assert.match(COURSE_WEBSITE_ACCOUNT_COPY.a1UrlSubmitWhen, /Piazza/i);
+    assert.match(
+      COURSE_WEBSITE_ACCOUNT_COPY.a1UrlSubmitWhen,
+      /do not create a second account/i,
+    );
+    assert.match(
+      COURSE_WEBSITE_ACCOUNT_COPY.a1UrlSubmitWhen,
+      /Hard-refresh after mapping is fixed/i,
+    );
   });
 });
