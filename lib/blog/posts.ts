@@ -6,6 +6,58 @@ import type { BlogPost } from "./types";
  */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "vercel-fluid-compute-any-shape",
+    title: "Vercel Fluid: one compute layer for functions, sandboxes, and builds",
+    publishedAt: "2026-09-17T12:00:00.000Z",
+    tags: ["nextjs", "ai", "course"],
+    relatedChapters: ["ch1", "ch5"],
+    intro: [
+      "On September 1, 2026, Luke Phillips-Sheard published Compute that takes any shape on the Vercel blog. Fluid is Vercel's unified compute layer: it assembles the machine a workload needs, swaps configuration on the fly, and absorbs burst capacity. Builds ran on it first, then sandboxes, and now functions; the post says if you have shipped on Vercel you have already been on Fluid.",
+      "The post cites more than 15 million builds a day, 25 million sandboxes a week, and a trillion requests a month. Building blocks include Hive, which provisions isolated machines; Fluid images and VHS snapshots, which resume custom environments rather than cold-booting; and Vercel Drives, portable storage that outlives the machine (sandboxes today, private beta). Many requests share one instance, and Active CPU pricing means you pay for CPU while code runs, not while waiting on a database or model. The write-up is framed for agents that need fast, isolated machines with their own environment and state that outlives compute.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. This course site already ships on Vercel; the digest is about how platform compute is assembled, not a change to App Router lab code. Follow the original Vercel post for architecture and pricing details.",
+    ],
+    source: {
+      title: "Compute that takes any shape",
+      url: "https://vercel.com/blog/fluid-compute-takes-any-shape",
+      publisher: "Vercel",
+    },
+  },
+  {
+    slug: "claude-code-vs-copilot-vs-cursor-2026",
+    title: "Claude Code vs Copilot vs Cursor: pick the tool that matches how you work",
+    publishedAt: "2026-09-17T12:00:00.000Z",
+    tags: ["ai", "course"],
+    relatedChapters: ["ch1"],
+    intro: [
+      "On September 7, 2026, GeekyGoo published a comparison of three AI coding tools and the philosophies behind them. GitHub Copilot adds AI to the IDE you already use; Cursor is an AI-first fork of VS Code; Claude Code is a terminal-native agent from Anthropic.",
+      "The post's 30-second verdict: cheapest autocomplete in your current IDE points to Copilot; the most fluid AI-native editing points to Cursor; serious multi-file, agent, or CI work that should stay editor-agnostic points to Claude Code. Late-2026 prices the post lists (check official pages, they change) are Copilot Free / Pro at $10 per month, Cursor Free / Pro at $20 per month, and Claude Code through Claude Pro at $20 per month with no standalone free tier. The honest takeaway is that many professionals combine tools rather than picking only one.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. If you already use one of these tools on labs, do not treat agent output as a substitute for understanding the Next.js and React code you submit.",
+    ],
+    source: {
+      title:
+        "Claude Code vs. GitHub Copilot vs. Cursor: which AI coding tool actually fits your workflow (2026)",
+      url: "https://www.geekygoo.com/blog/claude-code-vs-github-copilot-vs-cursor/",
+      publisher: "GeekyGoo",
+    },
+  },
+  {
+    slug: "shai-hulud-npm-resurfaces-111-days",
+    title: "Shai-Hulud npm worm resurfaces after 111 days despite publish-time scanning",
+    publishedAt: "2026-09-17T12:00:00.000Z",
+    tags: ["security", "course"],
+    relatedChapters: ["ch5"],
+    intro: [
+      "On September 7, 2026, Charlie Eriksen wrote that the Shai-Hulud npm worm had resurfaced. The May 19, 2026 wave hit @antv with 639 malicious versions in an hour. After 111 days of silence, the same payload hash (e37e3ddeeaaa9e0c4fdbcb829b4895a6521031c80053fc436625b61e6ee5b1a6) reappeared in four packages published within the same hour: feishu-docx-mcp@0.3.2, bmc-i18n-extract-cli@1.1.1, blueai-cli@0.7.0, and bmc-translate-utils@1.1.1.",
+      "npm had rolled out publish-time malware scanning in July, holding packages for 5 to 15 minutes before they become installable. Aikido argues that an exact match against a known-malicious hash is the easy case and still got missed. Indicators named in the post include a C2 host written as t[.]m-kosche[.]com, a preinstall script of bun run index.js, and persistence via .vscode/tasks.json and .claude/settings.json.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. For Chapter 5 Node hygiene, treat unexpected install scripts and unfamiliar packages carefully; registry scanning is not a substitute for knowing what you install. Follow the original Aikido post for the full IoC list.",
+    ],
+    source: {
+      title: "Shai-Hulud Rises From the Dead after 111 days",
+      url: "https://www.aikido.dev/blog/shai-hulud-npm-resurfaces",
+      publisher: "Aikido Security",
+    },
+  },
+  {
     slug: "vercel-flat-rate-cdn",
     title: "Vercel Flat Rate CDN: predictable Pro billing for traffic spikes",
     publishedAt: "2026-09-16T12:00:00.000Z",
