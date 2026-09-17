@@ -1,6 +1,5 @@
 export const COURSE_INFO_LINKS = [
   { href: "/syllabus", label: "Syllabus" },
-  { href: "/calendar", label: "Calendar" },
   { href: "/book", label: "Book" },
   { href: "/blog", label: "Blog" },
   { href: "/slides", label: "Slides" },
@@ -9,7 +8,6 @@ export const COURSE_INFO_LINKS = [
   { href: "/labs", label: "Labs" },
   { href: "/account/signin", label: "Kambaz" },
   { href: "/office-hours", label: "Office Hours" },
-  { href: "/piazza-hours", label: "Piazza Hours" },
   { href: "/project", label: "Project" },
 ] as const;
 

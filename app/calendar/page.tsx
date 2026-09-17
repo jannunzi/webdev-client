@@ -30,7 +30,7 @@ export default function AcademicCalendarPage() {
         <AcademicCalendarTable />
       </CourseInfoSection>
 
-      <CourseInfoFooter current="/calendar" />
+      <CourseInfoFooter />
     </article>
   );
 }
