@@ -56,9 +56,23 @@
  */
 .book-content,
 .page-content {
+  box-sizing: border-box;
   width: 100%;
+  min-width: 0;
   max-width: var(--container-xl, 36rem);
   margin-inline: auto;
+}
+
+/*
+ * Layouts already wrap main in `.page-content`. Nested article columns
+ * should fill that gutter instead of re-centering or growing past it.
+ */
+.page-content .page-content,
+.page-content .book-content,
+.book-content .page-content,
+.book-content .book-content {
+  max-width: none;
+  margin-inline: 0;
 }
 
 @media (width >= 40rem) {

@@ -103,6 +103,7 @@ describe("shared course chrome", () => {
     assert.match(toc, /data-expanded="true"/);
     assert.match(toc, /data-expanded="false"/);
     assert.match(css, /course-site-header-align/);
+    assert.match(css, /\.page-content \.book-content/);
   });
 
   it("keeps assignment hub nav and chapter link in the shared page-content column", () => {
