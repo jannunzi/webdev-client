@@ -6,17 +6,31 @@ import { runA1Checks } from "@/lib/assignments/checks";
 import { fetchDeployHtml, probeGithubRepo } from "@/lib/assignments/fetch-deploy";
 import {
   gradeFromResultsAndOverrides,
+  pointsPercent,
   proposedGradeFromResults,
   type CriterionPassMap,
 } from "@/lib/assignments/grade";
+import {
+  buildCanvasGradebookCsv,
+  canvasGradeFilename,
+  canvasGradeRowsFromStaffQueue,
+} from "@/lib/assignments/canvas-grades";
 import { getAssignment, isAssignmentId } from "@/lib/assignments/catalog";
 import { resolveNameQuery } from "@/lib/assignments/names";
-import { parseStaffStudentKey } from "@/lib/assignments/staff";
+import {
+  buildStaffStudentQueue,
+  listStaffQueueSections,
+  parseStaffStudentKey,
+  resolveStaffSectionFilter,
+  staffQueueForSection,
+} from "@/lib/assignments/staff";
 import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
 import {
   findSubmissionForStaffStudent,
+  listSubmissionsForAssignment,
   writeAssignmentSubmission,
 } from "@/lib/assignments/submissions";
+import { listCanvasRoster } from "@/lib/roster/list";
 import {
   toSubmissionView,
   type AssignmentStaffGrade,
@@ -218,8 +232,7 @@ export async function saveStaffAssignmentGrade(input: {
     input.acceptProposed || input.earnedPoints == null
       ? computed.earnedPoints
       : Math.max(0, Math.min(totalPoints, Math.round(input.earnedPoints)));
-  const percent =
-    totalPoints === 0 ? 0 : Math.round((earnedPoints / totalPoints) * 100);
+  const percent = pointsPercent(earnedPoints, totalPoints);
 
   const staffGrade: AssignmentStaffGrade = {
     earnedPoints,
@@ -258,6 +271,67 @@ export async function saveStaffAssignmentGrade(input: {
     const message =
       error instanceof Error ? error.message : "Could not save the staff grade.";
     console.error("staff assignment grade persist failed", message);
+    return { ok: false, code: "invalid", message };
+  }
+}
+
+export type CanvasGradeExportResult =
+  | {
+      ok: true;
+      csv: string;
+      filename: string;
+      gradedCount: number;
+      rowCount: number;
+    }
+  | Extract<StaffActionResult, { ok: false }>;
+
+export async function exportCanvasAssignmentGrades(input: {
+  assignmentId: string;
+  section?: string;
+}): Promise<CanvasGradeExportResult> {
+  const authz = await authorizeStaffGrader();
+  if (!authz.ok) return authz.result;
+
+  const assignment = getAssignment(input.assignmentId);
+  if (!assignment) {
+    return {
+      ok: false,
+      code: "invalid",
+      message: ASSIGNMENT_STUDENT_COPY.unknownAssignment,
+    };
+  }
+
+  try {
+    const [rosterList, submissions] = await Promise.all([
+      listCanvasRoster(),
+      listSubmissionsForAssignment(assignment.id),
+    ]);
+    const queue = buildStaffStudentQueue(
+      rosterList.status === "ok" ? rosterList.entries : [],
+      submissions,
+    );
+    const section = resolveStaffSectionFilter(
+      input.section,
+      listStaffQueueSections(queue),
+    );
+    const visible = staffQueueForSection(queue, section);
+    const rows = canvasGradeRowsFromStaffQueue(visible);
+    return {
+      ok: true,
+      csv: buildCanvasGradebookCsv({
+        canvasId: assignment.canvasId,
+        rows,
+      }),
+      filename: canvasGradeFilename(assignment.id, section),
+      gradedCount: rows.filter((row) => row.postedScore != null).length,
+      rowCount: rows.length,
+    };
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Could not export Canvas grades.";
+    console.error("staff assignment canvas grade export failed", message);
     return { ok: false, code: "invalid", message };
   }
 }

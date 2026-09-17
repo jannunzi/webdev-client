@@ -131,8 +131,10 @@ describe("assignment catalog", () => {
       assert.match(row.html, /not pre-provisioned/i);
       assert.match(row.html, /This site is not Canvas/i);
       assert.match(row.html, /map site progress back to the roster/i);
+      assert.match(row.html, /recorded in Canvas as a percentage on this 100-point assignment/);
       assert.doesNotMatch(row.html, /school email is fine/i);
       assert.doesNotMatch(row.html, /Clerk|rubric|Best \/ Better/i);
+      assert.doesNotMatch(row.html, /125/);
     }
   });
 
@@ -162,6 +164,7 @@ describe("assignment catalog", () => {
       A1_RUBRIC.groups.map((group) => group.id).join(","),
       "delivery,lab,kambaz",
     );
+    assert.equal(rubricPointTotal(A1_RUBRIC), 125);
     assert.ok(findCriterion(A1_RUBRIC, "a1-lab-heading-tags"));
     assert.ok(findCriterion(A1_RUBRIC, "a1-lab-heading-tags-ai")?.withAI);
     assert.ok(findCriterion(A1_RUBRIC, "a1-delivery-labs-nav"));
@@ -237,6 +240,8 @@ describe("assignment progress helpers", () => {
     assert.equal(summary.earnedPoints, 3);
     assert.equal(summary.totalCount, listRubricCriteria(assignment.rubric).length);
     assert.equal(summary.totalPoints, rubricPointTotal(assignment.rubric));
+    assert.equal(summary.totalPoints, 125);
+    assert.equal(summary.percent, Math.round((3 / 125) * 100));
   });
 
   it("drops a stale completed id when a later auto-check fails or omits it", () => {

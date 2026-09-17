@@ -14,6 +14,7 @@ import {
   staffGraderHref,
   staffQueueForSection,
   staffRowSectionLabel,
+  staffStudentOptionLabel,
   UNSECTIONED_LABEL,
 } from "./staff";
 import type { AssignmentSubmissionDoc } from "./submissions-store";
@@ -198,6 +199,33 @@ describe("staff queue section filter", () => {
     assert.equal(mid.previous, "grad-a@northeastern.edu");
     assert.equal(mid.next, null);
     assert.equal(mid.index, 1);
+  });
+
+  it("shows staff grade percent in the student picker label", () => {
+    const unlabeled = staffStudentOptionLabel({
+      key: "pat@northeastern.edu",
+      email: "pat@northeastern.edu",
+      name: "Pat Lee",
+      section: "CS4550-01",
+      hasSubmission: false,
+    });
+    assert.equal(unlabeled, "Pat Lee · pat@northeastern.edu · CS4550-01 · no submission");
+    assert.equal(
+      staffStudentOptionLabel({
+        key: "jane.doe@northeastern.edu",
+        email: "jane.doe@northeastern.edu",
+        name: "Jane Doe",
+        hasSubmission: true,
+        staffGrade: {
+          earnedPoints: 100,
+          totalPoints: 125,
+          percent: 80,
+          acceptedProposed: true,
+          gradedAt: "2026-09-16T00:00:00.000Z",
+        },
+      }),
+      "Jane Doe · 80% · jane.doe@northeastern.edu",
+    );
   });
 
   it("builds shareable assignment URLs with section and student", () => {

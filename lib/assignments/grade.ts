@@ -15,6 +15,47 @@ export type GradeBreakdown = {
 export type CriterionPassMap = Record<string, boolean>;
 
 /**
+ * Canvas assignment shells stay at 100 points. Website checklists (A1 is
+ * 125 pts) still use raw criterion math; the posted Canvas value is the
+ * percentage so 100/125 becomes 80, not 100.
+ */
+export const CANVAS_GRADE_SHELL_POINTS = 100;
+
+export function pointsPercent(
+  earnedPoints: number,
+  totalPoints: number,
+): number {
+  return totalPoints === 0 ? 0 : Math.round((earnedPoints / totalPoints) * 100);
+}
+
+export function formatGradePercent(
+  grade: Pick<GradeBreakdown, "percent">,
+): string {
+  return `${grade.percent}%`;
+}
+
+export function formatGradePoints(
+  grade: Pick<GradeBreakdown, "earnedPoints" | "totalPoints">,
+): string {
+  return `${grade.earnedPoints} / ${grade.totalPoints} pts`;
+}
+
+/**
+ * Percent first so students and staff see the Canvas-recorded value.
+ * Checklist points stay visible as the secondary detail.
+ */
+export function formatGradeSummary(grade: GradeBreakdown): string {
+  return `${formatGradePercent(grade)} (${formatGradePoints(grade)})`;
+}
+
+/** Value posted to a 100-point Canvas assignment shell. */
+export function canvasPostedScore(
+  grade: Pick<GradeBreakdown, "percent">,
+): number {
+  return grade.percent;
+}
+
+/**
  * Website grades are all-or-nothing per criterion: full points if the
  * criterion is treated as passed, otherwise 0.
  */
@@ -35,8 +76,7 @@ export function computeAllOrNothingGrade(
     }
   }
   const totalPoints = rubricPointTotal(rubric);
-  const percent =
-    totalPoints === 0 ? 0 : Math.round((earnedPoints / totalPoints) * 100);
+  const percent = pointsPercent(earnedPoints, totalPoints);
   return {
     earnedPoints,
     totalPoints,
@@ -45,10 +85,6 @@ export function computeAllOrNothingGrade(
     totalCount: criteria.length,
     passedIds,
   };
-}
-
-export function formatGradeSummary(grade: GradeBreakdown): string {
-  return `${grade.earnedPoints} / ${grade.totalPoints} pts (${grade.percent}%)`;
 }
 
 /** Auto-pass only. Skipped / missing results do not earn points. */

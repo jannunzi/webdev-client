@@ -53,6 +53,7 @@ export type StaffStudentRow = {
   section?: string;
   clerkUserId?: string;
   canvasUserId?: string;
+  sisUserId?: string;
   hasSubmission: boolean;
   githubUrl?: string;
   vercelUrl?: string;
@@ -103,6 +104,7 @@ function rowFromSubmission(
     section: fallback?.section ?? doc.section,
     clerkUserId: doc.clerkUserId,
     canvasUserId: fallback?.canvasUserId ?? doc.canvasUserId,
+    sisUserId: fallback?.sisUserId,
     hasSubmission: true,
     githubUrl: doc.githubUrl,
     vercelUrl: doc.vercelUrl,
@@ -143,6 +145,7 @@ export function buildStaffStudentQueue(
       name: studentDisplayName(entry),
       section: entry.section,
       canvasUserId: entry.canvasUserId,
+      sisUserId: entry.sisUserId,
       hasSubmission: false,
     });
   }
@@ -247,4 +250,21 @@ export function staffGraderHref(
   return query
     ? `/assignments/${assignmentId}?${query}`
     : `/assignments/${assignmentId}`;
+}
+
+export function staffStudentOptionLabel(row: StaffStudentRow): string {
+  const parts = [row.name];
+  if (row.staffGrade) {
+    parts.push(`${row.staffGrade.percent}%`);
+  }
+  if (row.email && row.email !== row.name) {
+    parts.push(row.email);
+  }
+  if (row.section) {
+    parts.push(row.section);
+  }
+  if (!row.hasSubmission) {
+    parts.push("no submission");
+  }
+  return parts.join(" · ");
 }

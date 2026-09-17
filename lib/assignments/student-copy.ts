@@ -39,6 +39,11 @@ export const ASSIGNMENT_STUDENT_COPY = {
   staffGradeLabel: "Staff grade",
   acceptProposed: "Accept proposed grade",
   overrideGrade: "Save override grade",
+  downloadCanvasCsv: "Download Canvas grade CSV",
+  canvasPercentHint:
+    "Grades show as a percentage. Canvas records that same percentage on a 100-point assignment shell — not the raw checklist point total.",
+  staffCanvasExportHint:
+    "The Canvas CSV posts the staff percentage (0–100) for a 100-point A1 shell. Keep that shell at 100 points; do not set it to 125.",
   noSubmission: "This student has not submitted a Vercel URL yet.",
   staffCommentsHint: "Comments are visible to the student.",
   studentFeedbackHint: "Staff comments on each item, if any, appear below.",
