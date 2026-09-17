@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import { assignmentSubmitAccess, canPersistAssignmentSubmission, supportsUrlSubmission } from "./access";
 import {
@@ -534,11 +535,21 @@ describe("student-facing copy", () => {
     assert.match(ASSIGNMENT_STUDENT_COPY.urlSubmitWhen, /not unlocked by a calendar date/i);
     assert.match(
       ASSIGNMENT_STUDENT_COPY.urlSubmitWhen,
+      /successful course-site roster mapping/i,
+    );
+    assert.match(
+      ASSIGNMENT_STUDENT_COPY.urlSubmitWhen,
       /same Northeastern email as your Canvas\/FACT roster/i,
     );
     assert.match(
       ASSIGNMENT_STUDENT_COPY.urlSubmitWhen,
       /on the course site roster/i,
+    );
+    assert.match(ASSIGNMENT_STUDENT_COPY.urlSubmitWhen, /Piazza/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.urlSubmitWhen, /do not create a second account/i);
+    assert.match(
+      ASSIGNMENT_STUDENT_COPY.urlSubmitWhen,
+      /Hard-refresh after mapping is fixed/i,
     );
     assert.match(ASSIGNMENT_STUDENT_COPY.notConfigured, /not a date lock/i);
     assert.match(ASSIGNMENT_STUDENT_COPY.notConfigured, /hard-refresh/i);
@@ -552,6 +563,7 @@ describe("student-facing copy", () => {
       "URL submit is not available yet",
     );
     assert.match(ASSIGNMENT_STUDENT_COPY.notOnRoster, /hard-refresh/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.notOnRoster, /do not create a second account/i);
     assert.match(ASSIGNMENT_STUDENT_COPY.notOnRoster, /Piazza to check the roster/i);
   });
 
@@ -594,5 +606,15 @@ describe("student-facing copy", () => {
       /use your Canvas email so we can map progress/i,
     );
     assert.match(ASSIGNMENT_STUDENT_COPY.notOnRoster, /Canvas\/FACT/i);
+  });
+
+  it("shows the shared URL-submit note next to Submit URLs on A1", () => {
+    const form = readFileSync(
+      new URL("../../app/assignments/components/A1SubmissionForm.tsx", import.meta.url),
+      "utf8",
+    );
+    const submitAt = form.indexOf("Submit URLs");
+    const copyAt = form.indexOf("ASSIGNMENT_STUDENT_COPY.urlSubmitWhen");
+    assert.ok(submitAt > 0 && copyAt > submitAt);
   });
 });

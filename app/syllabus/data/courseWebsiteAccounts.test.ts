@@ -15,6 +15,14 @@ const syllabusHeader = readFileSync(
   new URL("../components/SyllabusHeader.tsx", import.meta.url),
   "utf8",
 );
+const accountsSection = readFileSync(
+  new URL("../components/CourseWebsiteAccounts.tsx", import.meta.url),
+  "utf8",
+);
+const accountsNote = readFileSync(
+  new URL("../components/CourseWebsiteAccountNote.tsx", import.meta.url),
+  "utf8",
+);
 
 describe("syllabus course website accounts placement", () => {
   it("puts the accounts section next to How to use the book and meetings", () => {
@@ -35,6 +43,16 @@ describe("syllabus course website accounts placement", () => {
     assert.equal(
       COURSE_WEBSITE_ACCOUNT_COPY.heading,
       "Course website accounts",
+    );
+  });
+
+  it("anchors #accounts and shows the shared A1 URL-submit note", () => {
+    assert.match(accountsSection, /id="accounts"/);
+    assert.match(accountsNote, /COURSE_WEBSITE_ACCOUNT_COPY\.a1UrlSubmitWhen/);
+    assert.match(accountsNote, /A1 URL submit/);
+    assert.match(
+      COURSE_WEBSITE_ACCOUNT_COPY.a1UrlSubmitWhen,
+      /successful course-site roster mapping/i,
     );
   });
 

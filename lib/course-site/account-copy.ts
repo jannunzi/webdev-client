@@ -4,7 +4,8 @@
  * Northeastern SSO; accounts are not pre-provisioned. Students Sign up
  * with the same Northeastern email they use on Canvas so site progress
  * can be mapped back to the roster, then Sign in.
- * Do not name the auth vendor (Clerk) here.
+ * A1 URL submit/test fields appear only after that roster mapping —
+ * they are not date-locked. Do not name the auth vendor (Clerk) here.
  */
 export const COURSE_WEBSITE_ACCOUNT_COPY = {
   heading: "Course website accounts",
@@ -16,6 +17,8 @@ export const COURSE_WEBSITE_ACCOUNT_COPY = {
     "Use Sign up to create your own account with the same Northeastern email you use on Canvas, then Sign in. That email lets us map site progress back to the Canvas roster.",
   quizRosterSeparate:
     "Sign up with the same Northeastern email you use on Canvas so site progress can be mapped back to the roster. Taking a graded quiz still requires that Canvas email to be on the course roster. Creating a site account does not enroll you on the roster.",
+  a1UrlSubmitWhen:
+    "URL submit and test fields are not unlocked by a calendar date. They appear only after successful course-site roster mapping: Sign in with the same Northeastern email as your Canvas/FACT roster, and that email is on the course site roster. If that email looks correct in Canvas but the fields stay unavailable, ask on Piazza — do not create a second account. Hard-refresh after mapping is fixed.",
   signInPageHint:
     "This site is separate from Canvas and Northeastern SSO. Accounts are not created for you. If you don’t have an account yet, Sign up first with the same Northeastern email you use on Canvas, then Sign in. That email lets us map site progress back to the Canvas roster. “Couldn’t find your account” means you still need to Sign up — not that you need roster access.",
   signUpPageHint:
