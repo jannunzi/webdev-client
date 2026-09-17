@@ -11,7 +11,7 @@ import {
 } from "./submission-form";
 import { DEMO_ROSTER_STUDENTS } from "../roster/demo-students";
 import { matchRoster } from "../roster/match";
-import { normalizeEmail } from "../roster/emails";
+import { mergeClerkRosterEmailSources, normalizeEmail } from "../roster/emails";
 import type { AssignmentSubmitGate } from "./access";
 
 function deny(code: Exclude<AssignmentSubmitGate, { ok: true }>["code"]) {
@@ -121,10 +121,14 @@ describe("A1 submission form visibility", () => {
     );
     assert.match(
       submissionGateCopy("not_configured").body,
-      /Canvas\/FACT roster/i,
+      /could not read the imported Canvas\/FACT roster/i,
     );
     assert.match(submissionGateCopy("not_configured").body, /hard-refresh/i);
     assert.match(submissionGateCopy("not_configured").body, /Piazza/i);
+    assert.match(
+      submissionGateCopy("not_configured").body,
+      /site roster connection problem/i,
+    );
     assert.doesNotMatch(submissionGateCopy("not_configured").body, /ada@/i);
     assert.doesNotMatch(submissionGateCopy("not_configured").body, /\bClerk\b/i);
   });
@@ -177,7 +181,7 @@ describe("A1 submission form visibility", () => {
           isActualStaff: false,
           roster: { status: "not_on_roster" },
         }),
-        reason: "not_configured",
+        reason: "not_on_roster",
       },
     ];
 
@@ -293,6 +297,47 @@ describe("A1 submission form visibility", () => {
         "URL submit is not available yet",
       );
     }
+  });
+
+  it("shows URL fields when a slim Clerk session still matches a rostered NEU email", () => {
+    const emails = mergeClerkRosterEmailSources({
+      sessionUser: { id: "user_chen", emailAddresses: [] },
+      sessionClaims: { sub: "user_chen" },
+      backendUser: {
+        id: "user_chen",
+        email_addresses: [
+          { email_address: "Chen.Rya@Northeastern.edu" },
+        ],
+      },
+    });
+    assert.deepEqual(emails, ["chen.rya@northeastern.edu"]);
+
+    const roster = matchRoster({
+      emails,
+      mongoEntries: [
+        {
+          email: "chen.rya@northeastern.edu",
+          name: "Ryan Chen",
+          section: "CS4550 CRN 11464",
+        },
+      ],
+      envEmails: [],
+      mongoCount: 80,
+    });
+    assert.equal(roster.status, "matched");
+
+    const visibility = resolveA1SubmitVisibility({
+      assignmentId: "a1",
+      access: assignmentSubmitAccess({
+        signedIn: true,
+        configured: true,
+        isActualStaff: false,
+        roster,
+      }),
+    });
+    assert.equal(visibility.canSubmit, true);
+    assert.equal(visibility.gateReason, null);
+    assert.equal(a1SubmissionFormState(visibility).mode, "fields");
   });
 
   it("never leaves the URL fields as a blank section when gated", () => {

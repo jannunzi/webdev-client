@@ -19,10 +19,8 @@ import {
   isTakeWindowOpen,
   scheduleToIso,
 } from "@/lib/quiz-exam/schedule";
-import {
-  canvasUserIdFromMetadata,
-  collectClerkEmails,
-} from "@/lib/roster/emails";
+import { canvasUserIdFromMetadata } from "@/lib/roster/emails";
+import { loadClerkRosterEmails } from "@/lib/roster/load-clerk-emails";
 import { STUDENT_COPY } from "@/lib/quiz-exam/student-copy";
 import { lookupCanvasRoster } from "@/lib/roster/lookup";
 import {
@@ -97,7 +95,7 @@ export default async function TakeExamPage({ params }: PageProps) {
     );
   }
 
-  const { isAuthenticated, redirectToSignIn } = await auth();
+  const { isAuthenticated, redirectToSignIn, sessionClaims } = await auth();
   if (!isAuthenticated) {
     return redirectToSignIn();
   }
@@ -106,7 +104,11 @@ export default async function TakeExamPage({ params }: PageProps) {
   if (!user) {
     return redirectToSignIn();
   }
-  const emails = collectClerkEmails(user);
+  const emails = await loadClerkRosterEmails({
+    user,
+    sessionClaims,
+    userId: user.id,
+  });
   const canvasUserId = canvasUserIdFromMetadata(user);
   const impersonating = await isImpersonatingStudent();
   const showAuthorReview = await effectiveIsStaff();

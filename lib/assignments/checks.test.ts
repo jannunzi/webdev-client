@@ -544,9 +544,9 @@ describe("student-facing copy", () => {
     assert.match(ASSIGNMENT_STUDENT_COPY.notConfigured, /hard-refresh/i);
     assert.match(
       ASSIGNMENT_STUDENT_COPY.notConfigured,
-      /email you signed in with matches Canvas/i,
+      /could not read the imported Canvas\/FACT roster/i,
     );
-    assert.match(ASSIGNMENT_STUDENT_COPY.notConfigured, /Piazza to check the roster/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.notConfigured, /Piazza/i);
     assert.equal(
       ASSIGNMENT_STUDENT_COPY.notConfiguredTitle,
       "URL submit is not available yet",

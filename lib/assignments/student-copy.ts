@@ -27,7 +27,7 @@ export const ASSIGNMENT_STUDENT_COPY = {
     "The course roster has not been loaded yet. This is not a date lock — URL submit stays closed until the instructor imports the roster.",
   notConfiguredTitle: "URL submit is not available yet",
   notConfigured:
-    "This is not a date lock. URL submit and test fields appear when you are signed in with the same Northeastern email as your Canvas/FACT roster, and that email is on the course site roster. Hard-refresh this page and confirm the email you signed in with matches Canvas. If you are still blocked, ask staff on Piazza to check the roster.",
+    "This is not a date lock. The course site could not read the imported Canvas/FACT roster, so URL submit and test fields stay closed. Hard-refresh this page. If you are still blocked, ask staff on Piazza — this is a site roster connection problem, not a missing Sign-in.",
   unknownAssignment: "URL submit is only available for A1 right now.",
   impersonationBanner:
     "Impersonation — you can run checks to smoke-test the form. The submission is not saved.",

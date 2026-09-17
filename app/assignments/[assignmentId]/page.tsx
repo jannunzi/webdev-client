@@ -35,20 +35,29 @@ import {
   staffQueueForSection,
   type StaffStudentRow,
 } from "@/lib/assignments/staff";
+import { buildA1GateDiagnostics } from "@/lib/assignments/diagnostics";
+import type { A1GateDiagnostics } from "@/lib/assignments/diagnostics";
 import {
   isAssignmentProgressConfigured,
   isClerkConfigured,
+  isMongoConfigured,
+  mongoDbName,
 } from "@/lib/config";
 import { canvasUserIdFromMetadata } from "@/lib/roster/emails";
 import { listCanvasRoster } from "@/lib/roster/list";
 import { loadClerkRosterEmails } from "@/lib/roster/load-clerk-emails";
-import { lookupCanvasRoster } from "@/lib/roster/lookup";
+import {
+  CANVAS_ROSTER_COLLECTION,
+  getRosterCollection,
+  lookupCanvasRoster,
+} from "@/lib/roster/lookup";
 import { matchRoster } from "@/lib/roster/match";
 import {
   isActualStaff,
   isImpersonatingStudent,
 } from "@/lib/roster/staff-access";
 import { COURSE_WEBSITE_ACCOUNT_COPY } from "@/lib/course-site/account-copy";
+import A1SubmitDiagnostics from "../components/A1SubmitDiagnostics";
 import A1WorkArea from "../components/A1WorkArea";
 import AssignmentChapterLink from "../components/AssignmentChapterLink";
 import AssignmentChecklist from "../components/AssignmentChecklist";
@@ -97,6 +106,7 @@ export default async function AssignmentDetailPage({
   let selectedStudent: StaffStudentRow | null = null;
   let selectedSection: string | undefined;
   let showStaffGrader = false;
+  let staffDiagnostics: A1GateDiagnostics | null = null;
 
   if (isClerkConfigured()) {
     const { userId, sessionClaims } = await auth();
@@ -143,12 +153,14 @@ export default async function AssignmentDetailPage({
           canvasUserIds: canvasUserId ? [canvasUserId] : [],
           mongoEntries: [],
           envEmails: [],
-          mongoCount: 0,
+          mongoCount: emails.length > 0 ? 1 : 0,
         });
         roster =
           fallback.status === "matched"
             ? fallback
-            : { status: "not_configured" };
+            : emails.length > 0
+              ? { status: "not_on_roster" }
+              : { status: "not_configured" };
       }
 
       // Gate is computed here and never rewritten by checklist / staff extras.
@@ -164,6 +176,41 @@ export default async function AssignmentDetailPage({
       });
       canSubmit = visibility.canSubmit;
       gateReason = visibility.gateReason;
+
+      if (staff) {
+        let rosterCount: number | null = null;
+        if (isMongoConfigured()) {
+          try {
+            rosterCount = await (await getRosterCollection()).countDocuments();
+          } catch (error) {
+            console.error("assignment roster count failed", error);
+          }
+        }
+        staffDiagnostics = buildA1GateDiagnostics({
+          assignmentId: assignment.id,
+          signedIn: true,
+          mongoConfigured: isMongoConfigured(),
+          assignmentConfigured: isAssignmentProgressConfigured(),
+          isActualStaff: staff,
+          clerkEmails: emails,
+          roster,
+          rosterDb: mongoDbName(),
+          rosterCollection: CANVAS_ROSTER_COLLECTION,
+          rosterCount,
+        });
+      }
+
+      console.info("a1 submit gate", {
+        assignmentId: assignment.id,
+        emailCount: emails.length,
+        hasNortheasternEmail: emails.some((email) =>
+          /@(northeastern\.edu|husky\.neu\.edu|neu\.edu)$/.test(email),
+        ),
+        rosterStatus: roster.status,
+        mongoConfigured: isMongoConfigured(),
+        canSubmit,
+        gateReason,
+      });
 
       try {
         if (mongoReady) {
@@ -274,6 +321,10 @@ export default async function AssignmentDetailPage({
         {COURSE_WEBSITE_ACCOUNT_COPY.assignmentAuthHint}
       </p>
       <AssignmentChapterLink assignment={assignment} />
+
+      {staffDiagnostics ? (
+        <A1SubmitDiagnostics data={staffDiagnostics} />
+      ) : null}
 
       {assignment.status === "coming_soon" || !assignment.rubric ? (
         <StatusPanel title="Checklist coming soon" tone="neutral">

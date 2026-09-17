@@ -5,10 +5,12 @@ import {
   collectClerkEmails,
   collectSessionClaimEmails,
   emailMatchKeys,
+  mergeClerkRosterEmailSources,
   mergeRosterLookupEmails,
   normalizeEmail,
   parseRosterEmailsEnv,
   preferredRosterEmail,
+  rosterDocumentEmails,
 } from "./emails";
 
 describe("roster emails", () => {
@@ -107,6 +109,35 @@ describe("roster emails", () => {
         user: { primary_email_address: "Bob@Bob.com" },
       }),
       ["bob@bob.com"],
+    );
+  });
+
+  it("merges slim session + Backend API emails for roster lookup", () => {
+    assert.deepEqual(
+      mergeClerkRosterEmailSources({
+        sessionUser: { id: "user_chen", emailAddresses: [] },
+        sessionClaims: { sub: "user_chen" },
+        backendUser: {
+          id: "user_chen",
+          primaryEmailAddress: {
+            emailAddress: "Chen.Rya@Northeastern.edu",
+          },
+          email_addresses: [
+            { email_address: "chen.rya@northeastern.edu" },
+          ],
+        },
+      }),
+      ["chen.rya@northeastern.edu"],
+    );
+  });
+
+  it("reads mailbox fields from Atlas roster documents", () => {
+    assert.deepEqual(
+      rosterDocumentEmails({
+        sisLoginId: "  Chen.Rya@Husky.Neu.EDU ",
+        login_id: "not-an-email",
+      }),
+      ["chen.rya@husky.neu.edu"],
     );
   });
 

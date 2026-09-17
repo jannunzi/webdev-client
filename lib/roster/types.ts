@@ -2,6 +2,8 @@ export type CanvasRosterEntry = {
   email: string;
   canvasUserId?: string;
   sisUserId?: string;
+  sisLoginId?: string;
+  loginId?: string;
   name?: string;
   section?: string;
   source?: "mongo" | "env" | "csv" | "json" | "impersonation" | "demo";

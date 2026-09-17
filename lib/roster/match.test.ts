@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { rosterEntriesFromCsv, rosterEntriesFromJson } from "./csv";
-import { matchRoster, rosterEmailMatchFilter } from "./match";
+import {
+  matchRoster,
+  rosterEmailMatchFilter,
+  rosterIdentityMatchFilter,
+} from "./match";
 
 const csv = `Student,ID,SIS User ID,SIS Login ID,Email,Section
 Points Possible,,,,,
@@ -114,6 +118,35 @@ describe("roster matching", () => {
       }).status,
       "not_on_roster",
     );
+  });
+
+  it("matches a Clerk NEU email against a loginId-only Atlas row", () => {
+    const result = matchRoster({
+      emails: ["CHEN.RYA@northeastern.edu"],
+      mongoEntries: [
+        {
+          email: "",
+          sisLoginId: "chen.rya@northeastern.edu",
+          name: "Ryan Chen",
+          section: "CS4550 CRN 11464",
+        },
+      ],
+      envEmails: [],
+      mongoCount: 1,
+    });
+    assert.equal(result.status, "matched");
+  });
+
+  it("builds an identity filter across email and Canvas id fields", () => {
+    const filter = rosterIdentityMatchFilter({
+      emails: ["chen.rya@northeastern.edu"],
+      canvasUserIds: ["12345"],
+    });
+    assert.ok(filter);
+    const clauses = filter.$or as Record<string, unknown>[];
+    assert.ok(clauses.some((clause) => "sisLoginId" in clause));
+    assert.ok(clauses.some((clause) => clause.canvasUserId === "12345"));
+    assert.equal(rosterIdentityMatchFilter({ emails: [], canvasUserIds: [] }), null);
   });
 
   it("parses JSON roster files", () => {
