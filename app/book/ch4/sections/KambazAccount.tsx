@@ -4,6 +4,8 @@ import CodeBlock from "../../components/CodeBlock";
 import BookFigure from "../../components/BookFigure";
 import FigureLink from "../../components/FigureLink";
 import { OnYourOwn, WithAI } from "../../components/Practice";
+import NestedExerciseList from "../../components/NestedExerciseList";
+import { CH4_KAMBAZ_EXERCISES } from "../../exercise-lists/catalogs";
 import Link from "next/link";
 
 export default function KambazAccount() {
@@ -647,40 +649,12 @@ export default function Profile() {
           substitute for the walkthroughs. Create the store, click the
           buttons, and confirm the browser before you tick a line.
           Assignments and enrollments stay On your own: match the ids,
-          figures, and steps in those sections.
+          figures, and steps in those sections. Each screen is listed
+          once, with Lab, <strong>On your own</strong>, and{" "}
+          <strong>With AI</strong>{" "}nested as a/b/c when those blocks
+          exist.
         </p>
-        <ol>
-          <li>
-            Create the courses Zustand store seeded from JSON (
-            <SectionLink to="4.10.1" />).
-          </li>
-          <li>
-            Add, edit, update, and delete courses on the Dashboard (
-            <SectionLink to="4.10.2" />).
-          </li>
-          <li>
-            Toggle Course Navigation from the hamburger and read the
-            course name from the store (<SectionLink to="4.10.3" />).
-          </li>
-          <li>
-            Add a module from the dialog, delete with trash, rename with
-            the pencil, and share the list through the modules store (
-            <SectionLink to="4.10.4" />).
-          </li>
-          <li>
-            Sign in, filter Dashboard by enrollment, toggle Account
-            Navigation, and fill Profile from the current user in
-            Context (<SectionLink to="4.10.5" />).
-          </li>
-          <li>
-            Implement assignment CRUD in Zustand (
-            <SectionLink to="4.10.6" />).
-          </li>
-          <li>
-            Implement enroll and unenroll from Dashboard (
-            <SectionLink to="4.10.7" />).
-          </li>
-        </ol>
+        <NestedExerciseList groups={CH4_KAMBAZ_EXERCISES} />
       </Section>
     </>
   );

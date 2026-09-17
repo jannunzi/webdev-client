@@ -4,6 +4,8 @@ import OfficialLink from "../../components/OfficialLink";
 import CodeBlock from "../../components/CodeBlock";
 import LiveDemo from "../../components/LiveDemo";
 import { OnYourOwn, WithAI } from "../../components/Practice";
+import NestedExerciseList from "../../components/NestedExerciseList";
+import { CH5_LAB_EXERCISES } from "../../exercise-lists/catalogs";
 import Environment from "@/app/labs/lab5/intermediates/5-2-1-Environment";
 import PathParameters from "@/app/labs/lab5/intermediates/5-2-2-1-PathParameters";
 import QueryParameters from "@/app/labs/lab5/intermediates/5-2-2-2-QueryParameters";
@@ -1877,6 +1879,15 @@ const deleteTodo = async (todo) => {
           </WithAI>
         </Section>
       </Section>
+        <p>
+          Use this checklist to confirm Lab 5 covers the HTTP topics in{" "}
+          <SectionLink to="5.2.1" />–<SectionLink to="5.2.6" />. Each
+          topic is listed once, with Lab, <strong>On your own</strong>,
+          and <strong>With AI</strong>{" "}nested as a/b/c when that
+          section has those blocks. The walkthroughs above are the
+          source — this list is for checking coverage.
+        </p>
+        <NestedExerciseList groups={CH5_LAB_EXERCISES} />
     </Section>
   );
 }

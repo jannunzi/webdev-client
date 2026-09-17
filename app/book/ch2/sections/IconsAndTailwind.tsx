@@ -12,6 +12,8 @@ import LocalUrl from "../../components/LocalUrl";
 import CodeBlock from "../../components/CodeBlock";
 import LiveDemo from "../../components/LiveDemo";
 import { OnYourOwn, WithAI } from "../../components/Practice";
+import NestedExerciseList from "../../components/NestedExerciseList";
+import { CH2_LAB_EXERCISES } from "../../exercise-lists/catalogs";
 import ReactIconsSampler from "@/app/labs/lab2/intermediates/2-2-ReactIconsSampler";
 import TailwindSpacing from "@/app/labs/lab2/tailwind/TailwindSpacing";
 import TailwindTypography from "@/app/labs/lab2/tailwind/TailwindTypography";
@@ -532,42 +534,12 @@ export default function TailwindLab() {
           Each item points back to the section where you built the worked
           example. When you are done, <code>app/labs/lab2/page.tsx</code>{" "}
           should import the CSS samples in order, and the Tailwind samples
-          should live under <code>app/labs/lab2/tailwind/</code>. Complete
-          each section&apos;s <strong>On your own</strong>{" "}and{" "}
-          <strong>With AI</strong>{" "}blocks as well.
+          should live under <code>app/labs/lab2/tailwind/</code>. Each
+          topic is listed once, with Lab, <strong>On your own</strong>,
+          and <strong>With AI</strong>{" "}nested as a/b/c when that
+          section has those blocks.
         </p>
-        <ol>
-          <li>
-            Create <code>app/labs/lab2/page.tsx</code>{" "}and{" "}
-            <code>index.css</code>, and link Lab 2 from the Labs index and
-            TOC (<SectionLink to="2.1" />).
-          </li>
-          <li>
-            Practice the style attribute, then move rules into the CSS file
-            with id, class, and document-structure selectors (
-            <SectionLink to="2.1.1" />–<SectionLink to="2.1.5" />).
-          </li>
-          <li>
-            Create the color, border, box-model, corner, dimension, and
-            display samples and import them (<SectionLink to="2.1.7" />–
-            <SectionLink to="2.1.12" />).
-          </li>
-          <li>
-            Create the position, z-index, float, grid, flex, and media-query
-            samples and import them (<SectionLink to="2.1.13" />–
-            <SectionLink to="2.1.20" />).
-          </li>
-          <li>
-            Create <code>ReactIconsSampler.tsx</code>{" "}and import it (
-            <SectionLink to="2.2" />).
-          </li>
-          <li>
-            Create the Tailwind samples under{" "}
-            <code>app/labs/lab2/tailwind/</code>{" "}— spacing, typography,
-            backgrounds, responsive prefixes, filters, and grids (
-            <SectionLink to="2.3" />).
-          </li>
-        </ol>
+        <NestedExerciseList groups={CH2_LAB_EXERCISES} />
       </Section>
     </>
   );

@@ -27,6 +27,8 @@ import AssignmentEditorDemo from "@/app/book/ch1/embeds/AssignmentEditorDemo";
 import AccountScreensDemo from "@/app/book/ch1/embeds/AccountScreensDemo";
 import Link from "next/link";
 import { OnYourOwn, WithAI } from "../../components/Practice";
+import NestedExerciseList from "../../components/NestedExerciseList";
+import { CH2_KAMBAZ_EXERCISES } from "../../exercise-lists/catalogs";
 
 export default function KambazStyling() {
   return (
@@ -1425,44 +1427,11 @@ export default async function Assignments({
           in order as you read — this list is for checking coverage, not a
           substitute for the walkthroughs. Assignment Editor and Account
           stay On your own: match the figures and LiveDemos in those
-          sections.
+          sections. Each screen is listed once, with Lab,{" "}
+          <strong>On your own</strong>, and <strong>With AI</strong>{" "}
+          nested as a/b/c.
         </p>
-        <ol>
-          <li>
-            Style Kambaz Navigation and replace the table layout with flex (
-            <SectionLink to="2.4.1" />).
-          </li>
-          <li>
-            Style the Dashboard and <code>CourseCard</code>{" "}(
-            <SectionLink to="2.4.2" />).
-          </li>
-          <li>
-            Style Course Navigation (<SectionLink to="2.4.3" />).
-          </li>
-          <li>
-            Style Modules, <code>Module</code>, and <code>Lesson</code>{" "}(
-            <SectionLink to="2.4.4" />).
-          </li>
-          <li>
-            Style Home and Course Status (<SectionLink to="2.4.5" />).
-          </li>
-          <li>
-            Style the People table (<SectionLink to="2.4.6" />).
-          </li>
-          <li>
-            Style the Assignments screen (<SectionLink to="2.4.7" />).
-          </li>
-          <li>
-            Style the Assignment Editor (
-            <SectionLink to="2.4.8" />
-            ).
-          </li>
-          <li>
-            Style Sign in, Sign up, Profile, and Account Navigation (
-            <SectionLink to="2.4.9" />
-            ).
-          </li>
-        </ol>
+        <NestedExerciseList groups={CH2_KAMBAZ_EXERCISES} />
       </Section>
     </Section>
   );
