@@ -1790,11 +1790,13 @@ export default function Forms() {
         <OnYourOwn>
           <p>
             Build a personal <strong>Student Profile</strong>{" "}form that reuses
-            every control family from this section — not a tiny stub. Create{" "}
-            <code>app/labs/lab1/forms/YourForm.tsx</code>, wrap the fields in{" "}
-            <code>&lt;form id=&quot;wd-your-form&quot;&gt;</code>, import it into{" "}
-            <code>Forms.tsx</code>{" "}after the sample components, and include all
-            of the following:
+            every control family from this section — not a tiny stub. There is
+            one canonical file for that work:{" "}
+            <code>app/labs/lab1/forms/YourForm.tsx</code>. Wrap the fields in{" "}
+            <code>&lt;form id=&quot;wd-your-form&quot;&gt;</code>, import that
+            one <code>YourForm</code>{" "}component into{" "}
+            <code>Forms.tsx</code>{" "}once after the sample components, and
+            include all of the following:
           </p>
           <ul>
             <li>
@@ -1845,13 +1847,29 @@ export default function Forms() {
             the course sample; your profile form is the ambitious personal piece
             graders can skim for coverage of each input type.
           </p>
+          <p>
+            If you use an assistant, overwrite that same path —{" "}
+            <code>app/labs/lab1/forms/YourForm.tsx</code>
+            {" "}— rather than letting it create a second file under another
+            name, in a nested folder, or as a parallel &quot;AI&quot; form.
+            Keep the same form id,{" "}
+            <code>wd-your-form</code>, on that single component.{" "}
+            <code>Forms.tsx</code>{" "}must import that one{" "}
+            <code>YourForm</code>{" "}only — do not keep both an original and an
+            AI-generated form imported or rendered.
+          </p>
         </OnYourOwn>
         <WithAI
-          prompt={`Create app/labs/lab1/forms/YourForm.tsx as a Student Profile form with id wd-your-form. Cover every control from Lab 1 forms: labeled text/password fields, textarea bio, two radio name-groups (class standing plus one more exclusive choice such as full-time/part-time), at least three checkboxes, a single select and a multiple select (four+ options, two preselected), email, number (graduation year with min/max), date, range 0–10, submit Save and type=button Cancel with their own ids. Import YourForm into app/labs/lab1/forms/Forms.tsx after the sample components. Use obvious SAMPLE placeholders (Jane Doe, jane@university.edu) — I will replace them with my own details.`}
+          prompt={`Overwrite the same file app/labs/lab1/forms/YourForm.tsx only — do not create a second form file under another name. Keep the form id wd-your-form on that single component. Import YourForm into app/labs/lab1/forms/Forms.tsx only once after the sample components; do not import or render both an original and an AI-generated form. Cover every control from Lab 1 forms: labeled text/password fields, textarea bio, two radio name-groups (class standing plus one more exclusive choice such as full-time/part-time), at least three checkboxes, a single select and a multiple select (four+ options, two preselected), email, number (graduation year with min/max), date, range 0–10, submit Save and type=button Cancel with their own ids. Use obvious SAMPLE placeholders (Jane Doe, jane@university.edu) — I will replace them with my own details.`}
         >
-          The profile form is a lot of markup. Paste this prompt to scaffold{" "}
-          <code>YourForm.tsx</code>, then replace every sample default with facts
-          about you so the form still reads as yours:
+          The profile form is a lot of markup. Paste this prompt so the
+          assistant overwrites the same{" "}
+          <code>app/labs/lab1/forms/YourForm.tsx</code>
+          {" "}— not a second file under another name — keeps{" "}
+          <code>id=&quot;wd-your-form&quot;</code>{" "}on that one component, and
+          leaves <code>Forms.tsx</code>{" "}importing that{" "}
+          <code>YourForm</code>{" "}only. Then replace every sample default with
+          facts about you so the form still reads as yours:
         </WithAI>
       </Section>
 

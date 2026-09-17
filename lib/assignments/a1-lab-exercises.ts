@@ -314,7 +314,7 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
         id: "a1-lab-forms-oyo",
         kind: "oyo",
         description:
-          "Student Profile form in YourForm.tsx (wd-your-form) covering the field types from the chapter, plus Save and Cancel.",
+          "Student Profile form in the single canonical app/labs/lab1/forms/YourForm.tsx with id wd-your-form covering the field types from the chapter, plus Save and Cancel — overwrite that same path and keep that same id; Forms.tsx imports that one YourForm only.",
         points: 3,
         auto: {
           kind: "ids",
@@ -327,7 +327,7 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
         id: "a1-lab-forms-ai",
         kind: "ai",
         description:
-          "Scaffold YourForm.tsx with the sample prompt, then replace every SAMPLE default with your own details.",
+          "Overwrite the same app/labs/lab1/forms/YourForm.tsx (keep id wd-your-form; no second file; Forms.tsx imports that one YourForm only), then replace every SAMPLE default with your own details.",
         points: 2,
       },
     ],
