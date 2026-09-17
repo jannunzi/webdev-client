@@ -103,6 +103,34 @@ export function listRubricCriteria(
   return rubric.groups.flatMap((group) => group.criteria);
 }
 
+export type NestedRubricBlock =
+  | { type: "single"; row: RubricCriterion }
+  | { type: "nested"; parentLabel: string; rows: RubricCriterion[] };
+
+/** Group consecutive criteria that share a parentLabel into nested a/b/c blocks. */
+export function nestRubricCriteria(
+  criteria: readonly RubricCriterion[],
+): NestedRubricBlock[] {
+  const blocks: NestedRubricBlock[] = [];
+  let index = 0;
+  while (index < criteria.length) {
+    const row = criteria[index];
+    const parentLabel = row.parentLabel;
+    if (!parentLabel) {
+      blocks.push({ type: "single", row });
+      index += 1;
+      continue;
+    }
+    const rows: RubricCriterion[] = [];
+    while (index < criteria.length && criteria[index].parentLabel === parentLabel) {
+      rows.push(criteria[index]);
+      index += 1;
+    }
+    blocks.push({ type: "nested", parentLabel, rows });
+  }
+  return blocks;
+}
+
 export function findCriterion(
   rubric: AssignmentRubric,
   criterionId: string,

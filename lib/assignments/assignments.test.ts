@@ -16,6 +16,7 @@ import {
   listAssignmentIds,
   listAssignments,
   listRubricCriteria,
+  nestRubricCriteria,
   rubricPointTotal,
 } from "./catalog";
 import type { AssignmentCheckResult } from "./check-types";
@@ -163,11 +164,19 @@ describe("assignment catalog", () => {
       "delivery,lab,kambaz",
     );
     assert.ok(findCriterion(A1_RUBRIC, "a1-lab-heading-tags"));
+    assert.equal(findCriterion(A1_RUBRIC, "a1-lab-heading-tags")?.parentLabel, "HeadingTags");
+    assert.equal(findCriterion(A1_RUBRIC, "a1-lab-heading-tags")?.label, "Lab component");
     assert.ok(findCriterion(A1_RUBRIC, "a1-lab-heading-tags-ai")?.withAI);
+    assert.equal(findCriterion(A1_RUBRIC, "a1-lab-heading-tags-ai")?.label, "With AI");
     assert.ok(findCriterion(A1_RUBRIC, "a1-delivery-labs-nav"));
     assert.equal(
       A1_RUBRIC.groups.find((group) => group.id === "delivery")?.criteria.length,
       3,
+    );
+    assert.ok(
+      nestRubricCriteria(
+        A1_RUBRIC.groups.find((group) => group.id === "delivery")?.criteria ?? [],
+      ).every((block) => block.type === "single"),
     );
     assert.ok(
       A1_RUBRIC.groups

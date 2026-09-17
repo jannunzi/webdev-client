@@ -2378,10 +2378,11 @@ export default function LabsLayout({
           Use this checklist to confirm Lab 1 covers every HTML topic in{" "}
           <SectionLink to="1.3" />
           . It is the same list, in the same order, as the{" "}
-          <A1LabExerciseIntroLink />{" "}on A1 — create the component, then that
-          section&apos;s <strong>On your own</strong>, then its{" "}
-          <strong>With AI</strong>{" "}extra, walking <SectionLink to="1.3.1" />–
-          <SectionLink to="1.3.11" />{" "}as you read. Each item points back to
+          <A1LabExerciseIntroLink />{" "}on A1 — one top-level item per Lab
+          section, with nested <strong>a / b / c</strong> for the Lab
+          component, <strong>On your own</strong>, and{" "}
+          <strong>With AI</strong> extra, walking <SectionLink to="1.3.1" />–
+          <SectionLink to="1.3.11" />{" "}as you read. Each parent points back to
           the section where you built the worked example. When you are done,{" "}
           <code>app/labs/lab1/page.tsx</code>{" "}should import and render the
           components in order so the page matches the live demo below.

@@ -3,27 +3,80 @@ import { describe, it } from "node:test";
 import { A1_RUBRIC } from "./a1";
 import {
   A1_LAB_EXERCISES,
+  A1_LAB_EXERCISE_SECTIONS,
+  LAB_EXERCISE_KIND_LABELS,
   a1LabCriteria,
   a1LabManualIds,
+  flattenLabExercises,
 } from "./a1-lab-exercises";
+import { nestRubricCriteria } from "./catalog";
 import { A1_MANUAL_CRITERION_IDS, evaluateRubricSpec } from "./a1-rubric";
 
+const LAB_SECTIONS = [
+  "1.3.1",
+  "1.3.2",
+  "1.3.3",
+  "1.3.4",
+  "1.3.5",
+  "1.3.6",
+  "1.3.7",
+  "1.3.8",
+  "1.3.9",
+  "1.3.10",
+  "1.3.11",
+];
+
+const PARENT_LABELS = [
+  "HeadingTags",
+  "ParagraphTag",
+  "ListTags",
+  "Tables",
+  "Images",
+  "Forms",
+  "HighlightedParagraph",
+  "HighlightedBox",
+  "AnchorTag",
+  "Labs navigation",
+  "Labs TOC and layout",
+];
+
 describe("A1 Lab catalog / §1.3.12 parity", () => {
+  it("nests one parent per 1.3.1–1.3.11 section with lettered a/b/c tasks", () => {
+    assert.equal(A1_LAB_EXERCISE_SECTIONS.length, 11);
+    assert.deepEqual(
+      A1_LAB_EXERCISE_SECTIONS.map((section) => section.section),
+      LAB_SECTIONS,
+    );
+    assert.deepEqual(
+      A1_LAB_EXERCISE_SECTIONS.map((section) => section.label),
+      PARENT_LABELS,
+    );
+    assert.equal(new Set(PARENT_LABELS).size, PARENT_LABELS.length);
+    for (const section of A1_LAB_EXERCISE_SECTIONS) {
+      assert.deepEqual(
+        section.tasks.map((task) => task.kind),
+        ["core", "oyo", "ai"],
+        `${section.section} should be Lab component, On your own, With AI`,
+      );
+      assert.equal(section.tasks.length, 3);
+    }
+    assert.deepEqual(
+      A1_LAB_EXERCISES.map((row) => row.id),
+      flattenLabExercises(A1_LAB_EXERCISE_SECTIONS).map((row) => row.id),
+    );
+    assert.ok(
+      A1_LAB_EXERCISES.every((row) => row.label !== row.parentLabel),
+      "sub-task labels must not repeat the parent title",
+    );
+    assert.deepEqual(
+      [...new Set(A1_LAB_EXERCISES.map((row) => row.label))].sort(),
+      Object.values(LAB_EXERCISE_KIND_LABELS).slice().sort(),
+    );
+  });
+
   it("walks 1.3.1–1.3.11 as create, On your own, With AI per section", () => {
     const sections = [...new Set(A1_LAB_EXERCISES.map((row) => row.section))];
-    assert.deepEqual(sections, [
-      "1.3.1",
-      "1.3.2",
-      "1.3.3",
-      "1.3.4",
-      "1.3.5",
-      "1.3.6",
-      "1.3.7",
-      "1.3.8",
-      "1.3.9",
-      "1.3.10",
-      "1.3.11",
-    ]);
+    assert.deepEqual(sections, LAB_SECTIONS);
     for (const section of sections) {
       const kinds = A1_LAB_EXERCISES.filter((row) => row.section === section).map(
         (row) => row.kind,
@@ -51,13 +104,43 @@ describe("A1 Lab catalog / §1.3.12 parity", () => {
       labGroup.criteria.map((row) => row.description),
       A1_LAB_EXERCISES.map((row) => row.description),
     );
+    assert.deepEqual(
+      labGroup.criteria.map((row) => row.parentLabel),
+      A1_LAB_EXERCISES.map((row) => row.parentLabel),
+    );
     assert.deepEqual(labGroup.criteria, a1LabCriteria());
+  });
+
+  it("nests the A1 Lab checklist into the same 11 parents as §1.3.12", () => {
+    const labGroup = A1_RUBRIC.groups.find((group) => group.id === "lab");
+    assert.ok(labGroup);
+    const blocks = nestRubricCriteria(labGroup.criteria);
+    assert.ok(blocks.every((block) => block.type === "nested"));
+    assert.deepEqual(
+      blocks.map((block) => (block.type === "nested" ? block.parentLabel : "")),
+      A1_LAB_EXERCISE_SECTIONS.map((section) => section.label),
+    );
+    assert.deepEqual(
+      blocks.flatMap((block) =>
+        block.type === "nested" ? block.rows.map((row) => row.id) : [block.row.id],
+      ),
+      A1_LAB_EXERCISE_SECTIONS.flatMap((section) =>
+        section.tasks.map((task) => task.id),
+      ),
+    );
+    for (const block of blocks) {
+      if (block.type !== "nested") continue;
+      assert.deepEqual(
+        block.rows.map((row) => row.label),
+        ["Lab component", "On your own", "With AI"],
+      );
+    }
   });
 
   it("includes every book With AI extra as an A1 check item", () => {
     const ai = A1_LAB_EXERCISES.filter((row) => row.kind === "ai");
     assert.equal(ai.length, 11);
-    assert.ok(ai.every((row) => row.label.endsWith("— With AI")));
+    assert.ok(ai.every((row) => row.label === "With AI"));
     assert.ok(
       ai.every((row) => labGroupHas(row.id) && labGroupHasLabel(row.label)),
     );
