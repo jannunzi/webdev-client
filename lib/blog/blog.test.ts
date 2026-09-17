@@ -321,6 +321,7 @@ describe("blog affiliate", () => {
     assert.equal(BLOG_AFFILIATE_BOOKS.length, 2);
     for (const book of BLOG_AFFILIATE_BOOKS) {
       assert.match(book.asin, /^[A-Z0-9]{10}$/);
+      assert.match(book.coverUrl, /^https:\/\/covers\.openlibrary\.org\/b\/id\/\d+-M\.jpg$/);
       assert.equal(
         amazonProductUrl(book.asin),
         `https://www.amazon.com/dp/${book.asin}?tag=jannunzi04-20`,
@@ -365,9 +366,19 @@ describe("blog routes and nav", () => {
     assert.match(source, /rel="noopener noreferrer"/);
     assert.match(source, /Read original/);
     assert.match(ad, /Sponsored \/ further reading/);
-    assert.match(ad, /noopener noreferrer nofollow sponsored/);
+    assert.match(ad, /SponsoredBookItem/);
     assert.match(ad, /ASSOCIATES_DISCLOSURE/);
     assert.doesNotMatch(ad, /import .*BookAffiliateBanner/);
+    const item = read(
+      join(process.cwd(), "app/course-info/SponsoredBookItem.tsx"),
+    );
+    const cover = read(
+      join(process.cwd(), "app/course-info/SponsoredBookCover.tsx"),
+    );
+    assert.match(item, /SponsoredBookCover/);
+    assert.match(item, /noopener noreferrer nofollow sponsored/);
+    assert.match(cover, /alt=\{title\}/);
+    assert.match(cover, /affiliateCoverSources/);
     assert.doesNotMatch(index + post, /import .*BookAffiliateBanner/);
 
     const bookLayout = read(join(process.cwd(), "app/book/layout.tsx"));

@@ -4,6 +4,7 @@ export type AffiliateBook = {
   title: string;
   author: string;
   asin: string;
+  coverUrl?: string;
 };
 
 /**
@@ -20,6 +21,7 @@ export const AFFILIATE_BOOKS = {
     title: "JavaScript and jQuery: Interactive Front-End Web Development",
     author: "Jon Duckett",
     asin: "1118531647",
+    coverUrl: "https://covers.openlibrary.org/b/id/7419725-M.jpg",
   },
   eloquentJs: {
     title: "Eloquent JavaScript, 4th Edition",
@@ -35,16 +37,19 @@ export const AFFILIATE_BOOKS = {
     title: "Learning React",
     author: "Alex Banks and Eve Porcello",
     asin: "1492051721",
+    coverUrl: "https://covers.openlibrary.org/b/id/10282783-M.jpg",
   },
   realWorldNext: {
     title: "Real-World Next.js",
     author: "Michele Riva",
     asin: "1801074970",
+    coverUrl: "https://covers.openlibrary.org/b/id/13166260-M.jpg",
   },
   nodeExpress: {
     title: "Web Development with Node and Express",
     author: "Ethan Brown",
     asin: "1492053511",
+    coverUrl: "https://covers.openlibrary.org/b/id/8513971-M.jpg",
   },
   nodePatterns: {
     title: "Node.js Design Patterns",
@@ -131,27 +136,10 @@ export function amazonProductUrl(
   return `https://www.amazon.com/dp/${asin}?tag=${encodeURIComponent(tag)}`;
 }
 
-export function amazonImageUrl(
-  asin: string,
-  tag: string = amazonAssociateTag(),
-): string {
-  const params = new URLSearchParams({
-    _encoding: "UTF8",
-    ASIN: asin,
-    Format: "_SL160_",
-    ID: "AsinImage",
-    MarketPlace: "US",
-    ServiceVersion: "20070822",
-    WS: "1",
-    tag,
-  });
-  return `https://ws-na.amazon-adsystem.com/widgets/q?${params.toString()}`;
-}
-
-/** Amazon often serves a 1×1 spacer instead of a 404 for unknown covers. */
-export function isUsableAmazonCover(width: number, height: number): boolean {
-  return width >= 40 && height >= 40;
-}
+export {
+  amazonImageUrl,
+  isUsableAmazonCover,
+} from "@/lib/affiliate/covers";
 
 export function chapterFromPathname(pathname: string): number | null {
   const match = CHAPTER_PATH.exec(pathname);

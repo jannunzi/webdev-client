@@ -127,6 +127,14 @@ describe("Amazon associate links", () => {
     assert.match(cover, /tag=jannunzi04-20/);
     assert.equal(isUsableAmazonCover(1, 1), false);
     assert.equal(isUsableAmazonCover(160, 240), true);
+    assert.match(
+      AFFILIATE_BOOKS.learningReact.coverUrl ?? "",
+      /covers\.openlibrary\.org/,
+    );
+    assert.match(
+      AFFILIATE_BOOKS.realWorldNext.coverUrl ?? "",
+      /covers\.openlibrary\.org/,
+    );
   });
 
   it("tags every curated bestseller with the default associate id", () => {

@@ -3,6 +3,7 @@ import {
   BLOG_AFFILIATE_BOOKS,
   amazonProductUrl,
 } from "@/lib/blog/affiliate";
+import SponsoredBookItem from "@/app/course-info/SponsoredBookItem";
 
 /**
  * Static sponsored card for /blog only. Do not reuse the book chapter
@@ -21,17 +22,16 @@ export default function BlogAdSlot() {
         Optional books that complement the course stack. Not required for
         grades or labs.
       </p>
-      <ul className="mt-3 mb-0 list-none space-y-2 p-0">
+      <ul className="mt-3 mb-0 list-none space-y-3 p-0">
         {BLOG_AFFILIATE_BOOKS.map((book) => (
           <li key={book.asin}>
-            <a
+            <SponsoredBookItem
+              title={book.title}
+              author={book.author}
               href={amazonProductUrl(book.asin)}
-              target="_blank"
-              rel="noopener noreferrer nofollow sponsored"
-            >
-              {book.title}
-            </a>
-            <span className="text-neutral-600"> — {book.author}</span>
+              asin={book.asin}
+              coverUrl={book.coverUrl}
+            />
           </li>
         ))}
       </ul>
