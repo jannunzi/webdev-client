@@ -30,7 +30,7 @@ export default function SponsoredBookItem({
       />
       <span className="min-w-0 pt-0.5">
         <span className="font-medium underline underline-offset-2">{title}</span>
-        <span className="mt-0.5 block text-neutral-600"> — {author}</span>
+        <span className="mt-0.5 block text-neutral-600">{author}</span>
       </span>
     </a>
   );
