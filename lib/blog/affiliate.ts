@@ -15,6 +15,7 @@ export type BlogAffiliateBook = {
   title: string;
   author: string;
   asin: string;
+  coverUrl: string;
 };
 
 /** Optional further reading — not assigned course texts. */
@@ -23,11 +24,13 @@ export const BLOG_AFFILIATE_BOOKS: BlogAffiliateBook[] = [
     title: "Learning React",
     author: "Alex Banks and Eve Porcello",
     asin: "1492051721",
+    coverUrl: "https://covers.openlibrary.org/b/id/10282783-M.jpg",
   },
   {
     title: "Real-World Next.js",
     author: "Michele Riva",
     asin: "1801074970",
+    coverUrl: "https://covers.openlibrary.org/b/id/13166260-M.jpg",
   },
 ];
 

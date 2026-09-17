@@ -4,11 +4,10 @@ import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import { FaTimes } from "react-icons/fa";
 import { createAffiliateBannerSession } from "../affiliate/banner-session";
+import SponsoredBookCover from "@/app/course-info/SponsoredBookCover";
 import {
-  amazonImageUrl,
   amazonProductUrl,
   chapterFromPathname,
-  isUsableAmazonCover,
   productAtIndex,
   productsForChapter,
 } from "../affiliate/catalog";
@@ -22,7 +21,6 @@ export default function BookAffiliateBanner() {
   const products = useMemo(() => productsForChapter(chapter), [chapter]);
   const [session] = useState(() => createAffiliateBannerSession());
   const [slideOpen, setSlideOpen] = useState(false);
-  const [imageFailed, setImageFailed] = useState(false);
 
   useEffect(() => {
     session.start();
@@ -41,10 +39,6 @@ export default function BookAffiliateBanner() {
 
   const shown = state.shown;
   const product = productAtIndex(products, state.productIndex);
-
-  useEffect(() => {
-    setImageFailed(false);
-  }, [product.asin]);
 
   useEffect(() => {
     if (!shown) {
@@ -86,31 +80,13 @@ export default function BookAffiliateBanner() {
             target="_blank"
             rel="nofollow sponsored noopener noreferrer"
             className="book-affiliate-cover shrink-0 no-underline"
-            aria-hidden
             tabIndex={-1}
           >
-            {imageFailed ? (
-              <span className="flex h-[4.5rem] w-12 items-center justify-center rounded border border-neutral-300 bg-neutral-100 font-sans text-lg text-neutral-500">
-                {product.title.slice(0, 1)}
-              </span>
-            ) : (
-              // Amazon ASIN thumbnails 404 often; hide via onError. Book figures use img too.
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={amazonImageUrl(product.asin)}
-                alt=""
-                width={48}
-                height={72}
-                className="h-[4.5rem] w-12 rounded border border-neutral-200 bg-neutral-50 object-cover"
-                onError={() => setImageFailed(true)}
-                onLoad={(event) => {
-                  const img = event.currentTarget;
-                  if (!isUsableAmazonCover(img.naturalWidth, img.naturalHeight)) {
-                    setImageFailed(true);
-                  }
-                }}
-              />
-            )}
+            <SponsoredBookCover
+              title={product.title}
+              asin={product.asin}
+              coverUrl={product.coverUrl}
+            />
           </a>
           <div className="min-w-0 flex-1 font-sans">
             <p className="m-0 text-[0.7rem] font-semibold uppercase tracking-wide text-neutral-500">
