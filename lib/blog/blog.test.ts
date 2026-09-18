@@ -49,16 +49,23 @@ const REQUIRED_DIGEST_2026_09_17 = [
   "https://www.aikido.dev/blog/shai-hulud-npm-resurfaces",
 ] as const;
 
+const REQUIRED_DIGEST_2026_09_18 = [
+  "https://tailwindcss.com/blog/tailwind-is-joining-shopify",
+  "https://vercel.com/blog/ai-gateway-production-index-september-2026",
+  "https://threataft.com/articles/vm2-sandbox-mass-disclosure-13-cves-cvss-10",
+] as const;
+
 const REQUIRED_SOURCES = [
   ...REQUIRED_SEED_SOURCES,
   ...REQUIRED_CATCHUP_SOURCES,
   ...REQUIRED_DIGEST_2026_09_15,
   ...REQUIRED_DIGEST_2026_09_16,
   ...REQUIRED_DIGEST_2026_09_17,
+  ...REQUIRED_DIGEST_2026_09_18,
 ] as const;
 
 const ALLOWED_SOURCE_URL =
-  /^https:\/\/(nextjs\.org\/blog\/|react\.dev\/blog\/|vercel\.com\/blog\/|www\.isyncevolution\.com\/blog\/|cursor\.com\/blog\/|expressjs\.com\/en\/blog\/|openai\.com\/index\/|www\.geekygoo\.com\/blog\/|www\.aikido\.dev\/blog\/)/;
+  /^https:\/\/(nextjs\.org\/blog\/|react\.dev\/blog\/|vercel\.com\/blog\/|www\.isyncevolution\.com\/blog\/|cursor\.com\/blog\/|expressjs\.com\/en\/blog\/|openai\.com\/index\/|www\.geekygoo\.com\/blog\/|www\.aikido\.dev\/blog\/|tailwindcss\.com\/blog\/|threataft\.com\/articles\/)/;
 
 const BLOG_APP = join(process.cwd(), "app/blog");
 const KAMBAZ_APP = join(process.cwd(), "app/(kambaz)");
@@ -98,6 +105,9 @@ describe("blog posts", () => {
     for (const required of REQUIRED_DIGEST_2026_09_17) {
       assert.ok(urls.includes(required), required);
     }
+    for (const required of REQUIRED_DIGEST_2026_09_18) {
+      assert.ok(urls.includes(required), required);
+    }
 
     for (const post of BLOG_POSTS) {
       assert.ok(post.slug.length > 0, "slug");
@@ -125,30 +135,34 @@ describe("blog posts", () => {
     assert.deepEqual(
       listed.slice(0, 3).map((post) => post.slug),
       [
-        "claude-code-vs-copilot-vs-cursor-2026",
-        "shai-hulud-npm-resurfaces-111-days",
-        "vercel-fluid-compute-any-shape",
+        "ai-gateway-production-index-september-2026",
+        "tailwind-labs-joining-shopify",
+        "vm2-sandbox-mass-disclosure-13-cves",
       ],
     );
     assert.deepEqual(
       listed.slice(0, 3).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_17].sort(),
+      [...REQUIRED_DIGEST_2026_09_18].sort(),
     );
     assert.deepEqual(
       listed.slice(3, 6).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_16].sort(),
+      [...REQUIRED_DIGEST_2026_09_17].sort(),
     );
     assert.deepEqual(
       listed.slice(6, 9).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_15].sort(),
+      [...REQUIRED_DIGEST_2026_09_16].sort(),
     );
     assert.deepEqual(
       listed.slice(9, 12).map((post) => post.source.url).sort(),
+      [...REQUIRED_DIGEST_2026_09_15].sort(),
+    );
+    assert.deepEqual(
+      listed.slice(12, 15).map((post) => post.source.url).sort(),
       [...REQUIRED_CATCHUP_SOURCES].sort(),
     );
-    assert.equal(listed[12]?.slug, "august-2026-nextjs-security-release");
-    assert.equal(listed[13]?.slug, "nextjs-16-3-instant-navigations");
-    assert.equal(listed[14]?.slug, "nextjs-16-3-ai-improvements");
+    assert.equal(listed[15]?.slug, "august-2026-nextjs-security-release");
+    assert.equal(listed[16]?.slug, "nextjs-16-3-instant-navigations");
+    assert.equal(listed[17]?.slug, "nextjs-16-3-ai-improvements");
 
     assert.equal(listBlogSlugs().length, REQUIRED_SOURCES.length);
     assert.equal(
@@ -163,6 +177,7 @@ describe("blog posts", () => {
   });
 
   it("formats published dates in UTC and maps related chapters", () => {
+    assert.equal(formatBlogDate("2026-09-18T12:00:00.000Z"), "September 18, 2026");
     assert.equal(formatBlogDate("2026-09-17T12:00:00.000Z"), "September 17, 2026");
     assert.equal(formatBlogDate("2026-09-16T12:00:00.000Z"), "September 16, 2026");
     assert.equal(formatBlogDate("2026-09-15T12:00:00.000Z"), "September 15, 2026");
@@ -235,6 +250,19 @@ describe("blog posts", () => {
       shaiHulud?.intro.join(" ") ?? "",
       /e37e3ddeeaaa9e0c4fdbcb829b4895a6521031c80053fc436625b61e6ee5b1a6/,
     );
+
+    const tailwind = getBlogPost("tailwind-labs-joining-shopify");
+    assert.match(tailwind?.intro.join(" ") ?? "", /Adam Wathan/);
+    assert.match(tailwind?.intro.join(" ") ?? "", /110 million/);
+    assert.match(tailwind?.intro.join(" ") ?? "", /MIT-licensed/);
+    const aiGateway = getBlogPost("ai-gateway-production-index-september-2026");
+    assert.match(aiGateway?.intro.join(" ") ?? "", /Amelia Charles/);
+    assert.match(aiGateway?.intro.join(" ") ?? "", /56%/);
+    assert.match(aiGateway?.intro.join(" ") ?? "", /GPT-6 Astra/);
+    const vm2 = getBlogPost("vm2-sandbox-mass-disclosure-13-cves");
+    assert.match(vm2?.intro.join(" ") ?? "", /CVE-2026-92956/);
+    assert.match(vm2?.intro.join(" ") ?? "", /3\.11\.8/);
+    assert.match(vm2?.intro.join(" ") ?? "", /CISA KEV/);
   });
 
   it("dates the September 14 catch-up posts in America/New_York", () => {
@@ -252,6 +280,25 @@ describe("blog posts", () => {
       const post = getBlogPost(slug);
       assert.ok(post, slug);
       assert.equal(nyDate.format(new Date(post.publishedAt)), "September 14, 2026");
+    }
+  });
+
+  it("dates the September 18 digest posts in America/New_York", () => {
+    const nyDate = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "America/New_York",
+    });
+    for (const slug of [
+      "tailwind-labs-joining-shopify",
+      "ai-gateway-production-index-september-2026",
+      "vm2-sandbox-mass-disclosure-13-cves",
+    ]) {
+      const post = getBlogPost(slug);
+      assert.ok(post, slug);
+      assert.equal(post.publishedAt, "2026-09-18T12:00:00.000Z");
+      assert.equal(nyDate.format(new Date(post.publishedAt)), "September 18, 2026");
     }
   });
 
