@@ -6,6 +6,57 @@ import type { BlogPost } from "./types";
  */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "tailwind-labs-joining-shopify",
+    title: "Tailwind Labs joins Shopify; CSS stays MIT open source",
+    publishedAt: "2026-09-18T12:00:00.000Z",
+    tags: ["course"],
+    relatedChapters: ["ch1"],
+    intro: [
+      "On September 9, 2026, Adam Wathan wrote that Tailwind Labs is joining Shopify to give Tailwind a stable long-term home where it will be actively maintained. He says the framework is installed over 110 million times per week and is used to style products including ChatGPT, X, Cloudflare, Reddit, and Shopify.",
+      "Nothing changes for Tailwind CSS or the other open-source projects: they stay MIT-licensed, and the team continues to lead and maintain them with Shopify support. On the commercial side, Tailwind is closing new sign-ups for Tailwind Plus and ui.sh; existing customers keep access, and the focus moves to Tailwind CSS at Shopify.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. This course site already uses Tailwind for styling; the digest is about the project's home, not a change to lab CSS. Follow the original Tailwind CSS post for the full announcement.",
+    ],
+    source: {
+      title: "Tailwind Labs is joining Shopify",
+      url: "https://tailwindcss.com/blog/tailwind-is-joining-shopify",
+      publisher: "Tailwind CSS",
+    },
+  },
+  {
+    slug: "ai-gateway-production-index-september-2026",
+    title: "AI Gateway September index: open-weight models take 56% of tokens",
+    publishedAt: "2026-09-18T12:00:00.000Z",
+    tags: ["ai", "course"],
+    relatedChapters: ["ch1"],
+    intro: [
+      "On September 17, 2026, Amelia Charles and Eric Dodds published the September AI Gateway Production Index, covering August 2026 gateway data. Open-weight models ran 56% of gateway tokens in August, the first majority, up from 7% in December. Average price per token fell 23.2% in August, the third straight monthly drop, and the median team paid 7.6% less.",
+      "Anthropic kept 64% of spend. Fable 5 spend share fell sharply while Opus 5 rose. A special report says GPT-6 Astra launched September 3 and within two days took a third of OpenAI spend; in its first twelve days Astra took 7.7% of all gateway spend versus Fable 5.1's 3.7%.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. The digest is about production model mix and pricing on Vercel AI Gateway, not a change to App Router lab code. Follow the original Vercel post for the full index.",
+    ],
+    source: {
+      title: "Open-weight models take 56% of token volume, Astra doubles Fable 5.1 spend",
+      url: "https://vercel.com/blog/ai-gateway-production-index-september-2026",
+      publisher: "Vercel",
+    },
+  },
+  {
+    slug: "vm2-sandbox-mass-disclosure-13-cves",
+    title: "vm2 sandbox: 13 CVEs including seven CVSS 10.0 escapes",
+    publishedAt: "2026-09-18T12:00:00.000Z",
+    tags: ["security", "course"],
+    relatedChapters: ["ch5"],
+    intro: [
+      "On September 17, 2026, ThreatAft disclosed 13 vulnerabilities in the vm2 Node.js sandbox, including seven rated CVSS 10.0. Versions through 3.11.7 are affected; the fixes are in vm2 3.11.8. The write-up describes complete sandbox escape vectors spanning WebAssembly, TLS, Buffer, require, Promise, and TypedArray.",
+      "Examples named in the article include CVE-2026-92956 (WebAssembly escape on Node.js 26 from a default new VM()), CVE-2026-92947 (host Buffer pool), and CVE-2026-92941 (tls module exposure that can replace process-wide CA certificates). The recommended action is to upgrade to 3.11.8. At publication time the article reports no public exploit and no CISA KEV listing.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. For Chapter 5 Node hygiene and any lab work that runs untrusted code, treat JavaScript-level sandboxes as a weak isolation boundary. Follow the original ThreatAft article for the CVE list and upgrade notes.",
+    ],
+    source: {
+      title: "vm2 Sandbox Mass Disclosure — 13 CVEs, 7 × CVSS 10.0, Complete Escape on All Fronts",
+      url: "https://threataft.com/articles/vm2-sandbox-mass-disclosure-13-cves-cvss-10",
+      publisher: "ThreatAft",
+    },
+  },
+  {
     slug: "vercel-fluid-compute-any-shape",
     title: "Vercel Fluid: one compute layer for functions, sandboxes, and builds",
     publishedAt: "2026-09-17T12:00:00.000Z",
