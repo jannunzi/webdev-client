@@ -7,6 +7,12 @@
  * can be mapped to the roster. Roster match is still required for URL
  * submit. Fields are not unlocked by a calendar date. Do not name
  * demo students in this file.
+ *
+ * Jose (2026-09-17): do not tell students to hard-refresh as a fix for
+ * missing A1 URL submit fields or a roster mismatch. The student fix is
+ * Sign in with the same Northeastern/Canvas email as on the course
+ * roster. If that still fails, ask staff to refresh the roster or
+ * contact the instructor.
  */
 import { COURSE_WEBSITE_ACCOUNT_COPY } from "../course-site/account-copy";
 
@@ -22,12 +28,12 @@ export const ASSIGNMENT_STUDENT_COPY = {
     "URL submit and test fields are not unlocked by a calendar date. They appear when you are signed in with the same Northeastern email as your Canvas/FACT roster, and that email is on the course site roster.",
   notOnRosterTitle: "This email isn’t on the course roster",
   notOnRoster:
-    "This email isn’t on the Canvas/FACT course roster. You can still use the checklist in this browser. URL submit stays closed until you Sign in with the same Northeastern email you use on Canvas. Creating a site account does not enroll you on the roster; use your Canvas email so we can map progress. If you already did that, hard-refresh. If you are still blocked, ask staff on Piazza to check the roster.",
+    "This email isn’t on the Canvas/FACT course roster. You can still use the checklist in this browser. URL submit stays closed until you Sign in with the same Northeastern email you use on Canvas. Creating a site account does not enroll you on the roster; use your Canvas email so we can map progress. If you already did that and are still blocked, ask staff on Piazza to refresh the roster or contact the instructor.",
   rosterEmpty:
     "The course roster has not been loaded yet. This is not a date lock — URL submit stays closed until the instructor imports the roster.",
   notConfiguredTitle: "URL submit is not available yet",
   notConfigured:
-    "This is not a date lock. The course site could not read the imported Canvas/FACT roster, so URL submit and test fields stay closed. Hard-refresh this page. If you are still blocked, ask staff on Piazza — this is a site roster connection problem, not a missing Sign-in.",
+    "This is not a date lock. The course site could not read the imported Canvas/FACT roster, so URL submit and test fields stay closed. Sign in with the same Northeastern email you use on Canvas. If you are still blocked, ask staff on Piazza to refresh the roster or contact the instructor — this is a site roster connection problem, not a missing Sign-in.",
   unknownAssignment: "URL submit is only available for A1 right now.",
   impersonationBanner:
     "Impersonation — you can run checks to smoke-test the form. The submission is not saved.",

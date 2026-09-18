@@ -541,18 +541,30 @@ describe("student-facing copy", () => {
       /on the course site roster/i,
     );
     assert.match(ASSIGNMENT_STUDENT_COPY.notConfigured, /not a date lock/i);
-    assert.match(ASSIGNMENT_STUDENT_COPY.notConfigured, /hard-refresh/i);
+    assert.match(
+      ASSIGNMENT_STUDENT_COPY.notConfigured,
+      /same Northeastern email you use on Canvas/i,
+    );
     assert.match(
       ASSIGNMENT_STUDENT_COPY.notConfigured,
       /could not read the imported Canvas\/FACT roster/i,
     );
-    assert.match(ASSIGNMENT_STUDENT_COPY.notConfigured, /Piazza/i);
+    assert.match(
+      ASSIGNMENT_STUDENT_COPY.notConfigured,
+      /Piazza to refresh the roster or contact the instructor/i,
+    );
     assert.equal(
       ASSIGNMENT_STUDENT_COPY.notConfiguredTitle,
       "URL submit is not available yet",
     );
-    assert.match(ASSIGNMENT_STUDENT_COPY.notOnRoster, /hard-refresh/i);
-    assert.match(ASSIGNMENT_STUDENT_COPY.notOnRoster, /Piazza to check the roster/i);
+    assert.match(
+      ASSIGNMENT_STUDENT_COPY.notOnRoster,
+      /Piazza to refresh the roster or contact the instructor/i,
+    );
+    for (const value of Object.values(ASSIGNMENT_STUDENT_COPY)) {
+      assert.doesNotMatch(value, /hard[-\s]?refresh/i);
+      assert.doesNotMatch(value, /refresh (this|the) page/i);
+    }
   });
 
   it("tells students a failed Vercel URL cannot be loaded", () => {

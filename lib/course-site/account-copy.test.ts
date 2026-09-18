@@ -108,5 +108,7 @@ describe("course website account copy", () => {
     assert.doesNotMatch(ALL_COPY, /Canvas login/i);
     assert.doesNotMatch(ALL_COPY, /Northeastern login/i);
     assert.doesNotMatch(ALL_COPY, /sign (?:in|up) with (?:Northeastern )?SSO/i);
+    assert.doesNotMatch(ALL_COPY, /hard[-\s]?refresh/i);
+    assert.doesNotMatch(ALL_COPY, /refresh (this|the) page/i);
   });
 });
