@@ -1,4 +1,5 @@
 import type {
+  CodingQuestion,
   FillInBlankQuestion,
   MultipleChoiceQuestion,
   TrueFalseQuestion,
@@ -120,6 +121,27 @@ export function acronymFib(
     [words, ...(options?.extraCombinations ?? [])],
     explanation,
   );
+}
+
+/** Short HTML coding item. Reference solution + rubric stay server-side. */
+export function codingHtml(
+  id: string,
+  prompt: string,
+  referenceSolution: string,
+  rubric: string,
+  explanation?: string,
+  placeholder = "Write HTML here (about 10 lines or fewer).",
+): CodingQuestion {
+  return {
+    id,
+    type: "coding",
+    language: "html",
+    prompt,
+    referenceSolution,
+    rubric,
+    explanation,
+    placeholder,
+  };
 }
 
 /** Tightly parallel single-blank stems that swap a domain noun. */

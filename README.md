@@ -72,8 +72,19 @@ If Clerk or Atlas env vars are missing, those take routes show a clear
    `NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in`,
    `NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up`, `MONGODB_URI`, `MONGODB_DB=webdev`,
    `INSTRUCTOR_EMAILS=jannunzi@gmail.com`. Optional: `TA_EMAILS` (empty
-   until you add TAs).
+   until you add TAs). For Q1 HTML coding items: `XAI_API_KEY` (same name
+   SnapTools uses; never `NEXT_PUBLIC_`). Optional: `XAI_BASE_URL`
+   (default `https://api.x.ai/v1`), `XAI_MODEL` (default `grok-4-latest`).
    Redeploy after saving.
+
+   Website Q1 is **8 traditional items + 2 short HTML coding items** (10
+   total, 10 points each). The model grades coding **leniently** (trivial
+   misspellings and tag-case differences are OK) and can award **partial
+   credit**. Grading is server-side only. If `XAI_API_KEY` is missing, the
+   student attempt still finishes — coding items score 0 with a short
+   “could not be scored automatically” note; staff see the error on the
+   stored attempt. Canvas Q1 fallback stays 10 traditional groups (no AI
+   grader).
 
 Locally, copy `.env.example` to `.env.local` and fill the same keys. Do not
 commit `.env.local`.

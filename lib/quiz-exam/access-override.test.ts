@@ -14,7 +14,7 @@ import {
   toOverrideView,
 } from "./access-override";
 import { getExamBank } from "./banks";
-import { drawOnePerGroup } from "./sample";
+import { drawWebsiteAttempt } from "./website-draw";
 import {
   answerWindowCopy,
   etWallTimeToUtc,
@@ -219,7 +219,7 @@ describe("per-section take overrides", () => {
 describe("submit honors the same per-section take override", () => {
   const q1Bank = getExamBank("q1");
   assert.ok(q1Bank);
-  const drawn = drawOnePerGroup(q1Bank, "override-submit");
+  const drawn = drawWebsiteAttempt("q1", "override-submit");
 
   it("accepts a persisted submit when force-open before unlock", async () => {
     const stored: QuizAttemptDoc[] = [];

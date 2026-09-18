@@ -17,21 +17,25 @@ export function toStudentQuestion(drawn: DrawnQuestion): StudentQuestion {
         ? question.choices.map((choice) => ({ id: choice.id, text: choice.text }))
         : undefined,
     blankCount: question.type === "fill_in_blank" ? question.blankCount : undefined,
+    language: question.type === "coding" ? question.language : undefined,
+    placeholder: question.type === "coding" ? question.placeholder : undefined,
   };
 }
 
 export function assertNoAnswerLeak(question: StudentQuestion): void {
   const blob = JSON.stringify(question);
   if (
-    /correctChoiceId|acceptedCombinations|"answer":(true|false)/.test(blob)
+    /correctChoiceId|acceptedCombinations|referenceSolution|"rubric"|\"answer\":(true|false)/.test(
+      blob,
+    )
   ) {
     throw new Error(`Student payload leaked an answer field: ${question.id}`);
   }
 }
 
-/** Drop `correctReveal` so waiting/closed payloads cannot leak the key. */
+/** Drop answer-key fields so waiting/closed payloads cannot leak the key. */
 export function stripCorrectReveals(graded: GradedAnswer[]): GradedAnswer[] {
-  return graded.map(({ correctReveal: _correctReveal, ...item }) => item);
+  return graded.map(({ correctReveal: _correctReveal, feedback: _feedback, ...item }) => item);
 }
 
 export function revealCorrectAnswer(question: BankQuestion): string {
@@ -41,6 +45,9 @@ export function revealCorrectAnswer(question: BankQuestion): string {
   }
   if (question.type === "true_false") {
     return question.answer ? "True" : "False";
+  }
+  if (question.type === "coding") {
+    return question.referenceSolution;
   }
   return question.acceptedCombinations
     .map((combo) =>

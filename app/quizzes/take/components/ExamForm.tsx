@@ -42,6 +42,11 @@ function readAnswers(
       if (value === "true" || value === "false") {
         answers[question.id] = { type: "true_false", value: value === "true" };
       }
+    } else if (question.type === "coding") {
+      const code = String(form.get(`q-${question.id}`) ?? "");
+      if (code.trim() !== "") {
+        answers[question.id] = { type: "coding", code };
+      }
     } else {
       const blanks = Array.from(
         { length: question.blankCount ?? 1 },
@@ -74,6 +79,11 @@ export default function ExamForm({
   const [pending, setPending] = useState(false);
   const minutes = quizTimeLimitMinutes(quizId);
   const timeLimitLabel = minutes ? `, about ${minutes} minutes` : "";
+  const codingCount = questions.filter((question) => question.type === "coding").length;
+  const mixLabel =
+    codingCount > 0
+      ? `${questions.length - codingCount} topic-group items plus ${codingCount} short HTML coding items`
+      : `${questions.length} questions (one from each topic group)`;
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -119,11 +129,14 @@ export default function ExamForm({
       ) : null}
 
       <p className="text-sm text-neutral-700">
-        This attempt has {questions.length} questions (one from each topic
-        group){timeLimitLabel}, {formatItemPoints(questions.length)} points each
-        (100 total). Correct answers stay hidden until the class-wide review
-        window — not immediately after you submit. Grading happens on the
-        server.
+        This attempt has {mixLabel}
+        {timeLimitLabel}, {formatItemPoints(questions.length)} points each
+        (100 total).
+        {codingCount > 0
+          ? " Coding items are graded on the server (lenient, with partial credit)."
+          : ""}{" "}
+        Correct answers stay hidden until the class-wide review window — not
+        immediately after you submit. Grading happens on the server.
       </p>
 
       {questions.map((question, index) => (
@@ -220,6 +233,22 @@ function QuestionField({
             </label>
           ))}
         </div>
+      ) : null}
+
+      {question.type === "coding" ? (
+        <label className="mt-3 block text-sm">
+          <span className="mb-1 block text-neutral-600">
+            Your HTML ({question.language ?? "html"}, about 10 lines or fewer)
+          </span>
+          <textarea
+            name={`q-${question.id}`}
+            rows={8}
+            spellCheck={false}
+            autoComplete="off"
+            placeholder={question.placeholder}
+            className="w-full resize-y rounded border border-neutral-300 bg-white px-3 py-2 font-mono text-[0.85rem] leading-relaxed"
+          />
+        </label>
       ) : null}
     </fieldset>
   );

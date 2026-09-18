@@ -16,12 +16,15 @@ export type StudentQuestion = {
   code?: string;
   choices?: StudentChoice[];
   blankCount?: number;
+  language?: "html";
+  placeholder?: string;
 };
 
 export type StudentAnswer =
   | { type: "multiple_choice"; choiceId: string }
   | { type: "true_false"; value: boolean }
-  | { type: "fill_in_blank"; blanks: string[] };
+  | { type: "fill_in_blank"; blanks: string[] }
+  | { type: "coding"; code: string };
 
 export type GradedAnswer = {
   questionId: string;
@@ -32,6 +35,15 @@ export type GradedAnswer = {
   points: number;
   maxPoints: number;
   correctReveal?: string;
+  /** 0–1 model score for coding items; omitted for binary items. */
+  scoreRatio?: number;
+  /** Short model note. Hidden until the class answer window. */
+  feedback?: string;
+  /**
+   * Staff-visible grader failure (missing XAI_API_KEY, timeout, bad
+   * payload). Safe generic copy is shown to students.
+   */
+  gradingError?: string;
 };
 
 export type QuizAttemptDoc = {
@@ -50,6 +62,9 @@ export type QuizAttemptDoc = {
     response: unknown;
     correct: boolean;
     points: number;
+    scoreRatio?: number;
+    feedback?: string;
+    gradingError?: string;
   }>;
   meta: {
     drawnQuestionIds: string[];

@@ -363,6 +363,11 @@ export function renderQtiItem(question: BankQuestion, points: string): string {
   if (question.type === "true_false") {
     return renderTrueFalse(question, points);
   }
+  if (question.type === "coding") {
+    throw new Error(
+      `Coding question ${question.id} cannot be exported to Canvas QTI (website-only AI grading).`,
+    );
+  }
   if (question.blankCount > 1) {
     return renderMultipleBlanks(question, points);
   }

@@ -12,6 +12,7 @@ export const QUESTION_TYPES = [
   "multiple_choice",
   "true_false",
   "fill_in_blank",
+  "coding",
 ] as const;
 
 export type QuestionType = (typeof QUESTION_TYPES)[number];
@@ -59,10 +60,25 @@ export type FillInBlankQuestion = BaseQuestion & {
   acceptedCombinations: string[][];
 };
 
+/**
+ * Short HTML (or similar) snippet graded by a server-side model.
+ * `referenceSolution` and `rubric` are author/server only — never send
+ * them to the student take payload.
+ */
+export type CodingQuestion = BaseQuestion & {
+  type: "coding";
+  language: "html";
+  referenceSolution: string;
+  rubric: string;
+  /** Optional textarea hint; safe to show students. */
+  placeholder?: string;
+};
+
 export type BankQuestion =
   | MultipleChoiceQuestion
   | TrueFalseQuestion
-  | FillInBlankQuestion;
+  | FillInBlankQuestion
+  | CodingQuestion;
 
 export type QuestionGroup = {
   id: string;
@@ -89,6 +105,7 @@ export const QUESTION_TYPE_LABEL: Record<QuestionType, string> = {
   multiple_choice: "Multiple choice",
   true_false: "True / false",
   fill_in_blank: "Fill in the blank",
+  coding: "Coding (AI-graded)",
 };
 
 /** Reserved QTI-ish item type names for a future exporter. */
@@ -96,4 +113,6 @@ export const QTI_ITEM_TYPE: Record<QuestionType, string> = {
   multiple_choice: "multiple_choice_question",
   true_false: "true_false_question",
   fill_in_blank: "fill_in_multiple_blanks_question",
+  /** Website-only; Canvas fallback does not export coding groups. */
+  coding: "essay_question",
 };

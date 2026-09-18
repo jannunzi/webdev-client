@@ -9,15 +9,48 @@ import { buildAttemptReview } from "./review";
 import { assertNoAnswerLeak, stripCorrectReveals, toStudentQuestion } from "./sanitize";
 import { runExamSubmit } from "./submit";
 import type { QuizAttemptDoc, StudentAnswer } from "./types";
+import { drawWebsiteAttempt } from "./website-draw";
+
+function perfectCodingComplete() {
+  return async () => JSON.stringify({ score: 1, feedback: "Meets the prompt." });
+}
+
+function correctAnswers(
+  drawn: ReturnType<typeof drawWebsiteAttempt>,
+): Record<string, StudentAnswer> {
+  const answers: Record<string, StudentAnswer> = {};
+  for (const { question } of drawn) {
+    if (question.type === "multiple_choice") {
+      answers[question.id] = {
+        type: "multiple_choice",
+        choiceId: question.correctChoiceId,
+      };
+    } else if (question.type === "true_false") {
+      answers[question.id] = { type: "true_false", value: question.answer };
+    } else if (question.type === "coding") {
+      answers[question.id] = {
+        type: "coding",
+        code: question.referenceSolution,
+      };
+    } else {
+      answers[question.id] = {
+        type: "fill_in_blank",
+        blanks: question.acceptedCombinations[0] ?? [],
+      };
+    }
+  }
+  return answers;
+}
 
 const q1Exam = getExamBank("q1");
 assert.ok(q1Exam);
 
 describe("student exam sampling and grading", () => {
-  it("maps q1 to a 10-group draw from the Chapter 1 bank", () => {
+  it("maps Canvas/exam-bank q1 to a 10-group traditional draw", () => {
     const bank = getExamBank("q1");
     assert.equal(bank?.id, CHAPTER1_BANK.id);
     assert.equal(bank?.groups.length, QUIZ_DRAW_COUNTS.q1);
+    assert.ok(bank?.groups.every((group) => group.type !== "coding"));
     const first = drawOnePerGroup(q1Exam, "user_a:q1-html");
     const again = drawOnePerGroup(q1Exam, "user_a:q1-html");
     const other = drawOnePerGroup(q1Exam, "user_b:q1-html");
@@ -34,6 +67,30 @@ describe("student exam sampling and grading", () => {
     );
     const fromFull = drawExamAttempt(CHAPTER1_BANK, "user_a:q1-html", QUIZ_DRAW_COUNTS.q1);
     assert.equal(fromFull.length, QUIZ_DRAW_COUNTS.q1);
+  });
+
+  it("draws website Q1 as 8 traditional + 2 coding from distinct pools", () => {
+    const first = drawWebsiteAttempt("q1", "user_a:q1-html");
+    const again = drawWebsiteAttempt("q1", "user_a:q1-html");
+    const other = drawWebsiteAttempt("q1", "user_b:q1-html");
+    assert.equal(first.length, QUIZ_DRAW_COUNTS.q1);
+    assert.deepEqual(
+      first.map((item) => item.question.id),
+      again.map((item) => item.question.id),
+    );
+    const coding = first.filter((item) => item.question.type === "coding");
+    const traditional = first.filter((item) => item.question.type !== "coding");
+    assert.equal(coding.length, 2);
+    assert.equal(traditional.length, 8);
+    assert.equal(new Set(coding.map((item) => item.group.id)).size, 2);
+    assert.ok(coding.every((item) => item.group.id.startsWith("q1-code-")));
+    for (const item of first) {
+      assertNoAnswerLeak(toStudentQuestion(item));
+    }
+    assert.notDeepEqual(
+      first.map((item) => item.question.id),
+      other.map((item) => item.question.id),
+    );
   });
 
   it("strips answers from the student payload", () => {
@@ -89,7 +146,7 @@ describe("student exam sampling and grading", () => {
 
   it("does not persist when the Clerk user is off the roster", async () => {
     const stored: QuizAttemptDoc[] = [];
-    const drawn = drawOnePerGroup(q1Exam, "off-roster");
+    const drawn = drawWebsiteAttempt("q1", "off-roster");
     const result = await runExamSubmit({
       quizId: "q1",
       drawnQuestionIds: drawn.map((item) => item.question.id),
@@ -113,28 +170,14 @@ describe("student exam sampling and grading", () => {
 
   it("grades server-side and writes a quiz_attempts document", async () => {
     const stored: QuizAttemptDoc[] = [];
-    const drawn = drawOnePerGroup(q1Exam, "on-roster");
-    const answers: Record<string, StudentAnswer> = {};
-    for (const { question } of drawn) {
-      if (question.type === "multiple_choice") {
-        answers[question.id] = {
-          type: "multiple_choice",
-          choiceId: question.correctChoiceId,
-        };
-      } else if (question.type === "true_false") {
-        answers[question.id] = { type: "true_false", value: question.answer };
-      } else {
-        answers[question.id] = {
-          type: "fill_in_blank",
-          blanks: question.acceptedCombinations[0] ?? [],
-        };
-      }
-    }
+    const drawn = drawWebsiteAttempt("q1", "on-roster");
+    const answers = correctAnswers(drawn);
 
     const result = await runExamSubmit({
       quizId: "q1",
       drawnQuestionIds: drawn.map((item) => item.question.id),
       answers,
+      gradeCodingComplete: perfectCodingComplete(),
       startedAt: "2026-09-23T16:00:00.000Z",
       now: new Date("2026-09-23T16:10:00.000Z"),
       takeOverride: "open",
@@ -177,7 +220,7 @@ describe("student exam sampling and grading", () => {
 
   it("rejects a persisted submit after the class-wide take lock", async () => {
     const stored: QuizAttemptDoc[] = [];
-    const drawn = drawOnePerGroup(q1Exam, "late");
+    const drawn = drawWebsiteAttempt("q1", "late");
     const result = await runExamSubmit({
       quizId: "q1",
       drawnQuestionIds: drawn.map((item) => item.question.id),
@@ -205,7 +248,7 @@ describe("student exam sampling and grading", () => {
   });
 
   it("includes correctReveal only when the class answer window is open", async () => {
-    const drawn = drawOnePerGroup(q1Exam, "review-open");
+    const drawn = drawWebsiteAttempt("q1", "review-open");
     const result = await runExamSubmit({
       quizId: "q1",
       drawnQuestionIds: drawn.map((item) => item.question.id),
@@ -227,7 +270,7 @@ describe("student exam sampling and grading", () => {
   });
 
   it("grades in-memory and skips persist for an impersonation dummy roster", async () => {
-    const drawn = drawOnePerGroup(q1Exam, "impersonation");
+    const drawn = drawWebsiteAttempt("q1", "impersonation");
     const preview = await runExamSubmit({
       quizId: "q1",
       drawnQuestionIds: drawn.map((item) => item.question.id),
@@ -251,7 +294,7 @@ describe("student exam sampling and grading", () => {
   });
 
   it("rebuilds an attempt review without leaking answers when closed", () => {
-    const drawn = drawOnePerGroup(q1Exam, "review-rebuild");
+    const drawn = drawWebsiteAttempt("q1", "review-rebuild");
     const attempt: QuizAttemptDoc = {
       clerkUserId: "user_jane",
       quizId: "q1",

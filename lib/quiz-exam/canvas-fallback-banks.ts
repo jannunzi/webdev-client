@@ -92,6 +92,7 @@ function majorityType(questions: BankQuestion[]): QuestionType {
     multiple_choice: 0,
     true_false: 0,
     fill_in_blank: 0,
+    coding: 0,
   };
   for (const question of questions) {
     counts[question.type] += 1;

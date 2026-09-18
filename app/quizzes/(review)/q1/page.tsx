@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
-import { CHAPTER1_BANK, bankStats } from "@/lib/question-bank";
-import { QUIZ_DRAW_COUNTS, QUIZ_TIME_LIMIT_MINUTES } from "@/lib/quiz-exam";
+import { CHAPTER1_REVIEW_BANK, bankStats } from "@/lib/question-bank";
+import {
+  Q1_CODING_DRAW_COUNT,
+  Q1_TRADITIONAL_DRAW_COUNT,
+  QUIZ_DRAW_COUNTS,
+  QUIZ_TIME_LIMIT_MINUTES,
+} from "@/lib/quiz-exam";
 import QuestionBankReview from "../../components/QuestionBankReview";
 import { renderStaffReview } from "../../components/render-staff-review";
 
@@ -12,12 +17,12 @@ export const metadata: Metadata = {
 
 export default async function Quiz1BankPage() {
   return renderStaffReview(() => {
-    const stats = bankStats(CHAPTER1_BANK);
+    const stats = bankStats(CHAPTER1_REVIEW_BANK);
     return (
       <QuestionBankReview
-        bank={CHAPTER1_BANK}
+        bank={CHAPTER1_REVIEW_BANK}
         stats={stats}
-        studentDrawNote={`Student attempts and Canvas fallback draw ${QUIZ_DRAW_COUNTS.q1} of these ${stats.groups} topic groups (one question each, about ${QUIZ_TIME_LIMIT_MINUTES.q1} minutes, 100 points). Variants stay in the bank.`}
+        studentDrawNote={`Website Q1 draws ${Q1_TRADITIONAL_DRAW_COUNT} traditional groups plus ${Q1_CODING_DRAW_COUNT} coding items from the pools below (${QUIZ_DRAW_COUNTS.q1} total, about ${QUIZ_TIME_LIMIT_MINUTES.q1} minutes, 100 points). Canvas fallback still samples 10 traditional groups only — coding is website-only AI grading.`}
       />
     );
   });

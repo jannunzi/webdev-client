@@ -26,12 +26,12 @@ Checked in: `sample/q1-acronyms-group.fragment.xml` (one Q1 group, same XML shap
 
 | Canvas quiz | Bank |
 | --- | --- |
-| Q1 | Graded website bank `lib/question-bank/q1` (16 topic groups), **sampled to 10** at export / take time |
+| Q1 | Graded website bank `lib/question-bank/q1` (16 topic groups), **sampled to 10** at export time. Website take is 8 of those traditional groups **plus 2 AI-graded HTML coding items** from `lib/question-bank/q1/coding.ts` (not exported — Canvas cannot call xAI). |
 | Q2–Q6 | Practice banks `app/book/quizzes/` (ch2 CSS … ch6 Mongo), grouped by book section, **sampled to 10** groups; pick **1** random item per group |
 | X1 | 36 groups: 12 from each of Q1–Q3 source banks |
 | X2 | 36 groups: 12 from each of Q4–Q6 source banks |
 
-Shared counts live in `lib/quiz-exam/draw-counts.ts` (`QUIZ_DRAW_COUNTS`, `QUIZ_TIME_LIMIT_MINUTES`). Website `/quizzes/take` uses the same sized banks as this exporter.
+Shared counts live in `lib/quiz-exam/draw-counts.ts` (`QUIZ_DRAW_COUNTS`, `QUIZ_TIME_LIMIT_MINUTES`). Website `/quizzes/take` uses the same sized **traditional** banks as this exporter for Q2–Q6 and X1/X2. Q1 website take adds two coding items on top of an 8-group traditional draw.
 
 Stems are the **standalone** wording (no Lab / Kambaz / `wd-*` / book-section framing).
 
