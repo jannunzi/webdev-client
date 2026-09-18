@@ -123,7 +123,22 @@ describe("A1 submission form visibility", () => {
       submissionGateCopy("not_configured").body,
       /could not read the imported Canvas\/FACT roster/i,
     );
-    assert.match(submissionGateCopy("not_configured").body, /hard-refresh/i);
+    assert.match(
+      submissionGateCopy("not_configured").body,
+      /same Northeastern email you use on Canvas/i,
+    );
+    assert.match(
+      submissionGateCopy("not_configured").body,
+      /Piazza to refresh the roster or contact the instructor/i,
+    );
+    assert.doesNotMatch(
+      submissionGateCopy("not_configured").body,
+      /hard[-\s]?refresh/i,
+    );
+    assert.doesNotMatch(
+      submissionGateCopy("not_configured").body,
+      /refresh (this|the) page/i,
+    );
     assert.match(submissionGateCopy("not_configured").body, /Piazza/i);
     assert.match(
       submissionGateCopy("not_configured").body,
@@ -229,6 +244,13 @@ describe("A1 submission form visibility", () => {
       const copy = submissionGateCopy(state.gateReason);
       assert.equal(copy.title, ASSIGNMENT_STUDENT_COPY.notOnRosterTitle);
       assert.match(copy.body, /isn.t on the Canvas\/FACT course roster/i);
+      assert.match(copy.body, /same Northeastern email you use on Canvas/i);
+      assert.match(
+        copy.body,
+        /Piazza to refresh the roster or contact the instructor/i,
+      );
+      assert.doesNotMatch(copy.body, /hard[-\s]?refresh/i);
+      assert.doesNotMatch(copy.body, /refresh (this|the) page/i);
       assert.notEqual(copy.title, "URL submit is not available yet");
     }
   });

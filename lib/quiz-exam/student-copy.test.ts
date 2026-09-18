@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import { STUDENT_COPY } from "./student-copy";
+
+const quizTakePage = readFileSync(
+  new URL("../../app/quizzes/take/[quizId]/page.tsx", import.meta.url),
+  "utf8",
+);
 
 describe("student-facing quiz copy", () => {
   it("never names Clerk in strings shown to students", () => {
@@ -14,6 +20,13 @@ describe("student-facing quiz copy", () => {
     assert.match(STUDENT_COPY.useRosterEmail, /same Northeastern email you use on Canvas/i);
     assert.match(STUDENT_COPY.notOnRosterSubmit, /same Northeastern email you use on Canvas/i);
     assert.match(STUDENT_COPY.notOnRosterSubmit, /course roster/i);
+    for (const value of Object.values(STUDENT_COPY)) {
+      assert.doesNotMatch(value, /hard[-\s]?refresh/i);
+      assert.doesNotMatch(value, /refresh (this|the) page/i);
+    }
+    assert.match(quizTakePage, /ask the instructor to refresh the roster/);
+    assert.doesNotMatch(quizTakePage, /hard[-\s]?refresh/i);
+    assert.doesNotMatch(quizTakePage, /refresh (this|the) page/i);
   });
 
   it("keeps Sign up first and Canvas-email match for taking a quiz", () => {
