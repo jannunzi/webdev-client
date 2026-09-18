@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import { academicIntegrity, aiPolicy } from "./policies.ts";
+
+const aiPolicyComponent = readFileSync(
+  new URL("../components/AiPolicy.tsx", import.meta.url),
+  "utf8",
+);
 
 describe("AI policy", () => {
   const text = [...aiPolicy.paragraphs, ...(aiPolicy.bullets ?? [])].join(" ");
@@ -42,6 +48,20 @@ describe("AI policy", () => {
     );
     assert.match(text, /become that expert uncle/i);
     assert.match(text, /join amazing teams/i);
+  });
+
+  it("clarifies Claude Code is the default walkthrough, not required", () => {
+    assert.match(text, /Claude Code is the book's default walkthrough/i);
+    assert.match(text, /not required/i);
+    assert.match(text, /With AI prompts may go into Claude Code or another assistant/i);
+    assert.match(text, /Cursor, ChatGPT, Copilot, Claude chat/i);
+    assert.match(text, /university may provide Claude accounts/i);
+    assert.match(text, /need not buy Claude Code solely for this course/i);
+    assert.doesNotMatch(text, /must buy Claude/i);
+    assert.doesNotMatch(text, /must use Claude Code/i);
+    assert.doesNotMatch(text, /northeastern\.edu\/.*claude/i);
+    assert.match(aiPolicyComponent, /title="AI policy"/);
+    assert.match(aiPolicyComponent, /id="ai-policy"/);
   });
 
   it("aligns academic integrity with the wholesale-copy rule", () => {

@@ -1,4 +1,4 @@
-import { DESIGN_AI_TOOLS, TOOL } from "../chapter-end/catalog";
+import { AI, DESIGN_AI_TOOLS, TOOL } from "../chapter-end/catalog";
 import {
   numberedEndMatter,
   type ChapterEndMatterData,
@@ -95,6 +95,6 @@ export const ch1EndMatter: ChapterEndMatterData = {
   aiTools: {
     ...sections.aiTools,
     lead: "While the screens are still plain HTML, these AI and design tools are useful for exploring layouts, icons, and prompts before you write every tag by hand.",
-    items: DESIGN_AI_TOOLS,
+    items: [...DESIGN_AI_TOOLS, AI.claudeCode],
   },
 };

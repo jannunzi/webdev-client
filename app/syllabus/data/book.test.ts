@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
+import { AI_TOOLING_NOTE } from "../../book/aiTooling.ts";
 import { ch1EndMatter } from "../../book/ch1/end-matter.ts";
 import {
   BOOK_VIDEOS_HEADING,
@@ -8,6 +9,15 @@ import {
   HOW_TO_USE_THE_BOOK_HEADING,
   HOW_TO_USE_THE_BOOK_INTRO,
 } from "../../book/videosOptional.ts";
+
+const introAndSetup = readFileSync(
+  new URL("../../book/ch1/sections/IntroAndSetup.tsx", import.meta.url),
+  "utf8",
+);
+const chapterEndMatter = readFileSync(
+  new URL("../../book/components/ChapterEndMatter.tsx", import.meta.url),
+  "utf8",
+);
 
 const howToUseTheBook = readFileSync(
   new URL("../components/HowToUseTheBook.tsx", import.meta.url),
@@ -40,6 +50,26 @@ describe("how to use the book / optional videos", () => {
     assert.doesNotMatch(
       ch1EndMatter.references.lead,
       /you will find the official site and explainer videos/i,
+    );
+  });
+
+  it("treats Claude Code as the default walkthrough, not the only With AI assistant", () => {
+    assert.match(introAndSetup, /AI_TOOLING_NOTE/);
+    assert.match(introAndSetup, /default walkthrough/);
+    assert.match(introAndSetup, /or into another\s+assistant/);
+    assert.match(introAndSetup, /Cursor, ChatGPT, Copilot, or Claude chat/);
+    assert.doesNotMatch(
+      introAndSetup,
+      /This is the assistant you will paste/,
+    );
+    assert.doesNotMatch(
+      introAndSetup,
+      /install and sign in even if Cursor AI already works/,
+    );
+    assert.match(chapterEndMatter, /AI_TOOLING_NOTE/);
+    assert.match(AI_TOOLING_NOTE, /not required/);
+    assert.ok(
+      ch1EndMatter.aiTools.items.some((item) => item.name === "Claude Code"),
     );
   });
 

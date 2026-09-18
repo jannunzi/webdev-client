@@ -1,5 +1,7 @@
 import type { ExternalLink } from "./types";
 
+export { AI_TOOLING_BULLET, AI_TOOLING_NOTE } from "../aiTooling";
+
 /** Jose's design / ideation set — Chapters 1–2 use most of these. */
 export const AI = {
   v0: {
@@ -60,7 +62,13 @@ export const AI = {
     name: "Claude",
     href: "https://claude.ai",
     description:
-      "A conversational assistant for explaining APIs, reviewing code, and drafting implementations.",
+      "A conversational assistant for explaining APIs, reviewing code, and drafting implementations — one place you can paste violet With AI prompts.",
+  },
+  claudeCode: {
+    name: "Claude Code",
+    href: "https://code.claude.com/docs/en/vs-code",
+    description:
+      "The book's default IDE walkthrough for violet With AI prompts — not required; those prompts may go into Claude Code or another assistant.",
   },
   copilot: {
     name: "GitHub Copilot",

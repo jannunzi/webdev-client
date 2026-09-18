@@ -50,6 +50,6 @@ export const ch6EndMatter: ChapterEndMatterData = {
   aiTools: {
     ...sections.aiTools,
     lead: "Schemas and predicates are easier to draft with a coding assistant, and Compass can turn a plain-language question into a filter. Read every generated query before you run it against a collection you care about.",
-    items: [AI.cursor, AI.claude, AI.copilot, AI.promptGallery, AI.compassNl],
+    items: [AI.claudeCode, AI.cursor, AI.claude, AI.copilot, AI.promptGallery, AI.compassNl],
   },
 };
