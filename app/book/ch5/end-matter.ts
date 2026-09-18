@@ -55,6 +55,6 @@ export const ch5EndMatter: ChapterEndMatterData = {
   aiTools: {
     ...sections.aiTools,
     lead: "HTTP status codes, CORS headers, and route order are the kind of details a coding assistant can talk through while you watch the Network panel. Treat generated Express snippets as drafts — the sibling server still has to run on your machine.",
-    items: [AI.cursor, AI.claude, AI.copilot, AI.promptGallery],
+    items: [AI.claudeCode, AI.cursor, AI.claude, AI.copilot, AI.promptGallery],
   },
 };

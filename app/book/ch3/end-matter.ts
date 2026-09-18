@@ -50,6 +50,6 @@ export const ch3EndMatter: ChapterEndMatterData = {
   aiTools: {
     ...sections.aiTools,
     lead: "Once the work is arrays, functions, and data-driven components, coding assistants are more useful than mockup tools. Ask them to explain a method or sketch a map — then type the code yourself so the syntax stays yours.",
-    items: [AI.cursor, AI.claude, AI.copilot, AI.promptGallery, AI.v0],
+    items: [AI.claudeCode, AI.cursor, AI.claude, AI.copilot, AI.promptGallery, AI.v0],
   },
 };

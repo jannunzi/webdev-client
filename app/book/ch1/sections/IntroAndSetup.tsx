@@ -8,6 +8,7 @@ import LiveDemo from "../../components/LiveDemo";
 import BookFigure from "../../components/BookFigure";
 import FigureLink from "../../components/FigureLink";
 import Lab1Starter from "@/app/labs/lab1/intermediates/1-2-4-Lab1Starter";
+import { AI_TOOLING_NOTE } from "../../aiTooling";
 import { OnYourOwn, WithAI } from "../../components/Practice";
 
 export default function IntroAndSetup() {
@@ -321,7 +322,10 @@ export default function IntroAndSetup() {
         <ul>
           <li>Understand the fundamentals of HTML and how it structures web content.</li>
           <li>Set up a development environment for Next.js applications.</li>
-          <li>Install Claude Code in the IDE and sign in with a Claude account.</li>
+          <li>
+            Use Claude Code as the book&apos;s default walkthrough, or another
+            assistant, for <strong>With AI</strong> prompts.
+          </li>
           <li>Create and organize Next.js components using JSX.</li>
           <li>
             Use{" "}
@@ -507,18 +511,24 @@ v24.19.0`}</CodeBlock>
           <OfficialLink href="https://www.anthropic.com/">
             Anthropic
           </OfficialLink>
-          . In this course you can use it inside the editor to explain code,
-          draft a first version, and hunt down errors — still read what it
-          writes, and keep the book and labs as the source of truth. If your
-          school, employer, or a personal Claude plan already includes access,
-          sign in with that account. Otherwise start at{" "}
-          <OfficialLink href="https://claude.ai">claude.ai</OfficialLink>.{" "}
+          . In this course you can use an assistant to explain code, draft a
+          first version, and hunt down errors — still read what it writes, and
+          keep the book and labs as the source of truth.
+        </p>
+        <p>{AI_TOOLING_NOTE}</p>
+        <p>
+          The steps below are that default walkthrough, so the screenshots stay
+          consistent. If you follow them and your school, employer, or a
+          personal Claude plan already includes access, sign in with that
+          account. Otherwise start at{" "}
+          <OfficialLink href="https://claude.ai">claude.ai</OfficialLink>. If
+          you install{" "}
           <OfficialLink href="https://code.claude.com/docs/en/vs-code">
             Claude Code
-          </OfficialLink>{" "}
-          — the editor extension we install next — expects a Claude
-          subscription (Pro, Max, Team, or Enterprise) or a Claude Console
-          account, not a one-off API key for this setup.
+          </OfficialLink>
+          , the editor extension expects a Claude subscription (Pro, Max, Team,
+          or Enterprise) or a Claude Console account, not a one-off API key for
+          this setup.
         </p>
         <p>
           Open the Extensions view (
@@ -541,18 +551,21 @@ v24.19.0`}</CodeBlock>
           <strong>Open in New Tab</strong>. The first time, click{" "}
           <strong>Sign in</strong>{" "}and finish authorization in the browser. In
           Cursor, Claude Code is separate from Cursor&apos;s built-in chat —
-          install and sign in even if Cursor AI already works.
+          install and sign in only if you are following this walkthrough.
+          Cursor&apos;s built-in chat is another assistant you can paste{" "}
+          <strong>With AI</strong> prompts into.
         </p>
         <OnYourOwn>
-          Install Claude Code, sign in, and confirm the spark icon opens a chat
-          tab. This is the assistant you will paste <strong>With AI</strong>{" "}
-          prompts into for the rest of the book.
+          If you are following the book&apos;s default walkthrough, install
+          Claude Code, sign in, and confirm the spark icon opens a chat tab. You
+          can paste <strong>With AI</strong> prompts here, or into another
+          assistant such as Cursor, ChatGPT, Copilot, or Claude chat.
         </OnYourOwn>
         <WithAI
           prompt={`What did node -v print in this project? Look at the terminal output or package engines if needed, and quote the exact version string.`}
         >
           Amber blocks are work you invent by hand. Violet blocks include a
-          prompt you can copy into Claude Code (or another assistant). Read the
+          prompt you can copy into Claude Code or another assistant. Read the
           result before you keep it. Start with this check — the reply should
           match what you printed in <SectionLink to="1.2.1" />:
         </WithAI>

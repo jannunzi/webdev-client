@@ -1,4 +1,4 @@
-import { DESIGN_AI_TOOLS, TOOL } from "../chapter-end/catalog";
+import { AI, DESIGN_AI_TOOLS, TOOL } from "../chapter-end/catalog";
 import {
   numberedEndMatter,
   type ChapterEndMatterData,
@@ -49,6 +49,6 @@ export const ch2EndMatter: ChapterEndMatterData = {
   aiTools: {
     ...sections.aiTools,
     lead: "Styling is the chapter where design helpers earn their keep. Use them to try color, spacing, and icon choices, then rebuild the look yourself in CSS or Tailwind so you still understand every class.",
-    items: DESIGN_AI_TOOLS,
+    items: [...DESIGN_AI_TOOLS, AI.claudeCode],
   },
 };
