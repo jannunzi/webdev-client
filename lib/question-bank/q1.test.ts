@@ -54,9 +54,19 @@ describe("Chapter 1 question bank", () => {
       assert.deepEqual(fib.acceptedCombinations[0], spec.words);
       assert.match(
         fib.prompt,
-        /Fill each blank with the word that corresponds to each letter/,
+        /Fill each numbered blank with the word that corresponds to that number/,
       );
+      assert.match(fib.prompt, /___1___/);
+      assert.match(fib.prompt, new RegExp(`___${spec.letters}___`));
+      assert.doesNotMatch(fib.prompt, /_____ _____/);
     }
+  });
+
+  it("writes the SPA acronym with inline numbered blanks", () => {
+    const spa = CHAPTER1_BANK.groups[0].questions.find((q) => q.id === "q1-g01-07");
+    assert.ok(spa && spa.type === "fill_in_blank");
+    assert.match(spa.prompt, /SPA stands for ___1___ ___2___ ___3___\./);
+    assert.equal(spa.blankCount, 3);
   });
 
   it("accepts letter-order JSX blanks and rejects the old two-word form", () => {
@@ -93,6 +103,8 @@ describe("Chapter 1 question bank", () => {
       }
       assert.doesNotMatch(question.prompt, /paragraph/i);
       assert.match(question.prompt, /how the page should look/i);
+      assert.match(question.prompt, /The three blocks below show/);
+      assert.doesNotMatch(question.prompt, /blocks above/);
       assert.match(question.prompt, /How is that markup done/);
       const correct = question.choices.find((choice) => choice.id === question.correctChoiceId);
       assert.ok(correct);
@@ -161,7 +173,8 @@ describe("Chapter 1 question bank", () => {
     assert.doesNotMatch(blob, /robot demo/i);
     assert.doesNotMatch(blob, /class standing/i);
     assert.match(blob, /a list of choices/);
-    assert.match(blob, /arrives as the _____ attribute/);
+    assert.doesNotMatch(blob, /arrives as the _____ attribute/);
+    assert.match(blob, /passed into the function component as which parameter\/attribute name/);
     assert.match(blob, /year in school/);
   });
 
@@ -182,7 +195,7 @@ describe("Chapter 1 question bank", () => {
     }
   });
 
-  it("keeps props snippets and wording wrapper nested content as the children attribute", () => {
+  it("asks which parameter/attribute name receives nested wrapper content", () => {
     const group = CHAPTER1_BANK.groups.find((item) => item.id === "q1-g14-props-children");
     assert.ok(group);
     assert.equal(group.questions.length, 10);
@@ -199,7 +212,8 @@ describe("Chapter 1 question bank", () => {
       assert.equal(question.type, "fill_in_blank");
       const fib = question as FillInBlankQuestion;
       assert.match(fib.code ?? "", /<Panel>/);
-      assert.match(fib.prompt, /_____ attribute/);
+      assert.match(fib.prompt, /parameter\/attribute name/);
+      assert.doesNotMatch(fib.prompt, /arrives as/);
       assert.doesNotMatch(fib.prompt, /\bprop\b/i);
       assert.deepEqual(fib.acceptedCombinations[0], ["children"]);
     }

@@ -35,11 +35,34 @@ describe("Canvas QTI serializer", () => {
       ["Hyper", "Text", "Markup", "Language"],
       "HTML is HyperText Markup Language.",
     );
+    assert.match(question.prompt, /___1___ ___2___ ___3___ ___4___/);
     const xml = renderQtiItem(question, "6.25");
     assert.match(xml, /\[blank1\]/);
     assert.match(xml, /\[blank4\]/);
     assert.match(xml, /response_blank1/);
     assert.match(xml, />Hyper</);
+    assert.doesNotMatch(xml, /___1___/);
+    assert.doesNotMatch(xml, /\[blank1\]1/);
+  });
+
+  it("puts paragraph preview blocks after a “below” stem", () => {
+    const group = CHAPTER1_BANK.groups.find((item) => item.id === "q1-g03-paragraphs");
+    const question = group?.questions[0];
+    assert.ok(question && question.type === "multiple_choice");
+    const html = promptToHtml(question.prompt, question.code, question.preview);
+    const belowAt = html.indexOf("The three blocks below");
+    const firstBlock = question.preview?.kind === "paragraphs" ? question.preview.blocks[0] : "";
+    const blockAt = html.indexOf(firstBlock ?? "");
+    assert.ok(belowAt >= 0 && blockAt > belowAt);
+  });
+
+  it("emits pretty-printed nested-list choices as pre/code, not a prefixed first line", () => {
+    const group = CHAPTER1_BANK.groups.find((item) => item.id === "q1-g05-lists");
+    const question = group?.questions.find((item) => item.id === "q1-g05-08");
+    assert.ok(question && question.type === "multiple_choice");
+    const xml = renderQtiItem(question, "6.25");
+    assert.match(xml, /&lt;pre&gt;&lt;code&gt;/);
+    assert.match(xml, /&amp;lt;ul&amp;gt;\n  &amp;lt;li&amp;gt;/);
   });
 
   it("serializes MC, T/F, and single-blank FIB", () => {

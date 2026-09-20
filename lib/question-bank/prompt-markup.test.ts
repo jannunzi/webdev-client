@@ -27,4 +27,16 @@ describe("parsePromptMarkup", () => {
       { type: "text", value: "use `htmlFor without a close" },
     ]);
   });
+
+  it("marks numbered FIB tokens in the stem", () => {
+    assert.deepEqual(parsePromptMarkup("SPA stands for ___1___ ___2___ ___3___."), [
+      { type: "text", value: "SPA stands for " },
+      { type: "blank", value: "___1___", index: 1 },
+      { type: "text", value: " " },
+      { type: "blank", value: "___2___", index: 2 },
+      { type: "text", value: " " },
+      { type: "blank", value: "___3___", index: 3 },
+      { type: "text", value: "." },
+    ]);
+  });
 });

@@ -1,3 +1,4 @@
+import { numberedBlank } from "../blanks";
 import { codingQuestion } from "../builders";
 import type { QuestionBank, QuestionGroup } from "../types";
 
@@ -6,9 +7,9 @@ function listenerFib(input: {
   event: string;
 }): ReturnType<typeof codingQuestion> {
   const template = `const button = document.querySelector("button");
-button.____1____("${input.event}", () => {
+button.${numberedBlank(0)}("${input.event}", () => {
   count = count + 1;
-  label.____2____ = String(count);
+  label.${numberedBlank(1)} = String(count);
 });`;
   return codingQuestion({
     id: input.id,
@@ -30,7 +31,7 @@ button.addEventListener("${input.event}", () => {
   label.textContent = String(count);
 });`,
     rubric:
-      "____1____ is addEventListener. ____2____ is textContent (innerText is accepted). Excuse case and trivial misspellings. Partial credit per blank.",
+      `${numberedBlank(0)} is addEventListener. ${numberedBlank(1)} is textContent (innerText is accepted). Excuse case and trivial misspellings. Partial credit per blank.`,
     preview: {
       kind: "note",
       text: `On ${input.event}, increment a counter and write it into the label.`,

@@ -65,8 +65,9 @@ describe("website coding pools", () => {
     assert.match(firstForm.prompt, /grayed example/i);
     assert.match(firstForm.prompt, /label/i);
     assert.match(firstForm.prompt, /1\. connects the label/);
-    assert.match(firstForm.code ?? "", /____1____=/);
-    assert.match(firstForm.code ?? "", /____5____=/);
+    assert.match(firstForm.prompt, /5\. grayed example/);
+    assert.match(firstForm.code ?? "", /___1___=/);
+    assert.match(firstForm.code ?? "", /___5___=/);
     assert.doesNotMatch(firstForm.prompt, /Blank 1/);
     assert.doesNotMatch(firstForm.rubric ?? "", /Blank 1/);
     const firstList = list.questions[0];
@@ -74,5 +75,17 @@ describe("website coding pools", () => {
     assert.equal(firstList.style, "implement");
     assert.match(firstList.referenceSolution, /<ul>/);
     assert.match(firstList.referenceSolution, /<li>Apple<\/li>/);
+  });
+
+  it("uses ___N___ tokens in every coding FIB template", () => {
+    for (const bank of Object.values(WEBSITE_CODING_BANKS)) {
+      for (const group of bank.groups) {
+        for (const question of group.questions) {
+          if (question.type !== "coding" || question.style !== "fib") continue;
+          assert.match(question.code ?? "", /___1___/, question.id);
+          assert.doesNotMatch(question.code ?? "", /_____\s+_____/, question.id);
+        }
+      }
+    }
   });
 });

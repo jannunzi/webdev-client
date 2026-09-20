@@ -11,6 +11,7 @@ import {
 } from "@/lib/question-bank/types";
 import PromptMarkup from "./PromptMarkup";
 import CodingPreview from "./CodingPreview";
+import ChoiceContent from "./ChoiceContent";
 
 type Stats = {
   groups: number;
@@ -311,23 +312,17 @@ function QuestionBlock({
                       : "border-neutral-200 bg-white"
                   }`}
                 >
-                  <span className="mr-2 font-mono text-xs uppercase text-neutral-500">
-                    {choice.id}.
-                  </span>
-                  <PromptMarkup
-                    as="span"
+                  <ChoiceContent
+                    letter={choice.id}
                     text={choice.text}
-                    className={
-                      choice.text.includes("\n")
-                        ? "whitespace-pre-wrap break-words font-mono text-[0.85rem] leading-relaxed"
-                        : "whitespace-pre-wrap break-words"
+                    after={
+                      correct ? (
+                        <span className="shrink-0 text-xs font-semibold text-emerald-800">
+                          Correct
+                        </span>
+                      ) : null
                     }
                   />
-                  {correct ? (
-                    <span className="ml-2 text-xs font-semibold text-emerald-800">
-                      Correct
-                    </span>
-                  ) : null}
                 </div>
               </li>
             );

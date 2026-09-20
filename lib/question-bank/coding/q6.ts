@@ -1,3 +1,4 @@
+import { numberedBlank } from "../blanks";
 import { codingQuestion } from "../builders";
 import type { QuestionBank, QuestionGroup } from "../types";
 
@@ -8,8 +9,8 @@ function queryFib(input: {
   value: string | number;
 }): ReturnType<typeof codingQuestion> {
   const printed = typeof input.value === "string" ? `"${input.value}"` : String(input.value);
-  const template = `const docs = await db.collection("${input.collection}").____1____({ ${input.field}: ${printed} });
-await db.collection("${input.collection}").____2____({ ${input.field}: ${printed} });`;
+  const template = `const docs = await db.collection("${input.collection}").${numberedBlank(0)}({ ${input.field}: ${printed} });
+await db.collection("${input.collection}").${numberedBlank(1)}({ ${input.field}: ${printed} });`;
   return codingQuestion({
     id: input.id,
     language: "javascript",
@@ -24,7 +25,7 @@ await db.collection("${input.collection}").____2____({ ${input.field}: ${printed
     referenceSolution: `const docs = await db.collection("${input.collection}").find({ ${input.field}: ${printed} });
 await db.collection("${input.collection}").insertOne({ ${input.field}: ${printed} });`,
     rubric:
-      "____1____ is find. ____2____ is insertOne (insert is accepted as a near miss via the local grader). Excuse find() with parens and trivial misspellings. Partial credit per blank.",
+      `${numberedBlank(0)} is find. ${numberedBlank(1)} is insertOne (insert is accepted as a near miss via the local grader). Excuse find() with parens and trivial misspellings. Partial credit per blank.`,
     preview: {
       kind: "note",
       text: `find and insertOne on ${input.collection} where ${input.field} is ${printed}.`,

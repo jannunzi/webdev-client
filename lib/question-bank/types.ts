@@ -118,7 +118,7 @@ export type CodingCheck = {
  * the student take payload.
  *
  * Two styles (Jose, 2026-09-20):
- * - `fib`: complete a template (`____1____` blanks), often with a live preview
+ * - `fib`: complete a template (`___1___` blanks), often with a live preview
  * - `implement`: write the markup or code that produces a shown result
  */
 export type CodingQuestion = BaseQuestion & {

@@ -125,7 +125,7 @@ export const q1Group14: QuestionGroup = {
   type: "fill_in_blank",
   chapter: 1,
   section: "1.3.8",
-  skill: "Values passed on a component tag are props; nested markup arrives as the children attribute.",
+  skill: "Values passed on a component tag are props; nested markup is passed in as the children parameter.",
   questions: [
     ...PROP_VARIANTS.map((variant, index) =>
       fib(
@@ -139,9 +139,18 @@ export const q1Group14: QuestionGroup = {
     ...WRAPPER_VARIANTS.map((body, index) =>
       fib(
         `q1-g14-${String(index + 6).padStart(2, "0")}`,
-        "Content nested between this wrapper’s tags arrives as the _____ attribute.",
-        ["children", "the children", "children attribute", "the children attribute"],
-        "Nested markup arrives as the children attribute. Wrappers and layouts use the same idea.",
+        "The nested markup between this wrapper’s tags is passed into the function component as which parameter/attribute name? _____",
+        [
+          "children",
+          "the children",
+          "children attribute",
+          "the children attribute",
+          "children parameter",
+          "the children parameter",
+          "children prop",
+          "the children prop",
+        ],
+        "The nested body is passed in as the `children` parameter — the function/component argument name (also written as an attribute). Wrappers and layouts use the same idea.",
         `<Panel>\n  ${body}\n</Panel>`,
       ),
     ),
