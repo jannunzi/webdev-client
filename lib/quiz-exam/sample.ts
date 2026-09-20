@@ -103,3 +103,10 @@ export function findBankQuestion(
   }
   return undefined;
 }
+
+export function drawOneFromGroup(group: QuestionGroup, seed: string): DrawnQuestion {
+  const random = mulberry32(hashSeed(`${seed}:${group.id}`));
+  const index = Math.floor(random() * group.questions.length);
+  const question = group.questions[index] ?? group.questions[0];
+  return { group, question };
+}

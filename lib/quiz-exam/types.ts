@@ -1,4 +1,4 @@
-import type { QuestionType } from "../question-bank";
+import type { CodingLanguage, CodingPreview, CodingStyle, QuestionType } from "../question-bank";
 import type { AnswerWindowInfo } from "./schedule";
 
 export type StudentChoice = {
@@ -16,12 +16,17 @@ export type StudentQuestion = {
   code?: string;
   choices?: StudentChoice[];
   blankCount?: number;
+  language?: CodingLanguage;
+  style?: CodingStyle;
+  placeholder?: string;
+  preview?: CodingPreview;
 };
 
 export type StudentAnswer =
   | { type: "multiple_choice"; choiceId: string }
   | { type: "true_false"; value: boolean }
-  | { type: "fill_in_blank"; blanks: string[] };
+  | { type: "fill_in_blank"; blanks: string[] }
+  | { type: "coding"; code: string; blanks?: string[] };
 
 export type GradedAnswer = {
   questionId: string;
@@ -32,6 +37,15 @@ export type GradedAnswer = {
   points: number;
   maxPoints: number;
   correctReveal?: string;
+  /** 0–1 score for coding items; omitted for binary items. */
+  scoreRatio?: number;
+  /** Short grader note. Hidden until the class answer window. */
+  feedback?: string;
+  /**
+   * Staff-visible grader failure (missing XAI_API_KEY, timeout, bad
+   * payload). Safe generic copy is shown to students.
+   */
+  gradingError?: string;
 };
 
 export type QuizAttemptDoc = {
@@ -50,6 +64,9 @@ export type QuizAttemptDoc = {
     response: unknown;
     correct: boolean;
     points: number;
+    scoreRatio?: number;
+    feedback?: string;
+    gradingError?: string;
   }>;
   meta: {
     drawnQuestionIds: string[];

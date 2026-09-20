@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { CHAPTER1_BANK } from "./q1/index";
+import { CHAPTER1_BANK, CHAPTER1_REVIEW_BANK } from "./q1/index";
+import { validateCodingPool } from "./validate";
 import { isFibCombinationCorrect } from "./normalize";
 import { bankStats, validateBank } from "./validate";
 import type { FillInBlankQuestion } from "./types";
@@ -142,5 +143,22 @@ describe("Chapter 1 question bank", () => {
     assert.equal(/§\d/.test(blob), false);
     assert.equal(/\/labs\b/.test(blob), false);
     assert.equal(/the book/i.test(blob), false);
+  });
+
+  it("adds the two website coding styles only on the review bank", () => {
+    assert.equal(
+      CHAPTER1_BANK.groups.some((group) => group.type === "coding"),
+      false,
+    );
+    const coding = CHAPTER1_REVIEW_BANK.groups.filter((group) => group.type === "coding");
+    assert.equal(coding.length, 2);
+    assert.deepEqual(
+      validateCodingPool({
+        ...CHAPTER1_REVIEW_BANK,
+        id: "q1-html-coding",
+        groups: coding,
+      }),
+      [],
+    );
   });
 });

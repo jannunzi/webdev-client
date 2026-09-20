@@ -34,3 +34,8 @@ export function isAssignmentSubmissionConfigured(): boolean {
 export function mongoDbName(): string {
   return process.env.MONGODB_DB?.trim() || "web-dev";
 }
+
+/** Server-only xAI key used as a backup coding grader. Never NEXT_PUBLIC_. */
+export function isXaiConfigured(): boolean {
+  return Boolean(process.env.XAI_API_KEY?.trim());
+}

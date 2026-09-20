@@ -18,7 +18,13 @@ import {
 } from "@/lib/quiz-exam/schedule";
 import { submitExamAttempt } from "../actions";
 import PromptMarkup from "../../components/PromptMarkup";
+import CodingPreview from "../../components/CodingPreview";
 import { SubmittedAttemptView } from "./AttemptReview";
+
+function fillTemplate(template: string, blanks: string[]): string {
+  let index = 0;
+  return template.replace(/_{3,}/g, () => blanks[index++]?.trim() ?? "");
+}
 
 function formatItemPoints(groupCount: number): string {
   const raw = pointsPerDrawnItem(groupCount);
@@ -41,6 +47,25 @@ function readAnswers(
       const value = String(form.get(`q-${question.id}`) ?? "");
       if (value === "true" || value === "false") {
         answers[question.id] = { type: "true_false", value: value === "true" };
+      }
+    } else if (question.type === "coding") {
+      if (question.style === "fib") {
+        const blanks = Array.from(
+          { length: question.blankCount ?? 1 },
+          (_, index) => String(form.get(`q-${question.id}-${index}`) ?? ""),
+        );
+        if (blanks.some((blank) => blank.trim() !== "")) {
+          answers[question.id] = {
+            type: "coding",
+            blanks,
+            code: fillTemplate(question.code ?? "", blanks),
+          };
+        }
+      } else {
+        const code = String(form.get(`q-${question.id}`) ?? "");
+        if (code.trim() !== "") {
+          answers[question.id] = { type: "coding", code };
+        }
       }
     } else {
       const blanks = Array.from(
@@ -119,11 +144,12 @@ export default function ExamForm({
       ) : null}
 
       <p className="text-sm text-neutral-700">
-        This attempt has {questions.length} questions (one from each topic
-        group){timeLimitLabel}, {formatItemPoints(questions.length)} points each
-        (100 total). Correct answers stay hidden until the class-wide review
-        window — not immediately after you submit. Grading happens on the
-        server.
+        This attempt has {questions.length} questions (topic items plus short
+        coding items){timeLimitLabel}, {formatItemPoints(questions.length)} points
+        each (100 total). Correct answers stay hidden until the class-wide
+        review window — not immediately after you submit. Grading happens on
+        the server. Coding items are scored leniently (misspellings, missing
+        slashes, and extra whitespace are forgiven).
       </p>
 
       {questions.map((question, index) => (
@@ -161,6 +187,7 @@ function QuestionField({
         text={question.prompt}
         className="mt-1 font-medium whitespace-pre-wrap break-words"
       />
+      {question.preview ? <CodingPreview preview={question.preview} /> : null}
       {question.code ? (
         <pre className="mt-2 overflow-x-auto rounded border border-neutral-300 bg-neutral-50 px-3 py-2 font-mono text-[0.8rem] leading-relaxed">
           <code>{question.code}</code>
@@ -204,7 +231,8 @@ function QuestionField({
         </div>
       ) : null}
 
-      {question.type === "fill_in_blank" ? (
+      {question.type === "fill_in_blank" ||
+      (question.type === "coding" && question.style === "fib") ? (
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {Array.from({ length: question.blankCount ?? 1 }, (_, blankIndex) => (
             <label key={blankIndex} className="block text-sm">
@@ -220,6 +248,19 @@ function QuestionField({
             </label>
           ))}
         </div>
+      ) : null}
+
+      {question.type === "coding" && question.style !== "fib" ? (
+        <label className="mt-3 block text-sm">
+          <span className="mb-1 block text-neutral-600">Your code</span>
+          <textarea
+            name={`q-${question.id}`}
+            rows={8}
+            spellCheck={false}
+            placeholder={question.placeholder}
+            className="w-full rounded border border-neutral-300 bg-white px-3 py-2 font-mono text-[0.85rem] leading-relaxed"
+          />
+        </label>
       ) : null}
     </fieldset>
   );

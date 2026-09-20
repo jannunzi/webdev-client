@@ -10,6 +10,7 @@ import {
   type QuestionType,
 } from "@/lib/question-bank/types";
 import PromptMarkup from "./PromptMarkup";
+import CodingPreview from "./CodingPreview";
 
 type Stats = {
   groups: number;
@@ -25,6 +26,7 @@ const FILTERS: { id: "all" | QuestionType; label: string }[] = [
   { id: "fill_in_blank", label: "Fill in the blank" },
   { id: "multiple_choice", label: "Multiple choice" },
   { id: "true_false", label: "True / false" },
+  { id: "coding", label: "Coding" },
 ];
 
 function typeBadgeClass(type: QuestionType): string {
@@ -35,6 +37,8 @@ function typeBadgeClass(type: QuestionType): string {
       return "bg-violet-50 text-violet-900 ring-violet-200";
     case "true_false":
       return "bg-teal-50 text-teal-900 ring-teal-200";
+    case "coding":
+      return "bg-orange-50 text-orange-900 ring-orange-200";
   }
 }
 
@@ -42,10 +46,14 @@ export default function QuestionBankReview({
   bank,
   stats,
   studentDrawNote,
+  chapterHref = "/book/ch1",
+  takeHref = "/quizzes/take/q1",
 }: {
   bank: QuestionBank;
   stats: Stats;
   studentDrawNote?: string;
+  chapterHref?: string;
+  takeHref?: string;
 }) {
   const [filter, setFilter] = useState<"all" | QuestionType>("all");
   const [openIds, setOpenIds] = useState<string[]>(() =>
@@ -77,7 +85,7 @@ export default function QuestionBankReview({
       <p className="mb-4 text-sm">
         <Link href="/quizzes">Question banks</Link>
         {" · "}
-        <Link href="/book/ch1">Chapter 1</Link>
+        <Link href={chapterHref}>Chapter {bank.chapter}</Link>
         {" · "}
         <Link href="/book">Book home</Link>
       </p>
@@ -92,7 +100,7 @@ export default function QuestionBankReview({
         <p className="mb-0 mt-1 text-sm">
           Author review only — not a student exam. Correct answers are visible
           on purpose so the bank can be revised. Students take the graded
-          version at <Link href="/quizzes/take/q1">/quizzes/take/q1</Link>.
+          version at <Link href={takeHref}>{takeHref}</Link>.
         </p>
       </div>
 
@@ -111,6 +119,9 @@ export default function QuestionBankReview({
           {stats.byType.multiple_choice.groups} MC
           {" · "}
           {stats.byType.true_false.groups} TF
+          {stats.byType.coding.groups
+            ? ` · ${stats.byType.coding.groups} coding`
+            : ""}
         </p>
         {studentDrawNote ? (
           <p className="mt-2 mb-0 text-sm text-neutral-700">{studentDrawNote}</p>
@@ -280,6 +291,9 @@ function QuestionBlock({
         text={question.prompt}
         className="m-0 font-medium whitespace-pre-wrap break-words"
       />
+      {question.type === "coding" && question.preview ? (
+        <CodingPreview preview={question.preview} />
+      ) : null}
       {question.code ? (
         <pre className="mt-2 overflow-x-auto rounded border border-neutral-300 bg-white px-3 py-2 font-mono text-[0.8rem] leading-relaxed">
           <code>{question.code}</code>
@@ -331,6 +345,8 @@ function QuestionBlock({
         <FibAnswers question={question} />
       ) : null}
 
+      {question.type === "coding" ? <CodingAnswers question={question} /> : null}
+
       {question.explanation ? (
         <PromptMarkup
           text={question.explanation}
@@ -370,6 +386,38 @@ function FibAnswers({
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function CodingAnswers({
+  question,
+}: {
+  question: Extract<BankQuestion, { type: "coding" }>;
+}) {
+  return (
+    <div className="mt-3 space-y-2">
+      <div className="rounded border border-emerald-600 bg-emerald-50 px-3 py-2">
+        <p className="mt-0 mb-2 text-xs font-semibold uppercase tracking-wide text-emerald-900">
+          Reference solution · {question.language} · {question.style}
+        </p>
+        <pre className="mb-0 overflow-x-auto font-mono text-sm">
+          <code>{question.referenceSolution}</code>
+        </pre>
+      </div>
+      {question.acceptedBlanks?.length ? (
+        <div className="rounded border border-emerald-600 bg-emerald-50 px-3 py-2">
+          <p className="mt-0 mb-2 text-xs font-semibold uppercase tracking-wide text-emerald-900">
+            Accepted blanks
+          </p>
+          <ul className="mb-0 list-disc space-y-1 pl-5 font-mono text-sm">
+            {question.acceptedBlanks.map((combo, index) => (
+              <li key={index}>{combo.join(" · ")}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+      <p className="mb-0 text-sm text-neutral-600">{question.rubric}</p>
     </div>
   );
 }

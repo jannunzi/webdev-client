@@ -6,6 +6,8 @@ import {
   QUIZ_DRAW_COUNTS,
   QUIZ_TIME_LIMIT_MINUTES,
   QUIZ_TOTAL_POINTS,
+  WEBSITE_CODING_DRAW_COUNT,
+  WEBSITE_TRADITIONAL_DRAW_COUNT,
   pointsPerDrawnItem,
 } from "./draw-counts";
 
@@ -21,8 +23,14 @@ describe("shared graded-quiz draw counts", () => {
       "x1",
       "x2",
     ]);
+    assert.equal(WEBSITE_TRADITIONAL_DRAW_COUNT, 8);
+    assert.equal(WEBSITE_CODING_DRAW_COUNT, 2);
     for (const quizId of ["q1", "q2", "q3", "q4", "q5", "q6"] as const) {
       assert.equal(QUIZ_DRAW_COUNTS[quizId], 10);
+      assert.equal(
+        WEBSITE_TRADITIONAL_DRAW_COUNT + WEBSITE_CODING_DRAW_COUNT,
+        QUIZ_DRAW_COUNTS[quizId],
+      );
       assert.equal(QUIZ_TIME_LIMIT_MINUTES[quizId], 30);
       assert.equal(pointsPerDrawnItem(QUIZ_DRAW_COUNTS[quizId]), 10);
     }

@@ -1,7 +1,7 @@
-import { getExamBank } from "./banks";
+import type { CodingGradeResult } from "./coding-grade";
 import { gradeDrawnQuestions } from "./grade";
-import { findBankQuestion } from "./sample";
 import { stripCorrectReveals, toStudentQuestion } from "./sanitize";
+import { findQuizQuestion } from "./website-draw";
 import type {
   GradedAnswer,
   QuizAttemptDoc,
@@ -37,7 +37,27 @@ function asStudentAnswer(value: unknown): StudentAnswer | undefined {
     if (!Array.isArray(blanks)) return undefined;
     return { type: "fill_in_blank", blanks: blanks.map((blank) => String(blank)) };
   }
+  if (record.type === "coding" && "code" in record) {
+    const blanks = (record as { blanks?: unknown }).blanks;
+    return {
+      type: "coding",
+      code: String((record as { code: unknown }).code),
+      blanks: Array.isArray(blanks) ? blanks.map((blank) => String(blank)) : undefined,
+    };
+  }
   return undefined;
+}
+
+function codingResultFromAttempt(
+  item: QuizAttemptDoc["answers"][number],
+): CodingGradeResult | undefined {
+  if (item.type !== "coding") return undefined;
+  return {
+    score:
+      typeof item.scoreRatio === "number" ? item.scoreRatio : item.correct ? 1 : 0,
+    feedback: item.feedback ?? "",
+    error: item.gradingError,
+  };
 }
 
 /**
@@ -48,23 +68,23 @@ export function buildAttemptReview(
   attempt: QuizAttemptDoc,
   revealAnswers: boolean,
 ): AttemptReview | null {
-  const bank = getExamBank(attempt.quizId);
-  if (!bank) return null;
-
   const drawn = [];
   for (const questionId of attempt.meta.drawnQuestionIds) {
-    const found = findBankQuestion(bank, questionId);
+    const found = findQuizQuestion(attempt.quizId, questionId);
     if (!found) return null;
     drawn.push(found);
   }
 
   const answers: Record<string, StudentAnswer> = {};
+  const codingResults: Record<string, CodingGradeResult> = {};
   for (const item of attempt.answers) {
     const response = asStudentAnswer(item.response);
     if (response) answers[item.questionId] = response;
+    const coding = codingResultFromAttempt(item);
+    if (coding) codingResults[item.questionId] = coding;
   }
 
-  const graded = gradeDrawnQuestions(drawn, answers);
+  const graded = gradeDrawnQuestions(drawn, answers, codingResults);
   return {
     questions: drawn.map(toStudentQuestion),
     graded: revealAnswers ? graded : stripCorrectReveals(graded),
@@ -85,6 +105,12 @@ export function formatStudentResponse(
   }
   if (response.type === "true_false") {
     return response.value ? "True" : "False";
+  }
+  if (response.type === "coding") {
+    if (response.blanks?.some((blank) => blank.trim())) {
+      return response.blanks.map((blank) => (blank === "" ? "(blank)" : blank)).join(" · ");
+    }
+    return response.code.trim() ? response.code : "No answer";
   }
   return response.blanks.map((blank) => (blank === "" ? "(blank)" : blank)).join(" · ");
 }

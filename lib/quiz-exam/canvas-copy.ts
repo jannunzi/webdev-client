@@ -114,6 +114,9 @@ export function canvasQuizDescriptionHtml(quiz: CanvasFallbackQuizMeta): string 
   return [
     `<p>Take ${quiz.canvasTitle} on the course site:</p>`,
     `<p><a href="${url}">${url}</a></p>`,
+    quiz.quizId.startsWith("q")
+      ? `<p>This Canvas copy is traditional questions only (multiple choice, true/false, fill in the blank). Short coding items are graded on the website and are not included here.</p>`
+      : "",
     `<p>${CANVAS_FALLBACK_PERMISSION_BLURB}</p>`,
   ].join("");
 }

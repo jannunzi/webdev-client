@@ -1,3 +1,4 @@
+import { Q1_CODING_GROUPS } from "../coding/q1";
 import type { QuestionBank } from "../types";
 import { q1Group01, q1Group02, q1Group03, q1Group04 } from "./groups-01-04";
 import { q1Group05, q1Group06, q1Group07, q1Group08 } from "./groups-05-08";
@@ -26,5 +27,17 @@ export const CHAPTER1_BANK: QuestionBank = {
     q1Group14,
     q1Group15,
     q1Group16,
+  ],
+};
+
+/** Author-review surface: traditional 16 groups plus the two coding styles. */
+export const CHAPTER1_REVIEW_BANK: QuestionBank = {
+  ...CHAPTER1_BANK,
+  groups: [
+    ...CHAPTER1_BANK.groups,
+    ...Q1_CODING_GROUPS.map((group, index) => ({
+      ...group,
+      order: CHAPTER1_BANK.groups.length + index + 1,
+    })),
   ],
 };
