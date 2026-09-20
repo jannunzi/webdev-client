@@ -8,6 +8,7 @@ import {
   STUDENT_COPY,
 } from "@/lib/quiz-exam";
 import QuizAccessOverrides from "./components/QuizAccessOverrides";
+import StaffAttemptsLink from "../staff/components/StaffAttemptsLink";
 
 export const metadata: Metadata = {
   title: "Graded quizzes — CS 4550 / CS 5610",
@@ -21,6 +22,8 @@ export default function TakeQuizIndexPage() {
       <p className="mb-4 text-sm">
         <StaffOnly>
           <Link href="/quizzes">Question banks</Link>
+          {" · "}
+          <Link href="/quizzes/staff">Staff attempts</Link>
           {" · "}
         </StaffOnly>
         <Link href="/book">Course book</Link>
@@ -76,6 +79,7 @@ export default function TakeQuizIndexPage() {
         })}
       </ul>
       <QuizAccessOverrides />
+      <StaffAttemptsLink />
     </article>
   );
 }

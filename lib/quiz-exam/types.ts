@@ -28,6 +28,36 @@ export type StudentAnswer =
   | { type: "fill_in_blank"; blanks: string[] }
   | { type: "coding"; code: string; blanks?: string[] };
 
+export type QuizQuestionOverrideKind = "correct" | "wrong" | "points";
+
+/** Per-student staff override, stored on `quiz_attempts.overrides[questionId]`. */
+export type QuizQuestionOverride = {
+  kind: QuizQuestionOverrideKind;
+  /** Used when `kind === "points"`. Correct/wrong use maxPoints / 0. */
+  points?: number;
+  updatedBy?: string;
+  updatedAt?: Date | string;
+};
+
+/**
+ * Class-wide mark for one question id, stored in `quiz_grade_overrides`.
+ * Custom points stay per-student only.
+ */
+export type QuizClassQuestionOverride = {
+  quizId: string;
+  questionId: string;
+  scope: "all_students";
+  kind: "correct" | "wrong";
+  updatedBy?: string;
+  updatedAt: Date | string;
+};
+
+export type GradedAnswerOverride = {
+  scope: "student" | "all_students";
+  kind: QuizQuestionOverrideKind;
+  points?: number;
+};
+
 export type GradedAnswer = {
   questionId: string;
   groupId: string;
@@ -46,6 +76,12 @@ export type GradedAnswer = {
    * payload). Safe generic copy is shown to students.
    */
   gradingError?: string;
+  /** Auto-grade before staff overrides. */
+  autoCorrect?: boolean;
+  autoPoints?: number;
+  autoScoreRatio?: number;
+  /** Winning staff override, if any. */
+  override?: GradedAnswerOverride;
 };
 
 export type QuizAttemptDoc = {
@@ -68,6 +104,11 @@ export type QuizAttemptDoc = {
     feedback?: string;
     gradingError?: string;
   }>;
+  /**
+   * Per-student question overrides. Auto `answers[]` stay as submitted;
+   * `score` is the effective total after these and class-wide overrides.
+   */
+  overrides?: Record<string, QuizQuestionOverride>;
   meta: {
     drawnQuestionIds: string[];
     rosterEmail?: string;

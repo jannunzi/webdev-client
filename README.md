@@ -49,8 +49,8 @@ a “Search on YouTube” fallback. Results are cached for 24 hours.
 Anyone may browse the book, syllabus, labs, practice, assignments, and terms —
 signed in or not. **Only Canvas-roster students** can start or submit a graded
 quiz at `/quizzes/take/q1`. Author review (answers shown) at `/quizzes` and
-`/quizzes/q1` is **staff only** (`INSTRUCTOR_EMAILS` + `TA_EMAILS`, same as
-`/people`).
+`/quizzes/q1`, and staff attempt review at `/quizzes/staff/q1/attempts`,
+are **staff only** (`INSTRUCTOR_EMAILS` + `TA_EMAILS`, same as `/people`).
 
 If Clerk or Atlas env vars are missing, those take routes show a clear
 “not configured” message. The rest of the site keeps working.
@@ -65,8 +65,8 @@ If Clerk or Atlas env vars are missing, those take routes show a clear
    entry that allows Vercel (or `0.0.0.0/0` if you prefer allow-all + strong
    user password). Copy the `mongodb+srv://…` connection string. The app uses
    database `web-dev` (override with `MONGODB_DB`) and collections
-   `quiz_attempts`, `canvas_roster`, `assignment_progress`, and
-   `assignment_submissions`.
+   `quiz_attempts`, `quiz_grade_overrides`, `canvas_roster`,
+   `assignment_progress`, and `assignment_submissions`.
 3. **Vercel** project env (Production + Preview + Development):
    `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`,
    `NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in`,
@@ -155,10 +155,10 @@ Anyone can Clerk sign in or sign up on the public site. There is **no**
 separate instructor/TA registration. Staff status is **only** the env
 allowlists, matched server-side against the signed-in Clerk emails:
 
-- **`INSTRUCTOR_EMAILS`** — full instructor powers (People and author-review
-  question banks). Default if unset: `jannunzi@gmail.com`.
-- **`TA_EMAILS`** — TAs see the same People and author-review views. Empty by
-  default.
+- **`INSTRUCTOR_EMAILS`** — full instructor powers (People, author-review
+  question banks, and staff attempt review). Default if unset: `jannunzi@gmail.com`.
+- **`TA_EMAILS`** — TAs see the same People, author-review, and staff
+  attempt views. Empty by default.
 
 `canvas_roster` only gates **graded quizzes**. Being on the student roster
 does **not** grant People or author-review access.
@@ -196,12 +196,13 @@ roster. A second Clerk user with the same email is awkward, so this is an
 **app-level view mode**, not a second Clerk session.
 
 Signed-in staff see a sticky **Viewing as: Instructor | Student** bar on
-`/people`, author review (`/quizzes`, `/quizzes/q1`), and graded take
-(`/quizzes/take`). Non-staff users never see it.
+`/people`, author review (`/quizzes`, `/quizzes/q1`), graded take
+(`/quizzes/take`), and staff attempts (`/quizzes/staff`). Non-staff users never see it.
 
 - **Instructor** (default): current staff behavior.
-- **Student**: People and author review behave like a non-staff user (403;
-  answer keys are not loaded). `/quizzes/take/*` treats the actor as a
+- **Student**: People, author review, and staff attempts behave like a
+  non-staff user (403; answer keys and other students’ submissions are
+  not loaded). `/quizzes/take/*` treats the actor as a
   synthetic roster match named **Demo Student**
   (`demo.student@webdev.local`). That dummy is **not** written to
   `canvas_roster`. You can submit to smoke-test the exam UI; the score is
@@ -223,6 +224,62 @@ open because “now” is inside that window. Staff (`INSTRUCTOR_EMAILS` /
 (Enable / Disable / Off). While disabled, students see the dates and cannot
 start or submit. Enable CS4550 to test with `ada@ada.com` / `bob@bob.com`,
 then Disable again.
+
+### Staff attempt review + grade overrides
+
+Staff (`INSTRUCTOR_EMAILS` / `TA_EMAILS`, instructor view — not **View as
+student**) browse submissions at **`/quizzes/staff/q1/attempts`**. The
+graded take page (`/quizzes/take/q1`) also links here for signed-in staff.
+
+**How to try:** Sign in as staff → open `/quizzes/staff/q1/attempts` →
+select `asd@asd.com` → see that student’s answers with correct / wrong /
+partial marks → override a question (this student, all students who drew
+it, or custom points for that student). Existing Atlas documents are
+updated in place. **Do not delete** `asd@asd.com`’s Q1 attempt in
+`web-dev.quiz_attempts`.
+
+**Gate.** Same as People / author review: Clerk sign-in plus an allowlisted
+email. `INSTRUCTOR_EMAILS` defaults to `jannunzi@gmail.com` when unset.
+`TA_EMAILS` is empty until you add TAs. Impersonation hides the browser
+and blocks writes. `MONGODB_URI` + `MONGODB_DB` (default `web-dev`) are
+required to load attempts.
+
+**Scoring.** Auto-grade is always recomputed from the stored responses (and
+stored coding `scoreRatio`). Then class-wide overrides apply, then
+per-student overrides win. `quiz_attempts.score` is rewritten to the
+effective total. Original `answers[]` (response + auto marks) stay as
+submitted.
+
+**Schema (`web-dev`):**
+
+`quiz_attempts.overrides` (optional, keyed by question id):
+
+```
+{
+  "q1-g01-01": {
+    "kind": "correct" | "wrong" | "points",
+    "points": 7.5,          // used when kind === "points"
+    "updatedBy": "jannunzi@gmail.com",
+    "updatedAt": ISODate
+  }
+}
+```
+
+`quiz_grade_overrides` (new; unique `{ quizId, questionId }`):
+
+```
+{
+  "quizId": "q1",
+  "questionId": "q1-g01-01",
+  "scope": "all_students",
+  "kind": "correct" | "wrong",
+  "updatedBy": "jannunzi@gmail.com",
+  "updatedAt": ISODate
+}
+```
+
+Custom points are per-student only. Class-wide is correct / wrong for
+everyone who drew that question id.
 
 ### Exam sampling
 

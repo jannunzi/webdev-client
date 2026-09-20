@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import {
   answerWindowCopy,
   formatEasternDateTime,
@@ -96,10 +97,12 @@ export function GradedQuestionList({
   questions,
   graded,
   revealAnswers,
+  renderExtra,
 }: {
   questions: StudentQuestion[];
   graded: GradedAnswer[];
   revealAnswers: boolean;
+  renderExtra?: (item: GradedAnswer, question?: StudentQuestion) => ReactNode;
 }) {
   const byId = new Map(questions.map((question) => [question.id, question]));
 
@@ -166,6 +169,7 @@ export function GradedQuestionList({
                 <code>{item.correctReveal}</code>
               </pre>
             ) : null}
+            {renderExtra ? renderExtra(item, question) : null}
           </li>
         );
       })}
