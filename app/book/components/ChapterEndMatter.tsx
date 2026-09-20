@@ -1,3 +1,4 @@
+import { AI_TOOLING_NOTE } from "../aiTooling";
 import OfficialLink from "./OfficialLink";
 import Section from "./Section";
 import { getTerm } from "../terms/termRegistry";
@@ -70,6 +71,7 @@ export default function ChapterEndMatter({
 
       <Section id={aiTools.id} title={aiTools.title}>
         <p>{aiTools.lead}</p>
+        <p>{AI_TOOLING_NOTE}</p>
         <ul>
           {aiTools.items.map((item) => (
             <ExternalItem key={item.href} item={item} />

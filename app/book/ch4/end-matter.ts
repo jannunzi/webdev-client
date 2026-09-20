@@ -49,6 +49,6 @@ export const ch4EndMatter: ChapterEndMatterData = {
   aiTools: {
     ...sections.aiTools,
     lead: "State bugs are easier to talk through than to stare at. A coding assistant can help you choose between useState, Context, and a store — verify every suggestion against the live counter and todo labs.",
-    items: [AI.cursor, AI.claude, AI.copilot, AI.promptGallery],
+    items: [AI.claudeCode, AI.cursor, AI.claude, AI.copilot, AI.promptGallery],
   },
 };

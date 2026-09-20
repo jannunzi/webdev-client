@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 import { getTerm } from "../terms/termRegistry.ts";
 import { termPageHref, termSlug } from "../terms/termSlug.ts";
 import { chapterEndToc, endMatterTermName } from "./types.ts";
-import { AI, DESIGN_AI_TOOLS, TOOL } from "./catalog.ts";
+import { AI, AI_TOOLING_NOTE, DESIGN_AI_TOOLS, TOOL } from "./catalog.ts";
 import { ch1EndMatter } from "../ch1/end-matter.ts";
 import { ch2EndMatter } from "../ch2/end-matter.ts";
 import { ch3EndMatter } from "../ch3/end-matter.ts";
@@ -109,6 +109,29 @@ describe("chapter end matter", () => {
         const href = termPageHref(item.href, label, entry, { term: item.term });
         assert.match(href, new RegExp(`^/book/terms/${slug}(?:\\?|$)`));
       }
+    }
+  });
+
+  it("lists Claude Code as the optional default walkthrough on every AI Tools page", () => {
+    assert.match(AI_TOOLING_NOTE, /default walkthrough/i);
+    assert.match(AI_TOOLING_NOTE, /not required/i);
+    assert.match(
+      AI_TOOLING_NOTE,
+      /Cursor, ChatGPT, Copilot, Claude chat/i,
+    );
+    assert.match(AI_TOOLING_NOTE, /university may provide Claude accounts/i);
+    assert.match(
+      AI_TOOLING_NOTE,
+      /need not buy Claude Code solely for this course/i,
+    );
+    assert.doesNotMatch(AI_TOOLING_NOTE, /must buy Claude/i);
+    assert.doesNotMatch(AI_TOOLING_NOTE, /must use Claude Code/i);
+    assert.equal(termSlug(endMatterTermName(AI.claudeCode)), "claude-code");
+    for (const chapter of CHAPTERS) {
+      assert.ok(
+        chapter.aiTools.items.some((item) => item.href === AI.claudeCode.href),
+        `ch${chapter.chapter} AI Tools should list Claude Code`,
+      );
     }
   });
 

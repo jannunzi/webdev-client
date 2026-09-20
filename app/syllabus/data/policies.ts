@@ -1,3 +1,4 @@
+import { AI_TOOLING_BULLET, AI_TOOLING_NOTE } from "@/app/book/aiTooling";
 import type { PolicyBlock } from "./types";
 
 export const latePolicy: PolicyBlock = {
@@ -18,13 +19,15 @@ export const latePolicy: PolicyBlock = {
 export const aiPolicy: PolicyBlock = {
   paragraphs: [
     "Working with an AI agent is like asking your expert professional uncle or team at Google to do the work for you. If that would not be allowed with a person or a team, it is not allowed with AI.",
-    "You may ask that uncle or team to explain something and to help you work things out. You may use AI (Cursor, ChatGPT, Copilot, and similar assistants) when the book or an exercise explicitly mentions it. You may not copy code wholesale from an AI tool unless that exercise explicitly allows it.",
+    "You may ask that uncle or team to explain something and to help you work things out. You may use AI (Claude Code, Cursor, ChatGPT, Copilot, Claude chat, and similar assistants) when the book or an exercise explicitly mentions it. You may not copy code wholesale from an AI tool unless that exercise explicitly allows it.",
+    AI_TOOLING_NOTE,
     "You are responsible for the work and are expected to take full responsibility for the code you submit. The intent is for you to acquire the experience and the criteria to create and evaluate quality code. The idea is to become that expert uncle and join amazing teams.",
     "Teaching assistants will schedule regularly random audits asking you to explain a random piece of code from your submission. The slightest suspicion that the code is not your own results in a zero for that assignment, unless the instructor or the book explicitly allowed AI for that particular purpose.",
     "Quizzes (Q1–Q6) and exams (X1/X2) are closed: do not use AI unless the handout says otherwise.",
   ],
   bullets: [
     "Allowed: using AI when the book or an exercise explicitly mentions it; asking that uncle or team to explain something and help you work things out.",
+    AI_TOOLING_BULLET,
     "Not allowed: having that uncle or team do the work for you; copying generated code wholesale unless the exercise explicitly allows it.",
     "Audits: TAs will schedule regularly random audits. You must explain a random piece of code from your submission. The slightest suspicion that the code is not yours is a zero for that assignment, unless the instructor or book explicitly allowed AI for that particular purpose.",
     "You take full responsibility for the code you submit. The intent is the experience and criteria to create and evaluate quality code. The idea is to become that expert uncle and join amazing teams. Closed quizzes and exams: no AI unless the handout says otherwise.",
