@@ -11,7 +11,7 @@ import {
 } from "./submission-form";
 
 const rosterTarget = {
-  rosterDb: "webdev",
+  rosterDb: "web-dev",
   rosterCollection: "canvas_roster",
   rosterCount: 80,
 };
@@ -81,7 +81,7 @@ describe("A1 submit diagnostics", () => {
       isActualStaff: false,
       clerkEmails: ["chen.rya@northeastern.edu"],
       roster: { status: "not_configured" },
-      rosterDb: "webdev",
+      rosterDb: "web-dev",
       rosterCollection: "canvas_roster",
       rosterCount: null,
     });

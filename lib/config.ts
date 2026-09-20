@@ -32,5 +32,5 @@ export function isAssignmentSubmissionConfigured(): boolean {
 }
 
 export function mongoDbName(): string {
-  return process.env.MONGODB_DB?.trim() || "webdev";
+  return process.env.MONGODB_DB?.trim() || "web-dev";
 }
