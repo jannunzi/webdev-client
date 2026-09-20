@@ -6,9 +6,9 @@ function listenerFib(input: {
   event: string;
 }): ReturnType<typeof codingQuestion> {
   const template = `const button = document.querySelector("button");
-button._____("${input.event}", () => {
+button.____1____("${input.event}", () => {
   count = count + 1;
-  label._____ = String(count);
+  label.____2____ = String(count);
 });`;
   return codingQuestion({
     id: input.id,
@@ -16,7 +16,8 @@ button._____("${input.event}", () => {
     style: "fib",
     prompt: `A button should listen for the “${input.event}” event, add one to \`count\`, and show the new number in \`label\`.
 
-Fill the blanks with the method that registers the listener and the property that sets the visible text.`,
+1. the method that registers the listener
+2. the property that sets the visible text`,
     code: template,
     blankCount: 2,
     acceptedBlanks: [
@@ -29,7 +30,7 @@ button.addEventListener("${input.event}", () => {
   label.textContent = String(count);
 });`,
     rubric:
-      "Blank 1 is addEventListener. Blank 2 is textContent (innerText is accepted). Excuse case and trivial misspellings. Partial credit per blank.",
+      "____1____ is addEventListener. ____2____ is textContent (innerText is accepted). Excuse case and trivial misspellings. Partial credit per blank.",
     preview: {
       kind: "note",
       text: `On ${input.event}, increment a counter and write it into the label.`,

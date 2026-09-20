@@ -6,14 +6,15 @@
  * Used as the testable floor; xAI can only raise the score.
  */
 
-import type { CodingQuestion } from "../question-bank";
+import { BLANK_MARK, fillTemplate } from "../question-bank/blanks";
+import type { CodingQuestion } from "../question-bank/types";
+
+export { fillTemplate };
 
 export type LocalCodingGrade = {
   score: number;
   feedback: string;
 };
-
-const BLANK_MARK = /_{3,}/g;
 
 const BLANK_ALIASES: Record<string, string[]> = {
   for: ["htmlfor"],
@@ -30,11 +31,6 @@ const BLANK_ALIASES: Record<string, string[]> = {
   insertone: ["insert"],
   find: ["find()"],
 };
-
-export function fillTemplate(template: string, blanks: string[]): string {
-  let index = 0;
-  return template.replace(BLANK_MARK, () => blanks[index++]?.trim() ?? "");
-}
 
 export function levenshtein(left: string, right: string): number {
   if (left === right) return 0;

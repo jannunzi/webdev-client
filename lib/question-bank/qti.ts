@@ -63,7 +63,11 @@ export function qtiGroupIdent(groupId: string): string {
   return `g${groupId.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
 }
 
-export function promptToHtml(prompt: string, code?: string): string {
+export function promptToHtml(
+  prompt: string,
+  code?: string,
+  preview?: { kind: string; blocks?: string[] },
+): string {
   const inline = parsePromptMarkup(prompt)
     .map((part) =>
       part.type === "code"
@@ -71,10 +75,14 @@ export function promptToHtml(prompt: string, code?: string): string {
         : escapeXml(part.value),
     )
     .join("");
+  const visual =
+    preview?.kind === "paragraphs" && preview.blocks?.length
+      ? preview.blocks.map((block) => `<p>${escapeXml(block)}</p>`).join("")
+      : "";
   const snippet = code
     ? `<pre><code>${escapeXml(code)}</code></pre>`
     : "";
-  return `<div>${snippet}<p>${inline}</p></div>`;
+  return `<div>${visual}${snippet}<p>${inline}</p></div>`;
 }
 
 function metaField(label: string, entry: string): string {
@@ -131,7 +139,7 @@ function renderMultipleChoice(
   question: MultipleChoiceQuestion,
   points: string,
 ): string {
-  const html = promptToHtml(question.prompt, question.code);
+  const html = promptToHtml(question.prompt, question.code, question.preview);
   const labels = question.choices
     .map((choice) =>
       [
@@ -181,7 +189,7 @@ function renderMultipleChoice(
 }
 
 function renderTrueFalse(question: TrueFalseQuestion, points: string): string {
-  const html = promptToHtml(question.prompt, question.code);
+  const html = promptToHtml(question.prompt, question.code, question.preview);
   const correct = question.answer ? "true" : "false";
   return [
     `    <item ident="${qtiItemIdent(question.id)}" title="${escapeXml(question.id)}">`,
@@ -227,7 +235,7 @@ function renderTrueFalse(question: TrueFalseQuestion, points: string): string {
 }
 
 function renderShortAnswer(question: FillInBlankQuestion, points: string): string {
-  const html = promptToHtml(question.prompt, question.code);
+  const html = promptToHtml(question.prompt, question.code, question.preview);
   const answers = uniqueBlankAnswers(question)[0] ?? [];
   const equals = answers
     .map(
@@ -270,7 +278,11 @@ function renderShortAnswer(question: FillInBlankQuestion, points: string): strin
 }
 
 function renderMultipleBlanks(question: FillInBlankQuestion, points: string): string {
-  const html = promptToHtml(replaceBlanks(question.prompt, question.blankCount), question.code);
+  const html = promptToHtml(
+    replaceBlanks(question.prompt, question.blankCount),
+    question.code,
+    question.preview,
+  );
   const perBlank = uniqueBlankAnswers(question);
   const blankScore = (100 / question.blankCount).toFixed(2);
   const lids = perBlank

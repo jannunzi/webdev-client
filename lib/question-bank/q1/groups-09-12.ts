@@ -137,7 +137,7 @@ export const q1Group10: QuestionGroup = {
     ),
     mc(
       "q1-g10-07",
-      "A second independent exclusive choice (for example class standing vs full-time/part-time) needs _____.",
+      "A second independent exclusive choice (for example year in school vs full-time/part-time) needs _____.",
       [
         "the same name as the first radio group",
         "a different name from the first radio group",
@@ -165,7 +165,7 @@ export const q1Group10: QuestionGroup = {
     ),
     mc(
       "q1-g10-10",
-      "Which control is the right fit for “pick exactly one class standing”?",
+      "Which control is the right fit for “pick exactly one year in school (First-year / Sophomore / Junior / Senior)”?",
       [
         "checkboxes",
         "radio buttons that share one name (or a single-select dropdown)",

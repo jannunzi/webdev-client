@@ -8,24 +8,23 @@ function queryFib(input: {
   value: string | number;
 }): ReturnType<typeof codingQuestion> {
   const printed = typeof input.value === "string" ? `"${input.value}"` : String(input.value);
-  const template = `const docs = await db.collection("${input.collection}")._____({ ${input.field}: ${printed} });
-await db.collection("${input.collection}")._____({ ${input.field}: ${printed} });`;
+  const template = `const docs = await db.collection("${input.collection}").____1____({ ${input.field}: ${printed} });
+await db.collection("${input.collection}").____2____({ ${input.field}: ${printed} });`;
   return codingQuestion({
     id: input.id,
     language: "javascript",
     style: "fib",
     prompt: `Talk to the \`${input.collection}\` collection.
 
-The first line should find documents whose \`${input.field}\` is ${printed}. The second line should insert one document with that same field.
-
-Fill the blanks with the collection methods.`,
+1. find documents whose \`${input.field}\` is ${printed}
+2. insert one document with that same field`,
     code: template,
     blankCount: 2,
     acceptedBlanks: [["find", "insertOne"]],
     referenceSolution: `const docs = await db.collection("${input.collection}").find({ ${input.field}: ${printed} });
 await db.collection("${input.collection}").insertOne({ ${input.field}: ${printed} });`,
     rubric:
-      "Blank 1 is find. Blank 2 is insertOne (insert is accepted as a near miss via the local grader). Excuse find() with parens and trivial misspellings. Partial credit per blank.",
+      "____1____ is find. ____2____ is insertOne (insert is accepted as a near miss via the local grader). Excuse find() with parens and trivial misspellings. Partial credit per blank.",
     preview: {
       kind: "note",
       text: `find and insertOne on ${input.collection} where ${input.field} is ${printed}.`,

@@ -19,6 +19,10 @@ describe("lenient coding grader", () => {
       fillTemplate('a="_____" b="_____"', ["id", "title"]),
       'a="id" b="title"',
     );
+    assert.equal(
+      fillTemplate('a="____1____" b="____2____"', ["for", "id"]),
+      'a="for" b="id"',
+    );
   });
 
   it("forgives simple misspellings on form attribute blanks", () => {

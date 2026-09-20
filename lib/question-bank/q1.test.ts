@@ -79,18 +79,21 @@ describe("Chapter 1 question bank", () => {
     );
   });
 
-  it("asks how three body-copy blocks are separated without naming p in the stem", () => {
+  it("shows three rendered body-copy blocks and asks how that markup is done", () => {
     const group = CHAPTER1_BANK.groups.find((item) => item.id === "q1-g03-paragraphs");
     assert.ok(group);
     assert.equal(group.type, "multiple_choice");
     assert.doesNotMatch(group.name, /paragraph/i);
     for (const question of group.questions) {
       assert.equal(question.type, "multiple_choice");
-      assert.ok(question.code);
-      assert.equal(question.code.split("\n\n").length, 3);
+      assert.equal(question.code, undefined);
+      assert.equal(question.preview?.kind, "paragraphs");
+      if (question.preview?.kind === "paragraphs") {
+        assert.equal(question.preview.blocks.length, 3);
+      }
       assert.doesNotMatch(question.prompt, /paragraph/i);
-      assert.doesNotMatch(question.code, /<p>/i);
-      assert.match(question.prompt, /vertical separation/);
+      assert.match(question.prompt, /how the page should look/i);
+      assert.match(question.prompt, /How is that markup done/);
       const correct = question.choices.find((choice) => choice.id === question.correctChoiceId);
       assert.ok(correct);
       assert.match(correct.text, /`<p>`/);
@@ -155,7 +158,11 @@ describe("Chapter 1 question bank", () => {
     assert.doesNotMatch(blob, /the list of choices/);
     assert.doesNotMatch(blob, /Which type should a Save control use/);
     assert.doesNotMatch(blob, /arrives as the _____ prop/);
+    assert.doesNotMatch(blob, /robot demo/i);
+    assert.doesNotMatch(blob, /class standing/i);
     assert.match(blob, /a list of choices/);
+    assert.match(blob, /arrives as the _____ attribute/);
+    assert.match(blob, /year in school/);
   });
 
   it("asks for defaultValue from a snippet that starts with QWE, without prop/children wording", () => {
@@ -175,19 +182,52 @@ describe("Chapter 1 question bank", () => {
     }
   });
 
-  it("keeps the props group on snippets and drops children-prop FIBs", () => {
+  it("keeps props snippets and wording wrapper nested content as the children attribute", () => {
     const group = CHAPTER1_BANK.groups.find((item) => item.id === "q1-g14-props-children");
     assert.ok(group);
     assert.equal(group.questions.length, 10);
-    for (const question of group.questions) {
+    const props = group.questions.slice(0, 5);
+    const wrappers = group.questions.slice(5);
+    for (const question of props) {
       assert.equal(question.type, "fill_in_blank");
       const fib = question as FillInBlankQuestion;
-      assert.ok(fib.code);
-      assert.match(fib.code, /<Callout /);
-      assert.match(fib.prompt, /_____/);
-      assert.doesNotMatch(fib.prompt, /arrives as the/);
-      assert.doesNotMatch(fib.prompt, /children/);
+      assert.match(fib.code ?? "", /<Callout /);
+      assert.doesNotMatch(fib.prompt, /\bprop\b/i);
       assert.deepEqual(fib.acceptedCombinations[0], ["props"]);
+    }
+    for (const question of wrappers) {
+      assert.equal(question.type, "fill_in_blank");
+      const fib = question as FillInBlankQuestion;
+      assert.match(fib.code ?? "", /<Panel>/);
+      assert.match(fib.prompt, /_____ attribute/);
+      assert.doesNotMatch(fib.prompt, /\bprop\b/i);
+      assert.deepEqual(fib.acceptedCombinations[0], ["children"]);
+    }
+  });
+
+  it("pretty-prints the nested-list validity options", () => {
+    const group = CHAPTER1_BANK.groups.find((item) => item.id === "q1-g05-lists");
+    const question = group?.questions.find((item) => item.id === "q1-g05-08");
+    assert.ok(question && question.type === "multiple_choice");
+    for (const choice of question.choices) {
+      assert.match(choice.text, /\n/);
+    }
+    const correct = question.choices.find((choice) => choice.id === question.correctChoiceId);
+    assert.match(correct?.text ?? "", /<ul>\n  <li>\n    Fruit/);
+  });
+
+  it("asks image alt from an <img> snippet and drops the robot-demo stem", () => {
+    const group = CHAPTER1_BANK.groups.find((item) => item.id === "q1-g07-images");
+    assert.ok(group);
+    const alts = group.questions.filter((item) => item.id >= "q1-g07-06");
+    assert.equal(alts.length, 5);
+    for (const question of alts) {
+      assert.equal(question.type, "fill_in_blank");
+      const fib = question as FillInBlankQuestion;
+      assert.match(fib.code ?? "", /<img /);
+      assert.match(fib.prompt, /attribute/);
+      assert.doesNotMatch(fib.prompt, /robot demo/i);
+      assert.deepEqual(fib.acceptedCombinations[0], ["alt"]);
     }
   });
 

@@ -245,7 +245,7 @@ const BODY_COPY_SNIPPETS = [
 
 const BODY_COPY_CHOICES: [string, string, string, string] = [
   "Extra blank lines in the source — browsers keep that vertical space",
-  "Wrap each block of body copy in `<p>`",
+  "Wrap each block in `<p>`",
   "Wrap all three blocks in one `<h1>`",
   "Wrap each sentence in `<span>`",
 ];
@@ -261,11 +261,12 @@ export const q1Group03: QuestionGroup = {
   questions: BODY_COPY_SNIPPETS.map((blocks, index) =>
     mc(
       `q1-g03-${String(index + 1).padStart(2, "0")}`,
-      "The three blocks of body copy above display as separate units. How is that vertical separation accomplished in HTML?",
+      "The three blocks above show how the page should look. How is that markup done in HTML?",
       BODY_COPY_CHOICES,
       1,
       "The paragraph tag (`<p>`) is the standard element for a block of body copy. It adds vertical space before and after. Browsers ignore extra spaces, tabs, and newlines in the source, so blank lines alone do not separate the copy.",
-      blocks.join("\n\n"),
+      undefined,
+      { kind: "paragraphs", blocks },
     ),
   ),
 };

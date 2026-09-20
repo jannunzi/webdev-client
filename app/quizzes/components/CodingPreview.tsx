@@ -43,6 +43,23 @@ export default function CodingPreview({ preview }: { preview: Preview }) {
     );
   }
 
+  if (preview.kind === "paragraphs") {
+    return (
+      <div className="mt-3 rounded-lg border border-sky-200 bg-white px-4 py-3">
+        <p className="mt-0 mb-2 text-xs font-semibold uppercase tracking-wide text-sky-900">
+          Desired format
+        </p>
+        <div className="max-w-prose text-neutral-900">
+          {preview.blocks.map((block) => (
+            <p key={block} className="my-3 first:mt-0 last:mb-0">
+              {block}
+            </p>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   if (preview.kind === "styled-box") {
     return (
       <div className="mt-3">

@@ -64,6 +64,11 @@ describe("website coding pools", () => {
     assert.match(firstForm.prompt, /default value/i);
     assert.match(firstForm.prompt, /grayed example/i);
     assert.match(firstForm.prompt, /label/i);
+    assert.match(firstForm.prompt, /1\. connects the label/);
+    assert.match(firstForm.code ?? "", /____1____=/);
+    assert.match(firstForm.code ?? "", /____5____=/);
+    assert.doesNotMatch(firstForm.prompt, /Blank 1/);
+    assert.doesNotMatch(firstForm.rubric ?? "", /Blank 1/);
     const firstList = list.questions[0];
     assert.ok(firstList && firstList.type === "coding");
     assert.equal(firstList.style, "implement");

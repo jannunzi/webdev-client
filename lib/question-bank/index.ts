@@ -42,6 +42,7 @@ export {
   normalizeBlank,
   normalizeTuple,
 } from "./normalize";
+export { BLANK_MARK, countBlanks, fillTemplate, numberedBlank } from "./blanks";
 export { parsePromptMarkup } from "./prompt-markup";
 export type { PromptPart } from "./prompt-markup";
 export {

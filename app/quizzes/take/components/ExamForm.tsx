@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { fillTemplate, numberedBlank } from "@/lib/question-bank/blanks";
 import {
   pointsPerDrawnItem,
   quizTimeLimitMinutes,
@@ -20,11 +21,6 @@ import { submitExamAttempt } from "../actions";
 import PromptMarkup from "../../components/PromptMarkup";
 import CodingPreview from "../../components/CodingPreview";
 import { SubmittedAttemptView } from "./AttemptReview";
-
-function fillTemplate(template: string, blanks: string[]): string {
-  let index = 0;
-  return template.replace(/_{3,}/g, () => blanks[index++]?.trim() ?? "");
-}
 
 function formatItemPoints(groupCount: number): string {
   const raw = pointsPerDrawnItem(groupCount);
@@ -209,7 +205,15 @@ function QuestionField({
                   <span className="mr-1 font-mono text-xs uppercase text-neutral-500">
                     {choice.id}.
                   </span>
-                  <PromptMarkup as="span" text={choice.text} />
+                  <PromptMarkup
+                    as="span"
+                    text={choice.text}
+                    className={
+                      choice.text.includes("\n")
+                        ? "whitespace-pre-wrap break-words font-mono text-[0.85rem] leading-relaxed"
+                        : undefined
+                    }
+                  />
                 </span>
               </label>
             </li>
@@ -236,8 +240,10 @@ function QuestionField({
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {Array.from({ length: question.blankCount ?? 1 }, (_, blankIndex) => (
             <label key={blankIndex} className="block text-sm">
-              <span className="mb-1 block text-neutral-600">
-                Blank {blankIndex + 1}
+              <span className="mb-1 block font-mono text-neutral-600">
+                {(question.blankCount ?? 1) > 1
+                  ? numberedBlank(blankIndex)
+                  : "Answer"}
               </span>
               <input
                 type="text"

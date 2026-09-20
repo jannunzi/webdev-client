@@ -67,6 +67,9 @@ describe("website Q1–Q6 coding draw", () => {
       /the list of choices/,
       /Which type should a Save control use/,
       /arrives as the _____ prop/,
+      /robot demo/i,
+      /class standing/i,
+      /Blank 1/,
     ];
     const forbiddenIds = new Set(["q1-g01-02", "q1-g13-02"]);
     for (const seed of ["jose-review", "user_a:q1", "user_b:q1", "staff-impersonate"]) {

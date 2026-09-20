@@ -6,10 +6,10 @@ function fetchFib(input: {
   url: string;
   method: string;
 }): ReturnType<typeof codingQuestion> {
-  const template = `const response = await _____("${input.url}", {
-  _____: "${input.method}",
+  const template = `const response = await ____1____("${input.url}", {
+  ____2____: "${input.method}",
   headers: { "Content-Type": "application/json" },
-  body: JSON._____(payload),
+  body: JSON.____3____(payload),
 });`;
   return codingQuestion({
     id: input.id,
@@ -17,7 +17,9 @@ function fetchFib(input: {
     style: "fib",
     prompt: `Send JSON to \`${input.url}\` with HTTP ${input.method}.
 
-Fill the blanks with the browser function that makes the request, the option that sets the HTTP verb, and the JSON method that turns the object into a string.`,
+1. the browser function that makes the request
+2. the option that sets the HTTP verb
+3. the JSON method that turns the object into a string`,
     code: template,
     blankCount: 3,
     acceptedBlanks: [["fetch", "method", "stringify"]],

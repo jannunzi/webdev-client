@@ -95,6 +95,8 @@ describe("Canvas fallback banks", () => {
     assert.doesNotMatch(blob, /the list of choices/);
     assert.doesNotMatch(blob, /Which type should a Save control use/);
     assert.doesNotMatch(blob, /arrives as the _____ prop/);
+    assert.doesNotMatch(blob, /robot demo/i);
+    assert.doesNotMatch(blob, /class standing/i);
     assert.equal(
       [...banks.q1.groups, ...banks.x1.groups].some((group) =>
         group.questions.some((question) =>

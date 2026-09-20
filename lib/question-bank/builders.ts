@@ -16,6 +16,7 @@ export function mc(
   correctIndex: 0 | 1 | 2 | 3,
   explanation?: string,
   code?: string,
+  preview?: CodingPreview,
 ): MultipleChoiceQuestion {
   const letters = ["a", "b", "c", "d"] as const;
   return {
@@ -23,6 +24,7 @@ export function mc(
     type: "multiple_choice",
     prompt,
     code,
+    preview,
     explanation,
     choices: choices.map((text, index) => ({
       id: letters[index],

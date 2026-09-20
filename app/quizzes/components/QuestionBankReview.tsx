@@ -291,9 +291,7 @@ function QuestionBlock({
         text={question.prompt}
         className="m-0 font-medium whitespace-pre-wrap break-words"
       />
-      {question.type === "coding" && question.preview ? (
-        <CodingPreview preview={question.preview} />
-      ) : null}
+      {question.preview ? <CodingPreview preview={question.preview} /> : null}
       {question.code ? (
         <pre className="mt-2 overflow-x-auto rounded border border-neutral-300 bg-white px-3 py-2 font-mono text-[0.8rem] leading-relaxed">
           <code>{question.code}</code>
@@ -319,7 +317,11 @@ function QuestionBlock({
                   <PromptMarkup
                     as="span"
                     text={choice.text}
-                    className="whitespace-pre-wrap break-words"
+                    className={
+                      choice.text.includes("\n")
+                        ? "whitespace-pre-wrap break-words font-mono text-[0.85rem] leading-relaxed"
+                        : "whitespace-pre-wrap break-words"
+                    }
                   />
                   {correct ? (
                     <span className="ml-2 text-xs font-semibold text-emerald-800">

@@ -23,7 +23,7 @@ export function toStudentQuestion(drawn: DrawnQuestion): StudentQuestion {
     language: question.type === "coding" ? question.language : undefined,
     style: question.type === "coding" ? question.style : undefined,
     placeholder: question.type === "coding" ? question.placeholder : undefined,
-    preview: question.type === "coding" ? question.preview : undefined,
+    preview: question.preview,
   };
 }
 

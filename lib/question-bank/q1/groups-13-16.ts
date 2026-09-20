@@ -108,30 +108,44 @@ const PROP_VARIANTS = [
   { names: "heading and borderWidth", attrs: 'heading="…" borderWidth="…"' },
   { names: "caption and borderRadius", attrs: 'caption="…" borderRadius="…"' },
   { names: "message and borderColor", attrs: 'message="…" borderColor="…"' },
-  { names: "summary and padding", attrs: 'summary="…" padding="…"' },
-  { names: "kicker and backgroundColor", attrs: 'kicker="…" backgroundColor="…"' },
-  { names: "quote and borderWidth", attrs: 'quote="…" borderWidth="…"' },
-  { names: "status and borderColor", attrs: 'status="…" borderColor="…"' },
-  { names: "eyebrow and borderRadius", attrs: 'eyebrow="…" borderRadius="…"' },
+];
+
+const WRAPPER_VARIANTS = [
+  "<p>Hours are Tuesdays 2–4pm.</p>",
+  "<p>The library closes at 10pm.</p>",
+  "<ul>\n  <li>Apple</li>\n</ul>",
+  "<img src=\"/images/map.jpg\" alt=\"Campus map\" />",
+  "<p>Bring a specific question.</p>",
 ];
 
 export const q1Group14: QuestionGroup = {
   id: "q1-g14-props-children",
   order: 14,
-  name: "Component props",
+  name: "Component props and nested content",
   type: "fill_in_blank",
   chapter: 1,
   section: "1.3.8",
-  skill: "Attributes passed into a component are props.",
-  questions: PROP_VARIANTS.map((variant, index) =>
-    fib(
-      `q1-g14-${String(index + 1).padStart(2, "0")}`,
-      `Values such as ${variant.names} that you pass on this tag are called _____.`,
-      ["props", "properties", "prop", "the props"],
-      "Props (properties) are parameters on your component, passed as attributes when you use the tag.",
-      `<Callout ${variant.attrs} />`,
+  skill: "Values passed on a component tag are props; nested markup arrives as the children attribute.",
+  questions: [
+    ...PROP_VARIANTS.map((variant, index) =>
+      fib(
+        `q1-g14-${String(index + 1).padStart(2, "0")}`,
+        `Values such as ${variant.names} that you pass on this tag are called _____.`,
+        ["props", "properties", "prop", "the props"],
+        "Props (properties) are parameters on your component, passed as attributes when you use the tag.",
+        `<Callout ${variant.attrs} />`,
+      ),
     ),
-  ),
+    ...WRAPPER_VARIANTS.map((body, index) =>
+      fib(
+        `q1-g14-${String(index + 6).padStart(2, "0")}`,
+        "Content nested between this wrapper’s tags arrives as the _____ attribute.",
+        ["children", "the children", "children attribute", "the children attribute"],
+        "Nested markup arrives as the children attribute. Wrappers and layouts use the same idea.",
+        `<Panel>\n  ${body}\n</Panel>`,
+      ),
+    ),
+  ],
 };
 
 export const q1Group15: QuestionGroup = {
