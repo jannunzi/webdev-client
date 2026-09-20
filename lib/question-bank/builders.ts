@@ -55,11 +55,13 @@ export function fib(
   prompt: string,
   answers: string[],
   explanation?: string,
+  code?: string,
 ): FillInBlankQuestion {
   return {
     id,
     type: "fill_in_blank",
     prompt,
+    code,
     blankCount: 1,
     acceptedCombinations: answers.map((answer) => [answer]),
     explanation,

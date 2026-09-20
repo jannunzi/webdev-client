@@ -57,6 +57,29 @@ describe("website Q1–Q6 coding draw", () => {
     assert.equal(list.question.preview?.kind, "bullet-list");
   });
 
+  it("never draws Jose 2026-09-20 traditional stems on website Q1", () => {
+    const forbidden = [
+      /XML stands for/,
+      /Wrap each block of ordinary body text/,
+      /Office hours policy/,
+      /A div heading/,
+      /For an uncontrolled /,
+      /the list of choices/,
+      /Which type should a Save control use/,
+      /arrives as the _____ prop/,
+    ];
+    const forbiddenIds = new Set(["q1-g01-02", "q1-g13-02"]);
+    for (const seed of ["jose-review", "user_a:q1", "user_b:q1", "staff-impersonate"]) {
+      const drawn = drawWebsiteAttempt("q1", seed);
+      for (const item of drawn) {
+        assert.equal(forbiddenIds.has(item.question.id), false, item.question.id);
+        for (const pattern of forbidden) {
+          assert.doesNotMatch(item.question.prompt, pattern, item.question.id);
+        }
+      }
+    }
+  });
+
   it("rejects a traditional-only Q1 canvas draw on the website", () => {
     const coding = WEBSITE_CODING_BANKS.q1.groups.flatMap((group) =>
       group.questions.map((question) => ({ group, question })),

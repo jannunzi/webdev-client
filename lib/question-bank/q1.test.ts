@@ -34,7 +34,6 @@ describe("Chapter 1 question bank", () => {
     const group = CHAPTER1_BANK.groups[0];
     const expected: Record<string, { letters: number; words: string[] }> = {
       "q1-g01-01": { letters: 4, words: ["Hyper", "Text", "Markup", "Language"] },
-      "q1-g01-02": { letters: 3, words: ["eXtensible", "Markup", "Language"] },
       "q1-g01-03": { letters: 3, words: ["Java", "Script", "XML"] },
       "q1-g01-04": { letters: 3, words: ["Document", "Object", "Model"] },
       "q1-g01-05": { letters: 3, words: ["Uniform", "Resource", "Locator"] },
@@ -80,24 +79,21 @@ describe("Chapter 1 question bank", () => {
     );
   });
 
-  it("asks for the p element without naming it in the stem", () => {
+  it("asks how three body-copy blocks are separated without naming p in the stem", () => {
     const group = CHAPTER1_BANK.groups.find((item) => item.id === "q1-g03-paragraphs");
     assert.ok(group);
+    assert.equal(group.type, "multiple_choice");
     assert.doesNotMatch(group.name, /paragraph/i);
     for (const question of group.questions) {
-      assert.equal(question.type, "fill_in_blank");
-      const fib = question as FillInBlankQuestion;
-      assert.doesNotMatch(fib.prompt, /paragraph/i);
-      assert.match(fib.prompt, /short element\/tag name/);
-      assert.match(fib.prompt, /not a multi-line HTML document/);
-      assert.match(fib.prompt, /not a heading and not a generic container/);
-      assert.equal(fib.blankCount, 1);
-      assert.match(fib.explanation ?? "", /`<p>`/);
-      for (const combo of fib.acceptedCombinations) {
-        const value = combo[0] ?? "";
-        assert.equal(/\b(div|h1|span)\b/i.test(value), false, value);
-        assert.match(value, /p|paragraph/i);
-      }
+      assert.equal(question.type, "multiple_choice");
+      assert.ok(question.code);
+      assert.equal(question.code.split("\n\n").length, 3);
+      assert.doesNotMatch(question.prompt, /paragraph/i);
+      assert.doesNotMatch(question.code, /<p>/i);
+      assert.match(question.prompt, /vertical separation/);
+      const correct = question.choices.find((choice) => choice.id === question.correctChoiceId);
+      assert.ok(correct);
+      assert.match(correct.text, /`<p>`/);
     }
   });
 
@@ -143,6 +139,56 @@ describe("Chapter 1 question bank", () => {
     assert.equal(/§\d/.test(blob), false);
     assert.equal(/\/labs\b/.test(blob), false);
     assert.equal(/the book/i.test(blob), false);
+  });
+
+  it("drops Jose 2026-09-20 traditional stems from the Q1 bank", () => {
+    const questions = CHAPTER1_BANK.groups.flatMap((group) => group.questions);
+    const blob = questions
+      .map((question) => [question.id, question.prompt, question.explanation ?? "", question.code ?? ""].join("\n"))
+      .join("\n");
+    assert.equal(questions.some((question) => question.id === "q1-g01-02"), false);
+    assert.equal(questions.some((question) => question.id === "q1-g13-02"), false);
+    assert.doesNotMatch(blob, /XML stands for/);
+    assert.doesNotMatch(blob, /Wrap each block of ordinary body text in the HTML/);
+    assert.doesNotMatch(blob, /Office hours policy/);
+    assert.doesNotMatch(blob, /A div heading/);
+    assert.doesNotMatch(blob, /the list of choices/);
+    assert.doesNotMatch(blob, /Which type should a Save control use/);
+    assert.doesNotMatch(blob, /arrives as the _____ prop/);
+    assert.match(blob, /a list of choices/);
+  });
+
+  it("asks for defaultValue from a snippet that starts with QWE, without prop/children wording", () => {
+    const group = CHAPTER1_BANK.groups.find((item) => item.id === "q1-g09-text-fields");
+    assert.ok(group);
+    for (const question of group.questions) {
+      assert.equal(question.type, "fill_in_blank");
+      const fib = question as FillInBlankQuestion;
+      assert.ok(fib.code);
+      assert.match(fib.prompt, /QWE/);
+      assert.match(fib.prompt, /attribute/);
+      assert.doesNotMatch(fib.prompt, /\bprop\b/i);
+      assert.doesNotMatch(fib.prompt, /children/i);
+      assert.doesNotMatch(fib.prompt, /placeholder/i);
+      assert.doesNotMatch(fib.prompt, /uncontrolled/i);
+      assert.deepEqual(fib.acceptedCombinations[0], ["defaultValue"]);
+    }
+  });
+
+  it("keeps the props group on snippets and drops children-prop FIBs", () => {
+    const group = CHAPTER1_BANK.groups.find((item) => item.id === "q1-g14-props-children");
+    assert.ok(group);
+    assert.equal(group.questions.length, 10);
+    for (const question of group.questions) {
+      assert.equal(question.type, "fill_in_blank");
+      const fib = question as FillInBlankQuestion;
+      assert.ok(fib.code);
+      assert.match(fib.code, /<Callout /);
+      assert.match(fib.prompt, /_____/);
+      assert.doesNotMatch(fib.prompt, /arrives as the/);
+      assert.doesNotMatch(fib.prompt, /children/);
+      assert.deepEqual(fib.acceptedCombinations[0], ["props"]);
+    }
   });
 
   it("adds the two website coding styles only on the review bank", () => {

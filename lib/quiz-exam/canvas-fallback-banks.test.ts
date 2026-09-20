@@ -83,6 +83,28 @@ describe("Canvas fallback banks", () => {
     assert.match(x1, /<points_per_item>2\.7778<\/points_per_item>/);
   });
 
+  it("drops Jose 2026-09-20 stems from Q1 and X1 traditional fallback", () => {
+    const banks = buildCanvasFallbackBanks();
+    const blob = [...banks.q1.groups, ...banks.x1.groups]
+      .flatMap((group) => group.questions)
+      .map((question) => question.prompt)
+      .join("\n");
+    assert.doesNotMatch(blob, /XML stands for/);
+    assert.doesNotMatch(blob, /Wrap each block of ordinary body text/);
+    assert.doesNotMatch(blob, /A div heading/);
+    assert.doesNotMatch(blob, /the list of choices/);
+    assert.doesNotMatch(blob, /Which type should a Save control use/);
+    assert.doesNotMatch(blob, /arrives as the _____ prop/);
+    assert.equal(
+      [...banks.q1.groups, ...banks.x1.groups].some((group) =>
+        group.questions.some((question) =>
+          question.id === "q1-g01-02" || question.id === "q1-g13-02",
+        ),
+      ),
+      false,
+    );
+  });
+
   it("keeps exported stems standalone", () => {
     const banks = buildCanvasFallbackBanks();
     for (const bank of Object.values(banks)) {
