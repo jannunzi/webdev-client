@@ -10,6 +10,7 @@
  * `non_cc_assessments/<ident>.xml.qti` so Canvas restores groups.
  */
 
+import { replaceBlankMarkers } from "./blanks";
 import { parsePromptMarkup } from "./prompt-markup";
 import { QTI_ITEM_TYPE } from "./types";
 import type {
@@ -70,7 +71,7 @@ export function promptToHtml(
 ): string {
   const inline = parsePromptMarkup(prompt)
     .map((part) =>
-      part.type === "code"
+      part.type === "code" || part.type === "blank"
         ? `<code>${escapeXml(part.value)}</code>`
         : escapeXml(part.value),
     )
@@ -82,7 +83,14 @@ export function promptToHtml(
   const snippet = code
     ? `<pre><code>${escapeXml(code)}</code></pre>`
     : "";
-  return `<div>${visual}${snippet}<p>${inline}</p></div>`;
+  return `<div><p>${inline}</p>${visual}${snippet}</div>`;
+}
+
+function choiceToHtml(text: string): string {
+  if (text.includes("\n")) {
+    return `<pre><code>${escapeXml(text)}</code></pre>`;
+  }
+  return `<p>${escapeXml(text)}</p>`;
 }
 
 function metaField(label: string, entry: string): string {
@@ -103,17 +111,16 @@ function mattextPlain(text: string, indent: string): string {
 }
 
 function replaceBlanks(prompt: string, blankCount: number): string {
-  let remaining = blankCount;
-  const withTokens = prompt.replace(/_{3,}/g, () => {
-    if (remaining <= 0) return "_____";
-    const index = blankCount - remaining + 1;
-    remaining -= 1;
-    return `[blank${index}]`;
+  let used = 0;
+  const withTokens = replaceBlankMarkers(prompt, (index) => {
+    if (index >= blankCount) return "_____";
+    used = index + 1;
+    return `[blank${index + 1}]`;
   });
-  if (remaining === 0) return withTokens;
+  if (used >= blankCount) return withTokens;
   const extras = Array.from(
-    { length: remaining },
-    (_, index) => `[blank${blankCount - remaining + index + 1}]`,
+    { length: blankCount - used },
+    (_, index) => `[blank${used + index + 1}]`,
   ).join(" ");
   return `${withTokens} ${extras}`.trim();
 }
@@ -145,7 +152,7 @@ function renderMultipleChoice(
       [
         `          <response_label ident="${escapeXml(choice.id)}">`,
         "            <material>",
-        mattextHtml(`<p>${escapeXml(choice.text)}</p>`, "              "),
+        mattextHtml(choiceToHtml(choice.text), "              "),
         "            </material>",
         "          </response_label>",
       ].join("\n"),

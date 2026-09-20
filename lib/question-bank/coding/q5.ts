@@ -1,3 +1,4 @@
+import { numberedBlank } from "../blanks";
 import { codingQuestion } from "../builders";
 import type { QuestionBank, QuestionGroup } from "../types";
 
@@ -6,10 +7,10 @@ function fetchFib(input: {
   url: string;
   method: string;
 }): ReturnType<typeof codingQuestion> {
-  const template = `const response = await ____1____("${input.url}", {
-  ____2____: "${input.method}",
+  const template = `const response = await ${numberedBlank(0)}("${input.url}", {
+  ${numberedBlank(1)}: "${input.method}",
   headers: { "Content-Type": "application/json" },
-  body: JSON.____3____(payload),
+  body: JSON.${numberedBlank(2)}(payload),
 });`;
   return codingQuestion({
     id: input.id,

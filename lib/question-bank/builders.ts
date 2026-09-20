@@ -1,3 +1,4 @@
+import { numberedBlankSequence } from "./blanks";
 import type {
   CodingCheck,
   CodingLanguage,
@@ -90,8 +91,9 @@ export function fibMulti(
 
 /**
  * Acronym FIB: one blank per letter, words in letter order.
- * The stem tells students to fill each blank with the word for that letter
- * (CSS uses HTML as the example so the prompt does not give away Sheets).
+ * The stem uses inline `___1___` tokens and tells students to fill each
+ * numbered blank with the word for that letter (CSS uses HTML as the
+ * example so the prompt does not give away Sheets).
  */
 export function acronymFib(
   id: string,
@@ -116,7 +118,7 @@ export function acronymFib(
       );
     }
   }
-  const blanks = letters.map(() => "_____").join(" ");
+  const blanks = numberedBlankSequence(letters.length);
   const example =
     acronym.toUpperCase() === "CSS"
       ? "HTML → Hyper / Text / Markup / Language"
@@ -124,7 +126,7 @@ export function acronymFib(
   const prefix = options?.prefix ?? "";
   return fibMulti(
     id,
-    `${prefix}${acronym} stands for ${blanks}. Fill each blank with the word that corresponds to each letter, in letter order (for example, ${example}).`,
+    `${prefix}${acronym} stands for ${blanks}. Fill each numbered blank with the word that corresponds to that number, in letter order (for example, ${example}).`,
     letters.length,
     [words, ...(options?.extraCombinations ?? [])],
     explanation,

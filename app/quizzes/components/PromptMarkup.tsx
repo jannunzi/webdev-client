@@ -20,6 +20,13 @@ export default function PromptMarkup({
           <code key={index} className="quiz-prompt-code">
             {part.value}
           </code>
+        ) : part.type === "blank" ? (
+          <span
+            key={index}
+            className="mx-0.5 inline-block rounded bg-sky-50 px-1 font-mono text-[0.9em] text-sky-900"
+          >
+            {part.value}
+          </span>
         ) : (
           part.value
         ),

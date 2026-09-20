@@ -1,8 +1,8 @@
 /**
- * Shared FIB markers for coding templates and the take UI.
+ * Shared FIB markers for prompts, coding templates, and the take UI.
  *
- * Prefer numbered tokens (`____1____`) so the prompt list, the snippet,
- * and the answer fields use the same label. Plain `_____` still works.
+ * Prefer numbered tokens (`___1___`) so the stem, the snippet, and the
+ * numbered answer list use the same labels. Plain `_____` still works.
  */
 export const BLANK_MARK = /_{3,}\d+_{3,}|_{3,}/g;
 
@@ -16,5 +16,19 @@ export function fillTemplate(template: string, blanks: string[]): string {
 }
 
 export function numberedBlank(index: number): string {
-  return `____${index + 1}____`;
+  return `___${index + 1}___`;
+}
+
+export function numberedBlankSequence(count: number): string {
+  return Array.from({ length: count }, (_, index) => numberedBlank(index)).join(
+    " ",
+  );
+}
+
+export function replaceBlankMarkers(
+  template: string,
+  replaceWith: (index: number, token: string) => string,
+): string {
+  let index = 0;
+  return template.replace(BLANK_MARK, (token) => replaceWith(index++, token));
 }

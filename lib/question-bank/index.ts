@@ -42,7 +42,14 @@ export {
   normalizeBlank,
   normalizeTuple,
 } from "./normalize";
-export { BLANK_MARK, countBlanks, fillTemplate, numberedBlank } from "./blanks";
+export {
+  BLANK_MARK,
+  countBlanks,
+  fillTemplate,
+  numberedBlank,
+  numberedBlankSequence,
+  replaceBlankMarkers,
+} from "./blanks";
 export { parsePromptMarkup } from "./prompt-markup";
 export type { PromptPart } from "./prompt-markup";
 export {

@@ -50,8 +50,8 @@ export default function CodingPreview({ preview }: { preview: Preview }) {
           Desired format
         </p>
         <div className="max-w-prose text-neutral-900">
-          {preview.blocks.map((block) => (
-            <p key={block} className="my-3 first:mt-0 last:mb-0">
+          {preview.blocks.map((block, index) => (
+            <p key={`${index}-${block}`} className="my-3 first:mt-0 last:mb-0">
               {block}
             </p>
           ))}

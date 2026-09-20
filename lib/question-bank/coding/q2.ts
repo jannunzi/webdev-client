@@ -1,3 +1,4 @@
+import { numberedBlank } from "../blanks";
 import { codingQuestion } from "../builders";
 import type { QuestionBank, QuestionGroup } from "../types";
 
@@ -10,10 +11,10 @@ function boxFib(input: {
   text: string;
 }): ReturnType<typeof codingQuestion> {
   const template = `.note {
-  ____1____: ${input.color};
-  ____2____: ${input.background};
-  ____3____: ${input.padding};
-  ____4____: ${input.border};
+  ${numberedBlank(0)}: ${input.color};
+  ${numberedBlank(1)}: ${input.background};
+  ${numberedBlank(2)}: ${input.padding};
+  ${numberedBlank(3)}: ${input.border};
 }`;
   return codingQuestion({
     id: input.id,

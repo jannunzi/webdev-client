@@ -1,3 +1,4 @@
+import { numberedBlank } from "../blanks";
 import { codingQuestion } from "../builders";
 import type { QuestionBank, QuestionGroup } from "../types";
 
@@ -9,8 +10,8 @@ function formFib(input: {
   value: string;
   placeholder: string;
 }): ReturnType<typeof codingQuestion> {
-  const template = `<label ____1____="${input.inputId}">${input.label}</label>
-<input ____2____="${input.inputId}" ____3____="${input.title}" ____4____="${input.value}" ____5____="${input.placeholder}">`;
+  const template = `<label ${numberedBlank(0)}="${input.inputId}">${input.label}</label>
+<input ${numberedBlank(1)}="${input.inputId}" ${numberedBlank(2)}="${input.title}" ${numberedBlank(3)}="${input.value}" ${numberedBlank(4)}="${input.placeholder}">`;
   return codingQuestion({
     id: input.id,
     language: "html",
@@ -37,7 +38,7 @@ The tooltip text is “${input.title}”. The default value is “${input.value}
     referenceSolution: `<label for="${input.inputId}">${input.label}</label>
 <input id="${input.inputId}" title="${input.title}" value="${input.value}" placeholder="${input.placeholder}">`,
     rubric:
-      "____1____ is for (label). ____2____ is id (must match). ____3____ is title (tooltip). ____4____ is value (default). ____5____ is placeholder (gray example). Excuse htmlFor for for, quote style, and trivial misspellings. Partial credit per correct blank.",
+      `${numberedBlank(0)} is for (label). ${numberedBlank(1)} is id (must match). ${numberedBlank(2)} is title (tooltip). ${numberedBlank(3)} is value (default). ${numberedBlank(4)} is placeholder (gray example). Excuse htmlFor for for, quote style, and trivial misspellings. Partial credit per correct blank.`,
     preview: {
       kind: "form-input",
       label: input.label,

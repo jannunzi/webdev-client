@@ -1,3 +1,4 @@
+import { numberedBlank } from "../blanks";
 import { codingQuestion } from "../builders";
 import type { QuestionBank, QuestionGroup } from "../types";
 
@@ -5,8 +6,8 @@ function stateFib(input: {
   id: string;
   start: number;
 }): ReturnType<typeof codingQuestion> {
-  const template = `const [n, ____1____] = ____2____(${input.start});
-return <button ____3____={() => setN(n + 1)}>{n}</button>;`;
+  const template = `const [n, ${numberedBlank(0)}] = ${numberedBlank(1)}(${input.start});
+return <button ${numberedBlank(2)}={() => setN(n + 1)}>{n}</button>;`;
   return codingQuestion({
     id: input.id,
     language: "tsx",

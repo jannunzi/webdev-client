@@ -20,7 +20,7 @@ describe("lenient coding grader", () => {
       'a="id" b="title"',
     );
     assert.equal(
-      fillTemplate('a="____1____" b="____2____"', ["for", "id"]),
+      fillTemplate('a="___1___" b="___2___"', ["for", "id"]),
       'a="for" b="id"',
     );
   });

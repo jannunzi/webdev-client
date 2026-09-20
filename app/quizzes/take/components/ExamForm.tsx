@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { fillTemplate, numberedBlank } from "@/lib/question-bank/blanks";
+import { fillTemplate } from "@/lib/question-bank/blanks";
 import {
   pointsPerDrawnItem,
   quizTimeLimitMinutes,
@@ -18,8 +18,10 @@ import {
   type QuizScheduleIso,
 } from "@/lib/quiz-exam/schedule";
 import { submitExamAttempt } from "../actions";
-import PromptMarkup from "../../components/PromptMarkup";
+import ChoiceContent from "../../components/ChoiceContent";
 import CodingPreview from "../../components/CodingPreview";
+import FibBlankFields from "../../components/FibBlankFields";
+import PromptMarkup from "../../components/PromptMarkup";
 import { SubmittedAttemptView } from "./AttemptReview";
 
 function formatItemPoints(groupCount: number): string {
@@ -201,20 +203,7 @@ function QuestionField({
                   value={choice.id}
                   className="mt-1"
                 />
-                <span>
-                  <span className="mr-1 font-mono text-xs uppercase text-neutral-500">
-                    {choice.id}.
-                  </span>
-                  <PromptMarkup
-                    as="span"
-                    text={choice.text}
-                    className={
-                      choice.text.includes("\n")
-                        ? "whitespace-pre-wrap break-words font-mono text-[0.85rem] leading-relaxed"
-                        : undefined
-                    }
-                  />
-                </span>
+                <ChoiceContent letter={choice.id} text={choice.text} />
               </label>
             </li>
           ))}
@@ -237,23 +226,10 @@ function QuestionField({
 
       {question.type === "fill_in_blank" ||
       (question.type === "coding" && question.style === "fib") ? (
-        <div className="mt-3 grid gap-2 sm:grid-cols-2">
-          {Array.from({ length: question.blankCount ?? 1 }, (_, blankIndex) => (
-            <label key={blankIndex} className="block text-sm">
-              <span className="mb-1 block font-mono text-neutral-600">
-                {(question.blankCount ?? 1) > 1
-                  ? numberedBlank(blankIndex)
-                  : "Answer"}
-              </span>
-              <input
-                type="text"
-                name={`q-${question.id}-${blankIndex}`}
-                autoComplete="off"
-                className="w-full rounded border border-neutral-300 bg-white px-3 py-2 font-mono"
-              />
-            </label>
-          ))}
-        </div>
+        <FibBlankFields
+          questionId={question.id}
+          blankCount={question.blankCount ?? 1}
+        />
       ) : null}
 
       {question.type === "coding" && question.style !== "fib" ? (
