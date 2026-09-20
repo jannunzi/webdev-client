@@ -2,7 +2,8 @@
  * Shared graded-quiz length + timer. Website take and Canvas fallback
  * builders both read these so group counts cannot drift.
  *
- * Q1–Q6: 10 topic groups × 1 question, 10 points each, ~30 minutes.
+ * Q1–Q6 website: 8 traditional + 2 coding, 10 points each, ~30 minutes.
+ * Canvas QTI fallback stays 10 traditional groups (no AI grader).
  * X1/X2: 36 groups (12 from each of three source chapters), 100 / 36
  * points each, ~90 minutes.
  */
@@ -20,6 +21,11 @@ export const GRADED_QUIZ_IDS = [
 export type GradedQuizId = (typeof GRADED_QUIZ_IDS)[number];
 
 export const QUIZ_TOTAL_POINTS = 100;
+
+/** Traditional MC/TF/FIB items drawn on the website for Q1–Q6. */
+export const WEBSITE_TRADITIONAL_DRAW_COUNT = 8;
+/** Always one form/FIB-style item and one implement-style item. */
+export const WEBSITE_CODING_DRAW_COUNT = 2;
 
 export const QUIZ_DRAW_COUNTS = {
   q1: 10,

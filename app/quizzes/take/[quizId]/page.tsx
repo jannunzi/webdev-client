@@ -3,14 +3,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import StatusPanel from "../../components/StatusPanel";
-import { isQuizTakingConfigured } from "@/lib/config";
+import { isQuizTakingConfigured, isXaiConfigured } from "@/lib/config";
 import { loadTakeOverrideForRoster } from "@/lib/quiz-exam/access-overrides";
 import { findLatestQuizAttempt } from "@/lib/quiz-exam/attempts";
 import {
-  drawOnePerGroup,
+  drawWebsiteAttempt,
   getExamBank,
   toStudentQuestion,
 } from "@/lib/quiz-exam";
+import { isWebsiteCodingQuizId } from "@/lib/question-bank";
 import { buildAttemptReview } from "@/lib/quiz-exam/review";
 import {
   canRevealAnswers,
@@ -167,8 +168,10 @@ export default async function TakeExamPage({ params }: PageProps) {
     !attempt &&
     (impersonating || phase === "take_open");
   const questions = showForm
-    ? drawOnePerGroup(bank, `${user.id}:${bank.id}`).map(toStudentQuestion)
+    ? drawWebsiteAttempt(quizId, `${user.id}:${bank.id}`).map(toStudentQuestion)
     : [];
+  const showCodingKeyNote =
+    showAuthorReview && isWebsiteCodingQuizId(quizId) && !isXaiConfigured();
 
   return (
     <article>
@@ -223,6 +226,13 @@ export default async function TakeExamPage({ params }: PageProps) {
               you review.
             </p>
           )}
+          {showCodingKeyNote ? (
+            <p className="mt-4 rounded-lg border-2 border-amber-500 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+              Staff only: <code>XAI_API_KEY</code> is not set. The local
+              lenient grader still scores typical coding answers. Add the key
+              (same name SnapTools uses) so unusual answers can go to Grok.
+            </p>
+          ) : null}
           <div className="mt-4">
             <ExamForm
               quizId={quizId}

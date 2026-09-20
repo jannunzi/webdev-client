@@ -4,15 +4,19 @@ export {
   QUIZ_DRAW_COUNTS,
   QUIZ_TIME_LIMIT_MINUTES,
   QUIZ_TOTAL_POINTS,
+  WEBSITE_CODING_DRAW_COUNT,
+  WEBSITE_TRADITIONAL_DRAW_COUNT,
   pointsPerDrawnItem,
   quizDrawCount,
   quizTimeLimitMinutes,
 } from "./draw-counts";
 export type { GradedQuizId } from "./draw-counts";
-export { isAnswerCorrect, gradeDrawnQuestions } from "./grade";
+export { isAnswerCorrect, gradeCodingItems, gradeDrawnQuestions } from "./grade";
+export { drawWebsiteAttempt, findQuizQuestion } from "./website-draw";
 export { buildAttemptReview, formatStudentResponse } from "./review";
 export {
   drawExamAttempt,
+  drawOneFromGroup,
   drawOnePerGroup,
   findBankQuestion,
   sampleGroups,

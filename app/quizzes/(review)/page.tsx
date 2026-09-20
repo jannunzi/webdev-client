@@ -33,6 +33,41 @@ export default async function QuizzesIndexPage() {
           {" · "}
           <Link href="/quizzes/take/q1">Student exam</Link>
         </li>
+        <li>
+          <Link href="/quizzes/q2">Q2 — CSS (Chapter 2)</Link>
+          {" "}
+          <span className="text-sm text-amber-800">Review draft</span>
+          {" · "}
+          <Link href="/quizzes/take/q2">Student exam</Link>
+        </li>
+        <li>
+          <Link href="/quizzes/q3">Q3 — JavaScript (Chapter 3)</Link>
+          {" "}
+          <span className="text-sm text-amber-800">Review draft</span>
+          {" · "}
+          <Link href="/quizzes/take/q3">Student exam</Link>
+        </li>
+        <li>
+          <Link href="/quizzes/q4">Q4 — Client state (Chapter 4)</Link>
+          {" "}
+          <span className="text-sm text-amber-800">Review draft</span>
+          {" · "}
+          <Link href="/quizzes/take/q4">Student exam</Link>
+        </li>
+        <li>
+          <Link href="/quizzes/q5">Q5 — REST (Chapter 5)</Link>
+          {" "}
+          <span className="text-sm text-amber-800">Review draft</span>
+          {" · "}
+          <Link href="/quizzes/take/q5">Student exam</Link>
+        </li>
+        <li>
+          <Link href="/quizzes/q6">Q6 — MongoDB (Chapter 6)</Link>
+          {" "}
+          <span className="text-sm text-amber-800">Review draft</span>
+          {" · "}
+          <Link href="/quizzes/take/q6">Student exam</Link>
+        </li>
       </ul>
     </article>
   ));

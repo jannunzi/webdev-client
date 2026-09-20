@@ -1,5 +1,6 @@
 import type {
   BankQuestion,
+  CodingQuestion,
   FillInBlankQuestion,
   MultipleChoiceQuestion,
   QuestionBank,
@@ -7,6 +8,7 @@ import type {
   QuestionType,
   TrueFalseQuestion,
 } from "./types";
+import { CODING_LANGUAGES } from "./types";
 
 export type BankIssue = {
   path: string;
@@ -29,6 +31,10 @@ function isTf(question: BankQuestion): question is TrueFalseQuestion {
 
 function isFib(question: BankQuestion): question is FillInBlankQuestion {
   return question.type === "fill_in_blank";
+}
+
+function isCoding(question: BankQuestion): question is CodingQuestion {
+  return question.type === "coding";
 }
 
 export function validateQuestion(
@@ -109,6 +115,53 @@ export function validateQuestion(
     }
   }
 
+  if (isCoding(question)) {
+    if (!(CODING_LANGUAGES as readonly string[]).includes(question.language)) {
+      issues.push(issue(`${path}.language`, "Coding language is not supported."));
+    }
+    if (question.style !== "fib" && question.style !== "implement") {
+      issues.push(issue(`${path}.style`, "Coding style must be fib or implement."));
+    }
+    if (!question.referenceSolution?.trim()) {
+      issues.push(issue(`${path}.referenceSolution`, "Reference solution is required."));
+    } else if (question.referenceSolution.split("\n").length > 14) {
+      issues.push(
+        issue(`${path}.referenceSolution`, "Reference solution should stay at 14 lines or fewer."),
+      );
+    }
+    if (!question.rubric?.trim()) {
+      issues.push(issue(`${path}.rubric`, "Grading rubric is required."));
+    }
+    if (question.style === "fib") {
+      if (!Number.isInteger(question.blankCount) || (question.blankCount ?? 0) < 1) {
+        issues.push(issue(`${path}.blankCount`, "FIB coding items need blankCount >= 1."));
+      }
+      if (!question.acceptedBlanks?.length) {
+        issues.push(issue(`${path}.acceptedBlanks`, "FIB coding items need accepted blanks."));
+      } else {
+        question.acceptedBlanks.forEach((combo, index) => {
+          if (combo.length !== question.blankCount) {
+            issues.push(
+              issue(
+                `${path}.acceptedBlanks[${index}]`,
+                `Combination length ${combo.length} !== blankCount ${question.blankCount}.`,
+              ),
+            );
+          }
+        });
+      }
+      const markers = (question.code ?? "").match(/_{3,}/g)?.length ?? 0;
+      if (question.blankCount && markers !== question.blankCount) {
+        issues.push(
+          issue(
+            `${path}.code`,
+            `Template has ${markers} blanks; blankCount is ${question.blankCount}.`,
+          ),
+        );
+      }
+    }
+  }
+
   return issues;
 }
 
@@ -126,14 +179,22 @@ export function validateGroup(group: QuestionGroup, path: string): BankIssue[] {
   if (!group.section?.trim()) {
     issues.push(issue(`${path}.section`, "Group section is required."));
   }
-  if (!Array.isArray(group.questions) || group.questions.length < 8) {
+  const minQuestions = group.type === "coding" ? 3 : 8;
+  const maxQuestions = group.type === "coding" ? 8 : 14;
+  if (!Array.isArray(group.questions) || group.questions.length < minQuestions) {
     issues.push(
-      issue(`${path}.questions`, "Each group should have at least 8 questions/variants."),
+      issue(
+        `${path}.questions`,
+        `Each ${group.type === "coding" ? "coding pool" : "group"} should have at least ${minQuestions} questions/variants.`,
+      ),
     );
   }
-  if (group.questions.length > 14) {
+  if (group.questions.length > maxQuestions) {
     issues.push(
-      issue(`${path}.questions`, "Each group should stay manageable (14 or fewer)."),
+      issue(
+        `${path}.questions`,
+        `Each ${group.type === "coding" ? "coding pool" : "group"} should stay manageable (${maxQuestions} or fewer).`,
+      ),
     );
   }
 
@@ -200,11 +261,56 @@ export function assertBankValid(bank: QuestionBank): void {
   }
 }
 
+/** Coding topic pools are not part of the 16-group traditional bank. */
+export function validateCodingPool(bank: QuestionBank): BankIssue[] {
+  const issues: BankIssue[] = [];
+  if (!bank.id || !ID_PATTERN.test(bank.id)) {
+    issues.push(issue("id", "Bank id is missing or not kebab-case."));
+  }
+  if (bank.groups.length < 2) {
+    issues.push(issue("groups", "Coding pool needs a FIB group and an implement group."));
+  }
+  const groupIds = new Set<string>();
+  const questionIds = new Set<string>();
+  const styles = new Set<string>();
+  bank.groups.forEach((group, index) => {
+    if (group.type !== "coding") {
+      issues.push(
+        issue(`groups[${index}].type`, "Coding pool groups must have type coding."),
+      );
+    }
+    issues.push(...validateGroup(group, `groups[${index}]`));
+    if (group.chapter !== bank.chapter) {
+      issues.push(
+        issue(`groups[${index}].chapter`, "Group chapter must match the bank chapter."),
+      );
+    }
+    if (groupIds.has(group.id)) {
+      issues.push(issue("groups", `Duplicate group id ${group.id}.`));
+    }
+    groupIds.add(group.id);
+    for (const question of group.questions) {
+      if (question.type === "coding") styles.add(question.style);
+      if (questionIds.has(question.id)) {
+        issues.push(issue("questions", `Duplicate question id ${question.id}.`));
+      }
+      questionIds.add(question.id);
+    }
+  });
+  if (!styles.has("fib") || !styles.has("implement")) {
+    issues.push(
+      issue("groups", "Each coding pool must include both a fib and an implement style."),
+    );
+  }
+  return issues;
+}
+
 export function bankStats(bank: QuestionBank) {
   const byType: Record<QuestionType, { groups: number; questions: number }> = {
     multiple_choice: { groups: 0, questions: 0 },
     true_false: { groups: 0, questions: 0 },
     fill_in_blank: { groups: 0, questions: 0 },
+    coding: { groups: 0, questions: 0 },
   };
   for (const group of bank.groups) {
     byType[group.type].groups += 1;

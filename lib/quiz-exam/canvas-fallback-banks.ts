@@ -1,7 +1,8 @@
 /**
  * Assemble Canvas fallback banks.
  *
- * Q1 uses the graded website bank (sampled to `QUIZ_DRAW_COUNTS.q1`
+ * Traditional only — Canvas cannot run the website AI / lenient coding
+ * grader. Q1 uses the graded website bank (sampled to `QUIZ_DRAW_COUNTS.q1`
  * groups). Q2–Q6 map practice chapter banks (ch2 CSS … ch6 Mongo) into
  * topic groups until graded banks exist, then sample the same count.
  * X1/X2 take `EXAM_SOURCE_GROUP_TAKE` groups from each of three source
@@ -92,6 +93,7 @@ function majorityType(questions: BankQuestion[]): QuestionType {
     multiple_choice: 0,
     true_false: 0,
     fill_in_blank: 0,
+    coding: 0,
   };
   for (const question of questions) {
     counts[question.type] += 1;

@@ -8,6 +8,16 @@ import {
 import { formatStudentResponse } from "@/lib/quiz-exam/review";
 import type { GradedAnswer, StudentQuestion } from "@/lib/quiz-exam/types";
 import PromptMarkup from "../../components/PromptMarkup";
+import CodingPreview from "../../components/CodingPreview";
+
+function resultLabel(item: GradedAnswer): string {
+  if (item.type === "coding") {
+    if ((item.scoreRatio ?? (item.correct ? 1 : 0)) >= 0.999) return "Correct";
+    if ((item.scoreRatio ?? 0) > 0 || item.points > 0) return "Partial credit";
+    return "Incorrect";
+  }
+  return item.correct ? "Correct" : "Incorrect";
+}
 
 export function WindowBanner({
   schedule,
@@ -105,13 +115,18 @@ export function GradedQuestionList({
               showMark
                 ? item.correct
                   ? "border-emerald-300 bg-emerald-50"
-                  : "border-rose-200 bg-rose-50"
+                  : item.points > 0
+                    ? "border-amber-300 bg-amber-50"
+                    : "border-rose-200 bg-rose-50"
                 : "border-neutral-300 bg-white"
             }`}
           >
             <p className="m-0 text-sm font-semibold">
               {index + 1}. {question?.groupName ?? item.groupId}
-              {showMark ? ` — ${item.correct ? "Correct" : "Incorrect"}` : ""}
+              {showMark ? ` — ${resultLabel(item)}` : ""}
+              {showMark && item.maxPoints
+                ? ` (${item.points} / ${item.maxPoints})`
+                : ""}
             </p>
             {question ? (
               <PromptMarkup
@@ -119,20 +134,37 @@ export function GradedQuestionList({
                 className="mt-1 mb-0 whitespace-pre-wrap"
               />
             ) : null}
+            {question?.preview ? <CodingPreview preview={question.preview} /> : null}
+            {question?.code ? (
+              <pre className="mt-2 overflow-x-auto rounded border border-neutral-300 bg-white px-3 py-2 font-mono text-[0.8rem] leading-relaxed">
+                <code>{question.code}</code>
+              </pre>
+            ) : null}
             {question ? (
-              <p className="mb-0 mt-2 text-sm">
-                Your answer:{" "}
-                <PromptMarkup
-                  as="span"
-                  text={formatStudentResponse(question, item.response)}
-                />
-              </p>
+              question.type === "coding" &&
+              item.response?.type === "coding" &&
+              item.response.code.trim() &&
+              !item.response.blanks?.length ? (
+                <pre className="mt-2 overflow-x-auto rounded border border-neutral-300 bg-white px-3 py-2 font-mono text-[0.8rem] leading-relaxed">
+                  <code>{item.response.code}</code>
+                </pre>
+              ) : (
+                <p className="mb-0 mt-2 text-sm">
+                  Your answer:{" "}
+                  <PromptMarkup
+                    as="span"
+                    text={formatStudentResponse(question, item.response)}
+                  />
+                </p>
+              )
+            ) : null}
+            {revealAnswers && item.feedback ? (
+              <p className="mb-0 mt-2 text-sm">{item.feedback}</p>
             ) : null}
             {revealAnswers && item.correctReveal ? (
-              <p className="mb-0 mt-2 text-sm">
-                Correct answer:{" "}
-                <PromptMarkup as="span" text={item.correctReveal} />
-              </p>
+              <pre className="mt-2 overflow-x-auto rounded border border-emerald-300 bg-white px-3 py-2 font-mono text-[0.8rem] leading-relaxed">
+                <code>{item.correctReveal}</code>
+              </pre>
             ) : null}
           </li>
         );

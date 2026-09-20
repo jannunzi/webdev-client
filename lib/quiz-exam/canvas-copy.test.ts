@@ -21,6 +21,11 @@ describe("Canvas quiz fallback copy", () => {
       assert.doesNotMatch(html, /take this Canvas quiz by default/i);
       assert.doesNotMatch(html, /Clerk|Kambaz|Lab [0-9]|wd-/i);
       assert.ok(html.indexOf(url) < html.indexOf(CANVAS_FALLBACK_PERMISSION_BLURB));
+      if (quiz.quizId.startsWith("q")) {
+        assert.match(html, /coding items are graded on the website/i);
+      } else {
+        assert.doesNotMatch(html, /coding items are graded on the website/i);
+      }
     }
   });
 

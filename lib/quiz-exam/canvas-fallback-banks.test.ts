@@ -30,6 +30,13 @@ describe("Canvas fallback banks", () => {
     assert.ok(banks.q1.groups.every((group) =>
       CHAPTER1_BANK.groups.some((source) => source.id === group.id),
     ));
+    for (const bank of Object.values(banks)) {
+      assert.equal(
+        bank.groups.some((group) => group.type === "coding"),
+        false,
+        `${bank.id} Canvas fallback must stay traditional-only`,
+      );
+    }
     assert.ok(CHAPTER1_BANK.groups.length > banks.q1.groups.length);
     assert.equal(banks.q2.groups.length, 10);
     assert.equal(banks.q3.groups.length, 10);

@@ -1,4 +1,9 @@
 import type {
+  CodingCheck,
+  CodingLanguage,
+  CodingPreview,
+  CodingQuestion,
+  CodingStyle,
   FillInBlankQuestion,
   MultipleChoiceQuestion,
   TrueFalseQuestion,
@@ -120,6 +125,41 @@ export function acronymFib(
     [words, ...(options?.extraCombinations ?? [])],
     explanation,
   );
+}
+
+/** Short coding item. Reference solution + rubric stay server-side. */
+export function codingQuestion(input: {
+  id: string;
+  prompt: string;
+  language: CodingLanguage;
+  style: CodingStyle;
+  referenceSolution: string;
+  rubric: string;
+  explanation?: string;
+  placeholder?: string;
+  /** FIB template; shown to students as the `code` snippet. */
+  code?: string;
+  blankCount?: number;
+  acceptedBlanks?: string[][];
+  preview?: CodingPreview;
+  checks?: CodingCheck;
+}): CodingQuestion {
+  return {
+    id: input.id,
+    type: "coding",
+    language: input.language,
+    style: input.style,
+    prompt: input.prompt,
+    code: input.code,
+    referenceSolution: input.referenceSolution,
+    rubric: input.rubric,
+    explanation: input.explanation,
+    placeholder: input.placeholder,
+    blankCount: input.blankCount,
+    acceptedBlanks: input.acceptedBlanks,
+    preview: input.preview,
+    checks: input.checks,
+  };
 }
 
 /** Tightly parallel single-blank stems that swap a domain noun. */

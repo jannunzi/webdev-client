@@ -2,6 +2,11 @@ export type {
   BankQuestion,
   BankStatus,
   Choice,
+  CodingCheck,
+  CodingLanguage,
+  CodingPreview,
+  CodingQuestion,
+  CodingStyle,
   FillInBlankQuestion,
   MultipleChoiceQuestion,
   QuestionBank,
@@ -10,15 +15,25 @@ export type {
   TrueFalseQuestion,
 } from "./types";
 export {
+  CODING_LANGUAGES,
+  CODING_STYLES,
   QUESTION_TYPES,
   QUESTION_TYPE_LABEL,
   QTI_ITEM_TYPE,
 } from "./types";
-export { CHAPTER1_BANK } from "./q1";
+export { CHAPTER1_BANK, CHAPTER1_REVIEW_BANK } from "./q1";
+export {
+  WEBSITE_CODING_BANKS,
+  getWebsiteCodingBank,
+  isWebsiteCodingQuizId,
+  listWebsiteCodingBanks,
+} from "./coding";
+export type { WebsiteCodingQuizId } from "./coding";
 export {
   assertBankValid,
   bankStats,
   validateBank,
+  validateCodingPool,
   validateGroup,
   validateQuestion,
 } from "./validate";

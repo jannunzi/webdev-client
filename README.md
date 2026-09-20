@@ -72,8 +72,11 @@ If Clerk or Atlas env vars are missing, those take routes show a clear
    `NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in`,
    `NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up`, `MONGODB_URI`, `MONGODB_DB=webdev`,
    `INSTRUCTOR_EMAILS=jannunzi@gmail.com`. Optional: `TA_EMAILS` (empty
-   until you add TAs).
-   Redeploy after saving.
+   until you add TAs). For website coding items, set **`XAI_API_KEY`**
+   (same name SnapTools uses). Optional: `XAI_BASE_URL`
+   (default `https://api.x.ai/v1`), `XAI_MODEL` (default `grok-4-latest`).
+   The local lenient grader still scores typical answers if the key is
+   missing. Redeploy after saving.
 
 Locally, copy `.env.example` to `.env.local` and fill the same keys. Do not
 commit `.env.local`.
@@ -223,9 +226,17 @@ then Disable again.
 
 ### Exam sampling
 
-`/quizzes/take/q1` draws **one question from each of the 16 Q1 groups**. The
-draw is seeded by Clerk user id + bank id so a refresh keeps the same items.
-Correct answers are stripped from the client payload and graded on submit.
+`/quizzes/take/q1`–`q6` each draw **8 traditional items plus 2 short coding
+items** (one form/FIB-style, one implement-style), 10 questions / 100 points.
+The draw is seeded by Clerk user id + bank id so a refresh keeps the same
+items. Correct answers are stripped from the client payload and graded on
+submit.
+
+Coding items use a **lenient local grader** (misspellings, missing slashes,
+attribute order, whitespace) and, when `XAI_API_KEY` is set, xAI Grok as a
+backup that can only raise the score. **Canvas QTI fallback stays
+traditional-only** — Canvas cannot run that grader. X1/X2 remain 36
+traditional groups.
 
 ### Answer review windows (same student URL)
 

@@ -357,6 +357,9 @@ function renderMultipleBlanks(question: FillInBlankQuestion, points: string): st
 }
 
 export function renderQtiItem(question: BankQuestion, points: string): string {
+  if (question.type === "coding") {
+    return "";
+  }
   if (question.type === "multiple_choice") {
     return renderMultipleChoice(question, points);
   }
@@ -371,6 +374,7 @@ export function renderQtiItem(question: BankQuestion, points: string): string {
 
 export function renderQtiGroup(group: QuestionGroup, points: string): string {
   const items = group.questions
+    .filter((question) => question.type !== "coding")
     .map((question) => renderQtiItem(question, points))
     .join("\n");
   return [
@@ -393,8 +397,9 @@ export function renderCanvasQtiAssessment(
   ident: string,
   title = bank.title,
 ): string {
-  const points = pointsPerItem(bank.groups.length);
-  const groups = bank.groups.map((group) => renderQtiGroup(group, points)).join("\n");
+  const traditional = bank.groups.filter((group) => group.type !== "coding");
+  const points = pointsPerItem(traditional.length);
+  const groups = traditional.map((group) => renderQtiGroup(group, points)).join("\n");
   return [
     `<?xml version="1.0" encoding="UTF-8"?>`,
     `<questestinterop xmlns="${QTI_NS}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="${QTI_NS} ${QTI_XSD}">`,

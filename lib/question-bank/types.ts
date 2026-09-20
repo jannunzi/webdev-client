@@ -12,6 +12,7 @@ export const QUESTION_TYPES = [
   "multiple_choice",
   "true_false",
   "fill_in_blank",
+  "coding",
 ] as const;
 
 export type QuestionType = (typeof QUESTION_TYPES)[number];
@@ -59,10 +60,78 @@ export type FillInBlankQuestion = BaseQuestion & {
   acceptedCombinations: string[][];
 };
 
+export const CODING_LANGUAGES = ["html", "css", "javascript", "tsx"] as const;
+export type CodingLanguage = (typeof CODING_LANGUAGES)[number];
+
+export const CODING_STYLES = ["fib", "implement"] as const;
+export type CodingStyle = (typeof CODING_STYLES)[number];
+
+export type FormInputPreview = {
+  kind: "form-input";
+  label: string;
+  inputId: string;
+  defaultValue: string;
+  placeholder: string;
+  title: string;
+};
+
+export type BulletListPreview = {
+  kind: "bullet-list";
+  items: string[];
+};
+
+export type StyledBoxPreview = {
+  kind: "styled-box";
+  text: string;
+  style: Record<string, string>;
+};
+
+export type NotePreview = {
+  kind: "note";
+  text: string;
+};
+
+export type CodingPreview =
+  | FormInputPreview
+  | BulletListPreview
+  | StyledBoxPreview
+  | NotePreview;
+
+export type CodingCheck = {
+  requiredTags?: string[];
+  requiredAttrs?: Array<{ tag?: string; name: string; value?: string }>;
+  requiredText?: string[];
+  requiredTokens?: string[];
+};
+
+/**
+ * Short snippet graded on the server. `referenceSolution`, `rubric`,
+ * `acceptedBlanks`, and `checks` stay server-side — never send them in
+ * the student take payload.
+ *
+ * Two styles (Jose, 2026-09-20):
+ * - `fib`: complete a template (`_____` blanks), often with a live preview
+ * - `implement`: write the markup or code that produces a shown result
+ */
+export type CodingQuestion = BaseQuestion & {
+  type: "coding";
+  language: CodingLanguage;
+  style: CodingStyle;
+  referenceSolution: string;
+  rubric: string;
+  /** Textarea hint for implement items; safe to show students. */
+  placeholder?: string;
+  blankCount?: number;
+  acceptedBlanks?: string[][];
+  preview?: CodingPreview;
+  checks?: CodingCheck;
+};
+
 export type BankQuestion =
   | MultipleChoiceQuestion
   | TrueFalseQuestion
-  | FillInBlankQuestion;
+  | FillInBlankQuestion
+  | CodingQuestion;
 
 export type QuestionGroup = {
   id: string;
@@ -89,6 +158,7 @@ export const QUESTION_TYPE_LABEL: Record<QuestionType, string> = {
   multiple_choice: "Multiple choice",
   true_false: "True / false",
   fill_in_blank: "Fill in the blank",
+  coding: "Coding",
 };
 
 /** Reserved QTI-ish item type names for a future exporter. */
@@ -96,4 +166,6 @@ export const QTI_ITEM_TYPE: Record<QuestionType, string> = {
   multiple_choice: "multiple_choice_question",
   true_false: "true_false_question",
   fill_in_blank: "fill_in_multiple_blanks_question",
+  /** Website-only; Canvas fallback does not export coding groups. */
+  coding: "essay_question",
 };

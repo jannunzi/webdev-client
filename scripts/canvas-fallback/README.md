@@ -1,6 +1,8 @@
 # Canvas QTI fallback (Fall 2026)
 
-Website quizzes at `/quizzes/take/q1` … `/quizzes/take/q6` stay primary. These files fill Canvas Q1–Q6 and X1/X2 with **real questions** so staff can unlock a Classic Quiz if the site is down. Students take Canvas **only with instructor/TA permission**.
+Website quizzes at `/quizzes/take/q1` … `/quizzes/take/q6` stay primary. These files fill Canvas Q1–Q6 and X1/X2 with **real traditional questions** so staff can unlock a Classic Quiz if the site is down. Students take Canvas **only with instructor/TA permission**.
+
+**Coding items are website-only.** Canvas cannot call the local / xAI coding grader, so this exporter never includes the Q1–Q6 form/FIB or implement coding pools. A Canvas fallback quiz is 10 traditional groups (MC / TF / FIB). The website quiz is 8 traditional + 2 coding.
 
 ## Rebuild
 
@@ -26,7 +28,7 @@ Checked in: `sample/q1-acronyms-group.fragment.xml` (one Q1 group, same XML shap
 
 | Canvas quiz | Bank |
 | --- | --- |
-| Q1 | Graded website bank `lib/question-bank/q1` (16 topic groups), **sampled to 10** at export / take time |
+| Q1 | Graded website **traditional** bank `lib/question-bank/q1` (16 topic groups), **sampled to 10** at export time. Website take instead draws 8 of these plus 2 coding items. |
 | Q2–Q6 | Practice banks `app/book/quizzes/` (ch2 CSS … ch6 Mongo), grouped by book section, **sampled to 10** groups; pick **1** random item per group |
 | X1 | 36 groups: 12 from each of Q1–Q3 source banks |
 | X2 | 36 groups: 12 from each of Q4–Q6 source banks |
