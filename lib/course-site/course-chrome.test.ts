@@ -142,6 +142,17 @@ describe("shared course chrome", () => {
     assert.doesNotMatch(fallback, /\bClerk\b/);
   });
 
+  it("loads site-wide Tailwind from the root layout without Preflight or dark scheme", () => {
+    const layout = read("app/layout.tsx");
+    const globals = read("app/globals.css");
+    assert.match(layout, /^import "\.\/globals\.css";$/m);
+    assert.doesNotMatch(layout, /\/\/\s*import "\.\/globals\.css"/);
+    assert.match(globals, /tailwindcss\/theme/);
+    assert.match(globals, /tailwindcss\/utilities/);
+    assert.doesNotMatch(globals, /@import "tailwindcss";/);
+    assert.doesNotMatch(globals, /prefers-color-scheme:\s*dark/);
+  });
+
   it("does not weaken staff quiz or people auth bars — they keep title/hint only", () => {
     assert.match(
       read("app/quizzes/take/components/QuizAuthBar.tsx"),

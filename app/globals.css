@@ -1,4 +1,16 @@
-@import "tailwindcss";
+/*
+ * Site-wide Tailwind theme + utilities. Loaded from the root layout so
+ * every route (including /sign-in and a Safari hard-reload) has classes
+ * even when a nested layout’s CSS is not in cache.
+ *
+ * Do not `@import "tailwindcss"` (that pulls Preflight). Ch1 / Lab 1 need
+ * the browser’s default HTML look — same reason the course comments this
+ * file out in the student starter. Dark `prefers-color-scheme` is omitted
+ * so Safari (which follows macOS appearance) does not invert the course
+ * site while Chrome stays light.
+ */
+@import "tailwindcss/theme" layer(theme);
+@import "tailwindcss/utilities" layer(utilities);
 
 :root {
   --background: #ffffff;
@@ -10,17 +22,4 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
