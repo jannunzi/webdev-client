@@ -5,15 +5,17 @@ function stateFib(input: {
   id: string;
   start: number;
 }): ReturnType<typeof codingQuestion> {
-  const template = `const [n, _____] = _____(${input.start});
-return <button _____={() => setN(n + 1)}>{n}</button>;`;
+  const template = `const [n, ____1____] = ____2____(${input.start});
+return <button ____3____={() => setN(n + 1)}>{n}</button>;`;
   return codingQuestion({
     id: input.id,
     language: "tsx",
     style: "fib",
     prompt: `A React function component keeps a number that starts at ${input.start}. Clicking the button adds one.
 
-Fill the blanks with the state setter name, the state hook, and the click prop.`,
+1. the state setter name
+2. the state hook
+3. the click attribute`,
     code: template,
     blankCount: 3,
     acceptedBlanks: [["setN", "useState", "onClick"]],

@@ -9,8 +9,8 @@ function formFib(input: {
   value: string;
   placeholder: string;
 }): ReturnType<typeof codingQuestion> {
-  const template = `<label _____="${input.inputId}">${input.label}</label>
-<input _____="${input.inputId}" _____="${input.title}" _____="${input.value}" _____="${input.placeholder}">`;
+  const template = `<label ____1____="${input.inputId}">${input.label}</label>
+<input ____2____="${input.inputId}" ____3____="${input.title}" ____4____="${input.value}" ____5____="${input.placeholder}">`;
   return codingQuestion({
     id: input.id,
     language: "html",
@@ -22,16 +22,22 @@ function formFib(input: {
 - If you delete that value, grayed example text appears and goes away when you type again
 - Click the label text next to the field — the input gets focus
 
-Complete the HTML. Fill each blank with the attribute name (\`for\`, \`id\`, \`title\`, \`value\`, or \`placeholder\`).
+Complete the HTML. Fill each numbered blank with the attribute name (\`for\`, \`id\`, \`title\`, \`value\`, or \`placeholder\`).
 
-The tooltip text is “${input.title}”. The default value is “${input.value}”. The grayed example text is “${input.placeholder}”. The label must point at the input.`,
+1. connects the label to the input
+2. the input’s unique name (must match blank 1’s value)
+3. hover tooltip
+4. starting text
+5. grayed example text after the value is cleared
+
+The tooltip text is “${input.title}”. The default value is “${input.value}”. The grayed example text is “${input.placeholder}”.`,
     code: template,
     blankCount: 5,
     acceptedBlanks: [["for", "id", "title", "value", "placeholder"]],
     referenceSolution: `<label for="${input.inputId}">${input.label}</label>
 <input id="${input.inputId}" title="${input.title}" value="${input.value}" placeholder="${input.placeholder}">`,
     rubric:
-      "Blank 1 is for (label). Blank 2 is id (must match). Blank 3 is title (tooltip). Blank 4 is value (default). Blank 5 is placeholder (gray example). Excuse htmlFor for for, quote style, and trivial misspellings. Partial credit per correct blank.",
+      "____1____ is for (label). ____2____ is id (must match). ____3____ is title (tooltip). ____4____ is value (default). ____5____ is placeholder (gray example). Excuse htmlFor for for, quote style, and trivial misspellings. Partial credit per correct blank.",
     preview: {
       kind: "form-input",
       label: input.label,

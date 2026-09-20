@@ -7,6 +7,43 @@ const DEFAULT_VALUE_ANSWERS = [
   "default value",
 ];
 
+const TEXT_FIELD_VARIANTS: Array<{
+  label: string;
+  code: string;
+  mentionBody?: boolean;
+}> = [
+  { label: "username", code: `<input id="username" />` },
+  { label: "account nickname", code: `<input id="nickname" />` },
+  { label: "first name", code: `<input id="first-name" />` },
+  { label: "last name", code: `<input id="last-name" />` },
+  { label: "officer title", code: `<input id="title" />` },
+  {
+    label: "comments",
+    code: `<textarea id="comments"></textarea>`,
+    mentionBody: true,
+  },
+  {
+    label: "appeal notes",
+    code: `<textarea id="notes"></textarea>`,
+    mentionBody: true,
+  },
+  {
+    label: "biography",
+    code: `<textarea id="biography"></textarea>`,
+    mentionBody: true,
+  },
+  {
+    label: "meeting summary",
+    code: `<textarea id="summary"></textarea>`,
+    mentionBody: true,
+  },
+  {
+    label: "research abstract",
+    code: `<textarea id="abstract"></textarea>`,
+    mentionBody: true,
+  },
+];
+
 export const q1Group09: QuestionGroup = {
   id: "q1-g09-text-fields",
   order: 9,
@@ -14,28 +51,18 @@ export const q1Group09: QuestionGroup = {
   type: "fill_in_blank",
   chapter: 1,
   section: "1.3.6.2",
-  skill: "Uncontrolled initial text uses defaultValue (including JSX textarea); placeholder is not the value.",
-  questions: [
-    ...[
-      "Tenured Faculty username",
-      "Full Time Employee password",
-      "Savings Account nickname",
-      "Course registration first name",
-      "Library card last name",
-      "Dining plan comments",
-      "Parking appeal notes",
-      "Research biography",
-      "Club officer title",
-      "Advisor meeting summary",
-    ].map((domain, index) =>
-      fib(
-        `q1-g09-${String(index + 1).padStart(2, "0")}`,
-        `For an uncontrolled ${domain} field in JSX (including \`<textarea>\`), put the starting text on the _____ prop — not on children, and not as if \`placeholder\` were the submitted value.`,
-        DEFAULT_VALUE_ANSWERS,
-        "Uncontrolled fields get defaultValue, then the browser owns typing. placeholder is hint text. React 19 throws if textarea children are set.",
-      ),
+  skill: "Set a text field or textarea’s starting text with the defaultValue attribute.",
+  questions: TEXT_FIELD_VARIANTS.map((variant, index) =>
+    fib(
+      `q1-g09-${String(index + 1).padStart(2, "0")}`,
+      variant.mentionBody
+        ? `This ${variant.label} field should display the starting text \`QWE\`. Configure that initial text with the _____ attribute — not by putting \`QWE\` in the element body.`
+        : `This ${variant.label} field should display the starting text \`QWE\`. Configure that initial text with the _____ attribute.`,
+      DEFAULT_VALUE_ANSWERS,
+      "Use the `defaultValue` attribute for the starting text (camelCase in JSX).",
+      variant.code,
     ),
-  ],
+  ),
 };
 
 export const q1Group10: QuestionGroup = {
@@ -110,7 +137,7 @@ export const q1Group10: QuestionGroup = {
     ),
     mc(
       "q1-g10-07",
-      "A second independent exclusive choice (for example class standing vs full-time/part-time) needs _____.",
+      "A second independent exclusive choice (for example year in school vs full-time/part-time) needs _____.",
       [
         "the same name as the first radio group",
         "a different name from the first radio group",
@@ -138,7 +165,7 @@ export const q1Group10: QuestionGroup = {
     ),
     mc(
       "q1-g10-10",
-      "Which control is the right fit for “pick exactly one class standing”?",
+      "Which control is the right fit for “pick exactly one year in school (First-year / Sophomore / Junior / Senior)”?",
       [
         "checkboxes",
         "radio buttons that share one name (or a single-select dropdown)",
@@ -211,9 +238,11 @@ export const q1Group11: QuestionGroup = {
     ),
     mc(
       "q1-g11-06",
-      "Which element contains the list of choices?",
+      "Which element contains a list of choices?",
       ["<input type=\"dropdown\">", "<select> with nested <option> elements", "<ul> with <a> children", "<datalist> is required for every dropdown"],
       1,
+      undefined,
+      `<select>\n  <option value="COMEDY">Comedy</option>\n  <option value="DRAMA">Drama</option>\n</select>`,
     ),
     mc(
       "q1-g11-07",

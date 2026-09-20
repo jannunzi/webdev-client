@@ -10,18 +10,21 @@ function boxFib(input: {
   text: string;
 }): ReturnType<typeof codingQuestion> {
   const template = `.note {
-  _____: ${input.color};
-  _____: ${input.background};
-  _____: ${input.padding};
-  _____: ${input.border};
+  ____1____: ${input.color};
+  ____2____: ${input.background};
+  ____3____: ${input.padding};
+  ____4____: ${input.border};
 }`;
   return codingQuestion({
     id: input.id,
     language: "css",
     style: "fib",
-    prompt: `The box below is styled with four CSS declarations.
+    prompt: `The box below is styled with four CSS declarations. Fill each numbered blank with the property name.
 
-Fill each blank with the property name. The text color is ${input.color}. The background is ${input.background}. The inner spacing is ${input.padding}. The border is ${input.border}.`,
+1. text color (${input.color})
+2. background (${input.background})
+3. inner spacing (${input.padding})
+4. border (${input.border})`,
     code: template,
     blankCount: 4,
     acceptedBlanks: [["color", "background-color", "padding", "border"]],

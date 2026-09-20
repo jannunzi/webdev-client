@@ -8,6 +8,7 @@ import type {
   QuestionType,
   TrueFalseQuestion,
 } from "./types";
+import { countBlanks } from "./blanks";
 import { CODING_LANGUAGES } from "./types";
 
 export type BankIssue = {
@@ -150,7 +151,7 @@ export function validateQuestion(
           }
         });
       }
-      const markers = (question.code ?? "").match(/_{3,}/g)?.length ?? 0;
+      const markers = countBlanks(question.code ?? "");
       if (question.blankCount && markers !== question.blankCount) {
         issues.push(
           issue(

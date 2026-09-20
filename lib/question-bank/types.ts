@@ -30,6 +30,8 @@ type BaseQuestion = {
   prompt: string;
   /** Optional snippet shown with the prompt; always treated as text. */
   code?: string;
+  /** Live / visual example shown with the prompt (safe for students). */
+  preview?: CodingPreview;
   /** Author-facing note; useful later as student feedback. */
   explanation?: string;
 };
@@ -91,11 +93,17 @@ export type NotePreview = {
   text: string;
 };
 
+export type ParagraphsPreview = {
+  kind: "paragraphs";
+  blocks: string[];
+};
+
 export type CodingPreview =
   | FormInputPreview
   | BulletListPreview
   | StyledBoxPreview
-  | NotePreview;
+  | NotePreview
+  | ParagraphsPreview;
 
 export type CodingCheck = {
   requiredTags?: string[];
@@ -110,7 +118,7 @@ export type CodingCheck = {
  * the student take payload.
  *
  * Two styles (Jose, 2026-09-20):
- * - `fib`: complete a template (`_____` blanks), often with a live preview
+ * - `fib`: complete a template (`____1____` blanks), often with a live preview
  * - `implement`: write the markup or code that produces a shown result
  */
 export type CodingQuestion = BaseQuestion & {
@@ -123,7 +131,6 @@ export type CodingQuestion = BaseQuestion & {
   placeholder?: string;
   blankCount?: number;
   acceptedBlanks?: string[][];
-  preview?: CodingPreview;
   checks?: CodingCheck;
 };
 

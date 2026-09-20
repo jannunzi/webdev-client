@@ -1,20 +1,5 @@
-import { acronymFib, fib, mc, tf } from "../builders";
+import { acronymFib, mc, tf } from "../builders";
 import type { QuestionGroup } from "../types";
-
-const P_ANSWERS = [
-  "p",
-  "<p>",
-  "</p>",
-  "p tag",
-  "p element",
-  "paragraph",
-  "paragraph tag",
-  "paragraph element",
-  "<p> tag",
-  "<p> element",
-  "the p element",
-  "the paragraph element",
-];
 
 export const q1Group01: QuestionGroup = {
   id: "q1-g01-acronyms",
@@ -34,13 +19,6 @@ export const q1Group01: QuestionGroup = {
       ["Hyper", "Text", "Markup", "Language"],
       "HTML is HyperText Markup Language, a dialect of XML for structuring documents so browsers can render them.",
       { extraCombinations: [["HyperText", "Text", "Markup", "Language"]] },
-    ),
-    acronymFib(
-      "q1-g01-02",
-      "XML",
-      ["eXtensible", "Markup", "Language"],
-      "XML is eXtensible Markup Language. HTML is a specialized dialect of it for web documents.",
-      { extraCombinations: [["Extensible", "Markup", "Language"]] },
     ),
     acronymFib(
       "q1-g01-03",
@@ -212,35 +190,85 @@ export const q1Group02: QuestionGroup = {
   ],
 };
 
+const BODY_COPY_SNIPPETS = [
+  [
+    "The campus library closes at 10pm on weekdays.",
+    "Reserve a study room online before you visit.",
+    "Late fees apply after three overdue days.",
+  ],
+  [
+    "The dining hall posts allergen notices at each station.",
+    "Ask staff about shared fryers if you have a severe allergy.",
+    "Menus change weekly and are listed on the campus app.",
+  ],
+  [
+    "Parking permits are required in every numbered lot.",
+    "Visitors may use Lot C after 4pm without a permit.",
+    "Citations must be appealed within ten business days.",
+  ],
+  [
+    "This course meets twice a week in the science building.",
+    "The workshop uses the same classroom after lecture.",
+    "The catalog lists prerequisites on the course page.",
+  ],
+  [
+    "Faculty office hours are posted on each instructor page.",
+    "Bring a specific question or a short code sample.",
+    "Remote sessions use the same calendar appointment slot.",
+  ],
+  [
+    "The shuttle runs every fifteen minutes until midnight.",
+    "Real-time arrivals appear on the transit board.",
+    "Weekend service uses the reduced Saturday timetable.",
+  ],
+  [
+    "Wear closed-toe shoes in every hardware lab session.",
+    "Food and drink stay outside the bench area.",
+    "Report damaged equipment to the lab manager before leaving.",
+  ],
+  [
+    "The club meets on Thursdays in the student center.",
+    "New members can join at the start of any meeting.",
+    "Event photos are posted to the club newsletter.",
+  ],
+  [
+    "Interest compounds daily and is credited once a month.",
+    "Withdrawals before the maturity date may reduce the yield.",
+    "Read the disclosure before you open the account.",
+  ],
+  [
+    "The study measures how students review lecture recordings.",
+    "Participants kept a short log after each viewing session.",
+    "Results will be shared with the class at the end of term.",
+  ],
+];
+
+const BODY_COPY_CHOICES: [string, string, string, string] = [
+  "Extra blank lines in the source — browsers keep that vertical space",
+  "Wrap each block in `<p>`",
+  "Wrap all three blocks in one `<h1>`",
+  "Wrap each sentence in `<span>`",
+];
+
 export const q1Group03: QuestionGroup = {
   id: "q1-g03-paragraphs",
   order: 3,
   name: "Source whitespace and body copy",
-  type: "fill_in_blank",
+  type: "multiple_choice",
   chapter: 1,
   section: "1.3.2",
-  skill: "Wrap a block of body prose in p so the browser adds vertical space (source whitespace is ignored).",
-  questions: [
-    ...[
-      "Tenured Faculty biography",
-      "Full Time Employee handbook excerpt",
-      "Savings Account disclosure",
-      "Course catalog description",
-      "Office hours policy",
-      "Library borrowing notice",
-      "Dining hall allergen statement",
-      "Parking permit rules",
-      "Research abstract",
-      "Student club announcement",
-    ].map((domain, index) =>
-      fib(
-        `q1-g03-${String(index + 1).padStart(2, "0")}`,
-        `A long ${domain} is written as several sentences of body prose, with blank lines between those sentences in the source. Browsers collapse that extra whitespace and display the copy as one run-on block. Wrap each block of ordinary body text in the HTML _____ so the browser adds vertical separation. Fill in one short element/tag name (or its angle-bracket form), not a multi-line HTML document — not a heading and not a generic container.`,
-        P_ANSWERS,
-        "The paragraph tag (`<p>`) is the standard element for a block of body prose. It adds vertical space before and after. Browsers ignore extra spaces, tabs, and newlines in the source, so blank lines alone do not separate the copy. A `div` is a generic container and `h1`–`h6` are headings — neither is the paragraph element.",
-      ),
+  skill: "Separate blocks of body copy with p; source whitespace alone does not.",
+  questions: BODY_COPY_SNIPPETS.map((blocks, index) =>
+    mc(
+      `q1-g03-${String(index + 1).padStart(2, "0")}`,
+      "The three blocks above show how the page should look. How is that markup done in HTML?",
+      BODY_COPY_CHOICES,
+      1,
+      "The paragraph tag (`<p>`) is the standard element for a block of body copy. It adds vertical space before and after. Browsers ignore extra spaces, tabs, and newlines in the source, so blank lines alone do not separate the copy.",
+      undefined,
+      { kind: "paragraphs", blocks },
     ),
-  ],
+  ),
 };
 
 export const q1Group04: QuestionGroup = {
@@ -281,9 +309,9 @@ export const q1Group04: QuestionGroup = {
     ),
     tf(
       "q1-g04-06",
-      "A div heading (a div with large bold text but no h1–h6) is the same as an h2 for document structure and accessibility.",
-      false,
-      "div does not add heading semantics. Use heading tags for titles in the outline.",
+      "A `div` is a generic block element: it can group content and add structure (including vertical spacing) without naming a more specific role on its own.",
+      true,
+      "`div` is a generic container. As a block box it can add vertical spacing and group related markup, but it does not name a more specific role on its own.",
     ),
     tf(
       "q1-g04-07",

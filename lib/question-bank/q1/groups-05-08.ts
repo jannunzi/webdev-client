@@ -76,10 +76,10 @@ export const q1Group05: QuestionGroup = {
       "q1-g05-08",
       "Which markup is a valid nested list structure?",
       [
-        "<ul><ul><li>A</li></ul></ul>",
-        "<ul><li>Fruit<ul><li>Apple</li></ul></li></ul>",
-        "<li><ul><ul>Apple</ul></ul></li>",
-        "<ul Apple><li></li></ul>",
+        "<ul>\n  <ul>\n    <li>A</li>\n  </ul>\n</ul>",
+        "<ul>\n  <li>\n    Fruit\n    <ul>\n      <li>Apple</li>\n    </ul>\n  </li>\n</ul>",
+        "<li>\n  <ul>\n    <ul>Apple</ul>\n  </ul>\n</li>",
+        "<ul Apple>\n  <li></li>\n</ul>",
       ],
       1,
     ),
@@ -216,20 +216,20 @@ export const q1Group06: QuestionGroup = {
   ],
 };
 
-const IMG_PATH_DOMAINS: { label: string; file: string }[] = [
-  { label: "campus map", file: "campus-map" },
-  { label: "faculty portrait", file: "faculty-portrait" },
-  { label: "lab equipment", file: "lab-equipment" },
-  { label: "library hours poster", file: "library-hours" },
-  { label: "shuttle schedule graphic", file: "shuttle-schedule" },
+const IMG_PATH_DOMAINS: { label: string; file: string; alt: string }[] = [
+  { label: "campus map", file: "campus-map", alt: "Campus map" },
+  { label: "faculty portrait", file: "faculty-portrait", alt: "Faculty portrait" },
+  { label: "lab equipment", file: "lab-equipment", alt: "Lab equipment" },
+  { label: "library hours poster", file: "library-hours", alt: "Library hours poster" },
+  { label: "shuttle schedule graphic", file: "shuttle-schedule", alt: "Shuttle schedule" },
 ];
 
-const IMG_ALT_DOMAINS = [
-  "campus map",
-  "faculty portrait",
-  "robot demo",
-  "dining menu photo",
-  "course logo",
+const IMG_ALT_VARIANTS: { file: string; alt: string }[] = [
+  { file: "campus-map.jpg", alt: "Campus map" },
+  { file: "faculty-portrait.jpg", alt: "Faculty portrait" },
+  { file: "dining-menu.jpg", alt: "Dining menu" },
+  { file: "library-hours.jpg", alt: "Library hours poster" },
+  { file: "shuttle-schedule.jpg", alt: "Shuttle schedule" },
 ];
 
 export const q1Group07: QuestionGroup = {
@@ -244,20 +244,22 @@ export const q1Group07: QuestionGroup = {
     ...IMG_PATH_DOMAINS.map((domain, index) =>
       fib(
         `q1-g07-${String(index + 1).padStart(2, "0")}`,
-        `A ${domain.label} file is saved as public/images/${domain.file}.jpg. In \`<img src>\`, write the path as _____ (do not include the \`public/\` prefix).`,
+        `A ${domain.label} file is saved as public/images/${domain.file}.jpg. Fill the src path (do not include the \`public/\` prefix).`,
         [
           `/images/${domain.file}.jpg`,
           `images/${domain.file}.jpg`,
         ],
         "Files under public/ are served from the site root. Drop the public/ prefix: /images/…. (A leading slash is preferred.)",
+        `<img src="_____" alt="${domain.alt}" />`,
       ),
     ),
-    ...IMG_ALT_DOMAINS.map((domain, index) =>
+    ...IMG_ALT_VARIANTS.map((variant, index) =>
       fib(
         `q1-g07-${String(index + 6).padStart(2, "0")}`,
-        `The _____ attribute holds a short text description of a ${domain} image when it cannot load, and it matters for accessibility.`,
+        "Which attribute on this tag holds the short text description of the image?",
         ["alt", "alt text", "the alt", "alt attribute", "the alt attribute"],
         "`alt` describes the picture for people and tools that cannot see it. `src` points at the file.",
+        `<img src="/images/${variant.file}" _____="${variant.alt}" />`,
       ),
     ),
   ],

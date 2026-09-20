@@ -22,12 +22,6 @@ export const q1Group13: QuestionGroup = {
       1,
     ),
     mc(
-      "q1-g13-02",
-      "Which type should a Save control use when it should send the form?",
-      ['type="button"', 'type="submit"', 'type="reset"', "no type, ever"],
-      1,
-    ),
-    mc(
       "q1-g13-03",
       "Which type should Cancel use so the click does not send the form?",
       ['type="submit"', 'type="button"', 'type="reset" is required', "type=\"email\""],
@@ -108,57 +102,49 @@ export const q1Group13: QuestionGroup = {
   ],
 };
 
-const PROP_DOMAINS = [
-  "title and backgroundColor",
-  "label and accentColor",
-  "heading and borderWidth",
-  "caption and borderRadius",
-  "message and borderColor",
-  "summary and padding",
-  "kicker and backgroundColor",
-  "quote and borderWidth",
-  "status and borderColor",
-  "eyebrow and borderRadius",
+const PROP_VARIANTS = [
+  { names: "title and backgroundColor", attrs: 'title="…" backgroundColor="…"' },
+  { names: "label and accentColor", attrs: 'label="…" accentColor="…"' },
+  { names: "heading and borderWidth", attrs: 'heading="…" borderWidth="…"' },
+  { names: "caption and borderRadius", attrs: 'caption="…" borderRadius="…"' },
+  { names: "message and borderColor", attrs: 'message="…" borderColor="…"' },
 ];
 
-const CHILD_DOMAINS = [
-  "a heading and a list",
-  "a paragraph and a table",
-  "an image and a caption",
-  "two paragraphs",
-  "a form and its labels",
-  "an ordered list of steps",
-  "a nested unordered list",
-  "a callout heading and body copy",
-  "a toolbar of links",
-  "a figure and a short note",
+const WRAPPER_VARIANTS = [
+  "<p>Hours are Tuesdays 2–4pm.</p>",
+  "<p>The library closes at 10pm.</p>",
+  "<ul>\n  <li>Apple</li>\n</ul>",
+  "<img src=\"/images/map.jpg\" alt=\"Campus map\" />",
+  "<p>Bring a specific question.</p>",
 ];
 
 export const q1Group14: QuestionGroup = {
   id: "q1-g14-props-children",
   order: 14,
-  name: "Component props and children",
+  name: "Component props and nested content",
   type: "fill_in_blank",
   chapter: 1,
   section: "1.3.8",
-  skill: "Attributes passed into a component are props; nested markup arrives as children.",
+  skill: "Values passed on a component tag are props; nested markup arrives as the children attribute.",
   questions: [
-    ...PROP_DOMAINS.map((domain, index) =>
+    ...PROP_VARIANTS.map((variant, index) =>
       fib(
         `q1-g14-${String(index + 1).padStart(2, "0")}`,
-        `A function component is used as <Callout ${domain.split(" and ")[0]}="…" />. Values such as ${domain} that you pass as attributes are called _____.`,
+        `Values such as ${variant.names} that you pass on this tag are called _____.`,
         ["props", "properties", "prop", "the props"],
         "Props (properties) are parameters on your component, passed as attributes when you use the tag.",
+        `<Callout ${variant.attrs} />`,
       ),
-    ).slice(0, 5),
-    ...CHILD_DOMAINS.map((domain, index) =>
+    ),
+    ...WRAPPER_VARIANTS.map((body, index) =>
       fib(
         `q1-g14-${String(index + 6).padStart(2, "0")}`,
-        `Content nested between a wrapper component’s tags — for example ${domain} inside <Panel>…</Panel> — arrives as the _____ prop.`,
-        ["children", "the children", "children prop", "the children prop"],
-        "children is the nested body. Wrappers and layouts use the same idea.",
+        "Content nested between this wrapper’s tags arrives as the _____ attribute.",
+        ["children", "the children", "children attribute", "the children attribute"],
+        "Nested markup arrives as the children attribute. Wrappers and layouts use the same idea.",
+        `<Panel>\n  ${body}\n</Panel>`,
       ),
-    ).slice(0, 5),
+    ),
   ],
 };
 
