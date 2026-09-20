@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, it } from "node:test";
 import {
   adjacentQuizStaffKeys,
@@ -28,6 +30,29 @@ function attempt(
     ...partial,
   };
 }
+
+describe("quiz attempt documents stay in Atlas", () => {
+  it("never deletes quiz_attempts (including asd@asd.com Q1)", () => {
+    const root = process.cwd();
+    const files = [
+      "lib/quiz-exam/attempts.ts",
+      "lib/quiz-exam/grade-overrides.ts",
+      "app/quizzes/staff/actions.ts",
+    ];
+    for (const file of files) {
+      const src = readFileSync(join(root, file), "utf8");
+      if (file.endsWith("attempts.ts")) {
+        assert.doesNotMatch(src, /deleteOne|deleteMany|findOneAndDelete/, file);
+      } else {
+        assert.doesNotMatch(
+          src,
+          /quiz_attempts[\s\S]{0,80}delete|delete[\s\S]{0,80}quiz_attempts/,
+          file,
+        );
+      }
+    }
+  });
+});
 
 describe("quiz staff attempt access", () => {
   it("is staff-only and hidden while impersonating", () => {
