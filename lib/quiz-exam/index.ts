@@ -15,6 +15,16 @@ export { isAnswerCorrect, gradeCodingItems, gradeDrawnQuestions } from "./grade"
 export { drawWebsiteAttempt, findQuizQuestion } from "./website-draw";
 export { buildAttemptReview, formatStudentResponse } from "./review";
 export {
+  applyQuestionOverrides,
+  scoreFromGraded,
+  QUIZ_GRADE_OVERRIDES_COLLECTION,
+} from "./grade-override";
+export {
+  buildQuizStaffQueue,
+  canViewQuizStaffAttempts,
+  staffAttemptsHref,
+} from "./staff";
+export {
   drawExamAttempt,
   drawOneFromGroup,
   drawOnePerGroup,
@@ -58,6 +68,8 @@ export { runExamSubmit, rosterGateMessage } from "./submit";
 export type {
   GradedAnswer,
   QuizAttemptDoc,
+  QuizClassQuestionOverride,
+  QuizQuestionOverride,
   StudentAnswer,
   StudentQuestion,
   SubmitExamInput,

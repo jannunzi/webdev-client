@@ -157,5 +157,10 @@ describe("shared course chrome", () => {
     );
     assert.match(read("app/people/page.tsx"), /getEffectiveStaffAccess/);
     assert.match(read("app/quizzes/(review)/page.tsx"), /renderStaffReview/);
+    assert.match(
+      read("app/quizzes/staff/layout.tsx"),
+      /showActions=\{false\}/,
+    );
+    assert.match(read("app/quizzes/staff/page.tsx"), /renderStaffReview/);
   });
 });

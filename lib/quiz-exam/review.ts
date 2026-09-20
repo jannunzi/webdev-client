@@ -1,10 +1,12 @@
 import type { CodingGradeResult } from "./coding-grade";
+import { applyQuestionOverrides, scoreFromGraded } from "./grade-override";
 import { gradeDrawnQuestions } from "./grade";
 import { stripCorrectReveals, toStudentQuestion } from "./sanitize";
 import { findQuizQuestion } from "./website-draw";
 import type {
   GradedAnswer,
   QuizAttemptDoc,
+  QuizClassQuestionOverride,
   StudentAnswer,
   StudentQuestion,
 } from "./types";
@@ -67,6 +69,7 @@ function codingResultFromAttempt(
 export function buildAttemptReview(
   attempt: QuizAttemptDoc,
   revealAnswers: boolean,
+  classOverrides: readonly QuizClassQuestionOverride[] = [],
 ): AttemptReview | null {
   const drawn = [];
   for (const questionId of attempt.meta.drawnQuestionIds) {
@@ -84,12 +87,14 @@ export function buildAttemptReview(
     if (coding) codingResults[item.questionId] = coding;
   }
 
-  const graded = gradeDrawnQuestions(drawn, answers, codingResults);
+  const auto = gradeDrawnQuestions(drawn, answers, codingResults);
+  const graded = applyQuestionOverrides(auto, attempt.overrides, classOverrides);
+  const totals = scoreFromGraded(graded);
   return {
     questions: drawn.map(toStudentQuestion),
     graded: revealAnswers ? graded : stripCorrectReveals(graded),
-    score: attempt.score,
-    maxScore: attempt.maxScore,
+    score: totals.score,
+    maxScore: totals.maxScore || attempt.maxScore,
     submittedAt: attempt.submittedAt,
   };
 }

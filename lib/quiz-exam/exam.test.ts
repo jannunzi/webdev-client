@@ -296,5 +296,21 @@ describe("student exam sampling and grading", () => {
     assert.ok(shown);
     assert.ok(shown.graded.every((item) => typeof item.correctReveal === "string"));
     assert.equal(stripCorrectReveals(shown.graded).every((item) => !("correctReveal" in item)), true);
+
+    const firstId = drawn[0]?.question.id;
+    assert.ok(firstId);
+    const overridden = buildAttemptReview(
+      {
+        ...attempt,
+        overrides: { [firstId]: { kind: "correct" } },
+      },
+      true,
+    );
+    assert.ok(overridden);
+    const first = overridden.graded.find((item) => item.questionId === firstId);
+    assert.equal(first?.correct, true);
+    assert.ok((first?.points ?? 0) > 0);
+    assert.equal(first?.override?.scope, "student");
+    assert.ok(overridden.score > 0);
   });
 });

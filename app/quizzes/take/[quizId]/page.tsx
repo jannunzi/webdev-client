@@ -6,6 +6,7 @@ import StatusPanel from "../../components/StatusPanel";
 import { isQuizTakingConfigured, isXaiConfigured } from "@/lib/config";
 import { loadTakeOverrideForRoster } from "@/lib/quiz-exam/access-overrides";
 import { findLatestQuizAttempt } from "@/lib/quiz-exam/attempts";
+import { listQuizGradeOverrides } from "@/lib/quiz-exam/grade-overrides";
 import {
   drawWebsiteAttempt,
   getExamBank,
@@ -35,6 +36,7 @@ import {
 import { SubmittedAttemptView, WindowBanner } from "../components/AttemptReview";
 import ExamForm from "../components/ExamForm";
 import QuizAccessOverrides from "../components/QuizAccessOverrides";
+import StaffAttemptsLink from "../../staff/components/StaffAttemptsLink";
 
 export const dynamic = "force-dynamic";
 
@@ -68,6 +70,8 @@ function TakeNav({
         <>
           {" · "}
           <Link href={`/quizzes/${quizId}`}>Author review (answers shown)</Link>
+          {" · "}
+          <Link href={`/quizzes/staff/${quizId}/attempts`}>Staff attempts</Link>
         </>
       ) : null}
       {" · "}
@@ -130,6 +134,7 @@ export default async function TakeExamPage({ params }: PageProps) {
           </p>
         </StatusPanel>
         <QuizAccessOverrides quizId={quizId} />
+        <StaffAttemptsLink quizId={quizId} />
       </article>
     );
   }
@@ -144,6 +149,7 @@ export default async function TakeExamPage({ params }: PageProps) {
           </p>
         </StatusPanel>
         <QuizAccessOverrides quizId={quizId} />
+        <StaffAttemptsLink quizId={quizId} />
       </article>
     );
   }
@@ -259,6 +265,7 @@ export default async function TakeExamPage({ params }: PageProps) {
         </StatusPanel>
       )}
       <QuizAccessOverrides quizId={quizId} />
+      <StaffAttemptsLink quizId={quizId} />
     </article>
   );
 }
@@ -277,7 +284,8 @@ async function AttemptReviewSection({
   now: Date;
 }) {
   const reveal = canRevealAnswers(phase);
-  const review = buildAttemptReview(attempt, reveal);
+  const classOverrides = await listQuizGradeOverrides(attempt.quizId);
+  const review = buildAttemptReview(attempt, reveal, classOverrides);
   if (!review) {
     return (
       <StatusPanel title="Attempt submitted" tone="ok">
