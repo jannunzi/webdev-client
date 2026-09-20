@@ -64,13 +64,13 @@ If Clerk or Atlas env vars are missing, those take routes show a clear
 2. **MongoDB Atlas**: create a cluster, a database user, and a Network Access
    entry that allows Vercel (or `0.0.0.0/0` if you prefer allow-all + strong
    user password). Copy the `mongodb+srv://…` connection string. The app uses
-   database `webdev` (override with `MONGODB_DB`) and collections
+   database `web-dev` (override with `MONGODB_DB`) and collections
    `quiz_attempts`, `canvas_roster`, `assignment_progress`, and
    `assignment_submissions`.
 3. **Vercel** project env (Production + Preview + Development):
    `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`,
    `NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in`,
-   `NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up`, `MONGODB_URI`, `MONGODB_DB=webdev`,
+   `NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up`, `MONGODB_URI`, `MONGODB_DB=web-dev`,
    `INSTRUCTOR_EMAILS=jannunzi@gmail.com`. Optional: `TA_EMAILS` (empty
    until you add TAs).
    Redeploy after saving.
