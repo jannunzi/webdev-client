@@ -187,6 +187,24 @@ export default function HtmlSections() {
           <HeadingTags />
         </LiveDemo>
         <p>
+          That markup is the book sample. Keep its text — the <code>h4</code>{" "}
+          titled Heading Tags and the paragraph under it — unless a step says
+          to replace it. Do not erase the book sample every time you add
+          something.
+        </p>
+        <p>
+          As practice, add <code>h1</code>{" "}through <code>h6</code>{" "}in the
+          same <code>wd-h-tag</code>{" "}division, after the sample paragraph, so
+          you can see the six sizes. Leave the sample <code>h4</code>{" "}and its
+          paragraph in place:
+        </p>
+        <CodeBlock language="tsx">{`<h1>h1</h1>
+<h2>h2</h2>
+<h3>h3</h3>
+<h4>h4</h4>
+<h5>h5</h5>
+<h6>h6</h6>`}</CodeBlock>
+        <p>
           <strong>Try Chrome DevTools.</strong>{" "}With Lab 1 open in Chrome, press{" "}
           <code>F12</code>{" "}(or <code>Cmd+Option+I</code>{" "}on macOS /{" "}
           <code>Ctrl+Shift+I</code>{" "}on Windows) to open{" "}
@@ -226,11 +244,12 @@ export default function Lab1() {
 }`}</CodeBlock>
         <p>
           At <LocalUrl href="/labs/lab1">/labs/lab1</LocalUrl>{" "}you should see Lab 1, HTML Examples, and
-          Heading Tags appear as successively smaller headings, and that the
-          paragraph text sits inside the <code>wd-h-tag</code>{" "}division. Leave
-          the <code>{`{/* do the next exercise here */}`}</code>{" "}comment as a
-          marker for the following sections — you will replace it by importing
-          more components the same way.
+          Heading Tags appear as successively smaller headings, the original
+          sample paragraph still inside the <code>wd-h-tag</code>{" "}division, and
+          the <code>h1</code>–<code>h6</code>{" "}you added as practice after that
+          paragraph. Leave the <code>{`{/* do the next exercise here */}`}</code>{" "}
+          comment as a marker for the following sections — you will replace it
+          by importing more components the same way.
         </p>
         <OnYourOwn>
           In the same <code>HeadingTags.tsx</code>{" "}file, add a short personal
@@ -242,9 +261,11 @@ export default function Lab1() {
           compare a block and an inline element in the same personal section.
         </OnYourOwn>
         <WithAI
-          prompt={`In app/labs/lab1/HeadingTags.tsx, keep my personal heading block as it is. After the sample h1–h6 tags, add a second sample outline (not about me) with id wd-ai-headings: an h4 titled "Lab notes", an h5 titled "What I built", and an h6 titled "Next step". Use placeholder sentences, not my name.`}
+          prompt={`In app/labs/lab1/HeadingTags.tsx, keep the existing book sample — the h4 titled "Heading Tags" and the paragraph under it — unless a step says to replace it. Do not erase that sample text. Keep my personal heading block as it is. I added h1 through h6 as practice after the sample paragraph; leave those headings in place. After those h1–h6 tags, add a second sample outline (not about me) with id wd-ai-headings: an h4 titled "Lab notes", an h5 titled "What I built", and an h6 titled "Next step". Use placeholder sentences, not my name.`}
         >
-          Ask the assistant to add a second sample outline — not your personal
+          Ask the assistant to add a second sample outline after the{" "}
+          <code>h1</code>–<code>h6</code>{" "}you added as practice. Keep the book
+          sample (the <code>h4</code>{" "}and its paragraph) and your personal
           heading:
         </WithAI>
       </Section>
