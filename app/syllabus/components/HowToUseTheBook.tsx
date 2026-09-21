@@ -1,5 +1,4 @@
 import Link from "next/link";
-import BookVideosNote from "@/app/book/components/BookVideosNote";
 import {
   HOW_TO_USE_THE_BOOK_HEADING,
   HOW_TO_USE_THE_BOOK_INTRO,
@@ -13,7 +12,6 @@ export default function HowToUseTheBook() {
         {HOW_TO_USE_THE_BOOK_INTRO}{" "}
         <Link href="/book#how-to-use">Open the book</Link>.
       </p>
-      <BookVideosNote />
       <p>
         Optional book videos are not the same as lecture recordings. For
         attendance and lecture recordings, see{" "}
