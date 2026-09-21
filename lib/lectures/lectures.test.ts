@@ -1867,6 +1867,16 @@ describe("lecture decks", () => {
     assert.match(lists, /wd-tables/);
     assert.match(lists, /colSpan/);
     assert.match(lists, /not layout|not a layout/i);
+    const quizTable = findSlide("lists-and-tables", "quiz-table");
+    const quizCode = lectureSlideCodeBlocks(quizTable).map((block) => block.code).join("\n");
+    const tablesSource = readFileSync(
+      join(process.cwd(), "app/labs/lab1/Tables.tsx"),
+      "utf8",
+    ).trim();
+    assert.equal(quizCode.trim(), tablesSource);
+    assert.match(quizCode, /<th align="center">Date<\/th>/);
+    assert.match(quizCode, /colSpan=\{3\}/);
+    assert.doesNotMatch(quizCode, /colSpan=\{2\}/);
 
     const forms = slideText("web-forms");
     assert.match(forms, /defaultValue/);
