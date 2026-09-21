@@ -34,7 +34,10 @@ Complete the HTML. Fill each numbered blank with the attribute name (\`for\`, \`
 The tooltip text is “${input.title}”. The default value is “${input.value}”. The grayed example text is “${input.placeholder}”.`,
     code: template,
     blankCount: 5,
-    acceptedBlanks: [["for", "id", "title", "value", "placeholder"]],
+    acceptedBlanks: [
+      ["for", "id", "title", "value", "placeholder"],
+      ["htmlFor", "id", "title", "value", "placeholder"],
+    ],
     referenceSolution: `<label for="${input.inputId}">${input.label}</label>
 <input id="${input.inputId}" title="${input.title}" value="${input.value}" placeholder="${input.placeholder}">`,
     rubric:

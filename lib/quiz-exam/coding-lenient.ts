@@ -16,6 +16,10 @@ export type LocalCodingGrade = {
   feedback: string;
 };
 
+/**
+ * Equivalence classes for short coding / FIB tokens.
+ * `for` and `htmlFor` are the HTML vs JSX names for label association.
+ */
 const BLANK_ALIASES: Record<string, string[]> = {
   for: ["htmlfor"],
   htmlfor: ["for"],
@@ -59,6 +63,7 @@ export function normalizeToken(value: string): string {
     .toLowerCase()
     .replace(/^['"`]+|['"`]+$/g, "")
     .replace(/[()]/g, "")
+    .replace(/[=;]+$/g, "")
     .replace(/\s+/g, "");
 }
 
@@ -68,6 +73,7 @@ export function tokensSimilar(expected: string, actual: string): boolean {
   if (!left || !right) return false;
   if (left === right) return true;
   if (BLANK_ALIASES[left]?.includes(right)) return true;
+  if (BLANK_ALIASES[right]?.includes(left)) return true;
   const distance = levenshtein(left, right);
   const maxLen = Math.max(left.length, right.length);
   if (maxLen <= 4) return distance <= 1;
@@ -234,14 +240,15 @@ function hasAttr(
   html: string,
   spec: { tag?: string; name: string; value?: string },
 ): boolean {
-  const name = normalizeToken(spec.name);
   return tokenizeHtml(html).some((token) => {
     if (token.kind !== "open") return false;
     if (spec.tag && token.name !== normalizeToken(spec.tag)) return false;
-    const value = token.attrs[name];
-    if (value === undefined) return false;
+    const match = Object.keys(token.attrs).find((attrName) =>
+      tokensSimilar(spec.name, attrName),
+    );
+    if (match === undefined) return false;
     if (spec.value == null) return true;
-    return textsSimilar(spec.value, value);
+    return textsSimilar(spec.value, token.attrs[match] ?? "");
   });
 }
 
