@@ -13,6 +13,14 @@ const howToUseTheBook = readFileSync(
   new URL("../components/HowToUseTheBook.tsx", import.meta.url),
   "utf8",
 );
+const syllabusHeader = readFileSync(
+  new URL("../components/SyllabusHeader.tsx", import.meta.url),
+  "utf8",
+);
+const syllabusView = readFileSync(
+  new URL("../components/SyllabusView.tsx", import.meta.url),
+  "utf8",
+);
 
 describe("how to use the book / optional videos", () => {
   it("states that term videos are optional reference, not required viewing", () => {
@@ -47,5 +55,15 @@ describe("how to use the book / optional videos", () => {
     assert.match(howToUseTheBook, /href="#meetings"/);
     assert.match(howToUseTheBook, /Meeting information/);
     assert.match(howToUseTheBook, /not the same as lecture recordings/);
+  });
+
+  it("does not repeat the optional-videos callout on the syllabus", () => {
+    assert.doesNotMatch(howToUseTheBook, /BookVideosNote/);
+    assert.doesNotMatch(howToUseTheBook, /Book videos are optional/);
+    assert.doesNotMatch(howToUseTheBook, /optional reference material/i);
+    assert.doesNotMatch(syllabusHeader, /term videos are optional/i);
+    assert.doesNotMatch(syllabusHeader, /Book videos are optional/);
+    assert.doesNotMatch(syllabusView, /BookVideosNote/);
+    assert.match(howToUseTheBook, /id="book"/);
   });
 });
