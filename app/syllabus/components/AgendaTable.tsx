@@ -1,4 +1,8 @@
 import Link from "next/link";
+import {
+  formatQuizDeadlineLabel,
+  quizLectureMeetingDayNote,
+} from "../data/deadlines";
 import { holidayMeetingNote } from "../data/holidays";
 import { formatAgendaDate, formatWeekOf } from "../data/dates";
 import type { AgendaGroup, AgendaRow, CourseSection } from "../data/types";
@@ -22,9 +26,13 @@ function rowClass(row: AgendaRow): string {
 }
 
 function dateLabel(row: AgendaRow): string {
-  return row.kind === "orientation"
-    ? formatAgendaDate(row.date)
-    : formatWeekOf(row.date);
+  if (row.kind === "orientation") {
+    return formatAgendaDate(row.date);
+  }
+  if (row.deadlines.some((deadline) => deadline.kind === "quiz")) {
+    return formatQuizDeadlineLabel(row.date);
+  }
+  return formatWeekOf(row.date);
 }
 
 export default function AgendaTable({
@@ -55,7 +63,7 @@ export default function AgendaTable({
         <Link href="/slides/grok-api">Grok API</Link>
         ). X2 is the week of Dec 14, even though the last
         day of classes is Dec 13. Quizzes are taken at the end of lecture at
-        the end of each chapter.
+        the end of each chapter. {quizLectureMeetingDayNote}
       </p>
       <p>{holidayMeetingNote}</p>
       <p className="font-sans text-sm text-neutral-600">
@@ -96,7 +104,7 @@ export default function AgendaTable({
                   key={`${section.id}-${group.id}-${row.date}-${row.kind}-${index}`}
                   className={rowClass(row)}
                 >
-                  <td className="whitespace-nowrap px-3 py-2 font-sans">
+                  <td className="px-3 py-2 font-sans">
                     {dateLabel(row)}
                   </td>
                   <td className="px-3 py-2 tabular-nums text-neutral-600">

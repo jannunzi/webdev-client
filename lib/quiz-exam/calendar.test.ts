@@ -187,6 +187,10 @@ describe("Fall 2026 Canvas calendar", () => {
     assert.doesNotMatch(studentCopy, /section starts later/i);
     assert.doesNotMatch(studentCopy, /chapter quizzes \(Q1–Q6\) are due Sunday/);
     assert.match(deadlinesNote, /Quizzes \(Q1–Q6\) are taken at the end of lecture at the end of each chapter/);
+    assert.match(deadlinesNote, /your section’s own meeting that week/);
+    assert.match(deadlinesNote, /CS 5610-02 Mondays 6:00–9:00pm ET/);
+    assert.match(deadlinesNote, /not a calendar day labeled “today,”/);
+    assert.match(deadlinesNote, /Q1 in the week of Sep 21 is Mon Sep 21/);
     assert.match(deadlinesNote, /X1 is taken in the second half of lecture the week of October 26/);
     assert.doesNotMatch(deadlinesNote, /X1 is due Sunday/);
     assert.doesNotMatch(deadlinesNote, /Quizzes \(Q1–Q6\) are due Sunday/);
