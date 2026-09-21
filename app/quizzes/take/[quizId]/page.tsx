@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import StatusPanel from "../../components/StatusPanel";
 import { isQuizTakingConfigured, isXaiConfigured } from "@/lib/config";
-import { loadTakeOverrideForRoster } from "@/lib/quiz-exam/access-overrides";
+import { loadQuizAccessForRoster } from "@/lib/quiz-exam/access-overrides";
 import { findLatestQuizAttempt } from "@/lib/quiz-exam/attempts";
 import { listQuizGradeOverrides } from "@/lib/quiz-exam/grade-overrides";
 import {
@@ -20,6 +20,8 @@ import {
   getQuizSchedule,
   isTakeWindowOpen,
   scheduleToIso,
+  type QuizAnswersVisibleMode,
+  type QuizTakeOverrideMode,
 } from "@/lib/quiz-exam/schedule";
 import { canvasUserIdFromMetadata } from "@/lib/roster/emails";
 import { loadClerkRosterEmails } from "@/lib/roster/load-clerk-emails";
@@ -156,7 +158,7 @@ export default async function TakeExamPage({ params }: PageProps) {
 
   const now = new Date();
   const schedule = getQuizSchedule(quizId);
-  const takeOverride = await loadTakeOverrideForRoster(
+  const { takeOverride, answersVisible } = await loadQuizAccessForRoster(
     quizId,
     roster.entry.section,
   );
@@ -200,6 +202,8 @@ export default async function TakeExamPage({ params }: PageProps) {
           phase={phase}
           attempt={attempt}
           now={now}
+          takeOverride={takeOverride}
+          answersVisible={answersVisible}
         />
       ) : attempt && !schedule ? (
         <StatusPanel title="Attempt submitted" tone="ok">
@@ -219,6 +223,7 @@ export default async function TakeExamPage({ params }: PageProps) {
                 phase="take_closed"
                 now={now}
                 takeOverride={takeOverride}
+                answersVisible={answersVisible}
               />
               <p className="text-sm text-neutral-700">
                 Students cannot start a new attempt right now. Impersonation
@@ -257,6 +262,7 @@ export default async function TakeExamPage({ params }: PageProps) {
             phase="take_closed"
             now={now}
             takeOverride={takeOverride}
+            answersVisible={answersVisible}
           />
         </div>
       ) : (
@@ -276,14 +282,18 @@ async function AttemptReviewSection({
   phase,
   attempt,
   now,
+  takeOverride,
+  answersVisible,
 }: {
   title: string;
   schedule: NonNullable<ReturnType<typeof getQuizSchedule>>;
   phase: NonNullable<ReturnType<typeof getAnswerRevealPhase>>;
   attempt: NonNullable<Awaited<ReturnType<typeof findLatestQuizAttempt>>>;
   now: Date;
+  takeOverride?: QuizTakeOverrideMode;
+  answersVisible?: QuizAnswersVisibleMode;
 }) {
-  const reveal = canRevealAnswers(phase);
+  const reveal = canRevealAnswers(phase, answersVisible);
   const classOverrides = await listQuizGradeOverrides(attempt.quizId);
   const review = buildAttemptReview(attempt, reveal, classOverrides);
   if (!review) {
@@ -310,6 +320,8 @@ async function AttemptReviewSection({
         graded={review.graded}
         submittedAt={review.submittedAt}
         now={now}
+        takeOverride={takeOverride}
+        answersVisible={answersVisible}
       />
     </div>
   );

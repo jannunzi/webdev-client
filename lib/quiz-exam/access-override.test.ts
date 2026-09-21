@@ -6,9 +6,12 @@ import {
 } from "../roster/sections";
 import {
   activeTakeOverride,
+  answersVisibleForRosterSection,
+  describeAnswersVisible,
   describeTakeAccess,
   isOverridableQuizId,
   listOverridableQuizIds,
+  lookupAnswersVisible,
   lookupOverrideMode,
   takeOverrideForRosterSection,
   toOverrideView,
@@ -16,6 +19,7 @@ import {
 import { drawWebsiteAttempt } from "./website-draw";
 import {
   answerWindowCopy,
+  canRevealAnswers,
   etWallTimeToUtc,
   getAnswerRevealPhase,
   getQuizSchedule,
@@ -212,6 +216,104 @@ describe("per-section take overrides", () => {
     assert.equal(view.updatedAt, "2026-09-28T16:00:00.000Z");
     assert.equal(view.updatedBy, "jannunzi@gmail.com");
     assert.equal(view.mode, "open");
+    assert.equal(view.answersVisible, "schedule");
+  });
+});
+
+describe("per-section answers-visible overrides", () => {
+  const waiting = et(2026, 9, 27, 12);
+  const reviewOpen = et(2026, 9, 29, 12);
+
+  it("defaults to the class calendar when unset or Follow schedule", () => {
+    assert.equal(canRevealAnswers("submitted_waiting"), false);
+    assert.equal(canRevealAnswers("submitted_waiting", "schedule"), false);
+    assert.equal(canRevealAnswers("submitted_waiting", undefined), false);
+    assert.equal(canRevealAnswers("answers_open"), true);
+    assert.equal(canRevealAnswers("answers_open", "schedule"), true);
+    assert.deepEqual(describeAnswersVisible(q1, "schedule", waiting), {
+      visible: false,
+      mode: "schedule",
+      scheduledVisible: false,
+    });
+    assert.deepEqual(describeAnswersVisible(q1, undefined, reviewOpen), {
+      visible: true,
+      mode: "schedule",
+      scheduledVisible: true,
+    });
+  });
+
+  it("staff On shows answers before the review week", () => {
+    assert.equal(canRevealAnswers("submitted_waiting", "on"), true);
+    assert.equal(canRevealAnswers("answers_closed", "on"), true);
+    assert.deepEqual(describeAnswersVisible(q1, "on", waiting), {
+      visible: true,
+      mode: "on",
+      scheduledVisible: false,
+    });
+    const copy = answerWindowCopy(q1, "submitted_waiting", waiting, undefined, "on");
+    assert.match(copy.title, /answers are visible/i);
+    assert.match(copy.paragraphs.join(" "), /turned on the answer key/i);
+  });
+
+  it("staff Off hides answers during the review week", () => {
+    assert.equal(canRevealAnswers("answers_open", "off"), false);
+    assert.equal(canRevealAnswers("answers_reopen", "off"), false);
+    assert.deepEqual(describeAnswersVisible(q1, "off", reviewOpen), {
+      visible: false,
+      mode: "off",
+      scheduledVisible: true,
+    });
+    const copy = answerWindowCopy(q1, "answers_open", reviewOpen, undefined, "off");
+    assert.match(copy.title, /answers are hidden/i);
+    assert.match(copy.paragraphs.join(" "), /hid the answer key/i);
+    assert.match(copy.paragraphs.join(" "), /score/i);
+  });
+
+  it("does not apply section A’s answers override to section B", () => {
+    const overrides = [
+      {
+        quizId: "q1",
+        sectionId: "CS4550",
+        mode: "open" as const,
+        answersVisible: "on" as const,
+        updatedAt: waiting,
+      },
+      {
+        quizId: "q1",
+        sectionId: "CS5610-02",
+        mode: "open" as const,
+        answersVisible: "off" as const,
+        updatedAt: reviewOpen,
+      },
+    ];
+    assert.equal(
+      answersVisibleForRosterSection(overrides, "q1", "CS4550 CRN 11464"),
+      "on",
+    );
+    assert.equal(
+      answersVisibleForRosterSection(overrides, "q1", "CS5610-09 CRN 17396"),
+      undefined,
+    );
+    assert.equal(
+      answersVisibleForRosterSection(overrides, "q1", "CS5610-02 CRN 17395"),
+      "off",
+    );
+    assert.equal(lookupAnswersVisible(overrides, "q2", "CS4550"), undefined);
+  });
+
+  it("keeps take enable and answers-visible independent", () => {
+    const view = toOverrideView({
+      quizId: "q1",
+      sectionId: "CS4550",
+      mode: "closed",
+      answersVisible: "on",
+      updatedAt: waiting,
+      updatedBy: "jannunzi@gmail.com",
+    });
+    assert.equal(view.mode, "closed");
+    assert.equal(view.answersVisible, "on");
+    assert.equal(isTakeWindowOpen(q1, waiting, view.mode), false);
+    assert.equal(canRevealAnswers("submitted_waiting", view.answersVisible), true);
   });
 });
 
@@ -296,5 +398,62 @@ describe("submit honors the same per-section take override", () => {
     assert.equal(result.ok, false);
     if (!result.ok) assert.equal(result.code, "take_closed");
     assert.equal(stored.length, 0);
+  });
+
+  it("includes the answer key on submit when staff On before the review week", async () => {
+    const result = await runExamSubmit({
+      quizId: "q1",
+      drawnQuestionIds: drawn.map((item) => item.question.id),
+      answers: {},
+      startedAt: "2026-09-27T12:00:00.000Z",
+      now: et(2026, 9, 27, 12),
+      takeOverride: "open",
+      answersVisible: "on",
+      actor: { clerkUserId: "user_show", email: "show@northeastern.edu" },
+      roster: {
+        status: "matched",
+        entry: {
+          email: "show@northeastern.edu",
+          section: "CS4550 CRN 11464",
+        },
+      },
+    });
+    assert.equal(result.ok, true);
+    if (result.ok) {
+      assert.equal(result.window?.phase, "submitted_waiting");
+      assert.equal(result.window?.revealAnswers, true);
+      assert.equal(result.window?.answersVisible, "on");
+      assert.ok(result.graded.every((item) => typeof item.correctReveal === "string"));
+    }
+  });
+
+  it("strips the answer key on submit when staff Off during the review week", async () => {
+    const result = await runExamSubmit({
+      quizId: "q1",
+      drawnQuestionIds: drawn.map((item) => item.question.id),
+      answers: {},
+      startedAt: "2026-09-29T12:00:00.000Z",
+      now: et(2026, 9, 29, 12),
+      takeOverride: "open",
+      answersVisible: "off",
+      actor: { clerkUserId: "user_hide", email: "hide@northeastern.edu" },
+      roster: {
+        status: "matched",
+        entry: {
+          email: "hide@northeastern.edu",
+          section: "CS4550 CRN 11464",
+        },
+      },
+    });
+    assert.equal(result.ok, true);
+    if (result.ok) {
+      assert.equal(result.window?.phase, "answers_open");
+      assert.equal(result.window?.revealAnswers, false);
+      assert.equal(result.window?.answersVisible, "off");
+      for (const item of result.graded) {
+        assert.equal("correctReveal" in item, false);
+        assert.equal("correct" in item, false);
+      }
+    }
   });
 });

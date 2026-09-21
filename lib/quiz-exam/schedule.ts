@@ -21,6 +21,13 @@ export type ExamName = "midterm" | "final";
  */
 export type QuizTakeOverrideMode = "open" | "closed" | "schedule";
 
+/**
+ * Staff per-section answer-key gate. `on` / `off` override the calendar.
+ * `schedule` / unset keep the existing class-wide review windows
+ * (default: hidden until `answers_open` / `answers_reopen`).
+ */
+export type QuizAnswersVisibleMode = "on" | "off" | "schedule";
+
 export type QuizPhase =
   | "take_open"
   | "take_closed"
@@ -48,6 +55,8 @@ export type AnswerWindowInfo = {
   examPrepCloseAt: string;
   examName: ExamName;
   revealAnswers: boolean;
+  /** Staff override when set to `on` / `off`. Unset means follow schedule. */
+  answersVisible?: QuizAnswersVisibleMode;
 };
 
 export type QuizScheduleIso = {
@@ -376,14 +385,33 @@ export function getAnswerRevealPhase(
   return isTakeWindowOpen(schedule, now, override) ? "take_open" : "take_closed";
 }
 
-export function canRevealAnswers(phase: QuizPhase | null): boolean {
+export function activeAnswersVisibleOverride(
+  mode: QuizAnswersVisibleMode | undefined | null,
+): QuizAnswersVisibleMode | undefined {
+  return mode === "on" || mode === "off" ? mode : undefined;
+}
+
+/**
+ * Student-facing answer-key visibility. Staff `on` / `off` override the
+ * calendar. Unset / `schedule` keep the existing review windows (default
+ * hidden). Staff attempt review never uses this — it always reveals.
+ */
+export function canRevealAnswers(
+  phase: QuizPhase | null,
+  answersVisible?: QuizAnswersVisibleMode | null,
+): boolean {
+  const override = activeAnswersVisibleOverride(answersVisible);
+  if (override === "on") return true;
+  if (override === "off") return false;
   return phase === "answers_open" || phase === "answers_reopen";
 }
 
 export function toAnswerWindowInfo(
   schedule: QuizSchedule,
   phase: QuizPhase,
+  answersVisible?: QuizAnswersVisibleMode | null,
 ): AnswerWindowInfo {
+  const override = activeAnswersVisibleOverride(answersVisible);
   return {
     phase,
     answersOpenAt: schedule.answersOpenAt.toISOString(),
@@ -391,7 +419,8 @@ export function toAnswerWindowInfo(
     examPrepOpenAt: schedule.examPrepOpenAt.toISOString(),
     examPrepCloseAt: schedule.examPrepCloseAt.toISOString(),
     examName: schedule.examName,
-    revealAnswers: canRevealAnswers(phase),
+    revealAnswers: canRevealAnswers(phase, answersVisible),
+    answersVisible: override ?? "schedule",
   };
 }
 
@@ -424,6 +453,7 @@ export function answerWindowCopy(
   phase: QuizPhase,
   now: Date = new Date(),
   override?: QuizTakeOverrideMode | null,
+  answersVisible?: QuizAnswersVisibleMode | null,
 ): AnswerWindowCopy {
   const open = formatEasternDateTime(schedule.answersOpenAt);
   const close = formatEasternDateTime(schedule.answersCloseAt);
@@ -431,6 +461,29 @@ export function answerWindowCopy(
   const prepClose = formatEasternDateTime(schedule.examPrepCloseAt);
   const exam = examLabel(schedule.examName);
   const prepAgain = `They will be available again one week before the ${exam}, from ${prepOpen} until ${prepClose}.`;
+  const answersOverride = activeAnswersVisibleOverride(answersVisible);
+
+  if (answersOverride === "on" && phase !== "take_open" && phase !== "take_closed") {
+    return {
+      title: "Answers are visible",
+      paragraphs: [
+        "The instructor or a TA turned on the answer key for your section. You can check correct and incorrect marks on this attempt.",
+        "Staff can hide the key again at any time. Your score stays visible either way.",
+      ],
+      tone: "ok",
+    };
+  }
+
+  if (answersOverride === "off" && phase !== "take_open" && phase !== "take_closed") {
+    return {
+      title: "Answers are hidden",
+      paragraphs: [
+        "The instructor or a TA hid the answer key for your section. Correct and incorrect marks, solutions, and the expected answers are not shown.",
+        "Your score is still available on this page.",
+      ],
+      tone: "warn",
+    };
+  }
 
   if (phase === "submitted_waiting") {
     return {

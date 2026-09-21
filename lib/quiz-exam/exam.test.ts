@@ -180,6 +180,7 @@ describe("student exam sampling and grading", () => {
       assert.equal(result.window?.revealAnswers, false);
       for (const item of result.graded) {
         assert.equal("correctReveal" in item, false);
+        assert.equal("correct" in item, false);
       }
     }
   });
@@ -290,6 +291,8 @@ describe("student exam sampling and grading", () => {
     }
     for (const item of hidden.graded) {
       assert.equal("correctReveal" in item, false);
+      assert.equal("correct" in item, false);
+      assert.equal("feedback" in item, false);
     }
 
     const shown = buildAttemptReview(attempt, true);

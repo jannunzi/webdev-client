@@ -7,7 +7,10 @@ import {
   type QuizAccessOverrideRecord,
   type QuizAccessOverrideView,
 } from "./access-override";
-import type { QuizTakeOverrideMode } from "./schedule";
+import type {
+  QuizAnswersVisibleMode,
+  QuizTakeOverrideMode,
+} from "./schedule";
 
 export const QUIZ_ACCESS_OVERRIDES_COLLECTION = "quiz_access_overrides";
 
@@ -19,17 +22,41 @@ export async function getQuizAccessOverridesCollection() {
   return getCollection<QuizAccessOverrideDoc>(QUIZ_ACCESS_OVERRIDES_COLLECTION);
 }
 
+export type QuizAccessForRoster = {
+  takeOverride?: QuizTakeOverrideMode;
+  answersVisible?: QuizAnswersVisibleMode;
+};
+
 export async function loadTakeOverrideForRoster(
   quizId: string,
   rosterSection: string | undefined | null,
 ): Promise<QuizTakeOverrideMode | undefined> {
+  const access = await loadQuizAccessForRoster(quizId, rosterSection);
+  return access.takeOverride;
+}
+
+export async function loadAnswersVisibleForRoster(
+  quizId: string,
+  rosterSection: string | undefined | null,
+): Promise<QuizAnswersVisibleMode | undefined> {
+  const access = await loadQuizAccessForRoster(quizId, rosterSection);
+  return access.answersVisible;
+}
+
+export async function loadQuizAccessForRoster(
+  quizId: string,
+  rosterSection: string | undefined | null,
+): Promise<QuizAccessForRoster> {
   const sectionId = courseSectionIdFromRoster(rosterSection);
-  if (!sectionId) return undefined;
+  if (!sectionId) return {};
   try {
     const doc = await findQuizAccessOverride(quizId, sectionId);
-    return doc?.mode;
+    return {
+      takeOverride: doc?.mode,
+      answersVisible: doc?.answersVisible,
+    };
   } catch {
-    return undefined;
+    return {};
   }
 }
 
@@ -52,24 +79,46 @@ export async function listQuizAccessOverrides(
 export async function upsertQuizAccessOverride(input: {
   quizId: string;
   sectionId: string;
-  mode: QuizTakeOverrideMode;
+  mode?: QuizTakeOverrideMode;
+  answersVisible?: QuizAnswersVisibleMode;
   updatedBy?: string;
   updatedAt?: Date;
 }): Promise<QuizAccessOverrideDoc> {
-  const doc: QuizAccessOverrideDoc = {
-    quizId: input.quizId,
-    sectionId: input.sectionId,
-    mode: input.mode,
-    updatedAt: input.updatedAt ?? new Date(),
-    updatedBy: input.updatedBy,
+  const quizId = input.quizId;
+  const sectionId = input.sectionId;
+  const updatedAt = input.updatedAt ?? new Date();
+  const $set: Partial<QuizAccessOverrideDoc> = {
+    quizId,
+    sectionId,
+    updatedAt,
   };
+  if (input.mode) $set.mode = input.mode;
+  if (input.answersVisible) $set.answersVisible = input.answersVisible;
+  if (input.updatedBy) $set.updatedBy = input.updatedBy;
+
+  const $setOnInsert: Partial<QuizAccessOverrideDoc> = {};
+  if (!input.mode) $setOnInsert.mode = "schedule";
+  if (!input.answersVisible) $setOnInsert.answersVisible = "schedule";
+
   const collection = await getQuizAccessOverridesCollection();
   await collection.updateOne(
-    { quizId: doc.quizId, sectionId: doc.sectionId },
-    { $set: doc },
+    { quizId, sectionId },
+    {
+      $set,
+      ...(Object.keys($setOnInsert).length > 0 ? { $setOnInsert } : {}),
+    },
     { upsert: true },
   );
-  return doc;
+  const saved = await collection.findOne({ quizId, sectionId });
+  if (saved) return saved;
+  return {
+    quizId,
+    sectionId,
+    mode: input.mode ?? "schedule",
+    answersVisible: input.answersVisible ?? "schedule",
+    updatedAt,
+    updatedBy: input.updatedBy,
+  };
 }
 
 export function overrideDocsToViews(

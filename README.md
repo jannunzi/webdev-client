@@ -65,8 +65,8 @@ If Clerk or Atlas env vars are missing, those take routes show a clear
    entry that allows Vercel (or `0.0.0.0/0` if you prefer allow-all + strong
    user password). Copy the `mongodb+srv://…` connection string. The app uses
    database `web-dev` (override with `MONGODB_DB`) and collections
-   `quiz_attempts`, `quiz_grade_overrides`, `canvas_roster`,
-   `assignment_progress`, and `assignment_submissions`.
+   `quiz_attempts`, `quiz_access_overrides`, `quiz_grade_overrides`,
+   `canvas_roster`, `assignment_progress`, and `assignment_submissions`.
 3. **Vercel** project env (Production + Preview + Development):
    `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`,
    `NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in`,
@@ -224,6 +224,47 @@ open because “now” is inside that window. Staff (`INSTRUCTOR_EMAILS` /
 (Enable / Disable / Off). While disabled, students see the dates and cannot
 start or submit. Enable CS4550 to test with `ada@ada.com` / `bob@bob.com`,
 then Disable again.
+
+### Answers visible to students (staff only)
+
+The class calendar still decides the **default**: answer keys stay hidden
+until the scheduled review week (`answers_open` / `answers_reopen`), then
+hide again. That is the current product default (Off outside those
+windows). Staff can **override** it per quiz and section on
+`/quizzes/take` (same panel as Enable): **Answers visible to students:
+On / Off / Follow schedule**.
+
+- **On** — students who already submitted see correct/incorrect marks and
+  expected answers, even outside the calendar window.
+- **Off** — those marks, solutions, and the answer key stay hidden, even
+  during the review week. The attempt score still shows.
+- **Follow schedule** (default / unset) — calendar windows only.
+
+Staff attempt review at `/quizzes/staff/q1/attempts` always shows answers,
+regardless of this flag. Existing `quiz_attempts` documents are not
+changed.
+
+**Schema (`web-dev.quiz_access_overrides`, unique `{ quizId, sectionId }`):**
+
+```
+{
+  "quizId": "q1",
+  "sectionId": "CS4550",
+  "mode": "open" | "closed" | "schedule",   // take enable (existing)
+  "answersVisible": "on" | "off" | "schedule", // student answer key
+  "updatedBy": "jannunzi@gmail.com",
+  "updatedAt": ISODate
+}
+```
+
+`answersVisible` omitted or `"schedule"` follows the calendar. Take
+`mode` and `answersVisible` are independent fields on the same document.
+
+**How to try:** Sign in as staff → `/quizzes/take/q1` → for CS4550 set
+**Answers visible to students: On** → submit (or reopen) as a student →
+review shows marks and the key → staff sets **Off** → refresh the take
+URL → score remains, marks/key are gone. Then open
+`/quizzes/staff/q1/attempts` and confirm staff still sees answers.
 
 ### Staff attempt review + grade overrides
 

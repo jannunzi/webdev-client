@@ -5,21 +5,26 @@ import {
   type CourseSectionId,
 } from "../roster/sections";
 import {
+  canRevealAnswers,
+  getAnswerRevealPhase,
   getQuizSchedule,
   isScheduledTakeWindow,
   isTakeWindowOpen,
   listQuizSchedules,
+  type QuizAnswersVisibleMode,
   type QuizSchedule,
   type QuizTakeOverrideMode,
 } from "./schedule";
 
-export type { CourseSectionId, QuizTakeOverrideMode };
+export type { CourseSectionId, QuizAnswersVisibleMode, QuizTakeOverrideMode };
 export { COURSE_SECTION_IDS, courseSectionIdFromRoster, isCourseSectionId };
 
 export type QuizAccessOverrideRecord = {
   quizId: string;
   sectionId: string;
   mode: QuizTakeOverrideMode;
+  /** Default `schedule` / unset: follow the class review calendar. */
+  answersVisible?: QuizAnswersVisibleMode;
   updatedAt: Date | string;
   updatedBy?: string;
 };
@@ -28,6 +33,7 @@ export type QuizAccessOverrideView = {
   quizId: string;
   sectionId: string;
   mode: QuizTakeOverrideMode;
+  answersVisible: QuizAnswersVisibleMode;
   updatedAt: string;
   updatedBy?: string;
 };
@@ -56,6 +62,48 @@ export function lookupOverrideMode(
   return overrides.find(
     (row) => row.quizId === quizId && row.sectionId === sectionId,
   )?.mode;
+}
+
+export function lookupAnswersVisible(
+  overrides: readonly QuizAccessOverrideRecord[],
+  quizId: string,
+  sectionId: string | undefined,
+): QuizAnswersVisibleMode | undefined {
+  if (!sectionId) return undefined;
+  return overrides.find(
+    (row) => row.quizId === quizId && row.sectionId === sectionId,
+  )?.answersVisible;
+}
+
+export function answersVisibleForRosterSection(
+  overrides: readonly QuizAccessOverrideRecord[],
+  quizId: string,
+  rosterSection: string | undefined | null,
+): QuizAnswersVisibleMode | undefined {
+  return lookupAnswersVisible(
+    overrides,
+    quizId,
+    courseSectionIdFromRoster(rosterSection),
+  );
+}
+
+export function describeAnswersVisible(
+  schedule: QuizSchedule,
+  override: QuizAnswersVisibleMode | undefined | null,
+  now: Date = new Date(),
+): {
+  visible: boolean;
+  mode: QuizAnswersVisibleMode;
+  scheduledVisible: boolean;
+} {
+  const mode: QuizAnswersVisibleMode =
+    override === "on" || override === "off" ? override : "schedule";
+  const phase = getAnswerRevealPhase(schedule, now, true);
+  return {
+    visible: canRevealAnswers(phase, mode),
+    mode,
+    scheduledVisible: canRevealAnswers(phase),
+  };
 }
 
 export function takeOverrideForRosterSection(
@@ -98,6 +146,10 @@ export function toOverrideView(
     quizId: doc.quizId,
     sectionId: doc.sectionId,
     mode: doc.mode,
+    answersVisible:
+      doc.answersVisible === "on" || doc.answersVisible === "off"
+        ? doc.answersVisible
+        : "schedule",
     updatedAt,
     updatedBy: doc.updatedBy,
   };

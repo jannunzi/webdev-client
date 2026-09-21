@@ -38,11 +38,24 @@ export function assertNoAnswerLeak(question: StudentQuestion): void {
   }
 }
 
-/** Drop answer-key fields so waiting/closed payloads cannot leak the key. */
+/**
+ * Drop answer-key and per-item correctness so hidden payloads cannot leak
+ * which items were right. Total score stays on the attempt, not here.
+ */
 export function stripCorrectReveals(graded: GradedAnswer[]): GradedAnswer[] {
   return graded.map(
-    ({ correctReveal: _correctReveal, feedback: _feedback, gradingError: _gradingError, ...item }) =>
-      item,
+    ({
+      correctReveal: _correctReveal,
+      feedback: _feedback,
+      gradingError: _gradingError,
+      correct: _correct,
+      scoreRatio: _scoreRatio,
+      autoCorrect: _autoCorrect,
+      autoPoints: _autoPoints,
+      autoScoreRatio: _autoScoreRatio,
+      override: _override,
+      ...item
+    }) => item as GradedAnswer,
   );
 }
 

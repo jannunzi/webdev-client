@@ -46,10 +46,12 @@ export {
   isScheduledTakeWindow,
   isTakeWindowOpen,
 } from "./schedule";
-export type { QuizTakeOverrideMode } from "./schedule";
+export type { QuizAnswersVisibleMode, QuizTakeOverrideMode } from "./schedule";
 export {
   COURSE_SECTION_IDS,
   activeTakeOverride,
+  answersVisibleForRosterSection,
+  describeAnswersVisible,
   describeTakeAccess,
   takeOverrideForRosterSection,
 } from "./access-override";
