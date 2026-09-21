@@ -196,7 +196,10 @@ export default function HtmlSections() {
           As practice, add <code>h1</code>{" "}through <code>h6</code>{" "}in the
           same <code>wd-h-tag</code>{" "}division, after the sample paragraph, so
           you can see the six sizes. Leave the sample <code>h4</code>{" "}and its
-          paragraph in place:
+          paragraph in place. Add this practice block before{" "}
+          <strong>With AI</strong>. That later prompt refers to these practice
+          headings. Your personal <code>h4</code>{" "}in On your own stays in its
+          own section:
         </p>
         <CodeBlock language="tsx">{`<h1>h1</h1>
 <h2>h2</h2>
@@ -261,12 +264,15 @@ export default function Lab1() {
           compare a block and an inline element in the same personal section.
         </OnYourOwn>
         <WithAI
-          prompt={`In app/labs/lab1/HeadingTags.tsx, keep the existing book sample — the h4 titled "Heading Tags" and the paragraph under it — unless a step says to replace it. Do not erase that sample text. Keep my personal heading block as it is. I added h1 through h6 as practice after the sample paragraph; leave those headings in place. After those h1–h6 tags, add a second sample outline (not about me) with id wd-ai-headings: an h4 titled "Lab notes", an h5 titled "What I built", and an h6 titled "Next step". Use placeholder sentences, not my name.`}
+          prompt={`In app/labs/lab1/HeadingTags.tsx, keep the existing book sample — the h4 titled "Heading Tags" and the paragraph under it — unless a step says to replace it. Do not erase that sample text. Keep my personal heading block as it is. After the practice h1–h6 headings you added, add a second sample outline (not about me) with id wd-ai-headings: an h4 titled "Lab notes", an h5 titled "What I built", and an h6 titled "Next step". Use placeholder sentences, not my name.`}
         >
-          Ask the assistant to add a second sample outline after the{" "}
-          <code>h1</code>–<code>h6</code>{" "}you added as practice. Keep the book
-          sample (the <code>h4</code>{" "}and its paragraph) and your personal
-          heading:
+          Add the practice <code>h1</code>–<code>h6</code>{" "}headings before
+          this step. If that block is still missing, add it first; your
+          personal <code>h4</code>{" "}from On your own stays in its own section.
+          Then ask the assistant to add a second sample outline after the
+          practice <code>h1</code>–<code>h6</code>{" "}headings you added. Keep
+          the book sample (the <code>h4</code>{" "}and its paragraph) and your
+          personal heading:
         </WithAI>
       </Section>
 

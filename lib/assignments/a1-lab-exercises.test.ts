@@ -82,10 +82,11 @@ describe("A1 Lab catalog / §1.3.12 parity", () => {
     assert.ok(core);
     assert.ok(ai);
     assert.match(core.description, /book sample/);
-    assert.match(core.description, /Add h1–h6 as practice/);
+    assert.match(core.description, /Before With AI, add h1–h6 as practice/);
     assert.match(core.description, /without erasing that sample text/);
     assert.doesNotMatch(core.description, /sample h1–h6/);
-    assert.match(ai.description, /practice h1–h6/);
+    assert.match(ai.description, /After the practice h1–h6 headings you added/);
+    assert.doesNotMatch(ai.description, /sample h1/);
     assert.match(ai.description, /Keep the book sample text/);
     assert.equal(
       core.auto?.failMessage,
