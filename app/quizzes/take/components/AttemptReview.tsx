@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 import {
   answerWindowCopy,
+  canRevealAnswers,
   formatEasternDateTime,
+  type QuizAnswersVisibleMode,
   type QuizPhase,
   type QuizSchedule,
   type QuizTakeOverrideMode,
@@ -25,13 +27,21 @@ export function WindowBanner({
   phase,
   now,
   takeOverride,
+  answersVisible,
 }: {
   schedule: QuizSchedule;
   phase: QuizPhase;
   now?: Date;
   takeOverride?: QuizTakeOverrideMode | null;
+  answersVisible?: QuizAnswersVisibleMode | null;
 }) {
-  const copy = answerWindowCopy(schedule, phase, now, takeOverride);
+  const copy = answerWindowCopy(
+    schedule,
+    phase,
+    now,
+    takeOverride,
+    answersVisible,
+  );
   const toneClass =
     copy.tone === "ok"
       ? "border-emerald-600 bg-emerald-50 text-emerald-950"
@@ -195,6 +205,8 @@ export function SubmittedAttemptView({
   persisted = true,
   impersonation = false,
   now,
+  takeOverride,
+  answersVisible,
 }: {
   title: string;
   schedule: QuizSchedule;
@@ -207,8 +219,10 @@ export function SubmittedAttemptView({
   persisted?: boolean;
   impersonation?: boolean;
   now?: Date;
+  takeOverride?: QuizTakeOverrideMode | null;
+  answersVisible?: QuizAnswersVisibleMode | null;
 }) {
-  const revealAnswers = phase === "answers_open" || phase === "answers_reopen";
+  const revealAnswers = canRevealAnswers(phase, answersVisible);
   return (
     <div className="space-y-4">
       <AttemptScore
@@ -219,7 +233,13 @@ export function SubmittedAttemptView({
         persisted={persisted}
         impersonation={impersonation}
       />
-      <WindowBanner schedule={schedule} phase={phase} now={now} />
+      <WindowBanner
+        schedule={schedule}
+        phase={phase}
+        now={now}
+        takeOverride={takeOverride}
+        answersVisible={answersVisible}
+      />
       {revealAnswers ? (
         <GradedQuestionList
           questions={questions}

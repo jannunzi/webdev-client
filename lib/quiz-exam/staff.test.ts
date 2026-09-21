@@ -138,3 +138,21 @@ describe("quiz staff student queue", () => {
     assert.equal(filterQuizStaffQueueBySection(queue, "").length, 2);
   });
 });
+
+describe("staff attempt review always shows answers", () => {
+  it("rebuilds staff review with the key even when students would be hidden", () => {
+    const page = readFileSync(
+      join(process.cwd(), "app/quizzes/staff/[quizId]/attempts/page.tsx"),
+      "utf8",
+    );
+    assert.match(page, /buildAttemptReview\(attempt, true/);
+    assert.match(page, /student-facing/);
+    assert.match(
+      readFileSync(
+        join(process.cwd(), "app/quizzes/staff/components/StaffAttemptBrowser.tsx"),
+        "utf8",
+      ),
+      /revealAnswers/,
+    );
+  });
+});

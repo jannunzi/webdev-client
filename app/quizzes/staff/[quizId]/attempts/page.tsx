@@ -170,8 +170,10 @@ async function renderAttempts({
       </h1>
       <p className="text-neutral-700">
         Same preview a student sees during answer review, with marks and
-        points. Override a question for this student, enter custom points, or
-        apply correct / wrong to every student who drew that question.
+        points. Staff always see the answer key here — the student-facing
+        “Answers visible” toggle does not apply. Override a question for this
+        student, enter custom points, or apply correct / wrong to every
+        student who drew that question.
       </p>
       <StaffAttemptBrowser
         quizId={quizId}

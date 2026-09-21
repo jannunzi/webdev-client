@@ -25,10 +25,10 @@ export default async function QuizAccessOverrides({
   if (!isMongoConfigured()) {
     return (
       <section className="mt-6 rounded-lg border border-amber-500 bg-amber-50 px-4 py-3 text-amber-950">
-        <h2 className="mt-0 mb-1 text-lg font-semibold">Section take overrides</h2>
+        <h2 className="mt-0 mb-1 text-lg font-semibold">Section quiz overrides</h2>
         <p className="mb-0 text-sm">
-          MongoDB is not configured, so per-section open/close overrides cannot
-          be saved.
+          MongoDB is not configured, so per-section take and answer-key
+          overrides cannot be saved.
         </p>
       </section>
     );
@@ -47,9 +47,10 @@ export default async function QuizAccessOverrides({
   } catch {
     return (
       <section className="mt-6 rounded-lg border border-amber-500 bg-amber-50 px-4 py-3 text-amber-950">
-        <h2 className="mt-0 mb-1 text-lg font-semibold">Section take overrides</h2>
+        <h2 className="mt-0 mb-1 text-lg font-semibold">Section quiz overrides</h2>
         <p className="mb-0 text-sm">
-          Could not load saved overrides from MongoDB. Date windows still apply.
+          Could not load saved overrides from MongoDB. Date windows still apply
+          for the answer key; taking stays staff-enabled.
         </p>
       </section>
     );

@@ -8,7 +8,10 @@ import {
   type QuizAccessOverrideView,
 } from "@/lib/quiz-exam/access-override";
 import { upsertQuizAccessOverride } from "@/lib/quiz-exam/access-overrides";
-import type { QuizTakeOverrideMode } from "@/lib/quiz-exam/schedule";
+import type {
+  QuizAnswersVisibleMode,
+  QuizTakeOverrideMode,
+} from "@/lib/quiz-exam/schedule";
 import { isMongoConfigured } from "@/lib/config";
 import { collectClerkEmails, normalizeEmail } from "@/lib/roster/emails";
 import { isCourseSectionId } from "@/lib/roster/sections";
@@ -23,9 +26,14 @@ export type SetQuizAccessOverrideResult =
     };
 
 const MODES: readonly QuizTakeOverrideMode[] = ["open", "closed", "schedule"];
+const ANSWER_MODES: readonly QuizAnswersVisibleMode[] = ["on", "off", "schedule"];
 
 function isOverrideMode(value: string): value is QuizTakeOverrideMode {
   return (MODES as readonly string[]).includes(value);
+}
+
+function isAnswersVisibleMode(value: string): value is QuizAnswersVisibleMode {
+  return (ANSWER_MODES as readonly string[]).includes(value);
 }
 
 async function authorizeStaffWriter(): Promise<
@@ -52,7 +60,7 @@ async function authorizeStaffWriter(): Promise<
       result: {
         ok: false,
         code: "forbidden",
-        message: "Only course staff can change quiz take overrides.",
+        message: "Only course staff can change quiz take or answer-key overrides.",
       },
     };
   }
@@ -94,6 +102,47 @@ export async function setQuizAccessOverride(input: {
     const message =
       error instanceof Error ? error.message : "Could not save the override.";
     console.error("quiz access override persist failed", message);
+    return { ok: false, code: "invalid", message };
+  }
+}
+
+export async function setQuizAnswersVisible(input: {
+  quizId: string;
+  sectionId: string;
+  answersVisible: string;
+}): Promise<SetQuizAccessOverrideResult> {
+  const authz = await authorizeStaffWriter();
+  if (!authz.ok) return authz.result;
+
+  const quizId = input.quizId.trim().toLowerCase();
+  const sectionId = input.sectionId.trim();
+  const answersVisible = input.answersVisible.trim();
+  if (
+    !isOverridableQuizId(quizId) ||
+    !isCourseSectionId(sectionId) ||
+    !isAnswersVisibleMode(answersVisible)
+  ) {
+    return {
+      ok: false,
+      code: "invalid",
+      message: "Unknown quiz, section, or answers-visible mode.",
+    };
+  }
+
+  try {
+    const doc = await upsertQuizAccessOverride({
+      quizId,
+      sectionId,
+      answersVisible,
+      updatedBy: authz.email ? normalizeEmail(authz.email) : undefined,
+    });
+    revalidatePath("/quizzes/take");
+    revalidatePath(`/quizzes/take/${quizId}`);
+    return { ok: true, override: toOverrideView(doc) };
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Could not save the override.";
+    console.error("quiz answers-visible override persist failed", message);
     return { ok: false, code: "invalid", message };
   }
 }

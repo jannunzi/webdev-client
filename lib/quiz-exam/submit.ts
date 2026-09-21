@@ -11,6 +11,7 @@ import {
   getQuizSchedule,
   isTakeWindowOpen,
   toAnswerWindowInfo,
+  type QuizAnswersVisibleMode,
   type QuizTakeOverrideMode,
 } from "./schedule";
 import type {
@@ -37,6 +38,8 @@ export type ExamSubmitDeps = {
   persist?: (doc: QuizAttemptDoc) => Promise<{ insertedId: unknown }>;
   /** Per-section staff override for the take window only. */
   takeOverride?: QuizTakeOverrideMode | null;
+  /** Per-section staff override for student answer-key visibility. */
+  answersVisible?: QuizAnswersVisibleMode | null;
   /** Tests inject a mock so coding items never call the network. */
   gradeCodingComplete?: CodingLlmComplete;
 };
@@ -115,12 +118,15 @@ export async function runExamSubmit(deps: ExamSubmitDeps): Promise<SubmitExamRes
   const phase = schedule
     ? getAnswerRevealPhase(schedule, submittedAt, true, deps.takeOverride)
     : "submitted_waiting";
-  const reveal = canRevealAnswers(phase);
+  const reveal = canRevealAnswers(phase, deps.answersVisible);
   const publicGraded = reveal ? graded : stripCorrectReveals(graded);
   const score = graded.reduce((sum, item) => sum + item.points, 0);
   const maxScore = graded.reduce((sum, item) => sum + item.maxPoints, 0);
   const rosterEntry = (deps.roster as { entry: CanvasRosterEntry }).entry;
-  const window = schedule && phase ? toAnswerWindowInfo(schedule, phase) : undefined;
+  const window =
+    schedule && phase
+      ? toAnswerWindowInfo(schedule, phase, deps.answersVisible)
+      : undefined;
 
   const doc: QuizAttemptDoc = {
     clerkUserId: deps.actor.clerkUserId,

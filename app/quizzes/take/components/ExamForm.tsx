@@ -126,6 +126,7 @@ export default function ExamForm({
         graded={result.graded}
         persisted={result.persisted}
         impersonation={result.impersonation === true}
+        answersVisible={result.window?.answersVisible}
       />
     );
   }
