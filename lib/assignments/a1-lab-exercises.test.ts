@@ -74,6 +74,25 @@ describe("A1 Lab catalog / §1.3.12 parity", () => {
     );
   });
 
+  it("treats §1.3.1 h1–h6 as practice added on top of the h4 book sample", () => {
+    const section = A1_LAB_EXERCISE_SECTIONS.find((row) => row.section === "1.3.1");
+    assert.ok(section);
+    const core = section.tasks.find((task) => task.kind === "core");
+    const ai = section.tasks.find((task) => task.kind === "ai");
+    assert.ok(core);
+    assert.ok(ai);
+    assert.match(core.description, /book sample/);
+    assert.match(core.description, /Add h1–h6 as practice/);
+    assert.match(core.description, /without erasing that sample text/);
+    assert.doesNotMatch(core.description, /sample h1–h6/);
+    assert.match(ai.description, /practice h1–h6/);
+    assert.match(ai.description, /Keep the book sample text/);
+    assert.equal(
+      core.auto?.failMessage,
+      "Lab 1 should include wd-h-tag and the h1–h6 headings you add as practice.",
+    );
+  });
+
   it("walks 1.3.1–1.3.11 as create, On your own, With AI per section", () => {
     const sections = [...new Set(A1_LAB_EXERCISES.map((row) => row.section))];
     assert.deepEqual(sections, LAB_SECTIONS);

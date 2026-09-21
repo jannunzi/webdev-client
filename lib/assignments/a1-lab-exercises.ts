@@ -62,14 +62,15 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
         id: "a1-lab-heading-tags",
         kind: "core",
         description:
-          "Create HeadingTags.tsx with sample h1–h6 tags and import it on the Lab 1 page.",
+          "Create HeadingTags.tsx from the book sample (h4 \"Heading Tags\" and its paragraph). Add h1–h6 as practice without erasing that sample text, and import the component on the Lab 1 page.",
         points: 3,
         auto: {
           kind: "headings",
           requireAllIds: ["wd-h-tag"],
           headingLevels: [1, 2, 3, 4, 5, 6],
-          passMessage: "Found wd-h-tag and heading tags h1–h6.",
-          failMessage: "Lab 1 should include wd-h-tag and sample h1–h6 tags.",
+          passMessage: "Found wd-h-tag and practice headings h1–h6.",
+          failMessage:
+            "Lab 1 should include wd-h-tag and the h1–h6 headings you add as practice.",
         },
       },
       {
@@ -90,7 +91,7 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
         id: "a1-lab-heading-tags-ai",
         kind: "ai",
         description:
-          "Sample outline with id wd-ai-headings (h4 Lab notes, h5 What I built, h6 Next step).",
+          "After the practice h1–h6, add a sample outline with id wd-ai-headings (h4 Lab notes, h5 What I built, h6 Next step). Keep the book sample text.",
         points: 2,
         auto: {
           kind: "ids",
