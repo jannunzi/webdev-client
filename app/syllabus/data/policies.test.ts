@@ -44,6 +44,14 @@ describe("AI policy", () => {
     assert.match(text, /join amazing teams/i);
   });
 
+  it("allows IDE autocomplete and treats disabling it as optional preference", () => {
+    assert.match(text, /IDE autocomplete is allowed/i);
+    assert.match(text, /VS Code IntelliSense/i);
+    assert.match(text, /Copilot-style inline suggestions/i);
+    assert.match(text, /optional personal preference/i);
+    assert.match(text, /not an academic integrity requirement/i);
+  });
+
   it("aligns academic integrity with the wholesale-copy rule", () => {
     const integrity = academicIntegrity.paragraphs.join(" ");
     assert.match(integrity, /copying AI-generated code wholesale/i);
