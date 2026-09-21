@@ -46,8 +46,8 @@ export default function SyllabusHeader({
         <Link href="#meetings">Lecture recordings</Link> appear in Canvas →
         Zoom Meetings → Cloud Recordings after each lecture finishes
         processing (an empty list before or during the class day is
-        expected). They are available to enrolled students for a legitimate
-        absence — not as a replacement for class.
+        expected). They are available to enrolled students for a
+        legitimate absence — not as a replacement for class.
       </p>
     </header>
   );
