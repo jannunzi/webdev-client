@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   authoredSlideBullets,
@@ -75,6 +75,20 @@ function slideText(deckSlug: string): string {
   return deck.slides
     .flatMap((slide) => [slide.title, ...authoredSlideTextParts(slide)])
     .join("\n");
+}
+
+/** Home (`href="/labs"`) must not carry the Lab 1 id. */
+const HOME_LABS_AS_LAB1 =
+  /<(?:Link|a)\b[^>]*href=["']\/labs["'][^>]*id=["']wd-lab1-link["']|<(?:Link|a)\b[^>]*id=["']wd-lab1-link["'][^>]*href=["']\/labs["']/s;
+
+function sourceFilesUnder(dir: string): string[] {
+  const out: string[] = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) out.push(...sourceFilesUnder(full));
+    else if (/\.(tsx|ts)$/.test(entry.name)) out.push(full);
+  }
+  return out;
 }
 
 function findSlide(deckSlug: string, id: string) {
@@ -1889,10 +1903,12 @@ describe("lecture decks", () => {
     assert.match(overview, /app\/\(kambaz\)\/page\.tsx/);
     assert.match(overview, /wd-kambaz/);
     assert.match(overview, /wd-kambaz-link/);
+    assert.match(overview, /href="\/labs" id="wd-home-link"/);
     assert.match(overview, /next\/navigation/);
     assert.match(overview, /redirect\("\/account\/signin"\)/);
     assert.doesNotMatch(overview, /HashRouter/);
     assert.doesNotMatch(overview, /src\/Kanbas/);
+    assert.doesNotMatch(overview, HOME_LABS_AS_LAB1);
 
     const account = slideText("kambaz-account");
     assert.match(account, /wd-signin-screen/);
@@ -1954,6 +1970,37 @@ describe("lecture decks", () => {
     assert.match(assignments, /wd-assignments-editor/);
     assert.match(assignments, /wd-cancel/);
     assert.doesNotMatch(assignments, /<a href="\/courses/);
+  });
+
+  it("labels Labs Home as wd-home-link in Chapter 1 teaching snippets", () => {
+    const book = readFileSync(
+      join(process.cwd(), "app/book/ch1/sections/KambazSections.tsx"),
+      "utf8",
+    );
+    assert.match(book, /href="\/labs" id="wd-home-link"/);
+    assert.doesNotMatch(book, HOME_LABS_AS_LAB1);
+
+    const roots = [
+      join(process.cwd(), "app/book/ch1"),
+      join(process.cwd(), "lib/lectures/decks"),
+    ];
+    for (const root of roots) {
+      for (const file of sourceFilesUnder(root)) {
+        assert.doesNotMatch(
+          readFileSync(file, "utf8"),
+          HOME_LABS_AS_LAB1,
+          `${file} must not put wd-lab1-link on the Home /labs link`,
+        );
+      }
+    }
+
+    for (const slug of [
+      ...LECTURE_1_SLUGS,
+      ...LECTURE_2_SLUGS,
+      ...LECTURE_3_SLUGS,
+    ]) {
+      assert.doesNotMatch(slideText(slug), HOME_LABS_AS_LAB1, slug);
+    }
   });
 
   it("shows book Canvas target screenshots before Ch1 Kambaz screen sequences", () => {
