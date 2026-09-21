@@ -39,11 +39,18 @@ describe("lenient coding grader", () => {
     assert.equal(result.score, 0.8);
   });
 
-  it("accepts htmlFor as an alias for for", () => {
-    const result = scoreCodingLocally(form, {
-      blanks: ["htmlFor", "id", "title", "value", "placeholder"],
-    });
-    assert.equal(result.score, 1);
+  it("treats for and htmlFor as equivalent on the Q1 label-association blank", () => {
+    const rest = ["id", "title", "value", "placeholder"] as const;
+    for (const labelFor of ["htmlFor", "For", "HTMLFOR", " htmlFor ", '"htmlFor"', "`for`"]) {
+      const result = scoreCodingLocally(form, {
+        blanks: [labelFor, ...rest],
+      });
+      assert.equal(result.score, 1, `expected ${JSON.stringify(labelFor)} to match for`);
+    }
+    assert.equal(tokensSimilar("for", "htmlFor"), true);
+    assert.equal(tokensSimilar("for", "For"), true);
+    assert.equal(tokensSimilar("for", "HTMLFOR"), true);
+    assert.equal(tokensSimilar("htmlFor", "for"), true);
   });
 
   it("gives full credit for a bullet list that forgets slashes and shuffles attributes", () => {

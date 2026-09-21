@@ -60,6 +60,13 @@ describe("website coding pools", () => {
       "value",
       "placeholder",
     ]);
+    assert.deepEqual(firstForm.acceptedBlanks?.[1], [
+      "htmlFor",
+      "id",
+      "title",
+      "value",
+      "placeholder",
+    ]);
     assert.match(firstForm.prompt, /tooltip/i);
     assert.match(firstForm.prompt, /default value/i);
     assert.match(firstForm.prompt, /grayed example/i);
