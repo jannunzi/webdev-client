@@ -353,17 +353,21 @@ Unlock is **class-wide** (wall-clock ET → stored as ISO UTC in
 The server clock decides the phase. `correctReveal` is omitted from HTML and
 from the submit payload unless the phase is `answers_open` or `answers_reopen`.
 
-Fall 2026 first windows (00:00 ET Monday → +7d):
+Fall 2026 first windows (00:00 ET Monday → +7d), after Piazza Post 33
+moved Q1–Q6 one week later:
 
-- Q1: 2026-09-28 → 2026-10-05
-- Q2: 2026-10-12 → 2026-10-19
-- Q3: 2026-11-02 → 2026-11-09
-- Q4: 2026-11-09 → 2026-11-16
-- Q5: 2026-11-23 → 2026-11-30
-- Q6: 2026-12-21 → 2026-12-28
+- Q1: 2026-10-05 → 2026-10-12
+- Q2: 2026-10-19 → 2026-10-26
+- Q3: 2026-11-09 → 2026-11-16
+- Q4: 2026-11-16 → 2026-11-23
+- Q5: 2026-11-30 → 2026-12-07
+- Q6: 2026-12-28 → 2027-01-04
 
-Take windows follow Q1’s pattern (Monday 00:00 ET unlock → Sunday 23:59 ET
-due). Q1: unlock 2026-09-21, due 2026-09-27 23:59 ET.
+Take windows are the class-wide website window (Monday 00:00 ET unlock →
+Sunday 23:59 ET lock). That Monday–Sunday span is the CS 5610-09 online
+open week (attendance is not required). In-person sections still take the
+quiz at the end of their meeting that week. Q1: unlock 2026-09-28, lock
+2026-10-04 23:59 ET.
 
 **Exam dates** live in `COURSE_EXAMS` in the same module:
 

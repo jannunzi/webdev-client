@@ -16,9 +16,17 @@ const agendaTable = readFileSync(
   new URL("../components/AgendaTable.tsx", import.meta.url),
   "utf8",
 );
+const calendarPage = readFileSync(
+  new URL("../../calendar/page.tsx", import.meta.url),
+  "utf8",
+);
+const academicCalendar = readFileSync(
+  new URL("../components/AcademicCalendar.tsx", import.meta.url),
+  "utf8",
+);
 
 describe("quiz lecture meeting-day copy", () => {
-  it("spells out that Week-of quiz dates are each section’s own meeting day", () => {
+  it("splits in-person end of lecture from the online Monday–Sunday window", () => {
     assert.match(
       quizLectureMeetingDayNote,
       /your section’s own meeting that week/,
@@ -29,10 +37,6 @@ describe("quiz lecture meeting-day copy", () => {
     );
     assert.match(
       quizLectureMeetingDayNote,
-      /CS 5610-09 Tuesdays 6:00–9:00pm ET \(online\)/,
-    );
-    assert.match(
-      quizLectureMeetingDayNote,
       /CS 4550-01 Wednesdays 6:00–9:00pm ET/,
     );
     assert.match(
@@ -40,42 +44,70 @@ describe("quiz lecture meeting-day copy", () => {
       /not a calendar day labeled “today,”/,
     );
     assert.match(quizLectureMeetingDayNote, /not any weekday that week/);
+    assert.match(quizLectureMeetingDayNote, /attendance is not required/);
     assert.match(
       quizLectureMeetingDayNote,
-      /Q1 in the week of Sep 21 is Mon Sep 21 for CS 5610-02, Tue Sep 22 for CS 5610-09, and Wed Sep 23 for CS 4550/,
+      /open the whole week, Monday 12:00am ET through Sunday 11:59pm ET/,
+    );
+    assert.match(
+      quizLectureMeetingDayNote,
+      /Q1 in the week of Sep 28 is Mon Sep 28 at the end of lecture for CS 5610-02, Wed Sep 30 at the end of lecture for CS 4550, and open Mon Sep 28 through Sun Oct 4 \(2026-09-28 through 2026-10-04 ET\) for CS 5610-09/,
+    );
+    assert.doesNotMatch(quizLectureMeetingDayNote, /Tue Sep 29/);
+    assert.doesNotMatch(
+      quizLectureMeetingDayNote,
+      /CS 5610-09 Tuesdays 6:00–9:00pm ET/,
     );
     assert.equal(deadlinesNote.includes(quizLectureMeetingDayNote), true);
+    assert.match(
+      deadlinesNote,
+      /Quizzes \(Q1–Q6\) are the week after each chapter’s assignment is due/,
+    );
     assert.doesNotMatch(quizLectureMeetingDayNote, /less runway/i);
     assert.doesNotMatch(quizLectureMeetingDayNote, /do not slide/i);
     assert.doesNotMatch(quizLectureMeetingDayNote, /section starts later/i);
   });
 
-  it("labels Q1–Q6 as Week of · end of lecture on that section’s meeting day", () => {
+  it("labels shared, in-person, and online quiz weeks differently", () => {
     assert.equal(
-      formatQuizDeadlineLabel("2026-09-21"),
-      "Week of Sep 21 · end of lecture (your section’s meeting day)",
+      formatQuizDeadlineLabel("2026-09-28"),
+      "Week of Sep 28 · in person: end of lecture; online: Mon–Sun",
     );
     assert.equal(
-      formatQuizDeadlineLabel("2026-10-05"),
-      "Week of Oct 5 · end of lecture (your section’s meeting day)",
+      formatQuizDeadlineLabel("2026-09-28", "in-person"),
+      "Week of Sep 28 · end of lecture",
+    );
+    assert.equal(
+      formatQuizDeadlineLabel("2026-09-28", "online"),
+      "Week of Sep 28 · open Monday–Sunday",
+    );
+    assert.equal(
+      formatQuizDeadlineLabel("2026-10-12", "online"),
+      "Week of Oct 12 · open Monday–Sunday",
     );
     const quizDates = deadlines
       .filter((deadline) => deadline.kind === "quiz")
       .map((deadline) => deadline.date);
     assert.deepEqual(quizDates, [
-      "2026-09-21",
-      "2026-10-05",
-      "2026-10-19",
-      "2026-11-02",
-      "2026-11-16",
-      "2026-11-30",
+      "2026-09-28",
+      "2026-10-12",
+      "2026-10-26",
+      "2026-11-09",
+      "2026-11-23",
+      "2026-12-07",
     ]);
   });
 
   it("uses the shared meeting-day label on Shared deadlines and agenda quiz rows", () => {
     assert.match(deadlinesTable, /formatQuizDeadlineLabel/);
-    assert.match(agendaTable, /formatQuizDeadlineLabel/);
+    assert.match(agendaTable, /formatQuizDeadlineLabel\(row\.date, section\.modality\)/);
     assert.match(agendaTable, /quizLectureMeetingDayNote/);
     assert.match(agendaTable, /deadline\.kind === "quiz"/);
+    assert.match(calendarPage, /quizLectureMeetingDayNote/);
+    assert.match(calendarPage, /week of\s+Sep 28/);
+    assert.doesNotMatch(calendarPage, /week of Sep 21/);
+    assert.match(academicCalendar, /quizLectureMeetingDayNote/);
+    assert.match(academicCalendar, /week of\s+Sep 28/);
+    assert.doesNotMatch(academicCalendar, /week of Sep 21/);
   });
 });

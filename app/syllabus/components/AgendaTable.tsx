@@ -25,12 +25,12 @@ function rowClass(row: AgendaRow): string {
   return "border-b border-neutral-200";
 }
 
-function dateLabel(row: AgendaRow): string {
+function dateLabel(row: AgendaRow, section: CourseSection): string {
   if (row.kind === "orientation") {
     return formatAgendaDate(row.date);
   }
   if (row.deadlines.some((deadline) => deadline.kind === "quiz")) {
-    return formatQuizDeadlineLabel(row.date);
+    return formatQuizDeadlineLabel(row.date, section.modality);
   }
   return formatWeekOf(row.date);
 }
@@ -47,8 +47,9 @@ export default function AgendaTable({
       <p>
         Every section follows the same Canvas module sequence from the week of
         September 14, 2026, grouped by chapter. Dates are the shared Monday —
-        Week of Sep 14 through Week of Dec 14 — so Monday, Tuesday, and
-        Wednesday tabs show the same labels. CS 4550’s September 9 meeting is
+        Week of Sep 14 through Week of Dec 14. Quiz rows on an in-person tab
+        say end of lecture; the online tab says the quiz is open Monday–Sunday.
+        CS 4550’s September 9 meeting is
         orientation only and does not start Chapter 1. Each chapter spans two
         weeks. Chapter 4 is one Canvas module — “Ch 4 — Client state,
         Midterm/X1” — covering the weeks of Oct 26 and Nov 2. X1 is taken
@@ -62,8 +63,8 @@ export default function AgendaTable({
         <Link href="/slides/chatgpt-api">ChatGPT API</Link>, and{" "}
         <Link href="/slides/grok-api">Grok API</Link>
         ). X2 is the week of Dec 14, even though the last
-        day of classes is Dec 13. Quizzes are taken at the end of lecture at
-        the end of each chapter. {quizLectureMeetingDayNote}
+        day of classes is Dec 13. Quizzes are the week after each chapter’s
+        assignment is due. {quizLectureMeetingDayNote}
       </p>
       <p>{holidayMeetingNote}</p>
       <p className="font-sans text-sm text-neutral-600">
@@ -105,7 +106,7 @@ export default function AgendaTable({
                   className={rowClass(row)}
                 >
                   <td className="px-3 py-2 font-sans">
-                    {dateLabel(row)}
+                    {dateLabel(row, section)}
                   </td>
                   <td className="px-3 py-2 tabular-nums text-neutral-600">
                     {row.kind === "orientation" ? "—" : row.lectureNumber}
