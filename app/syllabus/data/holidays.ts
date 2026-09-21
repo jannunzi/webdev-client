@@ -40,7 +40,7 @@ export const thanksgivingBlackout = holidays[holidays.length - 1];
  * hosting URL.
  */
 export const lectureRecordingNote =
-  "All lectures are recorded and available to enrolled students. They appear in your Canvas course under Zoom Meetings → Cloud Recordings after each lecture finishes processing. An empty list before or during the class day is expected — not under Piazza Resources. Missing a lecture for a legitimate reason is fine — use the recording. Recordings are not a general replacement for attending live lectures.";
+  "All lectures are recorded and available to enrolled students. They appear in your Canvas course under Zoom Meetings → Cloud Recordings after each lecture finishes processing — not under Piazza Resources. An empty list before or during the class day is expected. Missing a lecture for a legitimate reason is fine — use the recording. Recordings are not a general replacement for attending live lectures.";
 
 export const holidayMeetingNote =
   "University holidays — including Labor Day, Indigenous Peoples’ Day, Veterans Day, and fall break (November 25–29; classes resume November 30) — do not skip a lecture week. Fall break sits in Chapter 6 week 1 (week of Nov 23); Veterans Day sits in Chapter 5 week 1 (week of Nov 9). If a holiday falls on your meeting day, you are not required to attend. A recording of the lecture will be posted, and you are responsible for that content.";
