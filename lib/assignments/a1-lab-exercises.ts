@@ -62,7 +62,7 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
         id: "a1-lab-heading-tags",
         kind: "core",
         description:
-          "Create HeadingTags.tsx from the book sample (h4 \"Heading Tags\" and its paragraph). Add h1–h6 as practice without erasing that sample text, and import the component on the Lab 1 page.",
+          "Create HeadingTags.tsx from the book sample (h4 \"Heading Tags\" and its paragraph). Before With AI, add h1–h6 as practice without erasing that sample text, and import the component on the Lab 1 page.",
         points: 3,
         auto: {
           kind: "headings",
@@ -91,7 +91,7 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
         id: "a1-lab-heading-tags-ai",
         kind: "ai",
         description:
-          "After the practice h1–h6, add a sample outline with id wd-ai-headings (h4 Lab notes, h5 What I built, h6 Next step). Keep the book sample text.",
+          "After the practice h1–h6 headings you added, add a sample outline with id wd-ai-headings (h4 Lab notes, h5 What I built, h6 Next step). Keep the book sample text.",
         points: 2,
         auto: {
           kind: "ids",
