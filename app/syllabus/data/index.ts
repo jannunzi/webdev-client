@@ -30,7 +30,12 @@ export {
   CHAPTER_4_MIDTERM_HEADING,
   PROJECT_GRADING_HEADING,
 } from "./topics";
-export { deadlines, deadlinesNote } from "./deadlines";
+export {
+  deadlines,
+  deadlinesNote,
+  formatQuizDeadlineLabel,
+  quizLectureMeetingDayNote,
+} from "./deadlines";
 export {
   agendaGroupsBySection,
   agendaLastMeeting,

@@ -1,4 +1,5 @@
-import type { Deadline } from "./types";
+import { formatWeekOf } from "./dates";
+import type { Deadline, IsoDate } from "./types";
 
 /**
  * Shared calendar dates for every section. Do not shift assignment, exam, or
@@ -9,8 +10,11 @@ import type { Deadline } from "./types";
  * settling those with Canvas.
  *
  * Quizzes are taken at the end of lecture at the end of each chapter. The
- * quiz `date` is the shared Monday of that chapter’s closing week. Website
- * take windows stay in `lib/quiz-exam/schedule.ts`.
+ * quiz `date` is the shared Monday of that chapter’s closing week (the
+ * “Week of” label). Students take the quiz at the end of their own
+ * section’s lecture that week — not a Sunday Canvas due, not any weekday,
+ * and not a calendar day labeled “today.” Website take windows stay in
+ * `lib/quiz-exam/schedule.ts`.
  *
  * X1 is taken in the second half of lecture the week of Oct 26 (Chapter 4
  * week 1 / midterm week), same pattern as chapter-end quizzes. The `date`
@@ -78,5 +82,17 @@ export const deadlines: Deadline[] = [
   },
 ];
 
+/**
+ * Student-facing: “Week of … · end of lecture” is each section’s own
+ * meeting day that week (Piazza CS5610-02 Post 31).
+ */
+export const quizLectureMeetingDayNote =
+  "“Week of … · end of lecture” means the end of your section’s own meeting that week — CS 5610-02 Mondays 6:00–9:00pm ET, CS 5610-09 Tuesdays 6:00–9:00pm ET (online), CS 4550-01 Wednesdays 6:00–9:00pm ET — not a calendar day labeled “today,” and not any weekday that week. Q1 in the week of Sep 21 is Mon Sep 21 for CS 5610-02, Tue Sep 22 for CS 5610-09, and Wed Sep 23 for CS 4550.";
+
+/** Shared deadlines / agenda Date label for Q1–Q6. */
+export function formatQuizDeadlineLabel(iso: IsoDate): string {
+  return `${formatWeekOf(iso)} · end of lecture (your section’s meeting day)`;
+}
+
 export const deadlinesNote =
-  "Assignment, exam, and project dates are one Canvas calendar for every section. Assignments are due Sunday 11:59pm ET. Quizzes (Q1–Q6) are taken at the end of lecture at the end of each chapter. X1 is taken in the second half of lecture the week of October 26. The project is due Sunday, December 6; grading begins the week of December 7. X2 is due Sunday 11:59pm ET the week of December 14 (finals week). A4–A6 due dates will be posted on Canvas.";
+  `Assignment, exam, and project dates are one Canvas calendar for every section. Assignments are due Sunday 11:59pm ET. Quizzes (Q1–Q6) are taken at the end of lecture at the end of each chapter. ${quizLectureMeetingDayNote} X1 is taken in the second half of lecture the week of October 26. The project is due Sunday, December 6; grading begins the week of December 7. X2 is due Sunday 11:59pm ET the week of December 14 (finals week). A4–A6 due dates will be posted on Canvas.`;
