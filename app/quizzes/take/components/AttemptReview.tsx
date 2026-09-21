@@ -98,11 +98,14 @@ export function GradedQuestionList({
   graded,
   revealAnswers,
   renderExtra,
+  showGroupTitle = false,
 }: {
   questions: StudentQuestion[];
   graded: GradedAnswer[];
   revealAnswers: boolean;
   renderExtra?: (item: GradedAnswer, question?: StudentQuestion) => ReactNode;
+  /** Staff-only. Topic titles give students the answer category. */
+  showGroupTitle?: boolean;
 }) {
   const byId = new Map(questions.map((question) => [question.id, question]));
 
@@ -125,7 +128,10 @@ export function GradedQuestionList({
             }`}
           >
             <p className="m-0 text-sm font-semibold">
-              {index + 1}. {question?.groupName ?? item.groupId}
+              {index + 1}.
+              {showGroupTitle
+                ? ` ${question?.groupName ?? item.groupId}`
+                : ""}
               {showMark ? ` — ${resultLabel(item)}` : ""}
               {showMark && item.maxPoints
                 ? ` (${item.points} / ${item.maxPoints})`
