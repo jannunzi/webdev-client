@@ -32,6 +32,7 @@ import LatePolicy from "./LatePolicy";
 import MeetingInfo from "./MeetingInfo";
 import OfficeHours from "./OfficeHours";
 import ProjectBlurb from "./ProjectBlurb";
+import RegradePolicy from "./RegradePolicy";
 import SectionTabs from "./SectionTabs";
 import SyllabusHeader from "./SyllabusHeader";
 import SyllabusNav from "./SyllabusNav";
@@ -50,6 +51,7 @@ export default function SyllabusView({
   evaluationNotes,
   gradeBands,
   latePolicy,
+  regradePolicy,
   assignmentsIntro,
   assignments,
   officeHourRows,
@@ -73,6 +75,7 @@ export default function SyllabusView({
   evaluationNotes: string[];
   gradeBands: GradeBand[];
   latePolicy: PolicyBlock;
+  regradePolicy: PolicyBlock;
   assignmentsIntro: string[];
   assignments: AssignmentItem[];
   officeHourRows: OfficeHourRow[];
@@ -131,6 +134,7 @@ export default function SyllabusView({
         notes={evaluationNotes}
       />
       <LatePolicy policy={latePolicy} />
+      <RegradePolicy policy={regradePolicy} />
       <AssignmentsBlurb intro={assignmentsIntro} assignments={assignments} />
       <DeadlinesTable deadlines={deadlines} note={deadlinesNote} />
       <ProjectBlurb project={projectBlurb} />

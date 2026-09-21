@@ -1,6 +1,53 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
-import { academicIntegrity, aiPolicy } from "./policies.ts";
+import { academicIntegrity, aiPolicy, regradePolicy } from "./policies.ts";
+
+const syllabusView = readFileSync(
+  new URL("../components/SyllabusView.tsx", import.meta.url),
+  "utf8",
+);
+const syllabusNav = readFileSync(
+  new URL("../components/SyllabusNav.tsx", import.meta.url),
+  "utf8",
+);
+
+describe("regrade policy", () => {
+  const text = regradePolicy.paragraphs.join(" ");
+
+  it("allows a regrade only for the immediately prior assignment, for one week after the grade posts", () => {
+    assert.match(
+      text,
+      /only for the assignment immediately before the one you are working on/,
+    );
+    assert.match(text, /Older assignments are not open for a regrade/);
+    assert.match(
+      text,
+      /opens when you receive a grade for the prior assignment/,
+    );
+    assert.match(text, /lasts one week from when the grade is posted/);
+    assert.match(
+      text,
+      /working on A2, once A1 is graded you have one week to resubmit A1/,
+    );
+    assert.match(
+      text,
+      /working on A4, you may only seek a regrade for A3 — not A2 or A1/,
+    );
+  });
+
+  it("does not add rules beyond the prior-assignment window", () => {
+    assert.doesNotMatch(text, /penalty|cap|quiz|exam|percent|%|Canvas|email/i);
+  });
+
+  it("renders the section after late policy and before assignments", () => {
+    const lateAt = syllabusView.indexOf("<LatePolicy ");
+    const regradeAt = syllabusView.indexOf("<RegradePolicy ");
+    const assignmentsAt = syllabusView.indexOf("<AssignmentsBlurb ");
+    assert.ok(lateAt > 0 && regradeAt > lateAt && assignmentsAt > regradeAt);
+    assert.match(syllabusNav, /href: "#regrade-policy", label: "Regrade policy"/);
+  });
+});
 
 describe("AI policy", () => {
   const text = [...aiPolicy.paragraphs, ...(aiPolicy.bullets ?? [])].join(" ");
