@@ -69,7 +69,7 @@ export default function TOC() {
   return (
     <ul>
       <li>
-        <Link href="/labs" id="wd-lab1-link">
+        <Link href="/labs" id="wd-home-link">
           Home
         </Link>
       </li>
