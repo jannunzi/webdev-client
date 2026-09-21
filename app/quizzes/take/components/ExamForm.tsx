@@ -178,8 +178,9 @@ function QuestionField({
 }) {
   return (
     <fieldset className="rounded-lg border border-neutral-300 bg-white p-4 shadow-sm">
+      {/* Index only — group/topic titles give away the answer category. */}
       <legend className="px-1 text-sm font-semibold text-neutral-700">
-        {index}. {question.groupName}
+        {index}.
       </legend>
       <PromptMarkup
         text={question.prompt}

@@ -7,6 +7,21 @@ const quizTakePage = readFileSync(
   new URL("../../app/quizzes/take/[quizId]/page.tsx", import.meta.url),
   "utf8",
 );
+const examForm = readFileSync(
+  new URL("../../app/quizzes/take/components/ExamForm.tsx", import.meta.url),
+  "utf8",
+);
+const attemptReview = readFileSync(
+  new URL("../../app/quizzes/take/components/AttemptReview.tsx", import.meta.url),
+  "utf8",
+);
+const staffAttemptBrowser = readFileSync(
+  new URL(
+    "../../app/quizzes/staff/components/StaffAttemptBrowser.tsx",
+    import.meta.url,
+  ),
+  "utf8",
+);
 
 describe("student-facing quiz copy", () => {
   it("never names Clerk in strings shown to students", () => {
@@ -51,6 +66,20 @@ describe("student-facing quiz copy", () => {
     assert.match(
       STUDENT_COPY.signUpPageHint,
       /taking a graded quiz still requires your Canvas roster email/i,
+    );
+  });
+
+  it("does not put topic titles beside student question numbers", () => {
+    assert.doesNotMatch(examForm, /question\.groupName/);
+    assert.match(attemptReview, /showGroupTitle = false/);
+    assert.match(
+      attemptReview,
+      /showGroupTitle\s*\?\s*` \$\{question\?\.groupName/,
+    );
+    assert.match(staffAttemptBrowser, /showGroupTitle/);
+    assert.doesNotMatch(
+      quizTakePage,
+      /<GradedQuestionList[\s\S]*showGroupTitle/,
     );
   });
 });

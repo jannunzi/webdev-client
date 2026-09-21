@@ -245,6 +245,7 @@ export default function StaffAttemptBrowser({
             questions={review.questions}
             graded={review.graded}
             revealAnswers
+            showGroupTitle
             renderExtra={(item) => {
               const classWide = classOverrides.find(
                 (row) => row.questionId === item.questionId,
