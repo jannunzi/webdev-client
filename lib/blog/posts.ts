@@ -6,6 +6,58 @@ import type { BlogPost } from "./types";
  */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "tailscale-aperture-ai-gateway",
+    title: "Tailscale Aperture: model routing on Vercel AI Gateway and Sandbox",
+    publishedAt: "2026-09-21T12:00:00.000Z",
+    tags: ["ai", "course"],
+    relatedChapters: ["ch1", "ch5"],
+    intro: [
+      "On September 11, 2026, Eric Dodds and Susan Aziz described how Tailscale built Aperture, a customer-facing model router that applies tailnet identity to AI model access. Add someone to the private network and they can use approved models; remove them and access disappears. Co-founder David Carney framed Tailscale as a networking company that chose not to rebuild provider routing; Remy Guercio leads the Aperture product.",
+      "Aperture sits on Vercel AI Gateway — one API for hundreds of models, with cost and usage in responses and zero data retention options including per-request zeroDataRetention — plus Vercel Sandbox for agent execution. The post uses the lethal trifecta framing for agents that can read private data, act on it, and reach the public internet, and mitigates that with an isolated sandbox plus identity controls. There is no cost markup on AI Gateway: customers pay the same rates as going direct. Tailscale migrated its own internal AI traffic to Gateway with a switch and reported that nobody noticed, going from prototype to paying customers in months.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. Chapters 1 and 5 already cover how this course site ships on Vercel and how identity belongs on the server; this digest is about an industry model router, not a change to lab APIs. Follow the original Vercel post for architecture and Gateway details.",
+    ],
+    source: {
+      title: "How Tailscale built a customer-facing model router on AI Gateway",
+      url: "https://vercel.com/blog/how-tailscale-built-a-customer-facing-model-router-on-ai-gateway",
+      publisher: "Vercel",
+    },
+  },
+  {
+    slug: "vercel-design-md-agents",
+    title: "design.md: teach agents on-brand pages outside the repo",
+    publishedAt: "2026-09-21T12:00:00.000Z",
+    tags: ["ai", "course"],
+    relatedChapters: ["ch1"],
+    intro: [
+      "On August 31, 2026, John Phamous explained how Vercel agents build on-brand pages when they cannot read the repo. The internal product-design skill works in-repo; design.md is a single public URL for reports, proposals, and one-offs that live outside the codebase. A naive port of that skill into one prompt failed because models interpreted vague design language differently without real components nearby.",
+      "The team rebuilt around seven fixed eval prompts — usage report, renewal proposal, benchmark, planning page, build-vs-buy, security brief, and a deck — and measured outputs. The system has three parts: design.md guidance, a public stylesheet of classes and tokens (the agent documents class names; CSS loads in the browser so it does not fill model context), and an evaluation loop with deterministic checks plus human review. On matched trials, known mechanical failures fell from 91 without design.md to 39 with it (57% fewer). The sample is small, and pages can still have ship-blocking issues. Weekly feedback from Slack @design-agent (eve), GitHub, and Figma keeps the file current.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. If you already use agents on labs, treat a public design brief as optional context rather than a substitute for understanding the React you submit. Follow the original Vercel post for the eval loop and stylesheet setup.",
+    ],
+    source: {
+      title: "How our agents build on-brand pages with design.md",
+      url: "https://vercel.com/blog/how-our-agents-build-on-brand-pages-with-design-md",
+      publisher: "Vercel",
+    },
+  },
+  {
+    slug: "libheif-avif-rce-disclosure",
+    title: "libheif AVIF RCE: from Next.js image opt to upstream fix",
+    publishedAt: "2026-09-21T12:00:00.000Z",
+    tags: ["nextjs", "security", "course"],
+    relatedChapters: ["ch1"],
+    intro: [
+      "On September 18, 2026, Karim Rahal wrote up how Vercel reproduced, disclosed, and helped fix a libheif remote-code-execution bug that first showed up as an apparent Next.js image-optimization RCE. Hacktron reported the issue; the root cause was the upstream AVIF decoder. The request path was next/image to /_next/image to sharp to libvips to libheif.",
+      "The timeline in the post is August 11-12 for the report and reproduce, August 13 for a Vercel platform mitigation that disabled AVIF on the Image Optimization Service, August 19 for coordination with libvips, August 24 for partner notification, and August 25 for the Next.js security release that disabled AVIF optimization. The same day, libheif v1.23.2 remediated the RCE. Self-hosted apps needed that Next.js release; Vercel-hosted apps were mitigated earlier at the platform layer. The write-up notes rising open-source vulnerability volume in 2026 and credits Hacktron plus the sharp, libvips, and libheif maintainers.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. This digest is the disclosure write-up and is distinct from the already-catalogued Next.js August 2026 security release on nextjs.org. Follow the original Vercel post for the chain and timeline rather than treating this summary as the advisory.",
+    ],
+    source: {
+      title:
+        "Reproducing, disclosing, and fixing the libheif vulnerability with Hacktron and the maintainers",
+      url: "https://vercel.com/blog/reproducing-disclosing-and-fixing-the-libheif-vulnerability-with-hacktron-and-the-maintainers",
+      publisher: "Vercel",
+    },
+  },
+  {
     slug: "vercel-fluid-compute-any-shape",
     title: "Vercel Fluid: one compute layer for functions, sandboxes, and builds",
     publishedAt: "2026-09-17T12:00:00.000Z",

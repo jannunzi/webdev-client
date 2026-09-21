@@ -49,12 +49,19 @@ const REQUIRED_DIGEST_2026_09_17 = [
   "https://www.aikido.dev/blog/shai-hulud-npm-resurfaces",
 ] as const;
 
+const REQUIRED_DIGEST_2026_09_21 = [
+  "https://vercel.com/blog/how-tailscale-built-a-customer-facing-model-router-on-ai-gateway",
+  "https://vercel.com/blog/how-our-agents-build-on-brand-pages-with-design-md",
+  "https://vercel.com/blog/reproducing-disclosing-and-fixing-the-libheif-vulnerability-with-hacktron-and-the-maintainers",
+] as const;
+
 const REQUIRED_SOURCES = [
   ...REQUIRED_SEED_SOURCES,
   ...REQUIRED_CATCHUP_SOURCES,
   ...REQUIRED_DIGEST_2026_09_15,
   ...REQUIRED_DIGEST_2026_09_16,
   ...REQUIRED_DIGEST_2026_09_17,
+  ...REQUIRED_DIGEST_2026_09_21,
 ] as const;
 
 const ALLOWED_SOURCE_URL =
@@ -98,6 +105,9 @@ describe("blog posts", () => {
     for (const required of REQUIRED_DIGEST_2026_09_17) {
       assert.ok(urls.includes(required), required);
     }
+    for (const required of REQUIRED_DIGEST_2026_09_21) {
+      assert.ok(urls.includes(required), required);
+    }
 
     for (const post of BLOG_POSTS) {
       assert.ok(post.slug.length > 0, "slug");
@@ -125,30 +135,34 @@ describe("blog posts", () => {
     assert.deepEqual(
       listed.slice(0, 3).map((post) => post.slug),
       [
-        "claude-code-vs-copilot-vs-cursor-2026",
-        "shai-hulud-npm-resurfaces-111-days",
-        "vercel-fluid-compute-any-shape",
+        "libheif-avif-rce-disclosure",
+        "tailscale-aperture-ai-gateway",
+        "vercel-design-md-agents",
       ],
     );
     assert.deepEqual(
       listed.slice(0, 3).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_17].sort(),
+      [...REQUIRED_DIGEST_2026_09_21].sort(),
     );
     assert.deepEqual(
       listed.slice(3, 6).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_16].sort(),
+      [...REQUIRED_DIGEST_2026_09_17].sort(),
     );
     assert.deepEqual(
       listed.slice(6, 9).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_15].sort(),
+      [...REQUIRED_DIGEST_2026_09_16].sort(),
     );
     assert.deepEqual(
       listed.slice(9, 12).map((post) => post.source.url).sort(),
+      [...REQUIRED_DIGEST_2026_09_15].sort(),
+    );
+    assert.deepEqual(
+      listed.slice(12, 15).map((post) => post.source.url).sort(),
       [...REQUIRED_CATCHUP_SOURCES].sort(),
     );
-    assert.equal(listed[12]?.slug, "august-2026-nextjs-security-release");
-    assert.equal(listed[13]?.slug, "nextjs-16-3-instant-navigations");
-    assert.equal(listed[14]?.slug, "nextjs-16-3-ai-improvements");
+    assert.equal(listed[15]?.slug, "august-2026-nextjs-security-release");
+    assert.equal(listed[16]?.slug, "nextjs-16-3-instant-navigations");
+    assert.equal(listed[17]?.slug, "nextjs-16-3-ai-improvements");
 
     assert.equal(listBlogSlugs().length, REQUIRED_SOURCES.length);
     assert.equal(
@@ -163,6 +177,7 @@ describe("blog posts", () => {
   });
 
   it("formats published dates in UTC and maps related chapters", () => {
+    assert.equal(formatBlogDate("2026-09-21T12:00:00.000Z"), "September 21, 2026");
     assert.equal(formatBlogDate("2026-09-17T12:00:00.000Z"), "September 17, 2026");
     assert.equal(formatBlogDate("2026-09-16T12:00:00.000Z"), "September 16, 2026");
     assert.equal(formatBlogDate("2026-09-15T12:00:00.000Z"), "September 15, 2026");
@@ -235,6 +250,19 @@ describe("blog posts", () => {
       shaiHulud?.intro.join(" ") ?? "",
       /e37e3ddeeaaa9e0c4fdbcb829b4895a6521031c80053fc436625b61e6ee5b1a6/,
     );
+
+    const tailscale = getBlogPost("tailscale-aperture-ai-gateway");
+    assert.match(tailscale?.intro.join(" ") ?? "", /Eric Dodds/);
+    assert.match(tailscale?.intro.join(" ") ?? "", /AI Gateway/);
+    assert.match(tailscale?.intro.join(" ") ?? "", /lethal trifecta/);
+    const designMd = getBlogPost("vercel-design-md-agents");
+    assert.match(designMd?.intro.join(" ") ?? "", /John Phamous/);
+    assert.match(designMd?.intro.join(" ") ?? "", /design\.md/);
+    assert.match(designMd?.intro.join(" ") ?? "", /57%/);
+    const libheif = getBlogPost("libheif-avif-rce-disclosure");
+    assert.match(libheif?.intro.join(" ") ?? "", /Karim Rahal/);
+    assert.match(libheif?.intro.join(" ") ?? "", /libheif/);
+    assert.match(libheif?.intro.join(" ") ?? "", /v1\.23\.2/);
   });
 
   it("dates the September 14 catch-up posts in America/New_York", () => {
@@ -252,6 +280,25 @@ describe("blog posts", () => {
       const post = getBlogPost(slug);
       assert.ok(post, slug);
       assert.equal(nyDate.format(new Date(post.publishedAt)), "September 14, 2026");
+    }
+  });
+
+  it("dates the September 21 digest posts in America/New_York", () => {
+    const nyDate = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "America/New_York",
+    });
+    for (const slug of [
+      "tailscale-aperture-ai-gateway",
+      "vercel-design-md-agents",
+      "libheif-avif-rce-disclosure",
+    ]) {
+      const post = getBlogPost(slug);
+      assert.ok(post, slug);
+      assert.equal(post.publishedAt, "2026-09-21T12:00:00.000Z");
+      assert.equal(nyDate.format(new Date(post.publishedAt)), "September 21, 2026");
     }
   });
 
