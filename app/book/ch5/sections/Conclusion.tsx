@@ -51,7 +51,7 @@ export default function Conclusion() {
           courses from the server as well as the modules and
           assignments.
         </p>
-        <CodeBlock language="shell">{`# in webdev-client
+        <CodeBlock language="shell">{`# in kambaz-next-js
 git checkout -b a5
 git add .
 git commit -am "a5 HTTP APIs"

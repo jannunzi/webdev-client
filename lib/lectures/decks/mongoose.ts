@@ -16,7 +16,7 @@ export const MONGOOSE_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "Applications need `find`, `create`, `updateOne`, and `deleteOne`",
-      "Work on branch `a6` in both `webdev-client` and `webdev-server`",
+      "Work on branch `a6` in both `kambaz-next-js` and `webdev-server`",
       "Book LiveDemos use `/api/lab6` in memory when Mongo is off",
       "Student code is the sibling server — set the URI and it uses Mongoose",
     ],

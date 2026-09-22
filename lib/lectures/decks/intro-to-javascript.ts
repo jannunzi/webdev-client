@@ -59,7 +59,7 @@ export const INTRO_TO_JAVASCRIPT_SLIDES: LectureSlide[] = [
     title: "Start a Lab 3 page",
     kind: "demo",
     bullets: [
-      "Keep working in the same `webdev-client` project",
+      "Keep working in the same `kambaz-next-js` project",
       "`mkdir app/labs/lab3` then a single top-level component",
       "Link it from `app/labs/page.tsx` and `app/labs/TOC.tsx` — same as Lab 2",
     ],

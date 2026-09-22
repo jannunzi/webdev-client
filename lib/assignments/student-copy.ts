@@ -51,7 +51,7 @@ export const ASSIGNMENT_STUDENT_COPY = {
   bothUrlsRequired: "Enter both a GitHub repository URL and a Vercel deployment URL.",
   vercelRequired: "Enter a Vercel deployment URL so checks can open your site.",
   githubFormat:
-    "Enter a public GitHub repository URL such as https://github.com/yourname/webdev-client.",
+    "Enter a public GitHub repository URL such as https://github.com/yourname/kambaz-next-js.",
   githubOfficial:
     "Submit your own public GitHub repository, not the course starter repo.",
   githubPrivate:

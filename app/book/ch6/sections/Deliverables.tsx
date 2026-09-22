@@ -39,7 +39,7 @@ export default function Deliverables() {
         <code>a6</code>{" "}branch deployment of your React application
         running on Vercel.
       </p>
-      <CodeBlock language="shell">{`# in webdev-client
+      <CodeBlock language="shell">{`# in kambaz-next-js
 git checkout -b a6
 git add .
 git commit -am "a6 MongoDB"

@@ -22,7 +22,7 @@ export const A1_RUBRIC: AssignmentRubric = {
           id: "a1-delivery-vercel",
           label: "Vercel deployment",
           description:
-            "Import webdev-client on Vercel, disable Deployment Protection, and submit a URL that opens without a Vercel login.",
+            "Import kambaz-next-js on Vercel, disable Deployment Protection, and submit a URL that opens without a Vercel login.",
           points: 3,
           bookHref: "/book/ch1#sec-1-6",
           bookLabel: "§1.6",
@@ -40,7 +40,7 @@ export const A1_RUBRIC: AssignmentRubric = {
           id: "a1-delivery-github",
           label: "GitHub repository",
           description:
-            "Public webdev-client repo with the source that produced the deploy, plus a wd-github link on Labs.",
+            "Public kambaz-next-js repo with the source that produced the deploy, plus a wd-github link on Labs.",
           points: 3,
           bookHref: "/book/ch1#sec-1-5",
           bookLabel: "§1.5",

@@ -100,7 +100,7 @@ export default function HttpServer() {
           <strong>NOTE: DO NOT</strong>{" "}create the Node.js project
           directory inside the existing Next.js React project directory.
           The Next.js React project should be in a directory called{" "}
-          <code>webdev-client</code>{" "}(or similar) and the new{" "}
+          <code>kambaz-next-js</code>{" "}and the new{" "}
           <code>webdev-server</code>{" "}directory{" "}
           <strong>SHOULD NOT</strong>{" "}be inside the Next.js React
           project directory. Instead, the two directories should be{" "}

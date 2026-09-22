@@ -39,7 +39,7 @@ export default function Programming() {
         </OfficialLink>{" "}
         deployment at that remote URI. Do all your work in a new
         GitHub branch called <code>a6</code>{" "}in both the React and
-        Node.js projects — <code>webdev-client</code>{" "}and the sibling{" "}
+        Node.js projects — <code>kambaz-next-js</code>{" "}and the sibling{" "}
         <code>webdev-server</code>.
       </p>
       <p>

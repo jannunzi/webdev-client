@@ -11,7 +11,7 @@ export const A2_RUBRIC: AssignmentRubric = {
       id: "delivery",
       title: "Delivery",
       intro:
-        "Push an a2 branch on the same webdev-client repo and submit that branch’s Vercel URL.",
+        "Push an a2 branch on the same kambaz-next-js repo and submit that branch’s Vercel URL.",
       criteria: [
         {
           id: "a2-delivery-branch",

@@ -499,4 +499,4 @@ save, the same browser sees the draft in normal mode too. There is no CMS.
 
 ## Deploy on Vercel
 
-The course book deploys to [https://webdev-client.vercel.app](https://webdev-client.vercel.app). Students deploy their own `webdev-client` fork with the [Vercel Platform](https://vercel.com/new) and **webdev-server** separately (Render or Heroku), then point `NEXT_PUBLIC_HTTP_SERVER` at that origin.
+The course book deploys to [https://webdev-client.vercel.app](https://webdev-client.vercel.app). Students deploy their own `kambaz-next-js` app with the [Vercel Platform](https://vercel.com/new) and **webdev-server** separately (Render or Heroku), then point `NEXT_PUBLIC_HTTP_SERVER` at that origin.

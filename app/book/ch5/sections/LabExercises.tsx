@@ -30,7 +30,7 @@ export default function LabExercises() {
         <SectionLink to="5.3" />{" "}Route Handler demos stay on
         same-origin <code>/api/...</code>{" "}and do not need port 4000.
       </p>
-      <CodeBlock language="shell">{`# terminal 1 — Next.js UI (port 3000), from webdev-client
+      <CodeBlock language="shell">{`# terminal 1 — Next.js UI (port 3000), from kambaz-next-js
 npm run dev
 
 # terminal 2 — sibling Express (port 4000), from webdev-server

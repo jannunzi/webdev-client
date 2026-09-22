@@ -9,7 +9,7 @@ export default function Delivery() {
     <Section id="sec-4-12" title="4.12 Delivery">
       <p>
         In the same Next.js application created in earlier chapters,{" "}
-        <code>webdev-client</code>, complete all the exercises described
+        <code>kambaz-next-js</code>, complete all the exercises described
         in this chapter — the Lab 4 components and the stateful Kambaz
         screens in <SectionLink to="4.10" />. Submit the work as a new
         branch on the same repository and Vercel project from earlier
@@ -23,7 +23,7 @@ export default function Delivery() {
       <ol>
         <li>
           Finish every exercise described in this chapter inside the same{" "}
-          <code>webdev-client</code>{" "}project used in <ChapterLink to={1} />
+          <code>kambaz-next-js</code>{" "}project used in <ChapterLink to={1} />
           , <ChapterLink to={2} />, and <ChapterLink to={3} />. That
           includes the Lab 4 event, form, Context, and Zustand practice
           components and the Kambaz stores, dashboard CRUD, module

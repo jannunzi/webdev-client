@@ -26,7 +26,7 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
     title: "Sibling folders, two ports",
     kind: "content",
     bullets: [
-      "`webdev-client` is Next.js on port 3000 — the user interface",
+      "`kambaz-next-js` is Next.js on port 3000 — the user interface",
       "`webdev-server` is Express on port 4000 — HTTP and later Mongo",
       "**Do not nest** the server inside the Next.js tree",
       "Same parent folder. Own `package.json`, own GitHub repo later",

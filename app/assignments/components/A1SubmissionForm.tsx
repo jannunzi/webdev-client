@@ -177,7 +177,7 @@ export default function A1SubmissionForm({
               type="url"
               inputMode="url"
               autoComplete="url"
-              placeholder="https://github.com/yourname/webdev-client"
+              placeholder="https://github.com/yourname/kambaz-next-js"
               className="mt-1 w-full rounded border border-neutral-400 bg-white px-3 py-2 font-sans text-sm"
               value={githubUrl}
               onChange={(event) => setGithubUrl(event.target.value)}
