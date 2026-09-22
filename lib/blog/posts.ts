@@ -6,6 +6,58 @@ import type { BlogPost } from "./types";
  */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "nextjs-upcoming-security-release-sept-22-2026",
+    title: "Next.js plans Sept 22 out-of-band security release (16.3.6 / 15.5.26)",
+    publishedAt: "2026-09-22T12:00:00.000Z",
+    tags: ["nextjs", "security", "course"],
+    relatedChapters: ["ch1", "ch5"],
+    intro: [
+      "Next.js announced an upcoming out-of-band security update for a critical issue identified in an upstream dependency. The team plans to publish Next.js 16.3.6 and 15.5.26 on September 22, 2026. The full advisory GHSA-vcvr-r3jv-pc5j will publish with the update and will cover impact, affected versions, and upgrade instructions.",
+      "Upgrade to 16.3.6 or 15.5.26 as soon as those releases are available. For questions about the Vercel Open Source Bug Bounty program, the post points to security@vercel.com.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. Chapters 1 and 5 already stress keeping framework and dependency versions current; treat this digest as patch hygiene context, not a lab requirement. Follow the original Next.js post and the advisory when it publishes for affected versions and upgrade steps.",
+    ],
+    source: {
+      title: "Upcoming Next.js Security Update for a Critical Upstream Issue",
+      url: "https://nextjs.org/blog/upcoming-nextjs-security-release-september-22-2026",
+      publisher: "Next.js",
+    },
+  },
+  {
+    slug: "ai-gateway-production-index-september-2026",
+    title: "AI Gateway Index: open-weight models hit 56% of token volume",
+    publishedAt: "2026-09-22T12:00:00.000Z",
+    tags: ["ai", "course"],
+    relatedChapters: ["ch1", "ch5"],
+    intro: [
+      "On September 17, 2026, Amelia Charles and Eric Dodds published the September AI Gateway Production Index, covering data through August 2026. Open-weight models ran 56% of AI Gateway tokens in August, up from 7% in December — the first month they held a majority. Average price per token fell 23.2% in August, the third straight monthly drop; among teams with more than 10M tokens in both months, the median team paid 7.6% less.",
+      "On frontier spend, Fable 5 share of gateway spend fell from 13.2% in July to 4.9% in August as Opus 5 rose to 22.5%, while Anthropic kept 64% of all spend. A special report notes GPT-6 Astra launched on Gateway September 3 and within two days took a third of OpenAI spend; over its first twelve days Astra was 7.7% of all gateway spend versus Fable 5.1 at 3.7% (Fable 5.1 launched September 1 at the same price). A September 18 note in the post adds that Jev became the fastest-adopted model in Gateway history, reaching about 13% of paid teams in the first 24 hours.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. Chapters 1 and 5 already touch how this course site ships on Vercel; this digest is industry usage data from AI Gateway, not a change to lab APIs. Follow the original Vercel post for the full index.",
+    ],
+    source: {
+      title:
+        "Open-weight models take 56% of token volume, Astra doubles Fable 5.1 spend",
+      url: "https://vercel.com/blog/ai-gateway-production-index-september-2026",
+      publisher: "Vercel",
+    },
+  },
+  {
+    slug: "delphi-100-deploys-day-python-vercel",
+    title: "Delphi: 100+ production deploys a day with Python backend on Vercel",
+    publishedAt: "2026-09-22T12:00:00.000Z",
+    tags: ["nextjs", "ai", "course"],
+    relatedChapters: ["ch1", "ch5"],
+    intro: [
+      "On September 15, 2026, Susan Aziz and Kevin Sundstrom described how Delphi, which builds digital minds, ships on Vercel. Founding engineer Spencer Schoeben emphasized needing excellent developer and agentic experience. The frontend ran on Vercel from day one; about six months ago the team rebuilt its Python backend on Vercel after onboarding pain with AWS, ECS, Docker, and a local database.",
+      "With 10 engineers and no dedicated infra role, Delphi does 100+ production deploys a day behind feature flags, and product and design ship too. Workflows handle long-running work and Queues handle background jobs: engineers write functions in the codebase and Vercel provisions them on deploy. Preview deployments make cloud agents' work reviewable via a live URL; agents use the SDK, MCP, and CLI. An internal Sandbox agent supports customer success over Slack, and chat traffic goes through AI Gateway with per-mind model routing and failover.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. Chapters 1 and 5 already cover shipping on Vercel and server-side identity; this digest is a customer shipping story, not a change to lab requirements. Follow the original Vercel post for the full workflow.",
+    ],
+    source: {
+      title: "How Delphi ships 100 times a day with its Python backend on Vercel",
+      url: "https://vercel.com/blog/how-delphi-ships-100-times-a-day-with-its-python-backend-on-vercel",
+      publisher: "Vercel",
+    },
+  },
+  {
     slug: "tailscale-aperture-ai-gateway",
     title: "Tailscale Aperture: model routing on Vercel AI Gateway and Sandbox",
     publishedAt: "2026-09-21T12:00:00.000Z",
