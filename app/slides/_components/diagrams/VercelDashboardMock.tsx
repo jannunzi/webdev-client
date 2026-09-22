@@ -8,14 +8,14 @@ export default function VercelDashboardMock() {
           <span className="rounded border border-sky-400 bg-sky-950 px-2 py-1 font-sans text-sm font-semibold uppercase tracking-wide text-sky-200">
             Project name
           </span>
-          <p className="m-0 font-sans text-2xl font-semibold">kambaz-next-js</p>
+          <p className="m-0 font-sans text-2xl font-semibold">webdev-client</p>
         </div>
         <div className="mb-4 flex flex-wrap items-center gap-3">
           <span className="rounded border border-sky-400 bg-sky-950 px-2 py-1 font-sans text-sm font-semibold uppercase tracking-wide text-sky-200">
             Website URL
           </span>
           <p className="m-0 font-mono text-lg">
-            kambaz-next-js.vercel.app
+            webdev-client.vercel.app
           </p>
         </div>
         <svg

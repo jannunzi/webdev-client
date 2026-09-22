@@ -8,10 +8,10 @@ export default function VercelImportMock() {
           Import Git Repository
         </p>
         <p className="mb-3 rounded border border-neutral-600 px-3 py-2 font-mono text-lg text-neutral-300">
-          Search… kambaz-next-js
+          Search… webdev-client
         </p>
         <div className="flex items-center justify-between gap-3 rounded border-2 border-sky-400 bg-sky-950 px-3 py-3">
-          <span className="font-mono text-lg">you/kambaz-next-js</span>
+          <span className="font-mono text-lg">you/webdev-client</span>
           <span className="rounded bg-white px-3 py-1 font-sans text-base font-semibold text-neutral-900">
             Import
           </span>

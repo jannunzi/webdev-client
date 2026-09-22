@@ -7,7 +7,7 @@ export default function NpmRunDevMock() {
         <p className="m-0 font-sans text-sm font-semibold uppercase tracking-wide text-neutral-500">
           Next.js starter
         </p>
-        <p className="mt-3 mb-0 font-sans text-3xl font-semibold">kambaz-next-js</p>
+        <p className="mt-3 mb-0 font-sans text-3xl font-semibold">webdev-client</p>
         <p className="mt-3 mb-6 font-sans text-lg text-neutral-700">
           Edit <code>app/page.tsx</code> and save to see changes.
         </p>

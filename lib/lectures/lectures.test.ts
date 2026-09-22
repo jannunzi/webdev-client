@@ -1825,7 +1825,8 @@ describe("lecture decks", () => {
     assert.match(text, /Vercel/);
     assert.match(text, /Deployment Protection/);
     assert.match(text, /Vercel Authentication/);
-    assert.match(text, /kambaz-next-js/);
+    assert.match(text, /webdev-client/);
+    assert.doesNotMatch(text, /kambaz-next-js/);
     assert.match(text, /OFFICE HOURS/);
     assert.match(text, /BREAK/);
     assert.match(text, /Jose Annunziato/);
@@ -1837,13 +1838,30 @@ describe("lecture decks", () => {
     assert.doesNotMatch(text, /Install Vercel on GitHub/);
   });
 
-  it("normalizes kambaz naming in the GitHub deck", () => {
+  it("names the GitHub repo webdev-client", () => {
     const text = slideText("commit-to-github");
-    assert.match(text, /kambaz/);
+    assert.match(text, /webdev-client/);
     assert.match(text, /node_modules/);
     assert.match(text, /git push -u origin main/);
+    assert.doesNotMatch(text, /kambaz-next-js/);
     assert.doesNotMatch(text, /kanbas/);
     assert.doesNotMatch(text, /kanbaz/);
+  });
+
+  it("keeps the student project name webdev-client on lecture slides and mocks", () => {
+    for (const deck of listLectureDecks()) {
+      assert.doesNotMatch(slideText(deck.slug), /kambaz-next-js/, deck.slug);
+      const lecture = getLecture(deck.slug);
+      assert.ok(lecture);
+      assert.doesNotMatch(lecture.summary, /kambaz-next-js/, deck.slug);
+    }
+    const creating = slideText("creating-a-nextjs-react-application");
+    assert.match(creating, /npx create-next-app@latest webdev-client/);
+    assert.match(creating, /cd webdev-client/);
+    const diagrams = join(process.cwd(), "app/slides/_components/diagrams");
+    for (const file of sourceFilesUnder(diagrams)) {
+      assert.doesNotMatch(readFileSync(file, "utf8"), /kambaz-next-js/, file);
+    }
   });
 
   it("teaches Chapter 1 HTML topics in the Lecture 2 decks", () => {
@@ -3010,7 +3028,7 @@ describe("lecture decks", () => {
     assert.match(expressCode, /app\.listen\(4000\)/);
     assert.ok(!authoredSlideBullets(express).some((row) => row.includes("app.listen")));
 
-    assert.equal(createApp.code, "npx create-next-app@latest kambaz-next-js");
+    assert.equal(createApp.code, "npx create-next-app@latest webdev-client");
     assert.equal(createApp.codeLanguage, "bash");
     assert.match(welcome.code ?? "", /Welcome to Web Dev/);
     assert.equal(welcome.codeFile, "app/page.tsx");

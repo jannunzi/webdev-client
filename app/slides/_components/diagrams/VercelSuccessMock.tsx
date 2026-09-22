@@ -2,7 +2,7 @@ import UiMockFrame from "./UiMockFrame";
 
 export default function VercelSuccessMock() {
   return (
-    <UiMockFrame product="Vercel" url="kambaz-next-js.vercel.app">
+    <UiMockFrame product="Vercel" url="webdev-client.vercel.app">
       <div className="rounded-lg border-2 border-neutral-800 bg-neutral-900 p-5 text-white">
         <p className="mt-0 mb-2 font-sans text-2xl font-semibold">
           Congratulations!

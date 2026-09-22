@@ -212,7 +212,7 @@ const LECTURE_SUMMARIES: Record<
   "creating-a-nextjs-react-application": {
     title: "Creating a Next.js React Application",
     summary:
-      "Scaffold kambaz-next-js with the App Router, replace the home page, add Lab 1, and link routes.",
+      "Scaffold webdev-client with the App Router, replace the home page, add Lab 1, and link routes.",
     chapter: 1,
     topicId: "setup",
     bookSectionId: "sec-1-2-4",
@@ -232,7 +232,7 @@ const LECTURE_SUMMARIES: Record<
   "deploying-to-vercel": {
     title: "Deploying to Vercel",
     summary:
-      "Vercel.com account, import kambaz-next-js from GitHub, Deploy, share the URL, turn off Vercel Authentication.",
+      "Vercel.com account, import webdev-client from GitHub, Deploy, share the URL, turn off Vercel Authentication.",
     chapter: 1,
     topicId: "deploy",
     bookSectionId: "sec-1-6",
