@@ -26,7 +26,9 @@ export default function AssignmentsIndexPage() {
         Use the checklists to track Delivery, Lab, and Kambaz work. Due dates
         are informational — Canvas is still the official calendar. A1 grades
         on this site are all-or-nothing per criterion from a public Vercel
-        URL (GitHub is optional). Canvas is a grade shell only.
+        URL (GitHub is optional). Grades show as a percentage; Canvas is a
+        100-point grade shell that records that percentage, not raw
+        checklist points.
       </p>
       <p className="rounded-lg border-2 border-sky-400 bg-sky-50 px-4 py-3 font-sans text-sm text-sky-950">
         <span className="font-semibold">
@@ -50,7 +52,7 @@ export default function AssignmentsIndexPage() {
               <p className="mt-0 mb-2 font-sans text-sm text-neutral-700">
                 {item.dueDate ? `Due ${formatLongDate(item.dueDate)}` : null}
                 {points != null
-                  ? `${item.dueDate ? " · " : ""}${points} pts`
+                  ? `${item.dueDate ? " · " : ""}${points} pts (shown as %)`
                   : null}
                 {item.status === "coming_soon"
                   ? `${item.dueDate || points != null ? " · " : ""}Checklist coming soon`

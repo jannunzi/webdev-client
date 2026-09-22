@@ -5,7 +5,8 @@ import type { AssignmentRubric } from "./types";
  * Student checklist for A1, regrouped Delivery / Lab HTML / Kambaz Ch1.
  *
  * Website grades are all-or-nothing per criterion (full points or 0).
- * Canvas is a grade shell only — do not mention Canvas rubric levels
+ * A1 totals 125 checklist points. Canvas is a 100-point grade shell
+ * that records the percentage — do not mention Canvas rubric levels
  * (Best / Better / Almost / Missing) to students. Rebuilding the IMSCC
  * Canvas package is a follow-up; this file only documents the website model.
  */

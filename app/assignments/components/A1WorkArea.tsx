@@ -180,8 +180,10 @@ export default function A1WorkArea({
         <div className="mb-6 rounded-lg border border-neutral-300 bg-white px-4 py-3 font-sans">
           <p className="mt-0 mb-2 text-sm text-neutral-800">
             Accept the proposed all-or-nothing total, or save per-criterion
-            overrides and comments. Students see the staff grade and comments
-            as read-only.
+            overrides and comments. Students see the staff grade as a
+            percentage (with checklist points underneath) and comments as
+            read-only. Canvas import uses that percentage on a 100-point
+            shell.
           </p>
           <div className="flex flex-wrap gap-2">
             <button

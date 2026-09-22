@@ -419,9 +419,19 @@ A1 rubric rows to pass/fail from `wd-*` ids and required routes. GitHub
 format/public checks run only when a GitHub URL is provided. Name checks
 read Labs HTML, not just the submitted landing/signin page. Two On your
 own rows stay manual (`a1-lab-highlighted-paragraph-oyo`,
-`a1-lab-highlighted-box-oyo`). This is still not Canvas grade export.
+`a1-lab-highlighted-box-oyo`).
 Staff **View as student** can exercise the form; the submission is not
 saved.
+
+**A1 grades and Canvas (for the Canvas teammate).** The website checklist
+is **125 points** (all-or-nothing per criterion). Students and staff see
+the grade as a **percentage** first (`80%`, with `100 / 125 pts`
+underneath). The A1 Canvas assignment shell must stay **100 points**.
+Staff **Download Canvas grade CSV** on `/assignments/a1` exports
+gradebook-style columns (`Student, ID, SIS User ID, SIS Login ID,
+Section, A1`) and posts the **percentage** (0–100), never the raw 125-point
+score. A `Points Possible` row of `100` is included. Import that CSV into
+Canvas; do not change the shell to 125.
 
 Canvas assignment descriptions should **not** paste the website rubric.
 Point students at the live pages. Suggested student copy (HTML helpers in

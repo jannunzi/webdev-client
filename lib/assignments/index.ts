@@ -18,11 +18,17 @@ export {
 } from "./catalog";
 export {
   CANVAS_FALLBACK_PERMISSION_BLURB,
+  CANVAS_GRADE_SHELL_POINTS,
   canvasAssignmentDescriptionHtml,
   canvasQuizDescriptionHtml,
   listCanvasFollowupCopy,
   listCanvasQuizFollowupCopy,
 } from "./canvas-copy";
+export {
+  buildCanvasGradebookCsv,
+  canvasGradeFilename,
+  canvasGradeRowsFromStaffQueue,
+} from "./canvas-grades";
 export {
   applyCriterionToggle,
   completedIdsAfterAutoCheckRun,
@@ -55,7 +61,11 @@ export type { A1GateDiagnostics } from "./diagnostics";
 export type { SubmissionGateReason } from "./submission-form";
 export {
   computeAllOrNothingGrade,
+  canvasPostedScore,
+  formatGradePercent,
+  formatGradePoints,
   formatGradeSummary,
+  pointsPercent,
   proposedGradeFromResults,
 } from "./grade";
 export {
@@ -67,6 +77,7 @@ export {
   resolveStaffSectionFilter,
   staffGraderHref,
   staffQueueForSection,
+  staffStudentOptionLabel,
 } from "./staff";
 export { criterionVerifyUrl } from "./verify-urls";
 export type {

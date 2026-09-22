@@ -1,5 +1,5 @@
 import type { AssignmentCheckResult } from "./check-types";
-import { autoPassedCriterionIds } from "./grade";
+import { autoPassedCriterionIds, pointsPercent } from "./grade";
 import type {
   AssignmentHubItem,
   AssignmentId,
@@ -169,6 +169,7 @@ export type ProgressTotals = {
   totalCount: number;
   earnedPoints: number;
   totalPoints: number;
+  percent: number;
 };
 
 export function summarizeProgress(
@@ -187,10 +188,12 @@ export function summarizeProgress(
       earnedPoints += row.points;
     }
   }
+  const totalPoints = criteria.reduce((sum, row) => sum + row.points, 0);
   return {
     completedCount,
     totalCount: criteria.length,
     earnedPoints,
-    totalPoints: criteria.reduce((sum, row) => sum + row.points, 0),
+    totalPoints,
+    percent: pointsPercent(earnedPoints, totalPoints),
   };
 }

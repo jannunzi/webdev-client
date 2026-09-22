@@ -27,7 +27,12 @@ import {
 import { isManualA1Criterion } from "@/lib/assignments/a1-rubric";
 import type { AssignmentCheckResult } from "@/lib/assignments/checks";
 import { latestResultByCriterion } from "@/lib/assignments/checks";
-import type { CriterionPassMap } from "@/lib/assignments/grade";
+import {
+  formatGradePoints,
+  formatGradePercent,
+  pointsPercent,
+  type CriterionPassMap,
+} from "@/lib/assignments/grade";
 import { criterionVerifyUrl } from "@/lib/assignments/verify-urls";
 import { supportsUrlSubmission } from "@/lib/assignments/access";
 import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
@@ -464,25 +469,25 @@ export default function AssignmentChecklist({
         </p>
       ) : null}
       <div className="mb-4 rounded-lg border border-neutral-300 bg-white px-4 py-3 font-sans shadow-sm">
-        <p className="m-0 text-base font-semibold tracking-tight">
-          {totals.completedCount} of {totals.totalCount} items ·{" "}
-          {totals.earnedPoints} / {totals.totalPoints} pts
+        <p className="m-0 text-3xl font-semibold tracking-tight">
+          {formatGradePercent(totals)}
+        </p>
+        <p className="mb-0 mt-1 text-sm font-medium text-neutral-800">
+          {formatGradePoints(totals)} · {totals.completedCount} of{" "}
+          {totals.totalCount} items
         </p>
         <div
           className="mt-2 h-2 overflow-hidden rounded-full bg-neutral-200"
           role="progressbar"
           aria-valuemin={0}
-          aria-valuemax={totals.totalCount}
-          aria-valuenow={totals.completedCount}
-          aria-label="Assignment checklist progress"
+          aria-valuemax={100}
+          aria-valuenow={totals.percent}
+          aria-label="Assignment grade percent"
         >
           <div
             className="h-full rounded-full bg-emerald-600"
             style={{
-              width:
-                totals.totalCount === 0
-                  ? "0%"
-                  : `${Math.round((totals.completedCount / totals.totalCount) * 100)}%`,
+              width: `${totals.percent}%`,
             }}
           />
         </div>
@@ -523,8 +528,14 @@ export default function AssignmentChecklist({
               {group.title}
             </h2>
             <p className="mt-0 mb-3 font-sans text-sm text-neutral-600">
-              {groupCompleted.length} / {group.criteria.length} · {groupEarned}{" "}
-              / {groupPoints} pts
+              {formatGradePercent({
+                percent: pointsPercent(groupEarned, groupPoints),
+              })}{" "}
+              · {groupCompleted.length} / {group.criteria.length} ·{" "}
+              {formatGradePoints({
+                earnedPoints: groupEarned,
+                totalPoints: groupPoints,
+              })}
             </p>
             {group.intro ? <p className="mt-0 text-neutral-800">{group.intro}</p> : null}
             <GroupCriteriaList

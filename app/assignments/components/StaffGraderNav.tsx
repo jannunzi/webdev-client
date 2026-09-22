@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   adjacentStaffStudentKeys,
@@ -8,8 +9,11 @@ import {
   listStaffQueueSections,
   resolveStaffSectionFilter,
   staffGraderHref,
+  staffStudentOptionLabel,
   type StaffStudentRow,
 } from "@/lib/assignments/staff";
+import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
+import { exportCanvasAssignmentGrades } from "../staff-actions";
 
 export default function StaffGraderNav({
   assignmentId,
@@ -23,6 +27,10 @@ export default function StaffGraderNav({
   selectedSection?: string;
 }) {
   const router = useRouter();
+  const [, startTransition] = useTransition();
+  const [exportNote, setExportNote] = useState<string | null>(null);
+  const [exportError, setExportError] = useState<string | null>(null);
+  const [exporting, setExporting] = useState(false);
   const sections = listStaffQueueSections(queue);
   const section = resolveStaffSectionFilter(selectedSection, sections);
   const visible = filterStaffQueueBySection(queue, section);
@@ -31,6 +39,34 @@ export default function StaffGraderNav({
     selectedKey,
   );
   const submitted = visible.filter((row) => row.hasSubmission).length;
+  const graded = visible.filter((row) => row.staffGrade).length;
+
+  function downloadCanvasCsv() {
+    setExporting(true);
+    setExportNote(null);
+    setExportError(null);
+    startTransition(async () => {
+      const result = await exportCanvasAssignmentGrades({
+        assignmentId,
+        section,
+      });
+      setExporting(false);
+      if (!result.ok) {
+        setExportError(result.message);
+        return;
+      }
+      const blob = new Blob([result.csv], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = result.filename;
+      link.click();
+      URL.revokeObjectURL(url);
+      setExportNote(
+        `Downloaded ${result.filename} with ${result.gradedCount} graded of ${result.rowCount} students (percentages for a 100-point Canvas shell).`,
+      );
+    });
+  }
 
   function go(key: string | null, nextSection = section) {
     router.push(staffGraderHref(assignmentId, { section: nextSection, student: key }));
@@ -91,10 +127,7 @@ export default function StaffGraderNav({
             <option value="">Your own checklist</option>
             {visible.map((row) => (
               <option key={row.key} value={row.key}>
-                {row.name}
-                {row.email && row.email !== row.name ? ` · ${row.email}` : ""}
-                {row.section ? ` · ${row.section}` : ""}
-                {row.hasSubmission ? "" : " · no submission"}
+                {staffStudentOptionLabel(row)}
               </option>
             ))}
           </select>
@@ -115,7 +148,25 @@ export default function StaffGraderNav({
         >
           Next
         </button>
+        <button
+          type="button"
+          className="rounded border border-neutral-800 bg-white px-3 py-2 text-sm hover:bg-neutral-50 disabled:opacity-60"
+          disabled={exporting}
+          onClick={downloadCanvasCsv}
+        >
+          {exporting ? "Preparing…" : ASSIGNMENT_STUDENT_COPY.downloadCanvasCsv}
+        </button>
       </div>
+      <p className="mb-0 mt-3 text-sm text-sky-950">
+        {ASSIGNMENT_STUDENT_COPY.staffCanvasExportHint} {graded} staff
+        grade{graded === 1 ? "" : "s"} in this view.
+      </p>
+      {exportNote ? (
+        <p className="mb-0 mt-2 text-sm text-emerald-800">{exportNote}</p>
+      ) : null}
+      {exportError ? (
+        <p className="mb-0 mt-2 text-sm text-amber-800">{exportError}</p>
+      ) : null}
     </section>
   );
 }
