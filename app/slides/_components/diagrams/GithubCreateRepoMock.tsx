@@ -16,7 +16,7 @@ export default function GithubCreateRepoMock() {
         <label className="mt-4 block font-sans text-lg">
           <span className="text-neutral-600">Repository name</span>
           <span className="mt-1 block rounded border-2 border-sky-600 bg-sky-50 px-3 py-2 font-mono">
-            kambaz-next-js
+            webdev-client
           </span>
         </label>
         <p className="mt-4 mb-0 font-sans text-lg">

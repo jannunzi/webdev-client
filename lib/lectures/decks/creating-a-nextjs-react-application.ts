@@ -60,15 +60,15 @@ function User() {
       "Creating a React application requires **Node.js**",
       "At the command line — **App Router**, not a Vite SPA",
     ],
-    code: "npx create-next-app@latest kambaz-next-js",
+    code: "npx create-next-app@latest webdev-client",
     codeLanguage: "bash",
   },
   {
     id: "defaults",
-    title: "Name the project kambaz-next-js",
+    title: "Name the project webdev-client",
     kind: "content",
     bullets: [
-      "What is your project named? › **kambaz-next-js**",
+      "What is your project named? › **webdev-client**",
       "**TypeScript** — Yes · **ESLint** — Yes · **Tailwind CSS** — Yes",
       "`src/` directory — **No** · **App Router** — **Yes** (required)",
       "**Turbopack** for `next dev` — Yes · import alias `@/*` — keep default",
@@ -84,7 +84,7 @@ function User() {
       "Once created, navigate to the folder and run",
       "The default Next.js app appears in a browser window — usually `http://localhost:3000`",
     ],
-    code: `cd kambaz-next-js
+    code: `cd webdev-client
 npm run dev`,
     codeLanguage: "bash",
     diagram: "npm-run-dev-mock",
@@ -95,7 +95,7 @@ npm run dev`,
     kind: "content",
     bullets: [
       "Open the new project with an IDE such as **VS Code** or **Cursor**",
-      "**File → Open** · navigate to the folder · select **kambaz-next-js**",
+      "**File → Open** · navigate to the folder · select **webdev-client**",
       "Use **Terminal → New Terminal** so commands run in the project root",
     ],
   },
