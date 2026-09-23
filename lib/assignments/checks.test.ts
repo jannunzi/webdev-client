@@ -540,6 +540,11 @@ describe("student-facing copy", () => {
       ASSIGNMENT_STUDENT_COPY.urlSubmitWhen,
       /on the course site roster/i,
     );
+    assert.match(ASSIGNMENT_STUDENT_COPY.urlSubmitWhen, /Run checks/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.urlSubmitWhen, /without an account/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.notConfigured, /saving URLs stays closed/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.notConfigured, /still run checks/i);
+    assert.doesNotMatch(ASSIGNMENT_STUDENT_COPY.notConfigured, /test fields stay closed/i);
     assert.match(ASSIGNMENT_STUDENT_COPY.notConfigured, /not a date lock/i);
     assert.match(
       ASSIGNMENT_STUDENT_COPY.notConfigured,

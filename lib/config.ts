@@ -26,7 +26,7 @@ export function isAssignmentProgressConfigured(): boolean {
   return isClerkConfigured() && isMongoConfigured();
 }
 
-/** A1 URL submit uses the same Clerk + Mongo gate as checklist sync. */
+/** A1 URL save uses the same Clerk + Mongo gate as checklist sync. Run checks does not. */
 export function isAssignmentSubmissionConfigured(): boolean {
   return isAssignmentProgressConfigured();
 }

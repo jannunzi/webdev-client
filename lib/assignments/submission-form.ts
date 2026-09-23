@@ -1,3 +1,4 @@
+import { isAssignmentId } from "./catalog";
 import { ASSIGNMENT_STUDENT_COPY } from "./student-copy";
 import {
   supportsUrlSubmission,
@@ -11,14 +12,22 @@ export type SubmissionGateReason =
   | "not_configured"
   | null;
 
+/**
+ * `fields` — signed-in roster (or staff) may save and run account checks.
+ * `check` — URL fields and Run checks stay open; Save shows the gate.
+ * A missing reason still gets an explicit save message, never a blank Save.
+ */
 export type A1SubmissionFormState =
   | { mode: "fields"; gateReason: null }
-  | { mode: "gate"; gateReason: Exclude<SubmissionGateReason, null> };
+  | { mode: "check"; gateReason: Exclude<SubmissionGateReason, null> };
+
+/** Which server action Run checks should call. Save is never the public action. */
+export type A1CheckAction = "public" | "account" | "staff";
 
 /**
- * URL fields render only when the student (or staff) may submit.
- * Off-roster and other misses always get an explicit message — never a
- * blank Submit URLs section.
+ * Run checks is public. Save stays behind canSubmit (sign-in + roster,
+ * or staff). Off-roster and other save misses still get an explicit
+ * message where the Save button would be.
  */
 export function a1SubmissionFormState(input: {
   canSubmit: boolean;
@@ -26,9 +35,57 @@ export function a1SubmissionFormState(input: {
 }): A1SubmissionFormState {
   if (input.canSubmit) return { mode: "fields", gateReason: null };
   return {
-    mode: "gate",
+    mode: "check",
     gateReason: input.gateReason ?? "not_configured",
   };
+}
+
+/**
+ * Staff review keeps the staff action. Account checks (including
+ * impersonation, which may run but not persist) stay on the authenticated
+ * action. Everyone else uses the public check, which does not read or
+ * write a submission.
+ */
+export function a1CheckAction(input: {
+  staffReview: boolean;
+  form: A1SubmissionFormState;
+}): A1CheckAction {
+  if (input.staffReview) return "staff";
+  if (input.form.mode === "fields") return "account";
+  return "public";
+}
+
+/**
+ * Validate a public Run checks request. No session and no roster.
+ * Persistence is intentionally not representable here.
+ */
+export function preparePublicAssignmentCheck(input: {
+  assignmentId: string;
+  githubUrl: string;
+  vercelUrl: string;
+}):
+  | { ok: true; githubUrl: string; vercelUrl: string }
+  | { ok: false; code: "invalid"; message: string } {
+  if (
+    !supportsUrlSubmission(input.assignmentId) ||
+    !isAssignmentId(input.assignmentId)
+  ) {
+    return {
+      ok: false,
+      code: "invalid",
+      message: ASSIGNMENT_STUDENT_COPY.unknownAssignment,
+    };
+  }
+  const githubUrl = input.githubUrl.trim();
+  const vercelUrl = input.vercelUrl.trim();
+  if (!vercelUrl) {
+    return {
+      ok: false,
+      code: "invalid",
+      message: ASSIGNMENT_STUDENT_COPY.vercelRequired,
+    };
+  }
+  return { ok: true, githubUrl, vercelUrl };
 }
 
 export function gateReasonFromAccess(

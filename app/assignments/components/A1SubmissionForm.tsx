@@ -5,12 +5,14 @@ import type { AssignmentCheckResult } from "@/lib/assignments/checks";
 import type { AssignmentSubmissionView } from "@/lib/assignments/submissions-store";
 import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
 import {
+  a1CheckAction,
   a1SubmissionFormState,
   submissionGateCopy,
   type SubmissionGateReason,
 } from "@/lib/assignments/submission-form";
 import {
   runAssignmentChecks,
+  runPublicAssignmentChecks,
   saveAssignmentSubmission,
 } from "../submission-actions";
 import { runStaffAssignmentChecks } from "../staff-actions";
@@ -46,6 +48,9 @@ export default function A1SubmissionForm({
   const [githubUrl, setGithubUrl] = useState(initialSubmission?.githubUrl ?? "");
   const [vercelUrl, setVercelUrl] = useState(initialSubmission?.vercelUrl ?? "");
   const [submission, setSubmission] = useState(initialSubmission);
+  const [savedToAccount, setSavedToAccount] = useState(
+    Boolean(initialSubmission),
+  );
   const [note, setNote] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pendingAction, setPendingAction] = useState<"save" | "check" | null>(
@@ -54,8 +59,11 @@ export default function A1SubmissionForm({
   const [, startTransition] = useTransition();
   const staffReview = Boolean(staffStudentKey);
   const formState = a1SubmissionFormState({ canSubmit, gateReason });
+  const checkAction = a1CheckAction({ staffReview, form: formState });
+  const saveGate =
+    formState.mode === "check" ? submissionGateCopy(formState.gateReason) : null;
 
-  const savedAt = formatSavedAt(submission?.updatedAt);
+  const savedAt = savedToAccount ? formatSavedAt(submission?.updatedAt) : null;
   const checkedAt = formatSavedAt(submission?.lastCheckedAt);
 
   function applyResult(
@@ -73,6 +81,7 @@ export default function A1SubmissionForm({
     setGithubUrl(result.submission.githubUrl);
     setVercelUrl(result.submission.vercelUrl);
     setSubmission(result.submission);
+    setSavedToAccount(result.persisted);
     onResults?.(result.submission.checkResults ?? []);
     onSubmission?.(result.submission);
     if (result.impersonation || !result.persisted) {
@@ -106,18 +115,25 @@ export default function A1SubmissionForm({
     setError(null);
     onCheckRunStart?.();
     startTransition(async () => {
-      const result = staffStudentKey
-        ? await runStaffAssignmentChecks({
-            assignmentId: "a1",
-            studentKey: staffStudentKey,
-            githubUrl,
-            vercelUrl,
-          })
-        : await runAssignmentChecks({
-            assignmentId: "a1",
-            githubUrl,
-            vercelUrl,
-          });
+      const result =
+        checkAction === "staff" && staffStudentKey
+          ? await runStaffAssignmentChecks({
+              assignmentId: "a1",
+              studentKey: staffStudentKey,
+              githubUrl,
+              vercelUrl,
+            })
+          : checkAction === "public"
+            ? await runPublicAssignmentChecks({
+                assignmentId: "a1",
+                githubUrl,
+                vercelUrl,
+              })
+            : await runAssignmentChecks({
+                assignmentId: "a1",
+                githubUrl,
+                vercelUrl,
+              });
       applyResult(result, "check");
       setPendingAction(null);
     });
@@ -143,25 +159,12 @@ export default function A1SubmissionForm({
         </p>
       ) : null}
 
-      {formState.mode === "gate" ? (
-        <div
-          role="status"
-          className="rounded-lg border border-amber-400 bg-amber-50 px-4 py-3 font-sans text-sm text-amber-950"
-        >
-          <p className="m-0 font-semibold">
-            {submissionGateCopy(formState.gateReason).title}
-          </p>
-          <p className="mb-0 mt-1">
-            {submissionGateCopy(formState.gateReason).body}
-          </p>
-        </div>
-      ) : (
-        <form
+      <form
           className="space-y-3"
           onSubmit={(event) => {
             event.preventDefault();
-            if (staffReview) onRunChecks();
-            else onSave();
+            if (checkAction === "account") onSave();
+            else onRunChecks();
           }}
         >
           <div>
@@ -218,8 +221,17 @@ export default function A1SubmissionForm({
               </p>
             ) : null}
           </div>
+          {saveGate ? (
+            <div
+              role="status"
+              className="rounded-lg border border-amber-400 bg-amber-50 px-4 py-3 font-sans text-sm text-amber-950"
+            >
+              <p className="m-0 font-semibold">{saveGate.title}</p>
+              <p className="mb-0 mt-1">{saveGate.body}</p>
+            </div>
+          ) : null}
           <div className="flex flex-wrap gap-2">
-            {staffReview ? null : (
+            {checkAction === "account" ? (
               <button
                 type="submit"
                 className="rounded border border-neutral-800 bg-neutral-800 px-3 py-2 font-sans text-sm text-white hover:bg-neutral-700 disabled:opacity-60"
@@ -227,27 +239,30 @@ export default function A1SubmissionForm({
               >
                 {pendingAction === "save" ? "Saving…" : "Save URLs and run checks"}
               </button>
-            )}
+            ) : null}
             <button
-              type={staffReview ? "submit" : "button"}
+              type={checkAction === "account" ? "button" : "submit"}
               className={
-                staffReview
-                  ? "rounded border border-neutral-800 bg-neutral-800 px-3 py-2 font-sans text-sm text-white hover:bg-neutral-700 disabled:opacity-60"
-                  : "rounded border border-neutral-800 bg-white px-3 py-2 font-sans text-sm hover:bg-neutral-50 disabled:opacity-60"
+                checkAction === "account"
+                  ? "rounded border border-neutral-800 bg-white px-3 py-2 font-sans text-sm hover:bg-neutral-50 disabled:opacity-60"
+                  : "rounded border border-neutral-800 bg-neutral-800 px-3 py-2 font-sans text-sm text-white hover:bg-neutral-700 disabled:opacity-60"
               }
               disabled={pendingAction !== null}
-              onClick={staffReview ? undefined : onRunChecks}
+              onClick={checkAction === "account" ? onRunChecks : undefined}
             >
               {pendingAction === "check" ? "Checking…" : "Run checks"}
             </button>
           </div>
         </form>
-      )}
 
       {savedAt ? (
         <p className="mb-1 mt-3 font-sans text-sm text-neutral-700">
           Last saved {savedAt}
           {checkedAt ? ` · Last checked ${checkedAt}` : null}
+        </p>
+      ) : checkedAt ? (
+        <p className="mb-1 mt-3 font-sans text-sm text-neutral-700">
+          Last checked {checkedAt}
         </p>
       ) : null}
       {note ? (

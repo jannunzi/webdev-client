@@ -17,6 +17,7 @@ import {
   toSubmissionView,
   type AssignmentSubmissionView,
 } from "@/lib/assignments/submissions-store";
+import { preparePublicAssignmentCheck } from "@/lib/assignments/submission-form";
 import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
 import { isAssignmentId } from "@/lib/assignments/catalog";
 import type { AssignmentId } from "@/lib/assignments/types";
@@ -203,6 +204,36 @@ function viewFromInputs(input: {
   };
 }
 
+/**
+ * Logged-out (and other save-gated) visitors can run A1 checks.
+ * This action never reads or writes assignment_submissions and does not
+ * consult Clerk. Saving stays on saveAssignmentSubmission.
+ */
+export async function runPublicAssignmentChecks(input: {
+  assignmentId: string;
+  githubUrl: string;
+  vercelUrl: string;
+}): Promise<SubmissionActionResult> {
+  const prepared = preparePublicAssignmentCheck(input);
+  if (!prepared.ok) return prepared;
+
+  const checkResults = await runChecksForA1({
+    githubUrl: prepared.githubUrl,
+    vercelUrl: prepared.vercelUrl,
+    nameSource: {},
+  });
+
+  return {
+    ok: true,
+    persisted: false,
+    submission: viewFromInputs({
+      githubUrl: prepared.githubUrl,
+      vercelUrl: prepared.vercelUrl,
+      checkResults,
+    }),
+  };
+}
+
 export async function saveAssignmentSubmission(input: {
   assignmentId: string;
   githubUrl: string;
@@ -260,6 +291,11 @@ export async function saveAssignmentSubmission(input: {
   }
 }
 
+/**
+ * Authenticated Run checks. May refresh check results on an existing
+ * saved submission. Impersonation still runs and does not persist.
+ * Anonymous visitors use runPublicAssignmentChecks instead.
+ */
 export async function runAssignmentChecks(input: {
   assignmentId: string;
   githubUrl: string;

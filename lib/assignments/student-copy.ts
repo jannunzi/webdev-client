@@ -4,9 +4,9 @@
  *
  * Creating a course-website account is not Canvas. Students Sign up
  * with the same Northeastern email they use on Canvas/FACT so progress
- * can be mapped to the roster. Roster match is still required for URL
- * submit. Fields are not unlocked by a calendar date. Do not name
- * demo students in this file.
+ * can be mapped to the roster. Run checks does not require an account.
+ * Saving URLs still requires sign-in and a roster match. Save is not
+ * unlocked by a calendar date. Do not name demo students in this file.
  *
  * Jose (2026-09-17): do not tell students to hard-refresh as a fix for
  * missing A1 URL submit fields or a roster mismatch. The student fix is
@@ -25,15 +25,15 @@ export const ASSIGNMENT_STUDENT_COPY = {
   syncAcrossDevices:
     "Checkmarks stay in this browser. Sign up if you don’t have a course-website account yet, then Sign in with the same Northeastern email you use on Canvas to sync across devices.",
   urlSubmitWhen:
-    "URL submit and test fields are not unlocked by a calendar date. They appear when you are signed in with the same Northeastern email as your Canvas/FACT roster, and that email is on the course site roster.",
+    "Run checks on a public Vercel URL works without an account. Saving URLs is not unlocked by a calendar date. Save stays closed until you are signed in with the same Northeastern email as your Canvas/FACT roster, and that email is on the course site roster.",
   notOnRosterTitle: "This email isn’t on the course roster",
   notOnRoster:
-    "This email isn’t on the Canvas/FACT course roster. You can still use the checklist in this browser. URL submit stays closed until you Sign in with the same Northeastern email you use on Canvas. Creating a site account does not enroll you on the roster; use your Canvas email so we can map progress. If you already did that and are still blocked, ask staff on Piazza to refresh the roster or contact the instructor.",
+    "This email isn’t on the Canvas/FACT course roster. You can still use the checklist in this browser and run checks on a public Vercel URL. URL submit stays closed until you Sign in with the same Northeastern email you use on Canvas. Creating a site account does not enroll you on the roster; use your Canvas email so we can map progress. If you already did that and are still blocked, ask staff on Piazza to refresh the roster or contact the instructor.",
   rosterEmpty:
     "The course roster has not been loaded yet. This is not a date lock — URL submit stays closed until the instructor imports the roster.",
   notConfiguredTitle: "URL submit is not available yet",
   notConfigured:
-    "This is not a date lock. The course site could not read the imported Canvas/FACT roster, so URL submit and test fields stay closed. Sign in with the same Northeastern email you use on Canvas. If you are still blocked, ask staff on Piazza to refresh the roster or contact the instructor — this is a site roster connection problem, not a missing Sign-in.",
+    "This is not a date lock. The course site could not read the imported Canvas/FACT roster, so saving URLs stays closed. You can still run checks on a public Vercel URL. Sign in with the same Northeastern email you use on Canvas. If you are still blocked, ask staff on Piazza to refresh the roster or contact the instructor — this is a site roster connection problem, not a missing Sign-in.",
   unknownAssignment: "URL submit is only available for A1 right now.",
   impersonationBanner:
     "Impersonation — you can run checks to smoke-test the form. The submission is not saved.",

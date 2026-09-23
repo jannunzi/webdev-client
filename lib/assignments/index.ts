@@ -45,8 +45,10 @@ export {
   supportsUrlSubmission,
 } from "./access";
 export {
+  a1CheckAction,
   a1SubmissionFormState,
   gateReasonFromAccess,
+  preparePublicAssignmentCheck,
   resolveA1SubmitVisibility,
   submissionGateCopy,
 } from "./submission-form";
