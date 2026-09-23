@@ -1,4 +1,5 @@
 import raw from "@/data/videos/lecture-clips.json";
+import { bookSectionNumberLabel } from "./book-section";
 import { parseLectureClipMap } from "./validate";
 import type { LectureClipMap } from "./types";
 
@@ -21,4 +22,13 @@ export function defaultBookSectionId(
   map: LectureClipMap = lectureClipMap,
 ): string | null {
   return listBookSectionIds(map)[0] ?? null;
+}
+
+/** TOC label when the map has one; otherwise the numeric id (`1.3.1`). */
+export function bookSectionTitle(
+  bookSectionId: string,
+  map: LectureClipMap = lectureClipMap,
+): string {
+  const title = map.titles?.[bookSectionId]?.trim();
+  return title || bookSectionNumberLabel(bookSectionId);
 }

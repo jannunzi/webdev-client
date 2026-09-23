@@ -12,6 +12,7 @@ import {
 } from "./courses.ts";
 import {
   bookSectionHasClip,
+  bookSectionTitle,
   defaultBookSectionId,
   lectureClipMap,
   listBookSectionIds,
@@ -173,40 +174,76 @@ describe("resolveLectureClip", () => {
   });
 });
 
-describe("stub lecture clip map", () => {
-  it("labels itself as a placeholder and resolves the three fallback stories", () => {
-    assert.match(lectureClipMap.description ?? "", /PLACEHOLDER/);
-    assert.equal(bookSectionHasClip("sec-1-2-1"), true);
-    assert.equal(bookSectionHasClip("sec-1-1"), false);
-    assert.deepEqual(listBookSectionIds(), ["sec-1-2-1", "sec-1-3"]);
-    assert.equal(defaultBookSectionId(), "sec-1-2-1");
+const PILOT_BOOK_SECTION_IDS = [
+  "sec-1-3",
+  ...Array.from({ length: 13 }, (_, index) => `sec-1-3-${index + 1}`),
+  ...Array.from({ length: 7 }, (_, index) => `sec-1-3-6-${index + 1}`),
+  "sec-2-1",
+  ...Array.from({ length: 21 }, (_, index) => `sec-2-1-${index + 1}`),
+];
 
+function tocLabels(source: string): Map<string, string> {
+  const labels = new Map<string, string>();
+  for (const match of source.matchAll(/id:\s*"([^"]+)"\s*,\s*label:\s*"([^"]+)"/g)) {
+    labels.set(match[1]!, match[2]!);
+  }
+  return labels;
+}
+
+describe("stub lecture clip map", () => {
+  it("uses the HTML 1.3 and CSS 2.1 TOC ids, with matching titles", () => {
+    assert.match(lectureClipMap.description ?? "", /PLACEHOLDER/);
+    assert.equal(bookSectionHasClip("sec-1-2-1"), false);
+    assert.equal(bookSectionHasClip("sec-1-3-1"), true);
+    assert.equal(bookSectionHasClip("sec-2-1-10"), true);
+    const ids = listBookSectionIds();
+    assert.deepEqual([...ids].sort(), [...PILOT_BOOK_SECTION_IDS].sort());
+    assert.equal(ids.length, 43);
+    assert.equal(defaultBookSectionId(), "sec-1-3");
+
+    const labels = tocLabels(read("app/book/TOC.tsx"));
+    for (const id of PILOT_BOOK_SECTION_IDS) {
+      const label = labels.get(id);
+      assert.ok(label, id);
+      assert.equal(bookSectionTitle(id), label, id);
+    }
+    assert.equal(
+      bookSectionTitle("sec-1-3-1"),
+      "1.3.1 Structuring Web Content with the HTML Heading, Div, and Span Tags",
+    );
+    assert.equal(bookSectionTitle("sec-2-1"), "2.1 Styling React Components with CSS");
+    assert.equal(bookPathForSection("sec-1-3-1"), "/book/ch1#sec-1-3-1");
+    assert.equal(bookPathForSection("sec-2-1-10"), "/book/ch2#sec-2-1-10");
+  });
+
+  it("resolves exact, same-semester, and prior-semester clips on real section ids", () => {
     const exact = resolveLectureClip(lectureClipMap, {
-      bookSectionId: "sec-1-2-1",
+      bookSectionId: "sec-1-3",
       preferredCourse: "CS4550",
       preferredSemester: "FA26",
     });
     assert.equal(exact?.tier, "same-section");
-    assert.equal(exact?.youtubeVideoId, "Fa26Stub001");
+    assert.equal(exact?.clip.sourceCourse, "CS4550");
+    assert.equal(exact?.clip.confidence, "placeholder");
 
     const otherSection = resolveLectureClip(lectureClipMap, {
-      bookSectionId: "sec-1-2-1",
-      preferredCourse: "CS5610-09",
+      bookSectionId: "sec-2-1",
+      preferredCourse: "CS4550",
       preferredSemester: "FA26",
     });
     assert.equal(otherSection?.tier, "same-semester");
     assert.equal(otherSection?.clip.semester, "FA26");
-    assert.notEqual(otherSection?.clip.sourceCourse, "CS5610-09");
+    assert.equal(otherSection?.clip.sourceCourse, "CS5610-02");
 
     const prior = resolveLectureClip(lectureClipMap, {
-      bookSectionId: "sec-1-3",
+      bookSectionId: "sec-1-3-1",
       preferredCourse: "CS4550",
       preferredSemester: "FA26",
     });
     assert.equal(prior?.tier, "prior-semester");
     assert.equal(prior?.youtubeVideoId, "Sp26Stub001");
     assert.equal(prior?.clip.semester, "SP26");
-    assert.equal(prior?.clip.confidence, "placeholder");
+    assert.equal(prior?.clip.sourceCourse, "CS5610-09");
   });
 
   it("rejects archive hosts and inconsistent ids", () => {
@@ -249,6 +286,8 @@ describe("videos query and course ids", () => {
     assert.equal(defaultVideoSemester(), "FA26");
     assert.equal(bookSectionNumberLabel("sec-1-2-1"), "1.2.1");
     assert.equal(bookPathForSection("sec-1-3"), "/book/ch1#sec-1-3");
+    assert.equal(bookPathForSection("sec-1-3-1"), "/book/ch1#sec-1-3-1");
+    assert.equal(bookPathForSection("sec-2-1-10"), "/book/ch2#sec-2-1-10");
 
     const href = videosHref("sec-1-2-1", { course: "CS4550", semester: "FA26" });
     assert.equal(href, "/videos?section=sec-1-2-1&course=CS4550&semester=FA26");
@@ -307,8 +346,8 @@ describe("videos page shell", () => {
     assert.match(read("app/book/components/Section.tsx"), /BookSectionClipLink/);
     assert.match(read("app/book/components/BookSectionClipLink.tsx"), /Watch lecture clip/);
     assert.match(
-      read("app/book/ch1/sections/IntroAndSetup.tsx"),
-      /BookSectionClipLink sectionId="sec-1-2-1"/,
+      read("app/book/ch1/sections/HtmlSections.tsx"),
+      /BookSectionClipLink sectionId="sec-1-3-6-1"/,
     );
 
     const page = read("app/videos/page.tsx");

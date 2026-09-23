@@ -13,7 +13,7 @@ export default function VideoPicker({
   section: string;
   courses: VideoCourseOption[];
   semesters: string[];
-  sections: { id: string; label: string }[];
+  sections: { id: string; label: string; group: string }[];
 }) {
   const courseOptions = courses.some((option) => option.id === course)
     ? courses
@@ -23,7 +23,13 @@ export default function VideoPicker({
     : [semester, ...semesters];
   const sectionOptions = sections.some((option) => option.id === section)
     ? sections
-    : [{ id: section, label: section }, ...sections];
+    : [{ id: section, label: section, group: "Selected" }, ...sections];
+  const groups: { name: string; options: typeof sectionOptions }[] = [];
+  for (const option of sectionOptions) {
+    const existing = groups.find((group) => group.name === option.group);
+    if (existing) existing.options.push(option);
+    else groups.push({ name: option.group, options: [option] });
+  }
 
   return (
     <form action="/videos" method="get" className="flex flex-wrap items-end gap-3">
@@ -62,10 +68,14 @@ export default function VideoPicker({
           defaultValue={section}
           className="mt-1 w-full rounded border border-neutral-400 bg-white px-3 py-2 font-normal"
         >
-          {sectionOptions.map((option) => (
-            <option key={option.id} value={option.id}>
-              {option.label}
-            </option>
+          {groups.map((group) => (
+            <optgroup key={group.name} label={group.name}>
+              {group.options.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.label}
+                </option>
+              ))}
+            </optgroup>
           ))}
         </select>
       </label>

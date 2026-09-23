@@ -1,19 +1,64 @@
 {
   "$schema": "./lecture-clips.schema.json",
-  "description": "PLACEHOLDER map for the Phase-1 videos shell. YouTube ids and times are fake. Replace these rows with curated FA26 and SP26 clips. Do not point entries at Zoom, Box, or other archive files.",
+  "description": "PLACEHOLDER map for the HTML §1.3 and CSS §2.1 pilot. YouTube ids and times are fake. Titles are the TOC labels from app/book/TOC.tsx. Replace clip rows with curated FA26 and SP26 maps. Do not point entries at Zoom, Box, or other archive files.",
+  "titles": {
+    "sec-1-3": "1.3 Introduction to HTML",
+    "sec-1-3-1": "1.3.1 Structuring Web Content with the HTML Heading, Div, and Span Tags",
+    "sec-1-3-2": "1.3.2 Formatting Vertical Spacing with the HTML Paragraph Tag",
+    "sec-1-3-3": "1.3.3 Listing Content with HTML List Tags",
+    "sec-1-3-4": "1.3.4 Tabulating Data with the HTML Table Tags",
+    "sec-1-3-5": "1.3.5 Image Tag",
+    "sec-1-3-6": "1.3.6 Creating Web Forms",
+    "sec-1-3-6-1": "1.3.6.1 Text Fields",
+    "sec-1-3-6-2": "1.3.6.2 Textarea",
+    "sec-1-3-6-3": "1.3.6.3 Radio Buttons",
+    "sec-1-3-6-4": "1.3.6.4 Checkboxes",
+    "sec-1-3-6-5": "1.3.6.5 Dropdowns",
+    "sec-1-3-6-6": "1.3.6.6 Other Field Types",
+    "sec-1-3-6-7": "1.3.6.7 Buttons",
+    "sec-1-3-7": "1.3.7 Parameterizing Components with Props",
+    "sec-1-3-8": "1.3.8 Wrapping Content with Children",
+    "sec-1-3-9": "1.3.9 Implementing Navigation with the Anchor Tag",
+    "sec-1-3-10": "1.3.10 Implementing Navigation",
+    "sec-1-3-11": "1.3.11 Implementing Layouts",
+    "sec-1-3-12": "1.3.12 Exercises",
+    "sec-1-3-13": "1.3.13 Check Your Understanding",
+    "sec-2-1": "2.1 Styling React Components with CSS",
+    "sec-2-1-1": "2.1.1 Style Attribute",
+    "sec-2-1-2": "2.1.2 Importing CSS Documents",
+    "sec-2-1-3": "2.1.3 ID Selectors",
+    "sec-2-1-4": "2.1.4 Class Selectors",
+    "sec-2-1-5": "2.1.5 Document Structure Selectors",
+    "sec-2-1-6": "2.1.6 CSS Selection Rule Mechanism",
+    "sec-2-1-7": "2.1.7 Foreground Color",
+    "sec-2-1-8": "2.1.8 Background Color",
+    "sec-2-1-9": "2.1.9 Borders",
+    "sec-2-1-10": "2.1.10 Padding, Margins, and the Box Model",
+    "sec-2-1-11": "2.1.11 Corners",
+    "sec-2-1-12": "2.1.12 Dimensions and Display",
+    "sec-2-1-13": "2.1.13 Relative Position",
+    "sec-2-1-14": "2.1.14 Absolute Position",
+    "sec-2-1-15": "2.1.15 Fixed Position",
+    "sec-2-1-16": "2.1.16 Z-Index",
+    "sec-2-1-17": "2.1.17 Float",
+    "sec-2-1-18": "2.1.18 Grid Layout with Float",
+    "sec-2-1-19": "2.1.19 Flex",
+    "sec-2-1-20": "2.1.20 Media Queries",
+    "sec-2-1-21": "2.1.21 Check Your Understanding"
+  },
   "sections": {
-    "sec-1-2-1": [
+    "sec-1-3": [
       {
-        "youtubeVideoId": "Fa26Stub001",
+        "youtubeVideoId": "PH000000001",
         "startSec": 90,
         "endSec": 420,
         "sourceCourse": "CS4550",
         "semester": "FA26",
         "confidence": "placeholder",
-        "note": "PLACEHOLDER — fake YouTube id and times for CS 4550, Fall 2026. Not a real lecture clip."
+        "note": "PLACEHOLDER — fake YouTube id and times for CS 4550, Fall 2026."
       },
       {
-        "youtubeVideoId": "Fa26Stub002",
+        "youtubeVideoId": "PH000000002",
         "startSec": 40,
         "endSec": 260,
         "sourceCourse": "CS5610-02",
@@ -22,7 +67,7 @@
         "note": "PLACEHOLDER — fake YouTube id and times for CS 5610-02 in the same semester, so the section picker can switch clips."
       }
     ],
-    "sec-1-3": [
+    "sec-1-3-1": [
       {
         "url": "https://www.youtube.com/watch?v=Sp26Stub001",
         "startSec": 600,
@@ -31,6 +76,457 @@
         "semester": "SP26",
         "confidence": "placeholder",
         "note": "PLACEHOLDER — URL form of a fake id. FA26 has no row, so students fall back to this prior semester."
+      }
+    ],
+    "sec-1-3-2": [
+      {
+        "youtubeVideoId": "PH000000003",
+        "startSec": 120,
+        "endSec": 360,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-3": [
+      {
+        "youtubeVideoId": "PH000000004",
+        "startSec": 140,
+        "endSec": 380,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-4": [
+      {
+        "youtubeVideoId": "PH000000005",
+        "startSec": 160,
+        "endSec": 400,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-5": [
+      {
+        "youtubeVideoId": "PH000000006",
+        "startSec": 180,
+        "endSec": 420,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-6": [
+      {
+        "youtubeVideoId": "PH000000007",
+        "startSec": 200,
+        "endSec": 440,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-6-1": [
+      {
+        "youtubeVideoId": "PH000000008",
+        "startSec": 220,
+        "endSec": 460,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-6-2": [
+      {
+        "youtubeVideoId": "PH000000009",
+        "startSec": 240,
+        "endSec": 480,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-6-3": [
+      {
+        "youtubeVideoId": "PH000000010",
+        "startSec": 260,
+        "endSec": 500,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-6-4": [
+      {
+        "youtubeVideoId": "PH000000011",
+        "startSec": 280,
+        "endSec": 520,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-6-5": [
+      {
+        "youtubeVideoId": "PH000000012",
+        "startSec": 60,
+        "endSec": 300,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-6-6": [
+      {
+        "youtubeVideoId": "PH000000013",
+        "startSec": 80,
+        "endSec": 320,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-6-7": [
+      {
+        "youtubeVideoId": "PH000000014",
+        "startSec": 100,
+        "endSec": 340,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-7": [
+      {
+        "youtubeVideoId": "PH000000015",
+        "startSec": 120,
+        "endSec": 360,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-8": [
+      {
+        "youtubeVideoId": "PH000000016",
+        "startSec": 140,
+        "endSec": 380,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-9": [
+      {
+        "youtubeVideoId": "PH000000017",
+        "startSec": 160,
+        "endSec": 400,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-10": [
+      {
+        "youtubeVideoId": "PH000000018",
+        "startSec": 180,
+        "endSec": 420,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-11": [
+      {
+        "youtubeVideoId": "PH000000019",
+        "startSec": 200,
+        "endSec": 440,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-12": [
+      {
+        "youtubeVideoId": "PH000000020",
+        "startSec": 220,
+        "endSec": 460,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-1-3-13": [
+      {
+        "youtubeVideoId": "PH000000021",
+        "startSec": 240,
+        "endSec": 480,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1": [
+      {
+        "youtubeVideoId": "PH000000022",
+        "startSec": 120,
+        "endSec": 480,
+        "sourceCourse": "CS5610-02",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id. FA26 has no CS4550 row, so that section falls back to another FA26 section."
+      }
+    ],
+    "sec-2-1-1": [
+      {
+        "youtubeVideoId": "PH000000023",
+        "startSec": 280,
+        "endSec": 520,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-2": [
+      {
+        "youtubeVideoId": "PH000000024",
+        "startSec": 60,
+        "endSec": 300,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-3": [
+      {
+        "youtubeVideoId": "PH000000025",
+        "startSec": 80,
+        "endSec": 320,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-4": [
+      {
+        "youtubeVideoId": "PH000000026",
+        "startSec": 100,
+        "endSec": 340,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-5": [
+      {
+        "youtubeVideoId": "PH000000027",
+        "startSec": 120,
+        "endSec": 360,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-6": [
+      {
+        "youtubeVideoId": "PH000000028",
+        "startSec": 140,
+        "endSec": 380,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-7": [
+      {
+        "youtubeVideoId": "PH000000029",
+        "startSec": 160,
+        "endSec": 400,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-8": [
+      {
+        "youtubeVideoId": "PH000000030",
+        "startSec": 180,
+        "endSec": 420,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-9": [
+      {
+        "youtubeVideoId": "PH000000031",
+        "startSec": 200,
+        "endSec": 440,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-10": [
+      {
+        "youtubeVideoId": "PH000000032",
+        "startSec": 220,
+        "endSec": 460,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-11": [
+      {
+        "youtubeVideoId": "PH000000033",
+        "startSec": 240,
+        "endSec": 480,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-12": [
+      {
+        "youtubeVideoId": "PH000000034",
+        "startSec": 260,
+        "endSec": 500,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-13": [
+      {
+        "youtubeVideoId": "PH000000035",
+        "startSec": 280,
+        "endSec": 520,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-14": [
+      {
+        "youtubeVideoId": "PH000000036",
+        "startSec": 60,
+        "endSec": 300,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-15": [
+      {
+        "youtubeVideoId": "PH000000037",
+        "startSec": 80,
+        "endSec": 320,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-16": [
+      {
+        "youtubeVideoId": "PH000000038",
+        "startSec": 100,
+        "endSec": 340,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-17": [
+      {
+        "youtubeVideoId": "PH000000039",
+        "startSec": 120,
+        "endSec": 360,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-18": [
+      {
+        "youtubeVideoId": "PH000000040",
+        "startSec": 140,
+        "endSec": 380,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-19": [
+      {
+        "youtubeVideoId": "PH000000041",
+        "startSec": 160,
+        "endSec": 400,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-20": [
+      {
+        "youtubeVideoId": "PH000000042",
+        "startSec": 180,
+        "endSec": 420,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
+      }
+    ],
+    "sec-2-1-21": [
+      {
+        "youtubeVideoId": "PH000000043",
+        "startSec": 200,
+        "endSec": 440,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times. Not a real lecture clip."
       }
     ]
   }

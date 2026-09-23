@@ -25,9 +25,13 @@ export type LectureClip = {
   note?: string;
 };
 
-/** `bookSectionId` → clips. Keys are book TOC anchors (`sec-1-2-1`, `intro`). */
+/**
+ * `bookSectionId` → clips. Keys are book TOC anchors (`sec-1-3-1`, `sec-2-1-10`).
+ * `titles` are the TOC labels for those ids, used by the videos page.
+ */
 export type LectureClipMap = {
   description?: string;
+  titles?: Record<string, string>;
   sections: Record<string, LectureClip[]>;
 };
 

@@ -2,9 +2,9 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import CourseInfoFooter from "@/app/course-info/CourseInfoFooter";
 import CourseInfoHeader from "@/app/course-info/CourseInfoHeader";
-import { bookSectionNumberLabel } from "@/lib/videos/book-section";
 import { defaultVideoCourseId, defaultVideoSemester, videoCourseOptions } from "@/lib/videos/courses";
 import {
+  bookSectionTitle,
   defaultBookSectionId,
   lectureClipMap,
   listBookSectionIds,
@@ -99,7 +99,10 @@ export default async function VideosPage({
     : null;
   const sectionOptions = listBookSectionIds().map((id) => ({
     id,
-    label: `§${bookSectionNumberLabel(id)}`,
+    label: bookSectionTitle(id),
+    group: id.startsWith("sec-2-1")
+      ? bookSectionTitle("sec-2-1")
+      : bookSectionTitle("sec-1-3"),
   }));
 
   return (
@@ -136,6 +139,7 @@ export default async function VideosPage({
       {query.semesterValid && resolved ? (
         <VideoClip
           resolved={resolved}
+          title={bookSectionTitle(query.section)}
           preferredCourse={query.course}
           preferredSemester={query.semester}
         />
@@ -143,7 +147,7 @@ export default async function VideosPage({
 
       {query.semesterValid && !resolved ? (
         <p className="mt-6" role="status">
-          No YouTube clip is mapped for §{bookSectionNumberLabel(query.section)}{" "}
+          No YouTube clip is mapped for {bookSectionTitle(query.section)}{" "}
           in {query.semester}, including other sections and earlier semesters.
         </p>
       ) : null}
@@ -172,11 +176,9 @@ export default async function VideosPage({
             return (
               <li key={id} className="border-b border-neutral-200 py-2">
                 {current ? (
-                  <span className="font-medium">
-                    §{bookSectionNumberLabel(id)}
-                  </span>
+                  <span className="font-medium">{bookSectionTitle(id)}</span>
                 ) : (
-                  <Link href={href}>§{bookSectionNumberLabel(id)}</Link>
+                  <Link href={href}>{bookSectionTitle(id)}</Link>
                 )}
                 <span className="font-sans text-sm text-neutral-600">
                   {" "}

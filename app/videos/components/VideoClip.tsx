@@ -13,14 +13,17 @@ import {
 
 export default function VideoClip({
   resolved,
+  title,
   preferredCourse,
   preferredSemester,
 }: {
   resolved: ResolvedLectureClip;
+  title: string;
   preferredCourse: string;
   preferredSemester: string;
 }) {
-  const label = bookSectionNumberLabel(resolved.bookSectionId);
+  const label = title || bookSectionNumberLabel(resolved.bookSectionId);
+  const bookHref = bookPathForSection(resolved.bookSectionId);
   const watchUrl = youtubeWatchUrl(resolved.youtubeVideoId, resolved.clip.startSec);
   const embedUrl = youtubeEmbedUrl(
     resolved.youtubeVideoId,
@@ -36,12 +39,11 @@ export default function VideoClip({
         id="video-clip-heading"
         className="mb-2 font-sans text-2xl font-semibold tracking-tight"
       >
-        §{label}
+        {label}
       </h2>
       <p className="mt-0">
-        <Link href={bookPathForSection(resolved.bookSectionId)}>
-          Open §{label} in the book
-        </Link>
+        <Link href={bookHref}>Open in the book</Link>
+        <span className="font-sans text-sm text-neutral-600"> {bookHref}</span>
       </p>
       <p className="text-neutral-800">
         {describeClipFallback(resolved, {

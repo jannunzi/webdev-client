@@ -7,7 +7,7 @@ import {
 } from "./types";
 import { YOUTUBE_VIDEO_ID, youtubeVideoIdFromUrl } from "./youtube";
 
-const ROOT_KEYS = new Set(["$schema", "description", "sections"]);
+const ROOT_KEYS = new Set(["$schema", "description", "titles", "sections"]);
 const CLIP_KEYS = new Set([
   "youtubeVideoId",
   "url",
@@ -128,8 +128,23 @@ export function parseLectureClipMap(value: unknown): LectureClipMap {
     );
   }
 
+  const titles: Record<string, string> = {};
+  if (value.titles != null) {
+    if (!isRecord(value.titles)) fail("titles must be an object of TOC labels.");
+    for (const [bookSectionId, title] of Object.entries(value.titles)) {
+      if (!(bookSectionId in sections)) {
+        fail(`titles["${bookSectionId}"] has no clip list.`);
+      }
+      if (typeof title !== "string" || !title.trim()) {
+        fail(`titles["${bookSectionId}"] must be a non-empty TOC label.`);
+      }
+      titles[bookSectionId] = title;
+    }
+  }
+
   return {
     description: typeof value.description === "string" ? value.description : undefined,
+    titles: value.titles == null ? undefined : titles,
     sections,
   };
 }
