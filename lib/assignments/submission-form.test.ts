@@ -3,8 +3,10 @@ import { describe, it } from "node:test";
 import { assignmentSubmitAccess } from "./access";
 import { ASSIGNMENT_STUDENT_COPY } from "./student-copy";
 import {
+  a1CheckAction,
   a1SubmissionFormState,
   gateReasonFromAccess,
+  preparePublicAssignmentCheck,
   resolveA1SubmitVisibility,
   submissionGateCopy,
   type SubmissionGateReason,
@@ -206,9 +208,10 @@ describe("A1 submission form visibility", () => {
         canSubmit: false,
         gateReason: gateReasonFromAccess(access),
       });
-      assert.equal(state.mode, "gate");
-      if (state.mode === "gate") {
+      assert.equal(state.mode, "check");
+      if (state.mode === "check") {
         assert.equal(state.gateReason, reason);
+        assert.equal(a1CheckAction({ staffReview: false, form: state }), "public");
         if (reason !== "not_configured") {
           assert.notEqual(state.gateReason, "not_configured");
         }
@@ -238,8 +241,8 @@ describe("A1 submission form visibility", () => {
       canSubmit: false,
       gateReason: gateReasonFromAccess(access),
     });
-    assert.equal(state.mode, "gate");
-    if (state.mode === "gate") {
+    assert.equal(state.mode, "check");
+    if (state.mode === "check") {
       assert.equal(state.gateReason, "not_on_roster");
       const copy = submissionGateCopy(state.gateReason);
       assert.equal(copy.title, ASSIGNMENT_STUDENT_COPY.notOnRosterTitle);
@@ -255,7 +258,7 @@ describe("A1 submission form visibility", () => {
     }
   });
 
-  it("treats a loaded A1 checklist as insufficient — fields follow canSubmit only", () => {
+  it("keeps save behind canSubmit while Run checks stays available", () => {
     const ada = matchRoster({
       emails: ["ada@ada.com"],
       mongoEntries: [],
@@ -295,6 +298,7 @@ describe("A1 submission form visibility", () => {
     });
     assert.equal(pageOpenButOffRoster.canSubmit, false);
     assert.equal(pageOpenButOffRoster.gateReason, "not_on_roster");
+    assert.equal(a1SubmissionFormState(pageOpenButOffRoster).mode, "check");
     if (pageOpenButOffRoster.gateReason) {
       assert.notEqual(
         submissionGateCopy(pageOpenButOffRoster.gateReason).title,
@@ -313,6 +317,10 @@ describe("A1 submission form visibility", () => {
     });
     assert.equal(signedInUnmatchedUnconfigured.canSubmit, false);
     assert.equal(signedInUnmatchedUnconfigured.gateReason, "not_configured");
+    assert.equal(
+      a1SubmissionFormState(signedInUnmatchedUnconfigured).mode,
+      "check",
+    );
     if (signedInUnmatchedUnconfigured.gateReason) {
       assert.equal(
         submissionGateCopy(signedInUnmatchedUnconfigured.gateReason).title,
@@ -362,15 +370,73 @@ describe("A1 submission form visibility", () => {
     assert.equal(a1SubmissionFormState(visibility).mode, "fields");
   });
 
-  it("never leaves the URL fields as a blank section when gated", () => {
+  it("never leaves Save as a blank control when the gate reason is missing", () => {
     const missingReason = a1SubmissionFormState({
       canSubmit: false,
       gateReason: null,
     });
-    assert.equal(missingReason.mode, "gate");
-    if (missingReason.mode === "gate") {
+    assert.equal(missingReason.mode, "check");
+    if (missingReason.mode === "check") {
       assert.equal(missingReason.gateReason, "not_configured");
       assert.ok(submissionGateCopy(missingReason.gateReason).title);
+      assert.equal(
+        a1CheckAction({ staffReview: false, form: missingReason }),
+        "public",
+      );
+    }
+  });
+
+  it("lets a logged-out visitor run checks while Save stays on the sign-in gate", () => {
+    const visibility = resolveA1SubmitVisibility({
+      assignmentId: "a1",
+      access: assignmentSubmitAccess({
+        signedIn: false,
+        configured: false,
+        isActualStaff: false,
+        roster: { status: "not_configured" },
+      }),
+    });
+    assert.equal(visibility.canSubmit, false);
+    assert.equal(visibility.gateReason, "sign_in");
+
+    const state = a1SubmissionFormState(visibility);
+    assert.equal(state.mode, "check");
+    if (state.mode === "check") {
+      assert.equal(submissionGateCopy(state.gateReason).title, "Sign in to submit URLs");
+      assert.equal(a1CheckAction({ staffReview: false, form: state }), "public");
+    }
+
+    const signedIn = a1SubmissionFormState({ canSubmit: true, gateReason: null });
+    assert.equal(a1CheckAction({ staffReview: false, form: signedIn }), "account");
+    assert.equal(a1CheckAction({ staffReview: true, form: signedIn }), "staff");
+
+    const prepared = preparePublicAssignmentCheck({
+      assignmentId: "a1",
+      githubUrl: "  https://github.com/jane-doe/webdev-client  ",
+      vercelUrl: " https://jane-a1.vercel.app ",
+    });
+    assert.deepEqual(prepared, {
+      ok: true,
+      githubUrl: "https://github.com/jane-doe/webdev-client",
+      vercelUrl: "https://jane-a1.vercel.app",
+    });
+    assert.equal(
+      preparePublicAssignmentCheck({
+        assignmentId: "a1",
+        githubUrl: "",
+        vercelUrl: "  ",
+      }).ok,
+      false,
+    );
+    const otherAssignment = preparePublicAssignmentCheck({
+      assignmentId: "a2",
+      githubUrl: "",
+      vercelUrl: "https://jane-a1.vercel.app",
+    });
+    assert.equal(otherAssignment.ok, false);
+    if (!otherAssignment.ok) {
+      assert.equal(otherAssignment.code, "invalid");
+      assert.equal(otherAssignment.message, ASSIGNMENT_STUDENT_COPY.unknownAssignment);
     }
   });
 });

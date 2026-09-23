@@ -65,6 +65,19 @@ import AssignmentHubNav from "../components/AssignmentHubNav";
 
 export const dynamic = "force-dynamic";
 
+/** Signed-out save gate. Sign-in wins over roster/config misses. */
+function loggedOutSubmitVisibility(assignmentId: string, configured: boolean) {
+  return resolveA1SubmitVisibility({
+    assignmentId,
+    access: assignmentSubmitAccess({
+      signedIn: false,
+      configured,
+      isActualStaff: false,
+      roster: { status: "not_configured" },
+    }),
+  });
+}
+
 type PageProps = {
   params: Promise<{ assignmentId: string }>;
   searchParams: Promise<{ student?: string; section?: string }>;
@@ -163,8 +176,9 @@ export default async function AssignmentDetailPage({
               : { status: "not_configured" };
       }
 
-      // Gate is computed here and never rewritten by checklist / staff extras.
-      // “The page loaded” (Tania) is not the same as canSubmit (URL fields).
+      // Save gate is computed here and never rewritten by checklist / staff
+      // extras. “The page loaded” is not canSubmit. Run checks does not use
+      // canSubmit — logged-out visitors still get the URL fields.
       const visibility = resolveA1SubmitVisibility({
         assignmentId: assignment.id,
         access: assignmentSubmitAccess({
@@ -286,10 +300,14 @@ export default async function AssignmentDetailPage({
         console.error("assignment staff queue load failed", error);
       }
     } else {
-      gateReason = mongoReady ? "sign_in" : "not_configured";
+      const visibility = loggedOutSubmitVisibility(assignment.id, mongoReady);
+      canSubmit = visibility.canSubmit;
+      gateReason = visibility.gateReason ?? "sign_in";
     }
   } else {
-    gateReason = "not_configured";
+    const visibility = loggedOutSubmitVisibility(assignment.id, false);
+    canSubmit = visibility.canSubmit;
+    gateReason = visibility.gateReason ?? "sign_in";
   }
 
   const points = assignment.rubric
