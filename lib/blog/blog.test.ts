@@ -16,6 +16,7 @@ import {
   listBlogPosts,
   listBlogSlugs,
   relatedChapterHref,
+  relatedChapterLabel,
 } from "./index.ts";
 import { BLOG_POSTS } from "./posts.ts";
 
@@ -202,6 +203,22 @@ describe("blog posts", () => {
     assert.equal(formatBlogDate("2026-06-26T15:00:00.000Z"), "June 26, 2026");
     assert.equal(relatedChapterHref("ch3"), "/book/ch3");
     assert.equal(relatedChapterHref("ch5"), "/book/ch5");
+  });
+
+  it("names related chapters in prose without course-disclaimer copy", () => {
+    const banned =
+      /optional further reading|not required for (?:labs or )?grades|CS 4550|CS 5610/i;
+    for (const post of BLOG_POSTS) {
+      const body = post.intro.join(" ");
+      assert.doesNotMatch(body, banned, post.slug);
+      for (const chapter of post.relatedChapters ?? []) {
+        assert.match(
+          body,
+          new RegExp(`\\b${relatedChapterLabel(chapter)}\\b`),
+          `${post.slug} ${chapter}`,
+        );
+      }
+    }
   });
 
   it("does not invent quotes or unstated dates in intros", () => {
@@ -449,6 +466,10 @@ describe("blog routes and nav", () => {
     assert.match(index, /listBlogPosts/);
     assert.match(index, /BlogAdSlot/);
     assert.match(index, /instructor-curated digests, not original reporting/i);
+    assert.match(index, /always links to the original source/);
+    assert.doesNotMatch(index, /optional further reading/i);
+    assert.doesNotMatch(index, /not required for grades/i);
+    assert.doesNotMatch(index, /CS 4550|CS 5610/);
     assert.match(index, /href=\{`\/blog\/\$\{post\.slug\}`\}/);
 
     assert.match(post, /generateStaticParams/);
@@ -456,6 +477,14 @@ describe("blog routes and nav", () => {
     assert.match(post, /notFound/);
     assert.match(post, /BlogAdSlot/);
     assert.match(post, /BlogSourceLink/);
+    assert.match(post, /Instructor-curated digest, not original reporting/);
+    assert.doesNotMatch(post, /optional further reading/i);
+    assert.doesNotMatch(post, /not required for grades/i);
+    assert.doesNotMatch(post, /CS 4550|CS 5610/);
+    const layout = read(join(BLOG_APP, "layout.tsx"));
+    assert.match(layout, /Instructor-curated news digests\./);
+    assert.doesNotMatch(layout, /optional further reading/i);
+    assert.doesNotMatch(layout, /not required for grades/i);
 
     assert.match(source, /rel="noopener noreferrer"/);
     assert.match(source, /Read original/);

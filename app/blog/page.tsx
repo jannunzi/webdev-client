@@ -7,7 +7,7 @@ import BlogSourceLink from "./components/BlogSourceLink";
 import BlogTagChips from "./components/BlogTagChips";
 
 const DIGEST_DISCLOSURE =
-  "These posts are instructor-curated digests, not original reporting. Each item paraphrases a public article and always links to the original source. Optional further reading — not required for grades.";
+  "These posts are instructor-curated digests, not original reporting. Each item paraphrases a public article and always links to the original source.";
 
 export default function BlogIndexPage() {
   const posts = listBlogPosts();
