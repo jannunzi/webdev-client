@@ -6,7 +6,7 @@ import {
   type LectureClip,
   type LectureClipMap,
 } from "./types";
-import { YOUTUBE_VIDEO_ID, youtubeVideoIdFromUrl } from "./youtube";
+import { YOUTUBE_VIDEO_ID, isYoutubeHost, youtubeVideoIdFromUrl } from "./youtube";
 
 const ROOT_KEYS = new Set(["$schema", "description", "titles", "sections"]);
 const CLIP_KEYS = new Set([
@@ -18,7 +18,23 @@ const CLIP_KEYS = new Set([
   "semester",
   "confidence",
   "note",
+  "parentLectureYoutubeId",
+  "fullLectureUrl",
+  "playlistUrl",
 ]);
+
+const SECTION_ENTRY_KEYS = new Set([
+  "clips",
+  "parentLectureYoutubeId",
+  "fullLectureUrl",
+  "playlistUrl",
+]);
+
+type LecturePointers = {
+  parentLectureYoutubeId?: string;
+  fullLectureUrl?: string;
+  playlistUrl?: string;
+};
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -41,6 +57,70 @@ function parseConfidence(value: unknown, where: string): ClipConfidenceValue {
   fail(
     `${where}.confidence must be a score from 0 to 1, or high, medium, low, or placeholder.`,
   );
+}
+
+function parseOptionalVideoId(value: unknown, where: string): string | undefined {
+  if (value == null) return undefined;
+  if (typeof value !== "string" || !YOUTUBE_VIDEO_ID.test(value)) {
+    fail(`${where} must be an 11-character YouTube id.`);
+  }
+  return value;
+}
+
+function parseYoutubePageUrl(
+  value: unknown,
+  where: string,
+  kind: "lecture" | "playlist",
+): string | undefined {
+  if (value == null) return undefined;
+  if (typeof value !== "string" || !value.trim()) {
+    fail(`${where} must be a YouTube URL.`);
+  }
+  const raw = value.trim();
+  let url: URL;
+  try {
+    url = new URL(raw);
+  } catch {
+    fail(`${where} must be a YouTube URL.`);
+  }
+  if (url.protocol !== "https:" && url.protocol !== "http:") {
+    fail(`${where} must be a YouTube URL.`);
+  }
+  if (!isYoutubeHost(url.hostname)) {
+    fail(`${where} must be a YouTube URL.`);
+  }
+  const list = url.searchParams.get("list");
+  const playlistPath = url.pathname === "/playlist" || url.pathname.startsWith("/playlist/");
+  if (kind === "playlist") {
+    if (!list && !playlistPath) {
+      fail(`${where} must be a YouTube playlist URL.`);
+    }
+    return raw;
+  }
+  if (!youtubeVideoIdFromUrl(raw) && !list && !playlistPath) {
+    fail(`${where} must be a YouTube watch, embed, youtu.be, or playlist URL.`);
+  }
+  return raw;
+}
+
+function parseLecturePointers(value: Record<string, unknown>, where: string): LecturePointers {
+  return {
+    parentLectureYoutubeId: parseOptionalVideoId(
+      value.parentLectureYoutubeId,
+      `${where}.parentLectureYoutubeId`,
+    ),
+    fullLectureUrl: parseYoutubePageUrl(value.fullLectureUrl, `${where}.fullLectureUrl`, "lecture"),
+    playlistUrl: parseYoutubePageUrl(value.playlistUrl, `${where}.playlistUrl`, "playlist"),
+  };
+}
+
+function withSectionPointers(clip: LectureClip, section: LecturePointers): LectureClip {
+  return {
+    ...clip,
+    parentLectureYoutubeId: clip.parentLectureYoutubeId ?? section.parentLectureYoutubeId,
+    fullLectureUrl: clip.fullLectureUrl ?? section.fullLectureUrl,
+    playlistUrl: clip.playlistUrl ?? section.playlistUrl,
+  };
 }
 
 function parseClip(bookSectionId: string, index: number, value: unknown): LectureClip {
@@ -98,6 +178,7 @@ function parseClip(bookSectionId: string, index: number, value: unknown): Lectur
   if (value.note != null && typeof value.note !== "string") {
     fail(`${where}.note must be a string.`);
   }
+  const pointers = parseLecturePointers(value, where);
 
   return {
     youtubeVideoId: youtubeVideoId ?? urlId ?? undefined,
@@ -108,7 +189,34 @@ function parseClip(bookSectionId: string, index: number, value: unknown): Lectur
     semester,
     confidence,
     note: typeof value.note === "string" ? value.note : undefined,
+    ...pointers,
   };
+}
+
+function parseSectionClips(bookSectionId: string, value: unknown): LectureClip[] {
+  if (Array.isArray(value)) {
+    if (value.length === 0) {
+      fail(`Section "${bookSectionId}" needs at least one clip.`);
+    }
+    return value.map((clip, index) => parseClip(bookSectionId, index, clip));
+  }
+  if (!isRecord(value)) {
+    fail(
+      `Section "${bookSectionId}" must be a clip list, or an object with clips and optional full-lecture fields.`,
+    );
+  }
+  for (const key of Object.keys(value)) {
+    if (!SECTION_ENTRY_KEYS.has(key)) {
+      fail(`sections["${bookSectionId}"] has unknown field "${key}".`);
+    }
+  }
+  if (!Array.isArray(value.clips) || value.clips.length === 0) {
+    fail(`Section "${bookSectionId}" needs at least one clip.`);
+  }
+  const pointers = parseLecturePointers(value, `sections["${bookSectionId}"]`);
+  return value.clips.map((clip, index) =>
+    withSectionPointers(parseClip(bookSectionId, index, clip), pointers),
+  );
 }
 
 /** Validate the on-disk map. Throws a message that names the bad field. */
@@ -129,12 +237,7 @@ export function parseLectureClipMap(value: unknown): LectureClipMap {
     if (!bookSectionId.trim() || bookSectionId !== bookSectionId.trim()) {
       fail(`Book section id "${bookSectionId}" must be a non-empty TOC anchor.`);
     }
-    if (!Array.isArray(clips) || clips.length === 0) {
-      fail(`Section "${bookSectionId}" needs at least one clip.`);
-    }
-    sections[bookSectionId] = clips.map((clip, index) =>
-      parseClip(bookSectionId, index, clip),
-    );
+    sections[bookSectionId] = parseSectionClips(bookSectionId, clips);
   }
 
   const titles: Record<string, string> = {};

@@ -26,6 +26,15 @@ export type LectureClip = {
   confidence: ClipConfidenceValue;
   /** Curator note. Not shown to students. */
   note?: string;
+  /**
+   * YouTube id of the full class recording when this row is only a short public part.
+   * Watch full lecture uses this id with no start time.
+   */
+  parentLectureYoutubeId?: string;
+  /** Curator URL for the whole lecture. Used as written, including any query the curator set. */
+  fullLectureUrl?: string;
+  /** YouTube playlist for the lecture. Used as written. */
+  playlistUrl?: string;
 };
 
 /**

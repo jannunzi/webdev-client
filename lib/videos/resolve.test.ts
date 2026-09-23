@@ -17,6 +17,7 @@ import {
   lectureClipMap,
   listBookSectionIds,
 } from "./map.ts";
+import { fullLectureHref } from "./full-lecture.ts";
 import { parseVideosQuery, videosHref } from "./query.ts";
 import {
   describeClipFallback,
@@ -253,6 +254,150 @@ describe("HTML §1.3 lecture clip map", () => {
     assert.equal(sameTerm?.youtubeVideoId, "i1MK6EwHVoU");
   });
 
+  it("offers the whole SP26 session and keeps FA26 parts as snippets", () => {
+    const snippet = resolveLectureClip(lectureClipMap, {
+      bookSectionId: "sec-1-3-1",
+      preferredCourse: "CS4550",
+      preferredSemester: "FA26",
+    });
+    assert.ok(snippet);
+    assert.equal(
+      fullLectureHref(snippet),
+      "https://www.youtube.com/watch?v=LUCofdJQ4qE",
+    );
+    assert.doesNotMatch(fullLectureHref(snippet) ?? "", /[?&](?:t|start)=/);
+    assert.match(youtubeWatchUrl(snippet.youtubeVideoId, snippet.clip.startSec), /[?&]t=960s/);
+    assert.match(youtubeWatchUrl(snippet.youtubeVideoId, snippet.clip.startSec), /[?&]start=960/);
+
+    const part = resolveLectureClip(lectureClipMap, {
+      bookSectionId: "sec-1-3-7",
+      preferredCourse: "CS4550",
+      preferredSemester: "FA26",
+    });
+    assert.ok(part);
+    assert.equal(part.clip.semester, "FA26");
+    assert.equal(fullLectureHref(part), null);
+    assert.equal(part.clip.parentLectureYoutubeId, undefined);
+    assert.equal(part.clip.fullLectureUrl, undefined);
+    assert.equal(part.clip.playlistUrl, undefined);
+
+    for (const id of listBookSectionIds()) {
+      const resolved = resolveLectureClip(lectureClipMap, {
+        bookSectionId: id,
+        preferredCourse: "CS4550",
+        preferredSemester: "FA26",
+      });
+      assert.ok(resolved, id);
+      const href = fullLectureHref(resolved);
+      if (resolved.clip.semester === "SP26") {
+        assert.equal(href, `https://www.youtube.com/watch?v=${resolved.youtubeVideoId}`, id);
+      } else {
+        assert.equal(href, null, id);
+      }
+    }
+  });
+
+  it("uses an explicit full lecture and inherits section-level pointers", () => {
+    const parsed = parseLectureClipMap({
+      sections: {
+        "sec-1-3-7": [
+          {
+            youtubeVideoId: "i1MK6EwHVoU",
+            startSec: 35,
+            endSec: 250,
+            sourceCourse: "CS5610",
+            semester: "FA26",
+            confidence: 0.78,
+            parentLectureYoutubeId: "LUCofdJQ4qE",
+          },
+        ],
+        "sec-1-3-8": {
+          fullLectureUrl: "https://www.youtube.com/watch?v=ParentVid01",
+          playlistUrl: "https://www.youtube.com/playlist?list=PLcourse123",
+          clips: [
+            {
+              youtubeVideoId: "i1MK6EwHVoU",
+              startSec: 168,
+              endSec: 550,
+              sourceCourse: "CS5610",
+              semester: "FA26",
+              confidence: 0.85,
+            },
+            {
+              youtubeVideoId: "i1MK6EwHVoU",
+              startSec: 10,
+              endSec: 20,
+              sourceCourse: "CS5610",
+              semester: "FA26",
+              confidence: 0.8,
+              fullLectureUrl: "https://youtu.be/ClipParent1",
+            },
+          ],
+        },
+      },
+    });
+    const parent = parsed.sections["sec-1-3-7"]?.[0];
+    assert.ok(parent);
+    assert.equal(
+      fullLectureHref({ clip: parent, youtubeVideoId: "i1MK6EwHVoU" }),
+      "https://www.youtube.com/watch?v=LUCofdJQ4qE",
+    );
+    const inherited = parsed.sections["sec-1-3-8"]?.[0];
+    assert.ok(inherited);
+    assert.equal(inherited.fullLectureUrl, "https://www.youtube.com/watch?v=ParentVid01");
+    assert.equal(
+      fullLectureHref({ clip: inherited, youtubeVideoId: "i1MK6EwHVoU" }),
+      "https://www.youtube.com/watch?v=ParentVid01",
+    );
+    const overridden = parsed.sections["sec-1-3-8"]?.[1];
+    assert.ok(overridden);
+    assert.equal(
+      fullLectureHref({ clip: overridden, youtubeVideoId: "i1MK6EwHVoU" }),
+      "https://youtu.be/ClipParent1",
+    );
+
+    const playlistOnly = parseLectureClipMap({
+      sections: {
+        "sec-1-3-11": [
+          {
+            youtubeVideoId: "q8QebLwQMhM",
+            startSec: 0,
+            endSec: 255,
+            sourceCourse: "CS5610",
+            semester: "FA26",
+            confidence: 0.75,
+            playlistUrl: "https://www.youtube.com/playlist?list=PLlayouts01",
+          },
+        ],
+      },
+    }).sections["sec-1-3-11"]?.[0];
+    assert.ok(playlistOnly);
+    assert.equal(
+      fullLectureHref({ clip: playlistOnly, youtubeVideoId: "q8QebLwQMhM" }),
+      "https://www.youtube.com/playlist?list=PLlayouts01",
+    );
+
+    assert.throws(
+      () =>
+        parseLectureClipMap({
+          sections: {
+            "sec-1-3-7": [
+              {
+                youtubeVideoId: "i1MK6EwHVoU",
+                startSec: 1,
+                endSec: 2,
+                sourceCourse: "CS5610",
+                semester: "FA26",
+                confidence: 0.8,
+                fullLectureUrl: "https://northeastern.box.com/s/archive",
+              },
+            ],
+          },
+        }),
+      /YouTube/,
+    );
+  });
+
   it("rejects archive hosts and inconsistent ids", () => {
     assert.throws(() =>
       parseLectureClipMap({
@@ -363,6 +508,8 @@ describe("videos page shell", () => {
     const clip = read("app/videos/components/VideoClip.tsx");
     assert.match(clip, /youtubeEmbedUrl/);
     assert.match(clip, /youtubeWatchUrl/);
+    assert.match(clip, /Watch full lecture/);
+    assert.match(clip, /fullLectureHref/);
     assert.doesNotMatch(`${page}\n${clip}`, /mux|blob\.vercel/i);
   });
 });

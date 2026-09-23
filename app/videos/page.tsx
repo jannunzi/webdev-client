@@ -131,8 +131,9 @@ export default async function VideosPage({
             a clip for that semester, that clip plays. Otherwise the page uses
             another section from the same semester, then the latest earlier
             semester. Playback is a YouTube embed or a link that opens at the
-            start time. HTML §1.3 has clips. CSS §2.1 does not yet, so those
-            sections show no clip.
+            start time. When the upload is the whole class session, Watch full
+            lecture opens that video from the beginning. HTML §1.3 has clips.
+            CSS §2.1 does not yet, so those sections show no clip.
           </p>
         }
       />

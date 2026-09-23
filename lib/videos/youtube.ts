@@ -86,3 +86,14 @@ export function youtubeWatchUrl(videoId: string, startSec: number): string {
   });
   return `https://www.youtube.com/watch?${params.toString()}`;
 }
+
+/** Whole-lecture watch URL. No `start` and no `t`, so playback begins at 0. */
+export function youtubeLectureUrl(videoId: string): string {
+  const params = new URLSearchParams({ v: videoId });
+  return `https://www.youtube.com/watch?${params.toString()}`;
+}
+
+export function isYoutubeHost(hostname: string): boolean {
+  const host = hostname.replace(/^www\./, "");
+  return host === "youtu.be" || YOUTUBE_HOSTS.has(host);
+}

@@ -5,6 +5,7 @@ import {
   fallbackTierLabel,
 } from "@/lib/videos/resolve";
 import type { ResolvedLectureClip } from "@/lib/videos/types";
+import { fullLectureHref } from "@/lib/videos/full-lecture";
 import {
   formatClipClock,
   youtubeEmbedUrl,
@@ -25,6 +26,7 @@ export default function VideoClip({
   const label = title || bookSectionNumberLabel(resolved.bookSectionId);
   const bookHref = bookPathForSection(resolved.bookSectionId);
   const watchUrl = youtubeWatchUrl(resolved.youtubeVideoId, resolved.clip.startSec);
+  const fullLectureUrl = fullLectureHref(resolved);
   const embedUrl = youtubeEmbedUrl(
     resolved.youtubeVideoId,
     resolved.clip.startSec,
@@ -88,6 +90,17 @@ export default function VideoClip({
         </a>
         .
       </p>
+      {fullLectureUrl ? (
+        <p className="mt-2 mb-0">
+          <a href={fullLectureUrl} target="_blank" rel="noreferrer">
+            Watch full lecture
+          </a>
+          <span className="font-sans text-sm text-neutral-600">
+            {" "}
+            from the beginning, without this section’s start time
+          </span>
+        </p>
+      ) : null}
       <p className="mt-2 mb-0 font-sans text-sm text-neutral-600">
         {resolved.clip.sourceCourse} · {resolved.clip.semester} · confidence{" "}
         {resolved.clip.confidence}
