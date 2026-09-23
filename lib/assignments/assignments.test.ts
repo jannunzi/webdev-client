@@ -7,6 +7,7 @@ import {
   evaluateRubricSpec,
 } from "./a1-rubric";
 import { A2_RUBRIC } from "./a2";
+import { ASSIGNMENT_STUDENT_COPY } from "./student-copy";
 import { listCanvasFollowupCopy, listCanvasQuizFollowupCopy } from "./canvas-copy";
 import { supportsUrlSubmission } from "./access";
 import {
@@ -183,6 +184,27 @@ describe("assignment catalog", () => {
         .find((group) => group.id === "lab")
         ?.criteria.some((row) => row.id === "a1-delivery-labs-nav"),
     );
+    const nameAndSection = findCriterion(A1_RUBRIC, "a1-delivery-name-section");
+    assert.equal(nameAndSection?.description, ASSIGNMENT_STUDENT_COPY.nameAndSection);
+    assert.match(nameAndSection?.description ?? "", /full Canvas name on Labs/i);
+    assert.match(nameAndSection?.description ?? "", /first then last/i);
+    assert.match(nameAndSection?.description ?? "", /matching the roster/i);
+    assert.match(
+      nameAndSection?.description ?? "",
+      /no Name and section checkbox or control in Run checks/i,
+    );
+    const deliveryIntro =
+      A1_RUBRIC.groups.find((group) => group.id === "delivery")?.intro ?? "";
+    assert.ok(deliveryIntro.includes(ASSIGNMENT_STUDENT_COPY.nameAndSectionDeliveryNote));
+    assert.match(
+      deliveryIntro,
+      /full Canvas name on Labs \(first then last, matching the roster\), not a checkbox or control in Run checks/i,
+    );
+    const labIntro = A1_RUBRIC.groups.find((group) => group.id === "lab")?.intro ?? "";
+    assert.match(labIntro, /Manual check badge/i);
+    assert.match(labIntro, /staff grade that row on your deploy URL/i);
+    assert.match(labIntro, /never marks it pass or fail/i);
+    assert.match(labIntro, /not a failed auto check/i);
     assert.ok(findCriterion(A1_RUBRIC, "a1-kambaz-assignments")?.onYourOwn);
     assert.equal(supportsUrlSubmission("a1"), true);
 

@@ -79,9 +79,17 @@ export const ASSIGNMENT_STUDENT_COPY = {
   labsMissing:
     "The page opened, but Labs navigation / wd- ids were not found. Open /labs on your deploy and follow Chapter 1.",
   labsUnread: "Could not read the page to check Labs markers.",
-  nameOk: "Found your name on the page.",
+  nameOk: "Found your full Canvas name on Labs.",
   nameMissing:
-    "Your name was not found. Put your full name (first then last) on Labs, matching the course roster.",
+    "Your name was not found on Labs. Put your full Canvas name there (first then last, matching the roster). There is no Name and section checkbox in Run checks.",
+  nameAndSection:
+    "Show your full Canvas name on Labs (first then last, matching the roster). There is no Name and section checkbox or control in Run checks.",
+  nameAndSectionDeliveryNote:
+    "Name and section is your full Canvas name on Labs (first then last, matching the roster), not a checkbox or control in Run checks.",
+  manualCheckHint:
+    "Staff grade this row on your deploy URL. Run checks does not mark it pass or fail. Manual check is not a failed auto check.",
+  manualCheckLabNote:
+    "A Manual check badge means staff grade that row on your deploy URL. Run checks never marks it pass or fail, and it is not a failed auto check.",
 } as const;
 
 export type AssignmentStudentCopyKey = keyof typeof ASSIGNMENT_STUDENT_COPY;

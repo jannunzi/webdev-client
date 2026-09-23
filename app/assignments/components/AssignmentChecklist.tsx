@@ -52,7 +52,13 @@ function autoCheckRunKey(
   return `${checkGeneration}:${fingerprint}`;
 }
 
-function AutoBadge({ result }: { result: AssignmentCheckResult }) {
+function AutoBadge({
+  result,
+  describedBy,
+}: {
+  result: AssignmentCheckResult;
+  describedBy?: string;
+}) {
   const tone = result.skipped
     ? "bg-neutral-200 text-neutral-800"
     : result.passed
@@ -61,6 +67,8 @@ function AutoBadge({ result }: { result: AssignmentCheckResult }) {
   return (
     <span
       className={`ml-2 font-sans text-xs font-medium uppercase tracking-wide ${tone}`}
+      title={result.skipped ? ASSIGNMENT_STUDENT_COPY.manualCheckHint : undefined}
+      aria-describedby={result.skipped ? describedBy : undefined}
     >
       {result.skipped
         ? "Manual check"
@@ -108,6 +116,11 @@ function CriterionRow({
   onStaffComment?: (criterionId: string, comment: string) => void;
 }) {
   const inputId = `criterion-${row.id}`;
+  const manualHintId = `manual-check-${row.id}`;
+  const showManualHint = Boolean(
+    auto?.skipped ||
+      (!auto && assignmentId === "a1" && isManualA1Criterion(row.id)),
+  );
   const verifyHref = criterionVerifyUrl(vercelUrl, row.id);
   return (
     <div className={`rounded-md border px-3 py-3 ${rowTone(auto)}`}>
@@ -134,8 +147,11 @@ function CriterionRow({
               </span>
             ) : null}
             {auto ? (
-              <AutoBadge result={auto} />
-            ) : assignmentId === "a1" && isManualA1Criterion(row.id) ? (
+              <AutoBadge
+                result={auto}
+                describedBy={showManualHint ? manualHintId : undefined}
+              />
+            ) : showManualHint ? (
               <AutoBadge
                 result={{
                   id: row.id,
@@ -144,9 +160,15 @@ function CriterionRow({
                   message: "",
                   skipped: true,
                 }}
+                describedBy={manualHintId}
               />
             ) : null}
           </label>
+          {showManualHint ? (
+            <p id={manualHintId} className="mb-1 mt-1 font-sans text-sm text-neutral-700">
+              {ASSIGNMENT_STUDENT_COPY.manualCheckHint}
+            </p>
+          ) : null}
           <p className="mb-1 mt-1 text-sm text-neutral-800">{row.description}</p>
           {auto && !auto.skipped && auto.message ? (
             <p className="mb-1 font-sans text-sm text-neutral-800">{auto.message}</p>
