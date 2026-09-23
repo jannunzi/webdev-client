@@ -6,6 +6,57 @@ import type { BlogPost } from "./types";
  */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "nextjs-security-update-sept-22-2026",
+    title: "Next.js 16.3.6 / 15.5.26: patch Node.js ImageResponse RCE now",
+    publishedAt: "2026-09-23T12:00:00.000Z",
+    tags: ["nextjs", "security", "course"],
+    relatedChapters: ["ch1", "ch5"],
+    intro: [
+      "On September 22, 2026, the Next.js team published an out-of-band security update. Next.js 16.3.6 (Active LTS) and 15.5.26 (Maintenance LTS) upgrade upstream dependencies, including Satori, to address an issue that could lead to remote code execution. Version 15.5.26 includes related hardening, but Next.js 15.x is not affected by the remote code execution issue.",
+      "The critical issue is remote code execution in the Node.js ImageResponse path in next/og (GHSA-vcvr-r3jv-pc5j), with related upstream advisory GHSA-wx4j-mvgx-mqwp for Satori. Next.js versions >=16.2.0 and <16.3.6 are affected. Improper escaping in SVG output from Satori could lead to RCE via other upstream dependencies; the fix upgrades those dependencies. Applications using the Edge ImageResponse implementation are not affected.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. Chapters 1 and 5 already stress keeping framework and dependency versions current; treat this digest as patch hygiene. Follow the original Next.js post for upgrade commands and advisory details.",
+    ],
+    source: {
+      title: "Next.js Security Update for a Critical Upstream Issue",
+      url: "https://nextjs.org/blog/nextjs-security-update-september-22-2026",
+      publisher: "Next.js",
+    },
+  },
+  {
+    slug: "ai-gateway-jev-fastest-adopted",
+    title: "Jev: fastest first-day adoption on Vercel AI Gateway",
+    publishedAt: "2026-09-23T12:00:00.000Z",
+    tags: ["ai", "course"],
+    relatedChapters: ["ch1", "ch5"],
+    intro: [
+      "On September 18, 2026, Amelia Charles, Harpreet Arora, and Eric Dodds reported that within 24 hours of launching on AI Gateway, Jev from TypeSafe AI reached more than twice as many paid teams as any previous model launch. By hour 24, nearly 13% of paid teams were using it — 2x the GPT-5.6 family and more than 6x Fable 5.1's share. The post also notes Jev is free on AI Gateway until September 25.",
+      "Jev was introduced on September 15 as a probabilistic decision model: an application sends context and questions, and Jev returns typed choices, scores, or true-or-false answers with probabilities. TypeSafe AI reports that in its own workflow evaluations Jev was up to 194 times faster and 445 times cheaper than language models.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. Chapters 1 and 5 already touch how this course site ships on Vercel; this digest is gateway adoption data, not a change to lab APIs. Follow the original Vercel post for details.",
+    ],
+    source: {
+      title: "Jev is the fastest-adopted model in AI Gateway history",
+      url: "https://vercel.com/blog/ai-gateway-jev-model-launch",
+      publisher: "Vercel",
+    },
+  },
+  {
+    slug: "featured-100k-media-pitches-vercel",
+    title: "Featured: 100K media pitches a month with three engineers on Vercel",
+    publishedAt: "2026-09-23T12:00:00.000Z",
+    tags: ["nextjs", "ai", "course"],
+    relatedChapters: ["ch1", "ch5"],
+    intro: [
+      "On September 11, 2026, Susan Aziz (with Eric Dodds) described how Featured, a co-pilot for public relations, runs on Vercel with three engineers supporting three brands and more than 100,000 users. The team migrated 374 Sanity sites from AWS Elastic Beanstalk to Vercel, routes chat across 17 models through AI SDK and AI Gateway, and replaced custom long-running job infrastructure with Workflow SDK. Agents deliver more than 100,000 media pitches per month.",
+      "Chat became the primary interface via eve and the useEveAgent hook, with durable sessions, streaming, tool calls, and approval prompts, and model calls through AI Gateway. Founder Brett Farmiloe frames Vercel's developer experience as the multiplier that lets three engineers move like a much larger team.",
+      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. Chapters 1 and 5 already cover shipping on Vercel; this digest is a customer shipping story, not a change to lab requirements. Follow the original Vercel post for the full workflow.",
+    ],
+    source: {
+      title: "How Featured's users make 100K media pitches per month on Vercel",
+      url: "https://vercel.com/blog/how-featureds-users-make-100k-media-pitches-per-month-on-vercel",
+      publisher: "Vercel",
+    },
+  },
+  {
     slug: "nextjs-upcoming-security-release-sept-22-2026",
     title: "Next.js plans Sept 22 out-of-band security release (16.3.6 / 15.5.26)",
     publishedAt: "2026-09-22T12:00:00.000Z",
