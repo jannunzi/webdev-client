@@ -2,6 +2,7 @@ import { normalizeSemesterCode } from "./semester";
 import {
   CLIP_CONFIDENCE,
   type ClipConfidence,
+  type ClipConfidenceValue,
   type LectureClip,
   type LectureClipMap,
 } from "./types";
@@ -25,6 +26,21 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function fail(message: string): never {
   throw new Error(message);
+}
+
+function parseConfidence(value: unknown, where: string): ClipConfidenceValue {
+  if (typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 1) {
+    return value;
+  }
+  if (
+    typeof value === "string" &&
+    CLIP_CONFIDENCE.includes(value as ClipConfidence)
+  ) {
+    return value as ClipConfidence;
+  }
+  fail(
+    `${where}.confidence must be a score from 0 to 1, or high, medium, low, or placeholder.`,
+  );
 }
 
 function parseClip(bookSectionId: string, index: number, value: unknown): LectureClip {
@@ -78,14 +94,7 @@ function parseClip(bookSectionId: string, index: number, value: unknown): Lectur
     fail(`${where}.semester must look like SP26, SU26, or FA26.`);
   }
 
-  if (
-    typeof value.confidence !== "string" ||
-    !CLIP_CONFIDENCE.includes(value.confidence as ClipConfidence)
-  ) {
-    fail(
-      `${where}.confidence must be high, medium, low, or placeholder.`,
-    );
-  }
+  const confidence = parseConfidence(value.confidence, where);
   if (value.note != null && typeof value.note !== "string") {
     fail(`${where}.note must be a string.`);
   }
@@ -97,7 +106,7 @@ function parseClip(bookSectionId: string, index: number, value: unknown): Lectur
     endSec: value.endSec,
     sourceCourse: value.sourceCourse.trim(),
     semester,
-    confidence: value.confidence as ClipConfidence,
+    confidence,
     note: typeof value.note === "string" ? value.note : undefined,
   };
 }
@@ -130,13 +139,13 @@ export function parseLectureClipMap(value: unknown): LectureClipMap {
 
   const titles: Record<string, string> = {};
   if (value.titles != null) {
-    if (!isRecord(value.titles)) fail("titles must be an object of TOC labels.");
+    if (!isRecord(value.titles)) fail("titles must be an object of UI labels.");
     for (const [bookSectionId, title] of Object.entries(value.titles)) {
       if (!(bookSectionId in sections)) {
         fail(`titles["${bookSectionId}"] has no clip list.`);
       }
       if (typeof title !== "string" || !title.trim()) {
-        fail(`titles["${bookSectionId}"] must be a non-empty TOC label.`);
+        fail(`titles["${bookSectionId}"] must be a non-empty UI label.`);
       }
       titles[bookSectionId] = title;
     }

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import CourseInfoFooter from "@/app/course-info/CourseInfoFooter";
 import CourseInfoHeader from "@/app/course-info/CourseInfoHeader";
+import { bookSectionNumberLabel } from "@/lib/videos/book-section";
 import { defaultVideoCourseId, defaultVideoSemester, videoCourseOptions } from "@/lib/videos/courses";
 import {
   bookSectionTitle,
@@ -21,6 +22,19 @@ type VideosSearchParams = {
   course?: string | string[];
   semester?: string | string[];
 };
+
+function sectionMenuLabel(id: string): string {
+  const title = bookSectionTitle(id);
+  const number = bookSectionNumberLabel(id);
+  if (
+    title === number ||
+    title.startsWith(`${number} `) ||
+    title.startsWith(`${number}.`)
+  ) {
+    return title;
+  }
+  return `${number} · ${title}`;
+}
 
 function one(value: string | string[] | undefined): string | undefined {
   const raw = Array.isArray(value) ? value[0] : value;
@@ -99,10 +113,12 @@ export default async function VideosPage({
     : null;
   const sectionOptions = listBookSectionIds().map((id) => ({
     id,
-    label: bookSectionTitle(id),
+    label: sectionMenuLabel(id),
     group: id.startsWith("sec-2-1")
-      ? bookSectionTitle("sec-2-1")
-      : bookSectionTitle("sec-1-3"),
+      ? "CSS §2.1"
+      : id.startsWith("sec-1-3")
+        ? "HTML §1.3"
+        : "Book sections",
   }));
 
   return (
@@ -115,7 +131,8 @@ export default async function VideosPage({
             a clip for that semester, that clip plays. Otherwise the page uses
             another section from the same semester, then the latest earlier
             semester. Playback is a YouTube embed or a link that opens at the
-            start time.
+            start time. HTML §1.3 has clips. CSS §2.1 does not yet, so those
+            sections show no clip.
           </p>
         }
       />
@@ -139,7 +156,7 @@ export default async function VideosPage({
       {query.semesterValid && resolved ? (
         <VideoClip
           resolved={resolved}
-          title={bookSectionTitle(query.section)}
+          title={sectionMenuLabel(query.section)}
           preferredCourse={query.course}
           preferredSemester={query.semester}
         />
@@ -147,7 +164,7 @@ export default async function VideosPage({
 
       {query.semesterValid && !resolved ? (
         <p className="mt-6" role="status">
-          No YouTube clip is mapped for {bookSectionTitle(query.section)}{" "}
+          No YouTube clip is mapped for {sectionMenuLabel(query.section)}{" "}
           in {query.semester}, including other sections and earlier semesters.
         </p>
       ) : null}
@@ -176,9 +193,9 @@ export default async function VideosPage({
             return (
               <li key={id} className="border-b border-neutral-200 py-2">
                 {current ? (
-                  <span className="font-medium">{bookSectionTitle(id)}</span>
+                  <span className="font-medium">{sectionMenuLabel(id)}</span>
                 ) : (
-                  <Link href={href}>{bookSectionTitle(id)}</Link>
+                  <Link href={href}>{sectionMenuLabel(id)}</Link>
                 )}
                 <span className="font-sans text-sm text-neutral-600">
                   {" "}

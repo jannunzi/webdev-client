@@ -174,76 +174,83 @@ describe("resolveLectureClip", () => {
   });
 });
 
-const PILOT_BOOK_SECTION_IDS = [
+const HTML_PILOT_SECTION_IDS = [
   "sec-1-3",
-  ...Array.from({ length: 13 }, (_, index) => `sec-1-3-${index + 1}`),
-  ...Array.from({ length: 7 }, (_, index) => `sec-1-3-6-${index + 1}`),
-  "sec-2-1",
-  ...Array.from({ length: 21 }, (_, index) => `sec-2-1-${index + 1}`),
+  "sec-1-3-1",
+  "sec-1-3-2",
+  "sec-1-3-3",
+  "sec-1-3-6",
+  "sec-1-3-6-1",
+  "sec-1-3-6-3",
+  "sec-1-3-6-4",
+  "sec-1-3-6-5",
+  "sec-1-3-6-6",
+  "sec-1-3-6-7",
+  "sec-1-3-7",
+  "sec-1-3-8",
+  "sec-1-3-9",
+  "sec-1-3-11",
 ];
 
-function tocLabels(source: string): Map<string, string> {
-  const labels = new Map<string, string>();
-  for (const match of source.matchAll(/id:\s*"([^"]+)"\s*,\s*label:\s*"([^"]+)"/g)) {
-    labels.set(match[1]!, match[2]!);
-  }
-  return labels;
-}
-
-describe("stub lecture clip map", () => {
-  it("uses the HTML 1.3 and CSS 2.1 TOC ids, with matching titles", () => {
-    assert.match(lectureClipMap.description ?? "", /PLACEHOLDER/);
-    assert.equal(bookSectionHasClip("sec-1-2-1"), false);
-    assert.equal(bookSectionHasClip("sec-1-3-1"), true);
-    assert.equal(bookSectionHasClip("sec-2-1-10"), true);
-    const ids = listBookSectionIds();
-    assert.deepEqual([...ids].sort(), [...PILOT_BOOK_SECTION_IDS].sort());
-    assert.equal(ids.length, 43);
+describe("HTML §1.3 lecture clip map", () => {
+  it("keeps Yolanda's 15 sections and leaves CSS §2.1 unmapped", () => {
+    assert.match(lectureClipMap.description ?? "", /HTML §1\.3/);
+    assert.doesNotMatch(lectureClipMap.description ?? "", /PLACEHOLDER/);
+    assert.deepEqual(listBookSectionIds(), [...HTML_PILOT_SECTION_IDS].sort((a, b) =>
+      a.localeCompare(b, undefined, { numeric: true }),
+    ));
+    assert.equal(listBookSectionIds().length, 15);
     assert.equal(defaultBookSectionId(), "sec-1-3");
+    assert.equal(bookSectionHasClip("sec-1-3-1"), true);
+    assert.equal(bookSectionHasClip("sec-2-1"), false);
+    assert.equal(bookSectionHasClip("sec-2-1-10"), false);
+    assert.equal(bookSectionHasClip("sec-1-3-4"), false);
+    assert.equal(bookSectionHasClip("sec-1-3-6-2"), false);
 
-    const labels = tocLabels(read("app/book/TOC.tsx"));
-    for (const id of PILOT_BOOK_SECTION_IDS) {
-      const label = labels.get(id);
-      assert.ok(label, id);
-      assert.equal(bookSectionTitle(id), label, id);
+    const toc = read("app/book/TOC.tsx");
+    for (const id of HTML_PILOT_SECTION_IDS) {
+      assert.match(toc, new RegExp(`id:\\s*"${id}"`));
+      const clips = lectureClipMap.sections[id] ?? [];
+      assert.equal(clips.length, 1, id);
+      const score = clips[0]?.confidence;
+      assert.equal(typeof score, "number", id);
+      assert.ok(typeof score === "number" && score >= 0.7, id);
     }
-    assert.equal(
-      bookSectionTitle("sec-1-3-1"),
-      "1.3.1 Structuring Web Content with the HTML Heading, Div, and Span Tags",
-    );
-    assert.equal(bookSectionTitle("sec-2-1"), "2.1 Styling React Components with CSS");
+    assert.equal(bookSectionTitle("sec-1-3-1"), "Headings, div, and span");
     assert.equal(bookPathForSection("sec-1-3-1"), "/book/ch1#sec-1-3-1");
-    assert.equal(bookPathForSection("sec-2-1-10"), "/book/ch2#sec-2-1-10");
+    assert.equal(
+      resolveLectureClip(lectureClipMap, {
+        bookSectionId: "sec-2-1",
+        preferredCourse: "CS4550",
+        preferredSemester: "FA26",
+      }),
+      null,
+    );
   });
 
-  it("resolves exact, same-semester, and prior-semester clips on real section ids", () => {
-    const exact = resolveLectureClip(lectureClipMap, {
-      bookSectionId: "sec-1-3",
-      preferredCourse: "CS4550",
-      preferredSemester: "FA26",
-    });
-    assert.equal(exact?.tier, "same-section");
-    assert.equal(exact?.clip.sourceCourse, "CS4550");
-    assert.equal(exact?.clip.confidence, "placeholder");
-
-    const otherSection = resolveLectureClip(lectureClipMap, {
-      bookSectionId: "sec-2-1",
-      preferredCourse: "CS4550",
-      preferredSemester: "FA26",
-    });
-    assert.equal(otherSection?.tier, "same-semester");
-    assert.equal(otherSection?.clip.semester, "FA26");
-    assert.equal(otherSection?.clip.sourceCourse, "CS5610-02");
-
-    const prior = resolveLectureClip(lectureClipMap, {
+  it("resolves sec-1-3-1 to the SP26 CS4550 clip for a Fall 2026 student", () => {
+    const resolved = resolveLectureClip(lectureClipMap, {
       bookSectionId: "sec-1-3-1",
       preferredCourse: "CS4550",
       preferredSemester: "FA26",
     });
-    assert.equal(prior?.tier, "prior-semester");
-    assert.equal(prior?.youtubeVideoId, "Sp26Stub001");
-    assert.equal(prior?.clip.semester, "SP26");
-    assert.equal(prior?.clip.sourceCourse, "CS5610-09");
+    assert.equal(resolved?.tier, "prior-semester");
+    assert.equal(resolved?.youtubeVideoId, "LUCofdJQ4qE");
+    assert.equal(resolved?.clip.startSec, 960);
+    assert.equal(resolved?.clip.endSec, 1298);
+    assert.equal(resolved?.clip.semester, "SP26");
+    assert.equal(resolved?.clip.sourceCourse, "CS4550");
+    assert.equal(resolved?.clip.confidence, 0.82);
+
+    const sameTerm = resolveLectureClip(lectureClipMap, {
+      bookSectionId: "sec-1-3-7",
+      preferredCourse: "CS4550",
+      preferredSemester: "FA26",
+    });
+    assert.equal(sameTerm?.tier, "same-semester");
+    assert.equal(sameTerm?.clip.semester, "FA26");
+    assert.equal(sameTerm?.clip.sourceCourse, "CS5610");
+    assert.equal(sameTerm?.youtubeVideoId, "i1MK6EwHVoU");
   });
 
   it("rejects archive hosts and inconsistent ids", () => {

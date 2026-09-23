@@ -4,6 +4,9 @@ export const CLIP_CONFIDENCE = ["high", "medium", "low", "placeholder"] as const
 
 export type ClipConfidence = (typeof CLIP_CONFIDENCE)[number];
 
+/** Curator label, or a 0–1 score (pilot rows use a score, and only scores ≥ 0.7 are included). */
+export type ClipConfidenceValue = ClipConfidence | number;
+
 /**
  * One YouTube clip that can stand in for a book section.
  * Provide `youtubeVideoId` or a YouTube `url` (or both, if they name the same video).
@@ -20,14 +23,14 @@ export type LectureClip = {
   sourceCourse: string;
   /** Season + 2-digit year: `SP26`, `SU26`, `FA26`. */
   semester: string;
-  confidence: ClipConfidence;
-  /** Curator note. Not shown to students; use `placeholder` confidence for fake rows. */
+  confidence: ClipConfidenceValue;
+  /** Curator note. Not shown to students. */
   note?: string;
 };
 
 /**
  * `bookSectionId` → clips. Keys are book TOC anchors (`sec-1-3-1`, `sec-2-1-10`).
- * `titles` are the TOC labels for those ids, used by the videos page.
+ * `titles` are optional UI labels for those ids. When omitted, the page shows the section number.
  */
 export type LectureClipMap = {
   description?: string;

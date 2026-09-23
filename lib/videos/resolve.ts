@@ -1,6 +1,6 @@
 import { semesterRank } from "./semester";
 import type {
-  ClipConfidence,
+  ClipConfidenceValue,
   FallbackTier,
   LectureClip,
   LectureClipMap,
@@ -9,12 +9,20 @@ import type {
 } from "./types";
 import { youtubeVideoIdFromUrl } from "./youtube";
 
-const CONFIDENCE_RANK: Record<ClipConfidence, number> = {
-  high: 3,
-  medium: 2,
-  low: 1,
-  placeholder: 0,
-};
+/** Labels sit on the same 0–1 scale as curator scores. Higher wins a tie. */
+function confidenceRank(confidence: ClipConfidenceValue): number {
+  if (typeof confidence === "number") return confidence;
+  switch (confidence) {
+    case "high":
+      return 0.9;
+    case "medium":
+      return 0.75;
+    case "low":
+      return 0.5;
+    case "placeholder":
+      return 0;
+  }
+}
 
 type PlayableClip = LectureClip & { youtubeVideoId: string };
 
@@ -29,7 +37,7 @@ function sameCourse(a: string, b: string): boolean {
 }
 
 function compareClips(a: PlayableClip, b: PlayableClip): number {
-  const byConfidence = CONFIDENCE_RANK[b.confidence] - CONFIDENCE_RANK[a.confidence];
+  const byConfidence = confidenceRank(b.confidence) - confidenceRank(a.confidence);
   if (byConfidence !== 0) return byConfidence;
   const byCourse = a.sourceCourse.localeCompare(b.sourceCourse);
   if (byCourse !== 0) return byCourse;
