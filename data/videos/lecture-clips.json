@@ -1,0 +1,37 @@
+{
+  "$schema": "./lecture-clips.schema.json",
+  "description": "PLACEHOLDER map for the Phase-1 videos shell. YouTube ids and times are fake. Replace these rows with curated FA26 and SP26 clips. Do not point entries at Zoom, Box, or other archive files.",
+  "sections": {
+    "sec-1-2-1": [
+      {
+        "youtubeVideoId": "Fa26Stub001",
+        "startSec": 90,
+        "endSec": 420,
+        "sourceCourse": "CS4550",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times for CS 4550, Fall 2026. Not a real lecture clip."
+      },
+      {
+        "youtubeVideoId": "Fa26Stub002",
+        "startSec": 40,
+        "endSec": 260,
+        "sourceCourse": "CS5610-02",
+        "semester": "FA26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — fake YouTube id and times for CS 5610-02 in the same semester, so the section picker can switch clips."
+      }
+    ],
+    "sec-1-3": [
+      {
+        "url": "https://www.youtube.com/watch?v=Sp26Stub001",
+        "startSec": 600,
+        "endSec": 1140,
+        "sourceCourse": "CS5610-09",
+        "semester": "SP26",
+        "confidence": "placeholder",
+        "note": "PLACEHOLDER — URL form of a fake id. FA26 has no row, so students fall back to this prior semester."
+      }
+    ]
+  }
+}

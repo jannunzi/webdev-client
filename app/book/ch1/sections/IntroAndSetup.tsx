@@ -1,4 +1,5 @@
 import Section from "../../components/Section";
+import BookSectionClipLink from "../../components/BookSectionClipLink";
 import BookSectionSlidesLink from "../../components/BookSectionSlidesLink";
 import SectionLink from "../../components/SectionLink";
 import LocalUrl from "../../components/LocalUrl";
@@ -360,7 +361,8 @@ export default function IntroAndSetup() {
 
         <h3 id="sec-1-2-1" className="scroll-mt-6 font-sans text-xl font-semibold">
           1.2.1 Installing Node.js{" "}
-          <BookSectionSlidesLink sectionId="sec-1-2-1" />
+          <BookSectionSlidesLink sectionId="sec-1-2-1" />{" "}
+          <BookSectionClipLink sectionId="sec-1-2-1" />
         </h3>
         <p>
           <OfficialLink href="https://nodejs.org/">
