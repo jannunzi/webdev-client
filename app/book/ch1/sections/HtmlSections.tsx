@@ -1,4 +1,4 @@
-import BookSectionClipLink from "../../components/BookSectionClipLink";
+import BookSectionVideosLink from "../../components/BookSectionVideosLink";
 import Section from "../../components/Section";
 import SectionLink from "../../components/SectionLink";
 import LocalUrl from "../../components/LocalUrl";
@@ -928,7 +928,7 @@ My favorite books (in no particular order)
           id="sec-1-3-6-1"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.6.1 Text Fields <BookSectionClipLink sectionId="sec-1-3-6-1" />
+          1.3.6.1 Text Fields <BookSectionVideosLink sectionId="sec-1-3-6-1" />
         </h3>
         <p>
           The <code>&lt;input&gt;</code>{" "}tag is the most common way to collect
@@ -1080,7 +1080,7 @@ export default function Forms() {
           id="sec-1-3-6-2"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.6.2 Textarea <BookSectionClipLink sectionId="sec-1-3-6-2" />
+          1.3.6.2 Textarea <BookSectionVideosLink sectionId="sec-1-3-6-2" />
         </h3>
         <p>
           Use <code>&lt;textarea&gt;</code>{" "}for longer multi-line text such as
@@ -1148,7 +1148,7 @@ Lorem ipsum dolor sit amet...
           id="sec-1-3-6-3"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.6.3 Radio Buttons <BookSectionClipLink sectionId="sec-1-3-6-3" />
+          1.3.6.3 Radio Buttons <BookSectionVideosLink sectionId="sec-1-3-6-3" />
         </h3>
         <p>
           The <code>&lt;input type=&quot;radio&quot;&gt;</code>{" "}tag lets the
@@ -1296,7 +1296,7 @@ Lorem ipsum dolor sit amet...
           id="sec-1-3-6-4"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.6.4 Checkboxes <BookSectionClipLink sectionId="sec-1-3-6-4" />
+          1.3.6.4 Checkboxes <BookSectionVideosLink sectionId="sec-1-3-6-4" />
         </h3>
         <p>
           The <code>&lt;input type=&quot;checkbox&quot;&gt;</code>{" "}tag uses the
@@ -1345,7 +1345,7 @@ Lorem ipsum dolor sit amet...
           id="sec-1-3-6-5"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.6.5 Dropdowns <BookSectionClipLink sectionId="sec-1-3-6-5" />
+          1.3.6.5 Dropdowns <BookSectionVideosLink sectionId="sec-1-3-6-5" />
         </h3>
         <p>
           Use <code>&lt;select&gt;</code>{" "}when the user can pick from a fixed
@@ -1474,7 +1474,7 @@ Lorem ipsum dolor sit amet...
           id="sec-1-3-6-6"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.6.6 Other Field Types <BookSectionClipLink sectionId="sec-1-3-6-6" />
+          1.3.6.6 Other Field Types <BookSectionVideosLink sectionId="sec-1-3-6-6" />
         </h3>
         <p>
           Plain <code>type=&quot;text&quot;</code>{" "}accepts almost any string. HTML
@@ -1713,7 +1713,7 @@ Lorem ipsum dolor sit amet...
           id="sec-1-3-6-7"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.6.7 Buttons <BookSectionClipLink sectionId="sec-1-3-6-7" />
+          1.3.6.7 Buttons <BookSectionVideosLink sectionId="sec-1-3-6-7" />
         </h3>
         <p>
           The <code>&lt;button&gt;</code>{" "}tag gives a form a way to{" "}

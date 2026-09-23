@@ -18,6 +18,7 @@ import {
   listBookSectionIds,
 } from "./map.ts";
 import { fullLectureHref } from "./full-lecture.ts";
+import { listVideoHubChapters, parentBookSectionId } from "./hub.ts";
 import { parseVideosQuery, videosHref } from "./query.ts";
 import {
   describeClipFallback,
@@ -488,28 +489,82 @@ describe("videos query and course ids", () => {
     );
     assert.equal(badSemester.semesterValid, false);
     assert.equal(badSemester.semester, "2026");
+
+    const hub = parseVideosQuery({}, defaults, known);
+    assert.equal(hub.hub, true);
+    assert.equal(hub.section, "");
+    assert.equal(hub.canonical, true);
+
+    const deepLink = parseVideosQuery({ section: "sec-1-3-1" }, defaults, known);
+    assert.equal(deepLink.hub, false);
+    assert.equal(deepLink.canonical, true);
+    assert.equal(deepLink.course, "CS4550");
+    assert.equal(deepLink.semester, "FA26");
+  });
+});
+
+describe("videos hub", () => {
+  it("groups mapped clips like the slides hub and leaves CSS out", () => {
+    assert.equal(parentBookSectionId("sec-1-3-6-1"), "sec-1-3");
+    assert.equal(parentBookSectionId("sec-1-3"), "sec-1-3");
+    const chapters = listVideoHubChapters(lectureClipMap, {
+      course: "CS4550",
+      semester: "FA26",
+    });
+    assert.equal(chapters.length, 1);
+    assert.equal(chapters[0]?.chapter, 1);
+    assert.equal(chapters[0]?.title, "Building Next.js User Interfaces with HTML");
+    assert.equal(chapters[0]?.sections.length, 1);
+    assert.equal(chapters[0]?.sections[0]?.id, "sec-1-3");
+    assert.equal(chapters[0]?.sections[0]?.title, "1.3 Introduction to HTML");
+    assert.equal(chapters[0]?.sections[0]?.clips.length, 15);
+    const headings = chapters[0]?.sections[0]?.clips.find(
+      (clip) => clip.id === "sec-1-3-1",
+    );
+    assert.equal(headings?.heading, "1.3.1 Headings, div, and span");
+    assert.match(headings?.embedUrl ?? "", /start=960/);
+    assert.match(headings?.embedUrl ?? "", /end=1298/);
+    assert.equal(
+      headings?.fullLectureUrl,
+      "https://www.youtube.com/watch?v=LUCofdJQ4qE",
+    );
+    const part = chapters[0]?.sections[0]?.clips.find(
+      (clip) => clip.id === "sec-1-3-7",
+    );
+    assert.equal(part?.fullLectureUrl, null);
+    assert.match(part?.embedUrl ?? "", /youtube-nocookie\.com\/embed\//);
+    assert.equal(
+      chapters.some((chapter) =>
+        chapter.sections.some((section) => section.id.startsWith("sec-2-1")),
+      ),
+      false,
+    );
   });
 });
 
 describe("videos page shell", () => {
-  it("links the course nav and mapped book headings to /videos without a hosted player", () => {
+  it("links the book to a slides-style thumbnail hub and plays one clip at a time", () => {
     const links = read("app/course-info/links.ts");
     assert.match(links, /href: "\/videos", label: "Videos"/);
-    assert.match(read("app/book/components/Section.tsx"), /BookSectionClipLink/);
-    assert.match(read("app/book/components/BookSectionClipLink.tsx"), /Watch lecture clip/);
+    assert.match(read("app/book/components/Section.tsx"), /BookSectionVideosLink/);
+    assert.match(read("app/book/components/BookSectionVideosLink.tsx"), /Videos/);
     assert.match(
       read("app/book/ch1/sections/HtmlSections.tsx"),
-      /BookSectionClipLink sectionId="sec-1-3-6-1"/,
+      /BookSectionVideosLink sectionId="sec-1-3-6-1"/,
     );
 
     const page = read("app/videos/page.tsx");
-    assert.match(page, /resolveLectureClip/);
-    assert.doesNotMatch(page, /mux|vercel\/blob|@mux/i);
-    const clip = read("app/videos/components/VideoClip.tsx");
-    assert.match(clip, /youtubeEmbedUrl/);
-    assert.match(clip, /youtubeWatchUrl/);
-    assert.match(clip, /Watch full lecture/);
-    assert.match(clip, /fullLectureHref/);
-    assert.doesNotMatch(`${page}\n${clip}`, /mux|blob\.vercel/i);
+    assert.match(page, /VideosHub/);
+    assert.doesNotMatch(page, /VideoPlaybackForm|<select/);
+    const hub = read("app/videos/components/VideosHub.tsx");
+    assert.match(hub, /aspect-video/);
+    assert.match(hub, /grid-cols-1 gap-4/);
+    assert.match(hub, /LectureChapterLink/);
+    assert.match(hub, /youtubeThumbUrl/);
+    assert.match(hub, /<iframe/);
+    assert.match(hub, /Watch full lecture/);
+    assert.match(hub, /Open in the book/);
+    assert.match(read("lib/videos/hub.ts"), /youtubeEmbedUrl/);
+    assert.doesNotMatch(`${page}\n${hub}`, /mux|vercel\/blob|@mux/i);
   });
 });

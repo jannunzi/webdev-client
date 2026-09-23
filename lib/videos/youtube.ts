@@ -87,6 +87,11 @@ export function youtubeWatchUrl(videoId: string, startSec: number): string {
   return `https://www.youtube.com/watch?${params.toString()}`;
 }
 
+/** Public poster for a hub card. The player itself stays on youtube-nocookie. */
+export function youtubeThumbUrl(videoId: string): string {
+  return `https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`;
+}
+
 /** Whole-lecture watch URL. No `start` and no `t`, so playback begins at 0. */
 export function youtubeLectureUrl(videoId: string): string {
   const params = new URLSearchParams({ v: videoId });

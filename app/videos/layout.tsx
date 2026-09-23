@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import CourseInfoLayout from "@/app/course-info/CourseInfoLayout";
+import CourseSiteHeader from "@/app/course-info/CourseSiteHeader";
+import "../book/book.css";
 
 export const metadata: Metadata = {
-  title: "Videos — CS 4550 / CS 5610 Web Development",
+  title: "Videos — Web Dev",
   description:
-    "YouTube lecture clips mapped to book sections. Pick a course section and open the clip at its start time.",
+    "YouTube lecture clips grouped by book chapter and section. Open a card to play that section at its start time.",
 };
 
 export default function VideosLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  return <CourseInfoLayout>{children}</CourseInfoLayout>;
+  return (
+    <div className="book-shell min-h-dvh">
+      <CourseSiteHeader />
+      {children}
+    </div>
+  );
 }
