@@ -29,6 +29,7 @@ import type { LectureClipMap } from "./types.ts";
 import { parseLectureClipMap } from "./validate.ts";
 import {
   youtubeEmbedUrl,
+  youtubeThumbUrl,
   youtubeVideoIdFromUrl,
   youtubeWatchUrl,
 } from "./youtube.ts";
@@ -448,6 +449,11 @@ describe("videos query and course ids", () => {
     assert.match(youtubeEmbedUrl("Fa26Stub001", 90, 420), /end=420/);
     assert.match(youtubeEmbedUrl("Fa26Stub001", 90, 420), /youtube-nocookie\.com\/embed\//);
     assert.match(youtubeWatchUrl("Fa26Stub001", 90), /[?&]start=90/);
+    assert.equal(
+      youtubeThumbUrl("LUCofdJQ4qE"),
+      "https://img.youtube.com/vi/LUCofdJQ4qE/hqdefault.jpg",
+    );
+    assert.doesNotMatch(youtubeThumbUrl("LUCofdJQ4qE"), /embed|iframe/);
     assert.match(youtubeWatchUrl("Fa26Stub001", 90), /[?&]t=90s/);
     assert.doesNotMatch(youtubeWatchUrl("Fa26Stub001", 90), /mux|blob/i);
   });

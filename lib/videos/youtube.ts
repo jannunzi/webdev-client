@@ -87,9 +87,12 @@ export function youtubeWatchUrl(videoId: string, startSec: number): string {
   return `https://www.youtube.com/watch?${params.toString()}`;
 }
 
-/** Public poster for a hub card. The player itself stays on youtube-nocookie. */
+/**
+ * Static poster for a hub card (`img.youtube.com`, not an embed).
+ * The player is a single youtube-nocookie iframe injected after a click.
+ */
 export function youtubeThumbUrl(videoId: string): string {
-  return `https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`;
+  return `https://img.youtube.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`;
 }
 
 /** Whole-lecture watch URL. No `start` and no `t`, so playback begins at 0. */
