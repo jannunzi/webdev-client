@@ -5,7 +5,7 @@ import CourseInfoLayout from "@/app/course-info/CourseInfoLayout";
 export const metadata: Metadata = {
   title: "Blog — CS 4550 / CS 5610 Web Development",
   description:
-    "Instructor-curated news digests for CS 4550 / CS 5610. Short blurbs that link to original sources. Optional further reading — not required for grades.",
+    "Instructor-curated news digests. Short blurbs that link to original sources.",
 };
 
 export default function BlogLayout({

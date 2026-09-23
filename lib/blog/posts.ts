@@ -65,7 +65,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "Next.js announced an upcoming out-of-band security update for a critical issue identified in an upstream dependency. The team plans to publish Next.js 16.3.6 and 15.5.26 on September 22, 2026. The full advisory GHSA-vcvr-r3jv-pc5j will publish with the update and will cover impact, affected versions, and upgrade instructions.",
       "Upgrade to 16.3.6 or 15.5.26 as soon as those releases are available. For questions about the Vercel Open Source Bug Bounty program, the post points to security@vercel.com.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. Chapters 1 and 5 already stress keeping framework and dependency versions current; treat this digest as patch hygiene context, not a lab requirement. Follow the original Next.js post and the advisory when it publishes for affected versions and upgrade steps.",
+      "That upgrade is the same framework and dependency hygiene as Chapter 1 and the Node packages in Chapter 5; follow the original Next.js post and the advisory when it publishes for affected versions and upgrade steps.",
     ],
     source: {
       title: "Upcoming Next.js Security Update for a Critical Upstream Issue",
@@ -82,7 +82,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "On September 17, 2026, Amelia Charles and Eric Dodds published the September AI Gateway Production Index, covering data through August 2026. Open-weight models ran 56% of AI Gateway tokens in August, up from 7% in December — the first month they held a majority. Average price per token fell 23.2% in August, the third straight monthly drop; among teams with more than 10M tokens in both months, the median team paid 7.6% less.",
       "On frontier spend, Fable 5 share of gateway spend fell from 13.2% in July to 4.9% in August as Opus 5 rose to 22.5%, while Anthropic kept 64% of all spend. A special report notes GPT-6 Astra launched on Gateway September 3 and within two days took a third of OpenAI spend; over its first twelve days Astra was 7.7% of all gateway spend versus Fable 5.1 at 3.7% (Fable 5.1 launched September 1 at the same price). A September 18 note in the post adds that Jev became the fastest-adopted model in Gateway history, reaching about 13% of paid teams in the first 24 hours.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. Chapters 1 and 5 already touch how this course site ships on Vercel; this digest is industry usage data from AI Gateway, not a change to lab APIs. Follow the original Vercel post for the full index.",
+      "Those Gateway numbers come from the same Vercel platform you already deploy to in Chapter 1 (and the Node server work in Chapter 5).",
     ],
     source: {
       title:
@@ -100,7 +100,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "On September 15, 2026, Susan Aziz and Kevin Sundstrom described how Delphi, which builds digital minds, ships on Vercel. Founding engineer Spencer Schoeben emphasized needing excellent developer and agentic experience. The frontend ran on Vercel from day one; about six months ago the team rebuilt its Python backend on Vercel after onboarding pain with AWS, ECS, Docker, and a local database.",
       "With 10 engineers and no dedicated infra role, Delphi does 100+ production deploys a day behind feature flags, and product and design ship too. Workflows handle long-running work and Queues handle background jobs: engineers write functions in the codebase and Vercel provisions them on deploy. Preview deployments make cloud agents' work reviewable via a live URL; agents use the SDK, MCP, and CLI. An internal Sandbox agent supports customer success over Slack, and chat traffic goes through AI Gateway with per-mind model routing and failover.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. Chapters 1 and 5 already cover shipping on Vercel and server-side identity; this digest is a customer shipping story, not a change to lab requirements. Follow the original Vercel post for the full workflow.",
+      "Delphi's cadence is the same Vercel deploy path you already use in Chapter 1 (and the Node server work in Chapter 5).",
     ],
     source: {
       title: "How Delphi ships 100 times a day with its Python backend on Vercel",
@@ -117,7 +117,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "On September 11, 2026, Eric Dodds and Susan Aziz described how Tailscale built Aperture, a customer-facing model router that applies tailnet identity to AI model access. Add someone to the private network and they can use approved models; remove them and access disappears. Co-founder David Carney framed Tailscale as a networking company that chose not to rebuild provider routing; Remy Guercio leads the Aperture product.",
       "Aperture sits on Vercel AI Gateway — one API for hundreds of models, with cost and usage in responses and zero data retention options including per-request zeroDataRetention — plus Vercel Sandbox for agent execution. The post uses the lethal trifecta framing for agents that can read private data, act on it, and reach the public internet, and mitigates that with an isolated sandbox plus identity controls. There is no cost markup on AI Gateway: customers pay the same rates as going direct. Tailscale migrated its own internal AI traffic to Gateway with a switch and reported that nobody noticed, going from prototype to paying customers in months.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. Chapters 1 and 5 already cover how this course site ships on Vercel and how identity belongs on the server; this digest is about an industry model router, not a change to lab APIs. Follow the original Vercel post for architecture and Gateway details.",
+      "The model router runs on the same Vercel deploy path you already use in Chapter 1 (and the Node server work in Chapter 5).",
     ],
     source: {
       title: "How Tailscale built a customer-facing model router on AI Gateway",
@@ -134,7 +134,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "On August 31, 2026, John Phamous explained how Vercel agents build on-brand pages when they cannot read the repo. The internal product-design skill works in-repo; design.md is a single public URL for reports, proposals, and one-offs that live outside the codebase. A naive port of that skill into one prompt failed because models interpreted vague design language differently without real components nearby.",
       "The team rebuilt around seven fixed eval prompts — usage report, renewal proposal, benchmark, planning page, build-vs-buy, security brief, and a deck — and measured outputs. The system has three parts: design.md guidance, a public stylesheet of classes and tokens (the agent documents class names; CSS loads in the browser so it does not fill model context), and an evaluation loop with deterministic checks plus human review. On matched trials, known mechanical failures fell from 91 without design.md to 39 with it (57% fewer). The sample is small, and pages can still have ship-blocking issues. Weekly feedback from Slack @design-agent (eve), GitHub, and Figma keeps the file current.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. If you already use agents on labs, treat a public design brief as optional context rather than a substitute for understanding the React you submit. Follow the original Vercel post for the eval loop and stylesheet setup.",
+      "The eval loop and public stylesheet are how the agent stays on-brand, next to the React you build in Chapter 1.",
     ],
     source: {
       title: "How our agents build on-brand pages with design.md",
@@ -151,7 +151,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "On September 18, 2026, Karim Rahal wrote up how Vercel reproduced, disclosed, and helped fix a libheif remote-code-execution bug that first showed up as an apparent Next.js image-optimization RCE. Hacktron reported the issue; the root cause was the upstream AVIF decoder. The request path was next/image to /_next/image to sharp to libvips to libheif.",
       "The timeline in the post is August 11-12 for the report and reproduce, August 13 for a Vercel platform mitigation that disabled AVIF on the Image Optimization Service, August 19 for coordination with libvips, August 24 for partner notification, and August 25 for the Next.js security release that disabled AVIF optimization. The same day, libheif v1.23.2 remediated the RCE. Self-hosted apps needed that Next.js release; Vercel-hosted apps were mitigated earlier at the platform layer. The write-up notes rising open-source vulnerability volume in 2026 and credits Hacktron plus the sharp, libvips, and libheif maintainers.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. This digest is the disclosure write-up and is distinct from the already-catalogued Next.js August 2026 security release on nextjs.org. Follow the original Vercel post for the chain and timeline rather than treating this summary as the advisory.",
+      "The image-optimization chain starts in the Next.js app you set up in Chapter 1; the original Vercel post has the timeline, and this write-up is separate from the August 2026 security release.",
     ],
     source: {
       title:
@@ -169,7 +169,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "On September 1, 2026, Luke Phillips-Sheard published Compute that takes any shape on the Vercel blog. Fluid is Vercel's unified compute layer: it assembles the machine a workload needs, swaps configuration on the fly, and absorbs burst capacity. Builds ran on it first, then sandboxes, and now functions; the post says if you have shipped on Vercel you have already been on Fluid.",
       "The post cites more than 15 million builds a day, 25 million sandboxes a week, and a trillion requests a month. Building blocks include Hive, which provisions isolated machines; Fluid images and VHS snapshots, which resume custom environments rather than cold-booting; and Vercel Drives, portable storage that outlives the machine (sandboxes today, private beta). Many requests share one instance, and Active CPU pricing means you pay for CPU while code runs, not while waiting on a database or model. The write-up is framed for agents that need fast, isolated machines with their own environment and state that outlives compute.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. This course site already ships on Vercel; the digest is about how platform compute is assembled, not a change to App Router lab code. Follow the original Vercel post for architecture and pricing details.",
+      "Fluid is the compute under the same Vercel deploy path you already use in Chapter 1 (and the Node server work in Chapter 5).",
     ],
     source: {
       title: "Compute that takes any shape",
@@ -186,7 +186,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "On September 7, 2026, GeekyGoo published a comparison of three AI coding tools and the philosophies behind them. GitHub Copilot adds AI to the IDE you already use; Cursor is an AI-first fork of VS Code; Claude Code is a terminal-native agent from Anthropic.",
       "The post's 30-second verdict: cheapest autocomplete in your current IDE points to Copilot; the most fluid AI-native editing points to Cursor; serious multi-file, agent, or CI work that should stay editor-agnostic points to Claude Code. Late-2026 prices the post lists (check official pages, they change) are Copilot Free / Pro at $10 per month, Cursor Free / Pro at $20 per month, and Claude Code through Claude Pro at $20 per month with no standalone free tier. The honest takeaway is that many professionals combine tools rather than picking only one.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. If you already use one of these tools on labs, do not treat agent output as a substitute for understanding the Next.js and React code you submit.",
+      "The verdict is about the editor; you are still writing the Next.js and React from Chapter 1.",
     ],
     source: {
       title:
@@ -204,7 +204,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "On September 7, 2026, Charlie Eriksen wrote that the Shai-Hulud npm worm had resurfaced. The May 19, 2026 wave hit @antv with 639 malicious versions in an hour. After 111 days of silence, the same payload hash (e37e3ddeeaaa9e0c4fdbcb829b4895a6521031c80053fc436625b61e6ee5b1a6) reappeared in four packages published within the same hour: feishu-docx-mcp@0.3.2, bmc-i18n-extract-cli@1.1.1, blueai-cli@0.7.0, and bmc-translate-utils@1.1.1.",
       "npm had rolled out publish-time malware scanning in July, holding packages for 5 to 15 minutes before they become installable. Aikido argues that an exact match against a known-malicious hash is the easy case and still got missed. Indicators named in the post include a C2 host written as t[.]m-kosche[.]com, a preinstall script of bun run index.js, and persistence via .vscode/tasks.json and .claude/settings.json.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. For Chapter 5 Node hygiene, treat unexpected install scripts and unfamiliar packages carefully; registry scanning is not a substitute for knowing what you install. Follow the original Aikido post for the full IoC list.",
+      "Unexpected install scripts and unfamiliar packages fit the Node dependency hygiene in Chapter 5; the original Aikido post has the full indicator list.",
     ],
     source: {
       title: "Shai-Hulud Rises From the Dead after 111 days",
@@ -221,7 +221,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "On September 8, 2026, Jas Garcha and Eric Dodds announced Flat Rate CDN for Vercel Pro teams: a fixed monthly CDN bill with spike protection instead of pure usage-based CDN charges. New Pro teams get Flat Rate CDN by default; existing Pro teams can opt in. Usage is tracked at the team level across all projects.",
       "One fixed monthly fee covers CDN Requests, Fast Data Transfer, Blob Data Transfer, and Observability events from CDN requests. Example tiers in the post include Flat Rate CDN 1M (included with Pro: 1M requests / 1 TB), 10M ($20), 50M ($100), and 150M ($300). The post says temporary spikes do not raise the bill, and that Vercel rightsizes the tier from sustained usage rather than capping or degrading the site when traffic goes viral. Teams can still opt out to pay-as-you-go CDN.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. This course site ships on Vercel; the digest is about billing predictability for student and staff deploys, not a change to App Router code. Follow the original Vercel post for tiers and opt-in steps.",
+      "The fixed CDN bill is about the same Vercel deploy path you already use in Chapter 1.",
     ],
     source: {
       title: "Introducing Flat Rate CDN",
@@ -238,7 +238,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "On September 10, 2026, OpenAI introduced the Agents API in public beta. It exposes the same harness and infrastructure that powers Codex so developers can create cloud agents through an API: specify the task, model, tools, and environment, then let OpenAI host and maintain the harness.",
       "You choose where the agent runs — an OpenAI-hosted sandbox, your own infrastructure, or partner sandboxes (the post names providers including Blaxel, Cloudflare, Daytona, DigitalOcean, E2B, Modal, Oracle, Runloop, and Vercel). The harness covers long-session context compaction, tool search and programmatic tool calling (including MCP, custom functions, and web search), and optional multi-agent subagent delegation. The post says the API is powered by the open-source Codex harness, with no extra fee beyond tokens and tools used.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. If you experiment with agent APIs alongside Next.js labs, do not treat agent output as a substitute for understanding the React and Node code you submit.",
+      "The hosted harness is another way to run an agent around the Next.js app you build in Chapter 1.",
     ],
     source: {
       title: "Introducing the Agents API",
@@ -255,7 +255,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "On August 25, 2026, Aayush Kapoor published Introducing Run SDK on the Vercel blog. The package runs untrusted JavaScript or type-stripped TypeScript in a fresh QuickJS context inside a worker thread, with no direct route to Node.js or the network. Applications expose narrow hostFunctions that become callable globals inside the sandbox; credentials and service clients stay in the host.",
       "Host functions can interrupt a run for human approval or authentication via getHostFunctionContext().interrupt, then resume with a signed token so settled host calls are not repeated. createRunner() sets shared limits such as timeoutMs and memoryLimitBytes. The post states the Run SDK powers code-mode tool execution in the AI SDK, supports Node.js 22.13+ and Bun (install with pnpm add run), and that OS-level isolation still belongs in Vercel Sandbox rather than this in-process QuickJS boundary.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. For Chapter 5 server work and any agent features that eval generated code, the lesson is to keep secrets out of the sandbox and authorize inside host functions. Follow the original post for API details.",
+      "Keeping credentials in host functions, outside the sandbox, fits the Node server work in Chapter 5 and the Next.js app in Chapter 1.",
     ],
     source: {
       title: "Introducing Run SDK: secure eval for your agents",
@@ -271,8 +271,7 @@ export const BLOG_POSTS: BlogPost[] = [
     relatedChapters: ["ch1"],
     intro: [
       "On September 10, 2026, Tim Caswell, Steven Salat, and Luba Kravchenko described how Vercel cut CDN metadata lookup latency. The CDN runs on average over 80 million routing instructions per second, and metadata lookups decide which paths exist and how to serve them. The team moved from per-path metadata objects to bounded indexed shards of about 200 KB, using JSONL plus inline indexes so one fetch warms many paths while lookups parse only the needed record.",
-      "Production measurements on August 5-12, 2026 traffic show P99 metadata lookup latency falling from 215.8 ms to 19.1 ms (91% lower) and the average from 8.59 ms to 1.81 ms (79% lower). Deployments built after July 17, 2026 already use the new shards; older deployments need a redeploy. The Build Output API contract is unchanged, and the change also saved about 16.6 seconds of redundant metadata upload work, making the deploy step about 10% faster overall. For CS 4550 / CS 5610, this helps explain how Next.js App Router deployments are routed on Vercel and why redeploying can pick up platform improvements without app code changes.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. Follow the original Vercel post for measurements and rollout details rather than treating this digest as the full write-up.",
+      "Production measurements on August 5-12, 2026 traffic show P99 metadata lookup latency falling from 215.8 ms to 19.1 ms (91% lower) and the average from 8.59 ms to 1.81 ms (79% lower). Deployments built after July 17, 2026 already use the new shards; older deployments need a redeploy. The Build Output API contract is unchanged, and the change also saved about 16.6 seconds of redundant metadata upload work, making the deploy step about 10% faster overall. That routing is the same Vercel deploy path you already use in Chapter 1, and a redeploy can pick up the platform change without app code changes.",
     ],
     source: {
       title: "How we cut CDN metadata lookup latency by 91%",
@@ -289,7 +288,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "On September 10, 2026, Alexi Robbins and Fredrika Lindh introduced Cursor Projects on the product blog, rolling out in beta. Projects take on larger bodies of work such as a feature, a migration, or a full app: they keep context over months, delegate to thousands of subagents, and can run recurring work without being prompted. You chat with a Projects coordinator that directs other agents rather than writing code itself. Runs are cloud by default on their own computer so closing a laptop does not stop the work, agents share context files, and subscriptions cover Slack, a schedule, and pull requests or CI.",
       "Cursor reports that new users merge 30% more pull requests, and that users who primarily use Projects merge six times as many — those figures are Cursor's own reporting. The post describes three patterns: feature work, migrations that span hundreds of pull requests, and ongoing gardening such as a design-system Project watching pull requests.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. If you already use Cursor on labs, do not treat agent output as a substitute for understanding Next.js and React yourself.",
+      "The coordinator still depends on the Next.js and React you learn in Chapter 1.",
     ],
     source: {
       title: "Introducing Projects",
@@ -305,8 +304,7 @@ export const BLOG_POSTS: BlogPost[] = [
     relatedChapters: ["ch5"],
     intro: [
       "On August 31, 2026, Ulises Gascon published August 2026 security releases on the Express blog. The releases are hbs 4.3.0, multer 2.3.0, and morgan 1.12.0, addressing six vulnerabilities.",
-      "The post names CVE-2026-16231 (hbs async helper XSS, High); CVE-2026-77037, CVE-2026-77078, and CVE-2026-82333 (multer denial-of-service and resource issues, High); CVE-2026-15603 (morgan Unicode log forging, Medium); and CVE-2026-77063 (multer async fileFilter size-limit bypass, Low). The recommended action is to upgrade with npm update hbs multer morgan, or bump those packages. For Chapter 5 Express and Node server hygiene, multipart upload middleware and logging are common lab patterns; patch when advisories land.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. This digest is not a substitute for the advisory — follow the original Express post for the full CVE list and upgrade notes.",
+      "The post names CVE-2026-16231 (hbs async helper XSS, High); CVE-2026-77037, CVE-2026-77078, and CVE-2026-82333 (multer denial-of-service and resource issues, High); CVE-2026-15603 (morgan Unicode log forging, Medium); and CVE-2026-77063 (multer async fileFilter size-limit bypass, Low). The recommended action is to upgrade with npm update hbs multer morgan, or bump those packages. Multipart upload middleware and request logging fit the Node dependency hygiene in Chapter 5; follow the original Express post for the full CVE list and upgrade notes.",
     ],
     source: {
       title: "August 2026 Security Releases",
@@ -323,7 +321,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "On September 9, 2026, the React Team announced that React 19.3 is on npm. View Transitions and Fragment Refs, shared as experimental APIs last year, are stable in this release.",
       "The ViewTransition component animates elements as they enter, exit, move, or resize using the browser View Transition API. You can pass a ref to a Fragment to get a FragmentInstance for working with sibling DOM children as a group. A component can call use(browser()) to opt out of server-side rendering: the nearest Suspense fallback shows on the server, then the component renders after hydration. React 19.3 also passes Trusted Types values through without string coercion so a Content-Security-Policy require-trusted-types-for policy can protect injection sinks such as innerHTML.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. Stay on the React version this repo already pins unless you are experimenting, and follow the original post for APIs and examples.",
+      "View Transitions, Fragment refs, and the other stable APIs pair with the React components in Chapter 1 and the client UI in Chapter 3; this repo still pins an earlier React.",
     ],
     source: {
       title: "React 19.3",
@@ -340,7 +338,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "On June 25, 2026, Vercel published AI SDK 7, the TypeScript SDK they describe as the layer for building AI applications, features, frameworks, and agents across model providers. The post frames the release as production depth for agent work: developing agents (reasoning control, typed tool and runtime context, provider file and skill uploads, MCP Apps, and a terminal UI), running them (tool approvals, durable WorkflowAgent, timeouts, and sandbox sessions), integrating established harnesses, and observing runs with telemetry and lifecycle events.",
       "The same announcement also covers experimental provider-agnostic realtime voice sessions and generateVideo. A v7 codemod is mentioned for upgrades from AI SDK 6.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. If you try the SDK, start from the original post rather than assuming last year's AI SDK APIs.",
+      "If you try the SDK, start from this release's APIs; they sit beside the Next.js app in Chapter 1, rather than last year's AI SDK surface.",
     ],
     source: {
       title: "AI SDK 7",
@@ -357,7 +355,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "On September 14, 2026, iSyncEvolution published a CTO-oriented guide to Next.js Middleware and Proxy authorization risk. It reviews CVE-2025-29927, a critical Middleware authorization bypass (CVSS 9.1) patched in releases including 12.3.5, 13.5.9, 14.2.25, and 15.2.3, plus later 2026 Middleware/Proxy bypasses disclosed in May (App Router segment-prefetch, Pages Router i18n, dynamic route parameters) and July (certain App Router apps using Turbopack and a single i18n locale in the 16.0.x–16.2.x range).",
       "The through-line is architectural: do not treat Middleware or, in Next.js 16, proxy.ts as the only authorization layer. The guide repeats the recommended workaround — enforce authorization in server-side page, Route Handler, Server Action, or data-access logic — and notes that renaming middleware.ts to proxy.ts is not itself a security migration.",
-      "Optional further reading for CS 4550 / CS 5610 — not required for labs or grades. This course site already uses a proxy file for request handling; that does not replace checks at protected operations. Read the original article and the linked Next.js advisories before changing lab auth.",
+      "This site already uses a proxy file for request handling, the same app boundary as Chapter 1, and that still does not replace the server-side checks in Chapter 5.",
     ],
     source: {
       title: "Next.js Security Best Practices: CTO Guide to Middleware & Proxy Risks",
@@ -374,7 +372,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "On August 25, 2026, the Next.js team published a security release and asked everyone to patch immediately. Updates landed in v16.3.3 (Active LTS) and v15.5.24 (Maintenance LTS) after an extra critical issue in an upstream dependency moved the date forward.",
       "Two issues are called out: unauthenticated remote code execution in the Image Optimization API when using AVIF (a vulnerability in libheif used by sharp; the patched releases disable AVIF optimization until an upstream fix lands), and a Windows-only unauthenticated RCE when an app uses both the Pages Router and the App Router without Cache Components. Linux and macOS are not affected by the Windows issue; the post says there is no known workaround for affected Windows-hosted apps.",
-      "Most of you deploy this course on Vercel (Linux), but the habit still matters: when the Next.js blog says patch ASAP, bump next and redeploy. This digest is not a substitute for the advisory — follow the original post and the linked GHSA/CVE entries.",
+      "Most of you deploy this course on Vercel (Linux), the same deploy path as Chapter 1 (and Node server work in Chapter 5), but the habit still matters: when the Next.js blog says patch ASAP, bump next and redeploy. This digest is not a substitute for the advisory — follow the original post and the linked GHSA/CVE entries.",
     ],
     source: {
       title: "August 2026 Security Release",
@@ -390,8 +388,8 @@ export const BLOG_POSTS: BlogPost[] = [
     relatedChapters: ["ch1", "ch3"],
     intro: [
       "Next.js 16.3 is the framework release this course site already sits on. The official post highlights Instant Navigations — an opt-in suite that aims for SPA-like clicks without giving up the server-driven App Router — plus quieter wins you will feel in lab: lower next dev memory (up to 90% less RAM on long sessions), faster rebuilds via disk cache, TypeScript 7 type-checking during next build, and up to 22% more requests under load after App Router SSR switched to native Node streams.",
-      "For CS 4550 / CS 5610, the practical takeaway is upgrade hygiene and navigation mental models. Instant Navigations is still opt-in (cacheComponents and partialPrefetching in next.config.ts); it is not required for labs or grades. If you experiment, read the original notes on Instant Insights, Partial Prefetching, and the Playwright instant() helper so you do not invent caching behavior.",
-      "The same post also points at versioned docs for AI agents (the AGENTS.md block next dev writes) and a companion write-up on agent tooling. Treat those as optional further reading while you finish chapters 1 and 3.",
+      "The practical takeaway is upgrade hygiene and the App Router navigation model in Chapter 1 and Chapter 3. Instant Navigations stays opt-in through cacheComponents and partialPrefetching in next.config.ts. The original notes on Instant Insights, Partial Prefetching, and the Playwright instant() helper spell out the caching behavior.",
+      "The same post also points at versioned docs for AI agents (the AGENTS.md block next dev writes) and a companion write-up on agent tooling, alongside the Chapter 1 and Chapter 3 navigation work.",
     ],
     source: {
       title: "Next.js 16.3",
@@ -408,7 +406,7 @@ export const BLOG_POSTS: BlogPost[] = [
     intro: [
       "Before 16.3 went stable, the Next.js team published a preview-era post about designing the framework for agent-driven development. The through-line is keeping coding agents on this version of Next.js instead of stale training data: next dev writes a version-matched AGENTS.md pointer at the bundled docs in node_modules/next/dist/docs/.",
       "The post also describes first-party Skills for multi-step workflows (next-dev-loop, Cache Components adoption and optimizer), agent-browser React introspection, Instant Insights fix menus with copy-ready prompts, a smaller DevTools MCP server, and docs-as-Markdown (append .md to any docs URL).",
-      "None of this is assigned coursework. If you already use Cursor or another agent for labs, the useful habit is: read the local Next.js docs the repo points at, and do not assume last year's App Router APIs still apply.",
+      "If you already use Cursor or another agent, read the local Next.js docs the repo points at — the same App Router you use in Chapter 1 — and do not assume last year's App Router APIs still apply.",
     ],
     source: {
       title: "Next.js 16.3: AI Improvements",
