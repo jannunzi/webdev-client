@@ -22,6 +22,8 @@ describe("shared course chrome", () => {
     assert.ok(hrefs.includes("/quizzes/take"));
     assert.ok(hrefs.includes("/office-hours"));
     assert.ok(hrefs.includes("/slides"));
+    assert.ok(hrefs.includes("/videos"));
+    assert.equal(hrefs.indexOf("/videos"), hrefs.indexOf("/slides") + 1);
     assert.ok(!hrefs.includes("/calendar"));
     assert.ok(!hrefs.includes("/piazza-hours"));
     assert.match(read("app/syllabus/components/SyllabusNav.tsx"), /href="\/calendar"/);
@@ -37,6 +39,7 @@ describe("shared course chrome", () => {
     assert.equal(isCourseInfoCurrent("/quizzes", "/quizzes/take"), false);
     assert.equal(isCourseInfoCurrent("/account/profile", "/account/signin"), true);
     assert.equal(isCourseInfoCurrent("/syllabus", "/book"), false);
+    assert.equal(isCourseInfoCurrent("/videos", "/videos"), true);
   });
 
   it("mounts CourseSiteHeader on syllabus, course-info, book, assignments, quizzes, slides, and people", () => {

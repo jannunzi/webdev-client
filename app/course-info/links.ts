@@ -3,6 +3,7 @@ export const COURSE_INFO_LINKS = [
   { href: "/book", label: "Book" },
   { href: "/blog", label: "Blog" },
   { href: "/slides", label: "Slides" },
+  { href: "/videos", label: "Videos" },
   { href: "/assignments", label: "Assignments" },
   { href: "/quizzes/take", label: "Quizzes" },
   { href: "/labs", label: "Labs" },

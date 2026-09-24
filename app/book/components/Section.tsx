@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import BookSectionVideosLink from "./BookSectionVideosLink";
 import BookSectionSlidesLink from "./BookSectionSlidesLink";
 
 export default function Section({
@@ -28,6 +29,7 @@ export default function Section({
       <div className={wrapClass}>
         <Heading className={headingClass}>{title}</Heading>
         <BookSectionSlidesLink sectionId={id} />
+        <BookSectionVideosLink sectionId={id} />
       </div>
       <div className="space-y-3 text-[1.05rem]">{children}</div>
     </section>
