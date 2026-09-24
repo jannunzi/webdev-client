@@ -3,7 +3,8 @@ import type { AssignmentItem } from "./types";
 export const assignmentsIntro = [
   "Six assignments (A1–A6) implement Kambaz incrementally. Each one corresponds to a chapter of the interactive book. Later assignments build on earlier ones — do not skip ahead and leave a hole in the stack.",
   "Due dates are one Canvas calendar for CS 4550 and both CS 5610 sections.",
-  "Unless a handout says otherwise, submit (1) a public GitHub repository and (2) a Vercel URL that is running the work for that assignment. The repository must contain the source that produced the deployment.",
+  "Unless a handout says otherwise, submit one public GitHub repository for A1–A6 and a Vercel URL that is running the work for that assignment. The same repository continues through the stack, and it must contain the source that produced the deployment.",
+  "Submit A1 from the main branch together with the production Vercel URL. For A2 and later, submit an assignment-named branch (a2, a3, …) together with that branch’s Vercel preview URL. You may tag the commit aN-submit (for example a2-submit) if that is useful for graders.",
 ];
 
 export const assignments: AssignmentItem[] = [
