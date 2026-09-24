@@ -1,6 +1,7 @@
 /**
- * Branded posters for the HTML §1.3 pilot.
- * Yolanda's 1280×720 samples: solid #E34F26, white Oswald-style title, HTML5 shield.
+ * Branded posters for the HTML §1.3 pilot (G2).
+ * Solid #E34F26, white HTML5 mark and “HTML” together at the top left,
+ * centered Oswald Bold topic, WebDevTV at the bottom left.
  * Every other clip keeps `youtubeThumbUrl` (`img.youtube.com/.../hqdefault.jpg`).
  * Keys are book TOC ids from `lecture-clips.json`, not YouTube ids — several
  * sections share one recording, and each card still needs its own title.
