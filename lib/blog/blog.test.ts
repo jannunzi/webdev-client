@@ -68,6 +68,12 @@ const REQUIRED_DIGEST_2026_09_23 = [
   "https://vercel.com/blog/how-featureds-users-make-100k-media-pitches-per-month-on-vercel",
 ] as const;
 
+const REQUIRED_DIGEST_2026_09_24 = [
+  "https://nextjs.org/blog/turbopack-chunking",
+  "https://nextjs.org/blog/how-we-closed-1500-github-issues",
+  "https://nextjs.org/blog/upcoming-nextjs-security-release-september-2026",
+] as const;
+
 const REQUIRED_SOURCES = [
   ...REQUIRED_SEED_SOURCES,
   ...REQUIRED_CATCHUP_SOURCES,
@@ -77,6 +83,7 @@ const REQUIRED_SOURCES = [
   ...REQUIRED_DIGEST_2026_09_21,
   ...REQUIRED_DIGEST_2026_09_22,
   ...REQUIRED_DIGEST_2026_09_23,
+  ...REQUIRED_DIGEST_2026_09_24,
 ] as const;
 
 const ALLOWED_SOURCE_URL =
@@ -129,6 +136,9 @@ describe("blog posts", () => {
     for (const required of REQUIRED_DIGEST_2026_09_23) {
       assert.ok(urls.includes(required), required);
     }
+    for (const required of REQUIRED_DIGEST_2026_09_24) {
+      assert.ok(urls.includes(required), required);
+    }
 
     for (const post of BLOG_POSTS) {
       assert.ok(post.slug.length > 0, "slug");
@@ -156,42 +166,46 @@ describe("blog posts", () => {
     assert.deepEqual(
       listed.slice(0, 3).map((post) => post.slug),
       [
-        "ai-gateway-jev-fastest-adopted",
-        "featured-100k-media-pitches-vercel",
-        "nextjs-security-update-sept-22-2026",
+        "nextjs-closed-1500-github-issues-agent",
+        "nextjs-upcoming-security-release-sept-30-2026",
+        "turbopack-chunking-nextjs-16-3",
       ],
     );
     assert.deepEqual(
       listed.slice(0, 3).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_23].sort(),
+      [...REQUIRED_DIGEST_2026_09_24].sort(),
     );
     assert.deepEqual(
       listed.slice(3, 6).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_22].sort(),
+      [...REQUIRED_DIGEST_2026_09_23].sort(),
     );
     assert.deepEqual(
       listed.slice(6, 9).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_21].sort(),
+      [...REQUIRED_DIGEST_2026_09_22].sort(),
     );
     assert.deepEqual(
       listed.slice(9, 12).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_17].sort(),
+      [...REQUIRED_DIGEST_2026_09_21].sort(),
     );
     assert.deepEqual(
       listed.slice(12, 15).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_16].sort(),
+      [...REQUIRED_DIGEST_2026_09_17].sort(),
     );
     assert.deepEqual(
       listed.slice(15, 18).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_15].sort(),
+      [...REQUIRED_DIGEST_2026_09_16].sort(),
     );
     assert.deepEqual(
       listed.slice(18, 21).map((post) => post.source.url).sort(),
+      [...REQUIRED_DIGEST_2026_09_15].sort(),
+    );
+    assert.deepEqual(
+      listed.slice(21, 24).map((post) => post.source.url).sort(),
       [...REQUIRED_CATCHUP_SOURCES].sort(),
     );
-    assert.equal(listed[21]?.slug, "august-2026-nextjs-security-release");
-    assert.equal(listed[22]?.slug, "nextjs-16-3-instant-navigations");
-    assert.equal(listed[23]?.slug, "nextjs-16-3-ai-improvements");
+    assert.equal(listed[24]?.slug, "august-2026-nextjs-security-release");
+    assert.equal(listed[25]?.slug, "nextjs-16-3-instant-navigations");
+    assert.equal(listed[26]?.slug, "nextjs-16-3-ai-improvements");
 
     assert.equal(listBlogSlugs().length, REQUIRED_SOURCES.length);
     assert.equal(
@@ -206,6 +220,7 @@ describe("blog posts", () => {
   });
 
   it("formats published dates in UTC and maps related chapters", () => {
+    assert.equal(formatBlogDate("2026-09-24T12:00:00.000Z"), "September 24, 2026");
     assert.equal(formatBlogDate("2026-09-23T12:00:00.000Z"), "September 23, 2026");
     assert.equal(formatBlogDate("2026-09-22T12:00:00.000Z"), "September 22, 2026");
     assert.equal(formatBlogDate("2026-09-21T12:00:00.000Z"), "September 21, 2026");
@@ -337,6 +352,19 @@ describe("blog posts", () => {
     assert.match(featured?.intro.join(" ") ?? "", /Susan Aziz/);
     assert.match(featured?.intro.join(" ") ?? "", /100,000/);
     assert.match(featured?.intro.join(" ") ?? "", /Workflow SDK/);
+
+    const chunking = getBlogPost("turbopack-chunking-nextjs-16-3");
+    assert.match(chunking?.intro.join(" ") ?? "", /generateComponentChunks/);
+    assert.match(chunking?.intro.join(" ") ?? "", /38 requests/);
+    assert.match(chunking?.intro.join(" ") ?? "", /Turbopack defaults/);
+    const closability = getBlogPost("nextjs-closed-1500-github-issues-agent");
+    assert.match(closability?.intro.join(" ") ?? "", /1,462/);
+    assert.match(closability?.intro.join(" ") ?? "", /closability/);
+    assert.match(closability?.intro.join(" ") ?? "", /eve/);
+    const sept30 = getBlogPost("nextjs-upcoming-security-release-sept-30-2026");
+    assert.match(sept30?.intro.join(" ") ?? "", /16\.3\.7/);
+    assert.match(sept30?.intro.join(" ") ?? "", /15\.5\.27/);
+    assert.match(sept30?.intro.join(" ") ?? "", /September 30/);
   });
 
   it("dates the September 14 catch-up posts in America/New_York", () => {
@@ -354,6 +382,25 @@ describe("blog posts", () => {
       const post = getBlogPost(slug);
       assert.ok(post, slug);
       assert.equal(nyDate.format(new Date(post.publishedAt)), "September 14, 2026");
+    }
+  });
+
+  it("dates the September 24 digest posts in America/New_York", () => {
+    const nyDate = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "America/New_York",
+    });
+    for (const slug of [
+      "turbopack-chunking-nextjs-16-3",
+      "nextjs-closed-1500-github-issues-agent",
+      "nextjs-upcoming-security-release-sept-30-2026",
+    ]) {
+      const post = getBlogPost(slug);
+      assert.ok(post, slug);
+      assert.equal(post.publishedAt, "2026-09-24T12:00:00.000Z");
+      assert.equal(nyDate.format(new Date(post.publishedAt)), "September 24, 2026");
     }
   });
 
