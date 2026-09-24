@@ -1,4 +1,5 @@
 import { a1LabCriteria } from "./a1-lab-exercises";
+import { ASSIGNMENT_STUDENT_COPY } from "./student-copy";
 import type { AssignmentRubric } from "./types";
 
 /**
@@ -16,7 +17,7 @@ export const A1_RUBRIC: AssignmentRubric = {
       id: "delivery",
       title: "Delivery",
       intro:
-        "Submit a Vercel URL that graders can open without signing in. A public GitHub repository is optional for auto-checks, but graders still look for the repo and a wd-github link on Labs.",
+        `Submit a Vercel URL that graders can open without signing in. A public GitHub repository is optional for auto-checks, but graders still look for the repo and a wd-github link on Labs. ${ASSIGNMENT_STUDENT_COPY.nameAndSectionDeliveryNote}`,
       criteria: [
         {
           id: "a1-delivery-vercel",
@@ -30,8 +31,7 @@ export const A1_RUBRIC: AssignmentRubric = {
         {
           id: "a1-delivery-name-section",
           label: "Name and section",
-          description:
-            "Labs shows your full name (first then last, matching Canvas) so graders can identify the work.",
+          description: ASSIGNMENT_STUDENT_COPY.nameAndSection,
           points: 3,
           bookHref: "/book/ch1#sec-1-7",
           bookLabel: "§1.7",
@@ -51,7 +51,7 @@ export const A1_RUBRIC: AssignmentRubric = {
       id: "lab",
       title: "Lab — HTML components",
       intro:
-        "Same nested list as book §1.3.12: one row per Lab 1 section (1.3.1–1.3.11), with lettered a/b/c for the Lab component, On your own, and With AI extra.",
+        `Same nested list as book §1.3.12: one row per Lab 1 section (1.3.1–1.3.11), with lettered a/b/c for the Lab component, On your own, and With AI extra. ${ASSIGNMENT_STUDENT_COPY.manualCheckLabNote}`,
       criteria: a1LabCriteria(),
     },
     {

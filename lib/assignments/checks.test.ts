@@ -195,6 +195,10 @@ describe("runA1Checks", () => {
     assert.equal(byCriterion.get("a1-lab-toc-ai")?.passed, true);
     assert.equal(byCriterion.get("a1-kambaz-account")?.passed, true);
     assert.equal(byCriterion.get("a1-lab-highlighted-paragraph-oyo")?.skipped, true);
+    assert.equal(
+      byCriterion.get("a1-lab-highlighted-paragraph-oyo")?.message,
+      ASSIGNMENT_STUDENT_COPY.manualCheckHint,
+    );
     assert.equal(byCriterion.get("a1-lab-forms-ai")?.skipped, true);
   });
 
@@ -577,6 +581,45 @@ describe("student-facing copy", () => {
     assert.match(ASSIGNMENT_STUDENT_COPY.vercelNotFound, /private window/i);
     assert.match(ASSIGNMENT_STUDENT_COPY.vercelUnreachable, /private\/incognito/i);
     assert.match(ASSIGNMENT_STUDENT_COPY.vercelHttpError, /cannot load the page/i);
+  });
+
+  it("says Name and section is the Canvas name on Labs, not a Run checks control", () => {
+    assert.match(ASSIGNMENT_STUDENT_COPY.nameAndSection, /full Canvas name on Labs/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.nameAndSection, /first then last/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.nameAndSection, /matching the roster/i);
+    assert.match(
+      ASSIGNMENT_STUDENT_COPY.nameAndSection,
+      /no Name and section checkbox or control in Run checks/i,
+    );
+    assert.match(
+      ASSIGNMENT_STUDENT_COPY.nameAndSectionDeliveryNote,
+      /not a checkbox or control in Run checks/i,
+    );
+    assert.match(ASSIGNMENT_STUDENT_COPY.nameMissing, /full Canvas name/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.nameMissing, /no Name and section checkbox in Run checks/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.nameOk, /full Canvas name on Labs/i);
+  });
+
+  it("says Manual check is staff grading on the deploy URL, not an auto result", () => {
+    assert.match(ASSIGNMENT_STUDENT_COPY.manualCheckHint, /Staff grade this row on your deploy URL/i);
+    assert.match(
+      ASSIGNMENT_STUDENT_COPY.manualCheckHint,
+      /Run checks does not mark it pass or fail/i,
+    );
+    assert.match(
+      ASSIGNMENT_STUDENT_COPY.manualCheckHint,
+      /not a failed auto check/i,
+    );
+    assert.match(ASSIGNMENT_STUDENT_COPY.manualCheckLabNote, /Manual check badge/i);
+    assert.match(
+      ASSIGNMENT_STUDENT_COPY.manualCheckLabNote,
+      /staff grade that row on your deploy URL/i,
+    );
+    assert.match(
+      ASSIGNMENT_STUDENT_COPY.manualCheckLabNote,
+      /never marks it pass or fail/i,
+    );
+    assert.doesNotMatch(ASSIGNMENT_STUDENT_COPY.manualCheckHint, /Best \/ Better/i);
   });
 
   it("describes origin normalize, Labs/Kambaz crawl, and optional GitHub", () => {

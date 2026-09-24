@@ -195,14 +195,12 @@ export async function runA1Checks(input: {
     if ((A1_LAB_SPECIAL_AUTO_IDS as readonly string[]).includes(exercise.id)) {
       continue;
     }
-    const kindLabel =
-      exercise.kind === "ai" ? "With AI" : "On your own";
     results.push(
       check(
         exercise.id,
         exercise.label,
         false,
-        `This ${kindLabel} row stays manual — there is no required extra id to look for.`,
+        ASSIGNMENT_STUDENT_COPY.manualCheckHint,
         {
           criterionId: exercise.id,
           groupId: "lab",
