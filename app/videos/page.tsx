@@ -6,6 +6,7 @@ import {
 } from "@/lib/videos/courses";
 import { listVideoHubChapters } from "@/lib/videos/hub";
 import { lectureClipMap } from "@/lib/videos/map";
+import { publishedCoursePlaylists } from "@/lib/videos/playlists";
 import { parseVideosQuery, videosHref, videosHubHref } from "@/lib/videos/query";
 import VideosHub from "./components/VideosHub";
 
@@ -66,6 +67,7 @@ export default async function VideosPage({
         semester: query.semesterValid ? query.semester : defaultVideoSemester(),
       })}
       activeSection={query.section || null}
+      playlists={publishedCoursePlaylists()}
     />
   );
 }

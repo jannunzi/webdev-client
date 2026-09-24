@@ -5,6 +5,7 @@ import { bookSectionTitle, listBookSectionIds } from "./map";
 import { videosHref } from "./query";
 import { fallbackTierLabel, resolveLectureClip } from "./resolve";
 import type { LectureClipMap } from "./types";
+import { brandedPosterUrl } from "./thumbs";
 import { formatClipClock, youtubeEmbedUrl } from "./youtube";
 
 export type VideoHubCard = {
@@ -16,6 +17,10 @@ export type VideoHubCard = {
   href: string;
   bookHref: string;
   youtubeVideoId: string | null;
+  /**
+   * Branded still for this book section. Null keeps the YouTube hqdefault poster.
+   */
+  posterUrl: string | null;
   /** Timed snippet player. Null until a clip resolves. */
   embedUrl: string | null;
   /** Whole-lecture URL with no start time, or null for a short part. */
@@ -131,6 +136,7 @@ export function listVideoHubChapters(
               href: videosHref(clipId),
               bookHref: bookPathForSection(clipId),
               youtubeVideoId: resolved?.youtubeVideoId ?? null,
+              posterUrl: brandedPosterUrl(clipId),
               embedUrl: resolved
                 ? youtubeEmbedUrl(
                     resolved.youtubeVideoId,

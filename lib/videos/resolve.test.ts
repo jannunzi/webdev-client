@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, it } from "node:test";
 import { COURSE_SECTION_IDS } from "../roster/sections.ts";
@@ -19,6 +19,10 @@ import {
 } from "./map.ts";
 import { fullLectureHref } from "./full-lecture.ts";
 import { listVideoHubChapters, parentBookSectionId } from "./hub.ts";
+import {
+  courseTermPlaylists,
+  publishedCoursePlaylists,
+} from "./playlists.ts";
 import { parseVideosQuery, videosHref } from "./query.ts";
 import {
   describeClipFallback,
@@ -26,9 +30,11 @@ import {
 } from "./resolve.ts";
 import { semesterCodeFromTermLabel, semesterRank } from "./semester.ts";
 import type { LectureClipMap } from "./types.ts";
+import { HTML_1_3_POSTERS, brandedPosterUrl } from "./thumbs.ts";
 import { parseLectureClipMap } from "./validate.ts";
 import {
   youtubeEmbedUrl,
+  youtubePlaylistUrl,
   youtubeThumbUrl,
   youtubeVideoIdFromUrl,
   youtubeWatchUrl,
@@ -538,7 +544,17 @@ describe("videos hub", () => {
       (clip) => clip.id === "sec-1-3-7",
     );
     assert.equal(part?.fullLectureUrl, null);
+    assert.equal(part?.posterUrl, null);
     assert.match(part?.embedUrl ?? "", /youtube-nocookie\.com\/embed\//);
+    assert.equal(
+      headings?.posterUrl,
+      "/videos/thumbs/html-1-3/02-headings-div.jpg",
+    );
+    assert.equal(
+      chapters[0]?.sections[0]?.clips.find((clip) => clip.id === "sec-1-3")
+        ?.posterUrl,
+      "/videos/thumbs/html-1-3/01-html-overview.jpg",
+    );
     assert.equal(
       chapters.some((chapter) =>
         chapter.sections.some((section) => section.id.startsWith("sec-2-1")),
@@ -567,10 +583,107 @@ describe("videos page shell", () => {
     assert.match(hub, /grid-cols-1 gap-4/);
     assert.match(hub, /LectureChapterLink/);
     assert.match(hub, /youtubeThumbUrl/);
+    assert.match(hub, /posterUrl/);
+    assert.match(hub, /CoursePlaylists/);
     assert.match(hub, /<iframe/);
     assert.match(hub, /Watch full lecture/);
     assert.match(hub, /Open in the book/);
     assert.match(read("lib/videos/hub.ts"), /youtubeEmbedUrl/);
     assert.doesNotMatch(`${page}\n${hub}`, /mux|vercel\/blob|@mux/i);
+    assert.match(page, /publishedCoursePlaylists/);
   });
 });
+
+describe("HTML §1.3 branded posters", () => {
+  it("maps each sample to its book section and leaves the other clips on YouTube", () => {
+    const expected: Record<string, string> = {
+      "sec-1-3": "01-html-overview.jpg",
+      "sec-1-3-1": "02-headings-div.jpg",
+      "sec-1-3-2": "03-paragraphs.jpg",
+      "sec-1-3-3": "04-lists.jpg",
+      "sec-1-3-6": "05-html-forms.jpg",
+      "sec-1-3-6-1": "06-text-inputs.jpg",
+      "sec-1-3-9": "07-anchors.jpg",
+      "sec-1-3-11": "08-layouts.jpg",
+    };
+    assert.deepEqual(
+      Object.fromEntries(
+        Object.entries(HTML_1_3_POSTERS).map(([id, path]) => [
+          id,
+          path.split("/").pop(),
+        ]),
+      ),
+      expected,
+    );
+    for (const [id, file] of Object.entries(expected)) {
+      assert.ok(lectureClipMap.sections[id]?.length, `${id} has a clip`);
+      const path = brandedPosterUrl(id);
+      assert.equal(path, `/videos/thumbs/html-1-3/${file}`);
+      const disk = join(root, "public", path!.slice(1));
+      assert.ok(existsSync(disk), `${path} is missing on disk`);
+      const size = jpegSize(disk);
+      assert.deepEqual(size, { width: 1280, height: 720 });
+    }
+
+    for (const id of listBookSectionIds()) {
+      if (id in expected) continue;
+      assert.equal(brandedPosterUrl(id), null, `${id} stays on hqdefault`);
+    }
+    assert.equal(brandedPosterUrl("sec-1-3-7"), null);
+    assert.equal(brandedPosterUrl("sec-1-3-8"), null);
+    assert.equal(brandedPosterUrl("sec-2-1"), null);
+  });
+});
+
+describe("course playlists", () => {
+  it("keeps the hub hook and hides rows until a live playlist URL is set", () => {
+    assert.ok(courseTermPlaylists.length > 0);
+    assert.equal(publishedCoursePlaylists().length, 0);
+    assert.equal(
+      publishedCoursePlaylists([
+        {
+          scope: "term",
+          semester: "FA26",
+          label: "Fall 2026",
+          url: "https://www.youtube.com/playlist?list=PLexampleterm",
+        },
+      ])[0]?.url,
+      "https://www.youtube.com/playlist?list=PLexampleterm",
+    );
+    assert.equal(
+      youtubePlaylistUrl("https://www.youtube.com/watch?v=LUCofdJQ4qE"),
+      null,
+    );
+    assert.throws(() =>
+      publishedCoursePlaylists([
+        {
+          scope: "course",
+          label: "Bad",
+          url: "https://example.com/playlist?list=nope",
+        },
+      ]),
+    );
+  });
+});
+
+function jpegSize(file: string): { width: number; height: number } {
+  const buf = readFileSync(file);
+  let i = 2;
+  while (i + 8 < buf.length) {
+    if (buf[i] !== 0xff) break;
+    const marker = buf[i + 1] ?? 0;
+    if (marker === 0xd8 || marker === 0xd9) {
+      i += 2;
+      continue;
+    }
+    const length = buf.readUInt16BE(i + 2);
+    if (marker >= 0xc0 && marker <= 0xc2) {
+      return {
+        height: buf.readUInt16BE(i + 5),
+        width: buf.readUInt16BE(i + 7),
+      };
+    }
+    i += 2 + length;
+  }
+  throw new Error(`No JPEG size in ${file}`);
+}
