@@ -6,6 +6,57 @@ import type { BlogPost } from "./types";
  */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "turbopack-chunking-nextjs-16-3",
+    title: "Turbopack chunking: fewer requests without over-shipping JS",
+    publishedAt: "2026-09-24T12:00:00.000Z",
+    tags: ["nextjs", "course"],
+    relatedChapters: ["ch1"],
+    intro: [
+      "On September 3, 2026, Next.js explained how Turbopack decides which code goes in which JavaScript file. One big chunk earns cache hits but over-ships; one chunk per page duplicates shared code; one chunk per module creates too many requests. Turbopack merges smaller chunks within a chunk group, the chunks loaded together for a route.",
+      "On nextjs.org demo navigations, no merging was 561.6 KiB and 96 requests, Turbopack defaults were 554.8 KiB and 38 requests, and one chunk per group was 610.0 KiB and 15 requests. In Next.js 16.3, experimental.turbopackChunking.generateComponentChunks emits un-merged versions so the runtime can load only the missing pieces on soft navigations. The same experimental.turbopackChunking options include firstPageLoadPriority, priorityRoutes, and clusters. experimental.turbopackCjsTreeShaking covers CommonJS tree-shaking, and experimental.turbopackSharedRuntime saves about 10 KB after the first navigation.",
+      "That chunking is part of the App Router and Next.js tooling in Chapter 1.",
+    ],
+    source: {
+      title: "How Turbopack chunks your JavaScript",
+      url: "https://nextjs.org/blog/turbopack-chunking",
+      publisher: "Next.js",
+    },
+  },
+  {
+    slug: "nextjs-closed-1500-github-issues-agent",
+    title: "Next.js closed 1,462 issues with a read-only closability agent",
+    publishedAt: "2026-09-24T12:00:00.000Z",
+    tags: ["ai", "nextjs", "course"],
+    relatedChapters: ["ch1"],
+    intro: [
+      "The Next.js issue backlog peaked at 3,109 open reports in January 2025 and still had 2,244 on August 10, 2026. On September 4, 2026, the team described closability, built on eve, Vercel's open-source agent framework, with Vercel Sandbox. The agent is research-only: it cannot comment, close, push, or deploy, and it ignores prompt-injection instructions in issue text. It ran on GPT-5.6 Luna, with investigations averaging about 30 minutes and up to 200 concurrent eve sessions.",
+      "By September 4, 1,462 issues were closed across the repository, including some outside this review. The reasons were Already fixed 543 (37%), Duplicate 278 (19%), Expected behavior 237 (16%), No longer reproducible 89 (6%), Unsupported or obsolete 66 (5%), and Other 249 (17%). The Maintainer Agent also includes reproduction, verification, e2e_test, and fix agents, and code changes still need human review before merge. Each week, closability researches up to 100 stale open issues, and the team is starting auto-close for the clearest cases (a score of 80 or higher plus a second agent, up to 25 a week) with a reopen window.",
+      "The closability review is about the same Next.js codebase you start from in Chapter 1.",
+    ],
+    source: {
+      title: "How we closed 1,500 GitHub issues in one month",
+      url: "https://nextjs.org/blog/how-we-closed-1500-github-issues",
+      publisher: "Next.js",
+    },
+  },
+  {
+    slug: "nextjs-upcoming-security-release-sept-30-2026",
+    title: "Next.js plans Sept 30 security release (16.3.7 / 15.5.27)",
+    publishedAt: "2026-09-24T12:00:00.000Z",
+    tags: ["nextjs", "security", "course"],
+    relatedChapters: ["ch1", "ch5"],
+    intro: [
+      "Next.js is preparing a scheduled security release for September 30, 2026. The September 30 release will address nine vulnerabilities: one critical, two high, five medium, and one low. The team plans to publish 16.3.7 and 15.5.27 with full advisories covering impact, affected versions, and upgrade instructions.",
+      "The post recommends upgrading to a patched version once the release is available. It points to Vercel's Open Source Bug Bounty for contributing, and to security@vercel.com for questions.",
+      "That upgrade is the same framework hygiene as Chapter 1 and the Node package and dependency upgrades in Chapter 5.",
+    ],
+    source: {
+      title: "Upcoming Next.js September Security Release",
+      url: "https://nextjs.org/blog/upcoming-nextjs-security-release-september-2026",
+      publisher: "Next.js",
+    },
+  },
+  {
     slug: "nextjs-security-update-sept-22-2026",
     title: "Next.js 16.3.6 / 15.5.26: patch Node.js ImageResponse RCE now",
     publishedAt: "2026-09-23T12:00:00.000Z",
