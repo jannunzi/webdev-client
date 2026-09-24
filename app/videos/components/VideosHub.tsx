@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import LectureChapterLink from "@/app/slides/_components/LectureChapterLink";
 import { lectureChapterLabel } from "@/lib/lectures/types";
 import type { VideoHubCard, VideoHubChapter } from "@/lib/videos/hub";
+import type { PublishedCoursePlaylist } from "@/lib/videos/playlists";
 import { youtubeThumbUrl } from "@/lib/videos/youtube";
 import VideosHubNav from "./VideosHubNav";
 
@@ -20,6 +21,29 @@ function PlayGlyph() {
   );
 }
 
+function posterSrc(clip: VideoHubCard): string | null {
+  if (clip.posterUrl) return clip.posterUrl;
+  if (clip.youtubeVideoId) return youtubeThumbUrl(clip.youtubeVideoId);
+  return null;
+}
+
+function CoursePlaylists({ playlists }: { playlists: PublishedCoursePlaylist[] }) {
+  if (playlists.length === 0) return null;
+  return (
+    <p className="font-sans text-sm">
+      <span className="font-semibold">YouTube playlists</span>
+      {playlists.map((playlist) => (
+        <span key={`${playlist.scope}-${playlist.course ?? ""}-${playlist.semester ?? ""}-${playlist.label}`}>
+          {" · "}
+          <a href={playlist.url} target="_blank" rel="noreferrer">
+            {playlist.label}
+          </a>
+        </span>
+      ))}
+    </p>
+  );
+}
+
 function ClipCard({
   clip,
   open,
@@ -30,6 +54,7 @@ function ClipCard({
   onPlay: (id: string) => void;
 }) {
   const playing = open && clip.embedUrl != null;
+  const poster = posterSrc(clip);
   return (
     <div
       id={`video-card-${clip.id}`}
@@ -53,10 +78,10 @@ function ClipCard({
               onPlay(clip.id);
             }}
           >
-            {clip.youtubeVideoId ? (
+            {poster ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={youtubeThumbUrl(clip.youtubeVideoId)}
+                src={poster}
                 alt=""
                 className="h-full w-full object-cover"
               />
@@ -110,9 +135,12 @@ function ClipCard({
 export default function VideosHub({
   chapters,
   activeSection,
+  playlists = [],
 }: {
   chapters: VideoHubChapter[];
   activeSection?: string | null;
+  /** Published course, section, year, or term playlists. Empty until a URL is set. */
+  playlists?: PublishedCoursePlaylist[];
 }) {
   const [openId, setOpenId] = useState<string | null>(activeSection ?? null);
   const clipCount = chapters.reduce(
@@ -162,6 +190,7 @@ export default function VideosHub({
           These clips follow the book. They are not a substitute for labs or
           the checklists on <Link href="/assignments">Assignments</Link>.
         </p>
+        <CoursePlaylists playlists={playlists} />
 
         {activeSection && !known.has(activeSection) ? (
           <p className="mt-4" role="status">

@@ -105,3 +105,25 @@ export function isYoutubeHost(hostname: string): boolean {
   const host = hostname.replace(/^www\./, "");
   return host === "youtu.be" || YOUTUBE_HOSTS.has(host);
 }
+
+/**
+ * A YouTube playlist page (`/playlist` or `?list=`). Returns the trimmed URL,
+ * or null when the value is not a YouTube playlist.
+ */
+export function youtubePlaylistUrl(value: string): string | null {
+  const raw = value.trim();
+  if (!raw) return null;
+  let url: URL;
+  try {
+    url = new URL(raw);
+  } catch {
+    return null;
+  }
+  if (url.protocol !== "https:" && url.protocol !== "http:") return null;
+  if (!isYoutubeHost(url.hostname)) return null;
+  const list = url.searchParams.get("list");
+  const playlistPath =
+    url.pathname === "/playlist" || url.pathname.startsWith("/playlist/");
+  if (!list && !playlistPath) return null;
+  return raw;
+}
