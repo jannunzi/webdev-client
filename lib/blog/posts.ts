@@ -6,6 +6,57 @@ import type { BlogPost } from "./types";
  */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "klaviyo-356-internal-apps-vercel",
+    title: "Klaviyo: 356 internal apps in two weeks on Vercel",
+    publishedAt: "2026-09-25T12:00:00.000Z",
+    tags: ["nextjs", "ai", "course"],
+    relatedChapters: ["ch1"],
+    intro: [
+      "On September 24, 2026, Susan Aziz and Kevin Sundstrom described how Klaviyo built a platform on Vercel for shipping internal apps, then opened it through a citizen developer program. In the first two weeks, 512 of Klaviyo's more than 2,000 employees deployed 356 apps; 196 were full-stack apps with their own databases. Teams now shipping include legal, marketing, and HR.",
+      "Secure Compute gives deployments a private network path into Klaviyo's infrastructure so apps can use company databases without public internet traffic. Apps are SSO-gated through Okta via Enterprise Managed Users, sensitive environment variables sit at the team level, and Wiz scans feed the SIEM. K:Forge, built on the Vercel SDK, creates a GitHub repo, deploys on Vercel, connects data, and applies security defaults so builders go from idea to a live app in under three minutes.",
+      "That deploy path is the same Vercel platform you already use in Chapter 1.",
+    ],
+    source: {
+      title: "How Klaviyo shipped 356 internal apps in two weeks on Vercel",
+      url: "https://vercel.com/blog/how-klaviyo-shipped-356-internal-apps-in-two-weeks-on-vercel",
+      publisher: "Vercel",
+    },
+  },
+  {
+    slug: "vercel-connect-credential-sprawl-ga",
+    title: "Vercel Connect GA: short-lived tokens instead of credential sprawl",
+    publishedAt: "2026-09-25T12:00:00.000Z",
+    tags: ["ai", "security", "course"],
+    relatedChapters: ["ch1", "ch5"],
+    intro: [
+      "On August 25, 2026, Hedi Zandi, Ben Sabic, and Dima Voytenko announced that Vercel Connect is generally available. Connect replaces long-lived provider tokens with short-lived ones your code requests at runtime, scoped to the task. During the public beta the ecosystem grew past 100 connectors.",
+      "Apps register a connector once, attach it to projects, and call getToken at runtime; deployments use OIDC identity so there is no provider secret to commit. GA adds fine-grained RBAC for who manages connectors, audit logs, and token and trigger observability. Triggers forward provider events with server-side signature verification so webhook signing secrets stay out of the app. Hobby includes 500 token requests and 1,000 triggers per month; Pro is billed at $3 per 1,000 token requests and $0.95 per 1,000 triggers, with beta billing terms unchanged until September 25, 2026.",
+      "Keeping secrets out of the app fits the Node server work in Chapter 5 and the same Vercel deploy path as Chapter 1.",
+    ],
+    source: {
+      title: "The end of credential sprawl for agents",
+      url: "https://vercel.com/blog/the-end-of-credential-sprawl-for-agents",
+      publisher: "Vercel",
+    },
+  },
+  {
+    slug: "vercel-bug-bounty-public",
+    title: "Vercel Bug Bounty Program is now public on HackerOne",
+    publishedAt: "2026-09-25T12:00:00.000Z",
+    tags: ["security", "course"],
+    relatedChapters: ["ch1", "ch5"],
+    intro: [
+      "On September 24, 2026, Caleb An and Talha Tariq announced that Vercel is combining its private and open-source bounty programs into a single public Vercel bug bounty program on HackerOne. Earlier public efforts named in the post include the $1 million React2Shell hacker challenge, the $1 million Vercel Sandbox hacker challenge, and the OSS bug bounty program.",
+      "All products across the Vercel platform and open-source projects are in scope. New OSS findings go to the main program; existing OSS submissions do not need to be copied over. The post says AI has increased both valid and invalid reports, and that Vercel streamlined triage tooling rather than closing the program. Researchers submit through HackerOne with clear reproduction steps.",
+      "That disclosure path is the same platform security hygiene as Chapter 1 and the Node dependency work in Chapter 5.",
+    ],
+    source: {
+      title: "The Vercel Bug Bounty Program is now publicly available",
+      url: "https://vercel.com/blog/the-vercel-bug-bounty-program-is-now-publicly-available",
+      publisher: "Vercel",
+    },
+  },
+  {
     slug: "turbopack-chunking-nextjs-16-3",
     title: "Turbopack chunking: fewer requests without over-shipping JS",
     publishedAt: "2026-09-24T12:00:00.000Z",
