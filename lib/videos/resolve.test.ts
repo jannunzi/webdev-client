@@ -603,6 +603,10 @@ describe("HTML §1.3 branded posters", () => {
       "sec-1-3-3": "04-lists.jpg",
       "sec-1-3-6": "05-html-forms.jpg",
       "sec-1-3-6-1": "06-text-inputs.jpg",
+      "sec-1-3-6-3": "09-radio-buttons.jpg",
+      "sec-1-3-6-4": "10-checkboxes.jpg",
+      "sec-1-3-6-5": "11-dropdowns.jpg",
+      "sec-1-3-6-7": "12-buttons.jpg",
       "sec-1-3-9": "07-anchors.jpg",
       "sec-1-3-11": "08-layouts.jpg",
     };
