@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import {
   adjacentStaffStudentKeys,
   buildStaffStudentQueue,
+  assignmentGradeSaveAccess,
   canPersistStaffGrade,
   canViewStaffGrader,
   filterStaffQueueBySection,
@@ -47,6 +48,41 @@ describe("staff grader access helpers", () => {
     assert.equal(canPersistStaffGrade(true, true), false);
     assert.equal(canPersistStaffGrade(true, false), true);
     assert.equal(canPersistStaffGrade(false, false), false);
+  });
+
+  it("rejects Save unless the caller is signed-in allowlist staff", () => {
+    assert.deepEqual(
+      assignmentGradeSaveAccess({
+        isAuthenticated: false,
+        isActualStaff: false,
+        impersonating: false,
+      }),
+      { ok: false, code: "unauthenticated" },
+    );
+    assert.deepEqual(
+      assignmentGradeSaveAccess({
+        isAuthenticated: true,
+        isActualStaff: false,
+        impersonating: false,
+      }),
+      { ok: false, code: "forbidden" },
+    );
+    assert.deepEqual(
+      assignmentGradeSaveAccess({
+        isAuthenticated: true,
+        isActualStaff: true,
+        impersonating: true,
+      }),
+      { ok: false, code: "forbidden" },
+    );
+    assert.deepEqual(
+      assignmentGradeSaveAccess({
+        isAuthenticated: true,
+        isActualStaff: true,
+        impersonating: false,
+      }),
+      { ok: true },
+    );
   });
 });
 

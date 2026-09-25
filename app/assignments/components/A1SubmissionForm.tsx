@@ -32,7 +32,11 @@ export default function A1SubmissionForm({
   impersonating = false,
   gateReason = null,
   staffStudentKey,
-  onCheckRunStart,
+  canSaveGrade = false,
+  saveGradeDisabled = true,
+  pendingGrade = false,
+  onClear,
+  onSaveGrade,
   onResults,
   onSubmission,
 }: {
@@ -41,7 +45,11 @@ export default function A1SubmissionForm({
   impersonating?: boolean;
   gateReason?: SubmissionGateReason;
   staffStudentKey?: string;
-  onCheckRunStart?: () => void;
+  canSaveGrade?: boolean;
+  saveGradeDisabled?: boolean;
+  pendingGrade?: boolean;
+  onClear?: () => void;
+  onSaveGrade?: () => void;
   onResults?: (results: AssignmentCheckResult[]) => void;
   onSubmission?: (submission: AssignmentSubmissionView) => void;
 }) {
@@ -66,11 +74,8 @@ export default function A1SubmissionForm({
   const savedAt = savedToAccount ? formatSavedAt(submission?.updatedAt) : null;
   const checkedAt = formatSavedAt(submission?.lastCheckedAt);
 
-  function applyResult(
-    result:
-      | Awaited<ReturnType<typeof saveAssignmentSubmission>>
-      | Awaited<ReturnType<typeof runStaffAssignmentChecks>>,
-    kind: "save" | "check",
+  function applySave(
+    result: Awaited<ReturnType<typeof saveAssignmentSubmission>>,
   ) {
     if (!result.ok) {
       setError(result.message);
@@ -82,30 +87,43 @@ export default function A1SubmissionForm({
     setVercelUrl(result.submission.vercelUrl);
     setSubmission(result.submission);
     setSavedToAccount(result.persisted);
-    onResults?.(result.submission.checkResults ?? []);
     onSubmission?.(result.submission);
-    if (result.impersonation || !result.persisted) {
-      setNote(ASSIGNMENT_STUDENT_COPY.savedButNotPersisted);
-    } else {
-      setNote(
-        kind === "save"
-          ? ASSIGNMENT_STUDENT_COPY.saved
-          : "Checks finished. Pass/fail colors are on the checklist below.",
-      );
-    }
+    setNote(
+      result.persisted
+        ? ASSIGNMENT_STUDENT_COPY.saved
+        : ASSIGNMENT_STUDENT_COPY.savedButNotPersisted,
+    );
   }
 
-  function onSave() {
+  function applyRun(result: {
+    ok: boolean;
+    message?: string;
+    submission?: { checkResults?: AssignmentCheckResult[] };
+  }) {
+    if (!result.ok) {
+      setError(result.message ?? "Could not run checks.");
+      setNote(null);
+      return;
+    }
+    setError(null);
+    onResults?.(result.submission?.checkResults ?? []);
+    setNote(
+      staffReview
+        ? "Checks finished. Save records the grade. Running checks again does not change a saved grade."
+        : "Checks finished. These results stay on this page until you Clear or leave. They are not saved.",
+    );
+  }
+
+  function onSaveUrls() {
     setPendingAction("save");
     setError(null);
-    onCheckRunStart?.();
     startTransition(async () => {
       const result = await saveAssignmentSubmission({
         assignmentId: "a1",
         githubUrl,
         vercelUrl,
       });
-      applyResult(result, "save");
+      applySave(result);
       setPendingAction(null);
     });
   }
@@ -113,7 +131,6 @@ export default function A1SubmissionForm({
   function onRunChecks() {
     setPendingAction("check");
     setError(null);
-    onCheckRunStart?.();
     startTransition(async () => {
       const result =
         checkAction === "staff" && staffStudentKey
@@ -134,7 +151,7 @@ export default function A1SubmissionForm({
                 githubUrl,
                 vercelUrl,
               });
-      applyResult(result, "check");
+      applyRun(result);
       setPendingAction(null);
     });
   }
@@ -163,8 +180,7 @@ export default function A1SubmissionForm({
           className="space-y-3"
           onSubmit={(event) => {
             event.preventDefault();
-            if (checkAction === "account") onSave();
-            else onRunChecks();
+            onRunChecks();
           }}
         >
           <div>
@@ -230,27 +246,41 @@ export default function A1SubmissionForm({
               <p className="mb-0 mt-1">{saveGate.body}</p>
             </div>
           ) : null}
+          {checkAction === "account" && !staffReview ? (
+            <button
+              type="button"
+              className="rounded border border-neutral-800 bg-white px-3 py-2 font-sans text-sm hover:bg-neutral-50 disabled:opacity-60"
+              disabled={pendingAction !== null}
+              onClick={onSaveUrls}
+            >
+              {pendingAction === "save" ? "Saving…" : "Save URLs"}
+            </button>
+          ) : null}
           <div className="flex flex-wrap gap-2">
-            {checkAction === "account" ? (
+            <button
+              type="button"
+              className="rounded border border-neutral-800 bg-white px-3 py-2 font-sans text-sm hover:bg-neutral-50 disabled:opacity-60"
+              disabled={pendingAction !== null || pendingGrade}
+              onClick={onClear}
+            >
+              Clear
+            </button>
+            {canSaveGrade ? (
               <button
-                type="submit"
+                type="button"
                 className="rounded border border-neutral-800 bg-neutral-800 px-3 py-2 font-sans text-sm text-white hover:bg-neutral-700 disabled:opacity-60"
-                disabled={pendingAction !== null}
+                disabled={saveGradeDisabled || pendingAction !== null}
+                onClick={onSaveGrade}
               >
-                {pendingAction === "save" ? "Saving…" : "Save URLs and run checks"}
+                {pendingGrade ? "Saving…" : "Save"}
               </button>
             ) : null}
             <button
-              type={checkAction === "account" ? "button" : "submit"}
-              className={
-                checkAction === "account"
-                  ? "rounded border border-neutral-800 bg-white px-3 py-2 font-sans text-sm hover:bg-neutral-50 disabled:opacity-60"
-                  : "rounded border border-neutral-800 bg-neutral-800 px-3 py-2 font-sans text-sm text-white hover:bg-neutral-700 disabled:opacity-60"
-              }
-              disabled={pendingAction !== null}
-              onClick={checkAction === "account" ? onRunChecks : undefined}
+              type="submit"
+              className="rounded border border-neutral-800 bg-neutral-800 px-3 py-2 font-sans text-sm text-white hover:bg-neutral-700 disabled:opacity-60"
+              disabled={pendingAction !== null || pendingGrade}
             >
-              {pendingAction === "check" ? "Checking…" : "Run checks"}
+              {pendingAction === "check" ? "Running…" : "Run"}
             </button>
           </div>
         </form>

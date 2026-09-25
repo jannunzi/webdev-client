@@ -27,12 +27,8 @@ export {
   applyCriterionToggle,
   completedIdsAfterAutoCheckRun,
   loadCompletedCriterionIds,
-  localProgressKey,
   mergeCompletedIds,
-  parseLocalProgress,
   replaceCompletedCriterionIds,
-  resolveProgressSnapshot,
-  serializeLocalProgress,
   summarizeProgress,
   upsertCriterionProgress,
 } from "./progress-store";

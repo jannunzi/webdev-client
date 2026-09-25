@@ -252,11 +252,6 @@ export async function saveAssignmentSubmission(input: {
     };
   }
 
-  const checkResults = await runChecksForA1({
-    githubUrl,
-    vercelUrl,
-    nameSource: authz.nameSource,
-  });
   const persist = authz.canPersist;
 
   if (!persist) {
@@ -264,7 +259,7 @@ export async function saveAssignmentSubmission(input: {
       ok: true,
       persisted: false,
       impersonation: authz.impersonating || undefined,
-      submission: viewFromInputs({ githubUrl, vercelUrl, checkResults }),
+      submission: viewFromInputs({ githubUrl, vercelUrl, checkResults: [] }),
     };
   }
 
@@ -274,14 +269,15 @@ export async function saveAssignmentSubmission(input: {
       assignmentId: input.assignmentId as AssignmentId,
       githubUrl,
       vercelUrl,
-      checkResults,
-      checked: true,
       identity: authz.identity,
     });
     return {
       ok: true,
       persisted: true,
-      submission: toSubmissionView(doc),
+      submission: {
+        ...toSubmissionView(doc),
+        checkResults: undefined,
+      },
     };
   } catch (error) {
     const message =
@@ -292,8 +288,8 @@ export async function saveAssignmentSubmission(input: {
 }
 
 /**
- * Authenticated Run checks. May refresh check results on an existing
- * saved submission. Impersonation still runs and does not persist.
+ * Authenticated Run checks. Results stay in the response only.
+ * This action does not write checklist progress or a grade.
  * Anonymous visitors use runPublicAssignmentChecks instead.
  */
 export async function runAssignmentChecks(input: {
@@ -335,41 +331,6 @@ export async function runAssignmentChecks(input: {
     vercelUrl,
     nameSource: authz.nameSource,
   });
-  const persist = authz.canPersist;
-
-  if (persist) {
-    try {
-      const existing = await readAssignmentSubmission(
-        authz.userId,
-        input.assignmentId as AssignmentId,
-      );
-      if (existing) {
-        const doc = await writeAssignmentSubmission({
-          clerkUserId: authz.userId,
-          assignmentId: input.assignmentId as AssignmentId,
-          githubUrl: existing.githubUrl,
-          vercelUrl: existing.vercelUrl,
-          checkResults,
-          checked: true,
-          identity: authz.identity,
-        });
-        return {
-          ok: true,
-          persisted: true,
-          submission: {
-            ...toSubmissionView(doc),
-            githubUrl,
-            vercelUrl,
-            checkResults,
-          },
-        };
-      }
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Could not store check results.";
-      console.error("assignment check persist failed", message);
-    }
-  }
 
   return {
     ok: true,

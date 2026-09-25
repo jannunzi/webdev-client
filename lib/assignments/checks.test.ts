@@ -654,5 +654,10 @@ describe("student-facing copy", () => {
       /use your Canvas email so we can map progress/i,
     );
     assert.match(ASSIGNMENT_STUDENT_COPY.notOnRoster, /Canvas\/FACT/i);
+    for (const value of Object.values(ASSIGNMENT_STUDENT_COPY)) {
+      assert.doesNotMatch(value, /stay in this browser/i);
+    }
+    assert.match(ASSIGNMENT_STUDENT_COPY.checksNotSaved, /not saved/i);
+    assert.match(ASSIGNMENT_STUDENT_COPY.manualCheckHint, /Checked by staff at grading/i);
   });
 });

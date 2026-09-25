@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import ClearLegacyProgressStorage from "@/app/assignments/components/ClearLegacyProgressStorage";
 import CourseSiteHeader from "@/app/course-info/CourseSiteHeader";
 import StaffViewModeBar from "@/app/quizzes/components/StaffViewModeBar";
 import { isClerkConfigured } from "@/lib/config";
@@ -16,6 +17,7 @@ export default function AssignmentsLayout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <div className="book-shell min-h-screen">
+      <ClearLegacyProgressStorage />
       <CourseSiteHeader constrain />
       <main className="min-w-0 py-8">
         <div className="page-content px-4 sm:px-6">

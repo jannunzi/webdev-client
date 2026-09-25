@@ -1,28 +1,62 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import type { AssignmentCheckResult } from "@/lib/assignments/checks";
+import { listRubricCriteria } from "@/lib/assignments/catalog";
 import {
-  proposedGradeFromResults,
-  type CriterionPassMap,
-} from "@/lib/assignments/grade";
-import { writeLocalProgress } from "@/lib/assignments/local-progress";
+  gradeRowsFromResults,
+  withCustomPoints,
+  withOverrideChecked,
+  type CriterionGradeRow,
+} from "@/lib/assignments/grade-rows";
+import type { AssignmentGradeView } from "@/lib/assignments/grade-rows";
 import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
 import type { StaffStudentRow } from "@/lib/assignments/staff";
 import type { AssignmentHubItem } from "@/lib/assignments/types";
 import type { AssignmentSubmissionView } from "@/lib/assignments/submissions-store";
-import { saveStaffAssignmentGrade } from "../staff-actions";
+import { saveAssignmentGrade } from "../staff-actions";
 import A1SubmissionForm, { type SubmissionGateReason } from "./A1SubmissionForm";
 import AssignmentChecklist from "./AssignmentChecklist";
-import AssignmentGradeSummary from "./AssignmentGradeSummary";
+import { AssignmentViewer } from "./AssignmentViewer";
 import StaffGraderNav from "./StaffGraderNav";
 
 export default function A1WorkArea({
+  serverUserId,
+  authEnabled,
+  ...props
+}: {
+  assignment: AssignmentHubItem;
+  initialSubmission: AssignmentSubmissionView | null;
+  initialGrade: AssignmentGradeView | null;
+  serverUserId: string | null;
+  authEnabled: boolean;
+  canSubmit: boolean;
+  impersonating: boolean;
+  gateReason: SubmissionGateReason;
+  staffQueue?: StaffStudentRow[];
+  selectedStudent?: StaffStudentRow | null;
+  selectedSection?: string;
+}) {
+  return (
+    <AssignmentViewer serverUserId={serverUserId} authEnabled={authEnabled}>
+      {(viewerUserId) => (
+        <A1WorkSession
+          key={`${viewerUserId ?? "out"}:${props.selectedStudent?.key ?? "self"}`}
+          {...props}
+          initialSubmission={
+            viewerUserId === serverUserId ? props.initialSubmission : null
+          }
+          initialGrade={viewerUserId === serverUserId ? props.initialGrade : null}
+        />
+      )}
+    </AssignmentViewer>
+  );
+}
+
+function A1WorkSession({
   assignment,
   initialSubmission,
-  initialCompletedIds,
-  signedIn,
-  mongoReady,
+  initialGrade,
   canSubmit,
   impersonating,
   gateReason,
@@ -32,9 +66,7 @@ export default function A1WorkArea({
 }: {
   assignment: AssignmentHubItem;
   initialSubmission: AssignmentSubmissionView | null;
-  initialCompletedIds: string[];
-  signedIn: boolean;
-  mongoReady: boolean;
+  initialGrade: AssignmentGradeView | null;
   canSubmit: boolean;
   impersonating: boolean;
   gateReason: SubmissionGateReason;
@@ -43,102 +75,88 @@ export default function A1WorkArea({
   selectedSection?: string;
 }) {
   const staffMode = Boolean(selectedStudent);
-  const [submission, setSubmission] = useState<AssignmentSubmissionView | null>(
-    initialSubmission,
-  );
-  const [autoResults, setAutoResults] = useState<AssignmentCheckResult[]>(
-    initialSubmission?.checkResults ?? [],
-  );
-  const [overrides, setOverrides] = useState<CriterionPassMap>(
-    initialSubmission?.staffGrade?.criterionOverrides ?? {},
-  );
-  const [comments, setComments] = useState<Record<string, string>>(
-    initialSubmission?.staffGrade?.comments ?? {},
-  );
+  const [submission, setSubmission] = useState(initialSubmission);
+  const [savedGrade, setSavedGrade] = useState(initialGrade);
+  const [draft, setDraft] = useState<CriterionGradeRow[] | null>(null);
+  const [live, setLive] = useState(false);
+  const [liveResults, setLiveResults] = useState<AssignmentCheckResult[] | null>(null);
   const [gradeNote, setGradeNote] = useState<string | null>(null);
   const [gradeError, setGradeError] = useState<string | null>(null);
-  const [pendingGrade, setPendingGrade] = useState<"accept" | "override" | null>(
-    null,
-  );
-  const [checkGeneration, setCheckGeneration] = useState(0);
+  const [pendingGrade, setPendingGrade] = useState(false);
   const [, startTransition] = useTransition();
-
-  function handleCheckRunStart() {
-    if (!staffMode) {
-      writeLocalProgress(assignment.id, []);
-    }
-    setAutoResults([]);
-    setCheckGeneration((current) => current + 1);
-  }
 
   useEffect(() => {
     setSubmission(initialSubmission);
-    setAutoResults(initialSubmission?.checkResults ?? []);
-    setOverrides(initialSubmission?.staffGrade?.criterionOverrides ?? {});
-    setComments(initialSubmission?.staffGrade?.comments ?? {});
+    setSavedGrade(initialGrade);
+    setDraft(null);
+    setLive(false);
+    setLiveResults(null);
     setGradeNote(null);
     setGradeError(null);
-  }, [initialSubmission, selectedStudent?.key]);
+  }, [initialSubmission, initialGrade]);
 
-  const proposed = useMemo(() => {
-    if (!assignment.rubric || autoResults.length === 0) return null;
-    return proposedGradeFromResults(assignment.rubric, autoResults);
-  }, [assignment.rubric, autoResults]);
+  const criteria = assignment.rubric ? listRubricCriteria(assignment.rubric) : [];
+  const displayRows = draft ?? savedGrade?.rows ?? [];
+  const scored = displayRows.length > 0;
+  const results = liveResults ?? (live ? [] : savedGrade?.checkResults ?? []);
 
-  const staffGrade = useMemo(() => {
-    const saved = submission?.staffGrade;
-    if (!saved) return null;
-    return {
-      earnedPoints: saved.earnedPoints,
-      totalPoints: saved.totalPoints,
-      percent: saved.percent,
-      passedCount: 0,
-      totalCount: 0,
-      passedIds: [],
-    };
-  }, [submission]);
+  function onResults(next: AssignmentCheckResult[]) {
+    setLiveResults(next);
+    setDraft(gradeRowsFromResults(criteria, next));
+    setLive(true);
+    setGradeNote(null);
+    setGradeError(null);
+  }
 
-  function onStaffOverride(criterionId: string, passed: boolean | null) {
-    setOverrides((current) => {
-      const next = { ...current };
-      if (passed == null) delete next[criterionId];
-      else next[criterionId] = passed;
-      return next;
+  function onClear() {
+    setDraft(null);
+    setLive(false);
+    setLiveResults(null);
+    setGradeNote(null);
+    setGradeError(null);
+  }
+
+  function onOverride(criterionId: string, checked: boolean) {
+    setDraft((current) => {
+      const base = current ?? savedGrade?.rows ?? [];
+      return base.map((row) =>
+        row.criterionId === criterionId ? withOverrideChecked(row, checked) : row,
+      );
     });
+    setLive(true);
   }
 
-  function onStaffComment(criterionId: string, comment: string) {
-    setComments((current) => ({ ...current, [criterionId]: comment }));
+  function onPoints(criterionId: string, points: number) {
+    setDraft((current) => {
+      const base = current ?? savedGrade?.rows ?? [];
+      return base.map((row) =>
+        row.criterionId === criterionId ? withCustomPoints(row, points) : row,
+      );
+    });
+    setLive(true);
   }
 
-  function persistGrade(acceptProposed: boolean) {
-    if (!selectedStudent) return;
-    setPendingGrade(acceptProposed ? "accept" : "override");
+  function onSaveGrade() {
+    if (!selectedStudent || !draft) return;
+    setPendingGrade(true);
     setGradeError(null);
     startTransition(async () => {
-      const result = await saveStaffAssignmentGrade({
+      const result = await saveAssignmentGrade({
         assignmentId: assignment.id,
         studentKey: selectedStudent.key,
-        acceptProposed,
-        overrides: acceptProposed ? undefined : overrides,
-        comments,
+        rows: draft,
+        checkResults: liveResults ?? savedGrade?.checkResults ?? [],
       });
-      setPendingGrade(null);
+      setPendingGrade(false);
       if (!result.ok) {
         setGradeError(result.message);
         return;
       }
-      setSubmission(result.submission);
-      setAutoResults(result.submission.checkResults ?? autoResults);
-      setOverrides(result.submission.staffGrade?.criterionOverrides ?? {});
-      setComments(result.submission.staffGrade?.comments ?? comments);
-      setGradeNote(
-        result.persisted
-          ? acceptProposed
-            ? "Accepted the proposed grade."
-            : "Saved the override grade and comments."
-          : ASSIGNMENT_STUDENT_COPY.savedButNotPersisted,
-      );
+      setSavedGrade(result.grade);
+      setDraft(null);
+      setLive(false);
+      setLiveResults(null);
+      setGradeNote("Saved the grade. Run again does not change it.");
     });
   }
 
@@ -159,86 +177,51 @@ export default function A1WorkArea({
         </p>
       ) : (
         <A1SubmissionForm
+          key={`${selectedStudent?.key ?? "self"}:${submission?.updatedAt ?? "none"}`}
           initialSubmission={submission}
           canSubmit={canSubmit || staffMode}
           impersonating={impersonating}
           gateReason={canSubmit || staffMode ? null : gateReason}
           staffStudentKey={selectedStudent?.key}
-          onCheckRunStart={handleCheckRunStart}
-          onResults={setAutoResults}
-          onSubmission={(next) => {
-            setSubmission(next);
-            setOverrides(next.staffGrade?.criterionOverrides ?? overrides);
-            setComments(next.staffGrade?.comments ?? comments);
-          }}
+          canSaveGrade={staffMode && !impersonating}
+          saveGradeDisabled={!draft || pendingGrade}
+          pendingGrade={pendingGrade}
+          onClear={onClear}
+          onSaveGrade={onSaveGrade}
+          onResults={onResults}
+          onSubmission={setSubmission}
         />
       )}
 
-      <AssignmentGradeSummary proposed={proposed} staff={staffGrade} />
-
-      {staffMode && selectedStudent?.hasSubmission ? (
-        <div className="mb-6 rounded-lg border border-neutral-300 bg-white px-4 py-3 font-sans">
-          <p className="mt-0 mb-2 text-sm text-neutral-800">
-            Accept the proposed all-or-nothing total, or save per-criterion
-            overrides and comments. Students see the staff grade and comments
-            as read-only.
-          </p>
-          <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              className="rounded border border-neutral-800 bg-neutral-800 px-3 py-2 text-sm text-white hover:bg-neutral-700 disabled:opacity-60"
-              disabled={pendingGrade !== null || !proposed}
-              onClick={() => persistGrade(true)}
-            >
-              {pendingGrade === "accept"
-                ? "Saving…"
-                : ASSIGNMENT_STUDENT_COPY.acceptProposed}
-            </button>
-            <button
-              type="button"
-              className="rounded border border-neutral-800 bg-white px-3 py-2 text-sm hover:bg-neutral-50 disabled:opacity-60"
-              disabled={pendingGrade !== null}
-              onClick={() => persistGrade(false)}
-            >
-              {pendingGrade === "override"
-                ? "Saving…"
-                : ASSIGNMENT_STUDENT_COPY.overrideGrade}
-            </button>
-          </div>
-          {gradeNote ? (
-            <p className="mb-0 mt-2 text-sm text-emerald-800">{gradeNote}</p>
-          ) : null}
-          {gradeError ? (
-            <p className="mb-0 mt-2 text-sm text-amber-800">{gradeError}</p>
-          ) : null}
-        </div>
+      {gradeNote ? (
+        <p className="mb-3 font-sans text-sm text-emerald-800">{gradeNote}</p>
+      ) : null}
+      {gradeError ? (
+        <p className="mb-3 font-sans text-sm text-amber-800">{gradeError}</p>
       ) : null}
 
       <AssignmentChecklist
         assignment={assignment}
-        initialCompletedIds={
-          staffMode ? autoPassedCriterionIdsOrEmpty(autoResults) : initialCompletedIds
+        rows={displayRows}
+        scored={scored}
+        live={live}
+        savedRows={savedGrade?.rows ?? null}
+        results={results}
+        audience={staffMode ? "staff" : "student"}
+        savedPoints={
+          savedGrade
+            ? {
+                earnedPoints: savedGrade.earnedPoints,
+                totalPoints: savedGrade.totalPoints,
+                savedAt: savedGrade.savedAt,
+                gradedByEmail: savedGrade.gradedByEmail,
+              }
+            : null
         }
-        signedIn={signedIn}
-        mongoReady={mongoReady}
-        autoResults={autoResults}
-        checkGeneration={checkGeneration}
         vercelUrl={submission?.vercelUrl}
-        persistProgress={!staffMode}
-        staffMode={staffMode}
-        staffOverrides={staffMode ? overrides : {}}
-        staffComments={comments}
-        onStaffOverride={staffMode ? onStaffOverride : undefined}
-        onStaffComment={staffMode ? onStaffComment : undefined}
+        onOverride={staffMode ? onOverride : undefined}
+        onPoints={staffMode ? onPoints : undefined}
       />
     </>
   );
-}
-
-function autoPassedCriterionIdsOrEmpty(
-  results: AssignmentCheckResult[],
-): string[] {
-  return results
-    .filter((row) => row.criterionId && row.passed && !row.skipped)
-    .map((row) => row.criterionId as string);
 }

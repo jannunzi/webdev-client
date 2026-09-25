@@ -46,6 +46,23 @@ export function canPersistStaffGrade(
   return staffGraderAccess({ isActualStaff, impersonating }).canPersist;
 }
 
+/**
+ * Save writes `assignment_grades`. Call this before any grade insert.
+ * Staff means the INSTRUCTOR_EMAILS / TA_EMAILS allowlist (`isActualStaff`).
+ * Students, signed-out visitors, and View as student are rejected.
+ */
+export function assignmentGradeSaveAccess(input: {
+  isAuthenticated: boolean;
+  isActualStaff: boolean;
+  impersonating: boolean;
+}): { ok: true } | { ok: false; code: "unauthenticated" | "forbidden" } {
+  if (!input.isAuthenticated) return { ok: false, code: "unauthenticated" };
+  if (!canPersistStaffGrade(input.isActualStaff, input.impersonating)) {
+    return { ok: false, code: "forbidden" };
+  }
+  return { ok: true };
+}
+
 export type StaffStudentRow = {
   key: string;
   email: string;

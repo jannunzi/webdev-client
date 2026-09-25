@@ -18,7 +18,8 @@ import {
   listAssignmentIds,
   rubricPointTotal,
 } from "@/lib/assignments/catalog";
-import { readAssignmentProgress } from "@/lib/assignments/progress";
+import { readLatestAssignmentGrade } from "@/lib/assignments/grades";
+import type { AssignmentGradeView } from "@/lib/assignments/grade-rows";
 import {
   listSubmissionsForAssignment,
   readAssignmentSubmission,
@@ -40,6 +41,7 @@ import type { A1GateDiagnostics } from "@/lib/assignments/diagnostics";
 import {
   isAssignmentProgressConfigured,
   isClerkConfigured,
+  isClerkPublishableKeySet,
   isMongoConfigured,
   mongoDbName,
 } from "@/lib/config";
@@ -109,8 +111,9 @@ export default async function AssignmentDetailPage({
   if (!assignment) notFound();
 
   let signedIn = false;
+  let serverUserId: string | null = null;
   let mongoReady = isAssignmentProgressConfigured();
-  let initialCompletedIds: string[] = [];
+  let initialGrade: AssignmentGradeView | null = null;
   let canSubmit = false;
   let impersonating = false;
   let gateReason: SubmissionGateReason = mongoReady ? "sign_in" : "not_configured";
@@ -124,6 +127,7 @@ export default async function AssignmentDetailPage({
   if (isClerkConfigured()) {
     const { userId, sessionClaims } = await auth();
     signedIn = Boolean(userId);
+    serverUserId = userId ?? null;
     if (signedIn && userId) {
       let staff = false;
       let user = null;
@@ -227,18 +231,6 @@ export default async function AssignmentDetailPage({
       });
 
       try {
-        if (mongoReady) {
-          initialCompletedIds = await readAssignmentProgress(
-            userId,
-            assignment.id,
-          );
-        }
-      } catch (error) {
-        console.error("assignment progress load failed", error);
-        mongoReady = false;
-      }
-
-      try {
         if (
           mongoReady &&
           canSubmit &&
@@ -278,7 +270,6 @@ export default async function AssignmentDetailPage({
                 assignment.id,
               );
               initialSubmission = doc ? toSubmissionView(doc) : null;
-              initialCompletedIds = [];
             } else if (selectedStudent) {
               initialSubmission = selectedStudent.vercelUrl
                 ? {
@@ -292,7 +283,6 @@ export default async function AssignmentDetailPage({
                     staffGrade: selectedStudent.staffGrade,
                   }
                 : null;
-              initialCompletedIds = [];
             }
           }
         }
@@ -308,6 +298,17 @@ export default async function AssignmentDetailPage({
     const visibility = loggedOutSubmitVisibility(assignment.id, false);
     canSubmit = visibility.canSubmit;
     gateReason = visibility.gateReason ?? "sign_in";
+  }
+
+  const gradeUserId = selectedStudent
+    ? selectedStudent.clerkUserId ?? null
+    : serverUserId;
+  if (gradeUserId && mongoReady && assignment.rubric) {
+    try {
+      initialGrade = await readLatestAssignmentGrade(gradeUserId, assignment.id);
+    } catch (error) {
+      console.error("assignment grade load failed", error);
+    }
   }
 
   const points = assignment.rubric
@@ -358,9 +359,9 @@ export default async function AssignmentDetailPage({
         <A1WorkArea
           assignment={assignment}
           initialSubmission={initialSubmission}
-          initialCompletedIds={initialCompletedIds}
-          signedIn={signedIn}
-          mongoReady={mongoReady}
+          initialGrade={initialGrade}
+          serverUserId={serverUserId}
+          authEnabled={isClerkPublishableKeySet()}
           canSubmit={canSubmit}
           impersonating={impersonating}
           gateReason={canSubmit ? null : gateReason}
@@ -371,9 +372,10 @@ export default async function AssignmentDetailPage({
       ) : (
         <AssignmentChecklist
           assignment={assignment}
-          initialCompletedIds={initialCompletedIds}
-          signedIn={signedIn}
-          mongoReady={mongoReady}
+          rows={[]}
+          scored={false}
+          live={false}
+          audience="student"
         />
       )}
     </article>
