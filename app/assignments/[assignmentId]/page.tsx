@@ -112,7 +112,7 @@ export default async function AssignmentDetailPage({
 
   let signedIn = false;
   let serverUserId: string | null = null;
-  let mongoReady = isAssignmentProgressConfigured();
+  const mongoReady = isAssignmentProgressConfigured();
   let initialGrade: AssignmentGradeView | null = null;
   let canSubmit = false;
   let impersonating = false;

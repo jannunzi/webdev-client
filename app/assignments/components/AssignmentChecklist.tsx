@@ -64,7 +64,6 @@ function Legend({
 function CriterionRow({
   row,
   criterion,
-  assignmentId,
   audience,
   scored,
   changed,
@@ -76,7 +75,6 @@ function CriterionRow({
 }: {
   row: CriterionGradeRow;
   criterion: RubricCriterion;
-  assignmentId: string;
   audience: GradeAudience;
   scored: boolean;
   changed: boolean;
@@ -331,7 +329,6 @@ export default function AssignmentChecklist({
             ) : null}
             {group.intro ? <p className="mt-0 text-neutral-800">{group.intro}</p> : null}
             <GroupList
-              assignmentId={assignment.id}
               criteria={group.criteria}
               audience={audience}
               scored={scored}
@@ -351,7 +348,6 @@ export default function AssignmentChecklist({
 }
 
 function GroupList({
-  assignmentId,
   criteria,
   audience,
   scored,
@@ -363,7 +359,6 @@ function GroupList({
   onOverride,
   onPoints,
 }: {
-  assignmentId: string;
   criteria: RubricCriterion[];
   audience: GradeAudience;
   scored: boolean;
@@ -383,7 +378,6 @@ function GroupList({
       <CriterionRow
         row={rowFor(criterion)}
         criterion={criterion}
-        assignmentId={assignmentId}
         audience={audience}
         scored={scored}
         changed={changed.has(criterion.id)}

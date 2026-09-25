@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import type { AssignmentCheckResult } from "@/lib/assignments/checks";
 import { listRubricCriteria } from "@/lib/assignments/catalog";
 import {
@@ -41,7 +41,7 @@ export default function A1WorkArea({
     <AssignmentViewer serverUserId={serverUserId} authEnabled={authEnabled}>
       {(viewerUserId) => (
         <A1WorkSession
-          key={`${viewerUserId ?? "out"}:${props.selectedStudent?.key ?? "self"}`}
+          key={`${viewerUserId ?? "out"}:${props.selectedStudent?.key ?? "self"}:${props.initialGrade?.savedAt ?? "none"}:${props.initialSubmission?.updatedAt ?? "none"}`}
           {...props}
           initialSubmission={
             viewerUserId === serverUserId ? props.initialSubmission : null
@@ -84,16 +84,6 @@ function A1WorkSession({
   const [gradeError, setGradeError] = useState<string | null>(null);
   const [pendingGrade, setPendingGrade] = useState(false);
   const [, startTransition] = useTransition();
-
-  useEffect(() => {
-    setSubmission(initialSubmission);
-    setSavedGrade(initialGrade);
-    setDraft(null);
-    setLive(false);
-    setLiveResults(null);
-    setGradeNote(null);
-    setGradeError(null);
-  }, [initialSubmission, initialGrade]);
 
   const criteria = assignment.rubric ? listRubricCriteria(assignment.rubric) : [];
   const displayRows = draft ?? savedGrade?.rows ?? [];
