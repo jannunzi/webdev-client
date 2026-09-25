@@ -13,6 +13,10 @@ export const HTML_1_3_POSTERS: Record<string, string> = {
   "sec-1-3-3": "/videos/thumbs/html-1-3/04-lists.jpg",
   "sec-1-3-6": "/videos/thumbs/html-1-3/05-html-forms.jpg",
   "sec-1-3-6-1": "/videos/thumbs/html-1-3/06-text-inputs.jpg",
+  "sec-1-3-6-3": "/videos/thumbs/html-1-3/09-radio-buttons.jpg",
+  "sec-1-3-6-4": "/videos/thumbs/html-1-3/10-checkboxes.jpg",
+  "sec-1-3-6-5": "/videos/thumbs/html-1-3/11-dropdowns.jpg",
+  "sec-1-3-6-7": "/videos/thumbs/html-1-3/12-buttons.jpg",
   "sec-1-3-9": "/videos/thumbs/html-1-3/07-anchors.jpg",
   "sec-1-3-11": "/videos/thumbs/html-1-3/08-layouts.jpg",
 };
