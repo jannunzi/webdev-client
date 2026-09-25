@@ -48,3 +48,6 @@ next-env.d.ts
 
 # generated Canvas QTI (rebuild with npm run canvas:export-qti)
 /scripts/canvas-fallback/out/
+
+# Clerk account provisioning output (student emails; never commit)
+/provision-results.json
