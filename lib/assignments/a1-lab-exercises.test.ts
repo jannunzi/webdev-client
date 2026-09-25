@@ -74,6 +74,28 @@ describe("A1 Lab catalog / §1.3.12 parity", () => {
     );
   });
 
+  it("tells Forms With AI to reuse wd-your-form on the same YourForm file", () => {
+    const section = A1_LAB_EXERCISE_SECTIONS.find((row) => row.section === "1.3.6");
+    assert.ok(section);
+    const oyo = section.tasks.find((task) => task.id === "a1-lab-forms-oyo");
+    const ai = section.tasks.find((task) => task.id === "a1-lab-forms-ai");
+    assert.ok(oyo);
+    assert.ok(ai);
+    assert.equal(oyo.points, 3);
+    assert.equal(ai.points, 2);
+    assert.equal(ai.auto, undefined);
+    assert.deepEqual(oyo.auto?.requireAllIds, ["wd-your-form"]);
+    assert.match(ai.description, /app\/labs\/lab1\/forms\/YourForm\.tsx/);
+    assert.match(ai.description, /same id as On your own/);
+    assert.match(ai.description, /wd-your-form/);
+    assert.match(ai.description, /No second file/);
+    assert.match(ai.description, /no new form id/);
+    assert.match(ai.description, /wd-ai-form/);
+    assert.match(ai.description, /wd-ai-your-form/);
+    assert.match(ai.description, /Unlike earlier With AI steps/);
+    assert.match(ai.description, /Forms\.tsx still imports that one YourForm only/);
+  });
+
   it("treats §1.3.1 h1–h6 as practice added on top of the h4 book sample", () => {
     const section = A1_LAB_EXERCISE_SECTIONS.find((row) => row.section === "1.3.1");
     assert.ok(section);

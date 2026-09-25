@@ -1881,21 +1881,28 @@ export default function Forms() {
             {" "}— rather than letting it create a second file under another
             name, in a nested folder, or as a parallel &quot;AI&quot; form.
             Keep the same form id,{" "}
-            <code>wd-your-form</code>, on that single component.{" "}
+            <code>wd-your-form</code>, on that single component — do not invent
+            a new form id such as <code>wd-ai-form</code>{" "}or{" "}
+            <code>wd-ai-your-form</code>.{" "}
             <code>Forms.tsx</code>{" "}must import that one{" "}
             <code>YourForm</code>{" "}only — do not keep both an original and an
             AI-generated form imported or rendered.
           </p>
         </OnYourOwn>
         <WithAI
-          prompt={`Overwrite the same file app/labs/lab1/forms/YourForm.tsx only — do not create a second form file under another name. Keep the form id wd-your-form on that single component. Import YourForm into app/labs/lab1/forms/Forms.tsx only once after the sample components; do not import or render both an original and an AI-generated form. Cover every control from Lab 1 forms: labeled text/password fields, textarea bio, two radio name-groups (class standing plus one more exclusive choice such as full-time/part-time), at least three checkboxes, a single select and a multiple select (four+ options, two preselected), email, number (graduation year with min/max), date, range 0–10, submit Save and type=button Cancel with their own ids. Use obvious SAMPLE placeholders (Jane Doe, jane@university.edu) — I will replace them with my own details.`}
+          prompt={`Overwrite the same file app/labs/lab1/forms/YourForm.tsx only. Keep id="wd-your-form" — the same id as On your own. No second file. No new form id: do not invent wd-ai-form, wd-ai-your-form, or any similar id. Unlike earlier With AI steps that add a new wd-ai-* id, this step reuses wd-your-form. Forms.tsx still imports that one YourForm only; do not import or render a second form. Cover every control from Lab 1 forms: labeled text/password fields, textarea bio, two radio name-groups (class standing plus one more exclusive choice such as full-time/part-time), at least three checkboxes, a single select and a multiple select (four+ options, two preselected), email, number (graduation year with min/max), date, range 0–10, submit Save and type=button Cancel with their own ids. Use obvious SAMPLE placeholders (Jane Doe, jane@university.edu) — I will replace them with my own details.`}
         >
           The profile form is a lot of markup. Paste this prompt so the
-          assistant overwrites the same{" "}
-          <code>app/labs/lab1/forms/YourForm.tsx</code>
-          {" "}— not a second file under another name — keeps{" "}
-          <code>id=&quot;wd-your-form&quot;</code>{" "}on that one component, and
-          leaves <code>Forms.tsx</code>{" "}importing that{" "}
+          assistant overwrites the <strong>same file</strong>,{" "}
+          <code>app/labs/lab1/forms/YourForm.tsx</code>. Keep{" "}
+          <code>id=&quot;wd-your-form&quot;</code> — the{" "}
+          <strong>same id as On your own</strong>.{" "}
+          <strong>No second file</strong>, and{" "}
+          <strong>no new form id</strong>: do not invent{" "}
+          <code>wd-ai-form</code>, <code>wd-ai-your-form</code>, or anything
+          like them. Unlike earlier With AI steps that add a new{" "}
+          <code>wd-ai-*</code>{" "}id, this one reuses the On your own id.{" "}
+          <code>Forms.tsx</code>{" "}still imports that one{" "}
           <code>YourForm</code>{" "}only. Then replace every sample default with
           facts about you so the form still reads as yours:
         </WithAI>
