@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 import { a1CriterionCoverage } from "@/lib/assignments/a1-rubric";
 import { listRubricCriteria, nestRubricCriteria } from "@/lib/assignments/catalog";
 import type { AssignmentCheckResult } from "@/lib/assignments/checks";
@@ -19,6 +19,21 @@ import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
 import type { AssignmentHubItem, RubricCriterion } from "@/lib/assignments/types";
 import { criterionVerifyUrl } from "@/lib/assignments/verify-urls";
 import { supportsUrlSubmission } from "@/lib/assignments/access";
+
+function DeployTitle({
+  href,
+  children,
+}: {
+  href: string | null;
+  children: ReactNode;
+}) {
+  if (!href) return <>{children}</>;
+  return (
+    <a href={href} target="_blank" rel="noreferrer" className="underline">
+      {children}
+    </a>
+  );
+}
 
 function isManualCriterion(assignmentId: string, criterionId: string): boolean {
   if (assignmentId !== "a1") return true;
@@ -163,7 +178,7 @@ function CriterionRow({
         ) : null}
       </div>
       <p className="mb-1 mt-2 font-sans text-base font-semibold text-inherit">
-        {criterion.label}
+        <DeployTitle href={verifyHref}>{criterion.label}</DeployTitle>
         {criterion.onYourOwn ? (
           <span className="ml-2 font-sans text-xs font-medium uppercase tracking-wide">
             On your own
@@ -406,7 +421,11 @@ function GroupList({
         block.type === "nested" ? (
           <li key={block.parentLabel}>
             <div className="font-sans text-base font-semibold tracking-tight">
-              {block.parentLabel}
+              <DeployTitle
+                href={criterionVerifyUrl(vercelUrl, block.rows[0]?.id ?? "")}
+              >
+                {block.parentLabel}
+              </DeployTitle>
             </div>
             <ol type="a" className="mt-2 mb-0 list-[lower-alpha] space-y-3 pl-5">
               {block.rows.map((criterion) => (

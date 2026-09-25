@@ -76,6 +76,7 @@ function A1WorkSession({
 }) {
   const staffMode = Boolean(selectedStudent);
   const [submission, setSubmission] = useState(initialSubmission);
+  const [deployUrl, setDeployUrl] = useState(initialSubmission?.vercelUrl ?? "");
   const [savedGrade, setSavedGrade] = useState(initialGrade);
   const [draft, setDraft] = useState<CriterionGradeRow[] | null>(null);
   const [live, setLive] = useState(false);
@@ -180,6 +181,7 @@ function A1WorkSession({
           onSaveGrade={onSaveGrade}
           onResults={onResults}
           onSubmission={setSubmission}
+          onDeployUrlChange={setDeployUrl}
         />
       )}
 
@@ -208,7 +210,7 @@ function A1WorkSession({
               }
             : null
         }
-        vercelUrl={submission?.vercelUrl}
+        vercelUrl={deployUrl}
         onOverride={staffMode ? onOverride : undefined}
         onPoints={staffMode ? onPoints : undefined}
       />

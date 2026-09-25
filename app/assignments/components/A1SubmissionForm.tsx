@@ -39,6 +39,7 @@ export default function A1SubmissionForm({
   onSaveGrade,
   onResults,
   onSubmission,
+  onDeployUrlChange,
 }: {
   initialSubmission: AssignmentSubmissionView | null;
   canSubmit: boolean;
@@ -52,6 +53,7 @@ export default function A1SubmissionForm({
   onSaveGrade?: () => void;
   onResults?: (results: AssignmentCheckResult[]) => void;
   onSubmission?: (submission: AssignmentSubmissionView) => void;
+  onDeployUrlChange?: (url: string) => void;
 }) {
   const [githubUrl, setGithubUrl] = useState(initialSubmission?.githubUrl ?? "");
   const [vercelUrl, setVercelUrl] = useState(initialSubmission?.vercelUrl ?? "");
@@ -85,6 +87,7 @@ export default function A1SubmissionForm({
     setError(null);
     setGithubUrl(result.submission.githubUrl);
     setVercelUrl(result.submission.vercelUrl);
+    onDeployUrlChange?.(result.submission.vercelUrl);
     setSubmission(result.submission);
     setSavedToAccount(result.persisted);
     onSubmission?.(result.submission);
@@ -226,7 +229,10 @@ export default function A1SubmissionForm({
               placeholder="https://your-app.vercel.app"
               className="mt-1 w-full rounded border border-neutral-400 bg-white px-3 py-2 font-sans text-sm"
               value={vercelUrl}
-              onChange={(event) => setVercelUrl(event.target.value)}
+              onChange={(event) => {
+                setVercelUrl(event.target.value);
+                onDeployUrlChange?.(event.target.value);
+              }}
               disabled={pendingAction !== null}
             />
             {vercelUrl ? (

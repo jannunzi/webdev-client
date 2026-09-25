@@ -164,22 +164,50 @@ describe("deploy origin normalization", () => {
 });
 
 describe("criterion verify URLs", () => {
-  it("joins the student deploy origin with the criterion path", () => {
+  it("joins the student deploy origin with the criterion path and check id", () => {
     const origin = "https://jane-a1.vercel.app/account/signin";
     assert.equal(
       criterionVerifyUrl(origin, "a1-lab-heading-tags"),
-      "https://jane-a1.vercel.app/labs/lab1",
+      "https://jane-a1.vercel.app/labs/lab1#wd-h-tag",
     );
     assert.equal(
       criterionVerifyUrl(origin, "a1-lab-heading-tags-ai"),
-      "https://jane-a1.vercel.app/labs/lab1",
+      "https://jane-a1.vercel.app/labs/lab1#wd-ai-headings",
+    );
+    assert.equal(
+      criterionVerifyUrl(origin, "a1-lab-forms-oyo"),
+      "https://jane-a1.vercel.app/labs/lab1#wd-your-form",
+    );
+    assert.equal(
+      criterionVerifyUrl(origin, "a1-lab-forms-ai"),
+      "https://jane-a1.vercel.app/labs/lab1#wd-your-form",
+    );
+    assert.equal(
+      criterionVerifyUrl(origin, "a1-lab-tables-ai"),
+      "https://jane-a1.vercel.app/labs/lab1#wd-tables",
+    );
+    assert.equal(
+      criterionVerifyUrl(origin, "a1-lab-anchor"),
+      "https://jane-a1.vercel.app/labs/lab1#wd-lipsum",
     );
     assert.equal(
       criterionVerifyUrl(origin, "a1-lab-toc-ai"),
+      "https://jane-a1.vercel.app/labs#wd-toc-book-link",
+    );
+    assert.equal(
+      criterionVerifyUrl(origin, "a1-lab-toc-oyo"),
       "https://jane-a1.vercel.app/labs",
     );
     assert.equal(
       criterionVerifyUrl(origin, "a1-kambaz-home"),
+      "https://jane-a1.vercel.app/courses/1234/home#wd-home",
+    );
+    assert.equal(
+      criterionVerifyUrl(origin, "a1-kambaz-nav"),
+      "https://jane-a1.vercel.app/dashboard",
+    );
+    assert.equal(
+      criterionVerifyUrl(origin, "a1-kambaz-course-nav"),
       "https://jane-a1.vercel.app/courses/1234/home",
     );
     assert.equal(
@@ -187,5 +215,10 @@ describe("criterion verify URLs", () => {
       "https://jane-a1.vercel.app/labs",
     );
     assert.equal(criterionVerifyUrl("", "a1-lab-heading-tags"), null);
+    assert.equal(criterionVerifyUrl("not a url", "a1-lab-forms"), null);
+    assert.equal(
+      criterionVerifyUrl("http://jane-a1.vercel.app", "a1-lab-forms"),
+      null,
+    );
   });
 });
