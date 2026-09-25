@@ -328,7 +328,7 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
         id: "a1-lab-forms-ai",
         kind: "ai",
         description:
-          "Overwrite the same app/labs/lab1/forms/YourForm.tsx (keep id wd-your-form; no second file; Forms.tsx imports that one YourForm only), then replace every SAMPLE default with your own details.",
+          "Overwrite the same file app/labs/lab1/forms/YourForm.tsx and keep id wd-your-form — the same id as On your own. No second file and no new form id (do not invent wd-ai-form, wd-ai-your-form, or similar). Unlike earlier With AI steps that add a new wd-ai-* id, Forms reuses the On-your-own id. Forms.tsx still imports that one YourForm only. Then replace every SAMPLE default with your own details.",
         points: 2,
       },
     ],
