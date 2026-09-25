@@ -66,7 +66,7 @@ If Clerk or Atlas env vars are missing, those take routes show a clear
    user password). Copy the `mongodb+srv://…` connection string. The app uses
    database `web-dev` (override with `MONGODB_DB`) and collections
    `quiz_attempts`, `quiz_access_overrides`, `quiz_grade_overrides`,
-   `canvas_roster`, `assignment_submissions`, and `assignment_grades`.
+   `canvas_roster` and `assignment_submissions` (URLs plus `staffGrade`).
    `assignment_progress` is unused and is left in place.
 3. **Vercel** project env (Production + Preview + Development):
    `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`,
@@ -407,8 +407,9 @@ those rubrics are authored.
 Signed-in students save GitHub and Vercel URLs on `assignment_submissions`
 (keyed by Clerk user + assignment). Checklist checkmarks are not stored in
 the browser or in Mongo. Run computes them for the current page. Staff Save
-appends a snapshot to `assignment_grades` (history kept; the page shows the
-latest). Run never changes a saved grade. `assignment_progress` is unused.
+writes `assignment_submissions.staffGrade` for that student (the same field
+the staff grader already used). Older pass/fail overrides still load. Run
+never changes a saved grade. `assignment_progress` is unused.
 The UI never mentions the auth vendor — the button says “Sign in with your
 Canvas email.”
 

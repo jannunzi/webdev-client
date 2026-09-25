@@ -16,9 +16,10 @@ import {
 import {
   getAssignment,
   listAssignmentIds,
+  listRubricCriteria,
   rubricPointTotal,
 } from "@/lib/assignments/catalog";
-import { readLatestAssignmentGrade } from "@/lib/assignments/grades";
+import { gradeViewFromStaffGrade } from "@/lib/assignments/grade-rows";
 import type { AssignmentGradeView } from "@/lib/assignments/grade-rows";
 import {
   listSubmissionsForAssignment,
@@ -300,15 +301,19 @@ export default async function AssignmentDetailPage({
     gateReason = visibility.gateReason ?? "sign_in";
   }
 
-  const gradeUserId = selectedStudent
-    ? selectedStudent.clerkUserId ?? null
-    : serverUserId;
-  if (gradeUserId && mongoReady && assignment.rubric) {
-    try {
-      initialGrade = await readLatestAssignmentGrade(gradeUserId, assignment.id);
-    } catch (error) {
-      console.error("assignment grade load failed", error);
-    }
+  if (assignment.rubric && initialSubmission?.staffGrade) {
+    initialGrade = gradeViewFromStaffGrade({
+      studentClerkUserId: selectedStudent?.clerkUserId ?? serverUserId ?? "",
+      assignmentId: assignment.id,
+      githubUrl: initialSubmission.githubUrl,
+      vercelUrl: initialSubmission.vercelUrl,
+      criteria: listRubricCriteria(assignment.rubric).map((row) => ({
+        id: row.id,
+        points: row.points,
+      })),
+      staffGrade: initialSubmission.staffGrade,
+      checkResults: initialSubmission.checkResults,
+    });
   }
 
   const points = assignment.rubric

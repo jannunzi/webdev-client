@@ -47,7 +47,7 @@ export function canPersistStaffGrade(
 }
 
 /**
- * Save writes `assignment_grades`. Call this before any grade insert.
+ * Save writes `assignment_submissions.staffGrade`. Call this before that write.
  * Staff means the INSTRUCTOR_EMAILS / TA_EMAILS allowlist (`isActualStaff`).
  * Students, signed-out visitors, and View as student are rejected.
  */

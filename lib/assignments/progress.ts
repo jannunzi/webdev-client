@@ -2,7 +2,7 @@ import "server-only";
 
 /**
  * Unused by the checklist and by grading. Checkmarks are not read or written.
- * `assignment_grades` stores staff snapshots. This module remains so the
+ * Staff grades live on `assignment_submissions.staffGrade`. This module remains so the
  * `assignment_progress` collection is not dropped from the app.
  */
 import { getCollection } from "../mongo";

@@ -6,12 +6,13 @@ import { runA1Checks } from "@/lib/assignments/checks";
 import { fetchDeployHtml, probeGithubRepo } from "@/lib/assignments/fetch-deploy";
 import type { AssignmentCheckResult } from "@/lib/assignments/check-types";
 import {
+  gradeViewFromStaffGrade,
   normalizeGradeRows,
   sanitizeCheckResults,
+  staffGradeRecordFromRows,
   type AssignmentGradeView,
   type CriterionGradeRow,
 } from "@/lib/assignments/grade-rows";
-import { insertAssignmentGrade } from "@/lib/assignments/grades";
 import { getAssignment, isAssignmentId, listRubricCriteria } from "@/lib/assignments/catalog";
 import {
   assignmentGradeSaveAccess,
@@ -20,7 +21,10 @@ import {
 } from "@/lib/assignments/staff";
 import { resolveNameQuery } from "@/lib/assignments/names";
 import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
-import { findSubmissionForStaffStudent } from "@/lib/assignments/submissions";
+import {
+  findSubmissionForStaffStudent,
+  writeAssignmentSubmission,
+} from "@/lib/assignments/submissions";
 import {
   toSubmissionView,
   type AssignmentSubmissionView,
@@ -138,7 +142,7 @@ export async function runStaffAssignmentChecks(input: {
     },
   });
 
-  // On-screen only. Run never writes assignment_grades or checklist progress.
+  // On-screen only. Run never writes staffGrade or checklist progress.
   return {
     ok: true,
     persisted: false,
@@ -248,17 +252,40 @@ export async function saveAssignmentGrade(input: {
   const user = await currentUser();
   const gradedByEmail = collectClerkEmails(user)[0];
 
+  const checkResults = sanitizeCheckResults(input.checkResults);
+  const staffGrade = staffGradeRecordFromRows({
+    rows,
+    checkResults,
+    comments: target.doc.staffGrade?.comments,
+    gradedByEmail: gradedByEmail ? normalizeEmail(gradedByEmail) : undefined,
+    gradedByClerkUserId: userId,
+  });
+
   try {
-    const grade = await insertAssignmentGrade({
-      studentClerkUserId: target.doc.clerkUserId,
+    const doc = await writeAssignmentSubmission({
+      clerkUserId: target.doc.clerkUserId,
       assignmentId: target.assignmentId,
       githubUrl: target.doc.githubUrl,
       vercelUrl,
-      rows,
-      checkResults: sanitizeCheckResults(input.checkResults),
-      gradedByClerkUserId: userId,
-      gradedByEmail: gradedByEmail ? normalizeEmail(gradedByEmail) : undefined,
+      checkResults,
+      checked: checkResults.length > 0,
+      staffGrade,
     });
+    const grade = gradeViewFromStaffGrade({
+      studentClerkUserId: doc.clerkUserId,
+      assignmentId: doc.assignmentId,
+      githubUrl: doc.githubUrl,
+      vercelUrl: doc.vercelUrl,
+      criteria: listRubricCriteria(assignment.rubric).map((row) => ({
+        id: row.id,
+        points: row.points,
+      })),
+      staffGrade: doc.staffGrade,
+      checkResults: doc.checkResults,
+    });
+    if (!grade) {
+      return { ok: false, code: "invalid", message: "Could not save the grade." };
+    }
     return { ok: true, grade };
   } catch (error) {
     const message =

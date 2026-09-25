@@ -167,6 +167,140 @@ export function gradeRowsFromResults(
   });
 }
 
+/** Older `staffGrade` documents: pass/fail overrides, no per-row points. */
+export type LegacyStaffGrade = {
+  acceptedProposed?: boolean;
+  criterionOverrides?: Record<string, boolean> | null;
+  earnedPoints?: number;
+  totalPoints?: number;
+  percent?: number;
+  gradedByEmail?: string;
+  gradedByClerkUserId?: string;
+  gradedAt?: Date | string;
+  rows?: readonly {
+    criterionId: string;
+    autoPassed: boolean;
+    overridePassed: boolean;
+    points: number;
+  }[];
+  checkResults?: AssignmentCheckResult[];
+};
+
+/**
+ * Load a saved staff grade into checklist rows.
+ * Grades that already store `rows` keep their points. Older grades use
+ * `criterionOverrides` as all-or-nothing flips on top of the saved checks.
+ */
+export function rowsFromStaffGrade(
+  criteria: readonly { id: string; points: number }[],
+  staffGrade: LegacyStaffGrade,
+  checkResults: readonly AssignmentCheckResult[] = [],
+): CriterionGradeRow[] {
+  if (staffGrade.rows?.length) {
+    return normalizeGradeRows(criteria, staffGrade.rows);
+  }
+  const base = gradeRowsFromResults(criteria, staffGrade.checkResults ?? checkResults);
+  const overrides = staffGrade.criterionOverrides ?? {};
+  return base.map((row) => {
+    const override = overrides[row.criterionId];
+    if (typeof override !== "boolean") return row;
+    return {
+      ...row,
+      overridePassed: override,
+      points: defaultPointsFor(override, row.maxPoints),
+    };
+  });
+}
+
+export function gradeViewFromStaffGrade(input: {
+  studentClerkUserId: string;
+  assignmentId: AssignmentId;
+  githubUrl: string;
+  vercelUrl: string;
+  criteria: readonly { id: string; points: number }[];
+  staffGrade?: LegacyStaffGrade | null;
+  checkResults?: AssignmentCheckResult[];
+}): AssignmentGradeView | null {
+  const staffGrade = input.staffGrade;
+  if (!staffGrade?.gradedAt && !staffGrade?.rows?.length && !staffGrade?.criterionOverrides) {
+    return null;
+  }
+  if (!staffGrade) return null;
+  const checkResults = sanitizeCheckResults(
+    staffGrade.checkResults ?? input.checkResults ?? [],
+  );
+  const rows = rowsFromStaffGrade(input.criteria, staffGrade, checkResults);
+  const totals = rows.length ? gradePoints(rows) : {
+    earnedPoints: staffGrade.earnedPoints ?? 0,
+    totalPoints: staffGrade.totalPoints ?? 0,
+    percent: staffGrade.percent ?? 0,
+  };
+  const gradedAt = staffGrade.gradedAt;
+  const savedAt =
+    gradedAt instanceof Date
+      ? gradedAt.toISOString()
+      : gradedAt
+        ? new Date(gradedAt).toISOString()
+        : new Date(0).toISOString();
+  return {
+    studentClerkUserId: input.studentClerkUserId,
+    assignmentId: input.assignmentId,
+    githubUrl: input.githubUrl,
+    vercelUrl: input.vercelUrl,
+    rows,
+    checkResults,
+    earnedPoints: totals.earnedPoints,
+    totalPoints: totals.totalPoints,
+    percent: totals.percent,
+    gradedByClerkUserId: staffGrade.gradedByClerkUserId ?? "",
+    gradedByEmail: staffGrade.gradedByEmail,
+    savedAt,
+  };
+}
+
+/** Fields written onto `assignment_submissions.staffGrade`. */
+export function staffGradeRecordFromRows(input: {
+  rows: readonly CriterionGradeRow[];
+  checkResults?: readonly AssignmentCheckResult[];
+  comments?: Record<string, string>;
+  gradedByEmail?: string;
+  gradedByClerkUserId?: string;
+  gradedAt?: Date;
+}): {
+  earnedPoints: number;
+  totalPoints: number;
+  percent: number;
+  acceptedProposed: boolean;
+  criterionOverrides?: Record<string, boolean>;
+  comments?: Record<string, string>;
+  gradedByEmail?: string;
+  gradedByClerkUserId?: string;
+  gradedAt: Date;
+  rows: CriterionGradeRow[];
+  checkResults: AssignmentCheckResult[];
+} {
+  const rows = input.rows.map((row) => ({ ...row }));
+  const totals = gradePoints(rows);
+  const criterionOverrides: Record<string, boolean> = {};
+  for (const row of rows) {
+    if (row.overridePassed !== row.autoPassed) {
+      criterionOverrides[row.criterionId] = row.overridePassed;
+    }
+  }
+  return {
+    ...totals,
+    acceptedProposed: !rows.some(isOverridden),
+    criterionOverrides:
+      Object.keys(criterionOverrides).length > 0 ? criterionOverrides : undefined,
+    comments: input.comments,
+    gradedByEmail: input.gradedByEmail,
+    gradedByClerkUserId: input.gradedByClerkUserId,
+    gradedAt: input.gradedAt ?? new Date(),
+    rows,
+    checkResults: sanitizeCheckResults(input.checkResults),
+  };
+}
+
 export function normalizeGradeRows(
   criteria: readonly { id: string; points: number }[],
   submitted: readonly {

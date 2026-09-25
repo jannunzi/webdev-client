@@ -7,7 +7,10 @@ import {
   defaultPointsFor,
   gradePoints,
   gradeRowsFromResults,
+  gradeViewFromStaffGrade,
   isOverridden,
+  rowsFromStaffGrade,
+  staffGradeRecordFromRows,
   normalizeGradeRows,
   rowPresentation,
   studentAutoPoints,
@@ -137,6 +140,92 @@ describe("override detection and points", () => {
     assert.equal(saved[1]?.autoPassed, false);
     assert.equal(saved[1]?.points, 0);
     assert.equal(saved[2]?.maxPoints, 1);
+  });
+});
+
+describe("existing staffGrade documents", () => {
+  const criteria = [
+    { id: "pass", points: 3 },
+    { id: "fail", points: 5 },
+  ];
+
+  it("loads an older pass/fail override as full points or zero", () => {
+    const rows = rowsFromStaffGrade(
+      criteria,
+      {
+        acceptedProposed: false,
+        criterionOverrides: { fail: true },
+        gradedAt: "2026-09-20T12:00:00.000Z",
+      },
+      [
+        {
+          id: "pass",
+          label: "pass",
+          passed: true,
+          message: "ok",
+          criterionId: "pass",
+        },
+        {
+          id: "fail",
+          label: "fail",
+          passed: false,
+          message: "missing",
+          criterionId: "fail",
+        },
+      ],
+    );
+    assert.equal(rows[0]?.autoPassed, true);
+    assert.equal(rows[0]?.overridePassed, true);
+    assert.equal(rows[0]?.points, 3);
+    assert.equal(isOverridden(rows[0]!), false);
+    assert.equal(rows[1]?.autoPassed, false);
+    assert.equal(rows[1]?.overridePassed, true);
+    assert.equal(rows[1]?.points, 5);
+    assert.equal(isOverridden(rows[1]!), true);
+  });
+
+  it("keeps partial points stored on a newer staffGrade", () => {
+    const saved = staffGradeRecordFromRows({
+      rows: [
+        row({ criterionId: "pass", autoPassed: true, maxPoints: 3 }),
+        withCustomPoints(
+          row({ criterionId: "fail", autoPassed: false, maxPoints: 5 }),
+          2,
+        ),
+      ],
+      gradedAt: new Date("2026-09-24T15:00:00.000Z"),
+      gradedByEmail: "jannunzi@gmail.com",
+    });
+    assert.equal(saved.earnedPoints, 5);
+    assert.equal(saved.acceptedProposed, false);
+    assert.equal(saved.criterionOverrides, undefined);
+    const view = gradeViewFromStaffGrade({
+      studentClerkUserId: "user_1",
+      assignmentId: "a1",
+      githubUrl: "",
+      vercelUrl: "https://jane-a1.vercel.app",
+      criteria,
+      staffGrade: saved,
+    });
+    assert.equal(view?.rows[1]?.points, 2);
+    assert.equal(view?.rows[1]?.overridePassed, false);
+    assert.equal(view?.earnedPoints, 5);
+    assert.equal(view?.gradedByEmail, "jannunzi@gmail.com");
+    assert.equal(view?.savedAt, "2026-09-24T15:00:00.000Z");
+  });
+
+  it("returns null when the submission has no staff grade", () => {
+    assert.equal(
+      gradeViewFromStaffGrade({
+        studentClerkUserId: "user_1",
+        assignmentId: "a1",
+        githubUrl: "",
+        vercelUrl: "https://jane-a1.vercel.app",
+        criteria,
+        staffGrade: null,
+      }),
+      null,
+    );
   });
 });
 

@@ -47,7 +47,7 @@ export async function upsertCriterionProgress(
 /**
  * `assignment_progress` is unused. Checklist checkmarks are not stored.
  * The collection is left in place so existing rows are not dropped here.
- * Grades live in `assignment_grades`.
+ * Staff grades live on `assignment_submissions.staffGrade`.
  */
 export const ASSIGNMENT_PROGRESS_COLLECTION = "assignment_progress";
 
