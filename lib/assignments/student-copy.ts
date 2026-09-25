@@ -22,13 +22,13 @@ export const ASSIGNMENT_STUDENT_COPY = {
   signInHint: COURSE_WEBSITE_ACCOUNT_COPY.assignmentSignInHint,
   syncProgress:
     "Sign up if you don’t have a course-website account yet, then Sign in with the same Northeastern email you use on Canvas to sync progress.",
-  syncAcrossDevices:
-    "Checkmarks stay in this browser. Sign up if you don’t have a course-website account yet, then Sign in with the same Northeastern email you use on Canvas to sync across devices.",
+  checksNotSaved:
+    "Run checks updates this page only. Checkmarks are not saved. Sign up if you don’t have a course-website account yet, then Sign in with the same Northeastern email you use on Canvas to save your GitHub and Vercel URLs.",
   urlSubmitWhen:
     "Run checks on a public Vercel URL works without an account. Saving URLs is not unlocked by a calendar date. Save stays closed until you are signed in with the same Northeastern email as your Canvas/FACT roster, and that email is on the course site roster.",
   notOnRosterTitle: "This email isn’t on the course roster",
   notOnRoster:
-    "This email isn’t on the Canvas/FACT course roster. You can still use the checklist in this browser and run checks on a public Vercel URL. URL submit stays closed until you Sign in with the same Northeastern email you use on Canvas. Creating a site account does not enroll you on the roster; use your Canvas email so we can map progress. If you already did that and are still blocked, ask staff on Piazza to refresh the roster or contact the instructor.",
+    "This email isn’t on the Canvas/FACT course roster. You can still run checks on a public Vercel URL. Checkmarks are not saved. URL submit stays closed until you Sign in with the same Northeastern email you use on Canvas. Creating a site account does not enroll you on the roster; use your Canvas email so we can map progress. If you already did that and are still blocked, ask staff on Piazza to refresh the roster or contact the instructor.",
   rosterEmpty:
     "The course roster has not been loaded yet. This is not a date lock — URL submit stays closed until the instructor imports the roster.",
   notConfiguredTitle: "URL submit is not available yet",
@@ -87,9 +87,9 @@ export const ASSIGNMENT_STUDENT_COPY = {
   nameAndSectionDeliveryNote:
     "Name and section is your full Canvas name on Labs (first then last, matching the roster), not a checkbox or control in Run checks.",
   manualCheckHint:
-    "Staff grade this row on your deploy URL. Run checks does not mark it pass or fail. Manual check is not a failed auto check.",
+    "Checked by staff at grading. Staff grade this row on your deploy URL. Run checks does not mark it pass or fail. Manual check is not a failed auto check.",
   manualCheckLabNote:
-    "A Manual check badge means staff grade that row on your deploy URL. Run checks never marks it pass or fail, and it is not a failed auto check.",
+    "A Manual check badge means checked by staff at grading. Staff grade that row on your deploy URL. Run checks never marks it pass or fail, and it is not a failed auto check.",
 } as const;
 
 export type AssignmentStudentCopyKey = keyof typeof ASSIGNMENT_STUDENT_COPY;

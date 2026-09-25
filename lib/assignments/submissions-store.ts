@@ -1,6 +1,7 @@
-import type { AssignmentId } from "./types";
 import type { AssignmentCheckResult } from "./checks";
+import type { CriterionGradeRow } from "./grade-rows";
 import type { CriterionPassMap } from "./grade";
+import type { AssignmentId } from "./types";
 
 export const ASSIGNMENT_SUBMISSIONS_COLLECTION = "assignment_submissions";
 
@@ -9,10 +10,16 @@ export type AssignmentStaffGrade = {
   totalPoints: number;
   percent: number;
   acceptedProposed: boolean;
+  /** Pass/fail flips from older saves. Newer saves also store `rows`. */
   criterionOverrides?: CriterionPassMap;
   comments?: Record<string, string>;
   gradedByEmail?: string;
+  gradedByClerkUserId?: string;
   gradedAt: Date | string;
+  /** Auto result, override, and points for each criterion. */
+  rows?: CriterionGradeRow[];
+  /** Autograder output captured with this grade. Run does not replace it. */
+  checkResults?: AssignmentCheckResult[];
 };
 
 export type AssignmentSubmissionIdentity = {

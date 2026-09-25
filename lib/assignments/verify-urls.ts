@@ -1,4 +1,4 @@
-import { a1LabVerifyPaths } from "./a1-lab-exercises";
+import { A1_LAB_EXERCISES, a1LabVerifyPaths } from "./a1-lab-exercises";
 import { deployOriginFromUrl, urlOnDeployOrigin } from "./urls";
 
 /**
@@ -24,6 +24,32 @@ export function criterionVerifyPath(criterionId: string): string | undefined {
   return A1_CRITERION_VERIFY_PATHS[criterionId];
 }
 
+/**
+ * Kambaz screen wrappers. Navigation rows stay path-only: those ids sit in
+ * the chrome, not a section to scroll to.
+ */
+const A1_KAMBAZ_VERIFY_HASH: Record<string, string> = {
+  "a1-kambaz-account": "wd-signin-screen",
+  "a1-kambaz-dashboard": "wd-dashboard",
+  "a1-kambaz-modules": "wd-modules",
+  "a1-kambaz-home": "wd-home",
+  "a1-kambaz-assignments": "wd-assignments",
+  "a1-kambaz-editor": "wd-assignments-editor",
+};
+
+/** Id fragment for a criterion, without a leading #. */
+export function criterionVerifyHash(criterionId: string): string | undefined {
+  const exercise = A1_LAB_EXERCISES.find((row) => row.id === criterionId);
+  if (exercise) {
+    const explicit = exercise.verifyHash?.replace(/^#/, "").trim();
+    if (explicit) return explicit;
+    const fromCheck = exercise.auto?.requireAllIds?.[0]?.trim();
+    if (fromCheck) return fromCheck;
+    return undefined;
+  }
+  return A1_KAMBAZ_VERIFY_HASH[criterionId];
+}
+
 export function criterionVerifyUrl(
   deployUrl: string | undefined,
   criterionId: string,
@@ -33,5 +59,7 @@ export function criterionVerifyUrl(
   if (!origin.ok) return null;
   const path = criterionVerifyPath(criterionId);
   if (!path) return null;
-  return urlOnDeployOrigin(origin.href, path);
+  const href = urlOnDeployOrigin(origin.href, path);
+  const hash = criterionVerifyHash(criterionId);
+  return hash ? `${href}#${hash}` : href;
 }

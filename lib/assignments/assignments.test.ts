@@ -21,19 +21,18 @@ import {
   rubricPointTotal,
 } from "./catalog";
 import type { AssignmentCheckResult } from "./check-types";
+import { clearLegacyAssignmentProgressStorage } from "./clear-legacy-progress";
 import {
   applyCriterionToggle,
   completedIdsAfterAutoCheckRun,
   loadCompletedCriterionIds,
   mergeCompletedIds,
-  parseLocalProgress,
   replaceCompletedCriterionIds,
-  resolveProgressSnapshot,
-  serializeLocalProgress,
   summarizeProgress,
   upsertCriterionProgress,
   type ProgressStore,
 } from "./progress-store";
+import { studentAutoPoints, type CriterionGradeRow } from "./grade-rows";
 import type { AssignmentProgressDoc } from "./types";
 
 function autoResult(
@@ -337,25 +336,61 @@ describe("assignment progress helpers", () => {
     ]);
   });
 
-  it("round-trips localStorage JSON", () => {
-    const raw = serializeLocalProgress(["a1-lab-tables", "a1-lab-images"]);
-    assert.deepEqual(parseLocalProgress(raw).sort(), [
-      "a1-lab-images",
-      "a1-lab-tables",
+  it("drops legacy assignmentProgress localStorage keys only", () => {
+    const map = new Map<string, string>([
+      ["webdev.assignmentProgress.a1", "{\"completed\":[\"a1-delivery-vercel\"]}"],
+      ["webdev.assignmentProgress.a2", "[]"],
+      ["webdev.syllabus.section", "01"],
     ]);
-    assert.deepEqual(parseLocalProgress('["a1-lab-forms"]'), ["a1-lab-forms"]);
-    assert.deepEqual(parseLocalProgress("not-json"), []);
-    assert.deepEqual(
-      resolveProgressSnapshot(["a1-delivery-vercel"], null),
-      ["a1-delivery-vercel"],
+    const storage = {
+      get length() {
+        return map.size;
+      },
+      key(index: number) {
+        return [...map.keys()][index] ?? null;
+      },
+      removeItem(key: string) {
+        map.delete(key);
+      },
+    };
+    const removed = clearLegacyAssignmentProgressStorage(storage);
+    assert.deepEqual(removed.sort(), [
+      "webdev.assignmentProgress.a1",
+      "webdev.assignmentProgress.a2",
+    ]);
+    assert.deepEqual([...map.keys()], ["webdev.syllabus.section"]);
+  });
+
+  it("does not count manual rows in the student auto total", () => {
+    const assignment = getAssignment("a1");
+    assert.ok(assignment?.rubric);
+    const manualId = A1_MANUAL_CRITERION_IDS[0];
+    const manual = listRubricCriteria(assignment.rubric).find(
+      (row) => row.id === manualId,
     );
+    assert.ok(manual);
+    const rows: CriterionGradeRow[] = [
+      {
+        criterionId: "a1-delivery-vercel",
+        maxPoints: 3,
+        autoPassed: true,
+        overridePassed: true,
+        points: 3,
+      },
+      {
+        criterionId: manual.id,
+        maxPoints: manual.points,
+        autoPassed: false,
+        overridePassed: true,
+        points: manual.points,
+      },
+    ];
     assert.deepEqual(
-      resolveProgressSnapshot(
-        ["a1-delivery-vercel"],
-        serializeLocalProgress([]),
-      ),
-      [],
+      studentAutoPoints(rows, new Set(A1_MANUAL_CRITERION_IDS)),
+      { earnedPoints: 3, totalPoints: 3 },
     );
+    const summary = summarizeProgress(assignment, ["a1-delivery-vercel"]);
+    assert.equal(summary.earnedPoints, 3);
   });
 
   it("upserts per clerk user + assignment + criterion", async () => {

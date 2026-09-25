@@ -1,17 +1,25 @@
 "use server";
 
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { canPersistStaffGrade, canViewStaffGrader } from "@/lib/assignments/access";
+import { canViewStaffGrader } from "@/lib/assignments/access";
 import { runA1Checks } from "@/lib/assignments/checks";
 import { fetchDeployHtml, probeGithubRepo } from "@/lib/assignments/fetch-deploy";
+import type { AssignmentCheckResult } from "@/lib/assignments/check-types";
 import {
-  gradeFromResultsAndOverrides,
-  proposedGradeFromResults,
-  type CriterionPassMap,
-} from "@/lib/assignments/grade";
-import { getAssignment, isAssignmentId } from "@/lib/assignments/catalog";
+  gradeViewFromStaffGrade,
+  normalizeGradeRows,
+  sanitizeCheckResults,
+  staffGradeRecordFromRows,
+  type AssignmentGradeView,
+  type CriterionGradeRow,
+} from "@/lib/assignments/grade-rows";
+import { getAssignment, isAssignmentId, listRubricCriteria } from "@/lib/assignments/catalog";
+import {
+  assignmentGradeSaveAccess,
+  canPersistStaffGrade,
+  parseStaffStudentKey,
+} from "@/lib/assignments/staff";
 import { resolveNameQuery } from "@/lib/assignments/names";
-import { parseStaffStudentKey } from "@/lib/assignments/staff";
 import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
 import {
   findSubmissionForStaffStudent,
@@ -19,7 +27,6 @@ import {
 } from "@/lib/assignments/submissions";
 import {
   toSubmissionView,
-  type AssignmentStaffGrade,
   type AssignmentSubmissionView,
 } from "@/lib/assignments/submissions-store";
 import type { AssignmentId } from "@/lib/assignments/types";
@@ -115,8 +122,8 @@ export async function runStaffAssignmentChecks(input: {
     return { ok: false, code: "not_found", message: target.message };
   }
 
-  const githubUrl = (input.githubUrl ?? target.doc.githubUrl ?? "").trim();
-  const vercelUrl = (input.vercelUrl ?? target.doc.vercelUrl ?? "").trim();
+  const githubUrl = (target.doc.githubUrl ?? "").trim();
+  const vercelUrl = (target.doc.vercelUrl ?? "").trim();
   if (!vercelUrl) {
     return {
       ok: false,
@@ -135,61 +142,70 @@ export async function runStaffAssignmentChecks(input: {
     },
   });
 
-  if (!authz.persist) {
-    return {
-      ok: true,
-      persisted: false,
-      impersonation: true,
-      submission: {
-        ...toSubmissionView(target.doc),
-        githubUrl,
-        vercelUrl,
-        checkResults,
-        lastCheckedAt: new Date().toISOString(),
-      },
-    };
-  }
-
-  try {
-    const doc = await writeAssignmentSubmission({
-      clerkUserId: target.doc.clerkUserId,
-      assignmentId: target.assignmentId,
-      githubUrl: target.doc.githubUrl,
-      vercelUrl: target.doc.vercelUrl,
+  // On-screen only. Run never writes staffGrade or checklist progress.
+  return {
+    ok: true,
+    persisted: false,
+    impersonation: authz.persist ? undefined : true,
+    submission: {
+      ...toSubmissionView(target.doc),
+      githubUrl,
+      vercelUrl,
       checkResults,
-      checked: true,
-    });
-    return {
-      ok: true,
-      persisted: true,
-      submission: {
-        ...toSubmissionView(doc),
-        githubUrl,
-        vercelUrl,
-        checkResults,
-      },
-    };
-  } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Could not store check results.";
-    console.error("staff assignment check persist failed", message);
-    return { ok: false, code: "invalid", message };
-  }
+    },
+  };
 }
 
-export async function saveStaffAssignmentGrade(input: {
+export type GradeSaveActionResult =
+  | { ok: true; grade: AssignmentGradeView }
+  | {
+      ok: false;
+      code: "forbidden" | "unauthenticated" | "not_configured" | "not_found" | "invalid";
+      message: string;
+    };
+
+export async function saveAssignmentGrade(input: {
   assignmentId: string;
   studentKey: string;
-  acceptProposed?: boolean;
-  overrides?: CriterionPassMap;
-  comments?: Record<string, string>;
-  earnedPoints?: number;
-}): Promise<StaffActionResult> {
-  const authz = await authorizeStaffGrader();
-  if (!authz.ok) return authz.result;
+  rows: CriterionGradeRow[];
+  checkResults?: AssignmentCheckResult[];
+}): Promise<GradeSaveActionResult> {
+  const { userId, isAuthenticated } = await auth();
+  const staff = await isActualStaff();
+  const impersonating = await isImpersonatingStudent();
+  if (!isAuthenticated || !userId) {
+    return {
+      ok: false,
+      code: "unauthenticated",
+      message: ASSIGNMENT_STUDENT_COPY.syncProgress,
+    };
+  }
+  const access = assignmentGradeSaveAccess({
+    isAuthenticated: true,
+    isActualStaff: staff,
+    impersonating,
+  });
+  if (!access.ok) {
+    return {
+      ok: false,
+      code: access.code,
+      message:
+        access.code === "unauthenticated"
+          ? ASSIGNMENT_STUDENT_COPY.syncProgress
+          : "Only course staff can save a grade.",
+    };
+  }
+
+  if (!isAssignmentProgressConfigured()) {
+    return {
+      ok: false,
+      code: "not_configured",
+      message: ASSIGNMENT_STUDENT_COPY.notConfigured,
+    };
+  }
 
   const assignment = getAssignment(input.assignmentId);
-  if (!assignment?.rubric) {
+  if (!assignment?.rubric || !isAssignmentId(input.assignmentId)) {
     return {
       ok: false,
       code: "invalid",
@@ -209,55 +225,72 @@ export async function saveStaffAssignmentGrade(input: {
     return { ok: false, code: "not_found", message: target.message };
   }
 
-  const results = target.doc.checkResults ?? [];
-  const computed = input.acceptProposed
-    ? proposedGradeFromResults(assignment.rubric, results)
-    : gradeFromResultsAndOverrides(assignment.rubric, results, input.overrides);
-  const totalPoints = computed.totalPoints;
-  const earnedPoints =
-    input.acceptProposed || input.earnedPoints == null
-      ? computed.earnedPoints
-      : Math.max(0, Math.min(totalPoints, Math.round(input.earnedPoints)));
-  const percent =
-    totalPoints === 0 ? 0 : Math.round((earnedPoints / totalPoints) * 100);
-
-  const staffGrade: AssignmentStaffGrade = {
-    earnedPoints,
-    totalPoints,
-    percent,
-    acceptedProposed: Boolean(input.acceptProposed) && input.earnedPoints == null,
-    criterionOverrides: input.acceptProposed ? undefined : input.overrides,
-    comments: input.comments ?? target.doc.staffGrade?.comments,
-    gradedByEmail: authz.staffEmail ? normalizeEmail(authz.staffEmail) : undefined,
-    gradedAt: new Date(),
-  };
-
-  if (!authz.persist) {
+  const vercelUrl = (target.doc.vercelUrl ?? "").trim();
+  if (!vercelUrl) {
     return {
-      ok: true,
-      persisted: false,
-      impersonation: true,
-      submission: {
-        ...toSubmissionView(target.doc),
-        staffGrade,
-      },
+      ok: false,
+      code: "invalid",
+      message: ASSIGNMENT_STUDENT_COPY.vercelRequired,
     };
   }
+
+  const rows = normalizeGradeRows(
+    listRubricCriteria(assignment.rubric).map((row) => ({
+      id: row.id,
+      points: row.points,
+    })),
+    input.rows ?? [],
+  );
+  if (!input.rows?.length) {
+    return {
+      ok: false,
+      code: "invalid",
+      message: "Run checks before saving a grade.",
+    };
+  }
+
+  const user = await currentUser();
+  const gradedByEmail = collectClerkEmails(user)[0];
+
+  const checkResults = sanitizeCheckResults(input.checkResults);
+  const staffGrade = staffGradeRecordFromRows({
+    rows,
+    checkResults,
+    comments: target.doc.staffGrade?.comments,
+    gradedByEmail: gradedByEmail ? normalizeEmail(gradedByEmail) : undefined,
+    gradedByClerkUserId: userId,
+  });
 
   try {
     const doc = await writeAssignmentSubmission({
       clerkUserId: target.doc.clerkUserId,
       assignmentId: target.assignmentId,
       githubUrl: target.doc.githubUrl,
-      vercelUrl: target.doc.vercelUrl,
-      checkResults: target.doc.checkResults,
+      vercelUrl,
+      checkResults,
+      checked: checkResults.length > 0,
       staffGrade,
     });
-    return { ok: true, persisted: true, submission: toSubmissionView(doc) };
+    const grade = gradeViewFromStaffGrade({
+      studentClerkUserId: doc.clerkUserId,
+      assignmentId: doc.assignmentId,
+      githubUrl: doc.githubUrl,
+      vercelUrl: doc.vercelUrl,
+      criteria: listRubricCriteria(assignment.rubric).map((row) => ({
+        id: row.id,
+        points: row.points,
+      })),
+      staffGrade: doc.staffGrade,
+      checkResults: doc.checkResults,
+    });
+    if (!grade) {
+      return { ok: false, code: "invalid", message: "Could not save the grade." };
+    }
+    return { ok: true, grade };
   } catch (error) {
     const message =
-      error instanceof Error ? error.message : "Could not save the staff grade.";
-    console.error("staff assignment grade persist failed", message);
+      error instanceof Error ? error.message : "Could not save the grade.";
+    console.error("assignment grade save failed", message);
     return { ok: false, code: "invalid", message };
   }
 }

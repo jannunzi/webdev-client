@@ -66,7 +66,8 @@ If Clerk or Atlas env vars are missing, those take routes show a clear
    user password). Copy the `mongodb+srv://…` connection string. The app uses
    database `web-dev` (override with `MONGODB_DB`) and collections
    `quiz_attempts`, `quiz_access_overrides`, `quiz_grade_overrides`,
-   `canvas_roster`, `assignment_progress`, and `assignment_submissions`.
+   `canvas_roster` and `assignment_submissions` (URLs plus `staffGrade`).
+   `assignment_progress` is unused and is left in place.
 3. **Vercel** project env (Production + Preview + Development):
    `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`,
    `NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in`,
@@ -403,17 +404,21 @@ links to the matching book chapter (`/book/ch1` for A1, and so on).
 checklists with section deep links. A3–A6 are syllabus placeholders until
 those rubrics are authored.
 
-Signed-in students persist checkmarks to MongoDB (`assignment_progress`,
-keyed by user + assignment + criterion). Visitors who are not signed in keep
-progress in this browser only. The UI never mentions the auth vendor — the
-button says “Sign in with your Canvas email.”
+Signed-in students save GitHub and Vercel URLs on `assignment_submissions`
+(keyed by Clerk user + assignment). Checklist checkmarks are not stored in
+the browser or in Mongo. Run computes them for the current page. Staff Save
+writes `assignment_submissions.staffGrade` for that student (the same field
+the staff grader already used). Older pass/fail overrides still load. Run
+never changes a saved grade. `assignment_progress` is unused.
+The UI never mentions the auth vendor — the button says “Sign in with your
+Canvas email.”
 
 **A1 URL submit (Phase 2C).** Rostered students (matched by Canvas email,
 including Northeastern aliases) and staff can save a public
 Vercel deployment URL on `/assignments/a1` (GitHub is optional). Off-roster
 signed-in users see an explicit message instead of a blank form. Documents
-live in `assignment_submissions` (user + `a1`). After save — or via **Run
-checks** — the server normalizes the deploy to its origin, fetches `/`,
+live in `assignment_submissions` (user + `a1`). **Save URLs** stores those
+URLs only. **Run** normalizes the deploy to its origin, fetches `/`,
 `/labs`, `/labs/lab1`, and Kambaz account/course screens, then maps many
 A1 rubric rows to pass/fail from `wd-*` ids and required routes. GitHub
 format/public checks run only when a GitHub URL is provided. Name checks
