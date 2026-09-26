@@ -49,7 +49,7 @@ export const DEPLOYING_TO_VERCEL_SLIDES: LectureSlide[] = [
     kind: "demo",
     bullets: [
       "Once you give permission to Vercel, it can list all your repositories",
-      "Search for the repository you want to deploy, e.g. **kambaz-next-js**",
+      "Search for the repository you want to deploy, e.g. **webdev-client**",
     ],
     diagram: "vercel-import-mock",
   },

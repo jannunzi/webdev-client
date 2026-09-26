@@ -35,6 +35,12 @@ export type A1LabExerciseTask = {
   points: number;
   /** Present when auto-check can look at Lab HTML. Omitted = manual. */
   auto?: A1LabExerciseAuto;
+  /**
+   * Element id to scroll to on the student deploy. Use this when the
+   * section wrapper is a better target than the first requireAllIds entry,
+   * or when the check has no requireAllIds.
+   */
+  verifyHash?: string;
 };
 
 /** One top-level Lab section (HeadingTags, …) with nested a/b/c tasks. */
@@ -62,14 +68,15 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
         id: "a1-lab-heading-tags",
         kind: "core",
         description:
-          "Create HeadingTags.tsx with sample h1–h6 tags and import it on the Lab 1 page.",
+          "Create HeadingTags.tsx from the book sample (h4 \"Heading Tags\" and its paragraph). Before With AI, add h1–h6 as practice without erasing that sample text, and import the component on the Lab 1 page.",
         points: 3,
         auto: {
           kind: "headings",
           requireAllIds: ["wd-h-tag"],
           headingLevels: [1, 2, 3, 4, 5, 6],
-          passMessage: "Found wd-h-tag and heading tags h1–h6.",
-          failMessage: "Lab 1 should include wd-h-tag and sample h1–h6 tags.",
+          passMessage: "Found wd-h-tag and practice headings h1–h6.",
+          failMessage:
+            "Lab 1 should include wd-h-tag and the h1–h6 headings you add as practice.",
         },
       },
       {
@@ -90,7 +97,7 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
         id: "a1-lab-heading-tags-ai",
         kind: "ai",
         description:
-          "Sample outline with id wd-ai-headings (h4 Lab notes, h5 What I built, h6 Next step).",
+          "After the practice h1–h6 headings you added, add a sample outline with id wd-ai-headings (h4 Lab notes, h5 What I built, h6 Next step). Keep the book sample text.",
         points: 2,
         auto: {
           kind: "ids",
@@ -237,6 +244,7 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
           failMessage:
             "Extend the quiz table with rows Q4–Q10 and recalculate the average.",
         },
+        verifyHash: "wd-tables",
       },
     ],
   },
@@ -327,8 +335,9 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
         id: "a1-lab-forms-ai",
         kind: "ai",
         description:
-          "Overwrite the same app/labs/lab1/forms/YourForm.tsx (keep id wd-your-form; no second file; Forms.tsx imports that one YourForm only), then replace every SAMPLE default with your own details.",
+          "Overwrite the same file app/labs/lab1/forms/YourForm.tsx and keep id wd-your-form — the same id as On your own. No second file and no new form id (do not invent wd-ai-form, wd-ai-your-form, or similar). Unlike earlier With AI steps that add a new wd-ai-* id, Forms reuses the On-your-own id. Forms.tsx still imports that one YourForm only. Then replace every SAMPLE default with your own details.",
         points: 2,
+        verifyHash: "wd-your-form",
       },
     ],
   },
@@ -355,6 +364,7 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
         kind: "oyo",
         description: "Extra HighlightedParagraph with your text and colors.",
         points: 2,
+        verifyHash: "wd-highlighted-paragraph",
       },
       {
         id: "a1-lab-highlighted-paragraph-ai",
@@ -362,6 +372,7 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
         description:
           "Extra sample HighlightedParagraph (not your personal sentence) with different colors.",
         points: 2,
+        verifyHash: "wd-highlighted-paragraph",
       },
     ],
   },
@@ -388,6 +399,7 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
         kind: "oyo",
         description: "Extra HighlightedBox wrapping your goals list.",
         points: 2,
+        verifyHash: "wd-highlighted-box",
       },
       {
         id: "a1-lab-highlighted-box-ai",
@@ -395,6 +407,7 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
         description:
           "Extra sample HighlightedBox of nested tags (not your personal goals list).",
         points: 2,
+        verifyHash: "wd-highlighted-box",
       },
     ],
   },
@@ -415,6 +428,7 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
           passMessage: "Found Lab 1 anchor ids (wd-lipsum or wd-github).",
           failMessage: "Lab 1 should include wd-lipsum and/or wd-github anchors.",
         },
+        verifyHash: "wd-lipsum",
       },
       {
         id: "a1-lab-anchor-oyo",
@@ -454,6 +468,7 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
           "Labs index at app/labs/page.tsx lists Lab 1–3 with Link, plus a Kambaz link so graders can reach every required page.",
         points: 3,
         // Special-cased in runA1Checks (labs HTML / navigation ids).
+        verifyHash: "wd-labs",
       },
       {
         id: "a1-lab-labs-nav-oyo",
@@ -467,6 +482,7 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
           passMessage: "Found a Lab 4 link (wd-lab4-link).",
           failMessage: "Link Lab 4 from Labs (id wd-lab4-link).",
         },
+        verifyHash: "wd-lab4-link",
       },
       {
         id: "a1-lab-labs-nav-ai",
@@ -480,6 +496,7 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
           passMessage: "Found a Lab 5 index link.",
           failMessage: "Add a Lab 5 placeholder and link it from the Labs index.",
         },
+        verifyHash: "wd-labs",
       },
     ],
   },
@@ -500,6 +517,7 @@ export const A1_LAB_EXERCISE_SECTIONS: readonly A1LabExerciseSection[] = [
           passMessage: "Found Labs TOC / navigation ids.",
           failMessage: "Labs TOC should include wd-home-link or wd-lab1-link.",
         },
+        verifyHash: "wd-home-link",
       },
       {
         id: "a1-lab-toc-oyo",

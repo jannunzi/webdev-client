@@ -19,8 +19,24 @@ describe("course website account copy", () => {
     assert.match(COURSE_WEBSITE_ACCOUNT_COPY.separateFromCanvas, /Kambaz/);
     assert.match(
       COURSE_WEBSITE_ACCOUNT_COPY.separateFromCanvas,
-      /https:\/\/webdev-client\.vercel\.app\//,
+      /https:\/\/kambaz\.dev\//,
     );
+    assert.doesNotMatch(
+      COURSE_WEBSITE_ACCOUNT_COPY.separateFromCanvas,
+      /webdev-client\.vercel\.app/,
+    );
+    assert.match(
+      COURSE_WEBSITE_ACCOUNT_COPY.readOnlyBackup,
+      /https:\/\/webdev-client\.vercel\.app is a read-only backup/i,
+    );
+    assert.match(
+      COURSE_WEBSITE_ACCOUNT_COPY.readOnlyBackup,
+      /can['’]t sign in or submit/i,
+    );
+    for (const [key, value] of Object.entries(COURSE_WEBSITE_ACCOUNT_COPY)) {
+      if (key === "readOnlyBackup") continue;
+      assert.doesNotMatch(value, /webdev-client\.vercel\.app/, key);
+    }
     assert.match(
       COURSE_WEBSITE_ACCOUNT_COPY.separateFromCanvas,
       /separate from Canvas and Northeastern SSO/i,

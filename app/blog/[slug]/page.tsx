@@ -61,8 +61,8 @@ export default async function BlogPostPage({ params }: PageProps) {
       />
 
       <p className="rounded-lg border border-neutral-200 bg-white px-4 py-3 font-sans text-sm text-neutral-700">
-        Instructor-curated digest, not original reporting. Optional further
-        reading — not required for grades.
+        Instructor-curated digest, not original reporting. Each post
+        paraphrases a public article and links to the original source.
       </p>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-start">

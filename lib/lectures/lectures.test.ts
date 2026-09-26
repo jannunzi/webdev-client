@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   authoredSlideBullets,
@@ -75,6 +75,20 @@ function slideText(deckSlug: string): string {
   return deck.slides
     .flatMap((slide) => [slide.title, ...authoredSlideTextParts(slide)])
     .join("\n");
+}
+
+/** Home (`href="/labs"`) must not carry the Lab 1 id. */
+const HOME_LABS_AS_LAB1 =
+  /<(?:Link|a)\b[^>]*href=["']\/labs["'][^>]*id=["']wd-lab1-link["']|<(?:Link|a)\b[^>]*id=["']wd-lab1-link["'][^>]*href=["']\/labs["']/s;
+
+function sourceFilesUnder(dir: string): string[] {
+  const out: string[] = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) out.push(...sourceFilesUnder(full));
+    else if (/\.(tsx|ts)$/.test(entry.name)) out.push(full);
+  }
+  return out;
 }
 
 function findSlide(deckSlug: string, id: string) {
@@ -1811,7 +1825,8 @@ describe("lecture decks", () => {
     assert.match(text, /Vercel/);
     assert.match(text, /Deployment Protection/);
     assert.match(text, /Vercel Authentication/);
-    assert.match(text, /kambaz-next-js/);
+    assert.match(text, /webdev-client/);
+    assert.doesNotMatch(text, /kambaz-next-js/);
     assert.match(text, /OFFICE HOURS/);
     assert.match(text, /BREAK/);
     assert.match(text, /Jose Annunziato/);
@@ -1823,13 +1838,30 @@ describe("lecture decks", () => {
     assert.doesNotMatch(text, /Install Vercel on GitHub/);
   });
 
-  it("normalizes kambaz naming in the GitHub deck", () => {
+  it("names the GitHub repo webdev-client", () => {
     const text = slideText("commit-to-github");
-    assert.match(text, /kambaz/);
+    assert.match(text, /webdev-client/);
     assert.match(text, /node_modules/);
     assert.match(text, /git push -u origin main/);
+    assert.doesNotMatch(text, /kambaz-next-js/);
     assert.doesNotMatch(text, /kanbas/);
     assert.doesNotMatch(text, /kanbaz/);
+  });
+
+  it("keeps the student project name webdev-client on lecture slides and mocks", () => {
+    for (const deck of listLectureDecks()) {
+      assert.doesNotMatch(slideText(deck.slug), /kambaz-next-js/, deck.slug);
+      const lecture = getLecture(deck.slug);
+      assert.ok(lecture);
+      assert.doesNotMatch(lecture.summary, /kambaz-next-js/, deck.slug);
+    }
+    const creating = slideText("creating-a-nextjs-react-application");
+    assert.match(creating, /npx create-next-app@latest webdev-client/);
+    assert.match(creating, /cd webdev-client/);
+    const diagrams = join(process.cwd(), "app/slides/_components/diagrams");
+    for (const file of sourceFilesUnder(diagrams)) {
+      assert.doesNotMatch(readFileSync(file, "utf8"), /kambaz-next-js/, file);
+    }
   });
 
   it("teaches Chapter 1 HTML topics in the Lecture 2 decks", () => {
@@ -1853,6 +1885,16 @@ describe("lecture decks", () => {
     assert.match(lists, /wd-tables/);
     assert.match(lists, /colSpan/);
     assert.match(lists, /not layout|not a layout/i);
+    const quizTable = findSlide("lists-and-tables", "quiz-table");
+    const quizCode = lectureSlideCodeBlocks(quizTable).map((block) => block.code).join("\n");
+    const tablesSource = readFileSync(
+      join(process.cwd(), "app/labs/lab1/Tables.tsx"),
+      "utf8",
+    ).trim();
+    assert.equal(quizCode.trim(), tablesSource);
+    assert.match(quizCode, /<th align="center">Date<\/th>/);
+    assert.match(quizCode, /colSpan=\{3\}/);
+    assert.doesNotMatch(quizCode, /colSpan=\{2\}/);
 
     const forms = slideText("web-forms");
     assert.match(forms, /defaultValue/);
@@ -1889,10 +1931,12 @@ describe("lecture decks", () => {
     assert.match(overview, /app\/\(kambaz\)\/page\.tsx/);
     assert.match(overview, /wd-kambaz/);
     assert.match(overview, /wd-kambaz-link/);
+    assert.match(overview, /href="\/labs" id="wd-home-link"/);
     assert.match(overview, /next\/navigation/);
     assert.match(overview, /redirect\("\/account\/signin"\)/);
     assert.doesNotMatch(overview, /HashRouter/);
     assert.doesNotMatch(overview, /src\/Kanbas/);
+    assert.doesNotMatch(overview, HOME_LABS_AS_LAB1);
 
     const account = slideText("kambaz-account");
     assert.match(account, /wd-signin-screen/);
@@ -1954,6 +1998,37 @@ describe("lecture decks", () => {
     assert.match(assignments, /wd-assignments-editor/);
     assert.match(assignments, /wd-cancel/);
     assert.doesNotMatch(assignments, /<a href="\/courses/);
+  });
+
+  it("labels Labs Home as wd-home-link in Chapter 1 teaching snippets", () => {
+    const book = readFileSync(
+      join(process.cwd(), "app/book/ch1/sections/KambazSections.tsx"),
+      "utf8",
+    );
+    assert.match(book, /href="\/labs" id="wd-home-link"/);
+    assert.doesNotMatch(book, HOME_LABS_AS_LAB1);
+
+    const roots = [
+      join(process.cwd(), "app/book/ch1"),
+      join(process.cwd(), "lib/lectures/decks"),
+    ];
+    for (const root of roots) {
+      for (const file of sourceFilesUnder(root)) {
+        assert.doesNotMatch(
+          readFileSync(file, "utf8"),
+          HOME_LABS_AS_LAB1,
+          `${file} must not put wd-lab1-link on the Home /labs link`,
+        );
+      }
+    }
+
+    for (const slug of [
+      ...LECTURE_1_SLUGS,
+      ...LECTURE_2_SLUGS,
+      ...LECTURE_3_SLUGS,
+    ]) {
+      assert.doesNotMatch(slideText(slug), HOME_LABS_AS_LAB1, slug);
+    }
   });
 
   it("shows book Canvas target screenshots before Ch1 Kambaz screen sequences", () => {
@@ -2736,7 +2811,7 @@ describe("lecture decks", () => {
     assert.equal(lectureSearchIsPresent("?fullscreen=1"), true);
     assert.equal(
       lecturePresentHref({
-        href: "https://webdev-client.vercel.app/slides/html-and-dom#slide-2",
+        href: "https://kambaz.dev/slides/html-and-dom#slide-2",
         slideNumber: 3,
         present: true,
       }),
@@ -2744,7 +2819,7 @@ describe("lecture decks", () => {
     );
     assert.equal(
       lecturePresentHref({
-        href: "https://webdev-client.vercel.app/slides/html-and-dom?fullscreen=1#slide-3",
+        href: "https://kambaz.dev/slides/html-and-dom?fullscreen=1#slide-3",
         slideNumber: 3,
         present: false,
       }),
@@ -2953,7 +3028,7 @@ describe("lecture decks", () => {
     assert.match(expressCode, /app\.listen\(4000\)/);
     assert.ok(!authoredSlideBullets(express).some((row) => row.includes("app.listen")));
 
-    assert.equal(createApp.code, "npx create-next-app@latest kambaz-next-js");
+    assert.equal(createApp.code, "npx create-next-app@latest webdev-client");
     assert.equal(createApp.codeLanguage, "bash");
     assert.match(welcome.code ?? "", /Welcome to Web Dev/);
     assert.equal(welcome.codeFile, "app/page.tsx");

@@ -27,12 +27,8 @@ export {
   applyCriterionToggle,
   completedIdsAfterAutoCheckRun,
   loadCompletedCriterionIds,
-  localProgressKey,
   mergeCompletedIds,
-  parseLocalProgress,
   replaceCompletedCriterionIds,
-  resolveProgressSnapshot,
-  serializeLocalProgress,
   summarizeProgress,
   upsertCriterionProgress,
 } from "./progress-store";
@@ -45,8 +41,10 @@ export {
   supportsUrlSubmission,
 } from "./access";
 export {
+  a1CheckAction,
   a1SubmissionFormState,
   gateReasonFromAccess,
+  preparePublicAssignmentCheck,
   resolveA1SubmitVisibility,
   submissionGateCopy,
 } from "./submission-form";

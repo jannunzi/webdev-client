@@ -17,6 +17,7 @@ import {
   toSubmissionView,
   type AssignmentSubmissionView,
 } from "@/lib/assignments/submissions-store";
+import { preparePublicAssignmentCheck } from "@/lib/assignments/submission-form";
 import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
 import { isAssignmentId } from "@/lib/assignments/catalog";
 import type { AssignmentId } from "@/lib/assignments/types";
@@ -203,6 +204,36 @@ function viewFromInputs(input: {
   };
 }
 
+/**
+ * Logged-out (and other save-gated) visitors can run A1 checks.
+ * This action never reads or writes assignment_submissions and does not
+ * consult Clerk. Saving stays on saveAssignmentSubmission.
+ */
+export async function runPublicAssignmentChecks(input: {
+  assignmentId: string;
+  githubUrl: string;
+  vercelUrl: string;
+}): Promise<SubmissionActionResult> {
+  const prepared = preparePublicAssignmentCheck(input);
+  if (!prepared.ok) return prepared;
+
+  const checkResults = await runChecksForA1({
+    githubUrl: prepared.githubUrl,
+    vercelUrl: prepared.vercelUrl,
+    nameSource: {},
+  });
+
+  return {
+    ok: true,
+    persisted: false,
+    submission: viewFromInputs({
+      githubUrl: prepared.githubUrl,
+      vercelUrl: prepared.vercelUrl,
+      checkResults,
+    }),
+  };
+}
+
 export async function saveAssignmentSubmission(input: {
   assignmentId: string;
   githubUrl: string;
@@ -221,11 +252,6 @@ export async function saveAssignmentSubmission(input: {
     };
   }
 
-  const checkResults = await runChecksForA1({
-    githubUrl,
-    vercelUrl,
-    nameSource: authz.nameSource,
-  });
   const persist = authz.canPersist;
 
   if (!persist) {
@@ -233,7 +259,7 @@ export async function saveAssignmentSubmission(input: {
       ok: true,
       persisted: false,
       impersonation: authz.impersonating || undefined,
-      submission: viewFromInputs({ githubUrl, vercelUrl, checkResults }),
+      submission: viewFromInputs({ githubUrl, vercelUrl, checkResults: [] }),
     };
   }
 
@@ -243,14 +269,15 @@ export async function saveAssignmentSubmission(input: {
       assignmentId: input.assignmentId as AssignmentId,
       githubUrl,
       vercelUrl,
-      checkResults,
-      checked: true,
       identity: authz.identity,
     });
     return {
       ok: true,
       persisted: true,
-      submission: toSubmissionView(doc),
+      submission: {
+        ...toSubmissionView(doc),
+        checkResults: undefined,
+      },
     };
   } catch (error) {
     const message =
@@ -260,6 +287,11 @@ export async function saveAssignmentSubmission(input: {
   }
 }
 
+/**
+ * Authenticated Run checks. Results stay in the response only.
+ * This action does not write checklist progress or a grade.
+ * Anonymous visitors use runPublicAssignmentChecks instead.
+ */
 export async function runAssignmentChecks(input: {
   assignmentId: string;
   githubUrl: string;
@@ -299,41 +331,6 @@ export async function runAssignmentChecks(input: {
     vercelUrl,
     nameSource: authz.nameSource,
   });
-  const persist = authz.canPersist;
-
-  if (persist) {
-    try {
-      const existing = await readAssignmentSubmission(
-        authz.userId,
-        input.assignmentId as AssignmentId,
-      );
-      if (existing) {
-        const doc = await writeAssignmentSubmission({
-          clerkUserId: authz.userId,
-          assignmentId: input.assignmentId as AssignmentId,
-          githubUrl: existing.githubUrl,
-          vercelUrl: existing.vercelUrl,
-          checkResults,
-          checked: true,
-          identity: authz.identity,
-        });
-        return {
-          ok: true,
-          persisted: true,
-          submission: {
-            ...toSubmissionView(doc),
-            githubUrl,
-            vercelUrl,
-            checkResults,
-          },
-        };
-      }
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Could not store check results.";
-      console.error("assignment check persist failed", message);
-    }
-  }
 
   return {
     ok: true,

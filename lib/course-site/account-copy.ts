@@ -9,7 +9,9 @@
 export const COURSE_WEBSITE_ACCOUNT_COPY = {
   heading: "Course website accounts",
   separateFromCanvas:
-    "This course website (Kambaz) at https://webdev-client.vercel.app/ is separate from Canvas and Northeastern SSO. Signing in here is not the same as signing into Canvas.",
+    "This course website (Kambaz) at https://kambaz.dev/ is separate from Canvas and Northeastern SSO. Signing in here is not the same as signing into Canvas.",
+  readOnlyBackup:
+    "https://webdev-client.vercel.app is a read-only backup for reading notes if kambaz.dev won’t load on your network. You can’t sign in or submit there.",
   notPreProvisioned:
     "Accounts are not pre-provisioned. If Sign in says it couldn’t find your account, you do not need roster access — you still need to register.",
   signUpThenSignIn:

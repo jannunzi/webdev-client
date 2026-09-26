@@ -44,13 +44,12 @@ export async function upsertCriterionProgress(
   await store.upsert(input);
 }
 
+/**
+ * `assignment_progress` is unused. Checklist checkmarks are not stored.
+ * The collection is left in place so existing rows are not dropped here.
+ * Staff grades live on `assignment_submissions.staffGrade`.
+ */
 export const ASSIGNMENT_PROGRESS_COLLECTION = "assignment_progress";
-
-export const LOCAL_PROGRESS_KEY_PREFIX = "webdev.assignmentProgress.";
-
-export function localProgressKey(assignmentId: AssignmentId): string {
-  return `${LOCAL_PROGRESS_KEY_PREFIX}${assignmentId}`;
-}
 
 export function applyCriterionToggle(
   completedIds: readonly string[],
@@ -125,43 +124,6 @@ export async function replaceCompletedCriterionIds(
     input.clerkUserId,
     input.assignmentId,
   );
-}
-
-/** localStorage is the full completed set once written; otherwise use server. */
-export function resolveProgressSnapshot(
-  serverIds: readonly string[],
-  localRaw: string | null,
-): string[] {
-  if (localRaw == null) {
-    return [...serverIds].sort();
-  }
-  return parseLocalProgress(localRaw).sort();
-}
-
-export function parseLocalProgress(raw: string | null): string[] {
-  if (!raw) return [];
-  try {
-    const parsed = JSON.parse(raw) as unknown;
-    if (Array.isArray(parsed)) {
-      return parsed.filter((id): id is string => typeof id === "string");
-    }
-    if (
-      parsed &&
-      typeof parsed === "object" &&
-      Array.isArray((parsed as { completed?: unknown }).completed)
-    ) {
-      return (parsed as { completed: unknown[] }).completed.filter(
-        (id): id is string => typeof id === "string",
-      );
-    }
-  } catch {
-    return [];
-  }
-  return [];
-}
-
-export function serializeLocalProgress(completedIds: readonly string[]): string {
-  return JSON.stringify({ completed: [...completedIds] });
 }
 
 export type ProgressTotals = {

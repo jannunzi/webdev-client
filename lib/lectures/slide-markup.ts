@@ -1,3 +1,5 @@
+import { COURSE_SITE_ORIGIN } from "@/lib/course-site/origin";
+
 /** Serialize contenteditable HTML back to the slide markdown dialect. */
 export function htmlToSlideText(html: string): string {
   let s = html;
@@ -52,7 +54,7 @@ export function lectureEditHref({
   href: string;
   edit: boolean;
 }): string {
-  const url = new URL(href, "https://webdev-client.vercel.app");
+  const url = new URL(href, COURSE_SITE_ORIGIN);
   if (edit) url.searchParams.set("edit", "1");
   else url.searchParams.delete("edit");
   return `${url.pathname}${url.search}${url.hash}`;

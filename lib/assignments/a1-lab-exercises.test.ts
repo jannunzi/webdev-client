@@ -74,6 +74,48 @@ describe("A1 Lab catalog / §1.3.12 parity", () => {
     );
   });
 
+  it("tells Forms With AI to reuse wd-your-form on the same YourForm file", () => {
+    const section = A1_LAB_EXERCISE_SECTIONS.find((row) => row.section === "1.3.6");
+    assert.ok(section);
+    const oyo = section.tasks.find((task) => task.id === "a1-lab-forms-oyo");
+    const ai = section.tasks.find((task) => task.id === "a1-lab-forms-ai");
+    assert.ok(oyo);
+    assert.ok(ai);
+    assert.equal(oyo.points, 3);
+    assert.equal(ai.points, 2);
+    assert.equal(ai.auto, undefined);
+    assert.deepEqual(oyo.auto?.requireAllIds, ["wd-your-form"]);
+    assert.match(ai.description, /app\/labs\/lab1\/forms\/YourForm\.tsx/);
+    assert.match(ai.description, /same id as On your own/);
+    assert.match(ai.description, /wd-your-form/);
+    assert.match(ai.description, /No second file/);
+    assert.match(ai.description, /no new form id/);
+    assert.match(ai.description, /wd-ai-form/);
+    assert.match(ai.description, /wd-ai-your-form/);
+    assert.match(ai.description, /Unlike earlier With AI steps/);
+    assert.match(ai.description, /Forms\.tsx still imports that one YourForm only/);
+  });
+
+  it("treats §1.3.1 h1–h6 as practice added on top of the h4 book sample", () => {
+    const section = A1_LAB_EXERCISE_SECTIONS.find((row) => row.section === "1.3.1");
+    assert.ok(section);
+    const core = section.tasks.find((task) => task.kind === "core");
+    const ai = section.tasks.find((task) => task.kind === "ai");
+    assert.ok(core);
+    assert.ok(ai);
+    assert.match(core.description, /book sample/);
+    assert.match(core.description, /Before With AI, add h1–h6 as practice/);
+    assert.match(core.description, /without erasing that sample text/);
+    assert.doesNotMatch(core.description, /sample h1–h6/);
+    assert.match(ai.description, /After the practice h1–h6 headings you added/);
+    assert.doesNotMatch(ai.description, /sample h1/);
+    assert.match(ai.description, /Keep the book sample text/);
+    assert.equal(
+      core.auto?.failMessage,
+      "Lab 1 should include wd-h-tag and the h1–h6 headings you add as practice.",
+    );
+  });
+
   it("walks 1.3.1–1.3.11 as create, On your own, With AI per section", () => {
     const sections = [...new Set(A1_LAB_EXERCISES.map((row) => row.section))];
     assert.deepEqual(sections, LAB_SECTIONS);

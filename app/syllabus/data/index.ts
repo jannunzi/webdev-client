@@ -53,6 +53,7 @@ export {
   classroomEnvironment,
   disabilities,
   latePolicy,
+  regradePolicy,
   titleIX,
 } from "./policies";
 export { assignments, assignmentsIntro } from "./assignments";

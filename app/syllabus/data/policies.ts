@@ -15,6 +15,14 @@ export const latePolicy: PolicyBlock = {
   ],
 };
 
+export const regradePolicy: PolicyBlock = {
+  paragraphs: [
+    "You may request a regrade, or resubmit an assignment for a regrade, only for the assignment immediately before the one you are working on. Older assignments are not open for a regrade.",
+    "That window opens when you receive a grade for the prior assignment, and it lasts one week from when the grade is posted.",
+    "While you are working on A2, once A1 is graded you have one week to resubmit A1 for a regrade. While you are working on A4, you may only seek a regrade for A3 — not A2 or A1.",
+  ],
+};
+
 export const aiPolicy: PolicyBlock = {
   paragraphs: [
     "Working with an AI agent is like asking your expert professional uncle or team at Google to do the work for you. If that would not be allowed with a person or a team, it is not allowed with AI.",

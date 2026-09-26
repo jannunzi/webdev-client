@@ -16,9 +16,11 @@ import {
 import {
   getAssignment,
   listAssignmentIds,
+  listRubricCriteria,
   rubricPointTotal,
 } from "@/lib/assignments/catalog";
-import { readAssignmentProgress } from "@/lib/assignments/progress";
+import { gradeViewFromStaffGrade } from "@/lib/assignments/grade-rows";
+import type { AssignmentGradeView } from "@/lib/assignments/grade-rows";
 import {
   listSubmissionsForAssignment,
   readAssignmentSubmission,
@@ -40,6 +42,7 @@ import type { A1GateDiagnostics } from "@/lib/assignments/diagnostics";
 import {
   isAssignmentProgressConfigured,
   isClerkConfigured,
+  isClerkPublishableKeySet,
   isMongoConfigured,
   mongoDbName,
 } from "@/lib/config";
@@ -64,6 +67,19 @@ import AssignmentChecklist from "../components/AssignmentChecklist";
 import AssignmentHubNav from "../components/AssignmentHubNav";
 
 export const dynamic = "force-dynamic";
+
+/** Signed-out save gate. Sign-in wins over roster/config misses. */
+function loggedOutSubmitVisibility(assignmentId: string, configured: boolean) {
+  return resolveA1SubmitVisibility({
+    assignmentId,
+    access: assignmentSubmitAccess({
+      signedIn: false,
+      configured,
+      isActualStaff: false,
+      roster: { status: "not_configured" },
+    }),
+  });
+}
 
 type PageProps = {
   params: Promise<{ assignmentId: string }>;
@@ -96,8 +112,9 @@ export default async function AssignmentDetailPage({
   if (!assignment) notFound();
 
   let signedIn = false;
-  let mongoReady = isAssignmentProgressConfigured();
-  let initialCompletedIds: string[] = [];
+  let serverUserId: string | null = null;
+  const mongoReady = isAssignmentProgressConfigured();
+  let initialGrade: AssignmentGradeView | null = null;
   let canSubmit = false;
   let impersonating = false;
   let gateReason: SubmissionGateReason = mongoReady ? "sign_in" : "not_configured";
@@ -111,6 +128,7 @@ export default async function AssignmentDetailPage({
   if (isClerkConfigured()) {
     const { userId, sessionClaims } = await auth();
     signedIn = Boolean(userId);
+    serverUserId = userId ?? null;
     if (signedIn && userId) {
       let staff = false;
       let user = null;
@@ -163,8 +181,9 @@ export default async function AssignmentDetailPage({
               : { status: "not_configured" };
       }
 
-      // Gate is computed here and never rewritten by checklist / staff extras.
-      // “The page loaded” (Tania) is not the same as canSubmit (URL fields).
+      // Save gate is computed here and never rewritten by checklist / staff
+      // extras. “The page loaded” is not canSubmit. Run checks does not use
+      // canSubmit — logged-out visitors still get the URL fields.
       const visibility = resolveA1SubmitVisibility({
         assignmentId: assignment.id,
         access: assignmentSubmitAccess({
@@ -213,18 +232,6 @@ export default async function AssignmentDetailPage({
       });
 
       try {
-        if (mongoReady) {
-          initialCompletedIds = await readAssignmentProgress(
-            userId,
-            assignment.id,
-          );
-        }
-      } catch (error) {
-        console.error("assignment progress load failed", error);
-        mongoReady = false;
-      }
-
-      try {
         if (
           mongoReady &&
           canSubmit &&
@@ -264,7 +271,6 @@ export default async function AssignmentDetailPage({
                 assignment.id,
               );
               initialSubmission = doc ? toSubmissionView(doc) : null;
-              initialCompletedIds = [];
             } else if (selectedStudent) {
               initialSubmission = selectedStudent.vercelUrl
                 ? {
@@ -278,7 +284,6 @@ export default async function AssignmentDetailPage({
                     staffGrade: selectedStudent.staffGrade,
                   }
                 : null;
-              initialCompletedIds = [];
             }
           }
         }
@@ -286,10 +291,29 @@ export default async function AssignmentDetailPage({
         console.error("assignment staff queue load failed", error);
       }
     } else {
-      gateReason = mongoReady ? "sign_in" : "not_configured";
+      const visibility = loggedOutSubmitVisibility(assignment.id, mongoReady);
+      canSubmit = visibility.canSubmit;
+      gateReason = visibility.gateReason ?? "sign_in";
     }
   } else {
-    gateReason = "not_configured";
+    const visibility = loggedOutSubmitVisibility(assignment.id, false);
+    canSubmit = visibility.canSubmit;
+    gateReason = visibility.gateReason ?? "sign_in";
+  }
+
+  if (assignment.rubric && initialSubmission?.staffGrade) {
+    initialGrade = gradeViewFromStaffGrade({
+      studentClerkUserId: selectedStudent?.clerkUserId ?? serverUserId ?? "",
+      assignmentId: assignment.id,
+      githubUrl: initialSubmission.githubUrl,
+      vercelUrl: initialSubmission.vercelUrl,
+      criteria: listRubricCriteria(assignment.rubric).map((row) => ({
+        id: row.id,
+        points: row.points,
+      })),
+      staffGrade: initialSubmission.staffGrade,
+      checkResults: initialSubmission.checkResults,
+    });
   }
 
   const points = assignment.rubric
@@ -340,9 +364,9 @@ export default async function AssignmentDetailPage({
         <A1WorkArea
           assignment={assignment}
           initialSubmission={initialSubmission}
-          initialCompletedIds={initialCompletedIds}
-          signedIn={signedIn}
-          mongoReady={mongoReady}
+          initialGrade={initialGrade}
+          serverUserId={serverUserId}
+          authEnabled={isClerkPublishableKeySet()}
           canSubmit={canSubmit}
           impersonating={impersonating}
           gateReason={canSubmit ? null : gateReason}
@@ -353,9 +377,10 @@ export default async function AssignmentDetailPage({
       ) : (
         <AssignmentChecklist
           assignment={assignment}
-          initialCompletedIds={initialCompletedIds}
-          signedIn={signedIn}
-          mongoReady={mongoReady}
+          rows={[]}
+          scored={false}
+          live={false}
+          audience="student"
         />
       )}
     </article>

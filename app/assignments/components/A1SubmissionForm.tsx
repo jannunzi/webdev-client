@@ -5,12 +5,14 @@ import type { AssignmentCheckResult } from "@/lib/assignments/checks";
 import type { AssignmentSubmissionView } from "@/lib/assignments/submissions-store";
 import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
 import {
+  a1CheckAction,
   a1SubmissionFormState,
   submissionGateCopy,
   type SubmissionGateReason,
 } from "@/lib/assignments/submission-form";
 import {
   runAssignmentChecks,
+  runPublicAssignmentChecks,
   saveAssignmentSubmission,
 } from "../submission-actions";
 import { runStaffAssignmentChecks } from "../staff-actions";
@@ -30,22 +32,35 @@ export default function A1SubmissionForm({
   impersonating = false,
   gateReason = null,
   staffStudentKey,
-  onCheckRunStart,
+  canSaveGrade = false,
+  saveGradeDisabled = true,
+  pendingGrade = false,
+  onClear,
+  onSaveGrade,
   onResults,
   onSubmission,
+  onDeployUrlChange,
 }: {
   initialSubmission: AssignmentSubmissionView | null;
   canSubmit: boolean;
   impersonating?: boolean;
   gateReason?: SubmissionGateReason;
   staffStudentKey?: string;
-  onCheckRunStart?: () => void;
+  canSaveGrade?: boolean;
+  saveGradeDisabled?: boolean;
+  pendingGrade?: boolean;
+  onClear?: () => void;
+  onSaveGrade?: () => void;
   onResults?: (results: AssignmentCheckResult[]) => void;
   onSubmission?: (submission: AssignmentSubmissionView) => void;
+  onDeployUrlChange?: (url: string) => void;
 }) {
   const [githubUrl, setGithubUrl] = useState(initialSubmission?.githubUrl ?? "");
   const [vercelUrl, setVercelUrl] = useState(initialSubmission?.vercelUrl ?? "");
   const [submission, setSubmission] = useState(initialSubmission);
+  const [savedToAccount, setSavedToAccount] = useState(
+    Boolean(initialSubmission),
+  );
   const [note, setNote] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pendingAction, setPendingAction] = useState<"save" | "check" | null>(
@@ -54,15 +69,15 @@ export default function A1SubmissionForm({
   const [, startTransition] = useTransition();
   const staffReview = Boolean(staffStudentKey);
   const formState = a1SubmissionFormState({ canSubmit, gateReason });
+  const checkAction = a1CheckAction({ staffReview, form: formState });
+  const saveGate =
+    formState.mode === "check" ? submissionGateCopy(formState.gateReason) : null;
 
-  const savedAt = formatSavedAt(submission?.updatedAt);
+  const savedAt = savedToAccount ? formatSavedAt(submission?.updatedAt) : null;
   const checkedAt = formatSavedAt(submission?.lastCheckedAt);
 
-  function applyResult(
-    result:
-      | Awaited<ReturnType<typeof saveAssignmentSubmission>>
-      | Awaited<ReturnType<typeof runStaffAssignmentChecks>>,
-    kind: "save" | "check",
+  function applySave(
+    result: Awaited<ReturnType<typeof saveAssignmentSubmission>>,
   ) {
     if (!result.ok) {
       setError(result.message);
@@ -72,31 +87,46 @@ export default function A1SubmissionForm({
     setError(null);
     setGithubUrl(result.submission.githubUrl);
     setVercelUrl(result.submission.vercelUrl);
+    onDeployUrlChange?.(result.submission.vercelUrl);
     setSubmission(result.submission);
-    onResults?.(result.submission.checkResults ?? []);
+    setSavedToAccount(result.persisted);
     onSubmission?.(result.submission);
-    if (result.impersonation || !result.persisted) {
-      setNote(ASSIGNMENT_STUDENT_COPY.savedButNotPersisted);
-    } else {
-      setNote(
-        kind === "save"
-          ? ASSIGNMENT_STUDENT_COPY.saved
-          : "Checks finished. Pass/fail colors are on the checklist below.",
-      );
-    }
+    setNote(
+      result.persisted
+        ? ASSIGNMENT_STUDENT_COPY.saved
+        : ASSIGNMENT_STUDENT_COPY.savedButNotPersisted,
+    );
   }
 
-  function onSave() {
+  function applyRun(result: {
+    ok: boolean;
+    message?: string;
+    submission?: { checkResults?: AssignmentCheckResult[] };
+  }) {
+    if (!result.ok) {
+      setError(result.message ?? "Could not run checks.");
+      setNote(null);
+      return;
+    }
+    setError(null);
+    onResults?.(result.submission?.checkResults ?? []);
+    setNote(
+      staffReview
+        ? "Checks finished. Save records the grade. Running checks again does not change a saved grade."
+        : "Checks finished. These results stay on this page until you Clear or leave. They are not saved.",
+    );
+  }
+
+  function onSaveUrls() {
     setPendingAction("save");
     setError(null);
-    onCheckRunStart?.();
     startTransition(async () => {
       const result = await saveAssignmentSubmission({
         assignmentId: "a1",
         githubUrl,
         vercelUrl,
       });
-      applyResult(result, "save");
+      applySave(result);
       setPendingAction(null);
     });
   }
@@ -104,21 +134,27 @@ export default function A1SubmissionForm({
   function onRunChecks() {
     setPendingAction("check");
     setError(null);
-    onCheckRunStart?.();
     startTransition(async () => {
-      const result = staffStudentKey
-        ? await runStaffAssignmentChecks({
-            assignmentId: "a1",
-            studentKey: staffStudentKey,
-            githubUrl,
-            vercelUrl,
-          })
-        : await runAssignmentChecks({
-            assignmentId: "a1",
-            githubUrl,
-            vercelUrl,
-          });
-      applyResult(result, "check");
+      const result =
+        checkAction === "staff" && staffStudentKey
+          ? await runStaffAssignmentChecks({
+              assignmentId: "a1",
+              studentKey: staffStudentKey,
+              githubUrl,
+              vercelUrl,
+            })
+          : checkAction === "public"
+            ? await runPublicAssignmentChecks({
+                assignmentId: "a1",
+                githubUrl,
+                vercelUrl,
+              })
+            : await runAssignmentChecks({
+                assignmentId: "a1",
+                githubUrl,
+                vercelUrl,
+              });
+      applyRun(result);
       setPendingAction(null);
     });
   }
@@ -143,25 +179,11 @@ export default function A1SubmissionForm({
         </p>
       ) : null}
 
-      {formState.mode === "gate" ? (
-        <div
-          role="status"
-          className="rounded-lg border border-amber-400 bg-amber-50 px-4 py-3 font-sans text-sm text-amber-950"
-        >
-          <p className="m-0 font-semibold">
-            {submissionGateCopy(formState.gateReason).title}
-          </p>
-          <p className="mb-0 mt-1">
-            {submissionGateCopy(formState.gateReason).body}
-          </p>
-        </div>
-      ) : (
-        <form
+      <form
           className="space-y-3"
           onSubmit={(event) => {
             event.preventDefault();
-            if (staffReview) onRunChecks();
-            else onSave();
+            onRunChecks();
           }}
         >
           <div>
@@ -178,7 +200,7 @@ export default function A1SubmissionForm({
               inputMode="url"
               autoComplete="url"
               placeholder="https://github.com/yourname/webdev-client"
-              className="mt-1 w-full rounded border border-neutral-400 bg-white px-3 py-2 font-sans text-sm"
+              className="mt-1 box-border w-full rounded border border-neutral-400 bg-white px-3 py-2 font-sans text-sm"
               value={githubUrl}
               onChange={(event) => setGithubUrl(event.target.value)}
               disabled={pendingAction !== null}
@@ -205,9 +227,12 @@ export default function A1SubmissionForm({
               inputMode="url"
               autoComplete="url"
               placeholder="https://your-app.vercel.app"
-              className="mt-1 w-full rounded border border-neutral-400 bg-white px-3 py-2 font-sans text-sm"
+              className="mt-1 box-border w-full rounded border border-neutral-400 bg-white px-3 py-2 font-sans text-sm"
               value={vercelUrl}
-              onChange={(event) => setVercelUrl(event.target.value)}
+              onChange={(event) => {
+                setVercelUrl(event.target.value);
+                onDeployUrlChange?.(event.target.value);
+              }}
               disabled={pendingAction !== null}
             />
             {vercelUrl ? (
@@ -218,36 +243,62 @@ export default function A1SubmissionForm({
               </p>
             ) : null}
           </div>
-          <div className="flex flex-wrap gap-2">
-            {staffReview ? null : (
-              <button
-                type="submit"
-                className="rounded border border-neutral-800 bg-neutral-800 px-3 py-2 font-sans text-sm text-white hover:bg-neutral-700 disabled:opacity-60"
-                disabled={pendingAction !== null}
-              >
-                {pendingAction === "save" ? "Saving…" : "Save URLs and run checks"}
-              </button>
-            )}
-            <button
-              type={staffReview ? "submit" : "button"}
-              className={
-                staffReview
-                  ? "rounded border border-neutral-800 bg-neutral-800 px-3 py-2 font-sans text-sm text-white hover:bg-neutral-700 disabled:opacity-60"
-                  : "rounded border border-neutral-800 bg-white px-3 py-2 font-sans text-sm hover:bg-neutral-50 disabled:opacity-60"
-              }
-              disabled={pendingAction !== null}
-              onClick={staffReview ? undefined : onRunChecks}
+          {saveGate ? (
+            <div
+              role="status"
+              className="rounded-lg border border-amber-400 bg-amber-50 px-4 py-3 font-sans text-sm text-amber-950"
             >
-              {pendingAction === "check" ? "Checking…" : "Run checks"}
+              <p className="m-0 font-semibold">{saveGate.title}</p>
+              <p className="mb-0 mt-1">{saveGate.body}</p>
+            </div>
+          ) : null}
+          {checkAction === "account" && !staffReview ? (
+            <button
+              type="button"
+              className="rounded border border-neutral-800 bg-white px-3 py-2 font-sans text-sm hover:bg-neutral-50 disabled:opacity-60"
+              disabled={pendingAction !== null}
+              onClick={onSaveUrls}
+            >
+              {pendingAction === "save" ? "Saving…" : "Save URLs"}
+            </button>
+          ) : null}
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              className="rounded border border-neutral-800 bg-white px-3 py-2 font-sans text-sm hover:bg-neutral-50 disabled:opacity-60"
+              disabled={pendingAction !== null || pendingGrade}
+              onClick={onClear}
+            >
+              Clear
+            </button>
+            {canSaveGrade ? (
+              <button
+                type="button"
+                className="rounded border border-neutral-800 bg-neutral-800 px-3 py-2 font-sans text-sm text-white hover:bg-neutral-700 disabled:opacity-60"
+                disabled={saveGradeDisabled || pendingAction !== null}
+                onClick={onSaveGrade}
+              >
+                {pendingGrade ? "Saving…" : "Save"}
+              </button>
+            ) : null}
+            <button
+              type="submit"
+              className="rounded border border-neutral-800 bg-neutral-800 px-3 py-2 font-sans text-sm text-white hover:bg-neutral-700 disabled:opacity-60"
+              disabled={pendingAction !== null || pendingGrade}
+            >
+              {pendingAction === "check" ? "Running…" : "Run"}
             </button>
           </div>
         </form>
-      )}
 
       {savedAt ? (
         <p className="mb-1 mt-3 font-sans text-sm text-neutral-700">
           Last saved {savedAt}
           {checkedAt ? ` · Last checked ${checkedAt}` : null}
+        </p>
+      ) : checkedAt ? (
+        <p className="mb-1 mt-3 font-sans text-sm text-neutral-700">
+          Last checked {checkedAt}
         </p>
       ) : null}
       {note ? (

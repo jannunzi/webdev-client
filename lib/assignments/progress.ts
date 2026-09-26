@@ -1,5 +1,10 @@
 import "server-only";
 
+/**
+ * Unused by the checklist and by grading. Checkmarks are not read or written.
+ * Staff grades live on `assignment_submissions.staffGrade`. This module remains so the
+ * `assignment_progress` collection is not dropped from the app.
+ */
 import { getCollection } from "../mongo";
 import type { AssignmentId, AssignmentProgressDoc } from "./types";
 import {

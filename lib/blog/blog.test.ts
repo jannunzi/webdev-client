@@ -16,6 +16,7 @@ import {
   listBlogPosts,
   listBlogSlugs,
   relatedChapterHref,
+  relatedChapterLabel,
 } from "./index.ts";
 import { BLOG_POSTS } from "./posts.ts";
 
@@ -55,6 +56,30 @@ const REQUIRED_DIGEST_2026_09_21 = [
   "https://vercel.com/blog/reproducing-disclosing-and-fixing-the-libheif-vulnerability-with-hacktron-and-the-maintainers",
 ] as const;
 
+const REQUIRED_DIGEST_2026_09_22 = [
+  "https://nextjs.org/blog/upcoming-nextjs-security-release-september-22-2026",
+  "https://vercel.com/blog/ai-gateway-production-index-september-2026",
+  "https://vercel.com/blog/how-delphi-ships-100-times-a-day-with-its-python-backend-on-vercel",
+] as const;
+
+const REQUIRED_DIGEST_2026_09_23 = [
+  "https://nextjs.org/blog/nextjs-security-update-september-22-2026",
+  "https://vercel.com/blog/ai-gateway-jev-model-launch",
+  "https://vercel.com/blog/how-featureds-users-make-100k-media-pitches-per-month-on-vercel",
+] as const;
+
+const REQUIRED_DIGEST_2026_09_24 = [
+  "https://nextjs.org/blog/turbopack-chunking",
+  "https://nextjs.org/blog/how-we-closed-1500-github-issues",
+  "https://nextjs.org/blog/upcoming-nextjs-security-release-september-2026",
+] as const;
+
+const REQUIRED_DIGEST_2026_09_25 = [
+  "https://vercel.com/blog/how-klaviyo-shipped-356-internal-apps-in-two-weeks-on-vercel",
+  "https://vercel.com/blog/the-end-of-credential-sprawl-for-agents",
+  "https://vercel.com/blog/the-vercel-bug-bounty-program-is-now-publicly-available",
+] as const;
+
 const REQUIRED_SOURCES = [
   ...REQUIRED_SEED_SOURCES,
   ...REQUIRED_CATCHUP_SOURCES,
@@ -62,6 +87,10 @@ const REQUIRED_SOURCES = [
   ...REQUIRED_DIGEST_2026_09_16,
   ...REQUIRED_DIGEST_2026_09_17,
   ...REQUIRED_DIGEST_2026_09_21,
+  ...REQUIRED_DIGEST_2026_09_22,
+  ...REQUIRED_DIGEST_2026_09_23,
+  ...REQUIRED_DIGEST_2026_09_24,
+  ...REQUIRED_DIGEST_2026_09_25,
 ] as const;
 
 const ALLOWED_SOURCE_URL =
@@ -108,6 +137,18 @@ describe("blog posts", () => {
     for (const required of REQUIRED_DIGEST_2026_09_21) {
       assert.ok(urls.includes(required), required);
     }
+    for (const required of REQUIRED_DIGEST_2026_09_22) {
+      assert.ok(urls.includes(required), required);
+    }
+    for (const required of REQUIRED_DIGEST_2026_09_23) {
+      assert.ok(urls.includes(required), required);
+    }
+    for (const required of REQUIRED_DIGEST_2026_09_24) {
+      assert.ok(urls.includes(required), required);
+    }
+    for (const required of REQUIRED_DIGEST_2026_09_25) {
+      assert.ok(urls.includes(required), required);
+    }
 
     for (const post of BLOG_POSTS) {
       assert.ok(post.slug.length > 0, "slug");
@@ -135,34 +176,50 @@ describe("blog posts", () => {
     assert.deepEqual(
       listed.slice(0, 3).map((post) => post.slug),
       [
-        "libheif-avif-rce-disclosure",
-        "tailscale-aperture-ai-gateway",
-        "vercel-design-md-agents",
+        "klaviyo-356-internal-apps-vercel",
+        "vercel-bug-bounty-public",
+        "vercel-connect-credential-sprawl-ga",
       ],
     );
     assert.deepEqual(
       listed.slice(0, 3).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_21].sort(),
+      [...REQUIRED_DIGEST_2026_09_25].sort(),
     );
     assert.deepEqual(
       listed.slice(3, 6).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_17].sort(),
+      [...REQUIRED_DIGEST_2026_09_24].sort(),
     );
     assert.deepEqual(
       listed.slice(6, 9).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_16].sort(),
+      [...REQUIRED_DIGEST_2026_09_23].sort(),
     );
     assert.deepEqual(
       listed.slice(9, 12).map((post) => post.source.url).sort(),
-      [...REQUIRED_DIGEST_2026_09_15].sort(),
+      [...REQUIRED_DIGEST_2026_09_22].sort(),
     );
     assert.deepEqual(
       listed.slice(12, 15).map((post) => post.source.url).sort(),
+      [...REQUIRED_DIGEST_2026_09_21].sort(),
+    );
+    assert.deepEqual(
+      listed.slice(15, 18).map((post) => post.source.url).sort(),
+      [...REQUIRED_DIGEST_2026_09_17].sort(),
+    );
+    assert.deepEqual(
+      listed.slice(18, 21).map((post) => post.source.url).sort(),
+      [...REQUIRED_DIGEST_2026_09_16].sort(),
+    );
+    assert.deepEqual(
+      listed.slice(21, 24).map((post) => post.source.url).sort(),
+      [...REQUIRED_DIGEST_2026_09_15].sort(),
+    );
+    assert.deepEqual(
+      listed.slice(24, 27).map((post) => post.source.url).sort(),
       [...REQUIRED_CATCHUP_SOURCES].sort(),
     );
-    assert.equal(listed[15]?.slug, "august-2026-nextjs-security-release");
-    assert.equal(listed[16]?.slug, "nextjs-16-3-instant-navigations");
-    assert.equal(listed[17]?.slug, "nextjs-16-3-ai-improvements");
+    assert.equal(listed[27]?.slug, "august-2026-nextjs-security-release");
+    assert.equal(listed[28]?.slug, "nextjs-16-3-instant-navigations");
+    assert.equal(listed[29]?.slug, "nextjs-16-3-ai-improvements");
 
     assert.equal(listBlogSlugs().length, REQUIRED_SOURCES.length);
     assert.equal(
@@ -177,6 +234,10 @@ describe("blog posts", () => {
   });
 
   it("formats published dates in UTC and maps related chapters", () => {
+    assert.equal(formatBlogDate("2026-09-25T12:00:00.000Z"), "September 25, 2026");
+    assert.equal(formatBlogDate("2026-09-24T12:00:00.000Z"), "September 24, 2026");
+    assert.equal(formatBlogDate("2026-09-23T12:00:00.000Z"), "September 23, 2026");
+    assert.equal(formatBlogDate("2026-09-22T12:00:00.000Z"), "September 22, 2026");
     assert.equal(formatBlogDate("2026-09-21T12:00:00.000Z"), "September 21, 2026");
     assert.equal(formatBlogDate("2026-09-17T12:00:00.000Z"), "September 17, 2026");
     assert.equal(formatBlogDate("2026-09-16T12:00:00.000Z"), "September 16, 2026");
@@ -187,6 +248,22 @@ describe("blog posts", () => {
     assert.equal(formatBlogDate("2026-06-26T15:00:00.000Z"), "June 26, 2026");
     assert.equal(relatedChapterHref("ch3"), "/book/ch3");
     assert.equal(relatedChapterHref("ch5"), "/book/ch5");
+  });
+
+  it("names related chapters in prose without course-disclaimer copy", () => {
+    const banned =
+      /optional further reading|not required for (?:labs or )?grades|CS 4550|CS 5610/i;
+    for (const post of BLOG_POSTS) {
+      const body = post.intro.join(" ");
+      assert.doesNotMatch(body, banned, post.slug);
+      for (const chapter of post.relatedChapters ?? []) {
+        assert.match(
+          body,
+          new RegExp(`\\b${relatedChapterLabel(chapter)}\\b`),
+          `${post.slug} ${chapter}`,
+        );
+      }
+    }
   });
 
   it("does not invent quotes or unstated dates in intros", () => {
@@ -263,6 +340,61 @@ describe("blog posts", () => {
     assert.match(libheif?.intro.join(" ") ?? "", /Karim Rahal/);
     assert.match(libheif?.intro.join(" ") ?? "", /libheif/);
     assert.match(libheif?.intro.join(" ") ?? "", /v1\.23\.2/);
+
+    const nextSecurity = getBlogPost("nextjs-upcoming-security-release-sept-22-2026");
+    assert.match(nextSecurity?.intro.join(" ") ?? "", /16\.3\.6/);
+    assert.match(nextSecurity?.intro.join(" ") ?? "", /15\.5\.26/);
+    assert.match(nextSecurity?.intro.join(" ") ?? "", /GHSA-vcvr-r3jv-pc5j/);
+    const aiGatewayIndex = getBlogPost("ai-gateway-production-index-september-2026");
+    assert.match(aiGatewayIndex?.intro.join(" ") ?? "", /Amelia Charles/);
+    assert.match(aiGatewayIndex?.intro.join(" ") ?? "", /56%/);
+    assert.match(aiGatewayIndex?.intro.join(" ") ?? "", /GPT-6 Astra/);
+    const delphi = getBlogPost("delphi-100-deploys-day-python-vercel");
+    assert.match(delphi?.intro.join(" ") ?? "", /Susan Aziz/);
+    assert.match(delphi?.intro.join(" ") ?? "", /Spencer Schoeben/);
+    assert.match(delphi?.intro.join(" ") ?? "", /100\+/);
+
+    const nextPatch = getBlogPost("nextjs-security-update-sept-22-2026");
+    assert.match(nextPatch?.intro.join(" ") ?? "", /16\.3\.6/);
+    assert.match(nextPatch?.intro.join(" ") ?? "", /ImageResponse/);
+    assert.match(nextPatch?.intro.join(" ") ?? "", /GHSA-vcvr/);
+    const jev = getBlogPost("ai-gateway-jev-fastest-adopted");
+    assert.match(jev?.intro.join(" ") ?? "", /Jev/);
+    assert.match(jev?.intro.join(" ") ?? "", /13%/);
+    assert.match(jev?.intro.join(" ") ?? "", /Amelia Charles/);
+    const featured = getBlogPost("featured-100k-media-pitches-vercel");
+    assert.match(featured?.intro.join(" ") ?? "", /Featured/);
+    assert.match(featured?.intro.join(" ") ?? "", /Susan Aziz/);
+    assert.match(featured?.intro.join(" ") ?? "", /100,000/);
+    assert.match(featured?.intro.join(" ") ?? "", /Workflow SDK/);
+
+    const chunking = getBlogPost("turbopack-chunking-nextjs-16-3");
+    assert.match(chunking?.intro.join(" ") ?? "", /generateComponentChunks/);
+    assert.match(chunking?.intro.join(" ") ?? "", /38 requests/);
+    assert.match(chunking?.intro.join(" ") ?? "", /Turbopack defaults/);
+    const closability = getBlogPost("nextjs-closed-1500-github-issues-agent");
+    assert.match(closability?.intro.join(" ") ?? "", /1,462/);
+    assert.match(closability?.intro.join(" ") ?? "", /closability/);
+    assert.match(closability?.intro.join(" ") ?? "", /eve/);
+    const sept30 = getBlogPost("nextjs-upcoming-security-release-sept-30-2026");
+    assert.match(sept30?.intro.join(" ") ?? "", /16\.3\.7/);
+    assert.match(sept30?.intro.join(" ") ?? "", /15\.5\.27/);
+    assert.match(sept30?.intro.join(" ") ?? "", /September 30/);
+
+    const klaviyo = getBlogPost("klaviyo-356-internal-apps-vercel");
+    assert.match(klaviyo?.intro.join(" ") ?? "", /Susan Aziz/);
+    assert.match(klaviyo?.intro.join(" ") ?? "", /Kevin Sundstrom/);
+    assert.match(klaviyo?.intro.join(" ") ?? "", /356/);
+    assert.match(klaviyo?.intro.join(" ") ?? "", /K:Forge/);
+    const connect = getBlogPost("vercel-connect-credential-sprawl-ga");
+    assert.match(connect?.intro.join(" ") ?? "", /Hedi Zandi/);
+    assert.match(connect?.intro.join(" ") ?? "", /getToken/);
+    assert.match(connect?.intro.join(" ") ?? "", /100 connectors/);
+    const bounty = getBlogPost("vercel-bug-bounty-public");
+    assert.match(bounty?.intro.join(" ") ?? "", /Caleb An/);
+    assert.match(bounty?.intro.join(" ") ?? "", /Talha Tariq/);
+    assert.match(bounty?.intro.join(" ") ?? "", /HackerOne/);
+    assert.match(bounty?.intro.join(" ") ?? "", /React2Shell/);
   });
 
   it("dates the September 14 catch-up posts in America/New_York", () => {
@@ -280,6 +412,82 @@ describe("blog posts", () => {
       const post = getBlogPost(slug);
       assert.ok(post, slug);
       assert.equal(nyDate.format(new Date(post.publishedAt)), "September 14, 2026");
+    }
+  });
+
+  it("dates the September 25 digest posts in America/New_York", () => {
+    const nyDate = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "America/New_York",
+    });
+    for (const slug of [
+      "klaviyo-356-internal-apps-vercel",
+      "vercel-connect-credential-sprawl-ga",
+      "vercel-bug-bounty-public",
+    ]) {
+      const post = getBlogPost(slug);
+      assert.ok(post, slug);
+      assert.equal(post.publishedAt, "2026-09-25T12:00:00.000Z");
+      assert.equal(nyDate.format(new Date(post.publishedAt)), "September 25, 2026");
+    }
+  });
+
+  it("dates the September 24 digest posts in America/New_York", () => {
+    const nyDate = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "America/New_York",
+    });
+    for (const slug of [
+      "turbopack-chunking-nextjs-16-3",
+      "nextjs-closed-1500-github-issues-agent",
+      "nextjs-upcoming-security-release-sept-30-2026",
+    ]) {
+      const post = getBlogPost(slug);
+      assert.ok(post, slug);
+      assert.equal(post.publishedAt, "2026-09-24T12:00:00.000Z");
+      assert.equal(nyDate.format(new Date(post.publishedAt)), "September 24, 2026");
+    }
+  });
+
+  it("dates the September 23 digest posts in America/New_York", () => {
+    const nyDate = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "America/New_York",
+    });
+    for (const slug of [
+      "nextjs-security-update-sept-22-2026",
+      "ai-gateway-jev-fastest-adopted",
+      "featured-100k-media-pitches-vercel",
+    ]) {
+      const post = getBlogPost(slug);
+      assert.ok(post, slug);
+      assert.equal(post.publishedAt, "2026-09-23T12:00:00.000Z");
+      assert.equal(nyDate.format(new Date(post.publishedAt)), "September 23, 2026");
+    }
+  });
+
+  it("dates the September 22 digest posts in America/New_York", () => {
+    const nyDate = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "America/New_York",
+    });
+    for (const slug of [
+      "nextjs-upcoming-security-release-sept-22-2026",
+      "ai-gateway-production-index-september-2026",
+      "delphi-100-deploys-day-python-vercel",
+    ]) {
+      const post = getBlogPost(slug);
+      assert.ok(post, slug);
+      assert.equal(post.publishedAt, "2026-09-22T12:00:00.000Z");
+      assert.equal(nyDate.format(new Date(post.publishedAt)), "September 22, 2026");
     }
   });
 
@@ -402,6 +610,10 @@ describe("blog routes and nav", () => {
     assert.match(index, /listBlogPosts/);
     assert.match(index, /BlogAdSlot/);
     assert.match(index, /instructor-curated digests, not original reporting/i);
+    assert.match(index, /always links to the original source/);
+    assert.doesNotMatch(index, /optional further reading/i);
+    assert.doesNotMatch(index, /not required for grades/i);
+    assert.doesNotMatch(index, /CS 4550|CS 5610/);
     assert.match(index, /href=\{`\/blog\/\$\{post\.slug\}`\}/);
 
     assert.match(post, /generateStaticParams/);
@@ -409,6 +621,14 @@ describe("blog routes and nav", () => {
     assert.match(post, /notFound/);
     assert.match(post, /BlogAdSlot/);
     assert.match(post, /BlogSourceLink/);
+    assert.match(post, /Instructor-curated digest, not original reporting/);
+    assert.doesNotMatch(post, /optional further reading/i);
+    assert.doesNotMatch(post, /not required for grades/i);
+    assert.doesNotMatch(post, /CS 4550|CS 5610/);
+    const layout = read(join(BLOG_APP, "layout.tsx"));
+    assert.match(layout, /Instructor-curated news digests\./);
+    assert.doesNotMatch(layout, /optional further reading/i);
+    assert.doesNotMatch(layout, /not required for grades/i);
 
     assert.match(source, /rel="noopener noreferrer"/);
     assert.match(source, /Read original/);

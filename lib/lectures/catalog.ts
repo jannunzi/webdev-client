@@ -1,3 +1,4 @@
+import { COURSE_SITE_ORIGIN } from "@/lib/course-site/origin";
 import { lectureTopics } from "@/app/syllabus/data/topics";
 import { ANCHORS_SLIDES } from "./decks/anchors";
 import { COMMIT_TO_GITHUB_SLIDES } from "./decks/commit-to-github";
@@ -126,7 +127,7 @@ import {
   type LectureTopicId,
 } from "./types";
 
-export const COURSE_SITE_ORIGIN = "https://webdev-client.vercel.app";
+export { COURSE_SITE_ORIGIN };
 export const SLIDES_PATH = "/slides";
 
 export function bookChapterMeta(chapter: number) {
@@ -212,7 +213,7 @@ const LECTURE_SUMMARIES: Record<
   "creating-a-nextjs-react-application": {
     title: "Creating a Next.js React Application",
     summary:
-      "Scaffold kambaz-next-js with the App Router, replace the home page, add Lab 1, and link routes.",
+      "Scaffold webdev-client with the App Router, replace the home page, add Lab 1, and link routes.",
     chapter: 1,
     topicId: "setup",
     bookSectionId: "sec-1-2-4",
@@ -232,7 +233,7 @@ const LECTURE_SUMMARIES: Record<
   "deploying-to-vercel": {
     title: "Deploying to Vercel",
     summary:
-      "Vercel.com account, import kambaz-next-js from GitHub, Deploy, share the URL, turn off Vercel Authentication.",
+      "Vercel.com account, import webdev-client from GitHub, Deploy, share the URL, turn off Vercel Authentication.",
     chapter: 1,
     topicId: "deploy",
     bookSectionId: "sec-1-6",

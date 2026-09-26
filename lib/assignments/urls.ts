@@ -1,3 +1,4 @@
+import { isLegacyCourseHost } from "@/lib/course-site/origin";
 import { COURSE_SITE_ORIGIN } from "./catalog";
 import { ASSIGNMENT_STUDENT_COPY } from "./student-copy";
 
@@ -93,13 +94,17 @@ export function isBlockedHostname(hostname: string): boolean {
 
 export function isCourseSiteUrl(url: URL): boolean {
   const host = hostnameOf(url.hostname);
-  let courseHost = "webdev-client.vercel.app";
+  let courseHost = "kambaz.dev";
   try {
     courseHost = hostnameOf(new URL(COURSE_SITE_ORIGIN).hostname);
   } catch {
     /* keep default */
   }
-  return host === courseHost || host === `www.${courseHost}`;
+  return (
+    host === courseHost ||
+    host === `www.${courseHost}` ||
+    isLegacyCourseHost(host)
+  );
 }
 
 export function looksLikeDeployUrl(raw: string): UrlParseResult {

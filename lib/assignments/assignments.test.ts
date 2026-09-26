@@ -7,6 +7,7 @@ import {
   evaluateRubricSpec,
 } from "./a1-rubric";
 import { A2_RUBRIC } from "./a2";
+import { ASSIGNMENT_STUDENT_COPY } from "./student-copy";
 import { listCanvasFollowupCopy, listCanvasQuizFollowupCopy } from "./canvas-copy";
 import { supportsUrlSubmission } from "./access";
 import {
@@ -20,19 +21,18 @@ import {
   rubricPointTotal,
 } from "./catalog";
 import type { AssignmentCheckResult } from "./check-types";
+import { clearLegacyAssignmentProgressStorage } from "./clear-legacy-progress";
 import {
   applyCriterionToggle,
   completedIdsAfterAutoCheckRun,
   loadCompletedCriterionIds,
   mergeCompletedIds,
-  parseLocalProgress,
   replaceCompletedCriterionIds,
-  resolveProgressSnapshot,
-  serializeLocalProgress,
   summarizeProgress,
   upsertCriterionProgress,
   type ProgressStore,
 } from "./progress-store";
+import { studentAutoPoints, type CriterionGradeRow } from "./grade-rows";
 import type { AssignmentProgressDoc } from "./types";
 
 function autoResult(
@@ -118,12 +118,12 @@ describe("assignment catalog", () => {
     assert.deepEqual(
       copy.map((row) => row.publicUrl),
       [
-        "https://webdev-client.vercel.app/assignments/a1",
-        "https://webdev-client.vercel.app/assignments/a2",
-        "https://webdev-client.vercel.app/assignments/a3",
-        "https://webdev-client.vercel.app/assignments/a4",
-        "https://webdev-client.vercel.app/assignments/a5",
-        "https://webdev-client.vercel.app/assignments/a6",
+        "https://kambaz.dev/assignments/a1",
+        "https://kambaz.dev/assignments/a2",
+        "https://kambaz.dev/assignments/a3",
+        "https://kambaz.dev/assignments/a4",
+        "https://kambaz.dev/assignments/a5",
+        "https://kambaz.dev/assignments/a6",
       ],
     );
     for (const row of copy) {
@@ -183,6 +183,27 @@ describe("assignment catalog", () => {
         .find((group) => group.id === "lab")
         ?.criteria.some((row) => row.id === "a1-delivery-labs-nav"),
     );
+    const nameAndSection = findCriterion(A1_RUBRIC, "a1-delivery-name-section");
+    assert.equal(nameAndSection?.description, ASSIGNMENT_STUDENT_COPY.nameAndSection);
+    assert.match(nameAndSection?.description ?? "", /full Canvas name on Labs/i);
+    assert.match(nameAndSection?.description ?? "", /first then last/i);
+    assert.match(nameAndSection?.description ?? "", /matching the roster/i);
+    assert.match(
+      nameAndSection?.description ?? "",
+      /no Name and section checkbox or control in Run checks/i,
+    );
+    const deliveryIntro =
+      A1_RUBRIC.groups.find((group) => group.id === "delivery")?.intro ?? "";
+    assert.ok(deliveryIntro.includes(ASSIGNMENT_STUDENT_COPY.nameAndSectionDeliveryNote));
+    assert.match(
+      deliveryIntro,
+      /full Canvas name on Labs \(first then last, matching the roster\), not a checkbox or control in Run checks/i,
+    );
+    const labIntro = A1_RUBRIC.groups.find((group) => group.id === "lab")?.intro ?? "";
+    assert.match(labIntro, /Manual check badge/i);
+    assert.match(labIntro, /staff grade that row on your deploy URL/i);
+    assert.match(labIntro, /never marks it pass or fail/i);
+    assert.match(labIntro, /not a failed auto check/i);
     assert.ok(findCriterion(A1_RUBRIC, "a1-kambaz-assignments")?.onYourOwn);
     assert.equal(supportsUrlSubmission("a1"), true);
 
@@ -315,25 +336,61 @@ describe("assignment progress helpers", () => {
     ]);
   });
 
-  it("round-trips localStorage JSON", () => {
-    const raw = serializeLocalProgress(["a1-lab-tables", "a1-lab-images"]);
-    assert.deepEqual(parseLocalProgress(raw).sort(), [
-      "a1-lab-images",
-      "a1-lab-tables",
+  it("drops legacy assignmentProgress localStorage keys only", () => {
+    const map = new Map<string, string>([
+      ["webdev.assignmentProgress.a1", "{\"completed\":[\"a1-delivery-vercel\"]}"],
+      ["webdev.assignmentProgress.a2", "[]"],
+      ["webdev.syllabus.section", "01"],
     ]);
-    assert.deepEqual(parseLocalProgress('["a1-lab-forms"]'), ["a1-lab-forms"]);
-    assert.deepEqual(parseLocalProgress("not-json"), []);
-    assert.deepEqual(
-      resolveProgressSnapshot(["a1-delivery-vercel"], null),
-      ["a1-delivery-vercel"],
+    const storage = {
+      get length() {
+        return map.size;
+      },
+      key(index: number) {
+        return [...map.keys()][index] ?? null;
+      },
+      removeItem(key: string) {
+        map.delete(key);
+      },
+    };
+    const removed = clearLegacyAssignmentProgressStorage(storage);
+    assert.deepEqual(removed.sort(), [
+      "webdev.assignmentProgress.a1",
+      "webdev.assignmentProgress.a2",
+    ]);
+    assert.deepEqual([...map.keys()], ["webdev.syllabus.section"]);
+  });
+
+  it("does not count manual rows in the student auto total", () => {
+    const assignment = getAssignment("a1");
+    assert.ok(assignment?.rubric);
+    const manualId = A1_MANUAL_CRITERION_IDS[0];
+    const manual = listRubricCriteria(assignment.rubric).find(
+      (row) => row.id === manualId,
     );
+    assert.ok(manual);
+    const rows: CriterionGradeRow[] = [
+      {
+        criterionId: "a1-delivery-vercel",
+        maxPoints: 3,
+        autoPassed: true,
+        overridePassed: true,
+        points: 3,
+      },
+      {
+        criterionId: manual.id,
+        maxPoints: manual.points,
+        autoPassed: false,
+        overridePassed: true,
+        points: manual.points,
+      },
+    ];
     assert.deepEqual(
-      resolveProgressSnapshot(
-        ["a1-delivery-vercel"],
-        serializeLocalProgress([]),
-      ),
-      [],
+      studentAutoPoints(rows, new Set(A1_MANUAL_CRITERION_IDS)),
+      { earnedPoints: 3, totalPoints: 3 },
     );
+    const summary = summarizeProgress(assignment, ["a1-delivery-vercel"]);
+    assert.equal(summary.earnedPoints, 3);
   });
 
   it("upserts per clerk user + assignment + criterion", async () => {

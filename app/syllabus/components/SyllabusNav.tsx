@@ -10,6 +10,7 @@ const SECTIONS = [
   { href: "#office-hours", label: "Office hours" },
   { href: "#evaluation", label: "Evaluation" },
   { href: "#late-policy", label: "Late policy" },
+  { href: "#regrade-policy", label: "Regrade policy" },
   { href: "#assignments", label: "Assignments" },
   { href: "#deadlines", label: "Deadlines" },
   { href: "#project", label: "Project" },

@@ -2,12 +2,13 @@ import "server-only";
 
 import { ASSIGNMENT_STUDENT_COPY } from "./student-copy";
 import type { HtmlFetchResult, UrlProbeResult } from "./checks";
+import { COURSE_SITE_ORIGIN } from "@/lib/course-site/origin";
 import { isBlockedHostname, isVercelAuthWallUrl, looksLikeDeployUrl } from "./urls";
 
 const FETCH_TIMEOUT_MS = 10_000;
 const MAX_BODY_CHARS = 800_000;
 const USER_AGENT =
-  "webdev-client-assignment-check/1.0 (+https://webdev-client.vercel.app)";
+  `webdev-client-assignment-check/1.0 (+${COURSE_SITE_ORIGIN})`;
 
 async function fetchWithTimeout(
   url: string,

@@ -54,6 +54,6 @@ describe("lecture line marks", () => {
       ?.slides.find((row) => row.id === "link-to-lab1");
     assert.ok(slide);
     const [block] = lectureSlideCodeBlocks(slide);
-    assert.deepEqual(block.addedLines, [1, 5, [7, 8]]);
+    assert.deepEqual(block.addedLines, [1, [6, 7]]);
   });
 });

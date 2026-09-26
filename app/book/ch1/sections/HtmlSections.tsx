@@ -1,3 +1,4 @@
+import BookSectionVideosLink from "../../components/BookSectionVideosLink";
 import Section from "../../components/Section";
 import SectionLink from "../../components/SectionLink";
 import LocalUrl from "../../components/LocalUrl";
@@ -187,6 +188,27 @@ export default function HtmlSections() {
           <HeadingTags />
         </LiveDemo>
         <p>
+          That markup is the book sample. Keep its text — the <code>h4</code>{" "}
+          titled Heading Tags and the paragraph under it — unless a step says
+          to replace it. Do not erase the book sample every time you add
+          something.
+        </p>
+        <p>
+          As practice, add <code>h1</code>{" "}through <code>h6</code>{" "}in the
+          same <code>wd-h-tag</code>{" "}division, after the sample paragraph, so
+          you can see the six sizes. Leave the sample <code>h4</code>{" "}and its
+          paragraph in place. Add this practice block before{" "}
+          <strong>With AI</strong>. That later prompt refers to these practice
+          headings. Your personal <code>h4</code>{" "}in On your own stays in its
+          own section:
+        </p>
+        <CodeBlock language="tsx">{`<h1>h1</h1>
+<h2>h2</h2>
+<h3>h3</h3>
+<h4>h4</h4>
+<h5>h5</h5>
+<h6>h6</h6>`}</CodeBlock>
+        <p>
           <strong>Try Chrome DevTools.</strong>{" "}With Lab 1 open in Chrome, press{" "}
           <code>F12</code>{" "}(or <code>Cmd+Option+I</code>{" "}on macOS /{" "}
           <code>Ctrl+Shift+I</code>{" "}on Windows) to open{" "}
@@ -226,11 +248,12 @@ export default function Lab1() {
 }`}</CodeBlock>
         <p>
           At <LocalUrl href="/labs/lab1">/labs/lab1</LocalUrl>{" "}you should see Lab 1, HTML Examples, and
-          Heading Tags appear as successively smaller headings, and that the
-          paragraph text sits inside the <code>wd-h-tag</code>{" "}division. Leave
-          the <code>{`{/* do the next exercise here */}`}</code>{" "}comment as a
-          marker for the following sections — you will replace it by importing
-          more components the same way.
+          Heading Tags appear as successively smaller headings, the original
+          sample paragraph still inside the <code>wd-h-tag</code>{" "}division, and
+          the <code>h1</code>–<code>h6</code>{" "}you added as practice after that
+          paragraph. Leave the <code>{`{/* do the next exercise here */}`}</code>{" "}
+          comment as a marker for the following sections — you will replace it
+          by importing more components the same way.
         </p>
         <OnYourOwn>
           In the same <code>HeadingTags.tsx</code>{" "}file, add a short personal
@@ -242,10 +265,15 @@ export default function Lab1() {
           compare a block and an inline element in the same personal section.
         </OnYourOwn>
         <WithAI
-          prompt={`In app/labs/lab1/HeadingTags.tsx, keep my personal heading block as it is. After the sample h1–h6 tags, add a second sample outline (not about me) with id wd-ai-headings: an h4 titled "Lab notes", an h5 titled "What I built", and an h6 titled "Next step". Use placeholder sentences, not my name.`}
+          prompt={`In app/labs/lab1/HeadingTags.tsx, keep the existing book sample — the h4 titled "Heading Tags" and the paragraph under it — unless a step says to replace it. Do not erase that sample text. Keep my personal heading block as it is. After the practice h1–h6 headings you added, add a second sample outline (not about me) with id wd-ai-headings: an h4 titled "Lab notes", an h5 titled "What I built", and an h6 titled "Next step". Use placeholder sentences, not my name.`}
         >
-          Ask the assistant to add a second sample outline — not your personal
-          heading:
+          Add the practice <code>h1</code>–<code>h6</code>{" "}headings before
+          this step. If that block is still missing, add it first; your
+          personal <code>h4</code>{" "}from On your own stays in its own section.
+          Then ask the assistant to add a second sample outline after the
+          practice <code>h1</code>–<code>h6</code>{" "}headings you added. Keep
+          the book sample (the <code>h4</code>{" "}and its paragraph) and your
+          personal heading:
         </WithAI>
       </Section>
 
@@ -900,7 +928,7 @@ My favorite books (in no particular order)
           id="sec-1-3-6-1"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.6.1 Text Fields
+          1.3.6.1 Text Fields <BookSectionVideosLink sectionId="sec-1-3-6-1" />
         </h3>
         <p>
           The <code>&lt;input&gt;</code>{" "}tag is the most common way to collect
@@ -1052,7 +1080,7 @@ export default function Forms() {
           id="sec-1-3-6-2"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.6.2 Textarea
+          1.3.6.2 Textarea <BookSectionVideosLink sectionId="sec-1-3-6-2" />
         </h3>
         <p>
           Use <code>&lt;textarea&gt;</code>{" "}for longer multi-line text such as
@@ -1120,7 +1148,7 @@ Lorem ipsum dolor sit amet...
           id="sec-1-3-6-3"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.6.3 Radio Buttons
+          1.3.6.3 Radio Buttons <BookSectionVideosLink sectionId="sec-1-3-6-3" />
         </h3>
         <p>
           The <code>&lt;input type=&quot;radio&quot;&gt;</code>{" "}tag lets the
@@ -1268,7 +1296,7 @@ Lorem ipsum dolor sit amet...
           id="sec-1-3-6-4"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.6.4 Checkboxes
+          1.3.6.4 Checkboxes <BookSectionVideosLink sectionId="sec-1-3-6-4" />
         </h3>
         <p>
           The <code>&lt;input type=&quot;checkbox&quot;&gt;</code>{" "}tag uses the
@@ -1317,7 +1345,7 @@ Lorem ipsum dolor sit amet...
           id="sec-1-3-6-5"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.6.5 Dropdowns
+          1.3.6.5 Dropdowns <BookSectionVideosLink sectionId="sec-1-3-6-5" />
         </h3>
         <p>
           Use <code>&lt;select&gt;</code>{" "}when the user can pick from a fixed
@@ -1446,7 +1474,7 @@ Lorem ipsum dolor sit amet...
           id="sec-1-3-6-6"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.6.6 Other Field Types
+          1.3.6.6 Other Field Types <BookSectionVideosLink sectionId="sec-1-3-6-6" />
         </h3>
         <p>
           Plain <code>type=&quot;text&quot;</code>{" "}accepts almost any string. HTML
@@ -1685,7 +1713,7 @@ Lorem ipsum dolor sit amet...
           id="sec-1-3-6-7"
           className="scroll-mt-6 font-sans text-lg font-semibold"
         >
-          1.3.6.7 Buttons
+          1.3.6.7 Buttons <BookSectionVideosLink sectionId="sec-1-3-6-7" />
         </h3>
         <p>
           The <code>&lt;button&gt;</code>{" "}tag gives a form a way to{" "}
@@ -1853,21 +1881,28 @@ export default function Forms() {
             {" "}— rather than letting it create a second file under another
             name, in a nested folder, or as a parallel &quot;AI&quot; form.
             Keep the same form id,{" "}
-            <code>wd-your-form</code>, on that single component.{" "}
+            <code>wd-your-form</code>, on that single component — do not invent
+            a new form id such as <code>wd-ai-form</code>{" "}or{" "}
+            <code>wd-ai-your-form</code>.{" "}
             <code>Forms.tsx</code>{" "}must import that one{" "}
             <code>YourForm</code>{" "}only — do not keep both an original and an
             AI-generated form imported or rendered.
           </p>
         </OnYourOwn>
         <WithAI
-          prompt={`Overwrite the same file app/labs/lab1/forms/YourForm.tsx only — do not create a second form file under another name. Keep the form id wd-your-form on that single component. Import YourForm into app/labs/lab1/forms/Forms.tsx only once after the sample components; do not import or render both an original and an AI-generated form. Cover every control from Lab 1 forms: labeled text/password fields, textarea bio, two radio name-groups (class standing plus one more exclusive choice such as full-time/part-time), at least three checkboxes, a single select and a multiple select (four+ options, two preselected), email, number (graduation year with min/max), date, range 0–10, submit Save and type=button Cancel with their own ids. Use obvious SAMPLE placeholders (Jane Doe, jane@university.edu) — I will replace them with my own details.`}
+          prompt={`Overwrite the same file app/labs/lab1/forms/YourForm.tsx only. Keep id="wd-your-form" — the same id as On your own. No second file. No new form id: do not invent wd-ai-form, wd-ai-your-form, or any similar id. Unlike earlier With AI steps that add a new wd-ai-* id, this step reuses wd-your-form. Forms.tsx still imports that one YourForm only; do not import or render a second form. Cover every control from Lab 1 forms: labeled text/password fields, textarea bio, two radio name-groups (class standing plus one more exclusive choice such as full-time/part-time), at least three checkboxes, a single select and a multiple select (four+ options, two preselected), email, number (graduation year with min/max), date, range 0–10, submit Save and type=button Cancel with their own ids. Use obvious SAMPLE placeholders (Jane Doe, jane@university.edu) — I will replace them with my own details.`}
         >
           The profile form is a lot of markup. Paste this prompt so the
-          assistant overwrites the same{" "}
-          <code>app/labs/lab1/forms/YourForm.tsx</code>
-          {" "}— not a second file under another name — keeps{" "}
-          <code>id=&quot;wd-your-form&quot;</code>{" "}on that one component, and
-          leaves <code>Forms.tsx</code>{" "}importing that{" "}
+          assistant overwrites the <strong>same file</strong>,{" "}
+          <code>app/labs/lab1/forms/YourForm.tsx</code>. Keep{" "}
+          <code>id=&quot;wd-your-form&quot;</code> — the{" "}
+          <strong>same id as On your own</strong>.{" "}
+          <strong>No second file</strong>, and{" "}
+          <strong>no new form id</strong>: do not invent{" "}
+          <code>wd-ai-form</code>, <code>wd-ai-your-form</code>, or anything
+          like them. Unlike earlier With AI steps that add a new{" "}
+          <code>wd-ai-*</code>{" "}id, this one reuses the On your own id.{" "}
+          <code>Forms.tsx</code>{" "}still imports that one{" "}
           <code>YourForm</code>{" "}only. Then replace every sample default with
           facts about you so the form still reads as yours:
         </WithAI>
