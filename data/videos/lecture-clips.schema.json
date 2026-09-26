@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://webdev-client.vercel.app/schemas/lecture-clips.schema.json",
+  "$id": "https://kambaz.dev/schemas/lecture-clips.schema.json",
   "title": "Book section lecture clips",
   "description": "Derived map from a book TOC id to YouTube clips. Do not store Zoom, Box, or other archive files. Student playback is YouTube-only.",
   "type": "object",

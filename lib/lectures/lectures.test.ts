@@ -2811,7 +2811,7 @@ describe("lecture decks", () => {
     assert.equal(lectureSearchIsPresent("?fullscreen=1"), true);
     assert.equal(
       lecturePresentHref({
-        href: "https://webdev-client.vercel.app/slides/html-and-dom#slide-2",
+        href: "https://kambaz.dev/slides/html-and-dom#slide-2",
         slideNumber: 3,
         present: true,
       }),
@@ -2819,7 +2819,7 @@ describe("lecture decks", () => {
     );
     assert.equal(
       lecturePresentHref({
-        href: "https://webdev-client.vercel.app/slides/html-and-dom?fullscreen=1#slide-3",
+        href: "https://kambaz.dev/slides/html-and-dom?fullscreen=1#slide-3",
         slideNumber: 3,
         present: false,
       }),

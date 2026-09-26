@@ -232,7 +232,7 @@ describe("slide markup and edit query", () => {
     assert.equal(lectureSearchIsEdit("?fullscreen=1"), false);
     assert.equal(
       lectureEditHref({
-        href: "https://webdev-client.vercel.app/slides/installing-nodejs#slide-2",
+        href: "https://kambaz.dev/slides/installing-nodejs#slide-2",
         edit: true,
       }),
       "/slides/installing-nodejs?edit=1#slide-2",

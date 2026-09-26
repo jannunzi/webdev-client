@@ -24,6 +24,7 @@ export default function CourseWebsiteAccountNote({
             {" · "}
             <Link href="/sign-in">Sign in</Link>.
           </p>
+          <p className="mb-0 mt-2">{COURSE_WEBSITE_ACCOUNT_COPY.readOnlyBackup}</p>
         </aside>
         <p className="rounded-md border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm">
           <span className="font-sans font-semibold">Graded quizzes. </span>

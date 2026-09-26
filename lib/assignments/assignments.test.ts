@@ -118,12 +118,12 @@ describe("assignment catalog", () => {
     assert.deepEqual(
       copy.map((row) => row.publicUrl),
       [
-        "https://webdev-client.vercel.app/assignments/a1",
-        "https://webdev-client.vercel.app/assignments/a2",
-        "https://webdev-client.vercel.app/assignments/a3",
-        "https://webdev-client.vercel.app/assignments/a4",
-        "https://webdev-client.vercel.app/assignments/a5",
-        "https://webdev-client.vercel.app/assignments/a6",
+        "https://kambaz.dev/assignments/a1",
+        "https://kambaz.dev/assignments/a2",
+        "https://kambaz.dev/assignments/a3",
+        "https://kambaz.dev/assignments/a4",
+        "https://kambaz.dev/assignments/a5",
+        "https://kambaz.dev/assignments/a6",
       ],
     );
     for (const row of copy) {

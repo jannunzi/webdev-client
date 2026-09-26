@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import { isClerkPublishableKeySet } from "@/lib/config";
+import LegacyCourseHostBanner from "./legacy-course-host-banner";
 // import "./globals.css";
 
 const geistSans = Geist({
@@ -30,6 +31,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <LegacyCourseHostBanner />
         {isClerkPublishableKeySet() ? (
           <ClerkProvider>{children}</ClerkProvider>
         ) : (

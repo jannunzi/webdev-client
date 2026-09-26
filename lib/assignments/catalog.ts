@@ -1,6 +1,7 @@
 import { assignments as syllabusAssignments } from "@/app/syllabus/data/assignments";
 import { deadlines } from "@/app/syllabus/data/deadlines";
 import type { Deadline } from "@/app/syllabus/data/types";
+import { COURSE_SITE_ORIGIN } from "@/lib/course-site/origin";
 import { A1_RUBRIC } from "./a1";
 import { A2_RUBRIC } from "./a2";
 import type {
@@ -15,7 +16,7 @@ const RUBRICS: Partial<Record<AssignmentId, AssignmentRubric>> = {
   a2: A2_RUBRIC,
 };
 
-export const COURSE_SITE_ORIGIN = "https://webdev-client.vercel.app";
+export { COURSE_SITE_ORIGIN };
 
 const CHAPTERS: Record<string, { href: string; title: string }> = {
   "Chapter 1": {

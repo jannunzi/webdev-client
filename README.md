@@ -2,7 +2,7 @@
 
 Next.js client for CS 4550 / CS 5610 Web Development. Students build **Kambaz**, a Canvas-inspired LMS UI, in this repo. The sibling Express API is **webdev-server** (nested here as a convenience copy; assignments still treat it as its own GitHub repository).
 
-The course homepage (`/`) redirects to `/syllabus`. Kambaz stays on its existing routes (`/account/signin`, `/dashboard`, `/courses/…`). The live book is at [https://webdev-client.vercel.app](https://webdev-client.vercel.app).
+The course homepage (`/`) redirects to `/syllabus`. Kambaz stays on its existing routes (`/account/signin`, `/dashboard`, `/courses/…`). The live book is at [https://kambaz.dev](https://kambaz.dev).
 
 This project was bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
@@ -181,7 +181,7 @@ Author-review links are hidden from student-facing surfaces.
 #### Vercel: add a TA (no invite UI)
 
 1. The TA creates a Clerk account on the live site with the email they will
-   use (Sign up on https://webdev-client.vercel.app).
+   use (Sign up on https://kambaz.dev).
 2. Jose adds that **exact** email to `TA_EMAILS` on Vercel (Production;
    Preview too if they use a preview URL). Comma-separate multiple TAs.
 3. Redeploy (or restart) so the new env value is live.
@@ -432,12 +432,12 @@ Canvas assignment descriptions should **not** paste the website rubric.
 Point students at the live pages. Suggested student copy (HTML helpers in
 `lib/assignments/canvas-copy.ts`):
 
-- https://webdev-client.vercel.app/assignments/a1
-- https://webdev-client.vercel.app/assignments/a2
-- https://webdev-client.vercel.app/assignments/a3
-- https://webdev-client.vercel.app/assignments/a4
-- https://webdev-client.vercel.app/assignments/a5
-- https://webdev-client.vercel.app/assignments/a6
+- https://kambaz.dev/assignments/a1
+- https://kambaz.dev/assignments/a2
+- https://kambaz.dev/assignments/a3
+- https://kambaz.dev/assignments/a4
+- https://kambaz.dev/assignments/a5
+- https://kambaz.dev/assignments/a6
 
 The IMSCC cartridge is not in this repo (Jose’s `canvas-fall` tooling).
 Updating those assignment HTML descriptions is a follow-up package.
@@ -504,4 +504,4 @@ save, the same browser sees the draft in normal mode too. There is no CMS.
 
 ## Deploy on Vercel
 
-The course book deploys to [https://webdev-client.vercel.app](https://webdev-client.vercel.app). Students deploy their own `webdev-client` fork with the [Vercel Platform](https://vercel.com/new) and **webdev-server** separately (Render or Heroku), then point `NEXT_PUBLIC_HTTP_SERVER` at that origin.
+The course book deploys to [https://kambaz.dev](https://kambaz.dev). Students deploy their own `webdev-client` fork with the [Vercel Platform](https://vercel.com/new) and **webdev-server** separately (Render or Heroku), then point `NEXT_PUBLIC_HTTP_SERVER` at that origin.

@@ -15,11 +15,11 @@ describe("Canvas quiz fallback copy", () => {
       const html = canvasQuizDescriptionHtml(quiz);
       const url = canvasQuizTakeUrl(quiz.quizId);
       assert.match(html, new RegExp(url.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
-      assert.match(html, /webdev-client\.vercel\.app\/quizzes\/take\//);
+      assert.match(html, /kambaz\.dev\/quizzes\/take\//);
       assert.match(html, /ask your instructor or TA for permission/i);
       assert.doesNotMatch(html, /use this Canvas quiz instead of the website/i);
       assert.doesNotMatch(html, /take this Canvas quiz by default/i);
-      assert.doesNotMatch(html, /Clerk|Kambaz|Lab [0-9]|wd-/i);
+      assert.doesNotMatch(html.replaceAll(url, ""), /Clerk|Kambaz|Lab [0-9]|wd-/i);
       assert.ok(html.indexOf(url) < html.indexOf(CANVAS_FALLBACK_PERMISSION_BLURB));
       if (quiz.quizId.startsWith("q")) {
         assert.match(html, /coding items are graded on the website/i);
