@@ -200,7 +200,7 @@ export default function A1SubmissionForm({
               inputMode="url"
               autoComplete="url"
               placeholder="https://github.com/yourname/webdev-client"
-              className="mt-1 w-full rounded border border-neutral-400 bg-white px-3 py-2 font-sans text-sm"
+              className="mt-1 box-border w-full rounded border border-neutral-400 bg-white px-3 py-2 font-sans text-sm"
               value={githubUrl}
               onChange={(event) => setGithubUrl(event.target.value)}
               disabled={pendingAction !== null}
@@ -227,7 +227,7 @@ export default function A1SubmissionForm({
               inputMode="url"
               autoComplete="url"
               placeholder="https://your-app.vercel.app"
-              className="mt-1 w-full rounded border border-neutral-400 bg-white px-3 py-2 font-sans text-sm"
+              className="mt-1 box-border w-full rounded border border-neutral-400 bg-white px-3 py-2 font-sans text-sm"
               value={vercelUrl}
               onChange={(event) => {
                 setVercelUrl(event.target.value);
