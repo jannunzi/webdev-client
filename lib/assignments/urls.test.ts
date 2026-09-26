@@ -37,6 +37,8 @@ describe("looksLikeDeployUrl", () => {
   });
 
   it("rejects the course website and private hosts", () => {
+    assert.equal(looksLikeDeployUrl("https://kambaz.dev").ok, false);
+    assert.equal(looksLikeDeployUrl("https://www.kambaz.dev/assignments/a1").ok, false);
     assert.equal(
       looksLikeDeployUrl("https://webdev-client.vercel.app").ok,
       false,
@@ -47,9 +49,14 @@ describe("looksLikeDeployUrl", () => {
     assert.equal(isBlockedHostname("192.168.0.1"), true);
     assert.equal(isBlockedHostname("example.com"), false);
     assert.equal(
+      isCourseSiteUrl(new URL("https://kambaz.dev/assignments/a1")),
+      true,
+    );
+    assert.equal(
       isCourseSiteUrl(new URL("https://webdev-client.vercel.app/assignments/a1")),
       true,
     );
+    assert.equal(isCourseSiteUrl(new URL("https://jane-a1.vercel.app/labs")), false);
   });
 });
 

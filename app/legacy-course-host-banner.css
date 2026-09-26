@@ -1,0 +1,16 @@
+.legacy-course-host-banner {
+  margin: 0;
+  padding: 0.4rem 0.75rem;
+  background: #fff7ed;
+  color: #7c2d12;
+  border-bottom: 1px solid #fdba74;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.legacy-course-host-banner a {
+  color: inherit;
+  font-weight: 600;
+}

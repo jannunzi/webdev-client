@@ -1,3 +1,4 @@
+import { COURSE_SITE_ORIGIN } from "@/lib/course-site/origin";
 import { lectureTopics } from "@/app/syllabus/data/topics";
 import { ANCHORS_SLIDES } from "./decks/anchors";
 import { COMMIT_TO_GITHUB_SLIDES } from "./decks/commit-to-github";
@@ -126,7 +127,7 @@ import {
   type LectureTopicId,
 } from "./types";
 
-export const COURSE_SITE_ORIGIN = "https://webdev-client.vercel.app";
+export { COURSE_SITE_ORIGIN };
 export const SLIDES_PATH = "/slides";
 
 export function bookChapterMeta(chapter: number) {
