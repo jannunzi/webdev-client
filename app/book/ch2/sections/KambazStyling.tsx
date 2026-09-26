@@ -1426,7 +1426,7 @@ export default async function Assignments({
           section where you styled the worked example. Restyle the screens
           in order as you read — this list is for checking coverage, not a
           substitute for the walkthroughs. Assignment Editor and Account
-          stay On your own: match the figures and LiveDemos in those
+          stay <strong>On your own</strong>: match the figures and LiveDemos in those
           sections. Each screen is listed once, with Lab,{" "}
           <strong>On your own</strong>, and <strong>With AI</strong>{" "}
           nested as a/b/c.
