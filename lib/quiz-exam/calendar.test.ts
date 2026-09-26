@@ -15,12 +15,12 @@ const CANVAS_ASSIGNMENT_DUES: Record<string, string> = {
 };
 
 const QUIZ_WINDOWS: Record<string, { unlock: string; due: string }> = {
-  Q1: { unlock: "2026-09-21", due: "2026-09-27" },
-  Q2: { unlock: "2026-10-05", due: "2026-10-11" },
-  Q3: { unlock: "2026-10-19", due: "2026-10-25" },
-  Q4: { unlock: "2026-11-02", due: "2026-11-08" },
-  Q5: { unlock: "2026-11-16", due: "2026-11-22" },
-  Q6: { unlock: "2026-11-30", due: "2026-12-06" },
+  Q1: { unlock: "2026-09-28", due: "2026-10-04" },
+  Q2: { unlock: "2026-10-12", due: "2026-10-18" },
+  Q3: { unlock: "2026-10-26", due: "2026-11-01" },
+  Q4: { unlock: "2026-11-09", due: "2026-11-15" },
+  Q5: { unlock: "2026-11-23", due: "2026-11-29" },
+  Q6: { unlock: "2026-12-07", due: "2026-12-13" },
 };
 
 function easternIsoDate(date: Date): string {
@@ -74,31 +74,31 @@ describe("Fall 2026 Canvas calendar", () => {
     }
   });
 
-  it("labels quizzes as end of each chapter’s lecture, not Sunday dues", () => {
+  it("labels quizzes as the week after each chapter, not Sunday dues", () => {
     const expected: Record<string, { label: string; date: string }> = {
       Q1: {
-        label: "Q1 — HTML (end of Chapter 1 lecture)",
-        date: "2026-09-21",
+        label: "Q1 — HTML (week after Chapter 1)",
+        date: "2026-09-28",
       },
       Q2: {
-        label: "Q2 — CSS & Tailwind (end of Chapter 2 lecture)",
-        date: "2026-10-05",
+        label: "Q2 — CSS & Tailwind (week after Chapter 2)",
+        date: "2026-10-12",
       },
       Q3: {
-        label: "Q3 — JavaScript (end of Chapter 3 lecture)",
-        date: "2026-10-19",
+        label: "Q3 — JavaScript (week after Chapter 3)",
+        date: "2026-10-26",
       },
       Q4: {
-        label: "Q4 — Client state (end of Chapter 4 lecture)",
-        date: "2026-11-02",
+        label: "Q4 — Client state (week after Chapter 4)",
+        date: "2026-11-09",
       },
       Q5: {
-        label: "Q5 — REST APIs (end of Chapter 5 lecture)",
-        date: "2026-11-16",
+        label: "Q5 — REST APIs (week after Chapter 5)",
+        date: "2026-11-23",
       },
       Q6: {
-        label: "Q6 — MongoDB (end of Chapter 6 lecture)",
-        date: "2026-11-30",
+        label: "Q6 — MongoDB (week after Chapter 6)",
+        date: "2026-12-07",
       },
     };
     const quizRows = deadlines.filter((deadline) => deadline.kind === "quiz");
@@ -108,7 +108,8 @@ describe("Fall 2026 Canvas calendar", () => {
       assert.ok(row, `${id} is missing from syllabus deadlines`);
       assert.equal(row.label, want.label);
       assert.equal(row.date, want.date);
-      assert.match(row.label, /end of Chapter \d lecture/);
+      assert.match(row.label, /week after Chapter \d/);
+      assert.doesNotMatch(row.label, /end of lecture/);
       assert.doesNotMatch(row.label, /\bdue\b/i);
       assert.doesNotMatch(row.label, /unlock/i);
       assert.doesNotMatch(row.label, /Sunday/i);
@@ -155,7 +156,11 @@ describe("Fall 2026 Canvas calendar", () => {
     assert.ok(quiz);
     assert.ok(exams);
     assert.match(quiz.description, /end of lecture/i);
-    assert.match(quiz.description, /end of each chapter/i);
+    assert.match(quiz.description, /week after that chapter/i);
+    assert.match(quiz.description, /week of Sep 28/);
+    assert.match(quiz.description, /attendance is not required/i);
+    assert.match(quiz.description, /2026-09-28 through 2026-10-04/);
+    assert.match(quiz.description, /not the end of Chapter 1’s original two weeks/);
     assert.match(quiz.description, /10 questions/);
     assert.doesNotMatch(quiz.description, /unlocks Monday/);
     assert.doesNotMatch(quiz.description, /locks Sunday/);
@@ -186,11 +191,14 @@ describe("Fall 2026 Canvas calendar", () => {
     assert.doesNotMatch(studentCopy, /do not slide/i);
     assert.doesNotMatch(studentCopy, /section starts later/i);
     assert.doesNotMatch(studentCopy, /chapter quizzes \(Q1–Q6\) are due Sunday/);
-    assert.match(deadlinesNote, /Quizzes \(Q1–Q6\) are taken at the end of lecture at the end of each chapter/);
+    assert.match(deadlinesNote, /Quizzes \(Q1–Q6\) are the week after each chapter’s assignment is due/);
     assert.match(deadlinesNote, /your section’s own meeting that week/);
     assert.match(deadlinesNote, /CS 5610-02 Mondays 6:00–9:00pm ET/);
+    assert.match(deadlinesNote, /attendance is not required/);
+    assert.match(deadlinesNote, /2026-09-28 through 2026-10-04 ET/);
     assert.match(deadlinesNote, /not a calendar day labeled “today,”/);
-    assert.match(deadlinesNote, /Q1 in the week of Sep 21 is Mon Sep 21/);
+    assert.match(deadlinesNote, /Q1 in the week of Sep 28 is Mon Sep 28/);
+    assert.doesNotMatch(deadlinesNote, /Tue Sep 29/);
     assert.match(deadlinesNote, /X1 is taken in the second half of lecture the week of October 26/);
     assert.doesNotMatch(deadlinesNote, /X1 is due Sunday/);
     assert.doesNotMatch(deadlinesNote, /Quizzes \(Q1–Q6\) are due Sunday/);

@@ -6,10 +6,18 @@
  * submitted”.
  *
  * Answer windows (package-14 / NOTE-package-13): answers open the Monday
- * 00:00 ET after the due-week Sunday, and close +7d.
+ * 00:00 ET after the due-week Sunday, and close +7d, except Q3 and Q6,
+ * which already waited out the exam week. Piazza Post 33 moved Q1–Q6 one
+ * week later; take unlock/lock and those answer windows shifted +7 civil
+ * ET days with them. Exam-prep reopen still uses COURSE_EXAMS.
  *
- * Take windows follow the same weekly pattern as Q1
- * (unlock Monday 00:00 ET → due Sunday 23:59 ET).
+ * Take windows are the class-wide website window for the quiz week:
+ * Monday 00:00 ET unlock through Sunday 23:59 ET lock. That is the
+ * CS 5610-09 (online) open week — attendance is not required (Q1:
+ * 2026-09-28 through 2026-10-04). In-person sections (CS 5610-02 Monday,
+ * CS 4550 Wednesday) still take the quiz at the end of their meeting
+ * that same week. These dates do not open a quiz by themselves; staff
+ * enable taking.
  */
 
 export type ExamName = "midterm" | "final";
@@ -131,40 +139,40 @@ const QUIZ_WINDOW_ISO: Record<
   }
 > = {
   q1: {
-    takeUnlockAt: "2026-09-21T04:00:00.000Z",
-    takeLockAt: "2026-09-28T03:59:00.000Z",
-    answersOpenAt: "2026-09-28T04:00:00.000Z",
-    answersCloseAt: "2026-10-05T04:00:00.000Z",
+    takeUnlockAt: "2026-09-28T04:00:00.000Z",
+    takeLockAt: "2026-10-05T03:59:00.000Z",
+    answersOpenAt: "2026-10-05T04:00:00.000Z",
+    answersCloseAt: "2026-10-12T04:00:00.000Z",
   },
   q2: {
-    takeUnlockAt: "2026-10-05T04:00:00.000Z",
-    takeLockAt: "2026-10-12T03:59:00.000Z",
-    answersOpenAt: "2026-10-12T04:00:00.000Z",
-    answersCloseAt: "2026-10-19T04:00:00.000Z",
+    takeUnlockAt: "2026-10-12T04:00:00.000Z",
+    takeLockAt: "2026-10-19T03:59:00.000Z",
+    answersOpenAt: "2026-10-19T04:00:00.000Z",
+    answersCloseAt: "2026-10-26T04:00:00.000Z",
   },
   q3: {
-    takeUnlockAt: "2026-10-19T04:00:00.000Z",
-    takeLockAt: "2026-10-26T03:59:00.000Z",
-    answersOpenAt: "2026-11-02T05:00:00.000Z",
-    answersCloseAt: "2026-11-09T05:00:00.000Z",
-  },
-  q4: {
-    takeUnlockAt: "2026-11-02T05:00:00.000Z",
-    takeLockAt: "2026-11-09T04:59:00.000Z",
+    takeUnlockAt: "2026-10-26T04:00:00.000Z",
+    takeLockAt: "2026-11-02T04:59:00.000Z",
     answersOpenAt: "2026-11-09T05:00:00.000Z",
     answersCloseAt: "2026-11-16T05:00:00.000Z",
   },
+  q4: {
+    takeUnlockAt: "2026-11-09T05:00:00.000Z",
+    takeLockAt: "2026-11-16T04:59:00.000Z",
+    answersOpenAt: "2026-11-16T05:00:00.000Z",
+    answersCloseAt: "2026-11-23T05:00:00.000Z",
+  },
   q5: {
-    takeUnlockAt: "2026-11-16T05:00:00.000Z",
-    takeLockAt: "2026-11-23T04:59:00.000Z",
-    answersOpenAt: "2026-11-23T05:00:00.000Z",
-    answersCloseAt: "2026-11-30T05:00:00.000Z",
+    takeUnlockAt: "2026-11-23T05:00:00.000Z",
+    takeLockAt: "2026-11-30T04:59:00.000Z",
+    answersOpenAt: "2026-11-30T05:00:00.000Z",
+    answersCloseAt: "2026-12-07T05:00:00.000Z",
   },
   q6: {
-    takeUnlockAt: "2026-11-30T05:00:00.000Z",
-    takeLockAt: "2026-12-07T04:59:00.000Z",
-    answersOpenAt: "2026-12-21T05:00:00.000Z",
-    answersCloseAt: "2026-12-28T05:00:00.000Z",
+    takeUnlockAt: "2026-12-07T05:00:00.000Z",
+    takeLockAt: "2026-12-14T04:59:00.000Z",
+    answersOpenAt: "2026-12-28T05:00:00.000Z",
+    answersCloseAt: "2027-01-04T05:00:00.000Z",
   },
   x1: {
     takeUnlockAt: "2026-10-26T04:00:00.000Z",
