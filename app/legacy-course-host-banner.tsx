@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useSyncExternalStore } from "react";
 import {
   courseSiteHrefForLocation,
-  isLegacyCourseHost,
+  shouldShowCourseHostBanner,
 } from "@/lib/course-site/origin";
 import "./legacy-course-host-banner.css";
 
@@ -24,8 +24,9 @@ function clientLocationSnapshot(): string {
 }
 
 /**
- * Shown only when this app is served from the read-only Vercel alias.
- * Does not redirect. The link keeps the current path, query, and hash.
+ * kambaz.dev and webdev-client.vercel.app are one production deployment.
+ * The host comes from `window.location.hostname` at runtime, not from a
+ * build-time env var. Does not redirect. The link keeps path, query, and hash.
  */
 export default function LegacyCourseHostBanner() {
   const pathname = usePathname() || "/";
@@ -37,7 +38,7 @@ export default function LegacyCourseHostBanner() {
   if (!snapshot) return null;
 
   const [hostname, search = "", hash = ""] = snapshot.split("\n");
-  if (!hostname || !isLegacyCourseHost(hostname)) return null;
+  if (!hostname || !shouldShowCourseHostBanner(hostname)) return null;
 
   const href = courseSiteHrefForLocation({ pathname, search, hash });
 
