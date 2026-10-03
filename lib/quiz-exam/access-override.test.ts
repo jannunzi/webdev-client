@@ -54,9 +54,9 @@ describe("course section ids for quiz overrides", () => {
 });
 
 describe("per-section take overrides", () => {
-  const beforeUnlock = et(2026, 9, 20, 12);
-  const duringWindow = et(2026, 9, 23, 12);
-  const afterLock = et(2026, 9, 28, 12);
+  const beforeUnlock = et(2026, 9, 27, 12);
+  const duringWindow = et(2026, 9, 30, 12);
+  const afterLock = et(2026, 10, 6, 12);
 
   it("keeps taking closed on the date window unless staff Enable", () => {
     assert.equal(isScheduledTakeWindow(q1, duringWindow), true);
@@ -202,7 +202,8 @@ describe("per-section take overrides", () => {
     const copy = answerWindowCopy(q1, "take_closed", duringWindow, "closed");
     assert.match(copy.title, /disabled for your section/i);
     assert.match(copy.paragraphs.join(" "), /your section/);
-    assert.match(copy.paragraphs.join(" "), /Syllabus window/);
+    assert.match(copy.paragraphs.join(" "), /week of Sep 28/);
+    assert.doesNotMatch(copy.paragraphs.join(" "), /end of lecture|Monday through Sunday|is due/i);
   });
 
   it("serializes override audit fields for the staff panel", () => {
@@ -221,8 +222,8 @@ describe("per-section take overrides", () => {
 });
 
 describe("per-section answers-visible overrides", () => {
-  const waiting = et(2026, 9, 27, 12);
-  const reviewOpen = et(2026, 9, 29, 12);
+  const waiting = et(2026, 10, 4, 12);
+  const reviewOpen = et(2026, 10, 6, 12);
 
   it("defaults to the class calendar when unset or Follow schedule", () => {
     assert.equal(canRevealAnswers("submitted_waiting"), false);
@@ -257,7 +258,7 @@ describe("per-section answers-visible overrides", () => {
 
   it("staff Off hides answers during the review week", () => {
     assert.equal(canRevealAnswers("answers_open", "off"), false);
-    assert.equal(canRevealAnswers("answers_reopen", "off"), false);
+    assert.equal(canRevealAnswers("answers_closed", "off"), false);
     assert.deepEqual(describeAnswersVisible(q1, "off", reviewOpen), {
       visible: false,
       mode: "off",
@@ -352,8 +353,8 @@ describe("submit honors the same per-section take override", () => {
       quizId: "q1",
       drawnQuestionIds: drawn.map((item) => item.question.id),
       answers: {},
-      startedAt: "2026-09-23T16:00:00.000Z",
-      now: et(2026, 9, 23, 12),
+      startedAt: "2026-09-30T16:00:00.000Z",
+      now: et(2026, 9, 30, 12),
       takeOverride: "schedule",
       actor: { clerkUserId: "user_dates", email: "dates@northeastern.edu" },
       roster: {
@@ -379,8 +380,8 @@ describe("submit honors the same per-section take override", () => {
       quizId: "q1",
       drawnQuestionIds: drawn.map((item) => item.question.id),
       answers: {},
-      startedAt: "2026-09-29T12:00:00.000Z",
-      now: et(2026, 9, 29, 12),
+      startedAt: "2026-09-30T16:00:00.000Z",
+      now: et(2026, 9, 30, 12),
       takeOverride: "closed",
       actor: { clerkUserId: "user_closed", email: "closed@northeastern.edu" },
       roster: {
@@ -432,8 +433,8 @@ describe("submit honors the same per-section take override", () => {
       quizId: "q1",
       drawnQuestionIds: drawn.map((item) => item.question.id),
       answers: {},
-      startedAt: "2026-09-29T12:00:00.000Z",
-      now: et(2026, 9, 29, 12),
+      startedAt: "2026-10-06T16:00:00.000Z",
+      now: et(2026, 10, 6, 12),
       takeOverride: "open",
       answersVisible: "off",
       actor: { clerkUserId: "user_hide", email: "hide@northeastern.edu" },

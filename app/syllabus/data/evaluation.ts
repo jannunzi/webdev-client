@@ -11,7 +11,7 @@ export const evaluationItems: EvaluationItem[] = [
     label: "Quizzes (Q1–Q6)",
     weight: 10,
     description:
-      "Short in-class checks taken at the end of lecture at the end of each chapter on this course website (~10 questions, about 30 minutes). Q1 is at the end of Chapter 1’s two weeks, Q2 at the end of Chapter 2, and so on. Canvas is a staff-approved fallback if the site is unavailable — ask your instructor or TA before using it.",
+      "Short checks on this course website (~10 questions, about 30 minutes). Each quiz is the week after that chapter’s assignment is due. In person, the quiz is at the end of lecture that week. Online, the quiz is open for the whole week. Canvas is a staff-approved fallback if the site is unavailable — ask your instructor or TA before using it.",
   },
   {
     label: "Exams (X1–X2)",

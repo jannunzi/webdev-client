@@ -6,6 +6,8 @@ The course homepage (`/`) redirects to `/syllabus`. Kambaz stays on its existing
 
 This project was bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+`npm test` needs Node.js 22 or newer (`package.json` `"engines": { "node": ">=22" }`).
+
 ## Getting Started
 
 First, run the development server:
@@ -231,7 +233,7 @@ then Disable again.
 ### Answers visible to students (staff only)
 
 The class calendar still decides the **default**: answer keys stay hidden
-until the scheduled review week (`answers_open` / `answers_reopen`), then
+until the scheduled review week (`answers_open`), then
 hide again. That is the current product default (Off outside those
 windows). Staff can **override** it per quiz and section on
 `/quizzes/take` (same panel as Enable): **Answers visible to students:
@@ -347,35 +349,33 @@ Unlock is **class-wide** (wall-clock ET → stored as ISO UTC in
 
 | Phase | What the student sees |
 | --- | --- |
-| Take open, no attempt | Existing exam form. New attempts are blocked after the Sunday 23:59 ET due. |
-| Submitted, before answers open | Score / submitted status. Answers start **{answersOpenAt}**, only for **one week**, until **{answersCloseAt}**, and again one week before the midterm or final. |
-| First answer week | Full review of their drawn attempt with correct answers. Banner: only one week, until **{answersCloseAt}**; reopen one week before the exam. |
-| After that week | Answers hidden. Message that the window ended, plus the next reopen (week before midterm/final) if it is still ahead. |
-| Midterm / final prep week | Answers shown again until the exam instant. |
+| Take open, no attempt | Existing exam form. The page names the quiz week only. |
+| Submitted, before answers open | Score / submitted status. Answers start **{answersOpenAt}** (Monday 00:00 ET the week after the take week) and stay available for one week, until **{answersCloseAt}**. |
+| Answer week | Full review of their drawn attempt with correct answers, until **{answersCloseAt}**. |
+| After that week | Answers stay hidden. There is no exam-prep reopen. |
+| During the take window | The key stays hidden. Staff can show it with `answersVisible: on`. |
 
 The server clock decides the phase. `correctReveal` is omitted from HTML and
-from the submit payload unless the phase is `answers_open` or `answers_reopen`.
+from the submit payload unless the phase is `answers_open`.
 
-Fall 2026 first windows (00:00 ET Monday → +7d):
+Fall 2026 answer windows are the single week after each quiz’s take week:
 
-- Q1: 2026-09-28 → 2026-10-05
-- Q2: 2026-10-12 → 2026-10-19
+- Q1: 2026-10-05 → 2026-10-12
+- Q2: 2026-10-19 → 2026-10-26
 - Q3: 2026-11-02 → 2026-11-09
-- Q4: 2026-11-09 → 2026-11-16
-- Q5: 2026-11-23 → 2026-11-30
-- Q6: 2026-12-21 → 2026-12-28
+- Q4: 2026-11-16 → 2026-11-23
+- Q5: 2026-11-30 → 2026-12-07
+- Q6: 2026-12-14 → 2026-12-21
 
-Take windows follow Q1’s pattern (Monday 00:00 ET unlock → Sunday 23:59 ET
-due). Q1: unlock 2026-09-21, due 2026-09-27 23:59 ET.
+Take windows stay the class-wide website window (Monday 00:00 ET unlock →
+Sunday 23:59 ET lock) so staff can enable a quiz that week. Student-facing
+schedule and take-page copy names the week only (Q1 is the week of Sep 28).
+In person at the end of lecture, and online open for the whole week, is
+stated once on the Evaluation Quizzes row. Q1 unlock 2026-09-28, lock
+2026-10-04 23:59 ET.
 
-**Exam dates** live in `COURSE_EXAMS` in the same module:
-
-- `midtermAt` — Q1–Q3 answer-reopen close `2026-11-05T05:00:00.000Z` (Thu
-  2026-11-05 00:00 ET), the first weekday after syllabus **X1** due
-  (2026-11-01). `/quizzes/take/x1` is a coming-soon stub.
-- `finalAt` — syllabus **X2** week `2026-12-14T05:00:00.000Z`
-  (2026-12-14 00:00 ET). `/quizzes/take/x2` is a coming-soon stub.
-  University finals are 2026-12-14–20 on the syllabus.
+X1 and X2 take dates are unchanged. `/quizzes/take/x1` and `/quizzes/take/x2`
+are coming-soon stubs. University finals are 2026-12-14–20 on the syllabus.
 
 Canvas package -20 grade shells for Q1–Q6 and X1/X2 are **100 points**
 each. The website scores as a percent and exports to Canvas out of 100.
@@ -385,9 +385,9 @@ blurb) is generated with `npm run canvas:export-qti`. See
 `scripts/canvas-fallback/README.md`. Students still take the website
 unless staff unlock Canvas.
 
-Q1–Q3 reopen `[midtermAt − 7d, midtermAt)` and are labeled “midterm”. Q4–Q6
-reopen `[finalAt − 7d, finalAt)` and are labeled “final”. Edit those two ISO
-strings if the answer-reopen exam instants move.
+Per-section answer windows are PR #191. These class-wide windows are the
+week after each take week so a key never opens during the take. There is
+no second window. Staff can still show a key with `answersVisible: on`.
 
 Staff **View as student** still does not persist an attempt. Impersonation can
 exercise the form even outside the take window; answers still follow the
