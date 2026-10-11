@@ -65,6 +65,8 @@ function bookHtml(url: string): string {
   if (url.includes("/labs/lab2/tailwind")) return PASS_TAILWIND;
   if (url.includes("/labs/lab2")) return PASS_LAB2;
   if (url.includes("/labs")) return PASS_LABS;
+  const path = new URL(url).pathname.replace(/\/+$/, "") || "/";
+  if (path in A2_BOOK_PAGES) return A2_BOOK_PAGES[path];
   return "<main>Home</main>";
 }
 
@@ -131,19 +133,10 @@ describe("A2 rubric and checker config", () => {
         autoPointsTotal += row.points;
       }
     }
-    assert.equal(autoPointsTotal, 38);
-    assert.equal(manualPoints, 45);
-    assert.deepEqual(manual, [
-      "a2-kambaz-nav",
-      "a2-kambaz-dashboard",
-      "a2-kambaz-course-nav",
-      "a2-kambaz-modules",
-      "a2-kambaz-home",
-      "a2-kambaz-people",
-      "a2-kambaz-assignments",
-      "a2-kambaz-editor",
-      "a2-kambaz-account",
-    ]);
+    // Every row is judged by the checker (Kambaz from the compiled CSS).
+    assert.equal(autoPointsTotal, 83);
+    assert.equal(manualPoints, 0);
+    assert.deepEqual(manual, []);
     assert.equal(A1_CHECKER_FOLLOWUP_CAP, A1_FOLLOWUP_URL_CAP);
     for (const row of listRubricCriteria(A1_RUBRIC)) {
       assert.equal(
@@ -181,7 +174,7 @@ describe("A2 rubric and checker config", () => {
 });
 
 describe("runA2Checks", () => {
-  it("scores 38/38 auto on a book-faithful Chapter 2 site", async () => {
+  it("scores 83/83 auto on a book-faithful Chapter 2 site", async () => {
     assert.equal(PASS_LABS.includes("wd-lab1-link"), false);
     assert.equal(PASS_LABS.includes("wd-lab2-link"), false);
     const graded = await grade({
@@ -208,7 +201,7 @@ describe("runA2Checks", () => {
         assert.equal(result.skipped, undefined);
       }
     }
-    assert.equal(graded.points, 38);
+    assert.equal(graded.points, 83);
     const prepared = preparePublicAssignmentCheck({
       assignmentId: "a2",
       githubUrl: TREE,
@@ -230,7 +223,7 @@ describe("runA2Checks", () => {
         if (url.includes("/labs")) {
           return PASS_LABS.replace(`${ORIGIN}/labs/lab2`, "/labs/other");
         }
-        return "<main>Home</main>";
+        return bookHtml(url);
       },
     });
     assert.equal(graded.by.get("a2-delivery-branch")?.passed, false);
@@ -249,7 +242,7 @@ describe("runA2Checks", () => {
     assert.equal(graded.by.get("a2-lab-tailwind")?.passed, false);
     assert.match(graded.by.get("a2-lab-tailwind")?.message ?? "", /Tailwind filters/);
     for (const row of graded.results) assert.doesNotMatch(row.message, /\bwd-/, row.id);
-    assert.equal(graded.by.get("a2-kambaz-nav")?.skipped, true);
+    assert.equal(graded.by.get("a2-kambaz-nav")?.passed, true);
   });
 
   it("does not let one bad GitHub URL fail the name row", async () => {
@@ -262,7 +255,7 @@ describe("runA2Checks", () => {
     assert.equal(graded.by.get("a2-delivery-branch")?.passed, false);
     assert.match(graded.by.get("a2-delivery-branch")?.message ?? "", /404/);
     assert.equal(graded.by.get("a2-delivery-name-github")?.passed, true);
-    assert.equal(graded.points, 35);
+    assert.equal(graded.points, 80);
   });
 
   it("rejects an A1 main deployment even when the site loads", async () => {
@@ -280,7 +273,7 @@ describe("runA2Checks", () => {
     assert.match(graded.by.get("a2-delivery-vercel")?.message ?? "", /-git-a2/);
     assert.match(graded.by.get("a2-delivery-vercel")?.message ?? "", /override/i);
     assert.equal(graded.by.get("a2-lab-page")?.passed, true);
-    assert.equal(graded.points, 35);
+    assert.equal(graded.points, 80);
   });
 
   it("accepts a truncated -git-a2 Vercel label and rejects a non-Vercel host", async () => {
@@ -380,7 +373,7 @@ describe("runA2Checks", () => {
     assert.equal(graded.by.get("a2-delivery-labs-nav")?.passed, false);
     // The Lab 2 page itself is fine; only the nav row checks the links.
     assert.equal(graded.by.get("a2-lab-page")?.passed, true);
-    assert.equal(graded.points, 35);
+    assert.equal(graded.points, 80);
   });
 
   it("asks to retry, without a deduction, when GitHub returns 403 or 429", async () => {
@@ -484,6 +477,6 @@ describe("runA2Checks", () => {
     });
     assert.equal(graded.by.get("a2-lab-icons")?.passed, false);
     assert.match(graded.by.get("a2-lab-icons")?.message ?? "", /ReactIconsSampler/);
-    assert.equal(graded.points, 35);
+    assert.equal(graded.points, 80);
   });
 });

@@ -13,6 +13,7 @@
  */
 import { readFileSync, readdirSync } from "node:fs";
 import type { AssignmentCheckProbes, HtmlFetchResult } from "../check-types";
+import { KAMBAZ_CSS, KAMBAZ_CSS_FILE, kambazPages } from "./a2-kambaz";
 
 export const A2_FIXTURE_ORIGIN = "https://webdev-client-git-a2-qstudent.vercel.app";
 export const A2_FIXTURE_TREE = "https://github.com/qa-student/webdev-client/tree/a2";
@@ -30,14 +31,19 @@ export const A2_BOOK_PAGES: Readonly<Record<string, string>> = {
   "/labs/lab1": read("labs-lab1.html"),
   "/labs/lab2": read("labs-lab2.html"),
   "/labs/lab2/tailwind": read("labs-lab2-tailwind.html"),
+  // Kambaz screens (a2-kambaz.ts): styled the way §2.4 builds them.
+  ...kambazPages(true),
 };
 
 /** Compiled stylesheets by file name (Next serves them from /_next/static/chunks/). */
-export const A2_BOOK_CSS: Readonly<Record<string, string>> = Object.fromEntries(
-  readdirSync(DIR)
-    .filter((name) => name.endsWith(".css"))
-    .map((name) => [name, read(name)]),
-);
+export const A2_BOOK_CSS: Readonly<Record<string, string>> = {
+  ...Object.fromEntries(
+    readdirSync(DIR)
+      .filter((name) => name.endsWith(".css"))
+      .map((name) => [name, read(name)]),
+  ),
+  [KAMBAZ_CSS_FILE]: KAMBAZ_CSS,
+};
 
 export type FixtureResponse = { status: number; body: string } | { network: true };
 

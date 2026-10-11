@@ -1,6 +1,7 @@
 import { A2_RUBRIC } from "./a2";
 import type { A1RubricAutoSpec } from "./a1-rubric-types";
 import { judgeA2Labs } from "./a2-judge";
+import { A2_KAMBAZ_ROWS, judgeA2Kambaz } from "./a2-kambaz-judge";
 import { a2GithubLinkPassed, a2LabsNavPassed } from "./a2-structure";
 import type { AssignmentChecker } from "./checker-types";
 import { A2_CHECKER_RULES_VERSION } from "./checker-version";
@@ -139,7 +140,23 @@ const A2_LAB_SPECS: A1RubricAutoSpec[] = [
 const kambazCriteria =
   A2_RUBRIC.groups.find((group) => group.id === "kambaz")?.criteria ?? [];
 
-const manualIds = new Set(kambazCriteria.map((row) => row.id));
+/**
+ * Kambaz rows are judged from the compiled CSS of the crawled screens
+ * (`judgeA2Kambaz`), like the lab rows. The specs only name the rows; the
+ * messages are the fallbacks staff see if a row was not judged.
+ */
+const A2_KAMBAZ_SPECS: A1RubricAutoSpec[] = A2_KAMBAZ_ROWS.map((row) => ({
+  criterionId: row.id,
+  groupId: "kambaz" as const,
+  label: kambazCriteria.find((criterion) => criterion.id === row.id)?.label ?? row.label,
+  kind: "structure" as const,
+  pagePath: row.pathLabel,
+  passMessage: `Found the ${row.label} styling on ${row.pathLabel}.`,
+  failMessage: `Style the ${row.label} screen as in ${row.section}.`,
+}));
+
+/** No manual rows: every A2 row is judged by the checker (some end as Needs TA review). */
+const manualIds = new Set<string>();
 
 const autoIds = new Set<string>([
   "a2-delivery-branch",
@@ -147,6 +164,7 @@ const autoIds = new Set<string>([
   "a2-delivery-name-github",
   "a2-delivery-labs-nav",
   ...A2_LAB_SPECS.map((spec) => spec.criterionId),
+  ...A2_KAMBAZ_SPECS.map((spec) => spec.criterionId),
 ]);
 
 export const A2_CHECKER: AssignmentChecker = {
@@ -157,11 +175,22 @@ export const A2_CHECKER: AssignmentChecker = {
   // CSS and page structure (judgeA2Labs), delivery rows from links.
   idsOptional: true,
   idHasContent: () => false,
-  judgeAutoSpecs: judgeA2Labs,
+  judgeAutoSpecs: async (ctx) => ({
+    ...(await judgeA2Labs(ctx)),
+    ...(await judgeA2Kambaz(ctx)),
+  }),
   reviewGates: {
     // A sample built differently from the book (or the ID-selector sample
     // when no element carries the ids) keeps its points for a TA only when
     // the Lab 2 page itself is real: content styled by a Lab 2 stylesheet.
+    // A Kambaz screen with some of its styling keeps its points for a TA,
+    // and one with none fails. People alone has a gate: a People page that
+    // isn't at the book's route is TA review only when the student's other
+    // Kambaz screens are real (some styling on Dashboard, Home or Modules).
+    "a2-kambaz-people": {
+      requires: ["a2-kambaz-dashboard", "a2-kambaz-home", "a2-kambaz-modules"],
+      minPassed: 1,
+    },
     "a2-lab-selectors": { requires: ["a2-lab-page"], minPassed: 1 },
     "a2-lab-box-model": { requires: ["a2-lab-page"], minPassed: 1 },
     "a2-lab-layout": { requires: ["a2-lab-page"], minPassed: 1 },
@@ -171,14 +200,10 @@ export const A2_CHECKER: AssignmentChecker = {
   extraCourseScreens: ["people/table"],
   verifyPaths: A2_VERIFY_PATHS,
   verifyHashes: A2_VERIFY_HASHES,
-  autoSpecs: A2_LAB_SPECS,
+  autoSpecs: [...A2_LAB_SPECS, ...A2_KAMBAZ_SPECS],
   autoIds,
   manualIds,
-  manualRows: kambazCriteria.map((row) => ({
-    id: row.id,
-    label: row.label,
-    groupId: "kambaz" as const,
-  })),
+  manualRows: [],
   delivery: {
     vercelCriterionId: "a2-delivery-vercel",
     previewBranch: "a2",

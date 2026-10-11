@@ -54,6 +54,9 @@ type Graded = {
   review: string[];
 };
 
+/** Every A2 row is auto-judged: delivery 12 + lab 26 + Kambaz 45. */
+const A2_AUTO_TOTAL = 83;
+
 async function grade(site: FixtureSite): Promise<Graded> {
   const results = await runConfiguredChecks("a2", {
     githubUrl: A2_FIXTURE_TREE,
@@ -91,7 +94,7 @@ const ownClassNames: FixtureSite = (path) => {
 const without = (...targets: string[]) => removeFrom(bookSite, LAB2, targets);
 
 describe("A2 checker: book build variants", () => {
-  it("scores the full book build, ids stripped, and text changed 38/38", async () => {
+  it("scores the full book build, ids stripped, and text changed 83/83", async () => {
     for (const [label, site] of [
       ["full", bookSite],
       ["ids stripped", editPages(bookSite, stripIds)],
@@ -100,7 +103,7 @@ describe("A2 checker: book build variants", () => {
       ["own class names (pages and CSS)", ownClassNames],
     ] as const) {
       const graded = await grade(site);
-      assert.equal(graded.points, 38, `${label}: ${graded.failed.join(", ")}`);
+      assert.equal(graded.points, A2_AUTO_TOTAL, `${label}: ${graded.failed.join(", ")}`);
       assert.deepEqual(graded.failed, [], label);
       assertNoIdsInFeedback(graded, label);
     }
@@ -115,8 +118,8 @@ describe("A2 checker: book build variants", () => {
 
   it("does not credit empty elements that only carry the book's ids", async () => {
     const graded = await grade(editPages(bookSite, idsOnlySkeleton, (path) => path.startsWith(LAB2)));
-    // Delivery rows (12) only: every lab row fails.
-    assert.equal(graded.points, 12);
+    // Delivery (12) and Kambaz (45) rows only: every lab row fails.
+    assert.equal(graded.points, 57);
     for (const id of ["a2-lab-page", "a2-lab-selectors", "a2-lab-box-model", "a2-lab-layout", "a2-lab-icons", "a2-lab-tailwind"]) {
       assert.equal(graded.row(id).passed, false, id);
     }
@@ -149,7 +152,7 @@ describe("A2 checker: book build variants", () => {
         (path) => path.startsWith("/labs"),
       ),
     );
-    assert.equal(graded.points, 35);
+    assert.equal(graded.points, 80);
     assert.deepEqual(graded.failed, ["a2-delivery-labs-nav"]);
     assertNoIdsInFeedback(graded, "toc lab2");
   });
@@ -162,7 +165,7 @@ describe("A2 checker: book build variants", () => {
     ];
     for (const [label, site, row] of cases) {
       const graded = await grade(site);
-      assert.equal(graded.points, 35, label);
+      assert.equal(graded.points, 80, label);
       assert.deepEqual(graded.failed, [row], label);
       assertNoIdsInFeedback(graded, label);
     }
@@ -207,11 +210,11 @@ describe("A2 checker: book build variants", () => {
       assert.deepEqual(others, [], `${label} touched other rows`);
       if (expected === "fail") {
         assert.equal(result.passed, false, result.message);
-        assert.equal(graded.points, 38 - (row === "a2-lab-icons" ? 3 : 5));
+        assert.equal(graded.points, A2_AUTO_TOTAL - (row === "a2-lab-icons" ? 3 : 5));
       } else {
         assert.equal(result.passed, true, result.message);
         assert.equal(result.needsReview, true, result.message);
-        assert.equal(graded.points, 38);
+        assert.equal(graded.points, A2_AUTO_TOTAL);
       }
       assert.match(result.message, message);
       assertNoIdsInFeedback(graded, label);
@@ -278,11 +281,11 @@ describe("A2 checker: book build variants", () => {
         const graded = await grade(editPages(bookSite, (html) => prep(edit(html)), TAILWIND));
         const row = graded.row("a2-lab-tailwind");
         if (expected === "fail") {
-          assert.equal(graded.points, 33, `${label} (${variant}): ${graded.failed.join(", ")}`);
+          assert.equal(graded.points, 78, `${label} (${variant}): ${graded.failed.join(", ")}`);
           assert.deepEqual(graded.failed, ["a2-lab-tailwind"], `${label} (${variant})`);
           assert.match(row.message, /^Missing on/, `${label} (${variant})`);
         } else {
-          assert.equal(graded.points, 38, `${label} (${variant}): ${graded.failed.join(", ")}`);
+          assert.equal(graded.points, A2_AUTO_TOTAL, `${label} (${variant}): ${graded.failed.join(", ")}`);
           assert.deepEqual(graded.failed, [], `${label} (${variant})`);
           assert.equal(row.needsReview, true, `${label} (${variant}): ${row.message}`);
           assert.match(row.message, /Needs TA review/, `${label} (${variant})`);
@@ -295,12 +298,12 @@ describe("A2 checker: book build variants", () => {
 
   it("fails Tailwind when its page is gone, and reviews a grid without spans", async () => {
     const gone = await grade(override(bookSite, TAILWIND, { status: 404, body: "nf" }));
-    assert.equal(gone.points, 33);
+    assert.equal(gone.points, 78);
     assert.deepEqual(gone.failed, ["a2-lab-tailwind"]);
     assert.match(gone.row("a2-lab-tailwind").message, /404/);
 
     const noSpans = await grade(removeFrom(bookSite, TAILWIND, ["wd-tailwind-grid-system"]));
-    assert.equal(noSpans.points, 38);
+    assert.equal(noSpans.points, A2_AUTO_TOTAL);
     assert.equal(noSpans.row("a2-lab-tailwind").needsReview, true);
     assert.match(noSpans.row("a2-lab-tailwind").message, /Tailwind grid system/);
   });
@@ -311,7 +314,7 @@ describe("A2 checker: samples built another way go to TA review", () => {
 
   async function assertReview(site: FixtureSite, row: string, sample: RegExp) {
     const graded = await grade(site);
-    assert.equal(graded.points, 38, graded.failed.join(", "));
+    assert.equal(graded.points, A2_AUTO_TOTAL, graded.failed.join(", "));
     assert.deepEqual(graded.failed, []);
     const result = graded.row(row);
     assert.equal(result.passed, true, result.message);
@@ -391,7 +394,7 @@ describe("A2 checker: samples built another way go to TA review", () => {
         ),
       ),
     );
-    assert.equal(graded.points, 38);
+    assert.equal(graded.points, A2_AUTO_TOTAL);
     assert.ok(!graded.row("a2-lab-layout").needsReview, graded.row("a2-lab-layout").message);
   });
 });
@@ -399,7 +402,7 @@ describe("A2 checker: samples built another way go to TA review", () => {
 describe("A2 checker: unreachable pages", () => {
   it("fails the Lab 2 rows when /labs/lab2 returns 404", async () => {
     const graded = await grade(override(bookSite, LAB2, { status: 404, body: "nf" }));
-    assert.equal(graded.points, 17);
+    assert.equal(graded.points, 62);
     for (const id of ["a2-lab-page", "a2-lab-selectors", "a2-lab-box-model", "a2-lab-layout", "a2-lab-icons"]) {
       assert.equal(graded.row(id).passed, false, id);
       assert.match(graded.row(id).message, /404/, id);
@@ -413,7 +416,7 @@ describe("A2 checker: unreachable pages", () => {
       ["login wall", { status: 401, body: "Log in to Vercel" }],
     ] as const) {
       const graded = await grade(override(bookSite, LAB2, res));
-      assert.equal(graded.points, 38, label);
+      assert.equal(graded.points, A2_AUTO_TOTAL, label);
       for (const id of ["a2-lab-page", "a2-lab-selectors", "a2-lab-box-model", "a2-lab-layout", "a2-lab-icons"]) {
         const row = graded.row(id);
         assert.equal(row.passed, true, `${label} ${id}`);
@@ -425,7 +428,7 @@ describe("A2 checker: unreachable pages", () => {
 
   it("keeps points when a stylesheet can't be downloaded", async () => {
     const graded = await grade((path) => (path.endsWith(".css") ? { status: 503, body: "" } : bookSite(path)));
-    assert.equal(graded.points, 38);
+    assert.equal(graded.points, A2_AUTO_TOTAL);
     assert.match(graded.row("a2-lab-box-model").message, /Needs re-check: the stylesheet/);
   });
 

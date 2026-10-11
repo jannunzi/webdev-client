@@ -1,4 +1,3 @@
-import { ASSIGNMENT_STUDENT_COPY } from "./student-copy";
 import type { AssignmentRubric } from "./types";
 
 /**
@@ -118,7 +117,7 @@ export const A2_RUBRIC: AssignmentRubric = {
       id: "kambaz",
       title: "Kambaz — Chapter 2 restyle",
       intro:
-        `Restyle the prototype so navigation, Dashboard, Modules, and related screens start to resemble the target product. Editor and Account stay On your own. ${ASSIGNMENT_STUDENT_COPY.manualCheckLabNote}`,
+        "Restyle the prototype so navigation, Dashboard, Modules, and related screens start to resemble the target product. Editor and Account stay On your own. Run checks reads the CSS that reaches each screen (the styling the book builds with Tailwind), not ids, class names, or text. A screen styled a different way than the book is flagged Needs TA review and keeps its points.",
       criteria: [
         {
           id: "a2-kambaz-nav",

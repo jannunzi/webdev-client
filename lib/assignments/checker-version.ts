@@ -18,7 +18,15 @@
  *       re-check with points kept; it is never graded against other pages.
  */
 export const A1_CHECKER_RULES_VERSION = "a1-rules-v2";
-export const A2_CHECKER_RULES_VERSION = "a2-rules-v2";
+/**
+ * A2 history:
+ *   v2: lab rows judged from the compiled CSS; ids never read.
+ *   v3: Kambaz rows judged from the compiled CSS of the crawled screens
+ *       (they were manual); a screen with some of its styling is Needs TA
+ *       review, one with none fails; People off the book's route is review
+ *       only when the other Kambaz screens are real.
+ */
+export const A2_CHECKER_RULES_VERSION = "a2-rules-v3";
 /**
  * A3 history:
  *   v1: structure-only checks (no ids, no fixed text), cross-screen
