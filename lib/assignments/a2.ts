@@ -17,7 +17,7 @@ export const A2_RUBRIC: AssignmentRubric = {
           id: "a2-delivery-branch",
           label: "a2 GitHub branch",
           description:
-            "Create, commit, and push a branch named a2 on the same public repository from A1. Submit that branch’s GitHub URL (…/tree/a2). The tree page must load.",
+            "Create, commit, and push a branch named a2 on the same public repository from A1. Submit your repository’s GitHub URL (the repository root or the …/tree/a2 branch URL both work). The URL must load.",
           points: 3,
           bookHref: "/book/ch2#sec-2-5",
           bookLabel: "§2.5",

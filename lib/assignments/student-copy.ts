@@ -56,9 +56,9 @@ export const ASSIGNMENT_STUDENT_COPY = {
   githubFormat:
     "Enter a public GitHub repository URL such as https://github.com/yourname/webdev-client.",
   a2GithubRequired:
-    "Enter the GitHub URL for your a2 branch, such as https://github.com/yourname/webdev-client/tree/a2.",
+    "Enter the GitHub URL of your repository, such as https://github.com/yourname/webdev-client (the a2 branch URL works too).",
   a2GithubBranchUrl:
-    "Enter an https GitHub URL for your a2 branch, such as https://github.com/yourname/webdev-client/tree/a2.",
+    "Enter an https GitHub URL for your repository, such as https://github.com/yourname/webdev-client.",
   githubRetry: "GitHub didn't respond, try again",
   githubOfficial:
     "Submit your own public GitHub repository, not the course starter repo.",

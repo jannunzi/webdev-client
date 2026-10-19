@@ -257,12 +257,12 @@ describe("A2 Vercel branch host", () => {
 });
 
 describe("A2 GitHub scheme messages", () => {
-  it("suggests …/tree/a2 for http and schemeless URLs only", () => {
+  it("suggests an https repository URL for http and schemeless URLs only", () => {
     assert.equal(
       a2GithubSchemeMessage("http://github.com/jane-doe/webdev-client/tree/a2"),
       ASSIGNMENT_STUDENT_COPY.a2GithubBranchUrl,
     );
-    assert.match(ASSIGNMENT_STUDENT_COPY.a2GithubBranchUrl, /tree\/a2/);
+    assert.match(ASSIGNMENT_STUDENT_COPY.a2GithubBranchUrl, /https:\/\/github\.com\//);
     assert.notEqual(
       ASSIGNMENT_STUDENT_COPY.a2GithubBranchUrl,
       ASSIGNMENT_STUDENT_COPY.githubFormat,

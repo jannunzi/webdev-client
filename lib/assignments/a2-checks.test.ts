@@ -96,7 +96,7 @@ async function grade(input: {
       async probeUrl(url) {
         probed.push(url);
         if (input.probeStatus === 200 || input.probeStatus === undefined) {
-          return url === TREE
+          return url === TREE || url === REPO || url.startsWith(`${REPO}/tree/`)
             ? { ok: true as const, status: 200 }
             : { ok: false as const, status: 404, message: "missing" };
         }
@@ -211,7 +211,7 @@ describe("runA2Checks", () => {
     assert.equal(supportsUrlSubmission("a2"), true);
   });
 
-  it("fails branch, labs nav, layout, and tailwind on a partial site", async () => {
+  it("passes a repository-root GitHub URL; fails labs nav, layout, and tailwind on a partial site", async () => {
     const graded = await grade({
       githubUrl: REPO,
       html(url) {
@@ -226,11 +226,11 @@ describe("runA2Checks", () => {
         return bookHtml(url);
       },
     });
-    assert.equal(graded.by.get("a2-delivery-branch")?.passed, false);
-    assert.match(graded.by.get("a2-delivery-branch")?.message ?? "", /tree\/a2/);
+    // Any URL of the student's repository is fine (Jose, Oct 19, 2026).
+    assert.equal(graded.by.get("a2-delivery-branch")?.passed, true);
     assert.equal(graded.by.get("a2-delivery-vercel")?.passed, true);
     assert.equal(graded.by.get("a2-delivery-name-github")?.passed, true);
-    assert.equal(graded.probed.length, 0);
+    assert.deepEqual(graded.probed, [REPO]);
     assert.equal(graded.by.get("a2-delivery-labs-nav")?.passed, false);
     // The Lab 2 page row reads the page itself; the TOC link is the labs-nav row.
     assert.equal(graded.by.get("a2-lab-page")?.passed, true);
@@ -309,7 +309,7 @@ describe("runA2Checks", () => {
     }
   });
 
-  it("scores an A1-only site 6 when Labs already links Lab 2", async () => {
+  it("scores an A1-only site 9 when Labs already links Lab 2 (repo-root GitHub URL counts)", async () => {
     const graded = await grade({
       githubUrl: REPO,
       vercelUrl: MAIN_ORIGIN,
@@ -349,11 +349,11 @@ describe("runA2Checks", () => {
     assert.equal(graded.by.get("a2-delivery-name-github")?.passed, true);
     assert.equal(graded.by.get("a2-delivery-labs-nav")?.passed, true);
     assert.equal(graded.by.get("a2-delivery-vercel")?.passed, false);
-    assert.equal(graded.by.get("a2-delivery-branch")?.passed, false);
+    assert.equal(graded.by.get("a2-delivery-branch")?.passed, true);
     assert.equal(graded.by.get("a2-lab-page")?.passed, false);
     assert.equal(graded.by.get("a2-lab-tailwind")?.passed, false);
     assert.equal(graded.by.get("a2-lab-icons")?.passed, false);
-    assert.equal(graded.points, 6);
+    assert.equal(graded.points, 9);
   });
 
   it("ignores a Lab 2 link that points at another site", async () => {
@@ -394,14 +394,26 @@ describe("runA2Checks", () => {
     }
   });
 
-  it("suggests …/tree/a2 for http and schemeless GitHub URLs", async () => {
+  it("passes another branch of the repository and fails a URL that 404s", async () => {
+    const other = await grade({ githubUrl: `${REPO}/tree/a2-submitted`, html: bookHtml });
+    assert.equal(other.by.get("a2-delivery-branch")?.passed, true);
+    assert.deepEqual(other.probed, [`${REPO}/tree/a2-submitted`]);
+    const missing = await grade({
+      githubUrl: "https://github.com/jane-doe/not-there/tree/a2",
+      html: bookHtml,
+    });
+    assert.equal(missing.by.get("a2-delivery-branch")?.passed, false);
+    assert.match(missing.by.get("a2-delivery-branch")?.message ?? "", /404/);
+  });
+
+  it("suggests an https repository URL for http and schemeless GitHub URLs", async () => {
     for (const githubUrl of [
       "http://github.com/jane-doe/webdev-client/tree/a2",
       "github.com/jane-doe/webdev-client/tree/a2",
     ]) {
       const graded = await grade({ githubUrl, html: bookHtml });
       const message = graded.by.get("a2-delivery-branch")?.message ?? "";
-      assert.match(message, /tree\/a2/);
+      assert.match(message, /https:\/\/github\.com\//);
       assert.notEqual(message, ASSIGNMENT_STUDENT_COPY.githubFormat);
       assert.equal(graded.by.get("a2-delivery-branch")?.passed, false);
     }
