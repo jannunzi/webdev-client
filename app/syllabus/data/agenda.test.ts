@@ -40,7 +40,7 @@ const WEEK_MAP = [
 ] as const;
 
 describe("Fall 2026 lectureTopics", () => {
-  it("is the 14-week Canvas spine with X1 merged into Chapter 4 week 1", () => {
+  it("is the 14-week Canvas spine with X1 in Chapter 4 week 2", () => {
     assert.equal(lectureTopics.length, 14);
     assert.match(lectureTopics[0]!.topic, /Chapter 1 week 1/);
     assert.match(lectureTopics[1]!.topic, /Chapter 1 week 2/);
@@ -49,7 +49,8 @@ describe("Fall 2026 lectureTopics", () => {
     assert.match(lectureTopics[4]!.topic, /Chapter 3 week 1/);
     assert.match(lectureTopics[5]!.topic, /Chapter 3 week 2/);
     assert.match(lectureTopics[6]!.topic, /Chapter 4 week 1/);
-    assert.match(lectureTopics[6]!.topic, /midterm\/X1/);
+    assert.doesNotMatch(lectureTopics[6]!.topic, /midterm\/X1/);
+    assert.match(lectureTopics[7]!.topic, /midterm\/X1/);
     assert.equal(lectureTopics[6]!.chapter, 4);
     assert.equal(lectureTopics[6]!.exam, undefined);
     assert.match(lectureTopics[7]!.topic, /Chapter 4 week 2/);
@@ -233,7 +234,7 @@ describe("agenda Week of labels and chapter groups", () => {
     assert.equal(mondayOfWeek(groups[2]!.rows[1]!.date), "2026-10-19");
     assert.equal(groups[3]?.rows.length, 2);
     assert.match(groups[3]?.rows[0]?.topic ?? "", /Chapter 4 week 1/);
-    assert.match(groups[3]?.rows[0]?.topic ?? "", /midterm\/X1/);
+    assert.match(groups[3]?.rows[1]?.topic ?? "", /midterm\/X1/);
     assert.equal(mondayOfWeek(groups[3]!.rows[0]!.date), "2026-10-26");
     assert.match(groups[3]?.rows[1]?.topic ?? "", /Chapter 4 week 2/);
     assert.equal(mondayOfWeek(groups[3]!.rows[1]!.date), "2026-11-02");
@@ -270,12 +271,12 @@ describe("agenda Week of labels and chapter groups", () => {
         `${id} should appear on the week of ${monday}`,
       );
     }
-    const x1 = mon.find((row) => mondayOfWeek(row.date) === "2026-10-26");
+    const x1 = mon.find((row) => mondayOfWeek(row.date) === "2026-11-02");
     const x2 = mon.find((row) => mondayOfWeek(row.date) === "2026-12-14");
     const x1Deadline = x1?.deadlines.find((deadline) =>
       deadline.label.startsWith("X1"),
     );
-    assert.equal(x1Deadline?.date, "2026-10-26");
+    assert.equal(x1Deadline?.date, "2026-11-02");
     assert.match(x1Deadline?.label ?? "", /2nd half of lecture/);
     assert.doesNotMatch(x1Deadline?.label ?? "", /\bdue\b/i);
     assert.doesNotMatch(x1Deadline?.label ?? "", /unlock/i);

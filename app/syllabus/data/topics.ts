@@ -76,12 +76,12 @@ export const lectureTopics: LectureTopic[] = [
   {
     chapter: 4,
     topic:
-      "Chapter 4 week 1 — Managing client state: events, forms, useState, and React Context; midterm/X1 this week",
+      "Chapter 4 week 1 — Managing client state: events, forms, useState, and React Context",
   },
   {
     chapter: 4,
     topic:
-      "Chapter 4 week 2 — Zustand stores and adding state to Kambaz (A4)",
+      "Chapter 4 week 2 — Zustand stores and adding state to Kambaz (A4); midterm/X1 this week",
   },
   {
     chapter: 5,

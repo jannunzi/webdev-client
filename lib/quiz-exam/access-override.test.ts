@@ -204,7 +204,7 @@ describe("per-section take overrides", () => {
     const copy = answerWindowCopy(x1, "take_closed", duringWindow, "closed");
     assert.match(copy.title, /disabled for your section/i);
     assert.match(copy.paragraphs.join(" "), /your section/);
-    assert.match(copy.paragraphs.join(" "), /October 26/);
+    assert.match(copy.paragraphs.join(" "), /November 2/);
     assert.doesNotMatch(copy.paragraphs.join(" "), /end of lecture|Monday through Sunday/i);
     assert.doesNotMatch(copy.paragraphs.join(" "), /taken (on|in) Canvas/);
   });

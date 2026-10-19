@@ -57,16 +57,17 @@ describe("Eastern wall-time conversion", () => {
     assert.doesNotMatch(formatEasternDateTime(q1.takeLockAt), /September 27/);
   });
 
-  it("crosses the Nov 1 DST fallback for X1 lock vs answers open", () => {
+  it("X1 week of Nov 2 is after the Nov 1 DST fallback", () => {
     const x1 = getQuizSchedule("x1");
     assert.ok(x1);
     assert.equal(
       x1.takeLockAt.toISOString(),
-      et(2026, 11, 1, 23, 59).toISOString(),
+      et(2026, 11, 8, 23, 59).toISOString(),
     );
-    assert.equal(x1.answersOpenAt.toISOString(), et(2026, 11, 2).toISOString());
-    assert.equal(x1.takeLockAt.toISOString(), "2026-11-02T04:59:00.000Z");
-    assert.equal(x1.answersOpenAt.toISOString(), "2026-11-02T05:00:00.000Z");
+    assert.equal(x1.answersOpenAt.toISOString(), et(2026, 11, 9).toISOString());
+    assert.equal(x1.takeUnlockAt.toISOString(), "2026-11-02T05:00:00.000Z");
+    assert.equal(x1.takeLockAt.toISOString(), "2026-11-09T04:59:00.000Z");
+    assert.equal(x1.answersOpenAt.toISOString(), "2026-11-09T05:00:00.000Z");
   });
 });
 
@@ -76,10 +77,10 @@ describe("X1 and X2 take windows", () => {
     const x2 = getQuizSchedule("x2");
     assert.ok(x1);
     assert.ok(x2);
-    assert.equal(x1.takeUnlockAt.toISOString(), et(2026, 10, 26).toISOString());
-    assert.equal(x1.takeLockAt.toISOString(), et(2026, 11, 1, 23, 59).toISOString());
-    assert.equal(x1.answersOpenAt.toISOString(), et(2026, 11, 2).toISOString());
-    assert.equal(x1.answersCloseAt.toISOString(), et(2026, 11, 9).toISOString());
+    assert.equal(x1.takeUnlockAt.toISOString(), et(2026, 11, 2).toISOString());
+    assert.equal(x1.takeLockAt.toISOString(), et(2026, 11, 8, 23, 59).toISOString());
+    assert.equal(x1.answersOpenAt.toISOString(), et(2026, 11, 9).toISOString());
+    assert.equal(x1.answersCloseAt.toISOString(), et(2026, 11, 16).toISOString());
     assert.equal(x2.takeUnlockAt.toISOString(), et(2026, 12, 14).toISOString());
     assert.equal(x2.takeLockAt.toISOString(), et(2026, 12, 20, 23, 59).toISOString());
     assert.equal(x2.answersOpenAt.toISOString(), et(2026, 12, 21).toISOString());

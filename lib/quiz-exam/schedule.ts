@@ -131,10 +131,10 @@ const QUIZ_WINDOW_ISO: Record<
     answersCloseAt: "2026-12-21T05:00:00.000Z",
   },
   x1: {
-    takeUnlockAt: "2026-10-26T04:00:00.000Z",
-    takeLockAt: "2026-11-02T04:59:00.000Z",
-    answersOpenAt: "2026-11-02T05:00:00.000Z",
-    answersCloseAt: "2026-11-09T05:00:00.000Z",
+    takeUnlockAt: "2026-11-02T05:00:00.000Z",
+    takeLockAt: "2026-11-09T04:59:00.000Z",
+    answersOpenAt: "2026-11-09T05:00:00.000Z",
+    answersCloseAt: "2026-11-16T05:00:00.000Z",
   },
   x2: {
     takeUnlockAt: "2026-12-14T05:00:00.000Z",
