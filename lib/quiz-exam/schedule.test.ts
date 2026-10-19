@@ -62,11 +62,11 @@ describe("Eastern wall-time conversion", () => {
     assert.ok(x1);
     assert.equal(
       x1.takeLockAt.toISOString(),
-      et(2026, 11, 8, 23, 59).toISOString(),
+      et(2026, 11, 7, 23, 59).toISOString(),
     );
     assert.equal(x1.answersOpenAt.toISOString(), et(2026, 11, 9).toISOString());
     assert.equal(x1.takeUnlockAt.toISOString(), "2026-11-02T05:00:00.000Z");
-    assert.equal(x1.takeLockAt.toISOString(), "2026-11-09T04:59:00.000Z");
+    assert.equal(x1.takeLockAt.toISOString(), "2026-11-08T04:59:00.000Z");
     assert.equal(x1.answersOpenAt.toISOString(), "2026-11-09T05:00:00.000Z");
   });
 });
@@ -78,7 +78,7 @@ describe("X1 and X2 take windows", () => {
     assert.ok(x1);
     assert.ok(x2);
     assert.equal(x1.takeUnlockAt.toISOString(), et(2026, 11, 2).toISOString());
-    assert.equal(x1.takeLockAt.toISOString(), et(2026, 11, 8, 23, 59).toISOString());
+    assert.equal(x1.takeLockAt.toISOString(), et(2026, 11, 7, 23, 59).toISOString());
     assert.equal(x1.answersOpenAt.toISOString(), et(2026, 11, 9).toISOString());
     assert.equal(x1.answersCloseAt.toISOString(), et(2026, 11, 16).toISOString());
     assert.equal(x2.takeUnlockAt.toISOString(), et(2026, 12, 14).toISOString());
@@ -367,5 +367,34 @@ describe("answer-window copy", () => {
         id,
       );
     }
+  });
+});
+
+describe("X1 per-section take windows (match Canvas)", () => {
+  it("uses each roster section's window and keeps answers class-wide", () => {
+    const s02 = getQuizSchedule("x1", "CS5610-02 CRN 12345");
+    const s01 = getQuizSchedule("x1", "CS4550");
+    const s09 = getQuizSchedule("x1", "CS5610-09");
+    assert.ok(s02 && s01 && s09);
+    assert.equal(s02.takeUnlockAt.toISOString(), et(2026, 11, 2, 19, 30).toISOString());
+    assert.equal(s02.takeLockAt.toISOString(), et(2026, 11, 2, 23, 59).toISOString());
+    assert.equal(s01.takeUnlockAt.toISOString(), et(2026, 11, 4, 19, 30).toISOString());
+    assert.equal(s01.takeLockAt.toISOString(), et(2026, 11, 4, 23, 59).toISOString());
+    assert.equal(s09.takeUnlockAt.toISOString(), et(2026, 11, 2).toISOString());
+    assert.equal(s09.takeLockAt.toISOString(), et(2026, 11, 7, 23, 59).toISOString());
+    for (const s of [s01, s02, s09]) {
+      assert.equal(s.answersOpenAt.toISOString(), et(2026, 11, 9).toISOString());
+      assert.equal(s.answersCloseAt.toISOString(), et(2026, 11, 16).toISOString());
+    }
+    const unknown = getQuizSchedule("x1", "Unsectioned");
+    assert.equal(unknown?.takeLockAt.toISOString(), et(2026, 11, 7, 23, 59).toISOString());
+    assert.equal(getQuizSchedule("q3", "CS4550")?.takeLockAt.toISOString(), getQuizSchedule("q3")?.takeLockAt.toISOString());
+  });
+
+  it("gates the key on the section's lock", () => {
+    const afterS02Lock = et(2026, 11, 3, 12);
+    assert.equal(getAnswerRevealPhase(getQuizSchedule("x1", "CS5610-02")!, afterS02Lock, true), "submitted_waiting");
+    assert.equal(getAnswerRevealPhase(getQuizSchedule("x1", "CS4550")!, et(2026, 11, 10), true), "answers_open");
+    assert.equal(getAnswerRevealPhase(getQuizSchedule("x1", "CS5610-09")!, et(2026, 11, 16), true), "answers_closed");
   });
 });

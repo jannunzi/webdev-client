@@ -1,3 +1,5 @@
+import { courseSectionIdFromRoster, type CourseSectionId } from "../roster/sections";
+
 /**
  * Class-wide Fall 2026 quiz take + answer-review windows.
  *
@@ -7,7 +9,8 @@
  *
  * Answers are available the week after the take week, for one week only
  * (Monday 00:00 ET through the next Monday 00:00 ET). There is no exam-prep
- * reopen and no second window. Per-section windows belong to PR #191. A key
+ * reopen and no second window. X1 take windows are per section
+ * (SECTION_TAKE_WINDOW_ISO). A key
  * is never shown before the take lock unless staff set answersVisible to
  * `on`.
  *
@@ -131,8 +134,9 @@ const QUIZ_WINDOW_ISO: Record<
     answersCloseAt: "2026-12-21T05:00:00.000Z",
   },
   x1: {
+    // Class-wide envelope: earliest section unlock → latest section lock.
     takeUnlockAt: "2026-11-02T05:00:00.000Z",
-    takeLockAt: "2026-11-09T04:59:00.000Z",
+    takeLockAt: "2026-11-08T04:59:00.000Z",
     answersOpenAt: "2026-11-09T05:00:00.000Z",
     answersCloseAt: "2026-11-16T05:00:00.000Z",
   },
@@ -226,9 +230,49 @@ function easternCivilParts(date: Date): {
   };
 }
 
-export function getQuizSchedule(quizId: string): QuizSchedule | undefined {
-  const windows = QUIZ_WINDOW_ISO[quizId];
-  if (!windows) return undefined;
+/**
+ * Per-section take windows that differ from the class-wide row, keyed by
+ * quiz id then course section id (see `lib/roster/sections.ts`). They match
+ * the Canvas availability dates for each section. Answers stay class-wide.
+ */
+const SECTION_TAKE_WINDOW_ISO: Record<
+  string,
+  Partial<Record<CourseSectionId, { takeUnlockAt: string; takeLockAt: string }>>
+> = {
+  x1: {
+    // Mon Nov 2, 7:30–11:59 PM ET (EST)
+    "CS5610-02": {
+      takeUnlockAt: "2026-11-03T00:30:00.000Z",
+      takeLockAt: "2026-11-03T04:59:00.000Z",
+    },
+    // Wed Nov 4, 7:30–11:59 PM ET (EST)
+    CS4550: {
+      takeUnlockAt: "2026-11-05T00:30:00.000Z",
+      takeLockAt: "2026-11-05T04:59:00.000Z",
+    },
+    // Mon Nov 2 12:00 AM – Sat Nov 7 11:59 PM ET (EST)
+    "CS5610-09": {
+      takeUnlockAt: "2026-11-02T05:00:00.000Z",
+      takeLockAt: "2026-11-08T04:59:00.000Z",
+    },
+  },
+};
+
+/**
+ * Schedule for a quiz. Pass the student's `canvas_roster.section` to get
+ * that section's take window when one is set; otherwise the class-wide row.
+ */
+export function getQuizSchedule(
+  quizId: string,
+  section?: string | null,
+): QuizSchedule | undefined {
+  const base = QUIZ_WINDOW_ISO[quizId];
+  if (!base) return undefined;
+  const sectionId = courseSectionIdFromRoster(section);
+  const sectionWindow = sectionId
+    ? SECTION_TAKE_WINDOW_ISO[quizId]?.[sectionId]
+    : undefined;
+  const windows = { ...base, ...sectionWindow };
   return {
     quizId,
     takeUnlockAt: new Date(windows.takeUnlockAt),

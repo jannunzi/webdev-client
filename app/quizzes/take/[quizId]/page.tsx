@@ -216,7 +216,7 @@ export default async function TakeExamPage({ params }: PageProps) {
   }
 
   const now = new Date();
-  const schedule = getQuizSchedule(quizId);
+  const schedule = getQuizSchedule(quizId, roster.entry.section);
   const { takeOverride, answersVisible } = await loadQuizAccessForRoster(
     quizId,
     roster.entry.section,
