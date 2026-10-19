@@ -34,18 +34,21 @@ export const VARIABLES_AND_CONSTANTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "sample",
-    title: "Declare, compute, interpolate",
-    kind: "demo",
-    bullets: [
-      "`constant1` is the difference of the other two — the page shows `-3`",
-      "Curly braces in JSX interpolate a JavaScript expression",
-      "`{functionScoped}` prints `2`. No quotes around the name",
-    ],
+    title: "Declare, compute, interpolate (1/2)",
+    kind: "content",
     code: `export default function VariablesAndConstants() {
   var functionScoped = 2;
   let blockScoped = 5;
-  const constant1 = functionScoped - blockScoped;
-  return (
+  const constant1 = functionScoped - blockScoped;`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/VariablesAndConstants.tsx",
+    codeHighlightLines: [2, 3, 4],
+  },
+  {
+    id: "sample-return",
+    title: "Declare, compute, interpolate (2/2)",
+    kind: "content",
+    code: `  return (
     <div id="wd-variables-and-constants">
       <h4>Variables and Constants</h4>
       functionScoped = {functionScoped}
@@ -59,7 +62,18 @@ export const VARIABLES_AND_CONSTANTS_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/VariablesAndConstants.tsx",
-    codeHighlightLines: [[2, 4], [8, 12]],
+    codeStartLine: 5,
+    codeHighlightLines: [4, 5, 6, 7, 8],
+  },
+  {
+    id: "sample-live",
+    title: "VariablesAndConstants: live demo",
+    kind: "demo",
+    bullets: [
+      "`constant1` is the difference of the other two — the page shows `-3`",
+      "Curly braces in JSX interpolate a JavaScript expression",
+      "`{functionScoped}` prints `2`. No quotes around the name",
+    ],
     embed: "js-variables",
   },
   {

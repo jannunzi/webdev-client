@@ -56,12 +56,7 @@ export const INTRO_TO_JAVASCRIPT_SLIDES: LectureSlide[] = [
   {
     id: "lab3-stub",
     title: "Start a Lab 3 page",
-    kind: "demo",
-    bullets: [
-      "Keep working in the same `webdev-client` project",
-      "`mkdir app/labs/lab3` then a single top-level component",
-      "Link it from `app/labs/page.tsx` and `app/labs/TOC.tsx` — same as Lab 2",
-    ],
+    kind: "content",
     code: `export default function Lab3() {
   return (
     <div id="wd-lab3">
@@ -72,6 +67,16 @@ export const INTRO_TO_JAVASCRIPT_SLIDES: LectureSlide[] = [
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/page.tsx",
     codeHighlightLines: [3, [4, 5]],
+  },
+  {
+    id: "lab3-stub-live",
+    title: "Lab3: live demo",
+    kind: "demo",
+    bullets: [
+      "Keep working in the same `webdev-client` project",
+      "`mkdir app/labs/lab3` then a single top-level component",
+      "Link it from `app/labs/page.tsx` and `app/labs/TOC.tsx` — same as Lab 2",
+    ],
     embed: "lab3-stub",
   },
   {

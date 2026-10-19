@@ -23,20 +23,23 @@ export const SPREAD_AND_DESTRUCTURING_SLIDES: LectureSlide[] = [
   },
   {
     id: "spread",
-    title: "Spread copies, last write wins",
-    kind: "demo",
-    bullets: [
-      "`arr2` is `arr1` plus `4, 5, 6`",
-      "`obj2` is `obj1` plus `d, e, f`",
-      "`obj3.b` is `4`, not `2` — the later `b` overrides the copy",
-    ],
+    title: "Spread copies, last write wins (1/3)",
+    kind: "content",
     code: `export default function Spreading() {
   const arr1 = [1, 2, 3];
   const arr2 = [...arr1, 4, 5, 6];
   const obj1 = { a: 1, b: 2, c: 3 };
   const obj2 = { ...obj1, d: 4, e: 5, f: 6 };
-  const obj3 = { ...obj1, b: 4 };
-  return (
+  const obj3 = { ...obj1, b: 4 };`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/Spreader.tsx",
+    codeHighlightLines: [3, 5, 6],
+  },
+  {
+    id: "spread-return",
+    title: "Spread copies, last write wins (2/3)",
+    kind: "content",
+    code: `  return (
     <div id="wd-spreading">
       <h2>Spread Operator</h2>
       <h3>Array Spread</h3>
@@ -48,8 +51,16 @@ export const SPREAD_AND_DESTRUCTURING_SLIDES: LectureSlide[] = [
       {JSON.stringify(obj1)}
       <br />
       {JSON.stringify(obj2)}
-      <br />
-      {JSON.stringify(obj3)}
+      <br />`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/Spreader.tsx",
+    codeStartLine: 7,
+  },
+  {
+    id: "spread-part-3",
+    title: "Spread copies, last write wins (3/3)",
+    kind: "content",
+    code: `      {JSON.stringify(obj3)}
       <br />
       <hr />
     </div>
@@ -57,13 +68,23 @@ export const SPREAD_AND_DESTRUCTURING_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/Spreader.tsx",
-    codeHighlightLines: [3, 5, 6],
+    codeStartLine: 20,
+  },
+  {
+    id: "spread-live",
+    title: "Spreading: live demo",
+    kind: "demo",
+    bullets: [
+      "`arr2` is `arr1` plus `4, 5, 6`",
+      "`obj2` is `obj1` plus `d, e, f`",
+      "`obj3.b` is `4`, not `2` — the later `b` overrides the copy",
+    ],
     embed: "js-spreader",
   },
   {
     id: "destruct",
-    title: "Names from objects, slots from arrays",
-    kind: "demo",
+    title: "Names from objects, slots (1/3)",
+    kind: "content",
     bullets: [
       "`const { name, age } = person` is `person.name` and `person.age`",
       "`const [first, second, third] = numbers` is index 0, 1, 2",
@@ -73,8 +94,16 @@ export const SPREAD_AND_DESTRUCTURING_SLIDES: LectureSlide[] = [
   const person = { name: "John", age: 25 };
   const { name, age } = person;
   const numbers = ["one", "two", "three"];
-  const [first, second, third] = numbers;
-  return (
+  const [first, second, third] = numbers;`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/Destructing.tsx",
+    codeHighlightLines: [3, 5],
+  },
+  {
+    id: "destruct-return",
+    title: "Names from objects, slots (2/3)",
+    kind: "content",
+    code: `  return (
     <div id="wd-destructing">
       <h2>Destructing</h2>
       <h3>Object Destructing</h3>
@@ -86,8 +115,16 @@ export const SPREAD_AND_DESTRUCTURING_SLIDES: LectureSlide[] = [
       age = {age}
       <h3>Array Destructing</h3>
       const [first, second, third] = ["one","two","three"]
-      <br />
-      <br />
+      <br />`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/Destructing.tsx",
+    codeStartLine: 6,
+  },
+  {
+    id: "destruct-part-3",
+    title: "Names from objects, slots (3/3)",
+    kind: "content",
+    code: `      <br />
       first = {first}
       <br />
       second = {second}
@@ -99,24 +136,32 @@ export const SPREAD_AND_DESTRUCTURING_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/Destructing.tsx",
-    codeHighlightLines: [3, 5],
+    codeStartLine: 19,
+  },
+  {
+    id: "destruct-live",
+    title: "Destructing: live demo",
+    kind: "demo",
     embed: "js-destructing",
   },
   {
     id: "fn-destruct",
-    title: "Functions can unpack a props object",
-    kind: "demo",
-    bullets: [
-      "`add(a, b)` takes two numbers. `subtract({ a, b })` takes one object",
-      "That object shape is how React components receive props",
-      "Defaults work too: `(name = \"Ada\")` or `{ b = 0 }`",
-    ],
+    title: "Functions can unpack a props object (1/3)",
+    kind: "content",
     code: `export default function FunctionDestructing() {
   const add = (a: number, b: number) => a + b;
   const sum = add(1, 2);
   const subtract = ({ a, b }: { a: number; b: number }) => a - b;
-  const difference = subtract({ a: 4, b: 2 });
-  return (
+  const difference = subtract({ a: 4, b: 2 });`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/FunctionDestructing.tsx",
+    codeHighlightLines: [2, 4],
+  },
+  {
+    id: "fn-destruct-return",
+    title: "Functions can unpack a props object (2/3)",
+    kind: "content",
+    code: `  return (
     <div id="wd-function-destructing">
       <h2>Function Destructing</h2>
       const add = (a, b) =&gt; a + b;
@@ -128,15 +173,33 @@ export const SPREAD_AND_DESTRUCTURING_SLIDES: LectureSlide[] = [
       const difference = subtract(&#123; a: 4, b: 2 &#125;);
       <br />
       sum = {sum}
-      <br />
-      difference = {difference}
+      <br />`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/FunctionDestructing.tsx",
+    codeStartLine: 6,
+  },
+  {
+    id: "fn-destruct-part-3",
+    title: "Functions can unpack a props object (3/3)",
+    kind: "content",
+    code: `      difference = {difference}
       <hr />
     </div>
   );
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/FunctionDestructing.tsx",
-    codeHighlightLines: [2, 4],
+    codeStartLine: 19,
+  },
+  {
+    id: "fn-destruct-live",
+    title: "FunctionDestructing: live demo",
+    kind: "demo",
+    bullets: [
+      "`add(a, b)` takes two numbers. `subtract({ a, b })` takes one object",
+      "That object shape is how React components receive props",
+      "Defaults work too: `(name = \"Ada\")` or `{ b = 0 }`",
+    ],
     embed: "js-function-destructing",
   },
   {
@@ -173,18 +236,21 @@ export default Math;`,
   },
   {
     id: "destructing-imports",
-    title: "Import Math three different ways",
-    kind: "demo",
-    bullets: [
-      "Default: `import Math from \"./Math\"`, then `Math.add(2, 3)`",
-      "`import * as Matematica` gathers every export under one local name",
-      "`{ add, subtract, multiply, divide }` unpacks the named exports",
-    ],
+    title: "Import Math three different ways (1/5)",
+    kind: "content",
     code: `import Math, { add, subtract, multiply, divide } from "./Math";
 import * as Matematica from "./Math";
 
-export default function DestructingImports() {
-  return (
+export default function DestructingImports() {`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/DestructingImports.tsx",
+    codeHighlightLines: [1, 2],
+  },
+  {
+    id: "destructing-imports-return",
+    title: "Import Math three different ways (2/5)",
+    kind: "content",
+    code: `  return (
     <div id="wd-destructuring-imports">
       <h2>Destructing Imports</h2>
       <table className="w-full border-collapse text-sm">
@@ -194,8 +260,16 @@ export default function DestructingImports() {
             <th>Matematica</th>
             <th>Functions</th>
           </tr>
-        </thead>
-        <tbody>
+        </thead>`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/DestructingImports.tsx",
+    codeStartLine: 5,
+  },
+  {
+    id: "destructing-imports-part-3",
+    title: "Import Math three different ways (3/5)",
+    kind: "content",
+    code: `        <tbody>
           <tr>
             <td>Math.add(2, 3) = {Math.add(2, 3)}</td>
             <td>Matematica.add(2, 3) = {Matematica.add(2, 3)}</td>
@@ -205,8 +279,16 @@ export default function DestructingImports() {
             <td>Math.subtract(5, 1) = {Math.subtract(5, 1)}</td>
             <td>Matematica.subtract(5, 1) = {Matematica.subtract(5, 1)}</td>
             <td>subtract(5, 1) = {subtract(5, 1)}</td>
-          </tr>
-          <tr>
+          </tr>`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/DestructingImports.tsx",
+    codeStartLine: 16,
+  },
+  {
+    id: "destructing-imports-part-4",
+    title: "Import Math three different ways (4/5)",
+    kind: "content",
+    code: `          <tr>
             <td>Math.multiply(3, 4) = {Math.multiply(3, 4)}</td>
             <td>Matematica.multiply(3, 4) = {Matematica.multiply(3, 4)}</td>
             <td>multiply(3, 4) = {multiply(3, 4)}</td>
@@ -218,13 +300,31 @@ export default function DestructingImports() {
           </tr>
         </tbody>
       </table>
-      <hr />
-    </div>
+      <hr />`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/DestructingImports.tsx",
+    codeStartLine: 27,
+  },
+  {
+    id: "destructing-imports-part-5",
+    title: "Import Math three different ways (5/5)",
+    kind: "content",
+    code: `    </div>
   );
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/DestructingImports.tsx",
-    codeHighlightLines: [1, 2],
+    codeStartLine: 40,
+  },
+  {
+    id: "destructing-imports-live",
+    title: "DestructingImports: live demo",
+    kind: "demo",
+    bullets: [
+      "Default: `import Math from \"./Math\"`, then `Math.add(2, 3)`",
+      "`import * as Matematica` gathers every export under one local name",
+      "`{ add, subtract, multiply, divide }` unpacks the named exports",
+    ],
     embed: "js-destructing-imports",
   },
   {

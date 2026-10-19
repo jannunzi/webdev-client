@@ -24,12 +24,7 @@ export const REDUCE_AND_JSON_SLIDES: LectureSlide[] = [
   {
     id: "reduce",
     title: "reduce starts at 0 and adds",
-    kind: "demo",
-    bullets: [
-      "Second argument is the starting accumulator — here `0`",
-      "Each pass: `total + n`. The sum is `15`",
-      "Create `ReduceFunction` and import it into Lab 3",
-    ],
+    kind: "content",
     code: `export default function ReduceFunction() {
   const numbers = [1, 2, 3, 4, 5];
   const sum = numbers.reduce((total, n) => total + n, 0);
@@ -44,17 +39,22 @@ export const REDUCE_AND_JSON_SLIDES: LectureSlide[] = [
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/ReduceFunction.tsx",
     codeHighlightLines: [3],
+  },
+  {
+    id: "reduce-live",
+    title: "ReduceFunction: live demo",
+    kind: "demo",
+    bullets: [
+      "Second argument is the starting accumulator — here `0`",
+      "Each pass: `total + n`. The sum is `15`",
+      "Create `ReduceFunction` and import it into Lab 3",
+    ],
     embed: "js-reduce",
   },
   {
     id: "json",
     title: "JSON.stringify shows the shape",
-    kind: "demo",
-    bullets: [
-      "**JSON** = JavaScript Object Notation",
-      "`stringify` writes text. `parse` reads it back into a value",
-      "The page now shows `[1,4,16,25,36]` with brackets and commas",
-    ],
+    kind: "content",
     code: `export default function JsonStringify() {
   const squares = [1, 4, 16, 25, 36];
   return (
@@ -68,6 +68,16 @@ export const REDUCE_AND_JSON_SLIDES: LectureSlide[] = [
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/JsonStringify.tsx",
     codeHighlightLines: [6],
+  },
+  {
+    id: "json-live",
+    title: "JsonStringify: live demo",
+    kind: "demo",
+    bullets: [
+      "**JSON** = JavaScript Object Notation",
+      "`stringify` writes text. `parse` reads it back into a value",
+      "The page now shows `[1,4,16,25,36]` with brackets and commas",
+    ],
     embed: "js-json-stringify",
   },
   {

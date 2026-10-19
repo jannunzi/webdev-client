@@ -23,21 +23,24 @@ export const ARRAY_ITERATION_SLIDES: LectureSlide[] = [
   },
   {
     id: "for-loop",
-    title: "for builds a second array",
-    kind: "demo",
-    bullets: [
-      "`string[]` tells TypeScript the empty array will hold strings",
-      "Each pass pushes an uppercased copy",
-      "JSX still omits commas, so the page shows `STRING1STRING3`",
-    ],
+    title: "for builds a second array (1/2)",
+    kind: "content",
     code: `export default function ForLoops() {
   let stringArray1 = ["string1", "string3"];
   let stringArray2: string[] = [];
   for (let i = 0; i < stringArray1.length; i++) {
     const string1 = stringArray1[i];
     stringArray2.push(string1.toUpperCase());
-  }
-  return (
+  }`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/ForLoops.tsx",
+    codeHighlightLines: [3, 4, 5, 6],
+  },
+  {
+    id: "for-loop-return",
+    title: "for builds a second array (2/2)",
+    kind: "content",
+    code: `  return (
     <div id="wd-for-loops">
       <h4>Looping through arrays</h4>
       stringArray2 = {stringArray2}
@@ -47,25 +50,38 @@ export const ARRAY_ITERATION_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/ForLoops.tsx",
-    codeHighlightLines: [[3, 6]],
+    codeStartLine: 8,
+  },
+  {
+    id: "for-loop-live",
+    title: "ForLoops: live demo",
+    kind: "demo",
+    bullets: [
+      "`string[]` tells TypeScript the empty array will hold strings",
+      "Each pass pushes an uppercased copy",
+      "JSX still omits commas, so the page shows `STRING1STRING3`",
+    ],
     embed: "js-for-loops",
   },
   {
     id: "map",
-    title: "map returns a new array",
-    kind: "demo",
-    bullets: [
-      "Pass a named function, or an implied-return arrow",
-      "`squares` uses `square`. `cubes` inlines `(a) => a * a * a`",
-      "Create `MapFunction` and import it into Lab 3",
-    ],
+    title: "map returns a new array (1/3)",
+    kind: "content",
     code: `export default function MapFunction() {
   let numberArray1 = [1, 2, 3, 4, 5, 6];
   const square = (a: number) => a * a;
   const todos = ["Buy milk", "Feed the pets"];
   const squares = numberArray1.map(square);
-  const cubes = numberArray1.map((a) => a * a * a);
-  return (
+  const cubes = numberArray1.map((a) => a * a * a);`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/MapFunction.tsx",
+    codeHighlightLines: [5, 6],
+  },
+  {
+    id: "map-return",
+    title: "map returns a new array (2/3)",
+    kind: "content",
+    code: `  return (
     <div id="wd-map-function">
       <h4>Map Function</h4>
       squares = {squares}
@@ -77,14 +93,33 @@ export const ARRAY_ITERATION_SLIDES: LectureSlide[] = [
         {todos.map((todo) => (
           <li key={todo}>{todo}</li>
         ))}
-      </ol>
-      <hr />
+      </ol>`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/MapFunction.tsx",
+    codeStartLine: 7,
+    codeHighlightLines: [10, 11, 12],
+  },
+  {
+    id: "map-part-3",
+    title: "map returns a new array (3/3)",
+    kind: "content",
+    code: `      <hr />
     </div>
   );
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/MapFunction.tsx",
-    codeHighlightLines: [5, 6, [16, 18]],
+    codeStartLine: 20,
+  },
+  {
+    id: "map-live",
+    title: "MapFunction: live demo",
+    kind: "demo",
+    bullets: [
+      "Pass a named function, or an implied-return arrow",
+      "`squares` uses `square`. `cubes` inlines `(a) => a * a * a`",
+      "Create `MapFunction` and import it into Lab 3",
+    ],
     embed: "js-map",
   },
   {

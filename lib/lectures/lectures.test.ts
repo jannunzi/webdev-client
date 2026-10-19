@@ -101,6 +101,43 @@ function findSlide(deckSlug: string, id: string) {
   return slide;
 }
 
+/** Chapter 3 JavaScript decks: code and its live demo sit on separate slides. */
+const CH3_JS_DECKS = [
+  "intro-to-javascript",
+  "variables-and-constants",
+  "variable-types",
+  "booleans-and-conditionals",
+  "null-and-undefined",
+  "javascript-functions",
+  "javascript-arrays",
+  "array-iteration",
+  "array-search",
+  "reduce-and-json",
+  "javascript-objects",
+  "spread-and-destructuring",
+  "optional-chaining",
+] as const;
+
+/**
+ * A listing split across slides (code before `return`, then the JSX) joined
+ * back together: the slide with `id`, plus each following slide in the same
+ * file whose `codeStartLine` continues the line count.
+ */
+function joinedListing(deckSlug: string, id: string): string {
+  const slides = getLectureDeck(deckSlug)!.slides;
+  const at = slides.findIndex((row) => row.id === id);
+  assert.ok(at >= 0, `${deckSlug} missing slide ${id}`);
+  const first = slides[at]!;
+  assert.equal(first.codeStartLine, undefined, `${deckSlug}#${id} starts a listing`);
+  let code = first.code ?? "";
+  for (const next of slides.slice(at + 1)) {
+    const lines = code.split("\n").length;
+    if (next.codeFile !== first.codeFile || next.codeStartLine !== lines + 1) break;
+    code += `\n${next.code}`;
+  }
+  return code;
+}
+
 /** Body of a named book `<CodeBlock>`, character-for-character. */
 function bookCodeBlockByName(relativeFile: string, name: string): string {
   const src = readFileSync(join(process.cwd(), relativeFile), "utf8");
@@ -1252,19 +1289,19 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-courses-styling"], 17);
     assert.equal(counts["kambaz-assignments-styling"], 9);
     assert.equal(counts["kambaz-account-styling"], 8);
-    assert.equal(counts["intro-to-javascript"], 8);
-    assert.equal(counts["variables-and-constants"], 7);
-    assert.equal(counts["variable-types"], 6);
-    assert.equal(counts["booleans-and-conditionals"], 8);
-    assert.equal(counts["null-and-undefined"], 6);
-    assert.equal(counts["javascript-functions"], 8);
-    assert.equal(counts["javascript-arrays"], 7);
-    assert.equal(counts["array-iteration"], 7);
-    assert.equal(counts["array-search"], 8);
-    assert.equal(counts["reduce-and-json"], 6);
-    assert.equal(counts["javascript-objects"], 6);
-    assert.equal(counts["spread-and-destructuring"], 9);
-    assert.equal(counts["optional-chaining"], 5);
+    assert.equal(counts["intro-to-javascript"], 9);
+    assert.equal(counts["variables-and-constants"], 9);
+    assert.equal(counts["variable-types"], 9);
+    assert.equal(counts["booleans-and-conditionals"], 15);
+    assert.equal(counts["null-and-undefined"], 9);
+    assert.equal(counts["javascript-functions"], 17);
+    assert.equal(counts["javascript-arrays"], 15);
+    assert.equal(counts["array-iteration"], 12);
+    assert.equal(counts["array-search"], 17);
+    assert.equal(counts["reduce-and-json"], 8);
+    assert.equal(counts["javascript-objects"], 9);
+    assert.equal(counts["spread-and-destructuring"], 23);
+    assert.equal(counts["optional-chaining"], 8);
     assert.equal(counts["dynamic-styling"], 7);
     assert.equal(counts["client-and-server"], 7);
     assert.equal(counts["parameterizing-components"], 7);
@@ -1865,7 +1902,8 @@ describe("lecture decks", () => {
     const used = new Set<string>();
     for (const [slug, slides] of Object.entries(expected)) {
       for (const [id, embed] of Object.entries(slides)) {
-        const slide = findSlide(slug, id);
+        const split = (CH3_JS_DECKS as readonly string[]).includes(slug);
+        const slide = findSlide(slug, split ? `${id}-live` : id);
         assert.equal(slide.embed, embed);
         assert.equal(slide.imageSrc, undefined);
         assert.ok((LECTURE_EMBED_IDS as readonly string[]).includes(embed));
@@ -2720,8 +2758,8 @@ describe("lecture decks", () => {
     for (const [slug, id, file, name] of pairs) {
       const slide = findSlide(slug, id);
       const book = bookCodeBlockByName(file, name);
-      assert.equal(slide.code, book, `${slug}#${id} must match book ${name}`);
-      const lineCount = book.split("\n").length;
+      assert.equal(joinedListing(slug, id), book, `${slug}#${id} must match book ${name}`);
+      const lineCount = (slide.code ?? "").split("\n").length;
       for (const line of expandLineMarks(slide.codeHighlightLines)) {
         assert.ok(
           line <= lineCount,
@@ -2734,7 +2772,7 @@ describe("lecture decks", () => {
     assert.ok(spreadIds.indexOf("imports") < spreadIds.indexOf("destructing-imports"));
     assert.equal(findSlide("spread-and-destructuring", "imports").embed, undefined);
     assert.equal(
-      findSlide("spread-and-destructuring", "destructing-imports").embed,
+      findSlide("spread-and-destructuring", "destructing-imports-live").embed,
       "js-destructing-imports",
     );
 
@@ -2747,7 +2785,7 @@ describe("lecture decks", () => {
 
     // The one Lab 3 page import step comes right after the first demo (book order).
     for (const [slug, demo, page] of [
-      ["variables-and-constants", "sample", "import-it"],
+      ["variables-and-constants", "sample-live", "import-it"],
     ] as const) {
       const ids = getLectureDeck(slug)!.slides.map((slide) => slide.id);
       assert.equal(ids.indexOf(page), ids.indexOf(demo) + 1, `${slug}#${page} follows ${demo}`);
@@ -3595,3 +3633,90 @@ function addedLineMarks(prev: string, next: string): Array<number | [number, num
   flush();
   return marks;
 }
+
+describe("Chapter 3 JavaScript decks: code, then the live demo", () => {
+  /** Every book `<CodeBlock file=…>` body for `file` in the Chapter 3 sections. */
+  function ch3BookListings(file: string): string[] {
+    const dir = join(process.cwd(), "app/book/ch3/sections");
+    const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const pattern = new RegExp(
+      `file="${escape(file)}"\\s*>\\{\`([\\s\\S]*?)\`\\}</CodeBlock>`,
+      "g",
+    );
+    return readdirSync(dir)
+      .filter((name) => name.endsWith(".tsx"))
+      .flatMap((name) =>
+        [...readFileSync(join(dir, name), "utf8").matchAll(pattern)].map(
+          (match) => Function(`"use strict"; return \`${match[1]}\`;`)() as string,
+        ),
+      );
+  }
+
+  it("never puts code and a live demo on the same slide", () => {
+    for (const slug of CH3_JS_DECKS) {
+      for (const slide of getLectureDeck(slug)!.slides) {
+        const hasCode = Boolean(slide.code || slide.codeBlocks?.length);
+        assert.ok(!(hasCode && slide.embed), `${slug}#${slide.id} has code and a live demo`);
+      }
+    }
+  });
+
+  it("follows each demo's code with a demo-only slide that keeps the talking points", () => {
+    let demos = 0;
+    for (const slug of CH3_JS_DECKS) {
+      const slides = getLectureDeck(slug)!.slides;
+      slides.forEach((slide, index) => {
+        if (!slide.embed) return;
+        demos += 1;
+        assert.equal(slide.kind, "demo", `${slug}#${slide.id}`);
+        assert.match(slide.id, /-live$/, `${slug}#${slide.id}`);
+        assert.ok(slide.title.length <= LECTURE_TITLE_MAX_CHARS, `${slug}#${slide.id} title`);
+        const base = slide.id.replace(/-live$/, "");
+        const prev = slides[index - 1]!;
+        assert.ok(prev.code, `${slug}#${slide.id} comes right after its code`);
+        assert.ok(
+          prev.id === base || prev.id.startsWith(`${base}-`),
+          `${slug}#${slide.id} follows ${base}, not ${prev.id}`,
+        );
+        // Talking points sit on the demo, or on the first code slide when the demo is too tall.
+        const first = findSlide(slug, base);
+        assert.ok(
+          (slide.bullets?.length ?? 0) > 0 || (first.bullets?.length ?? 0) > 0,
+          `${slug}#${slide.id} lost its talking points`,
+        );
+        // Joined back together, the split listing is the book listing.
+        const book = ch3BookListings(first.codeFile ?? "");
+        assert.ok(
+          book.includes(joinedListing(slug, base)),
+          `${slug}#${base} parts must join back into the book ${first.codeFile}`,
+        );
+      });
+    }
+    assert.equal(demos, 30);
+  });
+
+  it("splits long listings at return and numbers the continued lines", () => {
+    for (const slug of CH3_JS_DECKS) {
+      for (const slide of getLectureDeck(slug)!.slides) {
+        assert.ok(slide.title.length <= LECTURE_TITLE_MAX_CHARS, `${slug}#${slide.id} title`);
+        if (!slide.code || slide.embed) continue;
+        const lineCount = slide.code.split("\n").length;
+        for (const line of [
+          ...expandLineMarks(slide.codeHighlightLines),
+          ...expandLineMarks(slide.codeAddedLines),
+        ]) {
+          assert.ok(line <= lineCount, `${slug}#${slide.id} mark ${line} past ${lineCount}`);
+        }
+        if (slide.id.endsWith("-return")) {
+          assert.match(slide.code, /^ {2}return \($/m, `${slug}#${slide.id}`);
+          assert.ok(slide.codeStartLine && slide.codeStartLine > 1, `${slug}#${slide.id}`);
+          assert.match(slide.title, /\(\d\/\d\)$/, `${slug}#${slide.id}`);
+        }
+      }
+    }
+    const spread = getLectureDeck("spread-and-destructuring")!.slides.map((slide) => slide.id);
+    assert.deepEqual(spread.slice(2, 6), ["spread", "spread-return", "spread-part-3", "spread-live"]);
+    assert.equal(findSlide("spread-and-destructuring", "spread").bullets, undefined);
+    assert.equal(findSlide("spread-and-destructuring", "spread-live").bullets?.length, 3);
+  });
+});

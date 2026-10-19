@@ -23,15 +23,8 @@ export const OPTIONAL_CHAINING_SLIDES: LectureSlide[] = [
   },
   {
     id: "sample",
-    title: "?. then ?? on the page",
-    kind: "demo",
-    bullets: [
-      "`house.address?.city` is `Roma`",
-      "`missing?.prop` is `undefined`, so `?? \"n/a\"` prints the fallback",
-      "The `House` **type** names the object’s shape. `?` marks `address`, `zip`, and `garage` optional",
-      "TypeScript only lets you read properties the type declares, even through `?.`",
-      "Without the type, `house.garage?.cars` works in `npm run dev` but fails `next build`",
-    ],
+    title: "?. then ?? on the page (1/3)",
+    kind: "content",
     code: `type House = {
   bedrooms: number;
   address?: { street: string; city: string; zip?: string };
@@ -44,10 +37,26 @@ export default function OptionalChaining() {
     address: {
       street: "Via Roma",
       city: "Roma",
-    },
-  };
-  const missing = undefined as { prop?: string } | undefined;
-  return (
+    },`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/OptionalChaining.tsx",
+    codeHighlightLines: [1, 2, 3, 4, 5, 8],
+  },
+  {
+    id: "sample-part-2",
+    title: "?. then ?? on the page (2/3)",
+    kind: "content",
+    code: `  };
+  const missing = undefined as { prop?: string } | undefined;`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/OptionalChaining.tsx",
+    codeStartLine: 14,
+  },
+  {
+    id: "sample-return",
+    title: "?. then ?? on the page (3/3)",
+    kind: "content",
+    code: `  return (
     <div id="wd-optional-chaining">
       <h4>Optional Chaining</h4>
       house.address?.city = {house.address?.city}
@@ -59,7 +68,20 @@ export default function OptionalChaining() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/OptionalChaining.tsx",
-    codeHighlightLines: [[1, 5], 8, 19, 21],
+    codeStartLine: 16,
+    codeHighlightLines: [4, 6],
+  },
+  {
+    id: "sample-live",
+    title: "OptionalChaining: live demo",
+    kind: "demo",
+    bullets: [
+      "`house.address?.city` is `Roma`",
+      "`missing?.prop` is `undefined`, so `?? \"n/a\"` prints the fallback",
+      "The `House` **type** names the object’s shape. `?` marks `address`, `zip`, and `garage` optional",
+      "TypeScript only lets you read properties the type declares, even through `?.`",
+      "Without the type, `house.garage?.cars` works in `npm run dev` but fails `next build`",
+    ],
     embed: "js-optional-chaining",
   },
   {

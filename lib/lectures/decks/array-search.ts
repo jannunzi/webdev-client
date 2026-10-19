@@ -23,19 +23,22 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
   },
   {
     id: "find",
-    title: "find stops at the first hit",
-    kind: "demo",
-    bullets: [
-      "The predicate returns true when this is the item you want",
-      "A miss is `undefined` — JSX hides it unless you `String()` it",
-      "Create `FindFunction` and import it into Lab 3",
-    ],
+    title: "find stops at the first hit (1/2)",
+    kind: "content",
     code: `export default function FindFunction() {
   let numberArray1 = [1, 2, 3, 4, 5];
   let stringArray1 = ["string1", "string2", "string3"];
   const four = numberArray1.find((a) => a === 4);
-  const string3 = stringArray1.find((a) => a === "string3");
-  return (
+  const string3 = stringArray1.find((a) => a === "string3");`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/FindFunction.tsx",
+    codeHighlightLines: [4, 5],
+  },
+  {
+    id: "find-return",
+    title: "find stops at the first hit (2/2)",
+    kind: "content",
+    code: `  return (
     <div id="wd-find-function">
       <h4>Find Function</h4>
       four = {four}
@@ -47,24 +50,37 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/FindFunction.tsx",
-    codeHighlightLines: [4, 5],
+    codeStartLine: 6,
+  },
+  {
+    id: "find-live",
+    title: "FindFunction: live demo",
+    kind: "demo",
+    bullets: [
+      "The predicate returns true when this is the item you want",
+      "A miss is `undefined` — JSX hides it unless you `String()` it",
+      "Create `FindFunction` and import it into Lab 3",
+    ],
     embed: "js-find",
   },
   {
     id: "find-index",
-    title: "findIndex returns a position",
-    kind: "demo",
-    bullets: [
-      "`4` sits at index `2`. `\"string3\"` sits at index `1`",
-      "A miss is `-1` — the same sentinels as `indexOf`",
-      "Create `FindIndex` and import it into Lab 3",
-    ],
+    title: "findIndex returns a position (1/2)",
+    kind: "content",
     code: `export default function FindIndex() {
   let numberArray1 = [1, 2, 4, 5, 6];
   let stringArray1 = ["string1", "string3"];
   const fourIndex = numberArray1.findIndex((a) => a === 4);
-  const string3Index = stringArray1.findIndex((a) => a === "string3");
-  return (
+  const string3Index = stringArray1.findIndex((a) => a === "string3");`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/FindIndex.tsx",
+    codeHighlightLines: [4, 5],
+  },
+  {
+    id: "find-index-return",
+    title: "findIndex returns a position (2/2)",
+    kind: "content",
+    code: `  return (
     <div id="wd-find-index">
       <h4>Find Index Function</h4>
       fourIndex = {fourIndex}
@@ -76,24 +92,37 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/FindIndex.tsx",
-    codeHighlightLines: [4, 5],
+    codeStartLine: 6,
+  },
+  {
+    id: "find-index-live",
+    title: "FindIndex: live demo",
+    kind: "demo",
+    bullets: [
+      "`4` sits at index `2`. `\"string3\"` sits at index `1`",
+      "A miss is `-1` — the same sentinels as `indexOf`",
+      "Create `FindIndex` and import it into Lab 3",
+    ],
     embed: "js-find-index",
   },
   {
     id: "filter",
-    title: "filter keeps every match",
-    kind: "demo",
-    bullets: [
-      "Greater than 2, then evens, then odds — three new arrays",
-      "Kambaz will filter modules, assignments, and people by course id",
-      "Create `FilterFunction` and import it into Lab 3",
-    ],
+    title: "filter keeps every match (1/2)",
+    kind: "content",
     code: `export default function FilterFunction() {
   let numberArray1 = [1, 2, 4, 5, 6];
   const numbersGreaterThan2 = numberArray1.filter((a) => a > 2);
   const evenNumbers = numberArray1.filter((a) => a % 2 === 0);
-  const oddNumbers = numberArray1.filter((a) => a % 2 !== 0);
-  return (
+  const oddNumbers = numberArray1.filter((a) => a % 2 !== 0);`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/FilterFunction.tsx",
+    codeHighlightLines: [3, 4, 5],
+  },
+  {
+    id: "filter-return",
+    title: "filter keeps every match (2/2)",
+    kind: "content",
+    code: `  return (
     <div id="wd-filter-function">
       <h4>Filter Function</h4>
       numbersGreaterThan2 = {numbersGreaterThan2}
@@ -107,25 +136,38 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/FilterFunction.tsx",
-    codeHighlightLines: [[3, 5]],
+    codeStartLine: 6,
+  },
+  {
+    id: "filter-live",
+    title: "FilterFunction: live demo",
+    kind: "demo",
+    bullets: [
+      "Greater than 2, then evens, then odds — three new arrays",
+      "Kambaz will filter modules, assignments, and people by course id",
+      "Create `FilterFunction` and import it into Lab 3",
+    ],
     embed: "js-filter",
   },
   {
     id: "booleans",
-    title: "includes, some, and every",
-    kind: "demo",
-    bullets: [
-      "`includes(value)` — is this value present?",
-      "`some(predicate)` — does **at least one** item pass?",
-      "`every(predicate)` — do **all** items pass? Coerce with `+ \"\"`",
-    ],
+    title: "includes, some, and every (1/3)",
+    kind: "content",
     code: `export default function IncludesSomeEvery() {
   const numbers = [1, 2, 3, 4, 5];
   const includes3 = numbers.includes(3);
   const includes8 = numbers.includes(8);
   const someGreaterThan4 = numbers.some((n) => n > 4);
-  const everyGreaterThan0 = numbers.every((n) => n > 0);
-  return (
+  const everyGreaterThan0 = numbers.every((n) => n > 0);`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/IncludesSomeEvery.tsx",
+    codeHighlightLines: [3, 4, 5, 6],
+  },
+  {
+    id: "booleans-return",
+    title: "includes, some, and every (2/3)",
+    kind: "content",
+    code: `  return (
     <div id="wd-includes-some-every">
       <h4>Includes, Some, Every</h4>
       includes(3) = {includes3 + ""}
@@ -137,11 +179,29 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
       every(n &gt; 0) = {everyGreaterThan0 + ""}
       <hr />
     </div>
-  );
-}`,
+  );`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/IncludesSomeEvery.tsx",
-    codeHighlightLines: [[3, 6]],
+    codeStartLine: 7,
+  },
+  {
+    id: "booleans-part-3",
+    title: "includes, some, and every (3/3)",
+    kind: "content",
+    code: `}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/IncludesSomeEvery.tsx",
+    codeStartLine: 20,
+  },
+  {
+    id: "booleans-live",
+    title: "IncludesSomeEvery: live demo",
+    kind: "demo",
+    bullets: [
+      "`includes(value)` — is this value present?",
+      "`some(predicate)` — does **at least one** item pass?",
+      "`every(predicate)` — do **all** items pass? Coerce with `+ \"\"`",
+    ],
     embed: "js-includes-some-every",
   },
   {
