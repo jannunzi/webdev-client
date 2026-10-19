@@ -1254,21 +1254,21 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-account-styling"], 8);
     assert.equal(counts["intro-to-javascript"], 8);
     assert.equal(counts["variables-and-constants"], 7);
-    assert.equal(counts["variable-types"], 7);
-    assert.equal(counts["booleans-and-conditionals"], 12);
-    assert.equal(counts["null-and-undefined"], 7);
-    assert.equal(counts["javascript-functions"], 12);
-    assert.equal(counts["javascript-arrays"], 10);
-    assert.equal(counts["array-iteration"], 9);
-    assert.equal(counts["array-search"], 12);
-    assert.equal(counts["reduce-and-json"], 8);
-    assert.equal(counts["javascript-objects"], 7);
-    assert.equal(counts["spread-and-destructuring"], 13);
-    assert.equal(counts["optional-chaining"], 6);
-    assert.equal(counts["dynamic-styling"], 9);
-    assert.equal(counts["client-and-server"], 9);
-    assert.equal(counts["parameterizing-components"], 9);
-    assert.equal(counts["path-params-and-todos"], 12);
+    assert.equal(counts["variable-types"], 6);
+    assert.equal(counts["booleans-and-conditionals"], 8);
+    assert.equal(counts["null-and-undefined"], 6);
+    assert.equal(counts["javascript-functions"], 8);
+    assert.equal(counts["javascript-arrays"], 7);
+    assert.equal(counts["array-iteration"], 7);
+    assert.equal(counts["array-search"], 8);
+    assert.equal(counts["reduce-and-json"], 6);
+    assert.equal(counts["javascript-objects"], 6);
+    assert.equal(counts["spread-and-destructuring"], 9);
+    assert.equal(counts["optional-chaining"], 5);
+    assert.equal(counts["dynamic-styling"], 7);
+    assert.equal(counts["client-and-server"], 7);
+    assert.equal(counts["parameterizing-components"], 7);
+    assert.equal(counts["path-params-and-todos"], 11);
     assert.equal(counts["kambaz-database"], 10);
     assert.equal(counts["kambaz-dashboard-data"], 6);
     assert.equal(counts["kambaz-courses-data"], 7);
@@ -2700,12 +2700,6 @@ describe("lecture decks", () => {
   it("copies Chapter 3 book listings onto the matching slides", () => {
     const pairs = [
       ["variables-and-constants", "import-it", "app/book/ch3/sections/JsBasics.tsx", "Lab3 (after 3.2.1)"],
-      ["variable-types", "lab3-page-3-2-2", "app/book/ch3/sections/JsBasics.tsx", "Lab3 (after 3.2.2)"],
-      ["booleans-and-conditionals", "lab3-page-3-2-3", "app/book/ch3/sections/JsBasics.tsx", "Lab3 (after 3.2.3)"],
-      ["booleans-and-conditionals", "lab3-page-3-2-4", "app/book/ch3/sections/JsBasics.tsx", "Lab3 (after 3.2.4)"],
-      ["booleans-and-conditionals", "lab3-page-3-2-5", "app/book/ch3/sections/JsBasics.tsx", "Lab3 (after 3.2.5)"],
-      ["booleans-and-conditionals", "lab3-page-3-2-6", "app/book/ch3/sections/JsBasics.tsx", "Lab3 (after 3.2.6)"],
-      ["null-and-undefined", "lab3-page-3-2-7", "app/book/ch3/sections/JsBasics.tsx", "Lab3 (after 3.2.7)"],
       ["kambaz-database", "redirect", "app/book/ch3/sections/KambazData.tsx", "Kambaz"],
       ["kambaz-database", "nav", "app/book/ch3/sections/KambazData.tsx", "KambazNavigation"],
       ["kambaz-courses-data", "layout", "app/book/ch3/sections/KambazData.tsx", "CoursesLayout"],
@@ -2751,15 +2745,9 @@ describe("lecture decks", () => {
     assert.ok(pathIds.indexOf("lab3-complete") < pathIds.indexOf("recap"));
     assert.equal(findSlide("path-params-and-todos", "lab3-complete").codeFile, "app/labs/lab3/page.tsx");
 
-    // Each 3.2 Lab 3 page step comes right after the demo it adds (book order).
+    // The one Lab 3 page import step comes right after the first demo (book order).
     for (const [slug, demo, page] of [
       ["variables-and-constants", "sample", "import-it"],
-      ["variable-types", "boolean-coerce", "lab3-page-3-2-2"],
-      ["booleans-and-conditionals", "boolean-sample", "lab3-page-3-2-3"],
-      ["booleans-and-conditionals", "if-else", "lab3-page-3-2-4"],
-      ["booleans-and-conditionals", "ternary", "lab3-page-3-2-5"],
-      ["booleans-and-conditionals", "output-inline", "lab3-page-3-2-6"],
-      ["null-and-undefined", "when", "lab3-page-3-2-7"],
     ] as const) {
       const ids = getLectureDeck(slug)!.slides.map((slide) => slide.id);
       assert.equal(ids.indexOf(page), ids.indexOf(demo) + 1, `${slug}#${page} follows ${demo}`);
@@ -2807,73 +2795,54 @@ describe("lecture decks", () => {
     }
   });
 
-  it("shows every Lab 3 page.tsx step from the book on a slide, after its component", () => {
-    const ch3Files = ["JsBasics", "Functions", "DataStructures", "StylingAndComponents"].map(
-      (name) => `app/book/ch3/sections/${name}.tsx`,
-    );
-    const deckFor: Record<string, string> = {
-      "3.2.1": "variables-and-constants", "3.2.2": "variable-types",
-      "3.2.3": "booleans-and-conditionals", "3.2.4": "booleans-and-conditionals",
-      "3.2.5": "booleans-and-conditionals", "3.2.6": "booleans-and-conditionals",
-      "3.2.7": "null-and-undefined",
-      "3.3": "javascript-functions", "3.3.1": "javascript-functions",
-      "3.3.2": "javascript-functions", "3.3.3": "javascript-functions",
-      "3.4": "javascript-arrays", "3.4.1": "javascript-arrays", "3.4.2": "javascript-arrays",
-      "3.4.3": "array-iteration", "3.4.4": "array-iteration",
-      "3.4.5": "array-search", "3.4.6": "array-search", "3.4.7": "array-search", "3.4.8": "array-search",
-      "3.4.9": "reduce-and-json", "3.4.10": "reduce-and-json",
-      "3.4.11": "javascript-objects", "3.4.12": "javascript-objects",
-      "3.4.13": "spread-and-destructuring", "3.4.14": "spread-and-destructuring",
-      "3.4.15": "spread-and-destructuring", "3.4.16": "spread-and-destructuring",
-      "3.4.17": "optional-chaining",
-      "3.5.1": "dynamic-styling", "3.5.2": "dynamic-styling",
-      "3.6.1": "client-and-server", "3.6.2": "client-and-server",
-      "3.7": "parameterizing-components", "3.7.1": "parameterizing-components",
-      "3.7.3": "path-params-and-todos", "3.7.4": "path-params-and-todos",
-      complete: "path-params-and-todos",
-    };
-    // Slides that already carried a page.tsx listing keep their ids.
-    const idFor: Record<string, string> = {
-      "3.2.1": "import-it",
-      "3.4.12": "console",
-      // §3.7.4 is the finished page, identical to §3.7.5, so one slide shows both.
-      "3.7.4": "lab3-complete",
-      complete: "lab3-complete",
-    };
+  it("shows the Lab 3 page.tsx import once, plus the finished page", () => {
+    // Jose (Oct 19): import-and-render is shown once at the start of the lab,
+    // not after every component. Kept slides still match their book blocks.
+    const kept = [
+      ["variables-and-constants", "import-it", "app/book/ch3/sections/JsBasics.tsx", "Lab3 (after 3.2.1)"],
+      ["javascript-objects", "console", "app/book/ch3/sections/DataStructures.tsx", "Lab3 (after 3.4.12)"],
+      ["path-params-and-todos", "lab3-complete", "app/book/ch3/sections/StylingAndComponents.tsx", "Lab3 (complete)"],
+    ] as const;
     const ch3Slides = CHAPTER_3_SLUGS.flatMap((slug) =>
       getLectureDeck(slug)!.slides.map((slide) => ({ slug, slide })),
     );
-    const seen: string[] = [];
-    for (const file of ch3Files) {
-      const src = readFileSync(join(process.cwd(), file), "utf8");
-      for (const match of src.matchAll(/name="(Lab3 \((?:after ([\d.]+)|complete)\))"/g)) {
-        const [, name, sec] = match;
-        const key = sec ?? "complete";
-        seen.push(key);
-        const slug = deckFor[key];
-        assert.ok(slug, `no deck mapped for ${name}`);
-        const id = idFor[key] ?? `lab3-page-${key.replace(/\./g, "-")}`;
-        const slide = findSlide(slug, id);
-        assert.equal(slide.code, bookCodeBlockByName(file, name), `${slug}#${id} must match book ${name}`);
-        assert.equal(slide.codeFile, "app/labs/lab3/page.tsx");
-        assert.equal(slide.codeLanguage, "tsx");
-        assert.ok(slide.title.length <= LECTURE_TITLE_MAX_CHARS);
-        const lineCount = slide.code!.split("\n").length;
-        for (const line of expandLineMarks(slide.codeAddedLines)) {
-          assert.ok(line <= lineCount, `${slug}#${id} added line ${line} past ${lineCount}`);
-        }
-        // Define before use: each imported component has its own slide earlier.
-        const at = ch3Slides.findIndex((row) => row.slug === slug && row.slide.id === id);
-        for (const [, path] of slide.code!.matchAll(/^import \w+ from "\.\/([^"]+)";$/gm)) {
-          const componentAt = ch3Slides.findIndex(
-            (row) => row.slide.codeFile === `app/labs/lab3/${path}.tsx`,
-          );
-          assert.ok(componentAt >= 0 && componentAt < at, `${slug}#${id} imports ${path} before its slide`);
-        }
+    for (const [slug, id, file, name] of kept) {
+      const slide = findSlide(slug, id);
+      assert.equal(slide.code, bookCodeBlockByName(file, name), `${slug}#${id} must match book ${name}`);
+      assert.equal(slide.codeFile, "app/labs/lab3/page.tsx");
+      assert.equal(slide.codeLanguage, "tsx");
+      assert.ok(slide.title.length <= LECTURE_TITLE_MAX_CHARS);
+      const lineCount = slide.code!.split("\n").length;
+      for (const line of expandLineMarks(slide.codeAddedLines)) {
+        assert.ok(line <= lineCount, `${slug}#${id} added line ${line} past ${lineCount}`);
+      }
+      // Define before use: each imported component has its own slide earlier.
+      const at = ch3Slides.findIndex((row) => row.slug === slug && row.slide.id === id);
+      for (const [, path] of slide.code!.matchAll(/^import \w+ from "\.\/([^"]+)";$/gm)) {
+        const componentAt = ch3Slides.findIndex(
+          (row) => row.slide.codeFile === `app/labs/lab3/${path}.tsx`,
+        );
+        assert.ok(componentAt >= 0 && componentAt < at, `${slug}#${id} imports ${path} before its slide`);
       }
     }
-    assert.equal(seen.length, 38);
-    assert.deepEqual([...new Set(seen)].sort(), Object.keys(deckFor).sort());
+    // The first page.tsx slide in Lab 3 is import-it, and it states the pattern once.
+    const firstPage = ch3Slides.find(
+      (row) => row.slide.codeFile === "app/labs/lab3/page.tsx" && /^import \w+ from "\.\//m.test(row.slide.code ?? ""),
+    );
+    assert.equal(firstPage?.slide.id, "import-it");
+    assert.match(
+      (findSlide("variables-and-constants", "import-it").bullets ?? []).join("\n"),
+      /rest of the lab, import and render each new component in `app\/labs\/lab3\/page\.tsx` the same way/,
+    );
+    // No per-component page steps remain, and nothing links to a removed one.
+    const pageSlides = ch3Slides.filter((row) => row.slide.codeFile === "app/labs/lab3/page.tsx");
+    assert.deepEqual(
+      pageSlides.map((row) => row.slide.id).filter((id) => id !== "lab3-page"),
+      ["lab3-stub", "import-it", "console", "lab3-complete"],
+    );
+    for (const { slug, slide } of ch3Slides) {
+      assert.doesNotMatch(JSON.stringify(slide), /lab3-page-\d/, `${slug}#${slide.id} refers to a removed slide`);
+    }
   });
 
   it("teaches Chapter 4 events, stores, and Kambaz state", () => {

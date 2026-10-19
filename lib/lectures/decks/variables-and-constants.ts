@@ -69,7 +69,7 @@ export const VARIABLES_AND_CONSTANTS_SLIDES: LectureSlide[] = [
     bullets: [
       "Add the import at the top of `app/labs/lab3/page.tsx`",
       "Render `<VariablesAndConstants />` under the Lab 3 heading",
-      "Same import-and-place pattern for every exercise in this chapter",
+      "For the rest of the lab, import and render each new component in `app/labs/lab3/page.tsx` the same way",
     ],
     code: `import VariablesAndConstants from "./VariablesAndConstants";
 
