@@ -63,7 +63,7 @@ describe("Fall 2026 Canvas calendar", () => {
         deadline.kind === "exam" && deadline.label.includes("X2"),
     );
     const project = deadlines.find((deadline) => deadline.kind === "project");
-    assert.equal(x1?.date, "2026-10-26");
+    assert.equal(x1?.date, "2026-11-02");
     assert.equal(x1?.label, "X1 — Midterm (2nd half of lecture)");
     assert.doesNotMatch(x1?.label ?? "", /\bdue\b/i);
     assert.equal(examWeek?.date, "2026-12-20");
@@ -216,7 +216,7 @@ describe("Fall 2026 Canvas calendar", () => {
     assert.doesNotMatch(deadlinesNote, /Monday through Sunday/);
     assert.doesNotMatch(deadlinesNote, /time to be announced/);
     assert.doesNotMatch(deadlinesNote, /CS 5610-02 on Monday/);
-    assert.match(deadlinesNote, /X1 is taken in the second half of lecture the week of October 26/);
+    assert.match(deadlinesNote, /X1 is taken in the second half of lecture the week of November 2/);
     assert.doesNotMatch(deadlinesNote, /X1 is due Sunday/);
     assert.doesNotMatch(deadlinesNote, /Quizzes \(Q1–Q6\) are due Sunday/);
     assert.match(studentCopy, /course website/i);

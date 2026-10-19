@@ -15,9 +15,9 @@ import type { Deadline, IsoDate } from "./types";
  * (in person at the end of lecture, online open for the whole week) is
  * stated once on the Evaluation Quizzes row.
  *
- * Q1 is the week of Sep 28 (the Monday after A1 due Sun Sep 27). Q3 shares
- * the week of Oct 26 with X1; X1’s date is unchanged. X1 is the second half
- * of lecture that week. X2 is finals week (week of Dec 14) and locks Sunday
+ * Q1 is the week of Sep 28 (the Monday after A1 due Sun Sep 27). Q3 stays in
+ * the week of Oct 26. X1 moved to the week of Nov 2 (Jose, Oct 19); it is the
+ * second half of lecture that week. X2 is finals week (week of Dec 14) and locks Sunday
  * Dec 20. Project due is 2026-12-06; grading begins the week of Dec 7.
  */
 
@@ -54,7 +54,7 @@ export const deadlines: Deadline[] = [
     label: "A3 due · A4 assigned — Client state",
   },
   {
-    date: "2026-10-26",
+    date: "2026-11-02",
     kind: "exam",
     label: "X1 — Midterm (2nd half of lecture)",
   },
@@ -87,4 +87,4 @@ export const deadlines: Deadline[] = [
 ];
 
 export const deadlinesNote =
-  "Assignment, exam, and project dates are one Canvas calendar for every section. Assignments are due Sunday 11:59pm ET. Quizzes (Q1–Q6) are the week after each chapter’s assignment is due. X1 is taken in the second half of lecture the week of October 26. The project is due Sunday, December 6; grading begins the week of December 7. X2 is due Sunday 11:59pm ET the week of December 14 (finals week). A4–A6 due dates will be posted on Canvas.";
+  "Assignment, exam, and project dates are one Canvas calendar for every section. Assignments are due Sunday 11:59pm ET. Quizzes (Q1–Q6) are the week after each chapter’s assignment is due. X1 is taken in the second half of lecture the week of November 2. The project is due Sunday, December 6; grading begins the week of December 7. X2 is due Sunday 11:59pm ET the week of December 14 (finals week). A4–A6 due dates will be posted on Canvas.";

@@ -98,7 +98,11 @@ export async function runExamSubmit(deps: ExamSubmitDeps): Promise<SubmitExamRes
   }
 
   const submittedAt = deps.now ?? new Date();
-  const schedule = getQuizSchedule(deps.quizId);
+  const rosterSection =
+    deps.roster.status === "matched"
+      ? (deps.roster as { entry: CanvasRosterEntry }).entry.section
+      : undefined;
+  const schedule = getQuizSchedule(deps.quizId, rosterSection);
   if (
     deps.persist &&
     schedule &&

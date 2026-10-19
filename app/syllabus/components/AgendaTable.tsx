@@ -44,7 +44,7 @@ export default function AgendaTable({
         orientation only and does not start Chapter 1. Each chapter spans two
         weeks. Chapter 4 is one Canvas module — “Ch 4 — Client state,
         Midterm/X1” — covering the weeks of Oct 26 and Nov 2. X1 is taken
-        in the second half of lecture the week of Oct 26, not a separate
+        in the second half of lecture the week of Nov 2, not a separate
         midterm module. Chapter 5 is Nov 9 and Nov
         16; Chapter 6 is Nov 23 and Nov 30. Project grading is the week of
         Dec 7 (project due Dec 6), with room for the{" "}
