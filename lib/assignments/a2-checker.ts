@@ -243,12 +243,11 @@ export const A2_CHECKER: AssignmentChecker = {
       label: "a2 GitHub branch",
       branch: "a2",
       missingMessage:
-        "Submit the GitHub URL for your a2 branch, for example https://github.com/you/webdev-client/tree/a2.",
-      wrongBranchMessage:
-        "Point the GitHub URL at the a2 branch (…/tree/a2), not the repository root or another branch.",
+        "Submit the GitHub URL of your repository, for example https://github.com/you/webdev-client (the a2 branch URL …/tree/a2 is fine too).",
       notFoundMessage:
-        "GitHub returned HTTP 404 for /tree/a2. Push a public a2 branch and submit https://github.com/you/webdev-client/tree/a2.",
+        "GitHub returned HTTP 404 for that URL. Make sure the repository is public and the URL points to it (for example https://github.com/you/webdev-client).",
       passMessage: "GitHub /tree/a2 loaded (HTTP 200).",
+      repoPassMessage: "Your GitHub repository URL loaded (HTTP 200).",
     },
   },
 };

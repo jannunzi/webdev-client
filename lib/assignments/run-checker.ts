@@ -447,18 +447,19 @@ export async function runChecker(
     } else if (!parsed || !parsed.ok) {
       passed = false;
       message = parsed && !parsed.ok ? parsed.message : branch.missingMessage;
-    } else if (named !== branch.branch) {
-      passed = false;
-      message = branch.wrongBranchMessage;
     } else if (!input.probes.probeUrl) {
       passed = false;
       message = branch.notFoundMessage;
     } else {
-      const treeUrl = `https://github.com/${parsed.repo.owner}/${parsed.repo.repo}/tree/${encodeURIComponent(branch.branch)}`;
+      // Jose's rule (Oct 19, 2026): any URL of the student's repository is
+      // fine (repository root, the assignment branch, or another branch).
+      // Probe the URL as submitted: the named branch's tree page, or the root.
+      const repoRoot = `https://github.com/${parsed.repo.owner}/${parsed.repo.repo}`;
+      const treeUrl = named ? `${repoRoot}/tree/${encodeURIComponent(named)}` : repoRoot;
       const probe = await input.probes.probeUrl(treeUrl);
       if (probe.ok && probe.status === 200) {
         passed = true;
-        message = branch.passMessage;
+        message = named === branch.branch ? branch.passMessage : branch.repoPassMessage;
       } else if (
         !probe.ok &&
         (probe.transient || probe.status === 403 || probe.status === 429 || (probe.status ?? 0) >= 500)
@@ -473,7 +474,7 @@ export async function runChecker(
       } else {
         passed = false;
         message = probe.ok
-          ? `GitHub /tree/a2 responded HTTP ${probe.status}, not 200.`
+          ? `GitHub responded HTTP ${probe.status} for ${treeUrl}, not 200.`
           : probe.message || branch.notFoundMessage;
       }
     }

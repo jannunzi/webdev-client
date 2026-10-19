@@ -139,8 +139,8 @@ export type AssignmentChecker = {
       label: string;
     };
     /**
-     * When set, the submitted GitHub URL must point at this branch
-     * (`/tree/<branch>` or `/commits/<branch>`).
+     * The submitted GitHub URL must load. Any URL of the student's repository
+     * passes (root, this branch, or another branch; Jose, Oct 19, 2026).
      */
     branch?: {
       criterionId: string;
@@ -148,10 +148,12 @@ export type AssignmentChecker = {
       label: string;
       branch: string;
       missingMessage: string;
-      wrongBranchMessage: string;
-      /** Shown when /tree/<branch> responds 404. */
+      /** Shown when the submitted GitHub URL responds 404. */
       notFoundMessage: string;
+      /** Pass text when the URL is this branch's tree page. */
       passMessage: string;
+      /** Pass text for the repository root or another branch. */
+      repoPassMessage: string;
     };
   };
 };

@@ -456,7 +456,7 @@ describe("A1 submission form visibility", () => {
     assert.equal(a2Missing.ok, false);
     if (!a2Missing.ok) {
       assert.equal(a2Missing.message, ASSIGNMENT_STUDENT_COPY.a2GithubRequired);
-      assert.match(a2Missing.message, /tree\/a2/);
+      assert.match(a2Missing.message, /repository/);
       assert.notEqual(a2Missing.message, ASSIGNMENT_STUDENT_COPY.githubFormat);
     }
     assert.equal(

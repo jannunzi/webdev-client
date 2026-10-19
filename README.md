@@ -428,7 +428,8 @@ Canvas email.”
 **A1 and A2 URL submit.** Rostered students (matched by Canvas email,
 including Northeastern aliases) and staff can save a public
 Vercel deployment URL on `/assignments/a1` and `/assignments/a2` (GitHub is
-optional for A1. A2 Save and Run require a `…/tree/a2` GitHub URL that loads,
+optional for A1. A2 Save and Run require a GitHub URL of the student's repository that loads
+(root or any branch; `…/tree/a2` is fine too),
 and the Vercel host’s first label must match `-git-a2` and end in `.vercel.app`).
 Off-roster signed-in users see an explicit message instead of a blank form.
 Documents live in `assignment_submissions` (user + assignment id). **Save URLs**

@@ -20,7 +20,7 @@ export const A3_RUBRIC: AssignmentRubric = {
           id: "a3-delivery-branch",
           label: "a3 GitHub branch",
           description:
-            "Create, commit, and push a branch named a3 on the same public repository. Submit that branch’s GitHub URL (…/tree/a3). The tree page must load.",
+            "Create, commit, and push a branch named a3 on the same public repository. Submit your repository’s GitHub URL (the repository root or the …/tree/a3 branch URL both work). The URL must load.",
           points: 3,
           bookHref: "/book/ch3#sec-3-10",
           bookLabel: "§3.10",

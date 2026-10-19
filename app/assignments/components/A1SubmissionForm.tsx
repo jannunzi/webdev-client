@@ -206,7 +206,7 @@ export default function A1SubmissionForm({
       )}
       <p className="mt-0 text-neutral-800">
         {assignmentId === "a2"
-          ? "Paste the a2 branch preview URL (the hostname contains -git-a2-) and the GitHub URL for that branch (…/tree/a2). Checks open that branch, then fetch Labs, Lab 2, the Tailwind page, and Kambaz screens."
+          ? "Paste the a2 branch preview URL (the hostname contains -git-a2-) and your repository’s GitHub URL (the root or …/tree/a2 both work). Checks open the preview, then fetch Labs, Lab 2, the Tailwind page, and Kambaz screens."
           : ASSIGNMENT_STUDENT_COPY.checkInstructions}
       </p>
 
@@ -257,7 +257,7 @@ export default function A1SubmissionForm({
               className="font-sans text-sm font-semibold"
             >
               {assignmentId === "a2"
-                ? "GitHub a2 branch URL (…/tree/a2)"
+                ? "GitHub repository URL"
                 : "Public GitHub repository URL (optional)"}
             </label>
             <input

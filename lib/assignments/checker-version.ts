@@ -25,15 +25,20 @@ export const A1_CHECKER_RULES_VERSION = "a1-rules-v2";
  *       (they were manual); a screen with some of its styling is Needs TA
  *       review, one with none fails; People off the book's route is review
  *       only when the other Kambaz screens are real.
+ *   v4: the GitHub URL item accepts any URL of the student's repository
+ *       (root or any branch); it no longer has to be …/tree/a2 (Jose,
+ *       Oct 19, 2026). The Vercel a2 preview rule is unchanged.
  */
-export const A2_CHECKER_RULES_VERSION = "a2-rules-v3";
+export const A2_CHECKER_RULES_VERSION = "a2-rules-v4";
 /**
  * A3 history:
  *   v1: structure-only checks (no ids, no fixed text), cross-screen
  *       consistency for Kambaz, path-parameter probes, Needs re-check for
  *       pages that couldn't be opened.
+ *   v2: the GitHub URL item accepts any URL of the student's repository
+ *       (root or any branch), same rule as A2 v4.
  */
-export const A3_CHECKER_RULES_VERSION = "a3-rules-v1";
+export const A3_CHECKER_RULES_VERSION = "a3-rules-v2";
 
 /** Short commit of the running deployment, when Vercel provides it. */
 export function deployedCommit(env: Record<string, string | undefined> = process.env): string {
