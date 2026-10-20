@@ -21,13 +21,18 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "dimensions",
+    id: "dimensions-intro",
     title: "Portrait, landscape, square",
     kind: "content",
     bullets: [
       "Three sized `div`s still **stack** — they are still block boxes",
       "Classes: `wd-dimension-portrait`, `wd-dimension-landscape`, `wd-dimension-square`",
     ],
+  },
+  {
+    id: "dimensions",
+    title: "Portrait, landscape, square (code)",
+    kind: "content",
     code: `.wd-dimension-portrait {
   width: 75px;
   height: 100px;
@@ -44,7 +49,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
     codeFile: "app/labs/lab2/index.css",
   },
   {
-    id: "dimensions-tsx",
+    id: "dimensions-tsx-intro",
     title: "Width and height boxes",
     kind: "content",
     bullets: [
@@ -52,6 +57,11 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
       "Wrapper id `wd-css-dimensions`",
       "Yellow portrait, blue landscape, red square — same classes the later demos reuse",
     ],
+  },
+  {
+    id: "dimensions-tsx",
+    title: "Width and height boxes (code)",
+    kind: "content",
     code: `export default function Dimensions() {
   return (
     <div id="wd-css-dimensions">
@@ -80,7 +90,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
     embed: "css-dimensions",
   },
   {
-    id: "display",
+    id: "display-intro",
     title: "Block, inline, inline-block",
     kind: "content",
     bullets: [
@@ -89,6 +99,11 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
       "`inline-block` — sit in the line **and** honor `width` / `height`",
       "Each rule also sets `padding: 5px`",
     ],
+  },
+  {
+    id: "display",
+    title: "Block, inline, inline-block (code)",
+    kind: "content",
     code: `.wd-display-inline {
   display: inline;
   width: 150px;
@@ -112,13 +127,18 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
     codeHighlightLines: [5, 11, 17],
   },
   {
-    id: "display-tsx",
+    id: "display-tsx-intro",
     title: "Inline, inline-block, block",
     kind: "content",
     bullets: [
       "Wrapper id `wd-css-display`. Three headings, nine spans",
       "Same colors in each row so the only change is `display`",
     ],
+  },
+  {
+    id: "display-tsx",
+    title: "Inline, inline-block, block (code)",
+    kind: "content",
     code: `export default function Display() {
   return (
     <div id="wd-css-display">
@@ -168,7 +188,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
     embed: "css-display",
   },
   {
-    id: "relative",
+    id: "relative-intro",
     title: "Relative leaves a ghost space",
     kind: "content",
     bullets: [
@@ -176,6 +196,11 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
       "The original space stays behind — neighbors do **not** reflow into the gap",
       "`.wd-pos-relative` is the positioned ancestor the absolute boxes need next",
     ],
+  },
+  {
+    id: "relative",
+    title: "Relative leaves a ghost space (code)",
+    kind: "content",
     code: `.wd-pos-relative-nudge-up-right {
   position: relative;
   bottom: 30px;
@@ -194,7 +219,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
     codeAddedLines: [2, 8, [11, 13]],
   },
   {
-    id: "relative-tsx",
+    id: "relative-tsx-intro",
     title: "The relative nudge",
     kind: "content",
     bullets: [
@@ -202,6 +227,11 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
       "The file’s root is `#wd-css-positions`. The relative section sits inside it",
       "Portrait nudges down-right. Landscape nudges up-right. Square stays put",
     ],
+  },
+  {
+    id: "relative-tsx",
+    title: "The relative nudge (code)",
+    kind: "content",
     code: `export default function Positions() {
   return (
     <div id="wd-css-positions">
@@ -236,7 +266,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
     embed: "css-position-relative",
   },
   {
-    id: "absolute",
+    id: "absolute-intro",
     title: "Absolute leaves the normal flow",
     kind: "content",
     bullets: [
@@ -244,6 +274,11 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
       "That ancestor must be `relative`, `absolute`, or `fixed` — else the page itself",
       "`.wd-pos-absolute-120-20` is the red square: 20px down, 120px from the left",
     ],
+  },
+  {
+    id: "absolute",
+    title: "Absolute leaves the normal flow (code)",
+    kind: "content",
     code: `.wd-pos-absolute-10-10 {
   position: absolute;
   top: 10px;
@@ -264,14 +299,19 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
     codeAddedLines: [2, 7, [11, 15]],
   },
   {
-    id: "absolute-tsx",
+    id: "absolute-tsx-intro",
     title: "The absolute stack",
     kind: "content",
     bullets: [
-      "Paste the TSX below inside `#wd-css-positions`, after the previous section.",
+      "Paste the TSX on the next slide inside `#wd-css-positions`, after the previous section.",
       "`wd-pos-relative` plus `height: 150` is the containing block",
       "Absolute boxes take up no space, so the portrait hangs below the 150px box. The `<br />` row keeps the next section from sliding underneath",
     ],
+  },
+  {
+    id: "absolute-tsx",
+    title: "The absolute stack (code)",
+    kind: "content",
     code: `<div id="wd-css-position-absolute">
   <h2>Absolute position</h2>
   <div className="wd-pos-relative" style={{ height: 150 }}>
@@ -319,13 +359,18 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
     codeFile: "app/labs/lab2/index.css",
   },
   {
-    id: "fixed-tsx",
+    id: "fixed-tsx-intro",
     title: "The fixed square",
     kind: "content",
     bullets: [
-      "Paste the TSX below inside `#wd-css-positions`, after the previous section.",
+      "Paste the TSX on the next slide inside `#wd-css-positions`, after the previous section.",
       "The preview keeps the square inside the frame. In Lab 2 it sticks to the browser window",
     ],
+  },
+  {
+    id: "fixed-tsx",
+    title: "The fixed square (code)",
+    kind: "content",
     code: `<div id="wd-css-position-fixed">
   <h2>Fixed position</h2>
   Checkout the blue square that says &quot;Fixed position&quot; stuck all the way
@@ -420,7 +465,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
     codeFile: "app/labs/lab2/index.css",
   },
   {
-    id: "zindex-tsx",
+    id: "zindex-tsx-intro",
     title: "Bring landscape forward",
     kind: "content",
     bullets: [
@@ -428,6 +473,11 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
       "Wrapper id `wd-z-index`. Same three absolute classes as the red/yellow/blue stack",
       "Landscape carries `wd-zindex-bring-to-front`",
     ],
+  },
+  {
+    id: "zindex-tsx",
+    title: "Bring landscape forward (code)",
+    kind: "content",
     code: `export default function Zindex() {
   return (
     <div id="wd-z-index">

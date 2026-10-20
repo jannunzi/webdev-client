@@ -33,6 +33,7 @@ import {
 } from "@/lib/lectures/slide-pane";
 import {
   DEMO_FIT_CAPS,
+  DEMO_FIT_FLOORS,
   DEMO_FIT_MAX,
   DEMO_FIT_MIN,
   demoStageOverflows,
@@ -149,13 +150,15 @@ export default function LectureDeckShell({
       const body = stage.querySelector<HTMLElement>(".lecture-demo-frame-body");
       if (!body) return;
       const deckSlug = window.location.pathname.split("/").filter(Boolean).pop() ?? "";
-      const cap = DEMO_FIT_CAPS[`${deckSlug}#${slide?.id ?? ""}`] ?? DEMO_FIT_MAX;
+      const key = `${deckSlug}#${slide?.id ?? ""}`;
+      const cap = DEMO_FIT_CAPS[key] ?? DEMO_FIT_MAX;
+      const floor = DEMO_FIT_FLOORS[key] ?? DEMO_FIT_MIN;
       const scale = fitDemoScale(
         (next) => {
           setDemoScale(stage, next);
           return demoStageOverflows(stage, body);
         },
-        DEMO_FIT_MIN,
+        floor,
         cap,
       );
       setDemoScale(stage, scale);

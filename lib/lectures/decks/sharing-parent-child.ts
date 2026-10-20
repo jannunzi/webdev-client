@@ -54,7 +54,7 @@ export default function ParentStateComponent() {
     embed: "parent-child-state",
   },
   {
-    id: "child",
+    id: "child-intro",
     title: "The child does not own the data",
     kind: "content",
     bullets: [
@@ -62,6 +62,11 @@ export default function ParentStateComponent() {
       "Increment calls `setCounter(counter + 1)` — the parent re-renders both",
       "Same pattern as passing `theFunction` in §4.2.3",
     ],
+  },
+  {
+    id: "child",
+    title: "The child does not own the data (code)",
+    kind: "content",
     code: `export default function ChildStateComponent({
   counter,
   setCounter,

@@ -21,13 +21,18 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "assignment",
+    id: "assignment-intro",
     title: "res.json sends an object",
     kind: "demo",
     bullets: [
       "Import in `Lab5/index.js` and visit `/lab5/assignment`",
       "Get Assignment is a hyperlink to the raw JSON",
     ],
+  },
+  {
+    id: "assignment",
+    title: "res.json sends an object (code)",
+    kind: "demo",
     code: `const assignment = {
   id: 1,
   title: "NodeJS Assignment",

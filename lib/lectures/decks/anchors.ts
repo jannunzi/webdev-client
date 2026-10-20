@@ -27,7 +27,7 @@ export const ANCHORS_SLIDES: LectureSlide[] = [
     codeLanguage: "html",
   },
   {
-    id: "href-documents",
+    id: "href-documents-intro",
     title: "href to other documents",
     kind: "content",
     bullets: [
@@ -35,6 +35,11 @@ export const ANCHORS_SLIDES: LectureSlide[] = [
       "**Relative** — a path on this site: `/labs/lab1`",
       "Create `AnchorTag.tsx` and import it into `page.tsx`. Sample ids `wd-lipsum` and `wd-github`",
     ],
+  },
+  {
+    id: "href-documents",
+    title: "href to other documents (code)",
+    kind: "content",
     code: `export default function AnchorTag() {
   return (
     <>
@@ -91,13 +96,18 @@ export const ANCHORS_SLIDES: LectureSlide[] = [
     embed: "hash-toc",
   },
   {
-    id: "lab1-page",
+    id: "lab1-page-intro",
     title: "The Completed Lab 1 page.tsx",
     kind: "content",
     bullets: [
       "`page.tsx` stays thin: import each exercise, then render it in order",
       "`Forms` comes from the `forms` folder: `./forms/Forms`",
     ],
+  },
+  {
+    id: "lab1-page",
+    title: "The Completed Lab 1 page.tsx (code)",
+    kind: "content",
     code: `import HeadingTags from "./HeadingTags";
 import ParagraphTag from "./ParagraphTag";
 import ListTags from "./ListTags";

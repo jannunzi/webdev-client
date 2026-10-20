@@ -42,13 +42,18 @@ export const CSS_FLEX_SLIDES: LectureSlide[] = [
     codeFile: "app/labs/lab2/index.css",
   },
   {
-    id: "tsx",
+    id: "tsx-intro",
     title: "First version of Flex.tsx is just the row",
     kind: "content",
     bullets: [
       "`display: flex` lines children up in a row with no floats, clearing, or percentage math.",
       "The next steps add `wd-flex-grow-1`, then `wd-width-110px`, and reprint the file",
     ],
+  },
+  {
+    id: "tsx",
+    title: "First Flex.tsx (code)",
+    kind: "content",
     code: `export default function Flex() {
   return (
     <div id="wd-css-flex">
@@ -91,7 +96,7 @@ export const CSS_FLEX_SLIDES: LectureSlide[] = [
     codeAddedLines: [[1, 3]],
   },
   {
-    id: "grow-tsx",
+    id: "grow-tsx-intro",
     title: "Column 3 grows",
     kind: "content",
     bullets: [
@@ -99,6 +104,11 @@ export const CSS_FLEX_SLIDES: LectureSlide[] = [
       "Same file. Column 3’s `className` gains `wd-flex-grow-1`",
       "Columns 1 and 2 stay as wide as their text",
     ],
+  },
+  {
+    id: "grow-tsx",
+    title: "Column 3 grows (code)",
+    kind: "content",
     code: `export default function Flex() {
   return (
     <div id="wd-css-flex">
@@ -129,7 +139,7 @@ export const CSS_FLEX_SLIDES: LectureSlide[] = [
     embed: "css-flex-grow",
   },
   {
-    id: "pin",
+    id: "pin-intro",
     title: "Pin a column, grow the last",
     kind: "content",
     bullets: [
@@ -137,6 +147,11 @@ export const CSS_FLEX_SLIDES: LectureSlide[] = [
       "The name says 75. The declaration is 110 so “Column 1” plus padding fits",
       "Column 2 stays natural. Column 3 (`wd-flex-grow-1`) takes the rest",
     ],
+  },
+  {
+    id: "pin",
+    title: "Pin a column, grow the last (code)",
+    kind: "content",
     code: `.wd-width-110px {
   /* Room for "Column 1" + 10px padding under border-box */
   width: 110px;
@@ -147,7 +162,7 @@ export const CSS_FLEX_SLIDES: LectureSlide[] = [
     codeHighlightLines: [3],
   },
   {
-    id: "pin-tsx",
+    id: "pin-tsx-intro",
     title: "Pin column 1",
     kind: "content",
     bullets: [
@@ -155,6 +170,11 @@ export const CSS_FLEX_SLIDES: LectureSlide[] = [
       "Column 1 gains `wd-width-110px`. Column 3 keeps `wd-flex-grow-1`",
       "This is the finished `Flex.tsx`",
     ],
+  },
+  {
+    id: "pin-tsx",
+    title: "Pin column 1 (code)",
+    kind: "content",
     code: `export default function Flex() {
   return (
     <div id="wd-css-flex">

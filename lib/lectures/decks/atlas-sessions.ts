@@ -58,7 +58,7 @@ SESSION_SECRET=a long random phrase`,
     embed: "kambaz-styled-signin",
   },
   {
-    id: "secure",
+    id: "secure-intro",
     title: "SERVER_ENV turns on cookies",
     kind: "demo",
     bullets: [
@@ -66,6 +66,11 @@ SESSION_SECRET=a long random phrase`,
       "`sameSite: \"none\"` plus `secure: true` so Vercel can send them",
       "Leave this as `development` on your laptop",
     ],
+  },
+  {
+    id: "secure",
+    title: "SERVER_ENV turns on cookies (code)",
+    kind: "demo",
     code: `if (process.env.SERVER_ENV === "production") {
   app.set("trust proxy", 1);
   sessionOptions.proxy = true;

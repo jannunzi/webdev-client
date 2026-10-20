@@ -101,13 +101,18 @@ export const CSS_INTRO_SLIDES: LectureSlide[] = [
     codeLanguage: "tsx",
   },
   {
-    id: "style-page",
+    id: "style-page-intro",
     title: "Style the Lab 2 paragraph",
     kind: "content",
     bullets: [
       "Add the warning paragraph to `page.tsx` — the technique the paragraph itself warns about",
       "Convenient for a quick experiment. The rest of Lab 2 moves rules into CSS files",
     ],
+  },
+  {
+    id: "style-page",
+    title: "Style the Lab 2 paragraph (code)",
+    kind: "content",
     code: `export default function Lab2() {
   return (
     <div id="wd-lab2">
@@ -163,7 +168,7 @@ export const CSS_INTRO_SLIDES: LectureSlide[] = [
     codeFile: "app/labs/lab2/index.css",
   },
   {
-    id: "import-css",
+    id: "import-css-intro",
     title: "Import a CSS file in React",
     kind: "content",
     bullets: [
@@ -172,6 +177,11 @@ export const CSS_INTRO_SLIDES: LectureSlide[] = [
       "A tag selector restyles **every** `p` on the page. Powerful, blunt",
       "JSX still uses `className`, not `class`",
     ],
+  },
+  {
+    id: "import-css",
+    title: "Import a CSS file in React (code)",
+    kind: "content",
     code: `import "./index.css";
 
 export default function Lab2() {
@@ -202,7 +212,7 @@ export default function Lab2() {
     embed: "css-import",
   },
   {
-    id: "id-selectors",
+    id: "id-selectors-intro",
     title: "ID selectors target one id",
     kind: "content",
     bullets: [
@@ -210,6 +220,11 @@ export default function Lab2() {
       "Comment out the blanket `p` rule — it was only a temporary sample",
       "Each paragraph keeps its own colors. Other `p` tags stay untouched",
     ],
+  },
+  {
+    id: "id-selectors",
+    title: "ID selectors target one id (code)",
+    kind: "content",
     code: `/* p {
   background-color: green;
   color: white;
@@ -298,7 +313,7 @@ p#wd-id-selector-2 {
     embed: "css-class-selectors",
   },
   {
-    id: "structure-markup",
+    id: "structure-markup-intro",
     title: "Nest four document selectors",
     kind: "content",
     bullets: [
@@ -306,6 +321,11 @@ p#wd-id-selector-2 {
       "Markup first, in `page.tsx`, id `wd-css-document-structure`",
       "`.wd-selector-1` wraps `.wd-selector-2`, which wraps `.wd-selector-3`, which wraps `.wd-selector-4`",
     ],
+  },
+  {
+    id: "structure-markup",
+    title: "Nest four document selectors (code)",
+    kind: "content",
     code: `<div id="wd-css-document-structure">
   <div className="wd-selector-1">
     <h3>Document structure selectors</h3>
@@ -333,7 +353,7 @@ p#wd-id-selector-2 {
     codeFile: "app/labs/lab2/page.tsx",
   },
   {
-    id: "structure",
+    id: "structure-intro",
     title: "Descendant vs child combinators",
     kind: "content",
     bullets: [
@@ -341,6 +361,11 @@ p#wd-id-selector-2 {
       "A `>` is a **direct child**: `.wd-selector-2 > .wd-selector-3 > .wd-selector-4`",
       "The paragraph turns red from the broader rule. The inner span is yellow-on-blue",
     ],
+  },
+  {
+    id: "structure",
+    title: "Descendant vs child combinators (code)",
+    kind: "content",
     code: `.wd-selector-1 .wd-selector-3 {
   background-color: red;
   color: white;

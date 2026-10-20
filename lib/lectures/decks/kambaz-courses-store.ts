@@ -42,7 +42,7 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "store",
+    id: "store-intro",
     title: "Seed from courses.json",
     kind: "content",
     bullets: [
@@ -51,6 +51,11 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
       "`deleteCourse` filters. `updateCourse` maps the matching `_id`",
       "No Provider. Any Client Component imports `useCoursesStore`",
     ],
+  },
+  {
+    id: "store",
+    title: "Seed from courses.json (code)",
+    kind: "content",
     code: `"use client";
 
 import { create } from "zustand";

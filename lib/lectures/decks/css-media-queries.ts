@@ -22,7 +22,7 @@ export const CSS_MEDIA_QUERIES_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "syntax",
+    id: "syntax-intro",
     title: "Width range rules",
     kind: "content",
     bullets: [
@@ -31,6 +31,11 @@ export const CSS_MEDIA_QUERIES_SLIDES: LectureSlide[] = [
       "Rules inside only apply while the viewport stays in that range",
       "Each breakpoint resets the previous `li` highlight, then bolds the matching one",
     ],
+  },
+  {
+    id: "syntax",
+    title: "Width range rules (code)",
+    kind: "content",
     code: `.wd-media-queries-demo {
   background-color: green;
   color: white;
@@ -121,13 +126,18 @@ export const CSS_MEDIA_QUERIES_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "tsx",
+    id: "tsx-intro",
     title: "The four color rules",
     kind: "content",
     bullets: [
       "Import the CSS, then list the four promises as `li` tags",
       "The matching bullet is bold and underlined so you can see which rule is live",
     ],
+  },
+  {
+    id: "tsx",
+    title: "The four color rules (code)",
+    kind: "content",
     code: `import "./MediaQueriesDemo.css";
 
 export default function MediaQueriesDemo() {

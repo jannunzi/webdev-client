@@ -22,7 +22,7 @@ export const KAMBAZ_NAVIGATION_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "nav-component",
+    id: "nav-component-intro",
     title: "KambazNavigation + wd-* ids",
     kind: "content",
     bullets: [
@@ -30,6 +30,11 @@ export const KAMBAZ_NAVIGATION_SLIDES: LectureSlide[] = [
       "Ids: `wd-neu-link`, `wd-account-link`, `wd-dashboard-link`, `wd-course-link`, `wd-calendar-link`, `wd-inbox-link`, `wd-labs-link`",
       "Courses can point at `/dashboard` for now — **static HTML**, not a data array",
     ],
+  },
+  {
+    id: "nav-component",
+    title: "KambazNavigation + wd-* ids (code)",
+    kind: "content",
     code: `import Link from "next/link";
 
 export default function KambazNavigation() {
@@ -87,7 +92,7 @@ export default function KambazNavigation() {
     imageCaption: "Figure 2.4.1 — Kambaz Navigation",
   },
   {
-    id: "layout",
+    id: "layout-intro",
     title: "layout.tsx: nav left, children right",
     kind: "content",
     bullets: [
@@ -95,6 +100,11 @@ export default function KambazNavigation() {
       "Temporary `<table>`: nav `width=\"200\"`, content `width=\"100%\"`",
       "Account, Dashboard, and Calendar stay in the left column",
     ],
+  },
+  {
+    id: "layout",
+    title: "layout.tsx (code)",
+    kind: "content",
     code: `import { ReactNode } from "react";
 import KambazNavigation from "./Navigation";
 
@@ -128,7 +138,7 @@ export default function KambazLayout({
       "Click Calendar or Inbox. Those routes 404 until not-found.tsx exists.",
   },
   {
-    id: "not-found",
+    id: "not-found-intro",
     title: "not-found.tsx for missing pages",
     kind: "content",
     bullets: [
@@ -136,6 +146,11 @@ export default function KambazLayout({
       "`app/not-found.tsx` is a reserved App Router filename",
       "Id `wd-not-found`. Link `wd-not-found-dashboard-link` back to `/dashboard`",
     ],
+  },
+  {
+    id: "not-found",
+    title: "not-found.tsx for missing pages (code)",
+    kind: "content",
     code: `import Link from "next/link";
 
 export default function NotFound() {

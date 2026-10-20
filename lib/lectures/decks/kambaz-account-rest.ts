@@ -11,13 +11,18 @@ export const KAMBAZ_ACCOUNT_REST_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "dao",
+    id: "dao-intro",
     title: "Users DAO, then HTTP routes",
     kind: "demo",
     bullets: [
       "A DAO hides the array. Routes turn HTTP into function calls",
       "`npm install uuid` for new `_id`s on signup",
     ],
+  },
+  {
+    id: "dao",
+    title: "Users DAO, then HTTP routes (code)",
+    kind: "demo",
     code: `import { v4 as uuidv4 } from "uuid";
 export default function UsersDao(db) {
   let { users } = db;
@@ -120,13 +125,18 @@ const signin = async () => {
     embed: "kambaz-styled-signin",
   },
   {
-    id: "signup-profile",
+    id: "signup-profile-intro",
     title: "Signup 400, profile, update",
     kind: "demo",
     bullets: [
       "Signup: 400 if the username is taken, else `createUser`",
       "`PUT /api/users/:userId` updates, then profile POSTs `currentUser`",
     ],
+  },
+  {
+    id: "signup-profile",
+    title: "Signup 400, profile, update (code)",
+    kind: "demo",
     code: `const signup = (req, res) => {
   const user = dao.findUserByUsername(req.body.username);
   if (user) {

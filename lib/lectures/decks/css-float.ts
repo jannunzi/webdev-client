@@ -22,7 +22,7 @@ export const CSS_FLOAT_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "classes",
+    id: "classes-intro",
     title: "float left, right, then clear",
     kind: "content",
     bullets: [
@@ -31,6 +31,11 @@ export const CSS_FLOAT_SLIDES: LectureSlide[] = [
       "`img.wd-float-*` caps the photo at 35% so the paragraph has room to wrap",
       "`clear: both` on `wd-float-done` stops the wrap and starts a new row",
     ],
+  },
+  {
+    id: "classes",
+    title: "float left, right, then clear (code)",
+    kind: "content",
     code: `.wd-float-left {
   float: left;
   height: 100px;
@@ -58,7 +63,7 @@ img.wd-float-right {
     codeHighlightLines: [[9, 19]],
   },
   {
-    id: "float-tsx",
+    id: "float-tsx-intro",
     title: "Float right, then left",
     kind: "content",
     bullets: [
@@ -66,6 +71,11 @@ img.wd-float-right {
       "`STARSHIP` is the photo URL and `LOREM` is the wrapping paragraph. Float the photo right, then left",
       "The second block floats three colored boxes and one more image, then `wd-float-done`",
     ],
+  },
+  {
+    id: "float-tsx",
+    title: "Float right, then left (code)",
+    kind: "content",
     code: `const STARSHIP =
   "https://www.staradvertiser.com/wp-content/uploads/2021/08/web1_Starship-gap2.jpg";
 const LOREM =
@@ -117,7 +127,7 @@ export default function Float() {
     embed: "css-float",
   },
   {
-    id: "grid-idea",
+    id: "grid-idea-intro",
     title: "Float plus % widths is a grid",
     kind: "content",
     bullets: [
@@ -125,6 +135,11 @@ export default function Float() {
       "Each **row** needs `wd-grid-row` with `clear: both` so the next row does not climb up",
       "No `display: grid` yet. Lab 2 builds columns from float + percentages only",
     ],
+  },
+  {
+    id: "grid-idea",
+    title: "Float plus % widths is a grid (code)",
+    kind: "content",
     code: `.wd-grid-row {
   clear: both;
 }
@@ -138,7 +153,7 @@ export default function Float() {
     codeFile: "app/labs/lab2/index.css",
   },
   {
-    id: "halves",
+    id: "halves-intro",
     title: "Percentage float columns",
     kind: "content",
     bullets: [
@@ -146,6 +161,11 @@ export default function Float() {
       "Row 1: `wd-grid-col-half-page` twice",
       "Row 2: 20% / 60% / 20% — sidebar, main, sidebar",
     ],
+  },
+  {
+    id: "halves",
+    title: "Percentage float columns (code)",
+    kind: "content",
     code: `export default function GridLayout() {
   return (
     <div id="wd-css-grid-layout">

@@ -89,7 +89,7 @@ mongoose.connect(CONNECTION_STRING);`,
     codeAddedLines: [1, [4, 6]],
   },
   {
-    id: "schema",
+    id: "schema-intro",
     title: "A schema validates writes",
     kind: "demo",
     bullets: [
@@ -97,6 +97,11 @@ mongoose.connect(CONNECTION_STRING);`,
       "`username` required + unique. `role` is an enum, default `USER`",
       "`{ collection: \"users\" }` — do not let Mongoose invent a name",
     ],
+  },
+  {
+    id: "schema",
+    title: "A schema validates writes (code)",
+    kind: "demo",
     code: `import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   _id: String,

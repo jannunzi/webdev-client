@@ -61,3 +61,13 @@ describe("demoElementOverflows", () => {
     assert.equal(demoElementOverflows({ ...base, position: "fixed" }, stage), false);
   });
 });
+
+describe("DEMO_FIT_FLOORS", () => {
+  it("lets the too-tall Kambaz dashboard demo shrink to fit instead of running past the slide", async () => {
+    const { DEMO_FIT_FLOORS } = await import("./demo-fit");
+    const floor = DEMO_FIT_FLOORS["kambaz-dashboard-data#page-live"];
+    assert.ok(floor !== undefined && floor < DEMO_FIT_MIN);
+    const scale = fitDemoScale((s) => s > 0.95, floor);
+    assert.ok(scale >= 0.9 && scale <= 0.95, String(scale));
+  });
+});

@@ -11,7 +11,7 @@ export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "predicates",
+    id: "predicates-intro",
     title: "find() accepts a predicate",
     kind: "demo",
     bullets: [
@@ -19,6 +19,11 @@ export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
       "`$or` + `$regex` with flag `i` — `thor` finds Thor",
       "Export both so the route can call them",
     ],
+  },
+  {
+    id: "predicates",
+    title: "find() accepts a predicate (code)",
+    kind: "demo",
     code: `const findUsersByRole = (role) => model.find({ role });
 const findUsersByPartialName = (partialName) => {
   const regex = new RegExp(partialName, "i");
@@ -34,7 +39,7 @@ const findUsersByPartialName = (partialName) => {
     codeAddedLines: [[1, 11]],
   },
   {
-    id: "query-route",
+    id: "query-route-intro",
     title: "One GET, two query filters",
     kind: "demo",
     bullets: [
@@ -42,6 +47,11 @@ const findUsersByPartialName = (partialName) => {
       "Client encodes `?role=FACULTY` or `?name=thor`",
       "Independent filters are required — combining them is extra",
     ],
+  },
+  {
+    id: "query-route",
+    title: "One GET, two query filters (code)",
+    kind: "demo",
     code: `const findAllUsers = async (req, res) => {
   const { role, name } = req.query;
   if (role) {
@@ -134,13 +144,18 @@ app.delete("/api/users/:userId", async (req, res) => {
     codeAddedLines: [[1, 5]],
   },
   {
-    id: "update",
+    id: "update-intro",
     title: "$set, then refresh the session",
     kind: "demo",
     bullets: [
       "Without `$set`, Mongoose replaces the whole document",
       "If the path id matches `currentUser`, merge into `req.session`",
     ],
+  },
+  {
+    id: "update",
+    title: "$set, then refresh the session (code)",
+    kind: "demo",
     code: `const updateUser = (userId, user) =>
   model.updateOne({ _id: userId }, { $set: user });
 

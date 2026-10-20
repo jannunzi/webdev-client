@@ -21,7 +21,7 @@ export const KAMBAZ_ASSIGNMENTS_STYLING_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "people-tsx",
+    id: "people-tsx-intro",
     title: "People is a styled table",
     kind: "content",
     bullets: [
@@ -30,6 +30,11 @@ export const KAMBAZ_ASSIGNMENTS_STYLING_SLIDES: LectureSlide[] = [
       "`odd:bg-neutral-50` for alternating rows",
       "`FaUserCircle` beside each name — `text-4xl text-neutral-500`",
     ],
+  },
+  {
+    id: "people-tsx",
+    title: "People is a styled table (code)",
+    kind: "content",
     code: `import { FaUserCircle } from "react-icons/fa";
 
 export default function PeopleTable() {
@@ -111,7 +116,7 @@ export default function PeopleTable() {
     embed: "kambaz-styled-people",
   },
   {
-    id: "item",
+    id: "item-intro",
     title: "AssignmentItem, lesson borders",
     kind: "content",
     bullets: [
@@ -120,6 +125,11 @@ export default function PeopleTable() {
       "`FaFileAlt` on the left. Title is a `Link` to the editor",
       "Muted details line under the title",
     ],
+  },
+  {
+    id: "item",
+    title: "AssignmentItem, lesson borders (code)",
+    kind: "content",
     code: `import Link from "next/link";
 import { FaFileAlt } from "react-icons/fa";
 
@@ -150,7 +160,7 @@ export default function AssignmentItem({
     codeFile: "app/(kambaz)/courses/[cid]/assignments/AssignmentItem.tsx",
   },
   {
-    id: "toolbar",
+    id: "toolbar-intro",
     title: "Search left, actions right",
     kind: "content",
     bullets: [
@@ -158,6 +168,11 @@ export default function AssignmentItem({
       "Magnifying-glass icon is `absolute` inside a `relative` wrapper",
       "Gray group header reuses the module-title treatment",
     ],
+  },
+  {
+    id: "toolbar",
+    title: "Search left, actions right (code)",
+    kind: "content",
     code: `import { FaPlus, FaSearch } from "react-icons/fa";
 import AssignmentItem from "./AssignmentItem";
 
@@ -232,7 +247,7 @@ export default async function Assignments({
     embed: "kambaz-styled-assignments",
   },
   {
-    id: "editor",
+    id: "editor-intro",
     title: "Editor is On your own",
     kind: "content",
     bullets: [
@@ -240,6 +255,11 @@ export default async function Assignments({
       "Replace the table with Tailwind form utilities: labels above, full-width inputs",
       "Cancel / Save still return to the assignments list (`wd-cancel`, `wd-save`)",
     ],
+  },
+  {
+    id: "editor",
+    title: "Editor is On your own (code)",
+    kind: "content",
     code: `import Link from "next/link";
 
 export default function AssignmentEditor() {

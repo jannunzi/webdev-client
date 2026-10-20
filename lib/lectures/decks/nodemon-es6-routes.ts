@@ -68,7 +68,7 @@ app.listen(4000);`,
     codeHighlightLines: [2, [3, 6]],
   },
   {
-    id: "hello-fn",
+    id: "hello-fn-intro",
     title: "Move hello routes to Hello.js",
     kind: "demo",
     bullets: [
@@ -76,6 +76,11 @@ app.listen(4000);`,
       "Export a function that receives the shared `app`",
       "Do not call `express()` again — one instance per server",
     ],
+  },
+  {
+    id: "hello-fn",
+    title: "Move hello routes to Hello.js (code)",
+    kind: "demo",
     code: `export default function Hello(app) {
   const sayHello = (req, res) => {
     res.send("Life is good!");

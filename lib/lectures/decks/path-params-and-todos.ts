@@ -22,7 +22,7 @@ export const PATH_PARAMS_AND_TODOS_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "toc",
+    id: "toc-intro",
     title: "TOC maps links and highlights",
     kind: "content",
     bullets: [
@@ -32,6 +32,11 @@ export const PATH_PARAMS_AND_TODOS_SLIDES: LectureSlide[] = [
       "`aria-current=\"page\"` tells screen readers which link is the current page",
       "Visit `/labs/lab3`: only Lab 3 is a blue pill with white text",
     ],
+  },
+  {
+    id: "toc",
+    title: "TOC maps links and highlights (code)",
+    kind: "content",
     code: `"use client";
 
 import Link from "next/link";
@@ -80,7 +85,7 @@ export default function TOC() {
     codeHighlightLines: [[6, 12], [14, 20], 27, [33, 34]],
   },
   {
-    id: "path-page",
+    id: "path-page-intro",
     title: "[a] and [b] are route params",
     kind: "content",
     bullets: [
@@ -88,6 +93,11 @@ export default function TOC() {
       "`useParams` returns strings (or string arrays) — `parseInt` them",
       "This page is a Client Component because it uses a hook",
     ],
+  },
+  {
+    id: "path-page",
+    title: "[a] and [b] are route params (code)",
+    kind: "content",
     code: `"use client";
 
 import { useParams } from "next/navigation";
@@ -136,7 +146,7 @@ export default function PathParameters() {
     embed: "js-path-parameters",
   },
   {
-    id: "todo-item",
+    id: "todo-item-intro",
     title: "TodoItem takes one object",
     kind: "content",
     bullets: [
@@ -144,6 +154,11 @@ export default function PathParameters() {
       "If the parent omits `todo`, the milk item is used",
       "Store the list next to the component as `todos.json`",
     ],
+  },
+  {
+    id: "todo-item",
+    title: "TodoItem takes one object (code)",
+    kind: "content",
     code: `type Todo = {
   done: boolean;
   title: string;
@@ -222,7 +237,7 @@ export default function TodoList() {
     embed: "js-todo-list",
   },
   {
-    id: "lab3-complete",
+    id: "lab3-complete-intro",
     title: "Complete Lab 3 page",
     kind: "content",
     bullets: [
@@ -231,6 +246,11 @@ export default function TodoList() {
       "This is the finished Lab 3 page: every component in book order, each under its own heading",
       "Your On your own and With AI additions live inside those components; extra `Add`, `Square`, and `Highlight` go right after them",
     ],
+  },
+  {
+    id: "lab3-complete",
+    title: "Complete Lab 3 page (code)",
+    kind: "content",
     code: `import VariablesAndConstants from "./VariablesAndConstants";
 import VariableTypes from "./VariableTypes";
 import BooleanVariables from "./BooleanVariables";

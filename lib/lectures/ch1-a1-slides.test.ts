@@ -375,7 +375,7 @@ describe("Chapter 1 slides from the A1 slides-only walkthrough", () => {
       "{/* Add more assignments here (three recommended, like A2, A3), each linking to its editor */}";
     const lines = listing.split("\n").map((line) => line.trim());
     assert.equal(lines[lines.indexOf("/>") + 1], comment, "book comment right after the A1 AssignmentItem");
-    assert.match((slide("kambaz-assignments", "await-params").bullets ?? []).join("\n"), /Aim for three/);
+    assert.match((slide("kambaz-assignments", "await-params-intro").bullets ?? []).join("\n"), /Aim for three/);
     // Assignments are "aim for three" in #222's book; no slide may say "at least three" about them.
     // (Courses stay "at least three": the book's Dashboard still asks for that.)
     for (const slug of LECTURE_SLUGS) {
