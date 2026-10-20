@@ -12,6 +12,7 @@ import Modules from "@/app/book/ch2/embeds/_styled/courses/cid/modules/page";
 import Home from "@/app/book/ch2/embeds/_styled/courses/cid/home/page";
 import PeopleTable from "@/app/book/ch2/embeds/_styled/courses/cid/people/PeopleTable";
 import AssignmentItem from "@/app/book/ch2/embeds/_styled/courses/cid/assignments/AssignmentItem";
+import AssignmentEditorStyled from "@/app/book/ch2/embeds/_styled/courses/cid/assignments/AssignmentEditorStyled";
 import Link from "next/link";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import AsDashboardPath from "./AsDashboardPath";
@@ -272,6 +273,19 @@ export function KambazCh3PeopleEmbed() {
     >
       <div className="font-sans">
         <Ch3PeopleTable cid={cid} />
+      </div>
+    </LectureDemoFrame>
+  );
+}
+
+export function KambazStyledAssignmentEditorEmbed() {
+  return (
+    <LectureDemoFrame
+      label="app/(kambaz)/courses/[cid]/assignments/[aid]/page.tsx"
+      url="/courses/1234/assignments/123"
+    >
+      <div className="font-sans">
+        <AssignmentEditorStyled />
       </div>
     </LectureDemoFrame>
   );

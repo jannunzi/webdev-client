@@ -1269,7 +1269,7 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-navigation"], 11);
     assert.equal(counts["kambaz-courses"], 13);
     assert.equal(counts["kambaz-modules"], 17);
-    assert.equal(counts["kambaz-assignments"], 21);
+    assert.equal(counts["kambaz-assignments"], 22);
     assert.equal(counts["css-intro"], 28);
     assert.equal(counts["css-colors"], 14);
     assert.equal(counts["css-box-model"], 25);
@@ -1289,7 +1289,7 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-nav-styling"], 17);
     assert.equal(counts["kambaz-dashboard-styling"], 9);
     assert.equal(counts["kambaz-courses-styling"], 27);
-    assert.equal(counts["kambaz-assignments-styling"], 13);
+    assert.equal(counts["kambaz-assignments-styling"], 14);
     assert.equal(counts["kambaz-account-styling"], 10);
     assert.equal(counts["intro-to-javascript"], 9);
     assert.equal(counts["variables-and-constants"], 9);
@@ -1305,14 +1305,14 @@ describe("lecture decks", () => {
     assert.equal(counts["spread-and-destructuring"], 15);
     assert.equal(counts["optional-chaining"], 6);
     assert.equal(counts["dynamic-styling"], 10);
-    assert.equal(counts["client-and-server"], 9);
-    assert.equal(counts["parameterizing-components"], 10);
+    assert.equal(counts["client-and-server"], 56);
+    assert.equal(counts["parameterizing-components"], 25);
     assert.equal(counts["path-params-and-todos"], 17);
     assert.equal(counts["kambaz-database"], 14);
     assert.equal(counts["kambaz-dashboard-data"], 8);
     assert.equal(counts["kambaz-courses-data"], 11);
     assert.equal(counts["kambaz-modules-data"], 9);
-    assert.equal(counts["kambaz-assignments-data"], 14);
+    assert.equal(counts["kambaz-assignments-data"], 15);
     assert.equal(counts["click-events"], 7);
     assert.equal(counts["passing-data-and-functions"], 8);
     assert.equal(counts["usestate-counter"], 8);
@@ -1687,9 +1687,9 @@ describe("lecture decks", () => {
         "home-live": "kambaz-home",
       },
       "kambaz-assignments": {
-        "list-screen-live": "kambaz-assignments",
-        "editor-live": "kambaz-assignment-editor",
         "await-params-live": "kambaz-assignments-step",
+        "finished-live": "kambaz-assignments-finished",
+        "editor-finished-live": "kambaz-assignment-editor",
         "labs-name-github-live": "labs-name-github",
       },
       "css-intro": {
@@ -1761,6 +1761,7 @@ describe("lecture decks", () => {
       "kambaz-assignments-styling": {
         "people-demo": "kambaz-styled-people",
         "assignments-demo": "kambaz-styled-assignments",
+        "editor-live": "kambaz-styled-assignment-editor",
       },
       "kambaz-account-styling": { demo: "kambaz-styled-signin" },
       "intro-to-javascript": { "lab3-stub": "lab3-stub" },
@@ -1814,11 +1815,28 @@ describe("lecture decks", () => {
       "client-and-server": {
         client: "js-client-component",
         server: "js-server-component",
+        "pathname": "lab3-pathname",
+        "search-params": "lab3-search-params",
+        "window": "lab3-window",
+        "geolocation": "lab3-geolocation",
+        "map": "lab3-map",
+        "client-ip": "lab3-client-ip",
+        "server-time": "lab3-server-time",
+        "os": "lab3-os",
+        "env": "lab3-env",
+        "request-headers": "lab3-request-headers",
+        "weather": "lab3-weather",
+        "visit-counter": "lab3-visit-counter",
+        "child-process": "lab3-child-process",
       },
       "parameterizing-components": {
         add: "js-add",
         square: "js-square",
         highlight: "js-highlight",
+        "box-demo": "js-children-box",
+        "box-model": "js-children-box-model",
+        "nesting-order": "js-children-nesting-order",
+        "card-demo": "js-children-card",
       },
       "path-params-and-todos": {
         "path-links": "js-path-parameters",
@@ -2233,8 +2251,8 @@ describe("lecture decks", () => {
           "target-course-nav": "layout-live",
           "target-modules": "modules-page-live",
           "target-home": "home-live",
-          "target-assignments": "list-screen-live",
-          "target-editor": "editor-live",
+          "target-assignments": "finished-live",
+          "target-editor": "editor-finished-live",
         }[id];
         assert.ok(liveId);
         assert.ok(
@@ -2256,8 +2274,10 @@ describe("lecture decks", () => {
       ["kambaz-courses", "layout", "layout-live"],
       ["kambaz-modules", "modules-page", "modules-page-live"],
       ["kambaz-modules", "home", "home-live"],
-      ["kambaz-assignments", "list-screen", "list-screen-live"],
-      ["kambaz-assignments", "editor", "editor-live"],
+      ["kambaz-assignments", "await-params", "await-params-live"],
+      ["kambaz-assignments", "finished", "finished-live"],
+      ["kambaz-assignments", "editor-finished", "editor-finished-live"],
+      ["kambaz-assignments-styling", "editor", "editor-live"],
     ] as const;
 
     for (const [slug, codeId, liveId] of pairs) {
@@ -3254,6 +3274,21 @@ describe("lecture decks", () => {
     assert.equal(slidePaneScrollStep(400), 280);
   });
 
+  it("never changes slides on ArrowUp/ArrowDown; Left/Right navigate", () => {
+    const shell = readFileSync(join(process.cwd(), "app/slides/_components/LectureDeckShell.tsx"), "utf8");
+    for (const key of ["ArrowDown", "ArrowUp"]) {
+      const start = shell.indexOf(`if (event.key === "${key}") {`);
+      assert.ok(start > 0, key);
+      const end = shell.indexOf("\n      }\n", start);
+      assert.doesNotMatch(shell.slice(start, end), /goTo\(/, `${key} must not change slides`);
+    }
+    const next = shell.match(/NEXT_SLIDE_KEYS = new Set\(\[([^\]]*)\]/)?.[1] ?? "";
+    const prev = shell.match(/PREV_SLIDE_KEYS = new Set\(\[([^\]]*)\]/)?.[1] ?? "";
+    assert.match(next, /"ArrowRight"/);
+    assert.match(prev, /"ArrowLeft"/);
+    assert.doesNotMatch(next + prev, /ArrowUp|ArrowDown/);
+  });
+
   it("treats missing Fullscreen API as unsupported so phones can use CSS present", () => {
     assert.equal(nativeFullscreenEnabled({}), false);
     assert.equal(nativeFullscreenEnabled({ fullscreenEnabled: false }), false);
@@ -3705,7 +3740,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         );
       });
     }
-    assert.equal(demos, 50);
+    assert.equal(demos, 67);
   });
 
   it("keeps one code slide unless a listing is long, and never leaves a tiny tail", () => {
@@ -3796,7 +3831,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 206);
+    assert.equal(intros, 222);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
@@ -3807,13 +3842,100 @@ describe("explanation text never buries the code", () => {
   });
 });
 
+describe("kambaz-assignments-data AssignmentItem", () => {
+  it("shows the §2.4.7 AssignmentItem byte-identical right before the page that imports it", () => {
+    const book = readFileSync(join(process.cwd(), "app/book/ch2/sections/KambazStyling.tsx"), "utf8");
+    const m = book.match(/<CodeBlock[^>]*?name="AssignmentItem"[^>]*>\{`([\s\S]*?)`\}<\/CodeBlock>/);
+    assert.ok(m);
+    const listing = m[1].replace(/\\`/g, "`").replace(/\\\$/g, "$");
+    const deck = getLectureDeck("kambaz-assignments-data");
+    assert.ok(deck);
+    const ids = deck.slides.map((s) => s.id);
+    const slide = findSlide("kambaz-assignments-data", "assignment-item");
+    assert.equal(slide.code, listing);
+    assert.equal(slide.embed, undefined);
+    assert.equal(ids.indexOf("assignment-item") + 1, ids.indexOf("list"));
+  });
+});
+
 describe("form-state-types demo titles", () => {
   it("gives each demo slide a title distinct from its intro slide", () => {
-    for (const base of ["date", "object", "array"]) {
+    const expected = {
+      date: "Date: live demo",
+      object: "Object: spread, then overwrite: live demo",
+      array: "Array: copy, then add or filter: live demo",
+    } as const;
+    for (const [base, title] of Object.entries(expected)) {
       const intro = findSlide("form-state-types", `${base}-intro`);
       const live = findSlide("form-state-types", `${base}-live`);
-      assert.equal(live.title, `${intro.title}: live demo`);
+      assert.equal(live.title, title);
+      assert.notEqual(live.title, intro.title);
       assert.ok(live.title.length <= LECTURE_TITLE_MAX_CHARS);
     }
+  });
+});
+
+describe("parameterizing-components §3.7.1.1 children slides", () => {
+  it("copies each listing from the book byte for byte, in the book's order", () => {
+    const book = readFileSync(join(process.cwd(), "app/book/ch3/sections/StylingAndComponents.tsx"), "utf8");
+    const listing = (name: string) => {
+      const m = book.match(new RegExp(`<CodeBlock[^>]*?name="${name}"[^>]*>\\{\`([\\s\\S]*?)\`\\}</CodeBlock>`));
+      assert.ok(m, name);
+      return m[1].replace(/\\`/g, "`").replace(/\\\$/g, "$");
+    };
+    const order = ["Box", "BoxDemo", "Margin", "Border", "Padding", "Content", "BoxModelDemo", "NestingOrderDemo", "Card", "CardHeader", "CardBody", "CardDemo"];
+    const deck = getLectureDeck("parameterizing-components")!;
+    const shown: string[] = [];
+    for (const slide of deck.slides) {
+      for (const block of lectureSlideCodeBlocks(slide)) {
+        const name = block.file?.match(/children\/(\w+)\.tsx$/)?.[1];
+        if (!name) continue;
+        assert.equal(block.code, listing(name), name);
+        shown.push(name);
+      }
+    }
+    assert.deepEqual(shown, order);
+    assert.equal(findSlide("parameterizing-components", "layers").codeBlocks?.length, 4);
+  });
+});
+
+describe("client-and-server §3.6.3–3.6.4 API slides", () => {
+  const listings: Record<string, string> = {
+    pathname: "PathnameDemo",
+    "client-page": "ClientApis (after step 1)",
+    "search-params": "SearchParamsDemo",
+    suspense: "ClientApis (after step 2)",
+    window: "WindowDemo",
+    geolocation: "GeolocationDemo",
+    map: "MapEmbed",
+    "client-ip": "ClientIpDemo",
+    "client-time": "ClientTime",
+    "server-time": "ServerTimeDemo",
+    "server-page": "ServerApis (after step 1)",
+    os: "OsDemo",
+    "env-client-check": "EnvClientCheck",
+    env: "EnvDemo",
+    "request-headers": "RequestHeadersDemo",
+    weather: "WeatherDemo",
+    "visit-counter": "VisitCounterDemo",
+    "child-process": "ChildProcessDemo",
+  };
+  it("copies each listing from the book byte for byte, in the book's order", () => {
+    const book = readFileSync(join(process.cwd(), "app/book/ch3/sections/StylingAndComponents.tsx"), "utf8");
+    const ids = getLectureDeck("client-and-server")!.slides.map((s) => s.id);
+    let last = -1;
+    for (const [id, name] of Object.entries(listings)) {
+      const re = new RegExp(`<CodeBlock[^>]*?name="${name.replace(/[()]/g, "\\$&")}"[^>]*>\\{\`([\\s\\S]*?)\`\\}</CodeBlock>`);
+      const m = book.match(re);
+      assert.ok(m, name);
+      const listing = m[1].replace(/\\`/g, "`").replace(/\\\$/g, "$");
+      assert.equal(findSlide("client-and-server", id).code, listing, id);
+      assert.ok(ids.indexOf(id) > last, `${id} in book order`);
+      last = ids.indexOf(id);
+    }
+  });
+  it("shows each lab page listing only at its first step or when Suspense is added", () => {
+    const pages = getLectureDeck("client-and-server")!.slides.filter((s) => /\/(client|server)-apis\/page\.tsx$/.test(s.codeFile ?? ""));
+    assert.deepEqual(pages.map((s) => s.id), ["client-page", "suspense", "server-page"]);
   });
 });
