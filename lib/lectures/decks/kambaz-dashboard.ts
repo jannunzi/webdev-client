@@ -34,7 +34,7 @@ export const KAMBAZ_DASHBOARD_SLIDES: LectureSlide[] = [
     imageCaption: "Figure 1.4.3a — Dashboard Screen",
   },
   {
-    id: "course-card",
+    id: "course-card-intro",
     title: "The Dashboard Component",
     kind: "content",
     bullets: [
@@ -43,6 +43,11 @@ export const KAMBAZ_DASHBOARD_SLIDES: LectureSlide[] = [
       "`Link` to `/courses/${id}/home` with class `wd-dashboard-course-link`",
       "Put course photos under `public/images/`",
     ],
+  },
+  {
+    id: "course-card",
+    title: "The Dashboard Component (code)",
+    kind: "content",
     code: `import Link from "next/link";
 import Image from "next/image";
 
@@ -74,7 +79,7 @@ export default function CourseCard({
     codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
   },
   {
-    id: "dashboard-page",
+    id: "dashboard-page-intro",
     title: "The Dashboard Component",
     kind: "content",
     bullets: [
@@ -83,6 +88,11 @@ export default function CourseCard({
       "Home is `/courses/[cid]/home` — not `/courses/1234`",
       "`[cid]` is a **dynamic segment**: Next.js fills `cid` from that part of the URL",
     ],
+  },
+  {
+    id: "dashboard-page",
+    title: "The Dashboard Component (code)",
+    kind: "content",
     code: `import CourseCard from "./CourseCard";
 
 export default function Dashboard() {

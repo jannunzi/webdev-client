@@ -58,7 +58,7 @@ export const TAILWIND_INTRO_SLIDES: LectureSlide[] = [
     codeHighlightLines: [1],
   },
   {
-    id: "page",
+    id: "page-intro",
     title: "A page that opts in",
     kind: "content",
     bullets: [
@@ -67,6 +67,11 @@ export const TAILWIND_INTRO_SLIDES: LectureSlide[] = [
       "`p-8` and `text-4xl` only work here because this page imported Tailwind",
       "Preflight resets every heading to body-text size and weight, so each heading in this lab carries its own classes, such as `text-4xl font-bold`. Leave them off and it renders as plain 16px text",
     ],
+  },
+  {
+    id: "page",
+    title: "A page that opts in (code)",
+    kind: "content",
     code: `import "./index.css";
 
 export default function TailwindLab() {
@@ -81,16 +86,21 @@ export default function TailwindLab() {
     codeAddedLines: [1, [5, 6]],
   },
   {
-    id: "link-it",
+    id: "link-it-intro",
     title: "Link it from Lab 2",
     kind: "content",
-    density: "dense",
     bullets: [
       "Link to `/labs/lab2/tailwind` from the main Lab 2 page so both are reachable from the Labs table of contents",
       "Use a plain `<a>`, not `next/link`. Client navigation keeps this page's Preflight CSS after Back",
       "Both routes stay in the Labs TOC — CSS first, then utilities",
       "Work through spacing, type, color, responsive, filters, and grid one component at a time",
     ],
+  },
+  {
+    id: "link-it",
+    title: "Link it from Lab 2 (code)",
+    kind: "content",
+    density: "dense",
     code: `<p>
   <a href="/labs/lab2/tailwind">Open Tailwind CSS lab →</a>
 </p>`,

@@ -38,7 +38,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
     embed: "lab5-hello",
   },
   {
-    id: "calculator",
+    id: "calculator-intro",
     title: "Calculator query parameters",
     kind: "demo",
     bullets: [
@@ -46,6 +46,11 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
       "400 for bad numbers or an unknown operation",
       "`?a=10&b=5&operation=add` → `{ result: 15 }`",
     ],
+  },
+  {
+    id: "calculator",
+    title: "Calculator query parameters (code)",
+    kind: "demo",
     code: `export async function GET(request: NextRequest) {
   const a = parseFloat(request.nextUrl.searchParams.get("a") ?? "");
   const b = parseFloat(request.nextUrl.searchParams.get("b") ?? "");

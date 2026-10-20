@@ -66,7 +66,7 @@ export const VARIABLES_AND_CONSTANTS_SLIDES: LectureSlide[] = [
     embed: "js-variables",
   },
   {
-    id: "import-it",
+    id: "import-it-intro",
     title: "Import it into Lab 3",
     kind: "content",
     bullets: [
@@ -74,6 +74,11 @@ export const VARIABLES_AND_CONSTANTS_SLIDES: LectureSlide[] = [
       "Render `<VariablesAndConstants />` under the Lab 3 heading",
       "For the rest of the lab, import and render each new component in `app/labs/lab3/page.tsx` the same way",
     ],
+  },
+  {
+    id: "import-it",
+    title: "Import it into Lab 3 (code)",
+    kind: "content",
     code: `import VariablesAndConstants from "./VariablesAndConstants";
 
 export default function Lab3() {

@@ -41,7 +41,7 @@ export const HEADINGS_AND_PARAGRAPHS_SLIDES: LectureSlide[] = [
     codeLanguage: "tsx",
   },
   {
-    id: "lab1-nest",
+    id: "lab1-nest-intro",
     title: "Heading, Div, and Span Tags",
     kind: "content",
     bullets: [
@@ -49,6 +49,11 @@ export const HEADINGS_AND_PARAGRAPHS_SLIDES: LectureSlide[] = [
       "`id=\"wd-h-tag\"` is an **attribute**, a `name=\"value\"` pair on the opening tag",
       "`div` is a **block**: it starts a new line. `span` is **inline**: it stays in the sentence",
     ],
+  },
+  {
+    id: "lab1-nest",
+    title: "Heading, Div, and Span Tags (code)",
+    kind: "content",
     code: `export default function HeadingTags() {
   return (
     <div id="wd-h-tag">
@@ -101,7 +106,7 @@ export const HEADINGS_AND_PARAGRAPHS_SLIDES: LectureSlide[] = [
     embed: "heading-practice",
   },
   {
-    id: "import-headings",
+    id: "import-headings-intro",
     title: "Import HeadingTags into Lab 1",
     kind: "content",
     bullets: [
@@ -109,6 +114,11 @@ export const HEADINGS_AND_PARAGRAPHS_SLIDES: LectureSlide[] = [
       "Render it like an HTML tag: `<HeadingTags />`",
       "Keep the `{/* do the next exercise here */}` marker for the next exercises",
     ],
+  },
+  {
+    id: "import-headings",
+    title: "Import HeadingTags into Lab 1 (code)",
+    kind: "content",
     code: `import HeadingTags from "./HeadingTags";
 
 export default function Lab1() {
@@ -136,7 +146,7 @@ export default function Lab1() {
     ],
   },
   {
-    id: "paragraph-why",
+    id: "paragraph-why-intro",
     title: "Paragraphs",
     kind: "content",
     bullets: [
@@ -144,6 +154,11 @@ export default function Lab1() {
       "Without `p`, leftover text inside a `div` flows as one stream",
       "Lab 1 wrapper id: `wd-p-tag`. Intro sample: `wd-p-1`",
     ],
+  },
+  {
+    id: "paragraph-why",
+    title: "Paragraphs (code)",
+    kind: "content",
     code: `<p>
   Lorem Ipsum is simply dummy text of the printing
   and typesetting industry.
@@ -155,7 +170,7 @@ export default function Lab1() {
     codeLanguage: "html",
   },
   {
-    id: "whitespace-without-p",
+    id: "whitespace-without-p-intro",
     title: "Browser ignores white spaces",
     kind: "content",
     bullets: [
@@ -163,6 +178,11 @@ export default function Lab1() {
       "The browser still paints them as **one** contiguous block",
       "`...` stands in for the `wd-p-1` text. Tabs and newlines are **not** structure",
     ],
+  },
+  {
+    id: "whitespace-without-p",
+    title: "Browser ignores white spaces (code)",
+    kind: "content",
     code: `export default function ParagraphTag() {
   return (
     <div id="wd-p-tag">
@@ -184,13 +204,18 @@ export default function Lab1() {
     codeFile: "app/labs/lab1/ParagraphTag.tsx",
   },
   {
-    id: "wrap-p",
+    id: "wrap-p-intro",
     title: "Add Paragraph Tags for Vertical Spacing",
     kind: "content",
     bullets: [
       "Wrap each chunk so the browser **keeps** the vertical gaps",
       "The three demonstration paragraphs are `wd-p-2`, `wd-p-3`, and `wd-p-4`",
     ],
+  },
+  {
+    id: "wrap-p",
+    title: "Paragraph tags (code)",
+    kind: "content",
     code: `export default function ParagraphTag() {
   return (
     <div id="wd-p-tag">
@@ -230,13 +255,18 @@ export default function Lab1() {
     embed: "paragraph-tag",
   },
   {
-    id: "import-paragraph",
+    id: "import-paragraph-intro",
     title: "Import ParagraphTag into Lab 1",
     kind: "content",
     bullets: [
       "Import `ParagraphTag` the same way you imported `HeadingTags`",
       "Render it right after `<HeadingTags />`",
     ],
+  },
+  {
+    id: "import-paragraph",
+    title: "Import ParagraphTag into Lab 1 (code)",
+    kind: "content",
     code: `import HeadingTags from "./HeadingTags";
 import ParagraphTag from "./ParagraphTag";
 

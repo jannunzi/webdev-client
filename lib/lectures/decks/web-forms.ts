@@ -42,13 +42,18 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "text-fields",
+    id: "text-fields-intro",
     title: "Text Fields",
     kind: "content",
     bullets: [
       "Lab 1 ids: `wd-text-fields-username`, `-password`, `-first-name`, `-last-name`",
       "`type=\"password\"` masks the characters. `placeholder` is a hint, not a label",
     ],
+  },
+  {
+    id: "text-fields",
+    title: "Text Fields (code)",
+    kind: "content",
     code: `export default function TextFields() {
   return (
     <>
@@ -86,13 +91,18 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
     embed: "text-fields",
   },
   {
-    id: "forms-wrapper",
+    id: "forms-wrapper-intro",
     title: "Wire TextFields into Forms.tsx",
     kind: "content",
     bullets: [
       "`#wd-forms` wraps a `<form id=\"wd-text-fields\">`",
       "Import `Forms` into `page.tsx` from the folder: `./forms/Forms`",
     ],
+  },
+  {
+    id: "forms-wrapper",
+    title: "Wire TextFields into Forms.tsx (code)",
+    kind: "content",
     code: `import TextFields from "./TextFields";
 
 export default function Forms() {
@@ -124,13 +134,18 @@ Lorem ipsum dolor sit amet...
     codeLanguage: "html",
   },
   {
-    id: "textarea",
+    id: "textarea-intro",
     title: "Textarea",
     kind: "content",
     bullets: [
       "`cols` and `rows` set the visible size",
       "Import `Textarea` into `Forms.tsx` and render `<Textarea />` in the form",
     ],
+  },
+  {
+    id: "textarea",
+    title: "Textarea (code)",
+    kind: "content",
     code: `export default function Textarea() {
   return (
     <>
@@ -156,7 +171,7 @@ Lorem ipsum dolor sit amet...
     embed: "textarea",
   },
   {
-    id: "radio-genre",
+    id: "radio-genre-intro",
     title: "Radio Buttons",
     kind: "content",
     bullets: [
@@ -164,6 +179,11 @@ Lorem ipsum dolor sit amet...
       "Radios that share a `name` form a group. Each gets its own `id`",
       "Each label’s `htmlFor` matches its input’s `id`",
     ],
+  },
+  {
+    id: "radio-genre",
+    title: "Radio Buttons (code)",
+    kind: "content",
     code: `export default function RadioButtons() {
   return (
     <>
@@ -188,7 +208,7 @@ Lorem ipsum dolor sit amet...
     codeFile: "app/labs/lab1/forms/RadioButtons.tsx",
   },
   {
-    id: "radio-groups",
+    id: "radio-groups-intro",
     title: "Two Radio Groups",
     kind: "content",
     bullets: [
@@ -196,6 +216,11 @@ Lorem ipsum dolor sit amet...
       "Weekly does not clear Comedy: `radio-frequency` is its own group",
       "Import `RadioButtons` into `Forms.tsx`",
     ],
+  },
+  {
+    id: "radio-groups",
+    title: "Two Radio Groups (code)",
+    kind: "content",
     code: `export default function RadioButtons() {
   return (
     <>
@@ -238,13 +263,18 @@ Lorem ipsum dolor sit amet...
     embed: "radio-buttons",
   },
   {
-    id: "radio-label-patterns",
+    id: "radio-label-patterns-intro",
     title: "Label Patterns for Radios",
     kind: "content",
     bullets: [
       "Sibling label + `htmlFor`, or **wrap** the input inside the label",
       "Wrapping needs no `htmlFor`. Lab 1 keeps sibling labels",
     ],
+  },
+  {
+    id: "radio-label-patterns",
+    title: "Label Patterns for Radios (code)",
+    kind: "content",
     code: `{/* Sibling label + htmlFor */}
 <input type="radio" name="radio-beside" id="wd-radio-beside-yes" />
 <label htmlFor="wd-radio-beside-yes">Yes</label>
@@ -261,7 +291,7 @@ Lorem ipsum dolor sit amet...
     codeLanguage: "tsx",
   },
   {
-    id: "checkboxes",
+    id: "checkboxes-intro",
     title: "Checkboxes",
     kind: "content",
     bullets: [
@@ -269,6 +299,11 @@ Lorem ipsum dolor sit amet...
       "Comedy and Drama can both stay checked",
       "Import `Checkboxes` into `Forms.tsx`",
     ],
+  },
+  {
+    id: "checkboxes",
+    title: "Checkboxes (code)",
+    kind: "content",
     code: `export default function Checkboxes() {
   return (
     <>
@@ -299,7 +334,7 @@ Lorem ipsum dolor sit amet...
     embed: "checkboxes",
   },
   {
-    id: "select-one",
+    id: "select-one-intro",
     title: "Dropdowns",
     kind: "content",
     bullets: [
@@ -307,6 +342,11 @@ Lorem ipsum dolor sit amet...
       "People see the option text. The form records its `value`",
       "`defaultValue` on `select` picks the starting option",
     ],
+  },
+  {
+    id: "select-one",
+    title: "Dropdowns (code)",
+    kind: "content",
     code: `export default function Dropdowns() {
   return (
     <>
@@ -327,7 +367,7 @@ Lorem ipsum dolor sit amet...
     codeFile: "app/labs/lab1/forms/Dropdowns.tsx",
   },
   {
-    id: "select-many",
+    id: "select-many-intro",
     title: "Select Many",
     kind: "content",
     bullets: [
@@ -335,6 +375,11 @@ Lorem ipsum dolor sit amet...
       "Shift selects a range. Cmd (macOS) or Ctrl adds one option",
       "Import `Dropdowns` into `Forms.tsx`",
     ],
+  },
+  {
+    id: "select-many",
+    title: "Select Many (code)",
+    kind: "content",
     code: `export default function Dropdowns() {
   return (
     <>
@@ -375,7 +420,7 @@ Lorem ipsum dolor sit amet...
     embed: "dropdowns",
   },
   {
-    id: "email",
+    id: "email-intro",
     title: "Other Field Types",
     kind: "content",
     bullets: [
@@ -383,6 +428,11 @@ Lorem ipsum dolor sit amet...
       "They nudge users toward valid input and let the browser check it",
       "`type=\"email\"` checks for a basic `name@domain` shape",
     ],
+  },
+  {
+    id: "email",
+    title: "Other Field Types (code)",
+    kind: "content",
     code: `export default function OtherFieldTypes() {
   return (
     <>
@@ -401,13 +451,18 @@ Lorem ipsum dolor sit amet...
     codeFile: "app/labs/lab1/forms/OtherFieldTypes.tsx",
   },
   {
-    id: "number",
+    id: "number-intro",
     title: "Number",
     kind: "content",
     bullets: [
       "`type=\"number\"` brings up a numeric keypad on many phones",
       "`min={0}` rejects a negative salary",
     ],
+  },
+  {
+    id: "number",
+    title: "Number (code)",
+    kind: "content",
     code: `export default function OtherFieldTypes() {
   return (
     <>
@@ -436,7 +491,7 @@ Lorem ipsum dolor sit amet...
     codeAddedLines: [[12, 20]],
   },
   {
-    id: "range",
+    id: "range-intro",
     title: "Range",
     kind: "content",
     bullets: [
@@ -444,6 +499,11 @@ Lorem ipsum dolor sit amet...
       "`min`, `max`, and `defaultValue` keep the thumb in a sensible place",
       "The comment stands for the email and number fields you already wrote",
     ],
+  },
+  {
+    id: "range",
+    title: "Range (code)",
+    kind: "content",
     code: `export default function OtherFieldTypes() {
   return (
     <>
@@ -466,7 +526,7 @@ Lorem ipsum dolor sit amet...
     codeAddedLines: [[6, 14]],
   },
   {
-    id: "date",
+    id: "date-intro",
     title: "Date",
     kind: "content",
     bullets: [
@@ -474,6 +534,11 @@ Lorem ipsum dolor sit amet...
       "`min` and `max` restrict the allowed dates",
       "Import `OtherFieldTypes` into `Forms.tsx`",
     ],
+  },
+  {
+    id: "date",
+    title: "Date (code)",
+    kind: "content",
     code: `export default function OtherFieldTypes() {
   return (
     <>
@@ -536,7 +601,7 @@ Lorem ipsum dolor sit amet...
     ],
   },
   {
-    id: "buttons",
+    id: "buttons-intro",
     title: "Buttons",
     kind: "content",
     bullets: [
@@ -544,6 +609,11 @@ Lorem ipsum dolor sit amet...
       "`type=\"submit\"` for Save. `type=\"button\"` for Cancel and other actions",
       "Lab 1 ids: `wd-html-button-save`, `wd-html-button-cancel`",
     ],
+  },
+  {
+    id: "buttons",
+    title: "Buttons (code)",
+    kind: "content",
     code: `export default function Buttons() {
   return (
     <>
@@ -567,7 +637,7 @@ Lorem ipsum dolor sit amet...
     embed: "buttons",
   },
   {
-    id: "forms-complete",
+    id: "forms-complete-intro",
     title: "The Completed Forms.tsx",
     kind: "content",
     bullets: [
@@ -576,6 +646,11 @@ Lorem ipsum dolor sit amet...
       "An event handler needs `\"use client\"` as the first line of the file",
       "Without it the file is a **Server Component**, which cannot pass event handlers",
     ],
+  },
+  {
+    id: "forms-complete",
+    title: "The Completed Forms.tsx (code)",
+    kind: "content",
     code: `"use client";
 
 import TextFields from "./TextFields";
@@ -647,7 +722,7 @@ export default function Forms() {
     ],
   },
   {
-    id: "highlighted-paragraph",
+    id: "highlighted-paragraph-intro",
     title: "A Component with Props",
     kind: "content",
     bullets: [
@@ -655,6 +730,11 @@ export default function Forms() {
       "`text` plus four style props, each with a default value",
       "`?:` marks a prop optional. `string | number` accepts either type",
     ],
+  },
+  {
+    id: "highlighted-paragraph",
+    title: "A Component with Props (code)",
+    kind: "content",
     code: `function HighlightedParagraph({
   text = "This paragraph is highlighted using component props.",
   backgroundColor = "lightyellow",
@@ -736,7 +816,7 @@ export default function Forms() {
     ],
   },
   {
-    id: "highlighted-box",
+    id: "highlighted-box-intro",
     title: "A Component with Children",
     kind: "content",
     bullets: [
@@ -744,6 +824,11 @@ export default function Forms() {
       "Same style props as `HighlightedParagraph`, minus `text`",
       "The `div` renders `{children}`",
     ],
+  },
+  {
+    id: "highlighted-box",
+    title: "A Component with Children (code)",
+    kind: "content",
     code: `import type { ReactNode } from "react";
 
 function HighlightedBox({
@@ -779,13 +864,18 @@ function HighlightedBox({
     codeFile: "app/labs/lab1/HighlightedBox.tsx",
   },
   {
-    id: "highlighted-box-lab",
+    id: "highlighted-box-lab-intro",
     title: "Nest Content Inside the Box",
     kind: "content",
     bullets: [
       "Same file. Each box wraps different children",
       "Import `HighlightedBox.tsx` into `page.tsx` after the paragraph lab",
     ],
+  },
+  {
+    id: "highlighted-box-lab",
+    title: "Nest Content Inside the Box (code)",
+    kind: "content",
     code: `export default function HighlightedBoxLab() {
   return (
     <div id="wd-highlighted-box">

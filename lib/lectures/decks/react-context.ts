@@ -22,7 +22,7 @@ export const REACT_CONTEXT_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "context-file",
+    id: "context-file-intro",
     title: "Context, provider, and a hook",
     kind: "content",
     bullets: [
@@ -30,6 +30,11 @@ export const REACT_CONTEXT_SLIDES: LectureSlide[] = [
       "The provider holds `useState(7)` — same seed as §4.2.4",
       "`useCounterContext` throws if you forget the provider",
     ],
+  },
+  {
+    id: "context-file",
+    title: "Context, provider, and a hook (code)",
+    kind: "content",
     code: `"use client";
 
 import { createContext, useContext, useState, type ReactNode } from "react";
@@ -88,7 +93,7 @@ export function useCounterContext() {
     embed: "context-counter",
   },
   {
-    id: "writer",
+    id: "writer-intro",
     title: "The writer calls the setter",
     kind: "content",
     bullets: [
@@ -96,6 +101,11 @@ export function useCounterContext() {
       "Up and Down are the same arrows as the `useState` counter",
       "On your own: a Context todo list — do not put Kambaz courses here",
     ],
+  },
+  {
+    id: "writer",
+    title: "The writer calls the setter (code)",
+    kind: "content",
     code: `export default function ContextCounterWrite() {
   const { count, setCount } = useCounterContext();
   return (

@@ -22,13 +22,18 @@ export const DYNAMIC_STYLING_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "css",
+    id: "css-intro",
     title: "Four backgrounds, one padding",
     kind: "content",
     bullets: [
       "Import `./Classes.css` from the component so the rules load",
       "Same idea as Lab 2 — a class is just a name until you apply it",
     ],
+  },
+  {
+    id: "css",
+    title: "Four backgrounds, one padding (code)",
+    kind: "content",
     code: `.wd-bg-yellow {
   background-color: lightyellow;
 }

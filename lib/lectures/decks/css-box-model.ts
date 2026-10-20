@@ -24,7 +24,7 @@ export const CSS_BOX_MODEL_SLIDES: LectureSlide[] = [
     diagram: "box-model",
   },
   {
-    id: "borders-mix",
+    id: "borders-mix-intro",
     title: "Mix width, style, and color",
     kind: "content",
     bullets: [
@@ -32,6 +32,11 @@ export const CSS_BOX_MODEL_SLIDES: LectureSlide[] = [
       "Lab 2 splits them into small classes so you can remix: fat + red + solid",
       "Styles: `solid`, `dashed`, `dotted`, `double`, …",
     ],
+  },
+  {
+    id: "borders-mix",
+    title: "Mix width, style, and color (code)",
+    kind: "content",
     code: `.wd-border-fat { border-width: 20px 30px 20px 30px; }
 .wd-border-thin { border-width: 4px; }
 .wd-border-solid { border-style: solid; }
@@ -43,13 +48,18 @@ export const CSS_BOX_MODEL_SLIDES: LectureSlide[] = [
     codeFile: "app/labs/lab2/index.css",
   },
   {
-    id: "borders-tsx",
+    id: "borders-tsx-intro",
     title: "Two bordered paragraphs",
     kind: "content",
     bullets: [
       "First paragraph: fat, red, solid. Second: thin, blue, dashed",
       "No combined “fat-red-solid” rule — composition is the point",
     ],
+  },
+  {
+    id: "borders-tsx",
+    title: "Two bordered paragraphs (code)",
+    kind: "content",
     code: `export default function Borders() {
   return (
     <div id="wd-css-borders">
@@ -77,13 +87,18 @@ export const CSS_BOX_MODEL_SLIDES: LectureSlide[] = [
     embed: "css-borders",
   },
   {
-    id: "padding",
+    id: "padding-intro",
     title: "Padding is inside the border",
     kind: "content",
     bullets: [
       "`padding-top` / `-right` / `-bottom` / `-left`, or one `padding` for all sides",
       "Keep a fat border and a yellow fill so you can **see** the gap",
     ],
+  },
+  {
+    id: "padding",
+    title: "Padding is inside the border (code)",
+    kind: "content",
     code: `.wd-padded-top-left {
   padding-top: 50px;
   padding-left: 50px;
@@ -99,7 +114,7 @@ export const CSS_BOX_MODEL_SLIDES: LectureSlide[] = [
     codeFile: "app/labs/lab2/index.css",
   },
   {
-    id: "padding-tsx",
+    id: "padding-tsx-intro",
     title: "Padding on three boxes",
     kind: "content",
     bullets: [
@@ -107,6 +122,11 @@ export const CSS_BOX_MODEL_SLIDES: LectureSlide[] = [
       "Wrapper id `wd-css-paddings`",
       "Three boxes: top-left, bottom-right, and a fat pad on every side",
     ],
+  },
+  {
+    id: "padding-tsx",
+    title: "Padding on three boxes (code)",
+    kind: "content",
     code: `export default function Padding() {
   return (
     <div id="wd-css-paddings">
@@ -195,7 +215,7 @@ export const CSS_BOX_MODEL_SLIDES: LectureSlide[] = [
     embed: "css-margins",
   },
   {
-    id: "box-sizing",
+    id: "box-sizing-intro",
     title: "content-box vs border-box",
     kind: "content",
     bullets: [
@@ -203,6 +223,11 @@ export const CSS_BOX_MODEL_SLIDES: LectureSlide[] = [
       "Background fills the content and the padding. Margin does not paint — you see the parent behind the gap",
       "`content-box` adds padding and border onto `width` and `height` (260×240). `border-box` keeps that yellow box 200×180. Layout math is much easier with `border-box`.",
     ],
+  },
+  {
+    id: "box-sizing",
+    title: "content-box vs border-box (code)",
+    kind: "content",
     code: `.wd-box-model-parent {
   display: flow-root;
   background-color: lightgray;
@@ -265,7 +290,7 @@ export const CSS_BOX_MODEL_SLIDES: LectureSlide[] = [
     codeHighlightLines: [[43, 51], [52, 57]],
   },
   {
-    id: "box-model-tsx",
+    id: "box-model-tsx-intro",
     title: "Same size, two box models",
     kind: "content",
     bullets: [
@@ -273,6 +298,11 @@ export const CSS_BOX_MODEL_SLIDES: LectureSlide[] = [
       "The margin stays empty, so the gray parent shows through — the same outside gap as the margin slides",
       "Both yellow boxes declare the same size. `border-box` is the one that stays that size on screen",
     ],
+  },
+  {
+    id: "box-model-tsx",
+    title: "Same size, two box models (code)",
+    kind: "content",
     code: `export default function BoxModel() {
   return (
     <div id="wd-css-box-model">
@@ -342,13 +372,18 @@ export const CSS_BOX_MODEL_SLIDES: LectureSlide[] = [
     codeAddedLines: [[5, 8]],
   },
   {
-    id: "corners-tsx",
+    id: "corners-tsx-intro",
     title: "Four corner radii",
     kind: "content",
     bullets: [
       "Wrapper id `wd-css-corners`. Four paragraphs, four radius classes",
       "A thin blue border and fat padding make the curve visible",
     ],
+  },
+  {
+    id: "corners-tsx",
+    title: "Four corner radii (code)",
+    kind: "content",
     code: `export default function Corners() {
   return (
     <div id="wd-css-corners">

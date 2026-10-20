@@ -36,7 +36,7 @@ export const KAMBAZ_STYLING_SLIDES: LectureSlide[] = [
     codeFile: "app/(kambaz)/kambaz.css",
   },
   {
-    id: "kambaz-css",
+    id: "kambaz-css-intro",
     title: "Step 2: Append the base to kambaz.css",
     kind: "content",
     bullets: [
@@ -44,6 +44,11 @@ export const KAMBAZ_STYLING_SLIDES: LectureSlide[] = [
       "Without Preflight the browser often falls back to Times, a serif font",
       "Add a system sans-serif font, `color`, `line-height`, and `box-sizing`",
     ],
+  },
+  {
+    id: "kambaz-css",
+    title: "Step 2: kambaz.css base (code)",
+    kind: "content",
     code: `/* System sans-serif — Tailwind utilities alone
    do not set the body font */
 #wd-kambaz {
@@ -68,13 +73,18 @@ export const KAMBAZ_STYLING_SLIDES: LectureSlide[] = [
     codeFile: "app/(kambaz)/kambaz.css",
   },
   {
-    id: "layout",
+    id: "layout-intro",
     title: "Step 3: Layout imports kambaz.css",
     kind: "content",
     bullets: [
       "The Kambaz layout imports `./kambaz.css`. Next.js bundles the file only once, even if another component imports it too",
       "`font-sans` on the root applies Tailwind's system font even if the CSS rule is incomplete",
     ],
+  },
+  {
+    id: "layout",
+    title: "Step 3: Layout imports kambaz.css (code)",
+    kind: "content",
     code: `import { ReactNode } from "react";
 import "./kambaz.css";
 import KambazNavigation from "./Navigation";

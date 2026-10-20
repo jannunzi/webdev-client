@@ -100,13 +100,18 @@ mkdir data
     ],
   },
   {
-    id: "insert",
+    id: "insert-intro",
     title: "Insert one user document",
     kind: "demo",
     bullets: [
       "Select `kambaz` → `users`, then ADD DATA → Insert document",
       "Shape matches `users.json` from Chapter 3 — `_id` is a string",
     ],
+  },
+  {
+    id: "insert",
+    title: "Insert one user document (code)",
+    kind: "demo",
     code: `{
   "_id": "123",
   "username": "iron_man",

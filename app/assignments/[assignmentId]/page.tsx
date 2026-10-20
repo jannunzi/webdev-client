@@ -40,6 +40,7 @@ import {
 import { buildA1GateDiagnostics } from "@/lib/assignments/diagnostics";
 import type { A1GateDiagnostics } from "@/lib/assignments/diagnostics";
 import {
+  isAssignmentFixupsEnabled,
   isAssignmentProgressConfigured,
   isClerkConfigured,
   isClerkPublishableKeySet,
@@ -66,6 +67,18 @@ import A1WorkArea from "../components/A1WorkArea";
 import AssignmentChapterLink from "../components/AssignmentChapterLink";
 import AssignmentChecklist from "../components/AssignmentChecklist";
 import AssignmentHubNav from "../components/AssignmentHubNav";
+import FixupPanel, { type FixupPanelProps } from "../components/FixupPanel";
+import StaffFixupPanel, { type StaffFixupPanelProps } from "../components/StaffFixupPanel";
+import {
+  evaluateFixup,
+  fixupSectionWarning,
+  fixupWindowClosed,
+  fixupWindowState,
+  mainSaveBlockedByFixup,
+  resolveFixupSection,
+  sectionFromMetadata,
+} from "@/lib/assignments/fixup";
+import { findFixup, listFixupWindows } from "@/lib/assignments/fixup-store";
 
 export const dynamic = "force-dynamic";
 /**
@@ -138,6 +151,17 @@ export default async function AssignmentDetailPage({
   let showStaffGrader = false;
   let staffDiagnostics: A1GateDiagnostics | null = null;
   let studentRoster: { unmatched?: boolean; duplicates?: number } | null = null;
+  // Fix-up rounds: nothing is loaded or shown unless the flag is on.
+  const fixupsOn = isAssignmentFixupsEnabled() && Boolean(assignment.rubric);
+  let fixupStudent: FixupPanelProps | null = null;
+  let fixupStaff: StaffFixupPanelProps | null = null;
+  let fixupLock = false;
+  const fixupLabels: Record<string, string> = Object.fromEntries(
+    (assignment.rubric ? listRubricCriteria(assignment.rubric) : []).map((c) => [
+      c.id,
+      c.parentLabel ? `${c.parentLabel} — ${c.label}` : c.label,
+    ]),
+  );
 
   if (isClerkConfigured()) {
     const { userId, sessionClaims } = await auth();
@@ -279,6 +303,42 @@ export default async function AssignmentDetailPage({
       }
 
       try {
+        if (fixupsOn && mongoReady && !impersonating && initialSubmission && roster.status === "matched") {
+          const [windows, record] = await Promise.all([
+            listFixupWindows(),
+            findFixup(userId, assignment.id),
+          ]);
+          const section = record?.section
+            ? record.section
+            : resolveFixupSection({
+                rosterSection: roster.entry.section,
+                metadataSection: sectionFromMetadata(user?.publicMetadata as Record<string, unknown> | undefined),
+                submissionSection: initialSubmission.section,
+              }).section;
+          const window = fixupWindowState({ windows, assignmentId: assignment.id, section, now: new Date() });
+          fixupLock = mainSaveBlockedByFixup(record, window);
+          fixupStudent = {
+            assignmentId: assignment.id,
+            window,
+            result: record
+              ? evaluateFixup({
+                  assignmentId: assignment.id,
+                  rubric: assignment.rubric!,
+                  original: record.original,
+                  round: record.round,
+                  windowClosed: fixupWindowClosed(window),
+                })
+              : null,
+            labels: fixupLabels,
+            githubUrl: record?.round.githubUrl ?? initialSubmission.githubUrl,
+            vercelUrl: record?.round.vercelUrl ?? initialSubmission.vercelUrl,
+          };
+        }
+      } catch (error) {
+        console.error("assignment fix-up load failed", error);
+      }
+
+      try {
         if (showStaffGrader && mongoReady) {
           const [rosterList, submissions] = await Promise.all([
             listCanvasRoster(),
@@ -324,6 +384,47 @@ export default async function AssignmentDetailPage({
         }
       } catch (error) {
         console.error("assignment staff queue load failed", error);
+      }
+
+      try {
+        if (fixupsOn && showStaffGrader && mongoReady) {
+          const windows = await listFixupWindows();
+          const record = selectedStudent?.clerkUserId
+            ? await findFixup(selectedStudent.clerkUserId, assignment.id)
+            : null;
+          fixupStaff = {
+            assignmentId: assignment.id,
+            section: selectedSection && selectedSection !== "Unsectioned" ? selectedSection : undefined,
+            windows,
+            labels: fixupLabels,
+            student: selectedStudent?.clerkUserId
+              ? {
+                  clerkUserId: selectedStudent.clerkUserId,
+                  result: record
+                    ? evaluateFixup({
+                        assignmentId: assignment.id,
+                        rubric: assignment.rubric!,
+                        original: record.original,
+                        round: record.round,
+                        windowClosed: fixupWindowClosed(
+                          fixupWindowState({ windows, assignmentId: assignment.id, section: record.section, now: new Date() }),
+                        ),
+                      })
+                    : null,
+                  sectionWarning: fixupSectionWarning(
+                    record
+                      ? record.sectionSource ?? "roster"
+                      : resolveFixupSection({
+                          rosterSection: selectedStudent.section,
+                          submissionSection: initialSubmission?.section,
+                        }).source,
+                  ),
+                }
+              : undefined,
+          };
+        }
+      } catch (error) {
+        console.error("assignment staff fix-up load failed", error);
       }
     } else {
       const visibility = loggedOutSubmitVisibility(assignment.id, mongoReady);
@@ -417,6 +518,7 @@ export default async function AssignmentDetailPage({
           selectedStudent={selectedStudent}
           selectedSection={selectedSection}
           selectedFilter={selectedFilter}
+          fixupLock={fixupLock}
         />
       ) : (
         <AssignmentChecklist
@@ -427,6 +529,8 @@ export default async function AssignmentDetailPage({
           audience="student"
         />
       )}
+      {fixupStudent ? <FixupPanel {...fixupStudent} /> : null}
+      {fixupStaff ? <StaffFixupPanel {...fixupStaff} /> : null}
     </article>
   );
 }

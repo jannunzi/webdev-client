@@ -63,13 +63,18 @@ app.get("/lab5/todos/:id", getTodoById);`,
     codeAddedLines: [[1, 6]],
   },
   {
-    id: "create-delete",
+    id: "create-delete-intro",
     title: "Create and delete via GET first",
     kind: "demo",
     bullets: [
       "GET `/create` pushes a New Task. GET `/:id/delete` splices it out",
       "Misusing GET is a teaching step. §5.2.6 switches to POST and DELETE",
     ],
+  },
+  {
+    id: "create-delete",
+    title: "Create and delete via GET first (code)",
+    kind: "demo",
     code: `const createNewTodo = (req, res) => {
   const newTodo = {
     id: new Date().getTime(),

@@ -21,7 +21,7 @@ export const KAMBAZ_COURSES_STYLING_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "course-nav",
+    id: "course-nav-intro",
     title: "Course Nav is a list group",
     kind: "content",
     bullets: [
@@ -30,6 +30,11 @@ export const KAMBAZ_COURSES_STYLING_SLIDES: LectureSlide[] = [
       "A **hook** such as `usePathname` needs the browser. **`\"use client\"`** on the first line makes the component run there too, so the hook works",
       "`usePathname` returns the current URL path. Each link compares it with its own `href`",
     ],
+  },
+  {
+    id: "course-nav",
+    title: "Course Nav is a list group (code)",
+    kind: "content",
     code: `"use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -68,7 +73,7 @@ export default function CourseNavigation({ cid }: { cid: string }) {
     codeFile: "app/(kambaz)/courses/[cid]/Navigation.tsx",
   },
   {
-    id: "course-nav-rest",
+    id: "course-nav-rest-intro",
     title: "Assignments stays lit on nested paths",
     kind: "content",
     bullets: [
@@ -77,6 +82,11 @@ export default function CourseNavigation({ cid }: { cid: string }) {
       "Piazza, Zoom, Quizzes, Grades, and People follow the same pattern",
       "`.list-group` lives in `kambaz.css` — write the selectors; do not import a kit",
     ],
+  },
+  {
+    id: "course-nav-rest",
+    title: "Assignments stays lit (code)",
+    kind: "content",
     code: `      {/* ...Piazza and Zoom, same pattern... */}
       <Link
         href={assignments}
@@ -97,7 +107,7 @@ export default function CourseNavigation({ cid }: { cid: string }) {
     codeFile: "app/(kambaz)/courses/[cid]/Navigation.tsx",
   },
   {
-    id: "list-group-css",
+    id: "list-group-css-intro",
     title: "Course Navigation rules in kambaz.css",
     kind: "content",
     bullets: [
@@ -106,6 +116,11 @@ export default function CourseNavigation({ cid }: { cid: string }) {
       "A few app-wide rules beat a pile of utilities on every link",
       "Active item: black, white fill, `border-left: 3px solid black`",
     ],
+  },
+  {
+    id: "list-group-css",
+    title: "Course Navigation CSS (code)",
+    kind: "content",
     code: `.list-group.wd {
   display: flex;
   flex-direction: column;
@@ -168,7 +183,7 @@ export default function GreenCheckmark() {
     codeFile: "app/(kambaz)/courses/[cid]/modules/GreenCheckmark.tsx",
   },
   {
-    id: "module-lesson",
+    id: "module-lesson-intro",
     title: "A module with a checkmark",
     kind: "content",
     bullets: [
@@ -176,6 +191,11 @@ export default function GreenCheckmark() {
       "Gray `bg-neutral-200` title bar, checkmark on the right",
       "Import `GreenCheckmark` — it is new in Chapter 2, so the JSX alone will not compile",
     ],
+  },
+  {
+    id: "module-lesson",
+    title: "A module with a checkmark (code)",
+    kind: "content",
     code: `import type { ReactNode } from "react";
 import GreenCheckmark from "./GreenCheckmark";
 
@@ -201,7 +221,7 @@ export default function Module({
     codeAddedLines: [[1, 10]],
   },
   {
-    id: "lesson",
+    id: "lesson-intro",
     title: "A lesson with a green edge",
     kind: "content",
     bullets: [
@@ -209,6 +229,11 @@ export default function Module({
       "Same imports as `Module` — `GreenCheckmark` is new in Chapter 2",
       "`border-l-[3px] border-green-600` is the accent Assignments reuse",
     ],
+  },
+  {
+    id: "lesson",
+    title: "A lesson with a green edge (code)",
+    kind: "content",
     code: `import type { ReactNode } from "react";
 import GreenCheckmark from "./GreenCheckmark";
 
@@ -234,13 +259,18 @@ export default function Lesson({
     codeAddedLines: [[1, 10]],
   },
   {
-    id: "toolbar",
+    id: "toolbar-intro",
     title: "Modules toolbar is a flex row",
     kind: "content",
     bullets: [
       "Collapse All, View Progress, Publish All, red `+ Module`",
       "`border-neutral-300` on secondary buttons — bare `border` looks near-black",
     ],
+  },
+  {
+    id: "toolbar",
+    title: "Modules toolbar is a flex row (code)",
+    kind: "content",
     code: `<div className="mb-3 flex flex-wrap items-center gap-2">
   <button
     type="button"
@@ -273,13 +303,18 @@ export default function Lesson({
     codeHighlightLines: [1, 4, 10, 16, 22],
   },
   {
-    id: "modules-page",
+    id: "modules-page-intro",
     title: "Modules page: toolbar above the tree",
     kind: "content",
     bullets: [
       "Put the toolbar above the module tree in `modules/page.tsx`",
       "Part 1: the imports, the wrapper `div`, and the toolbar row",
     ],
+  },
+  {
+    id: "modules-page",
+    title: "Modules page (code)",
+    kind: "content",
     code: `import Lesson from "./Lesson";
 import Module from "./Module";
 
@@ -316,7 +351,7 @@ export default function Modules() {
     codeFile: "app/(kambaz)/courses/[cid]/modules/page.tsx",
   },
   {
-    id: "modules-list",
+    id: "modules-list-intro",
     title: "Modules page: the module tree",
     kind: "content",
     bullets: [
@@ -324,6 +359,11 @@ export default function Modules() {
       "The only new class: `m-0 list-none p-0` on `<ul id=\"wd-modules\">` removes the bullets and left indent, so modules line up with the toolbar",
       "The listing shows one module to save space. Keep every Chapter 1 module and lesson where the comments say so",
     ],
+  },
+  {
+    id: "modules-list",
+    title: "Modules page: the module tree (code)",
+    kind: "content",
     code: `      <ul id="wd-modules" className="m-0 list-none p-0">
         <Module title="Week 1, Lecture 1 - Course Introduction, Syllabus, Agenda">
           <Lesson title="LEARNING OBJECTIVES">
@@ -357,7 +397,7 @@ export default function Modules() {
     embed: "kambaz-styled-modules",
   },
   {
-    id: "status",
+    id: "status-intro",
     title: "Course Status button stack",
     kind: "content",
     bullets: [
@@ -365,6 +405,11 @@ export default function Modules() {
       "Unpublish / Publish share a two-column `flex` row",
       "The rest are full-width bordered buttons with React Icons",
     ],
+  },
+  {
+    id: "status",
+    title: "Course Status button stack (code)",
+    kind: "content",
     code: `import { FaCheckCircle } from "react-icons/fa";
 import { MdDoNotDisturbAlt } from "react-icons/md";
 
@@ -402,7 +447,7 @@ export default function CourseStatus() {
     codeAddedLines: [[1, 2], 17, [22, 29]],
   },
   {
-    id: "flex-layouts",
+    id: "flex-layouts-intro",
     title: "Flex replaces the last tables",
     kind: "content",
     bullets: [
@@ -410,6 +455,11 @@ export default function CourseStatus() {
       "Home imports the Modules page from §2.4.4: Modules `flex-1`, Status `hidden lg:block` at 250px",
       "Status vanishes first. Both sidebars leave together below `md`",
     ],
+  },
+  {
+    id: "flex-layouts",
+    title: "Flex replaces the last tables (code)",
+    kind: "content",
     code: `<div className="flex gap-4">
   <div className="hidden w-[140px] shrink-0 md:block">
     <CourseNavigation cid={cid} />

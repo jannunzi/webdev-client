@@ -21,7 +21,7 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "editor",
+    id: "editor-intro",
     title: "ModuleEditor is a controlled dialog",
     kind: "content",
     bullets: [
@@ -29,6 +29,11 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
       "`moduleName` / `setModuleName` is a string draft — §4.2.6",
       "Add Module calls `addModule()` then `handleClose()`. Cancel only closes",
     ],
+  },
+  {
+    id: "editor",
+    title: "ModuleEditor is a controlled dialog (code)",
+    kind: "content",
     code: `export default function ModuleEditor({
   show,
   handleClose,
@@ -73,7 +78,7 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
     codeHighlightLines: [16, [20, 21], [29, 32]],
   },
   {
-    id: "store",
+    id: "store-intro",
     title: "modulesStore is the shared list",
     kind: "content",
     bullets: [
@@ -81,6 +86,11 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
       "`editModule` sets `editing: true` so the row becomes an input",
       "`updateModule` / `deleteModule` map and filter like courses",
     ],
+  },
+  {
+    id: "store",
+    title: "modulesStore is the shared list (code)",
+    kind: "content",
     code: `export const useModulesStore = create<ModulesStore>((set) => ({
   modules: modulesJson as CourseModule[],
   addModule: (module) =>

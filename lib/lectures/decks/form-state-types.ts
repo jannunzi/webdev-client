@@ -65,7 +65,7 @@ export const FORM_STATE_TYPES_SLIDES: LectureSlide[] = [
     embed: "string-state",
   },
   {
-    id: "date",
+    id: "date-intro",
     title: "Date: format for type=date",
     kind: "demo",
     bullets: [
@@ -73,6 +73,11 @@ export const FORM_STATE_TYPES_SLIDES: LectureSlide[] = [
       "`type=\"date\"` wants `YYYY-MM-DD` — helper `dateObjectToHtmlDateString`",
       "`htmlDateStringToDate` reads the picker as a local date, so the day you pick stays that day",
     ],
+  },
+  {
+    id: "date",
+    title: "Date: format for type=date (code)",
+    kind: "demo",
     code: `"use client";
 
 import { useState } from "react";
@@ -110,10 +115,15 @@ export default function DateStateVariable() {
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/DateStateVariable.tsx",
     codeHighlightLines: [[5, 15], 18, 28],
+  },
+  {
+    id: "date-live",
+    title: "Date: format for type=date",
+    kind: "demo",
     embed: "date-state",
   },
   {
-    id: "object",
+    id: "object-intro",
     title: "Object: spread, then overwrite",
     kind: "demo",
     bullets: [
@@ -121,6 +131,11 @@ export default function DateStateVariable() {
       "Do not do `person.name = …` — that mutates and React may skip the paint",
       "`parseInt` on age; `|| 0` keeps the field a number if the box is empty",
     ],
+  },
+  {
+    id: "object",
+    title: "Object: spread, then overwrite (code)",
+    kind: "demo",
     code: `const [person, setPerson] = useState({ name: "Peter", age: 24 });
 <pre>{JSON.stringify(person, null, 2)}</pre>
 <input
@@ -139,10 +154,15 @@ export default function DateStateVariable() {
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/ObjectStateVariable.tsx",
     codeHighlightLines: [1, 5, [11, 12]],
+  },
+  {
+    id: "object-live",
+    title: "Object: spread, then overwrite",
+    kind: "demo",
     embed: "object-state",
   },
   {
-    id: "array",
+    id: "array-intro",
     title: "Array: copy, then add or filter",
     kind: "demo",
     bullets: [
@@ -150,6 +170,11 @@ export default function DateStateVariable() {
       "`filter((_item, i) => i !== index)` drops one index without mutate",
       "Each `li` needs a `key`. Delete wraps `deleteElement(index)` in an arrow",
     ],
+  },
+  {
+    id: "array",
+    title: "Array: copy, then add or filter (code)",
+    kind: "demo",
     code: `const [array, setArray] = useState([1, 2, 3, 4, 5]);
 const addElement = () => {
   setArray([...array, Math.floor(Math.random() * 100)]);
@@ -169,6 +194,11 @@ const deleteElement = (index: number) => {
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/ArrayStateVariable.tsx",
     codeHighlightLines: [[2, 7], [9, 16]],
+  },
+  {
+    id: "array-live",
+    title: "Array: copy, then add or filter",
+    kind: "demo",
     embed: "array-state",
   },
   {

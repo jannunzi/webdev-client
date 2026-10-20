@@ -39,7 +39,13 @@ import {
   type AssignmentSubmissionView,
 } from "@/lib/assignments/submissions-store";
 import type { AssignmentId } from "@/lib/assignments/types";
-import { isAssignmentProgressConfigured } from "@/lib/config";
+import { isAssignmentFixupsEnabled, isAssignmentProgressConfigured } from "@/lib/config";
+import {
+  clearFixupWindow,
+  setFixupApproval,
+  setFixupOverride,
+  setFixupWindow,
+} from "@/lib/assignments/fixup-store";
 import { collectClerkEmails, normalizeEmail } from "@/lib/roster/emails";
 import { isActualStaff, isImpersonatingStudent } from "@/lib/roster/staff-access";
 
@@ -373,4 +379,85 @@ export async function rerunAssignmentChecksBatch(input: {
       }),
   });
   return { ok: true, ...batch };
+}
+
+/* ------------------------------------------------------------------ */
+/* Fix-up rounds: open dates, item approvals, overrides                 */
+/* ------------------------------------------------------------------ */
+
+export type StaffFixupResult = { ok: true; message: string } | { ok: false; message: string };
+
+async function authorizeFixupStaff(assignmentId: string) {
+  if (!isAssignmentFixupsEnabled()) return { ok: false as const, message: "Fix-ups are turned off." };
+  const authz = await authorizeStaffGrader();
+  if (!authz.ok) return { ok: false as const, message: authz.result.message };
+  if (!authz.persist) return { ok: false as const, message: "Can't save while viewing as a student." };
+  const assignment = getAssignment(assignmentId);
+  if (!assignment?.rubric || !isAssignmentId(assignmentId)) {
+    return { ok: false as const, message: ASSIGNMENT_STUDENT_COPY.unknownAssignment };
+  }
+  return { ok: true as const, staffEmail: authz.staffEmail, rubric: assignment.rubric };
+}
+
+/** Set (or clear, with an empty date) the fix-up open date for a section. */
+export async function setFixupWindowAction(input: {
+  assignmentId: string;
+  section: string;
+  opensAt: string;
+}): Promise<StaffFixupResult> {
+  const ctx = await authorizeFixupStaff(input.assignmentId);
+  if (!ctx.ok) return ctx;
+  const section = input.section.trim();
+  if (!section) return { ok: false, message: "Pick a section first." };
+  if (!input.opensAt.trim()) {
+    await clearFixupWindow(input.assignmentId, section);
+    return { ok: true, message: "Fix-up window cleared." };
+  }
+  const opens = new Date(input.opensAt);
+  if (Number.isNaN(opens.getTime())) return { ok: false, message: "Invalid date." };
+  await setFixupWindow({ assignmentId: input.assignmentId, section, opensAt: opens.toISOString() }, ctx.staffEmail);
+  return { ok: true, message: "Fix-up window saved." };
+}
+
+/** Approve the new raw points (0..max) for one pending fix-up item, or clear it (null). */
+export async function approveFixupItemAction(input: {
+  assignmentId: string;
+  clerkUserId: string;
+  criterionId: string;
+  points: number | null;
+}): Promise<StaffFixupResult> {
+  const ctx = await authorizeFixupStaff(input.assignmentId);
+  if (!ctx.ok) return ctx;
+  const criterion = listRubricCriteria(ctx.rubric).find((c) => c.id === input.criterionId);
+  if (!criterion) return { ok: false, message: "Unknown rubric item." };
+  const points = input.points == null ? null : Math.min(criterion.points, Math.max(0, Number(input.points)));
+  if (points != null && !Number.isFinite(points)) return { ok: false, message: "Invalid points." };
+  const ok = await setFixupApproval({
+    clerkUserId: input.clerkUserId,
+    assignmentId: input.assignmentId,
+    criterionId: input.criterionId,
+    approval: points == null ? null : { points, approvedBy: ctx.staffEmail, approvedAt: new Date().toISOString() },
+  });
+  return ok ? { ok: true, message: "Saved." } : { ok: false, message: "No fix-up round for this student." };
+}
+
+/** Override the whole fix-up total (wins over the computed result), or clear it (null). */
+export async function setFixupOverrideAction(input: {
+  assignmentId: string;
+  clerkUserId: string;
+  points: number | null;
+  note?: string;
+}): Promise<StaffFixupResult> {
+  const ctx = await authorizeFixupStaff(input.assignmentId);
+  if (!ctx.ok) return ctx;
+  if (input.points != null && !Number.isFinite(Number(input.points))) return { ok: false, message: "Invalid points." };
+  const ok = await setFixupOverride({
+    clerkUserId: input.clerkUserId,
+    assignmentId: input.assignmentId,
+    override:
+      input.points == null
+        ? null
+        : { points: Number(input.points), by: ctx.staffEmail, at: new Date().toISOString(), note: input.note?.trim() || undefined },
+  });
+  return ok ? { ok: true, message: "Saved." } : { ok: false, message: "No fix-up round for this student." };
 }

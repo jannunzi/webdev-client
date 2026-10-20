@@ -63,7 +63,7 @@ export default function Dashboard() {
     embed: "kambaz-ch3-dashboard",
   },
   {
-    id: "card",
+    id: "card-intro",
     title: "CourseCard encodes _id in the href",
     kind: "content",
     bullets: [
@@ -71,6 +71,11 @@ export default function Dashboard() {
       "`href={\`/courses/${_id}/home\`}` — later screens look the course up",
       "The Go button is inside the same `Link`",
     ],
+  },
+  {
+    id: "card",
+    title: "CourseCard encodes _id in the href (code)",
+    kind: "content",
     code: `import Link from "next/link";
 import Image from "next/image";
 
