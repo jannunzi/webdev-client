@@ -11,6 +11,10 @@ import ServerComponentDemo from "@/app/labs/lab3/ServerComponentDemo";
 import Add from "@/app/labs/lab3/Add";
 import Square from "@/app/labs/lab3/Square";
 import Highlight from "@/app/labs/lab3/Highlight";
+import BoxDemo from "@/app/labs/lab3/children/BoxDemo";
+import BoxModelDemo from "@/app/labs/lab3/children/BoxModelDemo";
+import CardDemo from "@/app/labs/lab3/children/CardDemo";
+import NestingOrderDemo from "@/app/labs/lab3/children/NestingOrderDemo";
 import PathParameters from "@/app/labs/lab3/PathParameters";
 import TodoList from "@/app/labs/lab3/todos/TodoList";
 import Link from "next/link";
@@ -1044,6 +1048,418 @@ export default function Lab3() {
             Ask the assistant to add one extra sample highlight and square —
             leave your sentence as the personal bit:
           </WithAI>
+        </Section>
+
+        <Section
+          level={3}
+          id="sec-3-7-1-1"
+          title="3.7.1.1 Composing Styles with Children"
+        >
+          <p>
+            <code>Square</code>{" "}and <code>Highlight</code>{" "}each wrap
+            one small piece of text. This section, which is a reading demo and
+            not part of the graded lab, shows a more useful pattern: components
+            whose only job is to add styling around whatever{" "}
+            <code>children</code>{" "}they receive. A <strong>wrapper
+            component</strong>{" "}is a component that renders its{" "}
+            <code>children</code>{" "}inside extra markup, such as a styled{" "}
+            <code>div</code>, without needing to know what those children are.
+            You do not need to add these files to your Lab 3 page; read the
+            listings and compare each one with the live demo under it.
+          </p>
+          <p>
+            All the styling below uses the <code>style</code>{" "}attribute
+            from <SectionLink to="3.5.2" />: a JavaScript object whose keys
+            are camel-cased CSS property names. We use these{" "}
+            <strong>inline style objects</strong>{" "}instead of CSS classes
+            here on purpose. The values come from props, so they change from
+            one instance to the next, and a fixed class in a stylesheet cannot
+            hold a value that is only known when the component renders. When a
+            style value is a plain number, React adds <code>px</code>{" "}for
+            you, so <code>{`{ margin: 12 }`}</code>{" "}becomes{" "}
+            <code>margin: 12px</code>.
+          </p>
+          <h4 className="font-sans font-semibold">One configurable Box</h4>
+          <p>
+            Start with a single <code>Box</code>{" "}that accepts one prop per
+            CSS property it controls: <code>borderStyle</code>,{" "}
+            <code>borderColor</code>, <code>borderWidth</code>,{" "}
+            <code>width</code>, <code>height</code>, <code>position</code>,{" "}
+            <code>padding</code>, <code>margin</code>,{" "}
+            <code>borderRadius</code>, and <code>boxShadow</code>. Two new
+            pieces of syntax appear in its parameter list. A question mark
+            after a property name in the type, as in{" "}
+            <code>borderColor?: string</code>, makes that prop{" "}
+            <strong>optional</strong>: the caller may leave it out. A{" "}
+            <strong>default value</strong>, as in{" "}
+            <code>borderColor = &quot;black&quot;</code>{" "}inside the
+            destructured parameters, is the value the variable takes when the
+            caller leaves the prop out. <code>position</code>{" "}chooses how
+            the browser places the box: <code>static</code>{" "}(the default)
+            and <code>relative</code>{" "}both keep it in the normal flow of
+            the page. <code>boxShadow</code>{" "}draws a shadow from an
+            x-offset, a y-offset, a blur distance, and a color. Because each
+            style property has the same name as the variable holding its value,
+            the style object can use the shorthand{" "}
+            <code>{`{ borderStyle }`}</code>, which means{" "}
+            <code>{`{ borderStyle: borderStyle }`}</code>:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="Box"
+            file="app/labs/lab3/children/Box.tsx"
+          >{`import { ReactNode } from "react";
+
+export default function Box({
+  children,
+  borderStyle = "solid",
+  borderColor = "black",
+  borderWidth = 1,
+  width,
+  height,
+  position = "static",
+  padding = 0,
+  margin = 0,
+  borderRadius = 0,
+  boxShadow = "none",
+}: {
+  children: ReactNode;
+  borderStyle?: string;
+  borderColor?: string;
+  borderWidth?: number;
+  width?: number;
+  height?: number;
+  position?: "static" | "relative";
+  padding?: number;
+  margin?: number;
+  borderRadius?: number;
+  boxShadow?: string;
+}) {
+  return (
+    <div
+      style={{
+        borderStyle,
+        borderColor,
+        borderWidth,
+        width,
+        height,
+        position,
+        padding,
+        margin,
+        borderRadius,
+        boxShadow,
+      }}
+    >
+      {children}
+    </div>
+  );
+}`}</CodeBlock>
+          <p>
+            The demo renders one <code>Box</code>{" "}with only defaults and
+            one with every prop set:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="BoxDemo"
+            file="app/labs/lab3/children/BoxDemo.tsx"
+          >{`import Box from "./Box";
+
+export default function BoxDemo() {
+  return (
+    <div id="wd-box-demo">
+      <Box>Default box</Box>
+      <Box
+        borderStyle="dashed"
+        borderColor="blue"
+        borderWidth={4}
+        width={220}
+        height={80}
+        position="relative"
+        padding={16}
+        margin={12}
+        borderRadius={12}
+        boxShadow="4px 4px 8px gray"
+      >
+        Configured box
+      </Box>
+    </div>
+  );
+}`}</CodeBlock>
+          <LiveDemo mode="styled" name="BoxDemo" file="app/labs/lab3/children/BoxDemo.tsx">
+            <BoxDemo />
+          </LiveDemo>
+          <h4 className="font-sans font-semibold">
+            One component per box-model layer
+          </h4>
+          <p>
+            One <code>Box</code>{" "}with ten props works, but every new
+            property makes its parameter list longer. Another approach is to
+            split it into small <strong>single-purpose components</strong>,
+            each of which applies just one kind of CSS and then renders its{" "}
+            <code>children</code>. Because each one wraps children, they can be
+            placed inside one another, which is called{" "}
+            <strong>nesting</strong>. Following the box model from{" "}
+            <SectionLink to="2.1.10" />{" "}from the outside in, we get{" "}
+            <code>Margin</code>, <code>Border</code>, <code>Padding</code>, and{" "}
+            <code>Content</code>. Each also paints its own layer in the same
+            color DevTools uses for that layer in the box-model diagram in{" "}
+            <SectionLink to="2.1.10" />: tan for margin, yellow for border,
+            green for padding, and blue for content. A margin is normally
+            transparent; the tan background is only there so you can see it.
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="Margin"
+            file="app/labs/lab3/children/Margin.tsx"
+          >{`import { ReactNode } from "react";
+
+export default function Margin({
+  children,
+  margin,
+}: {
+  children: ReactNode;
+  margin: number;
+}) {
+  return <div style={{ margin, backgroundColor: "#F9CC9D" }}>{children}</div>;
+}`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="Border"
+            file="app/labs/lab3/children/Border.tsx"
+          >{`import { ReactNode } from "react";
+
+export default function Border({
+  children,
+  width,
+  style = "solid",
+  color = "black",
+  radius = 0,
+}: {
+  children: ReactNode;
+  width: number;
+  style?: string;
+  color?: string;
+  radius?: number;
+}) {
+  return (
+    <div
+      style={{
+        borderWidth: width,
+        borderStyle: style,
+        borderColor: color,
+        borderRadius: radius,
+        backgroundColor: "#FDDD9B",
+      }}
+    >
+      {children}
+    </div>
+  );
+}`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="Padding"
+            file="app/labs/lab3/children/Padding.tsx"
+          >{`import { ReactNode } from "react";
+
+export default function Padding({
+  children,
+  padding,
+}: {
+  children: ReactNode;
+  padding: number;
+}) {
+  return <div style={{ padding, backgroundColor: "#C3D08B" }}>{children}</div>;
+}`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="Content"
+            file="app/labs/lab3/children/Content.tsx"
+          >{`import { ReactNode } from "react";
+
+export default function Content({
+  children,
+  width,
+  height,
+}: {
+  children: ReactNode;
+  width: number;
+  height: number;
+}) {
+  return (
+    <div style={{ width, height, backgroundColor: "#8CB6C0" }}>{children}</div>
+  );
+}`}</CodeBlock>
+          <p>
+            Nesting them as{" "}
+            <code>{`<Margin><Border><Padding><Content>Hello</Content></Padding></Border></Margin>`}</code>{" "}
+            rebuilds the DevTools diagram one ring at a time: the outermost
+            component is the outermost ring, and <code>Hello</code>{" "}sits in
+            the blue content box in the middle:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="BoxModelDemo"
+            file="app/labs/lab3/children/BoxModelDemo.tsx"
+          >{`import Margin from "./Margin";
+import Border from "./Border";
+import Padding from "./Padding";
+import Content from "./Content";
+
+export default function BoxModelDemo() {
+  return (
+    <div id="wd-box-model-demo" style={{ backgroundColor: "white" }}>
+      <Margin margin={20}>
+        <Border width={6} color="black" radius={8}>
+          <Padding padding={20}>
+            <Content width={120} height={40}>
+              Hello
+            </Content>
+          </Padding>
+        </Border>
+      </Margin>
+    </div>
+  );
+}`}</CodeBlock>
+          <LiveDemo mode="styled" name="BoxModelDemo" file="app/labs/lab3/children/BoxModelDemo.tsx">
+            <BoxModelDemo />
+          </LiveDemo>
+          <p>
+            We left position out of this set on purpose. <code>position</code>{" "}
+            is not a layer of the box model, so it stays a prop of the single{" "}
+            <code>Box</code>. The order of nesting matters, because each
+            component styles only the <code>div</code>{" "}it renders. Swap{" "}
+            <code>Padding</code>{" "}and <code>Border</code>{" "}and the green
+            padding now sits outside the border, so the border hugs the
+            content directly. This is no longer the order the box model
+            describes for one element; it is two separate elements, each with
+            its own box:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="NestingOrderDemo"
+            file="app/labs/lab3/children/NestingOrderDemo.tsx"
+          >{`import Margin from "./Margin";
+import Border from "./Border";
+import Padding from "./Padding";
+import Content from "./Content";
+
+export default function NestingOrderDemo() {
+  return (
+    <div id="wd-nesting-order-demo" style={{ backgroundColor: "white" }}>
+      <Margin margin={20}>
+        <Padding padding={20}>
+          <Border width={6} color="black" radius={8}>
+            <Content width={120} height={40}>
+              Hello
+            </Content>
+          </Border>
+        </Padding>
+      </Margin>
+    </div>
+  );
+}`}</CodeBlock>
+          <LiveDemo mode="styled" name="NestingOrderDemo" file="app/labs/lab3/children/NestingOrderDemo.tsx">
+            <NestingOrderDemo />
+          </LiveDemo>
+          <h4 className="font-sans font-semibold">
+            Children can be anything
+          </h4>
+          <p>
+            So far every child has been text or another wrapper.{" "}
+            <code>children</code>{" "}can be any mix of HTML tags and
+            components. A <strong>card</strong>{" "}is a common page element:
+            a bordered panel with a header strip and a body. Build it from
+            three wrappers:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="Card"
+            file="app/labs/lab3/children/Card.tsx"
+          >{`import { ReactNode } from "react";
+
+export default function Card({ children }: { children: ReactNode }) {
+  return (
+    <div
+      style={{
+        width: 260,
+        borderStyle: "solid",
+        borderWidth: 1,
+        borderColor: "lightgray",
+        borderRadius: 8,
+        boxShadow: "2px 2px 6px lightgray",
+        margin: 8,
+      }}
+    >
+      {children}
+    </div>
+  );
+}`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="CardHeader"
+            file="app/labs/lab3/children/CardHeader.tsx"
+          >{`import { ReactNode } from "react";
+
+export default function CardHeader({ children }: { children: ReactNode }) {
+  return (
+    <div
+      style={{
+        padding: 8,
+        fontWeight: "bold",
+        backgroundColor: "whitesmoke",
+        borderBottom: "1px solid lightgray",
+      }}
+    >
+      {children}
+    </div>
+  );
+}`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="CardBody"
+            file="app/labs/lab3/children/CardBody.tsx"
+          >{`import { ReactNode } from "react";
+
+export default function CardBody({ children }: { children: ReactNode }) {
+  return <div style={{ padding: 8 }}>{children}</div>;
+}`}</CodeBlock>
+          <p>
+            The body below holds plain tags, the <code>Highlight</code>{" "}and{" "}
+            <code>Square</code>{" "}components from <SectionLink to="3.7.1" />,
+            and a button, all as children of one <code>CardBody</code>:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="CardDemo"
+            file="app/labs/lab3/children/CardDemo.tsx"
+          >{`import Card from "./Card";
+import CardHeader from "./CardHeader";
+import CardBody from "./CardBody";
+import Highlight from "../Highlight";
+import Square from "../Square";
+
+export default function CardDemo() {
+  return (
+    <div id="wd-card-demo">
+      <Card>
+        <CardHeader>Lab 3 Card</CardHeader>
+        <CardBody>
+          <p>
+            Children can be <b>tags</b>, <Highlight>components</Highlight>,
+            or both.
+          </p>
+          <p>
+            The square of 3 is <Square>3</Square>.
+          </p>
+          <button>Got it</button>
+        </CardBody>
+      </Card>
+    </div>
+  );
+}`}</CodeBlock>
+          <LiveDemo mode="styled" name="CardDemo" file="app/labs/lab3/children/CardDemo.tsx">
+            <CardDemo />
+          </LiveDemo>
         </Section>
 
         <Section
