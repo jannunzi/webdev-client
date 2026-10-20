@@ -1269,7 +1269,7 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-navigation"], 11);
     assert.equal(counts["kambaz-courses"], 13);
     assert.equal(counts["kambaz-modules"], 17);
-    assert.equal(counts["kambaz-assignments"], 21);
+    assert.equal(counts["kambaz-assignments"], 22);
     assert.equal(counts["css-intro"], 28);
     assert.equal(counts["css-colors"], 14);
     assert.equal(counts["css-box-model"], 25);
@@ -1289,7 +1289,7 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-nav-styling"], 17);
     assert.equal(counts["kambaz-dashboard-styling"], 9);
     assert.equal(counts["kambaz-courses-styling"], 27);
-    assert.equal(counts["kambaz-assignments-styling"], 13);
+    assert.equal(counts["kambaz-assignments-styling"], 14);
     assert.equal(counts["kambaz-account-styling"], 10);
     assert.equal(counts["intro-to-javascript"], 9);
     assert.equal(counts["variables-and-constants"], 9);
@@ -1687,9 +1687,9 @@ describe("lecture decks", () => {
         "home-live": "kambaz-home",
       },
       "kambaz-assignments": {
-        "list-screen-live": "kambaz-assignments",
-        "editor-live": "kambaz-assignment-editor",
         "await-params-live": "kambaz-assignments-step",
+        "finished-live": "kambaz-assignments-finished",
+        "editor-finished-live": "kambaz-assignment-editor",
         "labs-name-github-live": "labs-name-github",
       },
       "css-intro": {
@@ -1761,6 +1761,7 @@ describe("lecture decks", () => {
       "kambaz-assignments-styling": {
         "people-demo": "kambaz-styled-people",
         "assignments-demo": "kambaz-styled-assignments",
+        "editor-live": "kambaz-styled-assignment-editor",
       },
       "kambaz-account-styling": { demo: "kambaz-styled-signin" },
       "intro-to-javascript": { "lab3-stub": "lab3-stub" },
@@ -2233,8 +2234,8 @@ describe("lecture decks", () => {
           "target-course-nav": "layout-live",
           "target-modules": "modules-page-live",
           "target-home": "home-live",
-          "target-assignments": "list-screen-live",
-          "target-editor": "editor-live",
+          "target-assignments": "finished-live",
+          "target-editor": "editor-finished-live",
         }[id];
         assert.ok(liveId);
         assert.ok(
@@ -2256,8 +2257,10 @@ describe("lecture decks", () => {
       ["kambaz-courses", "layout", "layout-live"],
       ["kambaz-modules", "modules-page", "modules-page-live"],
       ["kambaz-modules", "home", "home-live"],
-      ["kambaz-assignments", "list-screen", "list-screen-live"],
-      ["kambaz-assignments", "editor", "editor-live"],
+      ["kambaz-assignments", "await-params", "await-params-live"],
+      ["kambaz-assignments", "finished", "finished-live"],
+      ["kambaz-assignments", "editor-finished", "editor-finished-live"],
+      ["kambaz-assignments-styling", "editor", "editor-live"],
     ] as const;
 
     for (const [slug, codeId, liveId] of pairs) {
