@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { canViewStaffGrader, supportsUrlSubmission } from "@/lib/assignments/access";
 import { getAssignment } from "@/lib/assignments/catalog";
 import { buildFixupExportRows, fixupExportCsv } from "@/lib/assignments/fixup";
-import { listFixupsForAssignment } from "@/lib/assignments/fixup-store";
+import { listFixupWindows, listFixupsForAssignment } from "@/lib/assignments/fixup-store";
 import { isAssignmentFixupsEnabled, isAssignmentProgressConfigured } from "@/lib/config";
 import { isActualStaff, isImpersonatingStudent } from "@/lib/roster/staff-access";
 
@@ -39,6 +39,8 @@ export async function GET(
     rubric: assignment.rubric,
     records: await listFixupsForAssignment(assignment.id),
     section,
+    windows: await listFixupWindows(),
+    now: new Date(),
   });
   const date = new Date().toISOString().slice(0, 10);
   const slug = section ? `-${section.replace(/[^A-Za-z0-9-]/g, "")}` : "";

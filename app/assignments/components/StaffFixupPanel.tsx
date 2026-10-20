@@ -3,14 +3,14 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { approveFixupItemAction, setFixupOverrideAction, setFixupWindowAction } from "../staff-actions";
-import type { FixupResult, FixupWindow } from "@/lib/assignments/fixup";
+import { FIXUP_COPY, type FixupResult, type FixupWindow } from "@/lib/assignments/fixup";
 import { formatPointsPercent } from "@/lib/assignments/grade";
 
 export type StaffFixupPanelProps = {
   assignmentId: string;
   section?: string;
   windows: FixupWindow[];
-  student?: { clerkUserId: string; result: FixupResult | null };
+  student?: { clerkUserId: string; result: FixupResult | null; sectionWarning?: string | null };
   labels: Record<string, string>;
 };
 
@@ -44,6 +44,8 @@ export default function StaffFixupPanel(props: StaffFixupPanelProps) {
           {current ? <span>Closes {new Date(new Date(current.opensAt).getTime() + 7 * 24 * 60 * 60 * 1000).toLocaleString("en-US", { timeZone: "America/New_York" })} (ET)</span> : null}
         </form>
       ) : <p>Pick a section to set its fix-up open date.</p>}
+      <p>{FIXUP_COPY.approvalsCleared}</p>
+      {props.student?.sectionWarning ? <p role="alert" className="font-semibold text-red-800">{props.student.sectionWarning}</p> : null}
       <p><a href={exportHref}>Download fix-up CSV{props.section ? ` for ${props.section}` : " (all sections)"}</a></p>
 
       {props.student ? (

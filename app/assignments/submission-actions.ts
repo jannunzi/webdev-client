@@ -24,7 +24,15 @@ import {
 import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
 import { getAssignment, isAssignmentId } from "@/lib/assignments/catalog";
 import { finalGrade } from "@/lib/assignments/final-grade";
-import { buildFixupSnapshot, fixableCriterionIds, fixupWindowState } from "@/lib/assignments/fixup";
+import {
+  FIXUP_COPY,
+  buildFixupSnapshot,
+  fixableCriterionIds,
+  fixupWindowState,
+  mainSaveBlockedByFixup,
+  resolveFixupSection,
+  sectionFromMetadata,
+} from "@/lib/assignments/fixup";
 import { findFixup, listFixupWindows, openFixupRound, saveFixupRun } from "@/lib/assignments/fixup-store";
 import { hasStaffGradeSave } from "@/lib/assignments/staff";
 import { getChecker } from "@/lib/assignments/checkers";
@@ -115,6 +123,7 @@ async function authorizeSubmission(assignmentId: string): Promise<
       canPersist: boolean;
       nameSource: NameSource;
       identity: AssignmentSubmissionIdentity;
+      metadataSection?: string;
     }
   | { ok: false; result: Extract<SubmissionActionResult, { ok: false }> }
 > {
@@ -178,6 +187,7 @@ async function authorizeSubmission(assignmentId: string): Promise<
       configured && canPersistAssignmentSubmission(impersonating),
     nameSource: nameSourceFromActor(user, roster),
     identity: identityFromRoster(user, roster),
+    metadataSection: sectionFromMetadata(user?.publicMetadata as Record<string, unknown> | undefined),
   };
 }
 
@@ -268,6 +278,27 @@ export async function saveAssignmentSubmission(input: {
   }
 
   const persist = authz.canPersist;
+
+  // During an open fix-up round, re-saving here would mark the graded
+  // submission "resubmitted after grading". Fix-ups go through the fix-up form.
+  if (persist && isAssignmentFixupsEnabled()) {
+    try {
+      const record = await findFixup(authz.userId, input.assignmentId);
+      if (record) {
+        const window = fixupWindowState({
+          windows: await listFixupWindows(),
+          assignmentId: input.assignmentId,
+          section: record.section,
+          now: new Date(),
+        });
+        if (mainSaveBlockedByFixup(record, window)) {
+          return { ok: false, code: "invalid", message: FIXUP_COPY.mainSaveBlocked };
+        }
+      }
+    } catch (error) {
+      console.error("fix-up save guard failed", error instanceof Error ? error.message : error);
+    }
+  }
 
   if (!persist) {
     return {
@@ -394,13 +425,23 @@ async function fixupContext(assignmentId: string) {
   }
   const assignment = getAssignment(assignmentId);
   if (!assignment?.rubric) return { ok: false as const, message: ASSIGNMENT_STUDENT_COPY.unknownAssignment };
+  const doc = await readAssignmentSubmission(authz.userId, assignmentId as AssignmentId);
+  const existing = await findFixup(authz.userId, assignmentId);
+  // A round keeps the section it was opened with.
+  const resolved = existing?.section
+    ? { section: existing.section, source: existing.sectionSource ?? ("roster" as const) }
+    : resolveFixupSection({
+        rosterSection: authz.identity.section,
+        metadataSection: authz.metadataSection,
+        submissionSection: doc?.section,
+      });
   const window = fixupWindowState({
     windows: await listFixupWindows(),
     assignmentId,
-    section: authz.identity.section,
+    section: resolved.section,
     now: new Date(),
   });
-  return { ok: true as const, authz, assignment, rubric: assignment.rubric, window };
+  return { ok: true as const, authz, assignment, rubric: assignment.rubric, window, doc, existing, resolved };
 }
 
 /** Open the one fix-up round: freezes the original grade first. */
@@ -408,11 +449,10 @@ export async function openFixupRoundAction(input: { assignmentId: string }): Pro
   const ctx = await fixupContext(input.assignmentId);
   if (!ctx.ok) return ctx;
   if (ctx.window.status !== "open") return { ok: false, message: "The fix-up window for this assignment isn't open." };
-  const { authz, rubric } = ctx;
-  if (await findFixup(authz.userId, input.assignmentId)) {
+  const { authz, rubric, doc } = ctx;
+  if (ctx.existing) {
     return { ok: false, message: "You already opened your fix-up round for this assignment." };
   }
-  const doc = await readAssignmentSubmission(authz.userId, input.assignmentId as AssignmentId);
   if (!doc) return { ok: false, message: ASSIGNMENT_STUDENT_COPY.noSubmission };
   const staff = doc.staffGrade && hasStaffGradeSave(doc.staffGrade) ? doc.staffGrade : null;
   const final = finalGrade({
@@ -437,7 +477,8 @@ export async function openFixupRoundAction(input: { assignmentId: string }): Pro
     assignmentId: input.assignmentId,
     email: authz.identity.rosterEmail ?? authz.identity.email,
     canvasUserId: authz.identity.canvasUserId,
-    section: authz.identity.section,
+    section: ctx.resolved.section,
+    sectionSource: ctx.resolved.source,
     original,
     round: { openedAt: new Date().toISOString(), githubUrl: doc.githubUrl, vercelUrl: doc.vercelUrl },
   });
@@ -456,8 +497,7 @@ export async function submitFixupAction(input: {
   if (!ctx.ok) return ctx;
   if (ctx.window.status !== "open") return { ok: false, message: "The fix-up window has closed." };
   const { authz } = ctx;
-  const existing = await findFixup(authz.userId, input.assignmentId);
-  if (!existing) return { ok: false, message: "Open your fix-up round first." };
+  if (!ctx.existing) return { ok: false, message: "Open your fix-up round first." };
   const githubUrl = input.githubUrl.trim();
   const vercelUrl = input.vercelUrl.trim();
   if (!vercelUrl) return { ok: false, message: ASSIGNMENT_STUDENT_COPY.vercelRequired };

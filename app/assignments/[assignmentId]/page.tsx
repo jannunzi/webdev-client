@@ -69,7 +69,15 @@ import AssignmentChecklist from "../components/AssignmentChecklist";
 import AssignmentHubNav from "../components/AssignmentHubNav";
 import FixupPanel, { type FixupPanelProps } from "../components/FixupPanel";
 import StaffFixupPanel, { type StaffFixupPanelProps } from "../components/StaffFixupPanel";
-import { evaluateFixup, fixupWindowState } from "@/lib/assignments/fixup";
+import {
+  evaluateFixup,
+  fixupSectionWarning,
+  fixupWindowClosed,
+  fixupWindowState,
+  mainSaveBlockedByFixup,
+  resolveFixupSection,
+  sectionFromMetadata,
+} from "@/lib/assignments/fixup";
 import { findFixup, listFixupWindows } from "@/lib/assignments/fixup-store";
 
 export const dynamic = "force-dynamic";
@@ -147,6 +155,7 @@ export default async function AssignmentDetailPage({
   const fixupsOn = isAssignmentFixupsEnabled() && Boolean(assignment.rubric);
   let fixupStudent: FixupPanelProps | null = null;
   let fixupStaff: StaffFixupPanelProps | null = null;
+  let fixupLock = false;
   const fixupLabels: Record<string, string> = Object.fromEntries(
     (assignment.rubric ? listRubricCriteria(assignment.rubric) : []).map((c) => [
       c.id,
@@ -299,11 +308,26 @@ export default async function AssignmentDetailPage({
             listFixupWindows(),
             findFixup(userId, assignment.id),
           ]);
+          const section = record?.section
+            ? record.section
+            : resolveFixupSection({
+                rosterSection: roster.entry.section,
+                metadataSection: sectionFromMetadata(user?.publicMetadata as Record<string, unknown> | undefined),
+                submissionSection: initialSubmission.section,
+              }).section;
+          const window = fixupWindowState({ windows, assignmentId: assignment.id, section, now: new Date() });
+          fixupLock = mainSaveBlockedByFixup(record, window);
           fixupStudent = {
             assignmentId: assignment.id,
-            window: fixupWindowState({ windows, assignmentId: assignment.id, section: roster.entry.section, now: new Date() }),
+            window,
             result: record
-              ? evaluateFixup({ assignmentId: assignment.id, rubric: assignment.rubric!, original: record.original, round: record.round })
+              ? evaluateFixup({
+                  assignmentId: assignment.id,
+                  rubric: assignment.rubric!,
+                  original: record.original,
+                  round: record.round,
+                  windowClosed: fixupWindowClosed(window),
+                })
               : null,
             labels: fixupLabels,
             githubUrl: record?.round.githubUrl ?? initialSubmission.githubUrl,
@@ -377,8 +401,24 @@ export default async function AssignmentDetailPage({
               ? {
                   clerkUserId: selectedStudent.clerkUserId,
                   result: record
-                    ? evaluateFixup({ assignmentId: assignment.id, rubric: assignment.rubric!, original: record.original, round: record.round })
+                    ? evaluateFixup({
+                        assignmentId: assignment.id,
+                        rubric: assignment.rubric!,
+                        original: record.original,
+                        round: record.round,
+                        windowClosed: fixupWindowClosed(
+                          fixupWindowState({ windows, assignmentId: assignment.id, section: record.section, now: new Date() }),
+                        ),
+                      })
                     : null,
+                  sectionWarning: fixupSectionWarning(
+                    record
+                      ? record.sectionSource ?? "roster"
+                      : resolveFixupSection({
+                          rosterSection: selectedStudent.section,
+                          submissionSection: initialSubmission?.section,
+                        }).source,
+                  ),
                 }
               : undefined,
           };
@@ -478,6 +518,7 @@ export default async function AssignmentDetailPage({
           selectedStudent={selectedStudent}
           selectedSection={selectedSection}
           selectedFilter={selectedFilter}
+          fixupLock={fixupLock}
         />
       ) : (
         <AssignmentChecklist

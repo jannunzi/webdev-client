@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import { A1_RUBRIC } from "./a1";
 import { listRubricCriteria } from "./catalog";
@@ -6,6 +7,14 @@ import type { AssignmentCheckResult } from "./check-types";
 import { criterionCoverage } from "./checkers";
 import { finalGrade } from "./final-grade";
 import {
+  FIXUP_COPY,
+  FIXUP_RUN_UNSET,
+  applyFixupRun,
+  fixupSectionWarning,
+  fixupWindowClosed,
+  mainSaveBlockedByFixup,
+  resolveFixupSection,
+  sectionFromMetadata,
   FIXUP_EXPORT_HEADERS,
   buildFixupExportRows,
   buildFixupSnapshot,
@@ -333,5 +342,88 @@ describe("fix-up: export percent truncates (83-point rubric)", () => {
     assert.equal(row.newPercent, "92.1");
     assert.equal(row.newScore, "76.5 / 83 (92.1%)");
     assert.equal(row.originalScore, "75 / 83 (90.3%)");
+  });
+});
+
+describe("QA #231 should-fixes", () => {
+  const W = [{ assignmentId: "a1", section: "CS5610-02", opensAt: "2026-10-15T12:00:00.000Z" }];
+  const AFTER = new Date("2026-10-23T12:00:00.000Z");
+
+  it("1) a new student run clears a staff override (and approvals)", () => {
+    const before = round(run({ [A.id]: { needsReview: true } }), {
+      staffOverride: { points: 80, at: NOW.toISOString() },
+      approvals: { [A.id]: { points: 3, approvedAt: NOW.toISOString() } },
+    });
+    const after = applyFixupRun(before, { checkResults: run(), submittedAt: AFTER.toISOString(), githubUrl: "g", vercelUrl: "v" });
+    assert.equal(after.staffOverride, undefined);
+    assert.equal(after.approvals, undefined);
+    const res = evaluateFixup({ assignmentId: "a1", rubric: A1_RUBRIC, original: original({ [A.id]: 0 }), round: after });
+    assert.equal(res.source, "fixup");
+    assert.equal(res.newPoints, TOTAL - 1.5);
+    // The Mongo update clears the same two fields.
+    assert.deepEqual(Object.keys(FIXUP_RUN_UNSET.$unset).sort(), ["round.approvals", "round.staffOverride"]);
+  });
+
+  it("2) never submitted: not ready while open, ready at the original grade once closed", () => {
+    const rec: FixupRecord = { clerkUserId: "u", assignmentId: "a1", email: "u@x.edu", section: "CS5610-02", original: original({ [A.id]: 0 }), round: round(undefined) };
+    const open = buildFixupExportRows({ assignmentId: "a1", rubric: A1_RUBRIC, records: [rec], windows: W, now: NOW })[0];
+    assert.equal(open.readyForCanvas, false);
+    assert.equal(open.status, "not_submitted");
+    const closed = buildFixupExportRows({ assignmentId: "a1", rubric: A1_RUBRIC, records: [rec], windows: W, now: AFTER })[0];
+    assert.equal(closed.readyForCanvas, true);
+    assert.equal(closed.newPoints, TOTAL - 3);
+    assert.equal(closed.regainedPoints, 0);
+    assert.match(closed.reasons, /no fix-up submitted/);
+    // A superseded window also counts as closed.
+    const sup = [...W, { assignmentId: "a2", section: "CS5610-02", opensAt: "2026-10-18T12:00:00.000Z" }];
+    assert.equal(buildFixupExportRows({ assignmentId: "a1", rubric: A1_RUBRIC, records: [rec], windows: sup, now: NOW })[0].readyForCanvas, true);
+    // A submitted round with a pending item stays pending after close.
+    const pending = { ...rec, round: round(run({ [A.id]: { needsReview: true } })) };
+    assert.equal(buildFixupExportRows({ assignmentId: "a1", rubric: A1_RUBRIC, records: [pending], windows: W, now: AFTER })[0].readyForCanvas, false);
+    assert.equal(fixupWindowClosed({ status: "closed", opensAt: "", closesAt: "" }), true);
+    assert.equal(fixupWindowClosed({ status: "open", opensAt: "", closesAt: "" }), false);
+  });
+
+  it("3) the main Save is blocked only while a round exists and the window is open", () => {
+    const rec = { round: round(undefined) };
+    const state = (now: Date) => fixupWindowState({ windows: W, assignmentId: "a1", section: "CS5610-02", now });
+    assert.equal(mainSaveBlockedByFixup(rec, state(NOW)), true);
+    assert.equal(mainSaveBlockedByFixup(null, state(NOW)), false);
+    assert.equal(mainSaveBlockedByFixup(rec, state(AFTER)), false);
+    assert.match(FIXUP_COPY.mainSaveBlocked, /fix-up form/);
+    const form = readFileSync(new URL("../../app/assignments/components/A1SubmissionForm.tsx", import.meta.url), "utf8");
+    assert.match(form, /disabled=\{pendingAction !== null \|\| fixupLock\}/);
+    const actions = readFileSync(new URL("../../app/assignments/submission-actions.ts", import.meta.url), "utf8");
+    assert.match(actions, /mainSaveBlockedByFixup\(record, window\)/);
+  });
+
+  it("4) both panels say a new run clears staff approvals", () => {
+    assert.match(FIXUP_COPY.approvalsCleared, /clears any staff approvals/);
+    for (const file of ["FixupPanel.tsx", "StaffFixupPanel.tsx"]) {
+      const text = readFileSync(new URL(`../../app/assignments/components/${file}`, import.meta.url), "utf8");
+      assert.match(text, /FIXUP_COPY\.approvalsCleared/, file);
+    }
+  });
+
+  it("5) section falls back to Canvas metadata, then the submission, and is flagged", () => {
+    assert.deepEqual(resolveFixupSection({ rosterSection: "CS5610-02", metadataSection: "X" }), { section: "CS5610-02", source: "roster" });
+    assert.deepEqual(resolveFixupSection({ rosterSection: " ", metadataSection: "CS5610-09" }), { section: "CS5610-09", source: "canvas_metadata" });
+    assert.deepEqual(resolveFixupSection({ submissionSection: "CS4550-01" }), { section: "CS4550-01", source: "submission" });
+    assert.deepEqual(resolveFixupSection({}), { section: undefined, source: "none" });
+    assert.equal(sectionFromMetadata({ canvasSection: " CS5610-09 " }), "CS5610-09");
+    assert.equal(sectionFromMetadata({ section: 5 }), undefined);
+    assert.equal(fixupSectionWarning("roster"), null);
+    assert.match(fixupSectionWarning("none")!, /can't get a fix-up window/);
+    // A fallback section still gets the window, and the export flags it.
+    const rec: FixupRecord = {
+      clerkUserId: "u", assignmentId: "a1", email: "u@x.edu", section: "CS5610-02", sectionSource: "canvas_metadata",
+      original: original({ [A.id]: 0 }), round: round(run()),
+    };
+    const [row] = buildFixupExportRows({ assignmentId: "a1", rubric: A1_RUBRIC, records: [rec], section: "CS5610-02" });
+    assert.equal(row.sectionSource, "canvas_metadata");
+    assert.match(row.reasons, /No roster section/);
+    assert.match(fixupExportCsv([row]), /,canvas_metadata,/);
+    const staff = readFileSync(new URL("../../app/assignments/components/StaffFixupPanel.tsx", import.meta.url), "utf8");
+    assert.match(staff, /sectionWarning/);
   });
 });

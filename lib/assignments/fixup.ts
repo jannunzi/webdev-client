@@ -91,9 +91,36 @@ export type FixupRecord = {
   email?: string;
   canvasUserId?: string;
   section?: string;
+  /** Where `section` came from. Anything but "roster" is flagged for staff. */
+  sectionSource?: FixupSectionSource;
   original: FixupSnapshot;
   round: FixupRound;
 };
+
+/** Fields a new student fix-up run clears (staff decisions on the old run). */
+export const FIXUP_RUN_UNSET = {
+  $unset: { "round.approvals": 1, "round.staffOverride": 1 },
+} as const;
+
+/** The round after a new student run: earlier staff decisions are dropped. */
+export function applyFixupRun(
+  round: FixupRound,
+  run: Pick<FixupRound, "githubUrl" | "vercelUrl" | "checkResults" | "submittedAt">,
+): FixupRound {
+  const { approvals: _a, staffOverride: _o, ...rest } = round;
+  void _a;
+  void _o;
+  return { ...rest, ...run };
+}
+
+/** Canvas section on the Clerk profile (publicMetadata.section / canvasSection). */
+export function sectionFromMetadata(meta: Record<string, unknown> | null | undefined): string | undefined {
+  for (const key of ["section", "canvasSection"]) {
+    const value = meta?.[key];
+    if (typeof value === "string" && value.trim()) return value.trim();
+  }
+  return undefined;
+}
 
 /** Mongo-safe key for a criterion in `round.approvals`. */
 export function fixupApprovalKey(criterionId: string): string {
@@ -158,6 +185,66 @@ export function buildFixupSnapshot(input: {
 export function fixableCriterionIds(original: FixupSnapshot): string[] {
   return original.criteria.filter((row) => row.points < row.maxPoints).map((row) => row.criterionId);
 }
+
+/* ------------------------------------------------------------------ */
+/* Section (roster first, then Canvas fallbacks)                       */
+/* ------------------------------------------------------------------ */
+
+export type FixupSectionSource = "roster" | "canvas_metadata" | "submission" | "none";
+
+/**
+ * The section whose window applies. The roster section wins. When it is
+ * blank, fall back to the Canvas section on the Clerk profile, then to the
+ * section stored with the student's submission. Staff views flag any
+ * fallback (and "none": that student can't get a window until fixed).
+ */
+export function resolveFixupSection(input: {
+  rosterSection?: string | null;
+  metadataSection?: string | null;
+  submissionSection?: string | null;
+}): { section: string | undefined; source: FixupSectionSource } {
+  const pick = (value: string | null | undefined) => value?.trim() || undefined;
+  const roster = pick(input.rosterSection);
+  if (roster) return { section: roster, source: "roster" };
+  const meta = pick(input.metadataSection);
+  if (meta) return { section: meta, source: "canvas_metadata" };
+  const sub = pick(input.submissionSection);
+  if (sub) return { section: sub, source: "submission" };
+  return { section: undefined, source: "none" };
+}
+
+export function fixupSectionWarning(source: FixupSectionSource | undefined): string | null {
+  switch (source) {
+    case "canvas_metadata":
+      return "No roster section: using the Canvas section on the student's profile.";
+    case "submission":
+      return "No roster section: using the section saved with the submission.";
+    case "none":
+      return "No section on file: this student can't get a fix-up window until the roster has a section.";
+    default:
+      return null;
+  }
+}
+
+/**
+ * The main assignment Save is blocked while the student has a round and
+ * the window is open (re-saving would mark the main grade "resubmitted
+ * after grading"). They use the fix-up form instead.
+ */
+export function mainSaveBlockedByFixup(
+  record: Pick<FixupRecord, "round"> | null | undefined,
+  window: FixupWindowState,
+): boolean {
+  return Boolean(record) && window.status === "open";
+}
+
+export const FIXUP_COPY = {
+  approvalsCleared:
+    "Each new fix-up run is checked from scratch: it clears any staff approvals and any staff override from earlier runs.",
+  mainSaveBlocked:
+    "Your fix-up round is open, so Submit is turned off here (it would replace your graded submission). Use the fix-up form below instead.",
+  noFixupSubmitted: "no fix-up submitted; original grade stands",
+} as const;
 
 /* ------------------------------------------------------------------ */
 /* Window                                                              */
@@ -274,6 +361,11 @@ export function evaluateFixup(input: {
   rubric: AssignmentRubric;
   original: FixupSnapshot;
   round: FixupRound | null | undefined;
+  /**
+   * The window has closed. A round that was never submitted is then final
+   * at the original grade (ready, nothing regained).
+   */
+  windowClosed?: boolean;
 }): FixupResult {
   const { assignmentId, rubric, original } = input;
   const round = input.round ?? null;
@@ -351,6 +443,20 @@ export function evaluateFixup(input: {
       reasons: [override.note ? `staff override: ${override.note}` : "staff override"],
     };
   }
+  if (!submitted && input.windowClosed) {
+    return {
+      items,
+      originalPoints,
+      maxPoints,
+      regained: 0,
+      newPoints: originalPoints,
+      source: "fixup",
+      submitted,
+      resolved: true,
+      pendingItems: [],
+      reasons: [FIXUP_COPY.noFixupSubmitted],
+    };
+  }
   if (!submitted) reasons.push("fix-up not submitted");
   if (pendingItems.length) reasons.push(`${pendingItems.length} item(s) need staff approval`);
   return {
@@ -385,6 +491,7 @@ export type FixupExportRow = {
   maxPoints: number;
   readyForCanvas: boolean;
   status: "ready" | "pending_staff" | "not_submitted";
+  sectionSource: FixupSectionSource;
   reasons: string;
 };
 
@@ -393,6 +500,9 @@ export function buildFixupExportRows(input: {
   rubric: AssignmentRubric;
   records: readonly FixupRecord[];
   section?: string | null;
+  /** With windows + now, a never-submitted round becomes final once its window closes. */
+  windows?: readonly FixupWindow[];
+  now?: Date;
 }): FixupExportRow[] {
   const section = input.section?.trim();
   return input.records
@@ -404,6 +514,7 @@ export function buildFixupExportRows(input: {
         rubric: input.rubric,
         original: record.original,
         round: record.round,
+        windowClosed: windowClosedFor(record, input.windows, input.now),
       });
       const ready = result.resolved;
       const status: FixupExportRow["status"] = ready
@@ -418,7 +529,9 @@ export function buildFixupExportRows(input: {
             ? `${item.criterionId} +${item.regained}`
             : `${item.criterionId} (${item.reason})`,
         );
-      const reasons = [...result.reasons, ...detail].join("; ") || "no items fixed";
+      const sectionNote = fixupSectionWarning(record.sectionSource);
+      const reasons =
+        [...result.reasons, ...detail, ...(sectionNote ? [sectionNote] : [])].join("; ") || "no items fixed";
       return {
         email: record.email ?? "",
         canvasUserId: record.canvasUserId ?? "",
@@ -433,6 +546,7 @@ export function buildFixupExportRows(input: {
         maxPoints: result.maxPoints,
         readyForCanvas: ready,
         status,
+        sectionSource: record.sectionSource ?? "roster",
         reasons,
       };
     })
@@ -443,6 +557,21 @@ export function buildFixupExportRows(input: {
           ? -1
           : 1,
     );
+}
+
+function windowClosedFor(
+  record: FixupRecord,
+  windows: readonly FixupWindow[] | undefined,
+  now: Date | undefined,
+): boolean {
+  if (!windows || !now) return false;
+  const state = fixupWindowState({ windows, assignmentId: record.assignmentId, section: record.section, now });
+  return state.status === "closed" || state.status === "superseded";
+}
+
+/** Whether a record's window is over (for the student and staff panels). */
+export function fixupWindowClosed(state: FixupWindowState): boolean {
+  return state.status === "closed" || state.status === "superseded";
 }
 
 function csvCell(value: string | number | boolean): string {
@@ -464,6 +593,7 @@ export const FIXUP_EXPORT_HEADERS = [
   "max_points",
   "ready_for_canvas",
   "status",
+  "section_source",
   "reasons",
 ] as const;
 
@@ -485,6 +615,7 @@ export function fixupExportCsv(rows: readonly FixupExportRow[]): string {
         row.maxPoints,
         row.readyForCanvas,
         row.status,
+        row.sectionSource,
         row.reasons,
       ]
         .map(csvCell)

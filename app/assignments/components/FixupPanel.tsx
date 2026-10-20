@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { openFixupRoundAction, submitFixupAction } from "../submission-actions";
-import type { FixupResult, FixupWindowState } from "@/lib/assignments/fixup";
+import { FIXUP_COPY, type FixupResult, type FixupWindowState } from "@/lib/assignments/fixup";
 import { formatPointsPercent } from "@/lib/assignments/grade";
 
 export type FixupPanelProps = {
@@ -52,6 +52,7 @@ export default function FixupPanel(props: FixupPanelProps) {
         Fix items you lost points on and earn back half of those points. Items you got full credit on stay
         locked, so your score can&apos;t go down. You get one round per assignment.
       </p>
+      <p>{FIXUP_COPY.approvalsCleared}</p>
       {"closesAt" in w ? (
         <p>
           {w.status === "not_open" ? `Opens ${when(w.opensAt)}. ` : null}
@@ -79,6 +80,7 @@ export default function FixupPanel(props: FixupPanelProps) {
               </>
             ) : null}
           </p>
+          {!result.submitted && result.resolved ? <p>No fix-up was submitted, so your original grade stands.</p> : null}
           {result.source === "override" ? <p>Your fix-up score was set by course staff.</p> : null}
           <table className="w-full text-left">
             <thead>

@@ -1,7 +1,7 @@
 import "server-only";
 
 import { getCollection } from "../mongo";
-import { fixupApprovalKey } from "./fixup";
+import { FIXUP_RUN_UNSET, fixupApprovalKey } from "./fixup";
 import type {
   FixupApproval,
   FixupRecord,
@@ -76,6 +76,7 @@ export async function openFixupRound(input: {
   email?: string;
   canvasUserId?: string;
   section?: string;
+  sectionSource?: FixupRecord["sectionSource"];
   original: FixupSnapshot;
   round: FixupRound;
 }): Promise<boolean> {
@@ -107,7 +108,9 @@ export async function saveFixupRun(input: {
         "round.submittedAt": input.submittedAt,
         updatedAt: new Date(),
       },
-      $unset: { "round.approvals": 1 as const },
+      // A new run is judged from scratch: earlier approvals and any staff
+      // override were decided against the old run.
+      ...FIXUP_RUN_UNSET,
     },
   );
   return result.matchedCount === 1;
