@@ -1,3 +1,18 @@
+import {
+  Lab3PathnameEmbed,
+  Lab3SearchParamsEmbed,
+  Lab3WindowEmbed,
+  Lab3GeolocationEmbed,
+  Lab3MapEmbed,
+  Lab3ClientIpEmbed,
+  Lab3ServerTimeEmbed,
+  Lab3OsEmbed,
+  Lab3EnvEmbed,
+  Lab3RequestHeadersEmbed,
+  Lab3WeatherEmbed,
+  Lab3VisitCounterEmbed,
+  Lab3ChildProcessEmbed,
+} from "./Lab3ApiEmbeds";
 import type { LectureEmbedId } from "@/lib/lectures/types";
 import AnchorsEmbed from "./AnchorsEmbed";
 import ButtonsEmbed from "./ButtonsEmbed";
@@ -458,6 +473,32 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <JsChildrenNestingOrderEmbed />;
     case "js-children-card":
       return <JsChildrenCardEmbed />;
+    case "lab3-pathname":
+      return <Lab3PathnameEmbed />;
+    case "lab3-search-params":
+      return <Lab3SearchParamsEmbed />;
+    case "lab3-window":
+      return <Lab3WindowEmbed />;
+    case "lab3-geolocation":
+      return <Lab3GeolocationEmbed />;
+    case "lab3-map":
+      return <Lab3MapEmbed />;
+    case "lab3-client-ip":
+      return <Lab3ClientIpEmbed />;
+    case "lab3-server-time":
+      return <Lab3ServerTimeEmbed />;
+    case "lab3-os":
+      return <Lab3OsEmbed />;
+    case "lab3-env":
+      return <Lab3EnvEmbed />;
+    case "lab3-request-headers":
+      return <Lab3RequestHeadersEmbed />;
+    case "lab3-weather":
+      return <Lab3WeatherEmbed />;
+    case "lab3-visit-counter":
+      return <Lab3VisitCounterEmbed />;
+    case "lab3-child-process":
+      return <Lab3ChildProcessEmbed />;
     case "js-add":
       return <JsAddEmbed />;
     case "js-square":
