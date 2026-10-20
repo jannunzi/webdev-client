@@ -297,6 +297,35 @@ function idPresent(config: AssignmentChecker, html: string, id: string): boolean
   return elementsWithId(html, id).some((element) => contentOk(id, element));
 }
 
+export function recheckLimitMessage(limit: number): string {
+  return `Needs TA review: your server couldn't be reached in ${limit} checks in a row, so this item is no longer kept as a re-check. No points until a TA checks it.`;
+}
+
+/**
+ * Re-check streaks for async-judged items (A5 server probes). An unreachable
+ * row counts one more than its previous saved streak; at `recheckLimit` it
+ * becomes a TA review row with no points, so a server that never answers
+ * never keeps full credit.
+ */
+function withRecheckStreaks(
+  config: AssignmentChecker,
+  rows: AssignmentCheckResult[],
+  unreachableIds: ReadonlySet<string>,
+  previous: readonly AssignmentCheckResult[] | undefined,
+): AssignmentCheckResult[] {
+  const limit = config.recheckLimit;
+  if (!limit) return rows;
+  return rows.map((row) => {
+    if (!row.criterionId || !unreachableIds.has(row.criterionId)) return row;
+    const before = previous?.find((prev) => prev.criterionId === row.criterionId)?.recheckStreak ?? 0;
+    const streak = before + 1;
+    if (streak >= limit) {
+      return { ...row, passed: false, needsReview: true, message: recheckLimitMessage(limit), recheckStreak: streak };
+    }
+    return { ...row, recheckStreak: streak };
+  });
+}
+
 /**
  * Turn verdicts into rows. A review candidate keeps its points only when
  * its gate passes (an On your own / With AI item needs its core item; a
@@ -348,6 +377,36 @@ function resolveVerdicts(
  * Same-origin fetches for resources a page links (stylesheets), through the
  * checker's probes, cached per run. Only paths on the deploy are fetched.
  */
+/** Remote fetches per run (A5 server probes); more are treated as unreachable. */
+export const REMOTE_FETCH_CAP = 40;
+
+function remoteFetcher(probes: AssignmentCheckProbes): (url: string) => Promise<FetchTextResult> {
+  const cache = new Map<string, Promise<FetchTextResult>>();
+  return (raw) => {
+    let url: string;
+    try {
+      const parsed = new URL(raw);
+      if (parsed.protocol !== "https:") return Promise.resolve({ ok: false, missing: false });
+      url = parsed.href;
+    } catch {
+      return Promise.resolve({ ok: false, missing: false });
+    }
+    const hit = cache.get(url);
+    if (hit) return hit;
+    if (cache.size >= REMOTE_FETCH_CAP) return Promise.resolve({ ok: false, missing: false });
+    const pending = probes
+      .getHtml(url)
+      .then((result): FetchTextResult => {
+        if (result.ok) return { ok: true, text: result.html };
+        const missing = isDefiniteNotFound({ path: url, ok: false, status: result.status, code: result.code });
+        return { ok: false, status: result.status, missing };
+      })
+      .catch((): FetchTextResult => ({ ok: false, missing: false }));
+    cache.set(url, pending);
+    return pending;
+  };
+}
+
 function textFetcher(
   origin: string,
   probes: AssignmentCheckProbes,
@@ -391,6 +450,8 @@ export async function runChecker(
     vercelUrl: string;
     nameQuery?: NameQuery;
     probes: AssignmentCheckProbes;
+    /** The submission's last saved results, for re-check streaks. */
+    previousResults?: readonly AssignmentCheckResult[];
   },
 ): Promise<AssignmentCheckResult[]> {
   const results: AssignmentCheckResult[] = [];
@@ -751,13 +812,24 @@ export async function runChecker(
           structure,
           attempted,
           fetchText: textFetcher(crawled.origin, input.probes),
+          fetchRemote: remoteFetcher(input.probes),
         })
       : {};
     const verdicts = config.autoSpecs.map((spec) => ({
       spec,
       verdict: custom[spec.criterionId] ?? judgeSpec(config, spec, structure),
     }));
-    results.push(...withLab1NotFoundNote(resolveVerdicts(config, verdicts, results), attempted));
+    results.push(
+      ...withLab1NotFoundNote(
+        withRecheckStreaks(
+          config,
+          resolveVerdicts(config, verdicts, results),
+          new Set(verdicts.filter(({ spec, verdict }) => verdict.kind === "unreachable" && spec.criterionId in custom).map(({ spec }) => spec.criterionId)),
+          input.previousResults,
+        ),
+        attempted,
+      ),
+    );
   }
 
   for (const row of config.manualRows) {

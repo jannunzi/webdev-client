@@ -145,6 +145,7 @@ export async function runStaffAssignmentChecks(input: {
     githubUrl,
     vercelUrl,
     nameQuery: resolveNameQuery({ rosterName: target.doc.name }),
+    previousResults: target.doc.checkResults,
     probes: {
       getHtml: fetchDeployHtml,
       probeUrl: probeGithubRepo,
@@ -368,6 +369,7 @@ export async function rerunAssignmentChecksBatch(input: {
         vercelUrl: doc.vercelUrl,
         nameQuery: resolveNameQuery({ rosterName: doc.name }),
         probes: { getHtml: fetchDeployHtml, probeUrl: probeGithubRepo },
+        previousResults: doc.checkResults,
       }),
   });
   return { ok: true, ...batch };

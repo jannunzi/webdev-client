@@ -54,6 +54,12 @@ export type AutoJudgeContext = {
    * the checker's own probes. Cached per run.
    */
   fetchText: (pathOrUrl: string) => Promise<FetchTextResult>;
+  /**
+   * Fetch an https URL on another origin (A5 reads the student's own Node
+   * server, linked from their Lab pages) through the same probes, so the
+   * deploy fetcher's blocked-host rules still apply. Cached and capped per run.
+   */
+  fetchRemote?: (url: string) => Promise<FetchTextResult>;
 };
 
 /**
@@ -90,6 +96,11 @@ export type AssignmentChecker = {
    * `minPassed` of `requires` (criterion ids) passed; otherwise it fails.
    * Missing entry: review is always allowed.
    */
+  /**
+   * Async-judged items that stay unreachable this many saved runs in a row go
+   * to TA review with no points (instead of re-check, points kept).
+   */
+  recheckLimit?: number;
   reviewGates?: Readonly<Record<string, { requires: readonly string[]; minPassed: number }>>;
   /**
    * Ids-optional checkers that need more than page HTML (A2 reads the
