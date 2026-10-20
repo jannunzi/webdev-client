@@ -47,6 +47,8 @@ export default function A1WorkArea({
   selectedFilter?: string;
   /** The signed-in student's roster flags, computed the same way as the export. */
   studentRoster?: RosterFlags | null;
+  /** An open fix-up round: the main Submit is off (use the fix-up form). */
+  fixupLock?: boolean;
 }) {
   return (
     <AssignmentViewer serverUserId={serverUserId} authEnabled={authEnabled}>
@@ -78,6 +80,7 @@ function A1WorkSession({
   selectedSection,
   selectedFilter,
   studentRoster,
+  fixupLock = false,
 }: {
   assignment: AssignmentHubItem;
   initialSubmission: AssignmentSubmissionView | null;
@@ -91,6 +94,7 @@ function A1WorkSession({
   selectedSection?: string;
   selectedFilter?: string;
   studentRoster?: RosterFlags | null;
+  fixupLock?: boolean;
 }) {
   const staffMode = Boolean(selectedStudent);
   const criteriaForInit = assignment.rubric ? listRubricCriteria(assignment.rubric) : [];
@@ -290,6 +294,7 @@ function A1WorkSession({
           impersonating={impersonating}
           gateReason={canSubmit || staffMode ? null : gateReason}
           staffStudentKey={selectedStudent?.key}
+          fixupLock={fixupLock && !staffMode}
           canSaveGrade={staffMode && !impersonating}
           saveGradeDisabled={!draft || pendingGrade}
           pendingGrade={pendingGrade}
