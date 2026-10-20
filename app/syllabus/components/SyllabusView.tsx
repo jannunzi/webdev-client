@@ -1,7 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { SECTION_STORAGE_KEY, findSection } from "../data/sections";
+import { useMemo, useState, useSyncExternalStore } from "react";
+import {
+  SECTION_STORAGE_KEY,
+  findSection,
+  resolveStoredSectionId,
+} from "../data/sections";
 import { projectBlurb } from "../data/project";
 import type {
   AgendaGroup,
@@ -37,6 +41,19 @@ import SectionTabs from "./SectionTabs";
 import SyllabusHeader from "./SyllabusHeader";
 import SyllabusNav from "./SyllabusNav";
 import TitleIX from "./TitleIX";
+
+function readStoredSection(): string | null {
+  try {
+    return window.localStorage.getItem(SECTION_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function subscribeToStoredSection(onChange: () => void): () => void {
+  window.addEventListener("storage", onChange);
+  return () => window.removeEventListener("storage", onChange);
+}
 
 export default function SyllabusView({
   course,
@@ -87,18 +104,26 @@ export default function SyllabusView({
   titleIX: PolicyBlock;
   disabilities: PolicyBlock;
 }) {
-  const [sectionId, setSectionId] = useState(defaultSectionId);
-
-  useEffect(() => {
-    const stored = window.localStorage.getItem(SECTION_STORAGE_KEY);
-    if (stored && sections.some((section) => section.id === stored)) {
-      setSectionId(stored);
-    }
-  }, [sections]);
+  // In-session pick (works even if localStorage is blocked).
+  const [chosenId, setChosenId] = useState<string | null>(null);
+  // Saved pick. Server snapshot is null so SSR and hydration render the first
+  // tab; the saved section is applied right after hydration.
+  const storedId = useSyncExternalStore(
+    subscribeToStoredSection,
+    readStoredSection,
+    () => null,
+  );
+  const sectionId =
+    chosenId ??
+    (storedId ? resolveStoredSectionId(storedId, sections) : defaultSectionId);
 
   function selectSection(id: string) {
-    setSectionId(id);
-    window.localStorage.setItem(SECTION_STORAGE_KEY, id);
+    setChosenId(id);
+    try {
+      window.localStorage.setItem(SECTION_STORAGE_KEY, id);
+    } catch {
+      // Storage blocked: selection still works for this visit.
+    }
   }
 
   const section = useMemo(
