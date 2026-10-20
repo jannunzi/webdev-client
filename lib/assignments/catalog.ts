@@ -4,6 +4,7 @@ import type { Deadline } from "@/app/syllabus/data/types";
 import { COURSE_SITE_ORIGIN } from "@/lib/course-site/origin";
 import { A1_RUBRIC } from "./a1";
 import { A2_RUBRIC } from "./a2";
+import { A3_RUBRIC } from "./a3";
 import type {
   AssignmentHubItem,
   AssignmentId,
@@ -14,6 +15,7 @@ import type {
 const RUBRICS: Partial<Record<AssignmentId, AssignmentRubric>> = {
   a1: A1_RUBRIC,
   a2: A2_RUBRIC,
+  a3: A3_RUBRIC,
 };
 
 export { COURSE_SITE_ORIGIN };

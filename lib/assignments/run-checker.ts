@@ -29,13 +29,13 @@ import {
   htmlHasId,
   isLabsPath,
 } from "./html";
-import { hasUsableNameQuery, htmlHasStudentName, type NameQuery } from "./names";
+import { hasUsableNameQuery, htmlHasStudentName, studentNameVerdict, type NameQuery } from "./names";
 import {
   GITHUB_RECHECK_MESSAGE,
   NEEDS_RECHECK_ROW_MESSAGE,
   needsReviewMessage,
 } from "./check-status";
-import { ASSIGNMENT_STUDENT_COPY } from "./student-copy";
+import { ASSIGNMENT_STUDENT_COPY, routeCaseWarning } from "./student-copy";
 import {
   a2GithubSchemeMessage,
   githubUrlBranch,
@@ -531,6 +531,7 @@ export async function runChecker(
     verifyPaths: Object.values(config.verifyPaths),
     followupCap: config.followupCap,
     extraCourseScreens: config.extraCourseScreens,
+    caseVariants: !config.lowercaseRoutesOnly,
     getHtml: async (url) => classifyDeployFetch(await input.probes.getHtml(url)),
   });
   if (!crawled.ok) {
@@ -666,7 +667,20 @@ export async function runChecker(
     const canCheckName = Boolean(
       input.nameQuery && hasUsableNameQuery(input.nameQuery),
     );
-    if (canCheckName && input.nameQuery) {
+    if (config.strictNames && input.nameQuery) {
+      const verdict = studentNameVerdict(crawled.labsHtml, input.nameQuery);
+      const extra = { criterionId: delivery.name.criterionId, groupId: delivery.name.groupId };
+      results.push(
+        verdict === "found"
+          ? check(delivery.name.criterionId, delivery.name.label, true, ASSIGNMENT_STUDENT_COPY.nameOk, extra)
+          : verdict === "review"
+            ? check(delivery.name.criterionId, delivery.name.label, true, ASSIGNMENT_STUDENT_COPY.nameNeedsReview, {
+                ...extra,
+                needsReview: true,
+              })
+            : deliveryMiss(delivery.name.criterionId, delivery.name.label, ASSIGNMENT_STUDENT_COPY.nameMissing, extra),
+      );
+    } else if (canCheckName && input.nameQuery) {
       const named = htmlHasStudentName(crawled.labsHtml, input.nameQuery);
       const extra = { criterionId: delivery.name.criterionId, groupId: delivery.name.groupId };
       results.push(
@@ -756,5 +770,22 @@ export async function runChecker(
     );
   }
 
+  if (config.routeCaseHints?.length) {
+    const origin = new URL(vercel.href).origin;
+    for (const hint of config.routeCaseHints) {
+      const lower = crawled.pages.find((page) => page.path.toLowerCase() === hint.path.toLowerCase());
+      if (!lower || lower.result.ok || !isDefiniteNotFound({ path: lower.path, ok: false, status: lower.result.status, code: lower.result.code })) continue;
+      const capital = classifyDeployFetch(await input.probes.getHtml(origin + hint.capitalized));
+      if (!capital.ok) continue;
+      results.push(
+        check("route-case-warning", "Lowercase routes", false, routeCaseWarning(hint.path, hint.capitalized), {
+          groupId: "delivery",
+          skipped: true,
+          warning: true,
+        }),
+      );
+      break;
+    }
+  }
   return results;
 }

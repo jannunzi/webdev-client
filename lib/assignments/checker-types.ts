@@ -73,6 +73,12 @@ export type AssignmentChecker = {
    * `reviewGates` entry allows it.
    */
   idsOptional?: boolean;
+  /** Whole-word name check on visible text, with TA review for partial matches (A3 onward). */
+  strictNames?: boolean;
+  /** Never crawl /Courses/... spellings (A3 onward). */
+  lowercaseRoutesOnly?: boolean;
+  /** Before submit: warn (no credit) when a lowercase route 404s but its capitalized form loads. */
+  routeCaseHints?: readonly { path: string; capitalized: string }[];
   structureFallbacks?: Readonly<Record<string, StructureFallback>>;
   /**
    * Ids-optional checkers: an element found by its wd-* id counts only when

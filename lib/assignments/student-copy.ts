@@ -36,7 +36,7 @@ export const ASSIGNMENT_STUDENT_COPY = {
   notConfiguredTitle: "URL submit is not available yet",
   notConfigured:
     "This is not a date lock. The course site could not read the imported Canvas/FACT roster, so submitting URLs stays closed. You can still run checks on a public Vercel URL. Sign in with the same Northeastern email you use on Canvas. If you are still blocked, ask staff on Piazza to refresh the roster or contact the instructor — this is a site roster connection problem, not a missing Sign-in.",
-  unknownAssignment: "URL submit is only available for A1 and A2 right now.",
+  unknownAssignment: "URL submit is only available for A1, A2, and A3 right now.",
   impersonationBanner:
     "Impersonation — you can run checks to smoke-test the form. This does not submit.",
   saved: "Submitted. You can run checks again after you update your Vercel URL.",
@@ -57,6 +57,8 @@ export const ASSIGNMENT_STUDENT_COPY = {
     "Enter a public GitHub repository URL such as https://github.com/yourname/webdev-client.",
   a2GithubRequired:
     "Enter the GitHub URL of your repository, such as https://github.com/yourname/webdev-client (the a2 branch URL works too).",
+  a3GithubRequired:
+    "Enter the GitHub URL of your repository, such as https://github.com/yourname/webdev-client (the a3 branch URL works too).",
   a2GithubBranchUrl:
     "Enter an https GitHub URL for your repository, such as https://github.com/yourname/webdev-client.",
   githubRetry: "GitHub didn't respond, try again",
@@ -88,6 +90,8 @@ export const ASSIGNMENT_STUDENT_COPY = {
     "The page opened, but we couldn't find links to your lab pages (Lab 1, Lab 2, Lab 3) on /labs. Open /labs on your deploy and follow Chapter 1.",
   labsUnread: "Could not read the page to check Labs markers.",
   nameOk: "Found your full Canvas name on Labs.",
+  nameNeedsReview:
+    "Needs TA review: we found only part of your Canvas name on Labs (or your roster name is a single word or initials). A TA will confirm it.",
   nameCheckNeedsRoster:
     "Sign in with your Canvas email so Run checks can compare your name on Labs with the course roster. Staff check your name again when grading.",
   nameMissing:
@@ -103,3 +107,8 @@ export const ASSIGNMENT_STUDENT_COPY = {
 } as const;
 
 export type AssignmentStudentCopyKey = keyof typeof ASSIGNMENT_STUDENT_COPY;
+
+/** Before-submit warning when a lowercase route 404s but its capitalized form loads. */
+export function routeCaseWarning(path: string, capitalized: string): string {
+  return `Warning: ${path} returned 404, but ${capitalized} loads. Routes are case-sensitive and the checks open lowercase paths only, so those pages earn no credit. Rename your folders to lowercase (for example app/labs/lab3) as in the book, redeploy, and run checks again before you submit.`;
+}
