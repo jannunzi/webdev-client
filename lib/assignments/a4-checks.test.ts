@@ -269,3 +269,9 @@ describe("A4 wiring", () => {
     assert.deepEqual(A4_CHECKER.verifyHashes, {});
   });
 });
+
+it("A4 dashboard form that starts blank still passes", async () => {
+  const { dashboardHasForm } = await import("./a4-structure");
+  const html = `<main><div><h1>Dashboard</h1><h5>New Course<button>Add</button><button>Update</button></h5><input value="" placeholder="Name"/><textarea placeholder="Description"></textarea><div><a href="/courses/1/home">A</a><a href="/courses/2/home">B</a></div></div></main>`;
+  assert.equal(dashboardHasForm(html, { siteHost: "x.vercel.app" } as never), true);
+});

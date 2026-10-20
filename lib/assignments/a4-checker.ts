@@ -113,7 +113,7 @@ export const A4_CHECKER: AssignmentChecker = {
     vercelCriterionId: "a4-delivery-vercel",
     previewBranch: "a4",
     previewHostMessage:
-      "Submit the a4 branch preview on Vercel. The first hostname label must include -git-a4- or end in -git-a4 (Vercel cuts labels after 63 characters), and the host must end in .vercel.app. Staff can override this at grading.",
+      "Submit the Vercel address made for your a4 branch, for example https://webdev-client-git-a4-yourname.vercel.app: the part before .vercel.app must include -git-a4 (Vercel may cut a long address right after it). Find it in Vercel under Deployments, on the deployment for the a4 branch. Staff can override this at grading.",
     labsNav: {
       criterionId: "a4-delivery-labs-nav",
       groupId: "delivery",
