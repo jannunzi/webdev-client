@@ -464,3 +464,44 @@ describe("A3 student copy stays in plain terms", () => {
     }
   });
 });
+
+describe("A3 review fixes (Quentin, ffbc2b8)", () => {
+  const roster = (name: string, html: string) => studentNameVerdict(html, resolveNameQuery({ rosterName: name }));
+  it("ignores accents in names", () => {
+    assert.equal(roster("Núñez, José", "<h1>Jose Nunez</h1>"), "found");
+    assert.equal(roster("Nunez, Jose", "<h1>José Núñez</h1>"), "found");
+  });
+  it("does not count a name that is only in <title>", () => {
+    assert.equal(roster("Lee, Ann", "<html><head><title>Ann Lee</title></head><body><p>Labs</p></body></html>"), "missing");
+    assert.equal(roster("Lee, Ann", "<html><head><title>Ann Lee</title></head><body><p>Ann Lee</p></body></html>"), "found");
+  });
+
+  const lab3 = (edit: (html: string) => string) => on(is("/labs/lab3"), edit);
+  const line = (from: RegExp, to: string) => lab3((h) => h.replace(from, to));
+  const NULL_LINE = "nullValue ?? &quot;default&quot; = <!-- -->default";
+  it("accepts other quote styles and separators on the ?? lines", async () => {
+    for (const text of ["nullValue ?? 'default': default", "nullValue ?? “default” is default", "nullValue ?? `default` → default"]) {
+      const { failed, review } = await grade(lab3((h) => {
+        assert.ok(h.includes(NULL_LINE));
+        return h.replace(NULL_LINE, text);
+      }));
+      assert.deepEqual(failed, [], text);
+      assert.ok(!review.includes("a3-lab-oyo-null-default"), text);
+    }
+    const garage = await grade(lab3((h) => h.replace(/house\.garage\?\.cars \?\? 0 = (<!-- -->)?0/, "house.garage?.cars ?? 0 → 0")));
+    assert.deepEqual(garage.failed, []);
+  });
+  it("sends a different ?? line to TA review instead of failing it", async () => {
+    const { failed, review } = await grade(lab3((h) => h.replace(/house\.garage\?\.cars \?\? 0 = (<!-- -->)?0/, "house.garage?.cars ?? 0 gives zero")));
+    assert.deepEqual(failed, []);
+    assert.ok(review.includes("a3-lab-oyo-garage"));
+    void line;
+  });
+  it("counts todo checkboxes only, checked or not", async () => {
+    const { failed } = await grade(lab3((h) => {
+      assert.ok(h.includes(' checked=""'));
+      return h.replace(/ checked=""/g, "");
+    }));
+    assert.deepEqual(failed, []);
+  });
+});

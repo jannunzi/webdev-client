@@ -359,15 +359,12 @@ export function lab3PathParameters(lab3Html: string, ctx: StructureContext): Str
   return pages.every(({ probe, page }) => page.state === "ok" && showsNumber(textOf(page.html), probe.sum));
 }
 
-function isChecked(open: string): boolean {
-  return /\schecked(\s|=|\/|>)/i.test(open);
-}
 
 export function lab3HasTodoList(html: string): boolean {
   return ["ul", "ol"].some((tag) =>
     elements(html, tag).some((list) => {
       const boxes = elements(list.inner, "input", true).filter((input) => attr(input.open, "type").toLowerCase() === "checkbox");
-      return boxes.length >= 3 && boxes.some((box) => isChecked(box.open)) && boxes.some((box) => !isChecked(box.open));
+      return boxes.length >= 3;
     }),
   );
 }
@@ -405,12 +402,32 @@ const flat = (html: string) => textOf(html).replace(/\s+/g, " ");
 /** Exact rendered results the book gives for an On your own step. */
 export const A3_OYO_TEXT: Record<string, RegExp> = {
   "a3-lab-oyo-pathname-length": /pathname length:\s*10(?!\d)/i,
-  "a3-lab-oyo-garage": /house\.garage\?\.cars\s*\?\?\s*0\s*=\s*0(?!\d)/,
-  "a3-lab-oyo-null-default": /nullValue\s*\?\?\s*"default"\s*=\s*default/,
   "a3-lab-oyo-good-morning": /good morning/i,
   "a3-lab-oyo-guest-inline": /guest inline/i,
   "a3-lab-oyo-add-30": /a\s*\+\s*b\s*=\s*30(?!\d)/,
 };
+
+const SEP = String.raw`\s*(?:=|:|is|→|->)\s*`;
+const Q = String.raw`["'\u2018\u2019\u201c\u201d\u0060]`;
+/** Book lines with a ?? result: any quote style, and =, :, is or → between label and value. */
+const NULLISH_LINES: Record<string, { exact: RegExp; near: RegExp }> = {
+  "a3-lab-oyo-null-default": {
+    exact: new RegExp(String.raw`nullValue\s*\?\?\s*${Q}default${Q}${SEP}${Q}?default${Q}?(?![\w])`, "i"),
+    near: /nullValue\s*\?\?/i,
+  },
+  "a3-lab-oyo-garage": {
+    exact: new RegExp(String.raw`garage\s*\?\.\s*cars\s*\?\?\s*0${SEP}0(?!\d)`, "i"),
+    near: /garage[\s\S]{0,20}\?\?/i,
+  },
+};
+
+/** Exact line → pass; a different line near the same ?? expression → TA review; nothing → fail. */
+export function lab3OyoNullishLine(html: string, criterionId: string): StructureVerdict {
+  const text = flat(html);
+  const rule = NULLISH_LINES[criterionId];
+  if (rule.exact.test(text)) return true;
+  return rule.near.test(text) ? "review" : false;
+}
 
 export function lab3OyoText(html: string, criterionId: string): boolean {
   return A3_OYO_TEXT[criterionId].test(flat(html));
@@ -462,12 +479,12 @@ export function lab3OyoThirdAddLink(html: string, ctx: StructureContext): boolea
   );
 }
 
-/** §3.7.4: four todo checkboxes, at least one checked and one not. */
+/** §3.7.4: four todo checkboxes (checked state is not graded). */
 export function lab3OyoFourTodos(html: string): boolean {
   return ["ul", "ol"].some((tag) =>
     elements(html, tag).some((list) => {
       const boxes = elements(list.inner, "input", true).filter((input) => attr(input.open, "type").toLowerCase() === "checkbox");
-      return boxes.length >= 4 && boxes.some((box) => isChecked(box.open)) && boxes.some((box) => !isChecked(box.open));
+      return boxes.length >= 4;
     }),
   );
 }
@@ -825,8 +842,8 @@ export const A3_STRUCTURE_FALLBACKS: Readonly<Record<string, StructureFallback>>
     test: (html, ctx) => lab3PathParameters(html, ctx),
   }),
   "a3-lab-todos": fallback({
-    looksFor: "a list of at least 3 todo checkboxes, some checked and some not",
-    missMessage: "We couldn't find the todo list on /labs/lab3 (a list of at least 3 checkboxes, at least one checked and one unchecked).",
+    looksFor: "a list of at least 3 todo checkboxes",
+    missMessage: "We couldn't find the todo list on /labs/lab3 (a list of at least 3 checkboxes).",
     target: LAB3,
     test: (html) => lab3HasTodoList(html),
   }),
@@ -864,7 +881,7 @@ export const A3_STRUCTURE_FALLBACKS: Readonly<Record<string, StructureFallback>>
     looksFor: "nullValue ?? \"default\" = default",
     missMessage: "The null and undefined section should show the line nullValue ?? \"default\" = default.",
     target: LAB3,
-    test: (html) => lab3OyoText(html, "a3-lab-oyo-null-default"),
+    test: (html) => lab3OyoNullishLine(html, "a3-lab-oyo-null-default"),
   }),
   "a3-lab-oyo-owners": fallback({
     looksFor: "an owners heading under the house",
@@ -882,7 +899,7 @@ export const A3_STRUCTURE_FALLBACKS: Readonly<Record<string, StructureFallback>>
     looksFor: "house.garage?.cars ?? 0 = 0",
     missMessage: "The optional chaining section should show the line house.garage?.cars ?? 0 = 0.",
     target: LAB3,
-    test: (html) => lab3OyoText(html, "a3-lab-oyo-garage"),
+    test: (html) => lab3OyoNullishLine(html, "a3-lab-oyo-garage"),
   }),
   "a3-lab-oyo-pathname-length": fallback({
     looksFor: "Pathname length: 10",
@@ -909,8 +926,8 @@ export const A3_STRUCTURE_FALLBACKS: Readonly<Record<string, StructureFallback>>
     test: (html, ctx) => lab3OyoThirdAddLink(html, ctx),
   }),
   "a3-lab-oyo-todos": fallback({
-    looksFor: "four todo checkboxes, some checked and some not",
-    missMessage: "The Todo List should show four checkbox rows, at least one checked and one unchecked.",
+    looksFor: "four todo checkboxes",
+    missMessage: "The Todo List should show four checkbox rows.",
     target: LAB3,
     test: (html) => lab3OyoFourTodos(html),
   }),

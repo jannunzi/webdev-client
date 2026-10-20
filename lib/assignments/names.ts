@@ -121,14 +121,16 @@ export type NameVerdict = "found" | "review" | "missing";
 /** Words of the visible page text: tags, attributes, scripts and styles removed. */
 function visibleWords(html: string): string[] {
   const text = html
-    .replace(/<(script|style|noscript|template)\b[\s\S]*?<\/\1>/gi, " ")
+    .replace(/<head\b[\s\S]*?<\/head>/gi, " ")
+    .replace(/<(script|style|noscript|template|title)\b[\s\S]*?<\/\1>/gi, " ")
     .replace(/<!--[\s\S]*?-->/g, " ")
     .replace(/<[^>]*>/g, " ")
     .replace(/&nbsp;|&#160;/gi, " ")
     .replace(/&amp;/gi, "&")
     .replace(/&#x27;|&#39;|&apos;/gi, "'");
   return text
-    .normalize("NFC")
+    .normalize("NFD")
+    .replace(/\p{M}+/gu, "")
     .toLowerCase()
     .split(/[^\p{L}\p{N}'-]+/u)
     .map((word) => word.replace(/^['-]+|['-]+$/g, "").replace(/'s$/, ""))
@@ -137,7 +139,8 @@ function visibleWords(html: string): string[] {
 
 function nameTokens(value: string | undefined): string[] {
   return (value ?? "")
-    .normalize("NFC")
+    .normalize("NFD")
+    .replace(/\p{M}+/gu, "")
     .toLowerCase()
     .split(/[^\p{L}\p{N}'-]+/u)
     .filter((token) => token.length >= 2 && !SKIP_NAME_TOKENS.has(token));
@@ -152,7 +155,8 @@ function hasSequence(words: string[], tokens: string[]): boolean {
 }
 
 /**
- * Whole-word name check on visible text only (A3 onward). Found: a full
+ * Whole-word name check on visible text only (A3 onward): <head>/<title> never
+ * count, and accents are ignored (José Núñez matches Jose Nunez). Found: a full
  * name phrase appears as consecutive words, or the first and last names
  * both appear as words. Review: the roster name is one word or initials,
  * or only one of the two names is on the page. One-letter tokens never count.

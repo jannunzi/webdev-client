@@ -136,7 +136,7 @@ export const A3_RUBRIC: AssignmentRubric = {
           id: "a3-lab-todos",
           label: "Todo list",
           description:
-            "A list of at least 3 todo checkboxes rendered from todos.json, with at least one checked and one unchecked.",
+            "A list of at least 3 todo checkboxes rendered from todos.json.",
           points: 2,
           bookHref: "/book/ch3#sec-3-7-4",
           bookLabel: "§3.7.4",
@@ -175,7 +175,7 @@ export const A3_RUBRIC: AssignmentRubric = {
           id: "a3-lab-oyo-null-default",
           label: "nullValue ?? \"default\"",
           description:
-            "A line reads nullValue ?? \"default\" = default.",
+            "A line shows nullValue ?? \"default\" and its result, default (any quotes; =, :, is or → between them).",
           points: 1,
           bookHref: "/book/ch3#sec-3-2-7",
           bookLabel: "§3.2.7",
@@ -205,7 +205,7 @@ export const A3_RUBRIC: AssignmentRubric = {
           id: "a3-lab-oyo-garage",
           label: "Optional chaining: garage",
           description:
-            "A line reads house.garage?.cars ?? 0 = 0.",
+            "A line shows house.garage?.cars ?? 0 and its result, 0 (=, :, is or → between them).",
           points: 1,
           bookHref: "/book/ch3#sec-3-4-17",
           bookLabel: "§3.4.17",
@@ -275,7 +275,7 @@ export const A3_RUBRIC: AssignmentRubric = {
           id: "a3-lab-oyo-todos",
           label: "Todo List: fourth todo",
           description:
-            "The Todo List shows four checkbox rows, at least one checked and one unchecked.",
+            "The Todo List shows four checkbox rows.",
           points: 1,
           bookHref: "/book/ch3#sec-3-7-4",
           bookLabel: "§3.7.4",
