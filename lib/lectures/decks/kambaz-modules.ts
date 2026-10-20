@@ -21,7 +21,7 @@ export const KAMBAZ_MODULES_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "module",
+    id: "module-intro",
     title: "Module is one week",
     kind: "content",
     bullets: [
@@ -29,6 +29,11 @@ export const KAMBAZ_MODULES_SLIDES: LectureSlide[] = [
       "Title plus a `children` slot where lessons nest",
       "Classes: `wd-module`, `wd-title`, `wd-lessons`",
     ],
+  },
+  {
+    id: "module",
+    title: "Module is one week (code)",
+    kind: "content",
     code: `import type { ReactNode } from "react";
 
 export default function Module({
@@ -49,7 +54,7 @@ export default function Module({
     codeFile: "app/(kambaz)/courses/[cid]/modules/Module.tsx",
   },
   {
-    id: "lesson",
+    id: "lesson-intro",
     title: "Lesson nests content items",
     kind: "content",
     bullets: [
@@ -57,6 +62,11 @@ export default function Module({
       "Same shape one level down — LEARNING OBJECTIVES, READING, SLIDES",
       "Always render `wd-content` so `{children}` stay the pattern",
     ],
+  },
+  {
+    id: "lesson",
+    title: "Lesson nests content items (code)",
+    kind: "content",
     code: `import type { ReactNode } from "react";
 
 export default function Lesson({
@@ -89,7 +99,7 @@ export default function Lesson({
     imageCaption: "Figure 1.4.5a — Modules Screen",
   },
   {
-    id: "modules-page",
+    id: "modules-page-intro",
     title: "Modules.tsx uses Module + Lesson",
     kind: "content",
     bullets: [
@@ -97,6 +107,11 @@ export default function Lesson({
       "Weeks 2–3 can start thin",
       "List id `wd-modules`",
     ],
+  },
+  {
+    id: "modules-page",
+    title: "Modules.tsx uses Module + Lesson (code)",
+    kind: "content",
     code: `import Module from "./Module";
 import Lesson from "./Lesson";
 
@@ -151,13 +166,18 @@ export default function Modules() {
     ],
   },
   {
-    id: "status",
+    id: "status-intro",
     title: "Implement Course Status Sidebar",
     kind: "content",
     bullets: [
       "`app/(kambaz)/courses/[cid]/home/Status.tsx` — wrapper `wd-course-status`",
       "Start from the stub; complete the remaining buttons on your own",
     ],
+  },
+  {
+    id: "status",
+    title: "Implement Course Status Sidebar (code)",
+    kind: "content",
     code: `export default function CourseStatus() {
   return (
     <div id="wd-course-status">
@@ -186,7 +206,7 @@ export default function Modules() {
     imageCaption: "Figure 1.4.6a — Home Screen",
   },
   {
-    id: "home",
+    id: "home-intro",
     title: "Implementing the Home Screen",
     kind: "content",
     bullets: [
@@ -194,6 +214,11 @@ export default function Modules() {
       "Import the Modules **page** — `import Modules from \"../modules/page\"`",
       "Delete any leftover `page.tsx` directly under `courses/[cid]/`",
     ],
+  },
+  {
+    id: "home",
+    title: "Implementing the Home Screen (code)",
+    kind: "content",
     code: `import Modules from "../modules/page";
 import CourseStatus from "./Status";
 

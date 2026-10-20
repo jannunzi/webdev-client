@@ -22,7 +22,7 @@ export const KAMBAZ_ACCOUNT_CONTEXT_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "context",
+    id: "context-intro",
     title: "AccountContext holds the user",
     kind: "content",
     bullets: [
@@ -30,6 +30,11 @@ export const KAMBAZ_ACCOUNT_CONTEXT_SLIDES: LectureSlide[] = [
       "`currentUser` starts `null` until someone signs in",
       "The hook throws outside the provider — same as `useCounterContext`",
     ],
+  },
+  {
+    id: "context",
+    title: "AccountContext holds the user (code)",
+    kind: "content",
     code: `"use client";
 
 import { createContext, useContext, useState, type ReactNode } from "react";
@@ -65,7 +70,7 @@ export function useAccountContext() {
     codeHighlightLines: [[8, 11], [15, 21], [24, 29]],
   },
   {
-    id: "layout",
+    id: "layout-intro",
     title: "Wrap the Kambaz layout",
     kind: "content",
     bullets: [
@@ -73,6 +78,11 @@ export function useAccountContext() {
       "Every Kambaz screen then sits inside `AccountProvider`",
       "Confirm Sign in, Dashboard, and Profile can call the hook",
     ],
+  },
+  {
+    id: "layout",
+    title: "Wrap the Kambaz layout (code)",
+    kind: "content",
     code: `import { AccountProvider } from "./account/AccountContext";
 
 export default function KambazLayout({

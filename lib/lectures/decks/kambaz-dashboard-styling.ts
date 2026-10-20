@@ -22,7 +22,7 @@ export const KAMBAZ_DASHBOARD_STYLING_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "card",
+    id: "card-intro",
     title: "CourseCard gets dressed",
     kind: "content",
     bullets: [
@@ -30,6 +30,11 @@ export const KAMBAZ_DASHBOARD_STYLING_SLIDES: LectureSlide[] = [
       "`truncate` + `whitespace-nowrap` keeps long titles on one line",
       "`h-40 w-full object-cover` crops the `next/image` photo",
     ],
+  },
+  {
+    id: "card",
+    title: "CourseCard gets dressed (code)",
+    kind: "content",
     code: `import Link from "next/link";
 import Image from "next/image";
 
@@ -77,7 +82,7 @@ export default function CourseCard({
     codeAddedLines: [[1, 2]],
   },
   {
-    id: "grid",
+    id: "grid-intro",
     title: "One column, then 2 / 3 / 4",
     kind: "content",
     bullets: [
@@ -85,6 +90,11 @@ export default function CourseCard({
       "`gap-8` is ~32px of white space between cards. The space grows when a grid column is wider than its card",
       "Existing `CourseCard` calls stay the same",
     ],
+  },
+  {
+    id: "grid",
+    title: "One column, then 2 / 3 / 4 (code)",
+    kind: "content",
     code: `import CourseCard from "./CourseCard";
 
 export default function Dashboard() {

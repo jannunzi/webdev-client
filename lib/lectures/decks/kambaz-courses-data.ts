@@ -22,7 +22,7 @@ export const KAMBAZ_COURSES_DATA_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "layout",
+    id: "layout-intro",
     title: "Layout awaits params, then finds",
     kind: "content",
     bullets: [
@@ -31,6 +31,11 @@ export const KAMBAZ_COURSES_DATA_SLIDES: LectureSlide[] = [
       "`Breadcrumb` is the heading text: the course name this layout just found",
       "Open two dashboard cards and confirm the heading name changes",
     ],
+  },
+  {
+    id: "layout",
+    title: "Layout awaits params, then finds (code)",
+    kind: "content",
     code: `import { ReactNode } from "react";
 import { FaAlignJustify } from "react-icons/fa6";
 import CourseNavigation from "./Navigation";
@@ -143,7 +148,7 @@ const LINKS = [
     embed: "kambaz-styled-course-nav",
   },
   {
-    id: "breadcrumb",
+    id: "breadcrumb-intro",
     title: "Breadcrumb reads the last segment",
     kind: "content",
     bullets: [
@@ -152,6 +157,11 @@ const LINKS = [
       "`course?.name` guards a missing `find` — the same `?.` as §3.4.17",
       "On Home it reads `Rocket Propulsion > Home`; the part after `>` follows the URL",
     ],
+  },
+  {
+    id: "breadcrumb",
+    title: "Breadcrumb reads the last segment (code)",
+    kind: "content",
     code: `"use client";
 
 import { usePathname } from "next/navigation";

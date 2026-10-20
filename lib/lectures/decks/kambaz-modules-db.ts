@@ -53,7 +53,7 @@ export default schema;`,
     codeHighlightLines: [6],
   },
   {
-    id: "find",
+    id: "find-intro",
     title: "Find modules by course id",
     kind: "demo",
     bullets: [
@@ -61,6 +61,11 @@ export default schema;`,
       "Embed would `findById` the course and return `course.modules`",
       "Same nested URL Chapter 5 already used",
     ],
+  },
+  {
+    id: "find",
+    title: "Find modules by course id (code)",
+    kind: "demo",
     code: `function findModulesForCourse(courseId) {
   return model.find({ course: courseId });
 }

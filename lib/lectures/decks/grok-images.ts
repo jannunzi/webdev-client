@@ -97,13 +97,18 @@ console.log(response.data[0].url);`,
     ],
   },
   {
-    id: "vision",
+    id: "vision-intro",
     title: "Image Understanding Endpoint",
     kind: "demo",
     bullets: [
       "`detail`: **`auto`**, **`low`**, or **`high`** (more tokens, more nuance)",
       "JPG/PNG, **20MiB** max. Same `/v1/chat/completions`",
     ],
+  },
+  {
+    id: "vision",
+    title: "Image Understanding Endpoint (code)",
+    kind: "demo",
     code: `const completion = await openai.chat.completions.create({
   model: "grok-4",
   messages: [{

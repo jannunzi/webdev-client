@@ -97,12 +97,17 @@ export const TAILWIND_RESPONSIVE_SLIDES: LectureSlide[] = [
     embed: "tw-responsive-show-hide",
   },
   {
-    id: "flex-tsx",
+    id: "flex-tsx-intro",
     title: "Stack, then side by side",
     kind: "content",
     bullets: [
       "CSS flex lines boxes up along one direction. `flex-direction: column` stacks them, and `flex-direction: row` places them side by side. Tailwind writes those as `flex-col` and `flex-row`. `flex flex-col` stacks the three boxes at every width. `md:flex-row` lays them side by side from `md` up. `gap-4` is the space between the boxes. It is unprefixed, so that space stays in both layouts",
     ],
+  },
+  {
+    id: "flex-tsx",
+    title: "Stack, then side by side (code)",
+    kind: "content",
     code: `export default function TailwindResponsiveFlex() {
   return (
     <div
@@ -173,12 +178,17 @@ export const TAILWIND_RESPONSIVE_SLIDES: LectureSlide[] = [
     embed: "tw-responsive-grid",
   },
   {
-    id: "spacing-tsx",
+    id: "spacing-tsx-intro",
     title: "Spacing and text size",
     kind: "content",
     bullets: [
       "`p-2` and `text-base` apply at every width. `md:p-8` and `md:text-2xl` grow the padding and the type from `md` up",
     ],
+  },
+  {
+    id: "spacing-tsx",
+    title: "Spacing and text size (code)",
+    kind: "content",
     code: `export default function TailwindResponsiveSpacingText() {
   return (
     <div id="wd-tailwind-responsive-spacing-text">
@@ -305,12 +315,17 @@ export const TAILWIND_RESPONSIVE_SLIDES: LectureSlide[] = [
     embed: "tw-responsive",
   },
   {
-    id: "page",
+    id: "page-intro",
     title: "Add each demo to the page",
     kind: "content",
     bullets: [
       "Import each responsive component into the lab page and render it there. The five small demos come first, then `TailwindResponsiveDesign`. Spacing, typography, and backgrounds stay above the responsive demos",
     ],
+  },
+  {
+    id: "page",
+    title: "Add each demo to the page (code)",
+    kind: "content",
     code: `import "./index.css";
 import TailwindSpacing from "./TailwindSpacing";
 import TailwindTypography from "./TailwindTypography";

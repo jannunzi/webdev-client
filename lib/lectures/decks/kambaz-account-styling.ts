@@ -21,7 +21,7 @@ export const KAMBAZ_ACCOUNT_STYLING_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "signin",
+    id: "signin-intro",
     title: "Sign in is the template",
     kind: "content",
     bullets: [
@@ -29,6 +29,11 @@ export const KAMBAZ_ACCOUNT_STYLING_SLIDES: LectureSlide[] = [
       "Full-width inputs: `w-full rounded border border-neutral-300 px-3 py-2`",
       "Primary button: `block w-full rounded bg-blue-600 … text-white`",
     ],
+  },
+  {
+    id: "signin",
+    title: "Sign in is the template (code)",
+    kind: "content",
     code: `<div id="wd-signin-screen" className="max-w-sm">
   <h1 className="mb-3 text-2xl font-semibold">Sign in</h1>
   <input
@@ -89,7 +94,7 @@ export const KAMBAZ_ACCOUNT_STYLING_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "delivery",
+    id: "delivery-intro",
     title: "Deliver on branch a2",
     kind: "content",
     bullets: [
@@ -98,6 +103,11 @@ export const KAMBAZ_ACCOUNT_STYLING_SLIDES: LectureSlide[] = [
       "Submit the GitHub URL pointed at `a2` and that branch’s preview URL",
       "Turn off Deployment Protection so graders can open it without signing in",
     ],
+  },
+  {
+    id: "delivery",
+    title: "Deliver on branch a2 (code)",
+    kind: "content",
     code: `git checkout -b a2
 git add .
 git commit -am "a2 CSS and Tailwind"

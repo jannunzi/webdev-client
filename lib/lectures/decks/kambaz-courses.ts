@@ -11,7 +11,7 @@ export const KAMBAZ_COURSES_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "home-stub",
+    id: "home-stub-intro",
     title: "Creating the Courses Screen",
     kind: "content",
     bullets: [
@@ -20,6 +20,11 @@ export const KAMBAZ_COURSES_SLIDES: LectureSlide[] = [
       "Start with Home: `app/(kambaz)/courses/[cid]/home/page.tsx`",
       "You do **not** need a leftover `page.tsx` directly under `[cid]`",
     ],
+  },
+  {
+    id: "home-stub",
+    title: "Creating the Courses Screen (code)",
+    kind: "content",
     code: `export default function Home() {
   return (
     <div id="wd-home">
@@ -31,7 +36,7 @@ export const KAMBAZ_COURSES_SLIDES: LectureSlide[] = [
     codeFile: "app/(kambaz)/courses/[cid]/home/page.tsx",
   },
   {
-    id: "course-nav",
+    id: "course-nav-intro",
     title: "Course Navigation Sidebar",
     kind: "content",
     bullets: [
@@ -39,6 +44,11 @@ export const KAMBAZ_COURSES_SLIDES: LectureSlide[] = [
       "Pass `cid` so links stay correct for every course",
       "Template literal: `` `/courses/${cid}/home` ``",
     ],
+  },
+  {
+    id: "course-nav",
+    title: "Course Navigation Sidebar (code)",
+    kind: "content",
     code: `import Link from "next/link";
 
 export default function CourseNavigation({ cid }: { cid: string }) {
@@ -95,7 +105,7 @@ export default function CourseNavigation({ cid }: { cid: string }) {
     imageCaption: "Figure 2.4.3 — Course Navigation",
   },
   {
-    id: "layout",
+    id: "layout-intro",
     title: "Layout Navigation on Left",
     kind: "content",
     bullets: [
@@ -104,6 +114,11 @@ export default function CourseNavigation({ cid }: { cid: string }) {
       "Wrapper `wd-courses`. Heading shows `Courses {cid}`",
       "Nav left, `{children}` right — same table chrome as Account",
     ],
+  },
+  {
+    id: "layout",
+    title: "Layout Navigation on Left (code)",
+    kind: "content",
     code: `import { ReactNode } from "react";
 import CourseNavigation from "./Navigation";
 

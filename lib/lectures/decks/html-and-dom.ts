@@ -67,7 +67,7 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
     embed: "html-skeleton",
   },
   {
-    id: "doctype-skeleton",
+    id: "doctype-skeleton-intro",
     title: "The document type",
     kind: "content",
     bullets: [
@@ -75,6 +75,11 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
       "Helps browsers open the **right** type of document — HTML5, not a 1990s quirk mode",
       "First line. **Not** a tag. A declaration",
     ],
+  },
+  {
+    id: "doctype-skeleton",
+    title: "The document type (code)",
+    kind: "content",
     code: `<!DOCTYPE html>
 <html>
   <head>
@@ -116,7 +121,7 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
     codeLanguage: "html",
   },
   {
-    id: "structure",
+    id: "structure-intro",
     title: "The structure of HTML documents",
     kind: "content",
     bullets: [
@@ -124,6 +129,11 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
       "Rewrite `hello.html` so visible copy lives in **`body`**",
       "Close tags in reverse order. Indent children — you are drawing the tree",
     ],
+  },
+  {
+    id: "structure",
+    title: "The structure of HTML documents (code)",
+    kind: "content",
     code: `<!DOCTYPE html>
 <html>
   <head>
@@ -163,7 +173,7 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
     codeLanguage: "html",
   },
   {
-    id: "whitespace",
+    id: "whitespace-intro",
     title: "White spaces are ignored",
     kind: "content",
     bullets: [
@@ -171,6 +181,11 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
       "Browsers only respect **single spaces**. Tabs and newlines are ignored",
       "This whole `body` renders as **one** paragraph — wrap later with `p`",
     ],
+  },
+  {
+    id: "whitespace",
+    title: "White spaces are ignored (code)",
+    kind: "content",
     code: `<body>
 Hello World!
 
@@ -227,7 +242,7 @@ content will render as a single paragraph.
     embed: "lab1-stub",
   },
   {
-    id: "next-up",
+    id: "next-up-intro",
     title: "Example DOM",
     kind: "content",
     bullets: [
@@ -235,6 +250,11 @@ content will render as a single paragraph.
       "The `href` and the link text are properties on the Link node",
       "Next deck: `h1`–`h6`, then `p` so whitespace becomes real vertical gaps",
     ],
+  },
+  {
+    id: "next-up",
+    title: "Example DOM (code)",
+    kind: "content",
     code: `<body>
   <h1>Read about the DOM</h1>
   <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model">

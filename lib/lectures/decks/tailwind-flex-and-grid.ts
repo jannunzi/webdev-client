@@ -33,13 +33,18 @@ export const TAILWIND_FLEX_AND_GRID_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "filters-tsx",
+    id: "filters-tsx-intro",
     title: "Blur utilities",
     kind: "content",
     bullets: [
       "Filter utilities apply visual effects like blur straight onto an image or element.",
       "Four copies of the same image, blur growing from none to `2xl`",
     ],
+  },
+  {
+    id: "filters-tsx",
+    title: "Blur utilities (code)",
+    kind: "content",
     code: `export default function TailwindFilters() {
   // reactjs.jpg is used here so the lab runs out of the box.
   const src = "/images/reactjs.jpg";
@@ -86,7 +91,7 @@ export const TAILWIND_FLEX_AND_GRID_SLIDES: LectureSlide[] = [
     codeAddedLines: [1, 4, 5],
   },
   {
-    id: "grid-four",
+    id: "grid-four-intro",
     title: "grid-cols-4 wraps children",
     kind: "content",
     bullets: [
@@ -94,6 +99,11 @@ export const TAILWIND_FLEX_AND_GRID_SLIDES: LectureSlide[] = [
       "Nine cells wrap onto a third row. No manual row break",
       "Start `TailwindGrids.tsx` with the outer wrapper, the Tailwind Grids `h2`, and this four-column grid",
     ],
+  },
+  {
+    id: "grid-four",
+    title: "grid-cols-4 wraps children (code)",
+    kind: "content",
     code: `export default function TailwindGrids() {
   return (
     <div>
@@ -115,14 +125,19 @@ export const TAILWIND_FLEX_AND_GRID_SLIDES: LectureSlide[] = [
     codeFile: "app/labs/lab2/tailwind/TailwindGrids.tsx",
   },
   {
-    id: "grid-three",
+    id: "grid-three-intro",
     title: "Paste the 3 Columns Grid",
     kind: "content",
     bullets: [
       "`col-span` lets one cell stretch across several grid tracks without changing the column count.",
-      "Paste the TSX below after the 4 Columns Grid",
+      "Paste the TSX on the next slide after the 4 Columns Grid",
       "`col-span-2` makes two of the cells twice as wide",
     ],
+  },
+  {
+    id: "grid-three",
+    title: "Paste the 3 Columns Grid (code)",
+    kind: "content",
     code: `      <div>
         <h3 className="mt-6 text-lg font-bold">3 Columns Grid</h3>
         <div className="grid grid-cols-3 gap-4">
@@ -139,14 +154,19 @@ export const TAILWIND_FLEX_AND_GRID_SLIDES: LectureSlide[] = [
     codeFile: "app/labs/lab2/tailwind/TailwindGrids.tsx",
   },
   {
-    id: "grid-system",
+    id: "grid-system-intro",
     title: "Paste the grid system",
     kind: "content",
     bullets: [
       "A twelve-column grid is the sweet spot because twelve divides evenly by two, three, four, and six.",
-      "Paste the TSX below after the 3 Columns Grid",
+      "Paste the TSX on the next slide after the 3 Columns Grid",
       "Twelve columns: `col-span-4` + `col-span-8`, then `2 / 8 / 2`",
     ],
+  },
+  {
+    id: "grid-system",
+    title: "Paste the grid system (code)",
+    kind: "content",
     code: `      <div id="wd-tailwind-grid-system" className="mt-6">
         <h2 className="text-2xl font-bold">Grid system</h2>
         <div className="grid grid-cols-2 gap-2">
@@ -181,7 +201,7 @@ export const TAILWIND_FLEX_AND_GRID_SLIDES: LectureSlide[] = [
     codeFile: "app/labs/lab2/tailwind/TailwindGrids.tsx",
   },
   {
-    id: "col-span",
+    id: "col-span-intro",
     title: "col-span on a 12-column grid",
     kind: "content",
     bullets: [
@@ -189,6 +209,11 @@ export const TAILWIND_FLEX_AND_GRID_SLIDES: LectureSlide[] = [
       "A 3-column grid uses `col-span-2` on two of the cells",
       "Twelve divides by 2, 3, 4, and 6 — `col-span-4` + `col-span-8`, then `2 / 8 / 2`",
     ],
+  },
+  {
+    id: "col-span",
+    title: "col-span on a 12-column grid (code)",
+    kind: "content",
     code: `export default function TailwindGrids() {
   return (
     <div>
@@ -304,13 +329,18 @@ export const TAILWIND_FLEX_AND_GRID_SLIDES: LectureSlide[] = [
     embed: "tw-flex",
   },
   {
-    id: "lab2-final-imports",
+    id: "lab2-final-imports-intro",
     title: "Finished Lab 2 page: imports",
     kind: "content",
     bullets: [
       "Here is the finished `app/labs/lab2/page.tsx`, with every §2.1 and §2.2 sample imported in order",
       "Compare it with yours: a missing import means a missing sample on `/labs/lab2`",
     ],
+  },
+  {
+    id: "lab2-final-imports",
+    title: "Finished Lab 2 page: imports (code)",
+    kind: "content",
     code: `import "./index.css";
 import ForegroundColors from "./ForegroundColors";
 import BackgroundColors from "./BackgroundColors";
@@ -332,13 +362,18 @@ import ReactIconsSampler from "./ReactIconsSampler";`,
     codeFile: "app/labs/lab2/page.tsx",
   },
   {
-    id: "lab2-final-intro",
+    id: "lab2-final-intro-intro",
     title: "Finished Lab 2 page: link and style",
     kind: "content",
     bullets: [
       "The link to the Tailwind lab from §2.3 sits under the heading",
       "The Tailwind samples themselves stay in `app/labs/lab2/tailwind/page.tsx`",
     ],
+  },
+  {
+    id: "lab2-final-intro",
+    title: "Finished Lab 2 page: link and style (code)",
+    kind: "content",
     code: `export default function Lab2() {
   return (
     <div id="wd-lab2">
@@ -422,13 +457,18 @@ import ReactIconsSampler from "./ReactIconsSampler";`,
     codeFile: "app/labs/lab2/page.tsx",
   },
   {
-    id: "lab2-final-samples",
+    id: "lab2-final-samples-intro",
     title: "Finished Lab 2 page: every sample",
     kind: "content",
     bullets: [
       "One tag per sample component, in the same order as the imports",
       "Any extra practice you added to Lab 2 goes on top of this",
     ],
+  },
+  {
+    id: "lab2-final-samples",
+    title: "Finished Lab 2 page: every sample (code)",
+    kind: "content",
     code: `      <ForegroundColors />
       <BackgroundColors />
       <Borders />

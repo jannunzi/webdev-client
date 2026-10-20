@@ -756,6 +756,8 @@ code.quiz-prompt-code {
 .lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body input,
 .lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body select,
 .lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body textarea {
+  /* Controls default to ~13px; match the label text around them. */
+  font-size: 1em;
   padding: 0.45em 0.65em;
   min-height: 2.35em;
   min-width: min(100%, 22rem);

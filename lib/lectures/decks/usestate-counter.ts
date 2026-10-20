@@ -22,7 +22,7 @@ export const USESTATE_COUNTER_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "hook-pair",
+    id: "hook-pair-intro",
     title: "useState returns a pair",
     kind: "content",
     bullets: [
@@ -31,6 +31,11 @@ export const USESTATE_COUNTER_SLIDES: LectureSlide[] = [
       "Calling the setter queues a render so the heading can move",
       "A plain `let` can change in memory and the heading stays put",
     ],
+  },
+  {
+    id: "hook-pair",
+    title: "useState returns a pair (code)",
+    kind: "content",
     code: `const [stateVariable, setStateVariable] = useState(initialStateValue);`,
     codeLanguage: "tsx",
   },

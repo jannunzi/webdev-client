@@ -143,7 +143,7 @@ export default async function Assignments({
     embed: "kambaz-ch3-assignments",
   },
   {
-    id: "editor",
+    id: "editor-intro",
     title: "Editor find + optional fields",
     kind: "content",
     bullets: [
@@ -154,6 +154,11 @@ export default async function Assignments({
       "Keep your Chapter 2 fields and classes; fill only the ones with data",
       "Cancel and Save are `Link`s back to that course’s list",
     ],
+  },
+  {
+    id: "editor",
+    title: "Editor find + optional fields (code)",
+    kind: "content",
     code: `import Link from "next/link";
 import * as db from "../../../../database";
 

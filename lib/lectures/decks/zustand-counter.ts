@@ -22,7 +22,7 @@ export const ZUSTAND_COUNTER_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "store",
+    id: "store-intro",
     title: "State and functions on one object",
     kind: "content",
     bullets: [
@@ -30,6 +30,11 @@ export const ZUSTAND_COUNTER_SLIDES: LectureSlide[] = [
       "`up` / `down` use the function form so they never close over a stale count",
       "Seed `count: 7` — same integer as Context and `useState`",
     ],
+  },
+  {
+    id: "store",
+    title: "State and functions on one object (code)",
+    kind: "content",
     code: `"use client";
 
 import { create } from "zustand";

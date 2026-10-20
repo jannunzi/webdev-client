@@ -34,7 +34,7 @@ export const KAMBAZ_ASSIGNMENTS_SLIDES: LectureSlide[] = [
     imageCaption: "Figure 1.4.7a — Assignments Screen",
   },
   {
-    id: "list-screen",
+    id: "list-screen-intro",
     title: "Create Assignments Screen",
     kind: "content",
     bullets: [
@@ -43,6 +43,11 @@ export const KAMBAZ_ASSIGNMENTS_SLIDES: LectureSlide[] = [
       "Buttons: `+ Group` and `+ Assignment`",
       "Heading `wd-assignments-title` — `ASSIGNMENTS 40% of Total`",
     ],
+  },
+  {
+    id: "list-screen",
+    title: "Create Assignments Screen (code)",
+    kind: "content",
     code: `export default function Assignments() {
   return (
     <div id="wd-assignments">
@@ -71,7 +76,7 @@ export const KAMBAZ_ASSIGNMENTS_SLIDES: LectureSlide[] = [
     embed: "kambaz-assignments",
   },
   {
-    id: "assignment-item",
+    id: "assignment-item-intro",
     title: "Extract AssignmentItem",
     kind: "content",
     bullets: [
@@ -79,6 +84,11 @@ export const KAMBAZ_ASSIGNMENTS_SLIDES: LectureSlide[] = [
       "The title is a `Link` from `next/link`, not `<a>`, with class `wd-assignment-link`",
       "It goes to `/courses/${cid}/assignments/${aid}`, and `details` sits underneath",
     ],
+  },
+  {
+    id: "assignment-item",
+    title: "Extract AssignmentItem (code)",
+    kind: "content",
     code: `import Link from "next/link";
 
 export default function AssignmentItem({
@@ -108,7 +118,7 @@ export default function AssignmentItem({
     codeFile: "app/(kambaz)/courses/[cid]/assignments/AssignmentItem.tsx",
   },
   {
-    id: "await-params",
+    id: "await-params-intro",
     title: "Page awaits cid from params",
     kind: "content",
     bullets: [
@@ -116,6 +126,11 @@ export default function AssignmentItem({
       "The page renders one assignment, A1, linked to its editor. Add the rest yourself. Aim for three (A2 and A3 after A1)",
       "Also add the search box, `+ Group`, `+ Assignment`, and the `wd-assignments-title` heading",
     ],
+  },
+  {
+    id: "await-params",
+    title: "Page awaits cid from params (code)",
+    kind: "content",
     code: `import AssignmentItem from "./AssignmentItem";
 
 export default async function Assignments({
@@ -162,7 +177,7 @@ export default async function Assignments({
     imageCaption: "Figure 1.4.8a — Assignment Editor",
   },
   {
-    id: "editor",
+    id: "editor-intro",
     title: "Create Assignment Editor Screen",
     kind: "content",
     bullets: [
@@ -170,6 +185,11 @@ export default async function Assignments({
       "Wrapper `wd-assignments-editor`. Use **`defaultValue`**, not `value`",
       "Start from name (`wd-name`), description, points (`wd-points`)",
     ],
+  },
+  {
+    id: "editor",
+    title: "Create Assignment Editor Screen (code)",
+    kind: "content",
     code: `export default function AssignmentEditor() {
   return (
     <div id="wd-assignments-editor">
@@ -228,7 +248,7 @@ export default async function Assignments({
     ],
   },
   {
-    id: "labs-name-github",
+    id: "labs-name-github-intro",
     title: "Name, Section, and GitHub on Labs",
     kind: "content",
     bullets: [
@@ -236,6 +256,11 @@ export default async function Assignments({
       "In `app/labs/page.tsx`: an `h2` with your full name as in Canvas, then a `p` with your course and section",
       "Link `wd-github` to **your** `webdev-client` repository. Your Lab 4 and Lab 5 links go where the comment is",
     ],
+  },
+  {
+    id: "labs-name-github",
+    title: "Name, Section, and GitHub on Labs (code)",
+    kind: "content",
     code: `import Link from "next/link";
 
 export default function Labs() {

@@ -22,13 +22,18 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "path-server",
+    id: "path-server-intro",
     title: "Path params live in the URL",
     kind: "demo",
     bullets: [
       "`req.params` are strings. `parseInt`, then `.toString()`",
       "A bare `res.send(6)` can look like HTTP status 6",
     ],
+  },
+  {
+    id: "path-server",
+    title: "Path params live in the URL (code)",
+    kind: "demo",
     code: `export default function PathParameters(app) {
   const add = (req, res) => {
     const { a, b } = req.params;
@@ -86,13 +91,18 @@ const [b, setB] = useState("23");
     codeHighlightLines: [4],
   },
   {
-    id: "query-server",
+    id: "query-server-intro",
     title: "Query params after the ?",
     kind: "demo",
     bullets: [
       "`req.query` is `{ a, b, operation }` — still strings",
       "One `/lab5/calculator` route, a `switch` on `operation`",
     ],
+  },
+  {
+    id: "query-server",
+    title: "Query params after the ? (code)",
+    kind: "demo",
     code: `export default function QueryParameters(app) {
   const calculator = (req, res) => {
     const { a, b, operation } = req.query;

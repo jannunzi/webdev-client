@@ -55,7 +55,7 @@ app/(kambaz)/account/signin/page.tsx  →  /account/signin`,
     codeFile: "app/(kambaz)/page.tsx",
   },
   {
-    id: "labs-link",
+    id: "labs-link-intro",
     title: "Link Labs TOC to Kambaz",
     kind: "content",
     bullets: [
@@ -63,6 +63,11 @@ app/(kambaz)/account/signin/page.tsx  →  /account/signin`,
       "`href=\"/\"` — the group owns `/`",
       "Keep id `wd-kambaz-link`; the ids help us test your work",
     ],
+  },
+  {
+    id: "labs-link",
+    title: "Link Labs TOC to Kambaz (code)",
+    kind: "content",
     code: `import Link from "next/link";
 
 export default function TOC() {

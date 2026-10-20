@@ -101,6 +101,22 @@ function findSlide(deckSlug: string, id: string) {
   return slide;
 }
 
+/**
+ * Talking points for a slide: its own bullets, or those on its explanation
+ * slide (`<id>-intro`) when the text was split off so it would not bury the code.
+ */
+function slideBullets(deckSlug: string, id: string) {
+  const slide = findSlide(deckSlug, id);
+  if (slide.bullets?.length) return slide.bullets;
+  return getLectureDeck(deckSlug)!.slides.find((row) => row.id === `${id}-intro`)?.bullets ?? slide.bullets;
+}
+
+/** Slide ids in order, minus the `<id>-intro` explanation slides split off a code slide. */
+function idsWithoutIntros(deckSlug: string): string[] {
+  const ids = getLectureDeck(deckSlug)!.slides.map((row) => row.id);
+  return ids.filter((id) => !(id.endsWith("-intro") && ids.includes(id.slice(0, -"-intro".length))));
+}
+
 /** Every deck where code and its live demo sit on separate slides: all of Chapter 3, plus single-page-navigation. */
 const SPLIT_DEMO_DECKS = [...CHAPTER_3_SLUGS, "single-page-navigation"] as const;
 
@@ -1241,42 +1257,42 @@ describe("lecture decks", () => {
     assert.equal(counts["creating-a-nextjs-react-application"], 19);
     assert.equal(counts["commit-to-github"], 7);
     assert.equal(counts["deploying-to-vercel"], 13);
-    assert.equal(counts["html-and-dom"], 16);
-    assert.equal(counts["headings-and-paragraphs"], 15);
-    assert.equal(counts["lists-and-tables"], 17);
-    assert.equal(counts["web-forms"], 40);
-    assert.equal(counts["anchors"], 7);
-    assert.equal(counts["single-page-navigation"], 19);
-    assert.equal(counts["kambaz-overview"], 8);
-    assert.equal(counts["kambaz-account"], 15);
-    assert.equal(counts["kambaz-dashboard"], 8);
-    assert.equal(counts["kambaz-navigation"], 8);
-    assert.equal(counts["kambaz-courses"], 10);
-    assert.equal(counts["kambaz-modules"], 12);
-    assert.equal(counts["kambaz-assignments"], 16);
-    assert.equal(counts["css-intro"], 23);
-    assert.equal(counts["css-colors"], 10);
-    assert.equal(counts["css-box-model"], 18);
-    assert.equal(counts["css-size-and-position"], 22);
-    assert.equal(counts["css-media-queries"], 8);
-    assert.equal(counts["css-float"], 9);
-    assert.equal(counts["css-flex"], 12);
+    assert.equal(counts["html-and-dom"], 20);
+    assert.equal(counts["headings-and-paragraphs"], 21);
+    assert.equal(counts["lists-and-tables"], 24);
+    assert.equal(counts["web-forms"], 58);
+    assert.equal(counts["anchors"], 9);
+    assert.equal(counts["single-page-navigation"], 21);
+    assert.equal(counts["kambaz-overview"], 9);
+    assert.equal(counts["kambaz-account"], 20);
+    assert.equal(counts["kambaz-dashboard"], 10);
+    assert.equal(counts["kambaz-navigation"], 11);
+    assert.equal(counts["kambaz-courses"], 13);
+    assert.equal(counts["kambaz-modules"], 17);
+    assert.equal(counts["kambaz-assignments"], 21);
+    assert.equal(counts["css-intro"], 28);
+    assert.equal(counts["css-colors"], 14);
+    assert.equal(counts["css-box-model"], 25);
+    assert.equal(counts["css-size-and-position"], 32);
+    assert.equal(counts["css-media-queries"], 10);
+    assert.equal(counts["css-float"], 13);
+    assert.equal(counts["css-flex"], 16);
     assert.equal(counts["css-rotation"], 6);
-    assert.equal(counts["react-icons"], 10);
-    assert.equal(counts["tailwind-intro"], 9);
+    assert.equal(counts["react-icons"], 13);
+    assert.equal(counts["tailwind-intro"], 11);
     assert.equal(counts["tailwind-spacing"], 8);
-    assert.equal(counts["tailwind-typography"], 7);
+    assert.equal(counts["tailwind-typography"], 8);
     assert.equal(counts["tailwind-colors"], 6);
-    assert.equal(counts["tailwind-filters-and-grid"], 20);
-    assert.equal(counts["tailwind-responsive"], 23);
-    assert.equal(counts["kambaz-styling"], 8);
-    assert.equal(counts["kambaz-nav-styling"], 11);
-    assert.equal(counts["kambaz-dashboard-styling"], 7);
-    assert.equal(counts["kambaz-courses-styling"], 17);
-    assert.equal(counts["kambaz-assignments-styling"], 9);
-    assert.equal(counts["kambaz-account-styling"], 8);
+    assert.equal(counts["tailwind-filters-and-grid"], 28);
+    assert.equal(counts["tailwind-responsive"], 26);
+    assert.equal(counts["kambaz-styling"], 10);
+    assert.equal(counts["kambaz-nav-styling"], 17);
+    assert.equal(counts["kambaz-dashboard-styling"], 9);
+    assert.equal(counts["kambaz-courses-styling"], 27);
+    assert.equal(counts["kambaz-assignments-styling"], 13);
+    assert.equal(counts["kambaz-account-styling"], 10);
     assert.equal(counts["intro-to-javascript"], 9);
-    assert.equal(counts["variables-and-constants"], 8);
+    assert.equal(counts["variables-and-constants"], 9);
     assert.equal(counts["variable-types"], 7);
     assert.equal(counts["booleans-and-conditionals"], 14);
     assert.equal(counts["null-and-undefined"], 7);
@@ -1285,68 +1301,68 @@ describe("lecture decks", () => {
     assert.equal(counts["array-iteration"], 9);
     assert.equal(counts["array-search"], 12);
     assert.equal(counts["reduce-and-json"], 8);
-    assert.equal(counts["javascript-objects"], 8);
-    assert.equal(counts["spread-and-destructuring"], 14);
+    assert.equal(counts["javascript-objects"], 10);
+    assert.equal(counts["spread-and-destructuring"], 15);
     assert.equal(counts["optional-chaining"], 6);
-    assert.equal(counts["dynamic-styling"], 9);
+    assert.equal(counts["dynamic-styling"], 10);
     assert.equal(counts["client-and-server"], 9);
     assert.equal(counts["parameterizing-components"], 10);
-    assert.equal(counts["path-params-and-todos"], 13);
-    assert.equal(counts["kambaz-database"], 13);
-    assert.equal(counts["kambaz-dashboard-data"], 7);
-    assert.equal(counts["kambaz-courses-data"], 9);
+    assert.equal(counts["path-params-and-todos"], 17);
+    assert.equal(counts["kambaz-database"], 14);
+    assert.equal(counts["kambaz-dashboard-data"], 8);
+    assert.equal(counts["kambaz-courses-data"], 11);
     assert.equal(counts["kambaz-modules-data"], 9);
-    assert.equal(counts["kambaz-assignments-data"], 13);
+    assert.equal(counts["kambaz-assignments-data"], 14);
     assert.equal(counts["click-events"], 7);
     assert.equal(counts["passing-data-and-functions"], 8);
-    assert.equal(counts["usestate-counter"], 7);
-    assert.equal(counts["form-state-types"], 9);
-    assert.equal(counts["sharing-parent-child"], 6);
+    assert.equal(counts["usestate-counter"], 8);
+    assert.equal(counts["form-state-types"], 15);
+    assert.equal(counts["sharing-parent-child"], 7);
     assert.equal(counts["prop-drilling-and-url"], 8);
-    assert.equal(counts["react-context"], 7);
-    assert.equal(counts["zustand-counter"], 6);
-    assert.equal(counts["zustand-todos"], 7);
+    assert.equal(counts["react-context"], 9);
+    assert.equal(counts["zustand-counter"], 7);
+    assert.equal(counts["zustand-todos"], 9);
     assert.equal(counts["use-effect"], 7);
     assert.equal(counts["ch4-check-understanding"], 7);
-    assert.equal(counts["kambaz-courses-store"], 8);
-    assert.equal(counts["kambaz-dashboard-crud"], 8);
-    assert.equal(counts["kambaz-modules-store"], 7);
-    assert.equal(counts["kambaz-account-context"], 7);
-    assert.equal(counts["http-server"], 10);
-    assert.equal(counts["nodemon-es6-routes"], 8);
-    assert.equal(counts["lab5-env"], 10);
-    assert.equal(counts["path-and-query"], 9);
-    assert.equal(counts["remote-objects"], 8);
-    assert.equal(counts["remote-arrays"], 8);
-    assert.equal(counts["async-http"], 9);
-    assert.equal(counts["next-routes"], 7);
+    assert.equal(counts["kambaz-courses-store"], 9);
+    assert.equal(counts["kambaz-dashboard-crud"], 9);
+    assert.equal(counts["kambaz-modules-store"], 9);
+    assert.equal(counts["kambaz-account-context"], 9);
+    assert.equal(counts["http-server"], 11);
+    assert.equal(counts["nodemon-es6-routes"], 9);
+    assert.equal(counts["lab5-env"], 11);
+    assert.equal(counts["path-and-query"], 11);
+    assert.equal(counts["remote-objects"], 9);
+    assert.equal(counts["remote-arrays"], 9);
+    assert.equal(counts["async-http"], 10);
+    assert.equal(counts["next-routes"], 8);
     assert.equal(counts["ch5-check-understanding"], 7);
     assert.equal(counts["kambaz-migrate-db"], 6);
-    assert.equal(counts["kambaz-account-rest"], 9);
-    assert.equal(counts["kambaz-sessions"], 8);
-    assert.equal(counts["kambaz-courses-api"], 9);
+    assert.equal(counts["kambaz-account-rest"], 11);
+    assert.equal(counts["kambaz-sessions"], 11);
+    assert.equal(counts["kambaz-courses-api"], 11);
     assert.equal(counts["deploy-api"], 8);
-    assert.equal(counts["local-mongo"], 12);
-    assert.equal(counts["mongoose"], 11);
-    assert.equal(counts["mongo-apis"], 11);
-    assert.equal(counts["mongo-users-crud"], 11);
+    assert.equal(counts["local-mongo"], 13);
+    assert.equal(counts["mongoose"], 12);
+    assert.equal(counts["mongo-apis"], 13);
+    assert.equal(counts["mongo-users-crud"], 14);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
-    assert.equal(counts["atlas-node"], 10);
-    assert.equal(counts["atlas-sessions"], 12);
+    assert.equal(counts["atlas-node"], 11);
+    assert.equal(counts["atlas-sessions"], 13);
     assert.equal(counts["ch6-check-understanding"], 7);
-    assert.equal(counts["kambaz-courses-db"], 10);
-    assert.equal(counts["kambaz-modules-db"], 9);
-    assert.equal(counts["kambaz-enrollments-db"], 10);
+    assert.equal(counts["kambaz-courses-db"], 14);
+    assert.equal(counts["kambaz-modules-db"], 10);
+    assert.equal(counts["kambaz-enrollments-db"], 13);
     assert.equal(counts["youtube-api"], 11);
     assert.equal(counts["youtube-search"], 11);
     assert.equal(counts["youtube-details"], 23);
     assert.equal(counts["chatgpt-api"], 14);
-    assert.equal(counts["chatgpt-text"], 22);
+    assert.equal(counts["chatgpt-text"], 23);
     assert.equal(counts["chatgpt-ui"], 21);
     assert.equal(counts["grok-api"], 18);
     assert.equal(counts["grok-chat"], 17);
-    assert.equal(counts["grok-images"], 16);
+    assert.equal(counts["grok-images"], 17);
     for (const deck of decks) {
       const ids = deck.slides.map((slide) => slide.id);
       assert.equal(new Set(ids).size, ids.length, `${deck.slug} duplicate slide id`);
@@ -1460,7 +1476,7 @@ describe("lecture decks", () => {
 
     const deck = getLectureDeck("css-box-model");
     assert.ok(deck);
-    const margins = deck.slides[MARGINS_LIVE_CLIP_BEFORE.slide - 1];
+    const margins = deck.slides.find((row) => row.id === MARGINS_LIVE_CLIP_BEFORE.id);
     assert.equal(margins?.id, MARGINS_LIVE_CLIP_BEFORE.id);
     assert.equal(margins?.embed, MARGINS_LIVE_CLIP_BEFORE.embed);
     const embeds = readFileSync(
@@ -1890,7 +1906,8 @@ describe("lecture decks", () => {
     for (const [slug, slides] of Object.entries(expected)) {
       for (const [id, embed] of Object.entries(slides)) {
         const split = (SPLIT_DEMO_DECKS as readonly string[]).includes(slug);
-        const slide = findSlide(slug, split ? `${id}-live` : id);
+        const liveSplit = getLectureDeck(slug)!.slides.some((row) => row.id === `${id}-live`);
+        const slide = findSlide(slug, split || liveSplit ? `${id}-live` : id);
         assert.equal(slide.embed, embed);
         assert.equal(slide.imageSrc, undefined);
         assert.ok((LECTURE_EMBED_IDS as readonly string[]).includes(embed));
@@ -2294,7 +2311,7 @@ describe("lecture decks", () => {
 
     const mq = slideText("css-media-queries");
     assert.equal(
-      findSlide("css-media-queries", "purpose").bullets?.[2],
+      slideBullets("css-media-queries", "purpose")?.[2],
       "A **breakpoint** is a viewport width at which styles change, for example through a media query.",
     );
     assert.match(mq, /@media/);
@@ -2308,7 +2325,7 @@ describe("lecture decks", () => {
 
     const float = slideText("css-float");
     assert.equal(
-      findSlide("css-float", "classes").bullets?.[0],
+      slideBullets("css-float", "classes")?.[0],
       "A length in **rem** is relative to the root font size, usually 16px, so 2rem = 32px.",
     );
     assert.match(float, /wd-float-left/);
@@ -2355,8 +2372,8 @@ describe("lecture decks", () => {
       ),
     );
     assert.match(findSlide("react-icons", "sampler").code ?? "", /^import "@\/app\/labs\/lab2\/tailwind\/utilities\.css";/);
-    assert.match(utilitiesCss.bullets?.join("\n") ?? "", /\*\*Preflight\*\*/);
-    assert.match(utilitiesCss.bullets?.join("\n") ?? "", /\*\*utilities\*\*/);
+    assert.match(slideBullets("react-icons", "utilities-css")?.join("\n") ?? "", /\*\*Preflight\*\*/);
+    assert.match(slideBullets("react-icons", "utilities-css")?.join("\n") ?? "", /\*\*utilities\*\*/);
     // §2.3.7's finished Lab 2 page, split at its blank lines, closes Lecture 6.
     const finishedIds = [
       "lab2-final-imports",
@@ -2376,7 +2393,8 @@ describe("lecture decks", () => {
       bookCodeBlock("app/book/ch2/sections/IconsAndTailwind.tsx", "Lab2 (finished)", "app/labs/lab2/page.tsx"),
     );
     const gridIds = getLectureDeck("tailwind-filters-and-grid")!.slides.map((slide) => slide.id);
-    assert.deepEqual(gridIds.slice(-6), [...finishedIds, "next-up"]);
+    // Each part may be preceded by its explanation slide (`-intro`).
+    assert.deepEqual(idsWithoutIntros("tailwind-filters-and-grid").slice(-6), [...finishedIds, "next-up"]);
     assert.match(findSlide("css-size-and-position", "absolute-tsx").code ?? "", /<br \/><br \/>/);
 
     const intro = slideText("tailwind-intro");
@@ -2449,11 +2467,11 @@ describe("lecture decks", () => {
     assert.ok(responsiveIds.indexOf("prefix-ruler") < responsiveIds.indexOf("breakpoint-tsx"));
     assert.equal(findSlide("tailwind-responsive", "prefix-ruler").diagram, "tailwind-breakpoints");
     assert.doesNotMatch(
-      findSlide("tailwind-responsive", "intro").bullets?.join("\n") ?? "",
+      slideBullets("tailwind-responsive", "intro")?.join("\n") ?? "",
       /md:/,
     );
     assert.doesNotMatch(
-      findSlide("tailwind-responsive", "widths").bullets?.join("\n") ?? "",
+      slideBullets("tailwind-responsive", "widths")?.join("\n") ?? "",
       /40rem \(640px\)/,
     );
     const cardIds = ["tsx", "card-frame", "card-image", "card-text", "demo"];
@@ -2493,7 +2511,7 @@ describe("lecture decks", () => {
     assert.match(shell, /font-sans/);
     assert.doesNotMatch(shell, /labs\/lab2\/tailwind\/utilities\.css/);
     // Step 2 adds to Step 1's file; replacing it would drop the Tailwind imports.
-    assert.match(findSlide("kambaz-styling", "kambaz-css").bullets?.[0] ?? "", /\*\*Append\*\*/);
+    assert.match(slideBullets("kambaz-styling", "kambaz-css")?.[0] ?? "", /\*\*Append\*\*/);
 
     const nav = slideText("kambaz-nav-styling");
     assert.match(nav, /wd-kambaz-navigation/);
@@ -2546,7 +2564,7 @@ describe("lecture decks", () => {
       [1, 4, 10, 16, 22],
     );
     assert.equal(findSlide("kambaz-courses-styling", "toolbar").codeAddedLines, undefined);
-    const coursesIds = getLectureDeck("kambaz-courses-styling")!.slides.map((slide) => slide.id);
+    const coursesIds = idsWithoutIntros("kambaz-courses-styling");
     const toolbarAt = coursesIds.indexOf("toolbar");
     assert.deepEqual(coursesIds.slice(toolbarAt, toolbarAt + 4), [
       "toolbar",
@@ -2559,7 +2577,7 @@ describe("lecture decks", () => {
     const courseNav = joinedCode("kambaz-courses-styling", ["course-nav", "course-nav-rest"], courseNavFile);
     assert.equal(courseNav, bookCodeBlock(KAMBAZ_BOOK, "CourseNavigation", courseNavFile));
     assert.ok(courseNav.indexOf("wd-course-modules-link") < courseNav.indexOf("wd-course-assignments-link"));
-    assert.match(findSlide("kambaz-courses-styling", "course-nav").bullets?.join("\n") ?? "", /use client/);
+    assert.match(slideBullets("kambaz-courses-styling", "course-nav")?.join("\n") ?? "", /use client/);
     const statusFile = "app/(kambaz)/courses/[cid]/home/Status.tsx";
     assert.equal(
       findSlide("kambaz-courses-styling", "status").code,
@@ -2775,7 +2793,9 @@ describe("lecture decks", () => {
       ["variables-and-constants", "sample-live", "import-it"],
     ] as const) {
       const ids = getLectureDeck(slug)!.slides.map((slide) => slide.id);
-      assert.equal(ids.indexOf(page), ids.indexOf(demo) + 1, `${slug}#${page} follows ${demo}`);
+      // Its explanation slide (`-intro`) sits between the demo and the code.
+      assert.equal(ids.indexOf(`${page}-intro`), ids.indexOf(demo) + 1, `${slug}#${page}-intro follows ${demo}`);
+      assert.equal(ids.indexOf(page), ids.indexOf(`${page}-intro`) + 1, `${slug}#${page} follows its intro`);
       assert.equal(findSlide(slug, page).codeFile, "app/labs/lab3/page.tsx");
     }
 
@@ -2811,10 +2831,11 @@ describe("lecture decks", () => {
     ] as const) {
       const slide = findSlide(slug, id);
       const curl = slide.code ?? slide.codeBlocks?.[0]?.code ?? "";
+      const why = getLectureDeck(slug)!.slides.find((row) => row.id === `${id}-intro`) ?? slide;
       assert.ok(kambazData.includes(curl), `${slug}#${id} curl matches book`);
       assert.match(curl, new RegExp(`https://kambaz\\.dev/downloads/kambaz-database/${file}\\.json`));
       assert.match(
-        (slide.bullets ?? []).join("\n"),
+        (why.bullets ?? []).join("\n"),
         /\]\(https:\/\/kambaz\.dev\/downloads\/kambaz-database\//,
       );
     }
@@ -2856,7 +2877,7 @@ describe("lecture decks", () => {
     );
     assert.equal(firstPage?.slide.id, "import-it");
     assert.match(
-      (findSlide("variables-and-constants", "import-it").bullets ?? []).join("\n"),
+      (slideBullets("variables-and-constants", "import-it") ?? []).join("\n"),
       /rest of the lab, import and render each new component in `app\/labs\/lab3\/page\.tsx` the same way/,
     );
     // No per-component page steps remain, and nothing links to a removed one.
@@ -3665,10 +3686,12 @@ describe("Chapter 3 decks: code, then the live demo", () => {
           prev.id === base || prev.id.startsWith(`${base}-`),
           `${slug}#${slide.id} follows ${base}, not ${prev.id}`,
         );
-        // Talking points sit on the demo, or on the first code slide when the demo is too tall.
+        // Talking points sit on the demo, on the first code slide when the demo is too tall,
+        // or on the explanation slide (`-intro`) right before a code slide the text would bury.
         const first = findSlide(slug, base);
+        const intro = slides.find((row) => row.id === `${base}-intro`);
         assert.ok(
-          (slide.bullets?.length ?? 0) > 0 || (first.bullets?.length ?? 0) > 0,
+          (slide.bullets?.length ?? 0) > 0 || (first.bullets?.length ?? 0) > 0 || (intro?.bullets?.length ?? 0) > 0,
           `${slug}#${slide.id} lost its talking points`,
         );
         // Joined back together, the split listing is the book listing.
@@ -3731,9 +3754,55 @@ describe("Chapter 3 decks: code, then the live demo", () => {
     assert.match(findSlide("spread-and-destructuring", "destructing-imports-part-2").code!, /^ {8}<tbody>/);
     const spread = getLectureDeck("spread-and-destructuring")!.slides.map((slide) => slide.id);
     assert.deepEqual(spread.slice(2, 4), ["spread", "spread-live"]);
-    assert.equal(findSlide("spread-and-destructuring", "spread").bullets, undefined);
-    assert.equal(findSlide("spread-and-destructuring", "spread-live").bullets?.length, 3);
+    assert.equal(slideBullets("spread-and-destructuring", "spread"), undefined);
+    assert.equal(slideBullets("spread-and-destructuring", "spread-live")?.length, 3);
     assert.match(findSlide("spread-and-destructuring", "spread").code!, /arr1 = \{JSON\.stringify\(arr1\)\} <br \/>/);
     assert.equal(getLectureDeck("optional-chaining")!.slides.filter((slide) => slide.code).length, 1);
+  });
+});
+
+describe("explanation text never buries the code", () => {
+  // Rendered at 1280x800, a slide whose bullets wrap past ~8 lines (about 48
+  // characters per line at slide size) or that has 4+ bullets pushes its code
+  // below the fold, so that text gets its own `<id>-intro` slide first.
+  const wrappedLines = (bullets: string[]) =>
+    bullets.reduce((sum, text) => sum + Math.ceil(text.replace(/[`*]/g, "").length / 48), 0);
+
+  it("keeps code slides to 3 short bullets or fewer", () => {
+    for (const deck of listLectureDecks()) {
+      for (const slide of deck.slides) {
+        if (!(slide.code || slide.codeBlocks?.length) || !slide.bullets?.length) continue;
+        assert.ok(slide.bullets.length <= 3, `${deck.slug}#${slide.id} has ${slide.bullets.length} bullets above its code`);
+        assert.ok(wrappedLines(slide.bullets) <= 8, `${deck.slug}#${slide.id} text pushes its code down`);
+      }
+    }
+  });
+
+  it("puts each explanation slide right before its code, with no code of its own", () => {
+    let intros = 0;
+    for (const deck of listLectureDecks()) {
+      const ids = deck.slides.map((row) => row.id);
+      deck.slides.forEach((slide, index) => {
+        // `-why` where the deck already used `<id>-intro` (lists-and-tables#images-intro).
+        const base = slide.id.replace(/-(intro|why)$/, "");
+        if (base === slide.id || !ids.includes(base) || slide.code) return;
+        intros += 1;
+        const code = deck.slides[index + 1]!;
+        assert.equal(code.id, base, `${deck.slug}#${slide.id} comes right before ${base}`);
+        assert.ok(code.code || code.codeBlocks?.length, `${deck.slug}#${base} has the code`);
+        assert.ok(!code.bullets?.length, `${deck.slug}#${base} keeps its text on the intro`);
+        assert.ok(slide.bullets?.length, `${deck.slug}#${slide.id} has the explanation`);
+        assert.ok(!slide.code && !slide.codeBlocks && !slide.embed, `${deck.slug}#${slide.id} is text only`);
+        assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
+      });
+    }
+    assert.equal(intros, 207);
+  });
+
+  it("splits path-params-and-todos TOC into explanation, then code", () => {
+    const ids = getLectureDeck("path-params-and-todos")!.slides.map((row) => row.id);
+    assert.equal(ids[2], "toc-intro");
+    assert.equal(ids[3], "toc");
+    assert.equal(findSlide("path-params-and-todos", "toc").title, "TOC maps links and highlights (code)");
   });
 });

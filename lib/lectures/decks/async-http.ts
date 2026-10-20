@@ -106,13 +106,18 @@ Lab5(app);`,
     ],
   },
   {
-    id: "post-delete",
+    id: "post-delete-intro",
     title: "POST create, DELETE remove",
     kind: "demo",
     bullets: [
       "POST `/lab5/todos` spreads `req.body` and assigns an id",
       "DELETE `/lab5/todos/:id` returns 404 when the id is missing",
     ],
+  },
+  {
+    id: "post-delete",
+    title: "POST create, DELETE remove (code)",
+    kind: "demo",
     code: `const postNewTodo = (req, res) => {
   const newTodo = { ...req.body, id: new Date().getTime() };
   todos.push(newTodo);

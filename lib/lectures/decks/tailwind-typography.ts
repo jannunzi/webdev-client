@@ -22,7 +22,7 @@ export const TAILWIND_TYPOGRAPHY_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "tsx",
+    id: "tsx-intro",
     title: "Font size and weight utilities",
     kind: "content",
     bullets: [
@@ -30,6 +30,11 @@ export const TAILWIND_TYPOGRAPHY_SLIDES: LectureSlide[] = [
       "The listing is the whole scale, and that is what the live demo renders",
       "`text-3xl` on the heading is the same utility as on the last size line",
     ],
+  },
+  {
+    id: "tsx",
+    title: "Font size and weight utilities (code)",
+    kind: "content",
     code: `export default function TailwindTypography() {
   return (
     <div>
