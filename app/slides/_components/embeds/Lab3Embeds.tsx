@@ -35,6 +35,10 @@ import Square from "@/app/labs/lab3/Square";
 import Highlight from "@/app/labs/lab3/Highlight";
 import PathParameters from "@/app/labs/lab3/PathParameters";
 import TodoList from "@/app/labs/lab3/todos/TodoList";
+import BoxDemo from "@/app/labs/lab3/children/BoxDemo";
+import BoxModelDemo from "@/app/labs/lab3/children/BoxModelDemo";
+import NestingOrderDemo from "@/app/labs/lab3/children/NestingOrderDemo";
+import CardDemo from "@/app/labs/lab3/children/CardDemo";
 import type { ReactNode } from "react";
 import LectureDemoFrame from "./LectureDemoFrame";
 
@@ -391,6 +395,38 @@ export function JsTodoListEmbed() {
   return (
     <Lab3Demo label="todos/TodoList.tsx">
       <TodoList />
+    </Lab3Demo>
+  );
+}
+
+export function JsChildrenBoxEmbed() {
+  return (
+    <Lab3Demo label="children/BoxDemo.tsx">
+      <BoxDemo />
+    </Lab3Demo>
+  );
+}
+
+export function JsChildrenBoxModelEmbed() {
+  return (
+    <Lab3Demo label="children/BoxModelDemo.tsx">
+      <BoxModelDemo />
+    </Lab3Demo>
+  );
+}
+
+export function JsChildrenNestingOrderEmbed() {
+  return (
+    <Lab3Demo label="children/NestingOrderDemo.tsx">
+      <NestingOrderDemo />
+    </Lab3Demo>
+  );
+}
+
+export function JsChildrenCardEmbed() {
+  return (
+    <Lab3Demo label="children/CardDemo.tsx">
+      <CardDemo />
     </Lab3Demo>
   );
 }
