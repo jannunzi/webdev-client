@@ -22,7 +22,7 @@ export const CSS_COLORS_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "notations",
+    id: "notations-intro",
     title: "Named, hex, and rgb colors",
     kind: "content",
     bullets: [
@@ -31,6 +31,11 @@ export const CSS_COLORS_SLIDES: LectureSlide[] = [
       "Functional: `rgb(12, 34, 56)`",
       "Lab 2 uses names and hex. Pick whichever is easier to read",
     ],
+  },
+  {
+    id: "notations",
+    title: "Named, hex, and rgb colors (code)",
+    kind: "content",
     code: `.wd-fg-color-black { color: black; }
 .wd-fg-color-white { color: white; }
 .wd-fg-color-blue { color: #7070ff; }
@@ -40,7 +45,7 @@ export const CSS_COLORS_SLIDES: LectureSlide[] = [
     codeFile: "app/labs/lab2/index.css",
   },
   {
-    id: "fg-tsx",
+    id: "fg-tsx-intro",
     title: "Foreground color",
     kind: "content",
     bullets: [
@@ -48,6 +53,11 @@ export const CSS_COLORS_SLIDES: LectureSlide[] = [
       "The heading is blue. The paragraph is red. A nested `span` is green",
       "Three classes, three elements — the span overrides inherited `color`",
     ],
+  },
+  {
+    id: "fg-tsx",
+    title: "Foreground color (code)",
+    kind: "content",
     code: `export default function ForegroundColors() {
   return (
     <div id="wd-css-colors">
@@ -74,7 +84,7 @@ export const CSS_COLORS_SLIDES: LectureSlide[] = [
     embed: "css-foreground",
   },
   {
-    id: "wire",
+    id: "wire-intro",
     title: "Import each demo into page.tsx",
     kind: "content",
     bullets: [
@@ -82,6 +92,11 @@ export const CSS_COLORS_SLIDES: LectureSlide[] = [
       "Every later demo component gets the same two lines: an `import` at the top and a tag inside `#wd-lab2`",
       "Edit the Lab 2 page. Do not replace the style, id, and class sections already there",
     ],
+  },
+  {
+    id: "wire",
+    title: "Import each demo into page.tsx (code)",
+    kind: "content",
     code: `import "./index.css";
 import ForegroundColors from "./ForegroundColors";
 
@@ -116,7 +131,7 @@ export default function Lab2() {
     codeAddedLines: [[1, 5]],
   },
   {
-    id: "bg-tsx",
+    id: "bg-tsx-intro",
     title: "Background color",
     kind: "content",
     bullets: [
@@ -124,6 +139,11 @@ export default function Lab2() {
       "`className` is a space-separated list. Every matching rule applies",
       "The nested span swaps both background and foreground again",
     ],
+  },
+  {
+    id: "bg-tsx",
+    title: "Background color (code)",
+    kind: "content",
     code: `export default function BackgroundColors() {
   return (
     <div id="wd-css-background-colors">

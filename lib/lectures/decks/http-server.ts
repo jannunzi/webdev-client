@@ -33,7 +33,7 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "node-intro",
+    id: "node-intro-intro",
     title: "Node runs JS outside the browser",
     kind: "content",
     bullets: [
@@ -42,6 +42,11 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
       "You already installed it for `next dev`. Confirm with `node -v`",
       "LTS 20.9+ is enough. 22.x is fine",
     ],
+  },
+  {
+    id: "node-intro",
+    title: "Node runs JS outside the browser (code)",
+    kind: "content",
     code: `node -v
 # v22.11.0`,
     codeLanguage: "bash",

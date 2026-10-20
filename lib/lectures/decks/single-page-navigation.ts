@@ -129,7 +129,7 @@ export default function TOC() {
     embed: "labs-index",
   },
   {
-    id: "layout-children",
+    id: "layout-children-intro",
     title: "LAYOUTS",
     kind: "content",
     bullets: [
@@ -137,6 +137,11 @@ export default function TOC() {
       "`page.tsx` creates a URL. `layout.tsx` does **not**",
       "`Readonly<…>` is TypeScript: the function cannot change its props object",
     ],
+  },
+  {
+    id: "layout-children",
+    title: "LAYOUTS (code)",
+    kind: "content",
     code: `import { ReactNode } from "react";
 import TOC from "./TOC";
 
@@ -228,7 +233,7 @@ export default function LabsLayout({
     ],
   },
   {
-    id: "kambaz-group",
+    id: "kambaz-group-intro",
     title: "KAMBAZ",
     kind: "content",
     bullets: [
@@ -236,6 +241,11 @@ export default function LabsLayout({
       "Parentheses are for organization. The group name does **not** appear in the URL",
       "Put the screen at `app/(kambaz)/page.tsx`, not `app/Kambaz/page.tsx`",
     ],
+  },
+  {
+    id: "kambaz-group",
+    title: "KAMBAZ (code)",
+    kind: "content",
     code: `export default function Kambaz() {
   return (
     <div id="wd-kambaz">

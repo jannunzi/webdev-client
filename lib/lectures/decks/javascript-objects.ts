@@ -22,7 +22,7 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "house",
+    id: "house-intro",
     title: "A house is a nested object (1/2)",
     kind: "content",
     bullets: [
@@ -30,6 +30,11 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
       "`JSON.stringify(house, null, 2)` pretty-prints inside `<pre>`",
       "Create `House` and import it into Lab 3",
     ],
+  },
+  {
+    id: "house",
+    title: "A house is a nested object (1/2) (code)",
+    kind: "content",
     code: `export default function House() {
   const house = {
     bedrooms: 4,
@@ -78,7 +83,7 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
     embed: "js-house",
   },
   {
-    id: "console",
+    id: "console-intro",
     title: "console.log writes off the page",
     kind: "content",
     bullets: [
@@ -87,6 +92,11 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
       "`House.tsx` already logs the house — expand `address` and `owners`",
       "Use the console for values you do not want in the markup",
     ],
+  },
+  {
+    id: "console",
+    title: "console.log writes off the page (code)",
+    kind: "content",
     code: `import VariablesAndConstants from "./VariablesAndConstants";
 import VariableTypes from "./VariableTypes";
 import BooleanVariables from "./BooleanVariables";

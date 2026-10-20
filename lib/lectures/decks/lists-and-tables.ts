@@ -11,7 +11,7 @@ export const LISTS_AND_TABLES_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "ol-vs-ul",
+    id: "ol-vs-ul-intro",
     title: "Lists",
     kind: "content",
     bullets: [
@@ -19,6 +19,11 @@ export const LISTS_AND_TABLES_SLIDES: LectureSlide[] = [
       "`<ol>` — **ordered**. Sequence matters. The browser numbers the items",
       "Each item is an `<li>`",
     ],
+  },
+  {
+    id: "ol-vs-ul",
+    title: "Lists (code)",
+    kind: "content",
     code: `<h2>Topics</h2>
 <ul>
   <li>HTML</li>
@@ -68,7 +73,7 @@ Follow these steps
     codeLanguage: "html",
   },
   {
-    id: "pancakes-before",
+    id: "pancakes-before-intro",
     title: "Example",
     kind: "content",
     bullets: [
@@ -76,6 +81,11 @@ Follow these steps
       "Start with the pancake steps as **plain text**, no `ol` yet",
       "Browsers **ignore** white spaces. The numbers look like a list in the file and fail on the page",
     ],
+  },
+  {
+    id: "pancakes-before",
+    title: "Example (code)",
+    kind: "content",
     code: `export default function ListTags() {
   return (
     <div id="wd-lists">
@@ -97,13 +107,18 @@ Follow these steps
     codeFile: "app/labs/lab1/ListTags.tsx",
   },
   {
-    id: "pancakes-after",
+    id: "pancakes-after-intro",
     title: "Add ol and li for ordered list",
     kind: "content",
     bullets: [
       "Wrap the list in `ol` and each step in `li`. Drop the typed numbers",
       "The browser numbers them. Lab 1 sample id: `wd-pancakes`",
     ],
+  },
+  {
+    id: "pancakes-after",
+    title: "Add ol and li for ordered list (code)",
+    kind: "content",
     code: `export default function ListTags() {
   return (
     <div id="wd-lists">
@@ -128,13 +143,18 @@ Follow these steps
     codeAddedLines: [[7, 16]],
   },
   {
-    id: "books-ul",
+    id: "books-ul-intro",
     title: "Use ul for unordered lists",
     kind: "content",
     bullets: [
       "After the pancake list, add favorite books — order is **not** the point",
       "Lab 1 sample id: `wd-my-books`",
     ],
+  },
+  {
+    id: "books-ul",
+    title: "Use ul for unordered lists (code)",
+    kind: "content",
     code: `How to make pancakes:
 <ol id="wd-pancakes">
   {/* pancake steps */}
@@ -173,7 +193,7 @@ My favorite books (in no particular order)
     codeLanguage: "html",
   },
   {
-    id: "thead-th",
+    id: "thead-th-intro",
     title: "Table headings and rows",
     kind: "content",
     bullets: [
@@ -181,6 +201,11 @@ My favorite books (in no particular order)
       "`tr` is a row. `th` is a **header cell**",
       "`border` sets border width — old HTML, fine for Lab 1",
     ],
+  },
+  {
+    id: "thead-th",
+    title: "Table headings and rows (code)",
+    kind: "content",
     code: `<table border="1">
   <thead>
     <tr>
@@ -286,7 +311,7 @@ My favorite books (in no particular order)
     embed: "tables",
   },
   {
-    id: "images-intro",
+    id: "images-intro-intro",
     title: "Image Tag",
     kind: "content",
     bullets: [
@@ -294,6 +319,11 @@ My favorite books (in no particular order)
       "`src` points at the file. Give `width` or `height`; the other scales",
       "`alt` describes the picture when it cannot load. That matters for **accessibility**",
     ],
+  },
+  {
+    id: "images-intro",
+    title: "Image Tag (code)",
+    kind: "content",
     code: `<img
   src="my-picture.jpg"
   width="200px"
@@ -304,7 +334,7 @@ My favorite books (in no particular order)
     codeLanguage: "html",
   },
   {
-    id: "images",
+    id: "images-why",
     title: "Remote and Local Images",
     kind: "content",
     bullets: [
@@ -312,6 +342,11 @@ My favorite books (in no particular order)
       "`<img />` and `<br />` are **void elements**: no body, so JSX closes them with `/>`",
       "Create `Images.tsx` and import it into `page.tsx`",
     ],
+  },
+  {
+    id: "images",
+    title: "Remote and Local Images (code)",
+    kind: "content",
     code: `export default function Images() {
   return (
     <div id="wd-images">

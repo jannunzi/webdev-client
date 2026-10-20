@@ -136,13 +136,18 @@ app.get("/api/users", findAllUsers);`,
     embed: "kambaz-styled-people",
   },
   {
-    id: "users-screen",
+    id: "users-screen-intro",
     title: "Users fetches on mount",
     kind: "demo",
     bullets: [
       "Client Component: `useState` plus `useEffect`",
       "`fetchUsers` is passed into the table so Details can refresh",
     ],
+  },
+  {
+    id: "users-screen",
+    title: "Users fetches on mount (code)",
+    kind: "demo",
     code: `"use client";
 import { useState, useEffect } from "react";
 import PeopleTable from "../../courses/[cid]/people/Table";
@@ -169,7 +174,7 @@ export default function Users() {
     codeAddedLines: [[8, 14]],
   },
   {
-    id: "admin-link",
+    id: "admin-link-intro",
     title: "Users link is ADMIN only",
     kind: "demo",
     bullets: [
@@ -177,6 +182,11 @@ export default function Users() {
       "Seed `nick_fury` / `fury123` is an administrator",
       "Faculty and student sessions must not show the link",
     ],
+  },
+  {
+    id: "admin-link",
+    title: "Users link is ADMIN only (code)",
+    kind: "demo",
     code: `{currentUser && currentUser.role === "ADMIN" && (
   <Link
     href="/account/users"

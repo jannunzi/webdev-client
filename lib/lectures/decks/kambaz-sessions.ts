@@ -41,13 +41,18 @@ SESSION_SECRET=super secret session phrase`,
     ],
   },
   {
-    id: "config",
+    id: "config-intro",
     title: "CORS, then session, then JSON",
     kind: "demo",
     bullets: [
       "Production: `proxy`, `sameSite: \"none\"`, `secure` cookies",
       "That is how Vercel can send credentials to Render",
     ],
+  },
+  {
+    id: "config",
+    title: "CORS, then session, then JSON (code)",
+    kind: "demo",
     code: `import "dotenv/config";
 import session from "express-session";
 const app = express();
@@ -75,13 +80,18 @@ app.use(express.json());`,
     codeHighlightLines: [[4, 7], [21, 22]],
   },
   {
-    id: "session-auth",
+    id: "session-auth-intro",
     title: "Store the user on the session",
     kind: "demo",
     bullets: [
       "Signin 401 if credentials miss. Profile 401 if nobody is signed in",
       "Signout destroys the session. Profile update must keep it in sync",
     ],
+  },
+  {
+    id: "session-auth",
+    title: "Store the user on the session (code)",
+    kind: "demo",
     code: `const signin = (req, res) => {
   const { username, password } = req.body;
   const currentUser = dao.findUserByCredentials(username, password);
@@ -109,13 +119,18 @@ const signout = (req, res) => {
     codeHighlightLines: [5, 12, 20],
   },
   {
-    id: "axios-cookies",
+    id: "axios-cookies-intro",
     title: "axios withCredentials",
     kind: "demo",
     bullets: [
       "Default axios drops cookies. `axios.create({ withCredentials: true })`",
       "Profile, signout, update, and later `/current/courses` must use it",
     ],
+  },
+  {
+    id: "axios-cookies",
+    title: "axios withCredentials (code)",
+    kind: "demo",
     code: `import axios from "axios";
 const axiosWithCredentials = axios.create({ withCredentials: true });
 export const signin = async (credentials: { username: string; password: string }) => {

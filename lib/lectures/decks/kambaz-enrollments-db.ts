@@ -22,7 +22,7 @@ export const KAMBAZ_ENROLLMENTS_DB_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "schema",
+    id: "schema-intro",
     title: "ref names, not copies",
     kind: "demo",
     bullets: [
@@ -30,6 +30,11 @@ export const KAMBAZ_ENROLLMENTS_DB_SLIDES: LectureSlide[] = [
       "`EnrollmentModel` + `collection: \"enrollments\"`",
       "DAO `_id` of `userId-courseId` keeps the pair unique",
     ],
+  },
+  {
+    id: "schema",
+    title: "ref names, not copies (code)",
+    kind: "demo",
     code: `import mongoose from "mongoose";
 const enrollmentSchema = new mongoose.Schema({
   _id: String,
@@ -67,13 +72,18 @@ export default enrollmentSchema;`,
     codeHighlightLines: [2, 3],
   },
   {
-    id: "delete-course",
+    id: "delete-course-intro",
     title: "Delete a course, then its joins",
     kind: "demo",
     bullets: [
       "`deleteMany` is the many-document cousin of `deleteOne`",
       "Otherwise Dashboard populates a course id that no longer exists",
     ],
+  },
+  {
+    id: "delete-course",
+    title: "Delete a course, then its joins (code)",
+    kind: "demo",
     code: `function unenrollAllUsersFromCourse(courseId) {
   return model.deleteMany({ course: courseId });
 }
@@ -89,13 +99,18 @@ const deleteCourse = async (req, res) => {
     codeAddedLines: [[5, 10]],
   },
   {
-    id: "enroll",
+    id: "enroll-intro",
     title: "Enroll / unenroll on your own",
     kind: "demo",
     bullets: [
       "`enrollUserInCourse` inserts `{ user, course, _id: userId-courseId }`",
       "`uid === \"current\"` reads the session, same as enrolled-courses",
     ],
+  },
+  {
+    id: "enroll",
+    title: "Enroll / unenroll on your own (code)",
+    kind: "demo",
     code: `function enrollUserInCourse(userId, courseId) {
   return model.create({
     user: userId,

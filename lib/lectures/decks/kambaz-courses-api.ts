@@ -21,13 +21,18 @@ export const KAMBAZ_COURSES_API_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "dao",
+    id: "dao-intro",
     title: "Courses DAO filters enrollments",
     kind: "demo",
     bullets: [
       "`findAllCourses` is the raw array",
       "`findCoursesForEnrolledUser` joins enrollments on the server",
     ],
+  },
+  {
+    id: "dao",
+    title: "Courses DAO filters enrollments (code)",
+    kind: "demo",
     code: `import { v4 as uuidv4 } from "uuid";
 export default function CoursesDao(db) {
   function findAllCourses() {
@@ -49,13 +54,18 @@ export default function CoursesDao(db) {
     codeHighlightLines: [[6, 13]],
   },
   {
-    id: "routes",
+    id: "routes-intro",
     title: "GET /api/courses and mine",
     kind: "demo",
     bullets: [
       "`userId === \"current\"` reads the session — 401 if anonymous",
       "Confirm `http://localhost:4000/api/courses` returns the array",
     ],
+  },
+  {
+    id: "routes",
+    title: "GET /api/courses and mine (code)",
+    kind: "demo",
     code: `import CoursesDao from "./dao.js";
 export default function CourseRoutes(app, db) {
   const dao = CoursesDao(db);

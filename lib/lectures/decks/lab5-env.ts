@@ -63,13 +63,18 @@ app.listen(4000);`,
     codeAddedLines: [3, 5],
   },
   {
-    id: "lab5-page",
+    id: "lab5-page-intro",
     title: "A Lab 5 page with a Welcome link",
     kind: "demo",
     bullets: [
       "Add the route to the Labs TOC. Do not hard-code the host for long",
       "The next slide replaces `localhost:4000` with an environment variable",
     ],
+  },
+  {
+    id: "lab5-page",
+    title: "A Lab 5 page with a Welcome link (code)",
+    kind: "demo",
     code: `export default function Lab5() {
   return (
     <div id="wd-lab5">

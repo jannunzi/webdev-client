@@ -21,13 +21,18 @@ export const KAMBAZ_COURSES_DB_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "schema",
+    id: "schema-intro",
     title: "Course schema keeps string ids",
     kind: "demo",
     bullets: [
       "`_id` stays `String` — enrollments and modules already store those ids",
       "`CourseModel` is the name enrollments will `ref` in §6.4.3.1",
     ],
+  },
+  {
+    id: "schema",
+    title: "Course schema keeps string ids (code)",
+    kind: "demo",
     code: `import mongoose from "mongoose";
 const courseSchema = new mongoose.Schema({
   _id: String,
@@ -58,13 +63,18 @@ export default model;`,
     codeAddedLines: [3],
   },
   {
-    id: "find",
+    id: "find-intro",
     title: "find() replaces Database.courses",
     kind: "demo",
     bullets: [
       "Comment out the array return so you do not keep two sources of truth",
       "Enrolled-user helper can still filter against in-memory enrollments for now",
     ],
+  },
+  {
+    id: "find",
+    title: "find() replaces Database.courses (code)",
+    kind: "demo",
     code: `import model from "./model.js";
 
 function findAllCourses() {
@@ -88,13 +98,18 @@ async function findCoursesForEnrolledUser(userId) {
     codeAddedLines: [5, [8, 18]],
   },
   {
-    id: "async-routes",
+    id: "async-routes-intro",
     title: "Await every course lookup",
     kind: "demo",
     bullets: [
       "`userId === \"current\"` still reads the session — 401 if anonymous",
       "Only the lookup behind it is now a promise",
     ],
+  },
+  {
+    id: "async-routes",
+    title: "Await every course lookup (code)",
+    kind: "demo",
     code: `const findAllCourses = async (req, res) => {
   const courses = await dao.findAllCourses();
   res.send(courses);
@@ -118,13 +133,18 @@ const findCoursesForEnrolledUser = async (req, res) => {
     codeHighlightLines: [1, 2, 6, 16],
   },
   {
-    id: "create",
+    id: "create-intro",
     title: "createCourse assigns a uuid",
     kind: "demo",
     bullets: [
       "Spread, `_id: uuidv4()`, `model.create`",
       "Route still enrolls the current user — that write becomes Mongo in §6.4.3.4",
     ],
+  },
+  {
+    id: "create",
+    title: "createCourse assigns a uuid (code)",
+    kind: "demo",
     code: `function createCourse(course) {
   const newCourse = { ...course, _id: uuidv4() };
   return model.create(newCourse);

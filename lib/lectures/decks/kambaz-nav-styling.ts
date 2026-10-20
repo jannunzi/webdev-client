@@ -22,7 +22,7 @@ export const KAMBAZ_NAV_STYLING_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "tsx",
+    id: "tsx-intro",
     title: "Pin a fixed black column",
     kind: "content",
     bullets: [
@@ -31,6 +31,11 @@ export const KAMBAZ_NAV_STYLING_SLIDES: LectureSlide[] = [
       "`z-20` keeps it above the scrolling page",
       "Inside the `nav`, keep every Chapter 1 link in the same order",
     ],
+  },
+  {
+    id: "tsx",
+    title: "Pin a fixed black column (code)",
+    kind: "content",
     code: `import { AiOutlineDashboard } from "react-icons/ai";
 import { IoCalendarOutline } from "react-icons/io5";
 import { LiaBookSolid, LiaCogSolid } from "react-icons/lia";
@@ -47,7 +52,7 @@ export default function KambazNavigation() {
     codeFile: "app/(kambaz)/Navigation.tsx",
   },
   {
-    id: "neu-link",
+    id: "neu-link-intro",
     title: "Northeastern logo link first",
     kind: "content",
     bullets: [
@@ -55,6 +60,11 @@ export default function KambazNavigation() {
       "If `public/images/NEU.png` isn't in your project yet, save any Northeastern logo there under that name",
       "The `eslint-disable` comment only silences ESLint's suggestion to use `next/image`",
     ],
+  },
+  {
+    id: "neu-link",
+    title: "Northeastern logo link first (code)",
+    kind: "content",
     code: `      <a
         href="https://www.northeastern.edu/"
         id="wd-neu-link"
@@ -75,7 +85,7 @@ export default function KambazNavigation() {
     codeFile: "app/(kambaz)/Navigation.tsx",
   },
   {
-    id: "account-dashboard",
+    id: "account-dashboard-intro",
     title: "Account and Dashboard tiles",
     kind: "content",
     bullets: [
@@ -83,6 +93,11 @@ export default function KambazNavigation() {
       "Dashboard is highlighted by hand: `bg-white text-red-600`, while every other tile says `bg-black text-white`",
       "So Dashboard stays highlighted on every Kambaz page, even on Account or Labs. That's expected for A2",
     ],
+  },
+  {
+    id: "account-dashboard",
+    title: "Account and Dashboard tiles (code)",
+    kind: "content",
     code: `      <Link
         href="/account"
         id="wd-account-link"
@@ -105,13 +120,18 @@ export default function KambazNavigation() {
     codeFile: "app/(kambaz)/Navigation.tsx",
   },
   {
-    id: "courses-calendar",
+    id: "courses-calendar-intro",
     title: "Courses and Calendar tiles",
     kind: "content",
     bullets: [
       "Same black tile, white label, and red icon as the rest",
       "Courses → `LiaBookSolid` from `react-icons/lia`. Calendar → `IoCalendarOutline` from `react-icons/io5`",
     ],
+  },
+  {
+    id: "courses-calendar",
+    title: "Courses and Calendar tiles (code)",
+    kind: "content",
     code: `      <Link
         href="/dashboard"
         id="wd-course-link"
@@ -134,13 +154,18 @@ export default function KambazNavigation() {
     codeFile: "app/(kambaz)/Navigation.tsx",
   },
   {
-    id: "inbox-labs",
+    id: "inbox-labs-intro",
     title: "Inbox and Labs tiles close the bar",
     kind: "content",
     bullets: [
       "Inbox → `FaInbox` from `react-icons/fa6`. Labs → `LiaCogSolid` from `react-icons/lia`",
       "Labs links to `/labs`, the Labs page from Chapter 1",
     ],
+  },
+  {
+    id: "inbox-labs",
+    title: "Inbox and Labs tiles close the bar (code)",
+    kind: "content",
     code: `      <Link
         href="/inbox"
         id="wd-inbox-link"
@@ -166,7 +191,7 @@ export default function KambazNavigation() {
     codeFile: "app/(kambaz)/Navigation.tsx",
   },
   {
-    id: "offset",
+    id: "offset-intro",
     title: "Offset the overlapping content",
     kind: "content",
     bullets: [
@@ -174,6 +199,11 @@ export default function KambazNavigation() {
       "Append `.wd-main-content-offset` to `kambaz.css`, inside a `768px` media query",
       "The offset only applies when `md:block` shows the sidebar",
     ],
+  },
+  {
+    id: "offset",
+    title: "Offset the overlapping content (code)",
+    kind: "content",
     code: `@media (min-width: 768px) {
   .wd-main-content-offset {
     margin-left: 120px;

@@ -138,7 +138,7 @@ export const SPREAD_AND_DESTRUCTURING_SLIDES: LectureSlide[] = [
     embed: "js-function-destructing",
   },
   {
-    id: "imports",
+    id: "imports-intro",
     title: "Named exports and one default",
     kind: "content",
     bullets: [
@@ -146,6 +146,11 @@ export const SPREAD_AND_DESTRUCTURING_SLIDES: LectureSlide[] = [
       "`const Math` groups those functions. `export default Math` is the one **default**",
       "A file has at most one default export",
     ],
+  },
+  {
+    id: "imports",
+    title: "Named exports and one default (code)",
+    kind: "content",
     code: `export function add(a: number, b: number): number {
   return a + b;
 }

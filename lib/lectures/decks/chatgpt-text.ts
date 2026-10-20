@@ -248,13 +248,18 @@ history.push({ role: "user", content: "tell me another" });`,
     ],
   },
   {
-    id: "zod",
+    id: "zod-intro",
     title: "Structured request",
     kind: "demo",
     bullets: [
       "`responses.parse` plus **`zodTextFormat`** locks the JSON",
       "The older `beta.chat.completions.parse` call is the same idea. Use `responses.parse` here",
     ],
+  },
+  {
+    id: "zod",
+    title: "Structured request (code)",
+    kind: "demo",
     code: `import { z } from "zod";
 import { zodTextFormat } from "openai/helpers/zod";
 

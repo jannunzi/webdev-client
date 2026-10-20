@@ -21,7 +21,7 @@ export const ZUSTAND_TODOS_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "store",
+    id: "store-intro",
     title: "Seed, then copy on write",
     kind: "content",
     bullets: [
@@ -29,6 +29,11 @@ export const ZUSTAND_TODOS_SLIDES: LectureSlide[] = [
       "`deleteTodo` filters by `id`. `updateTodo` maps the matching row",
       "Both add and update reset the draft to `emptyTodo`",
     ],
+  },
+  {
+    id: "store",
+    title: "Seed, then copy on write (code)",
+    kind: "content",
     code: `const emptyTodo: Todo = { id: "-1", title: "Learn Zustand", done: false };
 
 export const useTodoStore = create<TodoStore>((set) => ({
@@ -59,13 +64,18 @@ export const useTodoStore = create<TodoStore>((set) => ({
     codeHighlightLines: [[11, 15], [16, 19], [20, 24]],
   },
   {
-    id: "form",
+    id: "form-intro",
     title: "The form binds the draft",
     kind: "content",
     bullets: [
       "`value={todo.title}` and `setTodo({ ...todo, title })` — §4.2.8 again",
       "Add and Update call store functions, not a parent callback",
     ],
+  },
+  {
+    id: "form",
+    title: "The form binds the draft (code)",
+    kind: "content",
     code: `const todo = useTodoStore((state) => state.todo);
 const setTodo = useTodoStore((state) => state.setTodo);
 const addTodo = useTodoStore((state) => state.addTodo);

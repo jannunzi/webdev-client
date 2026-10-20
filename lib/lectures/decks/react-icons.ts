@@ -33,7 +33,7 @@ export const REACT_ICONS_SLIDES: LectureSlide[] = [
     codeLanguage: "bash",
   },
   {
-    id: "utilities-css",
+    id: "utilities-css-intro",
     title: "Tailwind utilities, no Preflight",
     kind: "content",
     bullets: [
@@ -42,6 +42,11 @@ export const REACT_ICONS_SLIDES: LectureSlide[] = [
       "**Preflight** is Tailwind's base reset. It strips default heading sizes, margins, and list bullets, so this file leaves it out",
       "`layer(...)` puts each import in a named **cascade layer**. When two rules conflict, the later layer wins",
     ],
+  },
+  {
+    id: "utilities-css",
+    title: "Tailwind utilities, no Preflight (code)",
+    kind: "content",
     code: `/* Theme + utilities without Preflight, for the Labs */
 @import "tailwindcss/theme" layer(theme);
 @import "tailwindcss/utilities" layer(utilities);`,
@@ -49,7 +54,7 @@ export const REACT_ICONS_SLIDES: LectureSlide[] = [
     codeFile: "app/labs/lab2/tailwind/utilities.css",
   },
   {
-    id: "sampler",
+    id: "sampler-intro",
     title: "Six families in one sampler",
     kind: "demo",
     bullets: [
@@ -58,6 +63,11 @@ export const REACT_ICONS_SLIDES: LectureSlide[] = [
       "`mb-4` adds bottom margin, `font-sans` picks a sans-serif font, and `text-lg font-semibold` makes a larger, bolder heading",
       "`flex` puts the icons in a row, `gap-3` spaces them 0.75rem apart, and `text-3xl` makes text large",
     ],
+  },
+  {
+    id: "sampler",
+    title: "Six families in one sampler (code)",
+    kind: "demo",
     code: `import "@/app/labs/lab2/tailwind/utilities.css";
 import { FaCalendar, FaEnvelopeOpenText, FaRegClock } from "react-icons/fa";
 import { AiOutlineDashboard } from "react-icons/ai";
@@ -94,7 +104,7 @@ export default function ReactIconsSampler() {
     embed: "react-icons",
   },
   {
-    id: "class-name",
+    id: "class-name-intro",
     title: "className, style, and size",
     kind: "content",
     bullets: [
@@ -103,6 +113,11 @@ export default function ReactIconsSampler() {
       "`size={32}` is pixels if you prefer a number",
       "`text-3xl` on the parent already scaled the sampler row",
     ],
+  },
+  {
+    id: "class-name",
+    title: "className, style, and size (code)",
+    kind: "content",
     code: `<FaCalendar className="text-4xl text-red-600" />
 <AiOutlineDashboard size={32} style={{ color: "navy" }} />`,
     codeLanguage: "tsx",

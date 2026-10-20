@@ -167,7 +167,7 @@ const LINKS = [
     embed: "kambaz-links-nav",
   },
   {
-    id: "download-courses",
+    id: "download-courses-intro",
     title: "Download courses.json first",
     kind: "content",
     bullets: [
@@ -176,6 +176,11 @@ const LINKS = [
       "Or open the link, copy the JSON, and paste it into a new `courses.json`",
       "Or download it from a terminal in your project folder (macOS, Linux, or Git Bash):",
     ],
+  },
+  {
+    id: "download-courses",
+    title: "Download courses.json first (code)",
+    kind: "content",
     code: `curl -o "app/(kambaz)/database/courses.json" https://kambaz.dev/downloads/kambaz-database/courses.json`,
     codeLanguage: "shell",
   },

@@ -46,7 +46,7 @@ export const KAMBAZ_ACCOUNT_SLIDES: LectureSlide[] = [
     imageCaption: "Figure 2.4.9b — Account Profile",
   },
   {
-    id: "signin",
+    id: "signin-intro",
     title: "Implementing the Sign In Screen",
     kind: "content",
     bullets: [
@@ -55,6 +55,11 @@ export const KAMBAZ_ACCOUNT_SLIDES: LectureSlide[] = [
       "`defaultValue` is starter credentials while there is no real auth",
       "`Link` to Profile (`wd-signin-btn`) and Sign up (`wd-signup-link`)",
     ],
+  },
+  {
+    id: "signin",
+    title: "Implementing the Sign In Screen (code)",
+    kind: "content",
     code: `import Link from "next/link";
 
 export default function Signin() {
@@ -122,7 +127,7 @@ export default function Kambaz() {
     ],
   },
   {
-    id: "profile",
+    id: "profile-intro",
     title: "Implementing the Profile Screen",
     kind: "content",
     bullets: [
@@ -131,6 +136,11 @@ export default function Kambaz() {
       "Reuse `date`, `email`, and a `select` from Lab 1",
       "Labels would have been nice",
     ],
+  },
+  {
+    id: "profile",
+    title: "Implementing the Profile Screen (code)",
+    kind: "content",
     code: `import Link from "next/link";
 
 export default function Profile() {
@@ -183,7 +193,7 @@ export default function Profile() {
     embed: "kambaz-profile",
   },
   {
-    id: "signup",
+    id: "signup-intro",
     title: "Implementing the Sign Up Screen",
     kind: "content",
     bullets: [
@@ -192,6 +202,11 @@ export default function Profile() {
       "Absolute paths — not `href=\"profile\"`",
       "CSS will make these look much better",
     ],
+  },
+  {
+    id: "signup",
+    title: "Implementing the Sign Up Screen (code)",
+    kind: "content",
     code: `import Link from "next/link";
 
 export default function Signup() {
@@ -234,7 +249,7 @@ export default function Signup() {
     embed: "kambaz-signup",
   },
   {
-    id: "account-nav",
+    id: "account-nav-intro",
     title: "Account Navigation Sidebar",
     kind: "content",
     bullets: [
@@ -242,6 +257,11 @@ export default function Signup() {
       "Three absolute `Link`s: Signin, Signup, Profile",
       "Navigation links between Account screens",
     ],
+  },
+  {
+    id: "account-nav",
+    title: "Account Navigation Sidebar (code)",
+    kind: "content",
     code: `import Link from "next/link";
 
 export default function AccountNavigation() {
@@ -257,7 +277,7 @@ export default function AccountNavigation() {
     codeFile: "app/(kambaz)/account/Navigation.tsx",
   },
   {
-    id: "account-layout",
+    id: "account-layout-intro",
     title: "Layout Sidebar in Left Column",
     kind: "content",
     bullets: [
@@ -265,6 +285,11 @@ export default function AccountNavigation() {
       "Two-column `<table>`: navigation left, `{children}` right",
       "Wrapper id `wd-kambaz-account`",
     ],
+  },
+  {
+    id: "account-layout",
+    title: "Layout Sidebar in Left Column (code)",
+    kind: "content",
     code: `import { ReactNode } from "react";
 import AccountNavigation from "./Navigation";
 
