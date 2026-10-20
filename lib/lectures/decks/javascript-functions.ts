@@ -23,7 +23,7 @@ export const JAVASCRIPT_FUNCTIONS_SLIDES: LectureSlide[] = [
   },
   {
     id: "legacy",
-    title: "Legacy ES5 function add (1/2)",
+    title: "Legacy ES5 function add",
     kind: "content",
     code: `function add(a: number, b: number) {
   return a + b;
@@ -31,21 +31,12 @@ export const JAVASCRIPT_FUNCTIONS_SLIDES: LectureSlide[] = [
 
 export default function LegacyFunctions() {
   const twoPlusFour = add(2, 4);
-  console.log(twoPlusFour);`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/LegacyFunctions.tsx",
-    codeHighlightLines: [1, 2, 3, 6],
-  },
-  {
-    id: "legacy-return",
-    title: "Legacy ES5 function add (2/2)",
-    kind: "content",
-    code: `  return (
+  console.log(twoPlusFour);
+  return (
     <div id="wd-legacy-functions">
       <h4>Functions</h4>
       <h5>Legacy ES5 functions</h5>
-      twoPlusFour = {twoPlusFour}
-      <br />
+      twoPlusFour = {twoPlusFour} <br />
       add(2, 4) = {add(2, 4)}
       <hr />
     </div>
@@ -53,8 +44,7 @@ export default function LegacyFunctions() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/LegacyFunctions.tsx",
-    codeStartLine: 8,
-    codeHighlightLines: [7],
+    codeHighlightLines: [1, 2, 3, 6, 13],
   },
   {
     id: "legacy-live",
@@ -69,7 +59,7 @@ export default function LegacyFunctions() {
   },
   {
     id: "arrow",
-    title: "ES6 arrows drop the function keyword (1/2)",
+    title: "ES6 arrows drop the function keyword",
     kind: "content",
     code: `const subtract = (a: number, b: number) => {
   return a - b;
@@ -77,20 +67,11 @@ export default function LegacyFunctions() {
 
 export default function ArrowFunctions() {
   const threeMinusOne = subtract(3, 1);
-  console.log(threeMinusOne);`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/ArrowFunctions.tsx",
-    codeAddedLines: [1, 2, 3],
-  },
-  {
-    id: "arrow-return",
-    title: "ES6 arrows drop the function keyword (2/2)",
-    kind: "content",
-    code: `  return (
+  console.log(threeMinusOne);
+  return (
     <div id="wd-arrow-functions">
       <h4>New ES6 arrow functions</h4>
-      threeMinusOne = {threeMinusOne}
-      <br />
+      threeMinusOne = {threeMinusOne} <br />
       subtract(3, 1) = {subtract(3, 1)}
       <hr />
     </div>
@@ -98,7 +79,7 @@ export default function ArrowFunctions() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/ArrowFunctions.tsx",
-    codeStartLine: 8,
+    codeAddedLines: [1, 2, 3],
   },
   {
     id: "arrow-live",
@@ -113,25 +94,16 @@ export default function ArrowFunctions() {
   },
   {
     id: "implied",
-    title: "Implied return drops the braces (1/2)",
+    title: "Implied return drops the braces",
     kind: "content",
     code: `export default function ImpliedReturn() {
   const multiply = (a: number, b: number) => a * b;
   const fourTimesFive = multiply(4, 5);
-  console.log(fourTimesFive);`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/ImpliedReturn.tsx",
-    codeHighlightLines: [2],
-  },
-  {
-    id: "implied-return",
-    title: "Implied return drops the braces (2/2)",
-    kind: "content",
-    code: `  return (
+  console.log(fourTimesFive);
+  return (
     <div id="wd-implied-return">
       <h4>Implied return</h4>
-      fourTimesFive = {fourTimesFive}
-      <br />
+      fourTimesFive = {fourTimesFive} <br />
       multiply(4, 5) = {multiply(4, 5)}
       <hr />
     </div>
@@ -139,7 +111,7 @@ export default function ArrowFunctions() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/ImpliedReturn.tsx",
-    codeStartLine: 5,
+    codeHighlightLines: [2],
   },
   {
     id: "implied-live",
@@ -154,7 +126,7 @@ export default function ArrowFunctions() {
   },
   {
     id: "templates",
-    title: "Template literals embed expressions (1/3)",
+    title: "Template literals embed expressions",
     kind: "content",
     code: `export default function TemplateLiterals() {
   const five = 2 + 3;
@@ -163,40 +135,21 @@ export default function ArrowFunctions() {
   const username = "alice";
   const greeting1 = \`Welcome home \${username}\`;
   const loggedIn = false;
-  const greeting2 = \`Logged in: \${loggedIn ? "Yes" : "No"}\`;`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/TemplateLiterals.tsx",
-    codeHighlightLines: [4, 6, 8],
-  },
-  {
-    id: "templates-return",
-    title: "Template literals embed expressions (2/3)",
-    kind: "content",
-    code: `  return (
+  const greeting2 = \`Logged in: \${loggedIn ? "Yes" : "No"}\`;
+  return (
     <div id="wd-template-literals">
       <h4>Template Literals</h4>
-      result1 = {result1}
-      <br />
-      result2 = {result2}
-      <br />
-      greeting1 = {greeting1}
-      <br />
+      result1 = {result1}     <br />
+      result2 = {result2}     <br />
+      greeting1 = {greeting1} <br />
       greeting2 = {greeting2}
       <hr />
     </div>
-  );`,
+  );
+}`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/TemplateLiterals.tsx",
-    codeStartLine: 9,
-  },
-  {
-    id: "templates-part-3",
-    title: "Template literals embed expressions (3/3)",
-    kind: "content",
-    code: `}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/TemplateLiterals.tsx",
-    codeStartLine: 22,
+    codeHighlightLines: [4, 6, 8],
   },
   {
     id: "templates-live",

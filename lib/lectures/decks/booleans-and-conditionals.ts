@@ -23,7 +23,7 @@ export const BOOLEANS_AND_CONDITIONALS_SLIDES: LectureSlide[] = [
   },
   {
     id: "boolean-sample",
-    title: "And, or, not, and === (1/3)",
+    title: "And, or, not, and === (1/2)",
     kind: "content",
     code: `export default function BooleanVariables() {
   let numberVariable = 123,
@@ -41,34 +41,19 @@ export const BOOLEANS_AND_CONDITIONALS_SLIDES: LectureSlide[] = [
     codeHighlightLines: [6, 7, 8, 9, 10, 11],
   },
   {
-    id: "boolean-sample-return",
-    title: "And, or, not, and === (2/3)",
+    id: "boolean-sample-part-2",
+    title: "And, or, not, and === (2/2)",
     kind: "content",
     code: `  return (
     <div id="wd-boolean-variables">
       <h4>Boolean Variables</h4>
-      true1 = {true1 + ""}
-      <br />
-      false1 = {false1 + ""}
-      <br />
-      false2 = {false2 + ""}
-      <br />
-      true2 = {true2 + ""}
-      <br />
-      true3 = {true3 + ""}
-      <br />`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/BooleanVariables.tsx",
-    codeStartLine: 12,
-  },
-  {
-    id: "boolean-sample-part-3",
-    title: "And, or, not, and === (3/3)",
-    kind: "content",
-    code: `      true4 = {true4 + ""}
-      <br />
-      true5 = {true5 + ""}
-      <br />
+      true1 = {true1 + ""}   <br />
+      false1 = {false1 + ""} <br />
+      false2 = {false2 + ""} <br />
+      true2 = {true2 + ""}   <br />
+      true3 = {true3 + ""}   <br />
+      true4 = {true4 + ""}   <br />
+      true5 = {true5 + ""}   <br />
       false3 = {false3 + ""}
       <hr />
     </div>
@@ -76,7 +61,7 @@ export const BOOLEANS_AND_CONDITIONALS_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/BooleanVariables.tsx",
-    codeStartLine: 25,
+    codeStartLine: 12,
   },
   {
     id: "boolean-sample-live",
@@ -167,7 +152,7 @@ export const BOOLEANS_AND_CONDITIONALS_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/ConditionalOutputIfElse.tsx",
-    codeHighlightLines: [[3, 11]],
+    codeHighlightLines: [3, 4, 5, 6, 7, 8, 9, 10, 11],
   },
   {
     id: "output-if-else-live",

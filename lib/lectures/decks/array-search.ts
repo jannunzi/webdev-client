@@ -23,26 +23,17 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
   },
   {
     id: "find",
-    title: "find stops at the first hit (1/2)",
+    title: "find stops at the first hit",
     kind: "content",
     code: `export default function FindFunction() {
   let numberArray1 = [1, 2, 3, 4, 5];
   let stringArray1 = ["string1", "string2", "string3"];
   const four = numberArray1.find((a) => a === 4);
-  const string3 = stringArray1.find((a) => a === "string3");`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/FindFunction.tsx",
-    codeHighlightLines: [4, 5],
-  },
-  {
-    id: "find-return",
-    title: "find stops at the first hit (2/2)",
-    kind: "content",
-    code: `  return (
+  const string3 = stringArray1.find((a) => a === "string3");
+  return (
     <div id="wd-find-function">
       <h4>Find Function</h4>
-      four = {four}
-      <br />
+      four = {four} <br />
       string3 = {string3}
       <hr />
     </div>
@@ -50,7 +41,7 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/FindFunction.tsx",
-    codeStartLine: 6,
+    codeHighlightLines: [4, 5],
   },
   {
     id: "find-live",
@@ -65,26 +56,17 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
   },
   {
     id: "find-index",
-    title: "findIndex returns a position (1/2)",
+    title: "findIndex returns a position",
     kind: "content",
     code: `export default function FindIndex() {
   let numberArray1 = [1, 2, 4, 5, 6];
   let stringArray1 = ["string1", "string3"];
   const fourIndex = numberArray1.findIndex((a) => a === 4);
-  const string3Index = stringArray1.findIndex((a) => a === "string3");`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/FindIndex.tsx",
-    codeHighlightLines: [4, 5],
-  },
-  {
-    id: "find-index-return",
-    title: "findIndex returns a position (2/2)",
-    kind: "content",
-    code: `  return (
+  const string3Index = stringArray1.findIndex((a) => a === "string3");
+  return (
     <div id="wd-find-index">
       <h4>Find Index Function</h4>
-      fourIndex = {fourIndex}
-      <br />
+      fourIndex = {fourIndex} <br />
       string3Index = {string3Index}
       <hr />
     </div>
@@ -92,7 +74,7 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/FindIndex.tsx",
-    codeStartLine: 6,
+    codeHighlightLines: [4, 5],
   },
   {
     id: "find-index-live",
@@ -107,28 +89,18 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
   },
   {
     id: "filter",
-    title: "filter keeps every match (1/2)",
+    title: "filter keeps every match",
     kind: "content",
     code: `export default function FilterFunction() {
   let numberArray1 = [1, 2, 4, 5, 6];
   const numbersGreaterThan2 = numberArray1.filter((a) => a > 2);
   const evenNumbers = numberArray1.filter((a) => a % 2 === 0);
-  const oddNumbers = numberArray1.filter((a) => a % 2 !== 0);`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/FilterFunction.tsx",
-    codeHighlightLines: [3, 4, 5],
-  },
-  {
-    id: "filter-return",
-    title: "filter keeps every match (2/2)",
-    kind: "content",
-    code: `  return (
+  const oddNumbers = numberArray1.filter((a) => a % 2 !== 0);
+  return (
     <div id="wd-filter-function">
       <h4>Filter Function</h4>
-      numbersGreaterThan2 = {numbersGreaterThan2}
-      <br />
-      evenNumbers = {evenNumbers}
-      <br />
+      numbersGreaterThan2 = {numbersGreaterThan2} <br />
+      evenNumbers = {evenNumbers}                 <br />
       oddNumbers = {oddNumbers}
       <hr />
     </div>
@@ -136,7 +108,7 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/FilterFunction.tsx",
-    codeStartLine: 6,
+    codeHighlightLines: [3, 4, 5],
   },
   {
     id: "filter-live",
@@ -151,47 +123,28 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
   },
   {
     id: "booleans",
-    title: "includes, some, and every (1/3)",
+    title: "includes, some, and every",
     kind: "content",
     code: `export default function IncludesSomeEvery() {
   const numbers = [1, 2, 3, 4, 5];
   const includes3 = numbers.includes(3);
   const includes8 = numbers.includes(8);
   const someGreaterThan4 = numbers.some((n) => n > 4);
-  const everyGreaterThan0 = numbers.every((n) => n > 0);`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/IncludesSomeEvery.tsx",
-    codeHighlightLines: [3, 4, 5, 6],
-  },
-  {
-    id: "booleans-return",
-    title: "includes, some, and every (2/3)",
-    kind: "content",
-    code: `  return (
+  const everyGreaterThan0 = numbers.every((n) => n > 0);
+  return (
     <div id="wd-includes-some-every">
       <h4>Includes, Some, Every</h4>
-      includes(3) = {includes3 + ""}
-      <br />
-      includes(8) = {includes8 + ""}
-      <br />
-      some(n &gt; 4) = {someGreaterThan4 + ""}
-      <br />
+      includes(3) = {includes3 + ""}           <br />
+      includes(8) = {includes8 + ""}           <br />
+      some(n &gt; 4) = {someGreaterThan4 + ""} <br />
       every(n &gt; 0) = {everyGreaterThan0 + ""}
       <hr />
     </div>
-  );`,
+  );
+}`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/IncludesSomeEvery.tsx",
-    codeStartLine: 7,
-  },
-  {
-    id: "booleans-part-3",
-    title: "includes, some, and every (3/3)",
-    kind: "content",
-    code: `}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/IncludesSomeEvery.tsx",
-    codeStartLine: 20,
+    codeHighlightLines: [3, 4, 5, 6],
   },
   {
     id: "booleans-live",

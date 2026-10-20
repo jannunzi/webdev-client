@@ -23,7 +23,7 @@ export const VARIABLE_TYPES_SLIDES: LectureSlide[] = [
   },
   {
     id: "sample",
-    title: "Values and their typeof strings (1/3)",
+    title: "Values and their typeof strings",
     kind: "content",
     code: `export default function VariableTypes() {
   let numberVariable = 123;
@@ -32,39 +32,16 @@ export const VARIABLE_TYPES_SLIDES: LectureSlide[] = [
   let booleanVariable = true;
   let isNumber = typeof numberVariable;
   let isString = typeof stringVariable;
-  let isBoolean = typeof booleanVariable;`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/VariableTypes.tsx",
-    codeHighlightLines: [6, 7, 8],
-  },
-  {
-    id: "sample-return",
-    title: "Values and their typeof strings (2/3)",
-    kind: "content",
-    code: `  return (
+  let isBoolean = typeof booleanVariable;
+  return (
     <div id="wd-variable-types">
       <h4>Variables Types</h4>
-      numberVariable = {numberVariable}
-      <br />
-      floatingPointNumber = {floatingPointNumber}
-      <br />
-      stringVariable = {stringVariable}
-      <br />
-      booleanVariable = {booleanVariable + ""}
-      <br />
-      isNumber = {isNumber}
-      <br />`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/VariableTypes.tsx",
-    codeStartLine: 9,
-    codeHighlightLines: [10],
-  },
-  {
-    id: "sample-part-3",
-    title: "Values and their typeof strings (3/3)",
-    kind: "content",
-    code: `      isString = {isString}
-      <br />
+      numberVariable = {numberVariable}           <br />
+      floatingPointNumber = {floatingPointNumber} <br />
+      stringVariable = {stringVariable}           <br />
+      booleanVariable = {booleanVariable + ""}    <br />
+      isNumber = {isNumber}                       <br />
+      isString = {isString}                       <br />
       isBoolean = {isBoolean}
       <hr />
     </div>
@@ -72,7 +49,7 @@ export const VARIABLE_TYPES_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/VariableTypes.tsx",
-    codeStartLine: 22,
+    codeHighlightLines: [6, 7, 8, 15],
   },
   {
     id: "sample-live",

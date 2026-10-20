@@ -43,8 +43,7 @@ export default function LegacyFunctions() {
     <div id="wd-legacy-functions">
       <h4>Functions</h4>
       <h5>Legacy ES5 functions</h5>
-      twoPlusFour = {twoPlusFour}
-      <br />
+      twoPlusFour = {twoPlusFour} <br />
       add(2, 4) = {add(2, 4)}
       <hr />
     </div>
@@ -143,8 +142,7 @@ export default function ArrowFunctions() {
   return (
     <div id="wd-arrow-functions">
       <h4>New ES6 arrow functions</h4>
-      threeMinusOne = {threeMinusOne}
-      <br />
+      threeMinusOne = {threeMinusOne} <br />
       subtract(3, 1) = {subtract(3, 1)}
       <hr />
     </div>
@@ -236,8 +234,7 @@ export default function Lab3() {
   return (
     <div id="wd-implied-return">
       <h4>Implied return</h4>
-      fourTimesFive = {fourTimesFive}
-      <br />
+      fourTimesFive = {fourTimesFive} <br />
       multiply(4, 5) = {multiply(4, 5)}
       <hr />
     </div>
@@ -345,12 +342,9 @@ export default function Lab3() {
   return (
     <div id="wd-template-literals">
       <h4>Template Literals</h4>
-      result1 = {result1}
-      <br />
-      result2 = {result2}
-      <br />
-      greeting1 = {greeting1}
-      <br />
+      result1 = {result1}     <br />
+      result2 = {result2}     <br />
+      greeting1 = {greeting1} <br />
       greeting2 = {greeting2}
       <hr />
     </div>

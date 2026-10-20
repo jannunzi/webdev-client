@@ -23,7 +23,7 @@ export const JAVASCRIPT_ARRAYS_SLIDES: LectureSlide[] = [
   },
   {
     id: "simple",
-    title: "A todo list is an array of li (1/4)",
+    title: "A todo list is an array of li (1/2)",
     kind: "content",
     code: `export default function SimpleArrays() {
   var functionScoped = 2;
@@ -34,16 +34,8 @@ export const JAVASCRIPT_ARRAYS_SLIDES: LectureSlide[] = [
   let htmlArray1 = [
     <li key={1}>Buy milk</li>,
     <li key={2}>Feed the pets</li>,
-  ];`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/SimpleArrays.tsx",
-    codeHighlightLines: [5, 6, 7, 8, 9, 10],
-  },
-  {
-    id: "simple-part-2",
-    title: "A todo list is an array of li (2/4)",
-    kind: "content",
-    code: `  let variableArray1 = [
+  ];
+  let variableArray1 = [
     functionScoped,
     blockScoped,
     constant1,
@@ -52,39 +44,28 @@ export const JAVASCRIPT_ARRAYS_SLIDES: LectureSlide[] = [
   ];`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/SimpleArrays.tsx",
-    codeStartLine: 11,
+    codeHighlightLines: [5, 6, 7, 8, 9, 10],
   },
   {
-    id: "simple-return",
-    title: "A todo list is an array of li (3/4)",
+    id: "simple-part-2",
+    title: "A todo list is an array of li (2/2)",
     kind: "content",
     code: `  return (
     <div id="wd-simple-arrays">
       <h4>Simple Arrays</h4>
-      numberArray1 = {numberArray1}
-      <br />
-      stringArray1 = {stringArray1}
-      <br />
-      variableArray1 = {variableArray1}
-      <br />
+      numberArray1 = {numberArray1}     <br />
+      stringArray1 = {stringArray1}     <br />
+      variableArray1 = {variableArray1} <br />
       Todo list:
       <ol>{htmlArray1}</ol>
       <hr />
-    </div>`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/SimpleArrays.tsx",
-    codeStartLine: 18,
-    codeHighlightLines: [9],
-  },
-  {
-    id: "simple-part-4",
-    title: "A todo list is an array of li (4/4)",
-    kind: "content",
-    code: `  );
+    </div>
+  );
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/SimpleArrays.tsx",
-    codeStartLine: 31,
+    codeStartLine: 18,
+    codeHighlightLines: [6],
   },
   {
     id: "simple-live",
@@ -99,25 +80,16 @@ export const JAVASCRIPT_ARRAYS_SLIDES: LectureSlide[] = [
   },
   {
     id: "index",
-    title: "length and indexOf (1/2)",
+    title: "length and indexOf",
     kind: "content",
     code: `export default function ArrayIndexAndLength() {
   let numberArray1 = [1, 2, 3, 4, 5];
   const length1 = numberArray1.length;
-  const index1 = numberArray1.indexOf(3);`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/ArrayIndexAndLength.tsx",
-    codeHighlightLines: [3, 4],
-  },
-  {
-    id: "index-return",
-    title: "length and indexOf (2/2)",
-    kind: "content",
-    code: `  return (
+  const index1 = numberArray1.indexOf(3);
+  return (
     <div id="wd-array-index-and-length">
       <h4>Array index and length</h4>
-      length1 = {length1}
-      <br />
+      length1 = {length1} <br />
       index1 = {index1}
       <hr />
     </div>
@@ -125,7 +97,7 @@ export const JAVASCRIPT_ARRAYS_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/ArrayIndexAndLength.tsx",
-    codeStartLine: 5,
+    codeHighlightLines: [3, 4],
   },
   {
     id: "index-live",
@@ -140,7 +112,7 @@ export const JAVASCRIPT_ARRAYS_SLIDES: LectureSlide[] = [
   },
   {
     id: "mutate",
-    title: "push appends; splice cuts (1/2)",
+    title: "push appends; splice cuts",
     kind: "content",
     code: `export default function AddingAndRemovingToFromArrays() {
   let numberArray1 = [1, 2, 3, 4, 5];
@@ -153,22 +125,12 @@ export const JAVASCRIPT_ARRAYS_SLIDES: LectureSlide[] = [
   stringArray1.push("string3");
   todoArray.push(<li key={3}>Walk the dogs</li>);
   numberArray1.splice(2, 1);
-  stringArray1.splice(1, 1);`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/AddingAndRemovingToFromArrays.tsx",
-    codeAddedLines: [8, 9, 10, 11, 12],
-  },
-  {
-    id: "mutate-return",
-    title: "push appends; splice cuts (2/2)",
-    kind: "content",
-    code: `  return (
+  stringArray1.splice(1, 1);
+  return (
     <div id="wd-adding-removing-from-arrays">
       <h4>Add/remove to/from arrays</h4>
-      numberArray1 = {numberArray1}
-      <br />
-      stringArray1 = {stringArray1}
-      <br />
+      numberArray1 = {numberArray1} <br />
+      stringArray1 = {stringArray1} <br />
       Todo list:
       <ol>{todoArray}</ol>
       <hr />
@@ -177,7 +139,7 @@ export const JAVASCRIPT_ARRAYS_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/AddingAndRemovingToFromArrays.tsx",
-    codeStartLine: 13,
+    codeAddedLines: [8, 9, 10, 11, 12],
   },
   {
     id: "mutate-live",

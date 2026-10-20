@@ -1290,18 +1290,18 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-assignments-styling"], 9);
     assert.equal(counts["kambaz-account-styling"], 8);
     assert.equal(counts["intro-to-javascript"], 9);
-    assert.equal(counts["variables-and-constants"], 9);
-    assert.equal(counts["variable-types"], 9);
-    assert.equal(counts["booleans-and-conditionals"], 15);
-    assert.equal(counts["null-and-undefined"], 9);
-    assert.equal(counts["javascript-functions"], 17);
-    assert.equal(counts["javascript-arrays"], 15);
-    assert.equal(counts["array-iteration"], 12);
-    assert.equal(counts["array-search"], 17);
+    assert.equal(counts["variables-and-constants"], 8);
+    assert.equal(counts["variable-types"], 7);
+    assert.equal(counts["booleans-and-conditionals"], 14);
+    assert.equal(counts["null-and-undefined"], 7);
+    assert.equal(counts["javascript-functions"], 12);
+    assert.equal(counts["javascript-arrays"], 11);
+    assert.equal(counts["array-iteration"], 9);
+    assert.equal(counts["array-search"], 12);
     assert.equal(counts["reduce-and-json"], 8);
-    assert.equal(counts["javascript-objects"], 9);
-    assert.equal(counts["spread-and-destructuring"], 23);
-    assert.equal(counts["optional-chaining"], 8);
+    assert.equal(counts["javascript-objects"], 8);
+    assert.equal(counts["spread-and-destructuring"], 14);
+    assert.equal(counts["optional-chaining"], 6);
     assert.equal(counts["dynamic-styling"], 7);
     assert.equal(counts["client-and-server"], 7);
     assert.equal(counts["parameterizing-components"], 7);
@@ -1395,7 +1395,7 @@ describe("lecture decks", () => {
     );
     assert.match(css, /--lecture-block-font-scale:\s*1/);
     assert.match(css, /\[data-demo-stage="true"\] \.lecture-demo-frame-body/);
-    assert.match(css, /font-size:\s*1\.3em/);
+    assert.match(css, /font-size:\s*calc\(var\(--demo-fit-scale, 1\.3\) \* 1em\)/);
     assert.doesNotMatch(
       css,
       /\.lecture-block-font-md \.lecture-slide-bullets \{[^}]*font-size:\s*1em/,
@@ -3695,28 +3695,46 @@ describe("Chapter 3 JavaScript decks: code, then the live demo", () => {
     assert.equal(demos, 30);
   });
 
-  it("splits long listings at return and numbers the continued lines", () => {
+  it("keeps one code slide unless a listing is long, and never leaves a tiny tail", () => {
+    const split: string[] = [];
     for (const slug of CH3_JS_DECKS) {
       for (const slide of getLectureDeck(slug)!.slides) {
         assert.ok(slide.title.length <= LECTURE_TITLE_MAX_CHARS, `${slug}#${slide.id} title`);
         if (!slide.code || slide.embed) continue;
-        const lineCount = slide.code.split("\n").length;
+        const lines = slide.code.split("\n");
+        // Lone <br /> lines move up onto the line before.
+        assert.ok(
+          !lines.some((line) => /^\s*<br\s*\/>\s*$/.test(line)),
+          `${slug}#${slide.id} has a lone <br /> line`,
+        );
         for (const line of [
           ...expandLineMarks(slide.codeHighlightLines),
           ...expandLineMarks(slide.codeAddedLines),
         ]) {
-          assert.ok(line <= lineCount, `${slug}#${slide.id} mark ${line} past ${lineCount}`);
+          assert.ok(line <= lines.length, `${slug}#${slide.id} mark ${line} past ${lines.length}`);
         }
-        if (slide.id.endsWith("-return")) {
-          assert.match(slide.code, /^ {2}return \($/m, `${slug}#${slide.id}`);
+        if (/-part-\d+$/.test(slide.id)) {
+          split.push(`${slug}#${slide.id}`);
           assert.ok(slide.codeStartLine && slide.codeStartLine > 1, `${slug}#${slide.id}`);
           assert.match(slide.title, /\(\d\/\d\)$/, `${slug}#${slide.id}`);
+          assert.ok(lines.length >= 10, `${slug}#${slide.id} is a tiny tail`);
         }
       }
     }
+    // Split only at a natural boundary: before return, or table header vs body.
+    assert.deepEqual(split, [
+      "booleans-and-conditionals#boolean-sample-part-2",
+      "javascript-arrays#simple-part-2",
+      "javascript-objects#house-part-2",
+      "spread-and-destructuring#destructing-imports-part-2",
+    ]);
+    assert.match(findSlide("javascript-arrays", "simple-part-2").code!, /^ {2}return \($/m);
+    assert.match(findSlide("spread-and-destructuring", "destructing-imports-part-2").code!, /^ {8}<tbody>/);
     const spread = getLectureDeck("spread-and-destructuring")!.slides.map((slide) => slide.id);
-    assert.deepEqual(spread.slice(2, 6), ["spread", "spread-return", "spread-part-3", "spread-live"]);
+    assert.deepEqual(spread.slice(2, 4), ["spread", "spread-live"]);
     assert.equal(findSlide("spread-and-destructuring", "spread").bullets, undefined);
     assert.equal(findSlide("spread-and-destructuring", "spread-live").bullets?.length, 3);
+    assert.match(findSlide("spread-and-destructuring", "spread").code!, /arr1 = \{JSON\.stringify\(arr1\)\} <br \/>/);
+    assert.equal(getLectureDeck("optional-chaining")!.slides.filter((slide) => slide.code).length, 1);
   });
 });

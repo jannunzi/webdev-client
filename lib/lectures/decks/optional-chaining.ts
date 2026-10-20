@@ -23,7 +23,7 @@ export const OPTIONAL_CHAINING_SLIDES: LectureSlide[] = [
   },
   {
     id: "sample",
-    title: "?. then ?? on the page (1/3)",
+    title: "?. then ?? on the page",
     kind: "content",
     code: `type House = {
   bedrooms: number;
@@ -37,30 +37,13 @@ export default function OptionalChaining() {
     address: {
       street: "Via Roma",
       city: "Roma",
-    },`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/OptionalChaining.tsx",
-    codeHighlightLines: [1, 2, 3, 4, 5, 8],
-  },
-  {
-    id: "sample-part-2",
-    title: "?. then ?? on the page (2/3)",
-    kind: "content",
-    code: `  };
-  const missing = undefined as { prop?: string } | undefined;`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/OptionalChaining.tsx",
-    codeStartLine: 14,
-  },
-  {
-    id: "sample-return",
-    title: "?. then ?? on the page (3/3)",
-    kind: "content",
-    code: `  return (
+    },
+  };
+  const missing = undefined as { prop?: string } | undefined;
+  return (
     <div id="wd-optional-chaining">
       <h4>Optional Chaining</h4>
-      house.address?.city = {house.address?.city}
-      <br />
+      house.address?.city = {house.address?.city} <br />
       missing?.prop ?? "n/a" = {missing?.prop ?? "n/a"}
       <hr />
     </div>
@@ -68,8 +51,7 @@ export default function OptionalChaining() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/OptionalChaining.tsx",
-    codeStartLine: 16,
-    codeHighlightLines: [4, 6],
+    codeHighlightLines: [1, 2, 3, 4, 5, 8, 19, 20],
   },
   {
     id: "sample-live",

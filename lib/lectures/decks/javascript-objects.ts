@@ -23,7 +23,7 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "house",
-    title: "A house is a nested object (1/3)",
+    title: "A house is a nested object (1/2)",
     kind: "content",
     bullets: [
       "`address` is an object. `owners` is a string array",
@@ -34,16 +34,8 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
   const house = {
     bedrooms: 4,
     bathrooms: 2.5,
-    squareFeet: 2000,`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/House.tsx",
-    codeHighlightLines: [2, 3, 4, 5],
-  },
-  {
-    id: "house-part-2",
-    title: "A house is a nested object (2/3)",
-    kind: "content",
-    code: `    address: {
+    squareFeet: 2000,
+    address: {
       street: "Via Roma",
       city: "Roma",
       state: "RM",
@@ -55,12 +47,11 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
   console.log(house);`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/House.tsx",
-    codeStartLine: 6,
-    codeHighlightLines: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    codeHighlightLines: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
   },
   {
-    id: "house-return",
-    title: "A house is a nested object (3/3)",
+    id: "house-part-2",
+    title: "A house is a nested object (2/2)",
     kind: "content",
     code: `  return (
     <div id="wd-house">

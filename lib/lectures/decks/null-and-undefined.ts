@@ -23,50 +23,27 @@ export const NULL_AND_UNDEFINED_SLIDES: LectureSlide[] = [
   },
   {
     id: "sample",
-    title: "Print both so you can see them (1/3)",
+    title: "Print both so you can see them",
     kind: "content",
     code: `export default function NullUndefined() {
   const nullValue = null;
-  const undefinedValue = undefined;`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/NullUndefined.tsx",
-    codeHighlightLines: [2, 3],
-  },
-  {
-    id: "sample-return",
-    title: "Print both so you can see them (2/3)",
-    kind: "content",
-    code: `  return (
+  const undefinedValue = undefined;
+  return (
     <div id="wd-null-undefined">
       <h4>Null vs Undefined</h4>
-      nullValue = {String(nullValue)}
-      <br />
-      undefinedValue = {String(undefinedValue)}
-      <br />
-      typeof nullValue = {typeof nullValue}
-      <br />
-      typeof undefinedValue = {typeof undefinedValue}
-      <br />
-      String(null) = {String(null)}
-      <br />`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/NullUndefined.tsx",
-    codeStartLine: 4,
-    codeHighlightLines: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-  },
-  {
-    id: "sample-part-3",
-    title: "Print both so you can see them (3/3)",
-    kind: "content",
-    code: `      String(undefined) = {String(undefined)}
+      nullValue = {String(nullValue)}           <br />
+      undefinedValue = {String(undefinedValue)} <br />
+      typeof nullValue = {typeof nullValue}     <br />
+      typeof undefinedValue = {typeof undefinedValue} <br />
+      String(null) = {String(null)}             <br />
+      String(undefined) = {String(undefined)}
       <hr />
     </div>
   );
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/NullUndefined.tsx",
-    codeStartLine: 17,
-    codeHighlightLines: [1],
+    codeHighlightLines: [2, 3, 7, 8, 9, 10, 11, 12],
   },
   {
     id: "sample-live",

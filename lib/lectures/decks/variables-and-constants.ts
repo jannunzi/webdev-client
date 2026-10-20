@@ -34,27 +34,17 @@ export const VARIABLES_AND_CONSTANTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "sample",
-    title: "Declare, compute, interpolate (1/2)",
+    title: "Declare, compute, interpolate",
     kind: "content",
     code: `export default function VariablesAndConstants() {
   var functionScoped = 2;
   let blockScoped = 5;
-  const constant1 = functionScoped - blockScoped;`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/VariablesAndConstants.tsx",
-    codeHighlightLines: [2, 3, 4],
-  },
-  {
-    id: "sample-return",
-    title: "Declare, compute, interpolate (2/2)",
-    kind: "content",
-    code: `  return (
+  const constant1 = functionScoped - blockScoped;
+  return (
     <div id="wd-variables-and-constants">
       <h4>Variables and Constants</h4>
-      functionScoped = {functionScoped}
-      <br />
-      blockScoped = {blockScoped}
-      <br />
+      functionScoped = {functionScoped} <br />
+      blockScoped = {blockScoped}       <br />
       constant1 = {constant1}
       <hr />
     </div>
@@ -62,8 +52,7 @@ export const VARIABLES_AND_CONSTANTS_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/VariablesAndConstants.tsx",
-    codeStartLine: 5,
-    codeHighlightLines: [4, 5, 6, 7, 8],
+    codeHighlightLines: [2, 3, 4, 8, 9, 10],
   },
   {
     id: "sample-live",

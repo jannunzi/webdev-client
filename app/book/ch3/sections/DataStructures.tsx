@@ -67,12 +67,9 @@ export default function DataStructures() {
   return (
     <div id="wd-simple-arrays">
       <h4>Simple Arrays</h4>
-      numberArray1 = {numberArray1}
-      <br />
-      stringArray1 = {stringArray1}
-      <br />
-      variableArray1 = {variableArray1}
-      <br />
+      numberArray1 = {numberArray1}     <br />
+      stringArray1 = {stringArray1}     <br />
+      variableArray1 = {variableArray1} <br />
       Todo list:
       <ol>{htmlArray1}</ol>
       <hr />
@@ -172,8 +169,7 @@ export default function Lab3() {
   return (
     <div id="wd-array-index-and-length">
       <h4>Array index and length</h4>
-      length1 = {length1}
-      <br />
+      length1 = {length1} <br />
       index1 = {index1}
       <hr />
     </div>
@@ -281,10 +277,8 @@ export default function Lab3() {
   return (
     <div id="wd-adding-removing-from-arrays">
       <h4>Add/remove to/from arrays</h4>
-      numberArray1 = {numberArray1}
-      <br />
-      stringArray1 = {stringArray1}
-      <br />
+      numberArray1 = {numberArray1} <br />
+      stringArray1 = {stringArray1} <br />
       Todo list:
       <ol>{todoArray}</ol>
       <hr />
@@ -490,10 +484,8 @@ export default function Lab3() {
   return (
     <div id="wd-map-function">
       <h4>Map Function</h4>
-      squares = {squares}
-      <br />
-      cubes = {cubes}
-      <br />
+      squares = {squares} <br />
+      cubes = {cubes}     <br />
       Todos:
       <ol>
         {todos.map((todo) => (
@@ -605,8 +597,7 @@ export default function Lab3() {
   return (
     <div id="wd-find-function">
       <h4>Find Function</h4>
-      four = {four}
-      <br />
+      four = {four} <br />
       string3 = {string3}
       <hr />
     </div>
@@ -702,8 +693,7 @@ export default function Lab3() {
   return (
     <div id="wd-find-index">
       <h4>Find Index Function</h4>
-      fourIndex = {fourIndex}
-      <br />
+      fourIndex = {fourIndex} <br />
       string3Index = {string3Index}
       <hr />
     </div>
@@ -810,10 +800,8 @@ export default function Lab3() {
   return (
     <div id="wd-filter-function">
       <h4>Filter Function</h4>
-      numbersGreaterThan2 = {numbersGreaterThan2}
-      <br />
-      evenNumbers = {evenNumbers}
-      <br />
+      numbersGreaterThan2 = {numbersGreaterThan2} <br />
+      evenNumbers = {evenNumbers}                 <br />
       oddNumbers = {oddNumbers}
       <hr />
     </div>
@@ -921,12 +909,9 @@ export default function Lab3() {
   return (
     <div id="wd-includes-some-every">
       <h4>Includes, Some, Every</h4>
-      includes(3) = {includes3 + ""}
-      <br />
-      includes(8) = {includes8 + ""}
-      <br />
-      some(n &gt; 4) = {someGreaterThan4 + ""}
-      <br />
+      includes(3) = {includes3 + ""}           <br />
+      includes(8) = {includes8 + ""}           <br />
+      some(n &gt; 4) = {someGreaterThan4 + ""} <br />
       every(n &gt; 0) = {everyGreaterThan0 + ""}
       <hr />
     </div>
@@ -1539,17 +1524,12 @@ export default function Lab3() {
     <div id="wd-spreading">
       <h2>Spread Operator</h2>
       <h3>Array Spread</h3>
-      arr1 = {JSON.stringify(arr1)}
-      <br />
-      arr2 = {JSON.stringify(arr2)}
-      <br />
+      arr1 = {JSON.stringify(arr1)} <br />
+      arr2 = {JSON.stringify(arr2)} <br />
       <h3>Object Spread</h3>
-      {JSON.stringify(obj1)}
-      <br />
-      {JSON.stringify(obj2)}
-      <br />
-      {JSON.stringify(obj3)}
-      <br />
+      {JSON.stringify(obj1)}        <br />
+      {JSON.stringify(obj2)}        <br />
+      {JSON.stringify(obj3)}        <br />
       <hr />
     </div>
   );
@@ -1685,20 +1665,13 @@ export default function Lab3() {
     <div id="wd-destructing">
       <h2>Destructing</h2>
       <h3>Object Destructing</h3>
-      const &#123; name, age &#125; = &#123; name: "John", age: 25 &#125;
-      <br />
-      <br />
-      name = {name}
-      <br />
+      const &#123; name, age &#125; = &#123; name: "John", age: 25 &#125; <br /> <br />
+      name = {name}     <br />
       age = {age}
       <h3>Array Destructing</h3>
-      const [first, second, third] = ["one","two","three"]
-      <br />
-      <br />
-      first = {first}
-      <br />
-      second = {second}
-      <br />
+      const [first, second, third] = ["one","two","three"] <br /> <br />
+      first = {first}   <br />
+      second = {second} <br />
       third = {third}
       <hr />
     </div>
@@ -1833,16 +1806,11 @@ export default function Lab3() {
   return (
     <div id="wd-function-destructing">
       <h2>Function Destructing</h2>
-      const add = (a, b) =&gt; a + b;
-      <br />
-      const sum = add(1, 2);
-      <br />
-      const subtract = (&#123; a, b &#125;) =&gt; a - b;
-      <br />
-      const difference = subtract(&#123; a: 4, b: 2 &#125;);
-      <br />
-      sum = {sum}
-      <br />
+      const add = (a, b) =&gt; a + b; <br />
+      const sum = add(1, 2);          <br />
+      const subtract = (&#123; a, b &#125;) =&gt; a - b; <br />
+      const difference = subtract(&#123; a: 4, b: 2 &#125;); <br />
+      sum = {sum}                     <br />
       difference = {difference}
       <hr />
     </div>
@@ -2205,8 +2173,7 @@ export default function OptionalChaining() {
   return (
     <div id="wd-optional-chaining">
       <h4>Optional Chaining</h4>
-      house.address?.city = {house.address?.city}
-      <br />
+      house.address?.city = {house.address?.city} <br />
       missing?.prop ?? "n/a" = {missing?.prop ?? "n/a"}
       <hr />
     </div>

@@ -66,7 +66,7 @@ export const INTRO_TO_JAVASCRIPT_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/page.tsx",
-    codeHighlightLines: [3, [4, 5]],
+    codeHighlightLines: [3, 4, 5],
   },
   {
     id: "lab3-stub-live",
