@@ -18,13 +18,11 @@ const SLACK_PX = 2;
 export const DEMO_FIT_CAPS: Record<string, number> = {};
 
 /**
- * Per-slide floors below DEMO_FIT_MIN, keyed by `deck#slideId`, for demos
- * too tall to fit at the default size. The fit then picks the largest scale
+ * Per-slide floors below DEMO_FIT_MIN, keyed by `deck#slideId`. Empty: demos
+ * never shrink below the default size; a too-tall demo scrolls instead. The fit then picks the largest scale
  * in [floor, cap] that does not overflow, so the whole demo shows.
  */
-export const DEMO_FIT_FLOORS: Record<string, number> = {
-  "kambaz-dashboard-data#page-live": 0.7,
-};
+export const DEMO_FIT_FLOORS: Record<string, number> = {};
 
 /** Largest scale in [min, max] (to `STEP`) for which `overflows` is false. */
 export function fitDemoScale(
