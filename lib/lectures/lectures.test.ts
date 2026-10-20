@@ -1284,7 +1284,7 @@ describe("lecture decks", () => {
     assert.equal(counts["tailwind-typography"], 8);
     assert.equal(counts["tailwind-colors"], 6);
     assert.equal(counts["tailwind-filters-and-grid"], 28);
-    assert.equal(counts["tailwind-responsive"], 26);
+    assert.equal(counts["tailwind-responsive"], 25);
     assert.equal(counts["kambaz-styling"], 10);
     assert.equal(counts["kambaz-nav-styling"], 17);
     assert.equal(counts["kambaz-dashboard-styling"], 9);
@@ -3796,7 +3796,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 207);
+    assert.equal(intros, 206);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
@@ -3804,5 +3804,16 @@ describe("explanation text never buries the code", () => {
     assert.equal(ids[2], "toc-intro");
     assert.equal(ids[3], "toc");
     assert.equal(findSlide("path-params-and-todos", "toc").title, "TOC maps links and highlights (code)");
+  });
+});
+
+describe("form-state-types demo titles", () => {
+  it("gives each demo slide a title distinct from its intro slide", () => {
+    for (const base of ["date", "object", "array"]) {
+      const intro = findSlide("form-state-types", `${base}-intro`);
+      const live = findSlide("form-state-types", `${base}-live`);
+      assert.equal(live.title, `${intro.title}: live demo`);
+      assert.ok(live.title.length <= LECTURE_TITLE_MAX_CHARS);
+    }
   });
 });

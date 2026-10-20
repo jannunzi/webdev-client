@@ -63,11 +63,21 @@ describe("demoElementOverflows", () => {
 });
 
 describe("DEMO_FIT_FLOORS", () => {
-  it("lets the too-tall Kambaz dashboard demo shrink to fit instead of running past the slide", async () => {
+  it("never shrinks a demo below the default size; tall demos scroll at 1.3x", async () => {
     const { DEMO_FIT_FLOORS } = await import("./demo-fit");
-    const floor = DEMO_FIT_FLOORS["kambaz-dashboard-data#page-live"];
-    assert.ok(floor !== undefined && floor < DEMO_FIT_MIN);
-    const scale = fitDemoScale((s) => s > 0.95, floor);
-    assert.ok(scale >= 0.9 && scale <= 0.95, String(scale));
+    assert.deepEqual(DEMO_FIT_FLOORS, {});
+    assert.equal(fitDemoScale((s) => s > 0.95), DEMO_FIT_MIN);
+  });
+});
+
+describe("demo-stage form control font", () => {
+  it("scopes the input font fix to slide demo stages, not book form controls", async () => {
+    const { readFileSync } = await import("node:fs");
+    const css = readFileSync("app/book/book.css", "utf8");
+    for (const m of css.matchAll(/([^{}]+)\{[^{}]*font-size:\s*1em;[^{}]*min-height:\s*2\.35em/g)) {
+      for (const sel of m[1].split(",").map((x) => x.replace(/\/\*[\s\S]*?\*\//g, "").trim())) {
+        assert.match(sel, /^\.lecture-slide\[data-demo-stage="true"\] /);
+      }
+    }
   });
 });

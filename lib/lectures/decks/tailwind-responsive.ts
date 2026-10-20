@@ -178,17 +178,12 @@ export const TAILWIND_RESPONSIVE_SLIDES: LectureSlide[] = [
     embed: "tw-responsive-grid",
   },
   {
-    id: "spacing-tsx-intro",
+    id: "spacing-tsx",
     title: "Spacing and text size",
     kind: "content",
     bullets: [
       "`p-2` and `text-base` apply at every width. `md:p-8` and `md:text-2xl` grow the padding and the type from `md` up",
     ],
-  },
-  {
-    id: "spacing-tsx",
-    title: "Spacing and text size (code)",
-    kind: "content",
     code: `export default function TailwindResponsiveSpacingText() {
   return (
     <div id="wd-tailwind-responsive-spacing-text">
