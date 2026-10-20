@@ -90,6 +90,11 @@ export type AssignmentChecker = {
    * `minPassed` of `requires` (criterion ids) passed; otherwise it fails.
    * Missing entry: review is always allowed.
    */
+  /**
+   * Async-judged items that stay unreachable this many saved runs in a row go
+   * to TA review with no points (instead of re-check, points kept).
+   */
+  recheckLimit?: number;
   reviewGates?: Readonly<Record<string, { requires: readonly string[]; minPassed: number }>>;
   /**
    * Ids-optional checkers that need more than page HTML (A2 reads the

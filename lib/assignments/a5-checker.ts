@@ -16,6 +16,9 @@ import type { AssignmentChecker } from "./checker-types";
  *       checker's own numbers; Next.js Route Handlers on the deploy.
  * Kept here, not in checker-version.ts, until A5 is turned on.
  */
+/** Saved runs with the server unreachable before its items go to TA review. */
+export const A5_RECHECK_LIMIT = 3;
+
 export const A5_CHECKER_RULES_VERSION = "a5-rules-v1";
 
 export const A5_CHECKER_FOLLOWUP_CAP = 0;
@@ -73,6 +76,7 @@ export const A5_CHECKER: AssignmentChecker = {
   judgeAutoSpecs: judgeA5,
   seedPaths: A5_SEED_PATHS,
   followupCap: A5_CHECKER_FOLLOWUP_CAP,
+  recheckLimit: A5_RECHECK_LIMIT,
   verifyPaths: A5_VERIFY_PATHS,
   verifyHashes: {},
   autoSpecs: A5_AUTO_SPECS,
@@ -83,7 +87,7 @@ export const A5_CHECKER: AssignmentChecker = {
     vercelCriterionId: "a5-delivery-vercel",
     previewBranch: "a5",
     previewHostMessage:
-      "Submit the a5 branch preview on Vercel. The first hostname label must include -git-a5- or end in -git-a5 (Vercel cuts labels after 63 characters), and the host must end in .vercel.app. Staff can override this at grading.",
+      "Submit the Vercel address made for your a5 branch, for example https://webdev-client-git-a5-yourname.vercel.app: the part before .vercel.app must include -git-a5 (Vercel may cut a long address right after it). Find it in Vercel under Deployments, on the deployment for the a5 branch. Staff can override this at grading.",
     labsNav: {
       criterionId: "a5-delivery-labs-nav",
       groupId: "delivery",

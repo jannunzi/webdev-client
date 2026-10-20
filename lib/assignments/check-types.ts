@@ -16,6 +16,12 @@ export type AssignmentCheckResult = {
    * unusable URL). Nothing was scored; the submission must be re-checked.
    */
   needsRecheck?: boolean;
+  /**
+   * Consecutive saved runs in which this item couldn't be reached (A5 server
+   * items). Carried from the previous saved results; at the checker's
+   * `recheckLimit` the row goes to TA review instead of keeping its points.
+   */
+  recheckStreak?: number;
 };
 
 export type HtmlFetchResult =

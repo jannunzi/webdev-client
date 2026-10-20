@@ -11,7 +11,8 @@ import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import { A5_RUBRIC } from "./a5";
 import { A5_CHECKER, A5_SEED_PATHS, A5_VERIFY_PATHS } from "./a5-checker";
-import { answerNumber, serverOrigins } from "./a5-structure";
+import { A5_WAKE, answerNumber, serverOrigins, wakeServer } from "./a5-structure";
+import { recheckLimitMessage } from "./run-checker";
 import { criterionCoverage, getChecker } from "./checkers";
 import { latestResultByCriterion, runConfiguredChecks } from "./checks";
 import type { AssignmentCheckResult, HtmlFetchResult } from "./checks";
@@ -35,7 +36,10 @@ const CANNOT_GET: Page = { status: 404, html: "<pre>Cannot GET</pre>" };
 type Serve = (key: string) => Page | HtmlFetchResult;
 const fromBuild: Serve = (key) => BUILD[key] ?? (key.startsWith("server:") ? CANNOT_GET : NOT_FOUND);
 
-async function grade(serve: Serve) {
+// No real waiting in tests.
+A5_WAKE.sleep = async () => {};
+
+async function grade(serve: Serve, previousResults?: AssignmentCheckResult[]) {
   const results: AssignmentCheckResult[] = await runConfiguredChecks("a5", {
     githubUrl: TREE,
     vercelUrl: `https://${CLIENT}`,
@@ -51,6 +55,7 @@ async function grade(serve: Serve) {
       },
       probeUrl: async () => ({ ok: true, status: 200 }),
     },
+    previousResults,
   });
   const byCriterion = latestResultByCriterion(results);
   let points = 0;
@@ -205,5 +210,42 @@ describe("A5 wiring", () => {
       assert.ok(A5_VERIFY_PATHS[row.id], row.id);
       assert.ok((A5_SEED_PATHS as readonly string[]).includes(A5_VERIFY_PATHS[row.id]), row.id);
     }
+  });
+
+  it("keeps knocking on a sleeping server before probing (about 60s)", async () => {
+    const seen: string[] = [];
+    let calls = 0;
+    const awake = await wakeServer("https://x.onrender.com", async (url) => {
+      seen.push(url);
+      calls += 1;
+      return calls < 3 ? { ok: false, missing: false } : { ok: true, text: "hi" };
+    });
+    assert.equal(awake, true);
+    assert.deepEqual(seen, ["https://x.onrender.com/", "https://x.onrender.com/?wake=1", "https://x.onrender.com/?wake=2"]);
+    let tries = 0;
+    assert.equal(await wakeServer("https://x.onrender.com", async () => (tries++, { ok: false, missing: false })), false);
+    assert.equal(tries, A5_WAKE.attempts);
+    assert.ok(A5_WAKE.attempts * 10_000 + (A5_WAKE.attempts - 1) * A5_WAKE.pauseMs >= 60_000 || A5_WAKE.budgetMs >= 60_000);
+  });
+
+  it("a server that stays down goes to TA review with no points after 3 runs", async () => {
+    const down: Serve = (k) => (k.startsWith("server:") ? { ok: false, code: "network", message: "timeout" } : fromBuild(k));
+    let previous: AssignmentCheckResult[] | undefined;
+    for (const run of [1, 2]) {
+      const graded = await grade(down, previous);
+      assert.deepEqual(graded.recheck, ordered(SERVER_ROWS), `run ${run}`);
+      assert.deepEqual(graded.failed, [], `run ${run} keeps points`);
+      assert.equal(graded.results.find((r) => r.criterionId === "a5-lab-todos")?.recheckStreak, run);
+      previous = graded.results;
+    }
+    const third = await grade(down, previous);
+    assert.deepEqual(third.failed, ordered(SERVER_ROWS));
+    assert.deepEqual(third.recheck, ordered(SERVER_ROWS));
+    assert.equal(third.points, TOTAL - pointsOf(SERVER_ROWS));
+    assert.equal(third.results.find((r) => r.criterionId === "a5-lab-todos")?.message, recheckLimitMessage(3));
+    // Once the server answers again, the streak is gone and points come back.
+    const back = await grade(fromBuild, third.results);
+    assert.equal(back.points, TOTAL);
+    assert.equal(back.results.find((r) => r.criterionId === "a5-lab-todos")?.recheckStreak, undefined);
   });
 });

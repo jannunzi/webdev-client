@@ -58,6 +58,7 @@ export async function runConfiguredChecks(
     vercelUrl: string;
     nameQuery?: NameQuery;
     probes: AssignmentCheckProbes;
+    previousResults?: readonly AssignmentCheckResult[];
   },
 ): Promise<AssignmentCheckResult[]> {
   const checker = getChecker(assignmentId);

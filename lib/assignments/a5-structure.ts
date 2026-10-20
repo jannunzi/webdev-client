@@ -297,6 +297,25 @@ const RECHECK =
   "We couldn't reach your Node server (it may have been asleep or slow to start). Points are kept for now; the check will be re-run.";
 
 /** Async verdicts for the server items and the Next.js Route Handlers. */
+/** Wake-up before the server probes. Tests shrink the pauses. */
+export const A5_WAKE = { attempts: 5, pauseMs: 5_000, budgetMs: 60_000, sleep: (ms: number) => new Promise<void>((done) => setTimeout(done, ms)) };
+
+/**
+ * Knock on the server root until it answers (any non-5xx reply, 404
+ * included) or about 60s have passed. Each knock uses its own URL so the
+ * per-run fetch cache doesn't replay a timeout. Returns whether it answered.
+ */
+export async function wakeServer(server: string, fetch: (url: string) => Promise<FetchTextResult>): Promise<boolean> {
+  const started = Date.now();
+  for (let attempt = 0; attempt < A5_WAKE.attempts; attempt += 1) {
+    const result = await fetch(attempt === 0 ? `${server}/` : `${server}/?wake=${attempt}`);
+    if (result.ok || result.missing) return true;
+    if (Date.now() - started + A5_WAKE.pauseMs >= A5_WAKE.budgetMs) break;
+    await A5_WAKE.sleep(A5_WAKE.pauseMs);
+  }
+  return false;
+}
+
 export async function judgeA5(ctx: AutoJudgeContext): Promise<Record<string, AutoVerdict>> {
   const out: Record<string, AutoVerdict> = {};
   const lab5 = ctx.structure.pages.find((page) => samePath(page.path, "/labs/lab5"));
@@ -332,8 +351,8 @@ export async function judgeA5(ctx: AutoJudgeContext): Promise<Record<string, Aut
     return out;
   }
   const fetch = ctx.fetchRemote ?? (async () => ({ ok: false as const, missing: false }));
-  // Wake the server once before the graded probes (Render free instances sleep).
-  await fetch(`${server}/`);
+  // Render free instances sleep and take 30-60s to wake: keep knocking first.
+  await wakeServer(server, fetch);
   for (const item of A5_SERVER_ITEMS) {
     const state = await item.run(server, fetch);
     out[item.id] =
