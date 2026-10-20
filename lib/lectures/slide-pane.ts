@@ -4,7 +4,7 @@ const OVERFLOW_SLOP = 2;
 /**
  * True when the slide content pane is taller than its viewport.
  * Used by LectureDeckShell: ArrowUp/ArrowDown scroll this pane when
- * overflowing; otherwise they change slides. Left/Right always change slides.
+ * overflowing and never change slides. Left/Right change slides.
  */
 export function slidePaneOverflows(
   el: { scrollHeight: number; clientHeight: number } | null,

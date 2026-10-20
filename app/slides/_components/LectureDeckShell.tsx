@@ -343,23 +343,21 @@ export default function LectureDeckShell({
         return;
       }
       if (event.key === "ArrowDown") {
-        event.preventDefault();
+        // Up/Down only scroll the slide; they never change slides.
         const pane = stageRef.current;
         if (slidePaneOverflows(pane) && pane) {
+          event.preventDefault();
           pane.scrollBy({ top: slidePaneScrollStep(pane.clientHeight) });
-          return;
         }
-        goTo(index + 1);
         return;
       }
       if (event.key === "ArrowUp") {
-        event.preventDefault();
+        // Up/Down only scroll the slide; they never change slides.
         const pane = stageRef.current;
         if (slidePaneOverflows(pane) && pane) {
+          event.preventDefault();
           pane.scrollBy({ top: -slidePaneScrollStep(pane.clientHeight) });
-          return;
         }
-        goTo(index - 1);
         return;
       }
       if (NEXT_SLIDE_KEYS.has(event.key)) {

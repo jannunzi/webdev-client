@@ -3257,6 +3257,21 @@ describe("lecture decks", () => {
     assert.equal(slidePaneScrollStep(400), 280);
   });
 
+  it("never changes slides on ArrowUp/ArrowDown; Left/Right navigate", () => {
+    const shell = readFileSync(join(process.cwd(), "app/slides/_components/LectureDeckShell.tsx"), "utf8");
+    for (const key of ["ArrowDown", "ArrowUp"]) {
+      const start = shell.indexOf(`if (event.key === "${key}") {`);
+      assert.ok(start > 0, key);
+      const end = shell.indexOf("\n      }\n", start);
+      assert.doesNotMatch(shell.slice(start, end), /goTo\(/, `${key} must not change slides`);
+    }
+    const next = shell.match(/NEXT_SLIDE_KEYS = new Set\(\[([^\]]*)\]/)?.[1] ?? "";
+    const prev = shell.match(/PREV_SLIDE_KEYS = new Set\(\[([^\]]*)\]/)?.[1] ?? "";
+    assert.match(next, /"ArrowRight"/);
+    assert.match(prev, /"ArrowLeft"/);
+    assert.doesNotMatch(next + prev, /ArrowUp|ArrowDown/);
+  });
+
   it("treats missing Fullscreen API as unsupported so phones can use CSS present", () => {
     assert.equal(nativeFullscreenEnabled({}), false);
     assert.equal(nativeFullscreenEnabled({ fullscreenEnabled: false }), false);
