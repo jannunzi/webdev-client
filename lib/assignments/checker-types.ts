@@ -54,6 +54,12 @@ export type AutoJudgeContext = {
    * the checker's own probes. Cached per run.
    */
   fetchText: (pathOrUrl: string) => Promise<FetchTextResult>;
+  /**
+   * Fetch an https URL on another origin (A5 reads the student's own Node
+   * server, linked from their Lab pages) through the same probes, so the
+   * deploy fetcher's blocked-host rules still apply. Cached and capped per run.
+   */
+  fetchRemote?: (url: string) => Promise<FetchTextResult>;
 };
 
 /**

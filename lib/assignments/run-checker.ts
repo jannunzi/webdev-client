@@ -348,6 +348,36 @@ function resolveVerdicts(
  * Same-origin fetches for resources a page links (stylesheets), through the
  * checker's probes, cached per run. Only paths on the deploy are fetched.
  */
+/** Remote fetches per run (A5 server probes); more are treated as unreachable. */
+export const REMOTE_FETCH_CAP = 40;
+
+function remoteFetcher(probes: AssignmentCheckProbes): (url: string) => Promise<FetchTextResult> {
+  const cache = new Map<string, Promise<FetchTextResult>>();
+  return (raw) => {
+    let url: string;
+    try {
+      const parsed = new URL(raw);
+      if (parsed.protocol !== "https:") return Promise.resolve({ ok: false, missing: false });
+      url = parsed.href;
+    } catch {
+      return Promise.resolve({ ok: false, missing: false });
+    }
+    const hit = cache.get(url);
+    if (hit) return hit;
+    if (cache.size >= REMOTE_FETCH_CAP) return Promise.resolve({ ok: false, missing: false });
+    const pending = probes
+      .getHtml(url)
+      .then((result): FetchTextResult => {
+        if (result.ok) return { ok: true, text: result.html };
+        const missing = isDefiniteNotFound({ path: url, ok: false, status: result.status, code: result.code });
+        return { ok: false, status: result.status, missing };
+      })
+      .catch((): FetchTextResult => ({ ok: false, missing: false }));
+    cache.set(url, pending);
+    return pending;
+  };
+}
+
 function textFetcher(
   origin: string,
   probes: AssignmentCheckProbes,
@@ -737,6 +767,7 @@ export async function runChecker(
           structure,
           attempted,
           fetchText: textFetcher(crawled.origin, input.probes),
+          fetchRemote: remoteFetcher(input.probes),
         })
       : {};
     const verdicts = config.autoSpecs.map((spec) => ({
