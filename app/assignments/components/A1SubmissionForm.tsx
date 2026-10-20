@@ -1,5 +1,6 @@
 "use client";
 
+import { FIXUP_COPY } from "@/lib/assignments/fixup";
 import { useState, useTransition } from "react";
 import type { AssignmentCheckResult } from "@/lib/assignments/checks";
 import type { AssignmentSubmissionView } from "@/lib/assignments/submissions-store";
@@ -55,6 +56,7 @@ export default function A1SubmissionForm({
   onSubmission,
   onDeployUrlChange,
   gradeLine,
+  fixupLock = false,
 }: {
   assignmentId: string;
   initialSubmission: AssignmentSubmissionView | null;
@@ -65,6 +67,8 @@ export default function A1SubmissionForm({
   gateReason?: SubmissionGateReason;
   staffStudentKey?: string;
   canSaveGrade?: boolean;
+  /** An open fix-up round: Submit is off and points to the fix-up form. */
+  fixupLock?: boolean;
   saveGradeDisabled?: boolean;
   pendingGrade?: boolean;
   onClear?: () => void;
@@ -326,11 +330,16 @@ export default function A1SubmissionForm({
               <p className="mb-0 mt-1">{saveGate.body}</p>
             </div>
           ) : null}
+          {fixupLock && !staffReview ? (
+            <p role="status" className="m-0 rounded-lg border border-amber-400 bg-amber-50 px-4 py-3 font-sans text-sm text-amber-950">
+              {FIXUP_COPY.mainSaveBlocked} <a href="#fixup-heading">Go to the fix-up form</a>
+            </p>
+          ) : null}
           {checkAction === "account" && !staffReview ? (
             <button
               type="button"
               className="rounded border border-neutral-800 bg-white px-3 py-2 font-sans text-sm hover:bg-neutral-50 disabled:opacity-60"
-              disabled={pendingAction !== null}
+              disabled={pendingAction !== null || fixupLock}
               onClick={onSaveUrls}
             >
               {submitActionLabel({

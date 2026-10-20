@@ -39,3 +39,11 @@ export function mongoDbName(): string {
 export function isXaiConfigured(): boolean {
   return Boolean(process.env.XAI_API_KEY?.trim());
 }
+
+/**
+ * Fix-up rounds (fix lost items for half credit). Off unless
+ * ASSIGNMENT_FIXUPS_ENABLED=1, so students see nothing until it is turned on.
+ */
+export function isAssignmentFixupsEnabled(): boolean {
+  return process.env.ASSIGNMENT_FIXUPS_ENABLED?.trim() === "1";
+}
