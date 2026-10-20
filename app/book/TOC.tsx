@@ -322,6 +322,8 @@ export const CH3_TOC: TocEntry[] = [
     children: [
       { id: "sec-3-6-1", label: "3.6.1 Client Components" },
       { id: "sec-3-6-2", label: "3.6.2 Server Components" },
+      { id: "sec-3-6-3", label: "3.6.3 More Client-Only APIs" },
+      { id: "sec-3-6-4", label: "3.6.4 More Server-Only APIs" },
     ],
   },
   {
