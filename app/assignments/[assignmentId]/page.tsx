@@ -40,6 +40,7 @@ import {
 import { buildA1GateDiagnostics } from "@/lib/assignments/diagnostics";
 import type { A1GateDiagnostics } from "@/lib/assignments/diagnostics";
 import {
+  isAssignmentFixupsEnabled,
   isAssignmentProgressConfigured,
   isClerkConfigured,
   isClerkPublishableKeySet,
@@ -66,6 +67,10 @@ import A1WorkArea from "../components/A1WorkArea";
 import AssignmentChapterLink from "../components/AssignmentChapterLink";
 import AssignmentChecklist from "../components/AssignmentChecklist";
 import AssignmentHubNav from "../components/AssignmentHubNav";
+import FixupPanel, { type FixupPanelProps } from "../components/FixupPanel";
+import StaffFixupPanel, { type StaffFixupPanelProps } from "../components/StaffFixupPanel";
+import { evaluateFixup, fixupWindowState } from "@/lib/assignments/fixup";
+import { findFixup, listFixupWindows } from "@/lib/assignments/fixup-store";
 
 export const dynamic = "force-dynamic";
 /**
@@ -138,6 +143,16 @@ export default async function AssignmentDetailPage({
   let showStaffGrader = false;
   let staffDiagnostics: A1GateDiagnostics | null = null;
   let studentRoster: { unmatched?: boolean; duplicates?: number } | null = null;
+  // Fix-up rounds: nothing is loaded or shown unless the flag is on.
+  const fixupsOn = isAssignmentFixupsEnabled() && Boolean(assignment.rubric);
+  let fixupStudent: FixupPanelProps | null = null;
+  let fixupStaff: StaffFixupPanelProps | null = null;
+  const fixupLabels: Record<string, string> = Object.fromEntries(
+    (assignment.rubric ? listRubricCriteria(assignment.rubric) : []).map((c) => [
+      c.id,
+      c.parentLabel ? `${c.parentLabel} — ${c.label}` : c.label,
+    ]),
+  );
 
   if (isClerkConfigured()) {
     const { userId, sessionClaims } = await auth();
@@ -279,6 +294,27 @@ export default async function AssignmentDetailPage({
       }
 
       try {
+        if (fixupsOn && mongoReady && !impersonating && initialSubmission && roster.status === "matched") {
+          const [windows, record] = await Promise.all([
+            listFixupWindows(),
+            findFixup(userId, assignment.id),
+          ]);
+          fixupStudent = {
+            assignmentId: assignment.id,
+            window: fixupWindowState({ windows, assignmentId: assignment.id, section: roster.entry.section, now: new Date() }),
+            result: record
+              ? evaluateFixup({ assignmentId: assignment.id, rubric: assignment.rubric!, original: record.original, round: record.round })
+              : null,
+            labels: fixupLabels,
+            githubUrl: record?.round.githubUrl ?? initialSubmission.githubUrl,
+            vercelUrl: record?.round.vercelUrl ?? initialSubmission.vercelUrl,
+          };
+        }
+      } catch (error) {
+        console.error("assignment fix-up load failed", error);
+      }
+
+      try {
         if (showStaffGrader && mongoReady) {
           const [rosterList, submissions] = await Promise.all([
             listCanvasRoster(),
@@ -324,6 +360,31 @@ export default async function AssignmentDetailPage({
         }
       } catch (error) {
         console.error("assignment staff queue load failed", error);
+      }
+
+      try {
+        if (fixupsOn && showStaffGrader && mongoReady) {
+          const windows = await listFixupWindows();
+          const record = selectedStudent?.clerkUserId
+            ? await findFixup(selectedStudent.clerkUserId, assignment.id)
+            : null;
+          fixupStaff = {
+            assignmentId: assignment.id,
+            section: selectedSection && selectedSection !== "Unsectioned" ? selectedSection : undefined,
+            windows,
+            labels: fixupLabels,
+            student: selectedStudent?.clerkUserId
+              ? {
+                  clerkUserId: selectedStudent.clerkUserId,
+                  result: record
+                    ? evaluateFixup({ assignmentId: assignment.id, rubric: assignment.rubric!, original: record.original, round: record.round })
+                    : null,
+                }
+              : undefined,
+          };
+        }
+      } catch (error) {
+        console.error("assignment staff fix-up load failed", error);
       }
     } else {
       const visibility = loggedOutSubmitVisibility(assignment.id, mongoReady);
@@ -427,6 +488,8 @@ export default async function AssignmentDetailPage({
           audience="student"
         />
       )}
+      {fixupStudent ? <FixupPanel {...fixupStudent} /> : null}
+      {fixupStaff ? <StaffFixupPanel {...fixupStaff} /> : null}
     </article>
   );
 }

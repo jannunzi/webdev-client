@@ -22,11 +22,15 @@ import {
   preparePublicAssignmentCheck,
 } from "@/lib/assignments/submission-form";
 import { ASSIGNMENT_STUDENT_COPY } from "@/lib/assignments/student-copy";
-import { isAssignmentId } from "@/lib/assignments/catalog";
+import { getAssignment, isAssignmentId } from "@/lib/assignments/catalog";
+import { finalGrade } from "@/lib/assignments/final-grade";
+import { buildFixupSnapshot, fixableCriterionIds, fixupWindowState } from "@/lib/assignments/fixup";
+import { findFixup, listFixupWindows, openFixupRound, saveFixupRun } from "@/lib/assignments/fixup-store";
+import { hasStaffGradeSave } from "@/lib/assignments/staff";
 import { getChecker } from "@/lib/assignments/checkers";
 import { checkerVersionLabel } from "@/lib/assignments/checker-version";
 import type { AssignmentId } from "@/lib/assignments/types";
-import { isAssignmentProgressConfigured } from "@/lib/config";
+import { isAssignmentFixupsEnabled, isAssignmentProgressConfigured } from "@/lib/config";
 import {
   canvasUserIdFromMetadata,
   preferredRosterEmail,
@@ -371,4 +375,107 @@ export async function runAssignmentChecks(input: {
     impersonation: authz.impersonating || undefined,
     submission: viewFromInputs({ githubUrl, vercelUrl, checkResults }),
   };
+}
+
+/* ------------------------------------------------------------------ */
+/* Fix-up rounds (behind ASSIGNMENT_FIXUPS_ENABLED; off by default)     */
+/* ------------------------------------------------------------------ */
+
+export type FixupActionResult = { ok: true; message: string } | { ok: false; message: string };
+
+async function fixupContext(assignmentId: string) {
+  if (!isAssignmentFixupsEnabled()) {
+    return { ok: false as const, message: "Fix-ups aren't open." };
+  }
+  const authz = await authorizeSubmission(assignmentId);
+  if (!authz.ok) return { ok: false as const, message: authz.result.message };
+  if (!authz.canPersist) {
+    return { ok: false as const, message: "Fix-ups can't be saved while viewing as a student." };
+  }
+  const assignment = getAssignment(assignmentId);
+  if (!assignment?.rubric) return { ok: false as const, message: ASSIGNMENT_STUDENT_COPY.unknownAssignment };
+  const window = fixupWindowState({
+    windows: await listFixupWindows(),
+    assignmentId,
+    section: authz.identity.section,
+    now: new Date(),
+  });
+  return { ok: true as const, authz, assignment, rubric: assignment.rubric, window };
+}
+
+/** Open the one fix-up round: freezes the original grade first. */
+export async function openFixupRoundAction(input: { assignmentId: string }): Promise<FixupActionResult> {
+  const ctx = await fixupContext(input.assignmentId);
+  if (!ctx.ok) return ctx;
+  if (ctx.window.status !== "open") return { ok: false, message: "The fix-up window for this assignment isn't open." };
+  const { authz, rubric } = ctx;
+  if (await findFixup(authz.userId, input.assignmentId)) {
+    return { ok: false, message: "You already opened your fix-up round for this assignment." };
+  }
+  const doc = await readAssignmentSubmission(authz.userId, input.assignmentId as AssignmentId);
+  if (!doc) return { ok: false, message: ASSIGNMENT_STUDENT_COPY.noSubmission };
+  const staff = doc.staffGrade && hasStaffGradeSave(doc.staffGrade) ? doc.staffGrade : null;
+  const final = finalGrade({
+    assignmentId: input.assignmentId,
+    rubric,
+    results: doc.checkResults ?? [],
+    staff,
+    submittedAt: doc.updatedAt,
+  });
+  const original = buildFixupSnapshot({
+    assignmentId: input.assignmentId,
+    rubric,
+    results: doc.checkResults ?? [],
+    staff,
+    final,
+    now: new Date(),
+  });
+  if (!original) return { ok: false, message: "This assignment isn't fully graded yet." };
+  if (!fixableCriterionIds(original).length) return { ok: false, message: "You earned every point. Nothing to fix." };
+  const opened = await openFixupRound({
+    clerkUserId: authz.userId,
+    assignmentId: input.assignmentId,
+    email: authz.identity.rosterEmail ?? authz.identity.email,
+    canvasUserId: authz.identity.canvasUserId,
+    section: authz.identity.section,
+    original,
+    round: { openedAt: new Date().toISOString(), githubUrl: doc.githubUrl, vercelUrl: doc.vercelUrl },
+  });
+  return opened
+    ? { ok: true, message: "Fix-up round opened." }
+    : { ok: false, message: "You already opened your fix-up round for this assignment." };
+}
+
+/** Run the checker on the fix-up links. Never changes the original submission. */
+export async function submitFixupAction(input: {
+  assignmentId: string;
+  githubUrl: string;
+  vercelUrl: string;
+}): Promise<FixupActionResult> {
+  const ctx = await fixupContext(input.assignmentId);
+  if (!ctx.ok) return ctx;
+  if (ctx.window.status !== "open") return { ok: false, message: "The fix-up window has closed." };
+  const { authz } = ctx;
+  const existing = await findFixup(authz.userId, input.assignmentId);
+  if (!existing) return { ok: false, message: "Open your fix-up round first." };
+  const githubUrl = input.githubUrl.trim();
+  const vercelUrl = input.vercelUrl.trim();
+  if (!vercelUrl) return { ok: false, message: ASSIGNMENT_STUDENT_COPY.vercelRequired };
+  const githubMissing = missingA2GithubMessage(input.assignmentId, githubUrl);
+  if (githubMissing) return { ok: false, message: githubMissing };
+  const checkResults = await runChecksForAssignment({
+    assignmentId: input.assignmentId,
+    githubUrl,
+    vercelUrl,
+    nameSource: authz.nameSource,
+  });
+  await saveFixupRun({
+    clerkUserId: authz.userId,
+    assignmentId: input.assignmentId,
+    githubUrl,
+    vercelUrl,
+    checkResults,
+    submittedAt: new Date().toISOString(),
+  });
+  return { ok: true, message: "Fix-up submitted and checked." };
 }
