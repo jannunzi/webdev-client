@@ -1,5 +1,6 @@
 "use client";
 
+import CheckWarnings from "./CheckWarnings";
 import Link from "next/link";
 import { useMemo, useState, type ReactNode } from "react";
 import { criterionCoverage } from "@/lib/assignments/checkers";
@@ -407,6 +408,7 @@ export default function AssignmentChecklist({
 
   return (
     <div>
+      <CheckWarnings results={results} />
       {supportsUrlSubmission(assignment.id) && audience === "student" ? (
         <p className="mb-3 rounded-lg border border-neutral-300 bg-white px-4 py-3 font-sans text-sm text-neutral-800">
           {ASSIGNMENT_STUDENT_COPY.urlSubmitWhen}

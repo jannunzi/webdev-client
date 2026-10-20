@@ -159,9 +159,10 @@ function followupUrls(
   verifyPaths: readonly string[],
   followupCap: number,
   extraCourseScreens: readonly string[] = [],
+  caseVariants = true,
 ): string[] {
   const checklistPaths = checklistFollowupPaths(seedPaths, verifyPaths);
-  const required = pathsOnOrigin(origin, withCaseVariants(checklistPaths));
+  const required = pathsOnOrigin(origin, caseVariants ? withCaseVariants(checklistPaths) : checklistPaths);
 
   const extraCanonical: string[] = [];
   const extraVariants: string[] = [];
@@ -170,7 +171,7 @@ function followupUrls(
       extractAssignmentIds(html, courseId)[0] ?? DEFAULT_ASSIGNMENT_ID;
     for (const path of canonicalCoursePaths(courseId, assignmentId)) {
       extraCanonical.push(path);
-      const variant = caseVariantPath(path);
+      const variant = caseVariants ? caseVariantPath(path) : null;
       if (variant) extraVariants.push(variant);
     }
     for (const screen of extraCourseScreens) {
@@ -178,7 +179,7 @@ function followupUrls(
       if (!suffix) continue;
       const path = `/courses/${courseId}/${suffix}`;
       extraCanonical.push(path);
-      const variant = caseVariantPath(path);
+      const variant = caseVariants ? caseVariantPath(path) : null;
       if (variant) extraVariants.push(variant);
     }
   }
@@ -206,6 +207,8 @@ export async function crawlDeploy(input: {
   followupCap: number;
   /** Extra /courses/:id/<screen> follow-ups. A1 leaves this empty. */
   extraCourseScreens?: readonly string[];
+  /** Also try /Courses/<id>/<Screen> spellings (A1/A2). A3 grades lowercase routes only. */
+  caseVariants?: boolean;
 }): Promise<DeployCorpus | { ok: false; message: string }> {
   const origin = deployOriginFromUrl(input.deployUrl);
   if (!origin.ok) return { ok: false, message: origin.message };
@@ -230,6 +233,7 @@ export async function crawlDeploy(input: {
     input.verifyPaths,
     input.followupCap,
     input.extraCourseScreens,
+    input.caseVariants ?? true,
   );
   const second = await Promise.all(
     more.map(async (url) => {

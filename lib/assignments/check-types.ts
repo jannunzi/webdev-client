@@ -6,6 +6,8 @@ export type AssignmentCheckResult = {
   criterionId?: string;
   groupId?: string;
   skipped?: boolean;
+  /** Shown before submit; never scored. */
+  warning?: boolean;
   /**
    * No wd-* id and no reliable structural match. Not a fail and no points
    * are taken off (the row counts as passed); staff confirm it by hand.

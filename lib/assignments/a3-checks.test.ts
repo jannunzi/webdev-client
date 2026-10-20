@@ -16,7 +16,7 @@ import type { AssignmentCheckResult, HtmlFetchResult } from "./checks";
 import { supportsUrlSubmission } from "./access";
 import { formatPointsPercent } from "./grade";
 import { stripWdIds } from "./html";
-import { resolveNameQuery } from "./names";
+import { resolveNameQuery, studentNameVerdict } from "./names";
 
 const ORIGIN = "https://webdev-client-git-a3-jane-doe.vercel.app";
 const TREE = "https://github.com/jane-doe/webdev-client/tree/a3";
@@ -175,25 +175,25 @@ describe("A3 checker (structure only, ids optional)", () => {
       fails: ["a3-delivery-labs-nav", "a3-lab-toc-highlight"],
     },
     { name: "GitHub link removed", serve: remove("/labs", "wd-github"), fails: ["a3-delivery-name-github"] },
-    { name: "House JSON removed", serve: remove("/labs/lab3", "wd-house"), fails: ["a3-lab-json"] },
-    { name: "imports table removed", serve: remove("/labs/lab3", "wd-destructuring-imports"), fails: ["a3-lab-imports-table"] },
-    { name: "Styles removed", serve: remove("/labs/lab3", "wd-styles"), fails: ["a3-lab-styles"] },
-    { name: "Classes removed", serve: remove("/labs/lab3", "wd-classes"), fails: ["a3-lab-classes"] },
-    { name: "Client Component removed", serve: remove("/labs/lab3", "wd-client-component-demo"), fails: ["a3-lab-client-server"] },
-    { name: "Server Component removed", serve: remove("/labs/lab3", "wd-server-component-demo"), fails: ["a3-lab-client-server"] },
+    { name: "House JSON removed", serve: remove("/labs/lab3", "wd-house"), fails: ["a3-lab-json", "a3-lab-oyo-owners"] },
+    { name: "imports table removed", serve: remove("/labs/lab3", "wd-destructuring-imports"), fails: ["a3-lab-imports-table", "a3-lab-oyo-imports-row"] },
+    { name: "Styles removed", serve: remove("/labs/lab3", "wd-styles"), fails: ["a3-lab-styles", "a3-lab-oyo-styles"] },
+    { name: "Classes removed", serve: remove("/labs/lab3", "wd-classes"), fails: ["a3-lab-classes", "a3-lab-oyo-classes"] },
+    { name: "Client Component removed", serve: remove("/labs/lab3", "wd-client-component-demo"), fails: ["a3-lab-client-server", "a3-lab-oyo-pathname-length"] },
+    { name: "Server Component removed", serve: remove("/labs/lab3", "wd-server-component-demo"), fails: ["a3-lab-client-server", "a3-lab-oyo-arch"] },
     {
       name: "Chapter 1 TOC (no highlight)",
       serve: on((path) => path.startsWith("/labs"), (html) => html.replace(/ style="background-color:#2563eb[^"]*"/g, "").replace(/ aria-current="page"/g, "")),
       fails: ["a3-lab-toc-highlight"],
     },
-    { name: "Path Parameters links removed", serve: remove("/labs/lab3", "wd-path-parameters"), fails: ["a3-lab-path-params"] },
+    { name: "Path Parameters links removed", serve: remove("/labs/lab3", "wd-path-parameters"), fails: ["a3-lab-path-params", "a3-lab-oyo-path-link"] },
     { name: "add/[a]/[b] route 404", serve: notFound((path) => path.startsWith("/labs/lab3/add/")), fails: ["a3-lab-path-params"] },
     {
       name: "add route ignores its parameters",
       serve: serveAs((path) => path.startsWith("/labs/lab3/add/"), () => "/labs/lab3/add/1/2"),
       fails: ["a3-lab-path-params"],
     },
-    { name: "Todo list removed", serve: on(is("/labs/lab3"), (html) => removeElement(html, /\bclass="list-none[^"]*"/)), fails: ["a3-lab-todos"] },
+    { name: "Todo list removed", serve: on(is("/labs/lab3"), (html) => removeElement(html, /\bclass="list-none[^"]*"/)), fails: ["a3-lab-todos", "a3-lab-oyo-todos"] },
     { name: "Lab 3 page 404", serve: notFound(is("/labs/lab3")), fails: LAB3_ROWS },
     {
       name: "Dashboard without course cards",
@@ -291,10 +291,10 @@ describe("A3 checker (structure only, ids optional)", () => {
 });
 
 describe("A3 wiring", () => {
-  it("is registered like A1/A2 but does not open submissions", () => {
+  it("is registered like A1/A2 and opens URL submissions", () => {
     assert.equal(getChecker("a3"), A3_CHECKER);
     assert.equal(criterionCoverage("a3", "a3-kambaz-editor"), "auto");
-    assert.equal(supportsUrlSubmission("a3"), false);
+    assert.equal(supportsUrlSubmission("a3"), true);
   });
 
   it("verifies every rubric item at a seeded path, with no element ids", () => {
@@ -303,5 +303,205 @@ describe("A3 wiring", () => {
       assert.ok((A3_SEED_PATHS as readonly string[]).includes(A3_VERIFY_PATHS[row.id]), row.id);
     }
     assert.deepEqual(A3_CHECKER.verifyHashes, {});
+  });
+});
+
+/* ------------------- reliability variants (Oct 19 pass) ------------------- */
+/*
+ * Each variant mirrors a live build that was run through the checker: the
+ * Chapter 3 reference project (100/100), and copies with every wd-* id
+ * removed, renamed course/assignment ids, different text, Tailwind classes,
+ * a class-only TOC, extra wrappers and Client Components (all 100/100), plus
+ * one false negative found on a public student a3 branch (an extra sidebar
+ * link whose classes are the same words in a different order).
+ */
+const NAV_EXTRA = (classes: string) =>
+  on(
+    (path) => path === "/dashboard" || path.startsWith("/courses/"),
+    (html) => html.replace(/(<a id="wd-labs-link"[^>]*>[\s\S]*?<\/a>)/, `$1<a class="${classes}" href="/labs">Lab Help</a>`),
+  );
+const TAILWIND_CLASSES = on(is("/labs/lab3"), (html) =>
+  html
+    .replace(/wd-bg-yellow/g, "bg-yellow-200")
+    .replace(/wd-bg-blue/g, "bg-blue-200")
+    .replace(/wd-bg-red/g, "bg-red-300")
+    .replace(/wd-bg-green/g, "bg-green-200")
+    .replace(/ wd-fg-black wd-padding-10px/g, " text-black p-2.5"),
+);
+const TOC_CLASS_ONLY = on((path) => path.startsWith("/labs"), (html) =>
+  html
+    .replace(/ style="background-color:#2563eb[^"]*"/g, ' class="rounded bg-blue-600 px-2 text-white"')
+    .replace(/ aria-current="page"/g, ""),
+);
+const TOC_ARIA_ONLY = on((path) => path.startsWith("/labs"), (html) => html.replace(/ style="background-color:#2563eb[^"]*"/g, ""));
+const WRAPPED = on(() => true, (html) =>
+  html.replace(/(<body[^>]*>)/, '$1<main class="p-4"><section class="wrapper"><div class="inner">').replace(/<\/body>/, "</div></section></main></body>"),
+);
+
+describe("A3 reliability: alternative builds keep full credit", () => {
+  const FULL: { name: string; serve: Serve }[] = [
+    { name: "extra sidebar link, same classes in a different order", serve: NAV_EXTRA("block bg-black py-3 text-center text-sm text-white no-underline") },
+    { name: "extra sidebar link styled differently on every page", serve: NAV_EXTRA("block bg-red-700 py-3 text-center text-sm text-white") },
+    { name: "Tailwind utility classes instead of the book's stylesheet classes", serve: TAILWIND_CLASSES },
+    { name: "TOC highlight by className only", serve: TOC_CLASS_ONLY },
+    { name: "TOC highlight by aria-current only", serve: TOC_ARIA_ONLY },
+    { name: "extra wrapper elements around every page", serve: WRAPPED },
+    { name: "ids stripped and text relabeled together", serve: (path) => { const page = relabel(path); return "html" in page && page.status === 200 ? { ...page, html: stripWdIds(page.html ?? "") } : page; } },
+  ];
+  for (const variant of FULL) {
+    it(`keeps 100 / 100: ${variant.name}`, async () => {
+      const { failed, points } = await grade(variant.serve);
+      assert.deepEqual(failed, []);
+      assert.equal(points, 100);
+    });
+  }
+
+  it("still fails a double highlight when an extra sidebar link is present", async () => {
+    const both: Serve = (path) => {
+      const page = NAV_EXTRA("block bg-black py-3 text-center text-sm text-white no-underline")(path);
+      return "html" in page && page.status === 200 ? (doubleHighlight(path) as Page).status === 200 && path.startsWith("/courses/")
+        ? { ...page, html: (page.html ?? "").replace(/(id="wd-dashboard-link" class="[^"]*?)bg-black text-white/, "$1bg-white text-red-600") }
+        : page : page;
+    };
+    const { failed } = await grade(both);
+    assert.deepEqual(failed, ["a3-kambaz-nav"]);
+  });
+});
+
+/* ------------- On your own (only steps with an exact book result) ------------- */
+describe("A3 On your own rows", () => {
+  const lab3 = (edit: (html: string) => string) => on(is("/labs/lab3"), edit);
+  const CASES: { name: string; serve: Serve; fails: string }[] = [
+    { name: "no not false1 paragraph", serve: lab3((h) => h.replace("<p>not false1</p>", "")), fails: "a3-lab-oyo-not-false1" },
+    { name: "no Good morning", serve: lab3((h) => h.replace(/Good morning/g, "Hello")), fails: "a3-lab-oyo-good-morning" },
+    { name: "no Guest Inline", serve: lab3((h) => h.replace(/Guest Inline/g, "")), fails: "a3-lab-oyo-guest-inline" },
+    { name: "no owners heading", serve: lab3((h) => h.replace("<h5>owners</h5>", "")), fails: "a3-lab-oyo-owners" },
+    { name: "no arch key", serve: lab3((h) => h.replace(/&quot;arch&quot;|"arch"/g, "&quot;cpu&quot;")), fails: "a3-lab-oyo-arch" },
+    { name: "no third add link", serve: lab3((h) => h.replace(/<a\b[^>]*href="\/labs\/lab3\/add\/10\/15"[^>]*>[\s\S]*?<\/a>/, "")), fails: "a3-lab-oyo-path-link" },
+    { name: "no Pathname length line", serve: lab3((h) => h.replace(/Pathname length/g, "Path")), fails: "a3-lab-oyo-pathname-length" },
+  ];
+  for (const row of CASES) {
+    it(`only ${row.fails} fails: ${row.name}`, async () => {
+      const { failed, points } = await grade(row.serve);
+      assert.deepEqual(failed, [row.fails]);
+      assert.equal(points, 99);
+    });
+  }
+
+  it("worth 14 points of 100, all in the Lab group and marked On your own", () => {
+    const oyo = CRITERIA.filter((row) => row.id.startsWith("a3-lab-oyo-"));
+    assert.equal(oyo.length, 14);
+    assert.ok(oyo.every((row) => row.onYourOwn && row.points === 1));
+    assert.equal(TOTAL, 100);
+  });
+
+  it("a Todo list's checkboxes never count as class-colored boxes", async () => {
+    const { failed } = await grade(remove("/labs/lab3", "wd-classes"));
+    assert.ok(failed.includes("a3-lab-classes"));
+  });
+});
+
+describe("A3 routes are lowercase only", () => {
+  it("never requests /Courses/... spellings", async () => {
+    const asked: string[] = [];
+    await grade((path) => {
+      asked.push(path);
+      return fromBuild(path);
+    });
+    assert.ok(asked.length > 0);
+    assert.ok(!asked.some((path) => /^\/Courses\//.test(path)), asked.filter((path) => /^\/Courses\//.test(path)).join(","));
+  });
+
+  it("warns before submit, with no credit, when /labs/lab3 404s but /Labs/Lab3 loads", async () => {
+    const capital: Serve = (path) => (path === "/labs/lab3" ? { status: 404, html: "<html><body>404</body></html>" } : path === "/Labs/Lab3" ? fromBuild("/labs/lab3") : fromBuild(path));
+    const { results, failed } = await grade(capital);
+    const warning = results.find((row) => row.id === "route-case-warning");
+    assert.ok(warning?.warning && warning.skipped && !warning.passed && !warning.criterionId);
+    assert.match(warning!.message, /\/Labs\/Lab3/);
+    assert.ok(failed.includes("a3-lab-page"));
+    const clean = await grade(fromBuild);
+    assert.ok(!clean.results.some((row) => row.id === "route-case-warning"));
+  });
+});
+
+describe("A3 name check (whole words on visible text)", () => {
+  const verdict = (first: string, last: string, html: string) => studentNameVerdict(html, resolveNameQuery({ firstName: first, lastName: last }));
+  const roster = (name: string, html: string) => studentNameVerdict(html, resolveNameQuery({ rosterName: name }));
+  it("does not match inside words, tags, or attributes", () => {
+    assert.equal(verdict("Li", "Wu", '<ul><li><a href="/wu">Home</a></li></ul>'), "missing");
+    assert.equal(verdict("Ann", "Lee", '<div class="planner annlee">Plans</div>'), "missing");
+    assert.equal(roster("M, N", "<p>in my lab</p>"), "review");
+  });
+  it("passes the full name, or first and last as separate words", () => {
+    assert.equal(verdict("Ann", "Lee", "<h1>Ann Lee</h1>"), "found");
+    assert.equal(roster("Lee, Ann", "<p>Lee</p><p>Ann</p>"), "found");
+    assert.equal(roster("Núñez, José", "<h1>José Núñez</h1>"), "found");
+  });
+  it("sends partial names and one-word roster names to TA review", () => {
+    assert.equal(roster("Lee, Ann", "<p>Ann's Labs</p>"), "review");
+    assert.equal(roster("Cher", "<p>Cher</p>"), "review");
+  });
+  it("is used by A3 only (A1/A2 keep their saved name rule)", () => {
+    assert.equal(A3_CHECKER.strictNames, true);
+    assert.equal(getChecker("a2")?.strictNames, undefined);
+    assert.equal(getChecker("a1")?.strictNames, undefined);
+  });
+});
+
+describe("A3 owners step accepts any heading text", () => {
+  it("passes an <h5> with different text when the owners follow it", async () => {
+    const { failed } = await grade(on(is("/labs/lab3"), (h) => h.replace("<h5>owners</h5>", "<h5>houseowner</h5>")));
+    assert.deepEqual(failed, []);
+  });
+});
+
+describe("A3 student copy stays in plain terms", () => {
+  it("never says hostname or preview URL on the A3 page", () => {
+    const vercel = CRITERIA.find((row) => row.id === "a3-delivery-vercel")!;
+    for (const text of [vercel.description, A3_CHECKER.delivery.previewHostMessage ?? ""]) {
+      assert.doesNotMatch(text, /hostname|preview url/i);
+      assert.match(text, /webdev-client-git-a3-yourname\.vercel\.app/);
+    }
+  });
+});
+
+describe("A3 review fixes (Quentin, ffbc2b8)", () => {
+  const roster = (name: string, html: string) => studentNameVerdict(html, resolveNameQuery({ rosterName: name }));
+  it("ignores accents in names", () => {
+    assert.equal(roster("Núñez, José", "<h1>Jose Nunez</h1>"), "found");
+    assert.equal(roster("Nunez, Jose", "<h1>José Núñez</h1>"), "found");
+  });
+  it("does not count a name that is only in <title>", () => {
+    assert.equal(roster("Lee, Ann", "<html><head><title>Ann Lee</title></head><body><p>Labs</p></body></html>"), "missing");
+    assert.equal(roster("Lee, Ann", "<html><head><title>Ann Lee</title></head><body><p>Ann Lee</p></body></html>"), "found");
+  });
+
+  const lab3 = (edit: (html: string) => string) => on(is("/labs/lab3"), edit);
+  const line = (from: RegExp, to: string) => lab3((h) => h.replace(from, to));
+  const NULL_LINE = "nullValue ?? &quot;default&quot; = <!-- -->default";
+  it("accepts other quote styles and separators on the ?? lines", async () => {
+    for (const text of ["nullValue ?? 'default': default", "nullValue ?? “default” is default", "nullValue ?? `default` → default"]) {
+      const { failed, review } = await grade(lab3((h) => {
+        assert.ok(h.includes(NULL_LINE));
+        return h.replace(NULL_LINE, text);
+      }));
+      assert.deepEqual(failed, [], text);
+      assert.ok(!review.includes("a3-lab-oyo-null-default"), text);
+    }
+    const garage = await grade(lab3((h) => h.replace(/house\.garage\?\.cars \?\? 0 = (<!-- -->)?0/, "house.garage?.cars ?? 0 → 0")));
+    assert.deepEqual(garage.failed, []);
+  });
+  it("sends a different ?? line to TA review instead of failing it", async () => {
+    const { failed, review } = await grade(lab3((h) => h.replace(/house\.garage\?\.cars \?\? 0 = (<!-- -->)?0/, "house.garage?.cars ?? 0 gives zero")));
+    assert.deepEqual(failed, []);
+    assert.ok(review.includes("a3-lab-oyo-garage"));
+    void line;
+  });
+  it("counts todo checkboxes only, checked or not", async () => {
+    const { failed } = await grade(lab3((h) => {
+      assert.ok(h.includes(' checked=""'));
+      return h.replace(/ checked=""/g, "");
+    }));
+    assert.deepEqual(failed, []);
   });
 });
