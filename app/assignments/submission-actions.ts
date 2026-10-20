@@ -296,7 +296,10 @@ export async function saveAssignmentSubmission(input: {
         }
       }
     } catch (error) {
+      // Fail closed: if we can't tell whether a fix-up round is open, don't
+      // risk marking the graded submission "resubmitted after grading".
       console.error("fix-up save guard failed", error instanceof Error ? error.message : error);
+      return { ok: false, code: "persist_failed", message: FIXUP_COPY.saveGuardUnavailable };
     }
   }
 

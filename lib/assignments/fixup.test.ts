@@ -427,3 +427,13 @@ describe("QA #231 should-fixes", () => {
     assert.match(staff, /sectionWarning/);
   });
 });
+
+describe("QA #231 nit: save guard fails closed", () => {
+  it("a failed fix-up lookup refuses the main save with a try-again message", () => {
+    assert.match(FIXUP_COPY.saveGuardUnavailable, /try again/i);
+    const actions = readFileSync(new URL("../../app/assignments/submission-actions.ts", import.meta.url), "utf8");
+    const guard = actions.slice(actions.indexOf("fix-up save guard failed") - 400, actions.indexOf("fix-up save guard failed") + 300);
+    assert.match(guard, /catch \(error\)/);
+    assert.match(guard, /return \{ ok: false, code: "persist_failed", message: FIXUP_COPY\.saveGuardUnavailable \}/);
+  });
+});

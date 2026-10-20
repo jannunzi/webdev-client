@@ -243,6 +243,8 @@ export const FIXUP_COPY = {
     "Each new fix-up run is checked from scratch: it clears any staff approvals and any staff override from earlier runs.",
   mainSaveBlocked:
     "Your fix-up round is open, so Submit is turned off here (it would replace your graded submission). Use the fix-up form below instead.",
+  saveGuardUnavailable:
+    "We couldn't save your submission right now. Please try again in a minute.",
   noFixupSubmitted: "no fix-up submitted; original grade stands",
 } as const;
 
