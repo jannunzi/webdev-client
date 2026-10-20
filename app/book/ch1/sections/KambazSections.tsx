@@ -12,6 +12,7 @@ import HomeDemo from "../embeds/HomeDemo";
 import AssignmentsDemo from "../embeds/AssignmentsDemo";
 import AssignmentsStep from "../embeds/assignments-step/Assignments";
 import AssignmentEditorDemo from "../embeds/AssignmentEditorDemo";
+import AssignmentsFinished from "../embeds/assignments-finished/Assignments";
 import DemoSignin from "../embeds/DemoSignin";
 import DemoSignup from "../embeds/DemoSignup";
 import DemoProfile from "../embeds/DemoProfile";
@@ -1267,6 +1268,63 @@ export default async function Assignments({
         >
           <AssignmentsDemo />
         </LiveDemo>
+        <p>
+          Finished page for lecture: the search field, + Group, + Assignment,
+          the <code>wd-assignments-title</code>{" "}heading, and A1–A3 written
+          out with the same <code>AssignmentItem</code>{" "}component above.
+        </p>
+        <CodeBlock
+          language="tsx"
+          name="Assignments (finished)"
+          file="app/(kambaz)/courses/[cid]/assignments/page.tsx"
+        >{`import AssignmentItem from "./AssignmentItem";
+
+export default async function Assignments({
+  params,
+}: {
+  params: Promise<{ cid: string }>;
+}) {
+  const { cid } = await params;
+  return (
+    <div id="wd-assignments">
+      <input
+        placeholder="Search for Assignments"
+        id="wd-search-assignment"
+      />{" "}
+      <button id="wd-add-assignment-group">+ Group</button>{" "}
+      <button id="wd-add-assignment">+ Assignment</button>
+      <h3 id="wd-assignments-title">
+        ASSIGNMENTS 40% of Total <button>+</button>
+      </h3>
+      <ul id="wd-assignment-list">
+        <AssignmentItem
+          cid={cid}
+          aid="123"
+          title="A1 - ENV + HTML"
+          details="Multiple Modules | Not available until May 6 at 12:00am | Due May 13 at 11:59pm | 100 pts"
+        />
+        <AssignmentItem
+          cid={cid}
+          aid="124"
+          title="A2 - CSS + TAILWIND"
+          details="Multiple Modules | Not available until May 13 at 12:00am | Due May 20 at 11:59pm | 100 pts"
+        />
+        <AssignmentItem
+          cid={cid}
+          aid="125"
+          title="A3 - JAVASCRIPT + REACT"
+          details="Multiple Modules | Not available until May 20 at 12:00am | Due May 27 at 11:59pm | 100 pts"
+        />
+      </ul>
+    </div>
+  );
+}`}</CodeBlock>
+        <LiveDemo
+          name="Assignments (finished)"
+          file="app/(kambaz)/courses/[cid]/assignments/page.tsx"
+        >
+          <AssignmentsFinished params={Promise.resolve({ cid: "1234" })} />
+        </LiveDemo>
       </Section>
 
       <Section
@@ -1297,13 +1355,10 @@ export default async function Assignments({
   return (
     <div id="wd-assignments-editor">
       <label htmlFor="wd-name">Assignment Name</label>
-      <input id="wd-name" defaultValue="A1 - ENV + HTML" />
-      <br />
-      <br />
+      <input id="wd-name" defaultValue="A1 - ENV + HTML" /> <br /><br />
       <textarea id="wd-description">
         The assignment is available online Submit a link to the landing page of
-      </textarea>
-      <br />
+      </textarea>                                           <br />
       <table>
         <tbody>
           <tr>
@@ -1387,6 +1442,119 @@ export default async function Assignments({
         >
           <AssignmentEditorDemo />
         </LiveDemo>
+        <p>
+          The finished editor behind that demo, with every control from the
+          checklist:
+        </p>
+        <CodeBlock
+          language="tsx"
+          name="AssignmentEditor (finished)"
+          file="app/(kambaz)/courses/[cid]/assignments/[aid]/page.tsx"
+        >{`import Link from "next/link";
+
+export default function AssignmentEditor() {
+  return (
+    <div id="wd-assignments-editor">
+      <label htmlFor="wd-name">Assignment Name</label>
+      <input id="wd-name" defaultValue="A1 - ENV + HTML" /> <br /><br />
+      <textarea
+        id="wd-description"
+        cols={50}
+        rows={6}
+        defaultValue="The assignment is available online Submit a link to the landing page of your Web application running on Vercel."
+      /> <br />
+      <table>
+        <tbody>
+          <tr>
+            <td align="right" valign="top">
+              <label htmlFor="wd-points">Points</label>
+            </td>
+            <td>
+              <input id="wd-points" defaultValue={100} />
+            </td>
+          </tr>
+          <tr>
+            <td align="right" valign="top">
+              <label htmlFor="wd-group">Assignment Group</label>
+            </td>
+            <td>
+              <select id="wd-group" defaultValue="ASSIGNMENTS">
+                <option value="ASSIGNMENTS">ASSIGNMENTS</option>
+                <option value="QUIZZES">QUIZZES</option>
+                <option value="EXAMS">EXAMS</option>
+                <option value="PROJECT">PROJECT</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td align="right" valign="top">
+              <label htmlFor="wd-display-grade-as">Display Grade as</label>
+            </td>
+            <td>
+              <select id="wd-display-grade-as" defaultValue="PERCENTAGE">
+                <option value="PERCENTAGE">Percentage</option>
+                <option value="POINTS">Points</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td align="right" valign="top">
+              <label htmlFor="wd-submission-type">Submission Type</label>
+            </td>
+            <td>
+              <select id="wd-submission-type" defaultValue="ONLINE">
+                <option value="ONLINE">Online</option>
+                <option value="ON_PAPER">On Paper</option>
+              </select>            <br /><br />
+              Online Entry Options <br />
+              <input type="checkbox" id="wd-text-entry" />
+              <label htmlFor="wd-text-entry">Text Entry</label> <br />
+              <input type="checkbox" id="wd-website-url" />
+              <label htmlFor="wd-website-url">Website URL</label> <br />
+              <input type="checkbox" id="wd-media-recordings" />
+              <label htmlFor="wd-media-recordings">Media Recordings</label> <br />
+              <input type="checkbox" id="wd-student-annotation" />
+              <label htmlFor="wd-student-annotation">Student Annotation</label> <br />
+              <input type="checkbox" id="wd-file-upload" />
+              <label htmlFor="wd-file-upload">File Uploads</label>
+            </td>
+          </tr>
+          <tr>
+            <td align="right" valign="top">
+              Assign
+            </td>
+            <td>
+              <label htmlFor="wd-assign-to">Assign to</label>     <br />
+              <input id="wd-assign-to" defaultValue="Everyone" /> <br /><br />
+              <label htmlFor="wd-due-date">Due</label>            <br />
+              <input type="date" id="wd-due-date"
+                     defaultValue="2024-05-13" /> <br /><br />
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                      <label htmlFor="wd-available-from">Available from</label> <br />
+                      <input type="date" id="wd-available-from"
+                             defaultValue="2024-05-06" />
+                    </td>
+                    <td>
+                      <label htmlFor="wd-available-until">Until</label> <br />
+                      <input type="date" id="wd-available-until"
+                             defaultValue="2024-05-20" />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <hr />
+      <Link href="/courses/1234/assignments" id="wd-cancel">Cancel</Link>{" "}
+      <Link href="/courses/1234/assignments" id="wd-save">Save</Link>
+    </div>
+  );
+}`}</CodeBlock>
       </Section>
 
       <Section level={3} id="sec-1-4-9" title="1.4.9 Exercises">

@@ -16,6 +16,7 @@ import Lab1StubEmbed from "./Lab1StubEmbed";
 import LabsIndexEmbed from "./LabsIndexEmbed";
 import LabsNameGithubEmbed from "./LabsNameGithubEmbed";
 import KambazAssignmentsStepEmbed from "./KambazAssignmentsStepEmbed";
+import KambazAssignmentsFinishedEmbed from "./KambazAssignmentsFinishedEmbed";
 import {
   KambazAccountNavEmbed,
   KambazLandingEmbed,
@@ -29,7 +30,6 @@ import {
 } from "./KambazChromeEmbeds";
 import {
   KambazAssignmentEditorEmbed,
-  KambazAssignmentsEmbed,
   KambazCoursesEmbed,
   KambazHomeEmbed,
   KambazModulesEmbed,
@@ -95,6 +95,7 @@ import {
   KambazCh3ModulesEmbed,
   KambazCh3PeopleEmbed,
   KambazStyledAssignmentsEmbed,
+  KambazStyledAssignmentEditorEmbed,
   KambazStyledCourseNavEmbed,
   KambazStyledDashboardEmbed,
   KambazStyledHomeEmbed,
@@ -263,12 +264,12 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <KambazModulesEmbed />;
     case "kambaz-home":
       return <KambazHomeEmbed />;
-    case "kambaz-assignments":
-      return <KambazAssignmentsEmbed />;
     case "kambaz-assignment-editor":
       return <KambazAssignmentEditorEmbed />;
     case "kambaz-assignments-step":
       return <KambazAssignmentsStepEmbed />;
+    case "kambaz-assignments-finished":
+      return <KambazAssignmentsFinishedEmbed />;
     case "labs-name-github":
       return <LabsNameGithubEmbed />;
     case "css-style-attr":
@@ -365,6 +366,8 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <KambazStyledPeopleEmbed />;
     case "kambaz-styled-assignments":
       return <KambazStyledAssignmentsEmbed />;
+    case "kambaz-styled-assignment-editor":
+      return <KambazStyledAssignmentEditorEmbed />;
     case "kambaz-ch3-dashboard":
       return <KambazCh3DashboardEmbed />;
     case "kambaz-ch3-modules":

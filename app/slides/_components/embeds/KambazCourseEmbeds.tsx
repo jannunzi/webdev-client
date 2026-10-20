@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import AssignmentsDemo from "@/app/book/ch1/embeds/AssignmentsDemo";
 import AssignmentEditorDemo from "@/app/book/ch1/embeds/AssignmentEditorDemo";
 import HomeDemo from "@/app/book/ch1/embeds/HomeDemo";
 import ModulesDemo from "@/app/book/ch1/embeds/ModulesDemo";
@@ -116,19 +115,6 @@ export function KambazHomeEmbed() {
     >
       <div className="font-sans text-sm [&_h2]:mt-0">
         <HomeDemo />
-      </div>
-    </LectureDemoFrame>
-  );
-}
-
-export function KambazAssignmentsEmbed() {
-  return (
-    <LectureDemoFrame
-      label="app/(kambaz)/courses/[cid]/assignments/page.tsx"
-      url="/courses/1234/assignments"
-    >
-      <div className="font-sans text-sm [&_h2]:mt-0">
-        <AssignmentsDemo />
       </div>
     </LectureDemoFrame>
   );
