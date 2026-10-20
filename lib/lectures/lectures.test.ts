@@ -1312,7 +1312,7 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-dashboard-data"], 8);
     assert.equal(counts["kambaz-courses-data"], 11);
     assert.equal(counts["kambaz-modules-data"], 9);
-    assert.equal(counts["kambaz-assignments-data"], 14);
+    assert.equal(counts["kambaz-assignments-data"], 15);
     assert.equal(counts["click-events"], 7);
     assert.equal(counts["passing-data-and-functions"], 8);
     assert.equal(counts["usestate-counter"], 8);
@@ -3807,5 +3807,21 @@ describe("explanation text never buries the code", () => {
     assert.equal(ids[2], "toc-intro");
     assert.equal(ids[3], "toc");
     assert.equal(findSlide("path-params-and-todos", "toc").title, "TOC maps links and highlights (code)");
+  });
+});
+
+describe("kambaz-assignments-data AssignmentItem", () => {
+  it("shows the §2.4.7 AssignmentItem byte-identical right before the page that imports it", () => {
+    const book = readFileSync(join(process.cwd(), "app/book/ch2/sections/KambazStyling.tsx"), "utf8");
+    const m = book.match(/<CodeBlock[^>]*?name="AssignmentItem"[^>]*>\{`([\s\S]*?)`\}<\/CodeBlock>/);
+    assert.ok(m);
+    const listing = m[1].replace(/\\`/g, "`").replace(/\\\$/g, "$");
+    const deck = getLectureDeck("kambaz-assignments-data");
+    assert.ok(deck);
+    const ids = deck.slides.map((s) => s.id);
+    const slide = findSlide("kambaz-assignments-data", "assignment-item");
+    assert.equal(slide.code, listing);
+    assert.equal(slide.embed, undefined);
+    assert.equal(ids.indexOf("assignment-item") + 1, ids.indexOf("list"));
   });
 });
