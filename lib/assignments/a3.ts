@@ -29,7 +29,7 @@ export const A3_RUBRIC: AssignmentRubric = {
           id: "a3-delivery-vercel",
           label: "Vercel branch deployment",
           description:
-            "Branch deployments are on, so a3 has its own preview URL whose hostname contains -git-a3-, with Deployment Protection off.",
+            "Submit the Vercel address made for your a3 branch (§3.10: each push to a3 gets its own address that contains the branch name). It looks like https://webdev-client-git-a3-yourname.vercel.app — the part before .vercel.app includes -git-a3. Deployment Protection must be off so anyone can open it.",
           points: 3,
           bookHref: "/book/ch3#sec-3-10",
           bookLabel: "§3.10",
@@ -65,7 +65,7 @@ export const A3_RUBRIC: AssignmentRubric = {
           label: "Lab 3 page",
           description:
             "/labs/lab3 shows a titled section for each exercise in §3.2–§3.7, in book order (at least 20 section headings).",
-          points: 6,
+          points: 4,
           bookHref: "/book/ch3#sec-3-2",
           bookLabel: "§3.2",
         },
@@ -74,7 +74,7 @@ export const A3_RUBRIC: AssignmentRubric = {
           label: "JSON.stringify",
           description:
             "A <pre> pretty-prints an object that has at least one nested object and one array (JSON.stringify(obj, null, 2)).",
-          points: 4,
+          points: 3,
           bookHref: "/book/ch3#sec-3-4-11",
           bookLabel: "§3.4.11",
         },
@@ -83,7 +83,7 @@ export const A3_RUBRIC: AssignmentRubric = {
           label: "Destructing imports table",
           description:
             "A table with at least 4 rows of 3 cells compares the import styles (default object, namespace, named functions).",
-          points: 4,
+          points: 3,
           bookHref: "/book/ch3#sec-3-4-16",
           bookLabel: "§3.4.16",
         },
@@ -92,7 +92,7 @@ export const A3_RUBRIC: AssignmentRubric = {
           label: "Style objects",
           description:
             "At least 3 boxes colored with inline style={{ backgroundColor: … }} objects.",
-          points: 4,
+          points: 3,
           bookHref: "/book/ch3#sec-3-5-2",
           bookLabel: "§3.5.2",
         },
@@ -101,7 +101,7 @@ export const A3_RUBRIC: AssignmentRubric = {
           label: "CSS classes",
           description:
             "At least 4 boxes colored by classes from a stylesheet you import (className, not inline styles).",
-          points: 4,
+          points: 3,
           bookHref: "/book/ch3#sec-3-5-1",
           bookLabel: "§3.5.1",
         },
@@ -110,7 +110,7 @@ export const A3_RUBRIC: AssignmentRubric = {
           label: "Client and Server Components",
           description:
             "A Client Component prints the current pathname (/labs/lab3), and a Server Component prints a list of at least 3 file names read on the server.",
-          points: 5,
+          points: 3,
           bookHref: "/book/ch3#sec-3-6",
           bookLabel: "§3.6",
         },
@@ -119,7 +119,7 @@ export const A3_RUBRIC: AssignmentRubric = {
           label: "Labs TOC highlight",
           description:
             "On each Lab page the TOC link for that lab is marked differently from the others (style, class, or aria-current), and the marking moves when you change labs (/labs/lab1 vs /labs/lab3).",
-          points: 5,
+          points: 3,
           bookHref: "/book/ch3#sec-3-7-2",
           bookLabel: "§3.7.2",
         },
@@ -128,7 +128,7 @@ export const A3_RUBRIC: AssignmentRubric = {
           label: "Path parameters",
           description:
             "/labs/lab3 links to at least two /labs/lab3/add/<a>/<b> URLs, and /labs/lab3/add/<a>/<b> shows a + b for any two numbers (for example /labs/lab3/add/12/30 shows 42).",
-          points: 6,
+          points: 5,
           bookHref: "/book/ch3#sec-3-7-3",
           bookLabel: "§3.7.3",
         },
@@ -137,9 +137,149 @@ export const A3_RUBRIC: AssignmentRubric = {
           label: "Todo list",
           description:
             "A list of at least 3 todo checkboxes rendered from todos.json, with at least one checked and one unchecked.",
-          points: 5,
+          points: 2,
           bookHref: "/book/ch3#sec-3-7-4",
           bookLabel: "§3.7.4",
+        },
+        {
+          id: "a3-lab-oyo-not-false1",
+          label: "If Else: not false1",
+          description:
+            "The If Else section shows a third paragraph that reads not false1.",
+          points: 1,
+          bookHref: "/book/ch3#sec-3-2-4",
+          bookLabel: "§3.2.4",
+          onYourOwn: true,
+        },
+        {
+          id: "a3-lab-oyo-good-morning",
+          label: "Ternary: Good morning",
+          description:
+            "A second ternary on const hour = 9 shows Good morning.",
+          points: 1,
+          bookHref: "/book/ch3#sec-3-2-5",
+          bookLabel: "§3.2.5",
+          onYourOwn: true,
+        },
+        {
+          id: "a3-lab-oyo-guest-inline",
+          label: "Inline conditional: Guest Inline",
+          description:
+            "The inline conditional section also shows Guest Inline.",
+          points: 1,
+          bookHref: "/book/ch3#sec-3-2-6",
+          bookLabel: "§3.2.6",
+          onYourOwn: true,
+        },
+        {
+          id: "a3-lab-oyo-null-default",
+          label: "nullValue ?? \"default\"",
+          description:
+            "A line reads nullValue ?? \"default\" = default.",
+          points: 1,
+          bookHref: "/book/ch3#sec-3-2-7",
+          bookLabel: "§3.2.7",
+          onYourOwn: true,
+        },
+        {
+          id: "a3-lab-oyo-owners",
+          label: "House owners",
+          description:
+            "Under bathrooms, an <h5> heading (the book uses owners) followed by the owners joined with commas.",
+          points: 1,
+          bookHref: "/book/ch3#sec-3-4-12",
+          bookLabel: "§3.4.12",
+          onYourOwn: true,
+        },
+        {
+          id: "a3-lab-oyo-imports-row",
+          label: "Imports table: fifth row",
+          description:
+            "The import-styles table has a fifth row for add(10, 20) whose three cells each show 30.",
+          points: 1,
+          bookHref: "/book/ch3#sec-3-4-16",
+          bookLabel: "§3.4.16",
+          onYourOwn: true,
+        },
+        {
+          id: "a3-lab-oyo-garage",
+          label: "Optional chaining: garage",
+          description:
+            "A line reads house.garage?.cars ?? 0 = 0.",
+          points: 1,
+          bookHref: "/book/ch3#sec-3-4-17",
+          bookLabel: "§3.4.17",
+          onYourOwn: true,
+        },
+        {
+          id: "a3-lab-oyo-classes",
+          label: "Classes: sixth box",
+          description:
+            "A box of your own after the fifth, so the Classes section has six colored boxes.",
+          points: 1,
+          bookHref: "/book/ch3#sec-3-5-1",
+          bookLabel: "§3.5.1",
+          onYourOwn: true,
+        },
+        {
+          id: "a3-lab-oyo-styles",
+          label: "Styles: fourth box",
+          description:
+            "A fourth box styled by a bgGreen object, so the Styles section has four colored boxes.",
+          points: 1,
+          bookHref: "/book/ch3#sec-3-5-2",
+          bookLabel: "§3.5.2",
+          onYourOwn: true,
+        },
+        {
+          id: "a3-lab-oyo-pathname-length",
+          label: "Pathname length",
+          description:
+            "Under the pathname, a paragraph reads Pathname length: 10 on /labs/lab3.",
+          points: 1,
+          bookHref: "/book/ch3#sec-3-6-1",
+          bookLabel: "§3.6.1",
+          onYourOwn: true,
+        },
+        {
+          id: "a3-lab-oyo-arch",
+          label: "Server info: arch",
+          description:
+            "The Server Information block includes an \"arch\" key.",
+          points: 1,
+          bookHref: "/book/ch3#sec-3-6-2",
+          bookLabel: "§3.6.2",
+          onYourOwn: true,
+        },
+        {
+          id: "a3-lab-oyo-add-30",
+          label: "Second Add",
+          description:
+            "A second <Add a={10} b={20} /> prints a + b = 30.",
+          points: 1,
+          bookHref: "/book/ch3#sec-3-7",
+          bookLabel: "§3.7",
+          onYourOwn: true,
+        },
+        {
+          id: "a3-lab-oyo-path-link",
+          label: "Path Parameters: third link",
+          description:
+            "Path Parameters shows three /labs/lab3/add/<a>/<b> links, with numbers of your choice.",
+          points: 1,
+          bookHref: "/book/ch3#sec-3-7-3",
+          bookLabel: "§3.7.3",
+          onYourOwn: true,
+        },
+        {
+          id: "a3-lab-oyo-todos",
+          label: "Todo List: fourth todo",
+          description:
+            "The Todo List shows four checkbox rows, at least one checked and one unchecked.",
+          points: 1,
+          bookHref: "/book/ch3#sec-3-7-4",
+          bookLabel: "§3.7.4",
+          onYourOwn: true,
         },
       ],
     },

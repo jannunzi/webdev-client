@@ -296,6 +296,7 @@ export function lab3ClassBoxes(html: string): number {
       const boxes = children(container.inner).filter(
         (child) =>
           (child.tag === "div" || child.tag === "p" || child.tag === "li") &&
+          !/<(input|button|select|textarea)\b/i.test(child.inner) &&
           attr(child.open, "class").trim().length > 0 &&
           !INLINE_BACKGROUND.test(attr(child.open, "style")) &&
           textOf(child.inner).length > 0 &&
@@ -367,6 +368,106 @@ export function lab3HasTodoList(html: string): boolean {
     elements(html, tag).some((list) => {
       const boxes = elements(list.inner, "input", true).filter((input) => attr(input.open, "type").toLowerCase() === "checkbox");
       return boxes.length >= 3 && boxes.some((box) => isChecked(box.open)) && boxes.some((box) => !isChecked(box.open));
+    }),
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Lab 3 On your own (only steps whose result is exact in the book)    */
+/* ------------------------------------------------------------------ */
+
+/** Largest group of sibling boxes that have text and match `pick`. */
+function siblingBoxes(html: string, pick: (child: El) => boolean): number {
+  let best = 0;
+  for (const tag of ["div", "section", "article", "td", "body", "main"]) {
+    for (const container of elements(html, tag)) {
+      const boxes = children(container.inner).filter(
+        (child) => BOX_TAGS.includes(child.tag) && textOf(child.inner).length > 0 && textOf(child.inner).length <= 200 && pick(child),
+      );
+      best = Math.max(best, boxes.length);
+    }
+  }
+  return best;
+}
+
+/** §3.5.2: a fourth inline-styled box next to the other three. */
+export function lab3OyoFourStyleBoxes(html: string): boolean {
+  return siblingBoxes(html, (child) => INLINE_BACKGROUND.test(attr(child.open, "style"))) >= 4;
+}
+
+/** §3.5.1: a sixth class-colored box next to the other five. */
+export function lab3OyoSixClassBoxes(html: string): boolean {
+  return lab3ClassBoxes(html) >= 6;
+}
+
+const flat = (html: string) => textOf(html).replace(/\s+/g, " ");
+
+/** Exact rendered results the book gives for an On your own step. */
+export const A3_OYO_TEXT: Record<string, RegExp> = {
+  "a3-lab-oyo-pathname-length": /pathname length:\s*10(?!\d)/i,
+  "a3-lab-oyo-garage": /house\.garage\?\.cars\s*\?\?\s*0\s*=\s*0(?!\d)/,
+  "a3-lab-oyo-null-default": /nullValue\s*\?\?\s*"default"\s*=\s*default/,
+  "a3-lab-oyo-good-morning": /good morning/i,
+  "a3-lab-oyo-guest-inline": /guest inline/i,
+  "a3-lab-oyo-add-30": /a\s*\+\s*b\s*=\s*30(?!\d)/,
+};
+
+export function lab3OyoText(html: string, criterionId: string): boolean {
+  return A3_OYO_TEXT[criterionId].test(flat(html));
+}
+
+/** §3.2.4: a third paragraph reading "not false1". */
+export function lab3OyoNotFalse1(html: string): boolean {
+  return elements(html, "p").some((p) => /^not false1$/i.test(textOf(p.inner).trim()));
+}
+
+/** §3.4.12: an <h5>owners</h5> heading. */
+export function lab3OyoOwnersHeading(html: string): boolean {
+  const source = renderedMarkup(html);
+  const lists = preJson(html)
+    .filter(isPlainObject)
+    .map((house) => house.owners)
+    .filter((owners): owners is string[] => Array.isArray(owners) && owners.length > 0 && owners.every((o) => typeof o === "string"))
+    .map((owners) => owners.join(", "));
+  return elements(html, "h5").some((h) => {
+    if (/^(house\s*)?owners?$/i.test(textOf(h.inner).trim().replace(/\s+/g, ""))) return true;
+    // Any heading text, as long as the owners from the house object follow it.
+    const after = source.slice(source.indexOf(h.open, h.index) + h.open.length + h.inner.length);
+    const next = textOf(after.split(/<h[1-6]\b/i)[0]).replace(/\s+/g, " ").trim();
+    return lists.some((joined) => next.startsWith(joined));
+  });
+}
+
+/** §3.6.2: the stringified server object has an "arch" key. */
+export function lab3OyoArch(html: string): boolean {
+  return preJson(html).some((value) => isPlainObject(value) && "arch" in value);
+}
+
+/** §3.4.16: a table row whose three cells each show 30. */
+export function lab3OyoImportsRow(html: string): boolean {
+  return elements(html, "tr").some((row) => {
+    const cells = elements(row.inner, "td", true).map((cell) => textOf(cell.inner).trim());
+    return cells.filter((cell) => /(^|\D)30$/.test(cell)).length >= 3;
+  });
+}
+
+/** §3.7.3: three distinct /labs/lab3/add/<a>/<b> links. */
+export function lab3OyoThirdAddLink(html: string, ctx: StructureContext): boolean {
+  return (
+    new Set(
+      anchors(html, ctx.siteHost)
+        .map((anchor) => anchor.path)
+        .filter((path): path is string => Boolean(path && ADD_LINK.test(path))),
+    ).size >= 3
+  );
+}
+
+/** §3.7.4: four todo checkboxes, at least one checked and one not. */
+export function lab3OyoFourTodos(html: string): boolean {
+  return ["ul", "ol"].some((tag) =>
+    elements(html, tag).some((list) => {
+      const boxes = elements(list.inner, "input", true).filter((input) => attr(input.open, "type").toLowerCase() === "checkbox");
+      return boxes.length >= 4 && boxes.some((box) => isChecked(box.open)) && boxes.some((box) => !isChecked(box.open));
     }),
   );
 }
@@ -728,6 +829,90 @@ export const A3_STRUCTURE_FALLBACKS: Readonly<Record<string, StructureFallback>>
     missMessage: "We couldn't find the todo list on /labs/lab3 (a list of at least 3 checkboxes, at least one checked and one unchecked).",
     target: LAB3,
     test: (html) => lab3HasTodoList(html),
+  }),
+  "a3-lab-oyo-styles": fallback({
+    looksFor: "a fourth inline-styled box beside the other three",
+    missMessage: "The Styles section should have four colored boxes (add a fourth box styled with a backgroundColor object).",
+    target: LAB3,
+    test: (html) => lab3OyoFourStyleBoxes(html),
+  }),
+  "a3-lab-oyo-classes": fallback({
+    looksFor: "a sixth class-colored box beside the other five",
+    missMessage: "The Classes section should have six colored boxes (add a box of your own whose class is picked with a ternary).",
+    target: LAB3,
+    test: (html) => lab3OyoSixClassBoxes(html),
+  }),
+  "a3-lab-oyo-not-false1": fallback({
+    looksFor: "a paragraph reading not false1",
+    missMessage: "The If Else section should show a third paragraph reading not false1.",
+    target: LAB3,
+    test: (html) => lab3OyoNotFalse1(html),
+  }),
+  "a3-lab-oyo-good-morning": fallback({
+    looksFor: "Good morning from the second ternary",
+    missMessage: "The Ternary section should show Good morning from a second ternary on hour = 9.",
+    target: LAB3,
+    test: (html) => lab3OyoText(html, "a3-lab-oyo-good-morning"),
+  }),
+  "a3-lab-oyo-guest-inline": fallback({
+    looksFor: "the Guest Inline heading",
+    missMessage: "The inline conditional section should also show Guest Inline.",
+    target: LAB3,
+    test: (html) => lab3OyoText(html, "a3-lab-oyo-guest-inline"),
+  }),
+  "a3-lab-oyo-null-default": fallback({
+    looksFor: "nullValue ?? \"default\" = default",
+    missMessage: "The null and undefined section should show the line nullValue ?? \"default\" = default.",
+    target: LAB3,
+    test: (html) => lab3OyoText(html, "a3-lab-oyo-null-default"),
+  }),
+  "a3-lab-oyo-owners": fallback({
+    looksFor: "an owners heading under the house",
+    missMessage: "The House section should show an owners heading (an h5) followed by the owners.",
+    target: LAB3,
+    test: (html) => lab3OyoOwnersHeading(html),
+  }),
+  "a3-lab-oyo-imports-row": fallback({
+    looksFor: "a table row whose three cells each show 30",
+    missMessage: "The import-styles table should have a fifth row for add(10, 20) where all three cells show 30.",
+    target: LAB3,
+    test: (html) => lab3OyoImportsRow(html),
+  }),
+  "a3-lab-oyo-garage": fallback({
+    looksFor: "house.garage?.cars ?? 0 = 0",
+    missMessage: "The optional chaining section should show the line house.garage?.cars ?? 0 = 0.",
+    target: LAB3,
+    test: (html) => lab3OyoText(html, "a3-lab-oyo-garage"),
+  }),
+  "a3-lab-oyo-pathname-length": fallback({
+    looksFor: "Pathname length: 10",
+    missMessage: "The Client Component should show Pathname length: 10 under the pathname on /labs/lab3.",
+    target: LAB3,
+    test: (html) => lab3OyoText(html, "a3-lab-oyo-pathname-length"),
+  }),
+  "a3-lab-oyo-arch": fallback({
+    looksFor: "an arch key in the server information",
+    missMessage: "The Server Component's information should include an \"arch\" key (process.arch).",
+    target: LAB3,
+    test: (html) => lab3OyoArch(html),
+  }),
+  "a3-lab-oyo-add-30": fallback({
+    looksFor: "a + b = 30 from a second Add",
+    missMessage: "A second Add on the Lab 3 page should print a + b = 30 (a = 10, b = 20).",
+    target: LAB3,
+    test: (html) => lab3OyoText(html, "a3-lab-oyo-add-30"),
+  }),
+  "a3-lab-oyo-path-link": fallback({
+    looksFor: "three /labs/lab3/add/<a>/<b> links",
+    missMessage: "Path Parameters should show three /labs/lab3/add/<a>/<b> links (add a third with numbers of your choice).",
+    target: LAB3,
+    test: (html, ctx) => lab3OyoThirdAddLink(html, ctx),
+  }),
+  "a3-lab-oyo-todos": fallback({
+    looksFor: "four todo checkboxes, some checked and some not",
+    missMessage: "The Todo List should show four checkbox rows, at least one checked and one unchecked.",
+    target: LAB3,
+    test: (html) => lab3OyoFourTodos(html),
   }),
   "a3-kambaz-nav": fallback({
     looksFor: "one highlighted sidebar item: Dashboard on /dashboard, Courses inside a course",

@@ -90,6 +90,8 @@ export const ASSIGNMENT_STUDENT_COPY = {
     "The page opened, but we couldn't find links to your lab pages (Lab 1, Lab 2, Lab 3) on /labs. Open /labs on your deploy and follow Chapter 1.",
   labsUnread: "Could not read the page to check Labs markers.",
   nameOk: "Found your full Canvas name on Labs.",
+  nameNeedsReview:
+    "Needs TA review: we found only part of your Canvas name on Labs (or your roster name is a single word or initials). A TA will confirm it.",
   nameCheckNeedsRoster:
     "Sign in with your Canvas email so Run checks can compare your name on Labs with the course roster. Staff check your name again when grading.",
   nameMissing:
@@ -105,3 +107,8 @@ export const ASSIGNMENT_STUDENT_COPY = {
 } as const;
 
 export type AssignmentStudentCopyKey = keyof typeof ASSIGNMENT_STUDENT_COPY;
+
+/** Before-submit warning when a lowercase route 404s but its capitalized form loads. */
+export function routeCaseWarning(path: string, capitalized: string): string {
+  return `Warning: ${path} returned 404, but ${capitalized} loads. Routes are case-sensitive and the checks open lowercase paths only, so those pages earn no credit. Rename your folders to lowercase (for example app/labs/lab3) as in the book, redeploy, and run checks again before you submit.`;
+}

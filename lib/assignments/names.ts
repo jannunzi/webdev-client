@@ -115,3 +115,72 @@ export function hasUsableNameQuery(query: NameQuery): boolean {
       query.markers.length > 0,
   );
 }
+
+export type NameVerdict = "found" | "review" | "missing";
+
+/** Words of the visible page text: tags, attributes, scripts and styles removed. */
+function visibleWords(html: string): string[] {
+  const text = html
+    .replace(/<(script|style|noscript|template)\b[\s\S]*?<\/\1>/gi, " ")
+    .replace(/<!--[\s\S]*?-->/g, " ")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;|&#160;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&#x27;|&#39;|&apos;/gi, "'");
+  return text
+    .normalize("NFC")
+    .toLowerCase()
+    .split(/[^\p{L}\p{N}'-]+/u)
+    .map((word) => word.replace(/^['-]+|['-]+$/g, "").replace(/'s$/, ""))
+    .filter(Boolean);
+}
+
+function nameTokens(value: string | undefined): string[] {
+  return (value ?? "")
+    .normalize("NFC")
+    .toLowerCase()
+    .split(/[^\p{L}\p{N}'-]+/u)
+    .filter((token) => token.length >= 2 && !SKIP_NAME_TOKENS.has(token));
+}
+
+function hasSequence(words: string[], tokens: string[]): boolean {
+  if (tokens.length === 0) return false;
+  for (let i = 0; i + tokens.length <= words.length; i += 1) {
+    if (tokens.every((token, k) => words[i + k] === token)) return true;
+  }
+  return false;
+}
+
+/**
+ * Whole-word name check on visible text only (A3 onward). Found: a full
+ * name phrase appears as consecutive words, or the first and last names
+ * both appear as words. Review: the roster name is one word or initials,
+ * or only one of the two names is on the page. One-letter tokens never count.
+ */
+export function studentNameVerdict(html: string, query: NameQuery): NameVerdict {
+  const words = visibleWords(html);
+  const set = new Set(words);
+  for (const phrase of query.phrases) {
+    const tokens = nameTokens(phrase);
+    if (tokens.length >= 2 && hasSequence(words, tokens)) return "found";
+  }
+  let first = nameTokens(query.first);
+  let last = nameTokens(query.last);
+  if (!first.length || !last.length) {
+    // Roster-only queries ("Lee, Ann"): first and last words of the full name.
+    const full = query.phrases.map(nameTokens).find((tokens) => tokens.length >= 2);
+    if (full) {
+      first = [full[0]];
+      last = [full[full.length - 1]];
+    }
+  }
+  if (first.length && last.length) {
+    const hasFirst = first.every((token) => set.has(token));
+    const hasLast = last.every((token) => set.has(token));
+    if (hasFirst && hasLast) return "found";
+    return hasFirst || hasLast ? "review" : "missing";
+  }
+  // One usable word (or only initials): never pass on its own.
+  const markers = query.markers.flatMap((marker) => nameTokens(marker));
+  return markers.some((token) => set.has(token)) || markers.length === 0 ? "review" : "missing";
+}

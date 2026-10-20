@@ -206,7 +206,7 @@ export default function A1SubmissionForm({
       )}
       <p className="mt-0 text-neutral-800">
         {assignmentId === "a3"
-          ? "Paste the a3 branch preview URL (the hostname contains -git-a3-) and your repository’s GitHub URL (the root, any branch, or …/tree/a3 all work). Checks open the preview, then fetch Labs, Lab 3 (and two /labs/lab3/add pages), the Dashboard, and Kambaz course screens."
+          ? "Paste the Vercel address for your a3 branch — the one Vercel made when you pushed a3 (§3.10), which looks like https://webdev-client-git-a3-yourname.vercel.app — and your repository’s GitHub URL (the repository page or any branch page works). Checks open that address, then Labs, Lab 3 (and two /labs/lab3/add pages), the Dashboard, and the Kambaz course screens."
           : assignmentId === "a2"
           ? "Paste the a2 branch preview URL (the hostname contains -git-a2-) and your repository’s GitHub URL (the root or …/tree/a2 both work). Checks open the preview, then fetch Labs, Lab 2, the Tailwind page, and Kambaz screens."
           : ASSIGNMENT_STUDENT_COPY.checkInstructions}

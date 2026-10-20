@@ -16,7 +16,7 @@ import type { AssignmentCheckResult, HtmlFetchResult } from "./checks";
 import { supportsUrlSubmission } from "./access";
 import { formatPointsPercent } from "./grade";
 import { stripWdIds } from "./html";
-import { resolveNameQuery } from "./names";
+import { resolveNameQuery, studentNameVerdict } from "./names";
 
 const ORIGIN = "https://webdev-client-git-a3-jane-doe.vercel.app";
 const TREE = "https://github.com/jane-doe/webdev-client/tree/a3";
@@ -175,25 +175,25 @@ describe("A3 checker (structure only, ids optional)", () => {
       fails: ["a3-delivery-labs-nav", "a3-lab-toc-highlight"],
     },
     { name: "GitHub link removed", serve: remove("/labs", "wd-github"), fails: ["a3-delivery-name-github"] },
-    { name: "House JSON removed", serve: remove("/labs/lab3", "wd-house"), fails: ["a3-lab-json"] },
-    { name: "imports table removed", serve: remove("/labs/lab3", "wd-destructuring-imports"), fails: ["a3-lab-imports-table"] },
-    { name: "Styles removed", serve: remove("/labs/lab3", "wd-styles"), fails: ["a3-lab-styles"] },
-    { name: "Classes removed", serve: remove("/labs/lab3", "wd-classes"), fails: ["a3-lab-classes"] },
-    { name: "Client Component removed", serve: remove("/labs/lab3", "wd-client-component-demo"), fails: ["a3-lab-client-server"] },
-    { name: "Server Component removed", serve: remove("/labs/lab3", "wd-server-component-demo"), fails: ["a3-lab-client-server"] },
+    { name: "House JSON removed", serve: remove("/labs/lab3", "wd-house"), fails: ["a3-lab-json", "a3-lab-oyo-owners"] },
+    { name: "imports table removed", serve: remove("/labs/lab3", "wd-destructuring-imports"), fails: ["a3-lab-imports-table", "a3-lab-oyo-imports-row"] },
+    { name: "Styles removed", serve: remove("/labs/lab3", "wd-styles"), fails: ["a3-lab-styles", "a3-lab-oyo-styles"] },
+    { name: "Classes removed", serve: remove("/labs/lab3", "wd-classes"), fails: ["a3-lab-classes", "a3-lab-oyo-classes"] },
+    { name: "Client Component removed", serve: remove("/labs/lab3", "wd-client-component-demo"), fails: ["a3-lab-client-server", "a3-lab-oyo-pathname-length"] },
+    { name: "Server Component removed", serve: remove("/labs/lab3", "wd-server-component-demo"), fails: ["a3-lab-client-server", "a3-lab-oyo-arch"] },
     {
       name: "Chapter 1 TOC (no highlight)",
       serve: on((path) => path.startsWith("/labs"), (html) => html.replace(/ style="background-color:#2563eb[^"]*"/g, "").replace(/ aria-current="page"/g, "")),
       fails: ["a3-lab-toc-highlight"],
     },
-    { name: "Path Parameters links removed", serve: remove("/labs/lab3", "wd-path-parameters"), fails: ["a3-lab-path-params"] },
+    { name: "Path Parameters links removed", serve: remove("/labs/lab3", "wd-path-parameters"), fails: ["a3-lab-path-params", "a3-lab-oyo-path-link"] },
     { name: "add/[a]/[b] route 404", serve: notFound((path) => path.startsWith("/labs/lab3/add/")), fails: ["a3-lab-path-params"] },
     {
       name: "add route ignores its parameters",
       serve: serveAs((path) => path.startsWith("/labs/lab3/add/"), () => "/labs/lab3/add/1/2"),
       fails: ["a3-lab-path-params"],
     },
-    { name: "Todo list removed", serve: on(is("/labs/lab3"), (html) => removeElement(html, /\bclass="list-none[^"]*"/)), fails: ["a3-lab-todos"] },
+    { name: "Todo list removed", serve: on(is("/labs/lab3"), (html) => removeElement(html, /\bclass="list-none[^"]*"/)), fails: ["a3-lab-todos", "a3-lab-oyo-todos"] },
     { name: "Lab 3 page 404", serve: notFound(is("/labs/lab3")), fails: LAB3_ROWS },
     {
       name: "Dashboard without course cards",
@@ -346,7 +346,7 @@ describe("A3 reliability: alternative builds keep full credit", () => {
     { name: "TOC highlight by className only", serve: TOC_CLASS_ONLY },
     { name: "TOC highlight by aria-current only", serve: TOC_ARIA_ONLY },
     { name: "extra wrapper elements around every page", serve: WRAPPED },
-    { name: "ids stripped and text relabeled together", serve: (path) => { const page = relabel(path); return "html" in page && page.status === 200 ? { ...page, html: stripWdIds(page.html) } : page; } },
+    { name: "ids stripped and text relabeled together", serve: (path) => { const page = relabel(path); return "html" in page && page.status === 200 ? { ...page, html: stripWdIds(page.html ?? "") } : page; } },
   ];
   for (const variant of FULL) {
     it(`keeps 100 / 100: ${variant.name}`, async () => {
@@ -360,10 +360,107 @@ describe("A3 reliability: alternative builds keep full credit", () => {
     const both: Serve = (path) => {
       const page = NAV_EXTRA("block bg-black py-3 text-center text-sm text-white no-underline")(path);
       return "html" in page && page.status === 200 ? (doubleHighlight(path) as Page).status === 200 && path.startsWith("/courses/")
-        ? { ...page, html: page.html.replace(/(id="wd-dashboard-link" class="[^"]*?)bg-black text-white/, "$1bg-white text-red-600") }
+        ? { ...page, html: (page.html ?? "").replace(/(id="wd-dashboard-link" class="[^"]*?)bg-black text-white/, "$1bg-white text-red-600") }
         : page : page;
     };
     const { failed } = await grade(both);
     assert.deepEqual(failed, ["a3-kambaz-nav"]);
+  });
+});
+
+/* ------------- On your own (only steps with an exact book result) ------------- */
+describe("A3 On your own rows", () => {
+  const lab3 = (edit: (html: string) => string) => on(is("/labs/lab3"), edit);
+  const CASES: { name: string; serve: Serve; fails: string }[] = [
+    { name: "no not false1 paragraph", serve: lab3((h) => h.replace("<p>not false1</p>", "")), fails: "a3-lab-oyo-not-false1" },
+    { name: "no Good morning", serve: lab3((h) => h.replace(/Good morning/g, "Hello")), fails: "a3-lab-oyo-good-morning" },
+    { name: "no Guest Inline", serve: lab3((h) => h.replace(/Guest Inline/g, "")), fails: "a3-lab-oyo-guest-inline" },
+    { name: "no owners heading", serve: lab3((h) => h.replace("<h5>owners</h5>", "")), fails: "a3-lab-oyo-owners" },
+    { name: "no arch key", serve: lab3((h) => h.replace(/&quot;arch&quot;|"arch"/g, "&quot;cpu&quot;")), fails: "a3-lab-oyo-arch" },
+    { name: "no third add link", serve: lab3((h) => h.replace(/<a\b[^>]*href="\/labs\/lab3\/add\/10\/15"[^>]*>[\s\S]*?<\/a>/, "")), fails: "a3-lab-oyo-path-link" },
+    { name: "no Pathname length line", serve: lab3((h) => h.replace(/Pathname length/g, "Path")), fails: "a3-lab-oyo-pathname-length" },
+  ];
+  for (const row of CASES) {
+    it(`only ${row.fails} fails: ${row.name}`, async () => {
+      const { failed, points } = await grade(row.serve);
+      assert.deepEqual(failed, [row.fails]);
+      assert.equal(points, 99);
+    });
+  }
+
+  it("worth 14 points of 100, all in the Lab group and marked On your own", () => {
+    const oyo = CRITERIA.filter((row) => row.id.startsWith("a3-lab-oyo-"));
+    assert.equal(oyo.length, 14);
+    assert.ok(oyo.every((row) => row.onYourOwn && row.points === 1));
+    assert.equal(TOTAL, 100);
+  });
+
+  it("a Todo list's checkboxes never count as class-colored boxes", async () => {
+    const { failed } = await grade(remove("/labs/lab3", "wd-classes"));
+    assert.ok(failed.includes("a3-lab-classes"));
+  });
+});
+
+describe("A3 routes are lowercase only", () => {
+  it("never requests /Courses/... spellings", async () => {
+    const asked: string[] = [];
+    await grade((path) => {
+      asked.push(path);
+      return fromBuild(path);
+    });
+    assert.ok(asked.length > 0);
+    assert.ok(!asked.some((path) => /^\/Courses\//.test(path)), asked.filter((path) => /^\/Courses\//.test(path)).join(","));
+  });
+
+  it("warns before submit, with no credit, when /labs/lab3 404s but /Labs/Lab3 loads", async () => {
+    const capital: Serve = (path) => (path === "/labs/lab3" ? { status: 404, html: "<html><body>404</body></html>" } : path === "/Labs/Lab3" ? fromBuild("/labs/lab3") : fromBuild(path));
+    const { results, failed } = await grade(capital);
+    const warning = results.find((row) => row.id === "route-case-warning");
+    assert.ok(warning?.warning && warning.skipped && !warning.passed && !warning.criterionId);
+    assert.match(warning!.message, /\/Labs\/Lab3/);
+    assert.ok(failed.includes("a3-lab-page"));
+    const clean = await grade(fromBuild);
+    assert.ok(!clean.results.some((row) => row.id === "route-case-warning"));
+  });
+});
+
+describe("A3 name check (whole words on visible text)", () => {
+  const verdict = (first: string, last: string, html: string) => studentNameVerdict(html, resolveNameQuery({ firstName: first, lastName: last }));
+  const roster = (name: string, html: string) => studentNameVerdict(html, resolveNameQuery({ rosterName: name }));
+  it("does not match inside words, tags, or attributes", () => {
+    assert.equal(verdict("Li", "Wu", '<ul><li><a href="/wu">Home</a></li></ul>'), "missing");
+    assert.equal(verdict("Ann", "Lee", '<div class="planner annlee">Plans</div>'), "missing");
+    assert.equal(roster("M, N", "<p>in my lab</p>"), "review");
+  });
+  it("passes the full name, or first and last as separate words", () => {
+    assert.equal(verdict("Ann", "Lee", "<h1>Ann Lee</h1>"), "found");
+    assert.equal(roster("Lee, Ann", "<p>Lee</p><p>Ann</p>"), "found");
+    assert.equal(roster("Núñez, José", "<h1>José Núñez</h1>"), "found");
+  });
+  it("sends partial names and one-word roster names to TA review", () => {
+    assert.equal(roster("Lee, Ann", "<p>Ann's Labs</p>"), "review");
+    assert.equal(roster("Cher", "<p>Cher</p>"), "review");
+  });
+  it("is used by A3 only (A1/A2 keep their saved name rule)", () => {
+    assert.equal(A3_CHECKER.strictNames, true);
+    assert.equal(getChecker("a2")?.strictNames, undefined);
+    assert.equal(getChecker("a1")?.strictNames, undefined);
+  });
+});
+
+describe("A3 owners step accepts any heading text", () => {
+  it("passes an <h5> with different text when the owners follow it", async () => {
+    const { failed } = await grade(on(is("/labs/lab3"), (h) => h.replace("<h5>owners</h5>", "<h5>houseowner</h5>")));
+    assert.deepEqual(failed, []);
+  });
+});
+
+describe("A3 student copy stays in plain terms", () => {
+  it("never says hostname or preview URL on the A3 page", () => {
+    const vercel = CRITERIA.find((row) => row.id === "a3-delivery-vercel")!;
+    for (const text of [vercel.description, A3_CHECKER.delivery.previewHostMessage]) {
+      assert.doesNotMatch(text, /hostname|preview url/i);
+      assert.match(text, /webdev-client-git-a3-yourname\.vercel\.app/);
+    }
   });
 });
