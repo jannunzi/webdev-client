@@ -458,7 +458,7 @@ describe("A3 owners step accepts any heading text", () => {
 describe("A3 student copy stays in plain terms", () => {
   it("never says hostname or preview URL on the A3 page", () => {
     const vercel = CRITERIA.find((row) => row.id === "a3-delivery-vercel")!;
-    for (const text of [vercel.description, A3_CHECKER.delivery.previewHostMessage]) {
+    for (const text of [vercel.description, A3_CHECKER.delivery.previewHostMessage ?? ""]) {
       assert.doesNotMatch(text, /hostname|preview url/i);
       assert.match(text, /webdev-client-git-a3-yourname\.vercel\.app/);
     }
