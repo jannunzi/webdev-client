@@ -1305,7 +1305,7 @@ describe("lecture decks", () => {
     assert.equal(counts["spread-and-destructuring"], 15);
     assert.equal(counts["optional-chaining"], 6);
     assert.equal(counts["dynamic-styling"], 10);
-    assert.equal(counts["client-and-server"], 9);
+    assert.equal(counts["client-and-server"], 56);
     assert.equal(counts["parameterizing-components"], 10);
     assert.equal(counts["path-params-and-todos"], 17);
     assert.equal(counts["kambaz-database"], 14);
@@ -1814,6 +1814,19 @@ describe("lecture decks", () => {
       "client-and-server": {
         client: "js-client-component",
         server: "js-server-component",
+        "pathname": "lab3-pathname",
+        "search-params": "lab3-search-params",
+        "window": "lab3-window",
+        "geolocation": "lab3-geolocation",
+        "map": "lab3-map",
+        "client-ip": "lab3-client-ip",
+        "server-time": "lab3-server-time",
+        "os": "lab3-os",
+        "env": "lab3-env",
+        "request-headers": "lab3-request-headers",
+        "weather": "lab3-weather",
+        "visit-counter": "lab3-visit-counter",
+        "child-process": "lab3-child-process",
       },
       "parameterizing-components": {
         add: "js-add",
@@ -3705,7 +3718,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         );
       });
     }
-    assert.equal(demos, 50);
+    assert.equal(demos, 63);
   });
 
   it("keeps one code slide unless a listing is long, and never leaves a tiny tail", () => {
@@ -3796,7 +3809,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 206);
+    assert.equal(intros, 219);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
@@ -3815,5 +3828,46 @@ describe("form-state-types demo titles", () => {
       assert.equal(live.title, `${intro.title}: live demo`);
       assert.ok(live.title.length <= LECTURE_TITLE_MAX_CHARS);
     }
+  });
+});
+
+describe("client-and-server §3.6.3–3.6.4 API slides", () => {
+  const listings: Record<string, string> = {
+    pathname: "PathnameDemo",
+    "client-page": "ClientApis (after step 1)",
+    "search-params": "SearchParamsDemo",
+    suspense: "ClientApis (after step 2)",
+    window: "WindowDemo",
+    geolocation: "GeolocationDemo",
+    map: "MapEmbed",
+    "client-ip": "ClientIpDemo",
+    "client-time": "ClientTime",
+    "server-time": "ServerTimeDemo",
+    "server-page": "ServerApis (after step 1)",
+    os: "OsDemo",
+    "env-client-check": "EnvClientCheck",
+    env: "EnvDemo",
+    "request-headers": "RequestHeadersDemo",
+    weather: "WeatherDemo",
+    "visit-counter": "VisitCounterDemo",
+    "child-process": "ChildProcessDemo",
+  };
+  it("copies each listing from the book byte for byte, in the book's order", () => {
+    const book = readFileSync(join(process.cwd(), "app/book/ch3/sections/StylingAndComponents.tsx"), "utf8");
+    const ids = getLectureDeck("client-and-server")!.slides.map((s) => s.id);
+    let last = -1;
+    for (const [id, name] of Object.entries(listings)) {
+      const re = new RegExp(`<CodeBlock[^>]*?name="${name.replace(/[()]/g, "\\$&")}"[^>]*>\\{\`([\\s\\S]*?)\`\\}</CodeBlock>`);
+      const m = book.match(re);
+      assert.ok(m, name);
+      const listing = m[1].replace(/\\`/g, "`").replace(/\\\$/g, "$");
+      assert.equal(findSlide("client-and-server", id).code, listing, id);
+      assert.ok(ids.indexOf(id) > last, `${id} in book order`);
+      last = ids.indexOf(id);
+    }
+  });
+  it("shows each lab page listing only at its first step or when Suspense is added", () => {
+    const pages = getLectureDeck("client-and-server")!.slides.filter((s) => /\/(client|server)-apis\/page\.tsx$/.test(s.codeFile ?? ""));
+    assert.deepEqual(pages.map((s) => s.id), ["client-page", "suspense", "server-page"]);
   });
 });
