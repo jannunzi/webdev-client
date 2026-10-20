@@ -24,12 +24,7 @@ export const VARIABLE_TYPES_SLIDES: LectureSlide[] = [
   {
     id: "sample",
     title: "Values and their typeof strings",
-    kind: "demo",
-    bullets: [
-      "`123` and `234.345` are both `number` — no separate float type",
-      "`\"Hello World!\"` is a `string`. `true` is a `boolean`",
-      "`typeof numberVariable` stores the string `\"number\"`",
-    ],
+    kind: "content",
     code: `export default function VariableTypes() {
   let numberVariable = 123;
   let floatingPointNumber = 234.345;
@@ -41,18 +36,12 @@ export const VARIABLE_TYPES_SLIDES: LectureSlide[] = [
   return (
     <div id="wd-variable-types">
       <h4>Variables Types</h4>
-      numberVariable = {numberVariable}
-      <br />
-      floatingPointNumber = {floatingPointNumber}
-      <br />
-      stringVariable = {stringVariable}
-      <br />
-      booleanVariable = {booleanVariable + ""}
-      <br />
-      isNumber = {isNumber}
-      <br />
-      isString = {isString}
-      <br />
+      numberVariable = {numberVariable}           <br />
+      floatingPointNumber = {floatingPointNumber} <br />
+      stringVariable = {stringVariable}           <br />
+      booleanVariable = {booleanVariable + ""}    <br />
+      isNumber = {isNumber}                       <br />
+      isString = {isString}                       <br />
       isBoolean = {isBoolean}
       <hr />
     </div>
@@ -60,7 +49,17 @@ export const VARIABLE_TYPES_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/VariableTypes.tsx",
-    codeHighlightLines: [[6, 8], 18],
+    codeHighlightLines: [6, 7, 8, 15],
+  },
+  {
+    id: "sample-live",
+    title: "VariableTypes: live demo",
+    kind: "demo",
+    bullets: [
+      "`123` and `234.345` are both `number` — no separate float type",
+      "`\"Hello World!\"` is a `string`. `true` is a `boolean`",
+      "`typeof numberVariable` stores the string `\"number\"`",
+    ],
     embed: "js-variable-types",
   },
   {
@@ -73,30 +72,6 @@ export const VARIABLE_TYPES_SLIDES: LectureSlide[] = [
       "`booleanVariable + \"\"` concatenates an empty string and coerces to `\"true\"`",
       "Same trick in the next deck for every `&&` / `===` result",
     ],
-  },
-  {
-    id: "lab3-page-3-2-2",
-    title: "Add VariableTypes to Lab 3",
-    kind: "content",
-    bullets: [
-      "Add the import under the first one in `app/labs/lab3/page.tsx`",
-      "Render `<VariableTypes />` at the bottom of the `wd-lab3` `div`",
-    ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-
-export default function Lab3() {
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [2, 9],
   },
   {
     id: "on-your-own",

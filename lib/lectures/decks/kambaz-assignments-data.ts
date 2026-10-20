@@ -48,14 +48,8 @@ export { courses, modules, assignments };`,
   },
   {
     id: "list",
-    title: "Assignments can stay a Server page",
-    kind: "demo",
-    bullets: [
-      "`await params` instead of `useParams` — no `\"use client\"`",
-      "Keep your Chapter 2 toolbar and classes — only the list changes",
-      "Map each row to `AssignmentItem` with `key={assignment._id}`",
-      "Encode both ids: `/courses/${cid}/assignments/${aid}`",
-    ],
+    title: "Assignments can stay a Server page (1/2)",
+    kind: "content",
     code: `import { FaPlus, FaSearch } from "react-icons/fa";
 import AssignmentItem from "./AssignmentItem";
 import * as db from "../../../database";
@@ -96,8 +90,16 @@ export default async function Assignments({
             <FaPlus /> Assignment
           </button>
         </div>
-      </div>
-      <h3
+      </div>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/assignments/page.tsx",
+    codeHighlightLines: [10, 11, 12, 13],
+  },
+  {
+    id: "list-part-2",
+    title: "Assignments can stay a Server page (2/2)",
+    kind: "content",
+    code: `      <h3
         id="wd-assignments-title"
         className="mb-3 flex items-center justify-between rounded bg-neutral-200 p-3 text-lg"
       >
@@ -125,7 +127,19 @@ export default async function Assignments({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/assignments/page.tsx",
-    codeHighlightLines: [[10, 13], [55, 63]],
+    codeStartLine: 42,
+    codeHighlightLines: [14, 15, 16, 17, 18, 19, 20, 21, 22],
+  },
+  {
+    id: "list-live",
+    title: "Assignments can stay a Server page demo",
+    kind: "demo",
+    bullets: [
+      "`await params` instead of `useParams` — no `\"use client\"`",
+      "Keep your Chapter 2 toolbar and classes — only the list changes",
+      "Map each row to `AssignmentItem` with `key={assignment._id}`",
+      "Encode both ids: `/courses/${cid}/assignments/${aid}`",
+    ],
     embed: "kambaz-ch3-assignments",
   },
   {
@@ -243,14 +257,8 @@ export { courses, modules, assignments, users, enrollments };`,
   },
   {
     id: "people",
-    title: "People joins users to enrollments",
-    kind: "demo",
-    bullets: [
-      "`enrollments.some` — the same `some` as §3.4.8",
-      "Keep users whose enrollment `user` and `course` both match",
-      "Each row shows name, login id, section, role, and activity",
-      "Open People for RS101 vs RS102 and confirm the names change",
-    ],
+    title: "People joins users to enrollments (1/2)",
+    kind: "content",
     code: `import { FaUserCircle } from "react-icons/fa";
 import * as db from "../../../../database";
 
@@ -278,8 +286,16 @@ export default async function PeopleTable({
             <th className="p-2">Last Activity</th>
             <th className="p-2">Total Activity</th>
           </tr>
-        </thead>
-        <tbody>
+        </thead>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/table/page.tsx",
+    codeHighlightLines: [11, 12, 13, 14, 15],
+  },
+  {
+    id: "people-part-2",
+    title: "People joins users to enrollments (2/2)",
+    kind: "content",
+    code: `        <tbody>
           {enrolled.map((user) => (
             <tr key={user._id} className="odd:bg-neutral-50">
               <td className="wd-full-name p-2 text-nowrap">
@@ -301,7 +317,19 @@ export default async function PeopleTable({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/table/page.tsx",
-    codeHighlightLines: [[11, 15], 31],
+    codeStartLine: 29,
+    codeHighlightLines: [3],
+  },
+  {
+    id: "people-live",
+    title: "People joins users to enrollments demo",
+    kind: "demo",
+    bullets: [
+      "`enrollments.some` — the same `some` as §3.4.8",
+      "Keep users whose enrollment `user` and `course` both match",
+      "Each row shows name, login id, section, role, and activity",
+      "Open People for RS101 vs RS102 and confirm the names change",
+    ],
     embed: "kambaz-ch3-people",
   },
   {

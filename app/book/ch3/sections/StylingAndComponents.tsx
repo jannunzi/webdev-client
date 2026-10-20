@@ -756,8 +756,7 @@ export default function Lab3() {
     <div id="wd-add">
       <h4>Add</h4>
       a = {a}
-      b = {b}
-      <br />
+      b = {b} <br />
       a + b = {a + b}
       <hr />
     </div>
@@ -1191,8 +1190,7 @@ export default function PathParameters() {
   return (
     <div id="wd-path-parameters">
       <h2>Path Parameters</h2>
-      <Link href="/labs/lab3/add/1/2">1 + 2</Link>
-      <br />
+      <Link href="/labs/lab3/add/1/2">1 + 2</Link> <br />
       <Link href="/labs/lab3/add/3/4">3 + 4</Link>
     </div>
   );

@@ -24,12 +24,7 @@ export const REDUCE_AND_JSON_SLIDES: LectureSlide[] = [
   {
     id: "reduce",
     title: "reduce starts at 0 and adds",
-    kind: "demo",
-    bullets: [
-      "Second argument is the starting accumulator — here `0`",
-      "Each pass: `total + n`. The sum is `15`",
-      "Create `ReduceFunction` and import it into Lab 3",
-    ],
+    kind: "content",
     code: `export default function ReduceFunction() {
   const numbers = [1, 2, 3, 4, 5];
   const sum = numbers.reduce((total, n) => total + n, 0);
@@ -44,80 +39,22 @@ export const REDUCE_AND_JSON_SLIDES: LectureSlide[] = [
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/ReduceFunction.tsx",
     codeHighlightLines: [3],
-    embed: "js-reduce",
   },
   {
-    id: "lab3-page-3-4-9",
-    title: "Add ReduceFunction to Lab 3",
-    kind: "content",
+    id: "reduce-live",
+    title: "ReduceFunction: live demo",
+    kind: "demo",
     bullets: [
-      "Import `ReduceFunction` into `app/labs/lab3/page.tsx` and render it last",
+      "Second argument is the starting accumulator — here `0`",
+      "Each pass: `total + n`. The sum is `15`",
+      "Create `ReduceFunction` and import it into Lab 3",
     ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-import BooleanVariables from "./BooleanVariables";
-import IfElse from "./IfElse";
-import TernaryOperator from "./TernaryOperator";
-import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
-import ConditionalOutputInline from "./ConditionalOutputInline";
-import NullUndefined from "./NullUndefined";
-import LegacyFunctions from "./LegacyFunctions";
-import ArrowFunctions from "./ArrowFunctions";
-import ImpliedReturn from "./ImpliedReturn";
-import TemplateLiterals from "./TemplateLiterals";
-import SimpleArrays from "./SimpleArrays";
-import ArrayIndexAndLength from "./ArrayIndexAndLength";
-import AddingAndRemovingToFromArrays from "./AddingAndRemovingToFromArrays";
-import ForLoops from "./ForLoops";
-import MapFunction from "./MapFunction";
-import FindFunction from "./FindFunction";
-import FindIndex from "./FindIndex";
-import FilterFunction from "./FilterFunction";
-import IncludesSomeEvery from "./IncludesSomeEvery";
-import ReduceFunction from "./ReduceFunction";
-
-export default function Lab3() {
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-      <BooleanVariables />
-      <IfElse />
-      <TernaryOperator />
-      <ConditionalOutputIfElse />
-      <ConditionalOutputInline />
-      <NullUndefined />
-      <LegacyFunctions />
-      <ArrowFunctions />
-      <ImpliedReturn />
-      <TemplateLiterals />
-      <SimpleArrays />
-      <ArrayIndexAndLength />
-      <AddingAndRemovingToFromArrays />
-      <ForLoops />
-      <MapFunction />
-      <FindFunction />
-      <FindIndex />
-      <FilterFunction />
-      <IncludesSomeEvery />
-      <ReduceFunction />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [22, 49],
+    embed: "js-reduce",
   },
   {
     id: "json",
     title: "JSON.stringify shows the shape",
-    kind: "demo",
-    bullets: [
-      "**JSON** = JavaScript Object Notation",
-      "`stringify` writes text. `parse` reads it back into a value",
-      "The page now shows `[1,4,16,25,36]` with brackets and commas",
-    ],
+    kind: "content",
     code: `export default function JsonStringify() {
   const squares = [1, 4, 16, 25, 36];
   return (
@@ -131,72 +68,17 @@ export default function Lab3() {
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/JsonStringify.tsx",
     codeHighlightLines: [6],
-    embed: "js-json-stringify",
   },
   {
-    id: "lab3-page-3-4-10",
-    title: "Add JsonStringify to Lab 3",
-    kind: "content",
+    id: "json-live",
+    title: "JsonStringify: live demo",
+    kind: "demo",
     bullets: [
-      "Import `JsonStringify` into `app/labs/lab3/page.tsx` and render it last",
+      "**JSON** = JavaScript Object Notation",
+      "`stringify` writes text. `parse` reads it back into a value",
+      "The page now shows `[1,4,16,25,36]` with brackets and commas",
     ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-import BooleanVariables from "./BooleanVariables";
-import IfElse from "./IfElse";
-import TernaryOperator from "./TernaryOperator";
-import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
-import ConditionalOutputInline from "./ConditionalOutputInline";
-import NullUndefined from "./NullUndefined";
-import LegacyFunctions from "./LegacyFunctions";
-import ArrowFunctions from "./ArrowFunctions";
-import ImpliedReturn from "./ImpliedReturn";
-import TemplateLiterals from "./TemplateLiterals";
-import SimpleArrays from "./SimpleArrays";
-import ArrayIndexAndLength from "./ArrayIndexAndLength";
-import AddingAndRemovingToFromArrays from "./AddingAndRemovingToFromArrays";
-import ForLoops from "./ForLoops";
-import MapFunction from "./MapFunction";
-import FindFunction from "./FindFunction";
-import FindIndex from "./FindIndex";
-import FilterFunction from "./FilterFunction";
-import IncludesSomeEvery from "./IncludesSomeEvery";
-import ReduceFunction from "./ReduceFunction";
-import JsonStringify from "./JsonStringify";
-
-export default function Lab3() {
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-      <BooleanVariables />
-      <IfElse />
-      <TernaryOperator />
-      <ConditionalOutputIfElse />
-      <ConditionalOutputInline />
-      <NullUndefined />
-      <LegacyFunctions />
-      <ArrowFunctions />
-      <ImpliedReturn />
-      <TemplateLiterals />
-      <SimpleArrays />
-      <ArrayIndexAndLength />
-      <AddingAndRemovingToFromArrays />
-      <ForLoops />
-      <MapFunction />
-      <FindFunction />
-      <FindIndex />
-      <FilterFunction />
-      <IncludesSomeEvery />
-      <ReduceFunction />
-      <JsonStringify />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [23, 51],
+    embed: "js-json-stringify",
   },
   {
     id: "recap",

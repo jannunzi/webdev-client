@@ -24,12 +24,7 @@ export const ARRAY_ITERATION_SLIDES: LectureSlide[] = [
   {
     id: "for-loop",
     title: "for builds a second array",
-    kind: "demo",
-    bullets: [
-      "`string[]` tells TypeScript the empty array will hold strings",
-      "Each pass pushes an uppercased copy",
-      "JSX still omits commas, so the page shows `STRING1STRING3`",
-    ],
+    kind: "content",
     code: `export default function ForLoops() {
   let stringArray1 = ["string1", "string3"];
   let stringArray2: string[] = [];
@@ -47,69 +42,23 @@ export const ARRAY_ITERATION_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/ForLoops.tsx",
-    codeHighlightLines: [[3, 6]],
-    embed: "js-for-loops",
+    codeHighlightLines: [3, 4, 5, 6],
   },
   {
-    id: "lab3-page-3-4-3",
-    title: "Add ForLoops to Lab 3",
-    kind: "content",
+    id: "for-loop-live",
+    title: "ForLoops: live demo",
+    kind: "demo",
     bullets: [
-      "Import `ForLoops` into `app/labs/lab3/page.tsx` and render it last",
+      "`string[]` tells TypeScript the empty array will hold strings",
+      "Each pass pushes an uppercased copy",
+      "JSX still omits commas, so the page shows `STRING1STRING3`",
     ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-import BooleanVariables from "./BooleanVariables";
-import IfElse from "./IfElse";
-import TernaryOperator from "./TernaryOperator";
-import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
-import ConditionalOutputInline from "./ConditionalOutputInline";
-import NullUndefined from "./NullUndefined";
-import LegacyFunctions from "./LegacyFunctions";
-import ArrowFunctions from "./ArrowFunctions";
-import ImpliedReturn from "./ImpliedReturn";
-import TemplateLiterals from "./TemplateLiterals";
-import SimpleArrays from "./SimpleArrays";
-import ArrayIndexAndLength from "./ArrayIndexAndLength";
-import AddingAndRemovingToFromArrays from "./AddingAndRemovingToFromArrays";
-import ForLoops from "./ForLoops";
-
-export default function Lab3() {
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-      <BooleanVariables />
-      <IfElse />
-      <TernaryOperator />
-      <ConditionalOutputIfElse />
-      <ConditionalOutputInline />
-      <NullUndefined />
-      <LegacyFunctions />
-      <ArrowFunctions />
-      <ImpliedReturn />
-      <TemplateLiterals />
-      <SimpleArrays />
-      <ArrayIndexAndLength />
-      <AddingAndRemovingToFromArrays />
-      <ForLoops />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [16, 37],
+    embed: "js-for-loops",
   },
   {
     id: "map",
     title: "map returns a new array",
-    kind: "demo",
-    bullets: [
-      "Pass a named function, or an implied-return arrow",
-      "`squares` uses `square`. `cubes` inlines `(a) => a * a * a`",
-      "Create `MapFunction` and import it into Lab 3",
-    ],
+    kind: "content",
     code: `export default function MapFunction() {
   let numberArray1 = [1, 2, 3, 4, 5, 6];
   const square = (a: number) => a * a;
@@ -119,10 +68,8 @@ export default function Lab3() {
   return (
     <div id="wd-map-function">
       <h4>Map Function</h4>
-      squares = {squares}
-      <br />
-      cubes = {cubes}
-      <br />
+      squares = {squares} <br />
+      cubes = {cubes}     <br />
       Todos:
       <ol>
         {todos.map((todo) => (
@@ -135,61 +82,18 @@ export default function Lab3() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/MapFunction.tsx",
-    codeHighlightLines: [5, 6, [16, 18]],
-    embed: "js-map",
+    codeHighlightLines: [5, 6, 14, 15, 16],
   },
   {
-    id: "lab3-page-3-4-4",
-    title: "Add MapFunction to Lab 3",
-    kind: "content",
+    id: "map-live",
+    title: "MapFunction: live demo",
+    kind: "demo",
     bullets: [
-      "Import `MapFunction` into `app/labs/lab3/page.tsx` and render it last",
+      "Pass a named function, or an implied-return arrow",
+      "`squares` uses `square`. `cubes` inlines `(a) => a * a * a`",
+      "Create `MapFunction` and import it into Lab 3",
     ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-import BooleanVariables from "./BooleanVariables";
-import IfElse from "./IfElse";
-import TernaryOperator from "./TernaryOperator";
-import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
-import ConditionalOutputInline from "./ConditionalOutputInline";
-import NullUndefined from "./NullUndefined";
-import LegacyFunctions from "./LegacyFunctions";
-import ArrowFunctions from "./ArrowFunctions";
-import ImpliedReturn from "./ImpliedReturn";
-import TemplateLiterals from "./TemplateLiterals";
-import SimpleArrays from "./SimpleArrays";
-import ArrayIndexAndLength from "./ArrayIndexAndLength";
-import AddingAndRemovingToFromArrays from "./AddingAndRemovingToFromArrays";
-import ForLoops from "./ForLoops";
-import MapFunction from "./MapFunction";
-
-export default function Lab3() {
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-      <BooleanVariables />
-      <IfElse />
-      <TernaryOperator />
-      <ConditionalOutputIfElse />
-      <ConditionalOutputInline />
-      <NullUndefined />
-      <LegacyFunctions />
-      <ArrowFunctions />
-      <ImpliedReturn />
-      <TemplateLiterals />
-      <SimpleArrays />
-      <ArrayIndexAndLength />
-      <AddingAndRemovingToFromArrays />
-      <ForLoops />
-      <MapFunction />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [17, 39],
+    embed: "js-map",
   },
   {
     id: "keys",

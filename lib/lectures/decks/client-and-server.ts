@@ -25,13 +25,7 @@ export const CLIENT_AND_SERVER_SLIDES: LectureSlide[] = [
   {
     id: "client",
     title: "usePathname needs a Client Component",
-    kind: "demo",
-    bullets: [
-      "`usePathname` reads the address bar — hooks only work in Client Components",
-      "Remove the directive and `next dev` or `next build` stops: the hook needs `\"use client\"`",
-      "View Source on `/labs/lab3` still shows the pathname text — rendered on the server first",
-      "Embedded here the path is the slides route; Lab 3 shows `/labs/lab3`",
-    ],
+    kind: "content",
     code: `"use client";
 
 import { usePathname } from "next/navigation";
@@ -48,102 +42,23 @@ export default function ClientComponentDemo() {
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/ClientComponentDemo.tsx",
     codeHighlightLines: [1, 6],
-    embed: "js-client-component",
   },
   {
-    id: "lab3-page-3-6-1",
-    title: "Add ClientComponentDemo to Lab 3",
-    kind: "content",
+    id: "client-live",
+    title: "ClientComponentDemo: live demo",
+    kind: "demo",
     bullets: [
-      "Import `ClientComponentDemo` and render it last. The Lab 3 page stays a Server Component — no `\"use client\"` there — and can still render a Client Component",
+      "`usePathname` reads the address bar — hooks only work in Client Components",
+      "Remove the directive and `next dev` or `next build` stops: the hook needs `\"use client\"`",
+      "View Source on `/labs/lab3` still shows the pathname text — rendered on the server first",
+      "Embedded here the path is the slides route; Lab 3 shows `/labs/lab3`",
     ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-import BooleanVariables from "./BooleanVariables";
-import IfElse from "./IfElse";
-import TernaryOperator from "./TernaryOperator";
-import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
-import ConditionalOutputInline from "./ConditionalOutputInline";
-import NullUndefined from "./NullUndefined";
-import LegacyFunctions from "./LegacyFunctions";
-import ArrowFunctions from "./ArrowFunctions";
-import ImpliedReturn from "./ImpliedReturn";
-import TemplateLiterals from "./TemplateLiterals";
-import SimpleArrays from "./SimpleArrays";
-import ArrayIndexAndLength from "./ArrayIndexAndLength";
-import AddingAndRemovingToFromArrays from "./AddingAndRemovingToFromArrays";
-import ForLoops from "./ForLoops";
-import MapFunction from "./MapFunction";
-import FindFunction from "./FindFunction";
-import FindIndex from "./FindIndex";
-import FilterFunction from "./FilterFunction";
-import IncludesSomeEvery from "./IncludesSomeEvery";
-import ReduceFunction from "./ReduceFunction";
-import JsonStringify from "./JsonStringify";
-import House from "./House";
-import Spreader from "./Spreader";
-import Destructing from "./Destructing";
-import FunctionDestructing from "./FunctionDestructing";
-import DestructingImports from "./DestructingImports";
-import OptionalChaining from "./OptionalChaining";
-import Classes from "./Classes";
-import Styles from "./Styles";
-import ClientComponentDemo from "./ClientComponentDemo";
-
-export default function Lab3() {
-  console.log("Hello World!");
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-      <BooleanVariables />
-      <IfElse />
-      <TernaryOperator />
-      <ConditionalOutputIfElse />
-      <ConditionalOutputInline />
-      <NullUndefined />
-      <LegacyFunctions />
-      <ArrowFunctions />
-      <ImpliedReturn />
-      <TemplateLiterals />
-      <SimpleArrays />
-      <ArrayIndexAndLength />
-      <AddingAndRemovingToFromArrays />
-      <ForLoops />
-      <MapFunction />
-      <FindFunction />
-      <FindIndex />
-      <FilterFunction />
-      <IncludesSomeEvery />
-      <ReduceFunction />
-      <JsonStringify />
-      <House />
-      <Spreader />
-      <Destructing />
-      <FunctionDestructing />
-      <DestructingImports />
-      <OptionalChaining />
-      <Classes />
-      <Styles />
-      <ClientComponentDemo />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [32, 70],
+    embed: "js-client-component",
   },
   {
     id: "server",
     title: "The server can read the disk",
-    kind: "demo",
-    bullets: [
-      "`process.platform` and `fs.readdirSync` exist only on Node",
-      "Adding `\"use client\"` here would fail — the browser has no `fs`",
-      "`try` / `catch` leaves `files` empty if the folder is missing",
-      "On Vercel, Lab 3 is prerendered at build time: the time and file list don’t change on refresh. `npm run dev` re-renders every request",
-    ],
+    kind: "content",
     code: `import fs from "node:fs";
 import path from "node:path";
 
@@ -175,94 +90,19 @@ export default function ServerComponentDemo() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/ServerComponentDemo.tsx",
-    codeHighlightLines: [[5, 14], 26],
-    embed: "js-server-component",
+    codeHighlightLines: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 26],
   },
   {
-    id: "lab3-page-3-6-2",
-    title: "Add ServerComponentDemo to Lab 3",
-    kind: "content",
+    id: "server-live",
+    title: "ServerComponentDemo: live demo",
+    kind: "demo",
     bullets: [
-      "Import `ServerComponentDemo` after `ClientComponentDemo`, so both demos are on the page",
+      "`process.platform` and `fs.readdirSync` exist only on Node",
+      "Adding `\"use client\"` here would fail — the browser has no `fs`",
+      "`try` / `catch` leaves `files` empty if the folder is missing",
+      "On Vercel, Lab 3 is prerendered at build time: the time and file list don’t change on refresh. `npm run dev` re-renders every request",
     ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-import BooleanVariables from "./BooleanVariables";
-import IfElse from "./IfElse";
-import TernaryOperator from "./TernaryOperator";
-import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
-import ConditionalOutputInline from "./ConditionalOutputInline";
-import NullUndefined from "./NullUndefined";
-import LegacyFunctions from "./LegacyFunctions";
-import ArrowFunctions from "./ArrowFunctions";
-import ImpliedReturn from "./ImpliedReturn";
-import TemplateLiterals from "./TemplateLiterals";
-import SimpleArrays from "./SimpleArrays";
-import ArrayIndexAndLength from "./ArrayIndexAndLength";
-import AddingAndRemovingToFromArrays from "./AddingAndRemovingToFromArrays";
-import ForLoops from "./ForLoops";
-import MapFunction from "./MapFunction";
-import FindFunction from "./FindFunction";
-import FindIndex from "./FindIndex";
-import FilterFunction from "./FilterFunction";
-import IncludesSomeEvery from "./IncludesSomeEvery";
-import ReduceFunction from "./ReduceFunction";
-import JsonStringify from "./JsonStringify";
-import House from "./House";
-import Spreader from "./Spreader";
-import Destructing from "./Destructing";
-import FunctionDestructing from "./FunctionDestructing";
-import DestructingImports from "./DestructingImports";
-import OptionalChaining from "./OptionalChaining";
-import Classes from "./Classes";
-import Styles from "./Styles";
-import ClientComponentDemo from "./ClientComponentDemo";
-import ServerComponentDemo from "./ServerComponentDemo";
-
-export default function Lab3() {
-  console.log("Hello World!");
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-      <BooleanVariables />
-      <IfElse />
-      <TernaryOperator />
-      <ConditionalOutputIfElse />
-      <ConditionalOutputInline />
-      <NullUndefined />
-      <LegacyFunctions />
-      <ArrowFunctions />
-      <ImpliedReturn />
-      <TemplateLiterals />
-      <SimpleArrays />
-      <ArrayIndexAndLength />
-      <AddingAndRemovingToFromArrays />
-      <ForLoops />
-      <MapFunction />
-      <FindFunction />
-      <FindIndex />
-      <FilterFunction />
-      <IncludesSomeEvery />
-      <ReduceFunction />
-      <JsonStringify />
-      <House />
-      <Spreader />
-      <Destructing />
-      <FunctionDestructing />
-      <DestructingImports />
-      <OptionalChaining />
-      <Classes />
-      <Styles />
-      <ClientComponentDemo />
-      <ServerComponentDemo />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [33, 72],
+    embed: "js-server-component",
   },
   {
     id: "split",

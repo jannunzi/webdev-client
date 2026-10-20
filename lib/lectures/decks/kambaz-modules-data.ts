@@ -46,14 +46,8 @@ export { courses, modules };`,
   },
   {
     id: "page",
-    title: "filter, then map, then lessons?.map",
-    kind: "demo",
-    bullets: [
-      "Client Component because it uses `useParams`",
-      "`lessons?.map` so a module without lessons does not throw",
-      "Keep the toolbar and classes from your Chapter 2 Modules screen",
-      "Only the hardcoded `Module` and `Lesson` elements become a `map`",
-    ],
+    title: "filter, then map, then lessons?.map (1/2)",
+    kind: "content",
     code: `"use client";
 
 import { useParams } from "next/navigation";
@@ -92,8 +86,16 @@ export default function Modules() {
         >
           + Module
         </button>
-      </div>
-      <ul id="wd-modules" className="m-0 list-none p-0">
+      </div>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/page.tsx",
+    codeHighlightLines: [9, 10],
+  },
+  {
+    id: "page-part-2",
+    title: "filter, then map, then lessons?.map (2/2)",
+    kind: "content",
+    code: `      <ul id="wd-modules" className="m-0 list-none p-0">
         {modules.map((module) => (
           <Module key={module._id} title={module.name}>
             {module.lessons?.map((lesson) => (
@@ -107,7 +109,19 @@ export default function Modules() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/page.tsx",
-    codeHighlightLines: [9, 10, [41, 45]],
+    codeStartLine: 40,
+    codeHighlightLines: [2, 3, 4, 5, 6],
+  },
+  {
+    id: "page-live",
+    title: "Modules: live demo",
+    kind: "demo",
+    bullets: [
+      "Client Component because it uses `useParams`",
+      "`lessons?.map` so a module without lessons does not throw",
+      "Keep the toolbar and classes from your Chapter 2 Modules screen",
+      "Only the hardcoded `Module` and `Lesson` elements become a `map`",
+    ],
     embed: "kambaz-ch3-modules",
   },
   {

@@ -686,6 +686,8 @@ export type LectureCodeBlock = {
   highlightLines?: CodeLineMarks;
   /** 1-based lines added vs the prior example (green). */
   addedLines?: CodeLineMarks;
+  /** Line number shown on the first line, when a listing continues from the prior slide. */
+  startLine?: number;
   /** Server-rendered Shiki HTML. Set by `withHighlightedLectureCode`. */
   html?: string;
 };
@@ -710,6 +712,8 @@ export type LectureSlide = {
   codeHighlightLines?: CodeLineMarks;
   /** `addedLines` for `code`. */
   codeAddedLines?: CodeLineMarks;
+  /** First line number for `code` when it continues the previous slide's listing. */
+  codeStartLine?: number;
   /** Extra snippets when a slide needs more than one block. */
   codeBlocks?: LectureCodeBlock[];
   /** Live React demo under the authored slide. Prefer this over a UI screenshot. */
@@ -837,6 +841,7 @@ type SlideCodeInput = Pick<
   | "codeFile"
   | "codeHighlightLines"
   | "codeAddedLines"
+  | "codeStartLine"
   | "codeBlocks"
 > & {
   blocks?: Array<{
@@ -846,6 +851,7 @@ type SlideCodeInput = Pick<
     file?: string;
     highlightLines?: CodeLineMarks;
     addedLines?: CodeLineMarks;
+    startLine?: number;
     html?: string;
   }>;
 };
@@ -861,6 +867,7 @@ export function lectureSlideCodeBlocks(slide: SlideCodeInput): LectureCodeBlock[
               file: block.file,
               highlightLines: block.highlightLines,
               addedLines: block.addedLines,
+              startLine: block.startLine,
               html: block.html,
             },
           ]
@@ -875,6 +882,7 @@ export function lectureSlideCodeBlocks(slide: SlideCodeInput): LectureCodeBlock[
       file: slide.codeFile,
       highlightLines: slide.codeHighlightLines,
       addedLines: slide.codeAddedLines,
+      startLine: slide.codeStartLine,
     });
   }
   if (slide.codeBlocks) {

@@ -101,6 +101,29 @@ function findSlide(deckSlug: string, id: string) {
   return slide;
 }
 
+/** Every deck where code and its live demo sit on separate slides: all of Chapter 3, plus single-page-navigation. */
+const SPLIT_DEMO_DECKS = [...CHAPTER_3_SLUGS, "single-page-navigation"] as const;
+
+/**
+ * A listing split across slides (code before `return`, then the JSX) joined
+ * back together: the slide with `id`, plus each following slide in the same
+ * file whose `codeStartLine` continues the line count.
+ */
+function joinedListing(deckSlug: string, id: string): string {
+  const slides = getLectureDeck(deckSlug)!.slides;
+  const at = slides.findIndex((row) => row.id === id);
+  assert.ok(at >= 0, `${deckSlug} missing slide ${id}`);
+  const first = slides[at]!;
+  assert.equal(first.codeStartLine, undefined, `${deckSlug}#${id} starts a listing`);
+  let code = first.code ?? "";
+  for (const next of slides.slice(at + 1)) {
+    const lines = code.split("\n").length;
+    if (next.codeFile !== first.codeFile || next.codeStartLine !== lines + 1) break;
+    code += `\n${next.code}`;
+  }
+  return code;
+}
+
 /** Body of a named book `<CodeBlock>`, character-for-character. */
 function bookCodeBlockByName(relativeFile: string, name: string): string {
   const src = readFileSync(join(process.cwd(), relativeFile), "utf8");
@@ -1223,7 +1246,7 @@ describe("lecture decks", () => {
     assert.equal(counts["lists-and-tables"], 17);
     assert.equal(counts["web-forms"], 40);
     assert.equal(counts["anchors"], 7);
-    assert.equal(counts["single-page-navigation"], 14);
+    assert.equal(counts["single-page-navigation"], 19);
     assert.equal(counts["kambaz-overview"], 8);
     assert.equal(counts["kambaz-account"], 15);
     assert.equal(counts["kambaz-dashboard"], 8);
@@ -1252,28 +1275,28 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-courses-styling"], 17);
     assert.equal(counts["kambaz-assignments-styling"], 9);
     assert.equal(counts["kambaz-account-styling"], 8);
-    assert.equal(counts["intro-to-javascript"], 8);
-    assert.equal(counts["variables-and-constants"], 7);
+    assert.equal(counts["intro-to-javascript"], 9);
+    assert.equal(counts["variables-and-constants"], 8);
     assert.equal(counts["variable-types"], 7);
-    assert.equal(counts["booleans-and-conditionals"], 12);
+    assert.equal(counts["booleans-and-conditionals"], 14);
     assert.equal(counts["null-and-undefined"], 7);
     assert.equal(counts["javascript-functions"], 12);
-    assert.equal(counts["javascript-arrays"], 10);
+    assert.equal(counts["javascript-arrays"], 11);
     assert.equal(counts["array-iteration"], 9);
     assert.equal(counts["array-search"], 12);
     assert.equal(counts["reduce-and-json"], 8);
-    assert.equal(counts["javascript-objects"], 7);
-    assert.equal(counts["spread-and-destructuring"], 13);
+    assert.equal(counts["javascript-objects"], 8);
+    assert.equal(counts["spread-and-destructuring"], 14);
     assert.equal(counts["optional-chaining"], 6);
     assert.equal(counts["dynamic-styling"], 9);
     assert.equal(counts["client-and-server"], 9);
-    assert.equal(counts["parameterizing-components"], 9);
-    assert.equal(counts["path-params-and-todos"], 12);
-    assert.equal(counts["kambaz-database"], 10);
-    assert.equal(counts["kambaz-dashboard-data"], 6);
-    assert.equal(counts["kambaz-courses-data"], 7);
-    assert.equal(counts["kambaz-modules-data"], 7);
-    assert.equal(counts["kambaz-assignments-data"], 9);
+    assert.equal(counts["parameterizing-components"], 10);
+    assert.equal(counts["path-params-and-todos"], 13);
+    assert.equal(counts["kambaz-database"], 13);
+    assert.equal(counts["kambaz-dashboard-data"], 7);
+    assert.equal(counts["kambaz-courses-data"], 9);
+    assert.equal(counts["kambaz-modules-data"], 9);
+    assert.equal(counts["kambaz-assignments-data"], 13);
     assert.equal(counts["click-events"], 7);
     assert.equal(counts["passing-data-and-functions"], 8);
     assert.equal(counts["usestate-counter"], 7);
@@ -1359,6 +1382,7 @@ describe("lecture decks", () => {
     assert.match(css, /--lecture-block-font-scale:\s*1/);
     assert.match(css, /\[data-demo-stage="true"\] \.lecture-demo-frame-body/);
     assert.match(css, /font-size:\s*1\.3em/);
+    assert.match(css, /zoom: var\(--demo-zoom, 1\)/);
     assert.doesNotMatch(
       css,
       /\.lecture-block-font-md \.lecture-slide-bullets \{[^}]*font-size:\s*1em/,
@@ -1865,7 +1889,8 @@ describe("lecture decks", () => {
     const used = new Set<string>();
     for (const [slug, slides] of Object.entries(expected)) {
       for (const [id, embed] of Object.entries(slides)) {
-        const slide = findSlide(slug, id);
+        const split = (SPLIT_DEMO_DECKS as readonly string[]).includes(slug);
+        const slide = findSlide(slug, split ? `${id}-live` : id);
         assert.equal(slide.embed, embed);
         assert.equal(slide.imageSrc, undefined);
         assert.ok((LECTURE_EMBED_IDS as readonly string[]).includes(embed));
@@ -2700,12 +2725,6 @@ describe("lecture decks", () => {
   it("copies Chapter 3 book listings onto the matching slides", () => {
     const pairs = [
       ["variables-and-constants", "import-it", "app/book/ch3/sections/JsBasics.tsx", "Lab3 (after 3.2.1)"],
-      ["variable-types", "lab3-page-3-2-2", "app/book/ch3/sections/JsBasics.tsx", "Lab3 (after 3.2.2)"],
-      ["booleans-and-conditionals", "lab3-page-3-2-3", "app/book/ch3/sections/JsBasics.tsx", "Lab3 (after 3.2.3)"],
-      ["booleans-and-conditionals", "lab3-page-3-2-4", "app/book/ch3/sections/JsBasics.tsx", "Lab3 (after 3.2.4)"],
-      ["booleans-and-conditionals", "lab3-page-3-2-5", "app/book/ch3/sections/JsBasics.tsx", "Lab3 (after 3.2.5)"],
-      ["booleans-and-conditionals", "lab3-page-3-2-6", "app/book/ch3/sections/JsBasics.tsx", "Lab3 (after 3.2.6)"],
-      ["null-and-undefined", "lab3-page-3-2-7", "app/book/ch3/sections/JsBasics.tsx", "Lab3 (after 3.2.7)"],
       ["kambaz-database", "redirect", "app/book/ch3/sections/KambazData.tsx", "Kambaz"],
       ["kambaz-database", "nav", "app/book/ch3/sections/KambazData.tsx", "KambazNavigation"],
       ["kambaz-courses-data", "layout", "app/book/ch3/sections/KambazData.tsx", "CoursesLayout"],
@@ -2726,8 +2745,8 @@ describe("lecture decks", () => {
     for (const [slug, id, file, name] of pairs) {
       const slide = findSlide(slug, id);
       const book = bookCodeBlockByName(file, name);
-      assert.equal(slide.code, book, `${slug}#${id} must match book ${name}`);
-      const lineCount = book.split("\n").length;
+      assert.equal(joinedListing(slug, id), book, `${slug}#${id} must match book ${name}`);
+      const lineCount = (slide.code ?? "").split("\n").length;
       for (const line of expandLineMarks(slide.codeHighlightLines)) {
         assert.ok(
           line <= lineCount,
@@ -2740,7 +2759,7 @@ describe("lecture decks", () => {
     assert.ok(spreadIds.indexOf("imports") < spreadIds.indexOf("destructing-imports"));
     assert.equal(findSlide("spread-and-destructuring", "imports").embed, undefined);
     assert.equal(
-      findSlide("spread-and-destructuring", "destructing-imports").embed,
+      findSlide("spread-and-destructuring", "destructing-imports-live").embed,
       "js-destructing-imports",
     );
 
@@ -2751,15 +2770,9 @@ describe("lecture decks", () => {
     assert.ok(pathIds.indexOf("lab3-complete") < pathIds.indexOf("recap"));
     assert.equal(findSlide("path-params-and-todos", "lab3-complete").codeFile, "app/labs/lab3/page.tsx");
 
-    // Each 3.2 Lab 3 page step comes right after the demo it adds (book order).
+    // The one Lab 3 page import step comes right after the first demo (book order).
     for (const [slug, demo, page] of [
-      ["variables-and-constants", "sample", "import-it"],
-      ["variable-types", "boolean-coerce", "lab3-page-3-2-2"],
-      ["booleans-and-conditionals", "boolean-sample", "lab3-page-3-2-3"],
-      ["booleans-and-conditionals", "if-else", "lab3-page-3-2-4"],
-      ["booleans-and-conditionals", "ternary", "lab3-page-3-2-5"],
-      ["booleans-and-conditionals", "output-inline", "lab3-page-3-2-6"],
-      ["null-and-undefined", "when", "lab3-page-3-2-7"],
+      ["variables-and-constants", "sample-live", "import-it"],
     ] as const) {
       const ids = getLectureDeck(slug)!.slides.map((slide) => slide.id);
       assert.equal(ids.indexOf(page), ids.indexOf(demo) + 1, `${slug}#${page} follows ${demo}`);
@@ -2807,73 +2820,54 @@ describe("lecture decks", () => {
     }
   });
 
-  it("shows every Lab 3 page.tsx step from the book on a slide, after its component", () => {
-    const ch3Files = ["JsBasics", "Functions", "DataStructures", "StylingAndComponents"].map(
-      (name) => `app/book/ch3/sections/${name}.tsx`,
-    );
-    const deckFor: Record<string, string> = {
-      "3.2.1": "variables-and-constants", "3.2.2": "variable-types",
-      "3.2.3": "booleans-and-conditionals", "3.2.4": "booleans-and-conditionals",
-      "3.2.5": "booleans-and-conditionals", "3.2.6": "booleans-and-conditionals",
-      "3.2.7": "null-and-undefined",
-      "3.3": "javascript-functions", "3.3.1": "javascript-functions",
-      "3.3.2": "javascript-functions", "3.3.3": "javascript-functions",
-      "3.4": "javascript-arrays", "3.4.1": "javascript-arrays", "3.4.2": "javascript-arrays",
-      "3.4.3": "array-iteration", "3.4.4": "array-iteration",
-      "3.4.5": "array-search", "3.4.6": "array-search", "3.4.7": "array-search", "3.4.8": "array-search",
-      "3.4.9": "reduce-and-json", "3.4.10": "reduce-and-json",
-      "3.4.11": "javascript-objects", "3.4.12": "javascript-objects",
-      "3.4.13": "spread-and-destructuring", "3.4.14": "spread-and-destructuring",
-      "3.4.15": "spread-and-destructuring", "3.4.16": "spread-and-destructuring",
-      "3.4.17": "optional-chaining",
-      "3.5.1": "dynamic-styling", "3.5.2": "dynamic-styling",
-      "3.6.1": "client-and-server", "3.6.2": "client-and-server",
-      "3.7": "parameterizing-components", "3.7.1": "parameterizing-components",
-      "3.7.3": "path-params-and-todos", "3.7.4": "path-params-and-todos",
-      complete: "path-params-and-todos",
-    };
-    // Slides that already carried a page.tsx listing keep their ids.
-    const idFor: Record<string, string> = {
-      "3.2.1": "import-it",
-      "3.4.12": "console",
-      // §3.7.4 is the finished page, identical to §3.7.5, so one slide shows both.
-      "3.7.4": "lab3-complete",
-      complete: "lab3-complete",
-    };
+  it("shows the Lab 3 page.tsx import once, plus the finished page", () => {
+    // Jose (Oct 19): import-and-render is shown once at the start of the lab,
+    // not after every component. Kept slides still match their book blocks.
+    const kept = [
+      ["variables-and-constants", "import-it", "app/book/ch3/sections/JsBasics.tsx", "Lab3 (after 3.2.1)"],
+      ["javascript-objects", "console", "app/book/ch3/sections/DataStructures.tsx", "Lab3 (after 3.4.12)"],
+      ["path-params-and-todos", "lab3-complete", "app/book/ch3/sections/StylingAndComponents.tsx", "Lab3 (complete)"],
+    ] as const;
     const ch3Slides = CHAPTER_3_SLUGS.flatMap((slug) =>
       getLectureDeck(slug)!.slides.map((slide) => ({ slug, slide })),
     );
-    const seen: string[] = [];
-    for (const file of ch3Files) {
-      const src = readFileSync(join(process.cwd(), file), "utf8");
-      for (const match of src.matchAll(/name="(Lab3 \((?:after ([\d.]+)|complete)\))"/g)) {
-        const [, name, sec] = match;
-        const key = sec ?? "complete";
-        seen.push(key);
-        const slug = deckFor[key];
-        assert.ok(slug, `no deck mapped for ${name}`);
-        const id = idFor[key] ?? `lab3-page-${key.replace(/\./g, "-")}`;
-        const slide = findSlide(slug, id);
-        assert.equal(slide.code, bookCodeBlockByName(file, name), `${slug}#${id} must match book ${name}`);
-        assert.equal(slide.codeFile, "app/labs/lab3/page.tsx");
-        assert.equal(slide.codeLanguage, "tsx");
-        assert.ok(slide.title.length <= LECTURE_TITLE_MAX_CHARS);
-        const lineCount = slide.code!.split("\n").length;
-        for (const line of expandLineMarks(slide.codeAddedLines)) {
-          assert.ok(line <= lineCount, `${slug}#${id} added line ${line} past ${lineCount}`);
-        }
-        // Define before use: each imported component has its own slide earlier.
-        const at = ch3Slides.findIndex((row) => row.slug === slug && row.slide.id === id);
-        for (const [, path] of slide.code!.matchAll(/^import \w+ from "\.\/([^"]+)";$/gm)) {
-          const componentAt = ch3Slides.findIndex(
-            (row) => row.slide.codeFile === `app/labs/lab3/${path}.tsx`,
-          );
-          assert.ok(componentAt >= 0 && componentAt < at, `${slug}#${id} imports ${path} before its slide`);
-        }
+    for (const [slug, id, file, name] of kept) {
+      const slide = findSlide(slug, id);
+      assert.equal(slide.code, bookCodeBlockByName(file, name), `${slug}#${id} must match book ${name}`);
+      assert.equal(slide.codeFile, "app/labs/lab3/page.tsx");
+      assert.equal(slide.codeLanguage, "tsx");
+      assert.ok(slide.title.length <= LECTURE_TITLE_MAX_CHARS);
+      const lineCount = slide.code!.split("\n").length;
+      for (const line of expandLineMarks(slide.codeAddedLines)) {
+        assert.ok(line <= lineCount, `${slug}#${id} added line ${line} past ${lineCount}`);
+      }
+      // Define before use: each imported component has its own slide earlier.
+      const at = ch3Slides.findIndex((row) => row.slug === slug && row.slide.id === id);
+      for (const [, path] of slide.code!.matchAll(/^import \w+ from "\.\/([^"]+)";$/gm)) {
+        const componentAt = ch3Slides.findIndex(
+          (row) => row.slide.codeFile === `app/labs/lab3/${path}.tsx`,
+        );
+        assert.ok(componentAt >= 0 && componentAt < at, `${slug}#${id} imports ${path} before its slide`);
       }
     }
-    assert.equal(seen.length, 38);
-    assert.deepEqual([...new Set(seen)].sort(), Object.keys(deckFor).sort());
+    // The first page.tsx slide in Lab 3 is import-it, and it states the pattern once.
+    const firstPage = ch3Slides.find(
+      (row) => row.slide.codeFile === "app/labs/lab3/page.tsx" && /^import \w+ from "\.\//m.test(row.slide.code ?? ""),
+    );
+    assert.equal(firstPage?.slide.id, "import-it");
+    assert.match(
+      (findSlide("variables-and-constants", "import-it").bullets ?? []).join("\n"),
+      /rest of the lab, import and render each new component in `app\/labs\/lab3\/page\.tsx` the same way/,
+    );
+    // No per-component page steps remain, and nothing links to a removed one.
+    const pageSlides = ch3Slides.filter((row) => row.slide.codeFile === "app/labs/lab3/page.tsx");
+    assert.deepEqual(
+      pageSlides.map((row) => row.slide.id).filter((id) => id !== "lab3-page"),
+      ["lab3-stub", "import-it", "console", "lab3-complete"],
+    );
+    for (const { slug, slide } of ch3Slides) {
+      assert.doesNotMatch(JSON.stringify(slide), /lab3-page-\d/, `${slug}#${slide.id} refers to a removed slide`);
+    }
   });
 
   it("teaches Chapter 4 events, stores, and Kambaz state", () => {
@@ -3626,3 +3620,120 @@ function addedLineMarks(prev: string, next: string): Array<number | [number, num
   flush();
   return marks;
 }
+
+describe("Chapter 3 decks: code, then the live demo", () => {
+  /** Every book `<CodeBlock file=…>` body for `file` in the Chapter 3 sections. */
+  function ch3BookListings(file: string): string[] {
+    const dirs = ["app/book/ch1/sections", "app/book/ch2/sections", "app/book/ch3/sections"].map((d) => join(process.cwd(), d));
+    const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const pattern = new RegExp(
+      `file="${escape(file)}"\\s*>\\{\`([\\s\\S]*?)\`\\}</CodeBlock>`,
+      "g",
+    );
+    return dirs
+      .flatMap((dir) => readdirSync(dir).filter((name) => name.endsWith(".tsx")).map((name) => join(dir, name)))
+      .flatMap((path) =>
+        [...readFileSync(path, "utf8").matchAll(pattern)].map(
+          (match) => Function(`"use strict"; return \`${match[1]}\`;`)() as string,
+        ),
+      );
+  }
+
+  it("never puts code and a live demo on the same slide", () => {
+    for (const slug of SPLIT_DEMO_DECKS) {
+      for (const slide of getLectureDeck(slug)!.slides) {
+        const hasCode = Boolean(slide.code || slide.codeBlocks?.length);
+        assert.ok(!(hasCode && slide.embed), `${slug}#${slide.id} has code and a live demo`);
+      }
+    }
+  });
+
+  it("follows each demo's code with a demo-only slide that keeps the talking points", () => {
+    let demos = 0;
+    for (const slug of SPLIT_DEMO_DECKS) {
+      const slides = getLectureDeck(slug)!.slides;
+      slides.forEach((slide, index) => {
+        if (!slide.embed) return;
+        demos += 1;
+        assert.equal(slide.kind, "demo", `${slug}#${slide.id}`);
+        assert.match(slide.id, /-live$/, `${slug}#${slide.id}`);
+        assert.ok(slide.title.length <= LECTURE_TITLE_MAX_CHARS, `${slug}#${slide.id} title`);
+        const base = slide.id.replace(/-live$/, "");
+        const prev = slides[index - 1]!;
+        assert.ok(prev.code, `${slug}#${slide.id} comes right after its code`);
+        assert.ok(
+          prev.id === base || prev.id.startsWith(`${base}-`),
+          `${slug}#${slide.id} follows ${base}, not ${prev.id}`,
+        );
+        // Talking points sit on the demo, or on the first code slide when the demo is too tall.
+        const first = findSlide(slug, base);
+        assert.ok(
+          (slide.bullets?.length ?? 0) > 0 || (first.bullets?.length ?? 0) > 0,
+          `${slug}#${slide.id} lost its talking points`,
+        );
+        // Joined back together, the split listing is the book listing.
+        // Ch2 step snapshots the book never lists on their own (unchanged by the split).
+        const snapshots = ["labs-index-toc", "lab2-page", "lab3-page"].map((id) => `single-page-navigation#${id}`);
+        if (!first.codeFile || snapshots.includes(`${slug}#${base}`)) return;
+        const book = ch3BookListings(first.codeFile);
+        assert.ok(
+          book.includes(joinedListing(slug, base)),
+          `${slug}#${base} parts must join back into the book ${first.codeFile}`,
+        );
+      });
+    }
+    assert.equal(demos, 50);
+  });
+
+  it("keeps one code slide unless a listing is long, and never leaves a tiny tail", () => {
+    const split: string[] = [];
+    for (const slug of SPLIT_DEMO_DECKS) {
+      for (const slide of getLectureDeck(slug)!.slides) {
+        assert.ok(slide.title.length <= LECTURE_TITLE_MAX_CHARS, `${slug}#${slide.id} title`);
+        if (!slide.code || slide.embed) continue;
+        const base = slide.id.replace(/-part-\d+$/, "");
+        const ids = getLectureDeck(slug)!.slides.map((row) => row.id);
+        if (!ids.includes(`${base}-live`)) continue;
+        const lines = slide.code.split("\n");
+        // Lone <br /> lines move up onto the line before.
+        assert.ok(
+          !lines.some((line) => /^\s*<br\s*\/>\s*$/.test(line)),
+          `${slug}#${slide.id} has a lone <br /> line`,
+        );
+        for (const line of [
+          ...expandLineMarks(slide.codeHighlightLines),
+          ...expandLineMarks(slide.codeAddedLines),
+        ]) {
+          assert.ok(line <= lines.length, `${slug}#${slide.id} mark ${line} past ${lines.length}`);
+        }
+        if (/-part-\d+$/.test(slide.id)) {
+          split.push(`${slug}#${slide.id}`);
+          assert.ok(slide.codeStartLine && slide.codeStartLine > 1, `${slug}#${slide.id}`);
+          assert.match(slide.title, /\(\d\/\d\)$/, `${slug}#${slide.id}`);
+          assert.ok(lines.length >= 10, `${slug}#${slide.id} is a tiny tail`);
+        }
+      }
+    }
+    // Split only at a natural boundary: before return, or table header vs body.
+    assert.deepEqual(split, [
+      "booleans-and-conditionals#boolean-sample-part-2",
+      "javascript-arrays#simple-part-2",
+      "javascript-objects#house-part-2",
+      "spread-and-destructuring#destructing-imports-part-2",
+      "kambaz-database#nav-part-2",
+      "kambaz-database#nav-part-3",
+      "kambaz-courses-data#course-nav-part-2",
+      "kambaz-modules-data#page-part-2",
+      "kambaz-assignments-data#list-part-2",
+      "kambaz-assignments-data#people-part-2",
+    ]);
+    assert.match(findSlide("javascript-arrays", "simple-part-2").code!, /^ {2}return \($/m);
+    assert.match(findSlide("spread-and-destructuring", "destructing-imports-part-2").code!, /^ {8}<tbody>/);
+    const spread = getLectureDeck("spread-and-destructuring")!.slides.map((slide) => slide.id);
+    assert.deepEqual(spread.slice(2, 4), ["spread", "spread-live"]);
+    assert.equal(findSlide("spread-and-destructuring", "spread").bullets, undefined);
+    assert.equal(findSlide("spread-and-destructuring", "spread-live").bullets?.length, 3);
+    assert.match(findSlide("spread-and-destructuring", "spread").code!, /arr1 = \{JSON\.stringify\(arr1\)\} <br \/>/);
+    assert.equal(getLectureDeck("optional-chaining")!.slides.filter((slide) => slide.code).length, 1);
+  });
+});

@@ -46,10 +46,8 @@ export default function JsBasics() {
   return (
     <div id="wd-variables-and-constants">
       <h4>Variables and Constants</h4>
-      functionScoped = {functionScoped}
-      <br />
-      blockScoped = {blockScoped}
-      <br />
+      functionScoped = {functionScoped} <br />
+      blockScoped = {blockScoped}       <br />
       constant1 = {constant1}
       <hr />
     </div>
@@ -132,18 +130,12 @@ export default function Lab3() {
   return (
     <div id="wd-variable-types">
       <h4>Variables Types</h4>
-      numberVariable = {numberVariable}
-      <br />
-      floatingPointNumber = {floatingPointNumber}
-      <br />
-      stringVariable = {stringVariable}
-      <br />
-      booleanVariable = {booleanVariable + ""}
-      <br />
-      isNumber = {isNumber}
-      <br />
-      isString = {isString}
-      <br />
+      numberVariable = {numberVariable}           <br />
+      floatingPointNumber = {floatingPointNumber} <br />
+      stringVariable = {stringVariable}           <br />
+      booleanVariable = {booleanVariable + ""}    <br />
+      isNumber = {isNumber}                       <br />
+      isString = {isString}                       <br />
       isBoolean = {isBoolean}
       <hr />
     </div>
@@ -231,20 +223,13 @@ export default function Lab3() {
   return (
     <div id="wd-boolean-variables">
       <h4>Boolean Variables</h4>
-      true1 = {true1 + ""}
-      <br />
-      false1 = {false1 + ""}
-      <br />
-      false2 = {false2 + ""}
-      <br />
-      true2 = {true2 + ""}
-      <br />
-      true3 = {true3 + ""}
-      <br />
-      true4 = {true4 + ""}
-      <br />
-      true5 = {true5 + ""}
-      <br />
+      true1 = {true1 + ""}   <br />
+      false1 = {false1 + ""} <br />
+      false2 = {false2 + ""} <br />
+      true2 = {true2 + ""}   <br />
+      true3 = {true3 + ""}   <br />
+      true4 = {true4 + ""}   <br />
+      true5 = {true5 + ""}   <br />
       false3 = {false3 + ""}
       <hr />
     </div>
@@ -604,16 +589,11 @@ export default function Lab3() {
   return (
     <div id="wd-null-undefined">
       <h4>Null vs Undefined</h4>
-      nullValue = {String(nullValue)}
-      <br />
-      undefinedValue = {String(undefinedValue)}
-      <br />
-      typeof nullValue = {typeof nullValue}
-      <br />
-      typeof undefinedValue = {typeof undefinedValue}
-      <br />
-      String(null) = {String(null)}
-      <br />
+      nullValue = {String(nullValue)}           <br />
+      undefinedValue = {String(undefinedValue)} <br />
+      typeof nullValue = {typeof nullValue}     <br />
+      typeof undefinedValue = {typeof undefinedValue} <br />
+      String(null) = {String(null)}             <br />
       String(undefined) = {String(undefined)}
       <hr />
     </div>

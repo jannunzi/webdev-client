@@ -35,12 +35,7 @@ export const VARIABLES_AND_CONSTANTS_SLIDES: LectureSlide[] = [
   {
     id: "sample",
     title: "Declare, compute, interpolate",
-    kind: "demo",
-    bullets: [
-      "`constant1` is the difference of the other two — the page shows `-3`",
-      "Curly braces in JSX interpolate a JavaScript expression",
-      "`{functionScoped}` prints `2`. No quotes around the name",
-    ],
+    kind: "content",
     code: `export default function VariablesAndConstants() {
   var functionScoped = 2;
   let blockScoped = 5;
@@ -48,10 +43,8 @@ export const VARIABLES_AND_CONSTANTS_SLIDES: LectureSlide[] = [
   return (
     <div id="wd-variables-and-constants">
       <h4>Variables and Constants</h4>
-      functionScoped = {functionScoped}
-      <br />
-      blockScoped = {blockScoped}
-      <br />
+      functionScoped = {functionScoped} <br />
+      blockScoped = {blockScoped}       <br />
       constant1 = {constant1}
       <hr />
     </div>
@@ -59,7 +52,17 @@ export const VARIABLES_AND_CONSTANTS_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/VariablesAndConstants.tsx",
-    codeHighlightLines: [[2, 4], [8, 12]],
+    codeHighlightLines: [2, 3, 4, 8, 9, 10],
+  },
+  {
+    id: "sample-live",
+    title: "VariablesAndConstants: live demo",
+    kind: "demo",
+    bullets: [
+      "`constant1` is the difference of the other two — the page shows `-3`",
+      "Curly braces in JSX interpolate a JavaScript expression",
+      "`{functionScoped}` prints `2`. No quotes around the name",
+    ],
     embed: "js-variables",
   },
   {
@@ -69,7 +72,7 @@ export const VARIABLES_AND_CONSTANTS_SLIDES: LectureSlide[] = [
     bullets: [
       "Add the import at the top of `app/labs/lab3/page.tsx`",
       "Render `<VariablesAndConstants />` under the Lab 3 heading",
-      "Same import-and-place pattern for every exercise in this chapter",
+      "For the rest of the lab, import and render each new component in `app/labs/lab3/page.tsx` the same way",
     ],
     code: `import VariablesAndConstants from "./VariablesAndConstants";
 

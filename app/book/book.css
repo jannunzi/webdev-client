@@ -732,6 +732,7 @@ code.quiz-prompt-code {
   font-size: 1.40625rem;
 }
 
+
 /*
  * Demo-only slides (no code sharing the stage): grow the live embed and
  * form controls ~30% so Signup/Signin/Profile fields read from the back.
@@ -746,6 +747,9 @@ code.quiz-prompt-code {
 
 .lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body {
   font-size: 1.3em;
+  /* Set per slide by fitDemoScale (lib/lectures/demo-fit.ts): zoom scales
+   * text, form controls and fixed px boxes together, never below 1. */
+  zoom: var(--demo-zoom, 1);
   padding: 1.15rem 1.35rem;
 }
 

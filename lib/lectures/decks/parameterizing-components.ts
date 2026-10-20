@@ -24,19 +24,13 @@ export const PARAMETERIZING_COMPONENTS_SLIDES: LectureSlide[] = [
   {
     id: "add",
     title: "Add reads a and b from props",
-    kind: "demo",
-    bullets: [
-      "`{ a, b }: { a: number; b: number }` names and types the props",
-      "Reuse the same component with different attributes",
-      "Create `Add.tsx` and import it into Lab 3",
-    ],
+    kind: "content",
     code: `export default function Add({ a, b }: { a: number; b: number }) {
   return (
     <div id="wd-add">
       <h4>Add</h4>
       a = {a}
-      b = {b}
-      <br />
+      b = {b} <br />
       a + b = {a + b}
       <hr />
     </div>
@@ -44,106 +38,23 @@ export const PARAMETERIZING_COMPONENTS_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/Add.tsx",
-    codeHighlightLines: [1, 8],
-    embed: "js-add",
+    codeHighlightLines: [1, 7],
   },
   {
-    id: "lab3-page-3-7",
-    title: "Render Add with two props in Lab 3",
-    kind: "content",
+    id: "add-live",
+    title: "Add: live demo",
+    kind: "demo",
     bullets: [
-      "Import `Add` and render it with its two props after `ServerComponentDemo`",
+      "`{ a, b }: { a: number; b: number }` names and types the props",
+      "Reuse the same component with different attributes",
+      "Create `Add.tsx` and import it into Lab 3",
     ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-import BooleanVariables from "./BooleanVariables";
-import IfElse from "./IfElse";
-import TernaryOperator from "./TernaryOperator";
-import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
-import ConditionalOutputInline from "./ConditionalOutputInline";
-import NullUndefined from "./NullUndefined";
-import LegacyFunctions from "./LegacyFunctions";
-import ArrowFunctions from "./ArrowFunctions";
-import ImpliedReturn from "./ImpliedReturn";
-import TemplateLiterals from "./TemplateLiterals";
-import SimpleArrays from "./SimpleArrays";
-import ArrayIndexAndLength from "./ArrayIndexAndLength";
-import AddingAndRemovingToFromArrays from "./AddingAndRemovingToFromArrays";
-import ForLoops from "./ForLoops";
-import MapFunction from "./MapFunction";
-import FindFunction from "./FindFunction";
-import FindIndex from "./FindIndex";
-import FilterFunction from "./FilterFunction";
-import IncludesSomeEvery from "./IncludesSomeEvery";
-import ReduceFunction from "./ReduceFunction";
-import JsonStringify from "./JsonStringify";
-import House from "./House";
-import Spreader from "./Spreader";
-import Destructing from "./Destructing";
-import FunctionDestructing from "./FunctionDestructing";
-import DestructingImports from "./DestructingImports";
-import OptionalChaining from "./OptionalChaining";
-import Classes from "./Classes";
-import Styles from "./Styles";
-import ClientComponentDemo from "./ClientComponentDemo";
-import ServerComponentDemo from "./ServerComponentDemo";
-import Add from "./Add";
-
-export default function Lab3() {
-  console.log("Hello World!");
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-      <BooleanVariables />
-      <IfElse />
-      <TernaryOperator />
-      <ConditionalOutputIfElse />
-      <ConditionalOutputInline />
-      <NullUndefined />
-      <LegacyFunctions />
-      <ArrowFunctions />
-      <ImpliedReturn />
-      <TemplateLiterals />
-      <SimpleArrays />
-      <ArrayIndexAndLength />
-      <AddingAndRemovingToFromArrays />
-      <ForLoops />
-      <MapFunction />
-      <FindFunction />
-      <FindIndex />
-      <FilterFunction />
-      <IncludesSomeEvery />
-      <ReduceFunction />
-      <JsonStringify />
-      <House />
-      <Spreader />
-      <Destructing />
-      <FunctionDestructing />
-      <DestructingImports />
-      <OptionalChaining />
-      <Classes />
-      <Styles />
-      <ClientComponentDemo />
-      <ServerComponentDemo />
-      <Add a={3} b={4} />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [34, 74],
+    embed: "js-add",
   },
   {
     id: "square",
     title: "children is the body",
-    kind: "demo",
-    bullets: [
-      "Content between the tags arrives as `children`",
-      "`<Square>4</Square>` — the child text `4` becomes `16`",
-      "`Number(children)` turns that text into a number",
-    ],
+    kind: "content",
     code: `import { ReactNode } from "react";
 
 export default function Square({ children }: { children: ReactNode }) {
@@ -153,17 +64,22 @@ export default function Square({ children }: { children: ReactNode }) {
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/Square.tsx",
     codeHighlightLines: [3, 5],
+  },
+  {
+    id: "square-live",
+    title: "Square: live demo",
+    kind: "demo",
+    bullets: [
+      "Content between the tags arrives as `children`",
+      "`<Square>4</Square>` — the child text `4` becomes `16`",
+      "`Number(children)` turns that text into a number",
+    ],
     embed: "js-square",
   },
   {
     id: "highlight",
     title: "Highlight formats its children",
-    kind: "demo",
-    bullets: [
-      "Same `children` prop — wrapping, not arithmetic",
-      "A yellow span with red text around whatever you nest",
-      "Create `Highlight.tsx` and wrap a sentence on Lab 3",
-    ],
+    kind: "content",
     code: `import { ReactNode } from "react";
 
 export default function Highlight({ children }: { children: ReactNode }) {
@@ -179,103 +95,17 @@ export default function Highlight({ children }: { children: ReactNode }) {
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/Highlight.tsx",
     codeHighlightLines: [3, 9],
-    embed: "js-highlight",
   },
   {
-    id: "lab3-page-3-7-1",
-    title: "Add Square and Highlight to Lab 3",
-    kind: "content",
+    id: "highlight-live",
+    title: "Highlight: live demo",
+    kind: "demo",
     bullets: [
-      "Import `Square` and `Highlight`. The square of 4 sits under its own `<h4>` heading, then a rule and the highlighted sentence",
+      "Same `children` prop — wrapping, not arithmetic",
+      "A yellow span with red text around whatever you nest",
+      "Create `Highlight.tsx` and wrap a sentence on Lab 3",
     ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-import BooleanVariables from "./BooleanVariables";
-import IfElse from "./IfElse";
-import TernaryOperator from "./TernaryOperator";
-import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
-import ConditionalOutputInline from "./ConditionalOutputInline";
-import NullUndefined from "./NullUndefined";
-import LegacyFunctions from "./LegacyFunctions";
-import ArrowFunctions from "./ArrowFunctions";
-import ImpliedReturn from "./ImpliedReturn";
-import TemplateLiterals from "./TemplateLiterals";
-import SimpleArrays from "./SimpleArrays";
-import ArrayIndexAndLength from "./ArrayIndexAndLength";
-import AddingAndRemovingToFromArrays from "./AddingAndRemovingToFromArrays";
-import ForLoops from "./ForLoops";
-import MapFunction from "./MapFunction";
-import FindFunction from "./FindFunction";
-import FindIndex from "./FindIndex";
-import FilterFunction from "./FilterFunction";
-import IncludesSomeEvery from "./IncludesSomeEvery";
-import ReduceFunction from "./ReduceFunction";
-import JsonStringify from "./JsonStringify";
-import House from "./House";
-import Spreader from "./Spreader";
-import Destructing from "./Destructing";
-import FunctionDestructing from "./FunctionDestructing";
-import DestructingImports from "./DestructingImports";
-import OptionalChaining from "./OptionalChaining";
-import Classes from "./Classes";
-import Styles from "./Styles";
-import ClientComponentDemo from "./ClientComponentDemo";
-import ServerComponentDemo from "./ServerComponentDemo";
-import Add from "./Add";
-import Square from "./Square";
-import Highlight from "./Highlight";
-
-export default function Lab3() {
-  console.log("Hello World!");
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-      <BooleanVariables />
-      <IfElse />
-      <TernaryOperator />
-      <ConditionalOutputIfElse />
-      <ConditionalOutputInline />
-      <NullUndefined />
-      <LegacyFunctions />
-      <ArrowFunctions />
-      <ImpliedReturn />
-      <TemplateLiterals />
-      <SimpleArrays />
-      <ArrayIndexAndLength />
-      <AddingAndRemovingToFromArrays />
-      <ForLoops />
-      <MapFunction />
-      <FindFunction />
-      <FindIndex />
-      <FilterFunction />
-      <IncludesSomeEvery />
-      <ReduceFunction />
-      <JsonStringify />
-      <House />
-      <Spreader />
-      <Destructing />
-      <FunctionDestructing />
-      <DestructingImports />
-      <OptionalChaining />
-      <Classes />
-      <Styles />
-      <ClientComponentDemo />
-      <ServerComponentDemo />
-      <Add a={3} b={4} />
-      <h4>Square of 4</h4>
-      <Square>4</Square>
-      <hr />
-      <Highlight>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-      </Highlight>
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [[35, 36], [77, 82]],
+    embed: "js-highlight",
   },
   {
     id: "recap",

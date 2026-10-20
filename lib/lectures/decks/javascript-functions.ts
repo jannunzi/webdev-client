@@ -24,12 +24,7 @@ export const JAVASCRIPT_FUNCTIONS_SLIDES: LectureSlide[] = [
   {
     id: "legacy",
     title: "Legacy ES5 function add",
-    kind: "demo",
-    bullets: [
-      "The sum prints both as a stored result and as a call inlined in JSX",
-      "`add(2, 4)` inside `{…}` is just another expression",
-      "Create `LegacyFunctions` and import it into Lab 3",
-    ],
+    kind: "content",
     code: `function add(a: number, b: number) {
   return a + b;
 }
@@ -41,8 +36,7 @@ export default function LegacyFunctions() {
     <div id="wd-legacy-functions">
       <h4>Functions</h4>
       <h5>Legacy ES5 functions</h5>
-      twoPlusFour = {twoPlusFour}
-      <br />
+      twoPlusFour = {twoPlusFour} <br />
       add(2, 4) = {add(2, 4)}
       <hr />
     </div>
@@ -50,55 +44,23 @@ export default function LegacyFunctions() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/LegacyFunctions.tsx",
-    codeHighlightLines: [[1, 3], 6, 14],
-    embed: "js-legacy-functions",
+    codeHighlightLines: [1, 2, 3, 6, 13],
   },
   {
-    id: "lab3-page-3-3",
-    title: "Add LegacyFunctions to Lab 3",
-    kind: "content",
+    id: "legacy-live",
+    title: "LegacyFunctions: live demo",
+    kind: "demo",
     bullets: [
-      "Import `LegacyFunctions` into `app/labs/lab3/page.tsx` and render it after `NullUndefined`",
+      "The sum prints both as a stored result and as a call inlined in JSX",
+      "`add(2, 4)` inside `{…}` is just another expression",
+      "Create `LegacyFunctions` and import it into Lab 3",
     ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-import BooleanVariables from "./BooleanVariables";
-import IfElse from "./IfElse";
-import TernaryOperator from "./TernaryOperator";
-import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
-import ConditionalOutputInline from "./ConditionalOutputInline";
-import NullUndefined from "./NullUndefined";
-import LegacyFunctions from "./LegacyFunctions";
-
-export default function Lab3() {
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-      <BooleanVariables />
-      <IfElse />
-      <TernaryOperator />
-      <ConditionalOutputIfElse />
-      <ConditionalOutputInline />
-      <NullUndefined />
-      <LegacyFunctions />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [9, 23],
+    embed: "js-legacy-functions",
   },
   {
     id: "arrow",
     title: "ES6 arrows drop the function keyword",
-    kind: "demo",
-    bullets: [
-      "`const subtract = (a, b) => { return a - b; }`",
-      "The name is optional; you typically store the function in a `const`",
-      "This is the shape of almost every callback — `map`, handlers, predicates",
-    ],
+    kind: "content",
     code: `const subtract = (a: number, b: number) => {
   return a - b;
 };
@@ -109,8 +71,7 @@ export default function ArrowFunctions() {
   return (
     <div id="wd-arrow-functions">
       <h4>New ES6 arrow functions</h4>
-      threeMinusOne = {threeMinusOne}
-      <br />
+      threeMinusOne = {threeMinusOne} <br />
       subtract(3, 1) = {subtract(3, 1)}
       <hr />
     </div>
@@ -118,57 +79,23 @@ export default function ArrowFunctions() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/ArrowFunctions.tsx",
-    codeAddedLines: [[1, 3]],
-    embed: "js-arrow-functions",
+    codeAddedLines: [1, 2, 3],
   },
   {
-    id: "lab3-page-3-3-1",
-    title: "Add ArrowFunctions to Lab 3",
-    kind: "content",
+    id: "arrow-live",
+    title: "ArrowFunctions: live demo",
+    kind: "demo",
     bullets: [
-      "Import `ArrowFunctions` into `app/labs/lab3/page.tsx` and render it last",
+      "`const subtract = (a, b) => { return a - b; }`",
+      "The name is optional; you typically store the function in a `const`",
+      "This is the shape of almost every callback — `map`, handlers, predicates",
     ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-import BooleanVariables from "./BooleanVariables";
-import IfElse from "./IfElse";
-import TernaryOperator from "./TernaryOperator";
-import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
-import ConditionalOutputInline from "./ConditionalOutputInline";
-import NullUndefined from "./NullUndefined";
-import LegacyFunctions from "./LegacyFunctions";
-import ArrowFunctions from "./ArrowFunctions";
-
-export default function Lab3() {
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-      <BooleanVariables />
-      <IfElse />
-      <TernaryOperator />
-      <ConditionalOutputIfElse />
-      <ConditionalOutputInline />
-      <NullUndefined />
-      <LegacyFunctions />
-      <ArrowFunctions />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [10, 25],
+    embed: "js-arrow-functions",
   },
   {
     id: "implied",
     title: "Implied return drops the braces",
-    kind: "demo",
-    bullets: [
-      "`(a, b) => a * b` is the same as `(a, b) => { return a * b; }`",
-      "Use it when the body is a single expression",
-      "That one-liner is what you will pass into `map` and `filter` in §3.4",
-    ],
+    kind: "content",
     code: `export default function ImpliedReturn() {
   const multiply = (a: number, b: number) => a * b;
   const fourTimesFive = multiply(4, 5);
@@ -176,8 +103,7 @@ export default function Lab3() {
   return (
     <div id="wd-implied-return">
       <h4>Implied return</h4>
-      fourTimesFive = {fourTimesFive}
-      <br />
+      fourTimesFive = {fourTimesFive} <br />
       multiply(4, 5) = {multiply(4, 5)}
       <hr />
     </div>
@@ -186,58 +112,22 @@ export default function Lab3() {
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/ImpliedReturn.tsx",
     codeHighlightLines: [2],
-    embed: "js-implied-return",
   },
   {
-    id: "lab3-page-3-3-2",
-    title: "Add ImpliedReturn to Lab 3",
-    kind: "content",
+    id: "implied-live",
+    title: "ImpliedReturn: live demo",
+    kind: "demo",
     bullets: [
-      "Import `ImpliedReturn` into `app/labs/lab3/page.tsx` and render it last",
+      "`(a, b) => a * b` is the same as `(a, b) => { return a * b; }`",
+      "Use it when the body is a single expression",
+      "That one-liner is what you will pass into `map` and `filter` in §3.4",
     ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-import BooleanVariables from "./BooleanVariables";
-import IfElse from "./IfElse";
-import TernaryOperator from "./TernaryOperator";
-import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
-import ConditionalOutputInline from "./ConditionalOutputInline";
-import NullUndefined from "./NullUndefined";
-import LegacyFunctions from "./LegacyFunctions";
-import ArrowFunctions from "./ArrowFunctions";
-import ImpliedReturn from "./ImpliedReturn";
-
-export default function Lab3() {
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-      <BooleanVariables />
-      <IfElse />
-      <TernaryOperator />
-      <ConditionalOutputIfElse />
-      <ConditionalOutputInline />
-      <NullUndefined />
-      <LegacyFunctions />
-      <ArrowFunctions />
-      <ImpliedReturn />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [11, 27],
+    embed: "js-implied-return",
   },
   {
     id: "templates",
     title: "Template literals embed expressions",
-    kind: "demo",
-    bullets: [
-      "Backticks, not quotes. `${expr}` interpolates inside the string",
-      "`result1` concatenates with `+`. `result2` does the same with a template",
-      "A ternary can live inside `${…}` — `Logged in: Yes` or `No`",
-    ],
+    kind: "content",
     code: `export default function TemplateLiterals() {
   const five = 2 + 3;
   const result1 = "2 + 3 = " + five;
@@ -249,12 +139,9 @@ export default function Lab3() {
   return (
     <div id="wd-template-literals">
       <h4>Template Literals</h4>
-      result1 = {result1}
-      <br />
-      result2 = {result2}
-      <br />
-      greeting1 = {greeting1}
-      <br />
+      result1 = {result1}     <br />
+      result2 = {result2}     <br />
+      greeting1 = {greeting1} <br />
       greeting2 = {greeting2}
       <hr />
     </div>
@@ -263,50 +150,17 @@ export default function Lab3() {
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/TemplateLiterals.tsx",
     codeHighlightLines: [4, 6, 8],
-    embed: "js-template-literals",
   },
   {
-    id: "lab3-page-3-3-3",
-    title: "Add TemplateLiterals to Lab 3",
-    kind: "content",
+    id: "templates-live",
+    title: "TemplateLiterals: live demo",
+    kind: "demo",
     bullets: [
-      "Import `TemplateLiterals` into `app/labs/lab3/page.tsx` and render it last",
+      "Backticks, not quotes. `${expr}` interpolates inside the string",
+      "`result1` concatenates with `+`. `result2` does the same with a template",
+      "A ternary can live inside `${…}` — `Logged in: Yes` or `No`",
     ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-import BooleanVariables from "./BooleanVariables";
-import IfElse from "./IfElse";
-import TernaryOperator from "./TernaryOperator";
-import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
-import ConditionalOutputInline from "./ConditionalOutputInline";
-import NullUndefined from "./NullUndefined";
-import LegacyFunctions from "./LegacyFunctions";
-import ArrowFunctions from "./ArrowFunctions";
-import ImpliedReturn from "./ImpliedReturn";
-import TemplateLiterals from "./TemplateLiterals";
-
-export default function Lab3() {
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-      <BooleanVariables />
-      <IfElse />
-      <TernaryOperator />
-      <ConditionalOutputIfElse />
-      <ConditionalOutputInline />
-      <NullUndefined />
-      <LegacyFunctions />
-      <ArrowFunctions />
-      <ImpliedReturn />
-      <TemplateLiterals />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [12, 29],
+    embed: "js-template-literals",
   },
   {
     id: "recap",

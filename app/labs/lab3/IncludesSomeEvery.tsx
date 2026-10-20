@@ -7,12 +7,9 @@ export default function IncludesSomeEvery() {
   return (
     <div id="wd-includes-some-every">
       <h4>Includes, Some, Every</h4>
-      includes(3) = {includes3 + ""}
-      <br />
-      includes(8) = {includes8 + ""}
-      <br />
-      some(n &gt; 4) = {someGreaterThan4 + ""}
-      <br />
+      includes(3) = {includes3 + ""}           <br />
+      includes(8) = {includes8 + ""}           <br />
+      some(n &gt; 4) = {someGreaterThan4 + ""} <br />
       every(n &gt; 0) = {everyGreaterThan0 + ""}
       <hr />
     </div>

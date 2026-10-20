@@ -6,8 +6,7 @@ export default function FindFunction() {
   return (
     <div id="wd-find-function">
       <h4>Find Function</h4>
-      four = {four}
-      <br />
+      four = {four} <br />
       string3 = {string3}
       <hr />
     </div>

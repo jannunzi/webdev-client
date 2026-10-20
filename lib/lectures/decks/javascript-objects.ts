@@ -23,8 +23,8 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "house",
-    title: "A house is a nested object",
-    kind: "demo",
+    title: "A house is a nested object (1/2)",
+    kind: "content",
     bullets: [
       "`address` is an object. `owners` is a string array",
       "`JSON.stringify(house, null, 2)` pretty-prints inside `<pre>`",
@@ -44,8 +44,16 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
     },
     owners: ["Alice", "Bob"],
   };
-  console.log(house);
-  return (
+  console.log(house);`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/House.tsx",
+    codeHighlightLines: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+  },
+  {
+    id: "house-part-2",
+    title: "A house is a nested object (2/2)",
+    kind: "content",
+    code: `  return (
     <div id="wd-house">
       <h4>House</h4>
       <h5>bedrooms</h5>
@@ -60,75 +68,14 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/House.tsx",
-    codeHighlightLines: [[2, 15], 25],
-    embed: "js-house",
+    codeStartLine: 16,
+    codeHighlightLines: [10],
   },
   {
-    id: "lab3-page-3-4-11",
-    title: "Add House to Lab 3",
-    kind: "content",
-    bullets: [
-      "Import `House` into `app/labs/lab3/page.tsx` and render it last",
-    ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-import BooleanVariables from "./BooleanVariables";
-import IfElse from "./IfElse";
-import TernaryOperator from "./TernaryOperator";
-import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
-import ConditionalOutputInline from "./ConditionalOutputInline";
-import NullUndefined from "./NullUndefined";
-import LegacyFunctions from "./LegacyFunctions";
-import ArrowFunctions from "./ArrowFunctions";
-import ImpliedReturn from "./ImpliedReturn";
-import TemplateLiterals from "./TemplateLiterals";
-import SimpleArrays from "./SimpleArrays";
-import ArrayIndexAndLength from "./ArrayIndexAndLength";
-import AddingAndRemovingToFromArrays from "./AddingAndRemovingToFromArrays";
-import ForLoops from "./ForLoops";
-import MapFunction from "./MapFunction";
-import FindFunction from "./FindFunction";
-import FindIndex from "./FindIndex";
-import FilterFunction from "./FilterFunction";
-import IncludesSomeEvery from "./IncludesSomeEvery";
-import ReduceFunction from "./ReduceFunction";
-import JsonStringify from "./JsonStringify";
-import House from "./House";
-
-export default function Lab3() {
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-      <BooleanVariables />
-      <IfElse />
-      <TernaryOperator />
-      <ConditionalOutputIfElse />
-      <ConditionalOutputInline />
-      <NullUndefined />
-      <LegacyFunctions />
-      <ArrowFunctions />
-      <ImpliedReturn />
-      <TemplateLiterals />
-      <SimpleArrays />
-      <ArrayIndexAndLength />
-      <AddingAndRemovingToFromArrays />
-      <ForLoops />
-      <MapFunction />
-      <FindFunction />
-      <FindIndex />
-      <FilterFunction />
-      <IncludesSomeEvery />
-      <ReduceFunction />
-      <JsonStringify />
-      <House />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [24, 53],
+    id: "house-live",
+    title: "House: live demo",
+    kind: "demo",
+    embed: "js-house",
   },
   {
     id: "console",

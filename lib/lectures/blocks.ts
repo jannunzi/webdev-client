@@ -36,6 +36,7 @@ export type CodeContentBlock = {
   file?: string;
   highlightLines?: CodeLineMarks;
   addedLines?: CodeLineMarks;
+  startLine?: number;
   html?: string;
   fontSize?: BlockFontSize;
   size?: BlockFrameSize;
@@ -104,6 +105,7 @@ export function createCodeBlock(
     file: partial?.file,
     highlightLines: partial?.highlightLines,
     addedLines: partial?.addedLines,
+    startLine: partial?.startLine,
     html: partial?.html,
     fontSize: partial?.fontSize,
     size: partial?.size,
@@ -198,6 +200,7 @@ export function blockSlideCodeBlocks(slide: BlockSlide): LectureCodeBlock[] {
             file: block.file,
             highlightLines: block.highlightLines,
             addedLines: block.addedLines,
+            startLine: block.startLine,
             html: block.html,
           },
         ]
@@ -241,6 +244,7 @@ export function toBlockSlide(slide: AuthoredSlide): BlockSlide {
         file: block.file,
         highlightLines: block.highlightLines,
         addedLines: block.addedLines,
+        startLine: block.startLine,
         html: block.html,
       }),
     );

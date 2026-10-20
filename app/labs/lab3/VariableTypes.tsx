@@ -9,18 +9,12 @@ export default function VariableTypes() {
   return (
     <div id="wd-variable-types">
       <h4>Variables Types</h4>
-      numberVariable = {numberVariable}
-      <br />
-      floatingPointNumber = {floatingPointNumber}
-      <br />
-      stringVariable = {stringVariable}
-      <br />
-      booleanVariable = {booleanVariable + ""}
-      <br />
-      isNumber = {isNumber}
-      <br />
-      isString = {isString}
-      <br />
+      numberVariable = {numberVariable}           <br />
+      floatingPointNumber = {floatingPointNumber} <br />
+      stringVariable = {stringVariable}           <br />
+      booleanVariable = {booleanVariable + ""}    <br />
+      isNumber = {isNumber}                       <br />
+      isString = {isString}                       <br />
       isBoolean = {isBoolean}
       <hr />
     </div>

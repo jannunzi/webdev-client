@@ -24,12 +24,7 @@ export const SPREAD_AND_DESTRUCTURING_SLIDES: LectureSlide[] = [
   {
     id: "spread",
     title: "Spread copies, last write wins",
-    kind: "demo",
-    bullets: [
-      "`arr2` is `arr1` plus `4, 5, 6`",
-      "`obj2` is `obj1` plus `d, e, f`",
-      "`obj3.b` is `4`, not `2` — the later `b` overrides the copy",
-    ],
+    kind: "content",
     code: `export default function Spreading() {
   const arr1 = [1, 2, 3];
   const arr2 = [...arr1, 4, 5, 6];
@@ -40,17 +35,12 @@ export const SPREAD_AND_DESTRUCTURING_SLIDES: LectureSlide[] = [
     <div id="wd-spreading">
       <h2>Spread Operator</h2>
       <h3>Array Spread</h3>
-      arr1 = {JSON.stringify(arr1)}
-      <br />
-      arr2 = {JSON.stringify(arr2)}
-      <br />
+      arr1 = {JSON.stringify(arr1)} <br />
+      arr2 = {JSON.stringify(arr2)} <br />
       <h3>Object Spread</h3>
-      {JSON.stringify(obj1)}
-      <br />
-      {JSON.stringify(obj2)}
-      <br />
-      {JSON.stringify(obj3)}
-      <br />
+      {JSON.stringify(obj1)}        <br />
+      {JSON.stringify(obj2)}        <br />
+      {JSON.stringify(obj3)}        <br />
       <hr />
     </div>
   );
@@ -58,87 +48,22 @@ export const SPREAD_AND_DESTRUCTURING_SLIDES: LectureSlide[] = [
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/Spreader.tsx",
     codeHighlightLines: [3, 5, 6],
-    embed: "js-spreader",
   },
   {
-    id: "lab3-page-3-4-13",
-    title: "Add Spreader to Lab 3",
-    kind: "content",
+    id: "spread-live",
+    title: "Spreading: live demo",
+    kind: "demo",
     bullets: [
-      "Import it as `Spreader`, the file name — a default import can take any local name, so it does not have to match the `Spreading` function. Render it last",
+      "`arr2` is `arr1` plus `4, 5, 6`",
+      "`obj2` is `obj1` plus `d, e, f`",
+      "`obj3.b` is `4`, not `2` — the later `b` overrides the copy",
     ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-import BooleanVariables from "./BooleanVariables";
-import IfElse from "./IfElse";
-import TernaryOperator from "./TernaryOperator";
-import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
-import ConditionalOutputInline from "./ConditionalOutputInline";
-import NullUndefined from "./NullUndefined";
-import LegacyFunctions from "./LegacyFunctions";
-import ArrowFunctions from "./ArrowFunctions";
-import ImpliedReturn from "./ImpliedReturn";
-import TemplateLiterals from "./TemplateLiterals";
-import SimpleArrays from "./SimpleArrays";
-import ArrayIndexAndLength from "./ArrayIndexAndLength";
-import AddingAndRemovingToFromArrays from "./AddingAndRemovingToFromArrays";
-import ForLoops from "./ForLoops";
-import MapFunction from "./MapFunction";
-import FindFunction from "./FindFunction";
-import FindIndex from "./FindIndex";
-import FilterFunction from "./FilterFunction";
-import IncludesSomeEvery from "./IncludesSomeEvery";
-import ReduceFunction from "./ReduceFunction";
-import JsonStringify from "./JsonStringify";
-import House from "./House";
-import Spreader from "./Spreader";
-
-export default function Lab3() {
-  console.log("Hello World!");
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-      <BooleanVariables />
-      <IfElse />
-      <TernaryOperator />
-      <ConditionalOutputIfElse />
-      <ConditionalOutputInline />
-      <NullUndefined />
-      <LegacyFunctions />
-      <ArrowFunctions />
-      <ImpliedReturn />
-      <TemplateLiterals />
-      <SimpleArrays />
-      <ArrayIndexAndLength />
-      <AddingAndRemovingToFromArrays />
-      <ForLoops />
-      <MapFunction />
-      <FindFunction />
-      <FindIndex />
-      <FilterFunction />
-      <IncludesSomeEvery />
-      <ReduceFunction />
-      <JsonStringify />
-      <House />
-      <Spreader />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [25, 56],
+    embed: "js-spreader",
   },
   {
     id: "destruct",
     title: "Names from objects, slots from arrays",
-    kind: "demo",
-    bullets: [
-      "`const { name, age } = person` is `person.name` and `person.age`",
-      "`const [first, second, third] = numbers` is index 0, 1, 2",
-      "Create `Destructing` and import it into Lab 3",
-    ],
+    kind: "content",
     code: `export default function Destructing() {
   const person = { name: "John", age: 25 };
   const { name, age } = person;
@@ -148,20 +73,13 @@ export default function Lab3() {
     <div id="wd-destructing">
       <h2>Destructing</h2>
       <h3>Object Destructing</h3>
-      const &#123; name, age &#125; = &#123; name: "John", age: 25 &#125;
-      <br />
-      <br />
-      name = {name}
-      <br />
+      const &#123; name, age &#125; = &#123; name: "John", age: 25 &#125; <br /> <br />
+      name = {name}     <br />
       age = {age}
       <h3>Array Destructing</h3>
-      const [first, second, third] = ["one","two","three"]
-      <br />
-      <br />
-      first = {first}
-      <br />
-      second = {second}
-      <br />
+      const [first, second, third] = ["one","two","three"] <br /> <br />
+      first = {first}   <br />
+      second = {second} <br />
       third = {third}
       <hr />
     </div>
@@ -170,89 +88,22 @@ export default function Lab3() {
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/Destructing.tsx",
     codeHighlightLines: [3, 5],
-    embed: "js-destructing",
   },
   {
-    id: "lab3-page-3-4-14",
-    title: "Add Destructing to Lab 3",
-    kind: "content",
+    id: "destruct-live",
+    title: "Destructing: live demo",
+    kind: "demo",
     bullets: [
-      "Import `Destructing` into `app/labs/lab3/page.tsx` and render it last",
+      "`const { name, age } = person` is `person.name` and `person.age`",
+      "`const [first, second, third] = numbers` is index 0, 1, 2",
+      "Create `Destructing` and import it into Lab 3",
     ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-import BooleanVariables from "./BooleanVariables";
-import IfElse from "./IfElse";
-import TernaryOperator from "./TernaryOperator";
-import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
-import ConditionalOutputInline from "./ConditionalOutputInline";
-import NullUndefined from "./NullUndefined";
-import LegacyFunctions from "./LegacyFunctions";
-import ArrowFunctions from "./ArrowFunctions";
-import ImpliedReturn from "./ImpliedReturn";
-import TemplateLiterals from "./TemplateLiterals";
-import SimpleArrays from "./SimpleArrays";
-import ArrayIndexAndLength from "./ArrayIndexAndLength";
-import AddingAndRemovingToFromArrays from "./AddingAndRemovingToFromArrays";
-import ForLoops from "./ForLoops";
-import MapFunction from "./MapFunction";
-import FindFunction from "./FindFunction";
-import FindIndex from "./FindIndex";
-import FilterFunction from "./FilterFunction";
-import IncludesSomeEvery from "./IncludesSomeEvery";
-import ReduceFunction from "./ReduceFunction";
-import JsonStringify from "./JsonStringify";
-import House from "./House";
-import Spreader from "./Spreader";
-import Destructing from "./Destructing";
-
-export default function Lab3() {
-  console.log("Hello World!");
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-      <BooleanVariables />
-      <IfElse />
-      <TernaryOperator />
-      <ConditionalOutputIfElse />
-      <ConditionalOutputInline />
-      <NullUndefined />
-      <LegacyFunctions />
-      <ArrowFunctions />
-      <ImpliedReturn />
-      <TemplateLiterals />
-      <SimpleArrays />
-      <ArrayIndexAndLength />
-      <AddingAndRemovingToFromArrays />
-      <ForLoops />
-      <MapFunction />
-      <FindFunction />
-      <FindIndex />
-      <FilterFunction />
-      <IncludesSomeEvery />
-      <ReduceFunction />
-      <JsonStringify />
-      <House />
-      <Spreader />
-      <Destructing />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [26, 58],
+    embed: "js-destructing",
   },
   {
     id: "fn-destruct",
     title: "Functions can unpack a props object",
-    kind: "demo",
-    bullets: [
-      "`add(a, b)` takes two numbers. `subtract({ a, b })` takes one object",
-      "That object shape is how React components receive props",
-      "Defaults work too: `(name = \"Ada\")` or `{ b = 0 }`",
-    ],
+    kind: "content",
     code: `export default function FunctionDestructing() {
   const add = (a: number, b: number) => a + b;
   const sum = add(1, 2);
@@ -261,16 +112,11 @@ export default function Lab3() {
   return (
     <div id="wd-function-destructing">
       <h2>Function Destructing</h2>
-      const add = (a, b) =&gt; a + b;
-      <br />
-      const sum = add(1, 2);
-      <br />
-      const subtract = (&#123; a, b &#125;) =&gt; a - b;
-      <br />
-      const difference = subtract(&#123; a: 4, b: 2 &#125;);
-      <br />
-      sum = {sum}
-      <br />
+      const add = (a, b) =&gt; a + b; <br />
+      const sum = add(1, 2);          <br />
+      const subtract = (&#123; a, b &#125;) =&gt; a - b; <br />
+      const difference = subtract(&#123; a: 4, b: 2 &#125;); <br />
+      sum = {sum}                     <br />
       difference = {difference}
       <hr />
     </div>
@@ -279,81 +125,17 @@ export default function Lab3() {
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/FunctionDestructing.tsx",
     codeHighlightLines: [2, 4],
-    embed: "js-function-destructing",
   },
   {
-    id: "lab3-page-3-4-15",
-    title: "Add FunctionDestructing to Lab 3",
-    kind: "content",
+    id: "fn-destruct-live",
+    title: "FunctionDestructing: live demo",
+    kind: "demo",
     bullets: [
-      "Import `FunctionDestructing` into `app/labs/lab3/page.tsx` and render it last",
+      "`add(a, b)` takes two numbers. `subtract({ a, b })` takes one object",
+      "That object shape is how React components receive props",
+      "Defaults work too: `(name = \"Ada\")` or `{ b = 0 }`",
     ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-import BooleanVariables from "./BooleanVariables";
-import IfElse from "./IfElse";
-import TernaryOperator from "./TernaryOperator";
-import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
-import ConditionalOutputInline from "./ConditionalOutputInline";
-import NullUndefined from "./NullUndefined";
-import LegacyFunctions from "./LegacyFunctions";
-import ArrowFunctions from "./ArrowFunctions";
-import ImpliedReturn from "./ImpliedReturn";
-import TemplateLiterals from "./TemplateLiterals";
-import SimpleArrays from "./SimpleArrays";
-import ArrayIndexAndLength from "./ArrayIndexAndLength";
-import AddingAndRemovingToFromArrays from "./AddingAndRemovingToFromArrays";
-import ForLoops from "./ForLoops";
-import MapFunction from "./MapFunction";
-import FindFunction from "./FindFunction";
-import FindIndex from "./FindIndex";
-import FilterFunction from "./FilterFunction";
-import IncludesSomeEvery from "./IncludesSomeEvery";
-import ReduceFunction from "./ReduceFunction";
-import JsonStringify from "./JsonStringify";
-import House from "./House";
-import Spreader from "./Spreader";
-import Destructing from "./Destructing";
-import FunctionDestructing from "./FunctionDestructing";
-
-export default function Lab3() {
-  console.log("Hello World!");
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-      <BooleanVariables />
-      <IfElse />
-      <TernaryOperator />
-      <ConditionalOutputIfElse />
-      <ConditionalOutputInline />
-      <NullUndefined />
-      <LegacyFunctions />
-      <ArrowFunctions />
-      <ImpliedReturn />
-      <TemplateLiterals />
-      <SimpleArrays />
-      <ArrayIndexAndLength />
-      <AddingAndRemovingToFromArrays />
-      <ForLoops />
-      <MapFunction />
-      <FindFunction />
-      <FindIndex />
-      <FilterFunction />
-      <IncludesSomeEvery />
-      <ReduceFunction />
-      <JsonStringify />
-      <House />
-      <Spreader />
-      <Destructing />
-      <FunctionDestructing />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [27, 60],
+    embed: "js-function-destructing",
   },
   {
     id: "imports",
@@ -389,13 +171,8 @@ export default Math;`,
   },
   {
     id: "destructing-imports",
-    title: "Import Math three different ways",
-    kind: "demo",
-    bullets: [
-      "Default: `import Math from \"./Math\"`, then `Math.add(2, 3)`",
-      "`import * as Matematica` gathers every export under one local name",
-      "`{ add, subtract, multiply, divide }` unpacks the named exports",
-    ],
+    title: "Import Math three different ways (1/2)",
+    kind: "content",
     code: `import Math, { add, subtract, multiply, divide } from "./Math";
 import * as Matematica from "./Math";
 
@@ -410,8 +187,16 @@ export default function DestructingImports() {
             <th>Matematica</th>
             <th>Functions</th>
           </tr>
-        </thead>
-        <tbody>
+        </thead>`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab3/DestructingImports.tsx",
+    codeHighlightLines: [1, 2],
+  },
+  {
+    id: "destructing-imports-part-2",
+    title: "Import Math three different ways (2/2)",
+    kind: "content",
+    code: `        <tbody>
           <tr>
             <td>Math.add(2, 3) = {Math.add(2, 3)}</td>
             <td>Matematica.add(2, 3) = {Matematica.add(2, 3)}</td>
@@ -440,84 +225,18 @@ export default function DestructingImports() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/DestructingImports.tsx",
-    codeHighlightLines: [1, 2],
-    embed: "js-destructing-imports",
+    codeStartLine: 16,
   },
   {
-    id: "lab3-page-3-4-16",
-    title: "Add DestructingImports to Lab 3",
-    kind: "content",
+    id: "destructing-imports-live",
+    title: "DestructingImports: live demo",
+    kind: "demo",
     bullets: [
-      "Only `DestructingImports` goes on the page — `Math.ts` is imported by that component, not by Lab 3. Render it last",
+      "Default: `import Math from \"./Math\"`, then `Math.add(2, 3)`",
+      "`import * as Matematica` gathers every export under one local name",
+      "`{ add, subtract, multiply, divide }` unpacks the named exports",
     ],
-    code: `import VariablesAndConstants from "./VariablesAndConstants";
-import VariableTypes from "./VariableTypes";
-import BooleanVariables from "./BooleanVariables";
-import IfElse from "./IfElse";
-import TernaryOperator from "./TernaryOperator";
-import ConditionalOutputIfElse from "./ConditionalOutputIfElse";
-import ConditionalOutputInline from "./ConditionalOutputInline";
-import NullUndefined from "./NullUndefined";
-import LegacyFunctions from "./LegacyFunctions";
-import ArrowFunctions from "./ArrowFunctions";
-import ImpliedReturn from "./ImpliedReturn";
-import TemplateLiterals from "./TemplateLiterals";
-import SimpleArrays from "./SimpleArrays";
-import ArrayIndexAndLength from "./ArrayIndexAndLength";
-import AddingAndRemovingToFromArrays from "./AddingAndRemovingToFromArrays";
-import ForLoops from "./ForLoops";
-import MapFunction from "./MapFunction";
-import FindFunction from "./FindFunction";
-import FindIndex from "./FindIndex";
-import FilterFunction from "./FilterFunction";
-import IncludesSomeEvery from "./IncludesSomeEvery";
-import ReduceFunction from "./ReduceFunction";
-import JsonStringify from "./JsonStringify";
-import House from "./House";
-import Spreader from "./Spreader";
-import Destructing from "./Destructing";
-import FunctionDestructing from "./FunctionDestructing";
-import DestructingImports from "./DestructingImports";
-
-export default function Lab3() {
-  console.log("Hello World!");
-  return (
-    <div id="wd-lab3">
-      <h2>Lab 3</h2>
-      <VariablesAndConstants />
-      <VariableTypes />
-      <BooleanVariables />
-      <IfElse />
-      <TernaryOperator />
-      <ConditionalOutputIfElse />
-      <ConditionalOutputInline />
-      <NullUndefined />
-      <LegacyFunctions />
-      <ArrowFunctions />
-      <ImpliedReturn />
-      <TemplateLiterals />
-      <SimpleArrays />
-      <ArrayIndexAndLength />
-      <AddingAndRemovingToFromArrays />
-      <ForLoops />
-      <MapFunction />
-      <FindFunction />
-      <FindIndex />
-      <FilterFunction />
-      <IncludesSomeEvery />
-      <ReduceFunction />
-      <JsonStringify />
-      <House />
-      <Spreader />
-      <Destructing />
-      <FunctionDestructing />
-      <DestructingImports />
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab3/page.tsx",
-    codeAddedLines: [28, 62],
+    embed: "js-destructing-imports",
   },
   {
     id: "recap",

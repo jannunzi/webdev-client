@@ -18,12 +18,9 @@ export default function SimpleArrays() {
   return (
     <div id="wd-simple-arrays">
       <h4>Simple Arrays</h4>
-      numberArray1 = {numberArray1}
-      <br />
-      stringArray1 = {stringArray1}
-      <br />
-      variableArray1 = {variableArray1}
-      <br />
+      numberArray1 = {numberArray1}     <br />
+      stringArray1 = {stringArray1}     <br />
+      variableArray1 = {variableArray1} <br />
       Todo list:
       <ol>{htmlArray1}</ol>
       <hr />

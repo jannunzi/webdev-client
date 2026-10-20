@@ -22,12 +22,15 @@ export async function highlightCodeToHtml({
   lineNumbers = false,
   highlightLines,
   addedLines,
+  startLine = 1,
 }: {
   code: string;
   language?: string;
   lineNumbers?: boolean;
   highlightLines?: CodeLineMarks;
   addedLines?: CodeLineMarks;
+  /** Number shown on the first line (a listing continued from a prior slide). Marks stay 1-based on this snippet. */
+  startLine?: number;
 }): Promise<string> {
   const highlighted = expandLineMarks(highlightLines);
   const added = expandLineMarks(addedLines);
@@ -38,7 +41,7 @@ export async function highlightCodeToHtml({
     ? [
         {
           line(node: { properties: Record<string, unknown> }, line: number) {
-            node.properties["data-line"] = String(line);
+            node.properties["data-line"] = String(line + startLine - 1);
             const classes = new Set(
               String(node.properties.class ?? "")
                 .split(/\s+/)

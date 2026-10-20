@@ -16,6 +16,7 @@ export async function highlightLectureCodeBlock(
     lineNumbers: true,
     highlightLines: block.highlightLines,
     addedLines: block.addedLines,
+    startLine: block.startLine,
   });
   return { ...block, html };
 }
@@ -35,6 +36,7 @@ export async function withHighlightedLectureCode(
               file: block.file,
               highlightLines: block.highlightLines,
               addedLines: block.addedLines,
+              startLine: block.startLine,
             });
             return { ...block, html: highlighted.html };
           }),
@@ -59,6 +61,7 @@ async function highlightLegacySlide(slide: LectureSlide): Promise<LectureSlide> 
     codeFile: undefined,
     codeHighlightLines: undefined,
     codeAddedLines: undefined,
+    codeStartLine: undefined,
     codeBlocks,
   };
 }
