@@ -28,8 +28,12 @@ export function videoCourseOptions(): VideoCourseOption[] {
   }));
 }
 
+/**
+ * Videos default stays CS 4550 (most clips are recorded there), even though the
+ * picker follows the syllabus tab order (Monday first).
+ */
 export function defaultVideoCourseId(): string {
-  return videoCourseOptions()[0]?.id ?? "CS4550";
+  return "CS4550";
 }
 
 /** Current syllabus term, as a clip semester code (`Fall 2026` → `FA26`). */

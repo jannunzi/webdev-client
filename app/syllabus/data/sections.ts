@@ -18,7 +18,7 @@ export const CS5610_09_ZOOM_URL = "https://northeastern.zoom.us/j/95309089469";
  * Official Fall 2026 sections. Every section meets once per week.
  * Meeting days and clock times are locked. Fill rooms / Zoom only when posted.
  */
-export const sections: CourseSection[] = [
+const officialSections: CourseSection[] = [
   {
     id: "cs4550-01",
     code: "CS 4550",
@@ -78,7 +78,34 @@ export const sections: CourseSection[] = [
   },
 ];
 
+/** Weekday of a section's (single) weekly meeting, Monday = 1 … Sunday = 7. */
+function meetingWeekday(section: CourseSection): number {
+  const day = section.daysOfWeek[0] ?? 7;
+  return day === 0 ? 7 : day;
+}
+
+/**
+ * Sections in tab order: by meeting day, Monday first
+ * (CS 5610-02 Mon, CS 5610-09 Tue, CS 4550-01 Wed).
+ */
+export const sections: CourseSection[] = [...officialSections].sort(
+  (a, b) => meetingWeekday(a) - meetingWeekday(b),
+);
+
 export const defaultSectionId = sections[0].id;
+
+/**
+ * Section to show after mount: the id saved in localStorage when it is still a
+ * real section, else the first tab. The server render always uses
+ * `defaultSectionId`, so hydration matches.
+ */
+export function resolveStoredSectionId(
+  stored: string | null | undefined,
+  list: readonly CourseSection[] = sections,
+): string {
+  if (stored && list.some((section) => section.id === stored)) return stored;
+  return list[0].id;
+}
 
 export function findSection(id: string | null | undefined): CourseSection {
   return sections.find((section) => section.id === id) ?? sections[0];

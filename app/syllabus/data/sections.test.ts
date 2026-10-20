@@ -6,8 +6,12 @@ import {
   CS5610_09_ZOOM_URL,
   findSection,
   isBannerMeetingLabelNote,
+  sections as orderedSections,
+  defaultSectionId as orderedDefault,
+  resolveStoredSectionId,
   sections,
 } from "./sections.ts";
+import { videoCourseOptions } from "../../../lib/videos/courses.ts";
 
 const meetingInfo = readFileSync(
   new URL("../components/MeetingInfo.tsx", import.meta.url),
@@ -90,5 +94,32 @@ describe("shared lecture recording policy", () => {
     assert.match(meetingInfo, /lectureRecordingNote/);
     assert.match(meetingInfo, /holidayMeetingNote/);
     assert.doesNotMatch(meetingInfo, /section\.lectureRecording/);
+  });
+});
+
+describe("syllabus tab order", () => {
+  it("orders tabs Monday → Wednesday", () => {
+    assert.deepEqual(
+      orderedSections.map((s) => s.id),
+      ["cs5610-02", "cs5610-09", "cs4550-01"],
+    );
+    assert.deepEqual(
+      orderedSections.map((s) => s.daysOfWeek[0]),
+      [1, 2, 3],
+    );
+    assert.equal(orderedDefault, "cs5610-02");
+  });
+  it("uses a saved section when valid, else the first tab", () => {
+    assert.equal(resolveStoredSectionId("cs4550-01"), "cs4550-01");
+    assert.equal(resolveStoredSectionId("cs5610-09"), "cs5610-09");
+    assert.equal(resolveStoredSectionId(null), "cs5610-02");
+    assert.equal(resolveStoredSectionId(""), "cs5610-02");
+    assert.equal(resolveStoredSectionId("cs9999-99"), "cs5610-02");
+  });
+  it("videos course picker shares the same order", () => {
+    assert.deepEqual(
+      videoCourseOptions().map((o) => o.id),
+      ["CS5610-02", "CS5610-09", "CS4550"],
+    );
   });
 });

@@ -426,8 +426,8 @@ describe("HTML §1.3 lecture clip map", () => {
 describe("videos query and course ids", () => {
   it("matches Fall 2026 roster section ids and builds a YouTube deep link", () => {
     assert.deepEqual(
-      videoCourseOptions().map((option) => option.id),
-      [...COURSE_SECTION_IDS],
+      videoCourseOptions().map((option) => option.id).sort(),
+      [...COURSE_SECTION_IDS].sort(),
     );
     assert.equal(
       sourceCourseIdForSyllabusSection({ code: "CS 5610", sectionNumber: "09" }),
