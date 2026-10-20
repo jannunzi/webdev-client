@@ -205,7 +205,9 @@ export default function A1SubmissionForm({
         </p>
       )}
       <p className="mt-0 text-neutral-800">
-        {assignmentId === "a2"
+        {assignmentId === "a3"
+          ? "Paste the a3 branch preview URL (the hostname contains -git-a3-) and your repository’s GitHub URL (the root, any branch, or …/tree/a3 all work). Checks open the preview, then fetch Labs, Lab 3 (and two /labs/lab3/add pages), the Dashboard, and Kambaz course screens."
+          : assignmentId === "a2"
           ? "Paste the a2 branch preview URL (the hostname contains -git-a2-) and your repository’s GitHub URL (the root or …/tree/a2 both work). Checks open the preview, then fetch Labs, Lab 2, the Tailwind page, and Kambaz screens."
           : ASSIGNMENT_STUDENT_COPY.checkInstructions}
       </p>
@@ -256,7 +258,7 @@ export default function A1SubmissionForm({
               htmlFor={`${assignmentId}-github-url`}
               className="font-sans text-sm font-semibold"
             >
-              {assignmentId === "a2"
+              {assignmentId === "a2" || assignmentId === "a3"
                 ? "GitHub repository URL"
                 : "Public GitHub repository URL (optional)"}
             </label>
@@ -266,10 +268,10 @@ export default function A1SubmissionForm({
               type="url"
               inputMode="url"
               autoComplete="url"
-              required={assignmentId === "a2"}
+              required={assignmentId === "a2" || assignmentId === "a3"}
               placeholder={
-                assignmentId === "a2"
-                  ? "https://github.com/yourname/webdev-client/tree/a2"
+                assignmentId === "a2" || assignmentId === "a3"
+                  ? `https://github.com/yourname/webdev-client/tree/${assignmentId}`
                   : "https://github.com/yourname/webdev-client"
               }
               className="mt-1 box-border w-full rounded border border-neutral-400 bg-white px-3 py-2 font-sans text-sm"

@@ -291,10 +291,10 @@ describe("A3 checker (structure only, ids optional)", () => {
 });
 
 describe("A3 wiring", () => {
-  it("is registered like A1/A2 but does not open submissions", () => {
+  it("is registered like A1/A2 and opens URL submissions", () => {
     assert.equal(getChecker("a3"), A3_CHECKER);
     assert.equal(criterionCoverage("a3", "a3-kambaz-editor"), "auto");
-    assert.equal(supportsUrlSubmission("a3"), false);
+    assert.equal(supportsUrlSubmission("a3"), true);
   });
 
   it("verifies every rubric item at a seeded path, with no element ids", () => {
@@ -303,5 +303,67 @@ describe("A3 wiring", () => {
       assert.ok((A3_SEED_PATHS as readonly string[]).includes(A3_VERIFY_PATHS[row.id]), row.id);
     }
     assert.deepEqual(A3_CHECKER.verifyHashes, {});
+  });
+});
+
+/* ------------------- reliability variants (Oct 19 pass) ------------------- */
+/*
+ * Each variant mirrors a live build that was run through the checker: the
+ * Chapter 3 reference project (100/100), and copies with every wd-* id
+ * removed, renamed course/assignment ids, different text, Tailwind classes,
+ * a class-only TOC, extra wrappers and Client Components (all 100/100), plus
+ * one false negative found on a public student a3 branch (an extra sidebar
+ * link whose classes are the same words in a different order).
+ */
+const NAV_EXTRA = (classes: string) =>
+  on(
+    (path) => path === "/dashboard" || path.startsWith("/courses/"),
+    (html) => html.replace(/(<a id="wd-labs-link"[^>]*>[\s\S]*?<\/a>)/, `$1<a class="${classes}" href="/labs">Lab Help</a>`),
+  );
+const TAILWIND_CLASSES = on(is("/labs/lab3"), (html) =>
+  html
+    .replace(/wd-bg-yellow/g, "bg-yellow-200")
+    .replace(/wd-bg-blue/g, "bg-blue-200")
+    .replace(/wd-bg-red/g, "bg-red-300")
+    .replace(/wd-bg-green/g, "bg-green-200")
+    .replace(/ wd-fg-black wd-padding-10px/g, " text-black p-2.5"),
+);
+const TOC_CLASS_ONLY = on((path) => path.startsWith("/labs"), (html) =>
+  html
+    .replace(/ style="background-color:#2563eb[^"]*"/g, ' class="rounded bg-blue-600 px-2 text-white"')
+    .replace(/ aria-current="page"/g, ""),
+);
+const TOC_ARIA_ONLY = on((path) => path.startsWith("/labs"), (html) => html.replace(/ style="background-color:#2563eb[^"]*"/g, ""));
+const WRAPPED = on(() => true, (html) =>
+  html.replace(/(<body[^>]*>)/, '$1<main class="p-4"><section class="wrapper"><div class="inner">').replace(/<\/body>/, "</div></section></main></body>"),
+);
+
+describe("A3 reliability: alternative builds keep full credit", () => {
+  const FULL: { name: string; serve: Serve }[] = [
+    { name: "extra sidebar link, same classes in a different order", serve: NAV_EXTRA("block bg-black py-3 text-center text-sm text-white no-underline") },
+    { name: "extra sidebar link styled differently on every page", serve: NAV_EXTRA("block bg-red-700 py-3 text-center text-sm text-white") },
+    { name: "Tailwind utility classes instead of the book's stylesheet classes", serve: TAILWIND_CLASSES },
+    { name: "TOC highlight by className only", serve: TOC_CLASS_ONLY },
+    { name: "TOC highlight by aria-current only", serve: TOC_ARIA_ONLY },
+    { name: "extra wrapper elements around every page", serve: WRAPPED },
+    { name: "ids stripped and text relabeled together", serve: (path) => { const page = relabel(path); return "html" in page && page.status === 200 ? { ...page, html: stripWdIds(page.html) } : page; } },
+  ];
+  for (const variant of FULL) {
+    it(`keeps 100 / 100: ${variant.name}`, async () => {
+      const { failed, points } = await grade(variant.serve);
+      assert.deepEqual(failed, []);
+      assert.equal(points, 100);
+    });
+  }
+
+  it("still fails a double highlight when an extra sidebar link is present", async () => {
+    const both: Serve = (path) => {
+      const page = NAV_EXTRA("block bg-black py-3 text-center text-sm text-white no-underline")(path);
+      return "html" in page && page.status === 200 ? (doubleHighlight(path) as Page).status === 200 && path.startsWith("/courses/")
+        ? { ...page, html: page.html.replace(/(id="wd-dashboard-link" class="[^"]*?)bg-black text-white/, "$1bg-white text-red-600") }
+        : page : page;
+    };
+    const { failed } = await grade(both);
+    assert.deepEqual(failed, ["a3-kambaz-nav"]);
   });
 });

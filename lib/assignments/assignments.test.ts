@@ -77,14 +77,15 @@ function memoryProgressStore(): ProgressStore {
 }
 
 describe("assignment catalog", () => {
-  it("lists A1–A6 from the syllabus and marks A1/A2 ready", () => {
+  it("lists A1–A6 from the syllabus and marks A1/A2/A3 ready", () => {
     const ids = listAssignmentIds();
     assert.deepEqual(ids, ["a1", "a2", "a3", "a4", "a5", "a6"]);
     const items = listAssignments();
     assert.equal(items.length, 6);
     assert.equal(getAssignment("A1")?.status, "ready");
     assert.equal(getAssignment("a2")?.status, "ready");
-    assert.equal(getAssignment("a3")?.status, "coming_soon");
+    assert.equal(getAssignment("a3")?.status, "ready");
+    assert.equal(getAssignment("a4")?.status, "coming_soon");
     assert.equal(getAssignment("a1")?.dueDate, "2026-09-27");
     assert.equal(getAssignment("a2")?.dueDate, "2026-10-11");
     assert.equal(getAssignment("a3")?.dueDate, "2026-10-25");

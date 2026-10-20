@@ -92,7 +92,7 @@ describe("student submission status", () => {
       "graded",
     );
     assert.equal(
-      statusForAssignment({ assignmentId: "a3", hasSubmission: false }),
+      statusForAssignment({ assignmentId: "a4", hasSubmission: false }),
       null,
     );
     assert.equal(

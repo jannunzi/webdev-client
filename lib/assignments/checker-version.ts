@@ -38,7 +38,7 @@ export const A2_CHECKER_RULES_VERSION = "a2-rules-v4";
  *   v2: the GitHub URL item accepts any URL of the student's repository
  *       (root or any branch), same rule as A2 v4.
  */
-export const A3_CHECKER_RULES_VERSION = "a3-rules-v2";
+export const A3_CHECKER_RULES_VERSION = "a3-rules-v3";
 
 /** Short commit of the running deployment, when Vercel provides it. */
 export function deployedCommit(env: Record<string, string | undefined> = process.env): string {

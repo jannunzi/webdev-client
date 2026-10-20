@@ -170,7 +170,10 @@ function samePath(a: string, b: string): boolean {
 
 /** How a link is marked: class, style, and aria-current together. */
 function markOf(anchor: Anchor): string {
-  return [attr(anchor.open, "class"), attr(anchor.open, "style"), attr(anchor.open, "aria-current")].join("|");
+  // Class order doesn't matter: "bg-black text-white" and "text-white bg-black" look the same.
+  const classes = [...new Set(attr(anchor.open, "class").split(/\s+/).filter(Boolean))].sort().join(" ");
+  const style = attr(anchor.open, "style").replace(/\s+/g, "").replace(/;$/, "").toLowerCase();
+  return [classes, style, attr(anchor.open, "aria-current")].join("|");
 }
 
 /* ------------------------------------------------------------------ */
@@ -418,31 +421,47 @@ function pageOf(ctx: StructureContext, id: string, screen: string): Lookup {
 
 const NAV_PATH = /^\/(dashboard|calendar|inbox|labs|courses|account)(\/[^/]*)?$/i;
 
-/** Kambaz sidebar links on a page that are marked differently from the rest. */
-function highlightedNavItems(html: string, siteHost?: string): { key: string; path: string }[] | null {
-  const seen = new Map<string, { key: string; path: string; mark: string }>();
+type NavItem = { key: string; path: string; mark: string };
+
+/** Kambaz sidebar links on a page (Account, Dashboard, Courses, Calendar, ...), first occurrence of each. */
+function navItems(html: string, siteHost?: string): NavItem[] {
+  const seen = new Map<string, NavItem>();
   for (const anchor of anchors(html, siteHost)) {
     if (!anchor.path || !NAV_PATH.test(anchor.path) || /^\/labs\/.+/i.test(anchor.path)) continue;
     if (/^\/courses\/[^/]+/i.test(anchor.path)) continue;
     const key = `${anchor.path.toLowerCase()}|${anchor.text.toLowerCase()}`;
     if (!seen.has(key)) seen.set(key, { key, path: anchor.path, mark: markOf(anchor) });
   }
-  const items = [...seen.values()];
+  return [...seen.values()];
+}
+
+/**
+ * Sidebar links marked differently from the rest. When the other page is
+ * given, a link styled the same odd way on both pages (an extra help button,
+ * a link whose classes differ for looks only) is not a highlight: the
+ * highlight is what moves between /dashboard and a course.
+ */
+function highlightedNavItems(html: string, siteHost?: string, otherHtml?: string): NavItem[] | null {
+  const items = navItems(html, siteHost);
   if (items.length < 4) return null;
   const counts = new Map<string, number>();
   for (const item of items) counts.set(item.mark, (counts.get(item.mark) ?? 0) + 1);
   const common = [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0];
-  return items.filter((item) => item.mark !== common);
+  const odd = items.filter((item) => item.mark !== common);
+  if (otherHtml === undefined) return odd;
+  const other = new Map(navItems(otherHtml, siteHost).map((item) => [item.key, item.mark]));
+  return odd.filter((item) => other.get(item.key) !== item.mark);
 }
 
 export function kambazNavHighlight(dashboardHtml: string, ctx: StructureContext): StructureVerdict {
-  const onDashboard = highlightedNavItems(dashboardHtml, ctx.siteHost);
-  if (!onDashboard || onDashboard.length !== 1 || !samePath(onDashboard[0].path, "/dashboard")) return false;
+  if (!highlightedNavItems(dashboardHtml, ctx.siteHost)) return false;
   const { ids, states } = compareCourses(ctx);
   if (ids.length === 0) return notOk(states.length ? states : ["untried"]);
   const home = pageOf(ctx, ids[0], "home");
   if (home.state !== "ok") return notOk([home.state]);
-  const inCourse = highlightedNavItems(home.html, ctx.siteHost);
+  const onDashboard = highlightedNavItems(dashboardHtml, ctx.siteHost, home.html);
+  if (!onDashboard || onDashboard.length !== 1 || !samePath(onDashboard[0].path, "/dashboard")) return false;
+  const inCourse = highlightedNavItems(home.html, ctx.siteHost, dashboardHtml);
   return Boolean(inCourse && inCourse.length === 1 && inCourse[0].key !== onDashboard[0].key);
 }
 
