@@ -1306,7 +1306,7 @@ describe("lecture decks", () => {
     assert.equal(counts["optional-chaining"], 6);
     assert.equal(counts["dynamic-styling"], 10);
     assert.equal(counts["client-and-server"], 56);
-    assert.equal(counts["parameterizing-components"], 10);
+    assert.equal(counts["parameterizing-components"], 25);
     assert.equal(counts["path-params-and-todos"], 17);
     assert.equal(counts["kambaz-database"], 14);
     assert.equal(counts["kambaz-dashboard-data"], 8);
@@ -1833,6 +1833,10 @@ describe("lecture decks", () => {
         add: "js-add",
         square: "js-square",
         highlight: "js-highlight",
+        "box-demo": "js-children-box",
+        "box-model": "js-children-box-model",
+        "nesting-order": "js-children-nesting-order",
+        "card-demo": "js-children-card",
       },
       "path-params-and-todos": {
         "path-links": "js-path-parameters",
@@ -3736,7 +3740,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         );
       });
     }
-    assert.equal(demos, 63);
+    assert.equal(demos, 67);
   });
 
   it("keeps one code slide unless a listing is long, and never leaves a tiny tail", () => {
@@ -3827,7 +3831,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 219);
+    assert.equal(intros, 222);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
@@ -3868,6 +3872,30 @@ describe("form-state-types demo titles", () => {
       assert.notEqual(live.title, intro.title);
       assert.ok(live.title.length <= LECTURE_TITLE_MAX_CHARS);
     }
+  });
+});
+
+describe("parameterizing-components §3.7.1.1 children slides", () => {
+  it("copies each listing from the book byte for byte, in the book's order", () => {
+    const book = readFileSync(join(process.cwd(), "app/book/ch3/sections/StylingAndComponents.tsx"), "utf8");
+    const listing = (name: string) => {
+      const m = book.match(new RegExp(`<CodeBlock[^>]*?name="${name}"[^>]*>\\{\`([\\s\\S]*?)\`\\}</CodeBlock>`));
+      assert.ok(m, name);
+      return m[1].replace(/\\`/g, "`").replace(/\\\$/g, "$");
+    };
+    const order = ["Box", "BoxDemo", "Margin", "Border", "Padding", "Content", "BoxModelDemo", "NestingOrderDemo", "Card", "CardHeader", "CardBody", "CardDemo"];
+    const deck = getLectureDeck("parameterizing-components")!;
+    const shown: string[] = [];
+    for (const slide of deck.slides) {
+      for (const block of lectureSlideCodeBlocks(slide)) {
+        const name = block.file?.match(/children\/(\w+)\.tsx$/)?.[1];
+        if (!name) continue;
+        assert.equal(block.code, listing(name), name);
+        shown.push(name);
+      }
+    }
+    assert.deepEqual(shown, order);
+    assert.equal(findSlide("parameterizing-components", "layers").codeBlocks?.length, 4);
   });
 });
 

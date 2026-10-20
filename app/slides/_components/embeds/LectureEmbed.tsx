@@ -150,6 +150,10 @@ import {
   JsPathParametersEmbed,
   JsReduceEmbed,
   JsServerComponentEmbed,
+  JsChildrenBoxEmbed,
+  JsChildrenBoxModelEmbed,
+  JsChildrenNestingOrderEmbed,
+  JsChildrenCardEmbed,
   JsSimpleArraysEmbed,
   JsSpreaderEmbed,
   JsSquareEmbed,
@@ -461,6 +465,14 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <JsClientComponentEmbed />;
     case "js-server-component":
       return <JsServerComponentEmbed />;
+    case "js-children-box":
+      return <JsChildrenBoxEmbed />;
+    case "js-children-box-model":
+      return <JsChildrenBoxModelEmbed />;
+    case "js-children-nesting-order":
+      return <JsChildrenNestingOrderEmbed />;
+    case "js-children-card":
+      return <JsChildrenCardEmbed />;
     case "lab3-pathname":
       return <Lab3PathnameEmbed />;
     case "lab3-search-params":
