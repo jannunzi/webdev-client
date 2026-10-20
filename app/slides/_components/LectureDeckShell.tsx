@@ -31,7 +31,14 @@ import {
   slidePaneOverflows,
   slidePaneScrollStep,
 } from "@/lib/lectures/slide-pane";
-import { demoStageOverflows, fitDemoScale, setDemoScale } from "@/lib/lectures/demo-fit";
+import {
+  DEMO_FIT_CAPS,
+  DEMO_FIT_MAX,
+  DEMO_FIT_MIN,
+  demoStageOverflows,
+  fitDemoScale,
+  setDemoScale,
+} from "@/lib/lectures/demo-fit";
 import LectureDiagram from "./diagrams/LectureDiagram";
 import LectureFilmstrip from "./LectureFilmstrip";
 import LectureSlideImage from "./LectureSlideImage";
@@ -135,16 +142,22 @@ export default function LectureDeckShell({
     if (!stage) return;
     if (!demoStage) {
       stage.style.removeProperty("--demo-fit-scale");
-      stage.style.removeProperty("--demo-fit-text");
+      stage.style.removeProperty("--demo-zoom");
       return;
     }
     const fit = () => {
       const body = stage.querySelector<HTMLElement>(".lecture-demo-frame-body");
       if (!body) return;
-      const scale = fitDemoScale((next) => {
-        setDemoScale(stage, next);
-        return demoStageOverflows(stage, body);
-      });
+      const deckSlug = window.location.pathname.split("/").filter(Boolean).pop() ?? "";
+      const cap = DEMO_FIT_CAPS[`${deckSlug}#${slide?.id ?? ""}`] ?? DEMO_FIT_MAX;
+      const scale = fitDemoScale(
+        (next) => {
+          setDemoScale(stage, next);
+          return demoStageOverflows(stage, body);
+        },
+        DEMO_FIT_MIN,
+        cap,
+      );
       setDemoScale(stage, scale);
     };
     fit();
@@ -154,7 +167,7 @@ export default function LectureDeckShell({
       window.clearTimeout(timer);
       window.removeEventListener("resize", fit);
     };
-  }, [demoStage, index, isPresenting]);
+  }, [demoStage, index, isPresenting, slide?.id]);
 
   const goTo = useCallback(
     (next: number) => {

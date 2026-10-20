@@ -51,8 +51,7 @@ export default function KambazNavigation() {
           className={`inline-block text-3xl ${
             accountActive ? "text-red-600" : "text-white"
           }`}
-        />
-        <br />
+        /> <br />
         Account
       </Link>
       {LINKS.map((link) => {
@@ -70,8 +69,7 @@ export default function KambazNavigation() {
               active ? "bg-white text-red-600" : "bg-black text-white"
             }`}
           >
-            <Icon className="inline-block text-3xl text-red-500" />
-            <br />
+            <Icon className="inline-block text-3xl text-red-500" /> <br />
             {link.label}
           </Link>
         );

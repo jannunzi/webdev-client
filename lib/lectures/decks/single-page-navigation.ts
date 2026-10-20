@@ -54,13 +54,7 @@ export const SINGLE_PAGE_NAVIGATION_SLIDES: LectureSlide[] = [
   {
     id: "link-toc",
     title: "Add Table of Content",
-    kind: "demo",
-    embed: "labs-index",
-    bullets: [
-      "`import Link from \"next/link\"`",
-      "`<Link href=\"/labs/lab1\">Lab 1</Link>` — `href` is the path, not a file path",
-      "`Link` still renders an anchor. It intercepts the click so React can swap the page",
-    ],
+    kind: "content",
     code: `import Link from "next/link";
 
 <Link href="/labs/lab1" id="wd-lab1-link">Lab 1</Link>
@@ -69,13 +63,20 @@ export const SINGLE_PAGE_NAVIGATION_SLIDES: LectureSlide[] = [
     codeLanguage: "tsx",
   },
   {
-    id: "labs-index-toc",
-    title: "Create a Table of Content",
+    id: "link-toc-live",
+    title: "Add Table of Content: live demo",
     kind: "demo",
     bullets: [
-      "The Labs index is `app/labs/page.tsx` — URL `/labs`",
-      "`TOC.tsx` is the reusable table of contents — not copied into every lab",
+      "`import Link from \"next/link\"`",
+      "`<Link href=\"/labs/lab1\">Lab 1</Link>` — `href` is the path, not a file path",
+      "`Link` still renders an anchor. It intercepts the click so React can swap the page",
     ],
+    embed: "labs-index",
+  },
+  {
+    id: "labs-index-toc",
+    title: "Create a Table of Content",
+    kind: "content",
     code: `import Link from "next/link";
 
 export default function Labs() {
@@ -116,12 +117,21 @@ export default function TOC() {
 }`,
       },
     ],
+  },
+  {
+    id: "labs-index-toc-live",
+    title: "Labs: live demo",
+    kind: "demo",
+    bullets: [
+      "The Labs index is `app/labs/page.tsx` — URL `/labs`",
+      "`TOC.tsx` is the reusable table of contents — not copied into every lab",
+    ],
     embed: "labs-index",
   },
   {
     id: "layout-children",
     title: "LAYOUTS",
-    kind: "demo",
+    kind: "content",
     bullets: [
       "`layout.tsx` keeps the TOC. `{children}` is the page that **swaps**",
       "`page.tsx` creates a URL. `layout.tsx` does **not**",
@@ -148,7 +158,12 @@ export default function LabsLayout({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/layout.tsx",
-    codeAddedLines: [2, [12, 14]],
+    codeAddedLines: [2, 12, 13, 14],
+  },
+  {
+    id: "layout-children-live",
+    title: "LabsLayout: live demo",
+    kind: "demo",
     embed: "labs-layout",
     interactiveHint:
       "Click Lab 2 in the live TOC. The left column stays. Only the page column — {children} — changes.",
@@ -156,12 +171,7 @@ export default function LabsLayout({
   {
     id: "lab2-page",
     title: "Lab 2 is its own page.tsx",
-    kind: "demo",
-    embed: "labs-layout",
-    bullets: [
-      "Create `app/labs/lab2/page.tsx` — URL `/labs/lab2`",
-      "A heading is enough for this week. CSS fills the file in Chapter 2",
-    ],
+    kind: "content",
     code: `export default function Lab2() {
   return (
     <div id="wd-lab2">
@@ -173,14 +183,19 @@ export default function LabsLayout({
     codeFile: "app/labs/lab2/page.tsx",
   },
   {
+    id: "lab2-page-live",
+    title: "Lab2: live demo",
+    kind: "demo",
+    bullets: [
+      "Create `app/labs/lab2/page.tsx` — URL `/labs/lab2`",
+      "A heading is enough for this week. CSS fills the file in Chapter 2",
+    ],
+    embed: "labs-layout",
+  },
+  {
     id: "lab3-page",
     title: "Lab 3 is the same pattern",
-    kind: "demo",
-    embed: "labs-layout",
-    bullets: [
-      "`app/labs/lab3/page.tsx` — URL `/labs/lab3`",
-      "Add a `Link` on the Labs index (and in `TOC.tsx`) so the screen is reachable",
-    ],
+    kind: "content",
     code: `export default function Lab3() {
   return (
     <div id="wd-lab3">
@@ -190,6 +205,16 @@ export default function LabsLayout({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/page.tsx",
+  },
+  {
+    id: "lab3-page-live",
+    title: "Lab3: live demo",
+    kind: "demo",
+    bullets: [
+      "`app/labs/lab3/page.tsx` — URL `/labs/lab3`",
+      "Add a `Link` on the Labs index (and in `TOC.tsx`) so the screen is reachable",
+    ],
+    embed: "labs-layout",
   },
   {
     id: "history-not-hash",

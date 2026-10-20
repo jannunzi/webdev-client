@@ -24,19 +24,13 @@ export const PARAMETERIZING_COMPONENTS_SLIDES: LectureSlide[] = [
   {
     id: "add",
     title: "Add reads a and b from props",
-    kind: "demo",
-    bullets: [
-      "`{ a, b }: { a: number; b: number }` names and types the props",
-      "Reuse the same component with different attributes",
-      "Create `Add.tsx` and import it into Lab 3",
-    ],
+    kind: "content",
     code: `export default function Add({ a, b }: { a: number; b: number }) {
   return (
     <div id="wd-add">
       <h4>Add</h4>
       a = {a}
-      b = {b}
-      <br />
+      b = {b} <br />
       a + b = {a + b}
       <hr />
     </div>
@@ -44,18 +38,23 @@ export const PARAMETERIZING_COMPONENTS_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/Add.tsx",
-    codeHighlightLines: [1, 8],
+    codeHighlightLines: [1, 7],
+  },
+  {
+    id: "add-live",
+    title: "Add: live demo",
+    kind: "demo",
+    bullets: [
+      "`{ a, b }: { a: number; b: number }` names and types the props",
+      "Reuse the same component with different attributes",
+      "Create `Add.tsx` and import it into Lab 3",
+    ],
     embed: "js-add",
   },
   {
     id: "square",
     title: "children is the body",
-    kind: "demo",
-    bullets: [
-      "Content between the tags arrives as `children`",
-      "`<Square>4</Square>` — the child text `4` becomes `16`",
-      "`Number(children)` turns that text into a number",
-    ],
+    kind: "content",
     code: `import { ReactNode } from "react";
 
 export default function Square({ children }: { children: ReactNode }) {
@@ -65,17 +64,22 @@ export default function Square({ children }: { children: ReactNode }) {
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/Square.tsx",
     codeHighlightLines: [3, 5],
+  },
+  {
+    id: "square-live",
+    title: "Square: live demo",
+    kind: "demo",
+    bullets: [
+      "Content between the tags arrives as `children`",
+      "`<Square>4</Square>` — the child text `4` becomes `16`",
+      "`Number(children)` turns that text into a number",
+    ],
     embed: "js-square",
   },
   {
     id: "highlight",
     title: "Highlight formats its children",
-    kind: "demo",
-    bullets: [
-      "Same `children` prop — wrapping, not arithmetic",
-      "A yellow span with red text around whatever you nest",
-      "Create `Highlight.tsx` and wrap a sentence on Lab 3",
-    ],
+    kind: "content",
     code: `import { ReactNode } from "react";
 
 export default function Highlight({ children }: { children: ReactNode }) {
@@ -91,6 +95,16 @@ export default function Highlight({ children }: { children: ReactNode }) {
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/Highlight.tsx",
     codeHighlightLines: [3, 9],
+  },
+  {
+    id: "highlight-live",
+    title: "Highlight: live demo",
+    kind: "demo",
+    bullets: [
+      "Same `children` prop — wrapping, not arithmetic",
+      "A yellow span with red text around whatever you nest",
+      "Create `Highlight.tsx` and wrap a sentence on Lab 3",
+    ],
     embed: "js-highlight",
   },
   {

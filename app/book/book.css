@@ -733,24 +733,6 @@ code.quiz-prompt-code {
 }
 
 
-/* Demo-only slides: the lone size utilities above grow with the fitted scale too
- * (--demo-fit-text is the fitted scale / 1.3, so 1 = the old fixed size). */
-.lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body .text-xs:not([class*="sm:text-"]):not([class*="md:text-"]):not([class*="lg:text-"]):not([class*="xl:text-"]):not([class*="2xl:text-"]) {
-  font-size: calc(0.9375rem * var(--demo-fit-text, 1));
-}
-
-.lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body .text-sm:not([class*="sm:text-"]):not([class*="md:text-"]):not([class*="lg:text-"]):not([class*="xl:text-"]):not([class*="2xl:text-"]) {
-  font-size: calc(1.09375rem * var(--demo-fit-text, 1));
-}
-
-.lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body .text-base:not([class*="sm:text-"]):not([class*="md:text-"]):not([class*="lg:text-"]):not([class*="xl:text-"]):not([class*="2xl:text-"]) {
-  font-size: calc(1.25rem * var(--demo-fit-text, 1));
-}
-
-.lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body .text-lg:not([class*="sm:text-"]):not([class*="md:text-"]):not([class*="lg:text-"]):not([class*="xl:text-"]):not([class*="2xl:text-"]) {
-  font-size: calc(1.40625rem * var(--demo-fit-text, 1));
-}
-
 /*
  * Demo-only slides (no code sharing the stage): grow the live embed and
  * form controls ~30% so Signup/Signin/Profile fields read from the back.
@@ -764,8 +746,10 @@ code.quiz-prompt-code {
 }
 
 .lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body {
-  /* Set per slide by fitDemoScale (lib/lectures/demo-fit.ts): grows to the free space, never below 1.3. */
-  font-size: calc(var(--demo-fit-scale, 1.3) * 1em);
+  font-size: 1.3em;
+  /* Set per slide by fitDemoScale (lib/lectures/demo-fit.ts): zoom scales
+   * text, form controls and fixed px boxes together, never below 1. */
+  zoom: var(--demo-zoom, 1);
   padding: 1.15rem 1.35rem;
 }
 

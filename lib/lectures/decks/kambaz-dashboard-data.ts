@@ -24,12 +24,7 @@ export const KAMBAZ_DASHBOARD_DATA_SLIDES: LectureSlide[] = [
   {
     id: "page",
     title: "Dashboard reads the database",
-    kind: "demo",
-    bullets: [
-      "`import * as db from \"../database\"` then `const courses = db.courses`",
-      "`{…course}` passes every field the card destructures",
-      "Add or rename a course in JSON — the grid updates, `CourseCard` does not",
-    ],
+    kind: "content",
     code: `import CourseCard from "./CourseCard";
 import * as db from "../database";
 
@@ -54,7 +49,17 @@ export default function Dashboard() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/page.tsx",
-    codeHighlightLines: [2, 5, 10, [16, 18]],
+    codeHighlightLines: [2, 5, 10, 16, 17, 18],
+  },
+  {
+    id: "page-live",
+    title: "Dashboard: live demo",
+    kind: "demo",
+    bullets: [
+      "`import * as db from \"../database\"` then `const courses = db.courses`",
+      "`{…course}` passes every field the card destructures",
+      "Add or rename a course in JSON — the grid updates, `CourseCard` does not",
+    ],
     embed: "kambaz-ch3-dashboard",
   },
   {

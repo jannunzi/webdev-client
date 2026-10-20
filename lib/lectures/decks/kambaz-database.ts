@@ -52,14 +52,8 @@ export default function Kambaz() {
   },
   {
     id: "nav",
-    title: "Sidebar links come from an array",
-    kind: "demo",
-    bullets: [
-      "Replace handwritten links with `LINKS` — label, path, icon",
-      "Account stays a special case (red text on white when active)",
-      "Courses points at `/dashboard` — you reach a course from a card",
-      "One item lit at a time: Dashboard on `/dashboard`, Courses inside `/courses/…`",
-    ],
+    title: "Sidebar links come from an array (1/3)",
+    kind: "content",
     code: `"use client";
 
 import { AiOutlineDashboard } from "react-icons/ai";
@@ -76,8 +70,16 @@ const LINKS = [
   { label: "Inbox", path: "/inbox", icon: FaInbox },
   { label: "Labs", path: "/labs", icon: LiaCogSolid },
 ] as const;
-
-export default function KambazNavigation() {
+`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/Navigation.tsx",
+    codeHighlightLines: [10, 11, 12, 13, 14, 15, 16],
+  },
+  {
+    id: "nav-part-2",
+    title: "Sidebar links come from an array (2/3)",
+    kind: "content",
+    code: `export default function KambazNavigation() {
   const pathname = usePathname() ?? "";
   const accountActive = pathname.includes("/account");
 
@@ -113,11 +115,18 @@ export default function KambazNavigation() {
           className={\`inline-block text-3xl \${
             accountActive ? "text-red-600" : "text-white"
           }\`}
-        />
-        <br />
+        /> <br />
         Account
-      </Link>
-      {LINKS.map((link) => {
+      </Link>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/Navigation.tsx",
+    codeStartLine: 18,
+  },
+  {
+    id: "nav-part-3",
+    title: "Sidebar links come from an array (3/3)",
+    kind: "content",
+    code: `      {LINKS.map((link) => {
         const active =
           link.label === "Courses"
             ? pathname.includes("/courses")
@@ -132,8 +141,7 @@ export default function KambazNavigation() {
               active ? "bg-white text-red-600" : "bg-black text-white"
             }\`}
           >
-            <Icon className="inline-block text-3xl text-red-500" />
-            <br />
+            <Icon className="inline-block text-3xl text-red-500" /> <br />
             {link.label}
           </Link>
         );
@@ -143,7 +151,19 @@ export default function KambazNavigation() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/Navigation.tsx",
-    codeHighlightLines: [[10, 16], [58, 78]],
+    codeStartLine: 57,
+    codeHighlightLines: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+  },
+  {
+    id: "nav-live",
+    title: "KambazNavigation: live demo",
+    kind: "demo",
+    bullets: [
+      "Replace handwritten links with `LINKS` — label, path, icon",
+      "Account stays a special case (red text on white when active)",
+      "Courses points at `/dashboard` — you reach a course from a card",
+      "One item lit at a time: Dashboard on `/dashboard`, Courses inside `/courses/…`",
+    ],
     embed: "kambaz-links-nav",
   },
   {

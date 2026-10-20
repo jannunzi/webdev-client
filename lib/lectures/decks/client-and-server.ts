@@ -25,13 +25,7 @@ export const CLIENT_AND_SERVER_SLIDES: LectureSlide[] = [
   {
     id: "client",
     title: "usePathname needs a Client Component",
-    kind: "demo",
-    bullets: [
-      "`usePathname` reads the address bar — hooks only work in Client Components",
-      "Remove the directive and `next dev` or `next build` stops: the hook needs `\"use client\"`",
-      "View Source on `/labs/lab3` still shows the pathname text — rendered on the server first",
-      "Embedded here the path is the slides route; Lab 3 shows `/labs/lab3`",
-    ],
+    kind: "content",
     code: `"use client";
 
 import { usePathname } from "next/navigation";
@@ -48,18 +42,23 @@ export default function ClientComponentDemo() {
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/ClientComponentDemo.tsx",
     codeHighlightLines: [1, 6],
+  },
+  {
+    id: "client-live",
+    title: "ClientComponentDemo: live demo",
+    kind: "demo",
+    bullets: [
+      "`usePathname` reads the address bar — hooks only work in Client Components",
+      "Remove the directive and `next dev` or `next build` stops: the hook needs `\"use client\"`",
+      "View Source on `/labs/lab3` still shows the pathname text — rendered on the server first",
+      "Embedded here the path is the slides route; Lab 3 shows `/labs/lab3`",
+    ],
     embed: "js-client-component",
   },
   {
     id: "server",
     title: "The server can read the disk",
-    kind: "demo",
-    bullets: [
-      "`process.platform` and `fs.readdirSync` exist only on Node",
-      "Adding `\"use client\"` here would fail — the browser has no `fs`",
-      "`try` / `catch` leaves `files` empty if the folder is missing",
-      "On Vercel, Lab 3 is prerendered at build time: the time and file list don’t change on refresh. `npm run dev` re-renders every request",
-    ],
+    kind: "content",
     code: `import fs from "node:fs";
 import path from "node:path";
 
@@ -91,7 +90,18 @@ export default function ServerComponentDemo() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/ServerComponentDemo.tsx",
-    codeHighlightLines: [[5, 14], 26],
+    codeHighlightLines: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 26],
+  },
+  {
+    id: "server-live",
+    title: "ServerComponentDemo: live demo",
+    kind: "demo",
+    bullets: [
+      "`process.platform` and `fs.readdirSync` exist only on Node",
+      "Adding `\"use client\"` here would fail — the browser has no `fs`",
+      "`try` / `catch` leaves `files` empty if the folder is missing",
+      "On Vercel, Lab 3 is prerendered at build time: the time and file list don’t change on refresh. `npm run dev` re-renders every request",
+    ],
     embed: "js-server-component",
   },
   {

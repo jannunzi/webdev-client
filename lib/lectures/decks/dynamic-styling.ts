@@ -54,12 +54,7 @@ export const DYNAMIC_STYLING_SLIDES: LectureSlide[] = [
   {
     id: "classes",
     title: "Build className from a variable",
-    kind: "demo",
-    bullets: [
-      "The fourth box is `` wd-bg-${color} `` — `color` is `\"blue\"`",
-      "The fifth box picks red or green from `dangerous`",
-      "Flip the flag and the background changes",
-    ],
+    kind: "content",
     code: `import "./Classes.css";
 
 export default function Classes() {
@@ -91,18 +86,23 @@ export default function Classes() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/Classes.tsx",
-    codeHighlightLines: [18, [21, 23]],
+    codeHighlightLines: [18, 21, 22, 23],
+  },
+  {
+    id: "classes-live",
+    title: "Classes: live demo",
+    kind: "demo",
+    bullets: [
+      "The fourth box is `` wd-bg-${color} `` — `color` is `\"blue\"`",
+      "The fifth box picks red or green from `dangerous`",
+      "Flip the flag and the background changes",
+    ],
     embed: "js-classes",
   },
   {
     id: "styles",
     title: "style takes a camelCase object",
-    kind: "demo",
-    bullets: [
-      "React `style` is a JS object — `backgroundColor`, not `background-color`",
-      "Spread smaller objects so padding and color are reused",
-      "Double braces on yellow: JSX `{…}` plus an object literal `{…}`",
-    ],
+    kind: "content",
     code: `export default function Styles() {
   const colorBlack = { color: "black" };
   const padding10px = { padding: "10px" };
@@ -135,7 +135,17 @@ export default function Classes() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/Styles.tsx",
-    codeHighlightLines: [[4, 13], [17, 22], 26],
+    codeHighlightLines: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 20, 21, 22, 26],
+  },
+  {
+    id: "styles-live",
+    title: "Styles: live demo",
+    kind: "demo",
+    bullets: [
+      "React `style` is a JS object — `backgroundColor`, not `background-color`",
+      "Spread smaller objects so padding and color are reused",
+      "Double braces on yellow: JSX `{…}` plus an object literal `{…}`",
+    ],
     embed: "js-styles",
   },
   {

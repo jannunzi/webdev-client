@@ -108,27 +108,31 @@ export default function AddPathParameters() {
   {
     id: "path-links",
     title: "Link encodes the two numbers",
-    kind: "demo",
-    bullets: [
-      "`/labs/lab3/add/1/2` prints `1 + 2 = 3`",
-      "The second link should print `3 + 4 = 7`",
-      "Import `PathParameters` into Lab 3 and click both",
-    ],
+    kind: "content",
     code: `import Link from "next/link";
 
 export default function PathParameters() {
   return (
     <div id="wd-path-parameters">
       <h2>Path Parameters</h2>
-      <Link href="/labs/lab3/add/1/2">1 + 2</Link>
-      <br />
+      <Link href="/labs/lab3/add/1/2">1 + 2</Link> <br />
       <Link href="/labs/lab3/add/3/4">3 + 4</Link>
     </div>
   );
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/PathParameters.tsx",
-    codeHighlightLines: [7, 9],
+    codeHighlightLines: [7, 8],
+  },
+  {
+    id: "path-links-live",
+    title: "PathParameters: live demo",
+    kind: "demo",
+    bullets: [
+      "`/labs/lab3/add/1/2` prints `1 + 2 = 3`",
+      "The second link should print `3 + 4 = 7`",
+      "Import `PathParameters` into Lab 3 and click both",
+    ],
     embed: "js-path-parameters",
   },
   {
@@ -185,12 +189,7 @@ export default TodoItem;`,
   {
     id: "todo-list",
     title: "TodoList maps JSON onto rows",
-    kind: "demo",
-    bullets: [
-      "Next.js lets you `import todos from \"./todos.json\"`",
-      "`key={todo.title}` works because titles are unique in this file",
-      "Import `TodoList` into Lab 3 — checkboxes follow `todo.done`",
-    ],
+    kind: "content",
     code: `import TodoItem from "./TodoItem";
 import todos from "./todos.json";
 
@@ -209,7 +208,17 @@ export default function TodoList() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/todos/TodoList.tsx",
-    codeHighlightLines: [2, [9, 11]],
+    codeHighlightLines: [2, 9, 10, 11],
+  },
+  {
+    id: "todo-list-live",
+    title: "TodoList: live demo",
+    kind: "demo",
+    bullets: [
+      "Next.js lets you `import todos from \"./todos.json\"`",
+      "`key={todo.title}` works because titles are unique in this file",
+      "Import `TodoList` into Lab 3 — checkboxes follow `todo.done`",
+    ],
     embed: "js-todo-list",
   },
   {

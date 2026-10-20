@@ -68,14 +68,8 @@ export default async function CoursesLayout({
   },
   {
     id: "course-nav",
-    title: "Course nav maps LINKS with cid",
-    kind: "demo",
-    bullets: [
-      "`\"use client\"` lets `usePathname` read the URL and highlight the active section",
-      "On your own: Home, Modules, Piazza, Zoom, Assignments, Quizzes, Grades, People",
-      "Each `href` is `` /courses/${cid}/${segment} ``",
-      "The layout already passes `cid` — this file does not need `useParams`",
-    ],
+    title: "Course nav maps LINKS with cid (1/2)",
+    kind: "content",
     code: `"use client";
 
 import Link from "next/link";
@@ -92,8 +86,16 @@ const LINKS = [
   { segment: "grades", id: "wd-course-grades-link", label: "Grades" },
   { segment: "people/table", id: "wd-course-people-link", label: "People" },
 ] as const;
-
-export default function CourseNavigation({ cid }: { cid: string }) {
+`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/Navigation.tsx",
+    codeHighlightLines: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+  },
+  {
+    id: "course-nav-part-2",
+    title: "Course nav maps LINKS with cid (2/2)",
+    kind: "content",
+    code: `export default function CourseNavigation({ cid }: { cid: string }) {
   const pathname = usePathname() ?? "";
   const inCourse = pathname.startsWith(\`/courses/\${cid}\`);
 
@@ -125,7 +127,19 @@ export default function CourseNavigation({ cid }: { cid: string }) {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/Navigation.tsx",
-    codeHighlightLines: [[7, 16], 25],
+    codeStartLine: 18,
+    codeHighlightLines: [8],
+  },
+  {
+    id: "course-nav-live",
+    title: "CourseNavigation: live demo",
+    kind: "demo",
+    bullets: [
+      "`\"use client\"` lets `usePathname` read the URL and highlight the active section",
+      "On your own: Home, Modules, Piazza, Zoom, Assignments, Quizzes, Grades, People",
+      "Each `href` is `` /courses/${cid}/${segment} ``",
+      "The layout already passes `cid` — this file does not need `useParams`",
+    ],
     embed: "kambaz-styled-course-nav",
   },
   {
