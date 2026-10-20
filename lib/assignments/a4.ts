@@ -30,7 +30,7 @@ export const A4_RUBRIC: AssignmentRubric = {
           id: "a4-delivery-vercel",
           label: "Vercel branch deployment",
           description:
-            "Branch deployments are on, so a4 has its own preview URL whose hostname contains -git-a4-, with Deployment Protection off.",
+            "Submit the Vercel address made for your a4 branch (§4.12: each push to a4 gets its own address that contains the branch name). It looks like https://webdev-client-git-a4-yourname.vercel.app — the part before .vercel.app includes -git-a4. Deployment Protection must be off so anyone can open it.",
           points: 3,
           bookHref: "/book/ch4#sec-4-12",
           bookLabel: "§4.12",

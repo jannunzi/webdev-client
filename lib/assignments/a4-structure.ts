@@ -259,8 +259,8 @@ export function dashboardHasForm(html: string, ctx: StructureContext): Structure
   if (courseLinks(rendered(html), ctx.siteHost).length === 0) return false;
   const form = dashboardForm(html, ctx.siteHost);
   if (!form) return false;
-  const filled = form.fields.filter((field) => field.value.trim() !== "");
-  return filled.length >= 2 && form.buttons >= 2;
+  // Count the fields, not their values: a course state that starts blank is fine.
+  return form.fields.length >= 2 && form.buttons >= 2;
 }
 
 const DATE_VALUE = /^\d{4}-\d{2}-\d{2}/;
