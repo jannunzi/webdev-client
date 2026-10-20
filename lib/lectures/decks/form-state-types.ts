@@ -118,7 +118,7 @@ export default function DateStateVariable() {
   },
   {
     id: "date-live",
-    title: "Date: format for type=date: live demo",
+    title: "Date: live demo",
     kind: "demo",
     embed: "date-state",
   },

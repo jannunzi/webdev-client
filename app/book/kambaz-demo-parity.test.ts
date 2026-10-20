@@ -62,6 +62,26 @@ function codeBlock(bookPath: string, name: string): string {
 /** Snapshot rendered by a Kambaz book demo, paired with the code block it must equal. */
 const SNAPSHOTS: Array<{ book: string; name: string; file: string }> = [
   {
+    book: "app/book/ch1/sections/KambazSections.tsx",
+    name: "Assignments (finished)",
+    file: "app/book/ch1/embeds/assignments-finished/Assignments.tsx",
+  },
+  {
+    book: "app/book/ch1/sections/KambazSections.tsx",
+    name: "AssignmentItem",
+    file: "app/book/ch1/embeds/assignments-finished/AssignmentItem.tsx",
+  },
+  {
+    book: "app/book/ch1/sections/KambazSections.tsx",
+    name: "AssignmentEditor (finished)",
+    file: "app/book/ch1/embeds/assignment-editor-finished/AssignmentEditor.tsx",
+  },
+  {
+    book: "app/book/ch2/sections/KambazStyling.tsx",
+    name: "AssignmentEditor (styled)",
+    file: "app/book/ch2/embeds/_styled/courses/cid/assignments/AssignmentEditorStyled.tsx",
+  },
+  {
     book: "app/book/ch2/sections/KambazStyling.tsx",
     name: "KambazNavigation",
     file: "app/book/ch2/embeds/_styled/Navigation.tsx",

@@ -11,16 +11,13 @@ export default async function AssignmentEditor({
   return (
     <div id="wd-assignments-editor">
       <label htmlFor="wd-name">Assignment Name</label>
-      <input id="wd-name" defaultValue={assignment?.title ?? ""} />
-      <br />
-      <br />
+      <input id="wd-name" defaultValue={assignment?.title ?? ""} /> <br /><br />
       <textarea
         id="wd-description"
         defaultValue={assignment?.description ?? ""}
         rows={8}
         className="w-full"
-      />
-      <br />
+      /> <br />
       <table>
         <tbody>
           <tr>
