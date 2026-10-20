@@ -118,7 +118,7 @@ export default function DateStateVariable() {
   },
   {
     id: "date-live",
-    title: "Date: format for type=date",
+    title: "Date: live demo",
     kind: "demo",
     embed: "date-state",
   },
@@ -157,7 +157,7 @@ export default function DateStateVariable() {
   },
   {
     id: "object-live",
-    title: "Object: spread, then overwrite",
+    title: "Object: spread, then overwrite: live demo",
     kind: "demo",
     embed: "object-state",
   },
@@ -197,7 +197,7 @@ const deleteElement = (index: number) => {
   },
   {
     id: "array-live",
-    title: "Array: copy, then add or filter",
+    title: "Array: copy, then add or filter: live demo",
     kind: "demo",
     embed: "array-state",
   },
