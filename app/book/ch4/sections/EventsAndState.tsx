@@ -620,7 +620,10 @@ export default function BooleanStateVariables() {
           <code>done</code>. The checkbox is a controlled input:{" "}
           <code>checked={"{done}"}</code>{" "}shows the current flag, and{" "}
           <code>onChange</code>{" "}writes the opposite value back into
-          state. The yellow banner uses the same short-circuit you
+          state. A <strong>controlled</strong>{" "}field has{" "}
+          <code>value</code>{" "}(or <code>checked</code>) plus{" "}
+          <code>onChange</code>, so React state is the single source of
+          what the input shows. The yellow banner uses the same short-circuit you
           practiced in <SectionLink to="3.2.4" />: when{" "}
           <code>done</code>{" "}is true the DIV appears; when it is false
           the right-hand side never runs. Toggle the checkbox and confirm
