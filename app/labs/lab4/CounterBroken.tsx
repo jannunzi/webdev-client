@@ -9,6 +9,7 @@ export default function CounterBroken() {
         type="button"
         onClick={() => {
           count++;
+          console.log(count);
         }}
         id="wd-counter-broken-up-click"
         className="me-2 rounded bg-green-600 px-3 py-1.5 text-sm font-medium text-white"
@@ -19,6 +20,7 @@ export default function CounterBroken() {
         type="button"
         onClick={() => {
           count--;
+          console.log(count);
         }}
         id="wd-counter-broken-down-click"
         className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
