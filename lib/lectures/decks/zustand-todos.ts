@@ -233,13 +233,13 @@ export default function ZustandTodoList() {
     title: "profileStore (code)",
     kind: "content",
     code: `import { create } from "zustand";
-import { emptyProfile, validateProfile, type Profile, type ProfileErrors } from "../profile/profile";
+import { emptyProfile, validateProfile, type Profile, type ProfileChanges, type ProfileErrors } from "../profile/profile";
 
 type ProfileStore = {
   profile: Profile;
   errors: ProfileErrors;
   submitted: boolean;
-  update: (changes: Partial<Profile>) => void;
+  update: (changes: ProfileChanges) => void;
   save: () => void;
 };
 
