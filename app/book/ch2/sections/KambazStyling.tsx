@@ -585,6 +585,18 @@ export default function Dashboard() {
         <code>/assignments/123</code>{" "}still lights up Assignments) with{" "}
         <code>startsWith</code>.
       </p>
+      <p id="wd-whats-a-hook">
+        <strong>What&apos;s a hook?</strong>{" "}<code>usePathname</code>{" "}is
+        the first hook in this book. A <strong>hook</strong>{" "}is a function
+        whose name starts with <code>use</code>{" "}and that you call inside a
+        component to get something React or Next.js provides; here, Next.js
+        provides the current URL path. Call hooks only at the top level of a
+        component, never inside loops or conditions, so they run in the same
+        order every time the component runs. Most hooks need a Client
+        Component, which is why this one comes with the{" "}
+        <code>&quot;use client&quot;</code>{" "}line explained next.{" "}
+        <ChapterLink to={4} />{" "}writes hooks of our own.
+      </p>
       <p>
         The first line, <code>&quot;use client&quot;</code>, is new. Next.js
         renders components on the server by default, and server components

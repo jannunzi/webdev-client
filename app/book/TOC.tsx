@@ -380,6 +380,7 @@ export const CH4_TOC: TocEntry[] = [
       { id: "sec-4-2-2", label: "4.2.2 Passing Data on Events" },
       { id: "sec-4-2-3", label: "4.2.3 Passing Functions" },
       { id: "sec-4-2-4", label: "4.2.4 useState and the Counter" },
+      { id: "sec-4-2-4-1", label: "4.2.4.1 Hooks" },
       { id: "sec-4-2-5", label: "4.2.5 Boolean State Variables" },
       { id: "sec-4-2-6", label: "4.2.6 String State Variables" },
       { id: "sec-4-2-7", label: "4.2.7 Date State Variables" },
@@ -424,7 +425,11 @@ export const CH4_TOC: TocEntry[] = [
       { id: "sec-4-6-4", label: "4.6.4 Todo List with Redux" },
     ],
   },
-  { id: "sec-4-7", label: "4.7 Side Effects with useEffect" },
+  {
+    id: "sec-4-7",
+    label: "4.7 Side Effects with useEffect",
+    children: [{ id: "sec-4-7-1", label: "4.7.1 Writing Your Own Hooks" }],
+  },
   { id: "sec-4-8", label: "4.8 Exercises" },
   { id: "sec-4-9", label: "4.9 Check Your Understanding" },
   {
