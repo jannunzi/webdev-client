@@ -34,7 +34,24 @@ export const ZUSTAND_TODOS_SLIDES: LectureSlide[] = [
     id: "store",
     title: "Seed, then copy on write (code)",
     kind: "content",
-    code: `const emptyTodo: Todo = { id: "-1", title: "Learn Zustand", done: false };
+    code: `import { create } from "zustand";
+
+export type Todo = {
+  id: string;
+  title: string;
+  done: boolean;
+};
+
+type TodoStore = {
+  todos: Todo[];
+  todo: Todo;
+  setTodo: (todo: Todo) => void;
+  addTodo: (todo: Todo) => void;
+  deleteTodo: (id: string) => void;
+  updateTodo: (todo: Todo) => void;
+};
+
+const emptyTodo: Todo = { id: "-1", title: "Learn Zustand", done: false };
 
 export const useTodoStore = create<TodoStore>((set) => ({
   todos: [
@@ -61,7 +78,7 @@ export const useTodoStore = create<TodoStore>((set) => ({
 }));`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/zustand/todoStore.ts",
-    codeHighlightLines: [[11, 15], [16, 19], [20, 24]],
+    codeHighlightLines: [28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41],
   },
   {
     id: "form-intro",
@@ -76,21 +93,93 @@ export const useTodoStore = create<TodoStore>((set) => ({
     id: "form",
     title: "The form binds the draft (code)",
     kind: "content",
-    code: `const todo = useTodoStore((state) => state.todo);
-const setTodo = useTodoStore((state) => state.setTodo);
-const addTodo = useTodoStore((state) => state.addTodo);
-const updateTodo = useTodoStore((state) => state.updateTodo);
+    code: `import { useTodoStore } from "./todoStore";
 
-<input
-  value={todo.title}
-  onChange={(e) => setTodo({ ...todo, title: e.target.value })}
-  id="wd-zustand-todo-title"
-/>
-<button type="button" onClick={() => addTodo(todo)}>Add</button>
-<button type="button" onClick={() => updateTodo(todo)}>Update</button>`,
+export default function ZustandTodoForm() {
+  const todo = useTodoStore((state) => state.todo);
+  const setTodo = useTodoStore((state) => state.setTodo);
+  const addTodo = useTodoStore((state) => state.addTodo);
+  const updateTodo = useTodoStore((state) => state.updateTodo);
+  return (
+    <div id="wd-zustand-todo-form" className="mb-3 flex flex-wrap gap-2">
+      <input
+        className="rounded border border-neutral-300 px-3 py-1.5"
+        value={todo.title}
+        onChange={(e) => setTodo({ ...todo, title: e.target.value })}
+        id="wd-zustand-todo-title"
+      />
+      <button
+        type="button"
+        onClick={() => addTodo(todo)}
+        id="wd-zustand-add-todo-click"
+        className="rounded bg-green-600 px-3 py-1.5 text-sm font-medium text-white"
+      >
+        Add
+      </button>
+      <button
+        type="button"
+        onClick={() => updateTodo(todo)}
+        id="wd-zustand-update-todo-click"
+        className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
+      >
+        Update
+      </button>
+    </div>
+  );
+}`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/zustand/ZustandTodoForm.tsx",
-    codeHighlightLines: [[1, 4], [6, 12]],
+    codeHighlightLines: [4, 5, 6, 7, 10, 12, 13, 14, 15],
+  },
+  {
+    id: "item-intro",
+    title: "Each item deletes and edits itself",
+    kind: "content",
+    bullets: [
+      "`ZustandTodoItem` receives one `todo` as a prop",
+      "It selects `deleteTodo` and `setTodo` from the store",
+      "Delete removes the row. Edit copies the todo into the form",
+    ],
+  },
+  {
+    id: "item",
+    title: "Each item deletes and edits itself (code)",
+    kind: "content",
+    code: `import { useTodoStore, type Todo } from "./todoStore";
+
+export default function ZustandTodoItem({ todo }: { todo: Todo }) {
+  const setTodo = useTodoStore((state) => state.setTodo);
+  const deleteTodo = useTodoStore((state) => state.deleteTodo);
+  return (
+    <li
+      id={\`wd-zustand-todo-\${todo.id}\`}
+      className="mb-1 flex items-center justify-between rounded border border-neutral-200 px-3 py-1"
+    >
+      <label className="flex items-center gap-2">
+        <input type="checkbox" checked={todo.done} readOnly />
+        <span className={todo.done ? "line-through" : undefined}>{todo.title}</span>
+      </label>
+      <span className="flex gap-2">
+        <button
+          type="button"
+          onClick={() => setTodo(todo)}
+          className="rounded bg-yellow-400 px-2 py-0.5 text-sm"
+        >
+          Edit
+        </button>
+        <button
+          type="button"
+          onClick={() => deleteTodo(todo.id)}
+          className="rounded bg-red-600 px-2 py-0.5 text-sm font-medium text-white"
+        >
+          Delete
+        </button>
+      </span>
+    </li>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab4/zustand/ZustandTodoItem.tsx",
   },
   {
     id: "list",

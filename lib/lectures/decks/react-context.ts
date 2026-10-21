@@ -65,6 +65,73 @@ export function useCounterContext() {
     codeHighlightLines: [8, [10, 16], [19, 25]],
   },
   {
+    id: "reader",
+    title: "The reader only reads count",
+    kind: "content",
+    bullets: [
+      "Import `useCounterContext` from `./CounterContext`",
+      "`const { count } = useCounterContext()` — no props",
+      "Every reader inside the provider sees the same count",
+    ],
+    code: `import { useCounterContext } from "./CounterContext";
+
+export default function ContextCounterRead() {
+  const { count } = useCounterContext();
+  return (
+    <div id="wd-context-counter-read">
+      <h3>Reader: {count}</h3>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab4/context/ContextCounterRead.tsx",
+    codeHighlightLines: [1, 4, 6],
+  },
+  {
+    id: "writer-intro",
+    title: "The writer calls the setter",
+    kind: "content",
+    bullets: [
+      "`const { count, setCount } = useCounterContext()`",
+      "Up and Down are the same arrows as the `useState` counter",
+      "On your own: a Context todo list — do not put Kambaz courses here",
+    ],
+  },
+  {
+    id: "writer",
+    title: "The writer calls the setter (code)",
+    kind: "content",
+    code: `import { useCounterContext } from "./CounterContext";
+
+export default function ContextCounterWrite() {
+  const { count, setCount } = useCounterContext();
+  return (
+    <div id="wd-context-counter-write">
+      <h3>Writer</h3>
+      <button
+        type="button"
+        onClick={() => setCount(count + 1)}
+        id="wd-context-up-click"
+        className="me-2 rounded bg-green-600 px-3 py-1.5 text-sm font-medium text-white"
+      >
+        Up
+      </button>
+      <button
+        type="button"
+        onClick={() => setCount(count - 1)}
+        id="wd-context-down-click"
+        className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+      >
+        Down
+      </button>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab4/context/ContextCounterWrite.tsx",
+    codeHighlightLines: [1, 4, 10, 18],
+  },
+  {
     id: "siblings",
     title: "Two siblings, no props between",
     kind: "content",
@@ -104,37 +171,6 @@ export default function ContextExamples() {
       "Wrap both in `<CounterProvider>` on `ContextExamples`",
     ],
     embed: "context-counter",
-  },
-  {
-    id: "writer-intro",
-    title: "The writer calls the setter",
-    kind: "content",
-    bullets: [
-      "`const { count, setCount } = useCounterContext()`",
-      "Up and Down are the same arrows as the `useState` counter",
-      "On your own: a Context todo list — do not put Kambaz courses here",
-    ],
-  },
-  {
-    id: "writer",
-    title: "The writer calls the setter (code)",
-    kind: "content",
-    code: `export default function ContextCounterWrite() {
-  const { count, setCount } = useCounterContext();
-  return (
-    <div id="wd-context-counter-write">
-      <button type="button" onClick={() => setCount(count + 1)}>
-        Up
-      </button>
-      <button type="button" onClick={() => setCount(count - 1)}>
-        Down
-      </button>
-    </div>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab4/context/ContextCounterWrite.tsx",
-    codeHighlightLines: [2, 5, 8],
   },
   {
     id: "profile-context-intro",

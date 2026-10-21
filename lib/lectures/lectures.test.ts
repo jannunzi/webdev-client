@@ -1319,15 +1319,15 @@ describe("lecture decks", () => {
     assert.equal(counts["form-state-types"], 29);
     assert.equal(counts["sharing-parent-child"], 8);
     assert.equal(counts["prop-drilling-and-url"], 16);
-    assert.equal(counts["react-context"], 15);
+    assert.equal(counts["react-context"], 16);
     assert.equal(counts["zustand-counter"], 8);
-    assert.equal(counts["zustand-todos"], 15);
+    assert.equal(counts["zustand-todos"], 17);
     assert.equal(counts["use-effect"], 8);
     assert.equal(counts["custom-hooks"], 24);
     assert.equal(counts["ch4-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-store"], 9);
-    assert.equal(counts["kambaz-dashboard-crud"], 11);
-    assert.equal(counts["kambaz-modules-store"], 9);
+    assert.equal(counts["kambaz-dashboard-crud"], 10);
+    assert.equal(counts["kambaz-modules-store"], 10);
     assert.equal(counts["kambaz-account-context"], 9);
     assert.equal(counts["http-server"], 11);
     assert.equal(counts["nodemon-es6-routes"], 9);
@@ -3845,7 +3845,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 237);
+    assert.equal(intros, 238);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
