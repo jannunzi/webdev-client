@@ -397,7 +397,7 @@ export function validateProfile(profile: Profile) {
     title: "Step 2: the fields",
     kind: "content",
     bullets: [
-      "Every input is controlled and calls `setProfile` with a copy where one field changed",
+      "Each input shows its value from `profile` and calls `setProfile` with a copy where one field changed",
       "`<select>` is a drop-down. Radios that share a `name` form one group",
       "`prefix` builds every `wd-*` id. `errors.x && <p>` shows a message only when there is one",
     ],
