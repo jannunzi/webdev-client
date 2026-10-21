@@ -58,12 +58,7 @@ export const useCounterStore = create<CounterStore>((set) => ({
   {
     id: "component",
     title: "Select count, up, and down",
-    kind: "demo",
-    bullets: [
-      "Three selector calls — this component rerenders when `count` changes",
-      "`onClick={up}` — the store already owns the increment",
-      "Import through `ZustandExamples` on the Lab 4 page",
-    ],
+    kind: "content",
     code: `"use client";
 
 import { useCounterStore } from "./counterStore";
@@ -75,10 +70,20 @@ export default function ZustandCounter() {
   return (
     <div id="wd-zustand-counter">
       <h3>Zustand Counter: {count}</h3>
-      <button type="button" onClick={up} id="wd-zustand-up-click">
+      <button
+        type="button"
+        onClick={up}
+        id="wd-zustand-up-click"
+        className="me-2 rounded bg-green-600 px-3 py-1.5 text-sm font-medium text-white"
+      >
         Up
       </button>
-      <button type="button" onClick={down} id="wd-zustand-down-click">
+      <button
+        type="button"
+        onClick={down}
+        id="wd-zustand-down-click"
+        className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+      >
         Down
       </button>
     </div>
@@ -86,7 +91,16 @@ export default function ZustandCounter() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/zustand/ZustandCounter.tsx",
-    codeHighlightLines: [[6, 8], 12, 15],
+    codeHighlightLines: [6, 7, 8],
+  },
+  {
+    id: "component-live",
+    title: "ZustandCounter: live demo",
+    kind: "demo",
+    bullets: [
+      "Three selector calls — this component rerenders when `count` changes",
+      "`onClick={up}` — the store already owns the increment",
+    ],
     embed: "zustand-counter",
   },
   {

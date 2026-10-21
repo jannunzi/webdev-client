@@ -22,7 +22,7 @@ export const USESTATE_COUNTER_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "hook-pair-intro",
+    id: "hook-pair",
     title: "useState returns a pair",
     kind: "content",
     bullets: [
@@ -31,23 +31,13 @@ export const USESTATE_COUNTER_SLIDES: LectureSlide[] = [
       "Calling the setter queues a render so the heading can move",
       "A plain `let` can change in memory and the heading stays put",
     ],
-  },
-  {
-    id: "hook-pair",
-    title: "useState returns a pair (code)",
-    kind: "content",
     code: `const [stateVariable, setStateVariable] = useState(initialStateValue);`,
     codeLanguage: "tsx",
   },
   {
     id: "broken",
     title: "A let does not notify React",
-    kind: "demo",
-    bullets: [
-      "`count++` updates memory. The heading stays at 7",
-      "React never saw a state change, so the virtual DOM is the same",
-      "Click Up and Down here — the number does not move",
-    ],
+    kind: "content",
     code: `"use client";
 
 export default function CounterBroken() {
@@ -61,26 +51,43 @@ export default function CounterBroken() {
           count++;
         }}
         id="wd-counter-broken-up-click"
+        className="me-2 rounded bg-green-600 px-3 py-1.5 text-sm font-medium text-white"
       >
         Up
       </button>
+      <button
+        type="button"
+        onClick={() => {
+          count--;
+        }}
+        id="wd-counter-broken-down-click"
+        className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+      >
+        Down
+      </button>
+      <hr />
     </div>
   );
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/CounterBroken.tsx",
-    codeHighlightLines: [4, [10, 12]],
+    codeHighlightLines: [4, 10, 11, 12],
+  },
+  {
+    id: "broken-live",
+    title: "CounterBroken: live demo",
+    kind: "demo",
+    bullets: [
+      "`count++` updates memory. The heading stays at 7",
+      "React never saw a state change, so the virtual DOM is the same",
+      "Click Up and Down here — the number does not move",
+    ],
     embed: "counter-broken",
   },
   {
     id: "working",
     title: "setCount queues a new render",
-    kind: "demo",
-    bullets: [
-      "`useState(7)` seeds the heading. Up and Down call the setter",
-      "React diffs the virtual DOM and writes the heading to the real one",
-      "Same integer you will rebuild with Context, Zustand, and Redux",
-    ],
+    kind: "content",
     code: `"use client";
 
 import { useState } from "react";
@@ -94,6 +101,7 @@ export default function Counter() {
         type="button"
         onClick={() => setCount(count + 1)}
         id="wd-counter-up-click"
+        className="me-2 rounded bg-green-600 px-3 py-1.5 text-sm font-medium text-white"
       >
         Up
       </button>
@@ -101,6 +109,7 @@ export default function Counter() {
         type="button"
         onClick={() => setCount(count - 1)}
         id="wd-counter-down-click"
+        className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
       >
         Down
       </button>
@@ -110,7 +119,17 @@ export default function Counter() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/Counter.tsx",
-    codeAddedLines: [3, 6, 12, 19],
+    codeAddedLines: [3, 6, 12, 20],
+  },
+  {
+    id: "working-live",
+    title: "Counter: live demo",
+    kind: "demo",
+    bullets: [
+      "`useState(7)` seeds the heading. Up and Down call the setter",
+      "React diffs the virtual DOM and writes the heading to the real one",
+      "Same integer you will rebuild with Context, Zustand, and Redux",
+    ],
     embed: "counter",
   },
   {

@@ -91,7 +91,27 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
     id: "store",
     title: "modulesStore is the shared list (code)",
     kind: "content",
-    code: `export const useModulesStore = create<ModulesStore>((set) => ({
+    code: `"use client";
+
+import { create } from "zustand";
+import modulesJson from "../database/modules.json";
+
+export type CourseModule = {
+  _id: string;
+  name: string;
+  description: string;
+  course: string;
+  lessons?: { _id: string; name: string; description: string; module: string }[];
+  editing?: boolean;
+};
+
+export const useModulesStore = create<{
+  modules: CourseModule[];
+  addModule: (module: { name: string; course: string }) => void;
+  deleteModule: (moduleId: string) => void;
+  updateModule: (module: CourseModule) => void;
+  editModule: (moduleId: string) => void;
+}>((set) => ({
   modules: modulesJson as CourseModule[],
   addModule: (module) =>
     set((state) => ({
@@ -123,10 +143,10 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
 }));`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/store/modulesStore.ts",
-    codeHighlightLines: [[3, 15], [24, 29]],
+    codeHighlightLines: [23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 44, 45, 46, 47, 48, 49],
   },
   {
-    id: "demo",
+    id: "store-live",
     title: "Modules still look like Chapter 2",
     kind: "demo",
     bullets: [

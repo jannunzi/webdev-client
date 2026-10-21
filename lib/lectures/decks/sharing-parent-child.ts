@@ -24,12 +24,7 @@ export const SHARING_PARENT_CHILD_SLIDES: LectureSlide[] = [
   {
     id: "parent",
     title: "The parent owns the counter",
-    kind: "demo",
-    bullets: [
-      "`useState(123)` lives in `ParentStateComponent`",
-      "Both `counter` and `setCounter` go to the child as attributes",
-      "The child’s heading and the parent’s heading stay in sync",
-    ],
+    kind: "content",
     code: `"use client";
 
 import { useState } from "react";
@@ -40,17 +35,24 @@ export default function ParentStateComponent() {
   return (
     <div id="wd-parent-state">
       <h2>Counter {counter}</h2>
-      <ChildStateComponent
-        counter={counter}
-        setCounter={setCounter}
-      />
+      <ChildStateComponent counter={counter} setCounter={setCounter} />
       <hr />
     </div>
   );
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/ParentStateComponent.tsx",
-    codeHighlightLines: [7, [11, 14]],
+    codeHighlightLines: [7],
+  },
+  {
+    id: "parent-live",
+    title: "ParentStateComponent: live demo",
+    kind: "demo",
+    bullets: [
+      "`useState(123)` lives in `ParentStateComponent`",
+      "Both `counter` and `setCounter` go to the child as attributes",
+      "The child’s heading and the parent’s heading stay in sync",
+    ],
     embed: "parent-child-state",
   },
   {

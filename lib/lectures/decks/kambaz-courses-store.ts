@@ -61,6 +61,27 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
 import { create } from "zustand";
 import coursesJson from "../database/courses.json";
 
+export type Course = (typeof coursesJson)[number];
+
+const emptyCourse: Course = {
+  _id: "0",
+  name: "New Course",
+  number: "New Number",
+  startDate: "2023-09-10",
+  endDate: "2023-12-15",
+  department: "D123",
+  credits: 4,
+  description: "New Description",
+  image: "/images/reactjs.jpg",
+};
+
+type CoursesStore = {
+  courses: Course[];
+  addCourse: (course: Course) => void;
+  deleteCourse: (courseId: string) => void;
+  updateCourse: (course: Course) => void;
+};
+
 export const useCoursesStore = create<CoursesStore>((set) => ({
   courses: coursesJson,
   addCourse: (course) =>
@@ -78,13 +99,15 @@ export const useCoursesStore = create<CoursesStore>((set) => ({
     set((state) => ({
       courses: state.courses.map((c) => (c._id === course._id ? course : c)),
     })),
-}));`,
+}));
+
+export { emptyCourse };`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/store/coursesStore.ts",
-    codeHighlightLines: [[6, 24]],
+    codeHighlightLines: [27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44],
   },
   {
-    id: "demo",
+    id: "store-live",
     title: "The list any screen can share",
     kind: "demo",
     bullets: [

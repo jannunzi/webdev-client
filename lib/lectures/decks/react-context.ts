@@ -69,16 +69,21 @@ export function useCounterContext() {
   {
     id: "siblings",
     title: "Two siblings, no props between",
-    kind: "demo",
-    bullets: [
-      "`ContextCounterRead` only needs `count`",
-      "`ContextCounterWrite` calls `setCount` — the reader updates",
-      "Wrap both in `<CounterProvider>` on `ContextExamples`",
-    ],
-    code: `export default function ContextExamples() {
+    kind: "content",
+    code: `"use client";
+
+import { CounterProvider } from "./CounterContext";
+import ContextCounterRead from "./ContextCounterRead";
+import ContextCounterWrite from "./ContextCounterWrite";
+
+export default function ContextExamples() {
   return (
     <div id="wd-context-examples">
       <h2>React Context</h2>
+      <p>
+        Two siblings share one counter without the parent passing props
+        through the middle.
+      </p>
       <CounterProvider>
         <ContextCounterRead />
         <ContextCounterWrite />
@@ -89,7 +94,17 @@ export function useCounterContext() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/context/ContextExamples.tsx",
-    codeAddedLines: [[5, 8]],
+    codeAddedLines: [15, 16, 17, 18],
+  },
+  {
+    id: "siblings-live",
+    title: "ContextExamples: live demo",
+    kind: "demo",
+    bullets: [
+      "`ContextCounterRead` only needs `count`",
+      "`ContextCounterWrite` calls `setCount` — the reader updates",
+      "Wrap both in `<CounterProvider>` on `ContextExamples`",
+    ],
     embed: "context-counter",
   },
   {
