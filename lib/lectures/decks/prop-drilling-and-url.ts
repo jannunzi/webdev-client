@@ -103,6 +103,16 @@ export default function PropDrilling() {
     ],
   },
   {
+    id: "query-suspense",
+    title: "Suspense: show a fallback until it's ready",
+    kind: "content",
+    bullets: [
+      "`<Suspense>` wraps part of a page and shows `fallback` until that part is ready",
+      "`next build` pre-renders the page without a URL",
+      "So the part that reads the URL renders in the browser; `fallback` shows meanwhile",
+    ],
+  },
+  {
     id: "query-intro",
     title: "Query parameters: QueryCalculator",
     kind: "content",

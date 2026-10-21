@@ -1325,7 +1325,7 @@ describe("lecture decks", () => {
     assert.equal(counts["usestate-counter"], 13);
     assert.equal(counts["form-state-types"], 29);
     assert.equal(counts["sharing-parent-child"], 8);
-    assert.equal(counts["prop-drilling-and-url"], 16);
+    assert.equal(counts["prop-drilling-and-url"], 17);
     assert.equal(counts["react-context"], 16);
     assert.equal(counts["zustand-counter"], 8);
     assert.equal(counts["zustand-todos"], 17);
@@ -3934,7 +3934,7 @@ describe("parameterizing-components §3.8.1.1 children slides", () => {
   });
 });
 
-describe("client-and-server §3.7.3–3.7.4 API slides", () => {
+describe("client-and-server §3.7.4–3.7.5 API slides", () => {
   const listings: Record<string, string> = {
     pathname: "PathnameDemo",
     "client-page": "ClientApis (after step 1)",

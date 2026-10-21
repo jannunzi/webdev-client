@@ -748,7 +748,23 @@ export default function Lab3() {
         <Section
           level={3}
           id="sec-3-7-3"
-          title="3.7.3 More Client-Only APIs"
+          title="3.7.3 Suspense"
+        >
+          <p>
+            <code>&lt;Suspense&gt;</code>, imported from <code>react</code>, is a component that wraps part of a page. Until that part is ready to show, React displays the <code>fallback</code>{" "}you give it instead, such as a short &quot;Loading...&quot; message. The rest of the page outside the boundary shows right away.
+          </p>
+          <CodeBlock language="tsx" name="Suspense example">{`<Suspense fallback={<p>Loading...</p>}>
+  <SomeComponent />
+</Suspense>`}</CodeBlock>
+          <p>
+            You need it when a component reads the URL with <code>useSearchParams</code>, which you use in <SectionLink to="3.7.4" />. When you run <code>next build</code>, Next.js pre-renders the page ahead of time, with no visitor and so no URL. The part that reads the URL cannot render yet, so it renders later in the browser, once the URL is known. Wrapping that part in <code>&lt;Suspense&gt;</code>{" "}tells Next.js where that part starts, and the <code>fallback</code>{" "}shows in the meantime. Without it, <code>next build</code>{" "}fails.
+          </p>
+        </Section>
+
+        <Section
+          level={3}
+          id="sec-3-7-4"
+          title="3.7.4 More Client-Only APIs"
         >
           <p>
             <SectionLink to="3.7.1" />{" "}used one client-only hook. The browser offers many more features that exist only on the user&apos;s machine. An <strong>API</strong>{" "}(application programming interface) is a set of functions and objects a program can call; a <strong>client-only API</strong>{" "}is one that exists only in the browser, so only a Client Component can call it. In this section you build six small Client Components, one concept each, in a new folder <code>app/labs/lab3/client-apis</code>. They all go on their own page, <code>/labs/lab3/client-apis</code>, so the main Lab 3 page stays as it is. Add them one at a time and check each demo before moving on.
@@ -1198,15 +1214,15 @@ export default function ClientApis() {
 
         <Section
           level={3}
-          id="sec-3-7-4"
-          title="3.7.4 More Server-Only APIs"
+          id="sec-3-7-5"
+          title="3.7.5 More Server-Only APIs"
         >
           <p>
             <SectionLink to="3.7.2" />{" "}used <code>process</code>{" "}and <code>fs</code>{" "}on the server. This section adds seven small Server Components, one concept each, in <code>app/labs/lab3/server-apis</code>, rendered on their own page, <code>/labs/lab3/server-apis</code>. A <strong>server-only API</strong>{" "}is one that exists only in Node.js, so only a Server Component can call it. Add them one at a time. Demos that read the current request or change on every visit can&apos;t be prerendered into this book, so their demo shows the reference site&apos;s own <code>/labs/lab3/server-apis</code>{" "}page in a frame.
           </p>
           <h4 className="mt-6 font-semibold">Step 1: Server time vs client time</h4>
           <p>
-            The server and the browser each have their own clock and time zone. The Server Component formats the server&apos;s time in UTC (Coordinated Universal Time, the zone-free reference clock). It renders a small Client Component, <code>ClientTime</code>, that reads the browser&apos;s clock inside <code>useEffect</code>{" "}and, with <code>setInterval</code>, again every second (1000 milliseconds){" "}(<SectionLink to="3.7.3" />{" "}Step 3), so the server&apos;s HTML and the browser&apos;s first render match. Create <code>ClientTime.tsx</code>{" "}first:
+            The server and the browser each have their own clock and time zone. The Server Component formats the server&apos;s time in UTC (Coordinated Universal Time, the zone-free reference clock). It renders a small Client Component, <code>ClientTime</code>, that reads the browser&apos;s clock inside <code>useEffect</code>{" "}and, with <code>setInterval</code>, again every second (1000 milliseconds){" "}(<SectionLink to="3.7.4" />{" "}Step 3), so the server&apos;s HTML and the browser&apos;s first render match. Create <code>ClientTime.tsx</code>{" "}first:
           </p>
           <CodeBlock
             language="tsx"
@@ -1420,7 +1436,7 @@ export default async function RequestHeadersDemo() {
             <iframe title="wd-request-headers-demo" src="/labs/lab3/server-apis#wd-request-headers-demo" className="w-full" style={{ height: 260, border: 0 }} />
           </LiveDemo>
           <p>
-            Compare the IP with Step 6 of <SectionLink to="3.7.3" />: the server sees the same address without asking anyone else. On <code>npm run dev</code>{" "}there is no proxy, so the IP is unknown. Because <code>headers()</code>{" "}depends on the request, Next.js renders this page <strong>dynamically</strong>, on every request, instead of prerendering it at build time.
+            Compare the IP with Step 6 of <SectionLink to="3.7.4" />: the server sees the same address without asking anyone else. On <code>npm run dev</code>{" "}there is no proxy, so the IP is unknown. Because <code>headers()</code>{" "}depends on the request, Next.js renders this page <strong>dynamically</strong>, on every request, instead of prerendering it at build time.
           </p>
           <p>
             Add <code>RequestHeadersDemo</code>{" "}to the page:
