@@ -329,6 +329,17 @@ export type Profile = {
   theme: Theme;
 };
 
+export type ProfileChanges = {
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+  dob?: Date | null;
+  role?: Role;
+  newsletter?: boolean;
+  topics?: string[];
+  theme?: Theme;
+};
+
 export type ProfileErrors = {
   firstName?: string;
   lastName?: string;
@@ -397,7 +408,7 @@ export function validateProfile(profile: Profile) {
     title: "Step 2: the fields",
     kind: "content",
     bullets: [
-      "Every input is controlled and calls `update` with a `Partial<Profile>`",
+      "Every input is controlled and calls `update` with a `ProfileChanges`: just the fields that changed",
       "`<select>` is a drop-down. Radios that share a `name` form one group",
       "`prefix` builds every `wd-*` id. `errors.x && <p>` shows a message only when there is one",
     ],
@@ -411,6 +422,7 @@ export function validateProfile(profile: Profile) {
   htmlToDate,
   TOPICS,
   type Profile,
+  type ProfileChanges,
   type ProfileErrors,
   type Role,
 } from "./profile";
@@ -427,7 +439,7 @@ export default function ProfileFields({
   prefix: string;
   profile: Profile;
   errors: ProfileErrors;
-  update: (changes: Partial<Profile>) => void;
+  update: (changes: ProfileChanges) => void;
 }) {
   const toggleTopic = (topic: string) =>
     update({
@@ -609,7 +621,7 @@ export default function ProfileAlert({
     code: `"use client";
 
 import { useState, type FormEvent } from "react";
-import { emptyProfile, validateProfile, type Profile, type ProfileErrors } from "./profile";
+import { emptyProfile, validateProfile, type Profile, type ProfileChanges, type ProfileErrors } from "./profile";
 import ProfileFields from "./ProfileFields";
 import ProfileAlert from "./ProfileAlert";
 
@@ -617,7 +629,7 @@ export default function ProfileForm() {
   const [profile, setProfile] = useState<Profile>(emptyProfile);
   const [errors, setErrors] = useState<ProfileErrors>({});
   const [submitted, setSubmitted] = useState(false);
-  const update = (changes: Partial<Profile>) =>
+  const update = (changes: ProfileChanges) =>
     setProfile({ ...profile, ...changes });
   const save = (e: FormEvent) => {
     e.preventDefault();
