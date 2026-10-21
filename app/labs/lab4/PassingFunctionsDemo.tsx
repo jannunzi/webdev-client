@@ -3,8 +3,8 @@
 import PassingFunctions from "./PassingFunctions";
 
 export default function PassingFunctionsDemo() {
-  const sayHello = () => {
-    alert("Hello from Lab 4");
+  const sayHello = (message: string) => {
+    alert(message);
   };
-  return <PassingFunctions theFunction={sayHello} />;
+  return <PassingFunctions message="Hello from Lab 4" theFunction={sayHello} />;
 }

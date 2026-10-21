@@ -1,5 +1,3 @@
-"use client";
-
 import { useTodoStore } from "./todoStore";
 
 export default function ZustandTodoForm() {

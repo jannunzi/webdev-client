@@ -19,15 +19,15 @@ import ZustandExamples from "./zustand/ZustandExamples";
 import ReduxExamples from "./redux/ReduxExamples";
 
 export default function Lab4() {
-  const sayHello = () => {
-    alert("Hello from Lab 4");
+  const sayHello = (message: string) => {
+    alert(message);
   };
   return (
     <div id="wd-lab4">
       <h2>Lab 4</h2>
       <ClickEvent />
       <PassingDataOnEvent />
-      <PassingFunctions theFunction={sayHello} />
+      <PassingFunctions message="Hello from Lab 4" theFunction={sayHello} />
       <CounterBroken />
       <Counter />
       <BooleanStateVariables />

@@ -64,9 +64,7 @@ export default function Stores() {
             language="tsx"
             name="CounterContext"
             file="app/labs/lab4/context/CounterContext.tsx"
-          >{`"use client";
-
-import { createContext, useContext, useState, type ReactNode } from "react";
+          >{`import { createContext, useContext, useState, type ReactNode } from "react";
 
 type CounterContextValue = {
   count: number;
@@ -107,9 +105,7 @@ export function useCounterContext() {
             language="tsx"
             name="ContextCounterRead"
             file="app/labs/lab4/context/ContextCounterRead.tsx"
-          >{`"use client";
-
-import { useCounterContext } from "./CounterContext";
+          >{`import { useCounterContext } from "./CounterContext";
 
 export default function ContextCounterRead() {
   const { count } = useCounterContext();
@@ -123,9 +119,7 @@ export default function ContextCounterRead() {
             language="tsx"
             name="ContextCounterWrite"
             file="app/labs/lab4/context/ContextCounterWrite.tsx"
-          >{`"use client";
-
-import { useCounterContext } from "./CounterContext";
+          >{`import { useCounterContext } from "./CounterContext";
 
 export default function ContextCounterWrite() {
   const { count, setCount } = useCounterContext();
@@ -262,9 +256,7 @@ export default function ContextExamples() {
             language="tsx"
             name="ProfileContext"
             file="app/labs/lab4/context/ProfileContext.tsx"
-          >{`"use client";
-
-import { createContext, useContext, useState, type ReactNode } from "react";
+          >{`import { createContext, useContext, useState, type ReactNode } from "react";
 import { emptyProfile, validateProfile, type Profile, type ProfileErrors } from "../profile/profile";
 
 type ProfileContextValue = {
@@ -404,9 +396,7 @@ export default function ContextProfileForm() {
             language="tsx"
             name="counterStore"
             file="app/labs/lab4/zustand/counterStore.ts"
-          >{`"use client";
-
-import { create } from "zustand";
+          >{`import { create } from "zustand";
 
 type CounterStore = {
   count: number;
@@ -431,9 +421,7 @@ export const useCounterStore = create<CounterStore>((set) => ({
             language="tsx"
             name="ZustandCounter"
             file="app/labs/lab4/zustand/ZustandCounter.tsx"
-          >{`"use client";
-
-import { useCounterStore } from "./counterStore";
+          >{`import { useCounterStore } from "./counterStore";
 
 export default function ZustandCounter() {
   const count = useCounterStore((state) => state.count);
@@ -502,9 +490,7 @@ export default function ZustandCounter() {
             language="tsx"
             name="todoStore"
             file="app/labs/lab4/zustand/todoStore.ts"
-          >{`"use client";
-
-import { create } from "zustand";
+          >{`import { create } from "zustand";
 
 export type Todo = {
   id: string;
@@ -561,9 +547,7 @@ export const useTodoStore = create<TodoStore>((set) => ({
             language="tsx"
             name="ZustandTodoForm"
             file="app/labs/lab4/zustand/ZustandTodoForm.tsx"
-          >{`"use client";
-
-import { useTodoStore } from "./todoStore";
+          >{`import { useTodoStore } from "./todoStore";
 
 export default function ZustandTodoForm() {
   const todo = useTodoStore((state) => state.todo);
@@ -601,9 +585,7 @@ export default function ZustandTodoForm() {
             language="tsx"
             name="ZustandTodoItem"
             file="app/labs/lab4/zustand/ZustandTodoItem.tsx"
-          >{`"use client";
-
-import { useTodoStore, type Todo } from "./todoStore";
+          >{`import { useTodoStore, type Todo } from "./todoStore";
 
 export default function ZustandTodoItem({ todo }: { todo: Todo }) {
   const setTodo = useTodoStore((state) => state.setTodo);
@@ -640,9 +622,7 @@ export default function ZustandTodoItem({ todo }: { todo: Todo }) {
             language="tsx"
             name="ZustandTodoList"
             file="app/labs/lab4/zustand/ZustandTodoList.tsx"
-          >{`"use client";
-
-import { useTodoStore } from "./todoStore";
+          >{`import { useTodoStore } from "./todoStore";
 import ZustandTodoForm from "./ZustandTodoForm";
 import ZustandTodoItem from "./ZustandTodoItem";
 
@@ -729,9 +709,7 @@ export default function ZustandExamples() {
             language="ts"
             name="profileStore"
             file="app/labs/lab4/zustand/profileStore.ts"
-          >{`"use client";
-
-import { create } from "zustand";
+          >{`import { create } from "zustand";
 import { emptyProfile, validateProfile, type Profile, type ProfileErrors } from "../profile/profile";
 
 type ProfileStore = {
@@ -877,8 +855,7 @@ export default function ZustandProfileForm() {
             language="tsx"
             name="helloReducer"
             file="app/labs/lab4/redux/helloReducer.ts"
-          >{`"use client";
-import { createSlice } from "@reduxjs/toolkit";
+          >{`import { createSlice } from "@reduxjs/toolkit";
 const helloSlice = createSlice({
   name: "hello",
   initialState: { message: "Hello Redux" },
@@ -903,9 +880,7 @@ export default helloSlice.reducer;`}</CodeBlock>
             language="tsx"
             name="store"
             file="app/labs/lab4/redux/store.ts"
-          >{`"use client";
-
-import { configureStore } from "@reduxjs/toolkit";
+          >{`import { configureStore } from "@reduxjs/toolkit";
 import helloReducer from "./helloReducer";
 import counterReducer from "./counterReducer";
 import addReducer from "./addReducer";
@@ -935,8 +910,7 @@ export type AppDispatch = typeof store.dispatch;`}</CodeBlock>
             language="tsx"
             name="HelloRedux"
             file="app/labs/lab4/redux/HelloRedux.tsx"
-          >{`"use client";
-import { useSelector } from "react-redux";
+          >{`import { useSelector } from "react-redux";
 import type { RootState } from "./store";
 
 export default function HelloRedux() {
@@ -983,9 +957,7 @@ export default function HelloRedux() {
           language="tsx"
           name="counterReducer"
           file="app/labs/lab4/redux/counterReducer.ts"
-        >{`"use client";
-
-import { createSlice } from "@reduxjs/toolkit";
+        >{`import { createSlice } from "@reduxjs/toolkit";
 
 const counterSlice = createSlice({
   name: "counter",
@@ -1029,9 +1001,7 @@ export default counterSlice.reducer;`}</CodeBlock>
           language="tsx"
           name="CounterRedux"
           file="app/labs/lab4/redux/CounterRedux.tsx"
-        >{`"use client";
-
-import { useDispatch, useSelector } from "react-redux";
+        >{`import { useDispatch, useSelector } from "react-redux";
 import { down, up } from "./counterReducer";
 import type { RootState } from "./store";
 
@@ -1112,8 +1082,7 @@ export default function CounterRedux() {
             language="tsx"
             name="addReducer"
             file="app/labs/lab4/redux/addReducer.ts"
-          >{`"use client";
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+          >{`import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 const addSlice = createSlice({
   name: "add",
   initialState: { sum: 0 },
@@ -1144,9 +1113,7 @@ export default addSlice.reducer;`}</CodeBlock>
             language="tsx"
             name="AddRedux"
             file="app/labs/lab4/redux/AddRedux.tsx"
-          >{`"use client";
-
-import { useState } from "react";
+          >{`import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { add } from "./addReducer";
 import type { RootState } from "./store";
@@ -1279,9 +1246,7 @@ export default function AddRedux() {
             language="tsx"
             name="todosReducer"
             file="app/labs/lab4/redux/todosReducer.ts"
-          >{`"use client";
-
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+          >{`import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 export type ReduxTodo = { id: string; title: string };
 
@@ -1329,9 +1294,7 @@ export default todosSlice.reducer;`}</CodeBlock>
             language="tsx"
             name="ReduxTodos"
             file="app/labs/lab4/redux/ReduxTodos.tsx"
-          >{`"use client";
-
-import { useState } from "react";
+          >{`import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo, deleteTodo, updateTodo } from "./todosReducer";
 import type { RootState } from "./store";
