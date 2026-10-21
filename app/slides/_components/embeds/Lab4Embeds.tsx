@@ -28,13 +28,15 @@ import LectureDemoFrame from "./LectureDemoFrame";
 
 function Lab4Demo({
   label,
+  url = "/labs/lab4",
   children,
 }: {
   label: string;
+  url?: string;
   children: ReactNode;
 }) {
   return (
-    <LectureDemoFrame label={label} url="/labs/lab4">
+    <LectureDemoFrame label={label} url={url}>
       <div className="font-sans text-base [&_h2]:mt-0 [&_h3]:mt-0 [&_h4]:mt-0 [&_h5]:mt-2">
         {children}
       </div>
