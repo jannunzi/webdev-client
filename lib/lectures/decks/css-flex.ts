@@ -209,7 +209,7 @@ export const CSS_FLEX_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "You can line children up, grow leftover space, and pin a sidebar column",
-      "§2.1.20: `@media` so the same markup changes at different viewport widths",
+      "§2.1.20: **media queries** (`@media` rules that apply only at some viewport widths) restyle the same markup",
     ],
   },
 ];
