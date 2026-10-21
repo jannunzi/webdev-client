@@ -84,9 +84,7 @@ export default function ParentStateComponent() {
           language="tsx"
           name="ChildStateComponent"
           file="app/labs/lab4/ChildStateComponent.tsx"
-        >{`"use client";
-
-export default function ChildStateComponent({
+        >{`export default function ChildStateComponent({
   counter,
   setCounter,
 }: {

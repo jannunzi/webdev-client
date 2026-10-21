@@ -19,17 +19,24 @@ import ZustandCounter from "@/app/labs/lab4/zustand/ZustandCounter";
 import ZustandTodoList from "@/app/labs/lab4/zustand/ZustandTodoList";
 import type { ReactNode } from "react";
 import { useState } from "react";
+import WindowSizeDemo from "@/app/labs/lab4/hooks/WindowSizeDemo";
+import ToggleDemo from "@/app/labs/lab4/hooks/ToggleDemo";
+import LocalStorageDemo from "@/app/labs/lab4/hooks/LocalStorageDemo";
+import IndependentToggles from "@/app/labs/lab4/hooks/IndependentToggles";
+import HookProfileForm from "@/app/labs/lab4/hooks/HookProfileForm";
 import LectureDemoFrame from "./LectureDemoFrame";
 
 function Lab4Demo({
   label,
+  url = "/labs/lab4",
   children,
 }: {
   label: string;
+  url?: string;
   children: ReactNode;
 }) {
   return (
-    <LectureDemoFrame label={label} url="/labs/lab4">
+    <LectureDemoFrame label={label} url={url}>
       <div className="font-sans text-base [&_h2]:mt-0 [&_h3]:mt-0 [&_h4]:mt-0 [&_h5]:mt-2">
         {children}
       </div>
@@ -280,5 +287,45 @@ export function KambazCoursesCrudEmbed() {
         </ul>
       </div>
     </LectureDemoFrame>
+  );
+}
+
+export function HooksWindowSizeDemoEmbed() {
+  return (
+    <Lab4Demo label="hooks/WindowSizeDemo.tsx" url="/labs/lab4/hooks">
+      <WindowSizeDemo />
+    </Lab4Demo>
+  );
+}
+
+export function HooksToggleDemoEmbed() {
+  return (
+    <Lab4Demo label="hooks/ToggleDemo.tsx" url="/labs/lab4/hooks">
+      <ToggleDemo />
+    </Lab4Demo>
+  );
+}
+
+export function HooksLocalStorageDemoEmbed() {
+  return (
+    <Lab4Demo label="hooks/LocalStorageDemo.tsx" url="/labs/lab4/hooks">
+      <LocalStorageDemo />
+    </Lab4Demo>
+  );
+}
+
+export function HooksIndependentTogglesEmbed() {
+  return (
+    <Lab4Demo label="hooks/IndependentToggles.tsx" url="/labs/lab4/hooks">
+      <IndependentToggles />
+    </Lab4Demo>
+  );
+}
+
+export function HooksHookProfileFormEmbed() {
+  return (
+    <Lab4Demo label="hooks/HookProfileForm.tsx" url="/labs/lab4/hooks">
+      <HookProfileForm />
+    </Lab4Demo>
   );
 }

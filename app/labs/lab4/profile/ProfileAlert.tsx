@@ -1,5 +1,3 @@
-"use client";
-
 import type { ProfileErrors } from "./profile";
 
 export default function ProfileAlert({

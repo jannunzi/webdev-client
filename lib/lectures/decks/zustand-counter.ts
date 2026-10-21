@@ -36,9 +36,7 @@ export const ZUSTAND_COUNTER_SLIDES: LectureSlide[] = [
     id: "store",
     title: "State and functions on one object (code)",
     kind: "content",
-    code: `"use client";
-
-import { create } from "zustand";
+    code: `import { create } from "zustand";
 
 type CounterStore = {
   count: number;
@@ -59,9 +57,7 @@ export const useCounterStore = create<CounterStore>((set) => ({
     id: "component",
     title: "Select count, up, and down",
     kind: "content",
-    code: `"use client";
-
-import { useCounterStore } from "./counterStore";
+    code: `import { useCounterStore } from "./counterStore";
 
 export default function ZustandCounter() {
   const count = useCounterStore((state) => state.count);
@@ -91,7 +87,7 @@ export default function ZustandCounter() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/zustand/ZustandCounter.tsx",
-    codeHighlightLines: [6, 7, 8],
+    codeHighlightLines: [4, 5, 6],
   },
   {
     id: "component-live",

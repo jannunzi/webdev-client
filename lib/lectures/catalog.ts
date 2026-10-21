@@ -71,6 +71,7 @@ import { REACT_CONTEXT_SLIDES } from "./decks/react-context";
 import { ZUSTAND_COUNTER_SLIDES } from "./decks/zustand-counter";
 import { ZUSTAND_TODOS_SLIDES } from "./decks/zustand-todos";
 import { USE_EFFECT_SLIDES } from "./decks/use-effect";
+import { CUSTOM_HOOKS_SLIDES } from "./decks/custom-hooks";
 import { CH4_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch4-check-understanding";
 import { KAMBAZ_COURSES_STORE_SLIDES } from "./decks/kambaz-courses-store";
 import { KAMBAZ_DASHBOARD_CRUD_SLIDES } from "./decks/kambaz-dashboard-crud";
@@ -898,6 +899,16 @@ const LECTURE_SUMMARIES: Record<
     bookSectionId: "sec-4-7",
     canvasLecture: 13,
     slides: USE_EFFECT_SLIDES,
+  },
+  "custom-hooks": {
+    title: "Writing Your Own Hooks",
+    summary:
+      "A custom hook is a use function that calls other hooks. It shares logic, not data, across components.",
+    chapter: 4,
+    topicId: "effects",
+    bookSectionId: "sec-4-7-1",
+    canvasLecture: 13,
+    slides: CUSTOM_HOOKS_SLIDES,
   },
   "ch4-check-understanding": {
     title: "Check Your Understanding",

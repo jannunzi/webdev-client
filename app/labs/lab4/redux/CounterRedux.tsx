@@ -1,5 +1,3 @@
-"use client";
-
 import { useDispatch, useSelector } from "react-redux";
 import { down, up } from "./counterReducer";
 import type { RootState } from "./store";

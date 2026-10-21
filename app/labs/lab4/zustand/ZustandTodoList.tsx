@@ -1,5 +1,3 @@
-"use client";
-
 import { useTodoStore } from "./todoStore";
 import ZustandTodoForm from "./ZustandTodoForm";
 import ZustandTodoItem from "./ZustandTodoItem";
