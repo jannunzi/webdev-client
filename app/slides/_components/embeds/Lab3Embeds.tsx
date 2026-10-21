@@ -27,6 +27,16 @@ import Destructing from "@/app/labs/lab3/Destructing";
 import FunctionDestructing from "@/app/labs/lab3/FunctionDestructing";
 import DestructingImports from "@/app/labs/lab3/DestructingImports";
 import OptionalChaining from "@/app/labs/lab3/OptionalChaining";
+import TsTypeAnnotations from "@/app/labs/lab3/types/TypeAnnotations";
+import TsObjectTypes from "@/app/labs/lab3/types/ObjectTypes";
+import TsInterfaces from "@/app/labs/lab3/types/Interfaces";
+import TsUnionTypes from "@/app/labs/lab3/types/UnionTypes";
+import TsEnums from "@/app/labs/lab3/types/Enums";
+import TsFunctionTypes from "@/app/labs/lab3/types/FunctionTypes";
+import TsTypedProps from "@/app/labs/lab3/types/TypedProps";
+import TsNarrowing from "@/app/labs/lab3/types/Narrowing";
+import TsAnyVsUnknown from "@/app/labs/lab3/types/AnyVsUnknown";
+import TsUtilityTypes from "@/app/labs/lab3/types/UtilityTypes";
 import Classes from "@/app/labs/lab3/Classes";
 import Styles from "@/app/labs/lab3/Styles";
 import ClientComponentDemo from "@/app/labs/lab3/ClientComponentDemo";
@@ -428,5 +438,95 @@ export function JsChildrenCardEmbed() {
     <Lab3Demo label="children/CardDemo.tsx">
       <CardDemo />
     </Lab3Demo>
+  );
+}
+
+function Lab3TypesDemo({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <LectureDemoFrame label={label} url="/labs/lab3/types">
+      <div className="font-sans text-base [&_h2]:mt-0 [&_h4]:mt-0 [&_h5]:mt-2">
+        {children}
+      </div>
+    </LectureDemoFrame>
+  );
+}
+
+export function TsTypeAnnotationsEmbed() {
+  return (
+    <Lab3TypesDemo label="types/TypeAnnotations.tsx">
+      <TsTypeAnnotations />
+    </Lab3TypesDemo>
+  );
+}
+
+export function TsObjectTypesEmbed() {
+  return (
+    <Lab3TypesDemo label="types/ObjectTypes.tsx">
+      <TsObjectTypes />
+    </Lab3TypesDemo>
+  );
+}
+
+export function TsInterfacesEmbed() {
+  return (
+    <Lab3TypesDemo label="types/Interfaces.tsx">
+      <TsInterfaces />
+    </Lab3TypesDemo>
+  );
+}
+
+export function TsUnionTypesEmbed() {
+  return (
+    <Lab3TypesDemo label="types/UnionTypes.tsx">
+      <TsUnionTypes />
+    </Lab3TypesDemo>
+  );
+}
+
+export function TsEnumsEmbed() {
+  return (
+    <Lab3TypesDemo label="types/Enums.tsx">
+      <TsEnums />
+    </Lab3TypesDemo>
+  );
+}
+
+export function TsFunctionTypesEmbed() {
+  return (
+    <Lab3TypesDemo label="types/FunctionTypes.tsx">
+      <TsFunctionTypes />
+    </Lab3TypesDemo>
+  );
+}
+
+export function TsTypedPropsEmbed() {
+  return (
+    <Lab3TypesDemo label="types/TypedProps.tsx">
+      <TsTypedProps />
+    </Lab3TypesDemo>
+  );
+}
+
+export function TsNarrowingEmbed() {
+  return (
+    <Lab3TypesDemo label="types/Narrowing.tsx">
+      <TsNarrowing />
+    </Lab3TypesDemo>
+  );
+}
+
+export function TsAnyVsUnknownEmbed() {
+  return (
+    <Lab3TypesDemo label="types/AnyVsUnknown.tsx">
+      <TsAnyVsUnknown />
+    </Lab3TypesDemo>
+  );
+}
+
+export function TsUtilityTypesEmbed() {
+  return (
+    <Lab3TypesDemo label="types/UtilityTypes.tsx">
+      <TsUtilityTypes />
+    </Lab3TypesDemo>
   );
 }

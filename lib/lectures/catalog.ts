@@ -52,6 +52,7 @@ import { REDUCE_AND_JSON_SLIDES } from "./decks/reduce-and-json";
 import { JAVASCRIPT_OBJECTS_SLIDES } from "./decks/javascript-objects";
 import { SPREAD_AND_DESTRUCTURING_SLIDES } from "./decks/spread-and-destructuring";
 import { OPTIONAL_CHAINING_SLIDES } from "./decks/optional-chaining";
+import { TYPESCRIPT_TYPES_SLIDES } from "./decks/typescript-types";
 import { DYNAMIC_STYLING_SLIDES } from "./decks/dynamic-styling";
 import { CLIENT_AND_SERVER_SLIDES } from "./decks/client-and-server";
 import { PARAMETERIZING_COMPONENTS_SLIDES } from "./decks/parameterizing-components";
@@ -709,6 +710,16 @@ const LECTURE_SUMMARIES: Record<
     bookSectionId: "sec-3-4-17",
     canvasLecture: 8,
     slides: OPTIONAL_CHAINING_SLIDES,
+  },
+  "typescript-types": {
+    title: "TypeScript Types",
+    summary:
+      "Annotations, object types, unions, enums, typed props, narrowing, and utility types — §3.5.",
+    chapter: 3,
+    topicId: "typescript-types",
+    bookSectionId: "sec-3-5",
+    canvasLecture: 8,
+    slides: TYPESCRIPT_TYPES_SLIDES,
   },
   "dynamic-styling": {
     title: "Dynamic Styling",

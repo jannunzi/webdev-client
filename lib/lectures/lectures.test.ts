@@ -187,7 +187,7 @@ describe("lecture catalog", () => {
     assert.equal(LECTURE_4_SLUGS.length, 8);
     assert.equal(LECTURE_6_SLUGS.length, 7);
     assert.equal(LECTURE_7_SLUGS.length, 6);
-    assert.equal(CHAPTER_3_SLUGS.length, 22);
+    assert.equal(CHAPTER_3_SLUGS.length, 23);
     assert.equal(CHAPTER_4_SLUGS.length, 16);
     assert.equal(CHAPTER_5_SLUGS.length, 14);
     assert.equal(CHAPTER_6_SLUGS.length, 12);
@@ -455,6 +455,7 @@ describe("lecture catalog", () => {
         "js-intro",
         "js-functions",
         "js-data",
+        "typescript-types",
         "dynamic-styling",
         "client-server",
         "parameterizing",
@@ -467,6 +468,7 @@ describe("lecture catalog", () => {
         "3.2 Introduction to JavaScript",
         "3.3 JavaScript Functions",
         "3.4 JavaScript Data Structures",
+        "3.5 TypeScript Types",
         "3.6 Dynamic Styling",
         "3.7 Client and Server Components",
         "3.8 Parameterizing Components",
@@ -496,18 +498,22 @@ describe("lecture catalog", () => {
     );
     assert.deepEqual(
       groups[2]?.topics[3]?.decks.map((deck) => deck.slug),
-      ["dynamic-styling"],
+      ["typescript-types"],
     );
     assert.deepEqual(
       groups[2]?.topics[4]?.decks.map((deck) => deck.slug),
-      ["client-and-server"],
+      ["dynamic-styling"],
     );
     assert.deepEqual(
       groups[2]?.topics[5]?.decks.map((deck) => deck.slug),
-      ["parameterizing-components", "path-params-and-todos"],
+      ["client-and-server"],
     );
     assert.deepEqual(
       groups[2]?.topics[6]?.decks.map((deck) => deck.slug),
+      ["parameterizing-components", "path-params-and-todos"],
+    );
+    assert.deepEqual(
+      groups[2]?.topics[7]?.decks.map((deck) => deck.slug),
       [
         "kambaz-database",
         "kambaz-dashboard-data",
@@ -1050,7 +1056,7 @@ describe("lecture catalog", () => {
     );
     assert.equal(groups[7]?.title, "Lecture 8");
     assert.equal(groups[7]?.canvasLecture, 8);
-    assert.equal(groups[7]?.decks.length, 17);
+    assert.equal(groups[7]?.decks.length, 18);
     assert.deepEqual(
       groups[7]?.decks.map((deck) => deck.slug),
       CHAPTER_3_SLUGS.filter((slug) => getLecture(slug)?.canvasLecture === 8),
@@ -1304,6 +1310,7 @@ describe("lecture decks", () => {
     assert.equal(counts["javascript-objects"], 10);
     assert.equal(counts["spread-and-destructuring"], 15);
     assert.equal(counts["optional-chaining"], 6);
+    assert.equal(counts["typescript-types"], 33);
     assert.equal(counts["dynamic-styling"], 10);
     assert.equal(counts["client-and-server"], 56);
     assert.equal(counts["parameterizing-components"], 25);
@@ -1809,6 +1816,18 @@ describe("lecture decks", () => {
         "destructing-imports": "js-destructing-imports",
       },
       "optional-chaining": { sample: "js-optional-chaining" },
+      "typescript-types": {
+        annotations: "ts-type-annotations",
+        "object-types": "ts-object-types",
+        interfaces: "ts-interfaces",
+        unions: "ts-union-types",
+        enums: "ts-enums",
+        functions: "ts-function-types",
+        props: "ts-typed-props",
+        narrowing: "ts-narrowing",
+        "any-unknown": "ts-any-vs-unknown",
+        utility: "ts-utility-types",
+      },
       "dynamic-styling": {
         classes: "js-classes",
         styles: "js-styles",
@@ -3749,7 +3768,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         );
       });
     }
-    assert.equal(demos, 96);
+    assert.equal(demos, 106);
   });
 
   it("keeps one code slide unless a listing is long, and never leaves a tiny tail", () => {
@@ -3763,8 +3782,10 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         if (!ids.includes(`${base}-live`)) continue;
         const lines = slide.code.split("\n");
         // Lone <br /> lines move up onto the line before.
+        // §3.5.10 UtilityTypes keeps the book listing's own `{" "}` / `<br />` lines byte for byte.
         assert.ok(
-          !lines.some((line) => /^\s*<br\s*\/>\s*$/.test(line)),
+          `${slug}#${slide.id}` === "typescript-types#utility" ||
+            !lines.some((line) => /^\s*<br\s*\/>\s*$/.test(line)),
           `${slug}#${slide.id} has a lone <br /> line`,
         );
         for (const line of [
@@ -3845,7 +3866,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 238);
+    assert.equal(intros, 245);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
