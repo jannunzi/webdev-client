@@ -87,9 +87,7 @@ export default function PassingDataOnEvent() {
     id: "passing-functions",
     title: "theFunction is a prop",
     kind: "content",
-    code: `"use client";
-
-export default function PassingFunctions({
+    code: `export default function PassingFunctions({
   message,
   theFunction,
 }: {
@@ -113,7 +111,7 @@ export default function PassingFunctions({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/PassingFunctions.tsx",
-    codeHighlightLines: [[3, 9], 15],
+    codeHighlightLines: [[1, 7], 13],
   },
   {
     id: "passing-functions-live",

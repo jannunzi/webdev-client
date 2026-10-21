@@ -238,9 +238,7 @@ export default function PassingDataOnEvent() {
           language="tsx"
           name="PassingFunctions"
           file="app/labs/lab4/PassingFunctions.tsx"
-        >{`"use client";
-
-export default function PassingFunctions({
+        >{`export default function PassingFunctions({
   message,
   theFunction,
 }: {
