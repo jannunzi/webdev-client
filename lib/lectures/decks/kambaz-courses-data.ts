@@ -22,6 +22,43 @@ export const KAMBAZ_COURSES_DATA_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "breadcrumb-intro",
+    title: "Breadcrumb reads the last segment",
+    kind: "content",
+    bullets: [
+      "Client Component so it can call `usePathname`",
+      "Course name from the object the layout found; section from the URL",
+      "`course?.name` guards a missing `find` — the same `?.` as §3.4.17",
+      "On Home it reads `Rocket Propulsion > Home`; the part after `>` follows the URL",
+    ],
+  },
+  {
+    id: "breadcrumb",
+    title: "Breadcrumb reads the last segment (code)",
+    kind: "content",
+    code: `"use client";
+
+import { usePathname } from "next/navigation";
+
+export default function Breadcrumb({
+  course,
+}: {
+  course: { name: string } | undefined;
+}) {
+  const pathname = usePathname() ?? "";
+  const section = pathname.split("/").pop() ?? "";
+  const label = section.charAt(0).toUpperCase() + section.slice(1);
+  return (
+    <span>
+      {course?.name} &gt; {label}
+    </span>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/Breadcrumb.tsx",
+    codeHighlightLines: [11, 15],
+  },
+  {
     id: "layout-intro",
     title: "Layout awaits params, then finds",
     kind: "content",
@@ -146,43 +183,6 @@ const LINKS = [
       "The layout already passes `cid` — this file does not need `useParams`",
     ],
     embed: "kambaz-styled-course-nav",
-  },
-  {
-    id: "breadcrumb-intro",
-    title: "Breadcrumb reads the last segment",
-    kind: "content",
-    bullets: [
-      "Client Component so it can call `usePathname`",
-      "Course name from the object the layout found; section from the URL",
-      "`course?.name` guards a missing `find` — the same `?.` as §3.4.17",
-      "On Home it reads `Rocket Propulsion > Home`; the part after `>` follows the URL",
-    ],
-  },
-  {
-    id: "breadcrumb",
-    title: "Breadcrumb reads the last segment (code)",
-    kind: "content",
-    code: `"use client";
-
-import { usePathname } from "next/navigation";
-
-export default function Breadcrumb({
-  course,
-}: {
-  course: { name: string } | undefined;
-}) {
-  const pathname = usePathname() ?? "";
-  const section = pathname.split("/").pop() ?? "";
-  const label = section.charAt(0).toUpperCase() + section.slice(1);
-  return (
-    <span>
-      {course?.name} &gt; {label}
-    </span>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/courses/[cid]/Breadcrumb.tsx",
-    codeHighlightLines: [11, 15],
   },
   {
     id: "recap",
