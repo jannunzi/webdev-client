@@ -142,29 +142,28 @@ export default function QueryCalculator() {
   );
 }`,
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab4/url-encoding/query-params/QueryCalculator.tsx",
+    codeFile: "app/labs/lab4/url-encoding/query-params/page.tsx",
   },
   {
     id: "query-page",
-    title: "The query page wraps it in Suspense",
+    title: "The query page is built on request",
     kind: "content",
     bullets: [
-      "`app/labs/lab4/url-encoding/query-params/page.tsx` renders `QueryCalculator`",
-      "Wrap `useSearchParams` in `Suspense` so Next.js can stream the page",
+      "`page.tsx` is the calculator. A small `layout.tsx` next to it sets `dynamic`",
+      "`\"force-dynamic\"` builds the page on request, when the query string is known",
       "Open `/labs/lab4/url-encoding/query-params?a=5&b=10`: the sum is 15",
     ],
-    code: `import { Suspense } from "react";
-import QueryCalculator from "./QueryCalculator";
+    code: `export const dynamic = "force-dynamic";
 
-export default function QueryCalculatorPage() {
-  return (
-    <Suspense fallback={<p>Loading calculator…</p>}>
-      <QueryCalculator />
-    </Suspense>
-  );
+export default function QueryParamsLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return children;
 }`,
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab4/url-encoding/query-params/page.tsx",
+    codeFile: "app/labs/lab4/url-encoding/query-params/layout.tsx",
   },
   {
     id: "path-intro",

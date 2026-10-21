@@ -305,7 +305,7 @@ export default function PropDrilling() {
           title="4.3.3.1 Query Search Parameters"
         >
           <p>
-            The <code>QueryCalculator</code>{" "}page demonstrates how to
+            The query calculator page demonstrates how to
             read data from the query string using Next.js{" "}
             <code>useSearchParams</code>. The hook decodes the names and
             values from the URL and returns an object map where the keys
@@ -314,8 +314,11 @@ export default function PropDrilling() {
             search terms, pagination, or any non-structural data. Create a
             query calculator at{" "}
             <code>app/labs/lab4/url-encoding/query-params/page.tsx</code>.
-            Wrap <code>useSearchParams</code>{" "}in{" "}
-            <code>Suspense</code>{" "}so Next.js can stream the page.
+            Add a small <code>layout.tsx</code>{" "}next to it that sets{" "}
+            <code>dynamic</code>{" "}to{" "}
+            <code>&quot;force-dynamic&quot;</code>. This tells Next.js to
+            build the page when it is requested, since the query string is
+            only known then.
             Confirm the browser displays as shown when you open the URL
             with <code>a</code>{" "}and <code>b</code>{" "}in the query
             string.
@@ -323,7 +326,7 @@ export default function PropDrilling() {
           <CodeBlock
             language="tsx"
             name="QueryCalculator"
-            file="app/labs/lab4/url-encoding/query-params/QueryCalculator.tsx"
+            file="app/labs/lab4/url-encoding/query-params/page.tsx"
           >{`"use client";
 
 import { useSearchParams } from "next/navigation";
@@ -351,18 +354,17 @@ export default function QueryCalculator() {
 }`}</CodeBlock>
           <CodeBlock
             language="tsx"
-            name="QueryCalculatorPage"
-            file="app/labs/lab4/url-encoding/query-params/page.tsx"
-          >{`import { Suspense } from "react";
-import QueryCalculator from "./QueryCalculator";
+            name="QueryParamsLayout"
+            file="app/labs/lab4/url-encoding/query-params/layout.tsx"
+          >{`export const dynamic = "force-dynamic";
 
-export default function QueryCalculatorPage() {
-  return (
-    <Suspense fallback={<p>Loading calculator…</p>}>
-      <QueryCalculator />
-    </Suspense>
-  );
-}`}</CodeBlock>
+export default function QueryParamsLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return children;
+}}`}</CodeBlock>
           <p>
             <code>searchParams.get(&quot;a&quot;)</code>{" "}returns the
             string after <code>a=</code>, or <code>null</code>{" "}if the
