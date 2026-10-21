@@ -464,6 +464,7 @@ export default function ProfileFields({
         onChange={(e) => update({ firstName: e.target.value })}
       />
       {errors.firstName && <p className={error}>{errors.firstName}</p>}
+      <br />
 
       <label htmlFor={\`\${prefix}-last-name\`}>Last name</label>
       <input
@@ -473,6 +474,7 @@ export default function ProfileFields({
         onChange={(e) => update({ lastName: e.target.value })}
       />
       {errors.lastName && <p className={error}>{errors.lastName}</p>}
+      <br />
 
       <label htmlFor={\`\${prefix}-password\`}>Password</label>
       <input
@@ -483,6 +485,7 @@ export default function ProfileFields({
         onChange={(e) => update({ password: e.target.value })}
       />
       {errors.password && <p className={error}>{errors.password}</p>}
+      <br />
 
       <label htmlFor={\`\${prefix}-dob\`}>Date of birth</label>
       <input
@@ -493,6 +496,7 @@ export default function ProfileFields({
         onChange={(e) => update({ dob: htmlToDate(e.target.value) })}
       />
       {errors.dob && <p className={error}>{errors.dob}</p>}
+      <br />
 
       <label htmlFor={\`\${prefix}-role\`}>Role</label>
       <select
@@ -507,6 +511,7 @@ export default function ProfileFields({
         <option value="FACULTY">Faculty</option>
       </select>
       {errors.role && <p className={error}>{errors.role}</p>}
+      <br />
 
       <label className="flex items-center gap-2">
         <input
@@ -517,6 +522,7 @@ export default function ProfileFields({
         />
         Email me the newsletter
       </label>
+      <br />
 
       <fieldset id={\`\${prefix}-topics\`}>
         <legend>Topics</legend>
