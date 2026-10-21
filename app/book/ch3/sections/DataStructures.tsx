@@ -1268,6 +1268,8 @@ export default function Lab3() {
       {house.bedrooms}
       <h5>bathrooms</h5>
       {house.bathrooms}
+      <h5>Number of properties</h5>
+      {Object.keys(house).length}
       <h5>Data</h5>
       <pre>{JSON.stringify(house, null, 2)}</pre>
       <hr />
@@ -1276,7 +1278,7 @@ export default function Lab3() {
 }`}</CodeBlock>
         <p>
           Dot notation reads a property: <code>house.bedrooms</code>,{" "}
-          <code>house.address.city</code>. The pretty-printed{" "}
+          <code>house.address.city</code>.{" "}<code>Object.keys(obj)</code>{" "}returns an array of the object&apos;s property names, so{" "}<code>Object.keys(house).length</code>{" "}gives the number of properties: 6 for this house. The pretty-printed{" "}
           <code>&lt;pre&gt;</code>{" "}uses the optional second and third
           arguments to <code>stringify</code>{" "}— a replacer (here{" "}
           <code>null</code>) and an indent width of <code>2</code>.{" "}

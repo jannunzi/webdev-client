@@ -3,7 +3,6 @@ import {
   htmlToDate,
   TOPICS,
   type Profile,
-  type ProfileChanges,
   type ProfileErrors,
   type Role,
 } from "./profile";
@@ -15,15 +14,16 @@ export default function ProfileFields({
   prefix,
   profile,
   errors,
-  update,
+  setProfile,
 }: {
   prefix: string;
   profile: Profile;
   errors: ProfileErrors;
-  update: (changes: ProfileChanges) => void;
+  setProfile: (profile: Profile) => void;
 }) {
   const toggleTopic = (topic: string) =>
-    update({
+    setProfile({
+      ...profile,
       topics: profile.topics.includes(topic)
         ? profile.topics.filter((t) => t !== topic)
         : [...profile.topics, topic],
@@ -35,7 +35,7 @@ export default function ProfileFields({
         id={`${prefix}-first-name`}
         className={input}
         value={profile.firstName}
-        onChange={(e) => update({ firstName: e.target.value })}
+        onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
       />
       {errors.firstName && <p className={error}>{errors.firstName}</p>}
 
@@ -44,7 +44,7 @@ export default function ProfileFields({
         id={`${prefix}-last-name`}
         className={input}
         value={profile.lastName}
-        onChange={(e) => update({ lastName: e.target.value })}
+        onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
       />
       {errors.lastName && <p className={error}>{errors.lastName}</p>}
 
@@ -54,7 +54,7 @@ export default function ProfileFields({
         type="password"
         className={input}
         value={profile.password}
-        onChange={(e) => update({ password: e.target.value })}
+        onChange={(e) => setProfile({ ...profile, password: e.target.value })}
       />
       {errors.password && <p className={error}>{errors.password}</p>}
 
@@ -64,7 +64,7 @@ export default function ProfileFields({
         type="date"
         className={input}
         value={dateToHtml(profile.dob)}
-        onChange={(e) => update({ dob: htmlToDate(e.target.value) })}
+        onChange={(e) => setProfile({ ...profile, dob: htmlToDate(e.target.value) })}
       />
       {errors.dob && <p className={error}>{errors.dob}</p>}
 
@@ -73,7 +73,7 @@ export default function ProfileFields({
         id={`${prefix}-role`}
         className={input}
         value={profile.role}
-        onChange={(e) => update({ role: e.target.value as Role })}
+        onChange={(e) => setProfile({ ...profile, role: e.target.value as Role })}
       >
         <option value="">Choose a role</option>
         <option value="STUDENT">Student</option>
@@ -87,7 +87,7 @@ export default function ProfileFields({
           id={`${prefix}-newsletter`}
           type="checkbox"
           checked={profile.newsletter}
-          onChange={() => update({ newsletter: !profile.newsletter })}
+          onChange={() => setProfile({ ...profile, newsletter: !profile.newsletter })}
         />
         Email me the newsletter
       </label>
@@ -114,7 +114,7 @@ export default function ProfileFields({
             type="radio"
             name={`${prefix}-theme`}
             checked={profile.theme === "light"}
-            onChange={() => update({ theme: "light" })}
+            onChange={() => setProfile({ ...profile, theme: "light" })}
           />
           Light
         </label>
@@ -123,7 +123,7 @@ export default function ProfileFields({
             type="radio"
             name={`${prefix}-theme`}
             checked={profile.theme === "dark"}
-            onChange={() => update({ theme: "dark" })}
+            onChange={() => setProfile({ ...profile, theme: "dark" })}
           />
           Dark
         </label>

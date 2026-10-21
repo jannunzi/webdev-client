@@ -699,7 +699,7 @@ export default function Forms() {
     bullets: [
       "HTML samples often write `value=`. In React Lab 1 use **`defaultValue`**",
       "`value` alone **freezes** the field: React keeps forcing the same text back",
-      "Lab 1 stays **uncontrolled**. Controlled inputs return in later chapters",
+      "Lab 1 stays **uncontrolled**: the browser keeps what the user types",
     ],
   },
   {

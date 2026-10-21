@@ -1,28 +1,17 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
-import { emptyProfile, validateProfile, type Profile, type ProfileChanges, type ProfileErrors } from "../profile/profile";
+import { emptyProfile, type Profile } from "../profile/profile";
 
 type ProfileContextValue = {
   profile: Profile;
-  errors: ProfileErrors;
-  submitted: boolean;
-  update: (changes: ProfileChanges) => void;
-  save: () => void;
+  setProfile: (profile: Profile) => void;
 };
 
 const ProfileContext = createContext<ProfileContextValue | null>(null);
 
 export function ProfileProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile>(emptyProfile);
-  const [errors, setErrors] = useState<ProfileErrors>({});
-  const [submitted, setSubmitted] = useState(false);
-  const update = (changes: ProfileChanges) =>
-    setProfile({ ...profile, ...changes });
-  const save = () => {
-    setErrors(validateProfile(profile));
-    setSubmitted(true);
-  };
   return (
-    <ProfileContext.Provider value={{ profile, errors, submitted, update, save }}>
+    <ProfileContext.Provider value={{ profile, setProfile }}>
       {children}
     </ProfileContext.Provider>
   );

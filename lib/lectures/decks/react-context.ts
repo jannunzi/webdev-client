@@ -178,7 +178,7 @@ export default function ContextExamples() {
     kind: "content",
     bullets: [
       "`profile.ts`, `ProfileFields`, and `ProfileAlert` stay exactly as they were",
-      "`ProfileProvider` holds the same three `useState` variables plus `update` and `save`",
+      "`ProfileProvider` keeps the `profile` state and publishes the same `profile`/`setProfile` pair",
       "`useProfileContext` throws a clear error outside the provider",
     ],
   },
@@ -187,30 +187,19 @@ export default function ContextExamples() {
     title: "ProfileContext (code)",
     kind: "content",
     code: `import { createContext, useContext, useState, type ReactNode } from "react";
-import { emptyProfile, validateProfile, type Profile, type ProfileChanges, type ProfileErrors } from "../profile/profile";
+import { emptyProfile, type Profile } from "../profile/profile";
 
 type ProfileContextValue = {
   profile: Profile;
-  errors: ProfileErrors;
-  submitted: boolean;
-  update: (changes: ProfileChanges) => void;
-  save: () => void;
+  setProfile: (profile: Profile) => void;
 };
 
 const ProfileContext = createContext<ProfileContextValue | null>(null);
 
 export function ProfileProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile>(emptyProfile);
-  const [errors, setErrors] = useState<ProfileErrors>({});
-  const [submitted, setSubmitted] = useState(false);
-  const update = (changes: ProfileChanges) =>
-    setProfile({ ...profile, ...changes });
-  const save = () => {
-    setErrors(validateProfile(profile));
-    setSubmitted(true);
-  };
   return (
-    <ProfileContext.Provider value={{ profile, errors, submitted, update, save }}>
+    <ProfileContext.Provider value={{ profile, setProfile }}>
       {children}
     </ProfileContext.Provider>
   );
@@ -232,7 +221,7 @@ export function useProfileContext() {
     kind: "content",
     bullets: [
       "A hook only sees providers above its component, so the body is separate",
-      "`ContextProfileFormBody` reads everything from the context, not its own state",
+      "The body reads `profile` and `setProfile` from the context; `errors`, `submitted`, and `save` stay in the form",
       "Any component inside `ProfileProvider` can share the profile without props",
     ],
   },
@@ -242,22 +231,26 @@ export function useProfileContext() {
     kind: "content",
     code: `"use client";
 
-import type { FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { ProfileProvider, useProfileContext } from "./ProfileContext";
+import { validateProfile, type ProfileErrors } from "../profile/profile";
 import ProfileFields from "../profile/ProfileFields";
 import ProfileAlert from "../profile/ProfileAlert";
 
 function ContextProfileFormBody() {
-  const { profile, errors, submitted, update, save } = useProfileContext();
-  const onSubmit = (e: FormEvent) => {
+  const { profile, setProfile } = useProfileContext();
+  const [errors, setErrors] = useState<ProfileErrors>({});
+  const [submitted, setSubmitted] = useState(false);
+  const save = (e: FormEvent) => {
     e.preventDefault();
-    save();
+    setErrors(validateProfile(profile));
+    setSubmitted(true);
   };
   return (
-    <form id="wd-context-profile-form" onSubmit={onSubmit} noValidate>
+    <form id="wd-context-profile-form" onSubmit={save} noValidate>
       <h2>Profile (React Context)</h2>
       <ProfileAlert id="wd-context-profile-alert" submitted={submitted} errors={errors} />
-      <ProfileFields prefix="wd-context-profile" profile={profile} errors={errors} update={update} />
+      <ProfileFields prefix="wd-context-profile" profile={profile} errors={errors} setProfile={setProfile} />
       <button id="wd-context-profile-save" type="submit" className="mt-3 rounded bg-blue-600 px-4 py-1.5 text-white">
         Save
       </button>

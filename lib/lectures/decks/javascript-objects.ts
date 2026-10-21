@@ -65,6 +65,8 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
       {house.bedrooms}
       <h5>bathrooms</h5>
       {house.bathrooms}
+      <h5>Number of properties</h5>
+      {Object.keys(house).length}
       <h5>Data</h5>
       <pre>{JSON.stringify(house, null, 2)}</pre>
       <hr />

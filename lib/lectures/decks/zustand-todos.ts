@@ -224,8 +224,8 @@ export default function ZustandTodoList() {
     kind: "content",
     bullets: [
       "`profile.ts`, `ProfileFields`, and `ProfileAlert` do not change",
-      "The store holds `profile`, `errors`, and `submitted` next to `update` and `save`",
-      "Both pass `set` a function of the current state, so `save` checks the latest profile",
+      "The store holds the same `profile`/`setProfile` pair",
+      "`setProfile` passes `set` the new profile",
     ],
   },
   {
@@ -233,24 +233,16 @@ export default function ZustandTodoList() {
     title: "profileStore (code)",
     kind: "content",
     code: `import { create } from "zustand";
-import { emptyProfile, validateProfile, type Profile, type ProfileChanges, type ProfileErrors } from "../profile/profile";
+import { emptyProfile, type Profile } from "../profile/profile";
 
 type ProfileStore = {
   profile: Profile;
-  errors: ProfileErrors;
-  submitted: boolean;
-  update: (changes: ProfileChanges) => void;
-  save: () => void;
+  setProfile: (profile: Profile) => void;
 };
 
 export const useProfileStore = create<ProfileStore>((set) => ({
   profile: emptyProfile,
-  errors: {},
-  submitted: false,
-  update: (changes) =>
-    set((state) => ({ profile: { ...state.profile, ...changes } })),
-  save: () =>
-    set((state) => ({ errors: validateProfile(state.profile), submitted: true })),
+  setProfile: (profile) => set({ profile }),
 }));`,
     codeLanguage: "ts",
     codeFile: "app/labs/lab4/zustand/profileStore.ts",
@@ -271,26 +263,27 @@ export const useProfileStore = create<ProfileStore>((set) => ({
     kind: "content",
     code: `"use client";
 
-import type { FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { useProfileStore } from "./profileStore";
+import { validateProfile, type ProfileErrors } from "../profile/profile";
 import ProfileFields from "../profile/ProfileFields";
 import ProfileAlert from "../profile/ProfileAlert";
 
 export default function ZustandProfileForm() {
   const profile = useProfileStore((state) => state.profile);
-  const errors = useProfileStore((state) => state.errors);
-  const submitted = useProfileStore((state) => state.submitted);
-  const update = useProfileStore((state) => state.update);
-  const save = useProfileStore((state) => state.save);
-  const onSubmit = (e: FormEvent) => {
+  const setProfile = useProfileStore((state) => state.setProfile);
+  const [errors, setErrors] = useState<ProfileErrors>({});
+  const [submitted, setSubmitted] = useState(false);
+  const save = (e: FormEvent) => {
     e.preventDefault();
-    save();
+    setErrors(validateProfile(profile));
+    setSubmitted(true);
   };
   return (
-    <form id="wd-zustand-profile-form" onSubmit={onSubmit} noValidate>
+    <form id="wd-zustand-profile-form" onSubmit={save} noValidate>
       <h2>Profile (Zustand)</h2>
       <ProfileAlert id="wd-zustand-profile-alert" submitted={submitted} errors={errors} />
-      <ProfileFields prefix="wd-zustand-profile" profile={profile} errors={errors} update={update} />
+      <ProfileFields prefix="wd-zustand-profile" profile={profile} errors={errors} setProfile={setProfile} />
       <button id="wd-zustand-profile-save" type="submit" className="mt-3 rounded bg-blue-600 px-4 py-1.5 text-white">
         Save
       </button>

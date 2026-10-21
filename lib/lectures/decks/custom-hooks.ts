@@ -295,7 +295,7 @@ export default function IndependentToggles() {
     title: "Step 5: useProfileForm",
     kind: "content",
     bullets: [
-      "The §4.2.10 form kept three state variables, `update`, and a validating `save`",
+      "The §4.2.10 form kept three state variables and a `save` that validates on submit",
       "`useProfileForm` holds all of that, so the form keeps only its JSX",
       "It returns an object, not a pair: five things read more clearly by name",
     ],
@@ -309,7 +309,6 @@ import {
   emptyProfile,
   validateProfile,
   type Profile,
-  type ProfileChanges,
   type ProfileErrors,
 } from "../profile/profile";
 
@@ -317,14 +316,12 @@ export default function useProfileForm() {
   const [profile, setProfile] = useState<Profile>(emptyProfile);
   const [errors, setErrors] = useState<ProfileErrors>({});
   const [submitted, setSubmitted] = useState(false);
-  const update = (changes: ProfileChanges) =>
-    setProfile({ ...profile, ...changes });
   const save = (e: FormEvent) => {
     e.preventDefault();
     setErrors(validateProfile(profile));
     setSubmitted(true);
   };
-  return { profile, errors, submitted, update, save };
+  return { profile, setProfile, errors, submitted, save };
 }`,
     codeLanguage: "ts",
     codeFile: "app/labs/lab4/hooks/useProfileForm.ts",
@@ -340,12 +337,12 @@ import ProfileFields from "../profile/ProfileFields";
 import ProfileAlert from "../profile/ProfileAlert";
 
 export default function HookProfileForm() {
-  const { profile, errors, submitted, update, save } = useProfileForm();
+  const { profile, setProfile, errors, submitted, save } = useProfileForm();
   return (
     <form id="wd-hook-profile-form" onSubmit={save} noValidate>
       <h3>useProfileForm</h3>
       <ProfileAlert id="wd-hook-profile-alert" submitted={submitted} errors={errors} />
-      <ProfileFields prefix="wd-hook-profile" profile={profile} errors={errors} update={update} />
+      <ProfileFields prefix="wd-hook-profile" profile={profile} errors={errors} setProfile={setProfile} />
       <button id="wd-hook-profile-save" type="submit" className="mt-3 rounded bg-blue-600 px-4 py-1.5 text-white">
         Save
       </button>

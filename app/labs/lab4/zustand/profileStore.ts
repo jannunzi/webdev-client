@@ -1,20 +1,12 @@
 import { create } from "zustand";
-import { emptyProfile, validateProfile, type Profile, type ProfileChanges, type ProfileErrors } from "../profile/profile";
+import { emptyProfile, type Profile } from "../profile/profile";
 
 type ProfileStore = {
   profile: Profile;
-  errors: ProfileErrors;
-  submitted: boolean;
-  update: (changes: ProfileChanges) => void;
-  save: () => void;
+  setProfile: (profile: Profile) => void;
 };
 
 export const useProfileStore = create<ProfileStore>((set) => ({
   profile: emptyProfile,
-  errors: {},
-  submitted: false,
-  update: (changes) =>
-    set((state) => ({ profile: { ...state.profile, ...changes } })),
-  save: () =>
-    set((state) => ({ errors: validateProfile(state.profile), submitted: true })),
+  setProfile: (profile) => set({ profile }),
 }));
