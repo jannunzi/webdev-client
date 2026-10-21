@@ -7,7 +7,7 @@ export const PATH_PARAMS_AND_TODOS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Path Parameters and Todos",
-      "§3.7.2–3.7.5 · the URL, a JSON list, the full Lab 3 page",
+      "§3.8.2–3.8.5 · the URL, a JSON list, the full Lab 3 page",
     ],
   },
   {
@@ -28,7 +28,7 @@ export const PATH_PARAMS_AND_TODOS_SLIDES: LectureSlide[] = [
     bullets: [
       "Your Chapter 1 TOC has no `\"use client\"`, no `LINKS`, no `match` — **replace the whole file**",
       "`\"use client\"` because `usePathname` reads the address bar. Each `li` uses `key={link.id}`",
-      "The active link gets an inline style object (§3.5.2) — Labs pages don’t load Tailwind",
+      "The active link gets an inline style object (§3.6.2) — Labs pages don’t load Tailwind",
       "`aria-current=\"page\"` tells screen readers which link is the current page",
       "Visit `/labs/lab3`: only Lab 3 is a blue pill with white text",
     ],
@@ -360,7 +360,7 @@ export default function Lab3() {
     kind: "title",
     bullets: [
       "Pause on the practice quiz before wiring Kambaz to JSON",
-      "§3.8: ten items from this chapter — not graded",
+      "§3.9: ten items from this chapter — not graded",
     ],
   },
 ];

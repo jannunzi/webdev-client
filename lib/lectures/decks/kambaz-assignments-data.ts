@@ -7,7 +7,7 @@ export const KAMBAZ_ASSIGNMENTS_DATA_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Assignments and People",
-      "§3.9.8–3.9.9 · filter rows, then join enrollments",
+      "§3.10.8–3.10.9 · filter rows, then join enrollments",
     ],
   },
   {
@@ -386,7 +386,7 @@ export default async function PeopleTable({
     kind: "title",
     bullets: [
       "Lab 3 taught the language. Kambaz now renders from JSON",
-      "§3.9.10 is the coverage checklist — then Chapter 4 adds state",
+      "§3.10.10 is the coverage checklist — then Chapter 4 adds state",
     ],
   },
 ];

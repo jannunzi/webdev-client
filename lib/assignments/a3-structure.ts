@@ -387,12 +387,12 @@ function siblingBoxes(html: string, pick: (child: El) => boolean): number {
   return best;
 }
 
-/** §3.5.2: a fourth inline-styled box next to the other three. */
+/** §3.6.2: a fourth inline-styled box next to the other three. */
 export function lab3OyoFourStyleBoxes(html: string): boolean {
   return siblingBoxes(html, (child) => INLINE_BACKGROUND.test(attr(child.open, "style"))) >= 4;
 }
 
-/** §3.5.1: a sixth class-colored box next to the other five. */
+/** §3.6.1: a sixth class-colored box next to the other five. */
 export function lab3OyoSixClassBoxes(html: string): boolean {
   return lab3ClassBoxes(html) >= 6;
 }
@@ -455,7 +455,7 @@ export function lab3OyoOwnersHeading(html: string): boolean {
   });
 }
 
-/** §3.6.2: the stringified server object has an "arch" key. */
+/** §3.7.2: the stringified server object has an "arch" key. */
 export function lab3OyoArch(html: string): boolean {
   return preJson(html).some((value) => isPlainObject(value) && "arch" in value);
 }
@@ -468,7 +468,7 @@ export function lab3OyoImportsRow(html: string): boolean {
   });
 }
 
-/** §3.7.3: three distinct /labs/lab3/add/<a>/<b> links. */
+/** §3.8.3: three distinct /labs/lab3/add/<a>/<b> links. */
 export function lab3OyoThirdAddLink(html: string, ctx: StructureContext): boolean {
   return (
     new Set(
@@ -479,7 +479,7 @@ export function lab3OyoThirdAddLink(html: string, ctx: StructureContext): boolea
   );
 }
 
-/** §3.7.4: four todo checkboxes (checked state is not graded). */
+/** §3.8.4: four todo checkboxes (checked state is not graded). */
 export function lab3OyoFourTodos(html: string): boolean {
   return ["ul", "ol"].some((tag) =>
     elements(html, tag).some((list) => {
@@ -795,7 +795,7 @@ function fallback(entry: Omit<StructureFallback, "structureOnly" | "onMiss"> & {
 export const A3_STRUCTURE_FALLBACKS: Readonly<Record<string, StructureFallback>> = {
   "a3-lab-page": fallback({
     looksFor: `the Lab 3 page with its sections (at least ${A3_MIN_LAB_HEADINGS} section headings)`,
-    missMessage: `/labs/lab3 should show a titled section for each exercise in §3.2–§3.7 (we found fewer than ${A3_MIN_LAB_HEADINGS} section headings, or the starter page).`,
+    missMessage: `/labs/lab3 should show a titled section for each exercise in §3.2–§3.8 (we found fewer than ${A3_MIN_LAB_HEADINGS} section headings, or the starter page).`,
     target: LAB3,
     test: (html) => lab3HasSections(html),
   }),

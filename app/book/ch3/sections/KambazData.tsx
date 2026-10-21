@@ -15,8 +15,8 @@ import { CH3_KAMBAZ_EXERCISES } from "../../exercise-lists/catalogs";
 export default function KambazData() {
   return (
     <Section
-      id="sec-3-9"
-      title="3.9 Implementing a Data Driven Kambaz Application"
+      id="sec-3-10"
+      title="3.10 Implementing a Data Driven Kambaz Application"
     >
       <p>
         <ChapterLink to={1} />{" "}and <ChapterLink to={2} />{" "}built Kambaz
@@ -26,7 +26,7 @@ export default function KambazData() {
         to JSON so the UI follows the data: different courses on the
         dashboard, and different modules, assignments, and people once the
         URL encodes a course id. A single coverage checklist is in{" "}
-        <SectionLink to="3.9.10" /> — use it after you have walked through
+        <SectionLink to="3.10.10" /> — use it after you have walked through
         the screens, not instead of wiring data as you read.
       </p>
       <p>
@@ -41,7 +41,7 @@ export default function KambazData() {
         on its own. The checks look at what each screen shows.
       </p>
       <p>
-        <strong>Data you need.</strong>{" "}<SectionLink to="3.9.2" />{" "}gives
+        <strong>Data you need.</strong>{" "}<SectionLink to="3.10.2" />{" "}gives
         you the reference JSON files, the same data the demos in this
         section use. You can change names and add rows, but keep at least
         three courses, and at least two courses that each have modules,
@@ -63,14 +63,14 @@ export default function Kambaz() {
 
       <Section
         level={3}
-        id="sec-3-9-1"
-        title="3.9.1 Data Driven Kambaz Navigation"
+        id="sec-3-10-1"
+        title="3.10.1 Data Driven Kambaz Navigation"
       >
         <p>
           The sidebar in <SectionLink to="2.4.1" />{" "}listed each link by
           hand. Replace that repetition with an array of labels, paths, and
           icons, then <code>map</code>{" "}it — the same pattern as the Labs
-          TOC in <SectionLink to="3.7.2" />. Account stays a special case
+          TOC in <SectionLink to="3.8.2" />. Account stays a special case
           (red text on white when active). Courses intentionally points at{" "}
           <code>/dashboard</code>, because you only reach a course from a
           dashboard card. Only one item is highlighted at a time: Dashboard
@@ -186,8 +186,8 @@ export default function KambazNavigation() {
 
       <Section
         level={3}
-        id="sec-3-9-2"
-        title="3.9.2 Implementing a Kambaz Database"
+        id="sec-3-10-2"
+        title="3.10.2 Implementing a Kambaz Database"
       >
         <p>
           The JSON files under <code>database/</code>{" "}are a stand-in
@@ -241,9 +241,9 @@ export { courses };`}</CodeBlock>
           — come from the same folder. Each later section downloads the file
           it needs and adds one import line to <code>index.ts</code>, so
           your project builds after every step: modules in{" "}
-          <SectionLink to="3.9.7" />, assignments in{" "}
-          <SectionLink to="3.9.8" />, and users and enrollments in{" "}
-          <SectionLink to="3.9.9" />. Don&apos;t import a file before it is
+          <SectionLink to="3.10.7" />, assignments in{" "}
+          <SectionLink to="3.10.8" />, and users and enrollments in{" "}
+          <SectionLink to="3.10.9" />. Don&apos;t import a file before it is
           in the folder: <code>next build</code>{" "}fails with{" "}
           <code>Module not found</code>.
         </p>
@@ -265,8 +265,8 @@ export { courses };`}</CodeBlock>
 
       <Section
         level={3}
-        id="sec-3-9-3"
-        title="3.9.3 Data Driven Dashboard"
+        id="sec-3-10-3"
+        title="3.10.3 Data Driven Dashboard"
       >
         <p>
           Refactor the dashboard from <SectionLink to="2.4.2" />{" "}so it maps{" "}
@@ -361,13 +361,13 @@ export default function CourseCard({
           <code>courses.length</code>. Clicking a card should land on{" "}
           <code>/courses/RS101/home</code>{" "}(or whichever{" "}
           <code>_id</code>{" "}you clicked). The target grid looks like{" "}
-          <FigureLink to="3.9.3" />:
+          <FigureLink to="3.10.3" />:
         </p>
         <BookFigure
           id="fig-3.9.3"
           src="/images/book/ch3/figures/fig-3-10-3-dashboard.png"
           alt="Data-driven Kambaz Dashboard with course cards from JSON"
-          caption="Figure 3.9.3 — Data-driven Dashboard"
+          caption="Figure 3.10.3 — Data-driven Dashboard"
         />
         <LiveDemo
           mode="styled"
@@ -396,8 +396,8 @@ export default function CourseCard({
 
       <Section
         level={3}
-        id="sec-3-9-4"
-        title="3.9.4 Data Driven Courses Screen"
+        id="sec-3-10-4"
+        title="3.10.4 Data Driven Courses Screen"
       >
         <p>
           The course layout lives at{" "}
@@ -444,13 +444,13 @@ export default async function CoursesLayout({
         <p>
           Pass <code>cid</code>{" "}into course navigation so its links stay
           inside this course. The heading should show the selected course
-          name, as in <FigureLink to="3.9.4" />:
+          name, as in <FigureLink to="3.10.4" />:
         </p>
         <BookFigure
           id="fig-3.9.4"
           src="/images/book/ch3/figures/fig-3-10-4-courses.png"
           alt="Course screen heading with breadcrumb showing Home"
-          caption="Figure 3.9.4 — Course Home breadcrumb"
+          caption="Figure 3.10.4 — Course Home breadcrumb"
         />
         <OnYourOwn>
           Click the Rocket Propulsion card, then the Aerodynamics card. The
@@ -471,8 +471,8 @@ export default async function CoursesLayout({
 
       <Section
         level={3}
-        id="sec-3-9-5"
-        title="3.9.5 Data Driven Course Navigation (On Your Own)"
+        id="sec-3-10-5"
+        title="3.10.5 Data Driven Course Navigation (On Your Own)"
       >
         <p>
           Map the course sidebar the same way you mapped Kambaz
@@ -559,14 +559,14 @@ export default function CourseNavigation({ cid }: { cid: string }) {
 
       <Section
         level={3}
-        id="sec-3-9-6"
-        title="3.9.6 Implementing the Breadcrumb"
+        id="sec-3-10-6"
+        title="3.10.6 Implementing the Breadcrumb"
       >
         <p>
           A breadcrumb shows where you are in a nest of screens. The course
           name already identifies the course; appending the last path
           segment identifies the section — Home, Modules, Assignments (
-          <FigureLink to="3.9.6a" />{" "}and <FigureLink to="3.9.6b" />
+          <FigureLink to="3.10.6a" />{" "}and <FigureLink to="3.10.6b" />
           ):
         </p>
         <BookFigure
@@ -575,22 +575,22 @@ export default function CourseNavigation({ cid }: { cid: string }) {
               id: "fig-3.9.6a",
               src: "/images/book/ch3/figures/fig-3-10-6a-breadcrumb.png",
               alt: "Breadcrumb showing a course name and Home",
-              caption: "Figure 3.9.6a — Breadcrumb",
+              caption: "Figure 3.10.6a — Breadcrumb",
             },
             {
               id: "fig-3.9.6b",
               src: "/images/book/ch3/figures/fig-3-10-6b-breadcrumb.png",
               alt: "Breadcrumb showing a course name and another section",
-              caption: "Figure 3.9.6b — Breadcrumb",
+              caption: "Figure 3.10.6b — Breadcrumb",
             },
           ]}
         />
         <p>
           <code>Breadcrumb</code>{" "}is another use of reading the current
-          path (<SectionLink to="3.7.2" />
+          path (<SectionLink to="3.8.2" />
           ): a Client Component calls <code>usePathname</code>{" "}and takes
           the last segment, not only a nav highlight. The layout passes
-          the <code>course</code>{" "}found in <SectionLink to="3.9.4" />:
+          the <code>course</code>{" "}found in <SectionLink to="3.10.4" />:
         </p>
         <CodeBlock
           language="tsx"
@@ -637,8 +637,8 @@ export default function Breadcrumb({
 
       <Section
         level={3}
-        id="sec-3-9-7"
-        title="3.9.7 Data Driven Modules"
+        id="sec-3-10-7"
+        title="3.10.7 Data Driven Modules"
       >
         <p>
           Modules currently ignore which course you opened. Each module in{" "}
@@ -647,13 +647,13 @@ export default function Breadcrumb({
           <code>cid</code>{" "}from <code>useParams</code>, then map modules
           and nested lessons — each with a <code>key</code>{" "}from{" "}
           <code>_id</code>. The target list looks like{" "}
-          <FigureLink to="3.9.7" />:
+          <FigureLink to="3.10.7" />:
         </p>
         <BookFigure
           id="fig-3.9.7"
           src="/images/book/ch3/figures/fig-3-10-7-modules.png"
           alt="Modules screen listing modules and lessons for the selected course"
-          caption="Figure 3.9.7 — Data-driven Modules"
+          caption="Figure 3.10.7 — Data-driven Modules"
         />
         <p>
           First give the screen its data. Download{" "}
@@ -760,8 +760,8 @@ export default function Modules() {
 
       <Section
         level={3}
-        id="sec-3-9-8"
-        title="3.9.8 Data Driven Assignments (On Your Own)"
+        id="sec-3-10-8"
+        title="3.10.8 Data Driven Assignments (On Your Own)"
       >
         <p>
           Refactor Assignments the same way as Modules: filter{" "}
@@ -771,13 +771,13 @@ export default function Modules() {
           Encode both course id and assignment id in the editor URL. This
           screen can stay a Server Component and <code>await params</code>{" "}
           instead of <code>useParams</code>. The list should match{" "}
-          <FigureLink to="3.9.8" />:
+          <FigureLink to="3.10.8" />:
         </p>
         <BookFigure
           id="fig-3.9.8"
           src="/images/book/ch3/figures/fig-3-10-8-assignments.png"
           alt="Assignments screen listing assignments for the selected course"
-          caption="Figure 3.9.8 — Data-driven Assignments"
+          caption="Figure 3.10.8 — Data-driven Assignments"
         />
         <p>
           Download{" "}
@@ -894,8 +894,8 @@ export default async function Assignments({
 
       <Section
         level={3}
-        id="sec-3-9-8-1"
-        title="3.9.8.1 Assignment Editor (On Your Own)"
+        id="sec-3-10-8-1"
+        title="3.10.8.1 Assignment Editor (On Your Own)"
       >
         <p>
           The editor at <code>assignments/[aid]/page.tsx</code>{" "}should
@@ -905,13 +905,13 @@ export default async function Assignments({
           <code>assignment?.title ?? &quot;&quot;</code>{" "}and the other
           properties. Cancel and Save are <code>Link</code>s back to that
           course&apos;s assignments list. The form should match{" "}
-          <FigureLink to="3.9.8.1" />:
+          <FigureLink to="3.10.8.1" />:
         </p>
         <BookFigure
           id="fig-3.9.8.1"
           src="/images/book/ch3/figures/fig-3-10-8-1-editor.png"
           alt="Assignment editor filled from the selected assignment JSON"
-          caption="Figure 3.9.8.1 — Data-driven Assignment Editor"
+          caption="Figure 3.10.8.1 — Data-driven Assignment Editor"
         />
         <p>
           The listing below is the reference wiring on a plain form. Your
@@ -1013,8 +1013,8 @@ export default async function AssignmentEditor({
 
       <Section
         level={3}
-        id="sec-3-9-9"
-        title="3.9.9 Data Driven People Screen"
+        id="sec-3-10-9"
+        title="3.10.9 Data Driven People Screen"
       >
         <p>
           People currently lists the same hardcoded rows for every course.
@@ -1130,10 +1130,10 @@ export default async function PeopleTable({
         </WithAI>
       </Section>
 
-      <Section level={3} id="sec-3-9-10" title="3.9.10 Exercises">
+      <Section level={3} id="sec-3-10-10" title="3.10.10 Exercises">
         <p>
           Use this checklist to confirm the data-driven Kambaz prototype
-          covers every screen in <SectionLink to="3.9" />. Each item points
+          covers every screen in <SectionLink to="3.10" />. Each item points
           back to the section where you wired the worked example. Build in
           order as you read — this list is for checking coverage, not a
           substitute for the walkthroughs. Course Navigation, Assignments,

@@ -74,6 +74,7 @@ export { REDUCE_AND_JSON_SLIDES } from "./decks/reduce-and-json";
 export { JAVASCRIPT_OBJECTS_SLIDES } from "./decks/javascript-objects";
 export { SPREAD_AND_DESTRUCTURING_SLIDES } from "./decks/spread-and-destructuring";
 export { OPTIONAL_CHAINING_SLIDES } from "./decks/optional-chaining";
+export { TYPESCRIPT_TYPES_SLIDES } from "./decks/typescript-types";
 export { DYNAMIC_STYLING_SLIDES } from "./decks/dynamic-styling";
 export { CLIENT_AND_SERVER_SLIDES } from "./decks/client-and-server";
 export { PARAMETERIZING_COMPONENTS_SLIDES } from "./decks/parameterizing-components";

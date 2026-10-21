@@ -544,7 +544,7 @@ export default function UrlEncoding() {
             and{" "}
             <LocalUrl href="/labs/lab4/url-encoding/path-params/5/10" />.
             Both should print a sum of 15. Course ids in Kambaz already
-            use the path strategy from <SectionLink to="3.9.4" />; query
+            use the path strategy from <SectionLink to="3.10.4" />; query
             strings will matter later for search and filters. The URL is
             a third place to put state: it survives a refresh, it can be
             bookmarked, and it does not require a parent to pass props.

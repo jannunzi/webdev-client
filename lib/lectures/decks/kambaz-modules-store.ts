@@ -178,7 +178,7 @@ export const useModulesStore = create<{
     kind: "demo",
     bullets: [
       "Reuse the list-group chrome. The new work is the dialog and the store",
-      "Filter `module.course === cid` the same way §3.9.7 did",
+      "Filter `module.course === cid` the same way §3.10.7 did",
       "Home imports the Modules page — both screens now see the same array",
     ],
     embed: "kambaz-styled-modules",

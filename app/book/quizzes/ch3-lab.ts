@@ -364,7 +364,7 @@ const sum = numbers.reduce((total, n) => total + n, 0);`,
   },
   {
     id: "3-use-client",
-    section: "3.6.1",
+    section: "3.7.1",
     kind: "syntax",
     prompt:
       "How do you opt a Next.js file into a Client Component so it can call usePathname?",
@@ -380,7 +380,7 @@ const sum = numbers.reduce((total, n) => total + n, 0);`,
   },
   {
     id: "3-client-vs-server",
-    section: "3.6.1",
+    section: "3.7.1",
     kind: "concept",
     prompt:
       "Which statement about Next.js client vs server components is correct?",
@@ -402,7 +402,7 @@ const sum = numbers.reduce((total, n) => total + n, 0);`,
   },
   {
     id: "3-children",
-    section: "3.7.1",
+    section: "3.8.1",
     kind: "concept",
     prompt:
       "Where does the 4 in <Square>4</Square> show up inside the Square function?",
@@ -418,7 +418,7 @@ const sum = numbers.reduce((total, n) => total + n, 0);`,
   },
   {
     id: "3-use-params",
-    section: "3.7.3",
+    section: "3.8.3",
     kind: "syntax",
     prompt:
       "Which hook reads the [a] and [b] segments from /calc/add/1/2 in a Client Component?",
@@ -434,7 +434,7 @@ const sum = numbers.reduce((total, n) => total + n, 0);`,
   },
   {
     id: "3-json-import",
-    section: "3.7.4",
+    section: "3.8.4",
     kind: "syntax",
     prompt: "How does a list component load the array in todos.json?",
     choices: [
@@ -449,7 +449,7 @@ const sum = numbers.reduce((total, n) => total + n, 0);`,
   },
   {
     id: "3-key-todo",
-    section: "3.7.4",
+    section: "3.8.4",
     kind: "snippet",
     prompt: "Which map call gives React a stable key for each todo?",
     code: `{todos.map((todo) => (
@@ -483,7 +483,7 @@ const sum = numbers.reduce((total, n) => total + n, 0);`,
   },
   {
     id: "3-default-param",
-    section: "3.7.4",
+    section: "3.8.4",
     kind: "concept",
     prompt:
       "In a TodoItem function, what does todo = { title: \"Buy milk\", … } in the parameter list do?",
@@ -502,7 +502,7 @@ const sum = numbers.reduce((total, n) => total + n, 0);`,
   },
   {
     id: "3-try-catch",
-    section: "3.6.2",
+    section: "3.7.2",
     kind: "concept",
     prompt:
       "Why wrap fs.readdirSync in try/catch inside a server component?",

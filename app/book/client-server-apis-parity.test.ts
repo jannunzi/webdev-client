@@ -34,16 +34,16 @@ function blocks(src: string): Block[] {
 
 const CASES = [
   {
-    id: "sec-3-6-3",
-    next: "sec-3-6-4",
+    id: "sec-3-7-3",
+    next: "sec-3-7-4",
     dir: "app/labs/lab3/client-apis",
     page: "ClientApis",
     components: ["PathnameDemo", "SearchParamsDemo", "WindowDemo", "GeolocationDemo", "MapEmbed", "ClientIpDemo"],
     helpers: [] as string[],
   },
   {
-    id: "sec-3-6-4",
-    next: "sec-3-7",
+    id: "sec-3-7-4",
+    next: "sec-3-8",
     dir: "app/labs/lab3/server-apis",
     page: "ServerApis",
     components: ["ServerTimeDemo", "OsDemo", "EnvDemo", "RequestHeadersDemo", "WeatherDemo", "VisitCounterDemo", "ChildProcessDemo"],
@@ -96,7 +96,7 @@ for (const c of CASES) {
 }
 
 describe("client-only rules", () => {
-  const src = section("sec-3-6-3", "sec-3-6-4");
+  const src = section("sec-3-7-3", "sec-3-7-4");
   it("useSearchParams demos are wrapped in Suspense in the book and on the page", () => {
     for (const name of ["SearchParamsDemo", "MapEmbed"]) {
       assert.match(src, new RegExp(`<Suspense fallback=\\{[^}]*\\}>\\s*<${name} />\\s*</Suspense>`));

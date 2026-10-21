@@ -7,7 +7,7 @@ export const PARAMETERIZING_COMPONENTS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Parameterizing Components",
-      "§3.7–3.7.1 · props and children",
+      "§3.8–3.8.1 · props and children",
     ],
   },
   {
@@ -535,7 +535,7 @@ export default function CardDemo() {
     kind: "title",
     bullets: [
       "`usePathname` highlights the TOC. `[a]/[b]` captures segments",
-      "§3.7.2–3.7.4: path params (values in URL segments), then a JSON todo list",
+      "§3.8.2–3.8.4: path params (values in URL segments), then a JSON todo list",
     ],
   },
 ];

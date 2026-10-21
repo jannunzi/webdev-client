@@ -26,13 +26,13 @@ const DEMOS = ["BoxDemo", "BoxModelDemo", "NestingOrderDemo", "CardDemo"];
 
 function section(): string {
   const src = read(BOOK);
-  const start = src.indexOf('id="sec-3-7-1-1"');
-  const end = src.indexOf('id="sec-3-7-2"');
-  assert.ok(start > 0 && end > start, "§3.7.1.1 sits between §3.7.1 and §3.7.2");
+  const start = src.indexOf('id="sec-3-8-1-1"');
+  const end = src.indexOf('id="sec-3-8-2"');
+  assert.ok(start > 0 && end > start, "§3.8.1.1 sits between §3.8.1 and §3.8.2");
   return src.slice(start, end);
 }
 
-describe("§3.7.1.1 children demo listings", () => {
+describe("§3.8.1.1 children demo listings", () => {
   const body = section();
   const blocks = [
     ...body.matchAll(/<CodeBlock\b[^>]*name="(\w+)"[^>]*file="([^"]+)"[^>]*>\{`([\s\S]*?)`\}<\/CodeBlock>/g),
@@ -76,9 +76,9 @@ describe("§3.7.1.1 children demo listings", () => {
     assert.deepEqual(order(b), ["Margin", "Padding", "Border", "Content"]);
   });
 
-  it("is in the table of contents after §3.7.1", () => {
+  it("is in the table of contents after §3.8.1", () => {
     const toc = read("app/book/TOC.tsx");
-    assert.ok(toc.indexOf('"sec-3-7-1-1"') > toc.indexOf('"sec-3-7-1"'));
-    assert.ok(toc.indexOf('"sec-3-7-1-1"') < toc.indexOf('"sec-3-7-2"'));
+    assert.ok(toc.indexOf('"sec-3-8-1-1"') > toc.indexOf('"sec-3-8-1"'));
+    assert.ok(toc.indexOf('"sec-3-8-1-1"') < toc.indexOf('"sec-3-8-2"'));
   });
 });

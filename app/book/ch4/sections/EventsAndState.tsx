@@ -47,7 +47,7 @@ export default function EventsAndState() {
           handles clicks. Those listeners only run in the browser, so the
           file that uses them starts with{" "}
           <code>&quot;use client&quot;</code> — the same directive{" "}
-          <SectionLink to="3.6.1" />{" "}introduced for pathname-aware
+          <SectionLink to="3.7.1" />{" "}introduced for pathname-aware
           components. In Next.js, JavaScript files execute on the server
           by default and cannot interact with the user. User interaction
           such as mouse clicks, keyboard typing, and dialog windows all
@@ -500,7 +500,7 @@ export default function Counter() {
             <code>fn</code>{" "}after React has rendered and painted the
             screen, and runs it again only when one of the values in the{" "}
             <code>deps</code>{" "}array changes. You have already seen it
-            at work in <SectionLink to="3.6.3" />: the window object demo
+            at work in <SectionLink to="3.7.3" />: the window object demo
             used <code>useState</code>{" "}to hold the size and{" "}
             <code>useEffect</code>{" "}to read <code>window</code>{" "}and
             listen for resizes only in the browser, and the geolocation

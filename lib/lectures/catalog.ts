@@ -52,6 +52,7 @@ import { REDUCE_AND_JSON_SLIDES } from "./decks/reduce-and-json";
 import { JAVASCRIPT_OBJECTS_SLIDES } from "./decks/javascript-objects";
 import { SPREAD_AND_DESTRUCTURING_SLIDES } from "./decks/spread-and-destructuring";
 import { OPTIONAL_CHAINING_SLIDES } from "./decks/optional-chaining";
+import { TYPESCRIPT_TYPES_SLIDES } from "./decks/typescript-types";
 import { DYNAMIC_STYLING_SLIDES } from "./decks/dynamic-styling";
 import { CLIENT_AND_SERVER_SLIDES } from "./decks/client-and-server";
 import { PARAMETERIZING_COMPONENTS_SLIDES } from "./decks/parameterizing-components";
@@ -710,43 +711,53 @@ const LECTURE_SUMMARIES: Record<
     canvasLecture: 8,
     slides: OPTIONAL_CHAINING_SLIDES,
   },
+  "typescript-types": {
+    title: "TypeScript Types",
+    summary:
+      "Annotations, object types, unions, enums, typed props, narrowing, and utility types — §3.5.",
+    chapter: 3,
+    topicId: "typescript-types",
+    bookSectionId: "sec-3-5",
+    canvasLecture: 8,
+    slides: TYPESCRIPT_TYPES_SLIDES,
+  },
   "dynamic-styling": {
     title: "Dynamic Styling",
     summary:
-      "Build className from a variable or ternary, then apply camelCase style objects — §3.5.",
+      "Build className from a variable or ternary, then apply camelCase style objects — §3.6.",
     chapter: 3,
     topicId: "dynamic-styling",
-    bookSectionId: "sec-3-5",
+    bookSectionId: "sec-3-6",
     canvasLecture: 8,
     slides: DYNAMIC_STYLING_SLIDES,
   },
   "client-and-server": {
     title: "Client and Server",
     summary:
-      "\"use client\" for usePathname; omit it to read process and fs on the server — §3.6.",
+      "\"use client\" for usePathname; omit it to read process and fs on the server — §3.7.",
     chapter: 3,
     topicId: "client-server",
-    bookSectionId: "sec-3-6",
+    bookSectionId: "sec-3-7",
     canvasLecture: 8,
     slides: CLIENT_AND_SERVER_SLIDES,
   },
   "parameterizing-components": {
     title: "Parameterizing Components",
     summary:
-      "Destructure props on Add, then children on Square and Highlight — §3.7–3.7.1.",
+      "Destructure props on Add, then children on Square and Highlight — §3.8–3.8.1.",
     chapter: 3,
     topicId: "parameterizing",
-    bookSectionId: "sec-3-7",
+    bookSectionId: "sec-3-8",
     canvasLecture: 8,
     slides: PARAMETERIZING_COMPONENTS_SLIDES,
   },
   "path-params-and-todos": {
     title: "Path Parameters and Todos",
     summary:
-      "usePathname on the Labs TOC, [a]/[b] path params, map todos.json, then the complete Lab 3 page — §3.7.2–3.7.5.",
+      "usePathname on the Labs TOC, [a]/[b] path params, map todos.json, then the complete Lab 3 page — §3.8.2–3.8.5.",
     chapter: 3,
     topicId: "parameterizing",
-    bookSectionId: "sec-3-7-2",
+    bookSectionId: "sec-3-8-2",
     canvasLecture: 8,
     slides: PATH_PARAMS_AND_TODOS_SLIDES,
   },
@@ -756,47 +767,47 @@ const LECTURE_SUMMARIES: Record<
       "Map Kambaz Navigation from LINKS, then collect courses and related JSON under database/.",
     chapter: 3,
     topicId: "kambaz-data",
-    bookSectionId: "sec-3-9",
+    bookSectionId: "sec-3-10",
     canvasLecture: 9,
     slides: KAMBAZ_DATABASE_SLIDES,
   },
   "kambaz-dashboard-data": {
     title: "Dashboard from Data",
     summary:
-      "Map db.courses onto CourseCard, key by _id, and encode the course in the card href — §3.9.3.",
+      "Map db.courses onto CourseCard, key by _id, and encode the course in the card href — §3.10.3.",
     chapter: 3,
     topicId: "kambaz-data",
-    bookSectionId: "sec-3-9-3",
+    bookSectionId: "sec-3-10-3",
     canvasLecture: 9,
     slides: KAMBAZ_DASHBOARD_DATA_SLIDES,
   },
   "kambaz-courses-data": {
     title: "Courses from Data",
     summary:
-      "Await [cid], find the course, map course nav, and breadcrumb the last segment — §3.9.4–3.9.6.",
+      "Await [cid], find the course, map course nav, and breadcrumb the last segment — §3.10.4–3.10.6.",
     chapter: 3,
     topicId: "kambaz-data",
-    bookSectionId: "sec-3-9-4",
+    bookSectionId: "sec-3-10-4",
     canvasLecture: 9,
     slides: KAMBAZ_COURSES_DATA_SLIDES,
   },
   "kambaz-modules-data": {
     title: "Modules from Data",
     summary:
-      "Filter modules by cid, map Module and Lesson with keys, optional-chain lessons — §3.9.7.",
+      "Filter modules by cid, map Module and Lesson with keys, optional-chain lessons — §3.10.7.",
     chapter: 3,
     topicId: "kambaz-data",
-    bookSectionId: "sec-3-9-7",
+    bookSectionId: "sec-3-10-7",
     canvasLecture: 9,
     slides: KAMBAZ_MODULES_DATA_SLIDES,
   },
   "kambaz-assignments-data": {
     title: "Assignments and People",
     summary:
-      "Filter assignments, find the editor row, then join users to enrollments with some — §3.9.8–3.9.9.",
+      "Filter assignments, find the editor row, then join users to enrollments with some — §3.10.8–3.10.9.",
     chapter: 3,
     topicId: "kambaz-data",
-    bookSectionId: "sec-3-9-8",
+    bookSectionId: "sec-3-10-8",
     canvasLecture: 9,
     slides: KAMBAZ_ASSIGNMENTS_DATA_SLIDES,
   },

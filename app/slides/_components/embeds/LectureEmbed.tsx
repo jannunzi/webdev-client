@@ -147,6 +147,16 @@ import {
   JsMapEmbed,
   JsNullUndefinedEmbed,
   JsOptionalChainingEmbed,
+  TsTypeAnnotationsEmbed,
+  TsObjectTypesEmbed,
+  TsInterfacesEmbed,
+  TsUnionTypesEmbed,
+  TsEnumsEmbed,
+  TsFunctionTypesEmbed,
+  TsTypedPropsEmbed,
+  TsNarrowingEmbed,
+  TsAnyVsUnknownEmbed,
+  TsUtilityTypesEmbed,
   JsPathParametersEmbed,
   JsReduceEmbed,
   JsServerComponentEmbed,
@@ -465,6 +475,26 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <JsDestructingImportsEmbed />;
     case "js-optional-chaining":
       return <JsOptionalChainingEmbed />;
+    case "ts-type-annotations":
+      return <TsTypeAnnotationsEmbed />;
+    case "ts-object-types":
+      return <TsObjectTypesEmbed />;
+    case "ts-interfaces":
+      return <TsInterfacesEmbed />;
+    case "ts-union-types":
+      return <TsUnionTypesEmbed />;
+    case "ts-enums":
+      return <TsEnumsEmbed />;
+    case "ts-function-types":
+      return <TsFunctionTypesEmbed />;
+    case "ts-typed-props":
+      return <TsTypedPropsEmbed />;
+    case "ts-narrowing":
+      return <TsNarrowingEmbed />;
+    case "ts-any-vs-unknown":
+      return <TsAnyVsUnknownEmbed />;
+    case "ts-utility-types":
+      return <TsUtilityTypesEmbed />;
     case "js-classes":
       return <JsClassesEmbed />;
     case "js-styles":

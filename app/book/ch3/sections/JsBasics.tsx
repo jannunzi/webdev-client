@@ -620,7 +620,7 @@ export default function Lab3() {
           the top, one tag at the bottom of the <code>wd-lab3</code>{" "}
           <code>div</code>{" "}— and every later section shows the whole{" "}
           <code>page.tsx</code>{" "}again right after its demo, so you can
-          check yours line by line. <SectionLink to="3.7.5" />{" "}shows the
+          check yours line by line. <SectionLink to="3.8.5" />{" "}shows the
           finished file:
         </p>
         <CodeBlock

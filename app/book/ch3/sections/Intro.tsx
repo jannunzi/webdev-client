@@ -109,8 +109,8 @@ export default function Intro() {
           Those objectives are best achieved by building along with the
           narration — each Lab 3 component and Kambaz data screen as it
           appears — rather than reading first and coding later. Glance at
-          the Lab 3 checklist in <SectionLink to="3.7.5" />{" "}and the Kambaz
-          checklist in <SectionLink to="3.9.10" />{" "}so the expected coverage
+          the Lab 3 checklist in <SectionLink to="3.8.5" />{" "}and the Kambaz
+          checklist in <SectionLink to="3.10.10" />{" "}so the expected coverage
           is visible from the start. Those lists are recaps, not a reason to
           skip ahead: work through each section, then use them to confirm
           what stuck.
@@ -133,7 +133,7 @@ export default function Intro() {
           Those lab files are throwaway drills — one idea per component.
           Kambaz, later in this chapter and across the rest of the course,
           is the application you keep. A coverage checklist for Lab 3 is in{" "}
-          <SectionLink to="3.7.5" /> — use it after you have walked through
+          <SectionLink to="3.8.5" /> — use it after you have walked through
           the samples, not instead of building them as you read.
         </p>
         <p>

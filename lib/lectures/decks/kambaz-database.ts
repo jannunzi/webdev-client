@@ -7,7 +7,7 @@ export const KAMBAZ_DATABASE_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Kambaz Database",
-      "§3.9–3.9.2 · redirect, map the sidebar, download JSON",
+      "§3.10–3.10.2 · redirect, map the sidebar, download JSON",
     ],
   },
   {
@@ -19,7 +19,7 @@ export const KAMBAZ_DATABASE_SLIDES: LectureSlide[] = [
       "Lab 3 drills were throwaway. Wire Kambaz so the UI follows JSON",
       "Different courses on the dashboard; modules and people once the URL has a course id",
       "Keep your Chapter 2 styling and `wd-*` ids. Change only lines that read `params`, `usePathname`, or `db`",
-      "A coverage checklist is in §3.9.10 — after you walk the screens",
+      "A coverage checklist is in §3.10.10 — after you walk the screens",
     ],
   },
   {
@@ -47,7 +47,7 @@ export default function Kambaz() {
     bullets: [
       "`usePathname` highlights the active route — needs `\"use client\"`",
       "Each mapped `Link` needs `key={link.label}`",
-      "Same pattern as the Labs TOC in §3.7.2",
+      "Same pattern as the Labs TOC in §3.8.2",
     ],
   },
   {
@@ -226,7 +226,7 @@ export { courses };`,
     kind: "title",
     bullets: [
       "Cards come from `db.courses`, not hardcoded markup",
-      "§3.9.3: `CourseCard` keyed by `_id`",
+      "§3.10.3: `CourseCard` keyed by `_id`",
     ],
   },
 ];

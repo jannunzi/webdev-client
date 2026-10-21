@@ -7,7 +7,7 @@ import HandInLink from "../../components/HandInLink";
 
 export default function Delivery() {
   return (
-    <Section id="sec-3-10" title="3.10 Delivery">
+    <Section id="sec-3-11" title="3.11 Delivery">
       <p>
         Submit this chapter&apos;s work as a new branch on the same{" "}
         <code>webdev-client</code>{" "}repository and deployment from earlier

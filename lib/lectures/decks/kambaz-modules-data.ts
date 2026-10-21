@@ -7,7 +7,7 @@ export const KAMBAZ_MODULES_DATA_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Modules from Data",
-      "§3.9.7 · filter by course, then map lessons",
+      "§3.10.7 · filter by course, then map lessons",
     ],
   },
   {
@@ -151,7 +151,7 @@ export default function Modules() {
     kind: "title",
     bullets: [
       "Assignments filter the same way. People joins two JSON files",
-      "§3.9.8–3.9.9: list, editor, then `enrollments.some`",
+      "§3.10.8–3.10.9: list, editor, then `enrollments.some`",
     ],
   },
 ];

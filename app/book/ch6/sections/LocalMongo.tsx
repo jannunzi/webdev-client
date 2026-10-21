@@ -225,7 +225,7 @@ mkdir data`}</CodeBlock>
           Document dialog that appears, paste a user shaped like the
           objects in{" "}
           <code>app/(kambaz)/database/users.json</code>{" "}from{" "}
-          <SectionLink to="3.9.2" />{" "}— an <code>_id</code>,{" "}
+          <SectionLink to="3.10.2" />{" "}— an <code>_id</code>,{" "}
           <code>username</code>, <code>password</code>,{" "}
           <code>firstName</code>, <code>lastName</code>,{" "}
           <code>role</code>, and the other fields the Account screens
