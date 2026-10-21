@@ -121,8 +121,8 @@ export default function PassingFunctions({
     kind: "demo",
     bullets: [
       "Type the props: `message: string`, `theFunction: (message: string) => void`",
-      "The child calls `theFunction(`From parent: ${message}`)` on click",
-      "The child does not know the alert text. The parent does",
+      "On click the child calls `theFunction` with `From parent:` plus `message`",
+      "Data goes down as a prop. The callback sends changed data back up",
     ],
     embed: "passing-functions",
   },
