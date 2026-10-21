@@ -224,8 +224,8 @@ export default function ZustandTodoList() {
     kind: "content",
     bullets: [
       "`profile.ts`, `ProfileFields`, and `ProfileAlert` do not change",
-      "The store holds `profile`, `errors`, and `submitted` next to `update` and `save`",
-      "Both pass `set` a function of the current state, so `save` checks the latest profile",
+      "The store holds the same `profile`/`setProfile` pair",
+      "`setProfile` passes `set` the new profile",
     ],
   },
   {
@@ -233,24 +233,16 @@ export default function ZustandTodoList() {
     title: "profileStore (code)",
     kind: "content",
     code: `import { create } from "zustand";
-import { emptyProfile, validateProfile, type Profile, type ProfileChanges, type ProfileErrors } from "../profile/profile";
+import { emptyProfile, type Profile } from "../profile/profile";
 
 type ProfileStore = {
   profile: Profile;
-  errors: ProfileErrors;
-  submitted: boolean;
-  update: (changes: ProfileChanges) => void;
-  save: () => void;
+  setProfile: (profile: Profile) => void;
 };
 
 export const useProfileStore = create<ProfileStore>((set) => ({
   profile: emptyProfile,
-  errors: {},
-  submitted: false,
-  update: (changes) =>
-    set((state) => ({ profile: { ...state.profile, ...changes } })),
-  save: () =>
-    set((state) => ({ errors: validateProfile(state.profile), submitted: true })),
+  setProfile: (profile) => set({ profile }),
 }));`,
     codeLanguage: "ts",
     codeFile: "app/labs/lab4/zustand/profileStore.ts",

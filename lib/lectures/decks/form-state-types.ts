@@ -329,17 +329,6 @@ export type Profile = {
   theme: Theme;
 };
 
-export type ProfileChanges = {
-  firstName?: string;
-  lastName?: string;
-  password?: string;
-  dob?: Date | null;
-  role?: Role;
-  newsletter?: boolean;
-  topics?: string[];
-  theme?: Theme;
-};
-
 export type ProfileErrors = {
   firstName?: string;
   lastName?: string;
@@ -408,7 +397,7 @@ export function validateProfile(profile: Profile) {
     title: "Step 2: the fields",
     kind: "content",
     bullets: [
-      "Every input is controlled and calls `update` with a `ProfileChanges`: just the fields that changed",
+      "Every input is controlled and calls `setProfile` with a copy where one field changed",
       "`<select>` is a drop-down. Radios that share a `name` form one group",
       "`prefix` builds every `wd-*` id. `errors.x && <p>` shows a message only when there is one",
     ],
@@ -422,7 +411,6 @@ export function validateProfile(profile: Profile) {
   htmlToDate,
   TOPICS,
   type Profile,
-  type ProfileChanges,
   type ProfileErrors,
   type Role,
 } from "./profile";
@@ -434,15 +422,16 @@ export default function ProfileFields({
   prefix,
   profile,
   errors,
-  update,
+  setProfile,
 }: {
   prefix: string;
   profile: Profile;
   errors: ProfileErrors;
-  update: (changes: ProfileChanges) => void;
+  setProfile: (profile: Profile) => void;
 }) {
   const toggleTopic = (topic: string) =>
-    update({
+    setProfile({
+      ...profile,
       topics: profile.topics.includes(topic)
         ? profile.topics.filter((t) => t !== topic)
         : [...profile.topics, topic],
@@ -461,7 +450,7 @@ export default function ProfileFields({
         id={\`\${prefix}-first-name\`}
         className={input}
         value={profile.firstName}
-        onChange={(e) => update({ firstName: e.target.value })}
+        onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
       />
       {errors.firstName && <p className={error}>{errors.firstName}</p>}
 
@@ -470,7 +459,7 @@ export default function ProfileFields({
         id={\`\${prefix}-last-name\`}
         className={input}
         value={profile.lastName}
-        onChange={(e) => update({ lastName: e.target.value })}
+        onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
       />
       {errors.lastName && <p className={error}>{errors.lastName}</p>}
 
@@ -480,7 +469,7 @@ export default function ProfileFields({
         type="password"
         className={input}
         value={profile.password}
-        onChange={(e) => update({ password: e.target.value })}
+        onChange={(e) => setProfile({ ...profile, password: e.target.value })}
       />
       {errors.password && <p className={error}>{errors.password}</p>}
 
@@ -490,7 +479,7 @@ export default function ProfileFields({
         type="date"
         className={input}
         value={dateToHtml(profile.dob)}
-        onChange={(e) => update({ dob: htmlToDate(e.target.value) })}
+        onChange={(e) => setProfile({ ...profile, dob: htmlToDate(e.target.value) })}
       />
       {errors.dob && <p className={error}>{errors.dob}</p>}
 
@@ -499,7 +488,7 @@ export default function ProfileFields({
         id={\`\${prefix}-role\`}
         className={input}
         value={profile.role}
-        onChange={(e) => update({ role: e.target.value as Role })}
+        onChange={(e) => setProfile({ ...profile, role: e.target.value as Role })}
       >
         <option value="">Choose a role</option>
         <option value="STUDENT">Student</option>
@@ -513,7 +502,7 @@ export default function ProfileFields({
           id={\`\${prefix}-newsletter\`}
           type="checkbox"
           checked={profile.newsletter}
-          onChange={() => update({ newsletter: !profile.newsletter })}
+          onChange={() => setProfile({ ...profile, newsletter: !profile.newsletter })}
         />
         Email me the newsletter
       </label>
@@ -540,7 +529,7 @@ export default function ProfileFields({
             type="radio"
             name={\`\${prefix}-theme\`}
             checked={profile.theme === "light"}
-            onChange={() => update({ theme: "light" })}
+            onChange={() => setProfile({ ...profile, theme: "light" })}
           />
           Light
         </label>
@@ -549,7 +538,7 @@ export default function ProfileFields({
             type="radio"
             name={\`\${prefix}-theme\`}
             checked={profile.theme === "dark"}
-            onChange={() => update({ theme: "dark" })}
+            onChange={() => setProfile({ ...profile, theme: "dark" })}
           />
           Dark
         </label>
@@ -559,7 +548,7 @@ export default function ProfileFields({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/profile/ProfileFields.tsx",
-    codeStartLine: 30,
+    codeStartLine: 31,
   },
   {
     id: "profile-alert-intro",
@@ -610,7 +599,7 @@ export default function ProfileAlert({
     kind: "content",
     bullets: [
       "Three state variables: `profile`, `errors`, and `submitted`",
-      "`update` spreads the changes over a copy: `{ ...profile, ...changes }`",
+      "It passes `setProfile` straight to `ProfileFields`",
       "`save` calls `e.preventDefault()`. `noValidate` turns off the browser's own checks",
     ],
   },

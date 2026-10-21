@@ -178,7 +178,7 @@ export default function ContextExamples() {
     kind: "content",
     bullets: [
       "`profile.ts`, `ProfileFields`, and `ProfileAlert` stay exactly as they were",
-      "`ProfileProvider` holds the same three `useState` variables plus `update` and `save`",
+      "`ProfileProvider` keeps the `profile` state and publishes the same `profile`/`setProfile` pair",
       "`useProfileContext` throws a clear error outside the provider",
     ],
   },
@@ -187,30 +187,19 @@ export default function ContextExamples() {
     title: "ProfileContext (code)",
     kind: "content",
     code: `import { createContext, useContext, useState, type ReactNode } from "react";
-import { emptyProfile, validateProfile, type Profile, type ProfileChanges, type ProfileErrors } from "../profile/profile";
+import { emptyProfile, type Profile } from "../profile/profile";
 
 type ProfileContextValue = {
   profile: Profile;
-  errors: ProfileErrors;
-  submitted: boolean;
-  update: (changes: ProfileChanges) => void;
-  save: () => void;
+  setProfile: (profile: Profile) => void;
 };
 
 const ProfileContext = createContext<ProfileContextValue | null>(null);
 
 export function ProfileProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile>(emptyProfile);
-  const [errors, setErrors] = useState<ProfileErrors>({});
-  const [submitted, setSubmitted] = useState(false);
-  const update = (changes: ProfileChanges) =>
-    setProfile({ ...profile, ...changes });
-  const save = () => {
-    setErrors(validateProfile(profile));
-    setSubmitted(true);
-  };
   return (
-    <ProfileContext.Provider value={{ profile, errors, submitted, update, save }}>
+    <ProfileContext.Provider value={{ profile, setProfile }}>
       {children}
     </ProfileContext.Provider>
   );
@@ -232,7 +221,7 @@ export function useProfileContext() {
     kind: "content",
     bullets: [
       "A hook only sees providers above its component, so the body is separate",
-      "`ContextProfileFormBody` reads everything from the context, not its own state",
+      "The body reads `profile` and `setProfile` from the context; `errors`, `submitted`, and `save` stay in the form",
       "Any component inside `ProfileProvider` can share the profile without props",
     ],
   },
