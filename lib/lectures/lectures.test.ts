@@ -3951,3 +3951,20 @@ describe("client-and-server §3.6.3–3.6.4 API slides", () => {
     assert.deepEqual(pages.map((s) => s.id), ["client-page", "suspense", "server-page"]);
   });
 });
+
+describe("Present mode survives Continue to the next deck", () => {
+  const shell = readFileSync(join(process.cwd(), "app/slides/_components/LectureDeckShell.tsx"), "utf8");
+
+  it("fullscreens the page, not the per-deck stage that unmounts", () => {
+    const calls = [...shell.matchAll(/requestNativeFullscreen\(([^)]*)\)/g)].map((m) => m[1]);
+    assert.ok(calls.length >= 2);
+    for (const target of calls) assert.equal(target, "document.documentElement");
+    assert.doesNotMatch(shell, /nativeFullscreenElement\(document\) === stageRef/);
+  });
+
+  it("continues with client-side navigation and never exits fullscreen on unmount", () => {
+    assert.match(shell, /<Link\s+href=\{continueHref\}/);
+    assert.doesNotMatch(shell, /window\.location(\.href)?\s*=|window\.location\.assign/);
+    assert.doesNotMatch(shell, /return \(\) => \{?\s*void exitNativeFullscreen/);
+  });
+});
