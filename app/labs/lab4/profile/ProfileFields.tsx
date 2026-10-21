@@ -3,6 +3,7 @@ import {
   htmlToDate,
   TOPICS,
   type Profile,
+  type ProfileChanges,
   type ProfileErrors,
   type Role,
 } from "./profile";
@@ -19,7 +20,7 @@ export default function ProfileFields({
   prefix: string;
   profile: Profile;
   errors: ProfileErrors;
-  update: (changes: Partial<Profile>) => void;
+  update: (changes: ProfileChanges) => void;
 }) {
   const toggleTopic = (topic: string) =>
     update({

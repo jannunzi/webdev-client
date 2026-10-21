@@ -176,7 +176,7 @@ export default function Lab2() {
     kind: "title",
     bullets: [
       "You can color text and fills with small reusable classes",
-      "Deck 3: border, padding, margin, `box-sizing`, and rounded corners",
+      "Deck 3: the **box model** (content, padding, border, and margin around every element), `box-sizing`, and rounded corners",
     ],
   },
 ];

@@ -56,7 +56,7 @@ export default function User() {
     title: "Create a Next.js Application",
     kind: "demo",
     bullets: [
-      "Creating a React application requires **Node.js**",
+      "Needs **Node.js**: **npm** installs packages, **npx** runs one",
       "Run it at the command line, from your course folder. It names the project **webdev-client**",
       "Pin **@16.3**, not `@latest`. Next.js 16.4 turns on **Cache Components** (a setting that prerenders and caches parts of each page), and Kambaz then fails `npm run build`",
     ],

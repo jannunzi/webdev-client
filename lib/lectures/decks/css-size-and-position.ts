@@ -347,7 +347,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
     title: "Fixed sticks to the viewport",
     kind: "content",
     bullets: [
-      "`position: fixed` anchors to the **browser window**, not an ancestor",
+      "`position: fixed` anchors to the **viewport** (the visible browser window), not an ancestor",
       "Scroll the page: the blue square stays glued to the right, halfway down",
     ],
     code: `.wd-pos-fixed {

@@ -1014,7 +1014,7 @@ export default function ArrayStateVariable() {
           Before the user&apos;s data is saved, the form runs <em>validation</em>: a check that every field holds an acceptable value. When the user clicks Save, the form validates the whole profile. Each invalid field shows an <em>error message</em>{" "}directly under it, and an <em>alert</em>{" "}— a highlighted banner at the top of the form — says how many fields need fixing, or that the profile was saved. We build it in four steps.
         </p>
         <p>
-          <strong>Step 1: the data and the rules.</strong>{" "}Start with a plain TypeScript file that has no React in it. A <em>type</em>{" "}describes the shape of a value; <code>Profile</code>{" "}lists every field and its type. <code>Role</code>{" "}is a <em>union type</em>: the role may only be one of the listed strings, and the empty string means &quot;not chosen yet&quot;. <code>Date | null</code>{" "}means the date of birth is either a <code>Date</code>{" "}or <code>null</code>{" "}while the date field is empty. <code>ProfileErrors</code>{" "}uses two built-in helper types: <code>Record&lt;keyof Profile, string&gt;</code>{" "}is an object with one string per profile field, and <code>Partial</code>{" "}makes every one of those keys optional, so a field with no problem simply has no entry. <code>emptyProfile</code>{" "}is the starting value. <code>dateToHtml</code>{" "}and <code>htmlToDate</code>{" "}are the same <code>YYYY-MM-DD</code>{" "}conversions from <SectionLink to="4.2.7" />, extended so an empty field maps to <code>null</code>. Finally, <code>validateProfile</code>{" "}is a <em>pure function</em>{" "}— it only reads its argument and returns a new value — that returns one message per invalid field. Because it has no React in it, any version of the form can reuse it:
+          <strong>Step 1: the data and the rules.</strong>{" "}Start with a plain TypeScript file that has no React in it. A <em>type</em>{" "}describes the shape of a value; <code>Profile</code>{" "}lists every field and its type. <code>Role</code>{" "}is a <em>union type</em>: the role may only be one of the listed strings, and the empty string means &quot;not chosen yet&quot;. <code>Date | null</code>{" "}means the date of birth is either a <code>Date</code>{" "}or <code>null</code>{" "}while the date field is empty. <code>ProfileErrors</code>{" "}has one optional message per profile field; the <code>?</code>{" "}after a field name means the key may be missing, so a field with no problem simply has no entry. <code>emptyProfile</code>{" "}is the starting value. <code>dateToHtml</code>{" "}and <code>htmlToDate</code>{" "}are the same <code>YYYY-MM-DD</code>{" "}conversions from <SectionLink to="4.2.7" />, extended so an empty field maps to <code>null</code>. Finally, <code>validateProfile</code>{" "}is a <em>pure function</em>{" "}— it only reads its argument and returns a new value — that returns one message per invalid field. Because it has no React in it, any version of the form can reuse it:
         </p>
         <CodeBlock
           language="ts"
@@ -1034,7 +1034,27 @@ export type Profile = {
   theme: Theme;
 };
 
-export type ProfileErrors = Partial<Record<keyof Profile, string>>;
+export type ProfileChanges = {
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+  dob?: Date | null;
+  role?: Role;
+  newsletter?: boolean;
+  topics?: string[];
+  theme?: Theme;
+};
+
+export type ProfileErrors = {
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+  dob?: string;
+  role?: string;
+  newsletter?: string;
+  topics?: string;
+  theme?: string;
+};
 
 export const TOPICS = ["HTML", "CSS", "React"];
 
@@ -1086,7 +1106,7 @@ export function validateProfile(profile: Profile) {
   return errors;
 }`}</CodeBlock>
         <p>
-          <strong>Step 2: the fields.</strong>{" "}<code>ProfileFields</code>{" "}draws every input and receives everything it needs as props: the current <code>profile</code>, the <code>errors</code>{" "}to show, and an <code>update</code>{" "}function that takes a <code>Partial&lt;Profile&gt;</code>{" "}— just the fields that changed. Each input is <em>controlled</em>, as in <SectionLink to="4.2.6" />: its <code>value</code>{" "}(or <code>checked</code>) comes from state and its <code>onChange</code>{" "}calls <code>update</code>. The <code>&lt;select&gt;</code>{" "}element is a drop-down list of <code>&lt;option&gt;</code>{" "}elements; the first option has an empty value so the form can tell when no role was picked. <code>e.target.value as Role</code>{" "}tells TypeScript the chosen value is one of the <code>Role</code>{" "}strings. The topic checkboxes add or remove a topic from the <code>topics</code>{" "}array with the same spread and <code>filter</code>{" "}calls as <SectionLink to="4.2.9" />. Radio buttons that share a <code>name</code>{" "}attribute form a group where only one can be selected. A <code>&lt;fieldset&gt;</code>{" "}groups related inputs and its <code>&lt;legend&gt;</code>{" "}is the group&apos;s caption. The <code>prefix</code>{" "}prop builds every <code>wd-*</code>{" "}id, so the same fields can appear several times on one page without repeating an id. Under each field, <code>{"{errors.firstName && <p>...</p>}"}</code>{" "}shows the message only when there is one. Notice that <code>ProfileFields</code>{" "}does not start with{" "}<code>&quot;use client&quot;</code>: modules imported by a Client Component already run on the client, so the directive is only needed at the server/client boundary, on the file a server page imports.
+          <strong>Step 2: the fields.</strong>{" "}<code>ProfileFields</code>{" "}draws every input and receives everything it needs as props: the current <code>profile</code>, the <code>errors</code>{" "}to show, and an <code>update</code>{" "}function that takes a <code>ProfileChanges</code>{" "}— just the fields that changed. <code>ProfileChanges</code>{" "}is defined in <code>profile.ts</code>{" "}like <code>ProfileErrors</code>: every <code>Profile</code>{" "}field again, each marked optional with <code>?</code>. Each input is <em>controlled</em>, as in <SectionLink to="4.2.6" />: its <code>value</code>{" "}(or <code>checked</code>) comes from state and its <code>onChange</code>{" "}calls <code>update</code>. The <code>&lt;select&gt;</code>{" "}element is a drop-down list of <code>&lt;option&gt;</code>{" "}elements; the first option has an empty value so the form can tell when no role was picked. <code>e.target.value as Role</code>{" "}tells TypeScript the chosen value is one of the <code>Role</code>{" "}strings. The topic checkboxes add or remove a topic from the <code>topics</code>{" "}array with the same spread and <code>filter</code>{" "}calls as <SectionLink to="4.2.9" />. Radio buttons that share a <code>name</code>{" "}attribute form a group where only one can be selected. A <code>&lt;fieldset&gt;</code>{" "}groups related inputs and its <code>&lt;legend&gt;</code>{" "}is the group&apos;s caption. The <code>prefix</code>{" "}prop builds every <code>wd-*</code>{" "}id, so the same fields can appear several times on one page without repeating an id. Under each field, <code>{"{errors.firstName && <p>...</p>}"}</code>{" "}shows the message only when there is one. Notice that <code>ProfileFields</code>{" "}does not start with{" "}<code>&quot;use client&quot;</code>: modules imported by a Client Component already run on the client, so the directive is only needed at the server/client boundary, on the file a server page imports.
         </p>
         <CodeBlock
           language="tsx"
@@ -1097,6 +1117,7 @@ export function validateProfile(profile: Profile) {
   htmlToDate,
   TOPICS,
   type Profile,
+  type ProfileChanges,
   type ProfileErrors,
   type Role,
 } from "./profile";
@@ -1113,7 +1134,7 @@ export default function ProfileFields({
   prefix: string;
   profile: Profile;
   errors: ProfileErrors;
-  update: (changes: Partial<Profile>) => void;
+  update: (changes: ProfileChanges) => void;
 }) {
   const toggleTopic = (topic: string) =>
     update({
@@ -1267,7 +1288,7 @@ export default function ProfileAlert({
         >{`"use client";
 
 import { useState, type FormEvent } from "react";
-import { emptyProfile, validateProfile, type Profile, type ProfileErrors } from "./profile";
+import { emptyProfile, validateProfile, type Profile, type ProfileChanges, type ProfileErrors } from "./profile";
 import ProfileFields from "./ProfileFields";
 import ProfileAlert from "./ProfileAlert";
 
@@ -1275,7 +1296,7 @@ export default function ProfileForm() {
   const [profile, setProfile] = useState<Profile>(emptyProfile);
   const [errors, setErrors] = useState<ProfileErrors>({});
   const [submitted, setSubmitted] = useState(false);
-  const update = (changes: Partial<Profile>) =>
+  const update = (changes: ProfileChanges) =>
     setProfile({ ...profile, ...changes });
   const save = (e: FormEvent) => {
     e.preventDefault();

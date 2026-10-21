@@ -130,8 +130,8 @@ export default function Counter() {
     kind: "demo",
     bullets: [
       "`useState(7)` seeds the heading. Up and Down call the setter",
-      "React diffs the virtual DOM and writes the heading to the real one",
-      "Same integer you will rebuild with Context, Zustand, and Redux",
+      "React compares an in-memory copy of the page (the **virtual DOM**) and writes only the heading to the real DOM",
+      "Later decks share this same integer across components",
     ],
     embed: "counter",
   },
@@ -151,7 +151,7 @@ export default function Counter() {
     kind: "content",
     bullets: [
       "An **effect** is code that reaches outside the component, such as reading the window size",
-      "`useEffect(fn, deps)` runs `fn` after render and paint, and again only when a value in `deps` changes",
+      "`useEffect(fn, deps)` runs `fn` after render and paint, and again only when a value in the **dependency array** `deps` changes",
       "The §3.7.3 window demo read `window` in `useEffect`. The geolocation demo kept coordinates in `useState`",
     ],
   },

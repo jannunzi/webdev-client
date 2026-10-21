@@ -343,8 +343,8 @@ export default function UrlEncoding() {
     title: "Next: React Context",
     kind: "title",
     bullets: [
-      "A provider publishes a value any descendant can read",
-      "§4.4: the same counter, no props through the middle",
+      "A **provider** is a component that publishes a value any descendant can read",
+      "§4.4: **Context** shares the same counter with no props through the middle",
     ],
   },
 ];

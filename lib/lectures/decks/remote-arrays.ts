@@ -126,7 +126,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
     kind: "title",
     bullets: [
       "Stay on the page. Then POST, PUT, and DELETE for real",
-      "§5.2.5–5.2.6: AJAX, CORS, `express.json()`",
+      "§5.2.5–5.2.6: AJAX (requests without a page reload), CORS (letting another origin call the server), `express.json()`",
     ],
   },
 ];

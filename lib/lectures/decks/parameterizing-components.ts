@@ -535,7 +535,7 @@ export default function CardDemo() {
     kind: "title",
     bullets: [
       "`usePathname` highlights the TOC. `[a]/[b]` captures segments",
-      "§3.8.2–3.8.4: path params, then a JSON todo list",
+      "§3.8.2–3.8.4: path params (values in URL segments), then a JSON todo list",
     ],
   },
 ];

@@ -95,7 +95,7 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
     title: "Server Side UI Rendering",
     kind: "content",
     bullets: [
-      "Server **executes** HTML with embedded source code",
+      "**Rendering** turns code and data into the page. Here the server **executes** HTML with embedded source code",
       "Sends a **finished page** to the client",
       "Classic PHP / JSP / Rails — and Next.js **Server Components**",
       "**Server Components**: UI code that runs only on the server and sends finished HTML",

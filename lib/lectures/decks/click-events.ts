@@ -116,7 +116,7 @@ export default function ClickEvent() {
     kind: "title",
     bullets: [
       "A click often needs an argument or a parent callback",
-      "§4.2.2–4.2.3: closures, then functions as props",
+      "§4.2.2–4.2.3: closures (functions that remember values around them), then functions as props",
     ],
   },
 ];

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { emptyProfile, validateProfile, type Profile, type ProfileErrors } from "./profile";
+import { emptyProfile, validateProfile, type Profile, type ProfileChanges, type ProfileErrors } from "./profile";
 import ProfileFields from "./ProfileFields";
 import ProfileAlert from "./ProfileAlert";
 
@@ -9,7 +9,7 @@ export default function ProfileForm() {
   const [profile, setProfile] = useState<Profile>(emptyProfile);
   const [errors, setErrors] = useState<ProfileErrors>({});
   const [submitted, setSubmitted] = useState(false);
-  const update = (changes: Partial<Profile>) =>
+  const update = (changes: ProfileChanges) =>
     setProfile({ ...profile, ...changes });
   const save = (e: FormEvent) => {
     e.preventDefault();
