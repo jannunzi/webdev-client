@@ -1238,7 +1238,7 @@ export default function ProfileFields({
   );
 }`}</CodeBlock>
         <p>
-          <strong>Step 3: the alert.</strong>{" "}<code>ProfileAlert</code>{" "}shows nothing until the form has been submitted. After that it counts the keys of <code>errors</code>{" "}with <code>Object.keys</code>: zero means the profile is valid and the banner says so; otherwise it says how many fields to fix. The <code>role=&quot;alert&quot;</code>{" "}attribute asks screen readers to announce the banner as soon as it appears, and <code>role=&quot;status&quot;</code>{" "}marks the quieter success message:
+          <strong>Step 3: the alert.</strong>{" "}<code>ProfileAlert</code>{" "}shows nothing until the form has been submitted. After that it counts the keys of <code>errors</code>{" "}with <code>Object.keys</code>. <code>Object.keys(obj)</code>{" "}returns an array of the object&apos;s property names, so <code>.length</code>{" "}counts the fields that have an error: zero means the profile is valid and the banner says so; otherwise it says how many fields to fix. The <code>role=&quot;alert&quot;</code>{" "}attribute asks screen readers to announce the banner as soon as it appears, and <code>role=&quot;status&quot;</code>{" "}marks the quieter success message:
         </p>
         <CodeBlock
           language="tsx"
