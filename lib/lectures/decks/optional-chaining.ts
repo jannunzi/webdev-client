@@ -78,11 +78,11 @@ export default function OptionalChaining() {
   },
   {
     id: "next-up",
-    title: "Next: style from data",
+    title: "Next: TypeScript types",
     kind: "title",
     bullets: [
-      "Classes and inline styles can follow a variable",
-      "§3.6: `className={\`wd-bg-${color}\`}` and `style={bgBlue}`",
+      "Types describe what each variable, object, and function holds",
+      "§3.5: annotations, object types, unions, and narrowing",
     ],
   },
 ];
