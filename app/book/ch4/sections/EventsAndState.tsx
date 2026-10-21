@@ -217,15 +217,21 @@ export default function PassingDataOnEvent() {
           variable, including passing them as parameters to other
           functions. A child can invoke behavior the parent owns if the
           parent passes the function as a prop. The example below passes
-          function <code>sayHello</code>{" "}to component{" "}
-          <code>PassingFunctions</code>. When the button is clicked,{" "}
-          <code>sayHello</code>{" "}is invoked. That is why the Lab 4 page
+          function <code>sayHello</code>{" "}and a{" "}
+          <code>message</code>{" "}string to component{" "}
+          <code>PassingFunctions</code>{" "}as attributes, so data flows
+          from parent to child. When the button is clicked, the child calls{" "}
+          <code>{"theFunction(`From parent: ${message}`)"}</code>, so{" "}
+          <code>sayHello</code>{" "}is invoked with a string and data flows
+          back from the child to the parent through the callback. That is why the Lab 4 page
           itself is a Client Component: the parent creates the function in
           the browser and hands the child a reference. To practice passing
           functions as parameters, create the{" "}
           <code>PassingFunctions</code>{" "}component below, declare a{" "}
-          <code>sayHello</code>{" "}callback on the Lab 4 page, pass it as{" "}
-          <code>{`theFunction={sayHello}`}</code>, and confirm it works
+          <code>sayHello</code>{" "}callback on the Lab 4 page that alerts the
+          string it receives, pass it as{" "}
+          <code>{`theFunction={sayHello}`}</code>{" "}together with{" "}
+          <code>{`message="Hello from Lab 4"`}</code>, and confirm it works
           as expected.
         </p>
         <CodeBlock
@@ -235,16 +241,18 @@ export default function PassingDataOnEvent() {
         >{`"use client";
 
 export default function PassingFunctions({
+  message,
   theFunction,
 }: {
-  theFunction: () => void;
+  message: string;
+  theFunction: (message: string) => void;
 }) {
   return (
     <div id="wd-passing-functions">
       <h2>Passing Functions</h2>
       <button
         type="button"
-        onClick={theFunction}
+        onClick={() => theFunction(\`From parent: \${message}\`)}
         id="wd-pass-functions-click"
         className="rounded bg-green-600 px-3 py-1.5 text-sm font-medium text-white"
       >
@@ -255,13 +263,17 @@ export default function PassingFunctions({
   );
 }`}</CodeBlock>
         <p>
-          On the Lab 4 page the callback is a small function that alerts{" "}
-          <code>&quot;Hello from Lab 4&quot;</code>. The child does not
-          know what the function does; it only knows the type{" "}
-          <code>{`() => void`}</code>{" "}and invokes it on click. That
+          On the Lab 4 page the callback is a small function that alerts
+          whatever string it receives, and the page passes{" "}
+          <code>&quot;Hello from Lab 4&quot;</code>{" "}as the{" "}
+          <code>message</code>{" "}attribute. The child does not know what
+          the function does; it only knows the type{" "}
+          <code>{`(message: string) => void`}</code>{" "}and invokes it on
+          click with <code>&quot;From parent: Hello from Lab 4&quot;</code>. That
           same pattern will later let a todo item ask a store to delete a
           row without owning the array itself. Click the button in the
-          demo and confirm the parent&apos;s alert appears:
+          demo and confirm the parent&apos;s alert shows{" "}
+          <code>&quot;From parent: Hello from Lab 4&quot;</code>:
         </p>
         <LiveDemo
           name="PassingFunctions"
@@ -1072,15 +1084,13 @@ export function validateProfile(profile: Profile) {
   return errors;
 }`}</CodeBlock>
         <p>
-          <strong>Step 2: the fields.</strong>{" "}<code>ProfileFields</code>{" "}draws every input and receives everything it needs as props: the current <code>profile</code>, the <code>errors</code>{" "}to show, and an <code>update</code>{" "}function that takes a <code>Partial&lt;Profile&gt;</code>{" "}— just the fields that changed. Each input is <em>controlled</em>, as in <SectionLink to="4.2.6" />: its <code>value</code>{" "}(or <code>checked</code>) comes from state and its <code>onChange</code>{" "}calls <code>update</code>. The <code>&lt;select&gt;</code>{" "}element is a drop-down list of <code>&lt;option&gt;</code>{" "}elements; the first option has an empty value so the form can tell when no role was picked. <code>e.target.value as Role</code>{" "}tells TypeScript the chosen value is one of the <code>Role</code>{" "}strings. The topic checkboxes add or remove a topic from the <code>topics</code>{" "}array with the same spread and <code>filter</code>{" "}calls as <SectionLink to="4.2.9" />. Radio buttons that share a <code>name</code>{" "}attribute form a group where only one can be selected. A <code>&lt;fieldset&gt;</code>{" "}groups related inputs and its <code>&lt;legend&gt;</code>{" "}is the group&apos;s caption. The <code>prefix</code>{" "}prop builds every <code>wd-*</code>{" "}id, so the same fields can appear several times on one page without repeating an id. Under each field, <code>{"{errors.firstName && <p>...</p>}"}</code>{" "}shows the message only when there is one:
+          <strong>Step 2: the fields.</strong>{" "}<code>ProfileFields</code>{" "}draws every input and receives everything it needs as props: the current <code>profile</code>, the <code>errors</code>{" "}to show, and an <code>update</code>{" "}function that takes a <code>Partial&lt;Profile&gt;</code>{" "}— just the fields that changed. Each input is <em>controlled</em>, as in <SectionLink to="4.2.6" />: its <code>value</code>{" "}(or <code>checked</code>) comes from state and its <code>onChange</code>{" "}calls <code>update</code>. The <code>&lt;select&gt;</code>{" "}element is a drop-down list of <code>&lt;option&gt;</code>{" "}elements; the first option has an empty value so the form can tell when no role was picked. <code>e.target.value as Role</code>{" "}tells TypeScript the chosen value is one of the <code>Role</code>{" "}strings. The topic checkboxes add or remove a topic from the <code>topics</code>{" "}array with the same spread and <code>filter</code>{" "}calls as <SectionLink to="4.2.9" />. Radio buttons that share a <code>name</code>{" "}attribute form a group where only one can be selected. A <code>&lt;fieldset&gt;</code>{" "}groups related inputs and its <code>&lt;legend&gt;</code>{" "}is the group&apos;s caption. The <code>prefix</code>{" "}prop builds every <code>wd-*</code>{" "}id, so the same fields can appear several times on one page without repeating an id. Under each field, <code>{"{errors.firstName && <p>...</p>}"}</code>{" "}shows the message only when there is one. Notice that <code>ProfileFields</code>{" "}does not start with{" "}<code>&quot;use client&quot;</code>: modules imported by a Client Component already run on the client, so the directive is only needed at the server/client boundary, on the file a server page imports.
         </p>
         <CodeBlock
           language="tsx"
           name="ProfileFields"
           file="app/labs/lab4/profile/ProfileFields.tsx"
-        >{`"use client";
-
-import {
+        >{`import {
   dateToHtml,
   htmlToDate,
   TOPICS,
@@ -1219,9 +1229,7 @@ export default function ProfileFields({
           language="tsx"
           name="ProfileAlert"
           file="app/labs/lab4/profile/ProfileAlert.tsx"
-        >{`"use client";
-
-import type { ProfileErrors } from "./profile";
+        >{`import type { ProfileErrors } from "./profile";
 
 export default function ProfileAlert({
   id,

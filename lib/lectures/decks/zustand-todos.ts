@@ -96,9 +96,7 @@ const updateTodo = useTodoStore((state) => state.updateTodo);
     id: "list",
     title: "The list maps store todos",
     kind: "content",
-    code: `"use client";
-
-import { useTodoStore } from "./todoStore";
+    code: `import { useTodoStore } from "./todoStore";
 import ZustandTodoForm from "./ZustandTodoForm";
 import ZustandTodoItem from "./ZustandTodoItem";
 
@@ -118,7 +116,7 @@ export default function ZustandTodoList() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/zustand/ZustandTodoList.tsx",
-    codeHighlightLines: [8, 14, 15, 16],
+    codeHighlightLines: [6, 12, 13, 14],
   },
   {
     id: "list-live",

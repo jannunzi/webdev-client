@@ -1,5 +1,3 @@
-"use client";
-
 import { create } from "zustand";
 import { emptyProfile, validateProfile, type Profile, type ProfileErrors } from "../profile/profile";
 

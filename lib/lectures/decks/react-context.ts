@@ -35,9 +35,7 @@ export const REACT_CONTEXT_SLIDES: LectureSlide[] = [
     id: "context-file",
     title: "Context, provider, and a hook (code)",
     kind: "content",
-    code: `"use client";
-
-import { createContext, useContext, useState, type ReactNode } from "react";
+    code: `import { createContext, useContext, useState, type ReactNode } from "react";
 
 type CounterContextValue = {
   count: number;
@@ -64,7 +62,7 @@ export function useCounterContext() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/context/CounterContext.tsx",
-    codeHighlightLines: [10, [12, 18], [21, 27]],
+    codeHighlightLines: [8, [10, 16], [19, 25]],
   },
   {
     id: "siblings",

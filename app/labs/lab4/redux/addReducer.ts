@@ -1,5 +1,3 @@
-"use client";
-
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 type AddPayload = { a: number; b: number };

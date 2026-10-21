@@ -1,5 +1,3 @@
-"use client";
-
 import { useCounterContext } from "./CounterContext";
 
 export default function ContextCounterWrite() {
