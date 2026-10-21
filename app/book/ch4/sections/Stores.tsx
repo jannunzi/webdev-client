@@ -6,6 +6,8 @@ import OfficialLink from "../../components/OfficialLink";
 import { OnYourOwn, WithAI } from "../../components/Practice";
 import ContextExamples from "@/app/labs/lab4/context/ContextExamples";
 import ZustandExamples from "@/app/labs/lab4/zustand/ZustandExamples";
+import ContextProfileForm from "@/app/labs/lab4/context/ContextProfileForm";
+import ZustandProfileForm from "@/app/labs/lab4/zustand/ZustandProfileForm";
 import ReduxExamples from "@/app/labs/lab4/redux/ReduxExamples";
 
 export default function Stores() {
@@ -246,6 +248,109 @@ export default function ContextExamples() {
             After you sketch the context, you can ask the assistant
             for a sample list — leave the design as yours:
           </WithAI>
+        </Section>
+
+        <Section
+          level={3}
+          id="sec-4-4-3"
+          title="4.4.3 The Profile Form with React Context"
+        >
+          <p>
+            Here is the profile form from <SectionLink to="4.2.10" />{" "}again, with its state moved into a context. <code>profile.ts</code>, <code>ProfileFields</code>, and <code>ProfileAlert</code>{" "}stay exactly as they were; only the place that holds the state changes. <code>ProfileProvider</code>{" "}keeps the same three <code>useState</code>{" "}variables that <code>ProfileForm</code>{" "}had, and publishes them together with <code>update</code>{" "}and <code>save</code>. As with <code>useCounterContext</code>{" "}in <SectionLink to="4.4.1" />, <code>useProfileContext</code>{" "}throws a clear error if it is used outside the provider:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="ProfileContext"
+            file="app/labs/lab4/context/ProfileContext.tsx"
+          >{`"use client";
+
+import { createContext, useContext, useState, type ReactNode } from "react";
+import { emptyProfile, validateProfile, type Profile, type ProfileErrors } from "../profile/profile";
+
+type ProfileContextValue = {
+  profile: Profile;
+  errors: ProfileErrors;
+  submitted: boolean;
+  update: (changes: Partial<Profile>) => void;
+  save: () => void;
+};
+
+const ProfileContext = createContext<ProfileContextValue | null>(null);
+
+export function ProfileProvider({ children }: { children: ReactNode }) {
+  const [profile, setProfile] = useState<Profile>(emptyProfile);
+  const [errors, setErrors] = useState<ProfileErrors>({});
+  const [submitted, setSubmitted] = useState(false);
+  const update = (changes: Partial<Profile>) =>
+    setProfile({ ...profile, ...changes });
+  const save = () => {
+    setErrors(validateProfile(profile));
+    setSubmitted(true);
+  };
+  return (
+    <ProfileContext.Provider value={{ profile, errors, submitted, update, save }}>
+      {children}
+    </ProfileContext.Provider>
+  );
+}
+
+export function useProfileContext() {
+  const value = useContext(ProfileContext);
+  if (!value) {
+    throw new Error("useProfileContext must be used inside ProfileProvider");
+  }
+  return value;
+}`}</CodeBlock>
+          <p>
+            <code>ContextProfileForm</code>{" "}wraps a small inner component in the provider. The inner component, <code>ContextProfileFormBody</code>, must be a separate component because a hook only sees providers <em>above</em>{" "}the component that calls it, never one that the same component renders. The body reads everything from the context instead of from its own <code>useState</code>, and its submit handler still calls <code>e.preventDefault()</code>{" "}before <code>save</code>. Any other component placed inside <code>ProfileProvider</code>{" "}could now read or change the same profile without props:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="ContextProfileForm"
+            file="app/labs/lab4/context/ContextProfileForm.tsx"
+          >{`"use client";
+
+import type { FormEvent } from "react";
+import { ProfileProvider, useProfileContext } from "./ProfileContext";
+import ProfileFields from "../profile/ProfileFields";
+import ProfileAlert from "../profile/ProfileAlert";
+
+function ContextProfileFormBody() {
+  const { profile, errors, submitted, update, save } = useProfileContext();
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    save();
+  };
+  return (
+    <form id="wd-context-profile-form" onSubmit={onSubmit} noValidate>
+      <h2>Profile (React Context)</h2>
+      <ProfileAlert id="wd-context-profile-alert" submitted={submitted} errors={errors} />
+      <ProfileFields prefix="wd-context-profile" profile={profile} errors={errors} update={update} />
+      <button id="wd-context-profile-save" type="submit" className="mt-3 rounded bg-blue-600 px-4 py-1.5 text-white">
+        Save
+      </button>
+      <pre>{JSON.stringify(profile, null, 2)}</pre>
+    </form>
+  );
+}
+
+export default function ContextProfileForm() {
+  return (
+    <ProfileProvider>
+      <ContextProfileFormBody />
+    </ProfileProvider>
+  );
+}`}</CodeBlock>
+          <p>
+            Save the empty form, fix the fields, and confirm it behaves exactly like the <code>useState</code>{" "}version:
+          </p>
+          <LiveDemo
+            name="ContextProfileForm"
+            file="app/labs/lab4/context/ContextProfileForm.tsx"
+            mode="styled"
+          >
+            <ContextProfileForm />
+          </LiveDemo>
         </Section>
       </Section>
 
@@ -610,6 +715,88 @@ export default function ZustandExamples() {
             Ask the assistant to add a sample toggle after your own extra
             action:
           </WithAI>
+        </Section>
+
+        <Section
+          level={3}
+          id="sec-4-5-3"
+          title="4.5.3 The Profile Form with Zustand"
+        >
+          <p>
+            Finally, the same profile form with its state in a Zustand store. Again <code>profile.ts</code>, <code>ProfileFields</code>, and <code>ProfileAlert</code>{" "}do not change. The store holds the <code>profile</code>, <code>errors</code>, and <code>submitted</code>{" "}values next to the <code>update</code>{" "}and <code>save</code>{" "}functions that change them. Both functions pass <code>set</code>{" "}a function of the current <code>state</code>, as the counter store did in <SectionLink to="4.5.1" />, so <code>save</code>{" "}always validates the latest profile:
+          </p>
+          <CodeBlock
+            language="ts"
+            name="profileStore"
+            file="app/labs/lab4/zustand/profileStore.ts"
+          >{`"use client";
+
+import { create } from "zustand";
+import { emptyProfile, validateProfile, type Profile, type ProfileErrors } from "../profile/profile";
+
+type ProfileStore = {
+  profile: Profile;
+  errors: ProfileErrors;
+  submitted: boolean;
+  update: (changes: Partial<Profile>) => void;
+  save: () => void;
+};
+
+export const useProfileStore = create<ProfileStore>((set) => ({
+  profile: emptyProfile,
+  errors: {},
+  submitted: false,
+  update: (changes) =>
+    set((state) => ({ profile: { ...state.profile, ...changes } })),
+  save: () =>
+    set((state) => ({ errors: validateProfile(state.profile), submitted: true })),
+}));`}</CodeBlock>
+          <p>
+            <code>ZustandProfileForm</code>{" "}needs no provider. Each call to <code>useProfileStore</code>{" "}passes a <em>selector</em>{" "}— a function that picks one value out of the store — so the component re-renders only when a value it selected changes. Because the store is a single module-level object, the profile also survives when the form leaves the screen and comes back, which the <code>useState</code>{" "}and Context versions do not:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="ZustandProfileForm"
+            file="app/labs/lab4/zustand/ZustandProfileForm.tsx"
+          >{`"use client";
+
+import type { FormEvent } from "react";
+import { useProfileStore } from "./profileStore";
+import ProfileFields from "../profile/ProfileFields";
+import ProfileAlert from "../profile/ProfileAlert";
+
+export default function ZustandProfileForm() {
+  const profile = useProfileStore((state) => state.profile);
+  const errors = useProfileStore((state) => state.errors);
+  const submitted = useProfileStore((state) => state.submitted);
+  const update = useProfileStore((state) => state.update);
+  const save = useProfileStore((state) => state.save);
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    save();
+  };
+  return (
+    <form id="wd-zustand-profile-form" onSubmit={onSubmit} noValidate>
+      <h2>Profile (Zustand)</h2>
+      <ProfileAlert id="wd-zustand-profile-alert" submitted={submitted} errors={errors} />
+      <ProfileFields prefix="wd-zustand-profile" profile={profile} errors={errors} update={update} />
+      <button id="wd-zustand-profile-save" type="submit" className="mt-3 rounded bg-blue-600 px-4 py-1.5 text-white">
+        Save
+      </button>
+      <pre>{JSON.stringify(profile, null, 2)}</pre>
+    </form>
+  );
+}`}</CodeBlock>
+          <p>
+            Save the empty form, fix the fields, and compare with the other two versions. All three are also gathered on one page at <code>/labs/lab4/profile-form</code>, so you can try them side by side:
+          </p>
+          <LiveDemo
+            name="ZustandProfileForm"
+            file="app/labs/lab4/zustand/ZustandProfileForm.tsx"
+            mode="styled"
+          >
+            <ZustandProfileForm />
+          </LiveDemo>
         </Section>
       </Section>
 

@@ -14,6 +14,7 @@ import StringStateVariables from "@/app/labs/lab4/StringStateVariables";
 import DateStateVariable from "@/app/labs/lab4/DateStateVariable";
 import ObjectStateVariable from "@/app/labs/lab4/ObjectStateVariable";
 import ArrayStateVariable from "@/app/labs/lab4/ArrayStateVariable";
+import ProfileForm from "@/app/labs/lab4/profile/ProfileForm";
 
 export default function EventsAndState() {
   return (
@@ -889,6 +890,314 @@ export default function ArrayStateVariable() {
         >
           Ask the assistant to add a sample Clear after your own control:
         </WithAI>
+      </Section>
+
+      <Section
+        level={3}
+        id="sec-4-2-10"
+        title="4.2.10 Putting It Together: A Profile Form"
+      >
+        <p>
+          The last few sections each used one kind of state at a time. A real form mixes them. This section builds a profile page — the screen where a person enters and edits facts about themselves — that combines every kind of state from <SectionLink to="4.2.5" />{" "}through <SectionLink to="4.2.9" />: <em>strings</em>{" "}for the first name, last name, and password; a <em>date</em>{" "}for the date of birth; a <em>string chosen from a fixed list</em>{" "}for the role; a <em>boolean</em>{" "}for a newsletter checkbox; an <em>array</em>{" "}for a set of topic checkboxes; and a string picked with <em>radio buttons</em>{" "}for the theme. All of them live together in one <em>object</em>, the profile.
+        </p>
+        <p>
+          Before the user&apos;s data is saved, the form runs <em>validation</em>: a check that every field holds an acceptable value. When the user clicks Save, the form validates the whole profile. Each invalid field shows an <em>error message</em>{" "}directly under it, and an <em>alert</em>{" "}— a highlighted banner at the top of the form — says how many fields need fixing, or that the profile was saved. We build it in four steps.
+        </p>
+        <p>
+          <strong>Step 1: the data and the rules.</strong>{" "}Start with a plain TypeScript file that has no React in it. A <em>type</em>{" "}describes the shape of a value; <code>Profile</code>{" "}lists every field and its type. <code>Role</code>{" "}is a <em>union type</em>: the role may only be one of the listed strings, and the empty string means &quot;not chosen yet&quot;. <code>Date | null</code>{" "}means the date of birth is either a <code>Date</code>{" "}or <code>null</code>{" "}while the date field is empty. <code>ProfileErrors</code>{" "}uses two built-in helper types: <code>Record&lt;keyof Profile, string&gt;</code>{" "}is an object with one string per profile field, and <code>Partial</code>{" "}makes every one of those keys optional, so a field with no problem simply has no entry. <code>emptyProfile</code>{" "}is the starting value. <code>dateToHtml</code>{" "}and <code>htmlToDate</code>{" "}are the same <code>YYYY-MM-DD</code>{" "}conversions from <SectionLink to="4.2.7" />, extended so an empty field maps to <code>null</code>. Finally, <code>validateProfile</code>{" "}is a <em>pure function</em>{" "}— it only reads its argument and returns a new value — that returns one message per invalid field. Because it has no React in it, any version of the form can reuse it:
+        </p>
+        <CodeBlock
+          language="ts"
+          name="profile"
+          file="app/labs/lab4/profile/profile.ts"
+        >{`export type Role = "" | "STUDENT" | "TA" | "FACULTY";
+export type Theme = "light" | "dark";
+
+export type Profile = {
+  firstName: string;
+  lastName: string;
+  password: string;
+  dob: Date | null;
+  role: Role;
+  newsletter: boolean;
+  topics: string[];
+  theme: Theme;
+};
+
+export type ProfileErrors = Partial<Record<keyof Profile, string>>;
+
+export const TOPICS = ["HTML", "CSS", "React"];
+
+export const emptyProfile: Profile = {
+  firstName: "",
+  lastName: "",
+  password: "",
+  dob: null,
+  role: "",
+  newsletter: false,
+  topics: [],
+  theme: "light",
+};
+
+export function dateToHtml(date: Date | null) {
+  if (!date) return "";
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return \`\${year}-\${month}-\${day}\`;
+}
+
+export function htmlToDate(text: string) {
+  if (!text) return null;
+  const [year, month, day] = text.split("-").map(Number);
+  return new Date(year, month - 1, day);
+}
+
+export function validateProfile(profile: Profile) {
+  const errors: ProfileErrors = {};
+  if (profile.firstName.trim() === "") {
+    errors.firstName = "First name is required.";
+  }
+  if (profile.lastName.trim() === "") {
+    errors.lastName = "Last name is required.";
+  }
+  if (profile.password.length < 8) {
+    errors.password = "Password needs at least 8 characters.";
+  }
+  if (!profile.dob || profile.dob > new Date()) {
+    errors.dob = "Pick a date of birth in the past.";
+  }
+  if (profile.role === "") {
+    errors.role = "Choose a role.";
+  }
+  if (profile.topics.length === 0) {
+    errors.topics = "Pick at least one topic.";
+  }
+  return errors;
+}`}</CodeBlock>
+        <p>
+          <strong>Step 2: the fields.</strong>{" "}<code>ProfileFields</code>{" "}draws every input and receives everything it needs as props: the current <code>profile</code>, the <code>errors</code>{" "}to show, and an <code>update</code>{" "}function that takes a <code>Partial&lt;Profile&gt;</code>{" "}— just the fields that changed. Each input is <em>controlled</em>, as in <SectionLink to="4.2.6" />: its <code>value</code>{" "}(or <code>checked</code>) comes from state and its <code>onChange</code>{" "}calls <code>update</code>. The <code>&lt;select&gt;</code>{" "}element is a drop-down list of <code>&lt;option&gt;</code>{" "}elements; the first option has an empty value so the form can tell when no role was picked. <code>e.target.value as Role</code>{" "}tells TypeScript the chosen value is one of the <code>Role</code>{" "}strings. The topic checkboxes add or remove a topic from the <code>topics</code>{" "}array with the same spread and <code>filter</code>{" "}calls as <SectionLink to="4.2.9" />. Radio buttons that share a <code>name</code>{" "}attribute form a group where only one can be selected. A <code>&lt;fieldset&gt;</code>{" "}groups related inputs and its <code>&lt;legend&gt;</code>{" "}is the group&apos;s caption. The <code>prefix</code>{" "}prop builds every <code>wd-*</code>{" "}id, so the same fields can appear several times on one page without repeating an id. Under each field, <code>{"{errors.firstName && <p>...</p>}"}</code>{" "}shows the message only when there is one:
+        </p>
+        <CodeBlock
+          language="tsx"
+          name="ProfileFields"
+          file="app/labs/lab4/profile/ProfileFields.tsx"
+        >{`"use client";
+
+import {
+  dateToHtml,
+  htmlToDate,
+  TOPICS,
+  type Profile,
+  type ProfileErrors,
+  type Role,
+} from "./profile";
+
+const input = "block w-full max-w-sm rounded border border-neutral-300 px-3 py-1.5";
+const error = "text-sm text-red-600";
+
+export default function ProfileFields({
+  prefix,
+  profile,
+  errors,
+  update,
+}: {
+  prefix: string;
+  profile: Profile;
+  errors: ProfileErrors;
+  update: (changes: Partial<Profile>) => void;
+}) {
+  const toggleTopic = (topic: string) =>
+    update({
+      topics: profile.topics.includes(topic)
+        ? profile.topics.filter((t) => t !== topic)
+        : [...profile.topics, topic],
+    });
+  return (
+    <div className="flex flex-col gap-3">
+      <label htmlFor={\`\${prefix}-first-name\`}>First name</label>
+      <input
+        id={\`\${prefix}-first-name\`}
+        className={input}
+        value={profile.firstName}
+        onChange={(e) => update({ firstName: e.target.value })}
+      />
+      {errors.firstName && <p className={error}>{errors.firstName}</p>}
+
+      <label htmlFor={\`\${prefix}-last-name\`}>Last name</label>
+      <input
+        id={\`\${prefix}-last-name\`}
+        className={input}
+        value={profile.lastName}
+        onChange={(e) => update({ lastName: e.target.value })}
+      />
+      {errors.lastName && <p className={error}>{errors.lastName}</p>}
+
+      <label htmlFor={\`\${prefix}-password\`}>Password</label>
+      <input
+        id={\`\${prefix}-password\`}
+        type="password"
+        className={input}
+        value={profile.password}
+        onChange={(e) => update({ password: e.target.value })}
+      />
+      {errors.password && <p className={error}>{errors.password}</p>}
+
+      <label htmlFor={\`\${prefix}-dob\`}>Date of birth</label>
+      <input
+        id={\`\${prefix}-dob\`}
+        type="date"
+        className={input}
+        value={dateToHtml(profile.dob)}
+        onChange={(e) => update({ dob: htmlToDate(e.target.value) })}
+      />
+      {errors.dob && <p className={error}>{errors.dob}</p>}
+
+      <label htmlFor={\`\${prefix}-role\`}>Role</label>
+      <select
+        id={\`\${prefix}-role\`}
+        className={input}
+        value={profile.role}
+        onChange={(e) => update({ role: e.target.value as Role })}
+      >
+        <option value="">Choose a role</option>
+        <option value="STUDENT">Student</option>
+        <option value="TA">Teaching assistant</option>
+        <option value="FACULTY">Faculty</option>
+      </select>
+      {errors.role && <p className={error}>{errors.role}</p>}
+
+      <label className="flex items-center gap-2">
+        <input
+          id={\`\${prefix}-newsletter\`}
+          type="checkbox"
+          checked={profile.newsletter}
+          onChange={() => update({ newsletter: !profile.newsletter })}
+        />
+        Email me the newsletter
+      </label>
+
+      <fieldset id={\`\${prefix}-topics\`}>
+        <legend>Topics</legend>
+        {TOPICS.map((topic) => (
+          <label key={topic} className="mr-4 inline-flex items-center gap-1">
+            <input
+              type="checkbox"
+              checked={profile.topics.includes(topic)}
+              onChange={() => toggleTopic(topic)}
+            />
+            {topic}
+          </label>
+        ))}
+      </fieldset>
+      {errors.topics && <p className={error}>{errors.topics}</p>}
+
+      <fieldset id={\`\${prefix}-theme\`}>
+        <legend>Theme</legend>
+        <label className="mr-4 inline-flex items-center gap-1">
+          <input
+            type="radio"
+            name={\`\${prefix}-theme\`}
+            checked={profile.theme === "light"}
+            onChange={() => update({ theme: "light" })}
+          />
+          Light
+        </label>
+        <label className="inline-flex items-center gap-1">
+          <input
+            type="radio"
+            name={\`\${prefix}-theme\`}
+            checked={profile.theme === "dark"}
+            onChange={() => update({ theme: "dark" })}
+          />
+          Dark
+        </label>
+      </fieldset>
+    </div>
+  );
+}`}</CodeBlock>
+        <p>
+          <strong>Step 3: the alert.</strong>{" "}<code>ProfileAlert</code>{" "}shows nothing until the form has been submitted. After that it counts the keys of <code>errors</code>{" "}with <code>Object.keys</code>: zero means the profile is valid and the banner says so; otherwise it says how many fields to fix. The <code>role=&quot;alert&quot;</code>{" "}attribute asks screen readers to announce the banner as soon as it appears, and <code>role=&quot;status&quot;</code>{" "}marks the quieter success message:
+        </p>
+        <CodeBlock
+          language="tsx"
+          name="ProfileAlert"
+          file="app/labs/lab4/profile/ProfileAlert.tsx"
+        >{`"use client";
+
+import type { ProfileErrors } from "./profile";
+
+export default function ProfileAlert({
+  id,
+  submitted,
+  errors,
+}: {
+  id: string;
+  submitted: boolean;
+  errors: ProfileErrors;
+}) {
+  if (!submitted) return null;
+  const count = Object.keys(errors).length;
+  if (count === 0) {
+    return (
+      <div id={id} role="status" className="mb-3 rounded bg-green-100 p-2 text-green-800">
+        Profile saved.
+      </div>
+    );
+  }
+  return (
+    <div id={id} role="alert" className="mb-3 rounded bg-red-100 p-2 text-red-800">
+      Please fix {count} {count === 1 ? "field" : "fields"} below.
+    </div>
+  );
+}`}</CodeBlock>
+        <p>
+          <strong>Step 4: the form and its state.</strong>{" "}<code>ProfileForm</code>{" "}owns three state variables: the <code>profile</code>{" "}object, the latest <code>errors</code>, and a <code>submitted</code>{" "}boolean. <code>update</code>{" "}copies the profile and overwrites only the changed fields with <code>{"{ ...profile, ...changes }"}</code>, the object-spread pattern from <SectionLink to="4.2.8" />. A form&apos;s <code>onSubmit</code>{" "}runs when the user clicks a <code>type=&quot;submit&quot;</code>{" "}button or presses Enter in a field. By default the browser would then reload the page, so <code>save</code>{" "}first calls <code>e.preventDefault()</code>{" "}to stop that, then stores the result of <code>validateProfile</code>. The <code>noValidate</code>{" "}attribute turns off the browser&apos;s own built-in checks so that our messages are the only ones shown. The <code>&lt;pre&gt;</code>{" "}prints the profile object so you can watch every type change as you type; a real page would never print a password like this. Create the four files and render <code>ProfileForm</code>:
+        </p>
+        <CodeBlock
+          language="tsx"
+          name="ProfileForm"
+          file="app/labs/lab4/profile/ProfileForm.tsx"
+        >{`"use client";
+
+import { useState, type FormEvent } from "react";
+import { emptyProfile, validateProfile, type Profile, type ProfileErrors } from "./profile";
+import ProfileFields from "./ProfileFields";
+import ProfileAlert from "./ProfileAlert";
+
+export default function ProfileForm() {
+  const [profile, setProfile] = useState<Profile>(emptyProfile);
+  const [errors, setErrors] = useState<ProfileErrors>({});
+  const [submitted, setSubmitted] = useState(false);
+  const update = (changes: Partial<Profile>) =>
+    setProfile({ ...profile, ...changes });
+  const save = (e: FormEvent) => {
+    e.preventDefault();
+    setErrors(validateProfile(profile));
+    setSubmitted(true);
+  };
+  return (
+    <form id="wd-profile-form" onSubmit={save} noValidate>
+      <h2>Profile</h2>
+      <ProfileAlert id="wd-profile-alert" submitted={submitted} errors={errors} />
+      <ProfileFields prefix="wd-profile" profile={profile} errors={errors} update={update} />
+      <button id="wd-profile-save" type="submit" className="mt-3 rounded bg-blue-600 px-4 py-1.5 text-white">
+        Save
+      </button>
+      <pre>{JSON.stringify(profile, null, 2)}</pre>
+    </form>
+  );
+}`}</CodeBlock>
+        <p>
+          Click Save with the form empty and confirm each field shows its message and the banner counts six fields. Fill in the fields one at a time and save again; the count drops until the banner reports the profile saved. Notice the date, checkboxes, and radios each update a different type inside the same object:
+        </p>
+        <LiveDemo
+          name="ProfileForm"
+          file="app/labs/lab4/profile/ProfileForm.tsx"
+          mode="styled"
+        >
+          <ProfileForm />
+        </LiveDemo>
       </Section>
     </>
   );

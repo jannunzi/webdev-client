@@ -385,6 +385,7 @@ export const CH4_TOC: TocEntry[] = [
       { id: "sec-4-2-7", label: "4.2.7 Date State Variables" },
       { id: "sec-4-2-8", label: "4.2.8 Object State Variables" },
       { id: "sec-4-2-9", label: "4.2.9 Array State Variables" },
+      { id: "sec-4-2-10", label: "4.2.10 Putting It Together: A Profile Form" },
     ],
   },
   {
@@ -401,6 +402,7 @@ export const CH4_TOC: TocEntry[] = [
     label: "4.4 React Context",
     children: [
       { id: "sec-4-4-2", label: "4.4.2 Context Todo List (On Your Own)" },
+      { id: "sec-4-4-3", label: "4.4.3 Profile Form with React Context" },
     ],
   },
   {
@@ -409,6 +411,7 @@ export const CH4_TOC: TocEntry[] = [
     children: [
       { id: "sec-4-5-1", label: "4.5.1 Zustand Counter" },
       { id: "sec-4-5-2", label: "4.5.2 Zustand Todo List" },
+      { id: "sec-4-5-3", label: "4.5.3 Profile Form with Zustand" },
     ],
   },
   {
