@@ -17,6 +17,9 @@ import Effect from "@/app/labs/lab4/Effect";
 import ContextExamples from "@/app/labs/lab4/context/ContextExamples";
 import ZustandCounter from "@/app/labs/lab4/zustand/ZustandCounter";
 import ZustandTodoList from "@/app/labs/lab4/zustand/ZustandTodoList";
+import ProfileForm from "@/app/labs/lab4/profile/ProfileForm";
+import ContextProfileForm from "@/app/labs/lab4/context/ContextProfileForm";
+import ZustandProfileForm from "@/app/labs/lab4/zustand/ZustandProfileForm";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import WindowSizeDemo from "@/app/labs/lab4/hooks/WindowSizeDemo";
@@ -326,6 +329,30 @@ export function HooksHookProfileFormEmbed() {
   return (
     <Lab4Demo label="hooks/HookProfileForm.tsx" url="/labs/lab4/hooks">
       <HookProfileForm />
+    </Lab4Demo>
+  );
+}
+
+export function ProfileFormEmbed() {
+  return (
+    <Lab4Demo label="profile/ProfileForm.tsx" url="/labs/lab4/profile-form">
+      <ProfileForm />
+    </Lab4Demo>
+  );
+}
+
+export function ContextProfileFormEmbed() {
+  return (
+    <Lab4Demo label="context/ContextProfileForm.tsx" url="/labs/lab4/profile-form">
+      <ContextProfileForm />
+    </Lab4Demo>
+  );
+}
+
+export function ZustandProfileFormEmbed() {
+  return (
+    <Lab4Demo label="zustand/ZustandProfileForm.tsx" url="/labs/lab4/profile-form">
+      <ZustandProfileForm />
     </Lab4Demo>
   );
 }

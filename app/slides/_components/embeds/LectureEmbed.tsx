@@ -190,6 +190,9 @@ import {
   HooksLocalStorageDemoEmbed,
   HooksIndependentTogglesEmbed,
   HooksHookProfileFormEmbed,
+  ProfileFormEmbed,
+  ContextProfileFormEmbed,
+  ZustandProfileFormEmbed,
 } from "./Lab4Embeds";
 import {
   Lab5CalculatorEmbed,
@@ -558,6 +561,12 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <HooksIndependentTogglesEmbed />;
     case "hooks-profile-form":
       return <HooksHookProfileFormEmbed />;
+    case "profile-form":
+      return <ProfileFormEmbed />;
+    case "context-profile-form":
+      return <ContextProfileFormEmbed />;
+    case "zustand-profile-form":
+      return <ZustandProfileFormEmbed />;
     case "use-effect":
       return <UseEffectEmbed />;
     case "kambaz-courses-crud":
