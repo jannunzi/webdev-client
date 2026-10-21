@@ -132,6 +132,101 @@ export default function ZustandTodoList() {
     embed: "zustand-todos",
   },
   {
+    id: "profile-store-intro",
+    title: "The profile form with Zustand",
+    kind: "content",
+    bullets: [
+      "`profile.ts`, `ProfileFields`, and `ProfileAlert` do not change",
+      "The store holds `profile`, `errors`, and `submitted` next to `update` and `save`",
+      "Both pass `set` a function of the current state, so `save` checks the latest profile",
+    ],
+  },
+  {
+    id: "profile-store",
+    title: "profileStore (code)",
+    kind: "content",
+    code: `"use client";
+
+import { create } from "zustand";
+import { emptyProfile, validateProfile, type Profile, type ProfileErrors } from "../profile/profile";
+
+type ProfileStore = {
+  profile: Profile;
+  errors: ProfileErrors;
+  submitted: boolean;
+  update: (changes: Partial<Profile>) => void;
+  save: () => void;
+};
+
+export const useProfileStore = create<ProfileStore>((set) => ({
+  profile: emptyProfile,
+  errors: {},
+  submitted: false,
+  update: (changes) =>
+    set((state) => ({ profile: { ...state.profile, ...changes } })),
+  save: () =>
+    set((state) => ({ errors: validateProfile(state.profile), submitted: true })),
+}));`,
+    codeLanguage: "ts",
+    codeFile: "app/labs/lab4/zustand/profileStore.ts",
+  },
+  {
+    id: "zustand-profile-form-intro",
+    title: "Selectors, and no provider",
+    kind: "content",
+    bullets: [
+      "`ZustandProfileForm` needs no provider",
+      "Each `useProfileStore` call passes a selector that picks one value",
+      "The store is module-level, so the profile survives leaving the screen",
+    ],
+  },
+  {
+    id: "zustand-profile-form",
+    title: "ZustandProfileForm (code)",
+    kind: "content",
+    code: `"use client";
+
+import type { FormEvent } from "react";
+import { useProfileStore } from "./profileStore";
+import ProfileFields from "../profile/ProfileFields";
+import ProfileAlert from "../profile/ProfileAlert";
+
+export default function ZustandProfileForm() {
+  const profile = useProfileStore((state) => state.profile);
+  const errors = useProfileStore((state) => state.errors);
+  const submitted = useProfileStore((state) => state.submitted);
+  const update = useProfileStore((state) => state.update);
+  const save = useProfileStore((state) => state.save);
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    save();
+  };
+  return (
+    <form id="wd-zustand-profile-form" onSubmit={onSubmit} noValidate>
+      <h2>Profile (Zustand)</h2>
+      <ProfileAlert id="wd-zustand-profile-alert" submitted={submitted} errors={errors} />
+      <ProfileFields prefix="wd-zustand-profile" profile={profile} errors={errors} update={update} />
+      <button id="wd-zustand-profile-save" type="submit" className="mt-3 rounded bg-blue-600 px-4 py-1.5 text-white">
+        Save
+      </button>
+      <pre>{JSON.stringify(profile, null, 2)}</pre>
+    </form>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab4/zustand/ZustandProfileForm.tsx",
+  },
+  {
+    id: "zustand-profile-form-live",
+    title: "Zustand profile form: live demo",
+    kind: "demo",
+    bullets: [
+      "Save the empty form, then fix the fields",
+      "Compare with the other two versions side by side at `/labs/lab4/profile-form`",
+    ],
+    embed: "zustand-profile-form",
+  },
+  {
     id: "recap",
     title: "Zustand todos recap",
     kind: "content",

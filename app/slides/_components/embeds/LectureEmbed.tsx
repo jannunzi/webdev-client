@@ -185,6 +185,9 @@ import {
   UseEffectEmbed,
   ZustandCounterEmbed,
   ZustandTodosEmbed,
+  ProfileFormEmbed,
+  ContextProfileFormEmbed,
+  ZustandProfileFormEmbed,
 } from "./Lab4Embeds";
 import {
   Lab5CalculatorEmbed,
@@ -543,6 +546,12 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <ZustandCounterEmbed />;
     case "zustand-todos":
       return <ZustandTodosEmbed />;
+    case "profile-form":
+      return <ProfileFormEmbed />;
+    case "context-profile-form":
+      return <ContextProfileFormEmbed />;
+    case "zustand-profile-form":
+      return <ZustandProfileFormEmbed />;
     case "use-effect":
       return <UseEffectEmbed />;
     case "kambaz-courses-crud":

@@ -1316,12 +1316,12 @@ describe("lecture decks", () => {
     assert.equal(counts["click-events"], 9);
     assert.equal(counts["passing-data-and-functions"], 10);
     assert.equal(counts["usestate-counter"], 9);
-    assert.equal(counts["form-state-types"], 18);
+    assert.equal(counts["form-state-types"], 29);
     assert.equal(counts["sharing-parent-child"], 8);
     assert.equal(counts["prop-drilling-and-url"], 11);
-    assert.equal(counts["react-context"], 10);
+    assert.equal(counts["react-context"], 15);
     assert.equal(counts["zustand-counter"], 8);
-    assert.equal(counts["zustand-todos"], 10);
+    assert.equal(counts["zustand-todos"], 15);
     assert.equal(counts["use-effect"], 8);
     assert.equal(counts["ch4-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-store"], 9);
@@ -3747,7 +3747,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         );
       });
     }
-    assert.equal(demos, 88);
+    assert.equal(demos, 91);
   });
 
   it("keeps one code slide unless a listing is long, and never leaves a tiny tail", () => {
@@ -3843,7 +3843,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 221);
+    assert.equal(intros, 229);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
