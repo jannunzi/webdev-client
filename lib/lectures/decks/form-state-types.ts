@@ -292,6 +292,360 @@ export default function ArrayStateVariable() {
     embed: "array-state",
   },
   {
+    id: "profile-intro",
+    title: "A profile form mixes every type",
+    kind: "content",
+    bullets: [
+      "One `Profile` object: strings, a date, a role, a boolean, an array, and a theme",
+      "Validation checks every field on Save. Errors show under each field",
+      "An alert banner counts the fields to fix, or says the profile saved",
+    ],
+  },
+  {
+    id: "profile-types-intro",
+    title: "Step 1: the data and the rules",
+    kind: "content",
+    bullets: [
+      "`Role` is a union type: one of the listed strings, or `\"\"` for not chosen",
+      "`ProfileErrors` is `Partial<Record<keyof Profile, string>>`: one optional message per field",
+      "`validateProfile` is a pure function with no React, so every form version reuses it",
+    ],
+  },
+  {
+    id: "profile-types",
+    title: "profile.ts (code)",
+    kind: "content",
+    code: `export type Role = "" | "STUDENT" | "TA" | "FACULTY";
+export type Theme = "light" | "dark";
+
+export type Profile = {
+  firstName: string;
+  lastName: string;
+  password: string;
+  dob: Date | null;
+  role: Role;
+  newsletter: boolean;
+  topics: string[];
+  theme: Theme;
+};
+
+export type ProfileErrors = Partial<Record<keyof Profile, string>>;
+
+export const TOPICS = ["HTML", "CSS", "React"];
+
+export const emptyProfile: Profile = {
+  firstName: "",
+  lastName: "",
+  password: "",
+  dob: null,
+  role: "",
+  newsletter: false,
+  topics: [],
+  theme: "light",
+};
+
+export function dateToHtml(date: Date | null) {
+  if (!date) return "";
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return \`\${year}-\${month}-\${day}\`;
+}
+
+export function htmlToDate(text: string) {
+  if (!text) return null;
+  const [year, month, day] = text.split("-").map(Number);
+  return new Date(year, month - 1, day);
+}
+
+export function validateProfile(profile: Profile) {
+  const errors: ProfileErrors = {};
+  if (profile.firstName.trim() === "") {
+    errors.firstName = "First name is required.";
+  }
+  if (profile.lastName.trim() === "") {
+    errors.lastName = "Last name is required.";
+  }
+  if (profile.password.length < 8) {
+    errors.password = "Password needs at least 8 characters.";
+  }
+  if (!profile.dob || profile.dob > new Date()) {
+    errors.dob = "Pick a date of birth in the past.";
+  }
+  if (profile.role === "") {
+    errors.role = "Choose a role.";
+  }
+  if (profile.topics.length === 0) {
+    errors.topics = "Pick at least one topic.";
+  }
+  return errors;
+}`,
+    codeLanguage: "ts",
+    codeFile: "app/labs/lab4/profile/profile.ts",
+  },
+  {
+    id: "profile-fields-intro",
+    title: "Step 2: the fields",
+    kind: "content",
+    bullets: [
+      "Every input is controlled and calls `update` with a `Partial<Profile>`",
+      "`<select>` is a drop-down. Radios that share a `name` form one group",
+      "`prefix` builds every `wd-*` id. `errors.x && <p>` shows a message only when there is one",
+    ],
+  },
+  {
+    id: "profile-fields",
+    title: "ProfileFields (1/2)",
+    kind: "content",
+    code: `"use client";
+
+import {
+  dateToHtml,
+  htmlToDate,
+  TOPICS,
+  type Profile,
+  type ProfileErrors,
+  type Role,
+} from "./profile";
+
+const input = "block w-full max-w-sm rounded border border-neutral-300 px-3 py-1.5";
+const error = "text-sm text-red-600";
+
+export default function ProfileFields({
+  prefix,
+  profile,
+  errors,
+  update,
+}: {
+  prefix: string;
+  profile: Profile;
+  errors: ProfileErrors;
+  update: (changes: Partial<Profile>) => void;
+}) {
+  const toggleTopic = (topic: string) =>
+    update({
+      topics: profile.topics.includes(topic)
+        ? profile.topics.filter((t) => t !== topic)
+        : [...profile.topics, topic],
+    });`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab4/profile/ProfileFields.tsx",
+  },
+  {
+    id: "profile-fields-part-2",
+    title: "ProfileFields (2/2)",
+    kind: "content",
+    code: `  return (
+    <div className="flex flex-col gap-3">
+      <label htmlFor={\`\${prefix}-first-name\`}>First name</label>
+      <input
+        id={\`\${prefix}-first-name\`}
+        className={input}
+        value={profile.firstName}
+        onChange={(e) => update({ firstName: e.target.value })}
+      />
+      {errors.firstName && <p className={error}>{errors.firstName}</p>}
+
+      <label htmlFor={\`\${prefix}-last-name\`}>Last name</label>
+      <input
+        id={\`\${prefix}-last-name\`}
+        className={input}
+        value={profile.lastName}
+        onChange={(e) => update({ lastName: e.target.value })}
+      />
+      {errors.lastName && <p className={error}>{errors.lastName}</p>}
+
+      <label htmlFor={\`\${prefix}-password\`}>Password</label>
+      <input
+        id={\`\${prefix}-password\`}
+        type="password"
+        className={input}
+        value={profile.password}
+        onChange={(e) => update({ password: e.target.value })}
+      />
+      {errors.password && <p className={error}>{errors.password}</p>}
+
+      <label htmlFor={\`\${prefix}-dob\`}>Date of birth</label>
+      <input
+        id={\`\${prefix}-dob\`}
+        type="date"
+        className={input}
+        value={dateToHtml(profile.dob)}
+        onChange={(e) => update({ dob: htmlToDate(e.target.value) })}
+      />
+      {errors.dob && <p className={error}>{errors.dob}</p>}
+
+      <label htmlFor={\`\${prefix}-role\`}>Role</label>
+      <select
+        id={\`\${prefix}-role\`}
+        className={input}
+        value={profile.role}
+        onChange={(e) => update({ role: e.target.value as Role })}
+      >
+        <option value="">Choose a role</option>
+        <option value="STUDENT">Student</option>
+        <option value="TA">Teaching assistant</option>
+        <option value="FACULTY">Faculty</option>
+      </select>
+      {errors.role && <p className={error}>{errors.role}</p>}
+
+      <label className="flex items-center gap-2">
+        <input
+          id={\`\${prefix}-newsletter\`}
+          type="checkbox"
+          checked={profile.newsletter}
+          onChange={() => update({ newsletter: !profile.newsletter })}
+        />
+        Email me the newsletter
+      </label>
+
+      <fieldset id={\`\${prefix}-topics\`}>
+        <legend>Topics</legend>
+        {TOPICS.map((topic) => (
+          <label key={topic} className="mr-4 inline-flex items-center gap-1">
+            <input
+              type="checkbox"
+              checked={profile.topics.includes(topic)}
+              onChange={() => toggleTopic(topic)}
+            />
+            {topic}
+          </label>
+        ))}
+      </fieldset>
+      {errors.topics && <p className={error}>{errors.topics}</p>}
+
+      <fieldset id={\`\${prefix}-theme\`}>
+        <legend>Theme</legend>
+        <label className="mr-4 inline-flex items-center gap-1">
+          <input
+            type="radio"
+            name={\`\${prefix}-theme\`}
+            checked={profile.theme === "light"}
+            onChange={() => update({ theme: "light" })}
+          />
+          Light
+        </label>
+        <label className="inline-flex items-center gap-1">
+          <input
+            type="radio"
+            name={\`\${prefix}-theme\`}
+            checked={profile.theme === "dark"}
+            onChange={() => update({ theme: "dark" })}
+          />
+          Dark
+        </label>
+      </fieldset>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab4/profile/ProfileFields.tsx",
+    codeStartLine: 32,
+  },
+  {
+    id: "profile-alert-intro",
+    title: "Step 3: the alert",
+    kind: "content",
+    bullets: [
+      "Shows nothing until the form has been submitted",
+      "`Object.keys(errors).length` counts the fields to fix. Zero means saved",
+      "`role=\"alert\"` is announced by screen readers. `role=\"status\"` is quieter",
+    ],
+  },
+  {
+    id: "profile-alert",
+    title: "ProfileAlert (code)",
+    kind: "content",
+    code: `"use client";
+
+import type { ProfileErrors } from "./profile";
+
+export default function ProfileAlert({
+  id,
+  submitted,
+  errors,
+}: {
+  id: string;
+  submitted: boolean;
+  errors: ProfileErrors;
+}) {
+  if (!submitted) return null;
+  const count = Object.keys(errors).length;
+  if (count === 0) {
+    return (
+      <div id={id} role="status" className="mb-3 rounded bg-green-100 p-2 text-green-800">
+        Profile saved.
+      </div>
+    );
+  }
+  return (
+    <div id={id} role="alert" className="mb-3 rounded bg-red-100 p-2 text-red-800">
+      Please fix {count} {count === 1 ? "field" : "fields"} below.
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab4/profile/ProfileAlert.tsx",
+  },
+  {
+    id: "profile-form-intro",
+    title: "Step 4: the form and its state",
+    kind: "content",
+    bullets: [
+      "Three state variables: `profile`, `errors`, and `submitted`",
+      "`update` spreads the changes over a copy: `{ ...profile, ...changes }`",
+      "`save` calls `e.preventDefault()`. `noValidate` turns off the browser's own checks",
+    ],
+  },
+  {
+    id: "profile-form",
+    title: "ProfileForm (code)",
+    kind: "content",
+    code: `"use client";
+
+import { useState, type FormEvent } from "react";
+import { emptyProfile, validateProfile, type Profile, type ProfileErrors } from "./profile";
+import ProfileFields from "./ProfileFields";
+import ProfileAlert from "./ProfileAlert";
+
+export default function ProfileForm() {
+  const [profile, setProfile] = useState<Profile>(emptyProfile);
+  const [errors, setErrors] = useState<ProfileErrors>({});
+  const [submitted, setSubmitted] = useState(false);
+  const update = (changes: Partial<Profile>) =>
+    setProfile({ ...profile, ...changes });
+  const save = (e: FormEvent) => {
+    e.preventDefault();
+    setErrors(validateProfile(profile));
+    setSubmitted(true);
+  };
+  return (
+    <form id="wd-profile-form" onSubmit={save} noValidate>
+      <h2>Profile</h2>
+      <ProfileAlert id="wd-profile-alert" submitted={submitted} errors={errors} />
+      <ProfileFields prefix="wd-profile" profile={profile} errors={errors} update={update} />
+      <button id="wd-profile-save" type="submit" className="mt-3 rounded bg-blue-600 px-4 py-1.5 text-white">
+        Save
+      </button>
+      <pre>{JSON.stringify(profile, null, 2)}</pre>
+    </form>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab4/profile/ProfileForm.tsx",
+  },
+  {
+    id: "profile-form-live",
+    title: "Profile form: live demo",
+    kind: "demo",
+    bullets: [
+      "Save the empty form: each field shows its message and the banner counts six",
+      "Fill in fields and save again until the banner reports the profile saved",
+      "The `<pre>` shows each input changing a different type in one object",
+    ],
+    embed: "profile-form",
+  },
+  {
     id: "recap",
     title: "Form state recap",
     kind: "content",

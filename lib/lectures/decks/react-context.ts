@@ -139,6 +139,122 @@ export default function ContextExamples() {
     codeHighlightLines: [2, 5, 8],
   },
   {
+    id: "profile-context-intro",
+    title: "The profile form with Context",
+    kind: "content",
+    bullets: [
+      "`profile.ts`, `ProfileFields`, and `ProfileAlert` stay exactly as they were",
+      "`ProfileProvider` holds the same three `useState` variables plus `update` and `save`",
+      "`useProfileContext` throws a clear error outside the provider",
+    ],
+  },
+  {
+    id: "profile-context",
+    title: "ProfileContext (code)",
+    kind: "content",
+    code: `"use client";
+
+import { createContext, useContext, useState, type ReactNode } from "react";
+import { emptyProfile, validateProfile, type Profile, type ProfileErrors } from "../profile/profile";
+
+type ProfileContextValue = {
+  profile: Profile;
+  errors: ProfileErrors;
+  submitted: boolean;
+  update: (changes: Partial<Profile>) => void;
+  save: () => void;
+};
+
+const ProfileContext = createContext<ProfileContextValue | null>(null);
+
+export function ProfileProvider({ children }: { children: ReactNode }) {
+  const [profile, setProfile] = useState<Profile>(emptyProfile);
+  const [errors, setErrors] = useState<ProfileErrors>({});
+  const [submitted, setSubmitted] = useState(false);
+  const update = (changes: Partial<Profile>) =>
+    setProfile({ ...profile, ...changes });
+  const save = () => {
+    setErrors(validateProfile(profile));
+    setSubmitted(true);
+  };
+  return (
+    <ProfileContext.Provider value={{ profile, errors, submitted, update, save }}>
+      {children}
+    </ProfileContext.Provider>
+  );
+}
+
+export function useProfileContext() {
+  const value = useContext(ProfileContext);
+  if (!value) {
+    throw new Error("useProfileContext must be used inside ProfileProvider");
+  }
+  return value;
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab4/context/ProfileContext.tsx",
+  },
+  {
+    id: "context-profile-form-intro",
+    title: "The body reads the context",
+    kind: "content",
+    bullets: [
+      "A hook only sees providers above its component, so the body is separate",
+      "`ContextProfileFormBody` reads everything from the context, not its own state",
+      "Any component inside `ProfileProvider` can share the profile without props",
+    ],
+  },
+  {
+    id: "context-profile-form",
+    title: "ContextProfileForm (code)",
+    kind: "content",
+    code: `"use client";
+
+import type { FormEvent } from "react";
+import { ProfileProvider, useProfileContext } from "./ProfileContext";
+import ProfileFields from "../profile/ProfileFields";
+import ProfileAlert from "../profile/ProfileAlert";
+
+function ContextProfileFormBody() {
+  const { profile, errors, submitted, update, save } = useProfileContext();
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    save();
+  };
+  return (
+    <form id="wd-context-profile-form" onSubmit={onSubmit} noValidate>
+      <h2>Profile (React Context)</h2>
+      <ProfileAlert id="wd-context-profile-alert" submitted={submitted} errors={errors} />
+      <ProfileFields prefix="wd-context-profile" profile={profile} errors={errors} update={update} />
+      <button id="wd-context-profile-save" type="submit" className="mt-3 rounded bg-blue-600 px-4 py-1.5 text-white">
+        Save
+      </button>
+      <pre>{JSON.stringify(profile, null, 2)}</pre>
+    </form>
+  );
+}
+
+export default function ContextProfileForm() {
+  return (
+    <ProfileProvider>
+      <ContextProfileFormBody />
+    </ProfileProvider>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab4/context/ContextProfileForm.tsx",
+  },
+  {
+    id: "context-profile-form-live",
+    title: "Context profile form: live demo",
+    kind: "demo",
+    bullets: [
+      "Save the empty form, then fix the fields",
+      "It behaves exactly like the `useState` version",
+    ],
+    embed: "context-profile-form",
+  },
+  {
     id: "recap",
     title: "Context recap",
     kind: "content",

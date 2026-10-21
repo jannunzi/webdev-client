@@ -17,19 +17,24 @@ import Effect from "@/app/labs/lab4/Effect";
 import ContextExamples from "@/app/labs/lab4/context/ContextExamples";
 import ZustandCounter from "@/app/labs/lab4/zustand/ZustandCounter";
 import ZustandTodoList from "@/app/labs/lab4/zustand/ZustandTodoList";
+import ProfileForm from "@/app/labs/lab4/profile/ProfileForm";
+import ContextProfileForm from "@/app/labs/lab4/context/ContextProfileForm";
+import ZustandProfileForm from "@/app/labs/lab4/zustand/ZustandProfileForm";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import LectureDemoFrame from "./LectureDemoFrame";
 
 function Lab4Demo({
   label,
+  url = "/labs/lab4",
   children,
 }: {
   label: string;
+  url?: string;
   children: ReactNode;
 }) {
   return (
-    <LectureDemoFrame label={label} url="/labs/lab4">
+    <LectureDemoFrame label={label} url={url}>
       <div className="font-sans text-base [&_h2]:mt-0 [&_h3]:mt-0 [&_h4]:mt-0 [&_h5]:mt-2">
         {children}
       </div>
@@ -280,5 +285,29 @@ export function KambazCoursesCrudEmbed() {
         </ul>
       </div>
     </LectureDemoFrame>
+  );
+}
+
+export function ProfileFormEmbed() {
+  return (
+    <Lab4Demo label="profile/ProfileForm.tsx" url="/labs/lab4/profile-form">
+      <ProfileForm />
+    </Lab4Demo>
+  );
+}
+
+export function ContextProfileFormEmbed() {
+  return (
+    <Lab4Demo label="context/ContextProfileForm.tsx" url="/labs/lab4/profile-form">
+      <ContextProfileForm />
+    </Lab4Demo>
+  );
+}
+
+export function ZustandProfileFormEmbed() {
+  return (
+    <Lab4Demo label="zustand/ZustandProfileForm.tsx" url="/labs/lab4/profile-form">
+      <ZustandProfileForm />
+    </Lab4Demo>
   );
 }
