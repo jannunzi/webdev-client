@@ -103,6 +103,15 @@ export default function PropDrilling() {
     ],
   },
   {
+    id: "query-suspense",
+    title: "Suspense, as in §3.7.3",
+    kind: "content",
+    bullets: [
+      "As in §3.7.3, `<Suspense>` shows its `fallback` until the part inside is ready",
+      "The query page reads the URL, so it wraps that part in `<Suspense>`",
+    ],
+  },
+  {
     id: "query-intro",
     title: "Query parameters: QueryCalculator",
     kind: "content",

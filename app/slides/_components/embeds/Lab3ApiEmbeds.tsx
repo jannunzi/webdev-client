@@ -7,7 +7,7 @@ import MapEmbed from "@/app/labs/lab3/client-apis/MapEmbed";
 import ClientIpDemo from "@/app/labs/lab3/client-apis/ClientIpDemo";
 import LectureDemoFrame from "./LectureDemoFrame";
 
-/** §3.7.3 client-only demos: the book's Lab 3 components, rendered directly. */
+/** §3.7.4 client-only demos: the book's Lab 3 components, rendered directly. */
 function ClientApiDemo({ label, children }: { label: string; children: ReactNode }) {
   return (
     <LectureDemoFrame label={label} url="/labs/lab3/client-apis">
@@ -71,7 +71,7 @@ export function Lab3ClientIpEmbed() {
 }
 
 /**
- * §3.7.4 server-only demos. The deck is a Client Component and cannot import
+ * §3.7.5 server-only demos. The deck is a Client Component and cannot import
  * node:os / fs / child_process, so, like the book's request-dependent demos,
  * each shows the live /labs/lab3/server-apis page in a frame at its anchor.
  */

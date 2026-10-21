@@ -500,7 +500,7 @@ export default function Counter() {
             <code>fn</code>{" "}after React has rendered and painted the
             screen, and runs it again only when one of the values in the{" "}
             <code>deps</code>{" "}array changes. You have already seen it
-            at work in <SectionLink to="3.7.3" />: the window object demo
+            at work in <SectionLink to="3.7.4" />: the window object demo
             used <code>useState</code>{" "}to hold the size and{" "}
             <code>useEffect</code>{" "}to read <code>window</code>{" "}and
             listen for resizes only in the browser, and the geolocation
