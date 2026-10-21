@@ -6,7 +6,13 @@ import OfficialLink from "../../components/OfficialLink";
 import { OnYourOwn, WithAI } from "../../components/Practice";
 import NestedExerciseList from "../../components/NestedExerciseList";
 import { CH4_LAB_EXERCISES } from "../../exercise-lists/catalogs";
+import LocalUrl from "../../components/LocalUrl";
 import Effect from "@/app/labs/lab4/Effect";
+import WindowSizeDemo from "@/app/labs/lab4/hooks/WindowSizeDemo";
+import ToggleDemo from "@/app/labs/lab4/hooks/ToggleDemo";
+import LocalStorageDemo from "@/app/labs/lab4/hooks/LocalStorageDemo";
+import IndependentToggles from "@/app/labs/lab4/hooks/IndependentToggles";
+import HookProfileForm from "@/app/labs/lab4/hooks/HookProfileForm";
 
 export default function EffectsAndExercises() {
   return (
@@ -131,6 +137,411 @@ export default function Effect() {
         >
           Ask the assistant to add a sample log in the existing effect:
         </WithAI>
+
+        <Section
+          level={3}
+          id="sec-4-7-1"
+          title="4.7.1 Writing Your Own Hooks"
+        >
+          <p>
+            A <strong>custom hook</strong>{" "}is a function you write
+            whose name starts with <code>use</code>{" "}and that calls other
+            hooks inside. It lets several components share the same
+            stateful logic without copying it. Each step below adds one
+            hook to its own file under <code>app/labs/lab4/hooks</code>,
+            plus a small component that calls it, and all of them appear
+            together on the <LocalUrl href="/labs/lab4/hooks" />{" "}page.
+            The hook files end in <code>.ts</code>{" "}because they return
+            data, not JSX, and they have no{" "}
+            <code>&quot;use client&quot;</code>{" "}line of their own: a
+            module only runs where the component that imports it runs,
+            and each demo component below is a Client Component.
+          </p>
+
+          <h4 className="mt-6 font-semibold">Step 1: useWindowSize</h4>
+          <p>
+            The window object demo in <SectionLink to="3.6.3" />{" "}kept
+            the window size in <code>useState</code>, filled it in from{" "}
+            <code>useEffect</code>, and removed its resize listener in
+            the cleanup. Moving exactly that logic into a function named{" "}
+            <code>useWindowSize</code>{" "}turns it into a hook that
+            returns the size, or <code>null</code>{" "}until the browser
+            has measured it:
+          </p>
+          <CodeBlock
+            language="ts"
+            name="useWindowSize"
+            file="app/labs/lab4/hooks/useWindowSize.ts"
+          >{`import { useEffect, useState } from "react";
+
+export type WindowSize = { width: number; height: number };
+
+export default function useWindowSize() {
+  const [size, setSize] = useState<WindowSize | null>(null);
+  useEffect(() => {
+    const update = () =>
+      setSize({ width: window.innerWidth, height: window.innerHeight });
+    const first = requestAnimationFrame(update);
+    window.addEventListener("resize", update);
+    return () => {
+      cancelAnimationFrame(first);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+  return size;
+}`}</CodeBlock>
+          <p>
+            The component that uses it shrinks to one line of logic. It
+            no longer mentions <code>window</code>, listeners, or cleanup;
+            it just asks for the size:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="WindowSizeDemo"
+            file="app/labs/lab4/hooks/WindowSizeDemo.tsx"
+          >{`"use client";
+
+import useWindowSize from "./useWindowSize";
+
+export default function WindowSizeDemo() {
+  const size = useWindowSize();
+  return (
+    <div id="wd-window-size-demo">
+      <h3>useWindowSize</h3>
+      {size ? (
+        <p>
+          Window size: {size.width} x {size.height}
+        </p>
+      ) : (
+        <p>Loading window size...</p>
+      )}
+    </div>
+  );
+}`}</CodeBlock>
+          <LiveDemo
+            name="WindowSizeDemo"
+            file="app/labs/lab4/hooks/WindowSizeDemo.tsx"
+            mode="styled"
+          >
+            <WindowSizeDemo />
+          </LiveDemo>
+          <p>Resize the browser window and watch the numbers change.</p>
+
+          <h4 className="mt-6 font-semibold">Step 2: useToggle</h4>
+          <p>
+            A custom hook does not need an effect. <code>useToggle</code>{" "}
+            wraps a boolean <code>useState</code>{" "}together with the
+            function that flips it, the pattern from{" "}
+            <SectionLink to="4.2.5" />. It returns a pair, like{" "}
+            <code>useState</code>{" "}does. Writing <code>as const</code>{" "}
+            after the array tells TypeScript that this is a{" "}
+            <strong>tuple</strong>, an array with a fixed length whose
+            first item is a boolean and second item is a function, so
+            callers can destructure it with the right types:
+          </p>
+          <CodeBlock
+            language="ts"
+            name="useToggle"
+            file="app/labs/lab4/hooks/useToggle.ts"
+          >{`import { useState } from "react";
+
+export default function useToggle(initial = false) {
+  const [on, setOn] = useState(initial);
+  const toggle = () => setOn(!on);
+  return [on, toggle] as const;
+}`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="ToggleDemo"
+            file="app/labs/lab4/hooks/ToggleDemo.tsx"
+          >{`"use client";
+
+import useToggle from "./useToggle";
+
+export default function ToggleDemo() {
+  const [shown, toggleShown] = useToggle();
+  return (
+    <div id="wd-toggle-demo">
+      <h3>useToggle</h3>
+      <button
+        type="button"
+        onClick={toggleShown}
+        id="wd-toggle-demo-click"
+        className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+      >
+        {shown ? "Hide" : "Show"} details
+      </button>
+      {shown && <p>These details are visible because shown is true.</p>}
+    </div>
+  );
+}`}</CodeBlock>
+          <LiveDemo
+            name="ToggleDemo"
+            file="app/labs/lab4/hooks/ToggleDemo.tsx"
+            mode="styled"
+          >
+            <ToggleDemo />
+          </LiveDemo>
+
+          <h4 className="mt-6 font-semibold">Step 3: useLocalStorage</h4>
+          <p>
+            <code>window.localStorage</code>{" "}is a small key-value store
+            the browser keeps for each site; what you save there is still
+            there after a reload or after closing the tab. It only stores
+            strings, so <code>JSON.stringify</code>{" "}turns the value into
+            a string when saving and <code>JSON.parse</code>{" "}turns it
+            back when reading. <code>useLocalStorage(key, initial)</code>{" "}
+            works like <code>useState</code>, but its setter also saves the
+            value under <code>key</code>, and after the first render it
+            reads back whatever was saved before. Like the window size, it
+            starts with <code>initial</code>{" "}on both server and browser
+            and reads <code>localStorage</code>{" "}only inside the effect,
+            so the HTML matches and there is no hydration error.{" "}
+            <code>&lt;T&gt;</code>{" "}is a <strong>type parameter</strong>:
+            it lets the same hook store a string, a number, or an object,
+            and TypeScript infers <code>T</code>{" "}from{" "}
+            <code>initial</code>:
+          </p>
+          <CodeBlock
+            language="ts"
+            name="useLocalStorage"
+            file="app/labs/lab4/hooks/useLocalStorage.ts"
+          >{`import { useEffect, useState } from "react";
+
+export default function useLocalStorage<T>(key: string, initial: T) {
+  const [value, setValue] = useState<T>(initial);
+  useEffect(() => {
+    const first = requestAnimationFrame(() => {
+      const saved = window.localStorage.getItem(key);
+      if (saved !== null) setValue(JSON.parse(saved) as T);
+    });
+    return () => cancelAnimationFrame(first);
+  }, [key]);
+  const save = (next: T) => {
+    setValue(next);
+    window.localStorage.setItem(key, JSON.stringify(next));
+  };
+  return [value, save] as const;
+}`}</CodeBlock>
+          <p>
+            This is how a page can remember a choice such as a selected
+            tab. Click a tab, reload the page, and the same tab is still
+            selected:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="LocalStorageDemo"
+            file="app/labs/lab4/hooks/LocalStorageDemo.tsx"
+          >{`"use client";
+
+import useLocalStorage from "./useLocalStorage";
+
+const TABS = ["Monday", "Tuesday", "Wednesday"];
+
+export default function LocalStorageDemo() {
+  const [tab, setTab] = useLocalStorage("wd-hooks-tab", TABS[0]);
+  return (
+    <div id="wd-local-storage-demo">
+      <h3>useLocalStorage</h3>
+      <div className="flex gap-2">
+        {TABS.map((t) => (
+          <button
+            key={t}
+            type="button"
+            onClick={() => setTab(t)}
+            className={
+              t === tab
+                ? "rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+                : "rounded border border-neutral-300 px-3 py-1.5 text-sm"
+            }
+          >
+            {t}
+          </button>
+        ))}
+      </div>
+      <p>Selected: {tab}. Reload the page and it stays selected.</p>
+    </div>
+  );
+}`}</CodeBlock>
+          <LiveDemo
+            name="LocalStorageDemo"
+            file="app/labs/lab4/hooks/LocalStorageDemo.tsx"
+            mode="styled"
+          >
+            <LocalStorageDemo />
+          </LiveDemo>
+
+          <h4 className="mt-6 font-semibold">Step 4: The rules of custom hooks</h4>
+          <ul>
+            <li>
+              <strong>The name starts with <code>use</code>.</strong>{" "}
+              That is how React and the linter recognize a hook and check
+              that it is called only at the top level of a component or
+              of another hook.
+            </li>
+            <li>
+              <strong>A hook can call other hooks.</strong>{" "}
+              <code>useWindowSize</code>{" "}calls <code>useState</code>{" "}
+              and <code>useEffect</code>; a hook you write later could call{" "}
+              <code>useWindowSize</code>.
+            </li>
+            <li>
+              <strong>Each component that calls it gets its own state.</strong>{" "}
+              A custom hook shares logic, not data. Below, two{" "}
+              <code>Lamp</code>{" "}components each call{" "}
+              <code>useToggle</code>, and switching one does not switch the
+              other.
+            </li>
+          </ul>
+          <CodeBlock
+            language="tsx"
+            name="IndependentToggles"
+            file="app/labs/lab4/hooks/IndependentToggles.tsx"
+          >{`"use client";
+
+import useToggle from "./useToggle";
+
+function Lamp({ label }: { label: string }) {
+  const [on, toggle] = useToggle();
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      className={
+        on
+          ? "rounded bg-yellow-300 px-3 py-1.5 text-sm"
+          : "rounded bg-neutral-700 px-3 py-1.5 text-sm text-white"
+      }
+    >
+      {label}: {on ? "on" : "off"}
+    </button>
+  );
+}
+
+export default function IndependentToggles() {
+  return (
+    <div id="wd-independent-toggles">
+      <h3>Each caller gets its own state</h3>
+      <div className="flex gap-2">
+        <Lamp label="Kitchen" />
+        <Lamp label="Porch" />
+      </div>
+    </div>
+  );
+}`}</CodeBlock>
+          <LiveDemo
+            name="IndependentToggles"
+            file="app/labs/lab4/hooks/IndependentToggles.tsx"
+            mode="styled"
+          >
+            <IndependentToggles />
+          </LiveDemo>
+
+          <h4 className="mt-6 font-semibold">Step 5: useProfileForm</h4>
+          <p>
+            The profile form in <SectionLink to="4.2.10" />{" "}kept three
+            state variables, an <code>update</code>{" "}function, and a{" "}
+            <code>save</code>{" "}handler that validates on submit.
+            Moving all of that into <code>useProfileForm</code>{" "}leaves
+            the form component with only its JSX. The hook returns an
+            object instead of a pair because it has five things to hand
+            back, and names read more clearly than positions:
+          </p>
+          <CodeBlock
+            language="ts"
+            name="useProfileForm"
+            file="app/labs/lab4/hooks/useProfileForm.ts"
+          >{`import { useState, type FormEvent } from "react";
+import {
+  emptyProfile,
+  validateProfile,
+  type Profile,
+  type ProfileErrors,
+} from "../profile/profile";
+
+export default function useProfileForm() {
+  const [profile, setProfile] = useState<Profile>(emptyProfile);
+  const [errors, setErrors] = useState<ProfileErrors>({});
+  const [submitted, setSubmitted] = useState(false);
+  const update = (changes: Partial<Profile>) =>
+    setProfile({ ...profile, ...changes });
+  const save = (e: FormEvent) => {
+    e.preventDefault();
+    setErrors(validateProfile(profile));
+    setSubmitted(true);
+  };
+  return { profile, errors, submitted, update, save };
+}`}</CodeBlock>
+          <p>
+            The form reuses <code>ProfileFields</code>{" "}and{" "}
+            <code>ProfileAlert</code>{" "}from <SectionLink to="4.2.10" />{" "}
+            unchanged. Press Save with empty fields to see the same errors
+            as before:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="HookProfileForm"
+            file="app/labs/lab4/hooks/HookProfileForm.tsx"
+          >{`"use client";
+
+import useProfileForm from "./useProfileForm";
+import ProfileFields from "../profile/ProfileFields";
+import ProfileAlert from "../profile/ProfileAlert";
+
+export default function HookProfileForm() {
+  const { profile, errors, submitted, update, save } = useProfileForm();
+  return (
+    <form id="wd-hook-profile-form" onSubmit={save} noValidate>
+      <h3>useProfileForm</h3>
+      <ProfileAlert id="wd-hook-profile-alert" submitted={submitted} errors={errors} />
+      <ProfileFields prefix="wd-hook-profile" profile={profile} errors={errors} update={update} />
+      <button id="wd-hook-profile-save" type="submit" className="mt-3 rounded bg-blue-600 px-4 py-1.5 text-white">
+        Save
+      </button>
+    </form>
+  );
+}`}</CodeBlock>
+          <LiveDemo
+            name="HookProfileForm"
+            file="app/labs/lab4/hooks/HookProfileForm.tsx"
+            mode="styled"
+          >
+            <HookProfileForm />
+          </LiveDemo>
+          <p>
+            Unlike <SectionLink to="4.4.3" />{" "}and{" "}
+            <SectionLink to="4.5.3" />, which share one profile between
+            components through Context or a store, every form that calls{" "}
+            <code>useProfileForm</code>{" "}gets its own profile, by the
+            third rule above. Finally, the page at{" "}
+            <code>app/labs/lab4/hooks/page.tsx</code>{" "}puts every demo
+            together. It is a Server Component; each demo it imports is a
+            Client Component:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="HooksPage"
+            file="app/labs/lab4/hooks/page.tsx"
+          >{`import WindowSizeDemo from "./WindowSizeDemo";
+import ToggleDemo from "./ToggleDemo";
+import LocalStorageDemo from "./LocalStorageDemo";
+import IndependentToggles from "./IndependentToggles";
+import HookProfileForm from "./HookProfileForm";
+
+export default function HooksPage() {
+  return (
+    <div id="wd-lab4-hooks" className="flex flex-col gap-8 p-4">
+      <h2>Writing Your Own Hooks</h2>
+      <WindowSizeDemo />
+      <ToggleDemo />
+      <LocalStorageDemo />
+      <IndependentToggles />
+      <HookProfileForm />
+    </div>
+  );
+}`}</CodeBlock>
+        </Section>
+
       </Section>
 
       <Section id="sec-4-8" title="4.8 Exercises">

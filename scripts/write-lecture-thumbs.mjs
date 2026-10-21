@@ -483,6 +483,14 @@ const thumbs = [
     art: STATE,
   },
   {
+    slug: "custom-hooks",
+    title: "Writing Your Own Hooks",
+    chapter: 4,
+    bg: "#134E4A",
+    accent: "#5EEAD4",
+    art: STATE,
+  },
+  {
     slug: "ch4-check-understanding",
     title: "Check Your Understanding",
     chapter: 4,

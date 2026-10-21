@@ -188,7 +188,7 @@ describe("lecture catalog", () => {
     assert.equal(LECTURE_6_SLUGS.length, 7);
     assert.equal(LECTURE_7_SLUGS.length, 6);
     assert.equal(CHAPTER_3_SLUGS.length, 22);
-    assert.equal(CHAPTER_4_SLUGS.length, 15);
+    assert.equal(CHAPTER_4_SLUGS.length, 16);
     assert.equal(CHAPTER_5_SLUGS.length, 14);
     assert.equal(CHAPTER_6_SLUGS.length, 12);
     assert.equal(PROJECT_SLUGS.length, 9);
@@ -561,7 +561,7 @@ describe("lecture catalog", () => {
     );
     assert.deepEqual(
       groups[3]?.topics[4]?.decks.map((deck) => deck.slug),
-      ["use-effect"],
+      ["use-effect", "custom-hooks"],
     );
     assert.deepEqual(
       groups[3]?.topics[5]?.decks.map((deck) => deck.slug),
@@ -1092,7 +1092,7 @@ describe("lecture catalog", () => {
     assert.equal(groups[12]?.canvasLecture, 13);
     assert.deepEqual(
       groups[12]?.decks.map((deck) => deck.slug),
-      ["use-effect", "ch4-check-understanding"],
+      ["use-effect", "custom-hooks", "ch4-check-understanding"],
     );
     assert.equal(groups[13]?.title, "Lecture 14");
     assert.equal(groups[13]?.canvasLecture, 14);
@@ -1288,7 +1288,7 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-styling"], 10);
     assert.equal(counts["kambaz-nav-styling"], 17);
     assert.equal(counts["kambaz-dashboard-styling"], 9);
-    assert.equal(counts["kambaz-courses-styling"], 27);
+    assert.equal(counts["kambaz-courses-styling"], 28);
     assert.equal(counts["kambaz-assignments-styling"], 14);
     assert.equal(counts["kambaz-account-styling"], 10);
     assert.equal(counts["intro-to-javascript"], 9);
@@ -1315,7 +1315,7 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-assignments-data"], 15);
     assert.equal(counts["click-events"], 9);
     assert.equal(counts["passing-data-and-functions"], 10);
-    assert.equal(counts["usestate-counter"], 9);
+    assert.equal(counts["usestate-counter"], 13);
     assert.equal(counts["form-state-types"], 18);
     assert.equal(counts["sharing-parent-child"], 8);
     assert.equal(counts["prop-drilling-and-url"], 11);
@@ -1323,6 +1323,7 @@ describe("lecture decks", () => {
     assert.equal(counts["zustand-counter"], 8);
     assert.equal(counts["zustand-todos"], 10);
     assert.equal(counts["use-effect"], 8);
+    assert.equal(counts["custom-hooks"], 24);
     assert.equal(counts["ch4-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-store"], 9);
     assert.equal(counts["kambaz-dashboard-crud"], 11);
@@ -3488,6 +3489,7 @@ describe("lecture decks", () => {
       "tailwind-responsive": {
         "prefix-ruler": "tailwind-breakpoints",
       },
+      "usestate-counter": { "hooks-table": "hooks-table" },
       "youtube-api": {
         credentials: "google-cloud-key-mock",
         enable: "youtube-enable-api-mock",
@@ -3747,7 +3749,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         );
       });
     }
-    assert.equal(demos, 88);
+    assert.equal(demos, 93);
   });
 
   it("keeps one code slide unless a listing is long, and never leaves a tiny tail", () => {
@@ -3843,7 +3845,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 221);
+    assert.equal(intros, 226);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {

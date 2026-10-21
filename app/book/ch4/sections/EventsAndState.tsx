@@ -471,6 +471,102 @@ export default function Counter() {
         >
           Ask the assistant to add a sample Reset after your own control:
         </WithAI>
+
+        <Section
+          level={3}
+          id="sec-4-2-4-1"
+          title="4.2.4.1 Hooks"
+        >
+          <p>
+            <code>useState</code>{" "}is the first hook this chapter
+            builds on, so this is a good moment to say exactly what a
+            hook is. A <strong>hook</strong>{" "}is a function whose name
+            starts with <code>use</code>{" "}and that a component calls to
+            get something React or Next.js provides. A{" "}
+            <strong>render</strong>{" "}is one call of your component
+            function that produces its JSX; React renders a component
+            when it first appears and again whenever its state or props
+            change. An ordinary local variable is created fresh on every
+            render, which is why <code>CounterBroken</code>{" "}kept
+            showing 7. <code>useState</code>{" "}is the hook that{" "}
+            <strong>remembers a value between renders</strong>: React
+            stores the value for the component, hands the latest one back
+            on each render, and renders again when the setter is called.
+          </p>
+          <p>
+            The second hook this chapter uses is{" "}
+            <code>useEffect</code>. An <strong>effect</strong>{" "}is code
+            that reaches outside the component, such as reading the
+            window size or asking the browser for the user&apos;s
+            location. <code>useEffect(fn, deps)</code>{" "}runs{" "}
+            <code>fn</code>{" "}after React has rendered and painted the
+            screen, and runs it again only when one of the values in the{" "}
+            <code>deps</code>{" "}array changes. You have already seen it
+            at work in <SectionLink to="3.6.3" />: the window object demo
+            used <code>useState</code>{" "}to hold the size and{" "}
+            <code>useEffect</code>{" "}to read <code>window</code>{" "}and
+            listen for resizes only in the browser, and the geolocation
+            demo used <code>useState</code>{" "}to hold the coordinates and
+            the status message.
+          </p>
+          <p>
+            Every hook follows the same rules. Call hooks only at the top
+            level of a component, never inside loops, conditions, or
+            nested functions, so React sees the same hooks in the same
+            order on every render. And most hooks need a Client
+            Component, because they depend on the browser or on state
+            that changes while the page is open; that is why each
+            component that used one so far started with{" "}
+            <code>&quot;use client&quot;</code>.
+          </p>
+          <p>
+            These are the hooks the book has used so far, and what each
+            one returns:
+          </p>
+          <table className="w-full border-collapse text-left text-sm">
+            <thead>
+              <tr className="border-b border-neutral-300">
+                <th className="py-1 pe-4">Hook</th>
+                <th className="py-1 pe-4">From</th>
+                <th className="py-1">Returns</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-neutral-200">
+                <td className="py-1 pe-4"><code>usePathname()</code></td>
+                <td className="py-1 pe-4"><code>next/navigation</code></td>
+                <td className="py-1">The current URL path as a string, such as <code>/courses/1234/home</code>.</td>
+              </tr>
+              <tr className="border-b border-neutral-200">
+                <td className="py-1 pe-4"><code>useSearchParams()</code></td>
+                <td className="py-1 pe-4"><code>next/navigation</code></td>
+                <td className="py-1">A read-only object for the query string; <code>.get(&quot;name&quot;)</code>{" "}returns one value or <code>null</code>.</td>
+              </tr>
+              <tr className="border-b border-neutral-200">
+                <td className="py-1 pe-4"><code>useParams()</code></td>
+                <td className="py-1 pe-4"><code>next/navigation</code></td>
+                <td className="py-1">An object with the route&apos;s dynamic segments, such as <code>{"{ cid: \"1234\" }"}</code>{" "}for <code>[cid]</code>.</td>
+              </tr>
+              <tr className="border-b border-neutral-200">
+                <td className="py-1 pe-4"><code>useState(initial)</code></td>
+                <td className="py-1 pe-4"><code>react</code></td>
+                <td className="py-1">A pair: the current value and a setter that changes it and renders again.</td>
+              </tr>
+              <tr>
+                <td className="py-1 pe-4"><code>useEffect(fn, deps)</code></td>
+                <td className="py-1 pe-4"><code>react</code></td>
+                <td className="py-1">Nothing; it schedules <code>fn</code>{" "}to run after render, and <code>fn</code>{" "}may return a cleanup function.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            The first three are hooks the Next.js team wrote; the last
+            two come with React. Nothing makes them special beyond their
+            names and the rules above, and the rest of this chapter builds
+            on <code>useState</code>{" "}and <code>useEffect</code>.
+          </p>
+        </Section>
+
       </Section>
 
       <Section

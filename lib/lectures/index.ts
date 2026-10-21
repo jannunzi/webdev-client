@@ -93,6 +93,7 @@ export { REACT_CONTEXT_SLIDES } from "./decks/react-context";
 export { ZUSTAND_COUNTER_SLIDES } from "./decks/zustand-counter";
 export { ZUSTAND_TODOS_SLIDES } from "./decks/zustand-todos";
 export { USE_EFFECT_SLIDES } from "./decks/use-effect";
+export { CUSTOM_HOOKS_SLIDES } from "./decks/custom-hooks";
 export { CH4_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch4-check-understanding";
 export { KAMBAZ_COURSES_STORE_SLIDES } from "./decks/kambaz-courses-store";
 export { KAMBAZ_DASHBOARD_CRUD_SLIDES } from "./decks/kambaz-dashboard-crud";

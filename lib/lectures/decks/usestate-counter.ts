@@ -136,6 +136,45 @@ export default function Counter() {
     embed: "counter",
   },
   {
+    id: "hooks",
+    title: "What a hook is",
+    kind: "content",
+    bullets: [
+      "A **hook** is a function whose name starts with `use` that a component calls to get something React or Next.js provides",
+      "A **render** is one call of your component that produces its JSX, on first appearance and on every state or props change",
+      "A local variable is created fresh each render, so CounterBroken kept showing 7. `useState` remembers a value between renders",
+    ],
+  },
+  {
+    id: "effects",
+    title: "useEffect reaches outside",
+    kind: "content",
+    bullets: [
+      "An **effect** is code that reaches outside the component, such as reading the window size",
+      "`useEffect(fn, deps)` runs `fn` after render and paint, and again only when a value in `deps` changes",
+      "The §3.6.3 window demo read `window` in `useEffect`. The geolocation demo kept coordinates in `useState`",
+    ],
+  },
+  {
+    id: "hook-rules",
+    title: "The rules of hooks",
+    kind: "content",
+    bullets: [
+      "Call hooks only at the top level of a component, never in loops, conditions, or nested functions",
+      "React then sees the same hooks in the same order on every render",
+      "Most hooks need a Client Component, which is why each one so far started with `\"use client\"`",
+    ],
+  },
+  {
+    id: "hooks-table",
+    title: "The hooks so far",
+    kind: "content",
+    bullets: [
+      "The first three come from Next.js. `useState` and `useEffect` come with React",
+    ],
+    diagram: "hooks-table",
+  },
+  {
     id: "recap",
     title: "Counter recap",
     kind: "content",
