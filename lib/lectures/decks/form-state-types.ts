@@ -307,7 +307,7 @@ export default function ArrayStateVariable() {
     kind: "content",
     bullets: [
       "`Role` is a union type: one of the listed strings, or `\"\"` for not chosen",
-      "`ProfileErrors` is `Partial<Record<keyof Profile, string>>`: one optional message per field",
+      "`ProfileErrors` has one optional message per field",
       "`validateProfile` is a pure function with no React, so every form version reuses it",
     ],
   },
@@ -329,7 +329,16 @@ export type Profile = {
   theme: Theme;
 };
 
-export type ProfileErrors = Partial<Record<keyof Profile, string>>;
+export type ProfileErrors = {
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+  dob?: string;
+  role?: string;
+  newsletter?: string;
+  topics?: string;
+  theme?: string;
+};
 
 export const TOPICS = ["HTML", "CSS", "React"];
 

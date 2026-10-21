@@ -12,7 +12,16 @@ export type Profile = {
   theme: Theme;
 };
 
-export type ProfileErrors = Partial<Record<keyof Profile, string>>;
+export type ProfileErrors = {
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+  dob?: string;
+  role?: string;
+  newsletter?: string;
+  topics?: string;
+  theme?: string;
+};
 
 export const TOPICS = ["HTML", "CSS", "React"];
 

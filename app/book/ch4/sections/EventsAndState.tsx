@@ -1014,7 +1014,7 @@ export default function ArrayStateVariable() {
           Before the user&apos;s data is saved, the form runs <em>validation</em>: a check that every field holds an acceptable value. When the user clicks Save, the form validates the whole profile. Each invalid field shows an <em>error message</em>{" "}directly under it, and an <em>alert</em>{" "}— a highlighted banner at the top of the form — says how many fields need fixing, or that the profile was saved. We build it in four steps.
         </p>
         <p>
-          <strong>Step 1: the data and the rules.</strong>{" "}Start with a plain TypeScript file that has no React in it. A <em>type</em>{" "}describes the shape of a value; <code>Profile</code>{" "}lists every field and its type. <code>Role</code>{" "}is a <em>union type</em>: the role may only be one of the listed strings, and the empty string means &quot;not chosen yet&quot;. <code>Date | null</code>{" "}means the date of birth is either a <code>Date</code>{" "}or <code>null</code>{" "}while the date field is empty. <code>ProfileErrors</code>{" "}uses two built-in helper types: <code>Record&lt;keyof Profile, string&gt;</code>{" "}is an object with one string per profile field, and <code>Partial</code>{" "}makes every one of those keys optional, so a field with no problem simply has no entry. <code>emptyProfile</code>{" "}is the starting value. <code>dateToHtml</code>{" "}and <code>htmlToDate</code>{" "}are the same <code>YYYY-MM-DD</code>{" "}conversions from <SectionLink to="4.2.7" />, extended so an empty field maps to <code>null</code>. Finally, <code>validateProfile</code>{" "}is a <em>pure function</em>{" "}— it only reads its argument and returns a new value — that returns one message per invalid field. Because it has no React in it, any version of the form can reuse it:
+          <strong>Step 1: the data and the rules.</strong>{" "}Start with a plain TypeScript file that has no React in it. A <em>type</em>{" "}describes the shape of a value; <code>Profile</code>{" "}lists every field and its type. <code>Role</code>{" "}is a <em>union type</em>: the role may only be one of the listed strings, and the empty string means &quot;not chosen yet&quot;. <code>Date | null</code>{" "}means the date of birth is either a <code>Date</code>{" "}or <code>null</code>{" "}while the date field is empty. <code>ProfileErrors</code>{" "}has one optional message per profile field; the <code>?</code>{" "}after a field name means the key may be missing, so a field with no problem simply has no entry. <code>emptyProfile</code>{" "}is the starting value. <code>dateToHtml</code>{" "}and <code>htmlToDate</code>{" "}are the same <code>YYYY-MM-DD</code>{" "}conversions from <SectionLink to="4.2.7" />, extended so an empty field maps to <code>null</code>. Finally, <code>validateProfile</code>{" "}is a <em>pure function</em>{" "}— it only reads its argument and returns a new value — that returns one message per invalid field. Because it has no React in it, any version of the form can reuse it:
         </p>
         <CodeBlock
           language="ts"
@@ -1034,7 +1034,16 @@ export type Profile = {
   theme: Theme;
 };
 
-export type ProfileErrors = Partial<Record<keyof Profile, string>>;
+export type ProfileErrors = {
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+  dob?: string;
+  role?: string;
+  newsletter?: string;
+  topics?: string;
+  theme?: string;
+};
 
 export const TOPICS = ["HTML", "CSS", "React"];
 
