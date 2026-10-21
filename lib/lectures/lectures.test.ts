@@ -3970,3 +3970,20 @@ describe("Present mode survives Continue to the next deck", () => {
     assert.doesNotMatch(shell, /return \(\) => \{?\s*void exitNativeFullscreen/);
   });
 });
+
+describe("demo-stage form controls", () => {
+  it("never gives checkboxes or radios the text-field box", () => {
+    const css = readFileSync(join(process.cwd(), "app/book/book.css"), "utf8");
+    const rules = [...css.matchAll(/([^{}]+)\{([^}]*)\}/g)].map(([, sel, body]) => ({ sel, body }));
+    const textRule = rules.find((r) => /\.lecture-demo-frame-body input/.test(r.sel) && /min-width/.test(r.body));
+    assert.ok(textRule, "text-input rule exists");
+    for (const sel of textRule.sel.split(",").map((s) => s.trim()).filter((s) => / input/.test(s))) {
+      assert.match(sel, /input:not\(\[type="checkbox"\]\):not\(\[type="radio"\]\)$/, sel);
+    }
+    const box = rules.find((r) => /input\[type="checkbox"\]/.test(r.sel) && /input\[type="radio"\]/.test(r.sel));
+    assert.ok(box, "checkbox/radio rule exists");
+    assert.match(box.body, /width: 1em;/);
+    assert.match(box.body, /min-width: 0;/);
+    assert.match(box.body, /padding: 0;/);
+  });
+});
