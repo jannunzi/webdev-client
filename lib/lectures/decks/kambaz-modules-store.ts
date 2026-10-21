@@ -32,9 +32,11 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
   },
   {
     id: "editor",
-    title: "ModuleEditor is a controlled dialog (code)",
+    title: "ModuleEditor is a controlled dialog (1/2)",
     kind: "content",
-    code: `export default function ModuleEditor({
+    code: `"use client";
+
+export default function ModuleEditor({
   show,
   handleClose,
   dialogTitle,
@@ -49,33 +51,58 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
   setModuleName: (name: string) => void;
   addModule: () => void;
 }) {
-  if (!show) return null;
-  return (
-    <div id="wd-add-module-dialog">
-      <input
-        value={moduleName}
-        onChange={(e) => setModuleName(e.target.value)}
-        id="wd-add-module-name"
-      />
-      <button type="button" onClick={handleClose} id="wd-add-module-cancel">
-        Cancel
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          addModule();
-          handleClose();
-        }}
-        id="wd-add-module-submit"
-      >
-        Add Module
-      </button>
+  if (!show) return null;`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx",
+    codeHighlightLines: [18],
+  },
+  {
+    id: "editor-part-2",
+    title: "ModuleEditor is a controlled dialog (2/2)",
+    kind: "content",
+    code: `  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      id="wd-add-module-dialog"
+    >
+      <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
+        <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
+          <h3 className="m-0 text-lg font-semibold">{dialogTitle}</h3>
+          <button type="button" onClick={handleClose} aria-label="Close">
+            ×
+          </button>
+        </div>
+        <div className="px-4 py-3">
+          <input
+            className="w-full rounded border border-neutral-300 px-3 py-1.5"
+            value={moduleName}
+            onChange={(e) => setModuleName(e.target.value)}
+            id="wd-add-module-name"
+          />
+        </div>
+        <div className="flex justify-end gap-2 border-t border-neutral-200 px-4 py-3">
+          <button type="button" onClick={handleClose} id="wd-add-module-cancel">
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              addModule();
+              handleClose();
+            }}
+            id="wd-add-module-submit"
+          >
+            Add Module
+          </button>
+        </div>
+      </div>
     </div>
   );
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx",
-    codeHighlightLines: [16, [20, 21], [29, 32]],
+    codeStartLine: 19,
+    codeHighlightLines: [16, 17, 27, 28, 29, 30],
   },
   {
     id: "store-intro",

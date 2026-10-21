@@ -21,38 +21,13 @@ export const KAMBAZ_DASHBOARD_CRUD_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "wire-intro",
+    id: "add-intro",
     title: "Select the four store slices",
     kind: "content",
     bullets: [
       "`courses`, `addCourse`, `deleteCourse`, `updateCourse`",
       "Typing a name must not rewrite every card until Add or Update",
     ],
-  },
-  {
-    id: "wire",
-    title: "Select the four store slices (code)",
-    kind: "content",
-    code: `"use client";
-
-import { useState } from "react";
-import {
-  emptyCourse,
-  useCoursesStore,
-  type Course,
-} from "../store/coursesStore";
-
-export default function Dashboard() {
-  const courses = useCoursesStore((state) => state.courses);
-  const addCourse = useCoursesStore((state) => state.addCourse);
-  const deleteCourse = useCoursesStore((state) => state.deleteCourse);
-  const updateCourse = useCoursesStore((state) => state.updateCourse);
-  const [course, setCourse] = useState<Course>(emptyCourse);
-  // …
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/dashboard/page.tsx",
-    codeAddedLines: [[4, 8], [11, 15]],
   },
   {
     id: "add",

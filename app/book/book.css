@@ -753,7 +753,7 @@ code.quiz-prompt-code {
   padding: 1.15rem 1.35rem;
 }
 
-.lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body input,
+.lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body input:not([type="checkbox"]):not([type="radio"]),
 .lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body select,
 .lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body textarea {
   /* Controls default to ~13px; match the label text around them. */
@@ -761,6 +761,17 @@ code.quiz-prompt-code {
   padding: 0.45em 0.65em;
   min-height: 2.35em;
   min-width: min(100%, 22rem);
+}
+
+/* Checkboxes and radios keep their shape and scale with the label text,
+ * not with the text-field box above (no padding, min-height or min-width). */
+.lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body input[type="checkbox"],
+.lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body input[type="radio"] {
+  width: 1em;
+  height: 1em;
+  padding: 0;
+  min-width: 0;
+  min-height: 0;
 }
 
 .lecture-slide[data-target-figure="true"] .lecture-target-figure {

@@ -1319,15 +1319,15 @@ describe("lecture decks", () => {
     assert.equal(counts["form-state-types"], 29);
     assert.equal(counts["sharing-parent-child"], 8);
     assert.equal(counts["prop-drilling-and-url"], 16);
-    assert.equal(counts["react-context"], 15);
+    assert.equal(counts["react-context"], 16);
     assert.equal(counts["zustand-counter"], 8);
-    assert.equal(counts["zustand-todos"], 15);
+    assert.equal(counts["zustand-todos"], 17);
     assert.equal(counts["use-effect"], 8);
     assert.equal(counts["custom-hooks"], 24);
     assert.equal(counts["ch4-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-store"], 9);
-    assert.equal(counts["kambaz-dashboard-crud"], 11);
-    assert.equal(counts["kambaz-modules-store"], 9);
+    assert.equal(counts["kambaz-dashboard-crud"], 10);
+    assert.equal(counts["kambaz-modules-store"], 10);
     assert.equal(counts["kambaz-account-context"], 9);
     assert.equal(counts["http-server"], 11);
     assert.equal(counts["nodemon-es6-routes"], 9);
@@ -3845,7 +3845,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 237);
+    assert.equal(intros, 238);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
@@ -3968,5 +3968,22 @@ describe("Present mode survives Continue to the next deck", () => {
     assert.match(shell, /<Link\s+href=\{continueHref\}/);
     assert.doesNotMatch(shell, /window\.location(\.href)?\s*=|window\.location\.assign/);
     assert.doesNotMatch(shell, /return \(\) => \{?\s*void exitNativeFullscreen/);
+  });
+});
+
+describe("demo-stage form controls", () => {
+  it("never gives checkboxes or radios the text-field box", () => {
+    const css = readFileSync(join(process.cwd(), "app/book/book.css"), "utf8");
+    const rules = [...css.matchAll(/([^{}]+)\{([^}]*)\}/g)].map(([, sel, body]) => ({ sel, body }));
+    const textRule = rules.find((r) => /\.lecture-demo-frame-body input/.test(r.sel) && /min-width/.test(r.body));
+    assert.ok(textRule, "text-input rule exists");
+    for (const sel of textRule.sel.split(",").map((s) => s.trim()).filter((s) => / input/.test(s))) {
+      assert.match(sel, /input:not\(\[type="checkbox"\]\):not\(\[type="radio"\]\)$/, sel);
+    }
+    const box = rules.find((r) => /input\[type="checkbox"\]/.test(r.sel) && /input\[type="radio"\]/.test(r.sel));
+    assert.ok(box, "checkbox/radio rule exists");
+    assert.match(box.body, /width: 1em;/);
+    assert.match(box.body, /min-width: 0;/);
+    assert.match(box.body, /padding: 0;/);
   });
 });
