@@ -160,7 +160,7 @@ export default function Effect() {
 
           <h4 className="mt-6 font-semibold">Step 1: useWindowSize</h4>
           <p>
-            The window object demo in <SectionLink to="3.6.3" />{" "}kept
+            The window object demo in <SectionLink to="3.7.3" />{" "}kept
             the window size in <code>useState</code>, filled it in from{" "}
             <code>useEffect</code>, and removed its resize listener in
             the cleanup. Moving exactly that logic into a function named{" "}

@@ -7,7 +7,7 @@ export const DYNAMIC_STYLING_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Dynamic Styling",
-      "§3.5 · classes and styles that follow the data",
+      "§3.6 · classes and styles that follow the data",
     ],
   },
   {
@@ -169,7 +169,7 @@ export default function Classes() {
     kind: "title",
     bullets: [
       "Next.js components run on the server unless you opt into the browser",
-      "§3.6: `\"use client\"` vs `fs` and `process`",
+      "§3.7: `\"use client\"` vs `fs` and `process`",
     ],
   },
 ];

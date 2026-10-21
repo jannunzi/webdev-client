@@ -3,10 +3,10 @@ import AssignmentItem from "@/app/book/ch3/embeds/_styled/courses/cid/assignment
 import * as db from "@/app/book/ch3/embeds/_styled/database";
 
 /**
- * Sync slide twin of the §3.9.8 Assignments listing.
+ * Sync slide twin of the §3.10.8 Assignments listing.
  * The book CodeBlock and
  * `app/book/ch3/embeds/_styled/courses/cid/assignments/page.tsx`
- * stay async Server Components (`await params`) — that is what §3.9.8 teaches.
+ * stay async Server Components (`await params`) — that is what §3.10.8 teaches.
  * Client slides cannot render that page (React #482). This file repeats the
  * same JSX with `cid` already resolved (RS101 in the embed). It is not the
  * page students copy.

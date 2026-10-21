@@ -7,7 +7,7 @@ export const KAMBAZ_COURSES_DATA_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Courses from Data",
-      "§3.9.4–3.9.6 · find the course, then map its nav",
+      "§3.10.4–3.10.6 · find the course, then map its nav",
     ],
   },
   {
@@ -200,7 +200,7 @@ export default function Breadcrumb({
     kind: "title",
     bullets: [
       "Each module JSON row has a `course` field",
-      "§3.9.7: `filter` then nested `lessons?.map`",
+      "§3.10.7: `filter` then nested `lessons?.map`",
     ],
   },
 ];

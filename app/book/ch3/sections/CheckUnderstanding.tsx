@@ -3,7 +3,7 @@ import PracticeCard from "../../components/PracticeCard";
 
 export default function CheckUnderstanding() {
   return (
-    <Section id="sec-3-8" title="3.8 Check Your Understanding">
+    <Section id="sec-3-9" title="3.9 Check Your Understanding">
       <p>
         Pause and test the JavaScript topics from this chapter. The
         practice quiz draws 10 items —{" "}

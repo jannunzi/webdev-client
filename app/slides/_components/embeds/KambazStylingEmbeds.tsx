@@ -244,7 +244,7 @@ export function KambazCh3ModulesEmbed() {
 
 /**
  * Chapter 3 data-driven Assignments for RS101.
- * Sync twin — see `ch3/AssignmentsScreen`. The async §3.9.8 page is not mounted here.
+ * Sync twin — see `ch3/AssignmentsScreen`. The async §3.10.8 page is not mounted here.
  */
 export function KambazCh3AssignmentsEmbed() {
   const cid = "RS101";
@@ -262,7 +262,7 @@ export function KambazCh3AssignmentsEmbed() {
 
 /**
  * Chapter 3 data-driven PeopleTable for RS101.
- * Sync twin — see `ch3/PeopleTableScreen`. The async §3.9.9 page is not mounted here.
+ * Sync twin — see `ch3/PeopleTableScreen`. The async §3.10.9 page is not mounted here.
  */
 export function KambazCh3PeopleEmbed() {
   const cid = "RS101";

@@ -25,7 +25,7 @@ export const CUSTOM_HOOKS_SLIDES: LectureSlide[] = [
     title: "Step 1: useWindowSize",
     kind: "content",
     bullets: [
-      "The §3.6.3 window demo kept the size in `useState` and filled it from `useEffect`",
+      "The §3.7.3 window demo kept the size in `useState` and filled it from `useEffect`",
       "Moving that logic into `useWindowSize` makes it a hook",
       "It returns the size, or `null` until the browser has measured it",
     ],

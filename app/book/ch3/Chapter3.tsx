@@ -2,6 +2,7 @@ import Intro from "./sections/Intro";
 import JsBasics from "./sections/JsBasics";
 import Functions from "./sections/Functions";
 import DataStructures from "./sections/DataStructures";
+import TypeScriptTypes from "./sections/TypeScriptTypes";
 import StylingAndComponents from "./sections/StylingAndComponents";
 import CheckUnderstanding from "./sections/CheckUnderstanding";
 import KambazData from "./sections/KambazData";
@@ -20,6 +21,7 @@ export default function Chapter3() {
       <JsBasics />
       <Functions />
       <DataStructures />
+      <TypeScriptTypes />
       <StylingAndComponents />
       <CheckUnderstanding />
       <KambazData />

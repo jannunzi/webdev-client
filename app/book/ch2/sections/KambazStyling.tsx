@@ -325,7 +325,7 @@ export default function KambazNavigation() {
         <code>usePathname()</code>{" "}hook, which reads the current path so each
         link can compare it with its own <code>href</code>.{" "}
         <SectionLink to="2.4.3" />{" "}uses it for Course Navigation, and{" "}
-        <SectionLink to="3.9.1" />{" "}applies the same idea to this sidebar.
+        <SectionLink to="3.10.1" />{" "}applies the same idea to this sidebar.
       </p>
       <OnYourOwn>
         In <code>Navigation.tsx</code>, swap in a different React Icon for one of

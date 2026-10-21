@@ -7,7 +7,7 @@ export const KAMBAZ_DASHBOARD_DATA_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Dashboard from Data",
-      "§3.9.3 · map courses onto cards",
+      "§3.10.3 · map courses onto cards",
     ],
   },
   {
@@ -141,7 +141,7 @@ export default function CourseCard({
     kind: "title",
     bullets: [
       "The layout awaits `[cid]`, then `find`s the course",
-      "§3.9.4–3.9.6: layout, course nav, breadcrumb",
+      "§3.10.4–3.10.6: layout, course nav, breadcrumb",
     ],
   },
 ];

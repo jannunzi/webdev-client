@@ -1821,7 +1821,7 @@ export default function Lab3() {
           one object and unpacks <code>a</code>{" "}and <code>b</code>{" "}from
           it — the same shape as{" "}
           <code>{`function Add({ a, b }: { a: number; b: number })`}</code>{" "}
-          in <SectionLink to="3.7" />:
+          in <SectionLink to="3.8" />:
         </p>
         <p>
           Parameters can also carry a <strong>default</strong>:{" "}
@@ -1829,7 +1829,7 @@ export default function Lab3() {
           <code>&quot;Ada&quot;</code>{" "}when the caller omits the argument.
           Destructured props work the same way —{" "}
           <code>{`{ a, b = 0 }`}</code> — which{" "}
-          <SectionLink to="3.7.4" />{" "}uses for a default todo.
+          <SectionLink to="3.8.4" />{" "}uses for a default todo.
         </p>
         <LiveDemo
           name="FunctionDestructing"
@@ -2185,7 +2185,7 @@ export default function OptionalChaining() {
           <code>?? &quot;n/a&quot;</code>{" "}fills in the fallback — the same
           pattern the assignment editor uses for{" "}
           <code>assignment?.title ?? &quot;&quot;</code>{" "}in{" "}
-          <SectionLink to="3.9.8.1" />. The <code>House</code>{" "}type marks{" "}
+          <SectionLink to="3.10.8.1" />. The <code>House</code>{" "}type marks{" "}
           <code>address</code>, <code>zip</code>, and <code>garage</code>{" "}
           optional with <code>?</code>. TypeScript only lets you read a
           property the type declares, even through <code>?.</code>, so

@@ -152,7 +152,7 @@ export default function Counter() {
     bullets: [
       "An **effect** is code that reaches outside the component, such as reading the window size",
       "`useEffect(fn, deps)` runs `fn` after render and paint, and again only when a value in `deps` changes",
-      "The §3.6.3 window demo read `window` in `useEffect`. The geolocation demo kept coordinates in `useState`",
+      "The §3.7.3 window demo read `window` in `useEffect`. The geolocation demo kept coordinates in `useState`",
     ],
   },
   {

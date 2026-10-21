@@ -36,7 +36,7 @@ import { CH3_LAB_EXERCISES } from "../../exercise-lists/catalogs";
 export default function StylingAndComponents() {
   return (
     <>
-      <Section id="sec-3-5" title="3.5 Dynamic Styling">
+      <Section id="sec-3-6" title="3.6 Dynamic Styling">
         <p>
           <ChapterLink to={2} />{" "}styled tags with CSS files and Tailwind
           classes. React can generate content dynamically based on
@@ -49,8 +49,8 @@ export default function StylingAndComponents() {
 
         <Section
           level={3}
-          id="sec-3-5-1"
-          title="3.5.1 Working with HTML Classes"
+          id="sec-3-6-1"
+          title="3.6.1 Working with HTML Classes"
         >
           <p>
             Let&apos;s start practicing simple things, like classes and
@@ -138,7 +138,7 @@ export default function Classes() {
           </p>
           <CodeBlock
             language="tsx"
-            name="Lab3 (after 3.5.1)"
+            name="Lab3 (after 3.6.1)"
             file="app/labs/lab3/page.tsx"
           >{`import VariablesAndConstants from "./VariablesAndConstants";
 import VariableTypes from "./VariableTypes";
@@ -231,8 +231,8 @@ export default function Lab3() {
 
         <Section
           level={3}
-          id="sec-3-5-2"
-          title="3.5.2 Working with the Style Attribute"
+          id="sec-3-6-2"
+          title="3.6.2 Working with the Style Attribute"
         >
           <p>
             In React, the <code>style</code>{" "}attribute accepts a
@@ -297,7 +297,7 @@ export default function Lab3() {
           </p>
           <CodeBlock
             language="tsx"
-            name="Lab3 (after 3.5.2)"
+            name="Lab3 (after 3.6.2)"
             file="app/labs/lab3/page.tsx"
           >{`import VariablesAndConstants from "./VariablesAndConstants";
 import VariableTypes from "./VariableTypes";
@@ -388,8 +388,8 @@ export default function Lab3() {
       </Section>
 
       <Section
-        id="sec-3-6"
-        title="3.6 Client and Server Components"
+        id="sec-3-7"
+        title="3.7 Client and Server Components"
       >
         <p>
           In Next.js, all components are Server Components by default.
@@ -412,8 +412,8 @@ export default function Lab3() {
 
         <Section
           level={3}
-          id="sec-3-6-1"
-          title="3.6.1 Client Components"
+          id="sec-3-7-1"
+          title="3.7.1 Client Components"
         >
           <p>
             This Client Component below is marked with the{" "}
@@ -469,7 +469,7 @@ export default function ClientComponentDemo() {
           </p>
           <CodeBlock
             language="tsx"
-            name="Lab3 (after 3.6.1)"
+            name="Lab3 (after 3.7.1)"
             file="app/labs/lab3/page.tsx"
           >{`import VariablesAndConstants from "./VariablesAndConstants";
 import VariableTypes from "./VariableTypes";
@@ -563,8 +563,8 @@ export default function Lab3() {
 
         <Section
           level={3}
-          id="sec-3-6-2"
-          title="3.6.2 Server Components"
+          id="sec-3-7-2"
+          title="3.7.2 Server Components"
         >
           <p>
             By default, Next.js pages and components are Server Components
@@ -632,7 +632,7 @@ export default function ServerComponentDemo() {
           </p>
           <CodeBlock
             language="tsx"
-            name="Lab3 (after 3.6.2)"
+            name="Lab3 (after 3.7.2)"
             file="app/labs/lab3/page.tsx"
           >{`import VariablesAndConstants from "./VariablesAndConstants";
 import VariableTypes from "./VariableTypes";
@@ -747,11 +747,11 @@ export default function Lab3() {
 
         <Section
           level={3}
-          id="sec-3-6-3"
-          title="3.6.3 More Client-Only APIs"
+          id="sec-3-7-3"
+          title="3.7.3 More Client-Only APIs"
         >
           <p>
-            <SectionLink to="3.6.1" />{" "}used one client-only hook. The browser offers many more features that exist only on the user&apos;s machine. An <strong>API</strong>{" "}(application programming interface) is a set of functions and objects a program can call; a <strong>client-only API</strong>{" "}is one that exists only in the browser, so only a Client Component can call it. In this section you build six small Client Components, one concept each, in a new folder <code>app/labs/lab3/client-apis</code>. They all go on their own page, <code>/labs/lab3/client-apis</code>, so the main Lab 3 page stays as it is. Add them one at a time and check each demo before moving on.
+            <SectionLink to="3.7.1" />{" "}used one client-only hook. The browser offers many more features that exist only on the user&apos;s machine. An <strong>API</strong>{" "}(application programming interface) is a set of functions and objects a program can call; a <strong>client-only API</strong>{" "}is one that exists only in the browser, so only a Client Component can call it. In this section you build six small Client Components, one concept each, in a new folder <code>app/labs/lab3/client-apis</code>. They all go on their own page, <code>/labs/lab3/client-apis</code>, so the main Lab 3 page stays as it is. Add them one at a time and check each demo before moving on.
           </p>
           <h4 className="mt-6 font-semibold">Step 1: usePathname</h4>
           <p>
@@ -1198,15 +1198,15 @@ export default function ClientApis() {
 
         <Section
           level={3}
-          id="sec-3-6-4"
-          title="3.6.4 More Server-Only APIs"
+          id="sec-3-7-4"
+          title="3.7.4 More Server-Only APIs"
         >
           <p>
-            <SectionLink to="3.6.2" />{" "}used <code>process</code>{" "}and <code>fs</code>{" "}on the server. This section adds seven small Server Components, one concept each, in <code>app/labs/lab3/server-apis</code>, rendered on their own page, <code>/labs/lab3/server-apis</code>. A <strong>server-only API</strong>{" "}is one that exists only in Node.js, so only a Server Component can call it. Add them one at a time. Demos that read the current request or change on every visit can&apos;t be prerendered into this book, so their demo shows the reference site&apos;s own <code>/labs/lab3/server-apis</code>{" "}page in a frame.
+            <SectionLink to="3.7.2" />{" "}used <code>process</code>{" "}and <code>fs</code>{" "}on the server. This section adds seven small Server Components, one concept each, in <code>app/labs/lab3/server-apis</code>, rendered on their own page, <code>/labs/lab3/server-apis</code>. A <strong>server-only API</strong>{" "}is one that exists only in Node.js, so only a Server Component can call it. Add them one at a time. Demos that read the current request or change on every visit can&apos;t be prerendered into this book, so their demo shows the reference site&apos;s own <code>/labs/lab3/server-apis</code>{" "}page in a frame.
           </p>
           <h4 className="mt-6 font-semibold">Step 1: Server time vs client time</h4>
           <p>
-            The server and the browser each have their own clock and time zone. The Server Component formats the server&apos;s time in UTC (Coordinated Universal Time, the zone-free reference clock). It renders a small Client Component, <code>ClientTime</code>, that reads the browser&apos;s clock inside <code>useEffect</code>{" "}and, with <code>setInterval</code>, again every second (1000 milliseconds){" "}(<SectionLink to="3.6.3" />{" "}Step 3), so the server&apos;s HTML and the browser&apos;s first render match. Create <code>ClientTime.tsx</code>{" "}first:
+            The server and the browser each have their own clock and time zone. The Server Component formats the server&apos;s time in UTC (Coordinated Universal Time, the zone-free reference clock). It renders a small Client Component, <code>ClientTime</code>, that reads the browser&apos;s clock inside <code>useEffect</code>{" "}and, with <code>setInterval</code>, again every second (1000 milliseconds){" "}(<SectionLink to="3.7.3" />{" "}Step 3), so the server&apos;s HTML and the browser&apos;s first render match. Create <code>ClientTime.tsx</code>{" "}first:
           </p>
           <CodeBlock
             language="tsx"
@@ -1420,7 +1420,7 @@ export default async function RequestHeadersDemo() {
             <iframe title="wd-request-headers-demo" src="/labs/lab3/server-apis#wd-request-headers-demo" className="w-full" style={{ height: 260, border: 0 }} />
           </LiveDemo>
           <p>
-            Compare the IP with Step 6 of <SectionLink to="3.6.3" />: the server sees the same address without asking anyone else. On <code>npm run dev</code>{" "}there is no proxy, so the IP is unknown. Because <code>headers()</code>{" "}depends on the request, Next.js renders this page <strong>dynamically</strong>, on every request, instead of prerendering it at build time.
+            Compare the IP with Step 6 of <SectionLink to="3.7.3" />: the server sees the same address without asking anyone else. On <code>npm run dev</code>{" "}there is no proxy, so the IP is unknown. Because <code>headers()</code>{" "}depends on the request, Next.js renders this page <strong>dynamically</strong>, on every request, instead of prerendering it at build time.
           </p>
           <p>
             Add <code>RequestHeadersDemo</code>{" "}to the page:
@@ -1447,7 +1447,7 @@ export default function ServerApis() {
 }`}</CodeBlock>
           <h4 className="mt-6 font-semibold">Step 5: Fetching data on the server</h4>
           <p>
-            A Server Component can call other servers with <code>fetch</code>{" "}before any HTML is sent. Open-Meteo is a free weather service that needs no key; this request asks for the current temperature and wind in Boston. The <code>try</code>/<code>catch</code>{" "}from <SectionLink to="3.6.2" />{" "}turns a network failure into a message. The <code>{"next: { revalidate: 1800 }"}</code>{" "}option lets Next.js <strong>cache</strong>{" "}(keep and reuse) the answer for 1800 seconds, 30 minutes, so repeated visits don&apos;t call Open-Meteo every time:
+            A Server Component can call other servers with <code>fetch</code>{" "}before any HTML is sent. Open-Meteo is a free weather service that needs no key; this request asks for the current temperature and wind in Boston. The <code>try</code>/<code>catch</code>{" "}from <SectionLink to="3.7.2" />{" "}turns a network failure into a message. The <code>{"next: { revalidate: 1800 }"}</code>{" "}option lets Next.js <strong>cache</strong>{" "}(keep and reuse) the answer for 1800 seconds, 30 minutes, so repeated visits don&apos;t call Open-Meteo every time:
           </p>
           <CodeBlock
             language="tsx"
@@ -1660,7 +1660,7 @@ export default function ServerApis() {
         </Section>
       </Section>
 
-      <Section id="sec-3-7" title="3.7 Parameterizing Components">
+      <Section id="sec-3-8" title="3.8 Parameterizing Components">
         <p>
           React components can be parameterized by using the familiar HTML
           attribute syntax, which passes attribute values to the
@@ -1705,7 +1705,7 @@ export default function ServerApis() {
         </p>
         <CodeBlock
           language="tsx"
-          name="Lab3 (after 3.7)"
+          name="Lab3 (after 3.8)"
           file="app/labs/lab3/page.tsx"
         >{`import VariablesAndConstants from "./VariablesAndConstants";
 import VariableTypes from "./VariableTypes";
@@ -1799,8 +1799,8 @@ export default function Lab3() {
 
         <Section
           level={3}
-          id="sec-3-7-1"
-          title="3.7.1 Child Components"
+          id="sec-3-8-1"
+          title="3.8.1 Child Components"
         >
           <p>
             In the previous section we discussed passing data to a
@@ -1875,7 +1875,7 @@ export default function Highlight({ children }: { children: ReactNode }) {
           </p>
           <CodeBlock
             language="tsx"
-            name="Lab3 (after 3.7.1)"
+            name="Lab3 (after 3.8.1)"
             file="app/labs/lab3/page.tsx"
           >{`import VariablesAndConstants from "./VariablesAndConstants";
 import VariableTypes from "./VariableTypes";
@@ -1977,8 +1977,8 @@ export default function Lab3() {
 
         <Section
           level={3}
-          id="sec-3-7-1-1"
-          title="3.7.1.1 Composing Styles with Children"
+          id="sec-3-8-1-1"
+          title="3.8.1.1 Composing Styles with Children"
         >
           <p>
             <code>Square</code>{" "}and <code>Highlight</code>{" "}each wrap
@@ -1994,7 +1994,7 @@ export default function Lab3() {
           </p>
           <p>
             All the styling below uses the <code>style</code>{" "}attribute
-            from <SectionLink to="3.5.2" />: a JavaScript object whose keys
+            from <SectionLink to="3.6.2" />: a JavaScript object whose keys
             are camel-cased CSS property names. We use these{" "}
             <strong>inline style objects</strong>{" "}instead of CSS classes
             here on purpose. The values come from props, so they change from
@@ -2350,7 +2350,7 @@ export default function CardBody({ children }: { children: ReactNode }) {
 }`}</CodeBlock>
           <p>
             The body below holds plain tags, the <code>Highlight</code>{" "}and{" "}
-            <code>Square</code>{" "}components from <SectionLink to="3.7.1" />,
+            <code>Square</code>{" "}components from <SectionLink to="3.8.1" />,
             and a button, all as children of one <code>CardBody</code>:
           </p>
           <CodeBlock
@@ -2389,8 +2389,8 @@ export default function CardDemo() {
 
         <Section
           level={3}
-          id="sec-3-7-2"
-          title="3.7.2 Working with the Pathname"
+          id="sec-3-8-2"
+          title="3.8.2 Working with the Pathname"
         >
           <p>
             <code>usePathname</code>{" "}returns the current URL path from
@@ -2405,7 +2405,7 @@ export default function CardDemo() {
             the client version below. It maps a <code>LINKS</code>{" "}array,
             and when a link&apos;s <code>match</code>{" "}function says the
             pathname belongs to that lab, it gives that link an inline style
-            object (<SectionLink to="3.5.2" />) and{" "}
+            object (<SectionLink to="3.6.2" />) and{" "}
             <code>aria-current=&quot;page&quot;</code>. The Labs pages
             don&apos;t load Tailwind, so Tailwind classes would have no
             visible effect here. If your Chapter 1 TOC has extra links you
@@ -2488,8 +2488,8 @@ export default function TOC() {
 
         <Section
           level={3}
-          id="sec-3-7-3"
-          title="3.7.3 Encoding Path Parameters"
+          id="sec-3-8-3"
+          title="3.8.3 Encoding Path Parameters"
         >
           <p>
             Dynamic folders in the App Router —{" "}
@@ -2550,7 +2550,7 @@ export default function PathParameters() {
           </p>
           <CodeBlock
             language="tsx"
-            name="Lab3 (after 3.7.3)"
+            name="Lab3 (after 3.8.3)"
             file="app/labs/lab3/page.tsx"
           >{`import VariablesAndConstants from "./VariablesAndConstants";
 import VariableTypes from "./VariableTypes";
@@ -2663,8 +2663,8 @@ export default function Lab3() {
 
         <Section
           level={3}
-          id="sec-3-7-4"
-          title="3.7.4 Rendering a Data Structure"
+          id="sec-3-8-4"
+          title="3.8.4 Rendering a Data Structure"
         >
           <p>
             Arrays, JSON, <code>map</code>, keys, default parameters, and
@@ -2758,11 +2758,11 @@ export default function TodoList() {
             <code>./todos/TodoList</code>, and render it last. <code>TodoItem</code>{" "}is
             rendered inside <code>TodoList</code>, so the page does not import it.
             This is the finished Lab 3 page — the same file{" "}
-            <SectionLink to="3.7.5" />{" "}lists:
+            <SectionLink to="3.8.5" />{" "}lists:
           </p>
           <CodeBlock
             language="tsx"
-            name="Lab3 (after 3.7.4)"
+            name="Lab3 (after 3.8.4)"
             file="app/labs/lab3/page.tsx"
           >{`import VariablesAndConstants from "./VariablesAndConstants";
 import VariableTypes from "./VariableTypes";
@@ -2872,10 +2872,10 @@ export default function Lab3() {
           </WithAI>
         </Section>
 
-        <Section level={3} id="sec-3-7-5" title="3.7.5 Exercises">
+        <Section level={3} id="sec-3-8-5" title="3.8.5 Exercises">
           <p>
             Use this checklist to confirm Lab 3 covers every JavaScript
-            topic in <SectionLink to="3.2" />–<SectionLink to="3.7" />.
+            topic in <SectionLink to="3.2" />–<SectionLink to="3.8" />.
             Import each component into <code>app/labs/lab3/page.tsx</code>{" "}
             in order. Each topic is listed once, with Lab,{" "}
             <strong>On your own</strong>, and <strong>With AI</strong>{" "}

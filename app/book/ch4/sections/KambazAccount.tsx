@@ -263,7 +263,7 @@ const visibleCourses = currentUser
           <p>
             The filter uses the same{" "}
             <code>enrollments.some</code>{" "}pattern{" "}
-            <SectionLink to="3.9.9" />{" "}used on the People table: keep
+            <SectionLink to="3.10.9" />{" "}used on the People table: keep
             a course when there is an enrollment whose{" "}
             <code>user</code>{" "}is the signed-in id and whose{" "}
             <code>course</code>{" "}is that course&apos;s{" "}
@@ -522,7 +522,7 @@ export default function Profile() {
             not append an empty title on the list. The editor should
             allow editing at least the name, description, points, due
             date, available-from date, and available-until date — the
-            same fields <SectionLink to="3.9.8.1" />{" "}already displayed
+            same fields <SectionLink to="3.10.8.1" />{" "}already displayed
             from JSON. Clicking Save creates the new assignment, adds
             it to the assignments array in the Zustand store, and
             navigates back to the Assignments screen, which must now

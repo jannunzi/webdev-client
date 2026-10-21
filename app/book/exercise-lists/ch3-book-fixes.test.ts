@@ -58,7 +58,7 @@ describe("Chapter 3 book fixes (A3 walkthrough)", () => {
       FILES,
     ]);
     // Each later file's download link comes before the first index.ts that
-    // imports it. (§3.9.2 shows the one-line index.ts first, then downloads
+    // imports it. (§3.10.2 shows the one-line index.ts first, then downloads
     // courses.json right below it, before anything builds.)
     for (const name of FILES) {
       const download = src.indexOf(`/downloads/kambaz-database/${name}.json`);
@@ -218,7 +218,7 @@ describe("Chapter 3 book fixes (A3 walkthrough)", () => {
         "3.3", "3.3.1", "3.3.2", "3.3.3",
         "3.4", "3.4.1", "3.4.2", "3.4.3", "3.4.4", "3.4.5", "3.4.6", "3.4.7", "3.4.8", "3.4.9",
         "3.4.10", "3.4.11", "3.4.12", "3.4.13", "3.4.14", "3.4.15", "3.4.16", "3.4.17",
-        "3.5.1", "3.5.2", "3.6.1", "3.6.2", "3.7", "3.7.1", "3.7.3", "3.7.4",
+        "3.6.1", "3.6.2", "3.7.1", "3.7.2", "3.8", "3.8.1", "3.8.3", "3.8.4",
       ].map((section) => `Lab3 (after ${section})`),
     );
     // No partial page.tsx snippets (e.g. "...lab components...") are left.
@@ -257,7 +257,7 @@ describe("Chapter 3 book fixes (A3 walkthrough)", () => {
     }
     assert.equal(steps[steps.length - 1].body, final, "the last step is the finished Lab 3 page");
   });
-it("shows the §3.7.1 Square and Highlight demos with the same markup as the Lab 3 page", () => {
+it("shows the §3.8.1 Square and Highlight demos with the same markup as the Lab 3 page", () => {
     const dedent = (text: string) => {
       const rows = text.split("\n").filter((line) => line.trim() !== "");
       const indent = Math.min(...rows.map((line) => line.match(/^ */)![0].length));
@@ -269,11 +269,11 @@ it("shows the §3.7.1 Square and Highlight demos with the same markup as the Lab
     assert.ok(squareOnPage, "page.tsx renders <h4>Square of 4</h4>, <Square>4</Square>, <hr />");
     assert.ok(highlightOnPage, "page.tsx renders a Highlight");
     const styling = read(STYLING);
-    const section = styling.slice(styling.indexOf('id="sec-3-7-1"'), styling.indexOf('id="sec-3-7-2"'));
+    const section = styling.slice(styling.indexOf('id="sec-3-8-1"'), styling.indexOf('id="sec-3-8-2"'));
     const demo = (name: string) =>
       section.match(new RegExp(`<LiveDemo name="${name}" file="app/labs/lab3/${name}\\.tsx">\\n([\\s\\S]*?)\\n *</LiveDemo>`))?.[1] ?? "";
-    assert.equal(dedent(demo("Square")), dedent(squareOnPage), "§3.7.1 Square demo");
-    assert.equal(dedent(demo("Highlight")), dedent(highlightOnPage), "§3.7.1 Highlight demo");
+    assert.equal(dedent(demo("Square")), dedent(squareOnPage), "§3.8.1 Square demo");
+    assert.equal(dedent(demo("Highlight")), dedent(highlightOnPage), "§3.8.1 Highlight demo");
     // The slide embeds show the same markup.
     const embeds = read("app/slides/_components/embeds/Lab3Embeds.tsx");
     const embed = (fn: string) =>

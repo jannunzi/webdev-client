@@ -82,7 +82,7 @@ export default function OptionalChaining() {
     kind: "title",
     bullets: [
       "Classes and inline styles can follow a variable",
-      "§3.5: `className={\`wd-bg-${color}\`}` and `style={bgBlue}`",
+      "§3.6: `className={\`wd-bg-${color}\`}` and `style={bgBlue}`",
     ],
   },
 ];

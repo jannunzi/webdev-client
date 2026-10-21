@@ -467,10 +467,10 @@ describe("lecture catalog", () => {
         "3.2 Introduction to JavaScript",
         "3.3 JavaScript Functions",
         "3.4 JavaScript Data Structures",
-        "3.5 Dynamic Styling",
-        "3.6 Client and Server Components",
-        "3.7 Parameterizing Components",
-        "3.9 Implementing a Data Driven Kambaz Application",
+        "3.6 Dynamic Styling",
+        "3.7 Client and Server Components",
+        "3.8 Parameterizing Components",
+        "3.10 Implementing a Data Driven Kambaz Application",
       ],
     );
     assert.equal(groups[2]?.topics[0]?.bookHref, "/book/ch3#sec-3-2");
@@ -858,11 +858,11 @@ describe("lecture catalog", () => {
     assert.equal(getLecture("intro-to-javascript")?.bookHref, "/book/ch3#sec-3-2");
     assert.equal(getLecture("javascript-functions")?.bookHref, "/book/ch3#sec-3-3");
     assert.equal(getLecture("javascript-arrays")?.bookHref, "/book/ch3#sec-3-4");
-    assert.equal(getLecture("dynamic-styling")?.bookHref, "/book/ch3#sec-3-5");
-    assert.equal(getLecture("client-and-server")?.bookHref, "/book/ch3#sec-3-6");
-    assert.equal(getLecture("parameterizing-components")?.bookHref, "/book/ch3#sec-3-7");
-    assert.equal(getLecture("kambaz-database")?.bookHref, "/book/ch3#sec-3-9");
-    assert.equal(getLecture("kambaz-dashboard-data")?.bookHref, "/book/ch3#sec-3-9-3");
+    assert.equal(getLecture("dynamic-styling")?.bookHref, "/book/ch3#sec-3-6");
+    assert.equal(getLecture("client-and-server")?.bookHref, "/book/ch3#sec-3-7");
+    assert.equal(getLecture("parameterizing-components")?.bookHref, "/book/ch3#sec-3-8");
+    assert.equal(getLecture("kambaz-database")?.bookHref, "/book/ch3#sec-3-10");
+    assert.equal(getLecture("kambaz-dashboard-data")?.bookHref, "/book/ch3#sec-3-10-3");
     assert.equal(getLecture("click-events")?.bookHref, "/book/ch4#sec-4-2-1");
     assert.equal(getLecture("usestate-counter")?.bookHref, "/book/ch4#sec-4-2-4");
     assert.equal(getLecture("sharing-parent-child")?.bookHref, "/book/ch4#sec-4-3-1");
@@ -3889,7 +3889,7 @@ describe("form-state-types demo titles", () => {
   });
 });
 
-describe("parameterizing-components §3.7.1.1 children slides", () => {
+describe("parameterizing-components §3.8.1.1 children slides", () => {
   it("copies each listing from the book byte for byte, in the book's order", () => {
     const book = readFileSync(join(process.cwd(), "app/book/ch3/sections/StylingAndComponents.tsx"), "utf8");
     const listing = (name: string) => {
@@ -3913,7 +3913,7 @@ describe("parameterizing-components §3.7.1.1 children slides", () => {
   });
 });
 
-describe("client-and-server §3.6.3–3.6.4 API slides", () => {
+describe("client-and-server §3.7.3–3.7.4 API slides", () => {
   const listings: Record<string, string> = {
     pathname: "PathnameDemo",
     "client-page": "ClientApis (after step 1)",

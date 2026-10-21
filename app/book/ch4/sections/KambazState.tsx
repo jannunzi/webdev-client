@@ -21,7 +21,7 @@ export default function KambazState() {
       <p>
         The current Kambaz implementation reads data from a collection of
         objects we combined into a database in{" "}
-        <SectionLink to="3.9.2" />{" "}—{" "}
+        <SectionLink to="3.10.2" />{" "}—{" "}
         <code>courses</code>, <code>modules</code>,{" "}
         <code>assignments</code>, <code>users</code>, and{" "}
         <code>enrollments</code>. Those arrays are dynamically rendered in
@@ -201,7 +201,7 @@ export default function KambazState() {
         </p>
         <p>
           Start the store from the same JSON{" "}
-          <SectionLink to="3.9.2" />{" "}introduced, then export functions
+          <SectionLink to="3.10.2" />{" "}introduced, then export functions
           that add, update, and delete. Those functions are the same
           operations you would have written next to Dashboard{" "}
           <code>useState</code> — append a copy with a new{" "}

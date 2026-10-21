@@ -220,7 +220,7 @@ describe("Kambaz book demos match the code block they show", () => {
     assert.doesNotMatch(book, /from "@\/app\/\(kambaz\)\//);
   });
 
-  it("keeps every Chapter 2 and 3.9 Kambaz live demo off the current app pages", () => {
+  it("keeps every Chapter 2 and 3.10 Kambaz live demo off the current app pages", () => {
     const styling = read("app/book/ch2/sections/KambazStyling.tsx");
     const data = read("app/book/ch3/sections/KambazData.tsx");
     for (const name of [
@@ -445,7 +445,7 @@ describe("Kambaz book demos match the code block they show", () => {
       exportLine(styling, "KambazCh3DashboardEmbed"),
       "export function KambazCh3DashboardEmbed",
     );
-    // Async §3.9.8 / §3.9.9 pages stay the book listings. Slides mount sync twins.
+    // Async §3.10.8 / §3.10.9 pages stay the book listings. Slides mount sync twins.
     assert.deepEqual(mountedImports(styling, "KambazCh3DashboardEmbed"), [
       "@/app/book/ch3/embeds/_styled/dashboard/Dashboard",
     ]);

@@ -2,7 +2,7 @@ import { FaUserCircle } from "react-icons/fa";
 import * as db from "@/app/book/ch3/embeds/_styled/database";
 
 /**
- * Sync slide twin of the §3.9.9 PeopleTable listing.
+ * Sync slide twin of the §3.10.9 PeopleTable listing.
  * The book CodeBlock and
  * `app/book/ch3/embeds/_styled/courses/cid/people/table/page.tsx`
  * stay async Server Components (`await params`) so students copy that page.

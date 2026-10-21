@@ -55,7 +55,7 @@ export default function KambazServer() {
           Inside the Kambaz folder, create a Database directory and
           copy all JSON files from the React project — the same arrays
           you exported in{" "}
-          <SectionLink to="3.9.2" />. Then change the file extensions
+          <SectionLink to="3.10.2" />. Then change the file extensions
           of the JSON files to JavaScript, for example, rename{" "}
           <code>users.json</code>{" "}to{" "}
           <code>users.js</code>{" "}and{" "}
