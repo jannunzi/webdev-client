@@ -1,5 +1,3 @@
-"use client";
-
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 export type ReduxTodo = { id: string; title: string };

@@ -79,7 +79,7 @@ export default function PassingDataOnEvent() {
     kind: "content",
     bullets: [
       "A parent can pass a function the child does not own",
-      "The child only knows the type `() => void` and invokes it on click",
+      "The child only knows the type `(message: string) => void` and calls it with a string",
       "Lab 4 itself is a Client Component so it can create `sayHello`",
     ],
   },
@@ -90,16 +90,18 @@ export default function PassingDataOnEvent() {
     code: `"use client";
 
 export default function PassingFunctions({
+  message,
   theFunction,
 }: {
-  theFunction: () => void;
+  message: string;
+  theFunction: (message: string) => void;
 }) {
   return (
     <div id="wd-passing-functions">
       <h2>Passing Functions</h2>
       <button
         type="button"
-        onClick={theFunction}
+        onClick={() => theFunction(\`From parent: \${message}\`)}
         id="wd-pass-functions-click"
         className="rounded bg-green-600 px-3 py-1.5 text-sm font-medium text-white"
       >
@@ -111,15 +113,15 @@ export default function PassingFunctions({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/PassingFunctions.tsx",
-    codeHighlightLines: [[3, 6], 13],
+    codeHighlightLines: [[3, 9], 15],
   },
   {
     id: "passing-functions-live",
     title: "PassingFunctions: live demo",
     kind: "demo",
     bullets: [
-      "Type the prop: `theFunction: () => void`",
-      "`onClick={theFunction}` — same reference rule as `hello`",
+      "Type the props: `message: string`, `theFunction: (message: string) => void`",
+      "The child calls `theFunction(`From parent: ${message}`)` on click",
       "The child does not know the alert text. The parent does",
     ],
     embed: "passing-functions",
@@ -132,11 +134,11 @@ export default function PassingFunctions({
       "On the Lab 4 page, declare `sayHello` and pass it down",
       "Later a todo item will ask a store to delete a row the same way",
     ],
-    code: `const sayHello = () => {
-  alert("Hello from Lab 4");
+    code: `const sayHello = (message: string) => {
+  alert(message);
 };
 
-<PassingFunctions theFunction={sayHello} />`,
+<PassingFunctions message="Hello from Lab 4" theFunction={sayHello} />`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/page.tsx",
     codeAddedLines: [[1, 3], 5],

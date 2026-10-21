@@ -1,5 +1,3 @@
-"use client";
-
 import { useTodoStore, type Todo } from "./todoStore";
 
 export default function ZustandTodoItem({ todo }: { todo: Todo }) {
