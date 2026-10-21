@@ -88,7 +88,7 @@ git push -u origin main`,
     kind: "title",
     bullets: [
       "Confirm GitHub shows your source — and not `node_modules`",
-      "Next: import that same repo into **Vercel** and share the URL",
+      "Next: **deploy** (publish it at a public URL) by importing the repo into **Vercel**, a hosting service",
     ],
   },
 ];

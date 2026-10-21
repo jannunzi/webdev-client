@@ -44,7 +44,7 @@ export default function UsersDao(db) {
     title: "Four POST account routes",
     kind: "demo",
     bullets: [
-      "Register after CORS, session, and `express.json()`",
+      "Register after CORS, the session (server memory of who is signed in), and `express.json()`",
       "Pass `db` into the route module",
     ],
     code: `import UsersDao from "./dao.js";
@@ -166,7 +166,7 @@ app.post("/api/users/signup", signup);`,
     title: "Next: sessions and Axios",
     kind: "title",
     bullets: [
-      "Cookies so more than one browser can be signed in",
+      "Cookies (small values the browser sends back on each request) so more than one browser can be signed in",
       "§5.4.3: CORS origin, `express-session`, `withCredentials`",
     ],
   },

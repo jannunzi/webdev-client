@@ -115,7 +115,7 @@ export default function ZustandCounter() {
     kind: "title",
     bullets: [
       "Array plus a draft, then add / update / delete",
-      "§4.5.2: the CRUD Kambaz will reuse for courses",
+      "§4.5.2: the create, read, update, and delete (CRUD) Kambaz will reuse for courses",
     ],
   },
 ];
