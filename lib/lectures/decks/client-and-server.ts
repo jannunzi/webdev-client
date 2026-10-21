@@ -105,6 +105,20 @@ export default function ServerComponentDemo() {
     embed: "js-server-component",
   },
   {
+    id: "suspense-basics",
+    title: "Suspense: a fallback until ready",
+    kind: "content",
+    bullets: [
+      "`<Suspense>`, from `react`, wraps part of a page and shows its `fallback` until that part is ready",
+      "`next build` pre-renders the page ahead of time, with no visitor and so no URL",
+      "A part that reads the URL renders later, in the browser. Without `<Suspense>`, `next build` fails",
+    ],
+    code: `<Suspense fallback={<p>Loading...</p>}>
+  <SomeComponent />
+</Suspense>`,
+    codeLanguage: "tsx",
+  },
+  {
     id: "client-apis",
     title: "More client-only APIs",
     kind: "content",

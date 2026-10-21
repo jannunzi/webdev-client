@@ -1312,7 +1312,7 @@ describe("lecture decks", () => {
     assert.equal(counts["optional-chaining"], 6);
     assert.equal(counts["typescript-types"], 33);
     assert.equal(counts["dynamic-styling"], 10);
-    assert.equal(counts["client-and-server"], 56);
+    assert.equal(counts["client-and-server"], 57);
     assert.equal(counts["parameterizing-components"], 25);
     assert.equal(counts["path-params-and-todos"], 17);
     assert.equal(counts["kambaz-database"], 14);

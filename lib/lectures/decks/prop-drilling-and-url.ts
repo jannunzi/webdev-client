@@ -104,12 +104,11 @@ export default function PropDrilling() {
   },
   {
     id: "query-suspense",
-    title: "Suspense: show a fallback until it's ready",
+    title: "Suspense, as in §3.7.3",
     kind: "content",
     bullets: [
-      "`<Suspense>` wraps part of a page and shows `fallback` until that part is ready",
-      "`next build` pre-renders the page without a URL",
-      "So the part that reads the URL renders in the browser; `fallback` shows meanwhile",
+      "As in §3.7.3, `<Suspense>` shows its `fallback` until the part inside is ready",
+      "The query page reads the URL, so it wraps that part in `<Suspense>`",
     ],
   },
   {
