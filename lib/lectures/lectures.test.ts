@@ -117,8 +117,8 @@ function idsWithoutIntros(deckSlug: string): string[] {
   return ids.filter((id) => !(id.endsWith("-intro") && ids.includes(id.slice(0, -"-intro".length))));
 }
 
-/** Every deck where code and its live demo sit on separate slides: all of Chapter 3, plus single-page-navigation. */
-const SPLIT_DEMO_DECKS = [...CHAPTER_3_SLUGS, "single-page-navigation"] as const;
+/** Every deck where code and its live demo sit on separate slides: all of Chapters 3 and 4, plus single-page-navigation. */
+const SPLIT_DEMO_DECKS = [...CHAPTER_3_SLUGS, ...CHAPTER_4_SLUGS, "single-page-navigation"] as const;
 
 /**
  * A listing split across slides (code before `return`, then the JSX) joined
@@ -1313,19 +1313,19 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-courses-data"], 11);
     assert.equal(counts["kambaz-modules-data"], 9);
     assert.equal(counts["kambaz-assignments-data"], 15);
-    assert.equal(counts["click-events"], 7);
-    assert.equal(counts["passing-data-and-functions"], 8);
-    assert.equal(counts["usestate-counter"], 8);
-    assert.equal(counts["form-state-types"], 15);
-    assert.equal(counts["sharing-parent-child"], 7);
-    assert.equal(counts["prop-drilling-and-url"], 8);
-    assert.equal(counts["react-context"], 9);
-    assert.equal(counts["zustand-counter"], 7);
-    assert.equal(counts["zustand-todos"], 9);
-    assert.equal(counts["use-effect"], 7);
+    assert.equal(counts["click-events"], 9);
+    assert.equal(counts["passing-data-and-functions"], 10);
+    assert.equal(counts["usestate-counter"], 9);
+    assert.equal(counts["form-state-types"], 18);
+    assert.equal(counts["sharing-parent-child"], 8);
+    assert.equal(counts["prop-drilling-and-url"], 11);
+    assert.equal(counts["react-context"], 10);
+    assert.equal(counts["zustand-counter"], 8);
+    assert.equal(counts["zustand-todos"], 10);
+    assert.equal(counts["use-effect"], 8);
     assert.equal(counts["ch4-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-store"], 9);
-    assert.equal(counts["kambaz-dashboard-crud"], 9);
+    assert.equal(counts["kambaz-dashboard-crud"], 11);
     assert.equal(counts["kambaz-modules-store"], 9);
     assert.equal(counts["kambaz-account-context"], 9);
     assert.equal(counts["http-server"], 11);
@@ -1878,12 +1878,12 @@ describe("lecture decks", () => {
       "zustand-counter": { component: "zustand-counter" },
       "zustand-todos": { list: "zustand-todos" },
       "use-effect": { demo: "use-effect" },
-      "kambaz-courses-store": { demo: "kambaz-courses-crud" },
+      "kambaz-courses-store": { store: "kambaz-courses-crud" },
       "kambaz-dashboard-crud": {
         add: "kambaz-courses-crud",
         edit: "kambaz-styled-dashboard",
       },
-      "kambaz-modules-store": { demo: "kambaz-styled-modules" },
+      "kambaz-modules-store": { store: "kambaz-styled-modules" },
       "kambaz-account-context": { signin: "kambaz-styled-signin" },
       "lab5-env": { environment: "lab5-env" },
       "next-routes": {
@@ -1923,9 +1923,8 @@ describe("lecture decks", () => {
     const used = new Set<string>();
     for (const [slug, slides] of Object.entries(expected)) {
       for (const [id, embed] of Object.entries(slides)) {
-        const split = (SPLIT_DEMO_DECKS as readonly string[]).includes(slug);
         const liveSplit = getLectureDeck(slug)!.slides.some((row) => row.id === `${id}-live`);
-        const slide = findSlide(slug, split || liveSplit ? `${id}-live` : id);
+        const slide = findSlide(slug, liveSplit ? `${id}-live` : id);
         assert.equal(slide.embed, embed);
         assert.equal(slide.imageSrc, undefined);
         assert.ok((LECTURE_EMBED_IDS as readonly string[]).includes(embed));
@@ -3686,7 +3685,7 @@ function addedLineMarks(prev: string, next: string): Array<number | [number, num
 describe("Chapter 3 decks: code, then the live demo", () => {
   /** Every book `<CodeBlock file=…>` body for `file` in the Chapter 3 sections. */
   function ch3BookListings(file: string): string[] {
-    const dirs = ["app/book/ch1/sections", "app/book/ch2/sections", "app/book/ch3/sections"].map((d) => join(process.cwd(), d));
+    const dirs = ["app/book/ch1/sections", "app/book/ch2/sections", "app/book/ch3/sections", "app/book/ch4/sections"].map((d) => join(process.cwd(), d));
     const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const pattern = new RegExp(
       `file="${escape(file)}"\\s*>\\{\`([\\s\\S]*?)\`\\}</CodeBlock>`,
@@ -3716,6 +3715,8 @@ describe("Chapter 3 decks: code, then the live demo", () => {
       const slides = getLectureDeck(slug)!.slides;
       slides.forEach((slide, index) => {
         if (!slide.embed) return;
+        // Ch4 Kambaz demos of a whole screen with no single listing of their own.
+        if (["kambaz-dashboard-crud#edit", "kambaz-account-context#signin"].includes(`${slug}#${slide.id}`)) return;
         demos += 1;
         assert.equal(slide.kind, "demo", `${slug}#${slide.id}`);
         assert.match(slide.id, /-live$/, `${slug}#${slide.id}`);
@@ -3746,7 +3747,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         );
       });
     }
-    assert.equal(demos, 67);
+    assert.equal(demos, 88);
   });
 
   it("keeps one code slide unless a listing is long, and never leaves a tiny tail", () => {
@@ -3790,6 +3791,9 @@ describe("Chapter 3 decks: code, then the live demo", () => {
       "kambaz-modules-data#page-part-2",
       "kambaz-assignments-data#list-part-2",
       "kambaz-assignments-data#people-part-2",
+      "form-state-types#array-part-2",
+      "prop-drilling-and-url#url-form-part-2",
+      "kambaz-dashboard-crud#add-part-2",
     ]);
     assert.match(findSlide("javascript-arrays", "simple-part-2").code!, /^ {2}return \($/m);
     assert.match(findSlide("spread-and-destructuring", "destructing-imports-part-2").code!, /^ {8}<tbody>/);
@@ -3813,7 +3817,9 @@ describe("explanation text never buries the code", () => {
     for (const deck of listLectureDecks()) {
       for (const slide of deck.slides) {
         if (!(slide.code || slide.codeBlocks?.length) || !slide.bullets?.length) continue;
-        assert.ok(slide.bullets.length <= 3, `${deck.slug}#${slide.id} has ${slide.bullets.length} bullets above its code`);
+        // A few short lines of code still fit under 4 bullets (usestate-counter#hook-pair).
+        const shortCode = (slide.code ?? "").split("\n").length <= 3;
+        assert.ok(slide.bullets.length <= 3 || shortCode, `${deck.slug}#${slide.id} has ${slide.bullets.length} bullets above its code`);
         assert.ok(wrappedLines(slide.bullets) <= 8, `${deck.slug}#${slide.id} text pushes its code down`);
       }
     }
@@ -3837,7 +3843,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 222);
+    assert.equal(intros, 221);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {

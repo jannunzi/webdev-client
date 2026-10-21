@@ -34,12 +34,7 @@ export const USE_EFFECT_SLIDES: LectureSlide[] = [
   {
     id: "demo",
     title: "Title follows name and clicks",
-    kind: "demo",
-    bullets: [
-      "Type in the field and click the button. Watch the browser tab",
-      "The title string is `` `${name} — clicked ${count}` ``",
-      "Kambaz Profile will use `[]` to copy the current user after mount",
-    ],
+    kind: "content",
     code: `"use client";
 
 import { useEffect, useState } from "react";
@@ -55,7 +50,12 @@ export default function Effect() {
   return (
     <div id="wd-use-effect">
       <h2>useEffect</h2>
+      <p>
+        The document title updates after React paints, whenever{" "}
+        <code>name</code> or <code>count</code> changes.
+      </p>
       <input
+        className="mb-2 block w-full max-w-sm rounded border border-neutral-300 px-3 py-1.5"
         value={name}
         onChange={(e) => setName(e.target.value)}
         id="wd-effect-name"
@@ -63,16 +63,28 @@ export default function Effect() {
       <button
         type="button"
         onClick={() => setCount(count + 1)}
+        className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
         id="wd-effect-count-click"
       >
         Clicked {count}
       </button>
+      <hr />
     </div>
   );
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/Effect.tsx",
-    codeHighlightLines: [[9, 11]],
+    codeHighlightLines: [9, 10, 11],
+  },
+  {
+    id: "demo-live",
+    title: "Effect: live demo",
+    kind: "demo",
+    bullets: [
+      "Type in the field and click the button. Watch the browser tab",
+      "The title string is `` `${name} — clicked ${count}` ``",
+      "Kambaz Profile will use `[]` to copy the current user after mount",
+    ],
     embed: "use-effect",
   },
   {

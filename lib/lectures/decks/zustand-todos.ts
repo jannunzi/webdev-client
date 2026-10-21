@@ -95,19 +95,20 @@ const updateTodo = useTodoStore((state) => state.updateTodo);
   {
     id: "list",
     title: "The list maps store todos",
-    kind: "demo",
-    bullets: [
-      "`ZustandTodoItem` receives the row, then calls `setTodo` / `deleteTodo`",
-      "Edit copies the row into the draft. Delete filters it out",
-      "Add `ZustandTodoList` to `ZustandExamples` and try all four buttons",
-    ],
-    code: `export default function ZustandTodoList() {
+    kind: "content",
+    code: `"use client";
+
+import { useTodoStore } from "./todoStore";
+import ZustandTodoForm from "./ZustandTodoForm";
+import ZustandTodoItem from "./ZustandTodoItem";
+
+export default function ZustandTodoList() {
   const todos = useTodoStore((state) => state.todos);
   return (
     <div id="wd-zustand-todo-list">
       <h3>Zustand Todo List</h3>
       <ZustandTodoForm />
-      <ul>
+      <ul className="m-0 max-w-lg list-none p-0">
         {todos.map((todo) => (
           <ZustandTodoItem key={todo.id} todo={todo} />
         ))}
@@ -117,7 +118,17 @@ const updateTodo = useTodoStore((state) => state.updateTodo);
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/zustand/ZustandTodoList.tsx",
-    codeHighlightLines: [2, [8, 10]],
+    codeHighlightLines: [8, 14, 15, 16],
+  },
+  {
+    id: "list-live",
+    title: "ZustandTodoList: live demo",
+    kind: "demo",
+    bullets: [
+      "`ZustandTodoItem` receives the row, then calls `setTodo` / `deleteTodo`",
+      "Edit copies the row into the draft. Delete filters it out",
+      "Add `ZustandTodoList` to `ZustandExamples` and try all four buttons",
+    ],
     embed: "zustand-todos",
   },
   {

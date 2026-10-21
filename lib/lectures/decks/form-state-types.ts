@@ -23,45 +23,83 @@ export const FORM_STATE_TYPES_SLIDES: LectureSlide[] = [
   {
     id: "boolean",
     title: "Boolean: checked and a ternary",
+    kind: "content",
+    code: `"use client";
+
+import { useState } from "react";
+
+export default function BooleanStateVariables() {
+  const [done, setDone] = useState(true);
+  return (
+    <div id="wd-boolean-state-variables">
+      <h2>Boolean State Variables</h2>
+      <p>{done ? "Done" : "Not done"}</p>
+      <label className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          checked={done}
+          onChange={() => setDone(!done)}
+          id="wd-boolean-checkbox"
+        />
+        Done
+      </label>
+      {done && <div className="mt-2 rounded bg-yellow-100 p-2">Yay! Done</div>}
+      <hr />
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab4/BooleanStateVariables.tsx",
+    codeHighlightLines: [6, 12, 13, 14, 15, 16, 17],
+  },
+  {
+    id: "boolean-live",
+    title: "Boolean: live demo",
     kind: "demo",
     bullets: [
       "`useState(true)` seeds Done. The checkbox writes `!done`",
       "`{done ? \"Done\" : \"Not done\"}` and `{done && <div>Yay!</div>}`",
       "Use `checked={done}`, not `value`, on a checkbox",
     ],
-    code: `const [done, setDone] = useState(true);
-<p>{done ? "Done" : "Not done"}</p>
-<input
-  type="checkbox"
-  checked={done}
-  onChange={() => setDone(!done)}
-  id="wd-boolean-checkbox"
-/>
-{done && <div className="mt-2 rounded bg-yellow-100 p-2">Yay! Done</div>}`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab4/BooleanStateVariables.tsx",
-    codeHighlightLines: [1, [3, 8]],
     embed: "boolean-state",
   },
   {
     id: "string",
     title: "String: value and onChange",
+    kind: "content",
+    code: `"use client";
+
+import { useState } from "react";
+
+export default function StringStateVariables() {
+  const [firstName, setFirstName] = useState("John");
+  return (
+    <div id="wd-string-state-variables">
+      <h2>String State Variables</h2>
+      <p>{firstName}</p>
+      <input
+        className="w-full max-w-sm rounded border border-neutral-300 px-3 py-1.5"
+        value={firstName}
+        onChange={(e) => setFirstName(e.target.value)}
+        id="wd-first-name"
+      />
+      <hr />
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab4/StringStateVariables.tsx",
+    codeHighlightLines: [6, 11, 13, 14, 15],
+  },
+  {
+    id: "string-live",
+    title: "String: live demo",
     kind: "demo",
     bullets: [
       "`value={firstName}` shows the current string",
       "`onChange={(e) => setFirstName(e.target.value)}` writes each keystroke",
       "Without `value`, the field is uncontrolled and React cannot reset it",
     ],
-    code: `const [firstName, setFirstName] = useState("John");
-<p>{firstName}</p>
-<input
-  value={firstName}
-  onChange={(e) => setFirstName(e.target.value)}
-  id="wd-first-name"
-/>`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab4/StringStateVariables.tsx",
-    codeHighlightLines: [1, [3, 6]],
     embed: "string-state",
   },
   {
@@ -136,24 +174,38 @@ export default function DateStateVariable() {
     id: "object",
     title: "Object: spread, then overwrite (code)",
     kind: "demo",
-    code: `const [person, setPerson] = useState({ name: "Peter", age: 24 });
-<pre>{JSON.stringify(person, null, 2)}</pre>
-<input
-  value={person.name}
-  onChange={(e) => setPerson({ ...person, name: e.target.value })}
-  id="wd-person-name"
-/>
-<input
-  type="number"
-  value={person.age}
-  onChange={(e) =>
-    setPerson({ ...person, age: parseInt(e.target.value) || 0 })
-  }
-  id="wd-person-age"
-/>`,
+    code: `"use client";
+
+import { useState } from "react";
+
+export default function ObjectStateVariable() {
+  const [person, setPerson] = useState({ name: "Peter", age: 24 });
+  return (
+    <div id="wd-object-state-variables">
+      <h2>Object State Variables</h2>
+      <pre>{JSON.stringify(person, null, 2)}</pre>
+      <input
+        className="mb-2 block w-full max-w-sm rounded border border-neutral-300 px-3 py-1.5"
+        value={person.name}
+        onChange={(e) => setPerson({ ...person, name: e.target.value })}
+        id="wd-person-name"
+      />
+      <input
+        type="number"
+        className="block w-full max-w-sm rounded border border-neutral-300 px-3 py-1.5"
+        value={person.age}
+        onChange={(e) =>
+          setPerson({ ...person, age: parseInt(e.target.value) || 0 })
+        }
+        id="wd-person-age"
+      />
+      <hr />
+    </div>
+  );
+}`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/ObjectStateVariable.tsx",
-    codeHighlightLines: [1, 5, [11, 12]],
+    codeHighlightLines: [6, 14, 21, 22],
   },
   {
     id: "object-live",
@@ -173,27 +225,65 @@ export default function DateStateVariable() {
   },
   {
     id: "array",
-    title: "Array: copy, then add or filter (code)",
+    title: "Array: copy, add, or filter (1/2)",
     kind: "demo",
-    code: `const [array, setArray] = useState([1, 2, 3, 4, 5]);
-const addElement = () => {
-  setArray([...array, Math.floor(Math.random() * 100)]);
-};
-const deleteElement = (index: number) => {
-  setArray(array.filter((_item, i) => i !== index));
-};
+    code: `"use client";
 
-{array.map((item, index) => (
-  <li key={\`\${item}-\${index}\`}>
-    <span>{item}</span>
-    <button type="button" onClick={() => deleteElement(index)}>
-      Delete
-    </button>
-  </li>
-))}`,
+import { useState } from "react";
+
+export default function ArrayStateVariable() {
+  const [array, setArray] = useState([1, 2, 3, 4, 5]);
+  const addElement = () => {
+    setArray([...array, Math.floor(Math.random() * 100)]);
+  };
+  const deleteElement = (index: number) => {
+    setArray(array.filter((_item, i) => i !== index));
+  };`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/ArrayStateVariable.tsx",
-    codeHighlightLines: [[2, 7], [9, 16]],
+    codeHighlightLines: [7, 8, 9, 10, 11, 12],
+  },
+  {
+    id: "array-part-2",
+    title: "Array: copy, add, or filter (2/2)",
+    kind: "content",
+    code: `  return (
+    <div id="wd-array-state-variables">
+      <h2>Array State Variable</h2>
+      <button
+        type="button"
+        onClick={addElement}
+        id="wd-add-element-click"
+        className="mb-2 rounded bg-green-600 px-3 py-1.5 text-sm font-medium text-white"
+      >
+        Add Element
+      </button>
+      <ul className="m-0 max-w-xs list-none p-0">
+        {array.map((item, index) => (
+          <li
+            key={\`\${item}-\${index}\`}
+            className="mb-1 flex items-center justify-between rounded border border-neutral-200 bg-green-50 px-3 py-1"
+          >
+            <span>{item}</span>
+            <button
+              type="button"
+              onClick={() => deleteElement(index)}
+              id={\`wd-delete-element-\${index}-click\`}
+              className="rounded bg-red-600 px-2 py-0.5 text-sm font-medium text-white"
+            >
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+      <hr />
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab4/ArrayStateVariable.tsx",
+    codeStartLine: 13,
+    codeHighlightLines: [13, 18, 25, 26, 27, 28],
   },
   {
     id: "array-live",

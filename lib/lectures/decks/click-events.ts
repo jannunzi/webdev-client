@@ -24,12 +24,7 @@ export const CLICK_EVENTS_SLIDES: LectureSlide[] = [
   {
     id: "lab4-stub",
     title: "Start Lab 4 as a Client page",
-    kind: "demo",
-    bullets: [
-      "`mkdir app/labs/lab4` then a page that only prints a heading",
-      "Link it from `app/labs/page.tsx` and `TOC.tsx`",
-      "Install stores now: `npm install zustand @reduxjs/toolkit react-redux`",
-    ],
+    kind: "content",
     code: `"use client";
 
 export default function Lab4() {
@@ -42,6 +37,16 @@ export default function Lab4() {
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/page.tsx",
     codeHighlightLines: [1, [5, 7]],
+  },
+  {
+    id: "lab4-stub-live",
+    title: "Lab 4 page: live demo",
+    kind: "demo",
+    bullets: [
+      "`mkdir app/labs/lab4` then a page that only prints a heading",
+      "Link it from `app/labs/page.tsx` and `TOC.tsx`",
+      "Install stores now: `npm install zustand @reduxjs/toolkit react-redux`",
+    ],
     embed: "lab4-stub",
   },
   {
@@ -57,12 +62,7 @@ export default function Lab4() {
   {
     id: "click",
     title: "A hello handler on a button",
-    kind: "demo",
-    bullets: [
-      "`hello` alerts `Hello World!` — no arguments, so a reference is enough",
-      "Click Hello and confirm the dialog appears",
-      "Import `<ClickEvent />` under the Lab 4 heading",
-    ],
+    kind: "content",
     code: `"use client";
 
 const hello = () => {
@@ -88,6 +88,16 @@ export default function ClickEvent() {
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/ClickEvent.tsx",
     codeHighlightLines: [[3, 5], 13],
+  },
+  {
+    id: "click-live",
+    title: "ClickEvent: live demo",
+    kind: "demo",
+    bullets: [
+      "`hello` alerts `Hello World!` — no arguments, so a reference is enough",
+      "Click Hello and confirm the dialog appears",
+      "Import `<ClickEvent />` under the Lab 4 heading",
+    ],
     embed: "click-event",
   },
   {

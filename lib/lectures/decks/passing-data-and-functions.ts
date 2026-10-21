@@ -23,13 +23,10 @@ export const PASSING_DATA_AND_FUNCTIONS_SLIDES: LectureSlide[] = [
   {
     id: "passing-data",
     title: "A closure holds the argument",
-    kind: "demo",
-    bullets: [
-      "First button still uses a reference — `hello` needs no data",
-      "Second button wraps `lifeIs(\"Life is Good!\")` in an arrow",
-      "Click both and confirm each alert matches the argument",
-    ],
-    code: `const hello = () => {
+    kind: "content",
+    code: `"use client";
+
+const hello = () => {
   alert("Hello World!");
 };
 
@@ -37,19 +34,43 @@ const lifeIs = (good: string) => {
   alert(good);
 };
 
-<button type="button" onClick={hello} id="wd-pass-data-click">
-  Pass Data
-</button>
-<button
-  type="button"
-  onClick={() => lifeIs("Life is Good!")}
-  id="wd-pass-data-parameter-click"
->
-  Pass Data Parameter
-</button>`,
+export default function PassingDataOnEvent() {
+  return (
+    <div id="wd-passing-data-on-event">
+      <h2>Passing Data on Event</h2>
+      <button
+        type="button"
+        onClick={hello}
+        id="wd-pass-data-click"
+        className="me-2 rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
+      >
+        Pass Data
+      </button>
+      <button
+        type="button"
+        onClick={() => lifeIs("Life is Good!")}
+        id="wd-pass-data-parameter-click"
+        className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+      >
+        Pass Data Parameter
+      </button>
+      <hr />
+    </div>
+  );
+}`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/PassingDataOnEvent.tsx",
-    codeAddedLines: [[5, 7], 14],
+    codeAddedLines: [7, 8, 9, 25],
+  },
+  {
+    id: "passing-data-live",
+    title: "PassingDataOnEvent: live demo",
+    kind: "demo",
+    bullets: [
+      "First button still uses a reference — `hello` needs no data",
+      "Second button wraps `lifeIs(\"Life is Good!\")` in an arrow",
+      "Click both and confirm each alert matches the argument",
+    ],
     embed: "passing-data",
   },
   {
@@ -65,12 +86,7 @@ const lifeIs = (good: string) => {
   {
     id: "passing-functions",
     title: "theFunction is a prop",
-    kind: "demo",
-    bullets: [
-      "Type the prop: `theFunction: () => void`",
-      "`onClick={theFunction}` — same reference rule as `hello`",
-      "The child does not know the alert text. The parent does",
-    ],
+    kind: "content",
     code: `"use client";
 
 export default function PassingFunctions({
@@ -96,6 +112,16 @@ export default function PassingFunctions({
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/PassingFunctions.tsx",
     codeHighlightLines: [[3, 6], 13],
+  },
+  {
+    id: "passing-functions-live",
+    title: "PassingFunctions: live demo",
+    kind: "demo",
+    bullets: [
+      "Type the prop: `theFunction: () => void`",
+      "`onClick={theFunction}` — same reference rule as `hello`",
+      "The child does not know the alert text. The parent does",
+    ],
     embed: "passing-functions",
   },
   {
