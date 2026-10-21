@@ -185,6 +185,11 @@ import {
   UseEffectEmbed,
   ZustandCounterEmbed,
   ZustandTodosEmbed,
+  HooksWindowSizeDemoEmbed,
+  HooksToggleDemoEmbed,
+  HooksLocalStorageDemoEmbed,
+  HooksIndependentTogglesEmbed,
+  HooksHookProfileFormEmbed,
 } from "./Lab4Embeds";
 import {
   Lab5CalculatorEmbed,
@@ -543,6 +548,16 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <ZustandCounterEmbed />;
     case "zustand-todos":
       return <ZustandTodosEmbed />;
+    case "hooks-window-size":
+      return <HooksWindowSizeDemoEmbed />;
+    case "hooks-toggle":
+      return <HooksToggleDemoEmbed />;
+    case "hooks-local-storage":
+      return <HooksLocalStorageDemoEmbed />;
+    case "hooks-independent-toggles":
+      return <HooksIndependentTogglesEmbed />;
+    case "hooks-profile-form":
+      return <HooksHookProfileFormEmbed />;
     case "use-effect":
       return <UseEffectEmbed />;
     case "kambaz-courses-crud":

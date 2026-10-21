@@ -19,6 +19,11 @@ import ZustandCounter from "@/app/labs/lab4/zustand/ZustandCounter";
 import ZustandTodoList from "@/app/labs/lab4/zustand/ZustandTodoList";
 import type { ReactNode } from "react";
 import { useState } from "react";
+import WindowSizeDemo from "@/app/labs/lab4/hooks/WindowSizeDemo";
+import ToggleDemo from "@/app/labs/lab4/hooks/ToggleDemo";
+import LocalStorageDemo from "@/app/labs/lab4/hooks/LocalStorageDemo";
+import IndependentToggles from "@/app/labs/lab4/hooks/IndependentToggles";
+import HookProfileForm from "@/app/labs/lab4/hooks/HookProfileForm";
 import LectureDemoFrame from "./LectureDemoFrame";
 
 function Lab4Demo({
@@ -280,5 +285,45 @@ export function KambazCoursesCrudEmbed() {
         </ul>
       </div>
     </LectureDemoFrame>
+  );
+}
+
+export function HooksWindowSizeDemoEmbed() {
+  return (
+    <Lab4Demo label="hooks/WindowSizeDemo.tsx" url="/labs/lab4/hooks">
+      <WindowSizeDemo />
+    </Lab4Demo>
+  );
+}
+
+export function HooksToggleDemoEmbed() {
+  return (
+    <Lab4Demo label="hooks/ToggleDemo.tsx" url="/labs/lab4/hooks">
+      <ToggleDemo />
+    </Lab4Demo>
+  );
+}
+
+export function HooksLocalStorageDemoEmbed() {
+  return (
+    <Lab4Demo label="hooks/LocalStorageDemo.tsx" url="/labs/lab4/hooks">
+      <LocalStorageDemo />
+    </Lab4Demo>
+  );
+}
+
+export function HooksIndependentTogglesEmbed() {
+  return (
+    <Lab4Demo label="hooks/IndependentToggles.tsx" url="/labs/lab4/hooks">
+      <IndependentToggles />
+    </Lab4Demo>
+  );
+}
+
+export function HooksHookProfileFormEmbed() {
+  return (
+    <Lab4Demo label="hooks/HookProfileForm.tsx" url="/labs/lab4/hooks">
+      <HookProfileForm />
+    </Lab4Demo>
   );
 }

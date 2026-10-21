@@ -9,6 +9,7 @@ import NpmRunDevMock from "./NpmRunDevMock";
 import ReactDataUiDiagram from "./ReactDataUiDiagram";
 import SsrDiagram from "./SsrDiagram";
 import TailwindBreakpointsDiagram from "./TailwindBreakpointsDiagram";
+import HooksTableDiagram from "./HooksTableDiagram";
 import BoxModelDiagram from "./BoxModelDiagram";
 import GoogleCloudKeyMock from "./GoogleCloudKeyMock";
 import GrokTokenFlow from "./GrokTokenFlow";
@@ -70,6 +71,8 @@ export default function LectureDiagram({ id }: { id: LectureDiagramId }) {
       return <BoxModelDiagram />;
     case "tailwind-breakpoints":
       return <TailwindBreakpointsDiagram />;
+    case "hooks-table":
+      return <HooksTableDiagram />;
     case "google-cloud-key-mock":
       return <GoogleCloudKeyMock />;
     case "youtube-enable-api-mock":

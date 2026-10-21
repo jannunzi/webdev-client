@@ -109,11 +109,11 @@ export default function Effect() {
   },
   {
     id: "next-up",
-    title: "Next: check your understanding",
+    title: "Next: write your own hooks",
     kind: "title",
     bullets: [
-      "A 10-item self-check before stateful Kambaz",
-      "§4.9: events, `useState`, Context, Zustand, `useEffect`",
+      "Move `useState` and `useEffect` logic into a `use` function",
+      "§4.7.1: share stateful logic between components",
     ],
   },
 ];
