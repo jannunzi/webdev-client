@@ -1034,17 +1034,6 @@ export type Profile = {
   theme: Theme;
 };
 
-export type ProfileChanges = {
-  firstName?: string;
-  lastName?: string;
-  password?: string;
-  dob?: Date | null;
-  role?: Role;
-  newsletter?: boolean;
-  topics?: string[];
-  theme?: Theme;
-};
-
 export type ProfileErrors = {
   firstName?: string;
   lastName?: string;
@@ -1106,7 +1095,7 @@ export function validateProfile(profile: Profile) {
   return errors;
 }`}</CodeBlock>
         <p>
-          <strong>Step 2: the fields.</strong>{" "}<code>ProfileFields</code>{" "}draws every input and receives everything it needs as props: the current <code>profile</code>, the <code>errors</code>{" "}to show, and an <code>update</code>{" "}function that takes a <code>ProfileChanges</code>{" "}— just the fields that changed. <code>ProfileChanges</code>{" "}is defined in <code>profile.ts</code>{" "}like <code>ProfileErrors</code>: every <code>Profile</code>{" "}field again, each marked optional with <code>?</code>. Each input is <em>controlled</em>, as in <SectionLink to="4.2.6" />: its <code>value</code>{" "}(or <code>checked</code>) comes from state and its <code>onChange</code>{" "}calls <code>update</code>. The <code>&lt;select&gt;</code>{" "}element is a drop-down list of <code>&lt;option&gt;</code>{" "}elements; the first option has an empty value so the form can tell when no role was picked. <code>e.target.value as Role</code>{" "}tells TypeScript the chosen value is one of the <code>Role</code>{" "}strings. The topic checkboxes add or remove a topic from the <code>topics</code>{" "}array with the same spread and <code>filter</code>{" "}calls as <SectionLink to="4.2.9" />. Radio buttons that share a <code>name</code>{" "}attribute form a group where only one can be selected. A <code>&lt;fieldset&gt;</code>{" "}groups related inputs and its <code>&lt;legend&gt;</code>{" "}is the group&apos;s caption. The <code>prefix</code>{" "}prop builds every <code>wd-*</code>{" "}id, so the same fields can appear several times on one page without repeating an id. Under each field, <code>{"{errors.firstName && <p>...</p>}"}</code>{" "}shows the message only when there is one. Notice that <code>ProfileFields</code>{" "}does not start with{" "}<code>&quot;use client&quot;</code>: modules imported by a Client Component already run on the client, so the directive is only needed at the server/client boundary, on the file a server page imports.
+          <strong>Step 2: the fields.</strong>{" "}<code>ProfileFields</code>{" "}draws every input and receives everything it needs as props: the current <code>profile</code>, the <code>errors</code>{" "}to show, and the <code>setProfile</code>{" "}function from the form&apos;s state. Each input is <em>controlled</em>, as in <SectionLink to="4.2.6" />: its <code>value</code>{" "}(or <code>checked</code>) comes from state and its <code>onChange</code>{" "}calls <code>setProfile</code>{" "}with a copy of the profile in which one field changed, for example <code>{"setProfile({ ...profile, firstName: e.target.value })"}</code>, the object-spread pattern from <SectionLink to="4.2.8" />. The <code>&lt;select&gt;</code>{" "}element is a drop-down list of <code>&lt;option&gt;</code>{" "}elements; the first option has an empty value so the form can tell when no role was picked. <code>e.target.value as Role</code>{" "}tells TypeScript the chosen value is one of the <code>Role</code>{" "}strings. The topic checkboxes add or remove a topic from the <code>topics</code>{" "}array with the same spread and <code>filter</code>{" "}calls as <SectionLink to="4.2.9" />. Radio buttons that share a <code>name</code>{" "}attribute form a group where only one can be selected. A <code>&lt;fieldset&gt;</code>{" "}groups related inputs and its <code>&lt;legend&gt;</code>{" "}is the group&apos;s caption. The <code>prefix</code>{" "}prop builds every <code>wd-*</code>{" "}id, so the same fields can appear several times on one page without repeating an id. Under each field, <code>{"{errors.firstName && <p>...</p>}"}</code>{" "}shows the message only when there is one. Notice that <code>ProfileFields</code>{" "}does not start with{" "}<code>&quot;use client&quot;</code>: modules imported by a Client Component already run on the client, so the directive is only needed at the server/client boundary, on the file a server page imports.
         </p>
         <CodeBlock
           language="tsx"
@@ -1117,7 +1106,6 @@ export function validateProfile(profile: Profile) {
   htmlToDate,
   TOPICS,
   type Profile,
-  type ProfileChanges,
   type ProfileErrors,
   type Role,
 } from "./profile";
@@ -1129,15 +1117,16 @@ export default function ProfileFields({
   prefix,
   profile,
   errors,
-  update,
+  setProfile,
 }: {
   prefix: string;
   profile: Profile;
   errors: ProfileErrors;
-  update: (changes: ProfileChanges) => void;
+  setProfile: (profile: Profile) => void;
 }) {
   const toggleTopic = (topic: string) =>
-    update({
+    setProfile({
+      ...profile,
       topics: profile.topics.includes(topic)
         ? profile.topics.filter((t) => t !== topic)
         : [...profile.topics, topic],
@@ -1149,7 +1138,7 @@ export default function ProfileFields({
         id={\`\${prefix}-first-name\`}
         className={input}
         value={profile.firstName}
-        onChange={(e) => update({ firstName: e.target.value })}
+        onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
       />
       {errors.firstName && <p className={error}>{errors.firstName}</p>}
 
@@ -1158,7 +1147,7 @@ export default function ProfileFields({
         id={\`\${prefix}-last-name\`}
         className={input}
         value={profile.lastName}
-        onChange={(e) => update({ lastName: e.target.value })}
+        onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
       />
       {errors.lastName && <p className={error}>{errors.lastName}</p>}
 
@@ -1168,7 +1157,7 @@ export default function ProfileFields({
         type="password"
         className={input}
         value={profile.password}
-        onChange={(e) => update({ password: e.target.value })}
+        onChange={(e) => setProfile({ ...profile, password: e.target.value })}
       />
       {errors.password && <p className={error}>{errors.password}</p>}
 
@@ -1178,7 +1167,7 @@ export default function ProfileFields({
         type="date"
         className={input}
         value={dateToHtml(profile.dob)}
-        onChange={(e) => update({ dob: htmlToDate(e.target.value) })}
+        onChange={(e) => setProfile({ ...profile, dob: htmlToDate(e.target.value) })}
       />
       {errors.dob && <p className={error}>{errors.dob}</p>}
 
@@ -1187,7 +1176,7 @@ export default function ProfileFields({
         id={\`\${prefix}-role\`}
         className={input}
         value={profile.role}
-        onChange={(e) => update({ role: e.target.value as Role })}
+        onChange={(e) => setProfile({ ...profile, role: e.target.value as Role })}
       >
         <option value="">Choose a role</option>
         <option value="STUDENT">Student</option>
@@ -1201,7 +1190,7 @@ export default function ProfileFields({
           id={\`\${prefix}-newsletter\`}
           type="checkbox"
           checked={profile.newsletter}
-          onChange={() => update({ newsletter: !profile.newsletter })}
+          onChange={() => setProfile({ ...profile, newsletter: !profile.newsletter })}
         />
         Email me the newsletter
       </label>
@@ -1228,7 +1217,7 @@ export default function ProfileFields({
             type="radio"
             name={\`\${prefix}-theme\`}
             checked={profile.theme === "light"}
-            onChange={() => update({ theme: "light" })}
+            onChange={() => setProfile({ ...profile, theme: "light" })}
           />
           Light
         </label>
@@ -1237,7 +1226,7 @@ export default function ProfileFields({
             type="radio"
             name={\`\${prefix}-theme\`}
             checked={profile.theme === "dark"}
-            onChange={() => update({ theme: "dark" })}
+            onChange={() => setProfile({ ...profile, theme: "dark" })}
           />
           Dark
         </label>
@@ -1279,7 +1268,7 @@ export default function ProfileAlert({
   );
 }`}</CodeBlock>
         <p>
-          <strong>Step 4: the form and its state.</strong>{" "}<code>ProfileForm</code>{" "}owns three state variables: the <code>profile</code>{" "}object, the latest <code>errors</code>, and a <code>submitted</code>{" "}boolean. <code>update</code>{" "}copies the profile and overwrites only the changed fields with <code>{"{ ...profile, ...changes }"}</code>, the object-spread pattern from <SectionLink to="4.2.8" />. A form&apos;s <code>onSubmit</code>{" "}runs when the user clicks a <code>type=&quot;submit&quot;</code>{" "}button or presses Enter in a field. By default the browser would then reload the page, so <code>save</code>{" "}first calls <code>e.preventDefault()</code>{" "}to stop that, then stores the result of <code>validateProfile</code>. The <code>noValidate</code>{" "}attribute turns off the browser&apos;s own built-in checks so that our messages are the only ones shown. The <code>&lt;pre&gt;</code>{" "}prints the profile object so you can watch every type change as you type; a real page would never print a password like this. Create the four files and render <code>ProfileForm</code>:
+          <strong>Step 4: the form and its state.</strong>{" "}<code>ProfileForm</code>{" "}owns three state variables: the <code>profile</code>{" "}object, the latest <code>errors</code>, and a <code>submitted</code>{" "}boolean. It passes <code>setProfile</code>{" "}straight to <code>ProfileFields</code>. A form&apos;s <code>onSubmit</code>{" "}runs when the user clicks a <code>type=&quot;submit&quot;</code>{" "}button or presses Enter in a field. By default the browser would then reload the page, so <code>save</code>{" "}first calls <code>e.preventDefault()</code>{" "}to stop that, then stores the result of <code>validateProfile</code>. The <code>noValidate</code>{" "}attribute turns off the browser&apos;s own built-in checks so that our messages are the only ones shown. The <code>&lt;pre&gt;</code>{" "}prints the profile object so you can watch every type change as you type; a real page would never print a password like this. Create the four files and render <code>ProfileForm</code>:
         </p>
         <CodeBlock
           language="tsx"
@@ -1288,7 +1277,7 @@ export default function ProfileAlert({
         >{`"use client";
 
 import { useState, type FormEvent } from "react";
-import { emptyProfile, validateProfile, type Profile, type ProfileChanges, type ProfileErrors } from "./profile";
+import { emptyProfile, validateProfile, type Profile, type ProfileErrors } from "./profile";
 import ProfileFields from "./ProfileFields";
 import ProfileAlert from "./ProfileAlert";
 
@@ -1296,8 +1285,6 @@ export default function ProfileForm() {
   const [profile, setProfile] = useState<Profile>(emptyProfile);
   const [errors, setErrors] = useState<ProfileErrors>({});
   const [submitted, setSubmitted] = useState(false);
-  const update = (changes: ProfileChanges) =>
-    setProfile({ ...profile, ...changes });
   const save = (e: FormEvent) => {
     e.preventDefault();
     setErrors(validateProfile(profile));
@@ -1307,7 +1294,7 @@ export default function ProfileForm() {
     <form id="wd-profile-form" onSubmit={save} noValidate>
       <h2>Profile</h2>
       <ProfileAlert id="wd-profile-alert" submitted={submitted} errors={errors} />
-      <ProfileFields prefix="wd-profile" profile={profile} errors={errors} update={update} />
+      <ProfileFields prefix="wd-profile" profile={profile} errors={errors} setProfile={setProfile} />
       <button id="wd-profile-save" type="submit" className="mt-3 rounded bg-blue-600 px-4 py-1.5 text-white">
         Save
       </button>

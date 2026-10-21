@@ -12,17 +12,6 @@ export type Profile = {
   theme: Theme;
 };
 
-export type ProfileChanges = {
-  firstName?: string;
-  lastName?: string;
-  password?: string;
-  dob?: Date | null;
-  role?: Role;
-  newsletter?: boolean;
-  topics?: string[];
-  theme?: Theme;
-};
-
 export type ProfileErrors = {
   firstName?: string;
   lastName?: string;

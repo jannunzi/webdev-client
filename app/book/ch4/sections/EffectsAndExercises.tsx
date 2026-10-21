@@ -440,8 +440,7 @@ export default function IndependentToggles() {
           <h4 className="mt-6 font-semibold">Step 5: useProfileForm</h4>
           <p>
             The profile form in <SectionLink to="4.2.10" />{" "}kept three
-            state variables, an <code>update</code>{" "}function, and a{" "}
-            <code>save</code>{" "}handler that validates on submit.
+            state variables and a <code>save</code>{" "}handler that validates on submit.
             Moving all of that into <code>useProfileForm</code>{" "}leaves
             the form component with only its JSX. The hook returns an
             object instead of a pair because it has five things to hand
@@ -456,7 +455,6 @@ import {
   emptyProfile,
   validateProfile,
   type Profile,
-  type ProfileChanges,
   type ProfileErrors,
 } from "../profile/profile";
 
@@ -464,14 +462,12 @@ export default function useProfileForm() {
   const [profile, setProfile] = useState<Profile>(emptyProfile);
   const [errors, setErrors] = useState<ProfileErrors>({});
   const [submitted, setSubmitted] = useState(false);
-  const update = (changes: ProfileChanges) =>
-    setProfile({ ...profile, ...changes });
   const save = (e: FormEvent) => {
     e.preventDefault();
     setErrors(validateProfile(profile));
     setSubmitted(true);
   };
-  return { profile, errors, submitted, update, save };
+  return { profile, setProfile, errors, submitted, save };
 }`}</CodeBlock>
           <p>
             The form reuses <code>ProfileFields</code>{" "}and{" "}
@@ -490,12 +486,12 @@ import ProfileFields from "../profile/ProfileFields";
 import ProfileAlert from "../profile/ProfileAlert";
 
 export default function HookProfileForm() {
-  const { profile, errors, submitted, update, save } = useProfileForm();
+  const { profile, setProfile, errors, submitted, save } = useProfileForm();
   return (
     <form id="wd-hook-profile-form" onSubmit={save} noValidate>
       <h3>useProfileForm</h3>
       <ProfileAlert id="wd-hook-profile-alert" submitted={submitted} errors={errors} />
-      <ProfileFields prefix="wd-hook-profile" profile={profile} errors={errors} update={update} />
+      <ProfileFields prefix="wd-hook-profile" profile={profile} errors={errors} setProfile={setProfile} />
       <button id="wd-hook-profile-save" type="submit" className="mt-3 rounded bg-blue-600 px-4 py-1.5 text-white">
         Save
       </button>
