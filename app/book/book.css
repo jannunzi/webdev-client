@@ -852,7 +852,8 @@ code.quiz-prompt-code {
   border-radius: 0;
 }
 
-.lecture-slide-present-fallback {
+.lecture-slide-present-fallback,
+.lecture-slide-present-native {
   position: fixed;
   inset: 0;
   z-index: 80;

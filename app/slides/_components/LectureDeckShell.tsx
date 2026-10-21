@@ -191,9 +191,10 @@ export default function LectureDeckShell({
 
   const enterPresent = useCallback(async () => {
     pushPresentHistory(indexRef.current + 1);
-    const el = stageRef.current;
-    if (el && preferNativeFullscreen(readPresentEnvironment())) {
-      const entered = await requestNativeFullscreen(el);
+    // Fullscreen the page, not this deck's stage: the stage unmounts when
+    // Continue opens the next deck, and the browser would leave fullscreen.
+    if (preferNativeFullscreen(readPresentEnvironment())) {
+      const entered = await requestNativeFullscreen(document.documentElement);
       if (entered) {
         pendingNativeUpgrade.current = false;
         return;
@@ -234,6 +235,11 @@ export default function LectureDeckShell({
       setIndex(parsed - 1);
     }
     if (lectureSearchIsPresent(window.location.search)) {
+      // Arrived from the previous deck's Continue while still fullscreen.
+      if (nativeFullscreenElement(document) === document.documentElement) {
+        setIsNativeFullscreen(true);
+        return;
+      }
       pendingNativeUpgrade.current = preferNativeFullscreen(readPresentEnvironment());
       setFallbackPresent(true);
     }
@@ -250,7 +256,7 @@ export default function LectureDeckShell({
 
   useEffect(() => {
     function sync() {
-      const active = nativeFullscreenElement(document) === stageRef.current;
+      const active = nativeFullscreenElement(document) === document.documentElement;
       setIsNativeFullscreen(active);
       if (active) {
         pendingNativeUpgrade.current = false;
@@ -276,10 +282,8 @@ export default function LectureDeckShell({
       if (!pendingNativeUpgrade.current || nativeFullscreenElement(document)) {
         return;
       }
-      const el = stageRef.current;
-      if (!el) return;
       pendingNativeUpgrade.current = false;
-      void requestNativeFullscreen(el);
+      void requestNativeFullscreen(document.documentElement);
     }
     pane.addEventListener("pointerdown", tryNativeUpgrade);
     return () => pane.removeEventListener("pointerdown", tryNativeUpgrade);
@@ -437,7 +441,7 @@ export default function LectureDeckShell({
     : undefined;
   const stageClass = isPresenting
     ? `lecture-slide lecture-slide-${density} box-border h-full w-full min-w-0 overflow-x-hidden overflow-y-auto px-5 py-6 sm:px-8 sm:py-7 ${kindFrame(kind)}${
-        fallbackPresent ? " lecture-slide-present-fallback" : ""
+        fallbackPresent ? " lecture-slide-present-fallback" : isNativeFullscreen ? " lecture-slide-present-native" : ""
       }`
     : `lecture-slide lecture-slide-${density} box-border min-h-0 min-w-0 w-full flex-1 overflow-x-hidden overflow-y-auto rounded-lg border-2 px-4 py-4 sm:px-6 sm:py-5 ${kindFrame(kind)}`;
 
