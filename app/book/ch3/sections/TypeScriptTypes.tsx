@@ -369,9 +369,9 @@ export default function FunctionTypes() {
           Calling <code>add(&quot;2&quot;, 3)</code>{" "}would fail the build.{" "}
           <code>multiply</code>{" "}needs no annotations on <code>a</code>{" "}
           and <code>b</code>{" "}because its <code>Operation</code>{" "}type
-          already declares them. <code>logMessage</code>{" "}writes to the
-          console of the terminal running <code>npm run dev</code>, since
-          this is a Server Component:
+          already declares them. On this page, <code>logMessage</code>{" "}
+          writes to the console of the terminal running{" "}
+          <code>npm run dev</code>, not the browser console:
         </p>
         <LiveDemo name="FunctionTypes" file="app/labs/lab3/types/FunctionTypes.tsx">
           <FunctionTypes />
@@ -381,9 +381,8 @@ export default function FunctionTypes() {
         <p>
           A component&apos;s props are just an object, so they are typed with
           an object type, usually named <code>Props</code>. The{" "}
-          <code>children</code>{" "}prop, like the one the <code>Square</code>{" "}
-          and <code>Box</code>{" "}components receive in{" "}
-          <SectionLink to="3.8.1" />, has the type <code>ReactNode</code>,
+          <code>children</code>{" "}prop, which holds whatever is written between a component&apos;s
+          opening and closing tags, has the type <code>ReactNode</code>,
           which covers text, elements, and lists of them. Create{" "}
           <code>CourseBadge.tsx</code>:
         </p>
@@ -585,8 +584,7 @@ export default function UtilityTypes() {
     <div id="wd-utility-types">
       <h4>Utility Types</h4>
       updated.name = {updated.name} <br />
-      fields = {fields.map((field) => \`\${field}: \${updated[field]}\`).join(", ")}{" "}
-      <br />
+      fields = {fields.map((field) => \`\${field}: \${updated[field]}\`).join(", ")} <br />
       enrollment.CS5610 = {enrollment.CS5610}, enrollment.CS5800 ={" "}
       {enrollment.CS5800}
       <hr />

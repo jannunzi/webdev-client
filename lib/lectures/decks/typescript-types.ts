@@ -592,8 +592,7 @@ export default function UtilityTypes() {
     <div id="wd-utility-types">
       <h4>Utility Types</h4>
       updated.name = {updated.name} <br />
-      fields = {fields.map((field) => \`\${field}: \${updated[field]}\`).join(", ")}{" "}
-      <br />
+      fields = {fields.map((field) => \`\${field}: \${updated[field]}\`).join(", ")} <br />
       enrollment.CS5610 = {enrollment.CS5610}, enrollment.CS5800 ={" "}
       {enrollment.CS5800}
       <hr />
