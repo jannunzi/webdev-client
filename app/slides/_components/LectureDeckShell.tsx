@@ -464,10 +464,55 @@ export default function LectureDeckShell({
         </p>
         {isPresenting ? null : (
           <div className="mb-2 flex shrink-0 flex-wrap items-center justify-between gap-2 font-sans text-sm text-neutral-600">
-            <p className="m-0 tabular-nums" aria-live="polite">
-              {index + 1} / {slides.length}
-            </p>
-            <div className="flex flex-wrap items-center gap-2">
+            <nav
+              aria-label={
+                chapterNumber
+                  ? `Other ${lectureChapterLabel(chapterNumber)} decks`
+                  : "Other slide decks"
+              }
+              className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1"
+            >
+              {prevDeck ? (
+                <Link href={`/slides/${prevDeck.slug}`} title={prevDeck.title}>
+                  ← Previous deck
+                </Link>
+              ) : (
+                <span className="text-neutral-400">First deck</span>
+              )}
+              {nextDeck ? (
+                <Link href={`/slides/${nextDeck.slug}`} title={nextDeck.title}>
+                  Next deck →
+                </Link>
+              ) : (
+                <span className="text-neutral-400">Last deck</span>
+              )}
+            </nav>
+            <div
+              role="toolbar"
+              aria-label="Slide controls"
+              className="flex flex-wrap items-center gap-2"
+            >
+              <button
+                type="button"
+                className="rounded border border-neutral-800 bg-white px-3 py-1.5 text-sm disabled:cursor-not-allowed disabled:opacity-40"
+                onClick={() => goTo(index - 1)}
+                disabled={index === 0}
+                title="Previous slide (←)"
+              >
+                ← Previous
+              </button>
+              <p className="m-0 tabular-nums" aria-live="polite">
+                {index + 1} / {slides.length}
+              </p>
+              <button
+                type="button"
+                className="book-practice-cta rounded border border-neutral-800 bg-neutral-800 px-3 py-1.5 text-sm text-white disabled:cursor-not-allowed disabled:opacity-40"
+                onClick={() => goTo(index + 1)}
+                disabled={index === last}
+                title="Next slide (→)"
+              >
+                Next →
+              </button>
               {editMode && onRemoveSlide ? (
                 <button
                   type="button"
@@ -482,6 +527,7 @@ export default function LectureDeckShell({
                 type="button"
                 className="rounded border border-neutral-800 bg-white px-3 py-1.5 text-sm"
                 onClick={() => togglePresent()}
+                title="← → change slides · ↑ ↓ scroll · f present · Esc exits"
               >
                 Present
               </button>
@@ -590,54 +636,6 @@ export default function LectureDeckShell({
           </button>
         ) : null}
 
-        {isPresenting ? null : (
-          <>
-            <div className="mt-2 flex shrink-0 flex-wrap items-center justify-between gap-3">
-              <button
-                type="button"
-                className="rounded border border-neutral-800 bg-white px-3 py-2 font-sans text-sm disabled:cursor-not-allowed disabled:opacity-40"
-                onClick={() => goTo(index - 1)}
-                disabled={index === 0}
-              >
-                Previous slide
-              </button>
-              <p className="m-0 font-sans text-xs text-neutral-500">
-                ← → change slides · swipe in present · ↑ ↓ scroll if overflow · space · f present · Esc / back exits
-              </p>
-              <button
-                type="button"
-                className="book-practice-cta rounded border border-neutral-800 bg-neutral-800 px-3 py-2 font-sans text-sm text-white disabled:cursor-not-allowed disabled:opacity-40"
-                onClick={() => goTo(index + 1)}
-                disabled={index === last}
-              >
-                Next slide
-              </button>
-            </div>
-            <nav
-              aria-label={
-                chapterNumber
-                  ? `Other ${lectureChapterLabel(chapterNumber)} decks`
-                  : "Other slide decks"
-              }
-              className="mt-2 flex shrink-0 flex-wrap gap-x-4 gap-y-1 border-t border-neutral-200 pt-2 font-sans text-sm"
-            >
-              {prevDeck ? (
-                <Link href={`/slides/${prevDeck.slug}`}>← {prevDeck.title}</Link>
-              ) : (
-                <span className="text-neutral-500">
-                  {chapterNumber ? `${lectureChapterLabel(chapterNumber)} · ` : ""}first deck
-                </span>
-              )}
-              {nextDeck ? (
-                <Link href={`/slides/${nextDeck.slug}`}>{nextDeck.title} →</Link>
-              ) : (
-                <span className="text-neutral-500">
-                  {chapterNumber ? `${lectureChapterLabel(chapterNumber)} · ` : ""}last deck
-                </span>
-              )}
-            </nav>
-          </>
-        )}
       </div>
     </section>
   );
