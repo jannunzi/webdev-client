@@ -1318,7 +1318,7 @@ describe("lecture decks", () => {
     assert.equal(counts["usestate-counter"], 13);
     assert.equal(counts["form-state-types"], 29);
     assert.equal(counts["sharing-parent-child"], 8);
-    assert.equal(counts["prop-drilling-and-url"], 11);
+    assert.equal(counts["prop-drilling-and-url"], 16);
     assert.equal(counts["react-context"], 15);
     assert.equal(counts["zustand-counter"], 8);
     assert.equal(counts["zustand-todos"], 15);
@@ -3845,7 +3845,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 234);
+    assert.equal(intros, 237);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {

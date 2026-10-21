@@ -103,6 +103,122 @@ export default function PropDrilling() {
     ],
   },
   {
+    id: "query-intro",
+    title: "Query parameters: QueryCalculator",
+    kind: "content",
+    bullets: [
+      "`useSearchParams()` decodes the query string. `.get(\"a\")` returns the value or `null`, so fall back to `\"0\"`",
+      "Next.js already decoded the values: no `decodeURIComponent`",
+      "Parse the strings as floats, add them, and render the sum",
+    ],
+  },
+  {
+    id: "query",
+    title: "QueryCalculator (code)",
+    kind: "content",
+    code: `"use client";
+
+import { useSearchParams } from "next/navigation";
+
+export default function QueryCalculator() {
+  const searchParams = useSearchParams();
+  const aRaw = searchParams.get("a") || "0";
+  const bRaw = searchParams.get("b") || "0";
+  const a = parseFloat(aRaw);
+  const b = parseFloat(bRaw);
+  const sum = a + b;
+  return (
+    <div id="wd-query-calculator">
+      <h1>Calculator – Query Parameters</h1>
+      <p>Raw query values (already decoded by Next.js):</p>
+      <p>
+        a = <code>{aRaw}</code>
+      </p>
+      <p>
+        b = <code>{bRaw}</code>
+      </p>
+      <h2 className="text-green-700">Sum = {sum}</h2>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab4/url-encoding/query-params/QueryCalculator.tsx",
+  },
+  {
+    id: "query-page",
+    title: "The query page wraps it in Suspense",
+    kind: "content",
+    bullets: [
+      "`app/labs/lab4/url-encoding/query-params/page.tsx` renders `QueryCalculator`",
+      "Wrap `useSearchParams` in `Suspense` so Next.js can stream the page",
+      "Open `/labs/lab4/url-encoding/query-params?a=5&b=10`: the sum is 15",
+    ],
+    code: `import { Suspense } from "react";
+import QueryCalculator from "./QueryCalculator";
+
+export default function QueryCalculatorPage() {
+  return (
+    <Suspense fallback={<p>Loading calculator…</p>}>
+      <QueryCalculator />
+    </Suspense>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab4/url-encoding/query-params/page.tsx",
+  },
+  {
+    id: "path-intro",
+    title: "Path parameters: PathCalculator",
+    kind: "content",
+    bullets: [
+      "Folders named `[a]` and `[b]` name the parameters",
+      "`useParams()` decodes them from the path",
+      "Open `/labs/lab4/url-encoding/path-params/5/10`: the sum is 15",
+    ],
+  },
+  {
+    id: "path",
+    title: "PathCalculator (code)",
+    kind: "content",
+    code: `"use client";
+
+import { useParams } from "next/navigation";
+
+export default function PathCalculator() {
+  const params = useParams();
+  const aRaw = params.a as string;
+  const bRaw = params.b as string;
+  const a = parseFloat(aRaw);
+  const b = parseFloat(bRaw);
+  const sum = a + b;
+  return (
+    <div id="wd-path-calculator">
+      <h1>Calculator – Path Parameters</h1>
+      <p>Raw path segments (already decoded by Next.js):</p>
+      <p>
+        a = <code>{aRaw}</code>
+      </p>
+      <p>
+        b = <code>{bRaw}</code>
+      </p>
+      <h2 className="text-green-700">Sum = {sum}</h2>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab4/url-encoding/path-params/[a]/[b]/page.tsx",
+  },
+  {
+    id: "url-form-intro",
+    title: "UrlEncoding navigates to either page",
+    kind: "content",
+    bullets: [
+      "`router.push` builds a URL in a click handler. `<Link href>` is declarative",
+      "`URLSearchParams` and `encodeURIComponent` build safe URLs",
+      "Import `UrlEncoding` into the Lab 4 page",
+    ],
+  },
+  {
     id: "url-form",
     title: "A calculator that navigates (1/2)",
     kind: "content",
@@ -211,23 +327,6 @@ export default function UrlEncoding() {
       "`URLSearchParams` and `encodeURIComponent` keep the URL safe",
     ],
     embed: "url-encoding",
-  },
-  {
-    id: "query-read",
-    title: "The next page reads the query",
-    kind: "content",
-    bullets: [
-      "`useSearchParams()` returns the decoded `a` and `b`",
-      "Parse floats, then print the sum — no store required",
-      "Path params use `useParams()` the same way Lab 3 did",
-    ],
-    code: `const searchParams = useSearchParams();
-const aRaw = searchParams.get("a") || "0";
-const bRaw = searchParams.get("b") || "0";
-const sum = parseFloat(aRaw) + parseFloat(bRaw);`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab4/url-encoding/query-params/QueryCalculator.tsx",
-    codeHighlightLines: [[1, 4]],
   },
   {
     id: "recap",
