@@ -556,7 +556,7 @@ export default function ProfileFields({
     kind: "content",
     bullets: [
       "Shows nothing until the form has been submitted",
-      "`Object.keys(errors).length` counts the fields to fix. Zero means saved",
+      "As in §3.4.11, `Object.keys(errors).length` counts the fields with an error. Zero means saved",
       "`role=\"alert\"` is announced by screen readers. `role=\"status\"` is quieter",
     ],
   },
