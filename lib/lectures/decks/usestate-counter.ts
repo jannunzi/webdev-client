@@ -49,6 +49,7 @@ export default function CounterBroken() {
         type="button"
         onClick={() => {
           count++;
+          console.log(count);
         }}
         id="wd-counter-broken-up-click"
         className="me-2 rounded bg-green-600 px-3 py-1.5 text-sm font-medium text-white"
@@ -59,6 +60,7 @@ export default function CounterBroken() {
         type="button"
         onClick={() => {
           count--;
+          console.log(count);
         }}
         id="wd-counter-broken-down-click"
         className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
@@ -71,7 +73,7 @@ export default function CounterBroken() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab4/CounterBroken.tsx",
-    codeHighlightLines: [4, 10, 11, 12],
+    codeHighlightLines: [4, 11, 12, 21, 22],
   },
   {
     id: "broken-live",
@@ -79,6 +81,7 @@ export default function CounterBroken() {
     kind: "demo",
     bullets: [
       "`count++` updates memory. The heading stays at 7",
+      "Open the console: count changes there, the heading does not",
       "React never saw a state change, so the virtual DOM is the same",
       "Click Up and Down here — the number does not move",
     ],

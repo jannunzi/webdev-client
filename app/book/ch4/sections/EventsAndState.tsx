@@ -360,7 +360,9 @@ export default function PassingFunctions({
           visible. A <code>count</code>{" "}variable is initialized and
           rendered on the screen. Buttons Up and Down update the variable
           in memory, but the heading stays at 7 because as far as React is
-          concerned there have been no changes to the virtual DOM.
+          concerned there have been no changes to the virtual DOM. Open
+          the browser console and click the buttons: each click logs the
+          new <code>count</code>, while the heading stays at 7.
         </p>
         <CodeBlock
           language="tsx"
@@ -377,6 +379,7 @@ export default function CounterBroken() {
         type="button"
         onClick={() => {
           count++;
+          console.log(count);
         }}
         id="wd-counter-broken-up-click"
         className="me-2 rounded bg-green-600 px-3 py-1.5 text-sm font-medium text-white"
@@ -387,6 +390,7 @@ export default function CounterBroken() {
         type="button"
         onClick={() => {
           count--;
+          console.log(count);
         }}
         id="wd-counter-broken-down-click"
         className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
