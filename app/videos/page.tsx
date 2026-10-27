@@ -5,6 +5,7 @@ import {
   videoCourseOptions,
 } from "@/lib/videos/courses";
 import { listVideoHubChapters } from "@/lib/videos/hub";
+import { listLectureClipSets } from "@/lib/videos/lectures";
 import { lectureClipMap } from "@/lib/videos/map";
 import { publishedCoursePlaylists } from "@/lib/videos/playlists";
 import { parseVideosQuery, videosHref, videosHubHref } from "@/lib/videos/query";
@@ -68,6 +69,7 @@ export default async function VideosPage({
       })}
       activeSection={query.section || null}
       playlists={publishedCoursePlaylists()}
+      lectures={listLectureClipSets()}
     />
   );
 }
