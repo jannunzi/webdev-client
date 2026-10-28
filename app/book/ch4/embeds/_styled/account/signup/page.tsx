@@ -47,7 +47,7 @@ export default function Signup() {
       />
       <button type="button" onClick={signup} id="wd-signup-btn">
         Sign up
-      </button>
+      </button>{" "}
       <Link href="/account/signin" id="wd-signin-link">
         Sign in
       </Link>
