@@ -16,7 +16,7 @@ export const KAMBAZ_DASHBOARD_DATA_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "Refactor the §2.4.2 dashboard so it maps JSON, not three hardcoded cards",
-      "Spread each course into `CourseCard` and key the card by `course._id`",
+      "Pass each course as one `course` prop and key the card by `course._id`",
       "The published count interpolates `courses.length`",
       "Clicking a card lands on `/courses/RS101/home` (or whichever `_id`)",
     ],
@@ -41,7 +41,7 @@ export default function Dashboard() {
         className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
       >
         {courses.map((course) => (
-          <CourseCard key={course._id} {...course} />
+          <CourseCard key={course._id} course={course} />
         ))}
       </div>
     </div>
@@ -67,8 +67,8 @@ export default function Dashboard() {
     title: "CourseCard encodes _id in the href",
     kind: "content",
     bullets: [
-      "Destructure `_id`, `name`, `description`, and `image`",
-      "`href={\`/courses/${_id}/home\`}` — later screens look the course up",
+      "One `course` prop: read `course._id`, `course.name`, `course.image`",
+      "`href={\`/courses/${course._id}/home\`}` — later screens look the course up",
       "The Go button is inside the same `Link`",
     ],
   },
@@ -80,35 +80,34 @@ export default function Dashboard() {
 import Image from "next/image";
 
 export default function CourseCard({
-  _id,
-  name,
-  description,
-  image,
+  course,
 }: {
-  _id: string;
-  name: string;
-  description: string;
-  image: string;
+  course: {
+    _id: string;
+    name: string;
+    description: string;
+    image: string;
+  };
 }) {
   return (
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
       <Link
-        href={\`/courses/\${_id}/home\`}
+        href={\`/courses/\${course._id}/home\`}
         className="wd-dashboard-course-link block text-neutral-900 no-underline"
       >
         <Image
-          src={image}
+          src={course.image}
           width={300}
           height={160}
-          alt={name}
+          alt={course.name}
           className="h-40 w-full object-cover"
         />
         <div className="p-4">
           <h5 className="wd-dashboard-course-title m-0 mb-2 truncate text-lg font-semibold whitespace-nowrap">
-            {name}
+            {course.name}
           </h5>
           <p className="wd-dashboard-course-description m-0 mb-3 h-[100px] overflow-hidden text-sm text-neutral-600">
-            {description}
+            {course.description}
           </p>
           <button
             type="button"
@@ -123,14 +122,14 @@ export default function CourseCard({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
-    codeHighlightLines: [[4, 8], 18],
+    codeHighlightLines: [[4, 13], 17],
   },
   {
     id: "recap",
     title: "Dashboard data recap",
     kind: "content",
     bullets: [
-      "`courses.map` + `key={course._id}` + `{...course}`",
+      "`courses.map` + `key={course._id}` + `course={course}`",
       "`Published Courses ({courses.length})` follows the JSON",
       "The card’s `Link` encodes `_id` for every later course screen",
     ],

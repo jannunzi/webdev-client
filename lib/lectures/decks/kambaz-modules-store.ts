@@ -26,33 +26,34 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "`show === false` returns `null` — the overlay is not in the document",
-      "`moduleName` / `setModuleName` is a string draft — §4.2.6",
-      "Add Module calls `addModule()` then `handleClose()`. Cancel only closes",
+      "It owns the `moduleName` draft (§4.2.6) and reads `cid` with `useParams`",
+      "Add Module calls the store's `addModule`, clears the draft, then closes",
     ],
   },
   {
     id: "editor",
     title: "ModuleEditor is a controlled dialog (1/2)",
     kind: "content",
-    code: `export default function ModuleEditor({
+    code: `import { useState } from "react";
+import { useParams } from "next/navigation";
+import { useModulesStore } from "../../../store/modulesStore";
+
+export default function ModuleEditor({
   show,
   handleClose,
   dialogTitle,
-  moduleName,
-  setModuleName,
-  addModule,
 }: {
   show: boolean;
   handleClose: () => void;
   dialogTitle: string;
-  moduleName: string;
-  setModuleName: (name: string) => void;
-  addModule: () => void;
 }) {
+  const { cid } = useParams();
+  const [moduleName, setModuleName] = useState("");
+  const addModule = useModulesStore((state) => state.addModule);
   if (!show) return null;`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx",
-    codeHighlightLines: [16],
+    codeHighlightLines: [[14, 16]],
   },
   {
     id: "editor-part-2",
@@ -74,7 +75,7 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
         </div>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx",
-    codeStartLine: 17,
+    codeStartLine: 18,
   },
   {
     id: "editor-part-3",
@@ -87,7 +88,8 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
           </button>
           <button id="wd-add-module-submit" type="button" className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
             onClick={() => {
-              addModule();
+              addModule({ name: moduleName, course: String(cid) });
+              setModuleName("");
               handleClose();
             }} >
             Add Module
@@ -99,8 +101,8 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx",
-    codeStartLine: 31,
-    codeHighlightLines: [7, 8],
+    codeStartLine: 32,
+    codeHighlightLines: [8, 9, 10],
   },
   {
     id: "controls-intro",
@@ -109,9 +111,8 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
     bullets: [
       "`ModulesControls` already has Collapse All, View Progress, Publish All",
       "It owns only `show`: + Module sets it true, Cancel or × sets it false",
-      "No props: it keeps the `moduleName` draft and reads `cid` with `useParams`",
-      "It calls the store's `addModule` with `{ name: moduleName, course: cid }`",
-      "After Add Module, `setModuleName(\"\")` so the next open starts blank",
+      "No props in; it passes the dialog only `show`, `handleClose`, `dialogTitle`",
+      "The dialog owns the name draft and calls the store's `addModule` itself",
     ],
     embed: "kambaz-ch4-modules-controls",
   },
@@ -120,21 +121,16 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
     title: "+ Module opens the dialog (1/3)",
     kind: "content",
     code: `import { useState } from "react";
-import { useParams } from "next/navigation";
 import { FaPlus } from "react-icons/fa";
 import ModuleEditor from "./ModuleEditor";
-import { useModulesStore } from "../../../store/modulesStore";
 
 export default function ModulesControls() {
-  const { cid } = useParams();
-  const [moduleName, setModuleName] = useState("");
-  const addModule = useModulesStore((state) => state.addModule);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx",
-    codeHighlightLines: [2, 5, 7, 8, 9, 10],
+    codeHighlightLines: [6, 7, 8],
   },
   {
     id: "controls-part-2",
@@ -154,7 +150,7 @@ export default function ModulesControls() {
       </select>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx",
-    codeStartLine: 14,
+    codeStartLine: 9,
   },
   {
     id: "controls-part-3",
@@ -168,20 +164,14 @@ export default function ModulesControls() {
         show={show}
         handleClose={handleClose}
         dialogTitle="Add Module"
-        moduleName={moduleName}
-        setModuleName={setModuleName}
-        addModule={() => {
-          addModule({ name: moduleName, course: String(cid) });
-          setModuleName("");
-        }}
       />
     </div>
   );
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx",
-    codeStartLine: 26,
-    codeHighlightLines: [10, 11, 12, 13],
+    codeStartLine: 21,
+    codeHighlightLines: [6, 7, 8],
   },
   {
     id: "buttons-intro",
@@ -250,34 +240,49 @@ export default function GreenCheckmark() {
   },
   {
     id: "module",
-    title: "Module takes a title node and extra",
+    title: "Module renders one module",
     kind: "content",
     bullets: [
-      "`title` is a `ReactNode`, so it can be the name or an input",
-      "`extra` holds the control buttons; no extra shows the checkmark",
+      "One `module` prop; it selects `updateModule` from the store itself",
+      "`module.editing` swaps the name for an input; Enter saves",
+      "Renders `ModuleControlButtons` and maps `lessons` to `Lesson`",
     ],
-    code: `import type { ReactNode } from "react";
-import GreenCheckmark from "./GreenCheckmark";
+    code: `import ModuleControlButtons from "./ModuleControlButtons";
+import Lesson from "./Lesson";
+import { useModulesStore, type CourseModule } from "../../../store/modulesStore";
 
-export default function Module({
-  title,
-  extra,
-  children,
-}: {
-  title: ReactNode;
-  extra?: ReactNode;
-  children?: ReactNode;
-}) {
+export default function Module({ module }: { module: CourseModule }) {
+  const updateModule = useModulesStore((state) => state.updateModule);
   return (
     <li className="wd-module mb-5 overflow-hidden border border-neutral-400 p-0 text-xl">
       <div className="wd-title flex items-center justify-between bg-neutral-200 p-3 ps-2">
-        <span className="min-w-0 flex-1">{title}</span>
+        <span className="min-w-0 flex-1">
+          {module.editing ? (
+            <input
+              className="w-1/2 rounded border border-neutral-300 px-2 py-1 text-base"
+              defaultValue={module.name}
+              onChange={(e) =>
+                updateModule({ ...module, name: e.target.value })
+              }
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  updateModule({ ...module, editing: false });
+                }
+              }}
+            />
+          ) : (
+            module.name
+          )}
+        </span>
         <span className="ms-2 flex items-center gap-2">
-          {extra}
-          {!extra ? <GreenCheckmark /> : null}
+          <ModuleControlButtons moduleId={module._id} />
         </span>
       </div>
-      <ul className="wd-lessons m-0 list-none p-0">{children}</ul>
+      <ul className="wd-lessons m-0 list-none p-0">
+        {module.lessons?.map((lesson) => (
+          <Lesson key={lesson._id} title={lesson.name} />
+        ))}
+      </ul>
     </li>
   );
 }`,
@@ -393,10 +398,9 @@ type ModulesStore = {
     title: "Modules page wires the store",
     kind: "content",
     bullets: [
-      "Only `modules` and `updateModule` come from `useModulesStore` here",
+      "Only `modules` comes from `useModulesStore` here",
       "Children read their own actions — no `moduleName` state, no action props",
-      "`editModule` sets `editing: true`; the title swaps the name for an input",
-      "Each `onChange` calls `updateModule`; Enter sets `editing` back to false",
+      "Filter by `cid`, then `<Module key={module._id} module={module} />`",
     ],
   },
   {
@@ -407,15 +411,12 @@ type ModulesStore = {
 
 import { useParams } from "next/navigation";
 import Module from "./Module";
-import Lesson from "./Lesson";
-import ModuleControlButtons from "./ModuleControlButtons";
 import ModulesControls from "./ModulesControls";
 import { useModulesStore } from "../../../store/modulesStore";
 
 export default function Modules() {
   const { cid } = useParams();
   const modules = useModulesStore((state) => state.modules);
-  const updateModule = useModulesStore((state) => state.updateModule);
 `,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/page.tsx",
@@ -431,30 +432,7 @@ export default function Modules() {
         {modules
           .filter((module) => module.course === cid)
           .map((module) => (
-            <Module
-              key={module._id}
-              extra={<ModuleControlButtons moduleId={module._id} />}
-              title={
-                module.editing ? (
-                  <input defaultValue={module.name} className="w-1/2 rounded border border-neutral-300 px-2 py-1 text-base"
-                    onChange={(e) =>
-                      updateModule({ ...module, name: e.target.value })
-                    }
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        updateModule({ ...module, editing: false });
-                      }
-                    }}
-                  />
-                ) : (
-                  module.name
-                )
-              }
-            >
-              {module.lessons?.map((lesson) => (
-                <Lesson key={lesson._id} title={lesson.name} />
-              ))}
-            </Module>
+            <Module key={module._id} module={module} />
           ))}
       </ul>
     </div>
@@ -462,7 +440,7 @@ export default function Modules() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/page.tsx",
-    codeStartLine: 15,
+    codeStartLine: 12,
   },
   {
     id: "page-live",

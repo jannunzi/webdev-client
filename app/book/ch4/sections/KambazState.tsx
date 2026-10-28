@@ -376,7 +376,7 @@ export default function Dashboard() {
         {courses.map((c) => (
           <CourseCard
             key={c._id}
-            {...c}
+            course={c}
             onEdit={() => setCourse(c)}
           />
         ))}
@@ -493,7 +493,7 @@ export default function Dashboard() {
             the card itself: <code>CourseCard</code>{" "}reads{" "}
             <code>deleteCourse</code>{" "}from{" "}
             <code>useCoursesStore</code>{" "}and calls{" "}
-            <code>{`deleteCourse(_id)`}</code>, so Dashboard does not
+            <code>{`deleteCourse(course._id)`}</code>, so Dashboard does not
             pass a delete prop. Style Delete as a red Tailwind button
             and give it id{" "}
             <code>wd-delete-course-click</code>. The Delete control
@@ -551,8 +551,14 @@ export default function Dashboard() {
           />
           <p>
             To practice the card buttons, keep the image, title, and
-            description from the <ChapterLink to={3} />{" "}card, then
-            accept <code>onEdit</code>{" "}(Edit fills the
+            description from the <ChapterLink to={3} />{" "}card, but
+            take the whole course as a single <code>course</code>{" "}prop
+            typed with the <code>Course</code>{" "}type from{" "}
+            <code>coursesStore.ts</code>, so Dashboard renders{" "}
+            <code>{`<CourseCard course={c} onEdit={() => setCourse(c)} />`}</code>{" "}
+            and the card reads <code>course._id</code>,{" "}
+            <code>course.name</code>, and so on. Accept{" "}
+            <code>onEdit</code>{" "}(Edit fills the
             Dashboard&apos;s local draft, so it stays a prop), read{" "}
             <code>deleteCourse</code>{" "}from the store, and wire both
             clicks through <code>preventDefault</code>. Style
@@ -565,41 +571,35 @@ export default function Dashboard() {
             file="app/(kambaz)/dashboard/CourseCard.tsx"
           >{`import Link from "next/link";
 import Image from "next/image";
-import { useCoursesStore } from "../store/coursesStore";
+import { useCoursesStore, type Course } from "../store/coursesStore";
 
 export default function CourseCard({
-  _id,
-  name,
-  description,
-  image,
+  course,
   onEdit,
 }: {
-  _id: string;
-  name: string;
-  description: string;
-  image: string;
+  course: Course;
   onEdit: () => void;
 }) {
   const deleteCourse = useCoursesStore((state) => state.deleteCourse);
   return (
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
       <Link
-        href={\`/courses/\${_id}/home\`}
+        href={\`/courses/\${course._id}/home\`}
         className="wd-dashboard-course-link block text-neutral-900 no-underline"
       >
         <Image
-          src={image}
+          src={course.image}
           width={300}
           height={160}
-          alt={name}
+          alt={course.name}
           className="h-40 w-full object-cover"
         />
         <div className="p-4">
           <h5 className="wd-dashboard-course-title m-0 mb-2 truncate text-lg font-semibold whitespace-nowrap">
-            {name}
+            {course.name}
           </h5>
           <p className="wd-dashboard-course-description m-0 mb-3 h-[100px] overflow-hidden text-sm text-neutral-600">
-            {description}
+            {course.description}
           </p>
           <button
             type="button"
@@ -624,7 +624,7 @@ export default function CourseCard({
             className="ms-2 inline-flex items-center justify-center rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
             onClick={(event) => {
               event.preventDefault();
-              deleteCourse(_id);
+              deleteCourse(course._id);
             }}
           >
             Delete
