@@ -121,6 +121,10 @@ import {
   KambazStyledSigninEmbed,
 } from "./KambazStylingEmbeds";
 import {
+  KambazCh4ModulesEmbed,
+  KambazCh4ProfileEmbed,
+} from "./KambazCh4Embeds";
+import {
   JsAddEmbed,
   JsArrayAddRemoveEmbed,
   JsArrayIndexEmbed,
@@ -207,6 +211,7 @@ import {
 import {
   KambazEnrollmentsEmbed,
   KambazPeopleCrudEmbed,
+  KambazSlidesSignupEmbed,
 } from "./EnrollmentsEmbeds";
 import {
   Lab5CalculatorEmbed,
@@ -419,6 +424,13 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <KambazCh3PeopleEmbed />;
     case "kambaz-styled-signin":
       return <KambazStyledSigninEmbed />;
+    case "kambaz-ch4-modules":
+      return <KambazCh4ModulesEmbed />;
+    case "kambaz-ch4-signup":
+      // Slides-only: Sign up through the slides' context createUser.
+      return <KambazSlidesSignupEmbed />;
+    case "kambaz-ch4-profile":
+      return <KambazCh4ProfileEmbed />;
     case "lab3-stub":
       return <Lab3StubEmbed />;
     case "js-variables":

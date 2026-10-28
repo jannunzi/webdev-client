@@ -7,6 +7,8 @@ import { OnYourOwn, WithAI } from "../../components/Practice";
 import NestedExerciseList from "../../components/NestedExerciseList";
 import { CH4_KAMBAZ_EXERCISES } from "../../exercise-lists/catalogs";
 import Link from "next/link";
+import LiveDemo from "../../components/LiveDemo";
+import { KambazCh4SignupEmbed } from "../../../slides/_components/embeds/KambazCh4Embeds";
 
 export default function KambazAccount() {
   return (
@@ -453,6 +455,100 @@ export default function Profile() {
           >
             Ask the assistant to fill any sample fields you skipped:
           </WithAI>
+        </Section>
+
+        <Section
+          level={3}
+          id="sec-4-10-5-6"
+          title="4.10.5.6 Sign up"
+        >
+          <p>
+            Sign up creates a new user and signs that user in. The
+            screen keeps <code>username</code>{" "}and{" "}
+            <code>password</code>{" "}in <code>useState</code>. Clicking
+            Sign up builds a user object with every field from{" "}
+            <code>users.json</code>, a new <code>_id</code>, and the
+            role <code>STUDENT</code>, passes it to{" "}
+            <code>setCurrentUser</code>, and navigates to Profile so the
+            new user can fill in the rest. To practice Sign up, update{" "}
+            <code>app/(kambaz)/account/signup/page.tsx</code>{" "}as shown
+            below:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="Signup"
+            file="app/(kambaz)/account/signup/page.tsx"
+          >{`"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAccountContext } from "../AccountContext";
+
+export default function Signup() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const { setCurrentUser } = useAccountContext();
+  const router = useRouter();
+
+  const signup = () => {
+    if (!username || !password) return;
+    setCurrentUser({
+      _id: crypto.randomUUID(),
+      username,
+      password,
+      firstName: "",
+      lastName: "",
+      email: "",
+      role: "STUDENT",
+      loginId: "",
+      section: "",
+      lastActivity: "",
+      totalActivity: "",
+    });
+    router.push("/account/profile");
+  };
+
+  return (
+    <div id="wd-signup-screen">
+      <h3>Sign up</h3>
+      <input
+        id="wd-username"
+        placeholder="username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <input
+        id="wd-password"
+        placeholder="password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button type="button" onClick={signup} id="wd-signup-btn">
+        Sign up
+      </button>
+      <Link href="/account/signin" id="wd-signin-link">
+        Sign in
+      </Link>
+    </div>
+  );
+}`}</CodeBlock>
+          <p>
+            The demo below runs Sign up and Profile on the{" "}
+            <code>AccountContext</code>{" "}from{" "}
+            <SectionLink to="4.10.5.1" />. Sign up with a new username,
+            fill the Profile fields, click Update, then Sign out. The new
+            user only lives in memory, so a reload forgets it until a
+            later chapter saves users on a server.
+          </p>
+          <LiveDemo
+            name="Signup"
+            file="app/(kambaz)/account/signup/page.tsx"
+            mode="styled"
+          >
+            <KambazCh4SignupEmbed />
+          </LiveDemo>
         </Section>
       </Section>
 

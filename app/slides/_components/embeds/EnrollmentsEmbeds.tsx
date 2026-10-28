@@ -1,6 +1,10 @@
 "use client";
 
 import LectureDemoFrame from "./LectureDemoFrame";
+import AsAccountRouter from "./AsAccountRouter";
+import Signup from "./enrollments/account/signup/page";
+import Signin from "./enrollments/account/signin/page";
+import Profile from "./enrollments/account/profile/page";
 import {
   AccountProvider,
   useAccountContext,
@@ -63,5 +67,29 @@ export function KambazPeopleCrudEmbed() {
         </div>
       </AccountProvider>
     </LectureDemoFrame>
+  );
+}
+
+/**
+ * Slides-only Sign up: createUser adds the new user to the context's users,
+ * so after Sign out the slides' Sign in finds them again.
+ */
+export function KambazSlidesSignupEmbed() {
+  return (
+    <AsAccountRouter
+      start="/account/signup"
+      Provider={AccountProvider}
+      screens={(path) =>
+        path === "/account/signup" ? (
+          <Signup />
+        ) : path === "/account/profile" ? (
+          <Profile />
+        ) : path === "/dashboard" ? (
+          <p className="text-sm">Signed in (Dashboard).</p>
+        ) : (
+          <Signin />
+        )
+      }
+    />
   );
 }

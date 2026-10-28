@@ -1334,8 +1334,8 @@ describe("lecture decks", () => {
     assert.equal(counts["ch4-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-store"], 10);
     assert.equal(counts["kambaz-dashboard-crud"], 14);
-    assert.equal(counts["kambaz-modules-store"], 11);
-    assert.equal(counts["kambaz-account-context"], 45);
+    assert.equal(counts["kambaz-modules-store"], 14);
+    assert.equal(counts["kambaz-account-context"], 53);
     assert.equal(counts["http-server"], 11);
     assert.equal(counts["nodemon-es6-routes"], 9);
     assert.equal(counts["lab5-env"], 11);
@@ -1903,9 +1903,11 @@ describe("lecture decks", () => {
         add: "kambaz-courses-crud",
         edit: "kambaz-courses-crud",
       },
-      "kambaz-modules-store": { store: "kambaz-styled-modules" },
+      "kambaz-modules-store": { page: "kambaz-ch4-modules", store: "kambaz-styled-modules" },
       "kambaz-account-context": {
         "signin-live": "kambaz-styled-signin",
+        profile: "kambaz-ch4-profile",
+        signup: "kambaz-ch4-signup",
         "enroll-dash-live": "kambaz-enrollments",
         "people-table-live": "kambaz-people-crud",
       },
@@ -3765,9 +3767,19 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         // Ch2 step snapshots the book never lists on their own (unchanged by the split).
         const snapshots = ["labs-index-toc", "lab2-page", "lab3-page"].map((id) => `single-page-navigation#${id}`);
         if (!first.codeFile || snapshots.includes(`${slug}#${base}`)) return;
-        // assignment solution, intentionally not in book (§4.10.7 Enrollments, People CRUD).
-        if (["kambaz-account-context#enroll-dash", "kambaz-account-context#people-table"].includes(`${slug}#${base}`)) return;
-        const book = ch3BookListings(first.codeFile);
+        // Graded A4 answers are slides-only: they join back into the embed the demo runs.
+        // assignment solution, intentionally not in book.
+        const slidesOnly: Record<string, string> = {
+          "kambaz-account-context#profile": "app/book/ch4/embeds/_styled/account/profile/page.tsx",
+          "kambaz-modules-store#page": "app/book/ch4/embeds/_styled/courses/cid/modules/page.tsx",
+          // assignment solution, intentionally not in book (§4.10.5.6 Sign up via createUser, §4.10.7).
+          "kambaz-account-context#signup": "app/slides/_components/embeds/enrollments/account/signup/page.tsx",
+          "kambaz-account-context#enroll-dash": "app/slides/_components/embeds/enrollments/dashboard/Dashboard.tsx",
+          "kambaz-account-context#people-table":
+            "app/slides/_components/embeds/enrollments/courses/cid/people/table/PeopleTable.tsx",
+        };
+        const embedFile = slidesOnly[`${slug}#${base}`];
+        const book = embedFile ? [readFileSync(embedFile, "utf8")] : ch3BookListings(first.codeFile);
         // Slides may lay code out more compactly than the book; compare ignoring whitespace.
         const flat = (text: string) => text.replace(/\s+/g, " ");
         const joined = flat(joinedListing(slug, base));
@@ -3777,7 +3789,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         );
       });
     }
-    assert.equal(demos, 109);
+    assert.equal(demos, 112);
   });
 
   it("keeps one code slide unless a listing is long, and never leaves a tiny tail", () => {
@@ -3830,7 +3842,10 @@ describe("Chapter 3 decks: code, then the live demo", () => {
       "kambaz-dashboard-crud#add-part-3",
       "kambaz-dashboard-crud#add-part-4",
       "kambaz-modules-store#store-part-2",
+      "kambaz-modules-store#page-part-2",
       "kambaz-account-context#signin-part-2",
+      "kambaz-account-context#profile-part-2",
+      "kambaz-account-context#signup-part-2",
       "kambaz-account-context#enroll-dash-part-2",
       "kambaz-account-context#enroll-dash-part-3",
       "kambaz-account-context#people-table-part-2",
@@ -3884,7 +3899,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 257);
+    assert.equal(intros, 259);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
@@ -4035,6 +4050,8 @@ describe("kambaz-account-context §4.10.7 assignment slides", () => {
     "enroll-card": "dashboard/CourseCard.tsx",
     "enroll-dash": "dashboard/Dashboard.tsx",
     "people-context": "account/AccountContext.tsx",
+    signup: "account/signup/page.tsx",
+    "signup-signin": "account/signin/page.tsx",
     "people-page": "courses/cid/people/table/page.tsx",
     "people-table": "courses/cid/people/table/PeopleTable.tsx",
   };
