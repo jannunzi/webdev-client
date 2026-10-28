@@ -1,11 +1,6 @@
-import { useState } from "react";
-import { FaPlus } from "react-icons/fa";
 import ModuleEditor from "./ModuleEditor";
 
 export default function ModulesControls() {
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   return (
     <div id="wd-modules-controls" className="mb-3 flex flex-wrap items-center gap-2">
       <button
@@ -27,19 +22,7 @@ export default function ModulesControls() {
         <option value="publish-all">Publish All</option>
         <option value="unpublish-all">Unpublish All</option>
       </select>
-      <button
-        type="button"
-        className="inline-flex items-center gap-1 rounded border border-red-600 bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
-        id="wd-add-module-btn"
-        onClick={handleShow}
-      >
-        <FaPlus /> Module
-      </button>
-      <ModuleEditor
-        show={show}
-        handleClose={handleClose}
-        dialogTitle="Add Module"
-      />
+      <ModuleEditor />
     </div>
   );
 }

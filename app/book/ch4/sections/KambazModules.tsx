@@ -55,9 +55,9 @@ export default function KambazModules() {
           draft <code>moduleName</code> string. Create{" "}
           <code>ModuleEditor.tsx</code>{" "}as a dialog with these props —{" "}
           <code>show</code>, <code>handleClose</code>,{" "}
-          <code>dialogTitle</code>, <code>moduleName</code>,{" "}
+          <code>moduleName</code>,{" "}
           <code>setModuleName</code>, and <code>addModule</code> — and
-          style it with Tailwind overlays and rounded panels. Confirm
+          hard-code the heading &quot;Add Module&quot;; style it with Tailwind overlays and rounded panels. Confirm
           the dialog appears, accepts a name, and disappears on Cancel.
         </p>
         <CodeBlock
@@ -66,14 +66,12 @@ export default function KambazModules() {
         >{`export default function ModuleEditor({
   show,
   handleClose,
-  dialogTitle,
   moduleName,
   setModuleName,
   addModule,
 }: {
   show: boolean;
   handleClose: () => void;
-  dialogTitle: string;
   moduleName: string;
   setModuleName: (name: string) => void;
   addModule: () => void;
@@ -86,7 +84,7 @@ export default function KambazModules() {
     >
       <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
         <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
-          <h3 className="m-0 text-lg font-semibold">{dialogTitle}</h3>
+          <h3 className="m-0 text-lg font-semibold">Add Module</h3>
           <button
             type="button"
             onClick={handleClose}
@@ -220,7 +218,6 @@ export default function ModulesControls({
       <ModuleEditor
         show={show}
         handleClose={handleClose}
-        dialogTitle="Add Module"
         moduleName={moduleName}
         setModuleName={setModuleName}
         addModule={addModule}
@@ -538,85 +535,93 @@ export const useModulesStore = create<ModulesStore>((set) => ({
           <code>moduleName</code>, reads <code>cid</code>{" "}with{" "}
           <code>useParams</code>, and calls the store&apos;s{" "}
           <code>addModule</code>; Add Module then clears the name and
-          closes the dialog. Its only props are <code>show</code>,{" "}
-          <code>handleClose</code>, and <code>dialogTitle</code>:
+          closes the dialog. It now owns the whole dialog and takes no
+          props: it renders the red <code>+ Module</code>{" "}button and
+          keeps its own <code>show</code>{" "}state. The button opens the
+          dialog, and the close ×, Cancel, and Add Module all close it:
         </p>
         <CodeBlock
           language="tsx"
           name="ModuleEditor"
           file="app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx"
         >{`import { useState } from "react";
+import { FaPlus } from "react-icons/fa";
 import { useParams } from "next/navigation";
 import { useModulesStore } from "../../../store/modulesStore";
 
-export default function ModuleEditor({
-  show,
-  handleClose,
-  dialogTitle,
-}: {
-  show: boolean;
-  handleClose: () => void;
-  dialogTitle: string;
-}) {
+export default function ModuleEditor() {
   const { cid } = useParams();
+  const [show, setShow] = useState(false);
   const [moduleName, setModuleName] = useState("");
   const addModule = useModulesStore((state) => state.addModule);
-  if (!show) return null;
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-      id="wd-add-module-dialog"
-    >
-      <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
-        <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
-          <h3 className="m-0 text-lg font-semibold">{dialogTitle}</h3>
-          <button
-            type="button"
-            onClick={handleClose}
-            className="text-2xl leading-none text-neutral-500"
-            aria-label="Close"
-          >
-            ×
-          </button>
+    <>
+      <button
+        type="button"
+        className="inline-flex items-center gap-1 rounded border border-red-600 bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+        id="wd-add-module-btn"
+        onClick={() => setShow(true)}
+      >
+        <FaPlus /> Module
+      </button>
+      {show && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          id="wd-add-module-dialog"
+        >
+          <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
+            <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
+              <h3 className="m-0 text-lg font-semibold">Add Module</h3>
+              <button
+                type="button"
+                onClick={() => setShow(false)}
+                className="text-2xl leading-none text-neutral-500"
+                aria-label="Close"
+              >
+                ×
+              </button>
+            </div>
+            <div className="px-4 py-3">
+              <input
+                className="w-full rounded border border-neutral-300 px-3 py-1.5"
+                value={moduleName}
+                onChange={(e) => setModuleName(e.target.value)}
+                id="wd-add-module-name"
+                placeholder="Module name"
+              />
+            </div>
+            <div className="flex justify-end gap-2 border-t border-neutral-200 px-4 py-3">
+              <button
+                type="button"
+                onClick={() => setShow(false)}
+                className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+                id="wd-add-module-cancel"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  addModule({ name: moduleName, course: String(cid) });
+                  setModuleName("");
+                  setShow(false);
+                }}
+                className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+                id="wd-add-module-submit"
+              >
+                Add Module
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="px-4 py-3">
-          <input
-            className="w-full rounded border border-neutral-300 px-3 py-1.5"
-            value={moduleName}
-            onChange={(e) => setModuleName(e.target.value)}
-            id="wd-add-module-name"
-            placeholder="Module name"
-          />
-        </div>
-        <div className="flex justify-end gap-2 border-t border-neutral-200 px-4 py-3">
-          <button
-            type="button"
-            onClick={handleClose}
-            className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
-            id="wd-add-module-cancel"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              addModule({ name: moduleName, course: String(cid) });
-              setModuleName("");
-              handleClose();
-            }}
-            className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
-            id="wd-add-module-submit"
-          >
-            Add Module
-          </button>
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }`}</CodeBlock>
         <p>
-          <code>ModulesControls</code>{" "}keeps only the{" "}
-          <code>show</code>{" "}state and passes those three props, and
+          <code>ModulesControls</code>{" "}no longer holds any state; it
+          renders <code>{`<ModuleEditor />`}</code>{" "}where the{" "}
+          <code>+ Module</code>{" "}button was, and
           Modules renders <code>{`<ModulesControls />`}</code>{" "}with no
           props:
         </p>
@@ -624,14 +629,9 @@ export default function ModuleEditor({
           language="tsx"
           name="ModulesControls"
           file="app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx"
-        >{`import { useState } from "react";
-import { FaPlus } from "react-icons/fa";
-import ModuleEditor from "./ModuleEditor";
+        >{`import ModuleEditor from "./ModuleEditor";
 
 export default function ModulesControls() {
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   return (
     <div id="wd-modules-controls" className="mb-3 flex flex-wrap items-center gap-2">
       <button
@@ -653,19 +653,7 @@ export default function ModulesControls() {
         <option value="publish-all">Publish All</option>
         <option value="unpublish-all">Unpublish All</option>
       </select>
-      <button
-        type="button"
-        className="inline-flex items-center gap-1 rounded border border-red-600 bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
-        id="wd-add-module-btn"
-        onClick={handleShow}
-      >
-        <FaPlus /> Module
-      </button>
-      <ModuleEditor
-        show={show}
-        handleClose={handleClose}
-        dialogTitle="Add Module"
-      />
+      <ModuleEditor />
     </div>
   );
 }`}</CodeBlock>
