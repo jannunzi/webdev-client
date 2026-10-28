@@ -7,12 +7,12 @@ export const KAMBAZ_ACCOUNT_PAGES_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · Account Pages and Sign Up",
-      "§4.10.5.4–6 · Account Nav, Profile, Sign up",
+      "§4.10.5.4–5 · Account Nav and Profile, plus Sign up",
     ],
   },
   {
     id: "purpose",
-    title: "Account Pages and Sign Up",
+    title: "Implementing Account Pages and Sign Up",
     kind: "content",
     bullets: [
       "Account Navigation and the landing page react to `currentUser`",
@@ -22,7 +22,7 @@ export const KAMBAZ_ACCOUNT_PAGES_SLIDES: LectureSlide[] = [
   },
   {
     id: "nav-intro",
-    title: "Account Navigation reads the user",
+    title: "Account Navigation Overview",
     kind: "content",
     bullets: [
       "Signed in: the sidebar lists only Profile",
@@ -32,7 +32,7 @@ export const KAMBAZ_ACCOUNT_PAGES_SLIDES: LectureSlide[] = [
   },
   {
     id: "nav",
-    title: "Account Navigation reads the user (code)",
+    title: "Account Navigation Component",
     kind: "content",
     code: `"use client";
 
@@ -68,7 +68,7 @@ export default function AccountNavigation() {
   },
   {
     id: "account-page-intro",
-    title: "Account landing picks the screen",
+    title: "Account Landing Page Overview",
     kind: "content",
     bullets: [
       "Nobody signed in: the Account screen redirects to Sign in",
@@ -78,7 +78,7 @@ export default function AccountNavigation() {
   },
   {
     id: "account-page",
-    title: "Account landing picks the screen (code)",
+    title: "Account Landing Page Redirects",
     kind: "content",
     code: `"use client";
 
@@ -98,7 +98,7 @@ export default function AccountPage() {
   },
   {
     id: "profile-intro",
-    title: "Profile reads the user",
+    title: "Profile Overview",
     kind: "content",
     bullets: [
       "Profile gets `currentUser` from `AccountContext`",
@@ -110,7 +110,7 @@ export default function AccountPage() {
   },
   {
     id: "profile",
-    title: "Copy currentUser into a draft",
+    title: "Profile Draft from currentUser",
     kind: "content",
     code: `"use client";
 
@@ -145,7 +145,7 @@ export default function Profile() {
   },
   {
     id: "profile-part-2",
-    title: "Edit profile fields and sign out",
+    title: "Profile Fields and Sign Out",
     kind: "content",
     code: `  if (!profile) return null;
   return (
@@ -203,7 +203,7 @@ export default function Profile() {
   },
   {
     id: "profile-live",
-    title: "Profile demo",
+    title: "Profile Demo",
     kind: "demo",
     bullets: [
       "Every input spreads `profile` and overwrites one property",
@@ -214,7 +214,7 @@ export default function Profile() {
   },
   {
     id: "people-context-intro",
-    title: "AccountContext holds the users",
+    title: "AccountContext with Users Overview",
     kind: "content",
     bullets: [
       "Users live in the React `AccountContext`, next to `currentUser`",
@@ -224,7 +224,7 @@ export default function Profile() {
   },
   {
     id: "people-context",
-    title: "Add users and CRUD to the type",
+    title: "User CRUD Context Types",
     kind: "content",
     code: `"use client";
 
@@ -249,7 +249,7 @@ const AccountContext = createContext<AccountContextValue | null>(null);
   },
   {
     id: "people-context-part-2",
-    title: "Provider implements user CRUD",
+    title: "AccountProvider User CRUD",
     kind: "content",
     code: `export function AccountProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -294,7 +294,7 @@ export function useAccountContext() {
   },
   {
     id: "signup-intro",
-    title: "Sign up creates a user",
+    title: "Sign Up Overview",
     kind: "content",
     bullets: [
       "`username` and `password` live in `useState`",
@@ -304,7 +304,7 @@ export function useAccountContext() {
   },
   {
     id: "signup",
-    title: "createUser, sign in, go to Profile",
+    title: "Sign Up with createUser",
     kind: "content",
     code: `"use client";
 
@@ -343,7 +343,7 @@ export default function Signup() {
   },
   {
     id: "signup-part-2",
-    title: "Sign up inputs and button",
+    title: "Sign Up Form Inputs",
     kind: "content",
     code: `  return (
     <div id="wd-signup-screen">
@@ -376,7 +376,7 @@ export default function Signup() {
   },
   {
     id: "signup-signin-intro",
-    title: "Sign in finds new users",
+    title: "Sign In with Context Users Overview",
     kind: "content",
     bullets: [
       "Sign in now searches the context's `users`, not `users.json`",
@@ -385,7 +385,7 @@ export default function Signup() {
   },
   {
     id: "signup-signin",
-    title: "Find the user in context users",
+    title: "Sign In Lookup in Context Users",
     kind: "content",
     code: `"use client";
 
@@ -418,7 +418,7 @@ export default function Signin() {
   },
   {
     id: "signup-signin-part-2",
-    title: "Sign in form inputs",
+    title: "Sign In Form Inputs",
     kind: "content",
     code: `  return (
     <div id="wd-signin-screen">
@@ -455,7 +455,7 @@ export default function Signin() {
   },
   {
     id: "signup-live",
-    title: "Sign up demo",
+    title: "Sign Up Demo",
     kind: "demo",
     bullets: [
       "Sign up with a new username, then fill Profile and Update",
@@ -466,7 +466,7 @@ export default function Signin() {
   },
   {
     id: "recap",
-    title: "Account Pages and Sign Up recap",
+    title: "Account Pages and Sign Up Recap",
     kind: "content",
     bullets: [
       "Account Nav and landing pick screens from `currentUser`",

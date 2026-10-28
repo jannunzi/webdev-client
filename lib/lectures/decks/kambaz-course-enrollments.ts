@@ -12,7 +12,7 @@ export const KAMBAZ_COURSE_ENROLLMENTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Course Enrollments",
+    title: "Implementing Course Enrollments",
     kind: "content",
     bullets: [
       "An enrollments store records which user is in which course",
@@ -22,7 +22,7 @@ export const KAMBAZ_COURSE_ENROLLMENTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "enroll-store-intro",
-    title: "Implementing Enrollments",
+    title: "Enrollments Store Overview",
     kind: "content",
     bullets: [
       "An **enrollment** is one `{ _id, user, course }` row from `enrollments.json`",
@@ -33,7 +33,7 @@ export const KAMBAZ_COURSE_ENROLLMENTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "enroll-store",
-    title: "Enrollments store",
+    title: "Enrollments Store",
     kind: "content",
     code: `"use client";
 
@@ -69,7 +69,7 @@ export const useEnrollmentsStore = create<EnrollmentsStore>((set) => ({
   },
   {
     id: "enroll-card-intro",
-    title: "Enroll and Unenroll on each card",
+    title: "CourseCard Enrollment Overview",
     kind: "content",
     bullets: [
       "No new props: the card reads `currentUser` and `useEnrollmentsStore` itself",
@@ -80,7 +80,7 @@ export const useEnrollmentsStore = create<EnrollmentsStore>((set) => ({
   },
   {
     id: "enroll-card",
-    title: "Card imports and course prop",
+    title: "CourseCard Imports and Props",
     kind: "content",
     code: `import Link from "next/link";
 import Image from "next/image";
@@ -100,7 +100,7 @@ export default function CourseCard({
   },
   {
     id: "enroll-card-part-2",
-    title: "Compute enrolled and toggle it",
+    title: "Computing and Toggling Enrollment",
     kind: "content",
     code: `  const deleteCourse = useCoursesStore((state) => state.deleteCourse);
   const { currentUser } = useAccountContext();
@@ -123,7 +123,7 @@ export default function CourseCard({
   },
   {
     id: "enroll-card-part-3",
-    title: "Card image, title and description",
+    title: "CourseCard Image, Title, Description",
     kind: "content",
     code: `  return (
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
@@ -157,7 +157,7 @@ export default function CourseCard({
   },
   {
     id: "enroll-card-part-4",
-    title: "Edit, Delete and Enroll buttons",
+    title: "Edit, Delete, and Enroll Buttons",
     kind: "content",
     code: `          <button
             type="button"
@@ -205,7 +205,7 @@ export default function CourseCard({
   },
   {
     id: "enroll-dash-intro",
-    title: "Dashboard by enrollment",
+    title: "Dashboard with Enrollments Overview",
     kind: "content",
     bullets: [
       "`isEnrolled(courseId)` checks for a row with the current user and course",
@@ -216,7 +216,7 @@ export default function CourseCard({
   },
   {
     id: "enroll-dash",
-    title: "Add a course and enroll its author",
+    title: "Adding a Course and Enrolling Its Author",
     kind: "content",
     code: `"use client";
 
@@ -258,7 +258,7 @@ export default function Dashboard() {
   },
   {
     id: "enroll-dash-part-2",
-    title: "Title bar and All/Enrolled toggle",
+    title: "Title Bar and All/Enrolled Toggle",
     kind: "content",
     code: `  return (
     <div id="wd-dashboard">
@@ -301,7 +301,7 @@ export default function Dashboard() {
   },
   {
     id: "enroll-dash-part-3",
-    title: "Course form and the card grid",
+    title: "Course Form and Card Grid",
     kind: "content",
     code: `      <input
         className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
@@ -342,7 +342,7 @@ export default function Dashboard() {
   },
   {
     id: "enroll-dash-live",
-    title: "Enrollments demo",
+    title: "Enrollments Demo",
     kind: "demo",
     bullets: [
       "Pick a user: Dashboard shows only their courses",
@@ -353,7 +353,7 @@ export default function Dashboard() {
   },
   {
     id: "enroll-guard-intro",
-    title: "Guard the course routes",
+    title: "Course Layout Guard Overview",
     kind: "content",
     bullets: [
       "Only enrolled users may open `/courses/[cid]/...`",
@@ -363,7 +363,7 @@ export default function Dashboard() {
   },
   {
     id: "enroll-guard",
-    title: "Redirect unless signed in, enrolled",
+    title: "Redirecting Unenrolled Users",
     kind: "content",
     code: `"use client";
 
@@ -406,7 +406,7 @@ export default function CoursesLayout({
   },
   {
     id: "enroll-guard-part-2",
-    title: "Breadcrumb, course nav and content",
+    title: "Breadcrumb, Course Nav, and Content",
     kind: "content",
     code: `  return (
     <div id="wd-courses">
@@ -436,7 +436,7 @@ export default function CoursesLayout({
   },
   {
     id: "recap",
-    title: "Course Enrollments recap",
+    title: "Course Enrollments Recap",
     kind: "content",
     bullets: [
       "`useEnrollmentsStore` holds enrollments with enroll and unenroll",

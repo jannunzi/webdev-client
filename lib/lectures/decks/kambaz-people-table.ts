@@ -12,7 +12,7 @@ export const KAMBAZ_PEOPLE_TABLE_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "People Table CRUD",
+    title: "Implementing the People Table CRUD",
     kind: "content",
     bullets: [
       "People lists the users enrolled in this course",
@@ -21,7 +21,7 @@ export const KAMBAZ_PEOPLE_TABLE_SLIDES: LectureSlide[] = [
   },
   {
     id: "people-page-intro",
-    title: "People table page",
+    title: "People Page Overview",
     kind: "content",
     bullets: [
       "The server page reads `cid` and hands it to a client `PeopleTable`",
@@ -30,7 +30,7 @@ export const KAMBAZ_PEOPLE_TABLE_SLIDES: LectureSlide[] = [
   },
   {
     id: "people-page",
-    title: "People table page",
+    title: "People Page Component",
     kind: "content",
     code: `import PeopleTable from "./PeopleTable";
 
@@ -47,7 +47,7 @@ export default async function PeopleTablePage({
   },
   {
     id: "people-table-intro",
-    title: "Add, edit, and delete people",
+    title: "PeopleTable CRUD Overview",
     kind: "content",
     bullets: [
       "A `user` draft feeds first and last name inputs, like the course draft",
@@ -57,7 +57,7 @@ export default async function PeopleTablePage({
   },
   {
     id: "people-table",
-    title: "Enrolled users and CRUD handlers",
+    title: "Enrolled Users and CRUD Handlers",
     kind: "content",
     code: `"use client";
 
@@ -101,7 +101,7 @@ export default function PeopleTable({ cid }: { cid: string }) {
   },
   {
     id: "people-table-part-2",
-    title: "Name inputs and add/update buttons",
+    title: "Name Inputs and Add/Update Buttons",
     kind: "content",
     code: `  return (
     <div id="wd-people-table" className="overflow-x-auto">
@@ -153,7 +153,7 @@ export default function PeopleTable({ cid }: { cid: string }) {
   },
   {
     id: "people-table-part-3",
-    title: "One table row per enrolled user",
+    title: "Table Row per Enrolled User",
     kind: "content",
     code: `        <tbody>
           {enrolled.map((usr) => (
@@ -197,7 +197,7 @@ export default function PeopleTable({ cid }: { cid: string }) {
   },
   {
     id: "people-table-live",
-    title: "People CRUD demo",
+    title: "People CRUD Demo",
     kind: "demo",
     bullets: [
       "Type a name and **Add**: the new user joins this course's table",
@@ -208,7 +208,7 @@ export default function PeopleTable({ cid }: { cid: string }) {
   },
   {
     id: "recap",
-    title: "Account and chapter recap",
+    title: "Account and Chapter 4 Recap",
     kind: "content",
     bullets: [
       "Context = current user. Zustand = courses and modules",

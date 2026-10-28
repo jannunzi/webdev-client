@@ -12,7 +12,7 @@ export const KAMBAZ_ACCOUNT_CONTEXT_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "User belongs in Context",
+    title: "Implementing Account Context",
     kind: "content",
     bullets: [
       "Sign in, Profile, Dashboard, and Account Nav all need `currentUser`",
@@ -23,7 +23,7 @@ export const KAMBAZ_ACCOUNT_CONTEXT_SLIDES: LectureSlide[] = [
   },
   {
     id: "context-intro",
-    title: "AccountContext holds the user",
+    title: "AccountContext Overview",
     kind: "content",
     bullets: [
       "Seed the `User` type from `users.json`",
@@ -33,7 +33,7 @@ export const KAMBAZ_ACCOUNT_CONTEXT_SLIDES: LectureSlide[] = [
   },
   {
     id: "context",
-    title: "Create the context and its type",
+    title: "Context and User Types",
     kind: "content",
     code: `"use client";
 
@@ -55,7 +55,7 @@ const AccountContext = createContext<AccountContextValue | null>(null);
   },
   {
     id: "context-part-2",
-    title: "Provider holds currentUser state",
+    title: "AccountProvider and useAccountContext",
     kind: "content",
     code: `export function AccountProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -80,7 +80,7 @@ export function useAccountContext() {
   },
   {
     id: "layout-intro",
-    title: "Wrap the Kambaz layout",
+    title: "Wrapping the Kambaz Layout",
     kind: "content",
     bullets: [
       "The layout can stay a Server Component — it only renders the provider",
@@ -90,7 +90,7 @@ export function useAccountContext() {
   },
   {
     id: "layout",
-    title: "Wrap the Kambaz layout (code)",
+    title: "Kambaz Layout with AccountProvider",
     kind: "content",
     code: `import { AccountProvider } from "./account/AccountContext";
 
@@ -112,7 +112,7 @@ export default function KambazLayout({
   },
   {
     id: "signin-intro",
-    title: "Sign in writes currentUser",
+    title: "Sign In Overview",
     kind: "content",
     bullets: [
       "`credentials` state holds the username and password the user types",
@@ -125,7 +125,7 @@ export default function KambazLayout({
   },
   {
     id: "signin",
-    title: "Look up the user and sign in",
+    title: "Sign In Lookup and setCurrentUser",
     kind: "content",
     code: `"use client";
 
@@ -159,7 +159,7 @@ export default function Signin() {
   },
   {
     id: "signin-part-2",
-    title: "Username and password inputs",
+    title: "Sign In Form Inputs",
     kind: "content",
     code: `  return (
     <div id="wd-signin-screen">
@@ -196,7 +196,7 @@ export default function Signin() {
   },
   {
     id: "signin-live",
-    title: "Sign in demo",
+    title: "Sign In Demo",
     kind: "demo",
     bullets: [
       "Each field uses the object-spread update from §4.2.8",
@@ -208,7 +208,7 @@ export default function Signin() {
   },
   {
     id: "dashboard-intro",
-    title: "Dashboard by Enrollment",
+    title: "Dashboard by Enrollment Overview",
     kind: "content",
     bullets: [
       "Dashboard reads `currentUser` from `AccountContext`",
@@ -220,7 +220,7 @@ export default function Signin() {
   },
   {
     id: "dashboard",
-    title: "Filter courses by enrollment",
+    title: "Filtering Courses by Enrollment",
     kind: "content",
     code: `"use client";
 
@@ -255,7 +255,7 @@ export default function Dashboard() {
   },
   {
     id: "dashboard-part-2",
-    title: "Editor form and enrolled cards",
+    title: "Course Editor and Enrolled Cards",
     kind: "content",
     code: `  return (
     <div id="wd-dashboard">
@@ -297,7 +297,7 @@ export default function Dashboard() {
   },
   {
     id: "recap",
-    title: "Context and Sign in recap",
+    title: "Account Context and Sign In Recap",
     kind: "content",
     bullets: [
       "Context = who is signed in; Zustand keeps courses and modules",
