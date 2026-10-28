@@ -1904,6 +1904,7 @@ describe("lecture decks", () => {
         edit: "kambaz-courses-crud",
       },
       "kambaz-modules-store": {
+        "controls-intro": "kambaz-ch4-modules-controls",
         "buttons-intro": "kambaz-ch4-module-row",
         page: "kambaz-ch4-modules",
         store: "kambaz-styled-modules",
@@ -3901,7 +3902,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(!code.bullets?.length, `${deck.slug}#${base} keeps its text on the intro`);
         assert.ok(slide.bullets?.length, `${deck.slug}#${slide.id} has the explanation`);
         // Foreshadowing demo: the row the next code slide builds (Jose asked for it).
-        const foreshadow = ["kambaz-modules-store#buttons-intro"].includes(`${deck.slug}#${slide.id}`);
+        const foreshadow = ["kambaz-modules-store#controls-intro", "kambaz-modules-store#buttons-intro"].includes(`${deck.slug}#${slide.id}`);
         assert.ok(!slide.code && !slide.codeBlocks && (!slide.embed || foreshadow), `${deck.slug}#${slide.id} is text only`);
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });

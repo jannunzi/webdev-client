@@ -124,6 +124,7 @@ import {
   KambazCh4ModulesEmbed,
   KambazCh4ProfileEmbed,
   KambazCh4ModuleRowEmbed,
+  KambazCh4ModulesControlsEmbed,
 } from "./KambazCh4Embeds";
 import {
   JsAddEmbed,
@@ -430,6 +431,9 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
     case "kambaz-ch4-module-row":
       // Foreshadow: one real Module row with ModuleControlButtons.
       return <KambazCh4ModuleRowEmbed />;
+    case "kambaz-ch4-modules-controls":
+      // Foreshadow: the real ModulesControls toolbar and + Module dialog.
+      return <KambazCh4ModulesControlsEmbed />;
     case "kambaz-ch4-signup":
       // Slides-only: Sign up through the slides' context createUser.
       return <KambazSlidesSignupEmbed />;

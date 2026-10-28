@@ -580,6 +580,7 @@ export const LECTURE_EMBED_IDS = [
   "kambaz-styled-signin",
   "kambaz-ch4-modules",
   "kambaz-ch4-module-row",
+  "kambaz-ch4-modules-controls",
   "kambaz-ch4-signup",
   "kambaz-ch4-profile",
   "lab3-stub",

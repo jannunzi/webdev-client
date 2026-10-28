@@ -115,6 +115,7 @@ export default function ModuleEditor({
       "Modules appends `{ name: moduleName, course: courseId }`",
       "After Add Module, `setModuleName(\"\")` so the next open starts blank",
     ],
+    embed: "kambaz-ch4-modules-controls",
   },
   {
     id: "controls",

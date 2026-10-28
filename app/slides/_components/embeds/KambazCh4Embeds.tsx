@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Signup from "@/app/book/ch4/embeds/_styled/account/signup/page";
 import Profile from "@/app/book/ch4/embeds/_styled/account/profile/page";
 import Ch4Modules from "@/app/book/ch4/embeds/_styled/courses/cid/modules/page";
 import Module from "@/app/book/ch4/embeds/_styled/courses/cid/modules/Module";
+import ModulesControls from "@/app/book/ch4/embeds/_styled/courses/cid/modules/ModulesControls";
 import ModuleControlButtons from "@/app/book/ch4/embeds/_styled/courses/cid/modules/ModuleControlButtons";
 import AsAccountRouter from "./AsAccountRouter";
 import AsCourseParams from "./AsCourseParams";
@@ -69,5 +71,15 @@ export function KambazCh4ModuleRowEmbed() {
         extra={<ModuleControlButtons moduleId="M101" deleteModule={() => {}} editModule={() => {}} />}
       />
     </ul>
+  );
+}
+
+/** Foreshadow §4.10.4.1: the real ModulesControls toolbar; + Module opens the dialog. */
+export function KambazCh4ModulesControlsEmbed() {
+  const [moduleName, setModuleName] = useState("");
+  return (
+    <div className="font-sans">
+      <ModulesControls moduleName={moduleName} setModuleName={setModuleName} addModule={() => setModuleName("")} />
+    </div>
   );
 }
