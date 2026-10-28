@@ -118,7 +118,7 @@ export default function ModuleEditor({
   },
   {
     id: "controls",
-    title: "+ Module opens the dialog (1/2)",
+    title: "+ Module opens the dialog (1/3)",
     kind: "content",
     code: `"use client";
 
@@ -143,12 +143,29 @@ export default function ModulesControls({
   },
   {
     id: "controls-part-2",
-    title: "+ Module opens the dialog (2/2)",
+    title: "Collapse All, View Progress, Publish All",
     kind: "content",
     code: `  return (
     <div id="wd-modules-controls" className="mb-3 flex flex-wrap items-center gap-2">
-      {/* Collapse All, View Progress, Publish All */}
-      <button id="wd-add-module-btn" type="button" className="inline-flex items-center gap-1 rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+      <button type="button" className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm">
+        Collapse All
+      </button>
+      <button type="button" className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm">
+        View Progress
+      </button>
+      <select defaultValue="publish-all" className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm">
+        <option value="publish-all">Publish All</option>
+        <option value="unpublish-all">Unpublish All</option>
+      </select>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx",
+    codeStartLine: 19,
+  },
+  {
+    id: "controls-part-3",
+    title: "+ Module button opens the dialog",
+    kind: "content",
+    code: `      <button id="wd-add-module-btn" type="button" className="inline-flex items-center gap-1 rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
         onClick={handleShow} >
         <FaPlus /> Module
       </button>
@@ -165,7 +182,7 @@ export default function ModulesControls({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx",
-    codeStartLine: 19,
+    codeStartLine: 31,
   },
   {
     id: "buttons-intro",
