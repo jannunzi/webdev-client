@@ -1332,7 +1332,7 @@ describe("lecture decks", () => {
     assert.equal(counts["use-effect"], 8);
     assert.equal(counts["custom-hooks"], 24);
     assert.equal(counts["ch4-check-understanding"], 7);
-    assert.equal(counts["kambaz-courses-store"], 9);
+    assert.equal(counts["kambaz-courses-store"], 10);
     assert.equal(counts["kambaz-dashboard-crud"], 14);
     assert.equal(counts["kambaz-modules-store"], 10);
     assert.equal(counts["kambaz-account-context"], 9);
@@ -3816,6 +3816,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
       "kambaz-assignments-data#people-part-2",
       "form-state-types#array-part-2",
       "prop-drilling-and-url#url-form-part-2",
+      "kambaz-courses-store#store-part-2",
       "kambaz-dashboard-crud#add-part-2",
       "kambaz-dashboard-crud#add-part-3",
       "kambaz-dashboard-crud#add-part-4",

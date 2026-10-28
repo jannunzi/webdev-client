@@ -55,7 +55,7 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
   },
   {
     id: "store",
-    title: "Seed from courses.json (code)",
+    title: "Seed from courses.json (1/2)",
     kind: "content",
     code: `"use client";
 
@@ -82,8 +82,16 @@ type CoursesStore = {
   deleteCourse: (courseId: string) => void;
   updateCourse: (course: Course) => void;
 };
-
-export const useCoursesStore = create<CoursesStore>((set) => ({
+`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/store/coursesStore.ts",
+    codeHighlightLines: [],
+  },
+  {
+    id: "store-part-2",
+    title: "Seed from courses.json (2/2)",
+    kind: "content",
+    code: `export const useCoursesStore = create<CoursesStore>((set) => ({
   courses: coursesJson,
   addCourse: (course) =>
     set((state) => ({
@@ -105,7 +113,8 @@ export const useCoursesStore = create<CoursesStore>((set) => ({
 export { emptyCourse };`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/store/coursesStore.ts",
-    codeHighlightLines: [27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44],
+    codeStartLine: 27,
+    codeHighlightLines: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
   },
   {
     id: "store-live",
