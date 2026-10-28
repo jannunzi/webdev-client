@@ -195,6 +195,7 @@ export default function ModulesControls({
       "The pencil calls `editModule` — wired up in §4.10.4.3",
       "Deleting a module removes its nested lessons too",
     ],
+    embed: "kambaz-ch4-module-row",
   },
   {
     id: "buttons",

@@ -123,6 +123,7 @@ import {
 import {
   KambazCh4ModulesEmbed,
   KambazCh4ProfileEmbed,
+  KambazCh4ModuleRowEmbed,
 } from "./KambazCh4Embeds";
 import {
   JsAddEmbed,
@@ -426,6 +427,9 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <KambazStyledSigninEmbed />;
     case "kambaz-ch4-modules":
       return <KambazCh4ModulesEmbed />;
+    case "kambaz-ch4-module-row":
+      // Foreshadow: one real Module row with ModuleControlButtons.
+      return <KambazCh4ModuleRowEmbed />;
     case "kambaz-ch4-signup":
       // Slides-only: Sign up through the slides' context createUser.
       return <KambazSlidesSignupEmbed />;
