@@ -34,9 +34,7 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
     id: "editor",
     title: "ModuleEditor is a controlled dialog (1/2)",
     kind: "content",
-    code: `"use client";
-
-export default function ModuleEditor({
+    code: `export default function ModuleEditor({
   show,
   handleClose,
   dialogTitle,
@@ -54,7 +52,7 @@ export default function ModuleEditor({
   if (!show) return null;`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx",
-    codeHighlightLines: [18],
+    codeHighlightLines: [16],
   },
   {
     id: "editor-part-2",
@@ -76,7 +74,7 @@ export default function ModuleEditor({
         </div>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx",
-    codeStartLine: 19,
+    codeStartLine: 17,
   },
   {
     id: "editor-part-3",
@@ -101,7 +99,7 @@ export default function ModuleEditor({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx",
-    codeStartLine: 33,
+    codeStartLine: 31,
     codeHighlightLines: [7, 8],
   },
   {
@@ -111,8 +109,8 @@ export default function ModuleEditor({
     bullets: [
       "`ModulesControls` already has Collapse All, View Progress, Publish All",
       "It owns only `show`: + Module sets it true, Cancel or × sets it false",
-      "`moduleName`, `setModuleName`, `addModule` come down from Modules",
-      "Modules appends `{ name: moduleName, course: courseId }`",
+      "No props: it keeps the `moduleName` draft and reads `cid` with `useParams`",
+      "It calls the store's `addModule` with `{ name: moduleName, course: cid }`",
       "After Add Module, `setModuleName(\"\")` so the next open starts blank",
     ],
     embed: "kambaz-ch4-modules-controls",
@@ -121,26 +119,22 @@ export default function ModuleEditor({
     id: "controls",
     title: "+ Module opens the dialog (1/3)",
     kind: "content",
-    code: `"use client";
-
-import { useState } from "react";
+    code: `import { useState } from "react";
+import { useParams } from "next/navigation";
 import { FaPlus } from "react-icons/fa";
 import ModuleEditor from "./ModuleEditor";
+import { useModulesStore } from "../../../store/modulesStore";
 
-export default function ModulesControls({
-  moduleName,
-  setModuleName,
-  addModule,
-}: {
-  moduleName: string;
-  setModuleName: (title: string) => void;
-  addModule: () => void;
-}) {
+export default function ModulesControls() {
+  const { cid } = useParams();
+  const [moduleName, setModuleName] = useState("");
+  const addModule = useModulesStore((state) => state.addModule);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx",
+    codeHighlightLines: [2, 5, 7, 8, 9, 10],
   },
   {
     id: "controls-part-2",
@@ -160,7 +154,7 @@ export default function ModulesControls({
       </select>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx",
-    codeStartLine: 19,
+    codeStartLine: 14,
   },
   {
     id: "controls-part-3",
@@ -176,14 +170,18 @@ export default function ModulesControls({
         dialogTitle="Add Module"
         moduleName={moduleName}
         setModuleName={setModuleName}
-        addModule={addModule}
+        addModule={() => {
+          addModule({ name: moduleName, course: String(cid) });
+          setModuleName("");
+        }}
       />
     </div>
   );
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx",
-    codeStartLine: 31,
+    codeStartLine: 26,
+    codeHighlightLines: [10, 11, 12, 13],
   },
   {
     id: "buttons-intro",
@@ -191,7 +189,7 @@ export default function ModulesControls({
     kind: "content",
     bullets: [
       "Add a red trash can to `ModuleControlButtons`",
-      "Pass `deleteModule` and the row's `moduleId`",
+      "Only `moduleId` is a prop; `deleteModule` / `editModule` come from the store",
       "`deleteModule` filters by `_id`, like `deleteCourse` on the Dashboard",
       "The pencil calls `editModule` — wired up in §4.10.4.3",
       "Deleting a module removes its nested lessons too",
@@ -206,12 +204,11 @@ export default function ModulesControls({
 import { BsPlus } from "react-icons/bs";
 import { IoEllipsisVertical } from "react-icons/io5";
 import GreenCheckmark from "./GreenCheckmark";
+import { useModulesStore } from "../../../store/modulesStore";
 
-export default function ModuleControlButtons({
-  moduleId, deleteModule, editModule,
-}: {
-  moduleId: string; deleteModule: (moduleId: string) => void; editModule: (moduleId: string) => void;
-}) {
+export default function ModuleControlButtons({ moduleId }: { moduleId: string }) {
+  const deleteModule = useModulesStore((state) => state.deleteModule);
+  const editModule = useModulesStore((state) => state.editModule);
   return (
     <div className="flex items-center gap-2">
       <FaPencilAlt title="Edit module" className="cursor-pointer text-blue-600"
@@ -396,7 +393,8 @@ type ModulesStore = {
     title: "Modules page wires the store",
     kind: "content",
     bullets: [
-      "Read `modules` and the CRUD actions from `useModulesStore`",
+      "Only `modules` and `updateModule` come from `useModulesStore` here",
+      "Children read their own actions — no `moduleName` state, no action props",
       "`editModule` sets `editing: true`; the title swaps the name for an input",
       "Each `onChange` calls `updateModule`; Enter sets `editing` back to false",
     ],
@@ -407,7 +405,6 @@ type ModulesStore = {
     kind: "content",
     code: `"use client";
 
-import { useState } from "react";
 import { useParams } from "next/navigation";
 import Module from "./Module";
 import Lesson from "./Lesson";
@@ -417,12 +414,8 @@ import { useModulesStore } from "../../../store/modulesStore";
 
 export default function Modules() {
   const { cid } = useParams();
-  const [moduleName, setModuleName] = useState("");
   const modules = useModulesStore((state) => state.modules);
-  const addModule = useModulesStore((state) => state.addModule);
-  const deleteModule = useModulesStore((state) => state.deleteModule);
   const updateModule = useModulesStore((state) => state.updateModule);
-  const editModule = useModulesStore((state) => state.editModule);
 `,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/page.tsx",
@@ -433,27 +426,14 @@ export default function Modules() {
     kind: "content",
     code: `  return (
     <div className="wd-modules">
-      <ModulesControls
-        moduleName={moduleName}
-        setModuleName={setModuleName}
-        addModule={() => {
-          addModule({ name: moduleName, course: String(cid) });
-          setModuleName("");
-        }}
-      />
+      <ModulesControls />
       <ul id="wd-modules" className="m-0 list-none p-0">
         {modules
           .filter((module) => module.course === cid)
           .map((module) => (
             <Module
               key={module._id}
-              extra={
-                <ModuleControlButtons
-                  moduleId={module._id}
-                  deleteModule={deleteModule}
-                  editModule={editModule}
-                />
-              }
+              extra={<ModuleControlButtons moduleId={module._id} />}
               title={
                 module.editing ? (
                   <input defaultValue={module.name} className="w-1/2 rounded border border-neutral-300 px-2 py-1 text-base"
@@ -482,7 +462,7 @@ export default function Modules() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/page.tsx",
-    codeStartLine: 20,
+    codeStartLine: 15,
   },
   {
     id: "page-live",

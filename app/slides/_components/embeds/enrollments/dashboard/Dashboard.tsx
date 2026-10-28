@@ -13,12 +13,10 @@ import { useAccountContext } from "../account/AccountContext";
 export default function Dashboard() {
   const courses = useCoursesStore((state) => state.courses);
   const addCourse = useCoursesStore((state) => state.addCourse);
-  const deleteCourse = useCoursesStore((state) => state.deleteCourse);
   const updateCourse = useCoursesStore((state) => state.updateCourse);
   const [course, setCourse] = useState<Course>(emptyCourse);
   const { currentUser } = useAccountContext();
-  const { enrollments, enrollIntoCourse, unenrollFromCourse } =
-    useEnrollmentsStore();
+  const { enrollments, enrollIntoCourse } = useEnrollmentsStore();
   const [showAllCourses, setShowAllCourses] = useState(false);
   const isEnrolled = (courseId: string) =>
     currentUser !== null &&
@@ -29,6 +27,11 @@ export default function Dashboard() {
     currentUser && !showAllCourses
       ? courses.filter((c) => isEnrolled(c._id))
       : courses;
+  const addCourseAndEnroll = () => {
+    addCourse(course);
+    const newCourse = useCoursesStore.getState().courses.at(-1);
+    if (currentUser && newCourse) enrollIntoCourse(currentUser._id, newCourse._id);
+  };
 
   return (
     <div id="wd-dashboard">
@@ -52,7 +55,7 @@ export default function Dashboard() {
           type="button"
           className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
           id="wd-add-new-course-click"
-          onClick={() => addCourse(course)}
+          onClick={addCourseAndEnroll}
         >
           Add
         </button>
@@ -92,16 +95,6 @@ export default function Dashboard() {
             key={c._id}
             {...c}
             onEdit={() => setCourse(c)}
-            onDelete={() => deleteCourse(c._id)}
-            enrolled={currentUser ? isEnrolled(c._id) : null}
-            onToggleEnrollment={() => {
-              if (!currentUser) return;
-              if (isEnrolled(c._id)) {
-                unenrollFromCourse(currentUser._id, c._id);
-              } else {
-                enrollIntoCourse(currentUser._id, c._id);
-              }
-            }}
           />
         ))}
       </div>
