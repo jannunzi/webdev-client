@@ -31,7 +31,7 @@ export const KAMBAZ_DASHBOARD_CRUD_SLIDES: LectureSlide[] = [
   },
   {
     id: "add",
-    title: "Add appends the draft (1/2)",
+    title: "Add appends the draft (1/4)",
     kind: "content",
     code: `"use client";
 
@@ -56,7 +56,7 @@ export default function Dashboard() {
   },
   {
     id: "add-part-2",
-    title: "Add appends the draft (2/2)",
+    title: "Add appends the draft (2/4)",
     kind: "content",
     code: `  return (
     <div id="wd-dashboard">
@@ -80,8 +80,17 @@ export default function Dashboard() {
         >
           Update
         </button>
-      </h5>
-      <input
+      </h5>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeStartLine: 18,
+    codeHighlightLines: [11],
+  },
+  {
+    id: "add-part-3",
+    title: "Add appends the draft (3/4)",
+    kind: "content",
+    code: `      <input
         className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
         value={course.name}
         onChange={(e) => setCourse({ ...course, name: e.target.value })}
@@ -96,8 +105,17 @@ export default function Dashboard() {
         }
         id="wd-course-description"
       />
-      <hr />
-      <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2>
+      <hr />`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeStartLine: 41,
+    codeHighlightLines: [3, 4],
+  },
+  {
+    id: "add-part-4",
+    title: "Add appends the draft (4/4)",
+    kind: "content",
+    code: `      <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2>
       <hr />
       <div
         id="wd-dashboard-courses"
@@ -117,8 +135,8 @@ export default function Dashboard() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/page.tsx",
-    codeStartLine: 18,
-    codeHighlightLines: [11, 26, 27],
+    codeStartLine: 57,
+    codeHighlightLines: [],
   },
   {
     id: "add-live",
