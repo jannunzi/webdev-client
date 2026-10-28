@@ -220,18 +220,80 @@ export default function Signin() {
   },
   {
     id: "dashboard",
-    title: "Dashboard by Enrollment (code)",
+    title: "Dashboard by Enrollment (1/2)",
     kind: "content",
-    code: `const { currentUser } = useAccountContext();
-const visibleCourses = currentUser
-  ? courses.filter((c) =>
-      db.enrollments.some(
-        (enrollment) =>
-          enrollment.user === currentUser._id && enrollment.course === c._id,
-      ),
-    )
-  : courses;`,
+    code: `"use client";
+
+import { useState } from "react";
+import CourseCard from "./CourseCard";
+import {
+  emptyCourse,
+  useCoursesStore,
+  type Course,
+} from "../store/coursesStore";
+import * as db from "../database";
+import { useAccountContext } from "../account/AccountContext";
+
+export default function Dashboard() {
+  const courses = useCoursesStore((state) => state.courses);
+  const addCourse = useCoursesStore((state) => state.addCourse);
+  const updateCourse = useCoursesStore((state) => state.updateCourse);
+  const [course, setCourse] = useState<Course>(emptyCourse);
+  const { currentUser } = useAccountContext();
+  const visibleCourses = currentUser
+    ? courses.filter((c) =>
+        db.enrollments.some(
+          (enrollment) =>
+            enrollment.user === currentUser._id && enrollment.course === c._id,
+        ),
+      )
+    : courses;
+`,
     codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeAddedLines: [[10, 11], [18, 26]],
+  },
+  {
+    id: "dashboard-part-2",
+    title: "Dashboard by Enrollment (2/2)",
+    kind: "content",
+    code: `  return (
+    <div id="wd-dashboard">
+      <h1 id="wd-dashboard-title">Dashboard</h1>
+      <hr />
+      <h5 className="flex flex-wrap items-center gap-2">
+        New Course
+        <button type="button" className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+          id="wd-add-new-course-click" onClick={() => addCourse(course)} >
+          Add
+        </button>
+        <button type="button" className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
+          id="wd-update-course-click" onClick={() => updateCourse(course)} >
+          Update
+        </button>
+      </h5>
+      <input className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
+        value={course.name} id="wd-course-name"
+        onChange={(e) => setCourse({ ...course, name: e.target.value })} />
+      <textarea className="mb-3 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
+        rows={3} value={course.description} id="wd-course-description"
+        onChange={(e) => setCourse({ ...course, description: e.target.value })} />
+      <hr />
+      <h2 id="wd-dashboard-published">Published Courses ({visibleCourses.length})</h2>
+      <hr />
+      <div id="wd-dashboard-courses" className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        {visibleCourses.map((c) => (
+          <CourseCard key={c._id} {...c}
+            onEdit={() => setCourse(c)} />
+        ))}
+      </div>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeStartLine: 27,
+    codeHighlightLines: [23, 26],
   },
   {
     id: "nav-intro",
@@ -679,7 +741,7 @@ export default function Signin() {
   },
   {
     id: "enroll-store-intro",
-    title: "Enrollments assignment",
+    title: "Implementing Enrollments",
     kind: "content",
     bullets: [
       "An **enrollment** is one `{ _id, user, course }` row from `enrollments.json`",
@@ -729,17 +791,21 @@ export const useEnrollmentsStore = create<EnrollmentsStore>((set) => ({
     title: "Enroll and Unenroll on each card",
     kind: "content",
     bullets: [
-      "Two new props: `enrolled` (`null` when nobody is signed in) and `onToggleEnrollment`",
+      "No new props: the card reads `currentUser` and `useEnrollmentsStore` itself",
+      "`enrolled` is `null` when nobody is signed in. Delete calls `deleteCourse(_id)`",
       "Green **Enroll** or red **Unenroll**, hidden while `enrolled` is `null`",
       "`event.preventDefault()` keeps the click from following the card's `Link`",
     ],
   },
   {
     id: "enroll-card",
-    title: "CourseCard enrollment button (1/3)",
+    title: "CourseCard enrollment button (1/4)",
     kind: "content",
     code: `import Link from "next/link";
 import Image from "next/image";
+import { useCoursesStore } from "../store/coursesStore";
+import { useEnrollmentsStore } from "../store/enrollmentsStore";
+import { useAccountContext } from "../account/AccountContext";
 
 export default function CourseCard({
   _id,
@@ -747,25 +813,42 @@ export default function CourseCard({
   description,
   image,
   onEdit,
-  onDelete,
-  enrolled,
-  onToggleEnrollment,
 }: {
   _id: string;
   name: string;
   description: string;
   image: string;
   onEdit: () => void;
-  onDelete: () => void;
-  enrolled: boolean | null;
-  onToggleEnrollment: () => void;
 }) {`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
   },
   {
     id: "enroll-card-part-2",
-    title: "CourseCard enrollment button (2/3)",
+    title: "CourseCard enrollment button (2/4)",
+    kind: "content",
+    code: `  const deleteCourse = useCoursesStore((state) => state.deleteCourse);
+  const { currentUser } = useAccountContext();
+  const { enrollments, enrollIntoCourse, unenrollFromCourse } =
+    useEnrollmentsStore();
+  const enrolled = currentUser
+    ? enrollments.some((e) => e.user === currentUser._id && e.course === _id)
+    : null;
+  const toggleEnrollment = () => {
+    if (!currentUser) return;
+    if (enrolled) {
+      unenrollFromCourse(currentUser._id, _id);
+    } else {
+      enrollIntoCourse(currentUser._id, _id);
+    }
+  };`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeStartLine: 20,
+  },
+  {
+    id: "enroll-card-part-3",
+    title: "CourseCard enrollment button (3/4)",
     kind: "content",
     code: `  return (
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
@@ -795,11 +878,11 @@ export default function CourseCard({
           </button>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
-    codeStartLine: 23,
+    codeStartLine: 35,
   },
   {
-    id: "enroll-card-part-3",
-    title: "CourseCard enrollment button (3/3)",
+    id: "enroll-card-part-4",
+    title: "CourseCard enrollment button (4/4)",
     kind: "content",
     code: `          <button
             type="button"
@@ -818,7 +901,7 @@ export default function CourseCard({
             className="ms-2 inline-flex items-center justify-center rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
             onClick={(event) => {
               event.preventDefault();
-              onDelete();
+              deleteCourse(_id);
             }}
           >
             Delete
@@ -830,7 +913,7 @@ export default function CourseCard({
               className={\`ms-2 inline-flex items-center justify-center rounded px-3 py-1.5 text-sm font-medium text-white \${enrolled ? "bg-red-600" : "bg-green-600"}\`}
               onClick={(event) => {
                 event.preventDefault();
-                onToggleEnrollment();
+                toggleEnrollment();
               }}
             >
               {enrolled ? "Unenroll" : "Enroll"}
@@ -843,7 +926,7 @@ export default function CourseCard({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
-    codeStartLine: 49,
+    codeStartLine: 61,
   },
   {
     id: "enroll-dash-intro",
@@ -852,7 +935,8 @@ export default function CourseCard({
     bullets: [
       "`isEnrolled(courseId)` checks for a row with the current user and course",
       "`showAllCourses` flag: the blue **Enrollments** button flips all vs. mine",
-      "`visibleCourses` feeds the count and the cards; each card gets its toggle",
+      "`visibleCourses` feeds the count and the cards; each card owns its toggle",
+      "Add also enrolls the author, so the new course passes the filter",
     ],
   },
   {
@@ -874,12 +958,10 @@ import { useAccountContext } from "../account/AccountContext";
 export default function Dashboard() {
   const courses = useCoursesStore((state) => state.courses);
   const addCourse = useCoursesStore((state) => state.addCourse);
-  const deleteCourse = useCoursesStore((state) => state.deleteCourse);
   const updateCourse = useCoursesStore((state) => state.updateCourse);
   const [course, setCourse] = useState<Course>(emptyCourse);
   const { currentUser } = useAccountContext();
-  const { enrollments, enrollIntoCourse, unenrollFromCourse } =
-    useEnrollmentsStore();
+  const { enrollments, enrollIntoCourse } = useEnrollmentsStore();
   const [showAllCourses, setShowAllCourses] = useState(false);
   const isEnrolled = (courseId: string) =>
     currentUser !== null &&
@@ -890,6 +972,11 @@ export default function Dashboard() {
     currentUser && !showAllCourses
       ? courses.filter((c) => isEnrolled(c._id))
       : courses;
+  const addCourseAndEnroll = () => {
+    addCourse(course);
+    const newCourse = useCoursesStore.getState().courses.at(-1);
+    if (currentUser && newCourse) enrollIntoCourse(currentUser._id, newCourse._id);
+  };
 `,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/page.tsx",
@@ -920,7 +1007,7 @@ export default function Dashboard() {
           type="button"
           className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
           id="wd-add-new-course-click"
-          onClick={() => addCourse(course)}
+          onClick={addCourseAndEnroll}
         >
           Add
         </button>
@@ -935,7 +1022,7 @@ export default function Dashboard() {
       </h5>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/page.tsx",
-    codeStartLine: 33,
+    codeStartLine: 36,
   },
   {
     id: "enroll-dash-part-3",
@@ -968,16 +1055,6 @@ export default function Dashboard() {
             key={c._id}
             {...c}
             onEdit={() => setCourse(c)}
-            onDelete={() => deleteCourse(c._id)}
-            enrolled={currentUser ? isEnrolled(c._id) : null}
-            onToggleEnrollment={() => {
-              if (!currentUser) return;
-              if (isEnrolled(c._id)) {
-                unenrollFromCourse(currentUser._id, c._id);
-              } else {
-                enrollIntoCourse(currentUser._id, c._id);
-              }
-            }}
           />
         ))}
       </div>
@@ -986,7 +1063,7 @@ export default function Dashboard() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/page.tsx",
-    codeStartLine: 68,
+    codeStartLine: 71,
   },
   {
     id: "enroll-dash-live",

@@ -25,7 +25,7 @@ export const KAMBAZ_DASHBOARD_CRUD_SLIDES: LectureSlide[] = [
     title: "Select the four store slices",
     kind: "content",
     bullets: [
-      "`courses`, `addCourse`, `deleteCourse`, `updateCourse`",
+      "`courses`, `addCourse`, `updateCourse` — `CourseCard` reads `deleteCourse`",
       "Typing a name must not rewrite every card until Add or Update",
     ],
   },
@@ -46,7 +46,6 @@ import {
 export default function Dashboard() {
   const courses = useCoursesStore((state) => state.courses);
   const addCourse = useCoursesStore((state) => state.addCourse);
-  const deleteCourse = useCoursesStore((state) => state.deleteCourse);
   const updateCourse = useCoursesStore((state) => state.updateCourse);
   const [course, setCourse] = useState<Course>(emptyCourse);
 `,
@@ -79,7 +78,7 @@ export default function Dashboard() {
       </h5>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/page.tsx",
-    codeStartLine: 18,
+    codeStartLine: 17,
     codeHighlightLines: [11],
   },
   {
@@ -104,7 +103,7 @@ export default function Dashboard() {
       <hr />`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/page.tsx",
-    codeStartLine: 41,
+    codeStartLine: 40,
     codeHighlightLines: [3, 4],
   },
   {
@@ -122,7 +121,6 @@ export default function Dashboard() {
             key={c._id}
             {...c}
             onEdit={() => setCourse(c)}
-            onDelete={() => deleteCourse(c._id)}
           />
         ))}
       </div>
@@ -131,7 +129,7 @@ export default function Dashboard() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/page.tsx",
-    codeStartLine: 57,
+    codeStartLine: 56,
     codeHighlightLines: [],
   },
   {
@@ -152,17 +150,16 @@ export default function Dashboard() {
     bullets: [
       "The button sits inside a `Link` to course Home",
       "Call `event.preventDefault()` or the card navigates before it disappears",
-      "Pass `onDelete={() => deleteCourse(c._id)}`. id `wd-delete-course-click`",
+      "`CourseCard` selects `deleteCourse` and calls `deleteCourse(_id)`. id `wd-delete-course-click`",
     ],
   },
   {
     id: "card-props",
-    title: "CourseCard takes onEdit and onDelete",
+    title: "CourseCard takes onEdit, reads delete",
     kind: "content",
-    code: `"use client";
-
-import Link from "next/link";
+    code: `import Link from "next/link";
 import Image from "next/image";
+import { useCoursesStore } from "../store/coursesStore";
 
 export default function CourseCard({
   _id,
@@ -170,18 +167,17 @@ export default function CourseCard({
   description,
   image,
   onEdit,
-  onDelete,
 }: {
   _id: string;
   name: string;
   description: string;
   image: string;
   onEdit: () => void;
-  onDelete: () => void;
-}) {`,
+}) {
+  const deleteCourse = useCoursesStore((state) => state.deleteCourse);`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
-    codeHighlightLines: [11, 12, 18, 19],
+    codeHighlightLines: [3, 10, 16, 18],
   },
   {
     id: "card-buttons",
@@ -212,7 +208,7 @@ export default function CourseCard({
           <button type="button" id="wd-delete-course-click" className="ms-2 inline-flex items-center justify-center rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
             onClick={(event) => {
               event.preventDefault();
-              onDelete();
+              deleteCourse(_id);
             }} >
             Delete
           </button>
@@ -223,8 +219,8 @@ export default function CourseCard({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
-    codeStartLine: 21,
-    codeHighlightLines: [29, 30, 40, 41],
+    codeStartLine: 19,
+    codeHighlightLines: [19, 26],
   },
   {
     id: "edit",
