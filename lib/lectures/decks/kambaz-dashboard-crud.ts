@@ -65,19 +65,15 @@ export default function Dashboard() {
       <h5 className="flex flex-wrap items-center gap-2">
         New Course
         <button
-          type="button"
+          type="button" id="wd-add-new-course-click"
           className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
-          id="wd-add-new-course-click"
-          onClick={() => addCourse(course)}
-        >
+          onClick={() => addCourse(course)} >
           Add
         </button>
         <button
-          type="button"
+          type="button" id="wd-update-course-click"
           className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
-          id="wd-update-course-click"
-          onClick={() => updateCourse(course)}
-        >
+          onClick={() => updateCourse(course)} >
           Update
         </button>
       </h5>`,
