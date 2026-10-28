@@ -743,7 +743,7 @@ export default function Signin() {
   },
   {
     id: "enroll-store-intro",
-    title: "Enrollments assignment",
+    title: "Implementing Enrollments",
     kind: "content",
     bullets: [
       "An **enrollment** is one `{ _id, user, course }` row from `enrollments.json`",
