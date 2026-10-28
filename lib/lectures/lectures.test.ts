@@ -1901,7 +1901,7 @@ describe("lecture decks", () => {
       "kambaz-courses-store": { store: "kambaz-courses-crud" },
       "kambaz-dashboard-crud": {
         add: "kambaz-courses-crud",
-        edit: "kambaz-styled-dashboard",
+        edit: "kambaz-courses-crud",
       },
       "kambaz-modules-store": { store: "kambaz-styled-modules" },
       "kambaz-account-context": { signin: "kambaz-styled-signin" },

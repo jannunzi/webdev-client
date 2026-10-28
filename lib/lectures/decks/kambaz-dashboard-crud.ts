@@ -258,7 +258,7 @@ export default function CourseCard({
       "Update: `updateCourse(course)` maps the matching `_id`",
       "The link and `_id` stay. The title and description change",
     ],
-    embed: "kambaz-styled-dashboard",
+    embed: "kambaz-courses-crud",
   },
   {
     id: "recap",
