@@ -12,7 +12,7 @@ export const INTRO_TO_JAVASCRIPT_SLIDES: LectureSlide[] = [
   },
   {
     id: "why-now",
-    title: "HTML and CSS were static on purpose",
+    title: "Introduction to JavaScript",
     kind: "content",
     bullets: [
       "Chapters 1–2 gave Kambaz **structure** and **style**",

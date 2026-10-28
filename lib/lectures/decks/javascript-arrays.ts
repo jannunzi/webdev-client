@@ -12,7 +12,7 @@ export const JAVASCRIPT_ARRAYS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Arrays gather values into one variable",
+    title: "Implementing JavaScript Arrays",
     kind: "content",
     bullets: [
       "Primitives were one value. Arrays hold many — numbers, strings, even JSX",

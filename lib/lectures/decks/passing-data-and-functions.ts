@@ -12,7 +12,7 @@ export const PASSING_DATA_AND_FUNCTIONS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Handlers often need an argument",
+    title: "Implementing Passing Data and Functions",
     kind: "content",
     bullets: [
       "Which item to delete, which string to alert, which two numbers to add",
@@ -75,7 +75,7 @@ export default function PassingDataOnEvent() {
   },
   {
     id: "functions-are-values",
-    title: "Functions are values too",
+    title: "Functions as Values",
     kind: "content",
     bullets: [
       "A parent can pass a function the child does not own",

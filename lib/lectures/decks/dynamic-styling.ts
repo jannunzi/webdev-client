@@ -12,7 +12,7 @@ export const DYNAMIC_STYLING_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Look follows the data",
+    title: "Implementing Dynamic Styling",
     kind: "content",
     bullets: [
       "Chapter 2 styled with CSS files and Tailwind classes",

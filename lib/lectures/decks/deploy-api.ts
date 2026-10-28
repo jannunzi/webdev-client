@@ -12,7 +12,7 @@ export const DEPLOY_API_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Two remotes, one pair",
+    title: "Implementing API Deployment",
     kind: "content",
     bullets: [
       "Finish locally first. Then replicate the two-process setup",

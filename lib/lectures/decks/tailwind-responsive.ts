@@ -12,7 +12,7 @@ export const TAILWIND_RESPONSIVE_SLIDES: LectureSlide[] = [
   },
   {
     id: "intro",
-    title: "Responsive Design",
+    title: "Implementing Responsive Design",
     kind: "content",
     bullets: [
       "A **responsive** page changes as the viewport — the browser window — gets wider",
@@ -219,7 +219,7 @@ export const TAILWIND_RESPONSIVE_SLIDES: LectureSlide[] = [
   },
   {
     id: "card-frame",
-    title: "The card frame (part 1 of 3)",
+    title: "The card frame",
     kind: "content",
     code: `export default function TailwindResponsiveDesign() {
   return (
@@ -233,7 +233,7 @@ export const TAILWIND_RESPONSIVE_SLIDES: LectureSlide[] = [
   },
   {
     id: "card-image",
-    title: "The image column (part 2 of 3)",
+    title: "The image column",
     kind: "content",
     code: `          <div className="relative md:w-48 md:shrink-0">
             <img
@@ -275,7 +275,7 @@ export const TAILWIND_RESPONSIVE_SLIDES: LectureSlide[] = [
   },
   {
     id: "card-text",
-    title: "The text column (part 3 of 3)",
+    title: "The text column",
     kind: "content",
     code: `          <div className="min-w-0 p-8">
             <div className="text-sm font-semibold tracking-wide text-indigo-500 uppercase">

@@ -12,7 +12,7 @@ export const KAMBAZ_SESSIONS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "One variable is one user",
+    title: "Implementing Sessions",
     kind: "content",
     bullets: [
       "A module-level `currentUser` cannot serve two browsers",

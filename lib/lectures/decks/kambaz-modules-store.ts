@@ -12,7 +12,7 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Home embeds Modules",
+    title: "Implementing Module State Management",
     kind: "content",
     bullets: [
       "Local `useState` on Modules would hide new rows from Home",
@@ -401,7 +401,7 @@ type ModulesStore = {
   },
   {
     id: "store-live",
-    title: "Modules still look like Chapter 2",
+    title: "Modules Styling Is Unchanged",
     kind: "demo",
     bullets: [
       "Reuse the list-group chrome. The new work is the dialog and the store",

@@ -12,7 +12,7 @@ export const NULL_AND_UNDEFINED_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Empty on purpose vs never assigned",
+    title: "Implementing null and undefined",
     kind: "content",
     bullets: [
       "`null` is an **assigned** empty value — you put it there",

@@ -12,7 +12,7 @@ export const CLICK_EVENTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Clicks are events, not markup",
+    title: "Implementing Click Events",
     kind: "content",
     bullets: [
       "HTML and CSS describe how a screen looks",

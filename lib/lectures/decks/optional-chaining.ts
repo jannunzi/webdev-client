@@ -12,7 +12,7 @@ export const OPTIONAL_CHAINING_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Do not crash on a missing field",
+    title: "Implementing Optional Chaining",
     kind: "content",
     bullets: [
       "`house.address.city` throws if `address` is `null` or `undefined`",

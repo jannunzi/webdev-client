@@ -12,7 +12,7 @@ export const JAVASCRIPT_FUNCTIONS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "A function is a named, parameterized block",
+    title: "Implementing JavaScript Functions",
     kind: "content",
     bullets: [
       "Wrap an algorithm, call it from JavaScript **or** from JSX",

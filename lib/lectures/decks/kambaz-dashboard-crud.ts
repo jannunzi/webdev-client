@@ -12,7 +12,7 @@ export const KAMBAZ_DASHBOARD_CRUD_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Dashboard becomes a Client page",
+    title: "Implementing Dashboard CRUD",
     kind: "content",
     bullets: [
       "Hooks and clicks need `\"use client\"`",
@@ -145,7 +145,7 @@ export default function Dashboard() {
   },
   {
     id: "delete",
-    title: "Delete must not navigate",
+    title: "Stopping Navigation on Delete",
     kind: "content",
     bullets: [
       "The button sits inside a `Link` to course Home",
@@ -218,7 +218,7 @@ export default function CourseCard({
   },
   {
     id: "edit",
-    title: "Edit copies, Update writes back",
+    title: "Editing and Updating a Course",
     kind: "demo",
     bullets: [
       "Edit: `setCourse(c)` so the form shows that card — preventDefault again",

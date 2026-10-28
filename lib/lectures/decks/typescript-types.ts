@@ -12,7 +12,7 @@ export const TYPESCRIPT_TYPES_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "JavaScript plus types",
+    title: "Implementing TypeScript Types",
     kind: "content",
     bullets: [
       "Files end in `.ts` and `.tsx` because they are written in **TypeScript**",

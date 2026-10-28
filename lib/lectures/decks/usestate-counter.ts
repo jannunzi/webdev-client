@@ -12,7 +12,7 @@ export const USESTATE_COUNTER_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "State is data that can change",
+    title: "Implementing useState",
     kind: "content",
     bullets: [
       "React turns data structures into a user interface",

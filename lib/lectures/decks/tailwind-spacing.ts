@@ -12,7 +12,7 @@ export const TAILWIND_SPACING_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "m is margin, p is padding",
+    title: "Implementing Tailwind Spacing",
     kind: "content",
     bullets: [
       "A letter for the property, a number for the amount",

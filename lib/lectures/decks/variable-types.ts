@@ -12,7 +12,7 @@ export const VARIABLE_TYPES_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "JavaScript has a handful of types",
+    title: "Implementing Variable Types",
     kind: "content",
     bullets: [
       "Number, String, Boolean, Date, plus objects and arrays later",

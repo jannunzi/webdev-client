@@ -12,7 +12,7 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "An object lives on the server",
+    title: "Implementing Remote Objects",
     kind: "content",
     bullets: [
       "Integers and strings were a start. Objects and arrays persist too",

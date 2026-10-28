@@ -12,7 +12,7 @@ export const TAILWIND_FLEX_AND_GRID_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Filters, then a real grid",
+    title: "Implementing Tailwind Filters and Grids",
     kind: "content",
     bullets: [
       "§2.3.5: `blur-*`, `grayscale`, `brightness-*`, `contrast-*` on the element",

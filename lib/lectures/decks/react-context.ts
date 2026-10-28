@@ -12,7 +12,7 @@ export const REACT_CONTEXT_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Skip the middle props",
+    title: "Implementing React Context",
     kind: "content",
     bullets: [
       "A parent publishes a value. Any descendant can read it",

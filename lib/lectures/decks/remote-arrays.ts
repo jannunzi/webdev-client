@@ -12,7 +12,7 @@ export const REMOTE_ARRAYS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "CRUD is the collection contract",
+    title: "Implementing Remote Arrays",
     kind: "content",
     bullets: [
       "**Create**, **Read**, **Update**, **Delete** — every list you will ship",

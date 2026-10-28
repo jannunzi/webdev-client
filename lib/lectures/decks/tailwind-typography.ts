@@ -12,7 +12,7 @@ export const TAILWIND_TYPOGRAPHY_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Size and weight have names",
+    title: "Implementing Tailwind Typography",
     kind: "content",
     bullets: [
       "Font size: `text-sm` through `text-3xl` (and beyond)",

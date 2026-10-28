@@ -12,7 +12,7 @@ export const KAMBAZ_STYLING_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Chapter 1 was unstyled on purpose",
+    title: "Implementing Kambaz Styling",
     kind: "content",
     bullets: [
       "**Tailwind CSS** is a utility-first framework: you style by combining **utility classes**, small single-purpose classes like `p-3` or `flex`, in the markup",

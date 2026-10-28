@@ -12,7 +12,7 @@ export const CSS_COLORS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Foreground vs background",
+    title: "Implementing CSS Colors",
     kind: "content",
     bullets: [
       "`color` paints the **foreground** — the text",

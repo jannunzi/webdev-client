@@ -12,7 +12,7 @@ export const ARRAY_ITERATION_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Same walk, two spellings",
+    title: "Implementing Array Iteration",
     kind: "content",
     bullets: [
       "A `for` loop is useful when you need the **index** as well as the value",
@@ -97,7 +97,7 @@ export const ARRAY_ITERATION_SLIDES: LectureSlide[] = [
   },
   {
     id: "keys",
-    title: "Give each sibling a key",
+    title: "Keys on Mapped Elements",
     kind: "content",
     bullets: [
       "`key={todo}` works here because the strings are unique",

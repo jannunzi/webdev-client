@@ -12,7 +12,7 @@ export const PATH_PARAMS_AND_TODOS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "The address bar is data too",
+    title: "Implementing Path Parameters and Todos",
     kind: "content",
     bullets: [
       "`usePathname` highlights the active Labs TOC item",

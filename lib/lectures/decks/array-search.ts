@@ -12,7 +12,7 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Ask the array a question",
+    title: "Implementing Array Search",
     kind: "content",
     bullets: [
       "`find` returns the **item** (or `undefined`)",

@@ -12,7 +12,7 @@ export const PARAMETERIZING_COMPONENTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Attributes are a props object",
+    title: "Implementing Component Props",
     kind: "content",
     bullets: [
       "HTML-style attributes become one object argument",
@@ -365,7 +365,7 @@ export default function BoxModelDemo() {
   },
   {
     id: "nesting-order-intro",
-    title: "Nesting order matters",
+    title: "Nesting Order",
     kind: "content",
     bullets: [
       "`position` is not a box-model layer, so it stays a prop of the single `Box`",
@@ -376,7 +376,7 @@ export default function BoxModelDemo() {
   },
   {
     id: "nesting-order",
-    title: "Nesting order matters (code)",
+    title: "Nesting Order (code)",
     kind: "content",
     code: `import Margin from "./Margin";
 import Border from "./Border";
@@ -413,7 +413,7 @@ export default function NestingOrderDemo() {
   },
   {
     id: "card",
-    title: "Children can be anything",
+    title: "Arbitrary Children Content",
     kind: "content",
     bullets: [
       "`children` can be any mix of HTML tags and components",

@@ -12,7 +12,7 @@ export const CSS_FLOAT_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Float pulls a box to an edge",
+    title: "Implementing Float Layouts",
     kind: "content",
     bullets: [
       "`float: left` or `float: right` takes a box out of normal stacking",
@@ -128,7 +128,7 @@ export default function Float() {
   },
   {
     id: "grid-idea-intro",
-    title: "Float plus % widths is a grid",
+    title: "Float Columns with % Widths",
     kind: "content",
     bullets: [
       "`width: 50%; float: left` — two columns",
@@ -138,7 +138,7 @@ export default function Float() {
   },
   {
     id: "grid-idea",
-    title: "Float plus % widths is a grid (code)",
+    title: "Float Columns with % Widths (code)",
     kind: "content",
     code: `.wd-grid-row {
   clear: both;

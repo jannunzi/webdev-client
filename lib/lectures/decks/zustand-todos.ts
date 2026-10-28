@@ -12,7 +12,7 @@ export const ZUSTAND_TODOS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "The list the form and item share",
+    title: "Implementing Zustand Todos",
     kind: "content",
     bullets: [
       "A todos array, a draft `todo`, and add / update / delete",

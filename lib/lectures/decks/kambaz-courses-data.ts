@@ -12,7 +12,7 @@ export const KAMBAZ_COURSES_DATA_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "cid selects one course object",
+    title: "Implementing Course Data",
     kind: "content",
     bullets: [
       "The layout lives at `app/(kambaz)/courses/[cid]/layout.tsx`",

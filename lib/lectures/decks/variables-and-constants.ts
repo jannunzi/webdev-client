@@ -12,7 +12,7 @@ export const VARIABLES_AND_CONSTANTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Variables store application state",
+    title: "Implementing Variables and Constants",
     kind: "content",
     bullets: [
       "User info, preferences, courses, enrollments — all values in memory",

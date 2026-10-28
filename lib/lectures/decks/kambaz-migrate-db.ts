@@ -12,7 +12,7 @@ export const KAMBAZ_MIGRATE_DB_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Data belongs on the server",
+    title: "Implementing the Server Database",
     kind: "content",
     bullets: [
       "Dashboard Add / Edit / Delete still die on refresh",

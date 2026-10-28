@@ -12,7 +12,7 @@ export const SHARING_PARENT_CHILD_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "useState is local until you lift it",
+    title: "Implementing Parent-Child State Sharing",
     kind: "content",
     bullets: [
       "A sibling cannot read another component’s `useState`",

@@ -12,7 +12,7 @@ export const ATLAS_SESSIONS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Remote sessions need five keys",
+    title: "Implementing Remote Sessions",
     kind: "content",
     bullets: [
       "Local Node already stores `currentUser` in a cookie",

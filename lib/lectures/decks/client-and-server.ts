@@ -12,7 +12,7 @@ export const CLIENT_AND_SERVER_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Server by default, client on purpose",
+    title: "Implementing Client and Server Components",
     kind: "content",
     bullets: [
       "Next.js components are **Server Components** unless you say otherwise",
@@ -936,7 +936,7 @@ export default async function ChildProcessDemo() {
   },
   {
     id: "split",
-    title: "A useful mental box",
+    title: "Client vs Server Summary",
     kind: "content",
     bullets: [
       "Server components **fetch and format** data",

@@ -12,7 +12,7 @@ export const KAMBAZ_COURSES_STYLING_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Three columns beside Kambaz nav",
+    title: "Implementing Course Screen Styling",
     kind: "content",
     bullets: [
       "A course has its own sidebar, a Modules list, and a Status column",
@@ -434,7 +434,7 @@ export default function CourseStatus() {
   },
   {
     id: "flex-layouts-intro",
-    title: "Flex replaces the last tables",
+    title: "Flex Layout for Course Home",
     kind: "content",
     bullets: [
       "Course layout: nav `hidden md:block` at 140px, children `flex-1`",
@@ -444,7 +444,7 @@ export default function CourseStatus() {
   },
   {
     id: "flex-layouts",
-    title: "Flex replaces the last tables (code)",
+    title: "Flex Layout for Course Home (code)",
     kind: "content",
     code: `<div className="flex gap-4">
   <div className="hidden w-[140px] shrink-0 md:block">
