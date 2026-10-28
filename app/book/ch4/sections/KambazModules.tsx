@@ -712,9 +712,17 @@ export default function ModuleControlButtons({
   );
 }`}</CodeBlock>
         <p>
-          The Modules page keeps only the store&apos;s{" "}
-          <code>modules</code>{" "}filtered by <code>cid</code>{" "}and{" "}
-          <code>updateModule</code>{" "}for the inline name input. Home
+          <code>Module</code>{" "}now takes a single{" "}
+          <code>module</code>{" "}prop instead of a title and an{" "}
+          <code>extra</code>{" "}slot. It renders the name, or the rename
+          input when <code>module.editing</code>{" "}is set, calling the
+          store&apos;s <code>updateModule</code>{" "}itself, places{" "}
+          <code>{`<ModuleControlButtons moduleId={module._id} />`}</code>{" "}
+          at the right of the title, and renders the lessons inside as
+          before. The Modules page keeps only the store&apos;s{" "}
+          <code>modules</code>{" "}filtered by <code>cid</code>{" "}and maps
+          each one to{" "}
+          <code>{`<Module key={module._id} module={module} />`}</code>. Home
           updates for free because it already renders{" "}
           <code>Modules</code>. Confirm you
           can still add, remove, and edit modules as before. Also

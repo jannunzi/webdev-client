@@ -233,10 +233,10 @@ describe("Kambaz book demos match the code block they show", () => {
   it("keeps the Chapter 4 Modules embed components and store identical to the app", () => {
     const real = "app/(kambaz)/courses/[cid]/modules/";
     const ch4 = "app/book/ch4/embeds/_styled/courses/cid/modules/";
-    // ModulesControls, ModuleEditor, and ModuleControlButtons read the Chapter 4
-    // Zustand store directly; the live app's versions talk to the server
-    // (Chapter 5+), so only the store-free components are compared here.
-    for (const name of ["Module", "Lesson", "GreenCheckmark"]) {
+    // Module, ModulesControls, ModuleEditor, and ModuleControlButtons read the
+    // Chapter 4 Zustand store directly; the live app's versions talk to the
+    // server (Chapter 5+), so only the store-free components are compared here.
+    for (const name of ["Lesson", "GreenCheckmark"]) {
       assert.equal(read(`${ch4}${name}.tsx`), read(`${real}${name}.tsx`), name);
     }
     assert.equal(
