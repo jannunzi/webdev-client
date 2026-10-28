@@ -121,6 +121,11 @@ import {
   KambazStyledSigninEmbed,
 } from "./KambazStylingEmbeds";
 import {
+  KambazCh4ModulesEmbed,
+  KambazCh4ProfileEmbed,
+  KambazCh4SignupEmbed,
+} from "./KambazCh4Embeds";
+import {
   JsAddEmbed,
   JsArrayAddRemoveEmbed,
   JsArrayIndexEmbed,
@@ -415,6 +420,12 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <KambazCh3PeopleEmbed />;
     case "kambaz-styled-signin":
       return <KambazStyledSigninEmbed />;
+    case "kambaz-ch4-modules":
+      return <KambazCh4ModulesEmbed />;
+    case "kambaz-ch4-signup":
+      return <KambazCh4SignupEmbed />;
+    case "kambaz-ch4-profile":
+      return <KambazCh4ProfileEmbed />;
     case "lab3-stub":
       return <Lab3StubEmbed />;
     case "js-variables":

@@ -7,6 +7,8 @@ import { OnYourOwn, WithAI } from "../../components/Practice";
 import NestedExerciseList from "../../components/NestedExerciseList";
 import { CH4_KAMBAZ_EXERCISES } from "../../exercise-lists/catalogs";
 import Link from "next/link";
+import LiveDemo from "../../components/LiveDemo";
+import { KambazCh4SignupEmbed } from "../../../slides/_components/embeds/KambazCh4Embeds";
 
 export default function KambazAccount() {
   return (
@@ -409,6 +411,10 @@ export default function Profile() {
     setProfile(currentUser);
   }, [currentUser, router]);
 
+  const update = () => {
+    setCurrentUser(profile);
+  };
+
   const signout = () => {
     setCurrentUser(null);
     router.push("/account/signin");
@@ -423,7 +429,41 @@ export default function Profile() {
         value={profile.username}
         onChange={(e) => setProfile({ ...profile, username: e.target.value })}
       />
-      {/* password, firstName, lastName, email, role */}
+      <input
+        id="wd-password"
+        type="password"
+        value={profile.password}
+        onChange={(e) => setProfile({ ...profile, password: e.target.value })}
+      />
+      <input
+        id="wd-firstname"
+        value={profile.firstName}
+        onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
+      />
+      <input
+        id="wd-lastname"
+        value={profile.lastName}
+        onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
+      />
+      <input
+        id="wd-email"
+        type="email"
+        value={profile.email}
+        onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+      />
+      <select
+        id="wd-role"
+        value={profile.role}
+        onChange={(e) => setProfile({ ...profile, role: e.target.value })}
+      >
+        <option value="USER">User</option>
+        <option value="ADMIN">Admin</option>
+        <option value="FACULTY">Faculty</option>
+        <option value="STUDENT">Student</option>
+      </select>
+      <button type="button" onClick={update} id="wd-update-btn">
+        Update
+      </button>
       <button type="button" onClick={signout} id="wd-signout-btn">
         Sign out
       </button>
@@ -431,15 +471,14 @@ export default function Profile() {
   );
 }`}</CodeBlock>
           <p>
-            The sample shows the username field and Sign out; bind the
-            remaining inputs the same way — password, first name, last
-            name, email, and a role select with User, Admin, Faculty,
-            and Student — each spreading{" "}
-            <code>profile</code>{" "}and overwriting one property. Confirm
-            the form fills with <code>iron_man</code>&apos;s name after
-            a successful sign in. Confirm that editing a field does not
-            change the name in Account Navigation until you decide to
-            write the context later. Confirm Sign out clears{" "}
+            Every input spreads <code>profile</code>{" "}and overwrites one
+            property, and the role select offers User, Admin, Faculty,
+            and Student. Confirm the form fills with{" "}
+            <code>iron_man</code>&apos;s fields after a successful sign
+            in. Editing a field changes only the local{" "}
+            <code>profile</code>; clicking Update passes it to{" "}
+            <code>setCurrentUser</code>{" "}so every screen that reads the
+            context sees the edit. Confirm Sign out clears{" "}
             <code>currentUser</code>{" "}and that visiting Profile while
             signed out sends you back to Sign in.
           </p>
@@ -453,6 +492,100 @@ export default function Profile() {
           >
             Ask the assistant to fill any sample fields you skipped:
           </WithAI>
+        </Section>
+
+        <Section
+          level={3}
+          id="sec-4-10-5-6"
+          title="4.10.5.6 Sign up"
+        >
+          <p>
+            Sign up creates a new user and signs that user in. The
+            screen keeps <code>username</code>{" "}and{" "}
+            <code>password</code>{" "}in <code>useState</code>. Clicking
+            Sign up builds a user object with every field from{" "}
+            <code>users.json</code>, a new <code>_id</code>, and the
+            role <code>STUDENT</code>, passes it to{" "}
+            <code>setCurrentUser</code>, and navigates to Profile so the
+            new user can fill in the rest. To practice Sign up, update{" "}
+            <code>app/(kambaz)/account/signup/page.tsx</code>{" "}as shown
+            below:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="Signup"
+            file="app/(kambaz)/account/signup/page.tsx"
+          >{`"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAccountContext } from "../AccountContext";
+
+export default function Signup() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const { setCurrentUser } = useAccountContext();
+  const router = useRouter();
+
+  const signup = () => {
+    if (!username || !password) return;
+    setCurrentUser({
+      _id: crypto.randomUUID(),
+      username,
+      password,
+      firstName: "",
+      lastName: "",
+      email: "",
+      role: "STUDENT",
+      loginId: "",
+      section: "",
+      lastActivity: "",
+      totalActivity: "",
+    });
+    router.push("/account/profile");
+  };
+
+  return (
+    <div id="wd-signup-screen">
+      <h3>Sign up</h3>
+      <input
+        id="wd-username"
+        placeholder="username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <input
+        id="wd-password"
+        placeholder="password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button type="button" onClick={signup} id="wd-signup-btn">
+        Sign up
+      </button>
+      <Link href="/account/signin" id="wd-signin-link">
+        Sign in
+      </Link>
+    </div>
+  );
+}`}</CodeBlock>
+          <p>
+            The demo below runs Sign up and Profile on the{" "}
+            <code>AccountContext</code>{" "}from{" "}
+            <SectionLink to="4.10.5.1" />. Sign up with a new username,
+            fill the Profile fields, click Update, then Sign out. The new
+            user only lives in memory, so a reload forgets it until a
+            later chapter saves users on a server.
+          </p>
+          <LiveDemo
+            name="Signup"
+            file="app/(kambaz)/account/signup/page.tsx"
+            mode="styled"
+          >
+            <KambazCh4SignupEmbed />
+          </LiveDemo>
         </Section>
       </Section>
 

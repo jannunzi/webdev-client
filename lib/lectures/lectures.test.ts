@@ -1334,8 +1334,8 @@ describe("lecture decks", () => {
     assert.equal(counts["ch4-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-store"], 10);
     assert.equal(counts["kambaz-dashboard-crud"], 14);
-    assert.equal(counts["kambaz-modules-store"], 11);
-    assert.equal(counts["kambaz-account-context"], 21);
+    assert.equal(counts["kambaz-modules-store"], 14);
+    assert.equal(counts["kambaz-account-context"], 26);
     assert.equal(counts["http-server"], 11);
     assert.equal(counts["nodemon-es6-routes"], 9);
     assert.equal(counts["lab5-env"], 11);
@@ -1903,8 +1903,12 @@ describe("lecture decks", () => {
         add: "kambaz-courses-crud",
         edit: "kambaz-courses-crud",
       },
-      "kambaz-modules-store": { store: "kambaz-styled-modules" },
-      "kambaz-account-context": { "signin-live": "kambaz-styled-signin" },
+      "kambaz-modules-store": { page: "kambaz-ch4-modules", store: "kambaz-styled-modules" },
+      "kambaz-account-context": {
+        "signin-live": "kambaz-styled-signin",
+        profile: "kambaz-ch4-profile",
+        signup: "kambaz-ch4-signup",
+      },
       "lab5-env": { environment: "lab5-env" },
       "next-routes": {
         hello: "lab5-hello",
@@ -3771,7 +3775,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         );
       });
     }
-    assert.equal(demos, 106);
+    assert.equal(demos, 109);
   });
 
   it("keeps one code slide unless a listing is long, and never leaves a tiny tail", () => {
@@ -3824,7 +3828,10 @@ describe("Chapter 3 decks: code, then the live demo", () => {
       "kambaz-dashboard-crud#add-part-3",
       "kambaz-dashboard-crud#add-part-4",
       "kambaz-modules-store#store-part-2",
+      "kambaz-modules-store#page-part-2",
       "kambaz-account-context#signin-part-2",
+      "kambaz-account-context#profile-part-2",
+      "kambaz-account-context#signup-part-2",
     ]);
     assert.match(findSlide("javascript-arrays", "simple-part-2").code!, /^ {2}return \($/m);
     assert.match(findSlide("spread-and-destructuring", "destructing-imports-part-2").code!, /^ {8}<tbody>/);
@@ -3874,7 +3881,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 250);
+    assert.equal(intros, 251);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
