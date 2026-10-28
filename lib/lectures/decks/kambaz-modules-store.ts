@@ -272,7 +272,7 @@ export default function Module({
   },
   {
     id: "store",
-    title: "modulesStore is the shared list (1/2)",
+    title: "modulesStore is the shared list (1/3)",
     kind: "content",
     code: `"use client";
 
@@ -307,7 +307,7 @@ type ModulesStore = {
   },
   {
     id: "store-part-2",
-    title: "modulesStore is the shared list (2/2)",
+    title: "modulesStore is the shared list (2/3)",
     kind: "content",
     code: `export const useModulesStore = create<ModulesStore>((set) => ({
   modules: modulesJson as CourseModule[],
@@ -323,8 +323,17 @@ type ModulesStore = {
           lessons: [],
         },
       ],
-    })),
-  deleteModule: (moduleId) =>
+    })),`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/store/modulesStore.ts",
+    codeStartLine: 30,
+    codeHighlightLines: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+  },
+  {
+    id: "store-part-3",
+    title: "modulesStore is the shared list (3/3)",
+    kind: "content",
+    code: `  deleteModule: (moduleId) =>
     set((state) => ({
       modules: state.modules.filter((m) => m._id !== moduleId),
     })),
@@ -341,8 +350,8 @@ type ModulesStore = {
 }));`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/store/modulesStore.ts",
-    codeStartLine: 30,
-    codeHighlightLines: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 24, 25, 26, 27, 28, 29],
+    codeStartLine: 45,
+    codeHighlightLines: [9, 10, 11, 12, 13, 14],
   },
   {
     id: "store-live",
