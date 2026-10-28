@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, type ComponentType, type ReactNode } from "react";
 import { AppRouterContext } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { PathnameContext } from "next/dist/shared/lib/hooks-client-context.shared-runtime";
 import { AccountProvider } from "@/app/book/ch4/embeds/_styled/account/AccountContext";
@@ -14,9 +14,12 @@ import { AccountProvider } from "@/app/book/ch4/embeds/_styled/account/AccountCo
 export default function AsAccountRouter({
   start,
   screens,
+  Provider = AccountProvider,
 }: {
   start: string;
   screens: (path: string, go: (path: string) => void) => ReactNode;
+  /** Defaults to the book's Chapter 4 AccountProvider. */
+  Provider?: ComponentType<{ children: ReactNode }>;
 }) {
   const [path, setPath] = useState(start);
   const router = {
@@ -30,12 +33,12 @@ export default function AsAccountRouter({
   return (
     <AppRouterContext.Provider value={router}>
       <PathnameContext.Provider value={path}>
-        <AccountProvider>
+        <Provider>
           <div className="font-sans">
             <p className="mb-2 font-mono text-xs text-neutral-500">{path}</p>
             {screens(path, setPath)}
           </div>
-        </AccountProvider>
+        </Provider>
       </PathnameContext.Provider>
     </AppRouterContext.Provider>
   );

@@ -674,6 +674,8 @@ export const LECTURE_EMBED_IDS = [
   "hooks-independent-toggles",
   "hooks-profile-form",
   "kambaz-courses-crud",
+  "kambaz-enrollments",
+  "kambaz-people-crud",
   "lab5-env",
   "lab5-hello",
   "lab5-calculator",

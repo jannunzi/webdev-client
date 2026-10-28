@@ -123,7 +123,6 @@ import {
 import {
   KambazCh4ModulesEmbed,
   KambazCh4ProfileEmbed,
-  KambazCh4SignupEmbed,
 } from "./KambazCh4Embeds";
 import {
   JsAddEmbed,
@@ -209,6 +208,11 @@ import {
   ContextProfileFormEmbed,
   ZustandProfileFormEmbed,
 } from "./Lab4Embeds";
+import {
+  KambazEnrollmentsEmbed,
+  KambazPeopleCrudEmbed,
+  KambazSlidesSignupEmbed,
+} from "./EnrollmentsEmbeds";
 import {
   Lab5CalculatorEmbed,
   Lab5EnvEmbed,
@@ -423,7 +427,8 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
     case "kambaz-ch4-modules":
       return <KambazCh4ModulesEmbed />;
     case "kambaz-ch4-signup":
-      return <KambazCh4SignupEmbed />;
+      // Slides-only: Sign up through the slides' context createUser.
+      return <KambazSlidesSignupEmbed />;
     case "kambaz-ch4-profile":
       return <KambazCh4ProfileEmbed />;
     case "lab3-stub":
@@ -612,6 +617,10 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <UseEffectEmbed />;
     case "kambaz-courses-crud":
       return <KambazCoursesCrudEmbed />;
+    case "kambaz-enrollments":
+      return <KambazEnrollmentsEmbed />;
+    case "kambaz-people-crud":
+      return <KambazPeopleCrudEmbed />;
     case "lab5-env":
       return <Lab5EnvEmbed />;
     case "lab5-hello":

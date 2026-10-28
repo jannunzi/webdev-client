@@ -1335,7 +1335,7 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-courses-store"], 10);
     assert.equal(counts["kambaz-dashboard-crud"], 14);
     assert.equal(counts["kambaz-modules-store"], 20);
-    assert.equal(counts["kambaz-account-context"], 26);
+    assert.equal(counts["kambaz-account-context"], 53);
     assert.equal(counts["http-server"], 11);
     assert.equal(counts["nodemon-es6-routes"], 9);
     assert.equal(counts["lab5-env"], 11);
@@ -1908,6 +1908,8 @@ describe("lecture decks", () => {
         "signin-live": "kambaz-styled-signin",
         profile: "kambaz-ch4-profile",
         signup: "kambaz-ch4-signup",
+        "enroll-dash-live": "kambaz-enrollments",
+        "people-table-live": "kambaz-people-crud",
       },
       "lab5-env": { environment: "lab5-env" },
       "next-routes": {
@@ -3770,6 +3772,11 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         const slidesOnly: Record<string, string> = {
           "kambaz-account-context#profile": "app/book/ch4/embeds/_styled/account/profile/page.tsx",
           "kambaz-modules-store#page": "app/book/ch4/embeds/_styled/courses/cid/modules/page.tsx",
+          // assignment solution, intentionally not in book (§4.10.5.6 Sign up via createUser, §4.10.7).
+          "kambaz-account-context#signup": "app/slides/_components/embeds/enrollments/account/signup/page.tsx",
+          "kambaz-account-context#enroll-dash": "app/slides/_components/embeds/enrollments/dashboard/Dashboard.tsx",
+          "kambaz-account-context#people-table":
+            "app/slides/_components/embeds/enrollments/courses/cid/people/table/PeopleTable.tsx",
         };
         const embedFile = slidesOnly[`${slug}#${base}`];
         const book = embedFile ? [readFileSync(embedFile, "utf8")] : ch3BookListings(first.codeFile);
@@ -3782,7 +3789,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         );
       });
     }
-    assert.equal(demos, 110);
+    assert.equal(demos, 112);
   });
 
   it("keeps one code slide unless a listing is long, and never leaves a tiny tail", () => {
@@ -3839,6 +3846,10 @@ describe("Chapter 3 decks: code, then the live demo", () => {
       "kambaz-account-context#signin-part-2",
       "kambaz-account-context#profile-part-2",
       "kambaz-account-context#signup-part-2",
+      "kambaz-account-context#enroll-dash-part-2",
+      "kambaz-account-context#enroll-dash-part-3",
+      "kambaz-account-context#people-table-part-2",
+      "kambaz-account-context#people-table-part-3",
     ]);
     assert.match(findSlide("javascript-arrays", "simple-part-2").code!, /^ {2}return \($/m);
     assert.match(findSlide("spread-and-destructuring", "destructing-imports-part-2").code!, /^ {8}<tbody>/);
@@ -3888,7 +3899,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 254);
+    assert.equal(intros, 262);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
@@ -4028,5 +4039,32 @@ describe("demo-stage form controls", () => {
     assert.match(box.body, /width: 1em;/);
     assert.match(box.body, /min-width: 0;/);
     assert.match(box.body, /padding: 0;/);
+  });
+});
+
+describe("kambaz-account-context §4.10.7 assignment slides", () => {
+  // assignment solution, intentionally not in book: the slides must join back into the
+  // working embed files instead (app/slides/_components/embeds/enrollments).
+  const embeds: Record<string, string> = {
+    "enroll-store": "store/enrollmentsStore.ts",
+    "enroll-card": "dashboard/CourseCard.tsx",
+    "enroll-dash": "dashboard/Dashboard.tsx",
+    "people-context": "account/AccountContext.tsx",
+    signup: "account/signup/page.tsx",
+    "signup-signin": "account/signin/page.tsx",
+    "people-page": "courses/cid/people/table/page.tsx",
+    "people-table": "courses/cid/people/table/PeopleTable.tsx",
+  };
+  it("joins each split listing back into its working embed file", () => {
+    for (const [id, file] of Object.entries(embeds)) {
+      const source = readFileSync(join(process.cwd(), "app/slides/_components/embeds/enrollments", file), "utf8");
+      assert.equal(`${joinedListing("kambaz-account-context", id)}\n`, source, id);
+    }
+  });
+  it("uses the Chapter 5 client names for enrollments and users", () => {
+    const text = slideText("kambaz-account-context");
+    for (const name of ["enrollIntoCourse", "unenrollFromCourse", "createUser", "updateUser", "deleteUser"]) {
+      assert.match(text, new RegExp(name), name);
+    }
   });
 });
