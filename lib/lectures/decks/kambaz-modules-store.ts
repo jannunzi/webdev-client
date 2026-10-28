@@ -106,7 +106,7 @@ export default function ModuleEditor({
   },
   {
     id: "store",
-    title: "modulesStore is the shared list (code)",
+    title: "modulesStore is the shared list (1/2)",
     kind: "content",
     code: `"use client";
 
@@ -129,7 +129,15 @@ export const useModulesStore = create<{
   updateModule: (module: CourseModule) => void;
   editModule: (moduleId: string) => void;
 }>((set) => ({
-  modules: modulesJson as CourseModule[],
+`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/store/modulesStore.ts",
+  },
+  {
+    id: "store-part-2",
+    title: "modulesStore is the shared list (2/2)",
+    kind: "content",
+    code: `  modules: modulesJson as CourseModule[],
   addModule: (module) =>
     set((state) => ({
       modules: [
@@ -160,7 +168,8 @@ export const useModulesStore = create<{
 }));`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/store/modulesStore.ts",
-    codeHighlightLines: [23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 44, 45, 46, 47, 48, 49],
+    codeStartLine: 22,
+    codeHighlightLines: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 23, 24, 25, 26, 27, 28],
   },
   {
     id: "store-live",
