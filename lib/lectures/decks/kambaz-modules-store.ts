@@ -22,156 +22,169 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
   },
   {
     id: "editor-intro",
-    title: "ModuleEditor is a controlled dialog",
+    title: "ModuleEditor owns its dialog",
     kind: "content",
     bullets: [
-      "`show === false` returns `null` — the overlay is not in the document",
-      "It owns the `moduleName` draft (§4.2.6) and reads `cid` with `useParams`",
+      "No props: it renders the red + Module button and the dialog",
+      "It owns `show` and the `moduleName` draft (§4.2.6); `cid` from `useParams`",
       "Add Module calls the store's `addModule`, clears the draft, then closes",
     ],
   },
   {
     id: "editor",
-    title: "ModuleEditor is a controlled dialog (1/2)",
+    title: "ModuleEditor owns its dialog (1/3)",
     kind: "content",
     code: `import { useState } from "react";
+import { FaPlus } from "react-icons/fa";
 import { useParams } from "next/navigation";
 import { useModulesStore } from "../../../store/modulesStore";
 
-export default function ModuleEditor({
-  show,
-  handleClose,
-  dialogTitle,
-}: {
-  show: boolean;
-  handleClose: () => void;
-  dialogTitle: string;
-}) {
+export default function ModuleEditor() {
   const { cid } = useParams();
+  const [show, setShow] = useState(false);
   const [moduleName, setModuleName] = useState("");
   const addModule = useModulesStore((state) => state.addModule);
-  if (!show) return null;`,
+  return (
+    <>
+      <button
+        type="button"
+        className="inline-flex items-center gap-1 rounded border border-red-600 bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+        id="wd-add-module-btn"
+        onClick={() => setShow(true)}
+      >
+        <FaPlus /> Module
+      </button>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx",
-    codeHighlightLines: [[14, 16]],
+    codeHighlightLines: [[6, 10], 17],
   },
   {
     id: "editor-part-2",
-    title: "Add module name field and close button",
+    title: "ModuleEditor owns its dialog (2/3)",
     kind: "content",
-    code: `  return (
-    <div id="wd-add-module-dialog" className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
-        <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
-          <h3 className="m-0 text-lg font-semibold">{dialogTitle}</h3>
-          <button type="button" className="text-2xl leading-none text-neutral-500" aria-label="Close"
-            onClick={handleClose} >
-            ×
-          </button>
-        </div>
-        <div className="px-4 py-3">
-          <input value={moduleName} id="wd-add-module-name" placeholder="Module name" className="w-full rounded border border-neutral-300 px-3 py-1.5"
-            onChange={(e) => setModuleName(e.target.value)} />
-        </div>`,
+    code: `      {show && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          id="wd-add-module-dialog"
+        >
+          <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
+            <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
+              <h3 className="m-0 text-lg font-semibold">Add Module</h3>
+              <button
+                type="button"
+                onClick={() => setShow(false)}
+                className="text-2xl leading-none text-neutral-500"
+                aria-label="Close"
+              >
+                ×
+              </button>
+            </div>
+            <div className="px-4 py-3">
+              <input
+                className="w-full rounded border border-neutral-300 px-3 py-1.5"
+                value={moduleName}
+                onChange={(e) => setModuleName(e.target.value)}
+                id="wd-add-module-name"
+                placeholder="Module name"
+              />
+            </div>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx",
-    codeStartLine: 18,
+    codeStartLine: 21,
+    codeHighlightLines: [1, 11, 22],
   },
   {
     id: "editor-part-3",
-    title: "Add Cancel and Add Module buttons",
+    title: "ModuleEditor owns its dialog (3/3)",
     kind: "content",
-    code: `        <div className="flex justify-end gap-2 border-t border-neutral-200 px-4 py-3">
-          <button id="wd-add-module-cancel" type="button" className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
-            onClick={handleClose} >
-            Cancel
-          </button>
-          <button id="wd-add-module-submit" type="button" className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
-            onClick={() => {
-              addModule({ name: moduleName, course: String(cid) });
-              setModuleName("");
-              handleClose();
-            }} >
-            Add Module
-          </button>
+    code: `            <div className="flex justify-end gap-2 border-t border-neutral-200 px-4 py-3">
+              <button
+                type="button"
+                onClick={() => setShow(false)}
+                className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+                id="wd-add-module-cancel"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  addModule({ name: moduleName, course: String(cid) });
+                  setModuleName("");
+                  setShow(false);
+                }}
+                className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+                id="wd-add-module-submit"
+              >
+                Add Module
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx",
-    codeStartLine: 32,
-    codeHighlightLines: [8, 9, 10],
+    codeStartLine: 47,
+    codeHighlightLines: [[12, 16]],
   },
   {
     id: "controls-intro",
-    title: "+ Module opens the dialog",
+    title: "ModulesControls is the toolbar",
     kind: "content",
     bullets: [
       "`ModulesControls` already has Collapse All, View Progress, Publish All",
-      "It owns only `show`: + Module sets it true, Cancel or × sets it false",
-      "No props in; it passes the dialog only `show`, `handleClose`, `dialogTitle`",
-      "The dialog owns the name draft and calls the store's `addModule` itself",
+      "No props and no state: it just renders `<ModuleEditor />` last",
+      "`ModuleEditor` brings its own + Module button, dialog and store call",
     ],
     embed: "kambaz-ch4-modules-controls",
   },
   {
     id: "controls",
-    title: "+ Module opens the dialog (1/3)",
+    title: "ModulesControls is the toolbar (1/2)",
     kind: "content",
-    code: `import { useState } from "react";
-import { FaPlus } from "react-icons/fa";
-import ModuleEditor from "./ModuleEditor";
+    code: `import ModuleEditor from "./ModuleEditor";
 
 export default function ModulesControls() {
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);`,
+  return (
+    <div id="wd-modules-controls" className="mb-3 flex flex-wrap items-center gap-2">
+      <button
+        type="button"
+        className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+      >
+        Collapse All
+      </button>
+      <button
+        type="button"
+        className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+      >
+        View Progress
+      </button>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx",
-    codeHighlightLines: [6, 7, 8],
+    codeHighlightLines: [1, 3],
   },
   {
     id: "controls-part-2",
-    title: "Collapse All, View Progress, Publish All",
+    title: "ModulesControls is the toolbar (2/2)",
     kind: "content",
-    code: `  return (
-    <div id="wd-modules-controls" className="mb-3 flex flex-wrap items-center gap-2">
-      <button type="button" className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm">
-        Collapse All
-      </button>
-      <button type="button" className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm">
-        View Progress
-      </button>
-      <select defaultValue="publish-all" className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm">
+    code: `      <select
+        defaultValue="publish-all"
+        className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+      >
         <option value="publish-all">Publish All</option>
         <option value="unpublish-all">Unpublish All</option>
-      </select>`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx",
-    codeStartLine: 9,
-  },
-  {
-    id: "controls-part-3",
-    title: "+ Module button opens the dialog",
-    kind: "content",
-    code: `      <button id="wd-add-module-btn" type="button" className="inline-flex items-center gap-1 rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
-        onClick={handleShow} >
-        <FaPlus /> Module
-      </button>
-      <ModuleEditor
-        show={show}
-        handleClose={handleClose}
-        dialogTitle="Add Module"
-      />
+      </select>
+      <ModuleEditor />
     </div>
   );
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx",
-    codeStartLine: 21,
-    codeHighlightLines: [6, 7, 8],
+    codeStartLine: 18,
+    codeHighlightLines: [8],
   },
   {
     id: "buttons-intro",
@@ -190,22 +203,31 @@ export default function ModulesControls() {
     id: "buttons",
     title: "Trash and pencil on each module row (code)",
     kind: "content",
-    code: `import { FaPencilAlt, FaTrash } from "react-icons/fa";
+    code: `import { FaCheckCircle, FaPencilAlt, FaTrash } from "react-icons/fa";
 import { BsPlus } from "react-icons/bs";
 import { IoEllipsisVertical } from "react-icons/io5";
-import GreenCheckmark from "./GreenCheckmark";
 import { useModulesStore } from "../../../store/modulesStore";
 
-export default function ModuleControlButtons({ moduleId }: { moduleId: string }) {
+export default function ModuleControlButtons({
+  moduleId,
+}: {
+  moduleId: string;
+}) {
   const deleteModule = useModulesStore((state) => state.deleteModule);
   const editModule = useModulesStore((state) => state.editModule);
   return (
     <div className="flex items-center gap-2">
-      <FaPencilAlt title="Edit module" className="cursor-pointer text-blue-600"
-        onClick={() => editModule(moduleId)} />
-      <FaTrash title="Delete module" className="cursor-pointer text-red-600"
-        onClick={() => deleteModule(moduleId)} />
-      <GreenCheckmark />
+      <FaPencilAlt
+        className="cursor-pointer text-blue-600"
+        onClick={() => editModule(moduleId)}
+        title="Edit module"
+      />
+      <FaTrash
+        className="cursor-pointer text-red-600"
+        onClick={() => deleteModule(moduleId)}
+        title="Delete module"
+      />
+      <FaCheckCircle className="text-green-600" />
       <BsPlus className="text-3xl" />
       <IoEllipsisVertical className="text-xl" />
     </div>
@@ -215,32 +237,8 @@ export default function ModuleControlButtons({ moduleId }: { moduleId: string })
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleControlButtons.tsx",
   },
   {
-    id: "green-checkmark",
-    title: "GreenCheckmark (repeat from Chapter 2)",
-    kind: "content",
-    bullets: [
-      "`ModuleControlButtons` imports it — same file as Chapter 2",
-      "Stack `FaCheckCircle` on `FaCircle` — green on white",
-    ],
-    code: `import { FaCheckCircle, FaCircle } from "react-icons/fa";
-
-export default function GreenCheckmark() {
-  return (
-    <span className="relative me-1 inline-flex">
-      <FaCheckCircle
-        className="absolute text-xl text-green-600"
-        style={{ top: "2px" }}
-      />
-      <FaCircle className="text-base text-white" />
-    </span>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/courses/[cid]/modules/GreenCheckmark.tsx",
-  },
-  {
     id: "module",
-    title: "Module renders one module",
+    title: "Module takes one module prop",
     kind: "content",
     bullets: [
       "One `module` prop; it selects `updateModule` from the store itself",
@@ -255,8 +253,16 @@ export default function Module({ module }: { module: CourseModule }) {
   const updateModule = useModulesStore((state) => state.updateModule);
   return (
     <li className="wd-module mb-5 overflow-hidden border border-neutral-400 p-0 text-xl">
-      <div className="wd-title flex items-center justify-between bg-neutral-200 p-3 ps-2">
-        <span className="min-w-0 flex-1">
+      <div className="wd-title flex items-center justify-between bg-neutral-200 p-3 ps-2">`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/Module.tsx",
+    codeHighlightLines: [5, 6],
+  },
+  {
+    id: "module-part-2",
+    title: "Name or a rename input",
+    kind: "content",
+    code: `        <span className="min-w-0 flex-1">
           {module.editing ? (
             <input
               className="w-1/2 rounded border border-neutral-300 px-2 py-1 text-base"
@@ -273,8 +279,17 @@ export default function Module({ module }: { module: CourseModule }) {
           ) : (
             module.name
           )}
-        </span>
-        <span className="ms-2 flex items-center gap-2">
+        </span>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/Module.tsx",
+    codeStartLine: 10,
+    codeHighlightLines: [2, 7, 11],
+  },
+  {
+    id: "module-part-3",
+    title: "Control buttons and lessons",
+    kind: "content",
+    code: `        <span className="ms-2 flex items-center gap-2">
           <ModuleControlButtons moduleId={module._id} />
         </span>
       </div>
@@ -288,6 +303,8 @@ export default function Module({ module }: { module: CourseModule }) {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/Module.tsx",
+    codeStartLine: 28,
+    codeHighlightLines: [2, [6, 8]],
   },
   {
     id: "store-intro",

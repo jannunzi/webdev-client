@@ -1294,7 +1294,7 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-styling"], 10);
     assert.equal(counts["kambaz-nav-styling"], 17);
     assert.equal(counts["kambaz-dashboard-styling"], 9);
-    assert.equal(counts["kambaz-courses-styling"], 28);
+    assert.equal(counts["kambaz-courses-styling"], 27);
     assert.equal(counts["kambaz-assignments-styling"], 14);
     assert.equal(counts["kambaz-account-styling"], 10);
     assert.equal(counts["intro-to-javascript"], 9);
@@ -2582,7 +2582,8 @@ describe("lecture decks", () => {
     assert.match(courses, /wd-courses-navigation/);
     assert.match(courses, /list-group-item/);
     assert.match(courses, /kambaz\.css/);
-    assert.match(courses, /GreenCheckmark/);
+    assert.match(courses, /FaCheckCircle className="text-green-600"/);
+    assert.doesNotMatch(courses, /GreenCheckmark/);
     assert.match(courses, /hidden lg:block/);
     assert.match(courses, /wd-course-status/);
     assert.doesNotMatch(courses, /react-bootstrap/i);
