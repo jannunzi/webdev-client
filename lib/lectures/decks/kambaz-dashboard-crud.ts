@@ -198,10 +198,7 @@ export default function CourseCard({
         className="wd-dashboard-course-link block text-neutral-900 no-underline"
       >
         <Image
-          src={image}
-          width={300}
-          height={160}
-          alt={name}
+          src={image} width={300} height={160} alt={name}
           className="h-40 w-full object-cover"
         />
         <div className="p-4">
@@ -247,7 +244,7 @@ export default function CourseCard({
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
     codeStartLine: 21,
-    codeHighlightLines: [32, 33, 43, 44],
+    codeHighlightLines: [29, 30, 40, 41],
   },
   {
     id: "edit",
