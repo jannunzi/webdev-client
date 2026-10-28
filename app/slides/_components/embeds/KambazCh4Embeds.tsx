@@ -65,14 +65,17 @@ export function KambazCh4ModulesEmbed() {
 /** Foreshadow §4.10.4.2: one module row with the real ModuleControlButtons. */
 export function KambazCh4ModuleRowEmbed() {
   return (
-    <LectureDemoFrame label="app/(kambaz)/courses/[cid]/modules/ModuleControlButtons.tsx">
-      <ul className="m-0 list-none p-0 font-sans">
-        <Module
-          title="Week 1 - HTML"
-          extra={<ModuleControlButtons moduleId="M101" />}
-        />
-      </ul>
-    </LectureDemoFrame>
+    <div className="mt-6">
+      <LectureDemoFrame label="app/(kambaz)/courses/[cid]/modules/ModuleControlButtons.tsx">
+        {/* Slides-only: padding roughly doubles the row's height on the slide. */}
+        <ul className="m-0 list-none py-6 font-sans">
+          <Module
+            title="Week 1 - HTML"
+            extra={<ModuleControlButtons moduleId="M101" />}
+          />
+        </ul>
+      </LectureDemoFrame>
+    </div>
   );
 }
 
