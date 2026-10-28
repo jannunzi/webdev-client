@@ -46,7 +46,7 @@ export { courses, modules };`,
   },
   {
     id: "page",
-    title: "filter, then map, then lessons?.map (1/2)",
+    title: "Filter modules by course id",
     kind: "content",
     code: `"use client";
 
@@ -93,7 +93,7 @@ export default function Modules() {
   },
   {
     id: "page-part-2",
-    title: "filter, then map, then lessons?.map (2/2)",
+    title: "Map modules, then their lessons",
     kind: "content",
     code: `      <ul id="wd-modules" className="m-0 list-none p-0">
         {modules.map((module) => (

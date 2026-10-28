@@ -23,7 +23,7 @@ export const JAVASCRIPT_ARRAYS_SLIDES: LectureSlide[] = [
   },
   {
     id: "simple",
-    title: "A todo list is an array of li (1/2)",
+    title: "Declare number, string and li arrays",
     kind: "content",
     code: `export default function SimpleArrays() {
   var functionScoped = 2;
@@ -48,7 +48,7 @@ export const JAVASCRIPT_ARRAYS_SLIDES: LectureSlide[] = [
   },
   {
     id: "simple-part-2",
-    title: "A todo list is an array of li (2/2)",
+    title: "Render the arrays and the todo list",
     kind: "content",
     code: `  return (
     <div id="wd-simple-arrays">

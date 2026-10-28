@@ -52,7 +52,7 @@ export default function Kambaz() {
   },
   {
     id: "nav",
-    title: "Sidebar links come from an array (1/3)",
+    title: "Icons and the LINKS array",
     kind: "content",
     code: `"use client";
 
@@ -77,7 +77,7 @@ const LINKS = [
   },
   {
     id: "nav-part-2",
-    title: "Sidebar links come from an array (2/3)",
+    title: "Sidebar shell and Account link",
     kind: "content",
     code: `export default function KambazNavigation() {
   const pathname = usePathname() ?? "";
@@ -124,7 +124,7 @@ const LINKS = [
   },
   {
     id: "nav-part-3",
-    title: "Sidebar links come from an array (3/3)",
+    title: "Map LINKS to active-aware links",
     kind: "content",
     code: `      {LINKS.map((link) => {
         const active =

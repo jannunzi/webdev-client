@@ -225,7 +225,7 @@ export default function ObjectStateVariable() {
   },
   {
     id: "array",
-    title: "Array: copy, add, or filter (1/2)",
+    title: "Add and delete copy the array",
     kind: "demo",
     code: `"use client";
 
@@ -245,7 +245,7 @@ export default function ArrayStateVariable() {
   },
   {
     id: "array-part-2",
-    title: "Array: copy, add, or filter (2/2)",
+    title: "Render the list with delete buttons",
     kind: "content",
     code: `  return (
     <div id="wd-array-state-variables">
@@ -404,7 +404,7 @@ export function validateProfile(profile: Profile) {
   },
   {
     id: "profile-fields",
-    title: "ProfileFields (1/2)",
+    title: "ProfileFields imports and props",
     kind: "content",
     code: `import {
   dateToHtml,
@@ -441,7 +441,7 @@ export default function ProfileFields({
   },
   {
     id: "profile-fields-part-2",
-    title: "ProfileFields (2/2)",
+    title: "Inputs that show their errors",
     kind: "content",
     code: `  return (
     <div className="flex flex-col gap-3">

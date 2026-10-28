@@ -84,7 +84,7 @@ export default function AssignmentItem({
   },
   {
     id: "list",
-    title: "Assignments can stay a Server page (1/2)",
+    title: "Await params and filter assignments",
     kind: "content",
     code: `import { FaPlus, FaSearch } from "react-icons/fa";
 import AssignmentItem from "./AssignmentItem";
@@ -133,7 +133,7 @@ export default async function Assignments({
   },
   {
     id: "list-part-2",
-    title: "Assignments can stay a Server page (2/2)",
+    title: "Section header and assignment items",
     kind: "content",
     code: `      <h3
         id="wd-assignments-title"
@@ -295,7 +295,7 @@ export { courses, modules, assignments, users, enrollments };`,
   },
   {
     id: "people",
-    title: "People joins users to enrollments (1/2)",
+    title: "Join enrollments to users",
     kind: "content",
     code: `import { FaUserCircle } from "react-icons/fa";
 import * as db from "../../../../database";
@@ -331,7 +331,7 @@ export default async function PeopleTable({
   },
   {
     id: "people-part-2",
-    title: "People joins users to enrollments (2/2)",
+    title: "One row per enrolled user",
     kind: "content",
     code: `        <tbody>
           {enrolled.map((user) => (

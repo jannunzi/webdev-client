@@ -110,7 +110,7 @@ export default async function CoursesLayout({
   },
   {
     id: "course-nav",
-    title: "Course nav maps LINKS with cid (1/2)",
+    title: "The LINKS array of course sections",
     kind: "content",
     code: `"use client";
 
@@ -135,7 +135,7 @@ const LINKS = [
   },
   {
     id: "course-nav-part-2",
-    title: "Course nav maps LINKS with cid (2/2)",
+    title: "Map LINKS to links with the cid",
     kind: "content",
     code: `export default function CourseNavigation({ cid }: { cid: string }) {
   const pathname = usePathname() ?? "";

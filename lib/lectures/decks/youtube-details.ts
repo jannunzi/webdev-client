@@ -188,7 +188,7 @@ export default function YouTubeVideoDetails() {
   },
   {
     id: "lesson-icon",
-    title: "Search Videos from Lesson Name (1/3)",
+    title: "YouTube link searches the lesson",
     kind: "demo",
     bullets: [
       "Modules lesson row links `?search=${lesson.name}`",
@@ -215,7 +215,7 @@ export default function YouTubeVideoDetails() {
   },
   {
     id: "lesson-map",
-    title: "Search Videos from Lesson Name (2/3)",
+    title: "Add the button to each lesson",
     kind: "demo",
     bullets: ["Pass **`lesson`** into the control buttons"],
     code: `{module.lessons &&

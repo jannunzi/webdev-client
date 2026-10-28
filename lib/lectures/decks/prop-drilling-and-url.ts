@@ -229,7 +229,7 @@ export default function PathCalculator() {
   },
   {
     id: "url-form",
-    title: "A calculator that navigates (1/2)",
+    title: "Build query and path URLs",
     kind: "content",
     code: `"use client";
 
@@ -262,7 +262,7 @@ export default function UrlEncoding() {
   },
   {
     id: "url-form-part-2",
-    title: "A calculator that navigates (2/2)",
+    title: "Inputs, buttons and links",
     kind: "content",
     code: `  return (
     <div id="wd-url-encoding" className="max-w-xl">

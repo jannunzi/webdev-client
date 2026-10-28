@@ -55,7 +55,7 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
   },
   {
     id: "store",
-    title: "Seed from courses.json (1/2)",
+    title: "Course type, emptyCourse, store type",
     kind: "content",
     code: `"use client";
 
@@ -86,7 +86,7 @@ type CoursesStore = {
   },
   {
     id: "store-part-2",
-    title: "Seed from courses.json (2/2)",
+    title: "Seed and add, delete, update",
     kind: "content",
     code: `export const useCoursesStore = create<CoursesStore>((set) => ({
   courses: coursesJson,

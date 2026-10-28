@@ -23,7 +23,7 @@ export const BOOLEANS_AND_CONDITIONALS_SLIDES: LectureSlide[] = [
   },
   {
     id: "boolean-sample",
-    title: "And, or, not, and === (1/2)",
+    title: "Compute booleans with && || ! ===",
     kind: "content",
     code: `export default function BooleanVariables() {
   let numberVariable = 123,
@@ -42,7 +42,7 @@ export const BOOLEANS_AND_CONDITIONALS_SLIDES: LectureSlide[] = [
   },
   {
     id: "boolean-sample-part-2",
-    title: "And, or, not, and === (2/2)",
+    title: "Print each boolean as a string",
     kind: "content",
     code: `  return (
     <div id="wd-boolean-variables">
