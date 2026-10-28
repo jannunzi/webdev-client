@@ -325,7 +325,6 @@ import {
 export default function Dashboard() {
   const courses = useCoursesStore((state) => state.courses);
   const addCourse = useCoursesStore((state) => state.addCourse);
-  const deleteCourse = useCoursesStore((state) => state.deleteCourse);
   const updateCourse = useCoursesStore((state) => state.updateCourse);
   const [course, setCourse] = useState<Course>(emptyCourse);
 
@@ -379,7 +378,6 @@ export default function Dashboard() {
             key={c._id}
             {...c}
             onEdit={() => setCourse(c)}
-            onDelete={() => deleteCourse(c._id)}
           />
         ))}
       </div>
@@ -390,9 +388,10 @@ export default function Dashboard() {
           The store selectors replace the old local{" "}
           <code>courses</code>{" "}array and the{" "}
           <code>setCourses</code>{" "}helpers you might have sketched first.
-          <code>addCourse</code>, <code>deleteCourse</code>, and{" "}
+          <code>addCourse</code>{" "}and{" "}
           <code>updateCourse</code>{" "}are the store functions from{" "}
-          <SectionLink to="4.10.1" />. The local{" "}
+          <SectionLink to="4.10.1" />;{" "}
+          <code>CourseCard</code>{" "}calls <code>deleteCourse</code>{" "}itself. The local{" "}
           <code>course</code>{" "}state is only the form: typing a name
           should not rewrite every card until you click Add or Update.
           The next three subsections walk through the Add form, the
@@ -491,9 +490,11 @@ export default function Dashboard() {
             to the course Home screen, so you must call{" "}
             <code>event.preventDefault()</code>{" "}or the card navigates
             away before the course disappears. Pass the click through to{" "}
-            <code>onDelete</code>{" "}so Dashboard can call{" "}
-            <code>{`deleteCourse(c._id)`}</code>{" "}without the card
-            importing the store. Style Delete as a red Tailwind button
+            the card itself: <code>CourseCard</code>{" "}reads{" "}
+            <code>deleteCourse</code>{" "}from{" "}
+            <code>useCoursesStore</code>{" "}and calls{" "}
+            <code>{`deleteCourse(_id)`}</code>, so Dashboard does not
+            pass a delete prop. Style Delete as a red Tailwind button
             and give it id{" "}
             <code>wd-delete-course-click</code>. The Delete control
             looks like <FigureLink to="4.10.2c" />:
@@ -551,8 +552,10 @@ export default function Dashboard() {
           <p>
             To practice the card buttons, keep the image, title, and
             description from the <ChapterLink to={3} />{" "}card, then
-            accept <code>onEdit</code>{" "}and <code>onDelete</code>{" "}and
-            wire both clicks through <code>preventDefault</code>. Style
+            accept <code>onEdit</code>{" "}(Edit fills the
+            Dashboard&apos;s local draft, so it stays a prop), read{" "}
+            <code>deleteCourse</code>{" "}from the store, and wire both
+            clicks through <code>preventDefault</code>. Style
             Edit like Update and Delete as a red button. Confirm Edit
             fills the form and Delete removes the card:
           </p>
@@ -560,10 +563,9 @@ export default function Dashboard() {
             language="tsx"
             name="CourseCard"
             file="app/(kambaz)/dashboard/CourseCard.tsx"
-          >{`"use client";
-
-import Link from "next/link";
+          >{`import Link from "next/link";
 import Image from "next/image";
+import { useCoursesStore } from "../store/coursesStore";
 
 export default function CourseCard({
   _id,
@@ -571,15 +573,14 @@ export default function CourseCard({
   description,
   image,
   onEdit,
-  onDelete,
 }: {
   _id: string;
   name: string;
   description: string;
   image: string;
   onEdit: () => void;
-  onDelete: () => void;
 }) {
+  const deleteCourse = useCoursesStore((state) => state.deleteCourse);
   return (
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
       <Link
@@ -623,7 +624,7 @@ export default function CourseCard({
             className="ms-2 inline-flex items-center justify-center rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
             onClick={(event) => {
               event.preventDefault();
-              onDelete();
+              deleteCourse(_id);
             }}
           >
             Delete

@@ -64,9 +64,7 @@ export default function KambazModules() {
           language="tsx"
           name="ModuleEditor"
           file="app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx"
-        >{`"use client";
-
-export default function ModuleEditor({
+        >{`export default function ModuleEditor({
   show,
   handleClose,
   dialogTitle,
@@ -174,11 +172,8 @@ export default function ModuleEditor({
         />
         <CodeBlock
           language="tsx"
-          name="ModulesControls"
           file="app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx"
-        >{`"use client";
-
-import { useState } from "react";
+        >{`import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import ModuleEditor from "./ModuleEditor";
 
@@ -235,10 +230,11 @@ export default function ModulesControls({
   );
 }`}</CodeBlock>
         <p>
-          <code>ModulesControls</code>{" "}owns only the dialog visibility.
-          The draft name and the function that appends a module stay on
-          the Modules page so the same{" "}
-          <code>addModule</code>{" "}can later call the Zustand store. Pass{" "}
+          <code>ModulesControls</code>{" "}owns only the dialog visibility
+          for now. The draft name and the function that appends a module
+          stay on the Modules page while the modules array is still local
+          state; <SectionLink to="4.10.4.4" />{" "}moves both into{" "}
+          <code>ModulesControls</code>{" "}once a store holds the array. Pass{" "}
           <code>moduleName</code>, <code>setModuleName</code>, and{" "}
           <code>addModule</code>{" "}down as props; the dialog will invoke{" "}
           <code>setModuleName</code>{" "}when you edit the text field and{" "}
@@ -305,7 +301,6 @@ export default function ModulesControls({
         </p>
         <CodeBlock
           language="tsx"
-          name="ModuleControlButtons"
           file="app/(kambaz)/courses/[cid]/modules/ModuleControlButtons.tsx"
         >{`import { FaPencilAlt, FaTrash } from "react-icons/fa";
 import { BsPlus } from "react-icons/bs";
@@ -536,15 +531,127 @@ export const useModulesStore = create<ModulesStore>((set) => ({
           <code>updateModule</code>.
         </p>
         <p>
-          Reimplement Modules by removing the local modules array and
-          the local add, delete, update, and edit helpers, and replacing
-          them with store selectors. The page then keeps only the draft
-          name in <code>useState</code>. Filter the store by{" "}
-          <code>cid</code>, pass store functions into{" "}
-          <code>ModulesControls</code>{" "}and{" "}
-          <code>ModuleControlButtons</code>, and wrap each add so it
-          also clears <code>moduleName</code>. Home updates for free
-          because it already renders <code>Modules</code>. Confirm you
+          Reimplement Modules by removing the local modules array
+          and the local add, delete, update, and edit helpers. Now that
+          the functions live in a store, the child components can read
+          them directly instead of receiving them as props.{" "}
+          <code>ModulesControls</code>{" "}takes over the draft{" "}
+          <code>moduleName</code>, reads <code>cid</code>{" "}with{" "}
+          <code>useParams</code>, and calls the store&apos;s{" "}
+          <code>addModule</code>, clearing the name afterward. It still
+          hands <code>ModuleEditor</code>{" "}a small{" "}
+          <code>addModule</code>{" "}function, so the dialog does not
+          change. Modules renders{" "}
+          <code>{`<ModulesControls />`}</code>{" "}with no props:
+        </p>
+        <CodeBlock
+          language="tsx"
+          name="ModulesControls"
+          file="app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx"
+        >{`import { useState } from "react";
+import { useParams } from "next/navigation";
+import { FaPlus } from "react-icons/fa";
+import ModuleEditor from "./ModuleEditor";
+import { useModulesStore } from "../../../store/modulesStore";
+
+export default function ModulesControls() {
+  const { cid } = useParams();
+  const [moduleName, setModuleName] = useState("");
+  const addModule = useModulesStore((state) => state.addModule);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  return (
+    <div id="wd-modules-controls" className="mb-3 flex flex-wrap items-center gap-2">
+      <button
+        type="button"
+        className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+      >
+        Collapse All
+      </button>
+      <button
+        type="button"
+        className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+      >
+        View Progress
+      </button>
+      <select
+        defaultValue="publish-all"
+        className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+      >
+        <option value="publish-all">Publish All</option>
+        <option value="unpublish-all">Unpublish All</option>
+      </select>
+      <button
+        type="button"
+        className="inline-flex items-center gap-1 rounded border border-red-600 bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+        id="wd-add-module-btn"
+        onClick={handleShow}
+      >
+        <FaPlus /> Module
+      </button>
+      <ModuleEditor
+        show={show}
+        handleClose={handleClose}
+        dialogTitle="Add Module"
+        moduleName={moduleName}
+        setModuleName={setModuleName}
+        addModule={() => {
+          addModule({ name: moduleName, course: String(cid) });
+          setModuleName("");
+        }}
+      />
+    </div>
+  );
+}`}</CodeBlock>
+        <p>
+          <code>ModuleControlButtons</code>{" "}now keeps only the{" "}
+          <code>moduleId</code>{" "}prop and gets{" "}
+          <code>deleteModule</code>{" "}and <code>editModule</code>{" "}from{" "}
+          <code>useModulesStore</code>, so the Modules map renders{" "}
+          <code>{`<ModuleControlButtons moduleId={module._id} />`}</code>:
+        </p>
+        <CodeBlock
+          language="tsx"
+          name="ModuleControlButtons"
+          file="app/(kambaz)/courses/[cid]/modules/ModuleControlButtons.tsx"
+        >{`import { FaPencilAlt, FaTrash } from "react-icons/fa";
+import { BsPlus } from "react-icons/bs";
+import { IoEllipsisVertical } from "react-icons/io5";
+import GreenCheckmark from "./GreenCheckmark";
+import { useModulesStore } from "../../../store/modulesStore";
+
+export default function ModuleControlButtons({
+  moduleId,
+}: {
+  moduleId: string;
+}) {
+  const deleteModule = useModulesStore((state) => state.deleteModule);
+  const editModule = useModulesStore((state) => state.editModule);
+  return (
+    <div className="flex items-center gap-2">
+      <FaPencilAlt
+        className="cursor-pointer text-blue-600"
+        onClick={() => editModule(moduleId)}
+        title="Edit module"
+      />
+      <FaTrash
+        className="cursor-pointer text-red-600"
+        onClick={() => deleteModule(moduleId)}
+        title="Delete module"
+      />
+      <GreenCheckmark />
+      <BsPlus className="text-3xl" />
+      <IoEllipsisVertical className="text-xl" />
+    </div>
+  );
+}`}</CodeBlock>
+        <p>
+          The Modules page keeps only the store&apos;s{" "}
+          <code>modules</code>{" "}filtered by <code>cid</code>{" "}and{" "}
+          <code>updateModule</code>{" "}for the inline name input. Home
+          updates for free because it already renders{" "}
+          <code>Modules</code>. Confirm you
           can still add, remove, and edit modules as before. Also
           confirm the modules still work on the Home screen: add a
           module on Modules, switch to Home without reloading, and
@@ -556,7 +663,7 @@ export const useModulesStore = create<ModulesStore>((set) => ({
           Enter, then delete it with the trash can.
         </OnYourOwn>
         <WithAI
-          prompt={`In app/(kambaz)/courses/[cid]/modules/page.tsx, keep any extra field I added. If moduleName is empty, do not call addModule. Do not rename my personal field.`}
+          prompt={`In app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx, keep any extra field I added. If moduleName is empty, do not call addModule. Do not rename my personal field.`}
         >
           Ask the assistant to skip empty names after your own extra field:
         </WithAI>

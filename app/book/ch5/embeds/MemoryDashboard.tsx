@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import CourseCard from "@/app/book/ch4/embeds/_styled/dashboard/CourseCard";
+import CourseCard from "./CourseCard";
 import coursesJson from "@/app/book/ch3/embeds/_styled/courses.json";
 
 type Course = {
