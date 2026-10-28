@@ -1334,8 +1334,8 @@ describe("lecture decks", () => {
     assert.equal(counts["ch4-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-store"], 10);
     assert.equal(counts["kambaz-dashboard-crud"], 14);
-    assert.equal(counts["kambaz-modules-store"], 10);
-    assert.equal(counts["kambaz-account-context"], 9);
+    assert.equal(counts["kambaz-modules-store"], 11);
+    assert.equal(counts["kambaz-account-context"], 10);
     assert.equal(counts["http-server"], 11);
     assert.equal(counts["nodemon-es6-routes"], 9);
     assert.equal(counts["lab5-env"], 11);
@@ -3823,6 +3823,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
       "kambaz-dashboard-crud#add-part-2",
       "kambaz-dashboard-crud#add-part-3",
       "kambaz-dashboard-crud#add-part-4",
+      "kambaz-modules-store#store-part-2",
     ]);
     assert.match(findSlide("javascript-arrays", "simple-part-2").code!, /^ {2}return \($/m);
     assert.match(findSlide("spread-and-destructuring", "destructing-imports-part-2").code!, /^ {8}<tbody>/);

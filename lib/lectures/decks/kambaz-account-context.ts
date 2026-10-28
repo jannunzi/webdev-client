@@ -33,7 +33,7 @@ export const KAMBAZ_ACCOUNT_CONTEXT_SLIDES: LectureSlide[] = [
   },
   {
     id: "context",
-    title: "AccountContext holds the user (code)",
+    title: "AccountContext holds the user (1/2)",
     kind: "content",
     code: `"use client";
 
@@ -48,8 +48,16 @@ type AccountContextValue = {
 };
 
 const AccountContext = createContext<AccountContextValue | null>(null);
-
-export function AccountProvider({ children }: { children: ReactNode }) {
+`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/account/AccountContext.tsx",
+    codeHighlightLines: [[8, 11]],
+  },
+  {
+    id: "context-part-2",
+    title: "AccountContext holds the user (2/2)",
+    kind: "content",
+    code: `export function AccountProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   return (
     <AccountContext.Provider value={{ currentUser, setCurrentUser }}>
@@ -67,7 +75,8 @@ export function useAccountContext() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/AccountContext.tsx",
-    codeHighlightLines: [[8, 11], [15, 21], [24, 29]],
+    codeStartLine: 15,
+    codeHighlightLines: [[1, 7], [10, 15]],
   },
   {
     id: "layout-intro",
