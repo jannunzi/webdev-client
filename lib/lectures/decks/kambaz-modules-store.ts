@@ -58,7 +58,7 @@ export default function ModuleEditor({
   },
   {
     id: "editor-part-2",
-    title: "ModuleEditor is a controlled dialog (2/2)",
+    title: "Add module name field and close button",
     kind: "content",
     code: `  return (
     <div id="wd-add-module-dialog" className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
@@ -73,8 +73,16 @@ export default function ModuleEditor({
         <div className="px-4 py-3">
           <input value={moduleName} id="wd-add-module-name" placeholder="Module name" className="w-full rounded border border-neutral-300 px-3 py-1.5"
             onChange={(e) => setModuleName(e.target.value)} />
-        </div>
-        <div className="flex justify-end gap-2 border-t border-neutral-200 px-4 py-3">
+        </div>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx",
+    codeStartLine: 19,
+  },
+  {
+    id: "editor-part-3",
+    title: "Add Cancel and Add Module buttons",
+    kind: "content",
+    code: `        <div className="flex justify-end gap-2 border-t border-neutral-200 px-4 py-3">
           <button id="wd-add-module-cancel" type="button" className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
             onClick={handleClose} >
             Cancel
@@ -93,8 +101,8 @@ export default function ModuleEditor({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx",
-    codeStartLine: 19,
-    codeHighlightLines: [21, 22, 38, 39, 40, 41],
+    codeStartLine: 33,
+    codeHighlightLines: [7, 8],
   },
   {
     id: "controls-intro",
@@ -107,10 +115,11 @@ export default function ModuleEditor({
       "Modules appends `{ name: moduleName, course: courseId }`",
       "After Add Module, `setModuleName(\"\")` so the next open starts blank",
     ],
+    embed: "kambaz-ch4-modules-controls",
   },
   {
     id: "controls",
-    title: "+ Module opens the dialog (1/2)",
+    title: "+ Module opens the dialog (1/3)",
     kind: "content",
     code: `"use client";
 
@@ -135,12 +144,29 @@ export default function ModulesControls({
   },
   {
     id: "controls-part-2",
-    title: "+ Module opens the dialog (2/2)",
+    title: "Collapse All, View Progress, Publish All",
     kind: "content",
     code: `  return (
     <div id="wd-modules-controls" className="mb-3 flex flex-wrap items-center gap-2">
-      {/* Collapse All, View Progress, Publish All */}
-      <button id="wd-add-module-btn" type="button" className="inline-flex items-center gap-1 rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+      <button type="button" className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm">
+        Collapse All
+      </button>
+      <button type="button" className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm">
+        View Progress
+      </button>
+      <select defaultValue="publish-all" className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm">
+        <option value="publish-all">Publish All</option>
+        <option value="unpublish-all">Unpublish All</option>
+      </select>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx",
+    codeStartLine: 19,
+  },
+  {
+    id: "controls-part-3",
+    title: "+ Module button opens the dialog",
+    kind: "content",
+    code: `      <button id="wd-add-module-btn" type="button" className="inline-flex items-center gap-1 rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
         onClick={handleShow} >
         <FaPlus /> Module
       </button>
@@ -157,7 +183,7 @@ export default function ModulesControls({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx",
-    codeStartLine: 19,
+    codeStartLine: 31,
   },
   {
     id: "buttons-intro",
@@ -170,6 +196,7 @@ export default function ModulesControls({
       "The pencil calls `editModule` — wired up in §4.10.4.3",
       "Deleting a module removes its nested lessons too",
     ],
+    embed: "kambaz-ch4-module-row",
   },
   {
     id: "buttons",
@@ -272,7 +299,7 @@ export default function Module({
   },
   {
     id: "store",
-    title: "modulesStore is the shared list (1/2)",
+    title: "modulesStore is the shared list (1/3)",
     kind: "content",
     code: `"use client";
 
@@ -307,7 +334,7 @@ type ModulesStore = {
   },
   {
     id: "store-part-2",
-    title: "modulesStore is the shared list (2/2)",
+    title: "modulesStore is the shared list (2/3)",
     kind: "content",
     code: `export const useModulesStore = create<ModulesStore>((set) => ({
   modules: modulesJson as CourseModule[],
@@ -323,8 +350,17 @@ type ModulesStore = {
           lessons: [],
         },
       ],
-    })),
-  deleteModule: (moduleId) =>
+    })),`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/store/modulesStore.ts",
+    codeStartLine: 30,
+    codeHighlightLines: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+  },
+  {
+    id: "store-part-3",
+    title: "modulesStore is the shared list (3/3)",
+    kind: "content",
+    code: `  deleteModule: (moduleId) =>
     set((state) => ({
       modules: state.modules.filter((m) => m._id !== moduleId),
     })),
@@ -341,8 +377,8 @@ type ModulesStore = {
 }));`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/store/modulesStore.ts",
-    codeStartLine: 30,
-    codeHighlightLines: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 24, 25, 26, 27, 28, 29],
+    codeStartLine: 45,
+    codeHighlightLines: [9, 10, 11, 12, 13, 14],
   },
   {
     id: "store-live",

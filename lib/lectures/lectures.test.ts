@@ -1334,7 +1334,7 @@ describe("lecture decks", () => {
     assert.equal(counts["ch4-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-store"], 10);
     assert.equal(counts["kambaz-dashboard-crud"], 14);
-    assert.equal(counts["kambaz-modules-store"], 22);
+    assert.equal(counts["kambaz-modules-store"], 25);
     assert.equal(counts["kambaz-account-context"], 53);
     assert.equal(counts["http-server"], 11);
     assert.equal(counts["nodemon-es6-routes"], 9);
@@ -1903,7 +1903,12 @@ describe("lecture decks", () => {
         add: "kambaz-courses-crud",
         edit: "kambaz-courses-crud",
       },
-      "kambaz-modules-store": { page: "kambaz-ch4-modules", store: "kambaz-styled-modules" },
+      "kambaz-modules-store": {
+        "controls-intro": "kambaz-ch4-modules-controls",
+        "buttons-intro": "kambaz-ch4-module-row",
+        page: "kambaz-ch4-modules",
+        store: "kambaz-styled-modules",
+      },
       "kambaz-account-context": {
         "signin-live": "kambaz-styled-signin",
         profile: "kambaz-ch4-profile",
@@ -3842,6 +3847,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
       "kambaz-dashboard-crud#add-part-3",
       "kambaz-dashboard-crud#add-part-4",
       "kambaz-modules-store#store-part-2",
+      "kambaz-modules-store#store-part-3",
       "kambaz-modules-store#page-part-2",
       "kambaz-account-context#signin-part-2",
       "kambaz-account-context#profile-part-2",
@@ -3895,7 +3901,9 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.code || code.codeBlocks?.length, `${deck.slug}#${base} has the code`);
         assert.ok(!code.bullets?.length, `${deck.slug}#${base} keeps its text on the intro`);
         assert.ok(slide.bullets?.length, `${deck.slug}#${slide.id} has the explanation`);
-        assert.ok(!slide.code && !slide.codeBlocks && !slide.embed, `${deck.slug}#${slide.id} is text only`);
+        // Foreshadowing demo: the row the next code slide builds (Jose asked for it).
+        const foreshadow = ["kambaz-modules-store#controls-intro", "kambaz-modules-store#buttons-intro"].includes(`${deck.slug}#${slide.id}`);
+        assert.ok(!slide.code && !slide.codeBlocks && (!slide.embed || foreshadow), `${deck.slug}#${slide.id} is text only`);
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
