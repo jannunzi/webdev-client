@@ -1,8 +1,4 @@
-type Todo = {
-  done: boolean;
-  title: string;
-  status: string;
-};
+import type { Todo } from "./TodoList";
 
 const TodoItem = ({
   todo = { done: true, title: "Buy milk", status: "COMPLETED" },

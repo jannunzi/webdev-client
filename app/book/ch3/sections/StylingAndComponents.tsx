@@ -2693,17 +2693,14 @@ export default function Lab3() {
             <strong>default parameter</strong>{" "}(
             <SectionLink to="3.4.15" />
             ): if the parent omits <code>todo</code>, the milk item is
-            used.
+            used. The <code>Todo</code>{" "}type comes from{" "}
+            <code>TodoList.tsx</code>, shown below.
           </p>
           <CodeBlock
             language="tsx"
             name="TodoItem"
             file="app/labs/lab3/todos/TodoItem.tsx"
-          >{`type Todo = {
-  done: boolean;
-  title: string;
-  status: string;
-};
+          >{`import type { Todo } from "./TodoList";
 
 const TodoItem = ({
   todo = { done: true, title: "Buy milk", status: "COMPLETED" },
@@ -2746,6 +2743,8 @@ export default TodoItem;`}</CodeBlock>
           >{`import TodoItem from "./TodoItem";
 import todos from "./todos.json";
 
+export type Todo = (typeof todos)[number];
+
 export default function TodoList() {
   return (
     <>
@@ -2759,6 +2758,15 @@ export default function TodoList() {
     </>
   );
 }`}</CodeBlock>
+          <p>
+            <code>Todo</code>{" "}is derived from the JSON instead of
+            written by hand. In a type position,{" "}
+            <code>typeof todos</code>{" "}is the type TypeScript inferred for
+            the imported JSON, an array of objects, and{" "}
+            <code>[number]</code>{" "}picks one element&apos;s type.{" "}
+            <code>TodoItem</code>{" "}imports it with{" "}
+            <code>import type</code>.
+          </p>
           <p>
             Import <code>TodoList</code>{" "}into Lab 3. Each row is a checkbox
             whose default matches <code>todo.done</code>. The Tailwind
