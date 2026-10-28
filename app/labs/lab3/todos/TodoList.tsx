@@ -1,6 +1,8 @@
 import TodoItem from "./TodoItem";
 import todos from "./todos.json";
 
+export type Todo = (typeof todos)[number];
+
 export default function TodoList() {
   return (
     <>

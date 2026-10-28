@@ -214,7 +214,9 @@ export default function KambazState() {
           <code>app/(kambaz)/store/coursesStore.ts</code>{" "}as shown
           below. Confirm the file compiles and that the initial{" "}
           <code>courses</code>{" "}array is the same seed you already
-          rendered on the data-driven dashboard.
+          rendered on the data-driven dashboard.{" "}
+          <code>Course</code>{" "}is derived from the JSON the same way{" "}
+          <code>Todo</code>{" "}was in <SectionLink to="3.8.4" />.
         </p>
         <CodeBlock
           language="tsx"

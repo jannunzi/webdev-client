@@ -159,11 +159,7 @@ export default function PathParameters() {
     id: "todo-item",
     title: "TodoItem takes one object (code)",
     kind: "content",
-    code: `type Todo = {
-  done: boolean;
-  title: string;
-  status: string;
-};
+    code: `import type { Todo } from "./TodoList";
 
 const TodoItem = ({
   todo = { done: true, title: "Buy milk", status: "COMPLETED" },
@@ -181,7 +177,7 @@ const TodoItem = ({
 export default TodoItem;`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/todos/TodoItem.tsx",
-    codeHighlightLines: [[7, 11], 14],
+    codeHighlightLines: [1, [3, 7], 10],
   },
   {
     id: "todos-json",
@@ -205,8 +201,14 @@ export default TodoItem;`,
     id: "todo-list",
     title: "TodoList maps JSON onto rows",
     kind: "content",
+    bullets: [
+      "`typeof todos` in a type position is the type TS inferred for the JSON: an array of objects",
+      "`[number]` picks one element's type, so `Todo` is one todo",
+    ],
     code: `import TodoItem from "./TodoItem";
 import todos from "./todos.json";
+
+export type Todo = (typeof todos)[number];
 
 export default function TodoList() {
   return (
@@ -223,7 +225,7 @@ export default function TodoList() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/todos/TodoList.tsx",
-    codeHighlightLines: [2, 9, 10, 11],
+    codeHighlightLines: [2, 4, 11, 12, 13],
   },
   {
     id: "todo-list-live",
