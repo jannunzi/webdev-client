@@ -188,7 +188,7 @@ describe("lecture catalog", () => {
     assert.equal(LECTURE_6_SLUGS.length, 7);
     assert.equal(LECTURE_7_SLUGS.length, 6);
     assert.equal(CHAPTER_3_SLUGS.length, 23);
-    assert.equal(CHAPTER_4_SLUGS.length, 16);
+    assert.equal(CHAPTER_4_SLUGS.length, 19);
     assert.equal(CHAPTER_5_SLUGS.length, 14);
     assert.equal(CHAPTER_6_SLUGS.length, 12);
     assert.equal(PROJECT_SLUGS.length, 9);
@@ -580,6 +580,9 @@ describe("lecture catalog", () => {
         "kambaz-dashboard-crud",
         "kambaz-modules-store",
         "kambaz-account-context",
+        "kambaz-account-pages",
+        "kambaz-course-enrollments",
+        "kambaz-people-table",
       ],
     );
 
@@ -1110,7 +1113,13 @@ describe("lecture catalog", () => {
     assert.equal(groups[14]?.canvasLecture, 15);
     assert.deepEqual(
       groups[14]?.decks.map((deck) => deck.slug),
-      ["kambaz-modules-store", "kambaz-account-context"],
+      [
+        "kambaz-modules-store",
+        "kambaz-account-context",
+        "kambaz-account-pages",
+        "kambaz-course-enrollments",
+        "kambaz-people-table",
+      ],
     );
     assert.equal(
       lectureDeckThumbnail("click-events"),
@@ -1231,12 +1240,20 @@ describe("lecture catalog", () => {
     const afterZustand = adjacentLectureSlugs("zustand-todos");
     assert.equal(afterZustand.next?.slug, "use-effect");
     assert.equal(afterZustand.prev?.slug, "zustand-counter");
-    const lastCh4 = adjacentLectureSlugs("kambaz-account-context");
+    const account = adjacentLectureSlugs("kambaz-account-context");
+    assert.equal(account.next?.slug, "kambaz-account-pages");
+    assert.equal(account.prev?.slug, "kambaz-modules-store");
+    const pages = adjacentLectureSlugs("kambaz-account-pages");
+    assert.equal(pages.next?.slug, "kambaz-course-enrollments");
+    const enroll = adjacentLectureSlugs("kambaz-course-enrollments");
+    assert.equal(enroll.prev?.slug, "kambaz-account-pages");
+    assert.equal(enroll.next?.slug, "kambaz-people-table");
+    const lastCh4 = adjacentLectureSlugs("kambaz-people-table");
     assert.equal(lastCh4.next?.slug, "http-server");
-    assert.equal(lastCh4.prev?.slug, "kambaz-modules-store");
+    assert.equal(lastCh4.prev?.slug, "kambaz-course-enrollments");
     const afterHttp = adjacentLectureSlugs("http-server");
     assert.equal(afterHttp.next?.slug, "nodemon-es6-routes");
-    assert.equal(afterHttp.prev?.slug, "kambaz-account-context");
+    assert.equal(afterHttp.prev?.slug, "kambaz-people-table");
     const lastCh5 = adjacentLectureSlugs("deploy-api");
     assert.equal(lastCh5.next?.slug, "local-mongo");
     assert.equal(lastCh5.prev?.slug, "kambaz-courses-api");
@@ -1335,7 +1352,10 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-courses-store"], 10);
     assert.equal(counts["kambaz-dashboard-crud"], 14);
     assert.equal(counts["kambaz-modules-store"], 25);
-    assert.equal(counts["kambaz-account-context"], 55);
+    assert.equal(counts["kambaz-account-context"], 15);
+    assert.equal(counts["kambaz-account-pages"], 21);
+    assert.equal(counts["kambaz-course-enrollments"], 18);
+    assert.equal(counts["kambaz-people-table"], 10);
     assert.equal(counts["http-server"], 11);
     assert.equal(counts["nodemon-es6-routes"], 9);
     assert.equal(counts["lab5-env"], 11);
@@ -1911,11 +1931,13 @@ describe("lecture decks", () => {
       },
       "kambaz-account-context": {
         "signin-live": "kambaz-styled-signin",
+      },
+      "kambaz-account-pages": {
         profile: "kambaz-ch4-profile",
         signup: "kambaz-ch4-signup",
-        "enroll-dash-live": "kambaz-enrollments",
-        "people-table-live": "kambaz-people-crud",
       },
+      "kambaz-course-enrollments": { "enroll-dash-live": "kambaz-enrollments" },
+      "kambaz-people-table": { "people-table-live": "kambaz-people-crud" },
       "lab5-env": { environment: "lab5-env" },
       "next-routes": {
         hello: "lab5-hello",
@@ -3777,12 +3799,12 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         // Graded A4 answers are slides-only: they join back into the embed the demo runs.
         // assignment solution, intentionally not in book.
         const slidesOnly: Record<string, string> = {
-          "kambaz-account-context#profile": "app/book/ch4/embeds/_styled/account/profile/page.tsx",
+          "kambaz-account-pages#profile": "app/book/ch4/embeds/_styled/account/profile/page.tsx",
           "kambaz-modules-store#page": "app/book/ch4/embeds/_styled/courses/cid/modules/page.tsx",
           // assignment solution, intentionally not in book (§4.10.5.6 Sign up via createUser, §4.10.7).
-          "kambaz-account-context#signup": "app/slides/_components/embeds/enrollments/account/signup/page.tsx",
-          "kambaz-account-context#enroll-dash": "app/slides/_components/embeds/enrollments/dashboard/Dashboard.tsx",
-          "kambaz-account-context#people-table":
+          "kambaz-account-pages#signup": "app/slides/_components/embeds/enrollments/account/signup/page.tsx",
+          "kambaz-course-enrollments#enroll-dash": "app/slides/_components/embeds/enrollments/dashboard/Dashboard.tsx",
+          "kambaz-people-table#people-table":
             "app/slides/_components/embeds/enrollments/courses/cid/people/table/PeopleTable.tsx",
         };
         const embedFile = slidesOnly[`${slug}#${base}`];
@@ -3852,12 +3874,12 @@ describe("Chapter 3 decks: code, then the live demo", () => {
       "kambaz-modules-store#store-part-3",
       "kambaz-modules-store#page-part-2",
       "kambaz-account-context#signin-part-2",
-      "kambaz-account-context#profile-part-2",
-      "kambaz-account-context#signup-part-2",
-      "kambaz-account-context#enroll-dash-part-2",
-      "kambaz-account-context#enroll-dash-part-3",
-      "kambaz-account-context#people-table-part-2",
-      "kambaz-account-context#people-table-part-3",
+      "kambaz-account-pages#profile-part-2",
+      "kambaz-account-pages#signup-part-2",
+      "kambaz-course-enrollments#enroll-dash-part-2",
+      "kambaz-course-enrollments#enroll-dash-part-3",
+      "kambaz-people-table#people-table-part-2",
+      "kambaz-people-table#people-table-part-3",
     ]);
     assert.match(findSlide("javascript-arrays", "simple-part-2").code!, /^ {2}return \($/m);
     assert.match(findSlide("spread-and-destructuring", "destructing-imports-part-2").code!, /^ {8}<tbody>/);
@@ -4052,27 +4074,28 @@ describe("demo-stage form controls", () => {
   });
 });
 
-describe("kambaz-account-context §4.10.7 assignment slides", () => {
+describe("Chapter 4 account §4.10.7 assignment slides", () => {
   // assignment solution, intentionally not in book: the slides must join back into the
   // working embed files instead (app/slides/_components/embeds/enrollments).
   const embeds: Record<string, string> = {
-    "enroll-store": "store/enrollmentsStore.ts",
-    "enroll-card": "dashboard/CourseCard.tsx",
-    "enroll-dash": "dashboard/Dashboard.tsx",
-    "people-context": "account/AccountContext.tsx",
-    signup: "account/signup/page.tsx",
-    "signup-signin": "account/signin/page.tsx",
-    "people-page": "courses/cid/people/table/page.tsx",
-    "people-table": "courses/cid/people/table/PeopleTable.tsx",
+    "kambaz-course-enrollments#enroll-store": "store/enrollmentsStore.ts",
+    "kambaz-course-enrollments#enroll-card": "dashboard/CourseCard.tsx",
+    "kambaz-course-enrollments#enroll-dash": "dashboard/Dashboard.tsx",
+    "kambaz-account-pages#people-context": "account/AccountContext.tsx",
+    "kambaz-account-pages#signup": "account/signup/page.tsx",
+    "kambaz-account-pages#signup-signin": "account/signin/page.tsx",
+    "kambaz-people-table#people-page": "courses/cid/people/table/page.tsx",
+    "kambaz-people-table#people-table": "courses/cid/people/table/PeopleTable.tsx",
   };
   it("joins each split listing back into its working embed file", () => {
-    for (const [id, file] of Object.entries(embeds)) {
+    for (const [key, file] of Object.entries(embeds)) {
+      const [slug, id] = key.split("#");
       const source = readFileSync(join(process.cwd(), "app/slides/_components/embeds/enrollments", file), "utf8");
-      assert.equal(`${joinedListing("kambaz-account-context", id)}\n`, source, id);
+      assert.equal(`${joinedListing(slug, id)}\n`, source, key);
     }
   });
   it("uses the Chapter 5 client names for enrollments and users", () => {
-    const text = slideText("kambaz-account-context");
+    const text = ["kambaz-account-pages", "kambaz-course-enrollments", "kambaz-people-table"].map(slideText).join("\n");
     for (const name of ["enrollIntoCourse", "unenrollFromCourse", "createUser", "updateUser", "deleteUser"]) {
       assert.match(text, new RegExp(name), name);
     }

@@ -78,6 +78,9 @@ import { KAMBAZ_COURSES_STORE_SLIDES } from "./decks/kambaz-courses-store";
 import { KAMBAZ_DASHBOARD_CRUD_SLIDES } from "./decks/kambaz-dashboard-crud";
 import { KAMBAZ_MODULES_STORE_SLIDES } from "./decks/kambaz-modules-store";
 import { KAMBAZ_ACCOUNT_CONTEXT_SLIDES } from "./decks/kambaz-account-context";
+import { KAMBAZ_ACCOUNT_PAGES_SLIDES } from "./decks/kambaz-account-pages";
+import { KAMBAZ_COURSE_ENROLLMENTS_SLIDES } from "./decks/kambaz-course-enrollments";
+import { KAMBAZ_PEOPLE_TABLE_SLIDES } from "./decks/kambaz-people-table";
 import { HTTP_SERVER_SLIDES } from "./decks/http-server";
 import { NODEMON_ES6_ROUTES_SLIDES } from "./decks/nodemon-es6-routes";
 import { LAB5_ENV_SLIDES } from "./decks/lab5-env";
@@ -962,14 +965,44 @@ const LECTURE_SUMMARIES: Record<
     slides: KAMBAZ_MODULES_STORE_SLIDES,
   },
   "kambaz-account-context": {
-    title: "Account Context",
+    title: "Account Context and Sign In",
     summary:
-      "AccountProvider around the Kambaz layout. Sign in writes currentUser; Profile and Account Nav read it.",
+      "AccountProvider around the Kambaz layout. Sign in writes currentUser; Dashboard filters by enrollment.",
     chapter: 4,
     topicId: "kambaz-state",
     bookSectionId: "sec-4-10-5",
     canvasLecture: 15,
     slides: KAMBAZ_ACCOUNT_CONTEXT_SLIDES,
+  },
+  "kambaz-account-pages": {
+    title: "Account Pages and Sign Up",
+    summary:
+      "Account Navigation and Profile read currentUser; AccountContext gains users so Sign up can create one.",
+    chapter: 4,
+    topicId: "kambaz-state",
+    bookSectionId: "sec-4-10-5-4",
+    canvasLecture: 15,
+    slides: KAMBAZ_ACCOUNT_PAGES_SLIDES,
+  },
+  "kambaz-course-enrollments": {
+    title: "Course Enrollments",
+    summary:
+      "An enrollments store, Enroll/Unenroll on each card, an All/Enrolled Dashboard, and a course layout guard.",
+    chapter: 4,
+    topicId: "kambaz-state",
+    bookSectionId: "sec-4-10-7",
+    canvasLecture: 15,
+    slides: KAMBAZ_COURSE_ENROLLMENTS_SLIDES,
+  },
+  "kambaz-people-table": {
+    title: "People Table CRUD",
+    summary:
+      "The People table lists enrolled users and adds, edits, and deletes them through AccountContext.",
+    chapter: 4,
+    topicId: "kambaz-state",
+    bookSectionId: "sec-4-10-7",
+    canvasLecture: 15,
+    slides: KAMBAZ_PEOPLE_TABLE_SLIDES,
   },
   "http-server": {
     title: "HTTP Server",
