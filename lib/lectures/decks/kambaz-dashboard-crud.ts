@@ -105,7 +105,9 @@ export default function Dashboard() {
     id: "add-part-4",
     title: "Map courses to cards",
     kind: "content",
-    code: `      <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2>
+    code: `      <h2 id="wd-dashboard-published">
+        Published Courses ({courses.length})
+      </h2>
       <hr />
       <div id="wd-dashboard-courses" className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4" >
         {courses.map((c) => (
