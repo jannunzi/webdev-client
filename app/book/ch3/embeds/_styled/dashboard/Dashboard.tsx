@@ -14,7 +14,7 @@ export default function Dashboard() {
         className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
       >
         {courses.map((course) => (
-          <CourseCard key={course._id} {...course} />
+          <CourseCard key={course._id} course={course} />
         ))}
       </div>
     </div>

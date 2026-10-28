@@ -4,7 +4,7 @@ import { useState } from "react";
 import CourseCard from "./CourseCard";
 import coursesJson from "@/app/book/ch3/embeds/_styled/courses.json";
 
-type Course = {
+export type Course = {
   _id: string;
   name: string;
   description: string;
@@ -95,7 +95,7 @@ export default function MemoryDashboard() {
         {courses.map((c) => (
           <CourseCard
             key={c._id}
-            {...c}
+            course={c}
             onEdit={() => setCourse(c)}
             onDelete={() => deleteCourse(c._id)}
           />
