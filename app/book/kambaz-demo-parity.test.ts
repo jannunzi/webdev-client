@@ -103,11 +103,6 @@ const SNAPSHOTS: Array<{ book: string; name: string; file: string }> = [
   },
   {
     book: "app/book/ch2/sections/KambazStyling.tsx",
-    name: "GreenCheckmark",
-    file: "app/book/ch2/embeds/_styled/courses/cid/modules/GreenCheckmark.tsx",
-  },
-  {
-    book: "app/book/ch2/sections/KambazStyling.tsx",
     name: "Module",
     file: "app/book/ch2/embeds/_styled/courses/cid/modules/Module.tsx",
   },
@@ -230,15 +225,10 @@ const SNAPSHOTS: Array<{ book: string; name: string; file: string }> = [
 
 describe("Kambaz book demos match the code block they show", () => {
 
-  it("keeps the Chapter 4 Modules embed components and store identical to the app", () => {
-    const real = "app/(kambaz)/courses/[cid]/modules/";
-    const ch4 = "app/book/ch4/embeds/_styled/courses/cid/modules/";
-    // Module, ModulesControls, ModuleEditor, and ModuleControlButtons read the
-    // Chapter 4 Zustand store directly; the live app's versions talk to the
-    // server (Chapter 5+), so only the store-free components are compared here.
-    for (const name of ["Lesson", "GreenCheckmark"]) {
-      assert.equal(read(`${ch4}${name}.tsx`), read(`${real}${name}.tsx`), name);
-    }
+  it("keeps the Chapter 4 modules store identical to the app", () => {
+    // The Chapter 4 module components read the Zustand store directly and use
+    // an inline FaCheckCircle; the live app's versions talk to the server
+    // (Chapter 5+) and still use GreenCheckmark, so only the store is compared.
     assert.equal(
       read("app/book/ch4/embeds/_styled/store/modulesStore.ts"),
       read("app/(kambaz)/store/modulesStore.ts"),
