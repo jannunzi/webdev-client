@@ -3762,8 +3762,11 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         const snapshots = ["labs-index-toc", "lab2-page", "lab3-page"].map((id) => `single-page-navigation#${id}`);
         if (!first.codeFile || snapshots.includes(`${slug}#${base}`)) return;
         const book = ch3BookListings(first.codeFile);
+        // Slides may lay code out more compactly than the book; compare ignoring whitespace.
+        const flat = (text: string) => text.replace(/\s+/g, " ");
+        const joined = flat(joinedListing(slug, base));
         assert.ok(
-          book.includes(joinedListing(slug, base)),
+          book.some((listing: string) => flat(listing).includes(joined)),
           `${slug}#${base} parts must join back into the book ${first.codeFile}`,
         );
       });
