@@ -117,6 +117,124 @@ export default function ModuleEditor({
     codeHighlightLines: [21, 22, 38, 39, 40, 41],
   },
   {
+    id: "controls-intro",
+    title: "+ Module opens the dialog",
+    kind: "content",
+    bullets: [
+      "`ModulesControls` already has Collapse All, View Progress, Publish All",
+      "It owns only `show`: + Module sets it true, Cancel or × sets it false",
+      "`moduleName`, `setModuleName`, `addModule` come down from Modules",
+      "Modules appends `{ name: moduleName, course: courseId }`",
+      "After Add Module, `setModuleName(\"\")` so the next open starts blank",
+    ],
+  },
+  {
+    id: "controls",
+    title: "+ Module opens the dialog (1/2)",
+    kind: "content",
+    code: `"use client";
+
+import { useState } from "react";
+import { FaPlus } from "react-icons/fa";
+import ModuleEditor from "./ModuleEditor";
+
+export default function ModulesControls({
+  moduleName,
+  setModuleName,
+  addModule,
+}: {
+  moduleName: string;
+  setModuleName: (title: string) => void;
+  addModule: () => void;
+}) {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx",
+  },
+  {
+    id: "controls-part-2",
+    title: "+ Module opens the dialog (2/2)",
+    kind: "content",
+    code: `  return (
+    <div id="wd-modules-controls" className="mb-3 flex flex-wrap items-center gap-2">
+      {/* Collapse All, View Progress, Publish All */}
+      <button
+        type="button"
+        id="wd-add-module-btn"
+        onClick={handleShow}
+        className="inline-flex items-center gap-1 rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+      >
+        <FaPlus /> Module
+      </button>
+      <ModuleEditor
+        show={show}
+        handleClose={handleClose}
+        dialogTitle="Add Module"
+        moduleName={moduleName}
+        setModuleName={setModuleName}
+        addModule={addModule}
+      />
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx",
+    codeStartLine: 19,
+  },
+  {
+    id: "buttons-intro",
+    title: "Trash and pencil on each module row",
+    kind: "content",
+    bullets: [
+      "Add a red trash can to `ModuleControlButtons`",
+      "Pass `deleteModule` and the row's `moduleId`",
+      "`deleteModule` filters by `_id`, like `deleteCourse` on the Dashboard",
+      "The pencil calls `editModule` — wired up in §4.10.4.3",
+      "Deleting a module removes its nested lessons too",
+    ],
+  },
+  {
+    id: "buttons",
+    title: "Trash and pencil on each module row (code)",
+    kind: "content",
+    code: `import { FaPencilAlt, FaTrash } from "react-icons/fa";
+import { BsPlus } from "react-icons/bs";
+import { IoEllipsisVertical } from "react-icons/io5";
+import GreenCheckmark from "./GreenCheckmark";
+
+export default function ModuleControlButtons({
+  moduleId,
+  deleteModule,
+  editModule,
+}: {
+  moduleId: string;
+  deleteModule: (moduleId: string) => void;
+  editModule: (moduleId: string) => void;
+}) {
+  return (
+    <div className="flex items-center gap-2">
+      <FaPencilAlt
+        className="cursor-pointer text-blue-600"
+        onClick={() => editModule(moduleId)}
+        title="Edit module"
+      />
+      <FaTrash
+        className="cursor-pointer text-red-600"
+        onClick={() => deleteModule(moduleId)}
+        title="Delete module"
+      />
+      <GreenCheckmark />
+      <BsPlus className="text-3xl" />
+      <IoEllipsisVertical className="text-xl" />
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleControlButtons.tsx",
+  },
+  {
     id: "store-intro",
     title: "modulesStore is the shared list",
     kind: "content",
@@ -210,6 +328,16 @@ type ModulesStore = {
       "Home imports the Modules page — both screens now see the same array",
     ],
     embed: "kambaz-styled-modules",
+  },
+  {
+    id: "page-intro",
+    title: "Modules page wires the store",
+    kind: "content",
+    bullets: [
+      "Read `modules` and the CRUD actions from `useModulesStore`",
+      "`editModule` sets `editing: true`; the title swaps the name for an input",
+      "Each `onChange` calls `updateModule`; Enter sets `editing` back to false",
+    ],
   },
   {
     id: "page",

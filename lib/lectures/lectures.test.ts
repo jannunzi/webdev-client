@@ -1334,7 +1334,7 @@ describe("lecture decks", () => {
     assert.equal(counts["ch4-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-store"], 10);
     assert.equal(counts["kambaz-dashboard-crud"], 14);
-    assert.equal(counts["kambaz-modules-store"], 14);
+    assert.equal(counts["kambaz-modules-store"], 20);
     assert.equal(counts["kambaz-account-context"], 26);
     assert.equal(counts["http-server"], 11);
     assert.equal(counts["nodemon-es6-routes"], 9);
@@ -3766,6 +3766,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         const snapshots = ["labs-index-toc", "lab2-page", "lab3-page"].map((id) => `single-page-navigation#${id}`);
         if (!first.codeFile || snapshots.includes(`${slug}#${base}`)) return;
         // Graded A4 answers are slides-only: they join back into the embed the demo runs.
+        // assignment solution, intentionally not in book.
         const slidesOnly: Record<string, string> = {
           "kambaz-account-context#profile": "app/book/ch4/embeds/_styled/account/profile/page.tsx",
           "kambaz-modules-store#page": "app/book/ch4/embeds/_styled/courses/cid/modules/page.tsx",
@@ -3781,7 +3782,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         );
       });
     }
-    assert.equal(demos, 109);
+    assert.equal(demos, 110);
   });
 
   it("keeps one code slide unless a listing is long, and never leaves a tiny tail", () => {
@@ -3887,7 +3888,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 251);
+    assert.equal(intros, 254);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
