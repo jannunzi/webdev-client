@@ -782,50 +782,84 @@ export default function CoursesLayout({
     codeStartLine: 37,
   },
   {
-    id: "people-store-intro",
-    title: "People CRUD assignment",
+    id: "people-context-intro",
+    title: "People CRUD in AccountContext",
     kind: "content",
     bullets: [
-      "`useUsersStore` holds `users.json`, the same seed `AccountContext` signs in with",
-      "`createUser(user)` returns the new user with a fresh `_id`",
-      "`updateUser(user)` and `deleteUser(userId)` match the Chapter 5 client",
+      "Users live in the React `AccountContext`, next to `currentUser`",
+      "`users` is `useState` seeded from `users.json`; `createUser(user)` returns the new user",
+      "Add `updateUser(user)` and `deleteUser(userId)`, the Chapter 5 client names",
     ],
   },
   {
-    id: "people-store",
-    title: "Users store",
+    id: "people-context",
+    title: "AccountContext with users (1/2)",
     kind: "content",
     code: `"use client";
 
-import { create } from "zustand";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import usersJson from "../database/users.json";
-import type { User } from "../account/AccountContext";
 
-type UsersStore = {
+export type User = (typeof usersJson)[number];
+
+type AccountContextValue = {
+  currentUser: User | null;
+  setCurrentUser: (user: User | null) => void;
   users: User[];
   createUser: (user: User) => User;
   updateUser: (user: User) => void;
   deleteUser: (userId: string) => void;
 };
 
-export const useUsersStore = create<UsersStore>((set) => ({
-  users: usersJson,
-  createUser: (user) => {
-    const newUser = { ...user, _id: crypto.randomUUID() };
-    set((state) => ({ users: [...state.users, newUser] }));
-    return newUser;
+const AccountContext = createContext<AccountContextValue | null>(null);
+`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/account/AccountContext.tsx",
   },
-  updateUser: (user) =>
-    set((state) => ({
-      users: state.users.map((u) => (u._id === user._id ? user : u)),
-    })),
-  deleteUser: (userId) =>
-    set((state) => ({
-      users: state.users.filter((u) => u._id !== userId),
-    })),
-}));`,
-    codeLanguage: "ts",
-    codeFile: "app/(kambaz)/store/usersStore.ts",
+  {
+    id: "people-context-part-2",
+    title: "AccountContext with users (2/2)",
+    kind: "content",
+    code: `export function AccountProvider({ children }: { children: ReactNode }) {
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [users, setUsers] = useState<User[]>(usersJson);
+  const createUser = (user: User) => {
+    const newUser = { ...user, _id: crypto.randomUUID() };
+    setUsers([...users, newUser]);
+    return newUser;
+  };
+  const updateUser = (user: User) => {
+    setUsers(users.map((u) => (u._id === user._id ? user : u)));
+  };
+  const deleteUser = (userId: string) => {
+    setUsers(users.filter((u) => u._id !== userId));
+  };
+  return (
+    <AccountContext.Provider
+      value={{
+        currentUser,
+        setCurrentUser,
+        users,
+        createUser,
+        updateUser,
+        deleteUser,
+      }}
+    >
+      {children}
+    </AccountContext.Provider>
+  );
+}
+
+export function useAccountContext() {
+  const value = useContext(AccountContext);
+  if (!value) {
+    throw new Error("useAccountContext must be used inside AccountProvider");
+  }
+  return value;
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/account/AccountContext.tsx",
+    codeStartLine: 19,
   },
   {
     id: "people-page-intro",
@@ -859,7 +893,7 @@ export default async function PeopleTablePage({
     kind: "content",
     bullets: [
       "A `user` draft feeds first and last name inputs, like the course draft",
-      "**Add** calls `createUser`, then `enrollIntoCourse` for this course",
+      "**Add** calls the context's `createUser`, then `enrollIntoCourse` here",
       "Each row gets **Edit** (load the draft) and **Delete** (`deleteUser`)",
     ],
   },
@@ -871,9 +905,11 @@ export default async function PeopleTablePage({
 
 import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import { useUsersStore } from "../../../../store/usersStore";
 import { useEnrollmentsStore } from "../../../../store/enrollmentsStore";
-import type { User } from "../../../../account/AccountContext";
+import {
+  useAccountContext,
+  type User,
+} from "../../../../account/AccountContext";
 
 const emptyUser: User = {
   _id: "0",
@@ -890,7 +926,7 @@ const emptyUser: User = {
 };
 
 export default function PeopleTable({ cid }: { cid: string }) {
-  const { users, createUser, updateUser, deleteUser } = useUsersStore();
+  const { users, createUser, updateUser, deleteUser } = useAccountContext();
   const { enrollments, enrollIntoCourse } = useEnrollmentsStore();
   const [user, setUser] = useState<User>(emptyUser);
   const enrolled = users.filter((usr) =>
@@ -955,7 +991,7 @@ export default function PeopleTable({ cid }: { cid: string }) {
         </thead>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx",
-    codeStartLine: 36,
+    codeStartLine: 38,
   },
   {
     id: "people-table-part-3",
@@ -999,7 +1035,7 @@ export default function PeopleTable({ cid }: { cid: string }) {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx",
-    codeStartLine: 80,
+    codeStartLine: 82,
   },
   {
     id: "people-table-live",

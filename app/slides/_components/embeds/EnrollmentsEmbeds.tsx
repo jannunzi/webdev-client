@@ -7,7 +7,6 @@ import {
 } from "./enrollments/account/AccountContext";
 import Dashboard from "./enrollments/dashboard/Dashboard";
 import PeopleTable from "./enrollments/courses/cid/people/table/PeopleTable";
-import { useUsersStore } from "./enrollments/store/usersStore";
 
 /**
  * Assignment solution demos (§4.10.7 Enrollments, People CRUD).
@@ -16,8 +15,7 @@ import { useUsersStore } from "./enrollments/store/usersStore";
  * in place of the Sign in screen so enroll / unenroll are visible.
  */
 function UserPicker() {
-  const { currentUser, setCurrentUser } = useAccountContext();
-  const users = useUsersStore((state) => state.users);
+  const { currentUser, setCurrentUser, users } = useAccountContext();
   return (
     <label className="mb-3 flex items-center gap-2 text-sm">
       Signed in as
@@ -59,9 +57,11 @@ export function KambazPeopleCrudEmbed() {
       label="people/table/PeopleTable.tsx"
       url={`/courses/${cid}/people/table`}
     >
-      <div className="font-sans">
-        <PeopleTable cid={cid} />
-      </div>
+      <AccountProvider>
+        <div className="font-sans">
+          <PeopleTable cid={cid} />
+        </div>
+      </AccountProvider>
     </LectureDemoFrame>
   );
 }

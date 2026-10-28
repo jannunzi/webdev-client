@@ -1335,7 +1335,7 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-courses-store"], 10);
     assert.equal(counts["kambaz-dashboard-crud"], 14);
     assert.equal(counts["kambaz-modules-store"], 11);
-    assert.equal(counts["kambaz-account-context"], 44);
+    assert.equal(counts["kambaz-account-context"], 45);
     assert.equal(counts["http-server"], 11);
     assert.equal(counts["nodemon-es6-routes"], 9);
     assert.equal(counts["lab5-env"], 11);
@@ -4034,7 +4034,7 @@ describe("kambaz-account-context §4.10.7 assignment slides", () => {
     "enroll-store": "store/enrollmentsStore.ts",
     "enroll-card": "dashboard/CourseCard.tsx",
     "enroll-dash": "dashboard/Dashboard.tsx",
-    "people-store": "store/usersStore.ts",
+    "people-context": "account/AccountContext.tsx",
     "people-page": "courses/cid/people/table/page.tsx",
     "people-table": "courses/cid/people/table/PeopleTable.tsx",
   };

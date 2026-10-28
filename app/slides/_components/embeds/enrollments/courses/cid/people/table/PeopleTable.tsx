@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import { useUsersStore } from "../../../../store/usersStore";
 import { useEnrollmentsStore } from "../../../../store/enrollmentsStore";
-import type { User } from "../../../../account/AccountContext";
+import {
+  useAccountContext,
+  type User,
+} from "../../../../account/AccountContext";
 
 const emptyUser: User = {
   _id: "0",
@@ -21,7 +23,7 @@ const emptyUser: User = {
 };
 
 export default function PeopleTable({ cid }: { cid: string }) {
-  const { users, createUser, updateUser, deleteUser } = useUsersStore();
+  const { users, createUser, updateUser, deleteUser } = useAccountContext();
   const { enrollments, enrollIntoCourse } = useEnrollmentsStore();
   const [user, setUser] = useState<User>(emptyUser);
   const enrolled = users.filter((usr) =>
