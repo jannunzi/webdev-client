@@ -240,34 +240,49 @@ export default function GreenCheckmark() {
   },
   {
     id: "module",
-    title: "Module takes a title node and extra",
+    title: "Module renders one module",
     kind: "content",
     bullets: [
-      "`title` is a `ReactNode`, so it can be the name or an input",
-      "`extra` holds the control buttons; no extra shows the checkmark",
+      "One `module` prop; it selects `updateModule` from the store itself",
+      "`module.editing` swaps the name for an input; Enter saves",
+      "Renders `ModuleControlButtons` and maps `lessons` to `Lesson`",
     ],
-    code: `import type { ReactNode } from "react";
-import GreenCheckmark from "./GreenCheckmark";
+    code: `import ModuleControlButtons from "./ModuleControlButtons";
+import Lesson from "./Lesson";
+import { useModulesStore, type CourseModule } from "../../../store/modulesStore";
 
-export default function Module({
-  title,
-  extra,
-  children,
-}: {
-  title: ReactNode;
-  extra?: ReactNode;
-  children?: ReactNode;
-}) {
+export default function Module({ module }: { module: CourseModule }) {
+  const updateModule = useModulesStore((state) => state.updateModule);
   return (
     <li className="wd-module mb-5 overflow-hidden border border-neutral-400 p-0 text-xl">
       <div className="wd-title flex items-center justify-between bg-neutral-200 p-3 ps-2">
-        <span className="min-w-0 flex-1">{title}</span>
+        <span className="min-w-0 flex-1">
+          {module.editing ? (
+            <input
+              className="w-1/2 rounded border border-neutral-300 px-2 py-1 text-base"
+              defaultValue={module.name}
+              onChange={(e) =>
+                updateModule({ ...module, name: e.target.value })
+              }
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  updateModule({ ...module, editing: false });
+                }
+              }}
+            />
+          ) : (
+            module.name
+          )}
+        </span>
         <span className="ms-2 flex items-center gap-2">
-          {extra}
-          {!extra ? <GreenCheckmark /> : null}
+          <ModuleControlButtons moduleId={module._id} />
         </span>
       </div>
-      <ul className="wd-lessons m-0 list-none p-0">{children}</ul>
+      <ul className="wd-lessons m-0 list-none p-0">
+        {module.lessons?.map((lesson) => (
+          <Lesson key={lesson._id} title={lesson.name} />
+        ))}
+      </ul>
     </li>
   );
 }`,
@@ -383,10 +398,9 @@ type ModulesStore = {
     title: "Modules page wires the store",
     kind: "content",
     bullets: [
-      "Only `modules` and `updateModule` come from `useModulesStore` here",
+      "Only `modules` comes from `useModulesStore` here",
       "Children read their own actions — no `moduleName` state, no action props",
-      "`editModule` sets `editing: true`; the title swaps the name for an input",
-      "Each `onChange` calls `updateModule`; Enter sets `editing` back to false",
+      "Filter by `cid`, then `<Module key={module._id} module={module} />`",
     ],
   },
   {
@@ -397,15 +411,12 @@ type ModulesStore = {
 
 import { useParams } from "next/navigation";
 import Module from "./Module";
-import Lesson from "./Lesson";
-import ModuleControlButtons from "./ModuleControlButtons";
 import ModulesControls from "./ModulesControls";
 import { useModulesStore } from "../../../store/modulesStore";
 
 export default function Modules() {
   const { cid } = useParams();
   const modules = useModulesStore((state) => state.modules);
-  const updateModule = useModulesStore((state) => state.updateModule);
 `,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/page.tsx",
@@ -421,30 +432,7 @@ export default function Modules() {
         {modules
           .filter((module) => module.course === cid)
           .map((module) => (
-            <Module
-              key={module._id}
-              extra={<ModuleControlButtons moduleId={module._id} />}
-              title={
-                module.editing ? (
-                  <input defaultValue={module.name} className="w-1/2 rounded border border-neutral-300 px-2 py-1 text-base"
-                    onChange={(e) =>
-                      updateModule({ ...module, name: e.target.value })
-                    }
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        updateModule({ ...module, editing: false });
-                      }
-                    }}
-                  />
-                ) : (
-                  module.name
-                )
-              }
-            >
-              {module.lessons?.map((lesson) => (
-                <Lesson key={lesson._id} title={lesson.name} />
-              ))}
-            </Module>
+            <Module key={module._id} module={module} />
           ))}
       </ul>
     </div>
@@ -452,7 +440,7 @@ export default function Modules() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/page.tsx",
-    codeStartLine: 15,
+    codeStartLine: 12,
   },
   {
     id: "page-live",
