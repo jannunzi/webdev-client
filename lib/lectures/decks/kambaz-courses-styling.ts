@@ -169,37 +169,13 @@ export default function CourseNavigation({ cid }: { cid: string }) {
     embed: "kambaz-styled-course-nav",
   },
   {
-    id: "checkmark",
-    title: "GreenCheckmark helper",
-    kind: "content",
-    bullets: [
-      "Modules and lessons share a publish indicator",
-      "Stack `FaCheckCircle` on `FaCircle` — green on white",
-    ],
-    code: `import { FaCheckCircle, FaCircle } from "react-icons/fa";
-
-export default function GreenCheckmark() {
-  return (
-    <span className="relative me-1 inline-flex">
-      <FaCheckCircle
-        className="absolute text-xl text-green-600"
-        style={{ top: "2px" }}
-      />
-      <FaCircle className="text-base text-white" />
-    </span>
-  );
-}`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/courses/[cid]/modules/GreenCheckmark.tsx",
-  },
-  {
     id: "module-lesson-intro",
     title: "A module with a checkmark",
     kind: "content",
     bullets: [
       "Modules and Home share this list, styled once with a gray header and a checkmark.",
       "Gray `bg-neutral-200` title bar, checkmark on the right",
-      "Import `GreenCheckmark` — it is new in Chapter 2, so the JSX alone will not compile",
+      "Green `FaCheckCircle` from `react-icons/fa` is the publish indicator",
     ],
   },
   {
@@ -207,7 +183,7 @@ export default function GreenCheckmark() {
     title: "A module with a checkmark (code)",
     kind: "content",
     code: `import type { ReactNode } from "react";
-import GreenCheckmark from "./GreenCheckmark";
+import { FaCheckCircle } from "react-icons/fa";
 
 export default function Module({
   title,
@@ -220,7 +196,7 @@ export default function Module({
     <li className="wd-module mb-5 overflow-hidden border border-neutral-400 p-0 text-xl">
       <div className="wd-title flex items-center justify-between bg-neutral-200 p-3 ps-2">
         <span>{title}</span>
-        <GreenCheckmark />
+        <FaCheckCircle className="text-green-600" />
       </div>
       <ul className="wd-lessons m-0 list-none p-0">{children}</ul>
     </li>
@@ -235,8 +211,8 @@ export default function Module({
     title: "A lesson with a green edge",
     kind: "content",
     bullets: [
-      "Lesson reuses Module's checkmark control and adds the green lesson border.",
-      "Same imports as `Module` — `GreenCheckmark` is new in Chapter 2",
+      "Lesson reuses Module's checkmark and adds the green lesson border.",
+      "Same `FaCheckCircle className=\"text-green-600\"` as `Module`",
       "`border-l-[3px] border-green-600` is the accent Assignments reuse",
     ],
   },
@@ -245,7 +221,7 @@ export default function Module({
     title: "A lesson with a green edge (code)",
     kind: "content",
     code: `import type { ReactNode } from "react";
-import GreenCheckmark from "./GreenCheckmark";
+import { FaCheckCircle } from "react-icons/fa";
 
 export default function Lesson({
   title,
@@ -258,7 +234,7 @@ export default function Lesson({
     <li className="wd-lesson border-l-[3px] border-green-600 p-3 pl-1">
       <div className="flex items-center justify-between">
         <span className="wd-title">{title}</span>
-        <GreenCheckmark />
+        <FaCheckCircle className="text-green-600" />
       </div>
       <ul className="wd-content mt-2 list-disc pl-6">{children}</ul>
     </li>
