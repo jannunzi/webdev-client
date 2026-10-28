@@ -82,7 +82,7 @@ export function KambazCh4ModulesControlsEmbed() {
   return (
     // Slides-only: unframed so the demo-stage zoom doesn't scale it; full
     // width, one row (overrides the book toolbar's flex-wrap).
-    <div className="mt-6 w-full overflow-x-auto font-sans [&_#wd-modules-controls]:flex-nowrap [&_#wd-modules-controls>*]:shrink-0 [&_#wd-modules-controls_*]:whitespace-nowrap">
+    <div className="mt-6 w-full overflow-x-auto font-sans [&_#wd-modules-controls]:flex-nowrap [&_#wd-modules-controls>*]:shrink-0 [&_#wd-modules-controls_*]:whitespace-nowrap [&_select]:w-auto [&_select]:min-w-0">
       <AsCourseParams cid="RS101">
         <ModulesControls />
       </AsCourseParams>
