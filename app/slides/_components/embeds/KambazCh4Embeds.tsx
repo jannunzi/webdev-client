@@ -7,6 +7,7 @@ import Module from "@/app/book/ch4/embeds/_styled/courses/cid/modules/Module";
 import ModulesControls from "@/app/book/ch4/embeds/_styled/courses/cid/modules/ModulesControls";
 import AsAccountRouter from "./AsAccountRouter";
 import AsCourseParams from "./AsCourseParams";
+import LectureDemoFrame from "./LectureDemoFrame";
 
 function SignedOut({ go }: { go: (path: string) => void }) {
   return (
@@ -63,21 +64,28 @@ export function KambazCh4ModulesEmbed() {
 /** Foreshadow §4.10.4.2: one module row with the real ModuleControlButtons. */
 export function KambazCh4ModuleRowEmbed() {
   return (
-    <ul className="m-0 list-none p-0 font-sans">
-      <Module
-        module={{ _id: "M101", name: "Week 1 - HTML", description: "", course: "RS101" }}
-      />
-    </ul>
+    <div className="mt-6">
+      <LectureDemoFrame label="app/(kambaz)/courses/[cid]/modules/Module.tsx">
+        {/* Slides-only: padding roughly doubles the row's height on the slide. */}
+        <ul className="m-0 list-none py-6 font-sans">
+          <Module
+            module={{ _id: "M101", name: "Week 1 - HTML", description: "", course: "RS101" }}
+          />
+        </ul>
+      </LectureDemoFrame>
+    </div>
   );
 }
 
 /** Foreshadow §4.10.4.1: the real ModulesControls toolbar; + Module opens the dialog. */
 export function KambazCh4ModulesControlsEmbed() {
   return (
-    <div className="font-sans">
-      <AsCourseParams cid="RS101">
-        <ModulesControls />
-      </AsCourseParams>
-    </div>
+    <LectureDemoFrame label="app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx">
+      <div className="font-sans">
+        <AsCourseParams cid="RS101">
+          <ModulesControls />
+        </AsCourseParams>
+      </div>
+    </LectureDemoFrame>
   );
 }
