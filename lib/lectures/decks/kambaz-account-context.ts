@@ -377,6 +377,642 @@ export default function Profile() {
     codeStartLine: 25,
   },
   {
+    id: "enroll-store-intro",
+    title: "Enrollments assignment",
+    kind: "content",
+    bullets: [
+      "An **enrollment** is one `{ _id, user, course }` row from `enrollments.json`",
+      "`useEnrollmentsStore` holds them, like the courses and modules stores",
+      "`enrollIntoCourse(userId, courseId)` adds a row; `unenrollFromCourse` removes it",
+      "Same names and arguments as the Chapter 5 client, so the swap is one line",
+    ],
+  },
+  {
+    id: "enroll-store",
+    title: "Enrollments store",
+    kind: "content",
+    code: `"use client";
+
+import { create } from "zustand";
+import enrollmentsJson from "../database/enrollments.json";
+
+export type Enrollment = (typeof enrollmentsJson)[number];
+
+type EnrollmentsStore = {
+  enrollments: Enrollment[];
+  enrollIntoCourse: (userId: string, courseId: string) => void;
+  unenrollFromCourse: (userId: string, courseId: string) => void;
+};
+
+export const useEnrollmentsStore = create<EnrollmentsStore>((set) => ({
+  enrollments: enrollmentsJson,
+  enrollIntoCourse: (userId, courseId) =>
+    set((state) => ({
+      enrollments: [
+        ...state.enrollments,
+        { _id: crypto.randomUUID(), user: userId, course: courseId },
+      ],
+    })),
+  unenrollFromCourse: (userId, courseId) =>
+    set((state) => ({
+      enrollments: state.enrollments.filter(
+        (e) => !(e.user === userId && e.course === courseId),
+      ),
+    })),
+}));`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/store/enrollmentsStore.ts",
+  },
+  {
+    id: "enroll-card-intro",
+    title: "Enroll and Unenroll on each card",
+    kind: "content",
+    bullets: [
+      "Two new props: `enrolled` (`null` when nobody is signed in) and `onToggleEnrollment`",
+      "Green **Enroll** or red **Unenroll**, hidden while `enrolled` is `null`",
+      "`event.preventDefault()` keeps the click from following the card's `Link`",
+    ],
+  },
+  {
+    id: "enroll-card",
+    title: "CourseCard enrollment button (1/3)",
+    kind: "content",
+    code: `import Link from "next/link";
+import Image from "next/image";
+
+export default function CourseCard({
+  _id,
+  name,
+  description,
+  image,
+  onEdit,
+  onDelete,
+  enrolled,
+  onToggleEnrollment,
+}: {
+  _id: string;
+  name: string;
+  description: string;
+  image: string;
+  onEdit: () => void;
+  onDelete: () => void;
+  enrolled: boolean | null;
+  onToggleEnrollment: () => void;
+}) {`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+  },
+  {
+    id: "enroll-card-part-2",
+    title: "CourseCard enrollment button (2/3)",
+    kind: "content",
+    code: `  return (
+    <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
+      <Link
+        href={\`/courses/\${_id}/home\`}
+        className="wd-dashboard-course-link block text-neutral-900 no-underline"
+      >
+        <Image
+          src={image}
+          width={300}
+          height={160}
+          alt={name}
+          className="h-40 w-full object-cover"
+        />
+        <div className="p-4">
+          <h5 className="wd-dashboard-course-title m-0 mb-2 truncate text-lg font-semibold whitespace-nowrap">
+            {name}
+          </h5>
+          <p className="wd-dashboard-course-description m-0 mb-3 h-[100px] overflow-hidden text-sm text-neutral-600">
+            {description}
+          </p>
+          <button
+            type="button"
+            className="inline-flex items-center justify-center rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+          >
+            Go
+          </button>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeStartLine: 23,
+  },
+  {
+    id: "enroll-card-part-3",
+    title: "CourseCard enrollment button (3/3)",
+    kind: "content",
+    code: `          <button
+            type="button"
+            id="wd-edit-course-click"
+            className="ms-2 inline-flex items-center justify-center rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
+            onClick={(event) => {
+              event.preventDefault();
+              onEdit();
+            }}
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            id="wd-delete-course-click"
+            className="ms-2 inline-flex items-center justify-center rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+            onClick={(event) => {
+              event.preventDefault();
+              onDelete();
+            }}
+          >
+            Delete
+          </button>
+          {enrolled !== null && (
+            <button
+              type="button"
+              id="wd-enrollment-click"
+              className={\`ms-2 inline-flex items-center justify-center rounded px-3 py-1.5 text-sm font-medium text-white \${enrolled ? "bg-red-600" : "bg-green-600"}\`}
+              onClick={(event) => {
+                event.preventDefault();
+                onToggleEnrollment();
+              }}
+            >
+              {enrolled ? "Unenroll" : "Enroll"}
+            </button>
+          )}
+        </div>
+      </Link>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeStartLine: 49,
+  },
+  {
+    id: "enroll-dash-intro",
+    title: "Dashboard by enrollment",
+    kind: "content",
+    bullets: [
+      "`isEnrolled(courseId)` checks for a row with the current user and course",
+      "`showAllCourses` flag: the blue **Enrollments** button flips all vs. mine",
+      "`visibleCourses` feeds the count and the cards; each card gets its toggle",
+    ],
+  },
+  {
+    id: "enroll-dash",
+    title: "Dashboard with enrollments (1/3)",
+    kind: "content",
+    code: `"use client";
+
+import { useState } from "react";
+import CourseCard from "./CourseCard";
+import {
+  emptyCourse,
+  useCoursesStore,
+  type Course,
+} from "../store/coursesStore";
+import { useEnrollmentsStore } from "../store/enrollmentsStore";
+import { useAccountContext } from "../account/AccountContext";
+
+export default function Dashboard() {
+  const courses = useCoursesStore((state) => state.courses);
+  const addCourse = useCoursesStore((state) => state.addCourse);
+  const deleteCourse = useCoursesStore((state) => state.deleteCourse);
+  const updateCourse = useCoursesStore((state) => state.updateCourse);
+  const [course, setCourse] = useState<Course>(emptyCourse);
+  const { currentUser } = useAccountContext();
+  const { enrollments, enrollIntoCourse, unenrollFromCourse } =
+    useEnrollmentsStore();
+  const [showAllCourses, setShowAllCourses] = useState(false);
+  const isEnrolled = (courseId: string) =>
+    currentUser !== null &&
+    enrollments.some(
+      (e) => e.user === currentUser._id && e.course === courseId,
+    );
+  const visibleCourses =
+    currentUser && !showAllCourses
+      ? courses.filter((c) => isEnrolled(c._id))
+      : courses;
+`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+  },
+  {
+    id: "enroll-dash-part-2",
+    title: "Dashboard with enrollments (2/3)",
+    kind: "content",
+    code: `  return (
+    <div id="wd-dashboard">
+      <h1 id="wd-dashboard-title" className="flex items-center justify-between">
+        Dashboard
+        {currentUser && (
+          <button
+            type="button"
+            className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+            id="wd-enrollments-toggle"
+            onClick={() => setShowAllCourses(!showAllCourses)}
+          >
+            Enrollments
+          </button>
+        )}
+      </h1>
+      <hr />
+      <h5 className="flex flex-wrap items-center gap-2">
+        New Course
+        <button
+          type="button"
+          className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+          id="wd-add-new-course-click"
+          onClick={() => addCourse(course)}
+        >
+          Add
+        </button>
+        <button
+          type="button"
+          className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
+          id="wd-update-course-click"
+          onClick={() => updateCourse(course)}
+        >
+          Update
+        </button>
+      </h5>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeStartLine: 33,
+  },
+  {
+    id: "enroll-dash-part-3",
+    title: "Dashboard with enrollments (3/3)",
+    kind: "content",
+    code: `      <input
+        className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
+        value={course.name}
+        onChange={(e) => setCourse({ ...course, name: e.target.value })}
+        id="wd-course-name"
+      />
+      <textarea
+        className="mb-3 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
+        rows={3}
+        value={course.description}
+        onChange={(e) =>
+          setCourse({ ...course, description: e.target.value })
+        }
+        id="wd-course-description"
+      />
+      <hr />
+      <h2 id="wd-dashboard-published">Published Courses ({visibleCourses.length})</h2>
+      <hr />
+      <div
+        id="wd-dashboard-courses"
+        className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+      >
+        {visibleCourses.map((c) => (
+          <CourseCard
+            key={c._id}
+            {...c}
+            onEdit={() => setCourse(c)}
+            onDelete={() => deleteCourse(c._id)}
+            enrolled={currentUser ? isEnrolled(c._id) : null}
+            onToggleEnrollment={() => {
+              if (!currentUser) return;
+              if (isEnrolled(c._id)) {
+                unenrollFromCourse(currentUser._id, c._id);
+              } else {
+                enrollIntoCourse(currentUser._id, c._id);
+              }
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeStartLine: 68,
+  },
+  {
+    id: "enroll-dash-live",
+    title: "Enrollments demo",
+    kind: "demo",
+    bullets: [
+      "Pick a user: Dashboard shows only their courses",
+      "**Enrollments** shows every course; Enroll / Unenroll update the store",
+      "Pick Nobody: no toggle and no enrollment buttons",
+    ],
+    embed: "kambaz-enrollments",
+  },
+  {
+    id: "enroll-guard-intro",
+    title: "Guard the course routes",
+    kind: "content",
+    bullets: [
+      "Only enrolled users may open `/courses/[cid]/...`",
+      "`useRouter().push(\"/dashboard\")` inside `useEffect` sends everyone else back",
+      "`return null` hides the course until the check passes",
+    ],
+  },
+  {
+    id: "enroll-guard",
+    title: "Course layout guard (1/2)",
+    kind: "content",
+    code: `"use client";
+
+import { ReactNode, useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { FaAlignJustify } from "react-icons/fa6";
+import CourseNavigation from "./Navigation";
+import Breadcrumb from "./Breadcrumb";
+import { useCoursesStore } from "../../store/coursesStore";
+import { useEnrollmentsStore } from "../../store/enrollmentsStore";
+import { useAccountContext } from "../../account/AccountContext";
+
+export default function CoursesLayout({
+  children,
+}: Readonly<{
+  children: ReactNode;
+}>) {
+  const { cid } = useParams();
+  const courseId = typeof cid === "string" ? cid : "";
+  const courses = useCoursesStore((state) => state.courses);
+  const course = courses.find((c) => c._id === courseId);
+  const [showCourseNav, setShowCourseNav] = useState(true);
+  const { currentUser } = useAccountContext();
+  const enrollments = useEnrollmentsStore((state) => state.enrollments);
+  const router = useRouter();
+  const enrolled =
+    currentUser !== null &&
+    enrollments.some(
+      (e) => e.user === currentUser._id && e.course === courseId,
+    );
+
+  useEffect(() => {
+    if (!enrolled) router.push("/dashboard");
+  }, [enrolled, router]);
+
+  if (!enrolled) return null;
+`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/layout.tsx",
+  },
+  {
+    id: "enroll-guard-part-2",
+    title: "Course layout guard (2/2)",
+    kind: "content",
+    code: `  return (
+    <div id="wd-courses">
+      <h2 className="text-2xl font-semibold text-red-600">
+        <FaAlignJustify
+          className="me-4 mb-1 inline cursor-pointer text-xl"
+          onClick={() => setShowCourseNav(!showCourseNav)}
+          title="Toggle course navigation"
+        />
+        <Breadcrumb course={course} />
+      </h2>
+      <hr className="my-3" />
+      <div className="flex gap-4">
+        {showCourseNav ? (
+          <div className="hidden w-[140px] shrink-0 md:block">
+            <CourseNavigation cid={courseId} />
+          </div>
+        ) : null}
+        <div className="min-w-0 flex-1">{children}</div>
+      </div>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/layout.tsx",
+    codeStartLine: 37,
+  },
+  {
+    id: "people-store-intro",
+    title: "People CRUD assignment",
+    kind: "content",
+    bullets: [
+      "`useUsersStore` holds `users.json`, the same seed `AccountContext` signs in with",
+      "`createUser(user)` returns the new user with a fresh `_id`",
+      "`updateUser(user)` and `deleteUser(userId)` match the Chapter 5 client",
+    ],
+  },
+  {
+    id: "people-store",
+    title: "Users store",
+    kind: "content",
+    code: `"use client";
+
+import { create } from "zustand";
+import usersJson from "../database/users.json";
+import type { User } from "../account/AccountContext";
+
+type UsersStore = {
+  users: User[];
+  createUser: (user: User) => User;
+  updateUser: (user: User) => void;
+  deleteUser: (userId: string) => void;
+};
+
+export const useUsersStore = create<UsersStore>((set) => ({
+  users: usersJson,
+  createUser: (user) => {
+    const newUser = { ...user, _id: crypto.randomUUID() };
+    set((state) => ({ users: [...state.users, newUser] }));
+    return newUser;
+  },
+  updateUser: (user) =>
+    set((state) => ({
+      users: state.users.map((u) => (u._id === user._id ? user : u)),
+    })),
+  deleteUser: (userId) =>
+    set((state) => ({
+      users: state.users.filter((u) => u._id !== userId),
+    })),
+}));`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/store/usersStore.ts",
+  },
+  {
+    id: "people-page-intro",
+    title: "People table page",
+    kind: "content",
+    bullets: [
+      "The server page reads `cid` and hands it to a client `PeopleTable`",
+      "`PeopleTable` needs `\"use client\"` because a server page imports it",
+    ],
+  },
+  {
+    id: "people-page",
+    title: "People table page",
+    kind: "content",
+    code: `import PeopleTable from "./PeopleTable";
+
+export default async function PeopleTablePage({
+  params,
+}: {
+  params: Promise<{ cid: string }>;
+}) {
+  const { cid } = await params;
+  return <PeopleTable cid={cid} />;
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/table/page.tsx",
+  },
+  {
+    id: "people-table-intro",
+    title: "Add, edit, and delete people",
+    kind: "content",
+    bullets: [
+      "A `user` draft feeds first and last name inputs, like the course draft",
+      "**Add** calls `createUser`, then `enrollIntoCourse` for this course",
+      "Each row gets **Edit** (load the draft) and **Delete** (`deleteUser`)",
+    ],
+  },
+  {
+    id: "people-table",
+    title: "PeopleTable with CRUD (1/3)",
+    kind: "content",
+    code: `"use client";
+
+import { useState } from "react";
+import { FaUserCircle } from "react-icons/fa";
+import { useUsersStore } from "../../../../store/usersStore";
+import { useEnrollmentsStore } from "../../../../store/enrollmentsStore";
+import type { User } from "../../../../account/AccountContext";
+
+const emptyUser: User = {
+  _id: "0",
+  username: "new_user",
+  password: "",
+  firstName: "New",
+  lastName: "User",
+  email: "",
+  role: "STUDENT",
+  loginId: "",
+  section: "S101",
+  lastActivity: "",
+  totalActivity: "",
+};
+
+export default function PeopleTable({ cid }: { cid: string }) {
+  const { users, createUser, updateUser, deleteUser } = useUsersStore();
+  const { enrollments, enrollIntoCourse } = useEnrollmentsStore();
+  const [user, setUser] = useState<User>(emptyUser);
+  const enrolled = users.filter((usr) =>
+    enrollments.some(
+      (enrollment) => enrollment.user === usr._id && enrollment.course === cid,
+    ),
+  );
+  const addUser = () => {
+    const newUser = createUser(user);
+    enrollIntoCourse(newUser._id, cid);
+  };`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx",
+  },
+  {
+    id: "people-table-part-2",
+    title: "PeopleTable with CRUD (2/3)",
+    kind: "content",
+    code: `  return (
+    <div id="wd-people-table" className="overflow-x-auto">
+      <div className="mb-3 flex flex-wrap items-center gap-2">
+        <input
+          className="rounded border border-neutral-300 px-3 py-1.5"
+          value={user.firstName}
+          onChange={(e) => setUser({ ...user, firstName: e.target.value })}
+          id="wd-user-first-name"
+        />
+        <input
+          className="rounded border border-neutral-300 px-3 py-1.5"
+          value={user.lastName}
+          onChange={(e) => setUser({ ...user, lastName: e.target.value })}
+          id="wd-user-last-name"
+        />
+        <button
+          type="button"
+          className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+          id="wd-add-user-click"
+          onClick={addUser}
+        >
+          Add
+        </button>
+        <button
+          type="button"
+          className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
+          id="wd-update-user-click"
+          onClick={() => updateUser(user)}
+        >
+          Update
+        </button>
+      </div>
+      <table className="w-full border-collapse text-left text-sm">
+        <thead>
+          <tr className="border-b border-neutral-300">
+            <th className="p-2">Name</th>
+            <th className="p-2">Login ID</th>
+            <th className="p-2">Section</th>
+            <th className="p-2">Role</th>
+            <th className="p-2">Last Activity</th>
+            <th className="p-2">Total Activity</th>
+            <th className="p-2"></th>
+          </tr>
+        </thead>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx",
+    codeStartLine: 36,
+  },
+  {
+    id: "people-table-part-3",
+    title: "PeopleTable with CRUD (3/3)",
+    kind: "content",
+    code: `        <tbody>
+          {enrolled.map((usr) => (
+            <tr key={usr._id} className="odd:bg-neutral-50">
+              <td className="wd-full-name p-2 text-nowrap">
+                <FaUserCircle className="me-2 inline align-middle text-3xl text-neutral-500" />
+                <span className="wd-first-name">{usr.firstName}</span>{" "}
+                <span className="wd-last-name">{usr.lastName}</span>
+              </td>
+              <td className="wd-login-id p-2">{usr.loginId}</td>
+              <td className="wd-section p-2">{usr.section}</td>
+              <td className="wd-role p-2">{usr.role}</td>
+              <td className="wd-last-activity p-2">{usr.lastActivity}</td>
+              <td className="wd-total-activity p-2">{usr.totalActivity}</td>
+              <td className="p-2 text-nowrap">
+                <button
+                  type="button"
+                  className="rounded bg-yellow-400 px-2 py-1 text-xs font-medium"
+                  onClick={() => setUser(usr)}
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  className="ms-2 rounded bg-red-600 px-2 py-1 text-xs font-medium text-white"
+                  onClick={() => deleteUser(usr._id)}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx",
+    codeStartLine: 80,
+  },
+  {
+    id: "people-table-live",
+    title: "People CRUD demo",
+    kind: "demo",
+    bullets: [
+      "Type a name and **Add**: the new user joins this course's table",
+      "**Edit** loads a row; change it and **Update**",
+      "**Delete** removes the user everywhere",
+    ],
+    embed: "kambaz-people-crud",
+  },
+  {
     id: "recap",
     title: "Account and chapter recap",
     kind: "content",

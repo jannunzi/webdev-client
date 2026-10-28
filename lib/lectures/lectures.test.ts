@@ -1335,7 +1335,7 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-courses-store"], 10);
     assert.equal(counts["kambaz-dashboard-crud"], 14);
     assert.equal(counts["kambaz-modules-store"], 11);
-    assert.equal(counts["kambaz-account-context"], 21);
+    assert.equal(counts["kambaz-account-context"], 44);
     assert.equal(counts["http-server"], 11);
     assert.equal(counts["nodemon-es6-routes"], 9);
     assert.equal(counts["lab5-env"], 11);
@@ -1904,7 +1904,11 @@ describe("lecture decks", () => {
         edit: "kambaz-courses-crud",
       },
       "kambaz-modules-store": { store: "kambaz-styled-modules" },
-      "kambaz-account-context": { "signin-live": "kambaz-styled-signin" },
+      "kambaz-account-context": {
+        "signin-live": "kambaz-styled-signin",
+        "enroll-dash-live": "kambaz-enrollments",
+        "people-table-live": "kambaz-people-crud",
+      },
       "lab5-env": { environment: "lab5-env" },
       "next-routes": {
         hello: "lab5-hello",
@@ -3761,6 +3765,8 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         // Ch2 step snapshots the book never lists on their own (unchanged by the split).
         const snapshots = ["labs-index-toc", "lab2-page", "lab3-page"].map((id) => `single-page-navigation#${id}`);
         if (!first.codeFile || snapshots.includes(`${slug}#${base}`)) return;
+        // assignment solution, intentionally not in book (§4.10.7 Enrollments, People CRUD).
+        if (["kambaz-account-context#enroll-dash", "kambaz-account-context#people-table"].includes(`${slug}#${base}`)) return;
         const book = ch3BookListings(first.codeFile);
         // Slides may lay code out more compactly than the book; compare ignoring whitespace.
         const flat = (text: string) => text.replace(/\s+/g, " ");
@@ -3771,7 +3777,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         );
       });
     }
-    assert.equal(demos, 106);
+    assert.equal(demos, 109);
   });
 
   it("keeps one code slide unless a listing is long, and never leaves a tiny tail", () => {
@@ -3825,6 +3831,10 @@ describe("Chapter 3 decks: code, then the live demo", () => {
       "kambaz-dashboard-crud#add-part-4",
       "kambaz-modules-store#store-part-2",
       "kambaz-account-context#signin-part-2",
+      "kambaz-account-context#enroll-dash-part-2",
+      "kambaz-account-context#enroll-dash-part-3",
+      "kambaz-account-context#people-table-part-2",
+      "kambaz-account-context#people-table-part-3",
     ]);
     assert.match(findSlide("javascript-arrays", "simple-part-2").code!, /^ {2}return \($/m);
     assert.match(findSlide("spread-and-destructuring", "destructing-imports-part-2").code!, /^ {8}<tbody>/);
@@ -3874,7 +3884,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 250);
+    assert.equal(intros, 257);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
@@ -4014,5 +4024,30 @@ describe("demo-stage form controls", () => {
     assert.match(box.body, /width: 1em;/);
     assert.match(box.body, /min-width: 0;/);
     assert.match(box.body, /padding: 0;/);
+  });
+});
+
+describe("kambaz-account-context §4.10.7 assignment slides", () => {
+  // assignment solution, intentionally not in book: the slides must join back into the
+  // working embed files instead (app/slides/_components/embeds/enrollments).
+  const embeds: Record<string, string> = {
+    "enroll-store": "store/enrollmentsStore.ts",
+    "enroll-card": "dashboard/CourseCard.tsx",
+    "enroll-dash": "dashboard/Dashboard.tsx",
+    "people-store": "store/usersStore.ts",
+    "people-page": "courses/cid/people/table/page.tsx",
+    "people-table": "courses/cid/people/table/PeopleTable.tsx",
+  };
+  it("joins each split listing back into its working embed file", () => {
+    for (const [id, file] of Object.entries(embeds)) {
+      const source = readFileSync(join(process.cwd(), "app/slides/_components/embeds/enrollments", file), "utf8");
+      assert.equal(`${joinedListing("kambaz-account-context", id)}\n`, source, id);
+    }
+  });
+  it("uses the Chapter 5 client names for enrollments and users", () => {
+    const text = slideText("kambaz-account-context");
+    for (const name of ["enrollIntoCourse", "unenrollFromCourse", "createUser", "updateUser", "deleteUser"]) {
+      assert.match(text, new RegExp(name), name);
+    }
   });
 });

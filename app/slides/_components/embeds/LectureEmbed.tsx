@@ -205,6 +205,10 @@ import {
   ZustandProfileFormEmbed,
 } from "./Lab4Embeds";
 import {
+  KambazEnrollmentsEmbed,
+  KambazPeopleCrudEmbed,
+} from "./EnrollmentsEmbeds";
+import {
   Lab5CalculatorEmbed,
   Lab5EnvEmbed,
   Lab5HelloEmbed,
@@ -601,6 +605,10 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <UseEffectEmbed />;
     case "kambaz-courses-crud":
       return <KambazCoursesCrudEmbed />;
+    case "kambaz-enrollments":
+      return <KambazEnrollmentsEmbed />;
+    case "kambaz-people-crud":
+      return <KambazPeopleCrudEmbed />;
     case "lab5-env":
       return <Lab5EnvEmbed />;
     case "lab5-hello":
