@@ -2,15 +2,12 @@
 
 import { useParams } from "next/navigation";
 import Module from "./Module";
-import Lesson from "./Lesson";
-import ModuleControlButtons from "./ModuleControlButtons";
 import ModulesControls from "./ModulesControls";
 import { useModulesStore } from "../../../store/modulesStore";
 
 export default function Modules() {
   const { cid } = useParams();
   const modules = useModulesStore((state) => state.modules);
-  const updateModule = useModulesStore((state) => state.updateModule);
 
   return (
     <div className="wd-modules">
@@ -19,34 +16,7 @@ export default function Modules() {
         {modules
           .filter((module) => module.course === cid)
           .map((module) => (
-            <Module
-              key={module._id}
-              extra={
-                <ModuleControlButtons moduleId={module._id} />
-              }
-              title={
-                module.editing ? (
-                  <input
-                    className="w-1/2 rounded border border-neutral-300 px-2 py-1 text-base"
-                    defaultValue={module.name}
-                    onChange={(e) =>
-                      updateModule({ ...module, name: e.target.value })
-                    }
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        updateModule({ ...module, editing: false });
-                      }
-                    }}
-                  />
-                ) : (
-                  module.name
-                )
-              }
-            >
-              {module.lessons?.map((lesson) => (
-                <Lesson key={lesson._id} title={lesson.name} />
-              ))}
-            </Module>
+            <Module key={module._id} module={module} />
           ))}
       </ul>
     </div>

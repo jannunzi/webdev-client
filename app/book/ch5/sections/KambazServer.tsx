@@ -1117,7 +1117,7 @@ export default function Dashboard() {
         {courses.map((c) => (
           <CourseCard
             key={c._id}
-            {...c}
+            course={c}
             onEdit={() => setCourse(c)}
             onDelete={() => deleteCourse(c._id)}
           />

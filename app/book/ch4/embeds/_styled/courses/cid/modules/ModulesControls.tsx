@@ -1,13 +1,8 @@
 import { useState } from "react";
-import { useParams } from "next/navigation";
 import { FaPlus } from "react-icons/fa";
 import ModuleEditor from "./ModuleEditor";
-import { useModulesStore } from "../../../store/modulesStore";
 
 export default function ModulesControls() {
-  const { cid } = useParams();
-  const [moduleName, setModuleName] = useState("");
-  const addModule = useModulesStore((state) => state.addModule);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -44,12 +39,6 @@ export default function ModulesControls() {
         show={show}
         handleClose={handleClose}
         dialogTitle="Add Module"
-        moduleName={moduleName}
-        setModuleName={setModuleName}
-        addModule={() => {
-          addModule({ name: moduleName, course: String(cid) });
-          setModuleName("");
-        }}
       />
     </div>
   );

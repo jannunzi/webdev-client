@@ -270,8 +270,9 @@ export { courses };`}</CodeBlock>
       >
         <p>
           Refactor the dashboard from <SectionLink to="2.4.2" />{" "}so it maps{" "}
-          <code>db.courses</code>{" "}onto <code>CourseCard</code>. Spread each
-          course into the card and key the card by{" "}
+          <code>db.courses</code>{" "}onto <code>CourseCard</code>. Pass each
+          course to the card as a single <code>course</code>{" "}prop and
+          key the card by{" "}
           <code>course._id</code>:
         </p>
         <CodeBlock
@@ -294,17 +295,18 @@ export default function Dashboard() {
         className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
       >
         {courses.map((course) => (
-          <CourseCard key={course._id} {...course} />
+          <CourseCard key={course._id} course={course} />
         ))}
       </div>
     </div>
   );
 }`}</CodeBlock>
         <p>
-          <code>CourseCard</code>{" "}destructures <code>_id</code>,{" "}
-          <code>name</code>, <code>description</code>, and{" "}
-          <code>image</code>. The <code>Link</code>{" "}encodes{" "}
-          <code>_id</code>{" "}in the path so later screens can look the
+          <code>CourseCard</code>{" "}takes one <code>course</code>{" "}prop
+          and reads <code>course._id</code>,{" "}
+          <code>course.name</code>, <code>course.description</code>, and{" "}
+          <code>course.image</code>. The <code>Link</code>{" "}encodes{" "}
+          <code>course._id</code>{" "}in the path so later screens can look the
           course up:
         </p>
         <CodeBlock
@@ -315,35 +317,34 @@ export default function Dashboard() {
 import Image from "next/image";
 
 export default function CourseCard({
-  _id,
-  name,
-  description,
-  image,
+  course,
 }: {
-  _id: string;
-  name: string;
-  description: string;
-  image: string;
+  course: {
+    _id: string;
+    name: string;
+    description: string;
+    image: string;
+  };
 }) {
   return (
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
       <Link
-        href={\`/courses/\${_id}/home\`}
+        href={\`/courses/\${course._id}/home\`}
         className="wd-dashboard-course-link block text-neutral-900 no-underline"
       >
         <Image
-          src={image}
+          src={course.image}
           width={300}
           height={160}
-          alt={name}
+          alt={course.name}
           className="h-40 w-full object-cover"
         />
         <div className="p-4">
           <h5 className="wd-dashboard-course-title m-0 mb-2 truncate text-lg font-semibold whitespace-nowrap">
-            {name}
+            {course.name}
           </h5>
           <p className="wd-dashboard-course-description m-0 mb-3 h-[100px] overflow-hidden text-sm text-neutral-600">
-            {description}
+            {course.description}
           </p>
           <button
             type="button"
