@@ -119,7 +119,7 @@ export default function Dashboard() {
         {courses.map((c) => (
           <CourseCard
             key={c._id}
-            {...c}
+            course={c}
             onEdit={() => setCourse(c)}
           />
         ))}
@@ -150,34 +150,28 @@ export default function Dashboard() {
     bullets: [
       "The button sits inside a `Link` to course Home",
       "Call `event.preventDefault()` or the card navigates before it disappears",
-      "`CourseCard` selects `deleteCourse` and calls `deleteCourse(_id)`. id `wd-delete-course-click`",
+      "`CourseCard` selects `deleteCourse` and calls `deleteCourse(course._id)`. id `wd-delete-course-click`",
     ],
   },
   {
     id: "card-props",
-    title: "CourseCard takes onEdit, reads delete",
+    title: "CourseCard takes course and onEdit",
     kind: "content",
     code: `import Link from "next/link";
 import Image from "next/image";
-import { useCoursesStore } from "../store/coursesStore";
+import { useCoursesStore, type Course } from "../store/coursesStore";
 
 export default function CourseCard({
-  _id,
-  name,
-  description,
-  image,
+  course,
   onEdit,
 }: {
-  _id: string;
-  name: string;
-  description: string;
-  image: string;
+  course: Course;
   onEdit: () => void;
 }) {
   const deleteCourse = useCoursesStore((state) => state.deleteCourse);`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
-    codeHighlightLines: [3, 10, 16, 18],
+    codeHighlightLines: [3, 6, 9, 12],
   },
   {
     id: "card-buttons",
@@ -185,15 +179,15 @@ export default function CourseCard({
     kind: "content",
     code: `  return (
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
-      <Link href={\`/courses/\${_id}/home\`}
+      <Link href={\`/courses/\${course._id}/home\`}
         className="wd-dashboard-course-link block text-neutral-900 no-underline" >
-        <Image src={image} width={300} height={160} alt={name} className="h-40 w-full object-cover" />
+        <Image src={course.image} width={300} height={160} alt={course.name} className="h-40 w-full object-cover" />
         <div className="p-4">
           <h5 className="wd-dashboard-course-title m-0 mb-2 truncate text-lg font-semibold whitespace-nowrap">
-            {name}
+            {course.name}
           </h5>
           <p className="wd-dashboard-course-description m-0 mb-3 h-[100px] overflow-hidden text-sm text-neutral-600">
-            {description}
+            {course.description}
           </p>
           <button type="button" className="inline-flex items-center justify-center rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white" >
             Go
@@ -208,7 +202,7 @@ export default function CourseCard({
           <button type="button" id="wd-delete-course-click" className="ms-2 inline-flex items-center justify-center rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
             onClick={(event) => {
               event.preventDefault();
-              deleteCourse(_id);
+              deleteCourse(course._id);
             }} >
             Delete
           </button>
@@ -219,7 +213,7 @@ export default function CourseCard({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
-    codeStartLine: 19,
+    codeStartLine: 13,
     codeHighlightLines: [19, 26],
   },
   {

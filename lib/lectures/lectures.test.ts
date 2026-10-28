@@ -2773,7 +2773,8 @@ describe("lecture decks", () => {
     const dash = slideText("kambaz-dashboard-data");
     assert.match(dash, /db.courses/);
     assert.match(dash, /key=\{course._id\}/);
-    assert.match(dash, /\/courses\/\$\{_id\}\/home/);
+    assert.match(dash, /\/courses\/\$\{course._id\}\/home/);
+    assert.match(dash, /course=\{course\}/);
 
     const courses = slideText("kambaz-courses-data");
     assert.match(courses, /courses.find/);
