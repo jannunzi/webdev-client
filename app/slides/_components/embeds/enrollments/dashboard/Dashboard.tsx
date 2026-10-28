@@ -93,7 +93,7 @@ export default function Dashboard() {
         {visibleCourses.map((c) => (
           <CourseCard
             key={c._id}
-            {...c}
+            course={c}
             onEdit={() => setCourse(c)}
           />
         ))}
