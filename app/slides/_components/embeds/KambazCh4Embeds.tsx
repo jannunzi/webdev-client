@@ -5,7 +5,6 @@ import Profile from "@/app/book/ch4/embeds/_styled/account/profile/page";
 import Ch4Modules from "@/app/book/ch4/embeds/_styled/courses/cid/modules/page";
 import Module from "@/app/book/ch4/embeds/_styled/courses/cid/modules/Module";
 import ModulesControls from "@/app/book/ch4/embeds/_styled/courses/cid/modules/ModulesControls";
-import ModuleControlButtons from "@/app/book/ch4/embeds/_styled/courses/cid/modules/ModuleControlButtons";
 import AsAccountRouter from "./AsAccountRouter";
 import AsCourseParams from "./AsCourseParams";
 
@@ -66,8 +65,7 @@ export function KambazCh4ModuleRowEmbed() {
   return (
     <ul className="m-0 list-none p-0 font-sans">
       <Module
-        title="Week 1 - HTML"
-        extra={<ModuleControlButtons moduleId="M101" />}
+        module={{ _id: "M101", name: "Week 1 - HTML", description: "", course: "RS101" }}
       />
     </ul>
   );
