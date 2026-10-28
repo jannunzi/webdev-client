@@ -1,18 +1,19 @@
+import { useState } from "react";
+import { useParams } from "next/navigation";
+import { useModulesStore } from "../../../store/modulesStore";
+
 export default function ModuleEditor({
   show,
   handleClose,
   dialogTitle,
-  moduleName,
-  setModuleName,
-  addModule,
 }: {
   show: boolean;
   handleClose: () => void;
   dialogTitle: string;
-  moduleName: string;
-  setModuleName: (name: string) => void;
-  addModule: () => void;
 }) {
+  const { cid } = useParams();
+  const [moduleName, setModuleName] = useState("");
+  const addModule = useModulesStore((state) => state.addModule);
   if (!show) return null;
   return (
     <div
@@ -52,7 +53,8 @@ export default function ModuleEditor({
           <button
             type="button"
             onClick={() => {
-              addModule();
+              addModule({ name: moduleName, course: String(cid) });
+              setModuleName("");
               handleClose();
             }}
             className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
