@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useParams } from "next/navigation";
 import Module from "./Module";
 import Lesson from "./Lesson";
@@ -10,23 +9,12 @@ import { useModulesStore } from "../../../store/modulesStore";
 
 export default function Modules() {
   const { cid } = useParams();
-  const [moduleName, setModuleName] = useState("");
   const modules = useModulesStore((state) => state.modules);
-  const addModule = useModulesStore((state) => state.addModule);
-  const deleteModule = useModulesStore((state) => state.deleteModule);
   const updateModule = useModulesStore((state) => state.updateModule);
-  const editModule = useModulesStore((state) => state.editModule);
 
   return (
     <div className="wd-modules">
-      <ModulesControls
-        moduleName={moduleName}
-        setModuleName={setModuleName}
-        addModule={() => {
-          addModule({ name: moduleName, course: String(cid) });
-          setModuleName("");
-        }}
-      />
+      <ModulesControls />
       <ul id="wd-modules" className="m-0 list-none p-0">
         {modules
           .filter((module) => module.course === cid)
@@ -34,11 +22,7 @@ export default function Modules() {
             <Module
               key={module._id}
               extra={
-                <ModuleControlButtons
-                  moduleId={module._id}
-                  deleteModule={deleteModule}
-                  editModule={editModule}
-                />
+                <ModuleControlButtons moduleId={module._id} />
               }
               title={
                 module.editing ? (

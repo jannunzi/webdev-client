@@ -1,18 +1,13 @@
-"use client";
-
 import { useState } from "react";
+import { useParams } from "next/navigation";
 import { FaPlus } from "react-icons/fa";
 import ModuleEditor from "./ModuleEditor";
+import { useModulesStore } from "../../../store/modulesStore";
 
-export default function ModulesControls({
-  moduleName,
-  setModuleName,
-  addModule,
-}: {
-  moduleName: string;
-  setModuleName: (title: string) => void;
-  addModule: () => void;
-}) {
+export default function ModulesControls() {
+  const { cid } = useParams();
+  const [moduleName, setModuleName] = useState("");
+  const addModule = useModulesStore((state) => state.addModule);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -51,7 +46,10 @@ export default function ModulesControls({
         dialogTitle="Add Module"
         moduleName={moduleName}
         setModuleName={setModuleName}
-        addModule={addModule}
+        addModule={() => {
+          addModule({ name: moduleName, course: String(cid) });
+          setModuleName("");
+        }}
       />
     </div>
   );

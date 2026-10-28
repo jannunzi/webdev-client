@@ -11,7 +11,6 @@ import {
 export default function Dashboard() {
   const courses = useCoursesStore((state) => state.courses);
   const addCourse = useCoursesStore((state) => state.addCourse);
-  const deleteCourse = useCoursesStore((state) => state.deleteCourse);
   const updateCourse = useCoursesStore((state) => state.updateCourse);
   const [course, setCourse] = useState<Course>(emptyCourse);
 
@@ -65,7 +64,6 @@ export default function Dashboard() {
             key={c._id}
             {...c}
             onEdit={() => setCourse(c)}
-            onDelete={() => deleteCourse(c._id)}
           />
         ))}
       </div>

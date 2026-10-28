@@ -1,7 +1,6 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
+import { useCoursesStore } from "../store/coursesStore";
 
 export default function CourseCard({
   _id,
@@ -9,15 +8,14 @@ export default function CourseCard({
   description,
   image,
   onEdit,
-  onDelete,
 }: {
   _id: string;
   name: string;
   description: string;
   image: string;
   onEdit: () => void;
-  onDelete: () => void;
 }) {
+  const deleteCourse = useCoursesStore((state) => state.deleteCourse);
   return (
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
       <Link
@@ -61,7 +59,7 @@ export default function CourseCard({
             className="ms-2 inline-flex items-center justify-center rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
             onClick={(event) => {
               event.preventDefault();
-              onDelete();
+              deleteCourse(_id);
             }}
           >
             Delete
