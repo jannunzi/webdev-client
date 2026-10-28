@@ -77,6 +77,9 @@ export const CHAPTER_4_SLUGS = [
   "kambaz-dashboard-crud",
   "kambaz-modules-store",
   "kambaz-account-context",
+  "kambaz-account-pages",
+  "kambaz-course-enrollments",
+  "kambaz-people-table",
 ] as const;
 
 /** Chapter 5 decks — Express HTTP, Lab 5 APIs, Next routes, Kambaz server, deploy (Lab 5 / A5). */
