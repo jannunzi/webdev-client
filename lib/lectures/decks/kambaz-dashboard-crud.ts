@@ -85,20 +85,15 @@ export default function Dashboard() {
     id: "add-part-3",
     title: "Name and description inputs",
     kind: "content",
-    code: `      <input
-        className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
-        value={course.name}
-        onChange={(e) => setCourse({ ...course, name: e.target.value })}
-        id="wd-course-name"
+    code: `      <input value={course.name} id="wd-course-name" className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
+        onChange={(e) =>
+          setCourse({ ...course, name: e.target.value })
+        }
       />
-      <textarea
-        className="mb-3 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
-        rows={3}
-        value={course.description}
+      <textarea value={course.description} rows={3} id="wd-course-description" className="mb-3 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
         onChange={(e) =>
           setCourse({ ...course, description: e.target.value })
         }
-        id="wd-course-description"
       />
       <hr />`,
     codeLanguage: "tsx",
@@ -112,10 +107,7 @@ export default function Dashboard() {
     kind: "content",
     code: `      <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2>
       <hr />
-      <div
-        id="wd-dashboard-courses"
-        className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-      >
+      <div id="wd-dashboard-courses" className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4" >
         {courses.map((c) => (
           <CourseCard
             key={c._id}
