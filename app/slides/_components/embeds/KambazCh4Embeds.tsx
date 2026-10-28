@@ -1,27 +1,30 @@
 "use client";
 
 import Signup from "@/app/book/ch4/embeds/_styled/account/signup/page";
+import Signin from "@/app/book/ch4/embeds/_styled/account/signin/page";
+import { useAccountContext } from "@/app/book/ch4/embeds/_styled/account/AccountContext";
 import Profile from "@/app/book/ch4/embeds/_styled/account/profile/page";
 import Ch4Modules from "@/app/book/ch4/embeds/_styled/courses/cid/modules/page";
 import AsAccountRouter from "./AsAccountRouter";
 import AsCourseParams from "./AsCourseParams";
 
-function SignedOut({ go }: { go: (path: string) => void }) {
+function SignedIn({ go }: { go: (path: string) => void }) {
+  const { currentUser } = useAccountContext();
   return (
-    <div id="wd-signin-screen">
-      <p className="text-sm">Signed out (Sign in screen).</p>
+    <div id="wd-dashboard">
+      <p className="text-sm">Dashboard, signed in as {currentUser?.username}.</p>
       <button
         type="button"
         className="rounded border border-neutral-300 px-3 py-1 text-sm"
-        onClick={() => go("/account/signup")}
+        onClick={() => go("/account/profile")}
       >
-        Back to Sign up
+        Profile
       </button>
     </div>
   );
 }
 
-/** §4.10.5.5 Sign up → Profile → Update → Sign out, on the Ch4 AccountContext. */
+/** §4.10.5.5 Sign up → Profile → Sign out → Sign in, on the Ch4 AccountContext. */
 export function KambazCh4AccountDemo({ start }: { start: string }) {
   return (
     <AsAccountRouter
@@ -31,8 +34,10 @@ export function KambazCh4AccountDemo({ start }: { start: string }) {
           <Signup />
         ) : path === "/account/profile" ? (
           <Profile />
+        ) : path === "/dashboard" ? (
+          <SignedIn go={go} />
         ) : (
-          <SignedOut go={go} />
+          <Signin />
         )
       }
     />

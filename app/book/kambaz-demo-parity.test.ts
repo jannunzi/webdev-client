@@ -178,6 +178,11 @@ const SNAPSHOTS: Array<{ book: string; name: string; file: string }> = [
   },
   {
     book: "app/book/ch4/sections/KambazAccount.tsx",
+    name: "Signin",
+    file: "app/book/ch4/embeds/_styled/account/signin/page.tsx",
+  },
+  {
+    book: "app/book/ch4/sections/KambazAccount.tsx",
     name: "Signup",
     file: "app/book/ch4/embeds/_styled/account/signup/page.tsx",
   },

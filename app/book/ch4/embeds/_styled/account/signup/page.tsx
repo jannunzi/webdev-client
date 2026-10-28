@@ -8,13 +8,13 @@ import { useAccountContext } from "../AccountContext";
 export default function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { setCurrentUser } = useAccountContext();
+  const { createUser, setCurrentUser } = useAccountContext();
   const router = useRouter();
 
   const signup = () => {
     if (!username || !password) return;
-    setCurrentUser({
-      _id: crypto.randomUUID(),
+    const user = createUser({
+      _id: "",
       username,
       password,
       firstName: "",
@@ -26,6 +26,7 @@ export default function Signup() {
       lastActivity: "",
       totalActivity: "",
     });
+    setCurrentUser(user);
     router.push("/account/profile");
   };
 
