@@ -160,6 +160,96 @@ export default function Dashboard() {
     ],
   },
   {
+    id: "card-props",
+    title: "CourseCard takes onEdit and onDelete",
+    kind: "content",
+    code: `"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+
+export default function CourseCard({
+  _id,
+  name,
+  description,
+  image,
+  onEdit,
+  onDelete,
+}: {
+  _id: string;
+  name: string;
+  description: string;
+  image: string;
+  onEdit: () => void;
+  onDelete: () => void;
+}) {`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeHighlightLines: [11, 12, 18, 19],
+  },
+  {
+    id: "card-buttons",
+    title: "CourseCard Edit and Delete buttons",
+    kind: "content",
+    code: `  return (
+    <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
+      <Link
+        href={\`/courses/\${_id}/home\`}
+        className="wd-dashboard-course-link block text-neutral-900 no-underline"
+      >
+        <Image
+          src={image}
+          width={300}
+          height={160}
+          alt={name}
+          className="h-40 w-full object-cover"
+        />
+        <div className="p-4">
+          <h5 className="wd-dashboard-course-title m-0 mb-2 truncate text-lg font-semibold whitespace-nowrap">
+            {name}
+          </h5>
+          <p className="wd-dashboard-course-description m-0 mb-3 h-[100px] overflow-hidden text-sm text-neutral-600">
+            {description}
+          </p>
+          <button
+            type="button"
+            className="inline-flex items-center justify-center rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+          >
+            Go
+          </button>
+          <button
+            type="button"
+            id="wd-edit-course-click"
+            className="ms-2 inline-flex items-center justify-center rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
+            onClick={(event) => {
+              event.preventDefault();
+              onEdit();
+            }}
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            id="wd-delete-course-click"
+            className="ms-2 inline-flex items-center justify-center rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+            onClick={(event) => {
+              event.preventDefault();
+              onDelete();
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      </Link>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeStartLine: 21,
+    codeHighlightLines: [32, 33, 43, 44],
+  },
+  {
     id: "edit",
     title: "Edit copies, Update writes back",
     kind: "demo",
@@ -168,7 +258,7 @@ export default function Dashboard() {
       "Update: `updateCourse(course)` maps the matching `_id`",
       "The link and `_id` stay. The title and description change",
     ],
-    embed: "kambaz-styled-dashboard",
+    embed: "kambaz-courses-crud",
   },
   {
     id: "recap",

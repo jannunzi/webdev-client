@@ -28,6 +28,7 @@ import LocalStorageDemo from "@/app/labs/lab4/hooks/LocalStorageDemo";
 import IndependentToggles from "@/app/labs/lab4/hooks/IndependentToggles";
 import HookProfileForm from "@/app/labs/lab4/hooks/HookProfileForm";
 import LectureDemoFrame from "./LectureDemoFrame";
+import Ch4Dashboard from "@/app/book/ch4/embeds/_styled/dashboard/Dashboard";
 
 function Lab4Demo({
   label,
@@ -193,101 +194,12 @@ export function UseEffectEmbed() {
   );
 }
 
-type DemoCourse = {
-  _id: string;
-  name: string;
-  description: string;
-};
-
-const seedCourses: DemoCourse[] = [
-  { _id: "RS101", name: "Rocket Propulsion", description: "Fundamentals" },
-  { _id: "RS102", name: "Aerodynamics", description: "Airflow and lift" },
-];
-
-/**
- * Isolated dashboard CRUD — local useState only.
- * Do not import the live Kambaz Dashboard (HTTP client) or coursesStore
- * (shared singleton) into the slide bundle.
- */
+/** Dashboard CRUD: the book's §4.10.2 Dashboard, with its own embed store copy. */
 export function KambazCoursesCrudEmbed() {
-  const [courses, setCourses] = useState(seedCourses);
-  const [draft, setDraft] = useState<DemoCourse>({
-    _id: "0",
-    name: "New Course",
-    description: "New Description",
-  });
-
   return (
-    <LectureDemoFrame label="Dashboard CRUD preview" url="/dashboard">
-      <div id="wd-dashboard" className="font-sans text-base">
-        <h2 className="mt-0">New Course</h2>
-        <div className="mb-2 flex flex-wrap gap-2">
-          <button
-            type="button"
-            className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
-            id="wd-add-new-course-click"
-            onClick={() =>
-              setCourses([
-                ...courses,
-                { ...draft, _id: crypto.randomUUID() },
-              ])
-            }
-          >
-            Add
-          </button>
-          <button
-            type="button"
-            className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
-            id="wd-update-course-click"
-            onClick={() =>
-              setCourses(
-                courses.map((course) =>
-                  course._id === draft._id ? draft : course,
-                ),
-              )
-            }
-          >
-            Update
-          </button>
-        </div>
-        <input
-          className="mb-2 block w-full max-w-sm rounded border border-neutral-300 px-3 py-1.5"
-          value={draft.name}
-          onChange={(e) => setDraft({ ...draft, name: e.target.value })}
-          id="wd-course-name"
-        />
-        <p id="wd-dashboard-published" className="mb-2 font-semibold">
-          Published Courses ({courses.length})
-        </p>
-        <ul className="m-0 list-none p-0">
-          {courses.map((course) => (
-            <li
-              key={course._id}
-              className="mb-1 flex items-center justify-between rounded border border-neutral-200 px-3 py-1"
-            >
-              <span>{course.name}</span>
-              <span className="flex gap-2">
-                <button
-                  type="button"
-                  className="rounded bg-yellow-400 px-2 py-0.5 text-sm"
-                  onClick={() => setDraft(course)}
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  className="rounded bg-red-600 px-2 py-0.5 text-sm font-medium text-white"
-                  id="wd-delete-course-click"
-                  onClick={() =>
-                    setCourses(courses.filter((row) => row._id !== course._id))
-                  }
-                >
-                  Delete
-                </button>
-              </span>
-            </li>
-          ))}
-        </ul>
+    <LectureDemoFrame label="dashboard/page.tsx" url="/dashboard">
+      <div className="font-sans">
+        <Ch4Dashboard />
       </div>
     </LectureDemoFrame>
   );
