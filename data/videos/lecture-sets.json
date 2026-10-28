@@ -1,5 +1,625 @@
 [
   {
+    "lectureId": "cs5610-02_2026-09-28",
+    "course": "CS5610-02",
+    "semester": "FA26",
+    "date": "2026-09-28",
+    "partCount": 15,
+    "clips": [
+      {
+        "part": 1,
+        "youtubeVideoId": "a1elfBMvooc",
+        "title": "Week Overview — CS5610 FA26 (Sep 28) Part 1/15",
+        "topic": "Week Overview",
+        "durationSec": 559,
+        "summary": "The class opens with Assignment 1 feedback and how to contest lost points, a recap of the first HTML module, and the plan for CSS week: CSS basics first, then a styling library, applied to the Kambaz project, with the first quiz at the end of class."
+      },
+      {
+        "part": 2,
+        "youtubeVideoId": "RxXEXidUQ74",
+        "title": "Style Attribute — CS5610 FA26 (Sep 28) Part 2/15",
+        "topic": "Style Attribute",
+        "durationSec": 717,
+        "summary": "Starting the Lab 2 page, we compare three ways to add styles (the inline style attribute, a style tag, and a separate .css file loaded with an import), why inline styles are a maintenance problem, and how a JSX style object uses camelCase properties and double curly braces before it compiles to a plain CSS string."
+      },
+      {
+        "part": 3,
+        "youtubeVideoId": "8M5fMUGGDXc",
+        "title": "CSS Selectors — CS5610 FA26 (Sep 28) Part 3/15",
+        "topic": "CSS Selectors",
+        "durationSec": 563,
+        "summary": "The anatomy of a CSS rule: selectors, properties, and values. We select elements by tag name and by ID, see two rules compete in the browser inspector, and learn how specificity and then source order decide which rule wins, plus the common trick of loading your own rules after a library such as Bootstrap to override it."
+      },
+      {
+        "part": 4,
+        "youtubeVideoId": "AYAs3eWX3Bg",
+        "title": "Class Selectors — CS5610 FA26 (Sep 28) Part 4/15",
+        "topic": "Class Selectors",
+        "durationSec": 769,
+        "summary": "Reusable class selectors with the dot syntax, combining several classes on one element, prefixing your own class names (wd- in the lab), and document-structure selectors that target elements by their ancestors, including the stricter child selector that is cheaper for the browser to match."
+      },
+      {
+        "part": 5,
+        "youtubeVideoId": "j4pMvj9LV4E",
+        "title": "Cascade & Colors — CS5610 FA26 (Sep 28) Part 5/15",
+        "topic": "Cascade & Colors",
+        "durationSec": 673,
+        "summary": "How the cascade settles conflicts (specificity, source order, and inheritance, where color is inherited but width and margin are not), why JSX uses className instead of class, utility classes for foreground and background colors, and naming classes by role instead of by literal color."
+      },
+      {
+        "part": 6,
+        "youtubeVideoId": "nJYlhPHuNeE",
+        "title": "Box Model — CS5610 FA26 (Sep 28) Part 6/15",
+        "topic": "Box Model",
+        "durationSec": 683,
+        "summary": "The CSS box model: content, padding, border, and margin. We style borders (width, style, color, per side), set padding and margins with the clockwise top-right-bottom-left shorthand, discuss when padding and margin differ, and round corners with border-radius."
+      },
+      {
+        "part": 7,
+        "youtubeVideoId": "Hhl8G4LpZx4",
+        "title": "Width & Height — CS5610 FA26 (Sep 28) Part 7/15",
+        "topic": "Width & Height",
+        "durationSec": 798,
+        "summary": "Dimensions in the box model: how block elements are as wide as their container and as tall as their content, what happens when you override width and height (portrait, landscape, and square boxes), and using overflow to clip or scroll content that no longer fits."
+      },
+      {
+        "part": 8,
+        "youtubeVideoId": "uCD_3Wz_JVo",
+        "title": "Display & Position — CS5610 FA26 (Sep 28) Part 8/15",
+        "topic": "Display & Position",
+        "durationSec": 609,
+        "summary": "The display property: inline elements ignore width and height, inline-block respects them, and block elements stack. After the break, an introduction to positioning: top, left, bottom, and right are distances from edges, and how they are read depends on the position value."
+      },
+      {
+        "part": 9,
+        "youtubeVideoId": "q_8cL665Xqg",
+        "title": "Relative Position — CS5610 FA26 (Sep 28) Part 9/15",
+        "topic": "Relative Position",
+        "durationSec": 733,
+        "summary": "A live demo of position: relative, nudging boxes with top, left, bottom, and right from where they would normally render. The parent's size does not change, and nudged boxes can end up overlapping their siblings."
+      },
+      {
+        "part": 10,
+        "youtubeVideoId": "9T72CKdYHkE",
+        "title": "Absolute Position — CS5610 FA26 (Sep 28) Part 10/15",
+        "topic": "Absolute Position",
+        "durationSec": 560,
+        "summary": "position: absolute takes an element out of normal flow: its siblings render as if it were gone, the parent stops counting its height, and the offsets are measured from the nearest positioned (relative) ancestor, or from the document if there is none."
+      },
+      {
+        "part": 11,
+        "youtubeVideoId": "BDRAMm3G63A",
+        "title": "Fixed & Z-Index — CS5610 FA26 (Sep 28) Part 11/15",
+        "topic": "Fixed & Z-Index",
+        "durationSec": 460,
+        "summary": "position: fixed keeps an element in place while the page scrolls, which is how toolbars and sidebars work. Then stacking order: overlapping elements draw in document order unless you raise one with z-index."
+      },
+      {
+        "part": 12,
+        "youtubeVideoId": "DjZlJvtydpg",
+        "title": "Float Layouts — CS5610 FA26 (Sep 28) Part 12/15",
+        "topic": "Float Layouts",
+        "durationSec": 436,
+        "summary": "How float, first meant to wrap text around images, was used to build early page layouts that replaced table-based layouts: percentage-width columns (halves, thirds, 20/60/20 sidebars), clear on each row, and the grid systems that grew from the idea."
+      },
+      {
+        "part": 13,
+        "youtubeVideoId": "dQNSCvrSpr8",
+        "title": "Flexbox — CS5610 FA26 (Sep 28) Part 13/15",
+        "topic": "Flexbox",
+        "durationSec": 490,
+        "summary": "display: flex, the dedicated tool for horizontal layouts: children of a flex container line up in a row, a fixed-width sidebar column sits next to a column that grows to fill the remaining width, and white-space: nowrap keeps text on one line."
+      },
+      {
+        "part": 14,
+        "youtubeVideoId": "tooojt51bjo",
+        "title": "Media Queries — CS5610 FA26 (Sep 28) Part 14/15",
+        "topic": "Media Queries",
+        "durationSec": 564,
+        "summary": "Responsive design with media queries: why a wide layout makes no sense on a phone, the origin of media types for print and projectors, early fixes like double-tap zoom and separate mobile sites, and one responsive codebase using min-width and max-width breakpoints."
+      },
+      {
+        "part": 15,
+        "youtubeVideoId": "60v85aSb5l4",
+        "title": "Media Query Demo — CS5610 FA26 (Sep 28) Part 15/15",
+        "topic": "Media Query Demo",
+        "durationSec": 420.7,
+        "summary": "The Media Query Demo on kambaz.dev: resizing the window changes colors and list styles at 750, 1000, and 1250 pixels with no JavaScript, because CSS is declarative. Then how libraries such as Bootstrap and Tailwind name standard breakpoints (small, medium, large, extra large)."
+      }
+    ]
+  },
+  {
+    "lectureId": "cs5610-09_2026-09-29",
+    "course": "CS5610-09",
+    "semester": "FA26",
+    "date": "2026-09-29",
+    "partCount": 20,
+    "clips": [
+      {
+        "part": 1,
+        "youtubeVideoId": "g7_J3sxuulc",
+        "title": "Why CSS — CS5610 FA26 (Sep 29) Part 1/20",
+        "topic": "Why CSS",
+        "durationSec": 549,
+        "summary": "After a recap of the first module, we revisit the client-server architecture behind the course: the browser handles the user interface but cannot reach the file system, the operating system, or a database, which is the server's job in the second half of the semester. Then why our HTML still looks plain, how CSS overrides the browser's default look by annotating nodes in the DOM, and how developers turn a designer's mockups into real styles."
+      },
+      {
+        "part": 2,
+        "youtubeVideoId": "YFe0JLVH8Pw",
+        "title": "CSS Roadmap — CS5610 FA26 (Sep 29) Part 2/20",
+        "topic": "CSS Roadmap",
+        "durationSec": 368,
+        "summary": "CSS is too large to cover completely, so the course focuses on the most common features, best practices, and responsive design. The plan: CSS syntax and exercises in the Lab 2 page today, restyling the Kambaz web app next lecture, mostly reusing popular CSS libraries and overriding them, and typing the on-your-own exercises by hand (without AI or type-ahead) because quizzes ask you to write HTML, CSS, and JavaScript."
+      },
+      {
+        "part": 3,
+        "youtubeVideoId": "k-c3nQSro4s",
+        "title": "Style Attribute — CS5610 FA26 (Sep 29) Part 3/20",
+        "topic": "Style Attribute",
+        "durationSec": 534,
+        "summary": "CSS as a declarative language, then the first way to style an element in the Lab 2 page: the style attribute. In JSX the style is a JavaScript object (a literal, a constant, or the result of a function call) that the transpiler turns into a plain CSS string in the DOM, and why hard-coded inline styles spread across hundreds of elements and pages become a maintenance nightmare."
+      },
+      {
+        "part": 4,
+        "youtubeVideoId": "qusHBsiZmyg",
+        "title": "CSS Files — CS5610 FA26 (Sep 29) Part 4/20",
+        "topic": "CSS Files",
+        "durationSec": 313,
+        "summary": "Better options than inline styles: a style tag groups a page's styles in one place, and a separate .css file shares them across pages. We move the H1 rule into index.css, see how camelCase JSX properties such as backgroundColor become dashed CSS properties, and why the rule does nothing until the file is imported."
+      },
+      {
+        "part": 5,
+        "youtubeVideoId": "UTLxdu-frX0",
+        "title": "CSS Selectors — CS5610 FA26 (Sep 29) Part 5/20",
+        "topic": "CSS Selectors",
+        "durationSec": 401,
+        "summary": "The anatomy of a CSS rule: a selector plus a block of property-value pairs. The browser walks the DOM tree and applies the rule wherever the selector matches, so a tag-name selector styles every H1. When two rules compete, the one defined later wins, and an inline style attribute cannot be overridden from a CSS file, which is the main reason to avoid it."
+      },
+      {
+        "part": 6,
+        "youtubeVideoId": "LW4eHykAtdA",
+        "title": "Specificity — CS5610 FA26 (Sep 29) Part 6/20",
+        "topic": "Specificity",
+        "durationSec": 564,
+        "summary": "Targeting individual elements with ID selectors (the # syntax), why adding the tag name to an ID selector is redundant, and how specificity resolves conflicts: a rule for a specific ID beats a broad paragraph rule even when the broad rule is declared later, and document order only decides between rules of equal specificity. Ends with a recap of the Lab 2 progress so far."
+      },
+      {
+        "part": 7,
+        "youtubeVideoId": "FbO_RiQSIBg",
+        "title": "Class Selectors — CS5610 FA26 (Sep 29) Part 7/20",
+        "topic": "Class Selectors",
+        "durationSec": 515,
+        "summary": "Reusable class selectors with the dot syntax, applied through className to paragraphs, headings, and lists alike. Naming conventions: memorable names, lowercase words separated by dashes, and an organization prefix (wd- for web dev) that separates the classes you own from the ones that come with third-party CSS libraries."
+      },
+      {
+        "part": 8,
+        "youtubeVideoId": "_rm2edoKWgU",
+        "title": "Structure Selectors — CS5610 FA26 (Sep 29) Part 8/20",
+        "topic": "Structure Selectors",
+        "durationSec": 632,
+        "summary": "Document structure selectors target elements by where they sit in the DOM tree: a space-separated selector matches an ancestor anywhere in the lineage, while the greater-than child selector requires direct parent-child relationships. A live demo also shows that background and text colors are inherited by descendants, and that a more specific rule beats inheritance."
+      },
+      {
+        "part": 9,
+        "youtubeVideoId": "ZqitFCn3ll0",
+        "title": "Cascade & Colors — CS5610 FA26 (Sep 29) Part 9/20",
+        "topic": "Cascade & Colors",
+        "durationSec": 356,
+        "summary": "A summary of the cascade (specificity, source order, and inheritance), why JSX uses className instead of the reserved word class, combining several classes on one element, colors as named tokens or hex RGB values, and why libraries name classes by role (warning, danger, success) instead of by literal color."
+      },
+      {
+        "part": 10,
+        "youtubeVideoId": "800_wNDoQtY",
+        "title": "Box Model — CS5610 FA26 (Sep 29) Part 10/20",
+        "topic": "Box Model",
+        "durationSec": 563,
+        "summary": "The CSS box model: every element is a rectangle with content, padding, border, and margin. In the browser inspector we look at default paragraph margins from the browser's user-agent style sheet and em units, override margins per side, style borders as a whole, per side, and per property (width, style, color), then save the inspector edits back into the CSS file."
+      },
+      {
+        "part": 11,
+        "youtubeVideoId": "ybedVKVYQ-k",
+        "title": "Padding & Corners — CS5610 FA26 (Sep 29) Part 11/20",
+        "topic": "Padding & Corners",
+        "durationSec": 566,
+        "summary": "Padding sets the space between the content and its border. We see how the background color fills the padding and shows through a dashed border but not the margin, set padding per side, use the one-, two-, and four-value shorthands (clockwise: top, right, bottom, left), and round corners with border-radius, per corner or all at once."
+      },
+      {
+        "part": 12,
+        "youtubeVideoId": "DBDi5ssnnts",
+        "title": "Block & Inline — CS5610 FA26 (Sep 29) Part 12/20",
+        "topic": "Block & Inline",
+        "durationSec": 472,
+        "summary": "After the break: why changing dimensions and positions can easily break a layout or make elements overlap. Starting the Dimensions exercise, we see the browser's two default layout behaviors: block elements stretch as wide as their container, grow only as tall as their content, and push later elements down, while inline content flows left to right and wraps at spaces."
+      },
+      {
+        "part": 13,
+        "youtubeVideoId": "x7LDxmkSLcc",
+        "title": "Width & Height — CS5610 FA26 (Sep 29) Part 13/20",
+        "topic": "Width & Height",
+        "durationSec": 527,
+        "summary": "Overriding width and height with portrait, landscape, and square boxes: fixed sizes stop following the screen width, content that no longer fits overflows, and the overflow property can hide it or make it scroll. Resized blocks still push their siblings down, and a gray parent shows how the children's heights add up to the parent's height."
+      },
+      {
+        "part": 14,
+        "youtubeVideoId": "KVKDIiqENbs",
+        "title": "Relative Position — CS5610 FA26 (Sep 29) Part 14/20",
+        "topic": "Relative Position",
+        "durationSec": 671,
+        "summary": "The Position exercise and position: relative. top, left, bottom, and right nudge a box away from where the browser would normally put it, even on top of its siblings, without changing the siblings' positions or the parent's height, because relative positioning computes sizes first and positions after."
+      },
+      {
+        "part": 15,
+        "youtubeVideoId": "uRS4001So5w",
+        "title": "Absolute Position — CS5610 FA26 (Sep 29) Part 15/20",
+        "topic": "Absolute Position",
+        "durationSec": 501,
+        "summary": "position: absolute removes an element from normal flow: the parent stops counting its height and its siblings ignore it. Offsets are measured from the document's top-left corner unless an ancestor is positioned relative, which resets the origin, and when every child is absolute the parent collapses, which is why the demo needed extra line breaks."
+      },
+      {
+        "part": 16,
+        "youtubeVideoId": "3YWhZJL71_w",
+        "title": "Fixed & Z-Index — CS5610 FA26 (Sep 29) Part 16/20",
+        "topic": "Fixed & Z-Index",
+        "durationSec": 335,
+        "summary": "position: fixed keeps an element in place while the page scrolls, unlike absolute. We build a fixed blue menu bar across the top of the page, watch it overlap other content, and fix the stacking with z-index: by default later elements draw on top, and a higher z-index brings an element to the front."
+      },
+      {
+        "part": 17,
+        "youtubeVideoId": "iaJQv7lBCns",
+        "title": "Float Layouts — CS5610 FA26 (Sep 29) Part 17/20",
+        "topic": "Float Layouts",
+        "durationSec": 376,
+        "summary": "Why plain HTML struggled with horizontal layouts and tables were misused for them (including the sidebars in Assignment 1), how float was meant to wrap text around images, and how floated divs with percentage widths (halves, thirds, 20/60/20) became an early way to build rows of columns."
+      },
+      {
+        "part": 18,
+        "youtubeVideoId": "VtAO89SWcfQ",
+        "title": "Flexbox — CS5610 FA26 (Sep 29) Part 18/20",
+        "topic": "Flexbox",
+        "durationSec": 396,
+        "summary": "Flexbox, the CSS designed for horizontal and vertical layout: display: flex on a parent lays its children out in a row, flex-direction switches between row and column, flex-grow lets the main column fill the remaining space, and a fixed-width sidebar that does not shrink, the strategy the assignment uses for the Canvas-style course pages with sidebars."
+      },
+      {
+        "part": 19,
+        "youtubeVideoId": "JGh0QK-S82g",
+        "title": "Media Queries — CS5610 FA26 (Sep 29) Part 19/20",
+        "topic": "Media Queries",
+        "durationSec": 508,
+        "summary": "Media queries began as a way to style for different devices such as printers and projectors and became the basis of responsive design. The history: full desktop pages shrunk onto the first iPhone, double-tap zoom, separate mobile and desktop sites, and finally one codebase whose CSS changes at common screen-width breakpoints (750, 1000, and 1250 pixels in the example)."
+      },
+      {
+        "part": 20,
+        "youtubeVideoId": "EtLjP5NkIow",
+        "title": "Media Query Demo — CS5610 FA26 (Sep 29) Part 20/20",
+        "topic": "Media Query Demo",
+        "durationSec": 418,
+        "summary": "Building the Media Query Demo in Lab 2: the background turns green, yellow, blue, or red and a different list item is highlighted as the window crosses 750, 1000, and 1250 pixels. Then how libraries like Bootstrap and Tailwind use breakpoints to change column counts, and how Canvas hides its sidebars or moves them into drop-downs on smaller screens."
+      }
+    ]
+  },
+  {
+    "lectureId": "cs4550-01_2026-09-30",
+    "course": "CS4550-01",
+    "semester": "FA26",
+    "date": "2026-09-30",
+    "partCount": 19,
+    "clips": [
+      {
+        "part": 1,
+        "youtubeVideoId": "XX3MFzr0thU",
+        "title": "CSS Recap — CS4550 FA26 (Sep 30) Part 1/19",
+        "topic": "CSS Recap",
+        "durationSec": 345,
+        "summary": "The class picks up the second module: the first half of the semester covers the client and the second half the server, the first quiz is scheduled for the end of class, and the slides and lecture videos are on the course site. Then a recap of the Lab 2 page so far: styles moved into index.css, rule order, and ID selectors with the hash syntax."
+      },
+      {
+        "part": 2,
+        "youtubeVideoId": "zhEf8QR6aBQ",
+        "title": "Class Selectors — CS4550 FA26 (Sep 30) Part 2/19",
+        "topic": "Class Selectors",
+        "durationSec": 660,
+        "summary": "Class selectors group a reusable set of styles under a name, much like a function in C or Java, and paint elements through className. In the inspector className becomes class and a JSX style object becomes a dashed CSS string, a mapping between two naming worlds similar to an ORM. Then the wd- prefix and how companies and teams namespace the classes they own."
+      },
+      {
+        "part": 3,
+        "youtubeVideoId": "s83NP-Shhu0",
+        "title": "Structure Selectors — CS4550 FA26 (Sep 30) Part 3/19",
+        "topic": "Structure Selectors",
+        "durationSec": 649.4,
+        "summary": "When tag names are too broad and IDs too narrow: document structure selectors match elements by their place in the DOM tree. A space matches any ancestor, the greater-than sign requires a direct parent, and a live demo shows colors inherited by descendants and a more specific rule overriding inheritance. Ends with how the browser resolves conflicts: specificity, then document order, then inheritance."
+      },
+      {
+        "part": 4,
+        "youtubeVideoId": "VOmGtu18wIA",
+        "title": "Colors & Box Model — CS4550 FA26 (Sep 30) Part 4/19",
+        "topic": "Colors & Box Model",
+        "durationSec": 729.9,
+        "summary": "Utility classes for foreground and background colors, and why libraries prefer role names like danger, warning, and info over literal color names. Then the box model: block elements are as wide as possible and as short as their content, inline elements flow left to right and wrap, and the inspector shows each element's content, padding, border, and margin."
+      },
+      {
+        "part": 5,
+        "youtubeVideoId": "H-lwuDdaNfA",
+        "title": "CSS Borders — CS4550 FA26 (Sep 30) Part 5/19",
+        "topic": "CSS Borders",
+        "durationSec": 413.7,
+        "summary": "The Borders exercise, then experiments in the browser inspector: padding around the content, the one-line border shorthand (width, style, color), overriding only the bottom border, setting individual properties such as the right border's color and width, and copying the result into a CSS class to make it permanent."
+      },
+      {
+        "part": 6,
+        "youtubeVideoId": "ZMwaZfghTPU",
+        "title": "Padding & Margins — CS4550 FA26 (Sep 30) Part 6/19",
+        "topic": "Padding & Margins",
+        "durationSec": 417.5,
+        "summary": "The Padding exercise: padding all around, the two-value (vertical, horizontal) and four-value (top, right, bottom, left) shorthands, single sides, trying values live in the inspector and copying them into the CSS. Then margins to push an element away from its neighbors, and rounded corners with border-radius, per corner or as a pill-shaped semicircle."
+      },
+      {
+        "part": 7,
+        "youtubeVideoId": "OrChJg69WHU",
+        "title": "Width & Height — CS4550 FA26 (Sep 30) Part 7/19",
+        "topic": "Width & Height",
+        "durationSec": 527.4,
+        "summary": "Why dimensions and positions are where layouts break: until now the browser kept every element in its own space. The Dimensions exercise overrides width and height for portrait, landscape, and square boxes, the content overflows its box, and the overflow property clips it or adds scroll bars."
+      },
+      {
+        "part": 8,
+        "youtubeVideoId": "AYSeIg37BaQ",
+        "title": "Relative Position — CS4550 FA26 (Sep 30) Part 8/19",
+        "topic": "Relative Position",
+        "durationSec": 652.5,
+        "summary": "The Positions exercise: a gray parent is as tall as its children combined, top, bottom, left, and right only take effect with a position value, and position: relative nudges a box from where the browser would put it (top moves it down, bottom moves it up). A nudged box can cover its sibling, yet the siblings and the parent's height do not change."
+      },
+      {
+        "part": 9,
+        "youtubeVideoId": "pykRsn8gpiw",
+        "title": "Absolute Position — CS4550 FA26 (Sep 30) Part 9/19",
+        "topic": "Absolute Position",
+        "durationSec": 412.5,
+        "summary": "position: absolute takes an element out of the layout calculation: it stops affecting its parent's height and pushing its siblings, its offsets are measured from a global origin unless an ancestor with position: relative becomes the local 0,0, and a parent whose children are all absolute collapses to zero height, a common bug that is hard to find."
+      },
+      {
+        "part": 10,
+        "youtubeVideoId": "M6oyK8Nm-3o",
+        "title": "Fixed & Z-Index — CS4550 FA26 (Sep 30) Part 10/19",
+        "topic": "Fixed & Z-Index",
+        "durationSec": 304,
+        "summary": "position: fixed for toolbars and menus that stay put while the page scrolls: a box pinned 20 pixels from the bottom-right corner and a full-width gray menu bar at the top. Overlap introduces a third dimension: elements draw in document order unless a higher z-index brings one to the front."
+      },
+      {
+        "part": 11,
+        "youtubeVideoId": "MINkAvSzr9U",
+        "title": "Float & Flexbox — CS4550 FA26 (Sep 30) Part 11/19",
+        "topic": "Float & Flexbox",
+        "durationSec": 453.5,
+        "summary": "Plain HTML had no horizontal layout, so tables were misused, then floats, meant for wrapping text around images in book-like layouts, were misused for rows of percentage-width columns. Flexbox was designed for the job: display: flex on a parent lays its children out horizontally, flex-grow lets a column fill the empty space, and a fixed width keeps a sidebar from growing."
+      },
+      {
+        "part": 12,
+        "youtubeVideoId": "L6kR1ZZJQ1o",
+        "title": "Media Queries — CS4550 FA26 (Sep 30) Part 12/19",
+        "topic": "Media Queries",
+        "durationSec": 680.3,
+        "summary": "Media queries began as a way to style pages for printers and projectors, then became the answer to the first iPhone showing full desktop pages: double-tap zoom, separate m. mobile sites that drifted apart, and finally one responsive site with breakpoints at common screen sizes. Canvas demonstrates it: around 1140 pixels the right sidebar disappears, and at phone widths the course navigation moves into drop-downs."
+      },
+      {
+        "part": 13,
+        "youtubeVideoId": "p8u-4YjC4BM",
+        "title": "Media Query Demo — CS4550 FA26 (Sep 30) Part 13/19",
+        "topic": "Media Query Demo",
+        "durationSec": 502.2,
+        "summary": "The Media Query Demo: a default green background with the first list item bold and underlined, then rules for 750–1000 pixels (yellow), 1000–1250 (blue), and above 1250 (red) that switch the background and the highlighted item as the window resizes. Then how Tailwind and Bootstrap name their breakpoints (sm, md, lg, xl, 2xl)."
+      },
+      {
+        "part": 14,
+        "youtubeVideoId": "xa2Yr2pUKtY",
+        "title": "Tailwind Setup — CS4550 FA26 (Sep 30) Part 14/19",
+        "topic": "Tailwind Setup",
+        "durationSec": 420.8,
+        "summary": "Tailwind, a library of small utility classes, compared with component libraries like Bootstrap that ship ready-made widgets. Instead of re-enabling Tailwind globally, which would break Labs 1 and 2, a local index.css imports Tailwind for just these exercises, and Tailwind's reset strips the default styles from headings and paragraphs so every style comes from classes."
+      },
+      {
+        "part": 15,
+        "youtubeVideoId": "NAV8JisI4_Y",
+        "title": "Tailwind Text — CS4550 FA26 (Sep 30) Part 15/19",
+        "topic": "Tailwind Text",
+        "durationSec": 291.8,
+        "summary": "Tailwind typography utilities: text sizes from text-sm up to text-6xl (checking the AI's suggestions, such as a made-up 10xl, against the Tailwind docs), font weights, italic, underline and line-through, and uppercase, lowercase, and capitalize. You will not have to memorize these classes for quizzes, but assignments ask for specific looks and AI help is welcome."
+      },
+      {
+        "part": 16,
+        "youtubeVideoId": "Gp6DjbAJYEY",
+        "title": "Borders & Spacing — CS4550 FA26 (Sep 30) Part 16/19",
+        "topic": "Borders & Spacing",
+        "durationSec": 347.7,
+        "summary": "Tailwind color, border, and spacing utilities: background and text colors with shades from 100 to 900, turning on a border before setting its width, color, and style, margin and padding classes on a non-linear scale, start and end instead of left and right for right-to-left languages, and rounded corners for the whole box or single corners."
+      },
+      {
+        "part": 17,
+        "youtubeVideoId": "isJBBpej7HQ",
+        "title": "Tailwind Layout — CS4550 FA26 (Sep 30) Part 17/19",
+        "topic": "Tailwind Layout",
+        "durationSec": 264.9,
+        "summary": "Layout in Tailwind: the flex class lines children up horizontally, width classes in pixels or fractions (thirds, halves, and twelfths, a convention borrowed from print), exact widths in square brackets, and grid classes that set a column count and wrap items into new rows, like the course cards on a dashboard."
+      },
+      {
+        "part": 18,
+        "youtubeVideoId": "FRb7R5N8Xus",
+        "title": "Tailwind Breakpoints — CS4550 FA26 (Sep 30) Part 18/19",
+        "topic": "Tailwind Breakpoints",
+        "durationSec": 481,
+        "summary": "Responsive design in Tailwind: the sm, md, lg, xl, and 2xl breakpoints (640, 768, 1024, 1280, and 1536 pixels), why Tailwind is mobile-first, and prefixing any class with a breakpoint so it applies from that width up. A demo changes text colors at each breakpoint as the window resizes."
+      },
+      {
+        "part": 19,
+        "youtubeVideoId": "OoqKz9ZN7VU",
+        "title": "Responsive Layout — CS4550 FA26 (Sep 30) Part 19/19",
+        "topic": "Responsive Layout",
+        "durationSec": 382.6,
+        "summary": "Showing and hiding content by screen size with hidden plus sm:block, md:block, and so on, then rebuilding a Canvas-style page with two left sidebars, the main content, and a right sidebar: as the window narrows the right sidebar disappears and the left sidebars turn into drop-downs, while the main content always shows at full width."
+      }
+    ]
+  },
+  {
+    "lectureId": "cs5610-02_2026-10-05",
+    "course": "CS5610-02",
+    "semester": "FA26",
+    "date": "2026-10-05",
+    "partCount": 19,
+    "clips": [
+      {
+        "part": 1,
+        "youtubeVideoId": "5V5Ez2xnPB4",
+        "title": "CSS Recap — CS5610 FA26 (Oct 5) Part 1/19",
+        "topic": "CSS Recap",
+        "durationSec": 660.5,
+        "summary": "The class opens with the plan for the week: finish CSS, introduce Tailwind, and apply both to the Kambaz project, with JavaScript and data-driven pages coming next. Next week is a holiday, so the lecture videos and an online quiz (multiple choice plus two short coding questions) cover that content. Then a recap of CSS so far: selectors, colors, the box model, size and position, media queries, and floats versus flexbox for horizontal layout."
+      },
+      {
+        "part": 2,
+        "youtubeVideoId": "_bl7WlRUgoU",
+        "title": "Tailwind Setup — CS5610 FA26 (Oct 5) Part 2/19",
+        "topic": "Tailwind Setup",
+        "durationSec": 699.5,
+        "summary": "React Icons, a library that bundles thousands of open-source icons we will use all semester, then Tailwind: a curated set of utility classes that wrap common CSS so you can combine them instead of writing raw CSS. A local index.css imports Tailwind for the lab page, Tailwind's reset removes the default heading sizes and margins, and the point of using h1 for logical structure even when Tailwind controls how it looks."
+      },
+      {
+        "part": 3,
+        "youtubeVideoId": "XYuorm-whi8",
+        "title": "Tailwind Typography — CS5610 FA26 (Oct 5) Part 3/19",
+        "topic": "Tailwind Typography",
+        "durationSec": 299,
+        "summary": "Tailwind typography utilities: font sizes from text-xs through text-base (16 pixels) up to text-9xl, font weights from thin to black, serif, sans, and mono font families, italic, underline, line-through, and overline, and uppercase, lowercase, and capitalize. AI autocomplete is fine for filling these in, but check its suggestions against the Tailwind docs because it sometimes invents classes."
+      },
+      {
+        "part": 4,
+        "youtubeVideoId": "tKFQd9I5F_E",
+        "title": "Tailwind Colors — CS5610 FA26 (Oct 5) Part 4/19",
+        "topic": "Tailwind Colors",
+        "durationSec": 194.5,
+        "summary": "Tailwind's color naming convention: bg- for background colors and text- for foreground colors, followed by the color name and a shade from 100 to 900, or an exact hex value. A demo builds rows of reds, greens, blues, and more in different shades."
+      },
+      {
+        "part": 5,
+        "youtubeVideoId": "pkxpSmUN-As",
+        "title": "Tailwind Borders — CS5610 FA26 (Oct 5) Part 5/19",
+        "topic": "Tailwind Borders",
+        "durationSec": 460,
+        "summary": "Borders in Tailwind follow the box model: the border class turns borders on, then you set the width, the color (border- plus the color and shade), and the style, which defaults to solid. The demo adds vertical margins with my- and padding with p-, and shows why padding and margin differ: padding takes the background color, while margins are always transparent."
+      },
+      {
+        "part": 6,
+        "youtubeVideoId": "jb4rsTD_UIY",
+        "title": "Border Styles & Radius — CS5610 FA26 (Oct 5) Part 6/19",
+        "topic": "Border Styles & Radius",
+        "durationSec": 429,
+        "summary": "Border styles (solid, dashed, dotted, double, and none or hidden), why you might turn a border off at some breakpoints, and how class strings can later be computed from JavaScript expressions instead of hard-coded. Then rounded corners from rounded-sm to rounded-2xl, rounding individual corners, and targeting single sides with classes like border-t and border-l, as in the Kambaz course navigation."
+      },
+      {
+        "part": 7,
+        "youtubeVideoId": "E7Jt03CN8Pk",
+        "title": "Tailwind Flexbox — CS5610 FA26 (Oct 5) Part 7/19",
+        "topic": "Tailwind Flexbox",
+        "durationSec": 498,
+        "summary": "The flex class lays children out horizontally, inverting how block elements behave: each child is as narrow as its content and pushes the next one sideways. Why horizontal scrolling should be avoided except for targeted pieces like a wide grades table, and how flex-grow lets one column, like Canvas's main content, fill the extra space while the sidebars stay fixed."
+      },
+      {
+        "part": 8,
+        "youtubeVideoId": "Xucz7xI56fU",
+        "title": "Tailwind Widths — CS5610 FA26 (Oct 5) Part 8/19",
+        "topic": "Tailwind Widths",
+        "durationSec": 231,
+        "summary": "Controlling widths inside a flex container: fractional widths such as w-1/2, w-1/3, and w-1/4, w-full, fixed sizes, and arbitrary values in square brackets that Tailwind turns into real CSS on the fly, which also works for custom hex and RGB colors."
+      },
+      {
+        "part": 9,
+        "youtubeVideoId": "DO3_d5_p1BQ",
+        "title": "Grid & Flex Wrap — CS5610 FA26 (Oct 5) Part 9/19",
+        "topic": "Grid & Flex Wrap",
+        "durationSec": 510.5,
+        "summary": "Tailwind's grid as a cleaner replacement for layout tables: grid-cols sets the column count and items wrap into new rows automatically, with gap for spacing. When the items have fixed widths, flex plus flex-wrap keeps their size and wraps them onto the next row when space runs out, the technique behind the Kambaz dashboard's course cards."
+      },
+      {
+        "part": 10,
+        "youtubeVideoId": "xHj03B_i99k",
+        "title": "Responsive Design — CS5610 FA26 (Oct 5) Part 10/19",
+        "topic": "Responsive Design",
+        "durationSec": 683,
+        "summary": "Why responsive design exists: the first iPhone showed full desktop pages with double-tap zoom, then separate mobile sites drifted out of sync, then one codebase with styles triggered by screen size. Tailwind is mobile-first with sm, md, lg, xl, and 2xl breakpoints (640, 768, 1024, 1280, and 1536 pixels), and Canvas shows it in action: the right sidebar disappears near 1140 pixels and the left sidebars fold into a menu at 768, without losing any functionality."
+      },
+      {
+        "part": 11,
+        "youtubeVideoId": "G-v-17L_MvA",
+        "title": "Tailwind Breakpoints — CS5610 FA26 (Oct 5) Part 11/19",
+        "topic": "Tailwind Breakpoints",
+        "durationSec": 382.5,
+        "summary": "Breakpoint prefixes in practice: a header whose background goes red, green, blue, yellow, and purple as the window passes sm, md, lg, and xl, and the gotcha that zooming the browser changes the calculated screen size. Each prefixed class applies from that width up, so unprefixed classes are the phone default."
+      },
+      {
+        "part": 12,
+        "youtubeVideoId": "2q1Ci0KASm0",
+        "title": "Hide & Show — CS5610 FA26 (Oct 5) Part 12/19",
+        "topic": "Hide & Show",
+        "durationSec": 556.5,
+        "summary": "Hiding and showing content by screen size, the way Canvas does it: a flex row with Canvas navigation, course navigation, a growing modules column, and a status column. Everything but the main content starts hidden, then sm:block, md:block, and lg:block bring each column back as the screen grows, while drop-down menus provide navigation on small screens and hide once the sidebars appear."
+      },
+      {
+        "part": 13,
+        "youtubeVideoId": "T0zOPjRwLL0",
+        "title": "Kambaz Layout — CS5610 FA26 (Oct 5) Part 13/19",
+        "topic": "Kambaz Layout",
+        "durationSec": 621,
+        "summary": "Applying Tailwind to the Kambaz project: a Kambaz-wide CSS file for shared styles (page-specific files only when needed), importing Tailwind's utilities without its reset, and replacing the layout tables from earlier labs with flex containers for the main layout, the course layout, and the home page, with flex-grow on the main content."
+      },
+      {
+        "part": 14,
+        "youtubeVideoId": "Hz-mu3k-Hy0",
+        "title": "Responsive Sidebars — CS5610 FA26 (Oct 5) Part 14/19",
+        "topic": "Responsive Sidebars",
+        "durationSec": 177.5,
+        "summary": "Making the Kambaz layout responsive: the course status column starts hidden and returns at lg, the course navigation returns at sm, and the Kambaz navigation at md, so a phone sees only the modules and larger screens add each sidebar in turn."
+      },
+      {
+        "part": 15,
+        "youtubeVideoId": "L50uOa-86To",
+        "title": "Kambaz Navigation — CS5610 FA26 (Oct 5) Part 15/19",
+        "topic": "Kambaz Navigation",
+        "durationSec": 915.5,
+        "summary": "Styling the Kambaz navigation sidebar: removing list bullets, padding, and link underlines (and finally importing Tailwind's full reset instead of fighting the defaults), centered white text on a black background, installing React Icons and adding an icon above each link, and computing the class string with a ternary expression so the selected link renders black on white."
+      },
+      {
+        "part": 16,
+        "youtubeVideoId": "5E0dx0clDvw",
+        "title": "Fixed Sidebar — CS5610 FA26 (Oct 5) Part 16/19",
+        "topic": "Fixed Sidebar",
+        "durationSec": 251,
+        "summary": "Keeping the Kambaz navigation in place while the content scrolls: position fixed with top-0, bottom-0, and left-0 stretches it to the full height, but fixed elements leave the normal flow and cover the content, so the main area gets left padding at the md breakpoint equal to the sidebar's width."
+      },
+      {
+        "part": 17,
+        "youtubeVideoId": "yE8QKPdjq70",
+        "title": "Course Navigation — CS5610 FA26 (Oct 5) Part 17/19",
+        "topic": "Course Navigation",
+        "durationSec": 363.5,
+        "summary": "Rebuilding the course navigation from an array of link objects rendered with map, then styling it: white background, red links with padding, and a black border that is turned off on the top, bottom, and right and only shown on the left of the selected link through a computed class string."
+      },
+      {
+        "part": 18,
+        "youtubeVideoId": "_ueJf7dGJ8o",
+        "title": "Module Borders — CS5610 FA26 (Oct 5) Part 18/19",
+        "topic": "Module Borders",
+        "durationSec": 484.5,
+        "summary": "Styling the Kambaz modules list: borders and horizontal margins around each module, why the outer border fights the lessons' borders and is turned off, and lesson rows with a white background, padding, light gray borders, and a green border only on the left."
+      },
+      {
+        "part": 19,
+        "youtubeVideoId": "nV814ETb3aI",
+        "title": "Lessons & Components — CS5610 FA26 (Oct 5) Part 19/19",
+        "topic": "Lessons & Components",
+        "durationSec": 701,
+        "summary": "When repeating the same utility classes on every row becomes tedious, a single CSS rule using a descendant selector styles all the lesson items at once. Then green check-circle icons from React Icons, why copied markup should become a component, how a data structure and map will make the modules data-driven next week, and why practicing the fundamentals still matters when AI tools can write the code."
+      }
+    ]
+  },
+  {
     "lectureId": "cs5610-09_2026-10-06",
     "course": "CS5610-09",
     "semester": "FA26",
