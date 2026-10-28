@@ -81,11 +81,15 @@ export function KambazCh4ModuleRowEmbed() {
 export function KambazCh4ModulesControlsEmbed() {
   return (
     // Slides-only: unframed so the demo-stage zoom doesn't scale it; full
-    // width, one row (overrides the book toolbar's flex-wrap).
-    <div className="mt-6 w-full overflow-x-auto font-sans [&_#wd-modules-controls]:flex-nowrap [&_#wd-modules-controls>*]:shrink-0 [&_#wd-modules-controls_*]:whitespace-nowrap [&_select]:w-auto [&_select]:min-w-0">
-      <AsCourseParams cid="RS101">
-        <ModulesControls />
-      </AsCourseParams>
+    // width, one row (overrides the book toolbar's flex-wrap). zoom: 2
+    // doubles the controls so the row spans nearly the full slide width;
+    // the dropdown stays content-width (book.css min-width overridden).
+    <div className="mt-10 w-full overflow-x-auto font-sans [&_#wd-modules-controls]:flex-nowrap [&_#wd-modules-controls]:justify-end [&_#wd-modules-controls>*]:shrink-0 [&_#wd-modules-controls_*]:whitespace-nowrap [&_select]:w-auto [&_select]:min-w-0">
+      <div style={{ zoom: 2 }}>
+        <AsCourseParams cid="RS101">
+          <ModulesControls />
+        </AsCourseParams>
+      </div>
     </div>
   );
 }
