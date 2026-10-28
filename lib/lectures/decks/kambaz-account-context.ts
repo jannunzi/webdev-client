@@ -26,8 +26,7 @@ export const KAMBAZ_ACCOUNT_CONTEXT_SLIDES: LectureSlide[] = [
     title: "AccountContext holds the user",
     kind: "content",
     bullets: [
-      "Seed the `User` type and the `users` list from `users.json`",
-      "`createUser` appends `{ ...user, _id }` and returns the new user",
+      "Seed the `User` type from `users.json`",
       "`currentUser` starts `null` until someone signs in",
       "The hook throws outside the provider — same as `useCounterContext`",
     ],
@@ -46,16 +45,13 @@ export type User = (typeof usersJson)[number];
 type AccountContextValue = {
   currentUser: User | null;
   setCurrentUser: (user: User | null) => void;
-  users: User[];
-  createUser: (user: User) => User;
 };
 
 const AccountContext = createContext<AccountContextValue | null>(null);
-
 `,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/AccountContext.tsx",
-    codeHighlightLines: [[8, 13]],
+    codeHighlightLines: [[8, 11]],
   },
   {
     id: "context-part-2",
@@ -63,16 +59,8 @@ const AccountContext = createContext<AccountContextValue | null>(null);
     kind: "content",
     code: `export function AccountProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [users, setUsers] = useState<User[]>(usersJson);
-  const createUser = (user: User) => {
-    const newUser = { ...user, _id: crypto.randomUUID() };
-    setUsers([...users, newUser]);
-    return newUser;
-  };
   return (
-    <AccountContext.Provider
-      value={{ currentUser, setCurrentUser, users, createUser }}
-    >
+    <AccountContext.Provider value={{ currentUser, setCurrentUser }}>
       {children}
     </AccountContext.Provider>
   );
@@ -87,8 +75,8 @@ export function useAccountContext() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/AccountContext.tsx",
-    codeStartLine: 17,
-    codeHighlightLines: [[1, 16], [18, 24]],
+    codeStartLine: 15,
+    codeHighlightLines: [[1, 7], [10, 15]],
   },
   {
     id: "layout-intro",
@@ -129,7 +117,7 @@ export default function KambazLayout({
     bullets: [
       "`credentials` state holds the username and password the user types",
       "Sign in is a Client Component so the fields are controlled",
-      "On click, find a user in the context's `users` whose username and password match",
+      "On click, find a user in `users.json` whose username and password match",
       "Match: `setCurrentUser(user)`, then `router.push(\"/dashboard\")`",
       "No match: ignore the click — no navigation, no user written",
       "Use the router in a click handler, not the server `redirect` helper",
@@ -144,6 +132,7 @@ export default function KambazLayout({
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import * as db from "../../database";
 import { useAccountContext } from "../AccountContext";
 
 export default function Signin() {
@@ -151,11 +140,11 @@ export default function Signin() {
     username: "",
     password: "",
   });
-  const { users, setCurrentUser } = useAccountContext();
+  const { setCurrentUser } = useAccountContext();
   const router = useRouter();
 
   const signin = () => {
-    const user = users.find(
+    const user = db.users.find(
       (u) =>
         u.username === credentials.username &&
         u.password === credentials.password,
@@ -164,7 +153,6 @@ export default function Signin() {
     setCurrentUser(user);
     router.push("/dashboard");
   };
-
 `,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/signin/page.tsx",
@@ -204,7 +192,7 @@ export default function Signin() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/signin/page.tsx",
-    codeStartLine: 27,
+    codeStartLine: 28,
   },
   {
     id: "signin-live",
@@ -443,8 +431,7 @@ export default function Profile() {
     kind: "content",
     bullets: [
       "`username` and `password` live in `useState`",
-      "Sign up builds a user with every `users.json` field",
-      "`createUser` adds it to `users` with a new `_id`",
+      "Sign up builds a user with every `users.json` field and a new `_id`",
       "`setCurrentUser` signs the new user in, then navigate to Profile",
     ],
   },
@@ -462,13 +449,13 @@ import { useAccountContext } from "../AccountContext";
 export default function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { createUser, setCurrentUser } = useAccountContext();
+  const { setCurrentUser } = useAccountContext();
   const router = useRouter();
 
   const signup = () => {
     if (!username || !password) return;
-    const user = createUser({
-      _id: "",
+    setCurrentUser({
+      _id: crypto.randomUUID(),
       username,
       password,
       firstName: "",
@@ -480,10 +467,8 @@ export default function Signup() {
       lastActivity: "",
       totalActivity: "",
     });
-    setCurrentUser(user);
     router.push("/account/profile");
   };
-
 `,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/signup/page.tsx",
@@ -519,15 +504,14 @@ export default function Signup() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/signup/page.tsx",
-    codeStartLine: 33,
+    codeStartLine: 32,
   },
   {
     id: "signup-live",
     title: "Sign up demo",
     kind: "demo",
     bullets: [
-      "Sign up with a new username, then Sign out",
-      "Sign back in with the same username and password",
+      "Sign up with a new username, then fill Profile and Update",
       "The new user only lives in memory until a later chapter",
     ],
     embed: "kambaz-ch4-signup",

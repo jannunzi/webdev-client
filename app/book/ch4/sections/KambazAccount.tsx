@@ -61,11 +61,7 @@ export default function KambazAccount() {
             <code>app/(kambaz)/account/AccountContext.tsx</code>{" "}as
             shown below. Confirm the file compiles and that{" "}
             <code>currentUser</code>{" "}starts as{" "}
-            <code>null</code>{" "}until someone signs in. The provider
-            also keeps the list of <code>users</code>{" "}in{" "}
-            <code>useState</code>, seeded from <code>users.json</code>,
-            and <code>createUser</code>{" "}appends a copy of a user with
-            a new <code>_id</code>{" "}and returns it.
+            <code>null</code>{" "}until someone signs in.
           </p>
           <CodeBlock
             language="tsx"
@@ -81,24 +77,14 @@ export type User = (typeof usersJson)[number];
 type AccountContextValue = {
   currentUser: User | null;
   setCurrentUser: (user: User | null) => void;
-  users: User[];
-  createUser: (user: User) => User;
 };
 
 const AccountContext = createContext<AccountContextValue | null>(null);
 
 export function AccountProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [users, setUsers] = useState<User[]>(usersJson);
-  const createUser = (user: User) => {
-    const newUser = { ...user, _id: crypto.randomUUID() };
-    setUsers([...users, newUser]);
-    return newUser;
-  };
   return (
-    <AccountContext.Provider
-      value={{ currentUser, setCurrentUser, users, createUser }}
-    >
+    <AccountContext.Provider value={{ currentUser, setCurrentUser }}>
       {children}
     </AccountContext.Provider>
   );
@@ -112,9 +98,8 @@ export function useAccountContext() {
   return value;
 }`}</CodeBlock>
           <p>
-            <code>setCurrentUser</code>{" "}is the only writer of{" "}
-            <code>currentUser</code>. Sign in will pass a user from{" "}
-            <code>users</code>. Sign out will
+            <code>setCurrentUser</code>{" "}is the only writer. Sign in
+            will pass a user from <code>users.json</code>. Sign out will
             pass <code>null</code>. The hook throws if a screen calls it
             outside the provider so you notice a missing wrap immediately
             instead of reading a silent{" "}
@@ -160,8 +145,7 @@ export default function KambazLayout({
             their username and password. Convert the page to a Client
             Component so the fields can be controlled and the click
             handler can talk to the browser. When users click Sign in,
-            search the context&apos;s <code>users</code>{" "}for a user
-            whose username
+            search <code>users.json</code>{" "}for a user whose username
             and password match. If there is a user that matches, store
             it in the account context by calling{" "}
             <code>setCurrentUser(user)</code>. Ignore the sign-in
@@ -182,6 +166,7 @@ export default function KambazLayout({
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import * as db from "../../database";
 import { useAccountContext } from "../AccountContext";
 
 export default function Signin() {
@@ -189,11 +174,11 @@ export default function Signin() {
     username: "",
     password: "",
   });
-  const { users, setCurrentUser } = useAccountContext();
+  const { setCurrentUser } = useAccountContext();
   const router = useRouter();
 
   const signin = () => {
-    const user = users.find(
+    const user = db.users.find(
       (u) =>
         u.username === credentials.username &&
         u.password === credentials.password,
@@ -482,10 +467,8 @@ export default function Profile() {
             screen keeps <code>username</code>{" "}and{" "}
             <code>password</code>{" "}in <code>useState</code>. Clicking
             Sign up builds a user object with every field from{" "}
-            <code>users.json</code>{" "}and the role{" "}
-            <code>STUDENT</code>, passes it to <code>createUser</code>,
-            which adds it to <code>users</code>{" "}with a new{" "}
-            <code>_id</code>, passes the returned user to{" "}
+            <code>users.json</code>, a new <code>_id</code>, and the
+            role <code>STUDENT</code>, passes it to{" "}
             <code>setCurrentUser</code>, and navigates to Profile so the
             new user can fill in the rest. To practice Sign up, update{" "}
             <code>app/(kambaz)/account/signup/page.tsx</code>{" "}as shown
@@ -505,13 +488,13 @@ import { useAccountContext } from "../AccountContext";
 export default function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { createUser, setCurrentUser } = useAccountContext();
+  const { setCurrentUser } = useAccountContext();
   const router = useRouter();
 
   const signup = () => {
     if (!username || !password) return;
-    const user = createUser({
-      _id: "",
+    setCurrentUser({
+      _id: crypto.randomUUID(),
       username,
       password,
       firstName: "",
@@ -523,7 +506,6 @@ export default function Signup() {
       lastActivity: "",
       totalActivity: "",
     });
-    setCurrentUser(user);
     router.push("/account/profile");
   };
 
@@ -556,9 +538,9 @@ export default function Signup() {
             The demo below runs Sign up and Profile on the{" "}
             <code>AccountContext</code>{" "}from{" "}
             <SectionLink to="4.10.5.1" />. Sign up with a new username,
-            then Sign out and sign back in with the same username and
-            password. The new user only lives in memory, so a reload
-            forgets it until a later chapter saves users on a server.
+            fill the Profile fields, click Update, then Sign out. The new
+            user only lives in memory, so a reload forgets it until a
+            later chapter saves users on a server.
           </p>
           <LiveDemo
             name="Signup"
