@@ -201,6 +201,66 @@ export default function ModuleControlButtons({
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleControlButtons.tsx",
   },
   {
+    id: "green-checkmark",
+    title: "GreenCheckmark (repeat from Chapter 2)",
+    kind: "content",
+    bullets: [
+      "`ModuleControlButtons` imports it — same file as Chapter 2",
+      "Stack `FaCheckCircle` on `FaCircle` — green on white",
+    ],
+    code: `import { FaCheckCircle, FaCircle } from "react-icons/fa";
+
+export default function GreenCheckmark() {
+  return (
+    <span className="relative me-1 inline-flex">
+      <FaCheckCircle
+        className="absolute text-xl text-green-600"
+        style={{ top: "2px" }}
+      />
+      <FaCircle className="text-base text-white" />
+    </span>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/GreenCheckmark.tsx",
+  },
+  {
+    id: "module",
+    title: "Module takes a title node and extra",
+    kind: "content",
+    bullets: [
+      "`title` is a `ReactNode`, so it can be the name or an input",
+      "`extra` holds the control buttons; no extra shows the checkmark",
+    ],
+    code: `import type { ReactNode } from "react";
+import GreenCheckmark from "./GreenCheckmark";
+
+export default function Module({
+  title,
+  extra,
+  children,
+}: {
+  title: ReactNode;
+  extra?: ReactNode;
+  children?: ReactNode;
+}) {
+  return (
+    <li className="wd-module mb-5 overflow-hidden border border-neutral-400 p-0 text-xl">
+      <div className="wd-title flex items-center justify-between bg-neutral-200 p-3 ps-2">
+        <span className="min-w-0 flex-1">{title}</span>
+        <span className="ms-2 flex items-center gap-2">
+          {extra}
+          {!extra ? <GreenCheckmark /> : null}
+        </span>
+      </div>
+      <ul className="wd-lessons m-0 list-none p-0">{children}</ul>
+    </li>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/Module.tsx",
+  },
+  {
     id: "store-intro",
     title: "modulesStore is the shared list",
     kind: "content",
