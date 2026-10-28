@@ -61,49 +61,29 @@ export default function ModuleEditor({
     title: "ModuleEditor is a controlled dialog (2/2)",
     kind: "content",
     code: `  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-      id="wd-add-module-dialog"
-    >
+    <div id="wd-add-module-dialog" className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
         <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
           <h3 className="m-0 text-lg font-semibold">{dialogTitle}</h3>
-          <button
-            type="button"
-            onClick={handleClose}
-            className="text-2xl leading-none text-neutral-500"
-            aria-label="Close"
-          >
+          <button type="button" className="text-2xl leading-none text-neutral-500" aria-label="Close"
+            onClick={handleClose} >
             ×
           </button>
         </div>
         <div className="px-4 py-3">
-          <input
-            className="w-full rounded border border-neutral-300 px-3 py-1.5"
-            value={moduleName}
-            onChange={(e) => setModuleName(e.target.value)}
-            id="wd-add-module-name"
-            placeholder="Module name"
-          />
+          <input value={moduleName} id="wd-add-module-name" placeholder="Module name" className="w-full rounded border border-neutral-300 px-3 py-1.5"
+            onChange={(e) => setModuleName(e.target.value)} />
         </div>
         <div className="flex justify-end gap-2 border-t border-neutral-200 px-4 py-3">
-          <button
-            type="button"
-            onClick={handleClose}
-            className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
-            id="wd-add-module-cancel"
-          >
+          <button id="wd-add-module-cancel" type="button" className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+            onClick={handleClose} >
             Cancel
           </button>
-          <button
-            type="button"
+          <button id="wd-add-module-submit" type="button" className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
             onClick={() => {
               addModule();
               handleClose();
-            }}
-            className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
-            id="wd-add-module-submit"
-          >
+            }} >
             Add Module
           </button>
         </div>
@@ -160,12 +140,8 @@ export default function ModulesControls({
     code: `  return (
     <div id="wd-modules-controls" className="mb-3 flex flex-wrap items-center gap-2">
       {/* Collapse All, View Progress, Publish All */}
-      <button
-        type="button"
-        id="wd-add-module-btn"
-        onClick={handleShow}
-        className="inline-flex items-center gap-1 rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
-      >
+      <button id="wd-add-module-btn" type="button" className="inline-flex items-center gap-1 rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+        onClick={handleShow} >
         <FaPlus /> Module
       </button>
       <ModuleEditor
@@ -205,26 +181,16 @@ import { IoEllipsisVertical } from "react-icons/io5";
 import GreenCheckmark from "./GreenCheckmark";
 
 export default function ModuleControlButtons({
-  moduleId,
-  deleteModule,
-  editModule,
+  moduleId, deleteModule, editModule,
 }: {
-  moduleId: string;
-  deleteModule: (moduleId: string) => void;
-  editModule: (moduleId: string) => void;
+  moduleId: string; deleteModule: (moduleId: string) => void; editModule: (moduleId: string) => void;
 }) {
   return (
     <div className="flex items-center gap-2">
-      <FaPencilAlt
-        className="cursor-pointer text-blue-600"
-        onClick={() => editModule(moduleId)}
-        title="Edit module"
-      />
-      <FaTrash
-        className="cursor-pointer text-red-600"
-        onClick={() => deleteModule(moduleId)}
-        title="Delete module"
-      />
+      <FaPencilAlt title="Edit module" className="cursor-pointer text-blue-600"
+        onClick={() => editModule(moduleId)} />
+      <FaTrash title="Delete module" className="cursor-pointer text-red-600"
+        onClick={() => deleteModule(moduleId)} />
       <GreenCheckmark />
       <BsPlus className="text-3xl" />
       <IoEllipsisVertical className="text-xl" />
@@ -394,9 +360,7 @@ export default function Modules() {
               }
               title={
                 module.editing ? (
-                  <input
-                    className="w-1/2 rounded border border-neutral-300 px-2 py-1 text-base"
-                    defaultValue={module.name}
+                  <input defaultValue={module.name} className="w-1/2 rounded border border-neutral-300 px-2 py-1 text-base"
                     onChange={(e) =>
                       updateModule({ ...module, name: e.target.value })
                     }
