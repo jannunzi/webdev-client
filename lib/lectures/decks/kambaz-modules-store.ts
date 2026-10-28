@@ -61,10 +61,7 @@ export default function ModuleEditor({
     title: "ModuleEditor is a controlled dialog (2/2)",
     kind: "content",
     code: `  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-      id="wd-add-module-dialog"
-    >
+    <div id="wd-add-module-dialog" className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
         <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
           <h3 className="m-0 text-lg font-semibold">{dialogTitle}</h3>
@@ -73,25 +70,18 @@ export default function ModuleEditor({
           </button>
         </div>
         <div className="px-4 py-3">
-          <input
-            className="w-full rounded border border-neutral-300 px-3 py-1.5"
-            value={moduleName}
-            onChange={(e) => setModuleName(e.target.value)}
-            id="wd-add-module-name"
-          />
+          <input value={moduleName} id="wd-add-module-name" className="w-full rounded border border-neutral-300 px-3 py-1.5"
+            onChange={(e) => setModuleName(e.target.value)} />
         </div>
         <div className="flex justify-end gap-2 border-t border-neutral-200 px-4 py-3">
           <button type="button" onClick={handleClose} id="wd-add-module-cancel">
             Cancel
           </button>
-          <button
-            type="button"
+          <button type="button" id="wd-add-module-submit"
             onClick={() => {
               addModule();
               handleClose();
-            }}
-            id="wd-add-module-submit"
-          >
+            }}>
             Add Module
           </button>
         </div>
