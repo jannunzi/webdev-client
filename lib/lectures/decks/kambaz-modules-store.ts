@@ -58,7 +58,7 @@ export default function ModuleEditor({
   },
   {
     id: "editor-part-2",
-    title: "ModuleEditor is a controlled dialog (2/2)",
+    title: "Add module name field and close button",
     kind: "content",
     code: `  return (
     <div id="wd-add-module-dialog" className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
@@ -73,8 +73,16 @@ export default function ModuleEditor({
         <div className="px-4 py-3">
           <input value={moduleName} id="wd-add-module-name" placeholder="Module name" className="w-full rounded border border-neutral-300 px-3 py-1.5"
             onChange={(e) => setModuleName(e.target.value)} />
-        </div>
-        <div className="flex justify-end gap-2 border-t border-neutral-200 px-4 py-3">
+        </div>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx",
+    codeStartLine: 19,
+  },
+  {
+    id: "editor-part-3",
+    title: "Add Cancel and Add Module buttons",
+    kind: "content",
+    code: `        <div className="flex justify-end gap-2 border-t border-neutral-200 px-4 py-3">
           <button id="wd-add-module-cancel" type="button" className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
             onClick={handleClose} >
             Cancel
@@ -93,8 +101,8 @@ export default function ModuleEditor({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx",
-    codeStartLine: 19,
-    codeHighlightLines: [21, 22, 38, 39, 40, 41],
+    codeStartLine: 33,
+    codeHighlightLines: [7, 8],
   },
   {
     id: "controls-intro",
