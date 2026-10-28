@@ -3825,7 +3825,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         if (/-part-\d+$/.test(slide.id)) {
           split.push(`${slug}#${slide.id}`);
           assert.ok(slide.codeStartLine && slide.codeStartLine > 1, `${slug}#${slide.id}`);
-          assert.match(slide.title, /\(\d\/\d\)$/, `${slug}#${slide.id}`);
+          assert.doesNotMatch(slide.title, /\(\d+\/\d+\)/, `${slug}#${slide.id} needs a descriptive title`);
           assert.ok(lines.length >= 10, `${slug}#${slide.id} is a tiny tail`);
         }
       }

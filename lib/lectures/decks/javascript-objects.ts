@@ -23,7 +23,7 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "house-intro",
-    title: "A house is a nested object (1/2)",
+    title: "A house is a nested object",
     kind: "content",
     bullets: [
       "`address` is an object. `owners` is a string array",
@@ -34,7 +34,7 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "house",
-    title: "A house is a nested object (1/2) (code)",
+    title: "Build the nested house object",
     kind: "content",
     code: `export default function House() {
   const house = {
@@ -57,7 +57,7 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "house-part-2",
-    title: "A house is a nested object (2/2)",
+    title: "Render fields, key count and JSON",
     kind: "content",
     code: `  return (
     <div id="wd-house">

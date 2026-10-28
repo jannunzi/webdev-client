@@ -31,7 +31,7 @@ export const KAMBAZ_DASHBOARD_CRUD_SLIDES: LectureSlide[] = [
   },
   {
     id: "add",
-    title: "Add appends the draft (1/4)",
+    title: "Store actions and the course draft",
     kind: "content",
     code: `"use client";
 
@@ -55,7 +55,7 @@ export default function Dashboard() {
   },
   {
     id: "add-part-2",
-    title: "Add appends the draft (2/4)",
+    title: "Add and Update buttons",
     kind: "content",
     code: `  return (
     <div id="wd-dashboard">
@@ -83,7 +83,7 @@ export default function Dashboard() {
   },
   {
     id: "add-part-3",
-    title: "Add appends the draft (3/4)",
+    title: "Name and description inputs",
     kind: "content",
     code: `      <input
         className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
@@ -108,7 +108,7 @@ export default function Dashboard() {
   },
   {
     id: "add-part-4",
-    title: "Add appends the draft (4/4)",
+    title: "Map courses to cards",
     kind: "content",
     code: `      <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2>
       <hr />

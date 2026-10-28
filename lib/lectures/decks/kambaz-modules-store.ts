@@ -32,7 +32,7 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
   },
   {
     id: "editor",
-    title: "ModuleEditor owns its dialog (1/3)",
+    title: "State and the + Module button",
     kind: "content",
     code: `import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
@@ -60,7 +60,7 @@ export default function ModuleEditor() {
   },
   {
     id: "editor-part-2",
-    title: "ModuleEditor owns its dialog (2/3)",
+    title: "Dialog header and name input",
     kind: "content",
     code: `      {show && (
         <div
@@ -95,7 +95,7 @@ export default function ModuleEditor() {
   },
   {
     id: "editor-part-3",
-    title: "ModuleEditor owns its dialog (3/3)",
+    title: "Cancel and Add Module buttons",
     kind: "content",
     code: `            <div className="flex justify-end gap-2 border-t border-neutral-200 px-4 py-3">
               <button
@@ -143,7 +143,7 @@ export default function ModuleEditor() {
   },
   {
     id: "controls",
-    title: "ModulesControls is the toolbar (1/2)",
+    title: "Collapse All and View Progress",
     kind: "content",
     code: `import ModuleEditor from "./ModuleEditor";
 
@@ -168,7 +168,7 @@ export default function ModulesControls() {
   },
   {
     id: "controls-part-2",
-    title: "ModulesControls is the toolbar (2/2)",
+    title: "Publish All select and ModuleEditor",
     kind: "content",
     code: `      <select
         defaultValue="publish-all"
@@ -318,7 +318,7 @@ export default function Module({ module }: { module: CourseModule }) {
   },
   {
     id: "store",
-    title: "modulesStore is the shared list (1/3)",
+    title: "Lesson, CourseModule and store types",
     kind: "content",
     code: `"use client";
 
@@ -353,7 +353,7 @@ type ModulesStore = {
   },
   {
     id: "store-part-2",
-    title: "modulesStore is the shared list (2/3)",
+    title: "Seed modules and addModule",
     kind: "content",
     code: `export const useModulesStore = create<ModulesStore>((set) => ({
   modules: modulesJson as CourseModule[],
@@ -377,7 +377,7 @@ type ModulesStore = {
   },
   {
     id: "store-part-3",
-    title: "modulesStore is the shared list (3/3)",
+    title: "delete, update and editModule",
     kind: "content",
     code: `  deleteModule: (moduleId) =>
     set((state) => ({
@@ -422,7 +422,7 @@ type ModulesStore = {
   },
   {
     id: "page",
-    title: "Modules page wires the store (1/2)",
+    title: "Read cid and modules from the store",
     kind: "content",
     code: `"use client";
 
@@ -440,7 +440,7 @@ export default function Modules() {
   },
   {
     id: "page-part-2",
-    title: "Modules page wires the store (2/2)",
+    title: "Controls plus one Module per module",
     kind: "content",
     code: `  return (
     <div className="wd-modules">

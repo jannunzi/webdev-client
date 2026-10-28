@@ -33,7 +33,7 @@ export const KAMBAZ_ACCOUNT_CONTEXT_SLIDES: LectureSlide[] = [
   },
   {
     id: "context",
-    title: "AccountContext holds the user (1/2)",
+    title: "Create the context and its type",
     kind: "content",
     code: `"use client";
 
@@ -55,7 +55,7 @@ const AccountContext = createContext<AccountContextValue | null>(null);
   },
   {
     id: "context-part-2",
-    title: "AccountContext holds the user (2/2)",
+    title: "Provider holds currentUser state",
     kind: "content",
     code: `export function AccountProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -125,7 +125,7 @@ export default function KambazLayout({
   },
   {
     id: "signin",
-    title: "Sign in writes currentUser (1/2)",
+    title: "Look up the user and sign in",
     kind: "content",
     code: `"use client";
 
@@ -159,7 +159,7 @@ export default function Signin() {
   },
   {
     id: "signin-part-2",
-    title: "Sign in writes currentUser (2/2)",
+    title: "Username and password inputs",
     kind: "content",
     code: `  return (
     <div id="wd-signin-screen">
@@ -220,7 +220,7 @@ export default function Signin() {
   },
   {
     id: "dashboard",
-    title: "Dashboard by Enrollment (1/2)",
+    title: "Filter courses by enrollment",
     kind: "content",
     code: `"use client";
 
@@ -255,7 +255,7 @@ export default function Dashboard() {
   },
   {
     id: "dashboard-part-2",
-    title: "Dashboard by Enrollment (2/2)",
+    title: "Editor form and enrolled cards",
     kind: "content",
     code: `  return (
     <div id="wd-dashboard">
@@ -385,7 +385,7 @@ export default function AccountPage() {
   },
   {
     id: "profile",
-    title: "Profile reads the user (1/2)",
+    title: "Copy currentUser into a draft",
     kind: "content",
     code: `"use client";
 
@@ -420,7 +420,7 @@ export default function Profile() {
   },
   {
     id: "profile-part-2",
-    title: "Profile reads the user (2/2)",
+    title: "Edit profile fields and sign out",
     kind: "content",
     code: `  if (!profile) return null;
   return (
@@ -499,7 +499,7 @@ export default function Profile() {
   },
   {
     id: "people-context",
-    title: "AccountContext with users (1/2)",
+    title: "Add users and CRUD to the type",
     kind: "content",
     code: `"use client";
 
@@ -524,7 +524,7 @@ const AccountContext = createContext<AccountContextValue | null>(null);
   },
   {
     id: "people-context-part-2",
-    title: "AccountContext with users (2/2)",
+    title: "Provider implements user CRUD",
     kind: "content",
     code: `export function AccountProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -579,7 +579,7 @@ export function useAccountContext() {
   },
   {
     id: "signup",
-    title: "Sign up creates a user (1/2)",
+    title: "createUser, sign in, go to Profile",
     kind: "content",
     code: `"use client";
 
@@ -618,7 +618,7 @@ export default function Signup() {
   },
   {
     id: "signup-part-2",
-    title: "Sign up creates a user (2/2)",
+    title: "Sign up inputs and button",
     kind: "content",
     code: `  return (
     <div id="wd-signup-screen">
@@ -660,7 +660,7 @@ export default function Signup() {
   },
   {
     id: "signup-signin",
-    title: "Sign in reads context users (1/2)",
+    title: "Find the user in context users",
     kind: "content",
     code: `"use client";
 
@@ -693,7 +693,7 @@ export default function Signin() {
   },
   {
     id: "signup-signin-part-2",
-    title: "Sign in reads context users (2/2)",
+    title: "Sign in form inputs",
     kind: "content",
     code: `  return (
     <div id="wd-signin-screen">
@@ -799,7 +799,7 @@ export const useEnrollmentsStore = create<EnrollmentsStore>((set) => ({
   },
   {
     id: "enroll-card",
-    title: "CourseCard enrollment button (1/4)",
+    title: "Card imports and course prop",
     kind: "content",
     code: `import Link from "next/link";
 import Image from "next/image";
@@ -819,7 +819,7 @@ export default function CourseCard({
   },
   {
     id: "enroll-card-part-2",
-    title: "CourseCard enrollment button (2/4)",
+    title: "Compute enrolled and toggle it",
     kind: "content",
     code: `  const deleteCourse = useCoursesStore((state) => state.deleteCourse);
   const { currentUser } = useAccountContext();
@@ -842,7 +842,7 @@ export default function CourseCard({
   },
   {
     id: "enroll-card-part-3",
-    title: "CourseCard enrollment button (3/4)",
+    title: "Card image, title and description",
     kind: "content",
     code: `  return (
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
@@ -876,7 +876,7 @@ export default function CourseCard({
   },
   {
     id: "enroll-card-part-4",
-    title: "CourseCard enrollment button (4/4)",
+    title: "Edit, Delete and Enroll buttons",
     kind: "content",
     code: `          <button
             type="button"
@@ -935,7 +935,7 @@ export default function CourseCard({
   },
   {
     id: "enroll-dash",
-    title: "Dashboard with enrollments (1/3)",
+    title: "Add a course and enroll its author",
     kind: "content",
     code: `"use client";
 
@@ -977,7 +977,7 @@ export default function Dashboard() {
   },
   {
     id: "enroll-dash-part-2",
-    title: "Dashboard with enrollments (2/3)",
+    title: "Title bar and All/Enrolled toggle",
     kind: "content",
     code: `  return (
     <div id="wd-dashboard">
@@ -1020,7 +1020,7 @@ export default function Dashboard() {
   },
   {
     id: "enroll-dash-part-3",
-    title: "Dashboard with enrollments (3/3)",
+    title: "Course form and the card grid",
     kind: "content",
     code: `      <input
         className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
@@ -1082,7 +1082,7 @@ export default function Dashboard() {
   },
   {
     id: "enroll-guard",
-    title: "Course layout guard (1/2)",
+    title: "Redirect unless signed in, enrolled",
     kind: "content",
     code: `"use client";
 
@@ -1125,7 +1125,7 @@ export default function CoursesLayout({
   },
   {
     id: "enroll-guard-part-2",
-    title: "Course layout guard (2/2)",
+    title: "Breadcrumb, course nav and content",
     kind: "content",
     code: `  return (
     <div id="wd-courses">
@@ -1191,7 +1191,7 @@ export default async function PeopleTablePage({
   },
   {
     id: "people-table",
-    title: "PeopleTable with CRUD (1/3)",
+    title: "Enrolled users and CRUD handlers",
     kind: "content",
     code: `"use client";
 
@@ -1235,7 +1235,7 @@ export default function PeopleTable({ cid }: { cid: string }) {
   },
   {
     id: "people-table-part-2",
-    title: "PeopleTable with CRUD (2/3)",
+    title: "Name inputs and add/update buttons",
     kind: "content",
     code: `  return (
     <div id="wd-people-table" className="overflow-x-auto">
@@ -1287,7 +1287,7 @@ export default function PeopleTable({ cid }: { cid: string }) {
   },
   {
     id: "people-table-part-3",
-    title: "PeopleTable with CRUD (3/3)",
+    title: "One table row per enrolled user",
     kind: "content",
     code: `        <tbody>
           {enrolled.map((usr) => (

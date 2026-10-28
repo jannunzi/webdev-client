@@ -176,7 +176,7 @@ export default Math;`,
   },
   {
     id: "destructing-imports",
-    title: "Import Math three different ways (1/2)",
+    title: "Three imports and the table header",
     kind: "content",
     code: `import Math, { add, subtract, multiply, divide } from "./Math";
 import * as Matematica from "./Math";
@@ -199,7 +199,7 @@ export default function DestructingImports() {
   },
   {
     id: "destructing-imports-part-2",
-    title: "Import Math three different ways (2/2)",
+    title: "Call add and subtract three ways",
     kind: "content",
     code: `        <tbody>
           <tr>
