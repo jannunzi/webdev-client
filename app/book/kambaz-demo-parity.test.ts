@@ -178,23 +178,8 @@ const SNAPSHOTS: Array<{ book: string; name: string; file: string }> = [
   },
   {
     book: "app/book/ch4/sections/KambazAccount.tsx",
-    name: "Profile",
-    file: "app/book/ch4/embeds/_styled/account/profile/page.tsx",
-  },
-  {
-    book: "app/book/ch4/sections/KambazAccount.tsx",
     name: "Signup",
     file: "app/book/ch4/embeds/_styled/account/signup/page.tsx",
-  },
-  {
-    book: "app/book/ch4/sections/KambazModules.tsx",
-    name: "Modules",
-    file: "app/book/ch4/embeds/_styled/courses/cid/modules/page.tsx",
-  },
-  {
-    book: "app/book/ch4/sections/KambazModules.tsx",
-    name: "Module",
-    file: "app/book/ch4/embeds/_styled/courses/cid/modules/Module.tsx",
   },
   {
     book: "app/book/ch4/sections/KambazModules.tsx",
@@ -367,8 +352,14 @@ describe("Kambaz book demos match the code block they show", () => {
     const blocks = bookCodeBlocks();
     const bodies = new Set(blocks.map((block) => block.body.trim()));
     const untied: string[] = [];
+    // Graded A4 answers live on slides only; the book keeps them as on-your-own work.
+    const slidesOnly = [
+      "app/book/ch4/embeds/_styled/account/profile/page.tsx",
+      "app/book/ch4/embeds/_styled/courses/cid/modules/page.tsx",
+      "app/book/ch4/embeds/_styled/courses/cid/modules/Module.tsx",
+    ];
     for (const file of walk("app/book").filter((path) =>
-      path.includes("/embeds/_styled/"),
+      path.includes("/embeds/_styled/") && !slidesOnly.includes(path),
     )) {
       if (file.endsWith(".json")) {
         const name = file.slice(file.lastIndexOf("/") + 1);

@@ -411,10 +411,6 @@ export default function Profile() {
     setProfile(currentUser);
   }, [currentUser, router]);
 
-  const update = () => {
-    setCurrentUser(profile);
-  };
-
   const signout = () => {
     setCurrentUser(null);
     router.push("/account/signin");
@@ -429,41 +425,7 @@ export default function Profile() {
         value={profile.username}
         onChange={(e) => setProfile({ ...profile, username: e.target.value })}
       />
-      <input
-        id="wd-password"
-        type="password"
-        value={profile.password}
-        onChange={(e) => setProfile({ ...profile, password: e.target.value })}
-      />
-      <input
-        id="wd-firstname"
-        value={profile.firstName}
-        onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
-      />
-      <input
-        id="wd-lastname"
-        value={profile.lastName}
-        onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
-      />
-      <input
-        id="wd-email"
-        type="email"
-        value={profile.email}
-        onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-      />
-      <select
-        id="wd-role"
-        value={profile.role}
-        onChange={(e) => setProfile({ ...profile, role: e.target.value })}
-      >
-        <option value="USER">User</option>
-        <option value="ADMIN">Admin</option>
-        <option value="FACULTY">Faculty</option>
-        <option value="STUDENT">Student</option>
-      </select>
-      <button type="button" onClick={update} id="wd-update-btn">
-        Update
-      </button>
+      {/* password, firstName, lastName, email, role */}
       <button type="button" onClick={signout} id="wd-signout-btn">
         Sign out
       </button>
@@ -471,14 +433,15 @@ export default function Profile() {
   );
 }`}</CodeBlock>
           <p>
-            Every input spreads <code>profile</code>{" "}and overwrites one
-            property, and the role select offers User, Admin, Faculty,
-            and Student. Confirm the form fills with{" "}
-            <code>iron_man</code>&apos;s fields after a successful sign
-            in. Editing a field changes only the local{" "}
-            <code>profile</code>; clicking Update passes it to{" "}
-            <code>setCurrentUser</code>{" "}so every screen that reads the
-            context sees the edit. Confirm Sign out clears{" "}
+            The sample shows the username field and Sign out; bind the
+            remaining inputs the same way — password, first name, last
+            name, email, and a role select with User, Admin, Faculty,
+            and Student — each spreading{" "}
+            <code>profile</code>{" "}and overwriting one property. Confirm
+            the form fills with <code>iron_man</code>&apos;s name after
+            a successful sign in. Confirm that editing a field does not
+            change the name in Account Navigation until you decide to
+            write the context later. Confirm Sign out clears{" "}
             <code>currentUser</code>{" "}and that visiting Profile while
             signed out sends you back to Sign in.
           </p>

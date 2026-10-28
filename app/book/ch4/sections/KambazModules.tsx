@@ -5,8 +5,6 @@ import BookFigure from "../../components/BookFigure";
 import FigureLink from "../../components/FigureLink";
 import { OnYourOwn, WithAI } from "../../components/Practice";
 import Link from "next/link";
-import LiveDemo from "../../components/LiveDemo";
-import { KambazCh4ModulesEmbed } from "../../../slides/_components/embeds/KambazCh4Embeds";
 
 export default function KambazModules() {
   return (
@@ -550,136 +548,8 @@ export const useModulesStore = create<ModulesStore>((set) => ({
           can still add, remove, and edit modules as before. Also
           confirm the modules still work on the Home screen: add a
           module on Modules, switch to Home without reloading, and
-          confirm the new row is there. To practice the wiring, update{" "}
-          <code>app/(kambaz)/courses/[cid]/modules/page.tsx</code>{" "}as
-          shown below. The page passes <code>moduleName</code>,{" "}
-          <code>setModuleName</code>, and an add wrapper to{" "}
-          <code>ModulesControls</code>, and passes{" "}
-          <code>deleteModule</code>{" "}and <code>editModule</code>{" "}to{" "}
-          <code>ModuleControlButtons</code>{" "}for each row:
+          confirm the new row is there.
         </p>
-        <p>
-          <code>Module</code>{" "}takes an <code>extra</code>{" "}slot for
-          the row controls and shows the plain checkmark only when no
-          controls are passed:
-        </p>
-        <CodeBlock
-          language="tsx"
-          name="Module"
-          file="app/(kambaz)/courses/[cid]/modules/Module.tsx"
-        >{`import type { ReactNode } from "react";
-import GreenCheckmark from "./GreenCheckmark";
-
-export default function Module({
-  title,
-  extra,
-  children,
-}: {
-  title: ReactNode;
-  extra?: ReactNode;
-  children?: ReactNode;
-}) {
-  return (
-    <li className="wd-module mb-5 overflow-hidden border border-neutral-400 p-0 text-xl">
-      <div className="wd-title flex items-center justify-between bg-neutral-200 p-3 ps-2">
-        <span className="min-w-0 flex-1">{title}</span>
-        <span className="ms-2 flex items-center gap-2">
-          {extra}
-          {!extra ? <GreenCheckmark /> : null}
-        </span>
-      </div>
-      <ul className="wd-lessons m-0 list-none p-0">{children}</ul>
-    </li>
-  );
-}`}</CodeBlock>
-        <p>The Modules page that wires everything together:</p>
-        <CodeBlock
-          language="tsx"
-          name="Modules"
-          file="app/(kambaz)/courses/[cid]/modules/page.tsx"
-        >{`"use client";
-
-import { useState } from "react";
-import { useParams } from "next/navigation";
-import Module from "./Module";
-import Lesson from "./Lesson";
-import ModuleControlButtons from "./ModuleControlButtons";
-import ModulesControls from "./ModulesControls";
-import { useModulesStore } from "../../../store/modulesStore";
-
-export default function Modules() {
-  const { cid } = useParams();
-  const [moduleName, setModuleName] = useState("");
-  const modules = useModulesStore((state) => state.modules);
-  const addModule = useModulesStore((state) => state.addModule);
-  const deleteModule = useModulesStore((state) => state.deleteModule);
-  const updateModule = useModulesStore((state) => state.updateModule);
-  const editModule = useModulesStore((state) => state.editModule);
-
-  return (
-    <div className="wd-modules">
-      <ModulesControls
-        moduleName={moduleName}
-        setModuleName={setModuleName}
-        addModule={() => {
-          addModule({ name: moduleName, course: String(cid) });
-          setModuleName("");
-        }}
-      />
-      <ul id="wd-modules" className="m-0 list-none p-0">
-        {modules
-          .filter((module) => module.course === cid)
-          .map((module) => (
-            <Module
-              key={module._id}
-              extra={
-                <ModuleControlButtons
-                  moduleId={module._id}
-                  deleteModule={deleteModule}
-                  editModule={editModule}
-                />
-              }
-              title={
-                module.editing ? (
-                  <input
-                    className="w-1/2 rounded border border-neutral-300 px-2 py-1 text-base"
-                    defaultValue={module.name}
-                    onChange={(e) =>
-                      updateModule({ ...module, name: e.target.value })
-                    }
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        updateModule({ ...module, editing: false });
-                      }
-                    }}
-                  />
-                ) : (
-                  module.name
-                )
-              }
-            >
-              {module.lessons?.map((lesson) => (
-                <Lesson key={lesson._id} title={lesson.name} />
-              ))}
-            </Module>
-          ))}
-      </ul>
-    </div>
-  );
-}`}</CodeBlock>
-        <p>
-          The demo below renders that page for RS101 with the store
-          above. Click + Module, type a name, and click Add Module. Click
-          the pencil, type a new name, and press Enter. Click the trash
-          can to delete a module.
-        </p>
-        <LiveDemo
-          name="Modules"
-          file="app/(kambaz)/courses/[cid]/modules/page.tsx"
-          mode="styled"
-        >
-          <KambazCh4ModulesEmbed />
-        </LiveDemo>
         <OnYourOwn>
           Add a module on Modules, switch to Home without reloading, and
           confirm the new row is there. Rename it with the pencil, press

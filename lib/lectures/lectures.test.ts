@@ -3765,7 +3765,13 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         // Ch2 step snapshots the book never lists on their own (unchanged by the split).
         const snapshots = ["labs-index-toc", "lab2-page", "lab3-page"].map((id) => `single-page-navigation#${id}`);
         if (!first.codeFile || snapshots.includes(`${slug}#${base}`)) return;
-        const book = ch3BookListings(first.codeFile);
+        // Graded A4 answers are slides-only: they join back into the embed the demo runs.
+        const slidesOnly: Record<string, string> = {
+          "kambaz-account-context#profile": "app/book/ch4/embeds/_styled/account/profile/page.tsx",
+          "kambaz-modules-store#page": "app/book/ch4/embeds/_styled/courses/cid/modules/page.tsx",
+        };
+        const embedFile = slidesOnly[`${slug}#${base}`];
+        const book = embedFile ? [readFileSync(embedFile, "utf8")] : ch3BookListings(first.codeFile);
         // Slides may lay code out more compactly than the book; compare ignoring whitespace.
         const flat = (text: string) => text.replace(/\s+/g, " ");
         const joined = flat(joinedListing(slug, base));
