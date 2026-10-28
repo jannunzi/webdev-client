@@ -8,6 +8,7 @@ import ModulesControls from "@/app/book/ch4/embeds/_styled/courses/cid/modules/M
 import ModuleControlButtons from "@/app/book/ch4/embeds/_styled/courses/cid/modules/ModuleControlButtons";
 import AsAccountRouter from "./AsAccountRouter";
 import AsCourseParams from "./AsCourseParams";
+import LectureDemoFrame from "./LectureDemoFrame";
 
 function SignedOut({ go }: { go: (path: string) => void }) {
   return (
@@ -64,22 +65,26 @@ export function KambazCh4ModulesEmbed() {
 /** Foreshadow §4.10.4.2: one module row with the real ModuleControlButtons. */
 export function KambazCh4ModuleRowEmbed() {
   return (
-    <ul className="m-0 list-none p-0 font-sans">
-      <Module
-        title="Week 1 - HTML"
-        extra={<ModuleControlButtons moduleId="M101" />}
-      />
-    </ul>
+    <LectureDemoFrame label="app/(kambaz)/courses/[cid]/modules/ModuleControlButtons.tsx">
+      <ul className="m-0 list-none p-0 font-sans">
+        <Module
+          title="Week 1 - HTML"
+          extra={<ModuleControlButtons moduleId="M101" />}
+        />
+      </ul>
+    </LectureDemoFrame>
   );
 }
 
 /** Foreshadow §4.10.4.1: the real ModulesControls toolbar; + Module opens the dialog. */
 export function KambazCh4ModulesControlsEmbed() {
   return (
-    <div className="font-sans">
-      <AsCourseParams cid="RS101">
-        <ModulesControls />
-      </AsCourseParams>
-    </div>
+    <LectureDemoFrame label="app/(kambaz)/courses/[cid]/modules/ModulesControls.tsx">
+      <div className="font-sans">
+        <AsCourseParams cid="RS101">
+          <ModulesControls />
+        </AsCourseParams>
+      </div>
+    </LectureDemoFrame>
   );
 }
