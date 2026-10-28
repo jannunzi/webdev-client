@@ -1334,7 +1334,7 @@ describe("lecture decks", () => {
     assert.equal(counts["ch4-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-store"], 10);
     assert.equal(counts["kambaz-dashboard-crud"], 14);
-    assert.equal(counts["kambaz-modules-store"], 14);
+    assert.equal(counts["kambaz-modules-store"], 20);
     assert.equal(counts["kambaz-account-context"], 53);
     assert.equal(counts["http-server"], 11);
     assert.equal(counts["nodemon-es6-routes"], 9);
@@ -3899,7 +3899,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 259);
+    assert.equal(intros, 262);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
