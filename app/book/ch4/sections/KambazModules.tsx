@@ -55,9 +55,9 @@ export default function KambazModules() {
           draft <code>moduleName</code> string. Create{" "}
           <code>ModuleEditor.tsx</code>{" "}as a dialog with these props —{" "}
           <code>show</code>, <code>handleClose</code>,{" "}
-          <code>dialogTitle</code>, <code>moduleName</code>,{" "}
+          <code>moduleName</code>,{" "}
           <code>setModuleName</code>, and <code>addModule</code> — and
-          style it with Tailwind overlays and rounded panels. Confirm
+          hard-code the heading &quot;Add Module&quot;; style it with Tailwind overlays and rounded panels. Confirm
           the dialog appears, accepts a name, and disappears on Cancel.
         </p>
         <CodeBlock
@@ -66,14 +66,12 @@ export default function KambazModules() {
         >{`export default function ModuleEditor({
   show,
   handleClose,
-  dialogTitle,
   moduleName,
   setModuleName,
   addModule,
 }: {
   show: boolean;
   handleClose: () => void;
-  dialogTitle: string;
   moduleName: string;
   setModuleName: (name: string) => void;
   addModule: () => void;
@@ -86,7 +84,7 @@ export default function KambazModules() {
     >
       <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
         <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
-          <h3 className="m-0 text-lg font-semibold">{dialogTitle}</h3>
+          <h3 className="m-0 text-lg font-semibold">Add Module</h3>
           <button
             type="button"
             onClick={handleClose}
@@ -220,7 +218,6 @@ export default function ModulesControls({
       <ModuleEditor
         show={show}
         handleClose={handleClose}
-        dialogTitle="Add Module"
         moduleName={moduleName}
         setModuleName={setModuleName}
         addModule={addModule}
@@ -538,8 +535,9 @@ export const useModulesStore = create<ModulesStore>((set) => ({
           <code>moduleName</code>, reads <code>cid</code>{" "}with{" "}
           <code>useParams</code>, and calls the store&apos;s{" "}
           <code>addModule</code>; Add Module then clears the name and
-          closes the dialog. Its only props are <code>show</code>,{" "}
-          <code>handleClose</code>, and <code>dialogTitle</code>:
+          closes the dialog. Its only props are <code>show</code>{" "}and{" "}
+          <code>handleClose</code>, and the heading is hard-coded as
+          &quot;Add Module&quot;:
         </p>
         <CodeBlock
           language="tsx"
@@ -552,11 +550,9 @@ import { useModulesStore } from "../../../store/modulesStore";
 export default function ModuleEditor({
   show,
   handleClose,
-  dialogTitle,
 }: {
   show: boolean;
   handleClose: () => void;
-  dialogTitle: string;
 }) {
   const { cid } = useParams();
   const [moduleName, setModuleName] = useState("");
@@ -569,7 +565,7 @@ export default function ModuleEditor({
     >
       <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
         <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
-          <h3 className="m-0 text-lg font-semibold">{dialogTitle}</h3>
+          <h3 className="m-0 text-lg font-semibold">Add Module</h3>
           <button
             type="button"
             onClick={handleClose}
@@ -616,7 +612,7 @@ export default function ModuleEditor({
 }`}</CodeBlock>
         <p>
           <code>ModulesControls</code>{" "}keeps only the{" "}
-          <code>show</code>{" "}state and passes those three props, and
+          <code>show</code>{" "}state and passes those two props, and
           Modules renders <code>{`<ModulesControls />`}</code>{" "}with no
           props:
         </p>
@@ -664,7 +660,6 @@ export default function ModulesControls() {
       <ModuleEditor
         show={show}
         handleClose={handleClose}
-        dialogTitle="Add Module"
       />
     </div>
   );

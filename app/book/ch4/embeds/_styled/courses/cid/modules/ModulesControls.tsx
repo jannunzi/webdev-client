@@ -38,7 +38,6 @@ export default function ModulesControls() {
       <ModuleEditor
         show={show}
         handleClose={handleClose}
-        dialogTitle="Add Module"
       />
     </div>
   );

@@ -5,11 +5,9 @@ import { useModulesStore } from "../../../store/modulesStore";
 export default function ModuleEditor({
   show,
   handleClose,
-  dialogTitle,
 }: {
   show: boolean;
   handleClose: () => void;
-  dialogTitle: string;
 }) {
   const { cid } = useParams();
   const [moduleName, setModuleName] = useState("");
@@ -22,7 +20,7 @@ export default function ModuleEditor({
     >
       <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
         <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
-          <h3 className="m-0 text-lg font-semibold">{dialogTitle}</h3>
+          <h3 className="m-0 text-lg font-semibold">Add Module</h3>
           <button
             type="button"
             onClick={handleClose}
