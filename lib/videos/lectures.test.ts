@@ -15,7 +15,7 @@ test("Oct 7 CS4550-01 Part 1 links TqIA9tXbZsE; unpublished parts are placeholde
   assert.ok(set);
   assert.equal(set.clips[0]!.youtubeVideoId, "TqIA9tXbZsE");
   assert.ok(set.clips.some((c) => c.youtubeVideoId === null));
-  assert.equal(listLectureClipSets().length, 8);
+  assert.equal(listLectureClipSets().length, 12);
 });
 
 test("invalid ids become placeholders, empty lectures hidden, newest first", () => {

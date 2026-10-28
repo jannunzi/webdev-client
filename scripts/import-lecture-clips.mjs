@@ -11,6 +11,10 @@ import { join } from "node:path";
 const root = process.argv[2] ?? "/workspace/webdevtv-lectures/clips";
 // Lectures shown on /videos. Add a new lecture id here, then re-run.
 const LECTURES = [
+  "cs5610-02_2026-09-28",
+  "cs5610-09_2026-09-29",
+  "cs4550-01_2026-09-30",
+  "cs5610-02_2026-10-05",
   "cs5610-09_2026-10-06",
   "cs4550-01_2026-10-07",
   "cs5610-09_2026-10-13",
