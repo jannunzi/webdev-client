@@ -90,7 +90,12 @@ export default function ModuleEditor({
       <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
         <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
           <h3 className="m-0 text-lg font-semibold">{dialogTitle}</h3>
-          <button type="button" onClick={handleClose} aria-label="Close">
+          <button
+            type="button"
+            onClick={handleClose}
+            className="text-2xl leading-none text-neutral-500"
+            aria-label="Close"
+          >
             ×
           </button>
         </div>
@@ -100,10 +105,16 @@ export default function ModuleEditor({
             value={moduleName}
             onChange={(e) => setModuleName(e.target.value)}
             id="wd-add-module-name"
+            placeholder="Module name"
           />
         </div>
         <div className="flex justify-end gap-2 border-t border-neutral-200 px-4 py-3">
-          <button type="button" onClick={handleClose} id="wd-add-module-cancel">
+          <button
+            type="button"
+            onClick={handleClose}
+            className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+            id="wd-add-module-cancel"
+          >
             Cancel
           </button>
           <button
@@ -112,6 +123,7 @@ export default function ModuleEditor({
               addModule();
               handleClose();
             }}
+            className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
             id="wd-add-module-submit"
           >
             Add Module
@@ -184,12 +196,30 @@ export default function ModulesControls({
   const handleShow = () => setShow(true);
   return (
     <div id="wd-modules-controls" className="mb-3 flex flex-wrap items-center gap-2">
-      {/* Collapse All, View Progress, Publish All */}
       <button
         type="button"
+        className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+      >
+        Collapse All
+      </button>
+      <button
+        type="button"
+        className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+      >
+        View Progress
+      </button>
+      <select
+        defaultValue="publish-all"
+        className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+      >
+        <option value="publish-all">Publish All</option>
+        <option value="unpublish-all">Unpublish All</option>
+      </select>
+      <button
+        type="button"
+        className="inline-flex items-center gap-1 rounded border border-red-600 bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
         id="wd-add-module-btn"
         onClick={handleShow}
-        className="inline-flex items-center gap-1 rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
       >
         <FaPlus /> Module
       </button>
@@ -296,10 +326,12 @@ export default function ModuleControlButtons({
       <FaPencilAlt
         className="cursor-pointer text-blue-600"
         onClick={() => editModule(moduleId)}
+        title="Edit module"
       />
       <FaTrash
         className="cursor-pointer text-red-600"
         onClick={() => deleteModule(moduleId)}
+        title="Delete module"
       />
       <GreenCheckmark />
       <BsPlus className="text-3xl" />
@@ -438,22 +470,31 @@ export default function ModuleControlButtons({
 import { create } from "zustand";
 import modulesJson from "../database/modules.json";
 
+export type Lesson = {
+  _id: string;
+  name: string;
+  description: string;
+  module: string;
+};
+
 export type CourseModule = {
   _id: string;
   name: string;
   description: string;
   course: string;
-  lessons?: { _id: string; name: string; description: string; module: string }[];
+  lessons?: Lesson[];
   editing?: boolean;
 };
 
-export const useModulesStore = create<{
+type ModulesStore = {
   modules: CourseModule[];
   addModule: (module: { name: string; course: string }) => void;
   deleteModule: (moduleId: string) => void;
   updateModule: (module: CourseModule) => void;
   editModule: (moduleId: string) => void;
-}>((set) => ({
+};
+
+export const useModulesStore = create<ModulesStore>((set) => ({
   modules: modulesJson as CourseModule[],
   addModule: (module) =>
     set((state) => ({

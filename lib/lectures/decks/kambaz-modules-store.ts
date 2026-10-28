@@ -61,27 +61,49 @@ export default function ModuleEditor({
     title: "ModuleEditor is a controlled dialog (2/2)",
     kind: "content",
     code: `  return (
-    <div id="wd-add-module-dialog" className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      id="wd-add-module-dialog"
+    >
       <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
         <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
           <h3 className="m-0 text-lg font-semibold">{dialogTitle}</h3>
-          <button type="button" onClick={handleClose} aria-label="Close">
+          <button
+            type="button"
+            onClick={handleClose}
+            className="text-2xl leading-none text-neutral-500"
+            aria-label="Close"
+          >
             ×
           </button>
         </div>
         <div className="px-4 py-3">
-          <input value={moduleName} id="wd-add-module-name" className="w-full rounded border border-neutral-300 px-3 py-1.5"
-            onChange={(e) => setModuleName(e.target.value)} />
+          <input
+            className="w-full rounded border border-neutral-300 px-3 py-1.5"
+            value={moduleName}
+            onChange={(e) => setModuleName(e.target.value)}
+            id="wd-add-module-name"
+            placeholder="Module name"
+          />
         </div>
         <div className="flex justify-end gap-2 border-t border-neutral-200 px-4 py-3">
-          <button type="button" onClick={handleClose} id="wd-add-module-cancel">
+          <button
+            type="button"
+            onClick={handleClose}
+            className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+            id="wd-add-module-cancel"
+          >
             Cancel
           </button>
-          <button type="button" id="wd-add-module-submit"
+          <button
+            type="button"
             onClick={() => {
               addModule();
               handleClose();
-            }}>
+            }}
+            className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+            id="wd-add-module-submit"
+          >
             Add Module
           </button>
         </div>
@@ -92,7 +114,7 @@ export default function ModuleEditor({
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx",
     codeStartLine: 19,
-    codeHighlightLines: [16, 17, 27, 28, 29, 30],
+    codeHighlightLines: [21, 22, 38, 39, 40, 41],
   },
   {
     id: "controls-intro",
@@ -196,10 +218,12 @@ export default function ModuleControlButtons({
       <FaPencilAlt
         className="cursor-pointer text-blue-600"
         onClick={() => editModule(moduleId)}
+        title="Edit module"
       />
       <FaTrash
         className="cursor-pointer text-red-600"
         onClick={() => deleteModule(moduleId)}
+        title="Delete module"
       />
       <GreenCheckmark />
       <BsPlus className="text-3xl" />
@@ -209,40 +233,6 @@ export default function ModuleControlButtons({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleControlButtons.tsx",
-  },
-  {
-    id: "title-edit-intro",
-    title: "Edit swaps the name for an input",
-    kind: "content",
-    bullets: [
-      "`editModule` maps the array and sets `editing: true` on the matching id",
-      "`updateModule` replaces the module object with the same `_id`",
-      "`editing` false: show the name. True: show an input",
-      "Each `onChange` spreads the module and overwrites `name`",
-      "Enter sets `editing` back to false",
-    ],
-  },
-  {
-    id: "title-edit",
-    title: "Edit swaps the name for an input (code)",
-    kind: "content",
-    code: `title={
-  module.editing ? (
-    <input
-      className="w-1/2 rounded border border-neutral-300 px-2 py-1 text-base"
-      defaultValue={module.name}
-      onChange={(e) => updateModule({ ...module, name: e.target.value })}
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          updateModule({ ...module, editing: false });
-        }
-      }}
-    />
-  ) : (
-    module.name
-  )
-}`,
-    codeLanguage: "tsx",
   },
   {
     id: "store-intro",
@@ -263,23 +253,29 @@ export default function ModuleControlButtons({
 import { create } from "zustand";
 import modulesJson from "../database/modules.json";
 
+export type Lesson = {
+  _id: string;
+  name: string;
+  description: string;
+  module: string;
+};
+
 export type CourseModule = {
   _id: string;
   name: string;
   description: string;
   course: string;
-  lessons?: { _id: string; name: string; description: string; module: string }[];
+  lessons?: Lesson[];
   editing?: boolean;
 };
 
-export const useModulesStore = create<{
+type ModulesStore = {
   modules: CourseModule[];
   addModule: (module: { name: string; course: string }) => void;
   deleteModule: (moduleId: string) => void;
   updateModule: (module: CourseModule) => void;
   editModule: (moduleId: string) => void;
-}>((set) => ({
-`,
+};`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/store/modulesStore.ts",
   },
@@ -287,7 +283,8 @@ export const useModulesStore = create<{
     id: "store-part-2",
     title: "modulesStore is the shared list (2/2)",
     kind: "content",
-    code: `  modules: modulesJson as CourseModule[],
+    code: `export const useModulesStore = create<ModulesStore>((set) => ({
+  modules: modulesJson as CourseModule[],
   addModule: (module) =>
     set((state) => ({
       modules: [
@@ -318,8 +315,8 @@ export const useModulesStore = create<{
 }));`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/store/modulesStore.ts",
-    codeStartLine: 22,
-    codeHighlightLines: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 23, 24, 25, 26, 27, 28],
+    codeStartLine: 30,
+    codeHighlightLines: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 24, 25, 26, 27, 28, 29],
   },
   {
     id: "store-live",
@@ -331,6 +328,112 @@ export const useModulesStore = create<{
       "Home imports the Modules page — both screens now see the same array",
     ],
     embed: "kambaz-styled-modules",
+  },
+  {
+    id: "page-intro",
+    title: "Modules page wires the store",
+    kind: "content",
+    bullets: [
+      "Read `modules` and the CRUD actions from `useModulesStore`",
+      "`editModule` sets `editing: true`; the title swaps the name for an input",
+      "Each `onChange` calls `updateModule`; Enter sets `editing` back to false",
+    ],
+  },
+  {
+    id: "page",
+    title: "Modules page wires the store (1/2)",
+    kind: "content",
+    code: `"use client";
+
+import { useState } from "react";
+import { useParams } from "next/navigation";
+import Module from "./Module";
+import Lesson from "./Lesson";
+import ModuleControlButtons from "./ModuleControlButtons";
+import ModulesControls from "./ModulesControls";
+import { useModulesStore } from "../../../store/modulesStore";
+
+export default function Modules() {
+  const { cid } = useParams();
+  const [moduleName, setModuleName] = useState("");
+  const modules = useModulesStore((state) => state.modules);
+  const addModule = useModulesStore((state) => state.addModule);
+  const deleteModule = useModulesStore((state) => state.deleteModule);
+  const updateModule = useModulesStore((state) => state.updateModule);
+  const editModule = useModulesStore((state) => state.editModule);
+`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/page.tsx",
+  },
+  {
+    id: "page-part-2",
+    title: "Modules page wires the store (2/2)",
+    kind: "content",
+    code: `  return (
+    <div className="wd-modules">
+      <ModulesControls
+        moduleName={moduleName}
+        setModuleName={setModuleName}
+        addModule={() => {
+          addModule({ name: moduleName, course: String(cid) });
+          setModuleName("");
+        }}
+      />
+      <ul id="wd-modules" className="m-0 list-none p-0">
+        {modules
+          .filter((module) => module.course === cid)
+          .map((module) => (
+            <Module
+              key={module._id}
+              extra={
+                <ModuleControlButtons
+                  moduleId={module._id}
+                  deleteModule={deleteModule}
+                  editModule={editModule}
+                />
+              }
+              title={
+                module.editing ? (
+                  <input
+                    className="w-1/2 rounded border border-neutral-300 px-2 py-1 text-base"
+                    defaultValue={module.name}
+                    onChange={(e) =>
+                      updateModule({ ...module, name: e.target.value })
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        updateModule({ ...module, editing: false });
+                      }
+                    }}
+                  />
+                ) : (
+                  module.name
+                )
+              }
+            >
+              {module.lessons?.map((lesson) => (
+                <Lesson key={lesson._id} title={lesson.name} />
+              ))}
+            </Module>
+          ))}
+      </ul>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/page.tsx",
+    codeStartLine: 20,
+  },
+  {
+    id: "page-live",
+    title: "Modules page demo",
+    kind: "demo",
+    bullets: [
+      "+ Module adds a module to this course",
+      "The pencil renames it. Enter saves",
+      "The trash can deletes it",
+    ],
+    embed: "kambaz-ch4-modules",
   },
   {
     id: "recap",

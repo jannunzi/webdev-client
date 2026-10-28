@@ -172,6 +172,36 @@ const SNAPSHOTS: Array<{ book: string; name: string; file: string }> = [
     file: "app/book/ch4/embeds/_styled/store/coursesStore.ts",
   },
   {
+    book: "app/book/ch4/sections/KambazAccount.tsx",
+    name: "AccountContext",
+    file: "app/book/ch4/embeds/_styled/account/AccountContext.tsx",
+  },
+  {
+    book: "app/book/ch4/sections/KambazAccount.tsx",
+    name: "Signup",
+    file: "app/book/ch4/embeds/_styled/account/signup/page.tsx",
+  },
+  {
+    book: "app/book/ch4/sections/KambazModules.tsx",
+    name: "ModulesControls",
+    file: "app/book/ch4/embeds/_styled/courses/cid/modules/ModulesControls.tsx",
+  },
+  {
+    book: "app/book/ch4/sections/KambazModules.tsx",
+    name: "ModuleControlButtons",
+    file: "app/book/ch4/embeds/_styled/courses/cid/modules/ModuleControlButtons.tsx",
+  },
+  {
+    book: "app/book/ch4/sections/KambazModules.tsx",
+    name: "ModuleEditor",
+    file: "app/book/ch4/embeds/_styled/courses/cid/modules/ModuleEditor.tsx",
+  },
+  {
+    book: "app/book/ch4/sections/KambazModules.tsx",
+    name: "modulesStore",
+    file: "app/book/ch4/embeds/_styled/store/modulesStore.ts",
+  },
+  {
     book: "app/book/ch3/sections/KambazData.tsx",
     name: "KambazNavigation",
     file: "app/book/ch3/embeds/_styled/Navigation.tsx",
@@ -199,6 +229,18 @@ const SNAPSHOTS: Array<{ book: string; name: string; file: string }> = [
 ];
 
 describe("Kambaz book demos match the code block they show", () => {
+
+  it("keeps the Chapter 4 Modules embed components and store identical to the app", () => {
+    const real = "app/(kambaz)/courses/[cid]/modules/";
+    const ch4 = "app/book/ch4/embeds/_styled/courses/cid/modules/";
+    for (const name of ["Module", "Lesson", "ModulesControls", "ModuleControlButtons", "ModuleEditor", "GreenCheckmark"]) {
+      assert.equal(read(`${ch4}${name}.tsx`), read(`${real}${name}.tsx`), name);
+    }
+    assert.equal(
+      read("app/book/ch4/embeds/_styled/store/modulesStore.ts"),
+      read("app/(kambaz)/store/modulesStore.ts"),
+    );
+  });
   for (const snapshot of SNAPSHOTS) {
     it(`${snapshot.name} in ${snapshot.book} equals ${snapshot.file}`, () => {
       assert.equal(read(snapshot.file).trim(), codeBlock(snapshot.book, snapshot.name).trim());
@@ -310,8 +352,14 @@ describe("Kambaz book demos match the code block they show", () => {
     const blocks = bookCodeBlocks();
     const bodies = new Set(blocks.map((block) => block.body.trim()));
     const untied: string[] = [];
+    // Graded A4 answers live on slides only; the book keeps them as on-your-own work.
+    const slidesOnly = [
+      "app/book/ch4/embeds/_styled/account/profile/page.tsx",
+      "app/book/ch4/embeds/_styled/courses/cid/modules/page.tsx",
+      "app/book/ch4/embeds/_styled/courses/cid/modules/Module.tsx",
+    ];
     for (const file of walk("app/book").filter((path) =>
-      path.includes("/embeds/_styled/"),
+      path.includes("/embeds/_styled/") && !slidesOnly.includes(path),
     )) {
       if (file.endsWith(".json")) {
         const name = file.slice(file.lastIndexOf("/") + 1);
