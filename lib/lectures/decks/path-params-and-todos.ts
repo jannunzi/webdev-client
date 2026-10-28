@@ -152,6 +152,7 @@ export default function PathParameters() {
     bullets: [
       "The `todo = { … }` in the parameter list is a **default**",
       "If the parent omits `todo`, the milk item is used",
+      "The `Todo` type comes from `TodoList.tsx`, shown below",
       "Store the list next to the component as `todos.json`",
     ],
   },

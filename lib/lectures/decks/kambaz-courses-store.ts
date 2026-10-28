@@ -46,6 +46,7 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
     title: "Seed from courses.json",
     kind: "content",
     bullets: [
+      "`Course` is derived from `courses.json`, like `Todo` in §3.8.4",
       "`emptyCourse` is the New Course draft — placeholder name and image",
       "`addCourse` spreads the draft and overrides `_id` with `randomUUID()`",
       "`deleteCourse` filters. `updateCourse` maps the matching `_id`",
