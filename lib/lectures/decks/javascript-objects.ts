@@ -27,6 +27,7 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "`address` is an object. `owners` is a string array",
+      "`Object.keys(obj)` returns an array of the object’s property names, so `Object.keys(house).length` gives the number of properties: 6 for this house",
       "`JSON.stringify(house, null, 2)` pretty-prints inside `<pre>`",
       "Create `House` and import it into Lab 3",
     ],
