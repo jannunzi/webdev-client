@@ -1,7 +1,6 @@
-import { FaPencilAlt, FaTrash } from "react-icons/fa";
+import { FaCheckCircle, FaPencilAlt, FaTrash } from "react-icons/fa";
 import { BsPlus } from "react-icons/bs";
 import { IoEllipsisVertical } from "react-icons/io5";
-import GreenCheckmark from "./GreenCheckmark";
 import { useModulesStore } from "../../../store/modulesStore";
 
 export default function ModuleControlButtons({
@@ -23,7 +22,7 @@ export default function ModuleControlButtons({
         onClick={() => deleteModule(moduleId)}
         title="Delete module"
       />
-      <GreenCheckmark />
+      <FaCheckCircle className="text-green-600" />
       <BsPlus className="text-3xl" />
       <IoEllipsisVertical className="text-xl" />
     </div>

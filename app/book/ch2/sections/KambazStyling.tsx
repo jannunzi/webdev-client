@@ -752,28 +752,12 @@ export default function CourseNavigation({ cid }: { cid: string }) {
       </LiveDemo>
       <p>
         If we keep the HTML from <ChapterLink to={1} />{" "}and add
-        Tailwind classes, the Modules list closes the gap. A small <code>GreenCheckmark</code>{" "}helper
-        covers the publish indicator every module and lesson needs:
+        Tailwind classes, the Modules list closes the gap. A green{" "}
+        <code>FaCheckCircle</code>{" "}icon from react-icons covers the
+        publish indicator every module and lesson needs.
       </p>
-      <CodeBlock
-        language="tsx"
-        name="GreenCheckmark"
-        file="app/(kambaz)/courses/[cid]/modules/GreenCheckmark.tsx"
-      >{`import { FaCheckCircle, FaCircle } from "react-icons/fa";
-
-export default function GreenCheckmark() {
-  return (
-    <span className="relative me-1 inline-flex">
-      <FaCheckCircle
-        className="absolute text-xl text-green-600"
-        style={{ top: "2px" }}
-      />
-      <FaCircle className="text-base text-white" />
-    </span>
-  );
-}`}</CodeBlock>
       <p>
-        If we drop that checkmark into <code>Module</code>{" "}and add a gray header
+        If we drop that icon into <code>Module</code>{" "}and add a gray header
         bar plus spacing:
       </p>
       <CodeBlock
@@ -781,7 +765,7 @@ export default function GreenCheckmark() {
         name="Module"
         file="app/(kambaz)/courses/[cid]/modules/Module.tsx"
       >{`import type { ReactNode } from "react";
-import GreenCheckmark from "./GreenCheckmark";
+import { FaCheckCircle } from "react-icons/fa";
 
 export default function Module({
   title,
@@ -794,7 +778,7 @@ export default function Module({
     <li className="wd-module mb-5 overflow-hidden border border-neutral-400 p-0 text-xl">
       <div className="wd-title flex items-center justify-between bg-neutral-200 p-3 ps-2">
         <span>{title}</span>
-        <GreenCheckmark />
+        <FaCheckCircle className="text-green-600" />
       </div>
       <ul className="wd-lessons m-0 list-none p-0">{children}</ul>
     </li>
@@ -810,7 +794,7 @@ export default function Module({
         name="Lesson"
         file="app/(kambaz)/courses/[cid]/modules/Lesson.tsx"
       >{`import type { ReactNode } from "react";
-import GreenCheckmark from "./GreenCheckmark";
+import { FaCheckCircle } from "react-icons/fa";
 
 export default function Lesson({
   title,
@@ -823,7 +807,7 @@ export default function Lesson({
     <li className="wd-lesson border-l-[3px] border-green-600 p-3 pl-1">
       <div className="flex items-center justify-between">
         <span className="wd-title">{title}</span>
-        <GreenCheckmark />
+        <FaCheckCircle className="text-green-600" />
       </div>
       <ul className="wd-content mt-2 list-disc pl-6">{children}</ul>
     </li>
@@ -961,11 +945,11 @@ export default function Modules() {
       <OnYourOwn>
         In <code>Module.tsx</code>{" "}and{" "}
         <code>Lesson.tsx</code>, add one more module or lesson with your own
-        title, keeping the gray module header, green lesson border, and{" "}
-        <code>GreenCheckmark</code>.
+        title, keeping the gray module header, green lesson border, and
+        green check icon.
       </OnYourOwn>
       <WithAI
-        prompt={`In app/(kambaz)/courses/[cid]/modules/page.tsx, keep my personal extra module or lesson unchanged. After the existing Module/Lesson tree, add one more sample Module titled "Sample module (AI)" containing one Lesson titled "Sample lesson (AI)". Reuse Module.tsx, Lesson.tsx, and GreenCheckmark — do not restyle those components or overwrite my personal titles.`}
+        prompt={`In app/(kambaz)/courses/[cid]/modules/page.tsx, keep my personal extra module or lesson unchanged. After the existing Module/Lesson tree, add one more sample Module titled "Sample module (AI)" containing one Lesson titled "Sample lesson (AI)". Reuse Module.tsx and Lesson.tsx with their green FaCheckCircle icon — do not restyle those components or overwrite my personal titles.`}
       >
         Paste this prompt to add a second sample module — then confirm the
         gray header, green lesson border, and checkmark still appear:
