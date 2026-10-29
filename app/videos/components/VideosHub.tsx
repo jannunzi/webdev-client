@@ -7,6 +7,8 @@ import { lectureChapterLabel } from "@/lib/lectures/types";
 import type { VideoHubCard, VideoHubChapter } from "@/lib/videos/hub";
 import type { PublishedCoursePlaylist } from "@/lib/videos/playlists";
 import { youtubeThumbUrl } from "@/lib/videos/youtube";
+import type { LectureClipSet } from "@/lib/videos/lectures";
+import LectureClipRows from "./LectureClipRows";
 import VideosHubNav from "./VideosHubNav";
 
 function PlayGlyph() {
@@ -136,11 +138,14 @@ export default function VideosHub({
   chapters,
   activeSection,
   playlists = [],
+  lectures = [],
 }: {
   chapters: VideoHubChapter[];
   activeSection?: string | null;
   /** Published course, section, year, or term playlists. Empty until a URL is set. */
   playlists?: PublishedCoursePlaylist[];
+  /** Whole-lecture clip sets from data/videos/lectures/. */
+  lectures?: LectureClipSet[];
 }) {
   const [openId, setOpenId] = useState<string | null>(activeSection ?? null);
   const clipCount = chapters.reduce(
@@ -191,6 +196,7 @@ export default function VideosHub({
           the checklists on <Link href="/assignments">Assignments</Link>.
         </p>
         <CoursePlaylists playlists={playlists} />
+        <LectureClipRows lectures={lectures} />
 
         {activeSection && !known.has(activeSection) ? (
           <p className="mt-4" role="status">

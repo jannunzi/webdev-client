@@ -1,0 +1,1466 @@
+[
+  {
+    "lectureId": "cs5610-09_2026-10-06",
+    "course": "CS5610-09",
+    "semester": "FA26",
+    "date": "2026-10-06",
+    "partCount": 21,
+    "clips": [
+      {
+        "part": 1,
+        "youtubeVideoId": "5rmZS4OI2PU",
+        "title": "CSS Libraries — CS5610 FA26 (Oct 6) Part 1/21",
+        "topic": "CSS Libraries",
+        "durationSec": 544,
+        "summary": "A recap of CSS as a declarative styling language, why many teams have engineers who only do CSS, and why most organizations keep their own library of style sheets instead of writing raw CSS. Utility classes wrap small, useful snippets of CSS in class names you look up when you need them, and the plan for today: learn Tailwind, then use it to make the Kambaz pages look more like the real Canvas."
+      },
+      {
+        "part": 2,
+        "youtubeVideoId": "79nDmq_iEhg",
+        "title": "Tailwind Setup — CS5610 FA26 (Oct 6) Part 2/21",
+        "topic": "Tailwind Setup",
+        "durationSec": 387,
+        "summary": "Importing Tailwind into the Lab 2 page and the project's index.css, and how Tailwind resets the browser's default styles so headings and paragraphs all look plain until you apply classes with className. Then how to find the class you need at tailwindcss.com, since there are thousands of them."
+      },
+      {
+        "part": 3,
+        "youtubeVideoId": "cRs4f0f9LUQ",
+        "title": "Tailwind Font Sizes — CS5610 FA26 (Oct 6) Part 3/21",
+        "topic": "Tailwind Font Sizes",
+        "durationSec": 372,
+        "summary": "Typography in Tailwind, starting with font sizes. An AI assistant generates the Typography component, which is a fine use of AI as long as you check the generated classes against the reference documentation, and we put the text-xs through text-9xl sizes in order and remove one that does not exist."
+      },
+      {
+        "part": 4,
+        "youtubeVideoId": "-R8SThVmLMU",
+        "title": "Font Weight & Style — CS5610 FA26 (Oct 6) Part 4/21",
+        "topic": "Font Weight & Style",
+        "durationSec": 241,
+        "summary": "Tailwind classes for font weight, from very thin to very bold, and for font style and text decoration: italic, underline, overline, and line-through, with a reminder to learn these as you find chances to use them."
+      },
+      {
+        "part": 5,
+        "youtubeVideoId": "hO1KtpLtGt4",
+        "title": "Tailwind Colors — CS5610 FA26 (Oct 6) Part 5/21",
+        "topic": "Tailwind Colors",
+        "durationSec": 479,
+        "summary": "How Tailwind colors text, backgrounds, and borders with class prefixes like text- and bg-, its numbered shades from 100 to 900 (red-500, red-600, and darker), and how to use an exact hex color when the predefined palette does not have it, with Tailwind generating that CSS on the fly."
+      },
+      {
+        "part": 6,
+        "youtubeVideoId": "Mf4VZucaGKE",
+        "title": "Tailwind Borders — CS5610 FA26 (Oct 6) Part 6/21",
+        "topic": "Tailwind Borders",
+        "durationSec": 258,
+        "summary": "Tailwind border classes: a default border on every side or just the top, bottom, left, or right, then the border width, color, and style, and the order these classes are read in. Also fixing a stray horizontal scroll bar the generated examples introduced."
+      },
+      {
+        "part": 7,
+        "youtubeVideoId": "pZfBLHcmNK8",
+        "title": "Spacing & Corners — CS5610 FA26 (Oct 6) Part 7/21",
+        "topic": "Spacing & Corners",
+        "durationSec": 400,
+        "summary": "Margins with the m- classes and padding with the p- classes, and why their numbers are a scale rather than pixels. Then border color shades, dashed, dotted, and double border styles, rounded corners up to fully round, and building a class string with an expression so a style can change on the fly."
+      },
+      {
+        "part": 8,
+        "youtubeVideoId": "75xLQYQwBfc",
+        "title": "Tailwind Flex — CS5610 FA26 (Oct 6) Part 8/21",
+        "topic": "Tailwind Flex",
+        "durationSec": 531,
+        "summary": "Laying elements out horizontally with Tailwind's flex class. A review of how block elements stack vertically and push content down, why floats were a workaround, and how display flex turns children into a row whose widths are set by their content, plus why horizontal scrolling is considered bad practice."
+      },
+      {
+        "part": 9,
+        "youtubeVideoId": "ujMxG3NlwrM",
+        "title": "Flex Wrap & Widths — CS5610 FA26 (Oct 6) Part 9/21",
+        "topic": "Flex Wrap & Widths",
+        "durationSec": 653,
+        "summary": "flex-wrap moves items to the next row when they run out of space, which is how dashboards like the Canvas course grid work. Then Tailwind width classes inside flex: fractions such as a third, a half, or a fourth, fixed widths, full width, and letting one column grow to fill the remaining space."
+      },
+      {
+        "part": 10,
+        "youtubeVideoId": "xzqL0oO-UiA",
+        "title": "Tailwind Grids — CS5610 FA26 (Oct 6) Part 10/21",
+        "topic": "Tailwind Grids",
+        "durationSec": 579,
+        "summary": "Why developers built grid systems on top of flex to get the row-and-column control tables used to give, then Tailwind's grid with column counts and gap. We also see how fixed widths break the grid, and another way to build the same grid with flex and flex-wrap plus margins, like the courses in the dashboard."
+      },
+      {
+        "part": 11,
+        "youtubeVideoId": "GXNwnGFDCVg",
+        "title": "Responsive Design — CS5610 FA26 (Oct 6) Part 11/21",
+        "topic": "Responsive Design",
+        "durationSec": 778,
+        "summary": "What responsive design means and where it came from: the first iPhone rendering full desktop pages, separate mobile and desktop sites, and then one codebase whose layout changes at breakpoints for monitors, laptops, tablets, and phones. Sidebars hide or turn into a menu drawer on small screens, and why it is easier to design mobile first and add styles as the screen grows."
+      },
+      {
+        "part": 12,
+        "youtubeVideoId": "91tKWI7wXl4",
+        "title": "Tailwind Breakpoints — CS5610 FA26 (Oct 6) Part 12/21",
+        "topic": "Tailwind Breakpoints",
+        "durationSec": 546,
+        "summary": "Building a responsive demo with Tailwind's breakpoint prefixes (sm, md, lg, xl, 2xl). A class without a prefix applies to every screen size, and a prefixed class overrides it from that width and up, so the background changes color as the window crosses 640, 768, 1024, and 1280 pixels."
+      },
+      {
+        "part": 13,
+        "youtubeVideoId": "PzKv52ww2A4",
+        "title": "Hide & Show — CS5610 FA26 (Oct 6) Part 13/21",
+        "topic": "Hide & Show",
+        "durationSec": 239,
+        "summary": "Using hidden and block with breakpoint prefixes to show content only on larger screens, the way Canvas shows only the main content on a phone and brings in its sidebars as the screen grows. This is the strategy we use next to style Kambaz."
+      },
+      {
+        "part": 14,
+        "youtubeVideoId": "zxqgtlUJVZk",
+        "title": "Kambaz Flex Layout — CS5610 FA26 (Oct 6) Part 14/21",
+        "topic": "Kambaz Flex Layout",
+        "durationSec": 408,
+        "summary": "After the break we start styling Kambaz with Tailwind. We replace the tables we misused for layout with divs and flex, add a Kambaz-specific CSS file, use temporary background colors to see each area, and style all input fields at once with a light border."
+      },
+      {
+        "part": 15,
+        "youtubeVideoId": "O1zpfQPQ1hc",
+        "title": "Course Layout — CS5610 FA26 (Oct 6) Part 15/21",
+        "topic": "Course Layout",
+        "durationSec": 275,
+        "summary": "Fixing the course layout the same way: removing the table rows and cells, wrapping the course navigation and content in divs, and using flex so the sidebar and the content sit side by side while the content grows as wide as possible."
+      },
+      {
+        "part": 16,
+        "youtubeVideoId": "66fMTIl38CM",
+        "title": "Kambaz Navigation — CS5610 FA26 (Oct 6) Part 16/21",
+        "topic": "Kambaz Navigation",
+        "durationSec": 310,
+        "summary": "Styling the main Kambaz navigation sidebar. Instead of styling twenty hard-coded links, we turn them into an array of objects and render one line item, a preview of the data-driven pages to come, then give it a black background, white text, centered labels, and a fixed width."
+      },
+      {
+        "part": 17,
+        "youtubeVideoId": "aZqnQNhJvJU",
+        "title": "Fixed Sidebar — CS5610 FA26 (Oct 6) Part 17/21",
+        "topic": "Fixed Sidebar",
+        "durationSec": 333,
+        "summary": "Making the navigation sidebar stay in place like the one in Canvas with position fixed, then pushing the rest of the page over so content does not disappear underneath it, and hiding the sidebar on small screens until the medium breakpoint."
+      },
+      {
+        "part": 18,
+        "youtubeVideoId": "yeXSfOWqs5g",
+        "title": "React Icons — CS5610 FA26 (Oct 6) Part 18/21",
+        "topic": "React Icons",
+        "durationSec": 420,
+        "summary": "Installing the React Icons library, which collects open-source icons, then searching it for a big N for Northeastern and icons for the account, dashboard, courses, inbox, and history links, importing them, and setting their size and color."
+      },
+      {
+        "part": 19,
+        "youtubeVideoId": "ybQn-Anw6us",
+        "title": "Selected Link — CS5610 FA26 (Oct 6) Part 19/21",
+        "topic": "Selected Link",
+        "durationSec": 329,
+        "summary": "Highlighting the selected navigation link with a class string computed by an expression: a white background and black text when selected, black and white otherwise, plus padding. The course navigation gets the same treatment, with no borders on the bottom and right, and real navigation state comes next week."
+      },
+      {
+        "part": 20,
+        "youtubeVideoId": "x-5ZSKF_yZk",
+        "title": "Styling Modules — CS5610 FA26 (Oct 6) Part 20/21",
+        "topic": "Styling Modules",
+        "durationSec": 356,
+        "summary": "Styling the course Modules page to match Canvas: gray module headings, white lessons, and a green border on the left. We look at how each module is a line item that takes its lessons as children, then add the padding, colors, and left border with Tailwind classes."
+      },
+      {
+        "part": 21,
+        "youtubeVideoId": "NIlFBlzGOYY",
+        "title": "Tailwind + CSS — CS5610 FA26 (Oct 6) Part 21/21",
+        "topic": "Tailwind + CSS",
+        "durationSec": 488,
+        "summary": "Applying the same classes over and over should raise a red flag. You can fix it by rendering from a data structure, or by combining Tailwind with plain CSS that targets every lesson line item at once. We finish with check-mark icons and refactor the modules and lessons into data we can iterate over."
+      }
+    ]
+  },
+  {
+    "lectureId": "cs4550-01_2026-10-07",
+    "course": "CS4550-01",
+    "semester": "FA26",
+    "date": "2026-10-07",
+    "partCount": 22,
+    "clips": [
+      {
+        "part": 1,
+        "youtubeVideoId": "TqIA9tXbZsE",
+        "title": "Wrapping Up CSS — CS4550 FA26 (Oct 7) Part 1/22",
+        "topic": "Wrapping Up CSS",
+        "durationSec": 390,
+        "summary": "Where the course stands: HTML and CSS are static, declarative languages, today wraps up CSS and starts JavaScript, the language that computes the user interface. Along the way, a reminder that AI tools can take on bigger tasks, but you stay responsible for judging quality and owning the code you commit."
+      },
+      {
+        "part": 2,
+        "youtubeVideoId": null,
+        "title": "Mobile-First Design — CS4550 FA26 (Oct 7) Part 2/22",
+        "topic": "Mobile-First Design",
+        "durationSec": 483,
+        "summary": "A recap of CSS libraries and Tailwind as an abstraction layer of classes on top of CSS properties, its breakpoint modifiers (sm, md, lg, xl), and the Canvas-style responsive layout from last class. Then why mobile-first design works: starting small and adding content as screens grow is much easier than deciding what to take away."
+      },
+      {
+        "part": 3,
+        "youtubeVideoId": null,
+        "title": "Styling Kambaz — CS4550 FA26 (Oct 7) Part 3/22",
+        "topic": "Styling Kambaz",
+        "durationSec": 416,
+        "summary": "Applying everything learned about CSS and Tailwind to our own Kambaz implementation, with the real Canvas as the target look and feel. Layouts in the Kambaz screens still use tables, so a dedicated CSS file is created in the Kambaz directory, and importing Tailwind blows away the default styles so every style has to be put back deliberately, keeping HTML for structure and CSS for styling."
+      },
+      {
+        "part": 4,
+        "youtubeVideoId": null,
+        "title": "Account Flex Layout — CS4550 FA26 (Oct 7) Part 4/22",
+        "topic": "Account Flex Layout",
+        "durationSec": 380,
+        "summary": "Replacing the table layout of the account screens (sign in, sign up, profile) with flex: temporary background colors to see each region, divs that stack as blocks without the table, then flex and flex-grow to put the account navigation beside the content. The AI assistant picks up the pattern for the remaining layouts, a legitimate use as long as you still read and own the result."
+      },
+      {
+        "part": 5,
+        "youtubeVideoId": null,
+        "title": "Course Layout — CS4550 FA26 (Oct 7) Part 5/22",
+        "topic": "Course Layout",
+        "durationSec": 400,
+        "summary": "Laying out the course screen in columns: the Kambaz navigation sidebar on the left, the course navigation in the second column, the main content in the middle growing to fill the space, and the status column on the right. The browser inspector measures the target widths on Canvas, such as about 165 pixels for the course navigation."
+      },
+      {
+        "part": 6,
+        "youtubeVideoId": null,
+        "title": "Responsive Sidebars — CS4550 FA26 (Oct 7) Part 6/22",
+        "topic": "Responsive Sidebars",
+        "durationSec": 456,
+        "summary": "Implementing the responsiveness of Canvas: as the window narrows, the right status column disappears around 1140 pixels and then the course navigation hides, while the main content always shows. Breakpoint classes hide and show each sidebar, compared with how Canvas itself does it."
+      },
+      {
+        "part": 7,
+        "youtubeVideoId": null,
+        "title": "Fixed Sidebars — CS4550 FA26 (Oct 7) Part 7/22",
+        "topic": "Fixed Sidebars",
+        "durationSec": 760,
+        "summary": "Filling the main content with copies of the modules shows the problem: everything scrolls, including the sidebars. Making the Kambaz navigation fixed takes it out of the layout calculation, so the content slides underneath it; a left margin that only applies at the md breakpoint, when the sidebar shows, pushes the content back, and pinning both top and bottom to zero stretches the sidebar to the full height of the screen."
+      },
+      {
+        "part": 8,
+        "youtubeVideoId": null,
+        "title": "React Icons — CS4550 FA26 (Oct 7) Part 8/22",
+        "topic": "React Icons",
+        "durationSec": 464,
+        "summary": "Decorating the Kambaz navigation with icons: centering and sizing the text, then browsing the React Icons library for account, dashboard, courses, calendar, inbox, history, settings, and help icons, importing them from the Font Awesome set, and fixing an import that would not resolve."
+      },
+      {
+        "part": 9,
+        "youtubeVideoId": null,
+        "title": "Selected Link Styling — CS4550 FA26 (Oct 7) Part 9/22",
+        "topic": "Selected Link Styling",
+        "durationSec": 413,
+        "summary": "Finishing the Kambaz navigation: a span to size the icons, inline-block and padding to space each item, and an external link that stays a plain anchor. The selected item is white with red text, so the class becomes a computed template string instead of a hard-coded one; for this assignment one item can stay highlighted."
+      },
+      {
+        "part": 10,
+        "youtubeVideoId": null,
+        "title": "Course Navigation — CS4550 FA26 (Oct 7) Part 10/22",
+        "topic": "Course Navigation",
+        "durationSec": 635,
+        "summary": "Styling the second sidebar, the course navigation: a white background, red text with the selected item in black, and a border on the left. Padding goes inside each link, borders only on the left side, and the selected style is computed with a back-tick expression. The assignment does not have to be pixel perfect; real projects go back and forth with a designer."
+      },
+      {
+        "part": 11,
+        "youtubeVideoId": null,
+        "title": "Modules Styling — CS4550 FA26 (Oct 7) Part 11/22",
+        "topic": "Modules Styling",
+        "durationSec": 504,
+        "summary": "The main content: a page maps over an array of modules, each module renders a list item with its lessons. Adding sample modules and lessons, then matching the target look: a gray heading, white lessons with a green border on the left, and controlling the width, color, and side of each border individually."
+      },
+      {
+        "part": 12,
+        "youtubeVideoId": null,
+        "title": "Custom CSS Classes — CS4550 FA26 (Oct 7) Part 12/22",
+        "topic": "Custom CSS Classes",
+        "durationSec": 485,
+        "summary": "When the same long list of classes is copied and pasted over and over, it is time to rethink it: moving the styling into a custom class in the Kambaz CSS file, finding where an existing bg-red class is defined, then margins, shades of green, larger text, and icons on the module and lesson headings to get closer to the target."
+      },
+      {
+        "part": 13,
+        "youtubeVideoId": null,
+        "title": "Why JavaScript — CS4550 FA26 (Oct 7) Part 13/22",
+        "topic": "Why JavaScript",
+        "durationSec": 485,
+        "summary": "Starting the JavaScript module: so far everything has been static, and JavaScript lets us compute the user interface from data and user events. It runs inside the browser and can modify the DOM, so single-page applications change the document programmatically instead of loading new pages. A short history: browser differences, a weakly typed language with a bad reputation, ES6 in 2015, and TypeScript, which adds types and which we use in TSX."
+      },
+      {
+        "part": 14,
+        "youtubeVideoId": null,
+        "title": "Variables & Data Types — CS4550 FA26 (Oct 7) Part 14/22",
+        "topic": "Variables & Data Types",
+        "durationSec": 477,
+        "summary": "Lab 3 begins: a component to house the JavaScript exercises, declaring variables and constants with let and const instead of the old var, and the basic data types (numbers, strings, booleans). Code is transpiled down to JavaScript every browser understands, and in JSX true and false render as blank, which makes booleans convenient as flags."
+      },
+      {
+        "part": 15,
+        "youtubeVideoId": null,
+        "title": "Boolean Operators — CS4550 FA26 (Oct 7) Part 15/22",
+        "topic": "Boolean Operators",
+        "durationSec": 390,
+        "summary": "Boolean operators and why JavaScript has two equality operators: == converts data types before comparing, so use === and !== instead. Then booleans in JSX, where an && expression guards whether content is displayed, a short circuit that is used pervasively to render content conditionally."
+      },
+      {
+        "part": 16,
+        "youtubeVideoId": null,
+        "title": "Ternaries & Null — CS4550 FA26 (Oct 7) Part 16/22",
+        "topic": "Ternaries & Null",
+        "durationSec": 418,
+        "summary": "More conditional rendering: ternary expressions that pick one of two elements, such as a welcome message when logged in, functions with multiple returns, if-else and switch statements by user role, and when HTML embedded in JavaScript reads better than JavaScript embedded in HTML. Then null versus undefined: a value explicitly set to nothing versus one never assigned."
+      },
+      {
+        "part": 17,
+        "youtubeVideoId": null,
+        "title": "Legacy Functions — CS4550 FA26 (Oct 7) Part 17/22",
+        "topic": "Legacy Functions",
+        "durationSec": 285,
+        "summary": "Why functions exist: wrap an algorithm under a meaningful name instead of copying it, invoke it with parentheses, and parameterize it with arguments. The legacy function syntax works as in other languages, and TypeScript requires declaring parameter types such as number, string, date, and object."
+      },
+      {
+        "part": 18,
+        "youtubeVideoId": null,
+        "title": "Arrow Functions — CS4550 FA26 (Oct 7) Part 18/22",
+        "topic": "Arrow Functions",
+        "durationSec": 557,
+        "summary": "Arrow functions: a parameter list, the arrow (an equals sign and a greater-than sign), and a body, with no function keyword and no name; they are assigned to a constant or passed anonymously. When the body is a single return, the braces and return keyword can go (implied return), and with one parameter the parentheses are optional, which makes compact lambdas inside a map very convenient."
+      },
+      {
+        "part": 19,
+        "youtubeVideoId": null,
+        "title": "Template Literals — CS4550 FA26 (Oct 7) Part 19/22",
+        "topic": "Template Literals",
+        "durationSec": 200,
+        "summary": "Single- and double-quoted strings, then the ES6 back-tick strings: template literals embed expressions directly instead of concatenating with the plus operator, can span multiple lines, and are very useful for computing dynamic classes and styles in React."
+      },
+      {
+        "part": 20,
+        "youtubeVideoId": null,
+        "title": "JavaScript Arrays — CS4550 FA26 (Oct 7) Part 20/22",
+        "topic": "JavaScript Arrays",
+        "durationSec": 562,
+        "summary": "Arrays in JavaScript: square brackets, mixed data types, and arrays of HTML elements in JSX. Rendering an array concatenates the string form of each item, so an array of line items renders as a list. Then push to append, splice to insert or remove, and a classic for loop that builds content."
+      },
+      {
+        "part": 21,
+        "youtubeVideoId": null,
+        "title": "Map Operator — CS4550 FA26 (Oct 7) Part 21/22",
+        "topic": "Map Operator",
+        "durationSec": 381,
+        "summary": "The map operator computes a new array by applying a function to every item, more elegant than a for loop and where arrow functions shine. A square function maps over numbers, then a to-do list maps each to-do into a list item, interlacing JavaScript and HTML."
+      },
+      {
+        "part": 22,
+        "youtubeVideoId": null,
+        "title": "Find & Filter — CS4550 FA26 (Oct 7) Part 22/22",
+        "topic": "Find & Filter",
+        "durationSec": 311,
+        "summary": "More array functions that take a callback: find returns the first matching item and findIndex its position, filter returns a smaller array of the items that pass a test, and includes, some, and every return booleans. Reading assignment for next time: object spreading and destructuring."
+      }
+    ]
+  },
+  {
+    "lectureId": "cs5610-09_2026-10-13",
+    "course": "CS5610-09",
+    "semester": "FA26",
+    "date": "2026-10-13",
+    "partCount": 25,
+    "clips": [
+      {
+        "part": 1,
+        "youtubeVideoId": null,
+        "title": "Halfway Recap — CS5610 FA26 (Oct 13) Part 1/25",
+        "topic": "Halfway Recap",
+        "durationSec": 294,
+        "summary": "Halfway through the semester: the first two modules covered the client side of a client-server application, static HTML, the basics of CSS and the box model, CSS libraries and Tailwind, responsive design, and navigating between screens. Next up is JavaScript, data structures, and computing the user interface from data."
+      },
+      {
+        "part": 2,
+        "youtubeVideoId": null,
+        "title": "Why JavaScript — CS5610 FA26 (Oct 13) Part 2/25",
+        "topic": "Why JavaScript",
+        "durationSec": 520,
+        "summary": "JavaScript is what lets us manipulate the DOM programmatically. How pages used to be generated on the server as one long HTML string, how scripts started being downloaded and run in the browser instead, why the language lagged behind others until ES6 in 2015, and how TypeScript and JSX/TSX fit in."
+      },
+      {
+        "part": 3,
+        "youtubeVideoId": null,
+        "title": "Application State — CS5610 FA26 (Oct 13) Part 3/25",
+        "topic": "Application State",
+        "durationSec": 295,
+        "summary": "Lab 3 begins with a component to house the JavaScript exercises. The central idea of the course: the application keeps its state, the values that change over time from timers, form input and user interaction, in data structures, and the user interface is computed from that state."
+      },
+      {
+        "part": 4,
+        "youtubeVideoId": null,
+        "title": "Let & Const — CS5610 FA26 (Oct 13) Part 4/25",
+        "topic": "Let & Const",
+        "durationSec": 196,
+        "summary": "Declaring variables with let for data that changes and const for data that does not, instead of the old var. An exercise walks through variables and constants, and how a component typically computes its data at the top and references it in the JSX below."
+      },
+      {
+        "part": 5,
+        "youtubeVideoId": null,
+        "title": "Data Types & typeof — CS5610 FA26 (Oct 13) Part 5/25",
+        "topic": "Data Types & typeof",
+        "durationSec": 411,
+        "summary": "JavaScript is weakly typed: a variable gets its type from what is assigned to it, which TypeScript tightens by letting you declare types. The typeof operator returns the type as a string, and when values are rendered in JSX strings and numbers concatenate while booleans render as blank."
+      },
+      {
+        "part": 6,
+        "youtubeVideoId": null,
+        "title": "Boolean Operators — CS5610 FA26 (Oct 13) Part 6/25",
+        "topic": "Boolean Operators",
+        "durationSec": 299,
+        "summary": "Boolean operators and why JavaScript has two equality operators: == coerces data types before comparing, so false, zero, an empty string and an empty array can all look alike, while === first checks the types and is the one to use."
+      },
+      {
+        "part": 7,
+        "youtubeVideoId": null,
+        "title": "Short-Circuit Rendering — CS5610 FA26 (Oct 13) Part 7/25",
+        "topic": "Short-Circuit Rendering",
+        "durationSec": 167,
+        "summary": "Why it is convenient that booleans render as nothing in JSX: ANDing a boolean with an HTML element short-circuits, so the element renders only when the condition is true. This is the pervasive pattern for conditional rendering."
+      },
+      {
+        "part": 8,
+        "youtubeVideoId": null,
+        "title": "Ternary Expressions — CS5610 FA26 (Oct 13) Part 8/25",
+        "topic": "Ternary Expressions",
+        "durationSec": 294,
+        "summary": "Ternary expressions, a condition followed by a question mark and two alternatives, render one element or another, such as a welcome message depending on whether a user is logged in. Also functions with multiple returns, and why embedding HTML in JavaScript expressions is often easier to read than the reverse."
+      },
+      {
+        "part": 9,
+        "youtubeVideoId": null,
+        "title": "Legacy Functions & Exports — CS5610 FA26 (Oct 13) Part 9/25",
+        "topic": "Legacy Functions & Exports",
+        "durationSec": 544,
+        "summary": "JavaScript is a functional language and our components are functions. Legacy function syntax, default versus named exports and how they change the import syntax, typed parameters in TypeScript, and why the this keyword misbehaves in legacy functions."
+      },
+      {
+        "part": 10,
+        "youtubeVideoId": null,
+        "title": "Arrow Functions — CS5610 FA26 (Oct 13) Part 10/25",
+        "topic": "Arrow Functions",
+        "durationSec": 429,
+        "summary": "Arrow functions, introduced partly to fix the this keyword: a parameter list, an arrow, and a body, assigned to a constant whose type is function. With a single return the curly brackets and return keyword can go, which makes expressions far more compact."
+      },
+      {
+        "part": 11,
+        "youtubeVideoId": null,
+        "title": "Template Literals — CS5610 FA26 (Oct 13) Part 11/25",
+        "topic": "Template Literals",
+        "durationSec": 252,
+        "summary": "Single- and double-quoted strings are interchangeable, but building long strings with the plus operator gets hard to read. Back-tick template literals embed expressions with the dollar-sign curly-bracket syntax and are much easier to read and write."
+      },
+      {
+        "part": 12,
+        "youtubeVideoId": null,
+        "title": "JavaScript Arrays — CS5610 FA26 (Oct 13) Part 12/25",
+        "topic": "JavaScript Arrays",
+        "durationSec": 412,
+        "summary": "Arrays, the simplest data structure: array literals with mixed types, arrays of HTML elements in JSX, rendering an array concatenates each item as a string, and operations to append, insert and remove items such as push and splice."
+      },
+      {
+        "part": 13,
+        "youtubeVideoId": null,
+        "title": "For Loop & Map — CS5610 FA26 (Oct 13) Part 13/25",
+        "topic": "For Loop & Map",
+        "durationSec": 240,
+        "summary": "The for loop works as in any other language, but the map function is more elegant: it passes each item to a function and builds a new array of the same size, for example squaring or cubing each number, with the function declared separately or inline as an arrow function."
+      },
+      {
+        "part": 14,
+        "youtubeVideoId": null,
+        "title": "Rendering Lists & Keys — CS5610 FA26 (Oct 13) Part 14/25",
+        "topic": "Rendering Lists & Keys",
+        "durationSec": 317,
+        "summary": "Using map inside JSX turns an array of to-dos into list items. Each generated element needs a key that is unique and stable, not random, so React can efficiently compare its virtual DOM and update only what changed."
+      },
+      {
+        "part": 15,
+        "youtubeVideoId": null,
+        "title": "Find, Filter & Reduce — CS5610 FA26 (Oct 13) Part 15/25",
+        "topic": "Find, Filter & Reduce",
+        "durationSec": 289,
+        "summary": "More array operations: find and findIndex search for items, filter keeps the items that pass a test, and reduce aggregates an array into a single value like a sum or average. Then JSON.stringify, a global utility that prints data structures on screen for debugging."
+      },
+      {
+        "part": 16,
+        "youtubeVideoId": null,
+        "title": "JavaScript Objects — CS5610 FA26 (Oct 13) Part 16/25",
+        "topic": "JavaScript Objects",
+        "durationSec": 284,
+        "summary": "Objects as collections of properties and values, accessed by key instead of by position, with the dot notation to navigate nested properties. JSON as the popular data exchange format, and stringifying an object for display."
+      },
+      {
+        "part": 17,
+        "youtubeVideoId": null,
+        "title": "Spread Operator — CS5610 FA26 (Oct 13) Part 17/25",
+        "topic": "Spread Operator",
+        "durationSec": 348,
+        "summary": "The spread operator, three dots, copies the contents of one array or object into another, at the beginning, the end or anywhere in between. With objects, properties that collide are overwritten by whichever comes later."
+      },
+      {
+        "part": 18,
+        "youtubeVideoId": null,
+        "title": "Destructuring — CS5610 FA26 (Oct 13) Part 18/25",
+        "topic": "Destructuring",
+        "durationSec": 389,
+        "summary": "Destructuring plucks values out of an object or array without repeating person.name over and over: curly brackets on the left side of an assignment pluck properties by name, and square brackets pluck array items by position."
+      },
+      {
+        "part": 19,
+        "youtubeVideoId": null,
+        "title": "Destructuring Parameters — CS5610 FA26 (Oct 13) Part 19/25",
+        "topic": "Destructuring Parameters",
+        "durationSec": 293,
+        "summary": "Destructuring in function parameters: a function can receive one object and pluck out only the properties it needs by name, so the order no longer matters and the caller passes an object with named values. This syntax is pervasive in React components."
+      },
+      {
+        "part": 20,
+        "youtubeVideoId": null,
+        "title": "Destructuring Imports — CS5610 FA26 (Oct 13) Part 20/25",
+        "topic": "Destructuring Imports",
+        "durationSec": 386,
+        "summary": "The curly brackets in an import are a destructuring operation: non-default exports come out as one big object. Exporting an object of functions as the default, importing everything as a namespace, and giving imports local aliases."
+      },
+      {
+        "part": 21,
+        "youtubeVideoId": null,
+        "title": "Optional Chaining — CS5610 FA26 (Oct 13) Part 21/25",
+        "topic": "Optional Chaining",
+        "durationSec": 322,
+        "summary": "Navigating nested properties like house.address.city fails when something in the middle is undefined. Optional chaining with the question-mark-dot operator and nullish defaults keep the expression safe, and TypeScript optional properties mark what may be missing."
+      },
+      {
+        "part": 22,
+        "youtubeVideoId": null,
+        "title": "Dynamic Styles — CS5610 FA26 (Oct 13) Part 22/25",
+        "topic": "Dynamic Styles",
+        "durationSec": 520,
+        "summary": "Using template literals and ternaries to compute classes and styles on the fly instead of hard-coding them, such as a red background when something is dangerous, plus style objects that can be computed, combined and reused."
+      },
+      {
+        "part": 23,
+        "youtubeVideoId": null,
+        "title": "Server & Client Components — CS5610 FA26 (Oct 13) Part 23/25",
+        "topic": "Server & Client Components",
+        "durationSec": 696,
+        "summary": "React began as a client-side library, but Next.js can run components on the server, cache the output and send the result to the browser. Some features such as reading the URL only exist in the browser and need use client, while the server can reach databases, the file system and process information."
+      },
+      {
+        "part": 24,
+        "youtubeVideoId": null,
+        "title": "Props & Children — CS5610 FA26 (Oct 13) Part 24/25",
+        "topic": "Props & Children",
+        "durationSec": 390,
+        "summary": "How components interact: passing property values as attributes, which arrive as one object that gets destructured into local constants, and passing content in the body of the tag, which arrives as children, useful for wrappers like sidebars and layouts."
+      },
+      {
+        "part": 25,
+        "youtubeVideoId": null,
+        "title": "URL Path Parameters — CS5610 FA26 (Oct 13) Part 25/25",
+        "topic": "URL Path Parameters",
+        "durationSec": 392,
+        "summary": "The URL is data too: reading the path name to highlight the active lab link, and dynamic route folders with square brackets that turn path segments into parameters a page can read. Next lecture builds a to-do list."
+      }
+    ]
+  },
+  {
+    "lectureId": "cs4550-01_2026-10-14",
+    "course": "CS4550-01",
+    "semester": "FA26",
+    "date": "2026-10-14",
+    "partCount": 19,
+    "clips": [
+      {
+        "part": 1,
+        "youtubeVideoId": null,
+        "title": "Module 3 Recap — CS4550 FA26 (Oct 14) Part 1/19",
+        "topic": "Module 3 Recap",
+        "durationSec": 309,
+        "summary": "Getting started on module three: JavaScript is what makes the application stateful, so users can create, read, update and delete data. A recap of let and const, arrow versus legacy functions, arrays and map, and where this is heading: dynamic sidebars and content computed from who you are and what courses you take."
+      },
+      {
+        "part": 2,
+        "youtubeVideoId": null,
+        "title": "Objects & JSON — CS4550 FA26 (Oct 14) Part 2/19",
+        "topic": "Objects & JSON",
+        "durationSec": 273,
+        "summary": "JavaScript objects collect name-value pairs, can nest objects and arrays to any depth, and are navigated with the dot notation. The global JSON object converts between objects and strings, and JSON.stringify on screen, plus console.log and the browser developer tools, are great for debugging."
+      },
+      {
+        "part": 3,
+        "youtubeVideoId": null,
+        "title": "Spread Operator — CS4550 FA26 (Oct 14) Part 3/19",
+        "topic": "Spread Operator",
+        "durationSec": 590,
+        "summary": "The ES6 spread operator, three dots, copies or unpacks one array or object into another, placed at the front, the end or anywhere in between. When the source and target objects both have the same property, whichever comes later overwrites the other, which is used on purpose all the time."
+      },
+      {
+        "part": 4,
+        "youtubeVideoId": null,
+        "title": "Destructuring — CS4550 FA26 (Oct 14) Part 4/19",
+        "topic": "Destructuring",
+        "durationSec": 332,
+        "summary": "Destructuring plucks out just the properties you need from an object with many properties, like name and age out of an employee record, in a single line and in any order, with aliases if needed. For arrays, position matters instead of names."
+      },
+      {
+        "part": 5,
+        "youtubeVideoId": null,
+        "title": "Destructuring Parameters — CS4550 FA26 (Oct 14) Part 5/19",
+        "topic": "Destructuring Parameters",
+        "durationSec": 222,
+        "summary": "Functions can receive one object and destructure their parameters by name, so subtract receives a and b in curly brackets and the caller passes an object. This syntax becomes pervasive throughout the course."
+      },
+      {
+        "part": 6,
+        "youtubeVideoId": null,
+        "title": "Exports & Imports — CS4550 FA26 (Oct 14) Part 6/19",
+        "topic": "Exports & Imports",
+        "durationSec": 711,
+        "summary": "What export means, exporting several functions, variables or objects from one file, and how importing with curly brackets is really destructuring. Why one export can be the default, exporting an object of functions like a small math library, and aliasing imports to avoid name collisions."
+      },
+      {
+        "part": 7,
+        "youtubeVideoId": null,
+        "title": "Optional Chaining — CS4550 FA26 (Oct 14) Part 7/19",
+        "topic": "Optional Chaining",
+        "durationSec": 294,
+        "summary": "Navigating nested properties fails when something in the middle is undefined, such as a house with an address but no garage. Optional chaining with the question mark avoids the error, and TypeScript optional properties mark what may be missing."
+      },
+      {
+        "part": 8,
+        "youtubeVideoId": null,
+        "title": "Dynamic Styles — CS4550 FA26 (Oct 14) Part 8/19",
+        "topic": "Dynamic Styles",
+        "durationSec": 527,
+        "summary": "Putting template strings to work: computing classes and styles on the fly from an algorithm instead of hard-coding them, such as a red background when something is dangerous, and style objects that can be computed, spread and combined into more complex styles."
+      },
+      {
+        "part": 9,
+        "youtubeVideoId": null,
+        "title": "Server vs Client Rendering — CS4550 FA26 (Oct 14) Part 9/19",
+        "topic": "Server vs Client Rendering",
+        "durationSec": 251,
+        "summary": "How web development used to be split, with Java, Python or PHP generating static HTML on the server, and React computing the page in the browser. Next.js tries to blur the line, rendering on the server when it can and on the client when the page has to be interactive."
+      },
+      {
+        "part": 10,
+        "youtubeVideoId": null,
+        "title": "Browser-Only APIs — CS4550 FA26 (Oct 14) Part 10/19",
+        "topic": "Browser-Only APIs",
+        "durationSec": 394,
+        "summary": "Some things only exist in the browser: reading the path name and the URL in the navigation bar, window location details like protocol and port, search parameters after the question mark, and alerts and dialogs. Components that use them need use client."
+      },
+      {
+        "part": 11,
+        "youtubeVideoId": null,
+        "title": "Server Components — CS4550 FA26 (Oct 14) Part 11/19",
+        "topic": "Server Components",
+        "durationSec": 262,
+        "summary": "Browsers sandbox scripts for security, so to reach the file system, the operating system or the network directly you run on the server. A server component uses Node.js to read the process, the working directory and files."
+      },
+      {
+        "part": 12,
+        "youtubeVideoId": null,
+        "title": "Component Props — CS4550 FA26 (Oct 14) Part 12/19",
+        "topic": "Component Props",
+        "durationSec": 153,
+        "summary": "How components interact more formally: attributes passed to a component arrive as properties of one object, which is destructured into local constants. The most basic and common way to pass data from one component to another."
+      },
+      {
+        "part": 13,
+        "youtubeVideoId": null,
+        "title": "Children Props — CS4550 FA26 (Oct 14) Part 13/19",
+        "topic": "Children Props",
+        "durationSec": 385,
+        "summary": "Passing content in the body of a tag instead of as attributes: it arrives as children. An alert component example renders a heading and message passed in the body, with a type attribute and a default value, and when an attribute fits better than the body."
+      },
+      {
+        "part": 14,
+        "youtubeVideoId": null,
+        "title": "Highlighting Lab Links — CS4550 FA26 (Oct 14) Part 14/19",
+        "topic": "Highlighting Lab Links",
+        "durationSec": 658,
+        "summary": "Labs follow a URL structure, so the path name can drive which link in the lab table of contents is highlighted. Styling the table of contents as a row, reading the path name with use client, and replacing repeated links with an array of links mapped into list items, a scalable solution."
+      },
+      {
+        "part": 15,
+        "youtubeVideoId": null,
+        "title": "URL Path Parameters — CS4550 FA26 (Oct 14) Part 15/19",
+        "topic": "URL Path Parameters",
+        "durationSec": 712,
+        "summary": "Passing data to a page through the URL: dynamic route folders with square brackets turn path segments into parameters, parsed into an object by name. Later Kambaz will read course IDs this way, and encoding state in URLs makes pages shareable and bookmarkable."
+      },
+      {
+        "part": 16,
+        "youtubeVideoId": null,
+        "title": "To-Do List Components — CS4550 FA26 (Oct 14) Part 16/19",
+        "topic": "To-Do List Components",
+        "durationSec": 645,
+        "summary": "A small to-do list built with these techniques: an array of to-do objects, checkboxes rendered from data, and then breaking a growing screen into smaller components such as a to-do item and a to-do form, following React guidance on good software engineering."
+      },
+      {
+        "part": 17,
+        "youtubeVideoId": null,
+        "title": "Kambaz Navigation State — CS4550 FA26 (Oct 14) Part 17/19",
+        "topic": "Kambaz Navigation State",
+        "durationSec": 748,
+        "summary": "Making Kambaz data-driven: adding inbox, history and settings screens, then using the path name to highlight the selected item in the Kambaz navigation and the course navigation instead of hard-coding it. No event handlers, the state comes from the URL."
+      },
+      {
+        "part": 18,
+        "youtubeVideoId": null,
+        "title": "Courses JSON Database — CS4550 FA26 (Oct 14) Part 18/19",
+        "topic": "Courses JSON Database",
+        "durationSec": 486,
+        "summary": "Moving the courses into a JSON file that acts as a simple database, aggregating it into a database module, fixing a broken JSON file, and rendering the dashboard by mapping over the courses, with placeholder images allowed."
+      },
+      {
+        "part": 19,
+        "youtubeVideoId": null,
+        "title": "Course Modules by ID — CS4550 FA26 (Oct 14) Part 19/19",
+        "topic": "Course Modules by ID",
+        "durationSec": 376,
+        "summary": "Driving content from the course ID in the URL: breadcrumbs and titles change per course, and modules are filtered by their course field, like a foreign key in a database, so each course shows its own modules. Next week the state gets richer with who is logged in."
+      }
+    ]
+  },
+  {
+    "lectureId": "cs5610-02_2026-10-19",
+    "course": "CS5610-02",
+    "semester": "FA26",
+    "date": "2026-10-19",
+    "partCount": 24,
+    "clips": [
+      {
+        "part": 2,
+        "youtubeVideoId": null,
+        "title": "Legacy & Arrow Functions — CS5610 FA26 (Oct 19) Part 2/24",
+        "topic": "Legacy & Arrow Functions",
+        "durationSec": 468,
+        "summary": "Declaring functions the legacy way with the function keyword, a name, a parameter list and a return, then the ES6 arrow function syntax with no keyword and no name: assigning it to a constant, dropping the curly brackets and the return for one-line bodies, and the debate about dropping the parentheses."
+      },
+      {
+        "part": 3,
+        "youtubeVideoId": null,
+        "title": "JavaScript Arrays — CS5610 FA26 (Oct 19) Part 3/24",
+        "topic": "JavaScript Arrays",
+        "durationSec": 521,
+        "summary": "Array literals with square brackets, mixing data types (numbers, strings, functions, even JSX) in one array, rendering arrays of line items inside JSX, and common array properties and operations such as length, push and index lookups."
+      },
+      {
+        "part": 4,
+        "youtubeVideoId": null,
+        "title": "For Loop & Map — CS5610 FA26 (Oct 19) Part 4/24",
+        "topic": "For Loop & Map",
+        "durationSec": 348,
+        "summary": "Iterating over arrays with a classic for loop, then the map function that computes a brand-new array of the same length by applying a function to each item, written compactly with arrow functions, and using map inside an ordered list to render list items in React."
+      },
+      {
+        "part": 5,
+        "youtubeVideoId": null,
+        "title": "Find, Filter & Reduce — CS5610 FA26 (Oct 19) Part 5/24",
+        "topic": "Find, Filter & Reduce",
+        "durationSec": 127,
+        "summary": "More array functions used constantly in React code: find to locate an item, filter to keep the items that match a condition, and reduce to accumulate an entire array into a single value such as a sum."
+      },
+      {
+        "part": 6,
+        "youtubeVideoId": null,
+        "title": "JSON & Objects — CS5610 FA26 (Oct 19) Part 6/24",
+        "topic": "JSON & Objects",
+        "durationSec": 313,
+        "summary": "The JSON utility library: JSON.stringify converts any data structure into a string so it can be sent to a server, stored or printed while debugging, why JSON replaced XML for data exchange, and declaring objects and navigating them with dot notation."
+      },
+      {
+        "part": 7,
+        "youtubeVideoId": null,
+        "title": "Spread Operator — CS5610 FA26 (Oct 19) Part 7/24",
+        "topic": "Spread Operator",
+        "durationSec": 316,
+        "summary": "Copying arrays and objects onto a target with the spread operator, appending items to the end of an array, merging objects that have no positions, and what happens when two objects declare the same property: the last one wins. Expect a spread question on a quiz or exam."
+      },
+      {
+        "part": 8,
+        "youtubeVideoId": null,
+        "title": "Destructuring — CS5610 FA26 (Oct 19) Part 8/24",
+        "topic": "Destructuring",
+        "durationSec": 387,
+        "summary": "Plucking properties out of an object into local constants with destructuring instead of repeating person dot name, how curly brackets mean construct on the right of the equal sign and destructure on the left, picking only a subset, and destructuring arrays by position."
+      },
+      {
+        "part": 9,
+        "youtubeVideoId": null,
+        "title": "Destructuring Parameters — CS5610 FA26 (Oct 19) Part 9/24",
+        "topic": "Destructuring Parameters",
+        "durationSec": 237,
+        "summary": "Destructuring in function parameters: passing one object and plucking out the properties a and b in any order, compared with positional parameters, and why extra properties do not get in the way."
+      },
+      {
+        "part": 10,
+        "youtubeVideoId": null,
+        "title": "Destructuring Imports — CS5610 FA26 (Oct 19) Part 10/24",
+        "topic": "Destructuring Imports",
+        "durationSec": 372,
+        "summary": "We have been destructuring all along in our imports: a module exports one big object, importing named functions with curly brackets, aliasing them, and default exports that do not need the curly brackets."
+      },
+      {
+        "part": 11,
+        "youtubeVideoId": null,
+        "title": "Optional Chaining — CS5610 FA26 (Oct 19) Part 11/24",
+        "topic": "Optional Chaining",
+        "durationSec": 211,
+        "summary": "Declaring whether object properties are required or optional (a house must have bedrooms, a garage is optional), and the optional chaining operator with defaults that let you deal with missing values without long chains of explicit guards."
+      },
+      {
+        "part": 12,
+        "youtubeVideoId": null,
+        "title": "Template Literals — CS5610 FA26 (Oct 19) Part 12/24",
+        "topic": "Template Literals",
+        "durationSec": 161,
+        "summary": "A refresher on string templates with backticks, which embed expressions inside static strings instead of concatenating, a common need when one language is generating another."
+      },
+      {
+        "part": 13,
+        "youtubeVideoId": null,
+        "title": "Dynamic Styles — CS5610 FA26 (Oct 19) Part 13/24",
+        "topic": "Dynamic Styles",
+        "durationSec": 467,
+        "summary": "Back to React: computing class names with expressions and template literals so styles change with the data, and the style attribute as an object whose properties can be computed, combined and passed around like data rather than hard-coded strings."
+      },
+      {
+        "part": 14,
+        "youtubeVideoId": null,
+        "title": "Server vs Client Components — CS5610 FA26 (Oct 19) Part 14/24",
+        "topic": "Server vs Client Components",
+        "durationSec": 416,
+        "summary": "Where React code runs: generating the page once on the server and caching it for many browsers, when a static landing page favors the server and highly dynamic content favors the client, and how Next.js mixes mostly server components with a few client components."
+      },
+      {
+        "part": 15,
+        "youtubeVideoId": null,
+        "title": "Client & Server-Only APIs — CS5610 FA26 (Oct 19) Part 15/24",
+        "topic": "Client & Server-Only APIs",
+        "durationSec": 351,
+        "summary": "A client component demo using the next/navigation library: Next.js complains when a client-only library runs on the server until the component declares use client. Things only the browser knows (path, search parameters, IP address) versus things only the server can do (reading and writing files)."
+      },
+      {
+        "part": 16,
+        "youtubeVideoId": null,
+        "title": "Component Props & Children — CS5610 FA26 (Oct 19) Part 16/24",
+        "topic": "Component Props & Children",
+        "durationSec": 293,
+        "summary": "How components collaborate: importing and rendering each other, passing data as attributes that arrive as properties, and passing content through the body as children, the strategy layouts use to wrap the content they are given."
+      },
+      {
+        "part": 17,
+        "youtubeVideoId": null,
+        "title": "URL Path Parameters — CS5610 FA26 (Oct 19) Part 17/24",
+        "topic": "URL Path Parameters",
+        "durationSec": 696,
+        "summary": "The URL can carry state: product pages that do not exist until computed from the URL, highlighting the current lab in a table of contents by parsing the path, and dynamic route placeholders in square brackets for values such as unique IDs that cannot be predicted."
+      },
+      {
+        "part": 18,
+        "youtubeVideoId": null,
+        "title": "Kambaz Navigation Highlighting — CS5610 FA26 (Oct 19) Part 18/24",
+        "topic": "Kambaz Navigation Highlighting",
+        "durationSec": 644,
+        "summary": "Making Kambaz more dynamic: building the navigation links from data, reading the path name in a client component, and highlighting the selected link in the main and course navigation sidebars by checking whether the path includes each link."
+      },
+      {
+        "part": 19,
+        "youtubeVideoId": null,
+        "title": "Deriving UI from State — CS5610 FA26 (Oct 19) Part 19/24",
+        "topic": "Deriving UI from State",
+        "durationSec": 330,
+        "summary": "Instead of catching events and changing styles by hand, keep the application state and derive the user interface from it. Why this makes applications easier to test, and why stateful things like a bank balance are harder to verify than stateless ones."
+      },
+      {
+        "part": 20,
+        "youtubeVideoId": null,
+        "title": "Courses JSON Database — CS5610 FA26 (Oct 19) Part 20/24",
+        "topic": "Courses JSON Database",
+        "durationSec": 354,
+        "summary": "Making Kambaz data-driven: collecting the courses into a local JSON database, importing it in the dashboard and iterating over it to render a course card for each course, so adding an object adds a course."
+      },
+      {
+        "part": 21,
+        "youtubeVideoId": null,
+        "title": "Course by ID & Breadcrumbs — CS5610 FA26 (Oct 19) Part 21/24",
+        "topic": "Course by ID & Breadcrumbs",
+        "durationSec": 330,
+        "summary": "Using the course ID from the URL folder in square brackets like a foreign key to find the course object, display its name, and build breadcrumbs from the course name and the current section of the path."
+      },
+      {
+        "part": 22,
+        "youtubeVideoId": null,
+        "title": "Course Modules by ID — CS5610 FA26 (Oct 19) Part 22/24",
+        "topic": "Course Modules by ID",
+        "durationSec": 243,
+        "summary": "Highlighting the course navigation and loading modules from the database, filtering them by the course ID the way a join uses a foreign key, so each course shows only its own modules."
+      },
+      {
+        "part": 23,
+        "youtubeVideoId": null,
+        "title": "Assignments, Users & Enrollments — CS5610 FA26 (Oct 19) Part 23/24",
+        "topic": "Assignments, Users & Enrollments",
+        "durationSec": 443,
+        "summary": "Loading each course's assignments, then users and enrollments, a many-to-many mapping between users and courses, so the People screen of each course lists only the students enrolled in it."
+      },
+      {
+        "part": 24,
+        "youtubeVideoId": null,
+        "title": "Next Up: Zustand & Events — CS5610 FA26 (Oct 19) Part 24/24",
+        "topic": "Next Up: Zustand & Events",
+        "durationSec": 206,
+        "summary": "What comes next week: Zustand for maintaining state that changes as users create, update and delete, telling React when to render, and handling events such as clicks, drags and keystrokes in forms before sending data to a server."
+      }
+    ]
+  },
+  {
+    "lectureId": "cs5610-09_2026-10-20",
+    "course": "CS5610-09",
+    "semester": "FA26",
+    "date": "2026-10-20",
+    "partCount": 20,
+    "clips": [
+      {
+        "part": 2,
+        "youtubeVideoId": null,
+        "title": "Rendering Booleans & Arrays — CS5610 FA26 (Oct 20) Part 2/20",
+        "topic": "Rendering Booleans & Arrays",
+        "durationSec": 216,
+        "summary": "A recap of how React renders data: booleans render as blank so they can guard content as a flag, and arrays render by concatenating their elements without the square brackets and commas."
+      },
+      {
+        "part": 3,
+        "youtubeVideoId": null,
+        "title": "JSON Stringify — CS5610 FA26 (Oct 20) Part 3/20",
+        "topic": "JSON Stringify",
+        "durationSec": 246,
+        "summary": "Serializing data with JSON.stringify so it can be streamed over the wire, stored in a file or in the browser, and printed while debugging so you can watch a data structure change."
+      },
+      {
+        "part": 4,
+        "youtubeVideoId": null,
+        "title": "Spread Operator — CS5610 FA26 (Oct 20) Part 4/20",
+        "topic": "Spread Operator",
+        "durationSec": 553,
+        "summary": "Revisiting spread, which comes in handy constantly in React: copying an array into a new one and appending at the end, spreading objects onto other objects, and the rule that when properties collide the last one wins."
+      },
+      {
+        "part": 5,
+        "youtubeVideoId": null,
+        "title": "Destructuring — CS5610 FA26 (Oct 20) Part 5/20",
+        "topic": "Destructuring",
+        "durationSec": 489,
+        "summary": "JSON quotes its keys and any string can be a key. Then destructuring: plucking name, age, city and country out of a person object in one compact line, curly brackets on the left side versus the right, and array destructuring where position matters instead of names."
+      },
+      {
+        "part": 6,
+        "youtubeVideoId": null,
+        "title": "Destructuring Parameters — CS5610 FA26 (Oct 20) Part 6/20",
+        "topic": "Destructuring Parameters",
+        "durationSec": 332,
+        "summary": "Functions that receive one object parameter and destructure a and b out of it, so the order of the arguments no longer matters, compared with positional parameters where it does."
+      },
+      {
+        "part": 7,
+        "youtubeVideoId": null,
+        "title": "Destructuring Imports & Aliases — CS5610 FA26 (Oct 20) Part 7/20",
+        "topic": "Destructuring Imports & Aliases",
+        "durationSec": 576,
+        "summary": "Exports arrive as one object, so imports can be destructured: importing named functions directly, aliasing them when a name is already taken (at the import itself), and making the most important export the default so it needs no curly brackets."
+      },
+      {
+        "part": 8,
+        "youtubeVideoId": null,
+        "title": "Optional Chaining — CS5610 FA26 (Oct 20) Part 8/20",
+        "topic": "Optional Chaining",
+        "durationSec": 271,
+        "summary": "Optional properties in data structures (a house must have bedrooms but not a garage) and the optional chaining operator, which avoids explicit guards when a value might be missing and falls back to something like not applicable."
+      },
+      {
+        "part": 9,
+        "youtubeVideoId": null,
+        "title": "Dynamic Styles — CS5610 FA26 (Oct 20) Part 9/20",
+        "topic": "Dynamic Styles",
+        "durationSec": 609,
+        "summary": "Moving beyond hard-coded styles: computing class names on the fly with string templates and expressions, and style objects computed inside the component and combined with the spread operator, so styles can be configured from the outside."
+      },
+      {
+        "part": 10,
+        "youtubeVideoId": null,
+        "title": "Server vs Client Rendering — CS5610 FA26 (Oct 20) Part 10/20",
+        "topic": "Server vs Client Rendering",
+        "durationSec": 392,
+        "summary": "React started as code downloaded and run in the browser while earlier efforts rendered content on the server. Next.js lets us choose where each component runs: server components by default, cached and swapped into the DOM, with client components where needed."
+      },
+      {
+        "part": 11,
+        "youtubeVideoId": null,
+        "title": "Client-Only APIs — CS5610 FA26 (Oct 20) Part 11/20",
+        "topic": "Client-Only APIs",
+        "durationSec": 223,
+        "summary": "Things that only happen in the browser: reading the path name, the URL and the port with a client component, information we will need to extract from the client to implement Kambaz."
+      },
+      {
+        "part": 12,
+        "youtubeVideoId": null,
+        "title": "Server-Only APIs — CS5610 FA26 (Oct 20) Part 12/20",
+        "topic": "Server-Only APIs",
+        "durationSec": 517,
+        "summary": "Things that only happen on the server: asking for the operating system, the current working directory and the host name, listing, reading and writing files, environment variables and request headers, contrasted with browser-only features like geolocation (with useEffect next lecture)."
+      },
+      {
+        "part": 13,
+        "youtubeVideoId": null,
+        "title": "Component Props & Children — CS5610 FA26 (Oct 20) Part 13/20",
+        "topic": "Component Props & Children",
+        "durationSec": 453,
+        "summary": "Components passing data: a parent passes attributes that the child receives as properties and destructures, and content passed through the reserved children property, used to build a reusable card that applies the box model (margin, border, padding, rounded corners, shadow) to whatever it wraps."
+      },
+      {
+        "part": 14,
+        "youtubeVideoId": null,
+        "title": "Highlighting with usePathname — CS5610 FA26 (Oct 20) Part 14/20",
+        "topic": "Highlighting with usePathname",
+        "durationSec": 192,
+        "summary": "Reading the URL path with usePathname and using it to compute whether each link should be highlighted, giving a visual cue of which screen you are on."
+      },
+      {
+        "part": 15,
+        "youtubeVideoId": null,
+        "title": "URL Path Parameters — CS5610 FA26 (Oct 20) Part 15/20",
+        "topic": "URL Path Parameters",
+        "durationSec": 433,
+        "summary": "Encoding information in the URL so a page can be recomputed from the URL alone, the common strategy behind large sites, and dynamic route parameters for values such as course IDs that we cannot predict but need to read."
+      },
+      {
+        "part": 16,
+        "youtubeVideoId": null,
+        "title": "Kambaz Navigation Highlighting — CS5610 FA26 (Oct 20) Part 16/20",
+        "topic": "Kambaz Navigation Highlighting",
+        "durationSec": 657,
+        "summary": "Applying these strategies to Kambaz: instead of static sidebars, reading the path name in the Kambaz navigation and course navigation and highlighting the link whose path the URL includes, handling account, dashboard, courses and inbox."
+      },
+      {
+        "part": 17,
+        "youtubeVideoId": null,
+        "title": "Courses JSON Database — CS5610 FA26 (Oct 20) Part 17/20",
+        "topic": "Courses JSON Database",
+        "durationSec": 494,
+        "summary": "Revisiting the dashboard: collecting the courses into a JSON file in a database folder, reading them dynamically and rendering the course cards from data, then updating the links that point into each course."
+      },
+      {
+        "part": 18,
+        "youtubeVideoId": null,
+        "title": "Course Breadcrumbs — CS5610 FA26 (Oct 20) Part 18/20",
+        "topic": "Course Breadcrumbs",
+        "durationSec": 234,
+        "summary": "The course layout pulls the course ID out of the URL, looks the course up in the database, and a client breadcrumb component splits the path name to show the course name and the current section."
+      },
+      {
+        "part": 19,
+        "youtubeVideoId": null,
+        "title": "Course Modules by ID — CS5610 FA26 (Oct 20) Part 19/20",
+        "topic": "Course Modules by ID",
+        "durationSec": 275,
+        "summary": "Replacing hard-coded modules with modules loaded from a file, where each module names its parent course, filtered by the course ID so each course shows its own modules on the modules and home screens."
+      },
+      {
+        "part": 20,
+        "youtubeVideoId": null,
+        "title": "Assignments, People & Enrollments — CS5610 FA26 (Oct 20) Part 20/20",
+        "topic": "Assignments, People & Enrollments",
+        "durationSec": 403,
+        "summary": "Following the same pattern for assignments, then enrollments with two foreign keys (users can be in many courses), so the People table does a nested loop to list the users enrolled in the current course, all passively driven by state encoded in the URL."
+      }
+    ]
+  },
+  {
+    "lectureId": "cs4550-01_2026-10-21",
+    "course": "CS4550-01",
+    "semester": "FA26",
+    "date": "2026-10-21",
+    "partCount": 24,
+    "clips": [
+      {
+        "part": 2,
+        "youtubeVideoId": null,
+        "title": "What Is State? — CS4550 FA26 (Oct 21) Part 2/24",
+        "topic": "What Is State?",
+        "durationSec": 493,
+        "summary": "Wrapping up the client side of the client-server architecture: state is the data that changes over time, and the user interface is a one-to-one mapping of the current state. An overview of what is coming, from useState and useEffect to React context and state libraries."
+      },
+      {
+        "part": 3,
+        "youtubeVideoId": null,
+        "title": "Click Events & Arrow Functions — CS4550 FA26 (Oct 21) Part 3/24",
+        "topic": "Click Events & Arrow Functions",
+        "durationSec": 619,
+        "summary": "Handling user events, starting with clicks: any element can be clickable with the onClick attribute. The syntax for passing a function versus calling it, wrapping calls in arrow functions to pass parameters, and a first look at closures."
+      },
+      {
+        "part": 4,
+        "youtubeVideoId": null,
+        "title": "Passing Functions as Callbacks — CS4550 FA26 (Oct 21) Part 4/24",
+        "topic": "Passing Functions as Callbacks",
+        "durationSec": 318,
+        "summary": "Functions are data in JavaScript, so a component can receive a function as a prop like any string or number. The parent passes a callback so the child can tell the parent something happened."
+      },
+      {
+        "part": 5,
+        "youtubeVideoId": null,
+        "title": "Changing Data & Why Hooks — CS4550 FA26 (Oct 21) Part 5/24",
+        "topic": "Changing Data & Why Hooks",
+        "durationSec": 389,
+        "summary": "How do we change data over time? Plain functions forget their values between calls, unlike a bank account object that remembers its balance. React gives functions memory by letting them hook into its infrastructure."
+      },
+      {
+        "part": 6,
+        "youtubeVideoId": null,
+        "title": "The useState Hook — CS4550 FA26 (Oct 21) Part 6/24",
+        "topic": "The useState Hook",
+        "durationSec": 295,
+        "summary": "The useState hook returns an array with the current value and a mutator function, destructured into a reasonably named variable and its setter by convention. Updating through the mutator tells React to re-render."
+      },
+      {
+        "part": 7,
+        "youtubeVideoId": null,
+        "title": "Why the Counter Gets Stuck — CS4550 FA26 (Oct 21) Part 7/24",
+        "topic": "Why the Counter Gets Stuck",
+        "durationSec": 441,
+        "summary": "A counter that does not work: changing a plain variable updates the DOM once and then gets stuck at seven. The fix with useState, the virtual DOM, the render cycle and why state updates are asynchronous."
+      },
+      {
+        "part": 8,
+        "youtubeVideoId": null,
+        "title": "Boolean State — CS4550 FA26 (Oct 21) Part 8/24",
+        "topic": "Boolean State",
+        "durationSec": 168,
+        "summary": "Boolean state variables for checkboxes and radio buttons: clicking toggles the flag, and the flag drives what renders, like showing done or not done or hiding and showing a whole div."
+      },
+      {
+        "part": 9,
+        "youtubeVideoId": null,
+        "title": "String State — CS4550 FA26 (Oct 21) Part 9/24",
+        "topic": "String State",
+        "durationSec": 202,
+        "summary": "String state variables bound to input fields: the onChange handler receives an event object and reads e.target.value to update the state as the user types."
+      },
+      {
+        "part": 10,
+        "youtubeVideoId": null,
+        "title": "Date State — CS4550 FA26 (Oct 21) Part 10/24",
+        "topic": "Date State",
+        "durationSec": 188,
+        "summary": "A date state variable edited with a date input field. HTML represents dates as strings while JavaScript uses Date objects, so helper functions convert back and forth."
+      },
+      {
+        "part": 11,
+        "youtubeVideoId": null,
+        "title": "Object State — CS4550 FA26 (Oct 21) Part 11/24",
+        "topic": "Object State",
+        "durationSec": 285,
+        "summary": "Objects as state variables, like a person with a name and age: each input copies the current object with the spread operator and overrides one property, converting numbers to the right type."
+      },
+      {
+        "part": 12,
+        "youtubeVideoId": null,
+        "title": "Array State — CS4550 FA26 (Oct 21) Part 12/24",
+        "topic": "Array State",
+        "durationSec": 385,
+        "summary": "Arrays as state variables: adding to the end, deleting by index, and always copying into a new array rather than mutating, with closures remembering each item's index."
+      },
+      {
+        "part": 13,
+        "youtubeVideoId": null,
+        "title": "Profile Form with State — CS4550 FA26 (Oct 21) Part 13/24",
+        "topic": "Profile Form with State",
+        "durationSec": 532,
+        "summary": "Putting it together in a profile form like the one we will use in Kambaz: an object with strings, a date, a role, an array of topic toggles and a theme radio, plus validation errors on save."
+      },
+      {
+        "part": 14,
+        "youtubeVideoId": null,
+        "title": "Sharing State Between Components — CS4550 FA26 (Oct 21) Part 14/24",
+        "topic": "Sharing State Between Components",
+        "durationSec": 241,
+        "summary": "Sharing state: the parent keeps the state and passes both the value and its mutators to children, so a child can update what the parent and its siblings display."
+      },
+      {
+        "part": 15,
+        "youtubeVideoId": null,
+        "title": "Prop Drilling & URL State — CS4550 FA26 (Oct 21) Part 15/24",
+        "topic": "Prop Drilling & URL State",
+        "durationSec": 297,
+        "summary": "Drilling state down through child and grandchild components gets cumbersome. The URL can hold state instead, read back with search params."
+      },
+      {
+        "part": 16,
+        "youtubeVideoId": null,
+        "title": "React Context — CS4550 FA26 (Oct 21) Part 16/24",
+        "topic": "React Context",
+        "durationSec": 798,
+        "summary": "Application state across many components: React context breaks the hierarchical dependency. A provider shares a counter with a reader and a writer without callbacks, then a richer profile object through a custom hook."
+      },
+      {
+        "part": 17,
+        "youtubeVideoId": null,
+        "title": "Zustand State Library — CS4550 FA26 (Oct 21) Part 17/24",
+        "topic": "Zustand State Library",
+        "durationSec": 441,
+        "summary": "React context is verbose, so lighter libraries compete for the job. Zustand is a small state management library: a store with state and actions that any component can reach through a hook, and the next state calculated from the previous one."
+      },
+      {
+        "part": 18,
+        "youtubeVideoId": null,
+        "title": "Zustand To-Do Store — CS4550 FA26 (Oct 21) Part 18/24",
+        "topic": "Zustand To-Do Store",
+        "durationSec": 435,
+        "summary": "A to-do list implemented with a Zustand store: create, read, update and delete actions that copy arrays with spread and target a to-do by its ID."
+      },
+      {
+        "part": 19,
+        "youtubeVideoId": null,
+        "title": "To-Do UI & Profile with Zustand — CS4550 FA26 (Oct 21) Part 19/24",
+        "topic": "To-Do UI & Profile with Zustand",
+        "durationSec": 406,
+        "summary": "Splitting a complex to-do UI into a form and list items that talk to the store directly, without passing state down, and the profile form revisited with Zustand."
+      },
+      {
+        "part": 20,
+        "youtubeVideoId": null,
+        "title": "The useEffect Hook — CS4550 FA26 (Oct 21) Part 20/24",
+        "topic": "The useEffect Hook",
+        "durationSec": 511,
+        "summary": "Side effects like loading to-dos from a server: the useEffect hook runs after rendering, and its dependency array controls when it runs again or only once when empty."
+      },
+      {
+        "part": 21,
+        "youtubeVideoId": null,
+        "title": "Custom Hooks & Window Size — CS4550 FA26 (Oct 21) Part 21/24",
+        "topic": "Custom Hooks & Window Size",
+        "durationSec": 412,
+        "summary": "Hooks seen so far, from useParams to useState, and how to write your own: a useWindowSize custom hook that wraps state and an effect into something reusable."
+      },
+      {
+        "part": 22,
+        "youtubeVideoId": null,
+        "title": "useToggle Hook — CS4550 FA26 (Oct 21) Part 22/24",
+        "topic": "useToggle Hook",
+        "durationSec": 138,
+        "summary": "A very common pattern, a toggle, wrapped in a useToggle custom hook so the boolean logic is not repeated over and over."
+      },
+      {
+        "part": 23,
+        "youtubeVideoId": null,
+        "title": "useLocalStorage Hook — CS4550 FA26 (Oct 21) Part 23/24",
+        "topic": "useLocalStorage Hook",
+        "durationSec": 323,
+        "summary": "A custom hook that syncs state with local storage, so tabs and choices are remembered after a reload and the state can be recreated from scratch."
+      },
+      {
+        "part": 24,
+        "youtubeVideoId": null,
+        "title": "Multiple Toggles & Form Hooks — CS4550 FA26 (Oct 21) Part 24/24",
+        "topic": "Multiple Toggles & Form Hooks",
+        "durationSec": 262,
+        "summary": "Independent toggles built from the same hook, and a single hook that wraps several state variables for a form, including whether it was submitted, for anyone to reuse."
+      }
+    ]
+  },
+  {
+    "lectureId": "cs5610-02_2026-10-26",
+    "course": "CS5610-02",
+    "semester": "FA26",
+    "date": "2026-10-26",
+    "partCount": 22,
+    "clips": [
+      {
+        "part": 1,
+        "youtubeVideoId": null,
+        "title": "Client, Server & Data-Driven UIs — CS5610 FA26 (Oct 26) Part 1/22",
+        "topic": "Client, Server & Data-Driven UIs",
+        "durationSec": 432,
+        "summary": "Wrapping up the client half of the semester before servers: the client-server split, React as a function that renders data structures into a data-driven user interface, state encoded in the URL as online stores do, and servers that must tell thousands of users apart."
+      },
+      {
+        "part": 2,
+        "youtubeVideoId": null,
+        "title": "State & User Events — CS5610 FA26 (Oct 26) Part 2/22",
+        "topic": "State & User Events",
+        "durationSec": 583,
+        "summary": "What application state means, a snapshot of every variable at a moment in time, and how user events change it. Events need client components since a human is in the loop, a tour of common event handlers, and why we skip the verbose older state libraries."
+      },
+      {
+        "part": 3,
+        "youtubeVideoId": null,
+        "title": "Click Events — CS5610 FA26 (Oct 26) Part 3/22",
+        "topic": "Click Events",
+        "durationSec": 414,
+        "summary": "Creating the Lab 4 component and handling a button click with onClick: pass the function itself, not a call with parentheses, remember use client so the handler works, and wrap the call in an arrow function when you need to pass arguments."
+      },
+      {
+        "part": 4,
+        "youtubeVideoId": null,
+        "title": "Event Object — CS5610 FA26 (Oct 26) Part 4/22",
+        "topic": "Event Object",
+        "durationSec": 196,
+        "summary": "Every handler receives an event object from the browser. preventDefault and stopPropagation, and why a click on one branch of a tree could otherwise be handled by its parent and collapse the whole tree."
+      },
+      {
+        "part": 5,
+        "youtubeVideoId": null,
+        "title": "Passing Functions & Callbacks — CS5610 FA26 (Oct 26) Part 5/22",
+        "topic": "Passing Functions & Callbacks",
+        "durationSec": 405,
+        "summary": "Passing a function to a component as an attribute so it can call back with data. Callback functions are how components talk to one another and how asynchronous work like fetching data reports back when it is done."
+      },
+      {
+        "part": 6,
+        "youtubeVideoId": null,
+        "title": "Why the Counter Won't Update — CS5610 FA26 (Oct 26) Part 6/22",
+        "topic": "Why the Counter Won't Update",
+        "durationSec": 383,
+        "summary": "Incrementing a plain variable on click changes the value but never the screen. React keeps a virtual DOM and assumes most content is static, so it only re-renders when you tell it something changed."
+      },
+      {
+        "part": 7,
+        "youtubeVideoId": null,
+        "title": "useState Counter — CS5610 FA26 (Oct 26) Part 7/22",
+        "topic": "useState Counter",
+        "durationSec": 231,
+        "summary": "Turning the counter into a state variable with useState: the hook returns the current value and a setter, and calling setCount tells React to redraw the component with the new value."
+      },
+      {
+        "part": 8,
+        "youtubeVideoId": null,
+        "title": "How useState Works — CS5610 FA26 (Oct 26) Part 8/22",
+        "topic": "How useState Works",
+        "durationSec": 450,
+        "summary": "Why hooks exist: functions cannot keep state the way classes do, so React keeps a map of state for every component. useState returns an array you destructure into any names you like, and only the affected part re-renders."
+      },
+      {
+        "part": 9,
+        "youtubeVideoId": null,
+        "title": "Boolean & String State — CS5610 FA26 (Oct 26) Part 9/22",
+        "topic": "Boolean & String State",
+        "durationSec": 265,
+        "summary": "A boolean state variable toggled true and false to render content dynamically, and a string state variable for a first name updated on every keystroke by reading event.target.value from the input."
+      },
+      {
+        "part": 10,
+        "youtubeVideoId": null,
+        "title": "Date State — CS5610 FA26 (Oct 26) Part 10/22",
+        "topic": "Date State",
+        "durationSec": 331,
+        "summary": "Dates live in two worlds: a JavaScript Date object and the year-month-day string an HTML date input expects. Converting between them so a date picker can read and update a state variable."
+      },
+      {
+        "part": 11,
+        "youtubeVideoId": null,
+        "title": "Object State — CS5610 FA26 (Oct 26) Part 11/22",
+        "topic": "Object State",
+        "durationSec": 419,
+        "summary": "A user object as a single state variable edited through a form: clone the current object with the spread operator, override the one changed property, and convert inputs back to the right data type."
+      },
+      {
+        "part": 12,
+        "youtubeVideoId": null,
+        "title": "Array State — CS5610 FA26 (Oct 26) Part 12/22",
+        "topic": "Array State",
+        "durationSec": 556,
+        "summary": "Arrays in state are never mutated in place. Add an item by building a new array with the old items plus a random value, and remove one by filtering out its index, with closures remembering each line item's index."
+      },
+      {
+        "part": 13,
+        "youtubeVideoId": null,
+        "title": "Keys in Lists — CS5610 FA26 (Oct 26) Part 13/22",
+        "topic": "Keys in Lists",
+        "durationSec": 336,
+        "summary": "Why every item rendered from an array needs a unique key: React uses it to map the virtual DOM back to the real DOM as items are added and removed, and why an ID beats the array index."
+      },
+      {
+        "part": 14,
+        "youtubeVideoId": null,
+        "title": "Sharing State Between Components — CS5610 FA26 (Oct 26) Part 14/22",
+        "topic": "Sharing State Between Components",
+        "durationSec": 430,
+        "summary": "A recap of events and state, then how components share state: a parent declares the state variable and passes the value and the setter down to child components that read and change it."
+      },
+      {
+        "part": 15,
+        "youtubeVideoId": null,
+        "title": "Prop Drilling & URL State — CS5610 FA26 (Oct 26) Part 15/22",
+        "topic": "Prop Drilling & URL State",
+        "durationSec": 290,
+        "summary": "Passing state through a long chain of parents to reach a grandchild is property drilling and makes code brittle. One escape is keeping state in the URL, as online stores do, so any component can read it."
+      },
+      {
+        "part": 16,
+        "youtubeVideoId": null,
+        "title": "React Context — CS5610 FA26 (Oct 26) Part 16/22",
+        "topic": "React Context",
+        "durationSec": 365,
+        "summary": "React's built-in answer to prop drilling: create a context, wrap components in its provider, and like a block-scoped variable, everything inside the provider can reach the shared state."
+      },
+      {
+        "part": 17,
+        "youtubeVideoId": null,
+        "title": "useContext Hook — CS5610 FA26 (Oct 26) Part 17/22",
+        "topic": "useContext Hook",
+        "durationSec": 307,
+        "summary": "A custom hook returns the counter context so any component inside the provider can read the count or change it. It solves property drilling, but it is far more verbose than useState."
+      },
+      {
+        "part": 18,
+        "youtubeVideoId": null,
+        "title": "Zustand Global Store — CS5610 FA26 (Oct 26) Part 18/22",
+        "topic": "Zustand Global Store",
+        "durationSec": 331,
+        "summary": "Zustand as the middle ground: declare a store with state and functions that return the next state, then read and update it from any component, as simply as useState. A shopping cart is a classic global store."
+      },
+      {
+        "part": 19,
+        "youtubeVideoId": null,
+        "title": "Shared State on the Server — CS5610 FA26 (Oct 26) Part 19/22",
+        "topic": "Shared State on the Server",
+        "durationSec": 149,
+        "summary": "Looking ahead: real apps keep state on a server shared by many users at once, like dozens of people fighting over the same seat, which raises consistency problems we tackle once we reach servers."
+      },
+      {
+        "part": 20,
+        "youtubeVideoId": null,
+        "title": "Zustand To-Do Store — CS5610 FA26 (Oct 26) Part 20/22",
+        "topic": "Zustand To-Do Store",
+        "durationSec": 351,
+        "summary": "A to-do list built on a Zustand store: the to-do data structure, a default to-do with an invalid ID, mutators kept in the store, and why pure functions make the store easy to unit test."
+      },
+      {
+        "part": 21,
+        "youtubeVideoId": null,
+        "title": "To-Do CRUD & UI — CS5610 FA26 (Oct 26) Part 21/22",
+        "topic": "To-Do CRUD & UI",
+        "durationSec": 461,
+        "summary": "Create, delete and update a to-do by computing brand new arrays, then pull the store's data and functions into the components: a form to add or update and a list item to edit or delete."
+      },
+      {
+        "part": 22,
+        "youtubeVideoId": null,
+        "title": "useEffect — CS5610 FA26 (Oct 26) Part 22/22",
+        "topic": "useEffect",
+        "durationSec": 554,
+        "summary": "Effects are things the user did not trigger, like loading data when a page opens. useEffect runs a function after render, and its dependency array controls when it runs again. Next week it fetches from a server."
+      }
+    ]
+  }
+]
