@@ -12,7 +12,7 @@ export const CSS_INTRO_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "CSS configures look and feel",
+    title: "Implementing CSS Styles",
     kind: "content",
     bullets: [
       "**CSS** = Cascading Style Sheets — a declarative language for color, space, borders, and layout",
@@ -143,7 +143,7 @@ export const CSS_INTRO_SLIDES: LectureSlide[] = [
   },
   {
     id: "why-avoid",
-    title: "Inline style does not scale",
+    title: "Limits of Inline Styles",
     kind: "content",
     bullets: [
       "The blue-on-white paragraph is convenient — and a warning",

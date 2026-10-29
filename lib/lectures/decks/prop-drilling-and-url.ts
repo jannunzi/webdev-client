@@ -12,7 +12,7 @@ export const PROP_DRILLING_AND_URL_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Three ways to share past a parent",
+    title: "Implementing Prop Drilling and URL State",
     kind: "content",
     bullets: [
       "Lift to a parent and pass props — works until the tree is deep",
@@ -94,7 +94,7 @@ export default function PropDrilling() {
   },
   {
     id: "url-idea",
-    title: "The URL can carry the next state",
+    title: "State Encoded in the URL",
     kind: "content",
     bullets: [
       "Query parameters: `/query-params?a=5&b=10` — optional pairs",

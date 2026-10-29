@@ -12,7 +12,7 @@ export const FORM_STATE_TYPES_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Bind the field to the value",
+    title: "Implementing Form State",
     kind: "content",
     bullets: [
       "A controlled field has `value` (or `checked`) plus `onChange`",

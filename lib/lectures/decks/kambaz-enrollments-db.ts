@@ -12,7 +12,7 @@ export const KAMBAZ_ENROLLMENTS_DB_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Many users, many courses",
+    title: "Implementing Enrollments in MongoDB",
     kind: "content",
     bullets: [
       "UML asterisks on both ends — keeping two arrays in sync is error-prone",

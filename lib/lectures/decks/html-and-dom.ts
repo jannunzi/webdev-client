@@ -12,7 +12,7 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
   },
   {
     id: "html-means",
-    title: "What is HTML?",
+    title: "Introduction to HTML and the DOM",
     kind: "content",
     bullets: [
       "**HTML** stands for **HyperText Markup Language**",

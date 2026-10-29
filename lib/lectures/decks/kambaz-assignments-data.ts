@@ -12,7 +12,7 @@ export const KAMBAZ_ASSIGNMENTS_DATA_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Same filter, two more screens",
+    title: "Implementing Assignments and People Data",
     kind: "content",
     bullets: [
       "Assignments: `db.assignments.filter` where `assignment.course === cid`",

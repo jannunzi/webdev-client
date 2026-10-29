@@ -12,7 +12,7 @@ export const KAMBAZ_MODULES_DATA_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Modules currently ignore the course",
+    title: "Implementing Modules Data",
     kind: "content",
     bullets: [
       "Each module in `modules.json` has a `course` field matching a course `_id`",
@@ -126,7 +126,7 @@ export default function Modules() {
   },
   {
     id: "pattern",
-    title: "Same tools, now on real data",
+    title: "Array Methods on Real Data",
     kind: "content",
     bullets: [
       "`filter` from §3.4.7 keeps this course’s modules",

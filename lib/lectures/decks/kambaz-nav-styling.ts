@@ -12,7 +12,7 @@ export const KAMBAZ_NAV_STYLING_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Pin a 120px icon column",
+    title: "Implementing Navigation Styling",
     kind: "content",
     bullets: [
       "Chapter 1’s sidebar was a plain vertical list of links",

@@ -12,7 +12,7 @@ export const BOOLEANS_AND_CONDITIONALS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Booleans are the raw material of decisions",
+    title: "Implementing Booleans and Conditionals",
     kind: "content",
     bullets: [
       "`&&` and, `||` or, `!` not, then comparisons",

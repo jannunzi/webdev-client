@@ -12,7 +12,7 @@ export const ZUSTAND_COUNTER_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Bear-bones shared state",
+    title: "Implementing a Zustand Counter",
     kind: "content",
     bullets: [
       "Zustand’s own joke about bears — not a misspelling of bare",

@@ -12,7 +12,7 @@ export const CH4_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Pause and test client state",
+    title: "Introduction to the Chapter 4 Quiz",
     kind: "content",
     bullets: [
       "The practice quiz draws **10 items** from this chapter",

@@ -12,7 +12,7 @@ export const MONGOOSE_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Compass is human; Mongoose is Node",
+    title: "Implementing Mongoose",
     kind: "content",
     bullets: [
       "Applications need `find`, `create`, `updateOne`, and `deleteOne`",

@@ -12,7 +12,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Size, then take it off-flow",
+    title: "Implementing Size and Position",
     kind: "content",
     bullets: [
       "Block boxes stretch to the parent unless you set `width` and `height`",
@@ -189,7 +189,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
   },
   {
     id: "relative-intro",
-    title: "Relative leaves a ghost space",
+    title: "Relative Positioning",
     kind: "content",
     bullets: [
       "`position: relative` plus `top` / `left` / `right` / `bottom` nudges the box",
@@ -199,7 +199,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
   },
   {
     id: "relative",
-    title: "Relative leaves a ghost space (code)",
+    title: "Relative Positioning (code)",
     kind: "content",
     code: `.wd-pos-relative-nudge-up-right {
   position: relative;
@@ -267,7 +267,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
   },
   {
     id: "absolute-intro",
-    title: "Absolute leaves the normal flow",
+    title: "Absolute Positioning",
     kind: "content",
     bullets: [
       "`position: absolute` is offset from the nearest positioned ancestor",
@@ -277,7 +277,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
   },
   {
     id: "absolute",
-    title: "Absolute leaves the normal flow (code)",
+    title: "Absolute Positioning (code)",
     kind: "content",
     code: `.wd-pos-absolute-10-10 {
   position: absolute;
@@ -344,7 +344,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
   },
   {
     id: "fixed",
-    title: "Fixed sticks to the viewport",
+    title: "Fixed Positioning",
     kind: "content",
     bullets: [
       "`position: fixed` anchors to the **viewport** (the visible browser window), not an ancestor",
@@ -452,7 +452,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
   },
   {
     id: "zindex",
-    title: "z-index wins the overlap",
+    title: "Stacking Order with z-index",
     kind: "content",
     bullets: [
       "Positioned boxes can overlap. Later HTML wins by default",

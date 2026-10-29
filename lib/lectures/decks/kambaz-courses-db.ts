@@ -12,7 +12,7 @@ export const KAMBAZ_COURSES_DB_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "URLs stay; the source changes",
+    title: "Implementing Courses in MongoDB",
     kind: "content",
     bullets: [
       "Chapter 5 routes still own `/api/courses` — arrays become documents",

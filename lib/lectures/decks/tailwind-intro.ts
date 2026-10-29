@@ -12,7 +12,7 @@ export const TAILWIND_INTRO_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Utilities instead of custom rules",
+    title: "Implementing Tailwind CSS",
     kind: "content",
     bullets: [
       "**Tailwind CSS** is utility-first: compose a look in `className`",

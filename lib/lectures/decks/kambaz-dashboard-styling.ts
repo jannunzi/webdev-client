@@ -12,7 +12,7 @@ export const KAMBAZ_DASHBOARD_STYLING_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Cards in a responsive grid",
+    title: "Implementing Dashboard Styling",
     kind: "content",
     bullets: [
       "Chapter 1 already extracted `CourseCard` inside `#wd-dashboard-courses`",
@@ -23,7 +23,7 @@ export const KAMBAZ_DASHBOARD_STYLING_SLIDES: LectureSlide[] = [
   },
   {
     id: "card-intro",
-    title: "CourseCard gets dressed",
+    title: "Styling the CourseCard",
     kind: "content",
     bullets: [
       "`w-[300px] max-w-full` — ~300px, but shrink on a narrow pane",
@@ -33,7 +33,7 @@ export const KAMBAZ_DASHBOARD_STYLING_SLIDES: LectureSlide[] = [
   },
   {
     id: "card",
-    title: "CourseCard gets dressed (code)",
+    title: "Styling the CourseCard (code)",
     kind: "content",
     code: `import Link from "next/link";
 import Image from "next/image";

@@ -12,7 +12,7 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
   },
   {
     id: "why-forms",
-    title: "Forms collect data",
+    title: "Implementing Web Forms",
     kind: "content",
     bullets: [
       "A `<form>` wraps controls so users fill in and submit them as one unit",

@@ -12,7 +12,7 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
   },
   {
     id: "three-ways",
-    title: "Three ways to send data",
+    title: "Implementing Path and Query Parameters",
     kind: "content",
     bullets: [
       "**Path parameters** — `/lab5/add/2/5` as URL segments",

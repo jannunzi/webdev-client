@@ -12,7 +12,7 @@ export const CH6_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Pause and test Mongo APIs",
+    title: "Introduction to the Chapter 6 Quiz",
     kind: "content",
     bullets: [
       "The practice quiz draws **10 items** from this chapter",

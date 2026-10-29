@@ -12,7 +12,7 @@ export const USE_EFFECT_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Render is a transformation",
+    title: "Implementing useEffect",
     kind: "content",
     bullets: [
       "The component body should compute JSX from props and state",

@@ -12,7 +12,7 @@ export const CSS_ROTATION_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Paint tricks after the layout",
+    title: "Implementing Rotation and Gradients",
     kind: "content",
     bullets: [
       "Lab 2’s graded path stopped at flex and media queries",

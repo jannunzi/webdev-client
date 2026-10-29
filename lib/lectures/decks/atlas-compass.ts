@@ -12,7 +12,7 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Compass talks to the cloud",
+    title: "Connecting Compass to Atlas",
     kind: "content",
     bullets: [
       "Local Compass is still on `mongodb://127.0.0.1:27017`",

@@ -12,7 +12,7 @@ export const REACT_ICONS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Icons are components, not images",
+    title: "Implementing React Icons",
     kind: "content",
     bullets: [
       "**React Icons** bundles Font Awesome, Heroicons, and other families as JSX",
@@ -124,7 +124,7 @@ export default function ReactIconsSampler() {
   },
   {
     id: "historical",
-    title: "Font Awesome was the old path",
+    title: "Font Awesome Alternative",
     kind: "content",
     bullets: [
       "This course uses **React Icons** so icons ship with the app and tree-shake",
@@ -133,7 +133,7 @@ export default function ReactIconsSampler() {
   },
   {
     id: "kambaz-later",
-    title: "These icons dress Kambaz",
+    title: "Icons Used in Kambaz",
     kind: "content",
     bullets: [
       "Dashboard link → `AiOutlineDashboard`",

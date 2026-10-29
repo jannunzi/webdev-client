@@ -12,7 +12,7 @@ export const ATLAS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "127.0.0.1 is empty on Render",
+    title: "Implementing a Cloud Database",
     kind: "content",
     bullets: [
       "Local `mongod` lives on your laptop — Compass at `27017`",

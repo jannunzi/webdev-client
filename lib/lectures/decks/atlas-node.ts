@@ -12,7 +12,7 @@ export const ATLAS_NODE_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Render needs a Drivers URI",
+    title: "Connecting Node.js to Atlas",
     kind: "content",
     bullets: [
       "Compass can see Atlas. Mongoose on Render still cannot",

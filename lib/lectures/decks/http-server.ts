@@ -12,7 +12,7 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "The client cannot keep the data",
+    title: "Implementing an HTTP Server",
     kind: "content",
     bullets: [
       "Chapters 1–4 built the Next.js UI. Refresh still resets Kambaz",

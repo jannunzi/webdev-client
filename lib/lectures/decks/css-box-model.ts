@@ -12,7 +12,7 @@ export const CSS_BOX_MODEL_SLIDES: LectureSlide[] = [
   },
   {
     id: "layers",
-    title: "Four layers of every box",
+    title: "Implementing the CSS Box Model",
     kind: "content",
     bullets: [
       "**Content** — the text or children",

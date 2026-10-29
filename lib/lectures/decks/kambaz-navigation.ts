@@ -12,7 +12,7 @@ export const KAMBAZ_NAVIGATION_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Chrome stays while screens swap",
+    title: "Implementing Kambaz Navigation",
     kind: "content",
     bullets: [
       "Account, Dashboard, Calendar, Inbox, and Labs should stay visible",

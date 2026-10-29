@@ -12,7 +12,7 @@ export const TAILWIND_COLORS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "bg-color-shade",
+    title: "Implementing Tailwind Colors",
     kind: "content",
     bullets: [
       "Background utilities: `bg-{color}-{shade}`",

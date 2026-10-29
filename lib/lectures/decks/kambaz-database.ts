@@ -12,7 +12,7 @@ export const KAMBAZ_DATABASE_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Kambaz is the app you keep",
+    title: "Implementing the Kambaz Database",
     kind: "content",
     bullets: [
       "Chapters 1–2 built screens whose markup never changed",

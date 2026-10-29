@@ -12,7 +12,7 @@ export const SPREAD_AND_DESTRUCTURING_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Copy a structure, or pull it apart",
+    title: "Implementing Spread and Destructuring",
     kind: "content",
     bullets: [
       "`...` **spreads** (copies) an array or object into another",

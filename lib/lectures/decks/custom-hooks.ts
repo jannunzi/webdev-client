@@ -12,7 +12,7 @@ export const CUSTOM_HOOKS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "A custom hook is a use function",
+    title: "Implementing Custom Hooks",
     kind: "content",
     bullets: [
       "A function whose name starts with `use` and that calls other hooks",

@@ -12,7 +12,7 @@ export const KAMBAZ_MODULES_DB_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "One course owns many modules",
+    title: "Implementing Modules in MongoDB",
     kind: "content",
     bullets: [
       "UML: `1` on the course end, `*` on the modules end",

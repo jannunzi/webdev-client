@@ -12,7 +12,7 @@ export const REDUCE_AND_JSON_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "One value in, or the real structure",
+    title: "Implementing reduce and JSON",
     kind: "content",
     bullets: [
       "`reduce` folds an array down to one value — a sum, a string, a group",

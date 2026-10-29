@@ -12,7 +12,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Route Handlers live in /api",
+    title: "Implementing Next.js Route Handlers",
     kind: "content",
     bullets: [
       "Express is this chapter’s spine — sibling process, port 4000",

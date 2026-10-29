@@ -12,7 +12,7 @@ export const CSS_MEDIA_QUERIES_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Same markup, different viewports",
+    title: "Implementing Media Queries",
     kind: "content",
     bullets: [
       "**Media queries** apply a CSS block only when the browser matches a condition",

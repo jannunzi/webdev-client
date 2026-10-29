@@ -12,7 +12,7 @@ export const MONGO_APIS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "The browser never imports Mongoose",
+    title: "Implementing MongoDB APIs",
     kind: "content",
     bullets: [
       "DAO hides the vendor. Routes turn HTTP into function calls",

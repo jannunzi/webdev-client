@@ -12,7 +12,7 @@ export const KAMBAZ_DASHBOARD_DATA_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "The grid is db.courses.map",
+    title: "Implementing a Data-Driven Dashboard",
     kind: "content",
     bullets: [
       "Refactor the §2.4.2 dashboard so it maps JSON, not three hardcoded cards",

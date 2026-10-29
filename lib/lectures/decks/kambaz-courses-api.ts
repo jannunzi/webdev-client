@@ -12,7 +12,7 @@ export const KAMBAZ_COURSES_API_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Courses leave the Zustand store",
+    title: "Implementing the Courses API",
     kind: "content",
     bullets: [
       "Chapter 4 Zustand was the published list. Refresh still resets it",

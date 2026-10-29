@@ -12,7 +12,7 @@ export const LOCAL_MONGO_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Arrays die when Node restarts",
+    title: "Implementing a Local MongoDB",
     kind: "content",
     bullets: [
       "Chapter 5 stored courses and users in process memory",

@@ -12,7 +12,7 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "JSON is still a snapshot",
+    title: "Implementing Course State Management",
     kind: "content",
     bullets: [
       "Chapter 3 made Kambaz data-driven. Add / Edit / Delete still do nothing",
@@ -22,7 +22,7 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
   },
   {
     id: "where-each",
-    title: "Pick the tool that fits",
+    title: "State Management Options",
     kind: "content",
     bullets: [
       "`useState` — form draft, dialog open, one-screen UI",
@@ -33,7 +33,7 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
   },
   {
     id: "why-not-local",
-    title: "Dashboard useState is not enough",
+    title: "Limits of Dashboard useState",
     kind: "content",
     bullets: [
       "Add would work on Dashboard and nowhere else",
@@ -55,7 +55,7 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
   },
   {
     id: "store",
-    title: "Course type, emptyCourse, store type",
+    title: "Declaring Course State Datatypes",
     kind: "content",
     code: `"use client";
 
@@ -86,7 +86,7 @@ type CoursesStore = {
   },
   {
     id: "store-part-2",
-    title: "Seed and add, delete, update",
+    title: "Course CRUD Operations",
     kind: "content",
     code: `export const useCoursesStore = create<CoursesStore>((set) => ({
   courses: coursesJson,
@@ -115,7 +115,7 @@ export { emptyCourse };`,
   },
   {
     id: "store-live",
-    title: "The list any screen can share",
+    title: "Dashboard Demo",
     kind: "demo",
     bullets: [
       "The real store lives in `store/coursesStore.ts` — import the hook",

@@ -12,7 +12,7 @@ export const KAMBAZ_ASSIGNMENTS_STYLING_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "A table, then a list, then a form",
+    title: "Implementing Assignments Styling",
     kind: "content",
     bullets: [
       "People is new in this chapter — no Chapter 1 prototype",

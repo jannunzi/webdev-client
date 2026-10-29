@@ -12,7 +12,7 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "An object names each value",
+    title: "Implementing JavaScript Objects",
     kind: "content",
     bullets: [
       "Curly braces hold **property: value** pairs, separated by commas",
@@ -87,7 +87,7 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "console-intro",
-    title: "console.log writes off the page",
+    title: "Logging with console.log",
     kind: "content",
     bullets: [
       "Right-click Lab 3 → Inspect → **Console** tab",
@@ -98,7 +98,7 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "console",
-    title: "console.log writes off the page (code)",
+    title: "Logging with console.log (code)",
     kind: "content",
     code: `import VariablesAndConstants from "./VariablesAndConstants";
 import VariableTypes from "./VariableTypes";

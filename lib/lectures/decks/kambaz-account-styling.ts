@@ -12,7 +12,7 @@ export const KAMBAZ_ACCOUNT_STYLING_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Same patterns, account chrome",
+    title: "Implementing Account Screen Styling",
     kind: "content",
     bullets: [
       "Sign in, Sign up, and Profile from §1.4.2 get Tailwind form classes",
@@ -22,7 +22,7 @@ export const KAMBAZ_ACCOUNT_STYLING_SLIDES: LectureSlide[] = [
   },
   {
     id: "signin-intro",
-    title: "Sign in is the template",
+    title: "Styling the Sign In Screen",
     kind: "content",
     bullets: [
       "`max-w-sm` keeps the form narrow",
@@ -32,7 +32,7 @@ export const KAMBAZ_ACCOUNT_STYLING_SLIDES: LectureSlide[] = [
   },
   {
     id: "signin",
-    title: "Sign in is the template (code)",
+    title: "Styling the Sign In Screen (code)",
     kind: "content",
     code: `<div id="wd-signin-screen" className="max-w-sm">
   <h1 className="mb-3 text-2xl font-semibold">Sign in</h1>

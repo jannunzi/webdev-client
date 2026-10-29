@@ -12,7 +12,7 @@ export const KAMBAZ_OVERVIEW_SLIDES: LectureSlide[] = [
   },
   {
     id: "what",
-    title: "Kambaz is an LMS prototype",
+    title: "Introduction to Kambaz",
     kind: "content",
     bullets: [
       "**Kambaz** is inspired by a popular online learning management system",
@@ -111,7 +111,7 @@ export default function Kambaz() {
   },
   {
     id: "structure-first",
-    title: "Structure first — CSS later",
+    title: "Structure Before Styling",
     kind: "content",
     bullets: [
       "These screens use browser-default HTML: inputs, `Link`s, a `<table>` for chrome",

@@ -12,7 +12,7 @@ export const CSS_FLEX_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Flex is a purpose-built row",
+    title: "Implementing Flexbox Layouts",
     kind: "content",
     bullets: [
       "`display: flex` on a **container** lines up its children",
