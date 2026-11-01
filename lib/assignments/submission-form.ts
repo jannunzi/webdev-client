@@ -92,13 +92,14 @@ export function preparePublicAssignmentCheck(input: {
   return { ok: true, githubUrl, vercelUrl };
 }
 
-/** A2 and A3 Save/submit require a GitHub URL. A1 stays optional. */
+/** A2, A3, and A4 Save/submit require a GitHub URL. A1 stays optional. */
 export function missingA2GithubMessage(
   assignmentId: string,
   githubUrl: string,
 ): string | null {
-  if (assignmentId !== "a2" && assignmentId !== "a3") return null;
+  if (assignmentId !== "a2" && assignmentId !== "a3" && assignmentId !== "a4") return null;
   if (githubUrl.trim()) return null;
+  if (assignmentId === "a4") return ASSIGNMENT_STUDENT_COPY.a4GithubRequired;
   return assignmentId === "a3"
     ? ASSIGNMENT_STUDENT_COPY.a3GithubRequired
     : ASSIGNMENT_STUDENT_COPY.a2GithubRequired;

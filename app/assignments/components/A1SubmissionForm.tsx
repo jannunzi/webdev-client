@@ -209,7 +209,9 @@ export default function A1SubmissionForm({
         </p>
       )}
       <p className="mt-0 text-neutral-800">
-        {assignmentId === "a3"
+        {assignmentId === "a4"
+          ? "Paste the Vercel address for your a4 branch — the one Vercel made when you pushed a4 (§4.12), which looks like https://webdev-client-git-a4-yourname.vercel.app — and your repository’s GitHub URL (the repository page or any branch page works). Checks open that address signed out, then Labs, Lab 4 (and two path-parameter pages), the Dashboard, the Modules screens, and Sign in and Profile."
+          : assignmentId === "a3"
           ? "Paste the Vercel address for your a3 branch — the one Vercel made when you pushed a3 (§3.11), which looks like https://webdev-client-git-a3-yourname.vercel.app — and your repository’s GitHub URL (the repository page or any branch page works). Checks open that address, then Labs, Lab 3 (and two /labs/lab3/add pages), the Dashboard, and the Kambaz course screens."
           : assignmentId === "a2"
           ? "Paste the a2 branch preview URL (the hostname contains -git-a2-) and your repository’s GitHub URL (the root or …/tree/a2 both work). Checks open the preview, then fetch Labs, Lab 2, the Tailwind page, and Kambaz screens."
@@ -262,7 +264,7 @@ export default function A1SubmissionForm({
               htmlFor={`${assignmentId}-github-url`}
               className="font-sans text-sm font-semibold"
             >
-              {assignmentId === "a2" || assignmentId === "a3"
+              {assignmentId === "a2" || assignmentId === "a3" || assignmentId === "a4"
                 ? "GitHub repository URL"
                 : "Public GitHub repository URL (optional)"}
             </label>
@@ -272,9 +274,9 @@ export default function A1SubmissionForm({
               type="url"
               inputMode="url"
               autoComplete="url"
-              required={assignmentId === "a2" || assignmentId === "a3"}
+              required={assignmentId === "a2" || assignmentId === "a3" || assignmentId === "a4"}
               placeholder={
-                assignmentId === "a2" || assignmentId === "a3"
+                assignmentId === "a2" || assignmentId === "a3" || assignmentId === "a4"
                   ? `https://github.com/yourname/webdev-client/tree/${assignmentId}`
                   : "https://github.com/yourname/webdev-client"
               }

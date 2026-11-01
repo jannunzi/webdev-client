@@ -9,15 +9,10 @@ import {
   a4LabsNavStructurePassed,
 } from "./a4-structure";
 import type { AssignmentChecker } from "./checker-types";
+import { A4_CHECKER_RULES_VERSION } from "./checker-version";
 
-/**
- * A4 history:
- *   v1: structure-only checks on the first (signed-out) render: Lab 4
- *       state widgets, path-parameter probes, Dashboard CRUD controls,
- *       Modules controls, and the signed-out account screens.
- * Kept here, not in checker-version.ts, until A4 is turned on.
- */
-export const A4_CHECKER_RULES_VERSION = "a4-rules-v1";
+export { A4_CHECKER_RULES_VERSION };
+
 
 export const A4_CHECKER_FOLLOWUP_CAP = 12;
 
@@ -97,6 +92,11 @@ export const A4_CHECKER: AssignmentChecker = {
   assignmentId: "a4",
   rulesVersion: A4_CHECKER_RULES_VERSION,
   idsOptional: true,
+  lowercaseRoutesOnly: true,
+  routeCaseHints: [
+    { path: "/labs/lab4", capitalized: "/Labs/Lab4" },
+    { path: "/dashboard", capitalized: "/Dashboard" },
+  ],
   structureFallbacks: A4_STRUCTURE_FALLBACKS,
   idHasContent: a4IdHasContent,
   reviewGates: A4_REVIEW_GATES,

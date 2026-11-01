@@ -1,3 +1,4 @@
+import { getAssignment } from "./catalog";
 /**
  * A4 checker against a student project built from the Chapter 4 listings
  * in book order, with the On your own steps the checker grades done exactly
@@ -125,6 +126,10 @@ const OYO_ROWS = CRITERIA.filter((row) => row.onYourOwn).map((row) => row.id);
 /* -------------------------------- tests -------------------------------- */
 
 describe("A4 checker (structure only, ids optional)", () => {
+  // The fixture's Dashboard and Modules markup is server-rendered from the
+  // current Chapter 4 embeds (store-based Dashboard + CourseCard, Modules with
+  // ModulesControls / ModuleEditor / ModuleControlButtons), plus the
+  // On-your-own number and start-date inputs.
   it("scores the book build 100 / 100 with points and percentage", async () => {
     const { points, failed, review, recheck } = await grade(fromBuild);
     assert.deepEqual(failed, []);
@@ -255,10 +260,13 @@ describe("A4 checker (structure only, ids optional)", () => {
 });
 
 describe("A4 wiring", () => {
-  it("is registered with the other checkers but does not open submissions", () => {
+  it("is registered with the other checkers and opens URL submissions", () => {
     assert.equal(getChecker("a4"), A4_CHECKER);
     assert.equal(criterionCoverage("a4", "a4-kambaz-modules"), "auto");
-    assert.equal(supportsUrlSubmission("a4"), false);
+    assert.equal(supportsUrlSubmission("a4"), true);
+    assert.equal(getAssignment("a4")?.status, "ready");
+    assert.equal(CRITERIA.reduce((sum, row) => sum + row.points, 0), 100);
+    assert.equal(A4_CHECKER.lowercaseRoutesOnly, true);
   });
 
   it("verifies every rubric item at a seeded path, with no element ids", () => {
