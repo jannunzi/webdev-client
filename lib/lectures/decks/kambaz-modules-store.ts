@@ -42,19 +42,14 @@ import { create } from "zustand";
 import modulesJson from "../database/modules.json";
 
 export type Lesson = {
-  _id: string;
-  name: string;
-  description: string;
-  module: string;
+  _id: string;          name: string;
+  description: string;  module: string;
 };
 
 export type CourseModule = {
-  _id: string;
-  name: string;
-  description: string;
-  course: string;
-  lessons?: Lesson[];
-  editing?: boolean;
+  _id: string;          name: string;
+  description: string;  course: string;
+  lessons?: Lesson[];   editing?: boolean;
 };
 
 type ModulesStore = {
@@ -179,23 +174,14 @@ export default function ModuleEditor() {
           <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
             <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
               <h3 className="m-0 text-lg font-semibold">Add Module</h3>
-              <button
-                type="button"
-                onClick={() => setShow(false)}
-                className="text-2xl leading-none text-neutral-500"
-                aria-label="Close"
-              >
+              <button type="button" aria-label="Close" className="text-2xl leading-none text-neutral-500"
+                onClick={() => setShow(false)} >
                 ×
               </button>
             </div>
             <div className="px-4 py-3">
-              <input
-                className="w-full rounded border border-neutral-300 px-3 py-1.5"
-                value={moduleName}
-                onChange={(e) => setModuleName(e.target.value)}
-                id="wd-add-module-name"
-                placeholder="Module name"
-              />
+              <input value={moduleName} placeholder="Module name" id="wd-add-module-name" className="w-full rounded border border-neutral-300 px-3 py-1.5"
+                onChange={(e) => setModuleName(e.target.value)} />
             </div>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/modules/ModuleEditor.tsx",
@@ -207,24 +193,16 @@ export default function ModuleEditor() {
     title: "Cancel and Add Module buttons",
     kind: "content",
     code: `            <div className="flex justify-end gap-2 border-t border-neutral-200 px-4 py-3">
-              <button
-                type="button"
-                onClick={() => setShow(false)}
-                className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
-                id="wd-add-module-cancel"
-              >
+              <button type="button" id="wd-add-module-cancel" className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+                onClick={() => setShow(false)} >
                 Cancel
               </button>
-              <button
-                type="button"
+              <button type="button" id="wd-add-module-submit" className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
                 onClick={() => {
                   addModule({ name: moduleName, course: String(cid) });
                   setModuleName("");
                   setShow(false);
-                }}
-                className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
-                id="wd-add-module-submit"
-              >
+                }} >
                 Add Module
               </button>
             </div>
@@ -260,16 +238,10 @@ export default function ModuleEditor() {
 export default function ModulesControls() {
   return (
     <div id="wd-modules-controls" className="mb-3 flex flex-wrap items-center gap-2">
-      <button
-        type="button"
-        className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
-      >
+      <button type="button" className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm" >
         Collapse All
       </button>
-      <button
-        type="button"
-        className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
-      >
+      <button type="button" className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm" >
         View Progress
       </button>`,
     codeLanguage: "tsx",
@@ -280,10 +252,7 @@ export default function ModulesControls() {
     id: "controls-part-2",
     title: "Publish All select and ModuleEditor",
     kind: "content",
-    code: `      <select
-        defaultValue="publish-all"
-        className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
-      >
+    code: `      <select defaultValue="publish-all" className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm" >
         <option value="publish-all">Publish All</option>
         <option value="unpublish-all">Unpublish All</option>
       </select>
@@ -327,16 +296,10 @@ export default function ModuleControlButtons({
   const editModule = useModulesStore((state) => state.editModule);
   return (
     <div className="flex items-center gap-2">
-      <FaPencilAlt
-        className="cursor-pointer text-blue-600"
-        onClick={() => editModule(moduleId)}
-        title="Edit module"
-      />
-      <FaTrash
-        className="cursor-pointer text-red-600"
-        onClick={() => deleteModule(moduleId)}
-        title="Delete module"
-      />
+      <FaPencilAlt title="Edit module" className="cursor-pointer text-blue-600"
+        onClick={() => editModule(moduleId)} />
+      <FaTrash title="Delete module" className="cursor-pointer text-red-600"
+        onClick={() => deleteModule(moduleId)} />
       <FaCheckCircle className="text-green-600" />
       <BsPlus className="text-3xl" />
       <IoEllipsisVertical className="text-xl" />
@@ -374,9 +337,7 @@ export default function Module({ module }: { module: CourseModule }) {
     kind: "content",
     code: `        <span className="min-w-0 flex-1">
           {module.editing ? (
-            <input
-              className="w-1/2 rounded border border-neutral-300 px-2 py-1 text-base"
-              defaultValue={module.name}
+            <input defaultValue={module.name} className="w-1/2 rounded border border-neutral-300 px-2 py-1 text-base"
               onChange={(e) =>
                 updateModule({ ...module, name: e.target.value })
               }
