@@ -42,14 +42,12 @@ import { create } from "zustand";
 import modulesJson from "../database/modules.json";
 
 export type Lesson = {
-  _id: string;          name: string;
-  description: string;  module: string;
+  _id: string;   name: string;   description: string;   module: string;
 };
 
 export type CourseModule = {
-  _id: string;          name: string;
-  description: string;  course: string;
-  lessons?: Lesson[];   editing?: boolean;
+  _id: string;      name: string;         description: string;
+  course: string;   lessons?: Lesson[];   editing?: boolean;
 };
 
 type ModulesStore = {
@@ -287,11 +285,7 @@ import { BsPlus } from "react-icons/bs";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { useModulesStore } from "../../../store/modulesStore";
 
-export default function ModuleControlButtons({
-  moduleId,
-}: {
-  moduleId: string;
-}) {
+export default function ModuleControlButtons({ moduleId }: { moduleId: string }) {
   const deleteModule = useModulesStore((state) => state.deleteModule);
   const editModule = useModulesStore((state) => state.editModule);
   return (
@@ -315,7 +309,7 @@ export default function ModuleControlButtons({
     kind: "content",
     bullets: [
       "A module row shows its name, its buttons and its lessons",
-      "While being renamed, the name becomes a text input; Enter saves it",
+      "To rename, the name becomes a text input; Enter saves it",
       "The next three slides show this row component, `Module`, in parts",
     ],
     code: `import ModuleControlButtons from "./ModuleControlButtons";
@@ -361,14 +355,18 @@ export default function Module({ module }: { module: CourseModule }) {
     title: "Control buttons and lessons",
     kind: "content",
     code: `        <span className="ms-2 flex items-center gap-2">
+
           <ModuleControlButtons moduleId={module._id} />
+
         </span>
       </div>
+
       <ul className="wd-lessons m-0 list-none p-0">
         {module.lessons?.map((lesson) => (
           <Lesson key={lesson._id} title={lesson.name} />
         ))}
       </ul>
+
     </li>
   );
 }`,
@@ -412,7 +410,9 @@ export default function Modules() {
     kind: "content",
     code: `  return (
     <div className="wd-modules">
+
       <ModulesControls />
+
       <ul id="wd-modules" className="m-0 list-none p-0">
         {modules
           .filter((module) => module.course === cid)
@@ -420,6 +420,7 @@ export default function Modules() {
             <Module key={module._id} module={module} />
           ))}
       </ul>
+
     </div>
   );
 }`,
