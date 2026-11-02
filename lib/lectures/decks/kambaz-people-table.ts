@@ -55,7 +55,7 @@ export default async function PeopleTablePage({
       "Goal: a form above the table with first and last name inputs",
       "Add creates a user and enrolls them in this course",
       "Each row gets Edit, which loads it into the form, and Delete",
-      "The next three slides build the table in parts",
+      "The next five slides build the table in parts",
     ],
   },
   {
@@ -108,8 +108,16 @@ export default function PeopleTable({ cid }: { cid: string }) {
           onClick={addUser} >                Add    </button>
         <button id="wd-update-user-click" type="button" className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
           onClick={() => updateUser(user)} > Update </button>
-      </div>
-      <table className="w-full border-collapse text-left text-sm">
+      </div>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx",
+    codeStartLine: 38,
+  },
+  {
+    id: "people-table-part-3",
+    title: "People Table Head",
+    kind: "content",
+    code: `      <table className="w-full border-collapse text-left text-sm">
         <thead>
           <tr className="border-b border-neutral-300">
             <th className="p-2">Name</th>
@@ -123,10 +131,10 @@ export default function PeopleTable({ cid }: { cid: string }) {
         </thead>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx",
-    codeStartLine: 38,
+    codeStartLine: 50,
   },
   {
-    id: "people-table-part-3",
+    id: "people-table-part-4",
     title: "Table Row per Enrolled User",
     kind: "content",
     code: `        <tbody>
@@ -141,8 +149,16 @@ export default function PeopleTable({ cid }: { cid: string }) {
               <td className="wd-section p-2">{usr.section}</td>
               <td className="wd-role p-2">{usr.role}</td>
               <td className="wd-last-activity p-2">{usr.lastActivity}</td>
-              <td className="wd-total-activity p-2">{usr.totalActivity}</td>
-              <td className="p-2 text-nowrap">
+              <td className="wd-total-activity p-2">{usr.totalActivity}</td>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx",
+    codeStartLine: 82,
+  },
+  {
+    id: "people-table-part-5",
+    title: "Edit and Delete Buttons Column",
+    kind: "content",
+    code: `              <td className="p-2 text-nowrap">
                 <button type="button" className="rounded bg-yellow-400 px-2 py-1 text-xs font-medium"
                   onClick={() => setUser(usr)} >        Edit   </button>
                 <button type="button" className="ms-2 rounded bg-red-600 px-2 py-1 text-xs font-medium text-white"
@@ -157,7 +173,7 @@ export default function PeopleTable({ cid }: { cid: string }) {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx",
-    codeStartLine: 82,
+    codeStartLine: 95,
   },
   {
     id: "people-table-live",
