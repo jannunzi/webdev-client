@@ -143,20 +143,10 @@ export default function PeopleTable({ cid }: { cid: string }) {
               <td className="wd-last-activity p-2">{usr.lastActivity}</td>
               <td className="wd-total-activity p-2">{usr.totalActivity}</td>
               <td className="p-2 text-nowrap">
-                <button
-                  type="button"
-                  className="rounded bg-yellow-400 px-2 py-1 text-xs font-medium"
-                  onClick={() => setUser(usr)}
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  className="ms-2 rounded bg-red-600 px-2 py-1 text-xs font-medium text-white"
-                  onClick={() => deleteUser(usr._id)}
-                >
-                  Delete
-                </button>
+                <button type="button" className="rounded bg-yellow-400 px-2 py-1 text-xs font-medium"
+                  onClick={() => setUser(usr)} >        Edit   </button>
+                <button type="button" className="ms-2 rounded bg-red-600 px-2 py-1 text-xs font-medium text-white"
+                  onClick={() => deleteUser(usr._id)} > Delete </button>
               </td>
             </tr>
           ))}
