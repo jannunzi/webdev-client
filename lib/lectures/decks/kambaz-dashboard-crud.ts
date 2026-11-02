@@ -68,15 +68,11 @@ export default function Dashboard() {
       <hr />
       <h5 className="flex flex-wrap items-center gap-2">
         New Course
-        <button
-          type="button" id="wd-add-new-course-click"
-          className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+        <button type="button" id="wd-add-new-course-click" className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
           onClick={() => addCourse(course)} >
           Add
         </button>
-        <button
-          type="button" id="wd-update-course-click"
-          className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
+        <button type="button" id="wd-update-course-click" className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
           onClick={() => updateCourse(course)} >
           Update
         </button>
@@ -144,7 +140,7 @@ export default function Dashboard() {
   },
   {
     id: "delete",
-    title: "Edit and Delete Buttons on a Card",
+    title: "Adding Edit and Delete Buttons to the CourseCard Component",
     kind: "content",
     bullets: [
       "Each course card needs Edit and Delete buttons",
@@ -158,7 +154,7 @@ export default function Dashboard() {
   },
   {
     id: "card-props",
-    title: "CourseCard takes course and onEdit",
+    title: "CourseCard takes course and onEdit properties",
     kind: "content",
     code: `import Link from "next/link";
 import Image from "next/image";
@@ -184,14 +180,18 @@ export default function CourseCard({
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
       <Link href={\`/courses/\${course._id}/home\`}
         className="wd-dashboard-course-link block text-neutral-900 no-underline" >
+
         <Image src={course.image} width={300} height={160} alt={course.name} className="h-40 w-full object-cover" />
+
         <div className="p-4">
           <h5 className="wd-dashboard-course-title m-0 mb-2 truncate text-lg font-semibold whitespace-nowrap">
             {course.name}
           </h5>
+
           <p className="wd-dashboard-course-description m-0 mb-3 h-[100px] overflow-hidden text-sm text-neutral-600">
             {course.description}
           </p>
+
           <button type="button" className="inline-flex items-center justify-center rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white" >
             Go
           </button>`,
