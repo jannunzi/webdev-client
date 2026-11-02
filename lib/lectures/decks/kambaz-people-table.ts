@@ -73,17 +73,8 @@ import {
 } from "../../../../account/AccountContext";
 
 const emptyUser: User = {
-  _id: "0",
-  username: "new_user",
-  password: "",
-  firstName: "New",
-  lastName: "User",
-  email: "",
-  role: "STUDENT",
-  loginId: "",
-  section: "S101",
-  lastActivity: "",
-  totalActivity: "",
+  _id: "0", username: "new_user", password: "", firstName: "New", lastName: "User",
+  email: "", role: "STUDENT", loginId: "", section: "S101", lastActivity: "", totalActivity: "",
 };
 
 export default function PeopleTable({ cid }: { cid: string }) {
@@ -109,34 +100,14 @@ export default function PeopleTable({ cid }: { cid: string }) {
     code: `  return (
     <div id="wd-people-table" className="overflow-x-auto">
       <div className="mb-3 flex flex-wrap items-center gap-2">
-        <input
-          className="rounded border border-neutral-300 px-3 py-1.5"
-          value={user.firstName}
-          onChange={(e) => setUser({ ...user, firstName: e.target.value })}
-          id="wd-user-first-name"
-        />
-        <input
-          className="rounded border border-neutral-300 px-3 py-1.5"
-          value={user.lastName}
-          onChange={(e) => setUser({ ...user, lastName: e.target.value })}
-          id="wd-user-last-name"
-        />
-        <button
-          type="button"
-          className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
-          id="wd-add-user-click"
-          onClick={addUser}
-        >
-          Add
-        </button>
-        <button
-          type="button"
-          className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
-          id="wd-update-user-click"
-          onClick={() => updateUser(user)}
-        >
-          Update
-        </button>
+        <input value={user.firstName} id="wd-user-first-name" className="rounded border border-neutral-300 px-3 py-1.5"
+          onChange={(e) => setUser({ ...user, firstName: e.target.value })} />
+        <input value={user.lastName} id="wd-user-last-name" className="rounded border border-neutral-300 px-3 py-1.5"
+          onChange={(e) => setUser({ ...user, lastName: e.target.value })} />
+        <button id="wd-add-user-click" type="button" className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+          onClick={addUser} >                Add    </button>
+        <button id="wd-update-user-click" type="button" className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
+          onClick={() => updateUser(user)} > Update </button>
       </div>
       <table className="w-full border-collapse text-left text-sm">
         <thead>
