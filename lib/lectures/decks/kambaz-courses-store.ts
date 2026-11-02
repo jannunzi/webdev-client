@@ -28,10 +28,9 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
     bullets: [
       "`useState` is great for local component state, such as form fields",
       "It is not great for application state that many screens share",
-      "Zustand: a small, efficient library for shared state",
-      "Context: React's built-in solution, but verbose",
-      "Redux: very verbose. Covered later only because it's still popular",
-      "We'll stick with Zustand: it is very popular and concise",
+      "Redux (2015): first widely adopted, very verbose, still popular",
+      "React Context (2018): React's built-in solution, also verbose",
+      "Zustand (2019): small and concise, most popular today. We'll use it",
     ],
   },
   {
