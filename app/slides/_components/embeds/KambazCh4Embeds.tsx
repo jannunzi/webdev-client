@@ -6,7 +6,7 @@ import Ch4Modules from "@/app/book/ch4/embeds/_styled/courses/cid/modules/page";
 import Module from "@/app/book/ch4/embeds/_styled/courses/cid/modules/Module";
 import ModuleEditor from "@/app/book/ch4/embeds/_styled/courses/cid/modules/ModuleEditor";
 import ModulesControls from "@/app/book/ch4/embeds/_styled/courses/cid/modules/ModulesControls";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import usersJson from "@/app/book/ch4/embeds/_styled/database/users.json";
 import { useAccountContext } from "@/app/book/ch4/embeds/_styled/account/AccountContext";
 import Ch4Dashboard from "@/app/book/ch4/embeds/_styled/dashboard/Dashboard";
@@ -68,7 +68,8 @@ function SignedInAsSeedUser({ children }: { children: ReactNode }) {
 
 export function KambazCh4ProfileEmbed() {
   return (
-    <div className="mt-6 w-full">
+    // Slides-only: 1.5x, still within the slide width.
+    <div className="mt-6 w-full max-w-full overflow-hidden" style={{ zoom: 1.5 }}>
     <AsAccountRouter
       start="/account/profile"
       screens={(path, go) =>
@@ -87,11 +88,20 @@ export function KambazCh4ProfileEmbed() {
 
 /** Foreshadow §4.10.4.1: the real ModuleEditor (+ Module button and dialog). */
 export function KambazCh4ModuleEditorEmbed() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    // Slides-only: open the real dialog once so it shows on the slide.
+    ref.current?.querySelector<HTMLButtonElement>("#wd-add-module-btn")?.click();
+  }, []);
   return (
-    // Slides-only: unframed and zoomed like the toolbar demo so it reads at
-    // slide size; the button sits on the right as it does in the toolbar.
-    <div className="mt-10 flex w-full justify-end font-sans">
-      <div style={{ zoom: 2 }}>
+    // Slides-only: the dialog renders in place (not a fixed overlay) to the
+    // right of the + Module button; the input no longer spills past the
+    // dialog (box-border, book.css min-width overridden).
+    <div
+      ref={ref}
+      className="mt-8 w-full font-sans [&>div]:flex [&>div]:items-start [&>div]:gap-8 [&_#wd-add-module-dialog]:static [&_#wd-add-module-dialog]:inset-auto [&_#wd-add-module-dialog]:z-auto [&_#wd-add-module-dialog]:flex-1 [&_#wd-add-module-dialog]:bg-transparent [&_#wd-add-module-dialog]:p-0 [&_#wd-add-module-dialog>div]:max-w-none [&_#wd-add-module-dialog>div]:border [&_#wd-add-module-dialog>div]:border-neutral-200 [&_input]:box-border [&_input]:min-w-0 [&_input]:max-w-full"
+    >
+      <div style={{ zoom: 1.5 }}>
         <AsCourseParams cid="RS101">
           <ModuleEditor />
         </AsCourseParams>
@@ -149,7 +159,7 @@ export function KambazCh4CourseFormEmbed() {
   return (
     // Slides-only: unframed so the demo-stage zoom doesn't shrink it; full
     // width, and the published heading and card grid are hidden.
-    <div className="mt-10 w-full font-sans [&_#wd-dashboard-title]:hidden [&_#wd-dashboard-published]:hidden [&_#wd-dashboard-courses]:hidden [&_hr]:hidden [&_input]:max-w-none [&_textarea]:max-w-none [&_select]:w-auto [&_select]:min-w-0">
+    <div className="mt-10 w-full font-sans text-xl [&_input]:!py-4 [&_input]:!text-xl [&_textarea]:!min-h-40 [&_textarea]:!py-4 [&_textarea]:!text-xl [&_button]:!py-3 [&_button]:!text-xl [&_#wd-dashboard-title]:hidden [&_#wd-dashboard-published]:hidden [&_#wd-dashboard-courses]:hidden [&_hr]:hidden [&_input]:max-w-none [&_textarea]:max-w-none [&_select]:w-auto [&_select]:min-w-0">
       <Ch4Dashboard />
     </div>
   );
@@ -158,7 +168,7 @@ export function KambazCh4CourseFormEmbed() {
 /** Foreshadow §4.10.2: one real CourseCard with its Edit and Delete buttons. */
 export function KambazCh4CourseCardEmbed() {
   return (
-    <div className="mt-10 flex w-full justify-center font-sans">
+    <div className="flex w-full justify-center font-sans">
       <CourseCard course={coursesJson[0]} onEdit={() => {}} />
     </div>
   );

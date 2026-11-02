@@ -785,6 +785,8 @@ export type LectureSlide = {
    * tighter so diagrams/embeds still fit, but does not shrink-to-avoid-scroll.
    */
   density?: LectureSlideDensity;
+  /** "split": bullets on the left, embed on the right (portrait demos). */
+  layout?: "split";
 };
 
 export type LectureHubItem = {

@@ -20,6 +20,7 @@ export const KAMBAZ_DASHBOARD_CRUD_SLIDES: LectureSlide[] = [
       "A form holds a draft course while the user types, before saving it",
       "Saving changes the store, so every screen showing courses re-renders",
     ],
+    density: "spacious",
     embed: "kambaz-ch4-course-form",
   },
   {
@@ -149,8 +150,10 @@ export default function Dashboard() {
       "Each course card needs Edit and Delete buttons",
       "The whole card is a link to the course, so a click would also open it",
       "The buttons must stop that navigation before doing their own work",
-      "The next two slides show the course card, `CourseCard`, with both buttons",
+      "The next three slides show the course card, `CourseCard`, with both buttons",
     ],
+    density: "spacious",
+    layout: "split",
     embed: "kambaz-ch4-course-card",
   },
   {
@@ -175,7 +178,7 @@ export default function CourseCard({
   },
   {
     id: "card-buttons",
-    title: "CourseCard Edit and Delete buttons",
+    title: "CourseCard Image, Title and Go",
     kind: "content",
     code: `  return (
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
@@ -191,8 +194,16 @@ export default function CourseCard({
           </p>
           <button type="button" className="inline-flex items-center justify-center rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white" >
             Go
-          </button>
-          <button type="button" id="wd-edit-course-click" className="ms-2 inline-flex items-center justify-center rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
+          </button>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeStartLine: 13,
+  },
+  {
+    id: "card-buttons-part-2",
+    title: "CourseCard Edit and Delete Buttons",
+    kind: "content",
+    code: `          <button type="button" id="wd-edit-course-click" className="ms-2 inline-flex items-center justify-center rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
             onClick={(event) => {
               event.preventDefault();
               onEdit();
@@ -213,8 +224,8 @@ export default function CourseCard({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
-    codeStartLine: 13,
-    codeHighlightLines: [19, 26],
+    codeStartLine: 28,
+    codeHighlightLines: [4, 11],
   },
   {
     id: "edit",
