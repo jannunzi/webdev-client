@@ -136,19 +136,13 @@ import * as db from "../../database";
 import { useAccountContext } from "../AccountContext";
 
 export default function Signin() {
-  const [credentials, setCredentials] = useState({
-    username: "",
-    password: "",
-  });
+  const [credentials, setCredentials] = useState({ username: "", password: "" });
   const { setCurrentUser } = useAccountContext();
   const router = useRouter();
 
   const signin = () => {
-    const user = db.users.find(
-      (u) =>
-        u.username === credentials.username &&
-        u.password === credentials.password,
-    );
+    const user = db.users.find((u) =>
+        u.username === credentials.username && u.password === credentials.password );
     if (!user) return;
     setCurrentUser(user);
     router.push("/dashboard");
@@ -167,13 +161,11 @@ export default function Signin() {
       <input value={credentials.username} id="wd-username" placeholder="username"
         onChange={(e) =>
           setCredentials({ ...credentials, username: e.target.value })
-        }
-      />
+        } />
       <input value={credentials.password} type="password" id="wd-password" placeholder="password"
         onChange={(e) =>
           setCredentials({ ...credentials, password: e.target.value })
-        }
-      />
+        } />
       <button type="button" onClick={signin} id="wd-signin-btn">
         Sign in
       </button>
@@ -235,11 +227,8 @@ export default function Dashboard() {
   const { currentUser } = useAccountContext();
   const visibleCourses = currentUser
     ? courses.filter((c) =>
-        db.enrollments.some(
-          (enrollment) =>
-            enrollment.user === currentUser._id && enrollment.course === c._id,
-        ),
-      )
+        db.enrollments.some((enrollment) =>
+            enrollment.user === currentUser._id && enrollment.course === c._id,),)
     : courses;
 `,
     codeLanguage: "tsx",
