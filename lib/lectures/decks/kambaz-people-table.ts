@@ -16,7 +16,7 @@ export const KAMBAZ_PEOPLE_TABLE_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "The People screen lists the users enrolled in a course",
-      "This deck lets instructors add, edit and delete those users",
+      "This module lets instructors add, edit and delete those users",
       "Changes go through the account context, so every screen re-renders",
     ],
   },

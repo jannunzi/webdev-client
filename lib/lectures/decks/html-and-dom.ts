@@ -248,7 +248,7 @@ content will render as a single paragraph.
     bullets: [
       "This HTML becomes a tree: **Window** → **Document** → **Heading** and **Link**",
       "The `href` and the link text are properties on the Link node",
-      "Next deck: `h1`–`h6`, then `p` so whitespace becomes real vertical gaps",
+      "Next module: `h1`–`h6`, then `p` so whitespace becomes real vertical gaps",
     ],
   },
   {

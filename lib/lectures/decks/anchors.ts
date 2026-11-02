@@ -86,7 +86,7 @@ export const ANCHORS_SLIDES: LectureSlide[] = [
     bullets: [
       "Hashes navigate to the **same** screen, but **scroll**",
       "The hash matches an element **`id`**: `#wd-anchor-bottom` → `id=\"wd-anchor-bottom\"`",
-      "Wikipedia-style fragments. Reserve `#` for in-page TOC — app routes use paths (next deck)",
+      "Wikipedia-style fragments. Reserve `#` for in-page TOC — app routes use paths (next module)",
     ],
     code: `<h2 id="toc">Table of Content</h2>
 <a href="#wd-anchor-bottom">Jump to bottom</a>

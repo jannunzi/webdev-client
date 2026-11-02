@@ -382,7 +382,7 @@ export default async function PeopleTable({
   },
   {
     id: "done",
-    title: "Chapter 3 decks are complete",
+    title: "Chapter 3 modules are complete",
     kind: "title",
     bullets: [
       "Lab 3 taught the language. Kambaz now renders from JSON",

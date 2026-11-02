@@ -1918,9 +1918,14 @@ describe("lecture decks", () => {
       "zustand-counter": { component: "zustand-counter" },
       "zustand-todos": { list: "zustand-todos" },
       "use-effect": { demo: "use-effect" },
-      "kambaz-courses-store": { store: "kambaz-courses-crud" },
+      "kambaz-courses-store": {
+        "why-not-local": "kambaz-ch4-course-form",
+        store: "kambaz-courses-crud",
+      },
       "kambaz-dashboard-crud": {
+        purpose: "kambaz-ch4-course-form",
         add: "kambaz-courses-crud",
+        delete: "kambaz-ch4-course-card",
         edit: "kambaz-courses-crud",
       },
       "kambaz-modules-store": {
@@ -3773,6 +3778,13 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         if (!slide.embed) return;
         // Ch4 Kambaz demos of a whole screen with no single listing of their own.
         if (["kambaz-dashboard-crud#edit", "kambaz-account-context#signin"].includes(`${slug}#${slide.id}`)) return;
+        // Foreshadowing demos of the real form and card, before their code (Jose asked for them).
+        if (
+          ["kambaz-courses-store#why-not-local", "kambaz-dashboard-crud#purpose", "kambaz-dashboard-crud#delete"].includes(
+            `${slug}#${slide.id}`,
+          )
+        )
+          return;
         demos += 1;
         assert.equal(slide.kind, "demo", `${slug}#${slide.id}`);
         assert.match(slide.id, /-live$/, `${slug}#${slide.id}`);

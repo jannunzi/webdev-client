@@ -70,7 +70,7 @@ export const VARIABLE_TYPES_SLIDES: LectureSlide[] = [
       "`{true}` and `{false}` produce **nothing** on the page",
       "React treats a boolean as a flag, not as text",
       "`booleanVariable + \"\"` concatenates an empty string and coerces to `\"true\"`",
-      "Same trick in the next deck for every `&&` / `===` result",
+      "Same trick in the next module for every `&&` / `===` result",
     ],
   },
   {

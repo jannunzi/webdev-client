@@ -117,7 +117,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
     bullets: [
       "`res.json(todos)` for the collection. `find` / `splice` for one id",
       "Keep the GET create/delete routes so earlier links still work",
-      "Proper verbs arrive with a JSON body in the next deck",
+      "Proper verbs arrive with a JSON body in the next module",
     ],
   },
   {

@@ -18,7 +18,7 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
       "Chapter 3 made Kambaz data-driven, but the data never changes",
       "Application state is data many screens share and users can change",
       "When that data changes, every screen that shows it must re-render",
-      "This deck moves the course list into shared state so it can change",
+      "This module moves the course list into shared state so it can change",
     ],
   },
   {
@@ -28,10 +28,9 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
     bullets: [
       "`useState` is great for local component state, such as form fields",
       "It is not great for application state that many screens share",
-      "Zustand: a small, efficient library for shared state",
-      "Context: React's built-in solution, but verbose",
-      "Redux: very verbose. Covered later only because it's still popular",
-      "We'll stick with Zustand: it is very popular and concise",
+      "Redux (2015): first widely adopted, very verbose, still popular",
+      "React Context (2018): React's built-in solution, also verbose",
+      "Zustand (2019): small and concise, most popular today. We'll use it",
     ],
   },
   {
@@ -43,6 +42,7 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
       "The course Home screen and layout would still read the JSON file",
       "A newly added course would have no name in the breadcrumb",
     ],
+    embed: "kambaz-ch4-course-form",
   },
   {
     id: "store-intro",
@@ -122,7 +122,7 @@ export { emptyCourse };`,
     kind: "demo",
     bullets: [
       "This is the live Dashboard reading courses from `store/coursesStore.ts`",
-      "The next deck adds buttons that create, edit and delete courses",
+      "The next module adds buttons that create, edit and delete courses",
     ],
     embed: "kambaz-courses-crud",
   },

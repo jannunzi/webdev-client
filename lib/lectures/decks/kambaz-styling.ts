@@ -109,7 +109,7 @@ export default function KambazLayout({
     kind: "content",
     bullets: [
       "Drop the Chapter 1 `<table>`: `KambazNavigation` now sits beside `wd-main-content-offset`",
-      "`p-3` pads the page. The next deck adds a 120px left offset for Kambaz Navigation",
+      "`p-3` pads the page. The next module adds a 120px left offset for Kambaz Navigation",
       "In the course layout and Home, `flex` puts Course Navigation and Course Status beside the content",
       "`md:` (medium, 48rem) and `lg:` (large, 64rem) apply at that width and up. Course Status hides below `lg`, then Kambaz Navigation and Course Navigation below `md`",
     ],
