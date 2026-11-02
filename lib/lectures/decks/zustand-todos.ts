@@ -15,19 +15,20 @@ export const ZUSTAND_TODOS_SLIDES: LectureSlide[] = [
     title: "Implementing Zustand Todos",
     kind: "content",
     bullets: [
-      "A todos array, a draft `todo`, and add / update / delete",
-      "Form and item call the store hook themselves — no prop chain",
-      "Same shape Kambaz will use for courses and modules",
+      "Goal: a todo list where components add, edit and delete todos",
+      "The list and the todo being typed both live in a Zustand store",
+      "The form and each item use the store directly, with no props chain",
+      "Kambaz will reuse this pattern for courses and modules",
     ],
   },
   {
     id: "store-intro",
-    title: "Seed, then copy on write",
+    title: "Planning a Todos Store",
     kind: "content",
     bullets: [
-      "`addTodo` spreads the list and assigns `crypto.randomUUID()`",
-      "`deleteTodo` filters by `id`. `updateTodo` maps the matching row",
-      "Both add and update reset the draft to `emptyTodo`",
+      "The store starts with a few todos and an empty draft todo",
+      "Adding, updating and deleting must make new arrays, never change the old one",
+      "The next slide builds the store",
     ],
   },
   {
@@ -82,11 +83,12 @@ export const useTodoStore = create<TodoStore>((set) => ({
   },
   {
     id: "form-intro",
-    title: "The form binds the draft",
+    title: "Building the Todo Form",
     kind: "content",
     bullets: [
-      "`value={todo.title}` and `setTodo({ ...todo, title })` — §4.2.8 again",
-      "Add and Update call store functions, not a parent callback",
+      "Goal: a form where the user types a todo, then adds or updates it",
+      "The text field shows the draft, and typing changes the draft in the store",
+      "The next slide builds the form",
     ],
   },
   {
@@ -133,12 +135,13 @@ export default function ZustandTodoForm() {
   },
   {
     id: "item-intro",
-    title: "Each item deletes and edits itself",
+    title: "Building a Todo Row",
     kind: "content",
     bullets: [
-      "`ZustandTodoItem` receives one `todo` as a prop",
-      "It selects `deleteTodo` and `setTodo` from the store",
-      "Delete removes the row. Edit copies the todo into the form",
+      "Goal: each todo row has Delete and Edit buttons",
+      "Delete removes the row. Edit copies it into the form",
+      "The row gets its todo as a prop and reads actions from the store",
+      "The next two slides build the row, then the list",
     ],
   },
   {
@@ -220,12 +223,12 @@ export default function ZustandTodoList() {
   },
   {
     id: "profile-store-intro",
-    title: "The profile form with Zustand",
+    title: "Moving the Profile Form to Zustand",
     kind: "content",
     bullets: [
-      "`profile.ts`, `ProfileFields`, and `ProfileAlert` do not change",
-      "The store holds the same `profile`/`setProfile` pair",
-      "`setProfile` passes `set` the new profile",
+      "The profile form can keep its data in a Zustand store instead",
+      "Its data file, fields and alert do not change",
+      "The next slide builds the profile store",
     ],
   },
   {
@@ -249,12 +252,13 @@ export const useProfileStore = create<ProfileStore>((set) => ({
   },
   {
     id: "zustand-profile-form-intro",
-    title: "Selectors, and no provider",
+    title: "Reading the Profile from Zustand",
     kind: "content",
     bullets: [
-      "`ZustandProfileForm` needs no provider",
-      "Each `useProfileStore` call passes a selector that picks one value",
-      "The store is module-level, so the profile survives leaving the screen",
+      "The form reads the profile from the store, with no provider",
+      "Each value is picked out separately, so only real changes re-render",
+      "The store outlives the screen, so the profile survives navigation",
+      "The next slide shows the updated form",
     ],
   },
   {

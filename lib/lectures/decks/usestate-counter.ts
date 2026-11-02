@@ -88,6 +88,16 @@ export default function CounterBroken() {
     embed: "counter-broken",
   },
   {
+    id: "prep-counter",
+    title: "Fixing the Counter with useState",
+    kind: "content",
+    bullets: [
+      "The broken counter changed a variable React never saw",
+      "Storing the count with `useState` tells React to redraw on each change",
+      "The next slide rebuilds the counter that way",
+    ],
+  },
+  {
     id: "working",
     title: "setCount queues a new render",
     kind: "content",

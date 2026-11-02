@@ -64,6 +64,16 @@ export default function BooleanStateVariables() {
     embed: "boolean-state",
   },
   {
+    id: "prep-string",
+    title: "Tracking a Text Field in State",
+    kind: "content",
+    bullets: [
+      "Goal: a text field whose value always matches a string in state",
+      "Each keystroke updates the state, and the field shows the new value",
+      "The next slide builds a first name field this way",
+    ],
+  },
+  {
     id: "string",
     title: "String: value and onChange",
     kind: "content",
@@ -107,9 +117,10 @@ export default function StringStateVariables() {
     title: "Date: format for type=date",
     kind: "demo",
     bullets: [
-      "`useState(new Date(2026, 0, 15, 10, 30))` — year, month, day, hour, minute. Months start at 0",
-      "`type=\"date\"` wants `YYYY-MM-DD` — helper `dateObjectToHtmlDateString`",
-      "`htmlDateStringToDate` reads the picker as a local date, so the day you pick stays that day",
+      "Goal: a date picker whose value is a date kept in state",
+      "A date input expects text like 2026-01-15, not a JavaScript Date",
+      "So two small helpers convert between the two formats",
+      "The next slide builds the picker and the helpers",
     ],
   },
   {
@@ -165,9 +176,9 @@ export default function DateStateVariable() {
     title: "Object: spread, then overwrite",
     kind: "demo",
     bullets: [
-      "`setPerson({ ...person, name: e.target.value })` copies, then writes one key",
-      "Do not do `person.name = …` — that mutates and React may skip the paint",
-      "`parseInt` on age; `|| 0` keeps the field a number if the box is empty",
+      "Goal: a form that edits a person's name and age, stored as one object",
+      "Each change must make a new object, never change the old one",
+      "The next slide builds the form",
     ],
   },
   {
@@ -218,9 +229,9 @@ export default function ObjectStateVariable() {
     title: "Array: copy, then add or filter",
     kind: "demo",
     bullets: [
-      "`setArray([...array, Math.floor(Math.random() * 100)])` appends a copy",
-      "`filter((_item, i) => i !== index)` drops one index without mutate",
-      "Each `li` needs a `key`. Delete wraps `deleteElement(index)` in an arrow",
+      "Goal: a list of numbers with an Add button and a Delete per item",
+      "Each change makes a new array instead of changing the old one",
+      "The next two slides build the handlers, then the list",
     ],
   },
   {
