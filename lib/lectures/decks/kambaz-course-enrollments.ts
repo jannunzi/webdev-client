@@ -262,13 +262,9 @@ export default function Dashboard() {
       <h5 className="flex flex-wrap items-center gap-2">
         New Course
         <button type="button" id="wd-add-new-course-click" className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
-          onClick={addCourseAndEnroll} >
-          Add
-        </button>
+          onClick={addCourseAndEnroll} >          Add        </button>
         <button type="button" id="wd-update-course-click" className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
-          onClick={() => updateCourse(course)} >
-          Update
-        </button>
+          onClick={() => updateCourse(course)} >  Update     </button>
       </h5>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/page.tsx",
