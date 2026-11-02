@@ -198,12 +198,12 @@ export default function CourseCard({
       "Goal: the Dashboard shows either every course or only enrolled ones",
       "A blue Enrollments button switches between the two views",
       "Adding a course also enrolls its author, so it appears in their view",
-      "The next three slides update the Dashboard in parts",
+      "The next four slides update the Dashboard in parts",
     ],
   },
   {
     id: "enroll-dash",
-    title: "Adding a Course and Enrolling Its Author",
+    title: "Dashboard Imports and State",
     kind: "content",
     code: `"use client";
 
@@ -224,8 +224,15 @@ export default function Dashboard() {
   const [course, setCourse] = useState<Course>(emptyCourse);
   const { currentUser } = useAccountContext();
   const { enrollments, enrollIntoCourse } = useEnrollmentsStore();
-  const [showAllCourses, setShowAllCourses] = useState(false);
-  const isEnrolled = (courseId: string) =>
+  const [showAllCourses, setShowAllCourses] = useState(false);`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+  },
+  {
+    id: "enroll-dash-part-2",
+    title: "Filtering and Enrolling on Add",
+    kind: "content",
+    code: `  const isEnrolled = (courseId: string) =>
     currentUser !== null &&
     enrollments.some(
       (e) => e.user === currentUser._id && e.course === courseId,
@@ -242,9 +249,10 @@ export default function Dashboard() {
 `,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeStartLine: 21,
   },
   {
-    id: "enroll-dash-part-2",
+    id: "enroll-dash-part-3",
     title: "Title Bar and All/Enrolled Toggle",
     kind: "content",
     code: `  return (
@@ -271,7 +279,7 @@ export default function Dashboard() {
     codeStartLine: 36,
   },
   {
-    id: "enroll-dash-part-3",
+    id: "enroll-dash-part-4",
     title: "Course Form and Card Grid",
     kind: "content",
     code: `      <input value={course.name} id="wd-course-name" className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
@@ -316,12 +324,12 @@ export default function Dashboard() {
       "Goal: only enrolled users can open a course's screens",
       "Anyone else is sent back to the Dashboard",
       "Nothing in the course shows until that check passes",
-      "The next two slides update the course layout",
+      "The next three slides update the course layout",
     ],
   },
   {
     id: "enroll-guard",
-    title: "Redirecting Unenrolled Users",
+    title: "Course Layout Imports and State",
     kind: "content",
     code: `"use client";
 
@@ -346,8 +354,15 @@ export default function CoursesLayout({
   const [showCourseNav, setShowCourseNav] = useState(true);
   const { currentUser } = useAccountContext();
   const enrollments = useEnrollmentsStore((state) => state.enrollments);
-  const router = useRouter();
-  const enrolled =
+  const router = useRouter();`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/layout.tsx",
+  },
+  {
+    id: "enroll-guard-part-2",
+    title: "Checking Enrollment and Redirecting",
+    kind: "content",
+    code: `  const enrolled =
     currentUser !== null &&
     enrollments.some(
       (e) => e.user === currentUser._id && e.course === courseId,
@@ -361,9 +376,10 @@ export default function CoursesLayout({
 `,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/layout.tsx",
+    codeStartLine: 25,
   },
   {
-    id: "enroll-guard-part-2",
+    id: "enroll-guard-part-3",
     title: "Breadcrumb, Course Nav, and Content",
     kind: "content",
     code: `  return (
