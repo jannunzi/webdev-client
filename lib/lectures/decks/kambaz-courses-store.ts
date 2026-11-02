@@ -42,6 +42,7 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
       "The course Home screen and layout would still read the JSON file",
       "A newly added course would have no name in the breadcrumb",
     ],
+    density: "spacious",
     embed: "kambaz-ch4-course-form",
   },
   {

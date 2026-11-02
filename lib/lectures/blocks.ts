@@ -67,6 +67,8 @@ export type BlockSlide = {
   imageAlt?: string;
   imageCaption?: string;
   density?: LectureSlideDensity;
+  /** "split": bullets on the left, component on the right. */
+  layout?: "split";
 };
 
 export type AuthoredSlide = LectureSlide | BlockSlide;
@@ -268,6 +270,7 @@ export function toBlockSlide(slide: AuthoredSlide): BlockSlide {
     imageAlt: slide.imageAlt,
     imageCaption: slide.imageCaption,
     density: slide.density,
+    layout: slide.layout,
   };
 }
 

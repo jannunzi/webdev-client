@@ -465,6 +465,7 @@ export default function Signin() {
       "Sign out, then sign back in with the new username and password",
       "The new user only lives in memory until a later chapter",
     ],
+    density: "spacious",
     embed: "kambaz-ch4-signup",
   },
   {

@@ -17,9 +17,114 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
     bullets: [
       "Modules are application state: the Modules and Home screens both show them",
       "Users will add, rename and delete modules, and both screens must re-render",
-      "First build a dialog that collects a new module's name",
-      "Then keep the module list in a shared Zustand store, like the courses",
+      "First keep the module list in a shared Zustand store, like the courses",
+      "Then build a dialog that collects a new module's name",
     ],
+  },
+  {
+    id: "store-intro",
+    title: "Planning a Modules Store",
+    kind: "content",
+    bullets: [
+      "Goal: one shared list of modules that both screens read and change",
+      "It starts with the modules in `modules.json`",
+      "Actions add, delete and update a module, and mark one as being renamed",
+      "The next three slides build this store in parts",
+    ],
+  },
+  {
+    id: "store",
+    title: "Lesson, CourseModule and store types",
+    kind: "content",
+    code: `"use client";
+
+import { create } from "zustand";
+import modulesJson from "../database/modules.json";
+
+export type Lesson = {
+  _id: string;
+  name: string;
+  description: string;
+  module: string;
+};
+
+export type CourseModule = {
+  _id: string;
+  name: string;
+  description: string;
+  course: string;
+  lessons?: Lesson[];
+  editing?: boolean;
+};
+
+type ModulesStore = {
+  modules: CourseModule[];
+  addModule: (module: { name: string; course: string }) => void;
+  deleteModule: (moduleId: string) => void;
+  updateModule: (module: CourseModule) => void;
+  editModule: (moduleId: string) => void;
+};`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/store/modulesStore.ts",
+  },
+  {
+    id: "store-part-2",
+    title: "Seed modules and addModule",
+    kind: "content",
+    code: `export const useModulesStore = create<ModulesStore>((set) => ({
+  modules: modulesJson as CourseModule[],
+  addModule: (module) =>
+    set((state) => ({
+      modules: [
+        ...state.modules,
+        {
+          _id: crypto.randomUUID(),
+          name: module.name,
+          description: "",
+          course: module.course,
+          lessons: [],
+        },
+      ],
+    })),`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/store/modulesStore.ts",
+    codeStartLine: 30,
+    codeHighlightLines: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+  },
+  {
+    id: "store-part-3",
+    title: "delete, update and editModule",
+    kind: "content",
+    code: `  deleteModule: (moduleId) =>
+    set((state) => ({
+      modules: state.modules.filter((m) => m._id !== moduleId),
+    })),
+  updateModule: (module) =>
+    set((state) => ({
+      modules: state.modules.map((m) => (m._id === module._id ? module : m)),
+    })),
+  editModule: (moduleId) =>
+    set((state) => ({
+      modules: state.modules.map((m) =>
+        m._id === moduleId ? { ...m, editing: true } : m,
+      ),
+    })),
+}));`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/store/modulesStore.ts",
+    codeStartLine: 45,
+    codeHighlightLines: [9, 10, 11, 12, 13, 14],
+  },
+  {
+    id: "store-live",
+    title: "Modules Styling Is Unchanged",
+    kind: "demo",
+    bullets: [
+      "Reuse the list-group chrome. The store is in place; the dialog comes next",
+      "Filter `module.course === cid` the same way §3.10.7 did",
+      "Home imports the Modules page — both screens now see the same array",
+    ],
+    embed: "kambaz-styled-modules",
   },
   {
     id: "editor-intro",
@@ -310,111 +415,6 @@ export default function Module({ module }: { module: CourseModule }) {
     codeFile: "app/(kambaz)/courses/[cid]/modules/Module.tsx",
     codeStartLine: 28,
     codeHighlightLines: [2, [6, 8]],
-  },
-  {
-    id: "store-intro",
-    title: "Planning a Modules Store",
-    kind: "content",
-    bullets: [
-      "Goal: one shared list of modules that both screens read and change",
-      "It starts with the modules in `modules.json`",
-      "Actions add, delete and update a module, and mark one as being renamed",
-      "The next three slides build this store in parts",
-    ],
-  },
-  {
-    id: "store",
-    title: "Lesson, CourseModule and store types",
-    kind: "content",
-    code: `"use client";
-
-import { create } from "zustand";
-import modulesJson from "../database/modules.json";
-
-export type Lesson = {
-  _id: string;
-  name: string;
-  description: string;
-  module: string;
-};
-
-export type CourseModule = {
-  _id: string;
-  name: string;
-  description: string;
-  course: string;
-  lessons?: Lesson[];
-  editing?: boolean;
-};
-
-type ModulesStore = {
-  modules: CourseModule[];
-  addModule: (module: { name: string; course: string }) => void;
-  deleteModule: (moduleId: string) => void;
-  updateModule: (module: CourseModule) => void;
-  editModule: (moduleId: string) => void;
-};`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/store/modulesStore.ts",
-  },
-  {
-    id: "store-part-2",
-    title: "Seed modules and addModule",
-    kind: "content",
-    code: `export const useModulesStore = create<ModulesStore>((set) => ({
-  modules: modulesJson as CourseModule[],
-  addModule: (module) =>
-    set((state) => ({
-      modules: [
-        ...state.modules,
-        {
-          _id: crypto.randomUUID(),
-          name: module.name,
-          description: "",
-          course: module.course,
-          lessons: [],
-        },
-      ],
-    })),`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/store/modulesStore.ts",
-    codeStartLine: 30,
-    codeHighlightLines: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-  },
-  {
-    id: "store-part-3",
-    title: "delete, update and editModule",
-    kind: "content",
-    code: `  deleteModule: (moduleId) =>
-    set((state) => ({
-      modules: state.modules.filter((m) => m._id !== moduleId),
-    })),
-  updateModule: (module) =>
-    set((state) => ({
-      modules: state.modules.map((m) => (m._id === module._id ? module : m)),
-    })),
-  editModule: (moduleId) =>
-    set((state) => ({
-      modules: state.modules.map((m) =>
-        m._id === moduleId ? { ...m, editing: true } : m,
-      ),
-    })),
-}));`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/store/modulesStore.ts",
-    codeStartLine: 45,
-    codeHighlightLines: [9, 10, 11, 12, 13, 14],
-  },
-  {
-    id: "store-live",
-    title: "Modules Styling Is Unchanged",
-    kind: "demo",
-    bullets: [
-      "Reuse the list-group chrome. The new work is the dialog and the store",
-      "Filter `module.course === cid` the same way §3.10.7 did",
-      "Home imports the Modules page — both screens now see the same array",
-    ],
-    embed: "kambaz-styled-modules",
   },
   {
     id: "page-intro",

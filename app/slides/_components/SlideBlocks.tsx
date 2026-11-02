@@ -117,9 +117,7 @@ export function SlideBlockView({
   slide: BlockSlide;
   density: LectureSlideDensity;
 }) {
-  return (
-    <>
-      {slide.blocks.map((block) => (
+  const blocks = slide.blocks.map((block) => (
         <div key={block.id} className="lecture-block" data-block-type={block.type}>
           {block.type === "bullets" ? (
             <BulletView block={block} density={density} kind={slide.kind} />
@@ -127,9 +125,17 @@ export function SlideBlockView({
           {block.type === "code" ? <CodeView block={block} /> : null}
           {block.type === "component" ? <ComponentView block={block} /> : null}
         </div>
-      ))}
-    </>
-  );
+  ));
+  if (slide.layout === "split") {
+    // Bullets left, portrait demo right.
+    return (
+      <div className="grid grid-cols-2 items-center gap-10">
+        <div>{blocks.filter((_, i) => slide.blocks[i]!.type !== "component")}</div>
+        <div>{blocks.filter((_, i) => slide.blocks[i]!.type === "component")}</div>
+      </div>
+    );
+  }
+  return <>{blocks}</>;
 }
 
 function ToolbarButton({

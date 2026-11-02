@@ -79,8 +79,8 @@ export function KambazPeopleCrudEmbed() {
  */
 export function KambazSlidesSignupEmbed() {
   return (
-    // Slides-only: roughly double height (min-height, taller inputs/buttons).
-    <div className="mt-6 min-h-[34rem] w-full [&_button]:!py-4 [&_input]:!mb-4 [&_input]:!py-4 [&_h3]:!mb-6">
+    // Slides-only: twice as big (zoom 2); the slide keeps normal text size.
+    <div className="mt-6 w-full" style={{ zoom: 2 }}>
     <AsAccountRouter
       start="/account/signup"
       Provider={AccountProvider}
@@ -119,7 +119,7 @@ export function KambazEnrollCourseCardEmbed() {
   return (
     <AccountProvider>
       <SignInFirstUser />
-      <div className="mt-10 flex w-full justify-center font-sans">
+      <div className="flex w-full justify-center font-sans">
         <FirstCourseCard />
       </div>
     </AccountProvider>

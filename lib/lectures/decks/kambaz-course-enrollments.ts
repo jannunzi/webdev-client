@@ -78,6 +78,7 @@ export const useEnrollmentsStore = create<EnrollmentsStore>((set) => ({
       "The next four slides update the course card in parts",
     ],
     density: "spacious",
+    layout: "split",
     embed: "kambaz-ch4-enroll-course-card",
   },
   {
