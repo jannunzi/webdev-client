@@ -10,6 +10,9 @@ import {
   useAccountContext,
 } from "./enrollments/account/AccountContext";
 import Dashboard from "./enrollments/dashboard/Dashboard";
+import CourseCard from "./enrollments/dashboard/CourseCard";
+import { useCoursesStore } from "./enrollments/store/coursesStore";
+import { useEffect } from "react";
 import PeopleTable from "./enrollments/courses/cid/people/table/PeopleTable";
 
 /**
@@ -76,6 +79,8 @@ export function KambazPeopleCrudEmbed() {
  */
 export function KambazSlidesSignupEmbed() {
   return (
+    // Slides-only: roughly double height (min-height, taller inputs/buttons).
+    <div className="mt-6 min-h-[34rem] w-full [&_button]:!py-4 [&_input]:!mb-4 [&_input]:!py-4 [&_h3]:!mb-6">
     <AsAccountRouter
       start="/account/signup"
       Provider={AccountProvider}
@@ -91,5 +96,32 @@ export function KambazSlidesSignupEmbed() {
         )
       }
     />
+    </div>
+  );
+}
+
+/** Slides-only: signs in the first context user so Enroll / Unenroll shows. */
+function SignInFirstUser() {
+  const { currentUser, setCurrentUser, users } = useAccountContext();
+  useEffect(() => {
+    if (!currentUser && users[0]) setCurrentUser(users[0]);
+  }, [currentUser, setCurrentUser, users]);
+  return null;
+}
+
+function FirstCourseCard() {
+  const course = useCoursesStore((state) => state.courses[0]);
+  return course ? <CourseCard course={course} onEdit={() => {}} /> : null;
+}
+
+/** Foreshadow §4.10.7: one real enrollments CourseCard (Enroll, Edit, Delete). */
+export function KambazEnrollCourseCardEmbed() {
+  return (
+    <AccountProvider>
+      <SignInFirstUser />
+      <div className="mt-10 flex w-full justify-center font-sans">
+        <FirstCourseCard />
+      </div>
+    </AccountProvider>
   );
 }

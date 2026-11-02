@@ -4,8 +4,9 @@ import Signup from "@/app/book/ch4/embeds/_styled/account/signup/page";
 import Profile from "@/app/book/ch4/embeds/_styled/account/profile/page";
 import Ch4Modules from "@/app/book/ch4/embeds/_styled/courses/cid/modules/page";
 import Module from "@/app/book/ch4/embeds/_styled/courses/cid/modules/Module";
+import ModuleEditor from "@/app/book/ch4/embeds/_styled/courses/cid/modules/ModuleEditor";
 import ModulesControls from "@/app/book/ch4/embeds/_styled/courses/cid/modules/ModulesControls";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import usersJson from "@/app/book/ch4/embeds/_styled/database/users.json";
 import { useAccountContext } from "@/app/book/ch4/embeds/_styled/account/AccountContext";
 import Ch4Dashboard from "@/app/book/ch4/embeds/_styled/dashboard/Dashboard";
@@ -52,19 +53,22 @@ export function KambazCh4SignupEmbed() {
   return <KambazCh4AccountDemo start="/account/signup" />;
 }
 
-/** Slides-only: signs in the first seed user once so Profile opens directly. */
+/**
+ * Slides-only: signs in the first seed user, and renders Profile only once
+ * currentUser is set. Child effects run before parent effects, so mounting
+ * Profile first made its "no currentUser" guard redirect to Sign in.
+ */
 function SignedInAsSeedUser({ children }: { children: ReactNode }) {
   const { currentUser, setCurrentUser } = useAccountContext();
-  const done = useRef(false);
   useEffect(() => {
-    if (!done.current && !currentUser) setCurrentUser(usersJson[0]);
-    done.current = true;
+    if (!currentUser) setCurrentUser(usersJson[0]);
   }, [currentUser, setCurrentUser]);
-  return <>{children}</>;
+  return currentUser ? <>{children}</> : null;
 }
 
 export function KambazCh4ProfileEmbed() {
   return (
+    <div className="mt-6 w-full">
     <AsAccountRouter
       start="/account/profile"
       screens={(path, go) =>
@@ -77,6 +81,22 @@ export function KambazCh4ProfileEmbed() {
         )
       }
     />
+    </div>
+  );
+}
+
+/** Foreshadow §4.10.4.1: the real ModuleEditor (+ Module button and dialog). */
+export function KambazCh4ModuleEditorEmbed() {
+  return (
+    // Slides-only: unframed and zoomed like the toolbar demo so it reads at
+    // slide size; the button sits on the right as it does in the toolbar.
+    <div className="mt-10 flex w-full justify-end font-sans">
+      <div style={{ zoom: 2 }}>
+        <AsCourseParams cid="RS101">
+          <ModuleEditor />
+        </AsCourseParams>
+      </div>
+    </div>
   );
 }
 

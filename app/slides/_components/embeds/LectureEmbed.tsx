@@ -125,6 +125,7 @@ import {
   KambazCh4ProfileEmbed,
   KambazCh4ModuleRowEmbed,
   KambazCh4ModulesControlsEmbed,
+  KambazCh4ModuleEditorEmbed,
   KambazCh4CourseFormEmbed,
   KambazCh4CourseCardEmbed,
 } from "./KambazCh4Embeds";
@@ -216,6 +217,7 @@ import {
   KambazEnrollmentsEmbed,
   KambazPeopleCrudEmbed,
   KambazSlidesSignupEmbed,
+  KambazEnrollCourseCardEmbed,
 } from "./EnrollmentsEmbeds";
 import {
   Lab5CalculatorEmbed,
@@ -442,6 +444,12 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
     case "kambaz-ch4-modules-controls":
       // Foreshadow: the real ModulesControls toolbar and + Module dialog.
       return <KambazCh4ModulesControlsEmbed />;
+    case "kambaz-ch4-module-editor":
+      // Foreshadow: the real ModuleEditor (+ Module button and dialog).
+      return <KambazCh4ModuleEditorEmbed />;
+    case "kambaz-ch4-enroll-course-card":
+      // Foreshadow: one real enrollments CourseCard.
+      return <KambazEnrollCourseCardEmbed />;
     case "kambaz-ch4-signup":
       // Slides-only: Sign up through the slides' context createUser.
       return <KambazSlidesSignupEmbed />;
