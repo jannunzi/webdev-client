@@ -152,38 +152,18 @@ export default function Profile() {
   return (
     <div id="wd-profile-screen">
       <h3>Profile</h3>
-      <input
-        id="wd-username"
-        value={profile.username}
-        onChange={(e) => setProfile({ ...profile, username: e.target.value })}
-      />
-      <input
-        id="wd-password"
-        type="password"
-        value={profile.password}
-        onChange={(e) => setProfile({ ...profile, password: e.target.value })}
-      />
-      <input
-        id="wd-firstname"
-        value={profile.firstName}
-        onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
-      />
-      <input
-        id="wd-lastname"
-        value={profile.lastName}
-        onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
-      />
-      <input
-        id="wd-email"
-        type="email"
-        value={profile.email}
-        onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-      />
-      <select
-        id="wd-role"
-        value={profile.role}
-        onChange={(e) => setProfile({ ...profile, role: e.target.value })}
-      >
+      <input value={profile.username} id="wd-username"
+        onChange={(e) => setProfile({ ...profile, username: e.target.value })} />
+      <input value={profile.password} type="password" id="wd-password"
+        onChange={(e) => setProfile({ ...profile, password: e.target.value })} />
+      <input value={profile.firstName} id="wd-firstname"
+        onChange={(e) => setProfile({ ...profile, firstName: e.target.value })} />
+      <input value={profile.lastName} id="wd-lastname"
+        onChange={(e) => setProfile({ ...profile, lastName: e.target.value })} />
+      <input value={profile.email} type="email" id="wd-email"
+        onChange={(e) => setProfile({ ...profile, email: e.target.value })} />
+      <select value={profile.role} id="wd-role"
+        onChange={(e) => setProfile({ ...profile, role: e.target.value })} >
         <option value="USER">User</option>
         <option value="ADMIN">Admin</option>
         <option value="FACULTY">Faculty</option>
@@ -270,14 +250,9 @@ const AccountContext = createContext<AccountContextValue | null>(null);
   return (
     <AccountContext.Provider
       value={{
-        currentUser,
-        setCurrentUser,
-        users,
-        createUser,
-        updateUser,
-        deleteUser,
-      }}
-    >
+        currentUser, setCurrentUser, users,
+        createUser,  updateUser,     deleteUser,
+      }} >
       {children}
     </AccountContext.Provider>
   );
@@ -324,17 +299,8 @@ export default function Signup() {
   const signup = () => {
     if (!username || !password) return;
     const newUser = createUser({
-      _id: crypto.randomUUID(),
-      username,
-      password,
-      firstName: "",
-      lastName: "",
-      email: "",
-      role: "STUDENT",
-      loginId: "",
-      section: "",
-      lastActivity: "",
-      totalActivity: "",
+      _id: crypto.randomUUID(), username, password, firstName: "", lastName: "",
+      email: "", role: "STUDENT", loginId: "", section: "", lastActivity: "", totalActivity: "",
     });
     setCurrentUser(newUser);
     router.push("/account/profile");
@@ -350,19 +316,10 @@ export default function Signup() {
     code: `  return (
     <div id="wd-signup-screen">
       <h3>Sign up</h3>
-      <input
-        id="wd-username"
-        placeholder="username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        id="wd-password"
-        placeholder="password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+      <input value={username} id="wd-username" placeholder="username"
+        onChange={(e) => setUsername(e.target.value)} />
+      <input value={password} id="wd-password" type="password" placeholder="password"
+        onChange={(e) => setPassword(e.target.value)} />
       <button type="button" onClick={signup} id="wd-signup-btn">
         Sign up
       </button>
@@ -426,23 +383,14 @@ export default function Signin() {
     code: `  return (
     <div id="wd-signin-screen">
       <h3>Sign in</h3>
-      <input
-        placeholder="username"
-        id="wd-username"
-        value={credentials.username}
+      <input value={credentials.username} id="wd-username" placeholder="username"
         onChange={(e) =>
           setCredentials({ ...credentials, username: e.target.value })
-        }
-      />
-      <input
-        placeholder="password"
-        type="password"
-        id="wd-password"
-        value={credentials.password}
+        } />
+      <input value={credentials.password} type="password" id="wd-password" placeholder="password"
         onChange={(e) =>
           setCredentials({ ...credentials, password: e.target.value })
-        }
-      />
+        } />
       <button type="button" onClick={signin} id="wd-signin-btn">
         Sign in
       </button>
