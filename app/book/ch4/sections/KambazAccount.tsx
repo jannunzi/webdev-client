@@ -704,6 +704,13 @@ export default function Signup() {
           then wire the Dashboard and the People table to that store.
         </p>
         <p>
+          When the People table adds a person, define the blank user in{" "}
+          <code>AccountContext</code>{" "}and export it, the same way{" "}
+          <code>emptyCourse</code>{" "}lives in the courses store, and
+          import that object into the table so the form starts from one
+          shared draft.
+        </p>
+        <p>
           Courses the user is enrolled in should provide a red Unenroll
           button, and courses the user is not enrolled in should provide
           a green Enroll button. When a user clicks Unenroll or Enroll,
@@ -719,7 +726,9 @@ export default function Signup() {
         <OnYourOwn>
           Create <code>app/(kambaz)/store/enrollmentsStore.ts</code>{" "}
           seeded from <code>enrollments.json</code>. Wire the
-          Enrollments toggle and the People table to that store.
+          Enrollments toggle and the People table to that store. Export{" "}
+          <code>emptyUser</code>{" "}from <code>AccountContext</code>{" "}
+          and import it into the People table.
         </OnYourOwn>
         <WithAI
           prompt={`Create app/(kambaz)/store/enrollmentsStore.ts seeded from enrollments.json with enroll and unenroll. In the Dashboard, keep any extra button I added and add a sample button id="wd-enrollments-toggle" that flips a showAllCourses flag. Do not remove my extra button.`}

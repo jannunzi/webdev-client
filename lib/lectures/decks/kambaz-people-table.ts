@@ -55,6 +55,7 @@ export default async function PeopleTablePage({
       "Goal: a form above the table with first and last name inputs",
       "Add creates a user and enrolls them in this course",
       "Each row gets Edit, which loads it into the form, and Delete",
+      "The form imports emptyUser from the account context, so every screen shares one draft",
       "The next five slides build the table in parts",
     ],
   },
@@ -67,12 +68,7 @@ export default async function PeopleTablePage({
 import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { useEnrollmentsStore } from "../../../../store/enrollmentsStore";
-import { useAccountContext, type User } from "../../../../account/AccountContext";
-
-const emptyUser: User = {
-  _id: "0", username: "new_user", password: "", firstName: "New", lastName: "User",
-  email: "", role: "STUDENT", loginId: "", section: "S101", lastActivity: "", totalActivity: "",
-};
+import { emptyUser, useAccountContext, type User } from "../../../../account/AccountContext";
 
 export default function PeopleTable({ cid }: { cid: string }) {
   const { users, createUser, updateUser, deleteUser } = useAccountContext();
@@ -110,7 +106,7 @@ export default function PeopleTable({ cid }: { cid: string }) {
       </div>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx",
-    codeStartLine: 38,
+    codeStartLine: 18,
   },
   {
     id: "people-table-part-3",
@@ -130,7 +126,7 @@ export default function PeopleTable({ cid }: { cid: string }) {
         </thead>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx",
-    codeStartLine: 50,
+    codeStartLine: 35,
   },
   {
     id: "people-table-part-4",
@@ -151,7 +147,7 @@ export default function PeopleTable({ cid }: { cid: string }) {
               <td className="wd-total-activity p-2">{usr.totalActivity}</td>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx",
-    codeStartLine: 82,
+    codeStartLine: 47,
   },
   {
     id: "people-table-part-5",
@@ -175,7 +171,7 @@ export default function PeopleTable({ cid }: { cid: string }) {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx",
-    codeStartLine: 95,
+    codeStartLine: 60,
   },
   {
     id: "people-table-live",

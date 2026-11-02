@@ -209,12 +209,13 @@ export default function Profile() {
       "Goal: Sign up and the People table must add, edit and delete users",
       "So the account context now also holds the list of all users",
       "It gains actions to create, update and delete a user",
+      "A blank user lives here too, the same way a blank course lives in the courses store",
       "The next two slides extend the context in parts",
     ],
   },
   {
     id: "people-context",
-    title: "User CRUD Context Types",
+    title: "Blank User and Context Types",
     kind: "content",
     code: `"use client";
 
@@ -222,6 +223,11 @@ import { createContext, useContext, useState, type ReactNode } from "react";
 import usersJson from "../database/users.json";
 
 export type User = (typeof usersJson)[number];
+
+const emptyUser: User = {
+  _id: "0", username: "new_user", password: "", firstName: "New", lastName: "User",
+  email: "", role: "STUDENT", loginId: "", section: "S101", lastActivity: "", totalActivity: "",
+};
 
 type AccountContextValue = {
   currentUser: User | null;
@@ -272,10 +278,12 @@ export function useAccountContext() {
     throw new Error("useAccountContext must be used inside AccountProvider");
   }
   return value;
-}`,
+}
+
+export { emptyUser };`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/AccountContext.tsx",
-    codeStartLine: 19,
+    codeStartLine: 24,
   },
   {
     id: "signup-intro",
