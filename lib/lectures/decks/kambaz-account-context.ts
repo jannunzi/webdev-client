@@ -164,19 +164,12 @@ export default function Signin() {
     code: `  return (
     <div id="wd-signin-screen">
       <h3>Sign in</h3>
-      <input
-        placeholder="username"
-        id="wd-username"
-        value={credentials.username}
+      <input value={credentials.username} id="wd-username" placeholder="username"
         onChange={(e) =>
           setCredentials({ ...credentials, username: e.target.value })
         }
       />
-      <input
-        placeholder="password"
-        type="password"
-        id="wd-password"
-        value={credentials.password}
+      <input value={credentials.password} type="password" id="wd-password" placeholder="password"
         onChange={(e) =>
           setCredentials({ ...credentials, password: e.target.value })
         }
@@ -263,20 +256,18 @@ export default function Dashboard() {
       <hr />
       <h5 className="flex flex-wrap items-center gap-2">
         New Course
-        <button type="button" className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
-          id="wd-add-new-course-click" onClick={() => addCourse(course)} >
+        <button type="button" className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white" id="wd-add-new-course-click"
+          onClick={() => addCourse(course)} >
           Add
         </button>
-        <button type="button" className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
-          id="wd-update-course-click" onClick={() => updateCourse(course)} >
+        <button type="button" className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium" id="wd-update-course-click"
+          onClick={() => updateCourse(course)} >
           Update
         </button>
       </h5>
-      <input className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
-        value={course.name} id="wd-course-name"
+      <input value={course.name} id="wd-course-name" className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
         onChange={(e) => setCourse({ ...course, name: e.target.value })} />
-      <textarea className="mb-3 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
-        rows={3} value={course.description} id="wd-course-description"
+      <textarea rows={3} value={course.description} id="wd-course-description" className="mb-3 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
         onChange={(e) => setCourse({ ...course, description: e.target.value })} />
       <hr />
       <h2 id="wd-dashboard-published">Published Courses ({visibleCourses.length})</h2>
