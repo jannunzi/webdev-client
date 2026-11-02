@@ -130,17 +130,8 @@ export default function CourseCard({
     kind: "content",
     code: `  return (
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
-      <Link
-        href={\`/courses/\${course._id}/home\`}
-        className="wd-dashboard-course-link block text-neutral-900 no-underline"
-      >
-        <Image
-          src={course.image}
-          width={300}
-          height={160}
-          alt={course.name}
-          className="h-40 w-full object-cover"
-        />
+      <Link href={\`/courses/\${course._id}/home\`} className="wd-dashboard-course-link block text-neutral-900 no-underline" >
+        <Image src={course.image} width={300} height={160} alt={course.name} className="h-40 w-full object-cover" />
         <div className="p-4">
           <h5 className="wd-dashboard-course-title m-0 mb-2 truncate text-lg font-semibold whitespace-nowrap">
             {course.name}
@@ -156,21 +147,14 @@ export default function CourseCard({
     id: "enroll-card-part-4",
     title: "CourseCard Go and Edit Buttons",
     kind: "content",
-    code: `          <button
-            type="button"
-            className="inline-flex items-center justify-center rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
-          >
+    code: `          <button type="button" className="inline-flex items-center justify-center rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white">
             Go
           </button>
-          <button
-            type="button"
-            id="wd-edit-course-click"
-            className="ms-2 inline-flex items-center justify-center rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
+          <button type="button" id="wd-edit-course-click" className="ms-2 inline-flex items-center justify-center rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
             onClick={(event) => {
               event.preventDefault();
               onEdit();
-            }}
-          >
+            }} >
             Edit
           </button>`,
     codeLanguage: "tsx",
@@ -181,27 +165,19 @@ export default function CourseCard({
     id: "enroll-card-part-5",
     title: "CourseCard Delete and Enroll Buttons",
     kind: "content",
-    code: `          <button
-            type="button"
-            id="wd-delete-course-click"
-            className="ms-2 inline-flex items-center justify-center rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+    code: `          <button type="button" id="wd-delete-course-click" className="ms-2 inline-flex items-center justify-center rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
             onClick={(event) => {
               event.preventDefault();
               deleteCourse(course._id);
-            }}
-          >
+            }} >
             Delete
           </button>
           {enrolled !== null && (
-            <button
-              type="button"
-              id="wd-enrollment-click"
-              className={\`ms-2 inline-flex items-center justify-center rounded px-3 py-1.5 text-sm font-medium text-white \${enrolled ? "bg-red-600" : "bg-green-600"}\`}
+            <button type="button" id="wd-enrollment-click" className={\`ms-2 inline-flex items-center justify-center rounded px-3 py-1.5 text-sm font-medium text-white \${enrolled ? "bg-red-600" : "bg-green-600"}\`}
               onClick={(event) => {
                 event.preventDefault();
                 toggleEnrollment();
-              }}
-            >
+              }} >
               {enrolled ? "Unenroll" : "Enroll"}
             </button>
           )}
@@ -276,12 +252,8 @@ export default function Dashboard() {
       <h1 id="wd-dashboard-title" className="flex items-center justify-between">
         Dashboard
         {currentUser && (
-          <button
-            type="button"
-            className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
-            id="wd-enrollments-toggle"
-            onClick={() => setShowAllCourses(!showAllCourses)}
-          >
+          <button type="button" id="wd-enrollments-toggle" className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+            onClick={() => setShowAllCourses(!showAllCourses)} >
             Enrollments
           </button>
         )}
@@ -289,20 +261,12 @@ export default function Dashboard() {
       <hr />
       <h5 className="flex flex-wrap items-center gap-2">
         New Course
-        <button
-          type="button"
-          className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
-          id="wd-add-new-course-click"
-          onClick={addCourseAndEnroll}
-        >
+        <button type="button" id="wd-add-new-course-click" className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+          onClick={addCourseAndEnroll} >
           Add
         </button>
-        <button
-          type="button"
-          className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
-          id="wd-update-course-click"
-          onClick={() => updateCourse(course)}
-        >
+        <button type="button" id="wd-update-course-click" className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
+          onClick={() => updateCourse(course)} >
           Update
         </button>
       </h5>`,
@@ -314,28 +278,16 @@ export default function Dashboard() {
     id: "enroll-dash-part-3",
     title: "Course Form and Card Grid",
     kind: "content",
-    code: `      <input
-        className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
-        value={course.name}
-        onChange={(e) => setCourse({ ...course, name: e.target.value })}
-        id="wd-course-name"
-      />
-      <textarea
-        className="mb-3 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
-        rows={3}
-        value={course.description}
+    code: `      <input value={course.name} id="wd-course-name" className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
+        onChange={(e) => setCourse({ ...course, name: e.target.value })} />
+      <textarea value={course.description} rows={3} id="wd-course-description" className="mb-3 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
         onChange={(e) =>
           setCourse({ ...course, description: e.target.value })
-        }
-        id="wd-course-description"
-      />
+        } />
       <hr />
       <h2 id="wd-dashboard-published">Published Courses ({visibleCourses.length})</h2>
       <hr />
-      <div
-        id="wd-dashboard-courses"
-        className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-      >
+      <div id="wd-dashboard-courses" className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4" >
         {visibleCourses.map((c) => (
           <CourseCard
             key={c._id}
@@ -423,11 +375,8 @@ export default function CoursesLayout({
     code: `  return (
     <div id="wd-courses">
       <h2 className="text-2xl font-semibold text-red-600">
-        <FaAlignJustify
-          className="me-4 mb-1 inline cursor-pointer text-xl"
-          onClick={() => setShowCourseNav(!showCourseNav)}
-          title="Toggle course navigation"
-        />
+        <FaAlignJustify title="Toggle course navigation" className="me-4 mb-1 inline cursor-pointer text-xl"
+          onClick={() => setShowCourseNav(!showCourseNav)} />
         <Breadcrumb course={course} />
       </h2>
       <hr className="my-3" />
