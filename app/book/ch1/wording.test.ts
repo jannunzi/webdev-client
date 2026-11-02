@@ -100,8 +100,14 @@ describe("Chapter 1 Engineering with AI", () => {
   const chapter = readFileSync("app/book/ch1/Chapter1.tsx", "utf8");
 
   it("is optional, ungraded, and last in the chapter", () => {
-    assert.match(ai, /Optional\. Not graded\./);
-    assert.match(ai, /not graded/);
+    assert.match(ai, /optional, not graded/);
+    assert.doesNotMatch(ai, /Optional\. Not graded\./);
+    assert.match(ai, /In a product team/);
+    assert.match(ai, /AI Assisted Course Builder/);
+    assert.match(ai, /Treat an AI assistant as a fast teammate/);
+    assert.match(ai, /already have a Claude account/);
+    assert.doesNotMatch(ai, /fake endpoint that pretends/);
+    assert.doesNotMatch(ai, /skip a review, to hide a change/);
     assert.match(toc, /1\.11 Engineering with AI \(optional, not graded\)/);
     const endMatter = toc.indexOf("...chapterEndToc(ch1EndMatter)");
     const section = toc.indexOf('id: "sec-1-11"');

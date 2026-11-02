@@ -5,13 +5,13 @@ import LiveDemo from "../../components/LiveDemo";
 import { OnYourOwn, WithAI } from "../../components/Practice";
 import AiCourseBuilderDemo from "../embeds/AiCourseBuilderDemo";
 
-const REQUIREMENTS = `# AI Course Builder — static controls
+const REQUIREMENTS = `# AI Assisted Course Builder — static controls
 
 ## Overview
 
-Course authors need an AI Course Builder on Kambaz. This slice only places the controls. They are static HTML. Clicking a control does not call a model, edit the title or description, or insert a module or lesson.
+Course authors need an AI Assisted Course Builder on Kambaz. This chapter only places the controls. They are static HTML. Clicking a control does not call a model, edit the title or description, or insert a module or lesson.
 
-Later slices of this same feature style the controls with Tailwind, show sample suggestions from a local JSON file, keep a draft in Zustand, and call Claude from a Next.js route handler. This slice does none of that. There is no mock AI API.
+Later chapters of this same feature style the controls with Tailwind, show sample suggestions from a local JSON file, keep a draft in Zustand, and call Claude from a Next.js route handler. This chapter does none of that. There is no mock AI API.
 
 ## User stories
 
@@ -30,7 +30,7 @@ Later slices of this same feature style the controls with Tailwind, show sample 
 - "AI: next module" appears once, after the module list, outside every module.
 - Optional ids for those two buttons: wd-ai-suggest-modules, wd-ai-next-module.
 - Every module shows a "Lesson type" select, then "Generate lessons", then that module's existing lessons, then "AI: next lesson".
-- The select options are exactly Reading, Slides, and Quiz. Slides means a slides.js lesson. This slice does not build the deck.
+- The select options are exactly Reading, Slides, and Quiz. Slides means a slides.js lesson. This chapter does not build the deck.
 - Controls that repeat inside every module use a class, so one id is not copied onto every module. Optional classes: wd-lesson-type, wd-generate-lessons, wd-ai-next-lesson.
 - Every new button is type="button". No onClick. No fetch. No form element, so Enter in a field does not submit.
 - The edited files stay Server Components. No "use client" line.
@@ -56,14 +56,7 @@ export default function EngineeringWithAI() {
       title="1.11 Engineering with AI (optional, not graded)"
     >
       <p>
-        <strong>Optional. Not graded.</strong> This section is practice you
-        can skip. Nothing here is collected, and it does not add a line to
-        the checklist in <SectionLink to="1.7" />. If you are only finishing
-        that checklist, stop at the conclusion and come back when you want
-        to practice the workflow an engineer uses with an assistant.
-      </p>
-      <p>
-        On a product team, the engineer does not invent the feature in the
+        In a product team, the engineer does not invent the feature in the
         chat window and then hope it is what anyone wanted. Someone writes
         down what the user can do. The engineer implements that description
         on its own Git branch, reads the change line by line, and only then
@@ -76,17 +69,18 @@ export default function EngineeringWithAI() {
         rather than shipping something you do not understand.
       </p>
       <p>
-        The feature you will practice on is an <strong>AI Course Builder</strong>{" "}
-        for Kambaz: buttons a course author would use to draft a title, a
-        description, a module list, and lessons. In this chapter those
-        buttons are static HTML. They show up on the screen, and clicking
-        them does not call a model or change any text. Later chapters of
-        this same optional thread style those controls with Tailwind, fill
-        them from a local JSON file of sample suggestions, store the draft
-        in Zustand, and only then call Claude from a Next.js route handler.
-        Leave that work for those chapters. There is no mock AI service to
-        stand in for the call, and adding one would teach the wrong habit:
-        a fake endpoint that pretends the model answered.
+        To practice how engineers use AI assistants in production teams,
+        this section demonstrates building an{" "}
+        <strong>AI Assisted Course Builder</strong> feature for Kambaz. The
+        buttons let a course author draft a title, a description, a module
+        list, and lessons. In this chapter those buttons are static HTML.
+        They show up on the screen, and clicking them does not ask Claude
+        to write anything or change any text. Later chapters of this same
+        optional thread style those controls with Tailwind, fill them from
+        a local JSON file of sample suggestions, store the draft in
+        Zustand — a client-side store you will meet later — and only then
+        call Claude from a Next.js route handler, a function on the server
+        that answers a request. Leave that work for those chapters.
       </p>
 
       <h3
@@ -96,10 +90,11 @@ export default function EngineeringWithAI() {
         1.11.1 Owning the code
       </h3>
       <p>
-        Treat the assistant as a fast teammate who has not read the ticket.
-        It will happily write something plausible. You still decide what
-        lands in the repository, the same way you would if a coworker handed
-        you a patch and walked away. When you ask for the edit, paste the
+        Treat an AI assistant as a fast teammate who has not read the
+        requirements. It will happily write something plausible. You still
+        decide what lands in the repository, the same way you would if a
+        coworker handed you a diff and walked away. When you ask for the
+        edit, paste the
         requirements document first, then name the few files the task
         actually touches. After the reply, read it against the acceptance
         criteria — the checklist of what must be true when you are done —
@@ -113,14 +108,8 @@ export default function EngineeringWithAI() {
         anything sitting in a <code>.env</code> file, passwords, and private
         details about real people. If the assistant needs to know that a
         file exists, describe the file in a sentence. Do not paste its
-        contents. Once a secret is in the transcript, you should assume it
-        has left your machine.
-      </p>
-      <p>
-        You also do not ask the tool to skip a review, to hide a change, or
-        to commit files you have not opened. Those requests feel efficient
-        and they are how a bad diff gets merged. The assistant can draft.
-        You are the person whose name is on the commit.
+        contents. Once a secret has been pasted into the conversation, you
+        should assume it has left your machine.
       </p>
 
       <h3
@@ -130,16 +119,22 @@ export default function EngineeringWithAI() {
         1.11.2 Chat, the CLI, and the IDE
       </h3>
       <p>
-        Sign in with the Claude account you already use. A personal plan
-        works, and so does a Team or Enterprise plan from an organization.
-        You will meet the same account in three places. A <strong>surface</strong>{" "}
-        here just means where you type: the website, a command in the
-        terminal, or the panel inside the editor. Pick one surface for a
-        given task. Running the same edit in all three spends the tokens
-        three times and gives you three diffs to reconcile.
+        This section assumes you already have a Claude account. A personal
+        account works, and a Team or Enterprise account from your
+        organization would work too. You can use that account in three
+        ways. You can talk to it in a browser chat and copy back only the
+        text you still agree with. You can run it in the terminal, against
+        the files in your project, and let it apply an edit. You can open
+        it inside your editor, beside the file you are already changing.
+        The terminal way is a command-line interface, usually called a{" "}
+        <strong>CLI</strong>: you type the program&apos;s name instead of
+        clicking an icon. These three ways of working are called{" "}
+        <strong>surfaces</strong>. Pick one surface for a given task.
+        Doing the same edit on all three means you pay for the work three
+        times and then have three diffs to reconcile.
       </p>
       <p>
-        The first surface is the chat on the website. Open{" "}
+        Start with the browser chat. Open{" "}
         <a href="https://claude.ai" target="_blank" rel="noreferrer">
           claude.ai
         </a>
@@ -154,10 +149,10 @@ export default function EngineeringWithAI() {
         parts you still agree with after you have read them.
       </p>
       <p>
-        The second surface is the <strong>Claude Code CLI</strong>, the
-        same assistant run as a command in your project folder. Reach for
-        it when the change spans more than one file and you want the edit
-        applied on disk, not pasted back as a message you then have to
+        The terminal surface is <strong>Claude Code</strong>, the same
+        assistant run as a CLI in your project folder. Reach for it when
+        the change spans more than one file and you want the edit applied
+        on disk, rather than pasted back as a message you then have to
         retype. Install it from the{" "}
         <a
           href="https://code.claude.com/docs/en/setup"
@@ -186,7 +181,7 @@ claude`}</CodeBlock>
         through the whole tree.
       </p>
       <p>
-        The third surface is the editor extension you installed in{" "}
+        The editor surface is the extension you installed in{" "}
         <SectionLink to="1.2.3" />. It is the same assistant, sitting beside
         the file you already have open, which makes it the right choice
         when the change is one or two files you are looking at. Open the
@@ -204,7 +199,7 @@ claude`}</CodeBlock>
         1.11.3 Token budgeting
       </h3>
       <p>
-        A <strong>token</strong> is a small chunk of text the model reads or
+        A <strong>token</strong> is a small chunk of text Claude reads or
         writes. Your prompt, the files you attach, and the reply are all
         counted, and on these three surfaces that count is billed to your
         own Claude account. A short prompt that includes the requirements
@@ -223,8 +218,9 @@ claude`}</CodeBlock>
         The account also lets you pick a <strong>model</strong>, which is
         the particular assistant behind the reply. The picker lists a
         cheaper, faster model and a stronger, slower one. Use the cheaper
-        model for a commit message, for the blurb at the top of a pull
-        request, or for a yes-or-no check against the acceptance criteria.
+        model for a commit message, for the short description at the top of
+        a pull request, or for a yes-or-no check against the acceptance
+        criteria.
         Use a stronger model when it has to edit several files and keep
         them consistent. A strong model on a one-line message spends money
         you will want later, when the edit is actually hard.
@@ -254,13 +250,13 @@ claude`}</CodeBlock>
         id="sec-1-11-4"
         className="scroll-mt-6 font-sans text-xl font-semibold"
       >
-        1.11.4 Requirements for the AI Course Builder
+        1.11.4 Requirements for the AI Assisted Course Builder
       </h3>
       <p>
         An engineer implements from a document the product team can review,
         not from a sentence typed into a chat. The document has four parts,
         and you will see all four in the sample below. The{" "}
-        <strong>overview</strong> says what this slice is and, just as
+        <strong>overview</strong> says what this chapter builds and, just as
         important, what it is not yet. The <strong>user stories</strong>{" "}
         are one sentence each, in the form &quot;as a course author, I can
         …, so that …&quot;, so you can tell who the control is for and why
@@ -494,9 +490,10 @@ export default function Module({
         <li>
           <p>
             The buttons do not belong on <code>main</code> mixed in with
-            the chapter work you already finished. Commit or stash anything
-            you want to keep, then look at <code>git status</code> so you
-            know the working tree is clean. <code>git checkout -b</code>{" "}
+            the chapter work you already finished. Commit what you want to
+            keep, or stash it — set the uncommitted edits aside without
+            making a commit — then look at <code>git status</code>. It
+            should list nothing left to commit. <code>git checkout -b</code>{" "}
             creates a new branch and switches to it. Name it{" "}
             <code>feature/ai-buttons</code>, which is the branch the later
             prompts refer to:
@@ -607,7 +604,7 @@ git checkout -b feature/ai-buttons`}</CodeBlock>
             <code>origin</code> as the remote for later pushes:
           </p>
           <CodeBlock language="shell">{`git add docs/ai-course-builder.md "app/(kambaz)/courses/[cid]/editor" "app/(kambaz)/courses/[cid]/modules"
-git commit -m "Add static AI Course Builder buttons"
+git commit -m "Add static AI Assisted Course Builder buttons"
 git push -u origin feature/ai-buttons`}</CodeBlock>
           <p>
             Replace the sample message with the line you actually reviewed.

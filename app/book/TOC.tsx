@@ -190,7 +190,7 @@ export const CH1_TOC: TocEntry[] = [
       { id: "sec-1-11-3", label: "1.11.3 Token budgeting" },
       {
         id: "sec-1-11-4",
-        label: "1.11.4 Requirements for the AI Course Builder",
+        label: "1.11.4 Requirements for the AI Assisted Course Builder",
       },
       { id: "sec-1-11-5", label: "1.11.5 Course editor starter" },
       { id: "sec-1-11-6", label: "1.11.6 Exercises" },
