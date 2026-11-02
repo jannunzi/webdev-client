@@ -169,7 +169,7 @@ export function KambazCh4CourseFormEmbed() {
 export function KambazCh4CourseCardEmbed() {
   return (
     <div className="flex w-full justify-center font-sans">
-      <CourseCard course={coursesJson[0]} onEdit={() => {}} />
+      <div style={{ zoom: 2 }}><CourseCard course={coursesJson[0]} onEdit={() => {}} /></div>
     </div>
   );
 }

@@ -120,7 +120,7 @@ export function KambazEnrollCourseCardEmbed() {
     <AccountProvider>
       <SignInFirstUser />
       <div className="flex w-full justify-center font-sans">
-        <FirstCourseCard />
+        <div style={{ zoom: 2 }}><FirstCourseCard /></div>
       </div>
     </AccountProvider>
   );
