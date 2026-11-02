@@ -176,6 +176,11 @@ git push`}</CodeBlock>
           or open the live{" "}
           <Link href="/account/signin">Kambaz</Link> prototype.
         </p>
+        <p>
+          <SectionLink to="1.11" />{" "}is optional and is not graded. It
+          practices an AI workflow on a feature branch. Skip it when you are
+          only finishing the checklist above.
+        </p>
       </Section>
     </>
   );

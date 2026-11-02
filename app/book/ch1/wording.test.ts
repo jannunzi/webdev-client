@@ -93,3 +93,32 @@ describe("Chapter 1 A1 wording", () => {
     assert.match(prose(kambaz), /Build all three for this chapter\./);
   });
 });
+
+describe("Chapter 1 Engineering with AI", () => {
+  const ai = readFileSync("app/book/ch1/sections/EngineeringWithAI.tsx", "utf8");
+  const toc = readFileSync("app/book/TOC.tsx", "utf8");
+  const chapter = readFileSync("app/book/ch1/Chapter1.tsx", "utf8");
+
+  it("is optional, ungraded, and last in the chapter", () => {
+    assert.match(ai, /Optional\. Not graded\./);
+    assert.match(ai, /not graded/);
+    assert.match(toc, /1\.11 Engineering with AI \(optional, not graded\)/);
+    const endMatter = toc.indexOf("...chapterEndToc(ch1EndMatter)");
+    const section = toc.indexOf('id: "sec-1-11"');
+    assert.ok(endMatter !== -1 && section > endMatter, "section 1.11 follows end matter");
+    assert.ok(
+      chapter.indexOf("<ChapterEndMatter") < chapter.indexOf("<EngineeringWithAI"),
+    );
+    assert.doesNotMatch(ai, /Northeastern|university|Annunziato/i);
+    assert.match(ai, /feature\/ai-buttons/);
+    assert.match(ai, /Generate description from title/);
+    assert.match(ai, /Generate title from description/);
+    assert.match(ai, /AI: suggest modules/);
+    assert.match(ai, /AI: next module/);
+    assert.match(ai, /AI: next lesson/);
+    assert.match(ai, /Generate lessons/);
+    assert.match(ai, /no mock AI/i);
+    assert.match(prose(ai), /Chapter 1 has no course editor/);
+    assert.match(prose(ai), /Modules screen from/);
+  });
+});

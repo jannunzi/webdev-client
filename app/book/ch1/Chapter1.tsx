@@ -3,6 +3,7 @@ import HtmlSections from "./sections/HtmlSections";
 import CheckUnderstanding from "./sections/CheckUnderstanding";
 import KambazSections from "./sections/KambazSections";
 import ClosingSections from "./sections/ClosingSections";
+import EngineeringWithAI from "./sections/EngineeringWithAI";
 import ChapterEndMatter from "../components/ChapterEndMatter";
 import { ch1EndMatter } from "./end-matter";
 
@@ -19,6 +20,7 @@ export default function Chapter1() {
       <KambazSections />
       <ClosingSections />
       <ChapterEndMatter data={ch1EndMatter} />
+      <EngineeringWithAI />
     </article>
   );
 }
