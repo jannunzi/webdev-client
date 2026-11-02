@@ -1352,8 +1352,8 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-courses-store"], 10);
     assert.equal(counts["kambaz-dashboard-crud"], 15);
     assert.equal(counts["kambaz-modules-store"], 25);
-    assert.equal(counts["kambaz-account-context"], 15);
-    assert.equal(counts["kambaz-account-pages"], 21);
+    assert.equal(counts["kambaz-account-context"], 16);
+    assert.equal(counts["kambaz-account-pages"], 22);
     assert.equal(counts["kambaz-course-enrollments"], 21);
     assert.equal(counts["kambaz-people-table"], 12);
     assert.equal(counts["http-server"], 11);
@@ -3891,6 +3891,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
       "kambaz-modules-store#page-part-2",
       "kambaz-account-context#signin-part-2",
       "kambaz-account-pages#profile-part-2",
+      "kambaz-account-pages#profile-part-3",
       "kambaz-account-pages#signup-part-2",
       "kambaz-course-enrollments#enroll-dash-part-2",
       "kambaz-course-enrollments#enroll-dash-part-3",
