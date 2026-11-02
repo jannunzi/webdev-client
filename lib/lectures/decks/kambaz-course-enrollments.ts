@@ -77,6 +77,8 @@ export const useEnrollmentsStore = create<EnrollmentsStore>((set) => ({
       "The card is a link, so the button must stop the click from opening it",
       "The next four slides update the course card in parts",
     ],
+    density: "spacious",
+    embed: "kambaz-ch4-enroll-course-card",
   },
   {
     id: "enroll-card",

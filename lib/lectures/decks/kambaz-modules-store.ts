@@ -29,8 +29,10 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
       "Goal: a red + Module button that opens a dialog asking for a module name",
       "The dialog keeps its own open or closed flag and the name being typed",
       "Saving adds the module to the current course's list, then closes the dialog",
-      "The next three slides build this component, `ModuleEditor`, in parts",
     ],
+    // Bullets keep normal slide text size; an embed otherwise makes it dense.
+    density: "spacious",
+    embed: "kambaz-ch4-module-editor",
   },
   {
     id: "editor",
@@ -141,6 +143,7 @@ export default function ModuleEditor() {
       "The new dialog's + Module button belongs at the end of that toolbar",
       "The next two slides show the toolbar, `ModulesControls`, with it added",
     ],
+    density: "spacious",
     embed: "kambaz-ch4-modules-controls",
   },
   {
@@ -198,6 +201,7 @@ export default function ModulesControls() {
       "Deleting a module also removes the lessons inside it",
       "The next slide adds both icons to the row's button group",
     ],
+    density: "spacious",
     embed: "kambaz-ch4-module-row",
   },
   {
