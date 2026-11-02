@@ -430,7 +430,7 @@ describe("A1 submission form visibility", () => {
       false,
     );
     const otherAssignment = preparePublicAssignmentCheck({
-      assignmentId: "a4",
+      assignmentId: "a5",
       githubUrl: "",
       vercelUrl: "https://jane-a1.vercel.app",
     });

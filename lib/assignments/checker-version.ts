@@ -39,6 +39,16 @@ export const A2_CHECKER_RULES_VERSION = "a2-rules-v4";
  *       (root or any branch), same rule as A2 v4.
  */
 export const A3_CHECKER_RULES_VERSION = "a3-rules-v5";
+/**
+ * A4 history:
+ *   v1: structure-only checks on the first (signed-out) render: Lab 4
+ *       state widgets, path-parameter probes, Dashboard CRUD controls,
+ *       Modules controls, and the signed-out account screens.
+ *   v2: turned on for URL submit. Checked against the current Chapter 4
+ *       (store-based components, CourseCard course prop, ModuleEditor owns
+ *       + Module, FaCheckCircle); lowercase routes as A3.
+ */
+export const A4_CHECKER_RULES_VERSION = "a4-rules-v2";
 
 /** Short commit of the running deployment, when Vercel provides it. */
 export function deployedCommit(env: Record<string, string | undefined> = process.env): string {
