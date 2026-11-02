@@ -75,7 +75,7 @@ export const useEnrollmentsStore = create<EnrollmentsStore>((set) => ({
       "Goal: each course card lets the signed-in user enroll or unenroll",
       "A green Enroll or red Unenroll button, hidden when nobody is signed in",
       "The card is a link, so the button must stop the click from opening it",
-      "The next four slides update the course card in parts",
+      "The next five slides update the course card in parts",
     ],
     density: "spacious",
     layout: "split",
@@ -126,7 +126,7 @@ export default function CourseCard({
   },
   {
     id: "enroll-card-part-3",
-    title: "CourseCard Image, Title, Description",
+    title: "CourseCard Image, Title and Description",
     kind: "content",
     code: `  return (
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
@@ -147,22 +147,22 @@ export default function CourseCard({
           </h5>
           <p className="wd-dashboard-course-description m-0 mb-3 h-[100px] overflow-hidden text-sm text-neutral-600">
             {course.description}
-          </p>
-          <button
-            type="button"
-            className="inline-flex items-center justify-center rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
-          >
-            Go
-          </button>`,
+          </p>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
     codeStartLine: 29,
   },
   {
     id: "enroll-card-part-4",
-    title: "Edit, Delete, and Enroll Buttons",
+    title: "CourseCard Go and Edit Buttons",
     kind: "content",
     code: `          <button
+            type="button"
+            className="inline-flex items-center justify-center rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+          >
+            Go
+          </button>
+          <button
             type="button"
             id="wd-edit-course-click"
             className="ms-2 inline-flex items-center justify-center rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
@@ -172,8 +172,16 @@ export default function CourseCard({
             }}
           >
             Edit
-          </button>
-          <button
+          </button>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeStartLine: 49,
+  },
+  {
+    id: "enroll-card-part-5",
+    title: "CourseCard Delete and Enroll Buttons",
+    kind: "content",
+    code: `          <button
             type="button"
             id="wd-delete-course-click"
             className="ms-2 inline-flex items-center justify-center rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
@@ -204,7 +212,7 @@ export default function CourseCard({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
-    codeStartLine: 55,
+    codeStartLine: 66,
   },
   {
     id: "enroll-dash-intro",
