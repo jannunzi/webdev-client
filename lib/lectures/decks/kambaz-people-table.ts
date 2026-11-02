@@ -67,10 +67,7 @@ export default async function PeopleTablePage({
 import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { useEnrollmentsStore } from "../../../../store/enrollmentsStore";
-import {
-  useAccountContext,
-  type User,
-} from "../../../../account/AccountContext";
+import { useAccountContext, type User } from "../../../../account/AccountContext";
 
 const emptyUser: User = {
   _id: "0", username: "new_user", password: "", firstName: "New", lastName: "User",
@@ -82,10 +79,7 @@ export default function PeopleTable({ cid }: { cid: string }) {
   const { enrollments, enrollIntoCourse } = useEnrollmentsStore();
   const [user, setUser] = useState<User>(emptyUser);
   const enrolled = users.filter((usr) =>
-    enrollments.some(
-      (enrollment) => enrollment.user === usr._id && enrollment.course === cid,
-    ),
-  );
+    enrollments.some((enrollment) => enrollment.user === usr._id && enrollment.course === cid));
   const addUser = () => {
     const newUser = createUser(user);
     enrollIntoCourse(newUser._id, cid);
@@ -100,14 +94,19 @@ export default function PeopleTable({ cid }: { cid: string }) {
     code: `  return (
     <div id="wd-people-table" className="overflow-x-auto">
       <div className="mb-3 flex flex-wrap items-center gap-2">
+
         <input value={user.firstName} id="wd-user-first-name" className="rounded border border-neutral-300 px-3 py-1.5"
           onChange={(e) => setUser({ ...user, firstName: e.target.value })} />
+
         <input value={user.lastName} id="wd-user-last-name" className="rounded border border-neutral-300 px-3 py-1.5"
           onChange={(e) => setUser({ ...user, lastName: e.target.value })} />
+
         <button id="wd-add-user-click" type="button" className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
           onClick={addUser} >                Add    </button>
+
         <button id="wd-update-user-click" type="button" className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
           onClick={() => updateUser(user)} > Update </button>
+
       </div>`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx",
@@ -159,10 +158,13 @@ export default function PeopleTable({ cid }: { cid: string }) {
     title: "Edit and Delete Buttons Column",
     kind: "content",
     code: `              <td className="p-2 text-nowrap">
+
                 <button type="button" className="rounded bg-yellow-400 px-2 py-1 text-xs font-medium"
                   onClick={() => setUser(usr)} >        Edit   </button>
+
                 <button type="button" className="ms-2 rounded bg-red-600 px-2 py-1 text-xs font-medium text-white"
                   onClick={() => deleteUser(usr._id)} > Delete </button>
+
               </td>
             </tr>
           ))}
