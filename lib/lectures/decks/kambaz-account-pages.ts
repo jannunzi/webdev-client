@@ -106,7 +106,7 @@ export default function AccountPage() {
       "Nobody signed in: send the visitor to Sign in",
       "The form edits a copy, so the stored user changes only on Update",
       "Sign out clears the signed-in user and returns to Sign in",
-      "The next two slides build Profile in parts",
+      "The next three slides build Profile in parts",
     ],
   },
   {
@@ -146,7 +146,7 @@ export default function Profile() {
   },
   {
     id: "profile-part-2",
-    title: "Profile Fields and Sign Out",
+    title: "Profile Text Inputs",
     kind: "content",
     code: `  if (!profile) return null;
   return (
@@ -161,8 +161,16 @@ export default function Profile() {
       <input value={profile.lastName} id="wd-lastname"
         onChange={(e) => setProfile({ ...profile, lastName: e.target.value })} />
       <input value={profile.email} type="email" id="wd-email"
-        onChange={(e) => setProfile({ ...profile, email: e.target.value })} />
-      <select value={profile.role} id="wd-role"
+        onChange={(e) => setProfile({ ...profile, email: e.target.value })} />`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/account/profile/page.tsx",
+    codeStartLine: 29,
+  },
+  {
+    id: "profile-part-3",
+    title: "Profile Role and Account Buttons",
+    kind: "content",
+    code: `      <select value={profile.role} id="wd-role"
         onChange={(e) => setProfile({ ...profile, role: e.target.value })} >
         <option value="USER">User</option>
         <option value="ADMIN">Admin</option>
@@ -180,7 +188,7 @@ export default function Profile() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/profile/page.tsx",
-    codeStartLine: 29,
+    codeStartLine: 43,
   },
   {
     id: "profile-live",

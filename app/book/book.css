@@ -941,3 +941,13 @@ html.lecture-presenting body {
   border-color: #e5e5e5;
   color: #171717;
 }
+
+/* Slides: the app has no Tailwind preflight, so the ModuleEditor dialog's
+ * w-full input stayed content-box and its padding + border pushed it past
+ * the dialog's right edge. Border-box keeps it inside on every slide. */
+.lecture-slide #wd-add-module-dialog input,
+.lecture-slide #wd-add-module-dialog button {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+}

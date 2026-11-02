@@ -208,7 +208,7 @@ export default function Signin() {
       "An enrollment records that one user takes one course",
       "With nobody signed in, it still shows every course",
       "New courses won't show until someone enrolls in them, later in this chapter",
-      "The next two slides update the Dashboard in parts",
+      "The next three slides update the Dashboard in parts",
     ],
   },
   {
@@ -248,7 +248,7 @@ export default function Dashboard() {
   },
   {
     id: "dashboard-part-2",
-    title: "Course Editor and Enrolled Cards",
+    title: "Dashboard Title and Course Buttons",
     kind: "content",
     code: `  return (
     <div id="wd-dashboard">
@@ -264,8 +264,16 @@ export default function Dashboard() {
           onClick={() => updateCourse(course)} >
           Update
         </button>
-      </h5>
-      <input value={course.name} id="wd-course-name" className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
+      </h5>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeStartLine: 27,
+  },
+  {
+    id: "dashboard-part-3",
+    title: "Course Fields and Enrolled Cards",
+    kind: "content",
+    code: `      <input value={course.name} id="wd-course-name" className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
         onChange={(e) => setCourse({ ...course, name: e.target.value })} />
       <textarea rows={3} value={course.description} id="wd-course-description" className="mb-3 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
         onChange={(e) => setCourse({ ...course, description: e.target.value })} />
@@ -283,8 +291,8 @@ export default function Dashboard() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/page.tsx",
-    codeStartLine: 27,
-    codeHighlightLines: [23, 26],
+    codeStartLine: 42,
+    codeHighlightLines: [8, 11],
   },
   {
     id: "recap",

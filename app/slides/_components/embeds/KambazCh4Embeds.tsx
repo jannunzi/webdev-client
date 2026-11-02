@@ -14,7 +14,6 @@ import CourseCard from "@/app/book/ch4/embeds/_styled/dashboard/CourseCard";
 import coursesJson from "@/app/book/ch4/embeds/_styled/database/courses.json";
 import AsAccountRouter from "./AsAccountRouter";
 import AsCourseParams from "./AsCourseParams";
-import LectureDemoFrame from "./LectureDemoFrame";
 
 function SignedOut({ go }: { go: (path: string) => void }) {
   return (
@@ -124,16 +123,13 @@ export function KambazCh4ModulesEmbed() {
 /** Foreshadow §4.10.4.2: one module row with the real ModuleControlButtons. */
 export function KambazCh4ModuleRowEmbed() {
   return (
-    <div className="mt-6">
-      <LectureDemoFrame label="app/(kambaz)/courses/[cid]/modules/Module.tsx">
-        {/* Slides-only: padding roughly doubles the row's height on the slide. */}
-        <ul className="m-0 list-none py-6 font-sans">
-          <Module
-            module={{ _id: "M101", name: "Week 1 - HTML", description: "", course: "RS101" }}
-          />
-        </ul>
-      </LectureDemoFrame>
-    </div>
+    // Slides-only: unframed like the other demos; padding roughly doubles
+    // the row's height on the slide.
+    <ul className="m-0 mt-6 w-full list-none py-6 font-sans">
+      <Module
+        module={{ _id: "M101", name: "Week 1 - HTML", description: "", course: "RS101" }}
+      />
+    </ul>
   );
 }
 
