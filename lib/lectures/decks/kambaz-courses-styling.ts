@@ -164,7 +164,7 @@ export default function CourseNavigation({ cid }: { cid: string }) {
     bullets: [
       "A narrow list group uses red idle links and a black left border on the active route.",
       "Home is highlighted here because this preview is not open on a course page",
-      "Clicking a link leaves the deck and opens the real course screen",
+      "Clicking a link leaves the slides and opens the real course screen",
     ],
     embed: "kambaz-styled-course-nav",
   },

@@ -229,7 +229,7 @@ export default function LabsLayout({
       "Old SPAs used `#/lab1` because changing the fragment does not reload",
       "That is **not** how the App Router works",
       "Next.js uses the **History API** so `/labs/lab1` updates without a full reload",
-      "Reserve `#fragment` for in-page TOC (the last deck)",
+      "Reserve `#fragment` for in-page TOC (the last module)",
     ],
   },
   {

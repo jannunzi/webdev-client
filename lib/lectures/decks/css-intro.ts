@@ -414,7 +414,7 @@ p#wd-id-selector-2 {
     kind: "title",
     bullets: [
       "You can target a tag, one id, a shared class, or a place in the tree",
-      "Deck 2: `color` and `background-color` as reusable `wd-fg-*` / `wd-bg-*` classes",
+      "Module 2: `color` and `background-color` as reusable `wd-fg-*` / `wd-bg-*` classes",
     ],
   },
 ];

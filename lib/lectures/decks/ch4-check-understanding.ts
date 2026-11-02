@@ -50,7 +50,7 @@ export const CH4_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
     bullets: [
       "Book: `/book/ch4#sec-4-9` — the Check Your Understanding card",
       "Or `/book/practice` and pick the Chapter 4 lab bank",
-      "Then come back here and start the stateful Kambaz decks",
+      "Then come back here and start the stateful Kambaz modules",
     ],
   },
   {

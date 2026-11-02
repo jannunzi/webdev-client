@@ -50,7 +50,7 @@ export const INTRO_TO_JAVASCRIPT_SLIDES: LectureSlide[] = [
       "Variables, types, booleans, `null` vs `undefined`",
       "Conditionals, the ternary, and short-circuit `&&` output",
       "Functions — legacy, arrows, implied return, template literals",
-      "Arrays, objects, then a data-driven Kambaz (later decks)",
+      "Arrays, objects, then a data-driven Kambaz (later modules)",
     ],
   },
   {

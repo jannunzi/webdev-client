@@ -18,7 +18,7 @@ export const CSS_FLOAT_SLIDES: LectureSlide[] = [
       "`float: left` or `float: right` takes a box out of normal stacking",
       "Following **inline** content wraps beside it — the classic image + paragraph",
       "Lab 2 floats the Starship photo. The same classes also work on colored boxes",
-      "Flex (next deck) is the modern row/column tool. Still learn float — Lab 2 grades it",
+      "Flex (next module) is the modern row/column tool. Still learn float — Lab 2 grades it",
     ],
   },
   {

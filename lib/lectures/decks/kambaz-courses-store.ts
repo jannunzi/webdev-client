@@ -18,7 +18,7 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
       "Chapter 3 made Kambaz data-driven, but the data never changes",
       "Application state is data many screens share and users can change",
       "When that data changes, every screen that shows it must re-render",
-      "This deck moves the course list into shared state so it can change",
+      "This module moves the course list into shared state so it can change",
     ],
   },
   {
@@ -123,7 +123,7 @@ export { emptyCourse };`,
     kind: "demo",
     bullets: [
       "This is the live Dashboard reading courses from `store/coursesStore.ts`",
-      "The next deck adds buttons that create, edit and delete courses",
+      "The next module adds buttons that create, edit and delete courses",
     ],
     embed: "kambaz-courses-crud",
   },

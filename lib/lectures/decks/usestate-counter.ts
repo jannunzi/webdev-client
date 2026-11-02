@@ -141,7 +141,7 @@ export default function Counter() {
     bullets: [
       "`useState(7)` seeds the heading. Up and Down call the setter",
       "React compares an in-memory copy of the page (the **virtual DOM**) and writes only the heading to the real DOM",
-      "Later decks share this same integer across components",
+      "Later modules share this same integer across components",
     ],
     embed: "counter",
   },

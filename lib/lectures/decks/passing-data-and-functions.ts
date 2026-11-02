@@ -18,7 +18,7 @@ export const PASSING_DATA_AND_FUNCTIONS_SLIDES: LectureSlide[] = [
       "Many clicks need data: which item to delete, which numbers to add",
       "A handler that takes arguments can't be passed by name alone",
       "And a child component often needs to run a function its parent owns",
-      "This deck covers both: arguments, then functions passed as props",
+      "This module covers both: arguments, then functions passed as props",
     ],
   },
   {
