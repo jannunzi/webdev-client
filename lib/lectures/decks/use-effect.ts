@@ -23,12 +23,13 @@ export const USE_EFFECT_SLIDES: LectureSlide[] = [
   },
   {
     id: "deps",
-    title: "The dependency array is the when",
+    title: "Updating the Tab Title",
     kind: "content",
     bullets: [
-      "`[name, count]` re-runs the effect when either value changes",
-      "`[]` runs only after the first paint — later chapters load data that way",
-      "Omit the array and the effect runs after every paint — rarely useful",
+      "Goal: the browser tab title shows a typed name and a click count",
+      "Setting the tab title reaches outside React, so it is a side effect",
+      "An effect lists the values it reads, and re-runs when one changes",
+      "The next slide builds this example",
     ],
   },
   {

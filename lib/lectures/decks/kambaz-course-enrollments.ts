@@ -22,13 +22,13 @@ export const KAMBAZ_COURSE_ENROLLMENTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "enroll-store-intro",
-    title: "Enrollments Store Overview",
+    title: "Planning an Enrollments Store",
     kind: "content",
     bullets: [
-      "An **enrollment** is one `{ _id, user, course }` row from `enrollments.json`",
-      "`useEnrollmentsStore` holds them, like the courses and modules stores",
-      "`enrollIntoCourse(userId, courseId)` adds a row; `unenrollFromCourse` removes it",
-      "Same names and arguments as the Chapter 5 client, so the swap is one line",
+      "An enrollment records that one user takes one course",
+      "Goal: a shared list of enrollments, starting from `enrollments.json`",
+      "Actions enroll a user into a course and unenroll them",
+      "The next slide builds this store, like the courses and modules stores",
     ],
   },
   {
@@ -69,13 +69,13 @@ export const useEnrollmentsStore = create<EnrollmentsStore>((set) => ({
   },
   {
     id: "enroll-card-intro",
-    title: "CourseCard Enrollment Overview",
+    title: "Planning Enroll Buttons on a Card",
     kind: "content",
     bullets: [
-      "No new props: the card reads `currentUser` and `useEnrollmentsStore` itself",
-      "`enrolled` is `null` when nobody is signed in. Delete calls `deleteCourse(course._id)`",
-      "Green **Enroll** or red **Unenroll**, hidden while `enrolled` is `null`",
-      "`event.preventDefault()` keeps the click from following the card's `Link`",
+      "Goal: each course card lets the signed-in user enroll or unenroll",
+      "A green Enroll or red Unenroll button, hidden when nobody is signed in",
+      "The card is a link, so the button must stop the click from opening it",
+      "The next four slides update the course card in parts",
     ],
   },
   {
@@ -205,13 +205,13 @@ export default function CourseCard({
   },
   {
     id: "enroll-dash-intro",
-    title: "Dashboard with Enrollments Overview",
+    title: "Planning an Enrollments Toggle",
     kind: "content",
     bullets: [
-      "`isEnrolled(courseId)` checks for a row with the current user and course",
-      "`showAllCourses` flag: the blue **Enrollments** button flips all vs. mine",
-      "`visibleCourses` feeds the count and the cards; each card owns its toggle",
-      "Add also enrolls the author, so the new course passes the filter",
+      "Goal: the Dashboard shows either every course or only enrolled ones",
+      "A blue Enrollments button switches between the two views",
+      "Adding a course also enrolls its author, so it appears in their view",
+      "The next three slides update the Dashboard in parts",
     ],
   },
   {
@@ -353,12 +353,13 @@ export default function Dashboard() {
   },
   {
     id: "enroll-guard-intro",
-    title: "Course Layout Guard Overview",
+    title: "Planning a Course Guard",
     kind: "content",
     bullets: [
-      "Only enrolled users may open `/courses/[cid]/...`",
-      "`useRouter().push(\"/dashboard\")` inside `useEffect` sends everyone else back",
-      "`return null` hides the course until the check passes",
+      "Goal: only enrolled users can open a course's screens",
+      "Anyone else is sent back to the Dashboard",
+      "Nothing in the course shows until that check passes",
+      "The next two slides update the course layout",
     ],
   },
   {

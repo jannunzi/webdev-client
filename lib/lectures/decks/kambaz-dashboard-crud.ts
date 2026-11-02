@@ -15,18 +15,21 @@ export const KAMBAZ_DASHBOARD_CRUD_SLIDES: LectureSlide[] = [
     title: "Implementing Dashboard CRUD",
     kind: "content",
     bullets: [
-      "Hooks and clicks need `\"use client\"`",
-      "Published cards come from `useCoursesStore`",
-      "The form draft stays in `useState(emptyCourse)` — one-screen UI",
+      "The Dashboard will let users create, edit and delete courses (CRUD)",
+      "The published courses come from the shared courses store",
+      "A form holds a draft course while the user types, before saving it",
+      "Saving changes the store, so every screen showing courses re-renders",
     ],
   },
   {
     id: "add-intro",
-    title: "Select the four store slices",
+    title: "Planning the Dashboard Form",
     kind: "content",
     bullets: [
-      "`courses`, `addCourse`, `updateCourse` — `CourseCard` reads `deleteCourse`",
-      "Typing a name must not rewrite every card until Add or Update",
+      "Goal: a form above the course cards with Add and Update buttons",
+      "Typing in the form changes only a draft course, not the published cards",
+      "Add saves the draft as a new course. Update saves it over the original",
+      "The next four slides build the Dashboard in parts",
     ],
   },
   {
@@ -139,12 +142,13 @@ export default function Dashboard() {
   },
   {
     id: "delete",
-    title: "Stopping Navigation on Delete",
+    title: "Edit and Delete Buttons on a Card",
     kind: "content",
     bullets: [
-      "The button sits inside a `Link` to course Home",
-      "Call `event.preventDefault()` or the card navigates before it disappears",
-      "`CourseCard` selects `deleteCourse` and calls `deleteCourse(course._id)`. id `wd-delete-course-click`",
+      "Each course card needs Edit and Delete buttons",
+      "The whole card is a link to the course, so a click would also open it",
+      "The buttons must stop that navigation before doing their own work",
+      "The next two slides show the course card, `CourseCard`, with both buttons",
     ],
   },
   {

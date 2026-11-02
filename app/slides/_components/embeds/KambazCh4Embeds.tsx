@@ -5,6 +5,9 @@ import Profile from "@/app/book/ch4/embeds/_styled/account/profile/page";
 import Ch4Modules from "@/app/book/ch4/embeds/_styled/courses/cid/modules/page";
 import Module from "@/app/book/ch4/embeds/_styled/courses/cid/modules/Module";
 import ModulesControls from "@/app/book/ch4/embeds/_styled/courses/cid/modules/ModulesControls";
+import { useEffect, useRef, type ReactNode } from "react";
+import usersJson from "@/app/book/ch4/embeds/_styled/database/users.json";
+import { useAccountContext } from "@/app/book/ch4/embeds/_styled/account/AccountContext";
 import AsAccountRouter from "./AsAccountRouter";
 import AsCourseParams from "./AsCourseParams";
 import LectureDemoFrame from "./LectureDemoFrame";
@@ -46,8 +49,32 @@ export function KambazCh4SignupEmbed() {
   return <KambazCh4AccountDemo start="/account/signup" />;
 }
 
+/** Slides-only: signs in the first seed user once so Profile opens directly. */
+function SignedInAsSeedUser({ children }: { children: ReactNode }) {
+  const { currentUser, setCurrentUser } = useAccountContext();
+  const done = useRef(false);
+  useEffect(() => {
+    if (!done.current && !currentUser) setCurrentUser(usersJson[0]);
+    done.current = true;
+  }, [currentUser, setCurrentUser]);
+  return <>{children}</>;
+}
+
 export function KambazCh4ProfileEmbed() {
-  return <KambazCh4AccountDemo start="/account/signup" />;
+  return (
+    <AsAccountRouter
+      start="/account/profile"
+      screens={(path, go) =>
+        path === "/account/profile" ? (
+          <SignedInAsSeedUser>
+            <Profile />
+          </SignedInAsSeedUser>
+        ) : (
+          <SignedOut go={() => go("/account/profile")} />
+        )
+      }
+    />
+  );
 }
 
 /** §4.10.4 Modules wired to the Ch4 modules store (add, delete, rename). */

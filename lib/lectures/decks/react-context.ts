@@ -23,12 +23,13 @@ export const REACT_CONTEXT_SLIDES: LectureSlide[] = [
   },
   {
     id: "context-file-intro",
-    title: "Context, provider, and a hook",
+    title: "Planning a Counter Context",
     kind: "content",
     bullets: [
-      "`createContext` starts `null` so a missing wrap is detectable",
-      "The provider holds `useState(7)` — same seed as §4.2.4",
-      "`useCounterContext` throws if you forget the provider",
+      "Goal: a counter that several components share without props",
+      "A context holds the value; a provider component publishes it",
+      "A small hook reads it, and fails loudly outside the provider",
+      "The next slide builds all three",
     ],
   },
   {
@@ -89,12 +90,13 @@ export default function ContextCounterRead() {
   },
   {
     id: "writer-intro",
-    title: "The writer calls the setter",
+    title: "Changing the Shared Counter",
     kind: "content",
     bullets: [
-      "`const { count, setCount } = useCounterContext()`",
-      "Up and Down are the same arrows as the `useState` counter",
-      "On your own: a Context todo list — do not put Kambaz courses here",
+      "A second component changes the shared counter with Up and Down buttons",
+      "The reader updates too, because both use the same context",
+      "On your own: a Context todo list. Do not put Kambaz courses here",
+      "The next slide shows this writer component",
     ],
   },
   {
@@ -174,12 +176,13 @@ export default function ContextExamples() {
   },
   {
     id: "profile-context-intro",
-    title: "The profile form with Context",
+    title: "Moving the Profile Form to Context",
     kind: "content",
     bullets: [
-      "`profile.ts`, `ProfileFields`, and `ProfileAlert` stay exactly as they were",
-      "`ProfileProvider` keeps the `profile` state and publishes the same `profile`/`setProfile` pair",
-      "`useProfileContext` throws a clear error outside the provider",
+      "The §4.2.10 profile form can keep its data in Context instead",
+      "Its data file, fields and alert stay exactly as they were",
+      "Only where the profile state lives changes",
+      "The next slide builds the profile context and its provider",
     ],
   },
   {
@@ -217,12 +220,12 @@ export function useProfileContext() {
   },
   {
     id: "context-profile-form-intro",
-    title: "The body reads the context",
+    title: "Reading the Profile from Context",
     kind: "content",
     bullets: [
-      "A hook only sees providers above its component, so the body is separate",
-      "The body reads `profile` and `setProfile` from the context; `errors`, `submitted`, and `save` stay in the form",
-      "Any component inside `ProfileProvider` can share the profile without props",
+      "A component sees a context only when its provider is above it",
+      "So the form is split: an outer part adds the provider, an inner part reads it",
+      "The next slide shows the updated form",
     ],
   },
   {

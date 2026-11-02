@@ -1339,8 +1339,8 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-assignments-data"], 15);
     assert.equal(counts["click-events"], 9);
     assert.equal(counts["passing-data-and-functions"], 10);
-    assert.equal(counts["usestate-counter"], 13);
-    assert.equal(counts["form-state-types"], 29);
+    assert.equal(counts["usestate-counter"], 14);
+    assert.equal(counts["form-state-types"], 30);
     assert.equal(counts["sharing-parent-child"], 8);
     assert.equal(counts["prop-drilling-and-url"], 17);
     assert.equal(counts["react-context"], 16);

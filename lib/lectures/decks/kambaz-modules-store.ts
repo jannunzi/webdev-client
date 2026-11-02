@@ -15,19 +15,21 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
     title: "Implementing Module State Management",
     kind: "content",
     bullets: [
-      "Local `useState` on Modules would hide new rows from Home",
-      "Prove the dialog and row buttons locally, then move the array",
-      "Zustand again — no parent of both screens has to own the list",
+      "Modules are application state: the Modules and Home screens both show them",
+      "Users will add, rename and delete modules, and both screens must re-render",
+      "First build a dialog that collects a new module's name",
+      "Then keep the module list in a shared Zustand store, like the courses",
     ],
   },
   {
     id: "editor-intro",
-    title: "ModuleEditor owns its dialog",
+    title: "Planning the Add Module Dialog",
     kind: "content",
     bullets: [
-      "No props: it renders the red + Module button and the dialog",
-      "It owns `show` and the `moduleName` draft (§4.2.6); `cid` from `useParams`",
-      "Add Module calls the store's `addModule`, clears the draft, then closes",
+      "Goal: a red + Module button that opens a dialog asking for a module name",
+      "The dialog keeps its own open or closed flag and the name being typed",
+      "Saving adds the module to the current course's list, then closes the dialog",
+      "The next three slides build this component, `ModuleEditor`, in parts",
     ],
   },
   {
@@ -132,12 +134,12 @@ export default function ModuleEditor() {
   },
   {
     id: "controls-intro",
-    title: "ModulesControls is the toolbar",
+    title: "Adding the Dialog to the Toolbar",
     kind: "content",
     bullets: [
-      "`ModulesControls` already has Collapse All, View Progress, Publish All",
-      "No props and no state: it just renders `<ModuleEditor />` last",
-      "`ModuleEditor` brings its own + Module button, dialog and store call",
+      "The Modules screen has a toolbar of buttons above the module list",
+      "The new dialog's + Module button belongs at the end of that toolbar",
+      "The next two slides show the toolbar, `ModulesControls`, with it added",
     ],
     embed: "kambaz-ch4-modules-controls",
   },
@@ -188,14 +190,13 @@ export default function ModulesControls() {
   },
   {
     id: "buttons-intro",
-    title: "Trash and pencil on each module row",
+    title: "Delete and Rename Buttons on a Row",
     kind: "content",
     bullets: [
-      "Add a red trash can to `ModuleControlButtons`",
-      "Only `moduleId` is a prop; `deleteModule` / `editModule` come from the store",
-      "`deleteModule` filters by `_id`, like `deleteCourse` on the Dashboard",
-      "The pencil calls `editModule` — wired up in §4.10.4.3",
-      "Deleting a module removes its nested lessons too",
+      "Each module row needs a way to delete it and a way to rename it",
+      "Goal: a red trash can and a pencil next to the row's existing buttons",
+      "Deleting a module also removes the lessons inside it",
+      "The next slide adds both icons to the row's button group",
     ],
     embed: "kambaz-ch4-module-row",
   },
@@ -238,12 +239,12 @@ export default function ModuleControlButtons({
   },
   {
     id: "module",
-    title: "Module takes one module prop",
+    title: "Showing One Module Row",
     kind: "content",
     bullets: [
-      "One `module` prop; it selects `updateModule` from the store itself",
-      "`module.editing` swaps the name for an input; Enter saves",
-      "Renders `ModuleControlButtons` and maps `lessons` to `Lesson`",
+      "A module row shows its name, its buttons and its lessons",
+      "While being renamed, the name becomes a text input; Enter saves it",
+      "The next three slides show this row component, `Module`, in parts",
     ],
     code: `import ModuleControlButtons from "./ModuleControlButtons";
 import Lesson from "./Lesson";
@@ -308,12 +309,13 @@ export default function Module({ module }: { module: CourseModule }) {
   },
   {
     id: "store-intro",
-    title: "modulesStore is the shared list",
+    title: "Planning a Modules Store",
     kind: "content",
     bullets: [
-      "Seed from `modules.json`. `addModule` takes `{ name, course }`",
-      "`editModule` sets `editing: true` so the row becomes an input",
-      "`updateModule` / `deleteModule` map and filter like courses",
+      "Goal: one shared list of modules that both screens read and change",
+      "It starts with the modules in `modules.json`",
+      "Actions add, delete and update a module, and mark one as being renamed",
+      "The next three slides build this store in parts",
     ],
   },
   {
@@ -412,12 +414,13 @@ type ModulesStore = {
   },
   {
     id: "page-intro",
-    title: "Modules page wires the store",
+    title: "Reading Modules from the Store",
     kind: "content",
     bullets: [
-      "Only `modules` comes from `useModulesStore` here",
-      "Children read their own actions — no `moduleName` state, no action props",
-      "Filter by `cid`, then `<Module key={module._id} module={module} />`",
+      "The Modules screen now reads its list from the shared store",
+      "It shows only the modules of the course in the URL",
+      "Each row and the toolbar handle their own actions, so it passes no callbacks",
+      "The next two slides show the updated Modules screen",
     ],
   },
   {

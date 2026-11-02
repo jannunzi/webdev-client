@@ -15,19 +15,20 @@ export const KAMBAZ_ACCOUNT_PAGES_SLIDES: LectureSlide[] = [
     title: "Implementing Account Pages and Sign Up",
     kind: "content",
     bullets: [
-      "Account Navigation and the landing page react to `currentUser`",
-      "Profile edits a draft copy of the user",
-      "AccountContext grows a `users` list so Sign up can add to it",
+      "Account screens change depending on whether someone is signed in",
+      "Profile lets the signed-in user edit their details and sign out",
+      "Sign up adds a new user, so the context needs a list of users",
     ],
   },
   {
     id: "nav-intro",
-    title: "Account Navigation Overview",
+    title: "Planning Account Navigation",
     kind: "content",
     bullets: [
-      "Signed in: the sidebar lists only Profile",
-      "`currentUser` is `null`: list Signin and Signup",
-      "Confirm the links change after sign in and again after sign out",
+      "Goal: the Account sidebar shows links that fit who is signed in",
+      "Signed in: only a Profile link",
+      "Signed out: Sign in and Sign up links",
+      "The next slide builds the sidebar",
     ],
   },
   {
@@ -68,12 +69,12 @@ export default function AccountNavigation() {
   },
   {
     id: "account-page-intro",
-    title: "Account Landing Page Overview",
+    title: "Planning the Account Landing Page",
     kind: "content",
     bullets: [
-      "Nobody signed in: the Account screen redirects to Sign in",
-      "Someone signed in: it redirects to Profile",
-      "The Account link in Kambaz Navigation follows the same rule",
+      "Goal: opening Account sends the user to the right screen",
+      "Nobody signed in: go to Sign in. Someone signed in: go to Profile",
+      "The next slide builds that landing page",
     ],
   },
   {
@@ -98,14 +99,14 @@ export default function AccountPage() {
   },
   {
     id: "profile-intro",
-    title: "Profile Overview",
+    title: "Planning the Profile Screen",
     kind: "content",
     bullets: [
-      "Profile gets `currentUser` from `AccountContext`",
-      "No `currentUser`: navigate to Sign in",
-      "`useEffect` copies the user into local `profile` state for the form",
-      "Editing a field doesn't write the context on every keystroke",
-      "Sign out sets `currentUser` to `null` and navigates to Sign in",
+      "Goal: a Profile form where the signed-in user edits their details",
+      "Nobody signed in: send the visitor to Sign in",
+      "The form edits a copy, so the stored user changes only on Update",
+      "Sign out clears the signed-in user and returns to Sign in",
+      "The next two slides build Profile in parts",
     ],
   },
   {
@@ -214,12 +215,13 @@ export default function Profile() {
   },
   {
     id: "people-context-intro",
-    title: "AccountContext with Users Overview",
+    title: "Planning a Users List in Context",
     kind: "content",
     bullets: [
-      "Users live in the React `AccountContext`, next to `currentUser`",
-      "`users` is `useState` seeded from `users.json`; `createUser(user)` returns the new user",
-      "Add `updateUser(user)` and `deleteUser(userId)`, the Chapter 5 client names",
+      "Goal: Sign up and the People table must add, edit and delete users",
+      "So the account context now also holds the list of all users",
+      "It gains actions to create, update and delete a user",
+      "The next two slides extend the context in parts",
     ],
   },
   {
@@ -294,12 +296,12 @@ export function useAccountContext() {
   },
   {
     id: "signup-intro",
-    title: "Sign Up Overview",
+    title: "Planning the Sign Up Screen",
     kind: "content",
     bullets: [
-      "`username` and `password` live in `useState`",
-      "`createUser` adds a user with every `users.json` field to the context's `users`",
-      "`setCurrentUser(newUser)` signs them in, then navigate to Profile",
+      "Goal: a Sign up screen with username and password fields",
+      "Signing up adds a new user, signs them in and opens Profile",
+      "The next two slides build the screen in parts",
     ],
   },
   {
@@ -376,11 +378,12 @@ export default function Signup() {
   },
   {
     id: "signup-signin-intro",
-    title: "Sign In with Context Users Overview",
+    title: "Updating Sign In for New Users",
     kind: "content",
     bullets: [
-      "Sign in now searches the context's `users`, not `users.json`",
-      "A user created by Sign up can sign out and sign back in",
+      "Sign in must now find users added by Sign up, not only the JSON file",
+      "So it searches the users list in the account context",
+      "The next two slides show the updated Sign in screen",
     ],
   },
   {

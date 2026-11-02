@@ -51,12 +51,13 @@ export default function Lab4() {
   },
   {
     id: "reference",
-    title: "Pass the function, not the result",
+    title: "Running Code When a Button Is Clicked",
     kind: "content",
     bullets: [
-      "`onClick={hello}` stores a reference React can call later",
-      "`onClick={hello()}` runs during render — the alert fires on load",
-      "Wrap several statements in an arrow when one click does more than one thing",
+      "Goal: a button that shows a Hello World! alert when clicked",
+      "React must run the handler later, on the click, not while drawing the page",
+      "So the button gets the function itself, not the result of calling it",
+      "The next slide builds that button",
     ],
   },
   {

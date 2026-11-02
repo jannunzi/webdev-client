@@ -23,12 +23,12 @@ export const SHARING_PARENT_CHILD_SLIDES: LectureSlide[] = [
   },
   {
     id: "child-intro",
-    title: "The child does not own the data",
+    title: "Sharing a Counter with a Child",
     kind: "content",
     bullets: [
-      "Type the props: `counter: number` and `setCounter: (n: number) => void`",
-      "Increment calls `setCounter(counter + 1)` — the parent re-renders both",
-      "Same pattern as passing `theFunction` in §4.2.3",
+      "Goal: a child shows a counter and increments it, but the parent owns it",
+      "The parent passes both the value and the function that changes it",
+      "The next slide builds the child, then the parent",
     ],
   },
   {

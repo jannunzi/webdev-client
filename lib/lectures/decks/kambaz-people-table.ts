@@ -15,17 +15,19 @@ export const KAMBAZ_PEOPLE_TABLE_SLIDES: LectureSlide[] = [
     title: "Implementing the People Table CRUD",
     kind: "content",
     bullets: [
-      "People lists the users enrolled in this course",
-      "The table adds, edits, and deletes users through AccountContext",
+      "The People screen lists the users enrolled in a course",
+      "This deck lets instructors add, edit and delete those users",
+      "Changes go through the account context, so every screen re-renders",
     ],
   },
   {
     id: "people-page-intro",
-    title: "People Page Overview",
+    title: "Planning the People Screen",
     kind: "content",
     bullets: [
-      "The server page reads `cid` and hands it to a client `PeopleTable`",
-      "`PeopleTable` needs `\"use client\"` because a server page imports it",
+      "The People screen reads the course id from the URL",
+      "It passes that id to a table component that runs in the browser",
+      "The next slide shows the People screen",
     ],
   },
   {
@@ -47,12 +49,13 @@ export default async function PeopleTablePage({
   },
   {
     id: "people-table-intro",
-    title: "PeopleTable CRUD Overview",
+    title: "Planning People Table CRUD",
     kind: "content",
     bullets: [
-      "A `user` draft feeds first and last name inputs, like the course draft",
-      "**Add** calls the context's `createUser`, then `enrollIntoCourse` here",
-      "Each row gets **Edit** (load the draft) and **Delete** (`deleteUser`)",
+      "Goal: a form above the table with first and last name inputs",
+      "Add creates a user and enrolls them in this course",
+      "Each row gets Edit, which loads it into the form, and Delete",
+      "The next three slides build the table in parts",
     ],
   },
   {

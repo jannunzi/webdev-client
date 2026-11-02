@@ -15,9 +15,10 @@ export const PASSING_DATA_AND_FUNCTIONS_SLIDES: LectureSlide[] = [
     title: "Implementing Passing Data and Functions",
     kind: "content",
     bullets: [
-      "Which item to delete, which string to alert, which two numbers to add",
-      "`onClick={add(2, 3)}` calls `add` during render and passes `undefined`",
-      "Wrap the call: `onClick={() => add(2, 3)}` so it waits for the click",
+      "Many clicks need data: which item to delete, which numbers to add",
+      "A handler that takes arguments can't be passed by name alone",
+      "And a child component often needs to run a function its parent owns",
+      "This deck covers both: arguments, then functions passed as props",
     ],
   },
   {
@@ -75,12 +76,12 @@ export default function PassingDataOnEvent() {
   },
   {
     id: "functions-are-values",
-    title: "Functions as Values",
+    title: "Passing a Function as a Prop",
     kind: "content",
     bullets: [
-      "A parent can pass a function the child does not own",
-      "The child only knows the type `(message: string) => void` and calls it with a string",
-      "Lab 4 itself is a Client Component so it can create `sayHello`",
+      "In JavaScript a function is a value, so it can be passed as a prop",
+      "Goal: a parent hands a child a function, and the child calls it on click",
+      "The next slide shows the child that receives the function",
     ],
   },
   {
