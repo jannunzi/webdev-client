@@ -20,6 +20,7 @@ export const KAMBAZ_DASHBOARD_CRUD_SLIDES: LectureSlide[] = [
       "A form holds a draft course while the user types, before saving it",
       "Saving changes the store, so every screen showing courses re-renders",
     ],
+    embed: "kambaz-ch4-course-form",
   },
   {
     id: "add-intro",
@@ -150,6 +151,7 @@ export default function Dashboard() {
       "The buttons must stop that navigation before doing their own work",
       "The next two slides show the course card, `CourseCard`, with both buttons",
     ],
+    embed: "kambaz-ch4-course-card",
   },
   {
     id: "card-props",

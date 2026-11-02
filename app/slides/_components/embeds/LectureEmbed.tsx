@@ -125,6 +125,8 @@ import {
   KambazCh4ProfileEmbed,
   KambazCh4ModuleRowEmbed,
   KambazCh4ModulesControlsEmbed,
+  KambazCh4CourseFormEmbed,
+  KambazCh4CourseCardEmbed,
 } from "./KambazCh4Embeds";
 import {
   JsAddEmbed,
@@ -431,6 +433,12 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
     case "kambaz-ch4-module-row":
       // Foreshadow: one real Module row with ModuleControlButtons.
       return <KambazCh4ModuleRowEmbed />;
+    case "kambaz-ch4-course-form":
+      // Foreshadow: the real Dashboard's New Course form.
+      return <KambazCh4CourseFormEmbed />;
+    case "kambaz-ch4-course-card":
+      // Foreshadow: one real CourseCard.
+      return <KambazCh4CourseCardEmbed />;
     case "kambaz-ch4-modules-controls":
       // Foreshadow: the real ModulesControls toolbar and + Module dialog.
       return <KambazCh4ModulesControlsEmbed />;

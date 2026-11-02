@@ -8,6 +8,9 @@ import ModulesControls from "@/app/book/ch4/embeds/_styled/courses/cid/modules/M
 import { useEffect, useRef, type ReactNode } from "react";
 import usersJson from "@/app/book/ch4/embeds/_styled/database/users.json";
 import { useAccountContext } from "@/app/book/ch4/embeds/_styled/account/AccountContext";
+import Ch4Dashboard from "@/app/book/ch4/embeds/_styled/dashboard/Dashboard";
+import CourseCard from "@/app/book/ch4/embeds/_styled/dashboard/CourseCard";
+import coursesJson from "@/app/book/ch4/embeds/_styled/database/courses.json";
 import AsAccountRouter from "./AsAccountRouter";
 import AsCourseParams from "./AsCourseParams";
 import LectureDemoFrame from "./LectureDemoFrame";
@@ -117,6 +120,26 @@ export function KambazCh4ModulesControlsEmbed() {
           <ModulesControls />
         </AsCourseParams>
       </div>
+    </div>
+  );
+}
+
+/** Foreshadow §4.10.2: the real Dashboard's New Course form (cards hidden). */
+export function KambazCh4CourseFormEmbed() {
+  return (
+    // Slides-only: unframed so the demo-stage zoom doesn't shrink it; full
+    // width, and the published heading and card grid are hidden.
+    <div className="mt-10 w-full font-sans [&_#wd-dashboard-title]:hidden [&_#wd-dashboard-published]:hidden [&_#wd-dashboard-courses]:hidden [&_hr]:hidden [&_input]:max-w-none [&_textarea]:max-w-none [&_select]:w-auto [&_select]:min-w-0">
+      <Ch4Dashboard />
+    </div>
+  );
+}
+
+/** Foreshadow §4.10.2: one real CourseCard with its Edit and Delete buttons. */
+export function KambazCh4CourseCardEmbed() {
+  return (
+    <div className="mt-10 flex w-full justify-center font-sans">
+      <CourseCard course={coursesJson[0]} onEdit={() => {}} />
     </div>
   );
 }
