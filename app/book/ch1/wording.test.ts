@@ -103,8 +103,14 @@ describe("Chapter 1 Engineering with AI", () => {
     assert.match(ai, /optional, not graded/);
     assert.doesNotMatch(ai, /Optional\. Not graded\./);
     assert.match(ai, /In a product team/);
+    assert.match(ai, /Jira/);
+    assert.match(ai, /GitHub Issues/);
+    assert.match(ai, /Continuous integration/);
+    assert.match(ai, /monitors/);
     assert.match(ai, /AI Assisted Course Builder/);
-    assert.match(ai, /Treat an AI assistant as a fast teammate/);
+    assert.doesNotMatch(ai, /does not invent the feature/);
+    assert.doesNotMatch(ai, /happily write/);
+    assert.doesNotMatch(ai, /walked away/);
     assert.match(ai, /already have a Claude account/);
     assert.doesNotMatch(ai, /fake endpoint that pretends/);
     assert.doesNotMatch(ai, /skip a review, to hide a change/);

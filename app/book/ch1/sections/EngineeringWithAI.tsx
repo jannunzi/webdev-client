@@ -56,31 +56,108 @@ export default function EngineeringWithAI() {
       title="1.11 Engineering with AI (optional, not graded)"
     >
       <p>
-        In a product team, the engineer does not invent the feature in the
-        chat window and then hope it is what anyone wanted. Someone writes
-        down what the user can do. The engineer implements that description
-        on its own Git branch, reads the change line by line, and only then
-        asks for it to be merged. That line-by-line change is a{" "}
-        <strong>diff</strong>: Git&apos;s picture of which lines were added
-        and which were removed. Teams at a company such as Amazon use an
-        assistant to draft, to search, and to speed up the edit, and a
-        person still reviews every line that merges. You own the code. Read
-        it before you keep it, and if you cannot explain a line, delete it
-        rather than shipping something you do not understand.
+        In a product team, a change follows one path from a written
+        requirement to a running product. An AI assistant can draft or
+        search at several steps on that path. A person decides, reviews,
+        and stays accountable for the step. Teams at a company such as
+        Amazon use that split: the assistant speeds the step up, and an
+        engineer owns what leaves the step.
+      </p>
+      <p>
+        The path starts with requirements. Product requirements say what
+        the user can do. A <strong>user story</strong> puts one of those
+        capabilities in a single sentence: who the user is, what they can
+        do, and why. <strong>Acceptance criteria</strong> are the checks
+        that define done — which labels appear, where they sit, and what
+        happens when the user acts. An assistant can draft stories from
+        notes, or turn notes into criteria. The person who accepts the
+        document decides what done means.
+      </p>
+      <p>
+        The team records the work as an <strong>issue</strong>, also
+        called a ticket, in an issue tracker. Jira is a common tracker.
+        GitHub Issues and Linear are others. The issue holds the
+        requirement, the acceptance criteria, and a status such as to do,
+        in progress, in review, or done. An engineer picks up an issue and
+        does the work it names. An assistant can draft the issue text from
+        the requirements. A person creates the issue, sets its scope, and
+        assigns it.
+      </p>
+      <p>
+        Design comes before the edit. The engineer decides which screens
+        change, which files those screens live in, and what this issue
+        leaves out. An assistant can list options from the requirements.
+        The engineer chooses one and keeps that choice with the issue, so
+        the implementation has a target.
+      </p>
+      <p>
+        Implementation happens on a <strong>feature branch</strong>. A
+        branch is a separate line of commits, started from the main line
+        with <code>git checkout -b</code>, so unfinished work stays off{" "}
+        <code>main</code> until review. You already commit in{" "}
+        <SectionLink to="1.5" />. An assistant can draft the code from the
+        requirements and from the files the design named. The engineer
+        reads the <strong>diff</strong> — Git&apos;s line-by-line picture
+        of what was added and removed — compares it with the acceptance
+        criteria, and keeps the lines they can explain. The engineer owns
+        the code that remains.
+      </p>
+      <p>
+        Tests check that the change matches the acceptance criteria. Some
+        tests are automated and run from a command. Some are a pass
+        through the screens by hand. An assistant can draft a test or a
+        checklist. The engineer runs the checks and decides whether the
+        behavior is the behavior the issue asked for.
+      </p>
+      <p>
+        The engineer then opens a <strong>pull request</strong>. A pull
+        request is the page on GitHub that proposes merging the feature
+        branch into the main line and shows the diff for review. Reviewers
+        comment on that diff. An assistant can draft the description and
+        can comment as well. The author reads each comment, keeps the ones
+        that match the requirements, and leaves the ones that ask for work
+        the issue did not include. The author is accountable for the pull
+        request.
+      </p>
+      <p>
+        <strong>Continuous integration</strong>, or <strong>CI</strong>,
+        runs the project&apos;s checks on that pull request: the build, and
+        the tests the repository defines. An assistant can help read the
+        log when a check fails. A green check is evidence that the
+        automated steps passed. A person decides whether the change is
+        ready to merge.
+      </p>
+      <p>
+        Merge copies the reviewed branch onto the main line. Deploy
+        publishes that line so people can open the app, which you already
+        do for this chapter in <SectionLink to="1.6" />. An assistant can
+        draft a short note about what changed. A person merges, a person
+        deploys, and the engineer confirms that the deployed app is the
+        one that was reviewed.
+      </p>
+      <p>
+        After deploy, the team <strong>monitors</strong> the running app:
+        error logs, failed requests, and whether the feature still matches
+        the acceptance criteria. An assistant can summarize a log. A person
+        decides whether the behavior is an incident and which issue to
+        file next.
       </p>
       <p>
         To practice how engineers use AI assistants in production teams,
         this section demonstrates building an{" "}
-        <strong>AI Assisted Course Builder</strong> feature for Kambaz. The
-        buttons let a course author draft a title, a description, a module
-        list, and lessons. In this chapter those buttons are static HTML.
-        They show up on the screen, and clicking them does not ask Claude
-        to write anything or change any text. Later chapters of this same
-        optional thread style those controls with Tailwind, fill them from
-        a local JSON file of sample suggestions, store the draft in
-        Zustand — a client-side store you will meet later — and only then
-        call Claude from a Next.js route handler, a function on the server
-        that answers a request. Leave that work for those chapters.
+        <strong>AI Assisted Course Builder</strong> feature for Kambaz,
+        following that path through the requirements, a feature branch, the
+        implementation, a manual check against the acceptance criteria, and
+        a pull request. The exercises stop before merge. The buttons let a
+        course author draft a title, a description, a module list, and
+        lessons. In this chapter those buttons are static HTML. They show
+        up on the screen, and clicking them does not ask Claude to write
+        anything or change any text. Later chapters of this same optional
+        thread style those controls with Tailwind, fill them from a local
+        JSON file of sample suggestions, store the draft in Zustand — a
+        client-side store you will meet later — and only then call Claude
+        from a Next.js route handler, a function on the server that answers
+        a request. Leave that work for those chapters.
       </p>
 
       <h3
@@ -90,15 +167,12 @@ export default function EngineeringWithAI() {
         1.11.1 Owning the code
       </h3>
       <p>
-        Treat an AI assistant as a fast teammate who has not read the
-        requirements. It will happily write something plausible. You still
-        decide what lands in the repository, the same way you would if a
-        coworker handed you a diff and walked away. When you ask for the
-        edit, paste the
-        requirements document first, then name the few files the task
-        actually touches. After the reply, read it against the acceptance
-        criteria — the checklist of what must be true when you are done —
-        before you save any of it.
+        An assistant drafts from the requirements and the files you put in
+        the prompt. The issue, the acceptance criteria, and the file list
+        are in the reply only when you include them. Paste the requirements
+        document first, then name the few files the task touches. After the
+        reply, read the diff against the acceptance criteria and save only
+        what matches.
       </p>
       <p>
         Keep secrets out of the chat, out of the command-line tool, and out
@@ -139,14 +213,11 @@ export default function EngineeringWithAI() {
           claude.ai
         </a>
         , start a new chat, and paste the requirements document before you
-        ask for anything else, so the reply is about that document and not
-        about whatever the previous conversation was doing. Use the chat
-        when you want a plan, a checklist, a commit message, or the
-        description of a pull request. A <strong>pull request</strong> is
-        the GitHub page where you propose merging a branch and where
-        someone — here, you — can comment on the diff before it lands. Chat
-        returns text. It does not edit your repository. You copy only the
-        parts you still agree with after you have read them.
+        ask for anything else, so the reply stays on that document. Use the
+        chat when you want a plan, a checklist, a commit message, or the
+        pull request description from the process above. Chat returns text.
+        It does not edit your repository. You copy the parts that match the
+        requirements after you have read them.
       </p>
       <p>
         The terminal surface is <strong>Claude Code</strong>, the same
@@ -177,8 +248,7 @@ claude`}</CodeBlock>
         <code>path/to/your/webdev-client</code> with the real folder. The
         second line starts Claude in that folder, so the session is about
         this project. When it asks which files to change, name the modules
-        page and <code>Module.tsx</code> rather than telling it to wander
-        through the whole tree.
+        page and <code>Module.tsx</code>, the files this issue changes.
       </p>
       <p>
         The editor surface is the extension you installed in{" "}
@@ -222,13 +292,13 @@ claude`}</CodeBlock>
         a pull request, or for a yes-or-no check against the acceptance
         criteria.
         Use a stronger model when it has to edit several files and keep
-        them consistent. A strong model on a one-line message spends money
-        you will want later, when the edit is actually hard.
+        them consistent. The cheaper model is enough for a short text task.
+        The stronger model is the one to spend on a multi-file edit.
       </p>
       <p>
         Keep a short <strong>cost log</strong> on your machine: one row per
-        task, written before you start the next task, so a runaway chat is
-        visible while you still remember what you sent. If a task takes
+        task, written before you start the next task, while you still
+        remember what you sent. If a task takes
         many retries, stop and narrow the prompt instead of attaching more
         files. Leave the log out of the commit. It is a notebook, not
         project source, and it is easy to jot an account detail into it by
@@ -253,9 +323,8 @@ claude`}</CodeBlock>
         1.11.4 Requirements for the AI Assisted Course Builder
       </h3>
       <p>
-        An engineer implements from a document the product team can review,
-        not from a sentence typed into a chat. The document has four parts,
-        and you will see all four in the sample below. The{" "}
+        The implementation follows the requirements document. The sample
+        below has the four parts from the process above. The{" "}
         <strong>overview</strong> says what this chapter builds and, just as
         important, what it is not yet. The <strong>user stories</strong>{" "}
         are one sentence each, in the form &quot;as a course author, I can
@@ -263,9 +332,9 @@ claude`}</CodeBlock>
         it is on the screen. The <strong>acceptance criteria</strong> are
         the checks you will run in the browser when the edit is done: which
         labels appear, where they sit, and what must not happen when you
-        click. <strong>Out of scope</strong> is the list of tempting next
-        steps you will refuse in this chapter, including a model call, a
-        mock AI service, styling, and client state.
+        click. <strong>Out of scope</strong> lists work this chapter does
+        not include: a model call, a mock AI service, styling, and client
+        state.
       </p>
       <p>
         Save the sample as <code>docs/ai-course-builder.md</code> on the
@@ -302,11 +371,9 @@ claude`}</CodeBlock>
         Chapter 1 has no course editor. The Dashboard in this chapter is a
         list of course cards, and the title and description form arrives
         later, on that Dashboard, in <SectionLink to="4.10.2" />. Leave
-        that exercise where it is. Copying it forward would turn a later
-        chapter into something you have already done, and this optional
-        section is not the place that form is taught. What you need today
-        is a short static page with a title field and a description field,
-        so the generate buttons have something to sit under.
+        that exercise where it is. This section needs a short static page
+        with a title field and a description field, so the generate buttons
+        have fields to sit under.
       </p>
       <p>
         Create <code>app/(kambaz)/courses/[cid]/editor/page.tsx</code> and
@@ -489,10 +556,11 @@ export default function Module({
       <ol>
         <li>
           <p>
-            The buttons do not belong on <code>main</code> mixed in with
-            the chapter work you already finished. Commit what you want to
-            keep, or stash it — set the uncommitted edits aside without
-            making a commit — then look at <code>git status</code>. It
+            Create the feature branch from the process above, so this work
+            stays off <code>main</code> until the pull request is reviewed.
+            Commit what you want to keep, or stash it — set the uncommitted
+            edits aside without making a commit — then look at{" "}
+            <code>git status</code>. It
             should list nothing left to commit. <code>git checkout -b</code>{" "}
             creates a new branch and switches to it. Name it{" "}
             <code>feature/ai-buttons</code>, which is the branch the later
@@ -527,8 +595,8 @@ git checkout -b feature/ai-buttons`}</CodeBlock>
             you accept it. If you are in the website chat, the reply is
             text: apply only the parts you have checked against the
             reference snippets. The prompt tells it to show the diff and
-            stop, so you should get a change to read rather than a second
-            round of edits you did not ask for.
+            stop, so the reply is a diff you can read before any further
+            edit.
           </p>
           <WithAI
             prompt={`Read docs/ai-course-builder.md. Add the static controls from the acceptance criteria. The course editor file already exists; add the two generate buttons and keep the Title and Description fields. Edit app/(kambaz)/courses/[cid]/modules/page.tsx and Module.tsx. Keep every module, lesson, and content item, including Week 1. Put AI: suggest modules immediately after the + Module button. Put AI: next module after the module list. Inside each module, put a Lesson type select (Reading, Slides, Quiz only) and Generate lessons above the lessons, and AI: next lesson after the lessons. Use a class, not a repeated id, on those per-module controls. Buttons are type button, with no onClick and no fetch. Do not add a use client line, Tailwind, Bootstrap, useState, a JSON file, an API route, or a Video option. Do not edit Course Navigation. Show the diff and stop.`}
@@ -625,10 +693,10 @@ git push -u origin feature/ai-buttons`}</CodeBlock>
             prompt={`Draft a GitHub pull request description for feature/ai-buttons. Use two headings: Summary and Test plan. State that the controls are static HTML, that this work is optional and not graded, and that the buttons do not call a model. Do not claim checks you did not run.`}
           >
             The reply should have a Summary and a Test plan, and it should
-            say the buttons do not call a model. Before you submit, open
-            the Files changed tab and confirm it matches the diff you
-            already reviewed. You are the author of the pull request, so a
-            wrong sentence in the description is yours.
+            say the buttons do not call a model. You are the author of the
+            pull request. Read the description, then open the Files changed
+            tab and confirm it matches the diff you already reviewed, before
+            you submit.
           </WithAI>
         </li>
         <li>
@@ -664,12 +732,11 @@ git push -u origin feature/ai-buttons`}</CodeBlock>
         </li>
       </ol>
       <p>
-        <strong>What the assistant got wrong.</strong> On a task this
-        small, the reply often still adds a click handler, a Tailwind or
-        Bootstrap class, a Video option, a new route, or a rewrite of Week
-        1. None of those are in the requirements, and each one is the kind
-        of line you delete when you read the diff. Write down what happened
-        this time, while you still remember the prompt that caused it.
+        <strong>What the assistant got wrong.</strong> Compare the diff
+        with the requirements. A click handler, a Tailwind or Bootstrap
+        class, a Video option, a new route, or a rewrite of Week 1 is
+        outside the acceptance criteria. Remove it, and write down what you
+        changed while you still remember the prompt.
       </p>
       <OnYourOwn>
         In the cost log, write three sentences: what you asked, what you
