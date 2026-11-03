@@ -1,7 +1,25 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
+import { HiSparkles } from "react-icons/hi2";
 import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  createHistory,
+  discardUntil,
+  pushHistory,
+  redoHistory,
+  undoHistory,
+  type EditHistory,
+} from "@/lib/inline-edit/edit-history";
+import {
+  applyChoices,
+  acceptAllChoices,
+  buildDiff,
+  maskPreservedHtml,
+  renderReview,
+  type DiffPart,
+  type HunkChoice,
+} from "@/lib/inline-edit/suggest-diff";
 
 type SavePayload = { file: string; hash: string; html: string };
 type SaveState = {
@@ -26,6 +44,7 @@ export function serializeEditable(root: HTMLElement): string {
     if (node.nodeType === Node.TEXT_NODE) return escapeHtml(node.textContent ?? "");
     if (node.nodeType !== Node.ELEMENT_NODE) return "";
     const el = node as HTMLElement;
+    if (el.dataset.inlineGhost != null) return "";
     if (kind === "jsx" && el.dataset.editSlot != null) {
       const index = Number(el.dataset.editSlot);
       return Number.isInteger(index) ? `<slot data-i="${index}"></slot>` : "";
@@ -89,6 +108,58 @@ function PencilIcon() {
   );
 }
 
+function currentHtml(el: HTMLElement): string {
+  const clone = el.cloneNode(true) as HTMLElement;
+  clone.querySelectorAll("[data-inline-ghost]").forEach((node) => node.remove());
+  return clone.innerHTML;
+}
+
+function removeGhost(el: HTMLElement) {
+  el.querySelectorAll("[data-inline-ghost]").forEach((node) => node.remove());
+}
+
+function atSentenceEnd(root: HTMLElement): boolean {
+  const selection = window.getSelection();
+  if (!selection || !selection.isCollapsed || selection.rangeCount === 0) return false;
+  const anchor = selection.anchorNode;
+  if (!anchor || !root.contains(anchor) || root.querySelector("[data-inline-ghost]")) return false;
+  const range = selection.getRangeAt(0);
+  const after = range.cloneRange();
+  after.selectNodeContents(root);
+  after.setStart(range.endContainer, range.endOffset);
+  if (after.toString().trim() !== "") return false;
+  const before = range.cloneRange();
+  before.selectNodeContents(root);
+  before.setEnd(range.endContainer, range.endOffset);
+  return /[.!?]["']?\s*$/.test(before.toString().replaceAll("\u00a0", " "));
+}
+
+function showGhost(root: HTMLElement, sentence: string) {
+  removeGhost(root);
+  const selection = window.getSelection();
+  if (!selection || selection.rangeCount === 0) return;
+  const span = document.createElement("span");
+  span.dataset.inlineGhost = "1";
+  span.contentEditable = "false";
+  span.className = "text-neutral-400";
+  span.textContent = sentence.startsWith(" ") ? sentence : ` ${sentence}`;
+  const range = selection.getRangeAt(0);
+  range.collapse(false);
+  range.insertNode(span);
+  const caret = document.createRange();
+  caret.setStartBefore(span);
+  caret.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(caret);
+}
+
+function acceptGhost(root: HTMLElement) {
+  const ghost = root.querySelector("[data-inline-ghost]");
+  if (!ghost) return false;
+  ghost.replaceWith(document.createTextNode(ghost.textContent ?? ""));
+  return true;
+}
+
 function CheckIcon() {
   return (
     <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
@@ -132,10 +203,40 @@ function Editor() {
   const [box, setBox] = useState<DOMRect | null>(null);
   const [badgeBox, setBadgeBox] = useState<DOMRect | null>(null);
   const [save, setSave] = useState<SaveState | null>(null);
+  const [reviewing, setReviewing] = useState(false);
+  const [suggesting, setSuggesting] = useState(false);
+  const [suggestError, setSuggestError] = useState("");
   const originals = useRef(new Map<HTMLElement, string>());
   const outlines = useRef(new Map<HTMLElement, string>());
   const holds = useRef(new Map<string, () => void>());
+  const historyRef = useRef<EditHistory | null>(null);
+  const reviewRef = useRef<{ parts: DiffPart[]; baseHtml: string } | null>(null);
+  const ghostTimer = useRef<number | null>(null);
+  const snapshotTimer = useRef<number | null>(null);
+  const continueAbort = useRef<AbortController | null>(null);
   const pencilEl = editing ?? hover;
+
+  const pushSnapshot = useCallback((el: HTMLElement) => {
+    const html = currentHtml(el);
+    const history = historyRef.current ?? createHistory(html);
+    historyRef.current = pushHistory(history, html);
+  }, []);
+
+  const restoreHistory = useCallback((el: HTMLElement) => {
+    const history = historyRef.current;
+    if (!history) return;
+    removeGhost(el);
+    el.innerHTML = history.present;
+    const stillReviewing = Boolean(el.querySelector("[data-diff-hunk]"));
+    setReviewing(stillReviewing);
+    if (stillReviewing) {
+      el.contentEditable = "false";
+      return;
+    }
+    reviewRef.current = null;
+    el.contentEditable = "true";
+    lockFixed(el);
+  }, []);
 
   const release = useCallback((el: HTMLElement) => {
     const hash = el.dataset.srcHash ?? "";
@@ -152,9 +253,17 @@ function Editor() {
 
   const cancel = useCallback((el: HTMLElement) => {
     const original = originals.current.get(el);
+    continueAbort.current?.abort();
+    if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
+    if (snapshotTimer.current != null) window.clearTimeout(snapshotTimer.current);
     release(el);
     if (original !== undefined) el.innerHTML = original;
     originals.current.delete(el);
+    historyRef.current = null;
+    reviewRef.current = null;
+    setReviewing(false);
+    setSuggesting(false);
+    setSuggestError("");
     setEditing(null);
     setSave(null);
   }, [release]);
@@ -163,12 +272,108 @@ function Editor() {
     if (editing && editing !== el) return;
     originals.current.set(el, el.innerHTML);
     outlines.current.set(el, el.style.outline);
+    historyRef.current = createHistory(el.innerHTML);
+    reviewRef.current = null;
     el.style.outline = "2px solid #2563eb";
     el.contentEditable = "true";
     lockFixed(el);
+    setReviewing(false);
+    setSuggestError("");
     setEditing(el);
     setHover(el);
     setSave(null);
+    el.focus();
+  }
+
+  async function requestSuggestion(el: HTMLElement, mode: "improve" | "continue") {
+    const html = serializeEditable(el);
+    const masked = maskPreservedHtml(html);
+    const controller = new AbortController();
+    continueAbort.current?.abort();
+    if (mode === "continue") continueAbort.current = controller;
+    setSuggesting(mode === "improve");
+    setSuggestError("");
+    try {
+      const response = await fetch("/api/staff/ai-suggest", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        signal: controller.signal,
+        body: JSON.stringify({
+          mode,
+          text: masked.prompt,
+          maskCount: masked.masks.length,
+        }),
+      });
+      const data = (await response.json().catch(() => null)) as {
+        ok?: boolean;
+        text?: string;
+        error?: string;
+      } | null;
+      if (controller.signal.aborted) return;
+      if (!response.ok || !data?.ok || !data.text) {
+        if (mode === "improve") setSuggestError(data?.error || "No suggestion.");
+        return;
+      }
+      if (mode === "continue") {
+        if (!reviewRef.current && atSentenceEnd(el)) showGhost(el, data.text);
+        return;
+      }
+      const diff = buildDiff(masked.prompt, data.text, masked.masks);
+      if (!diff.ok) {
+        setSuggestError(diff.error);
+        return;
+      }
+      pushSnapshot(el);
+      reviewRef.current = { parts: diff.parts, baseHtml: currentHtml(el) };
+      el.contentEditable = "false";
+      el.innerHTML = renderReview(diff.parts, {});
+      pushSnapshot(el);
+      setReviewing(true);
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") return;
+      if (mode === "improve") setSuggestError("No suggestion.");
+    } finally {
+      if (mode === "improve") setSuggesting(false);
+    }
+  }
+
+  function chooseHunk(el: HTMLElement, id: string, choice: HunkChoice) {
+    const review = reviewRef.current;
+    const span = el.querySelector(`[data-diff-hunk="${id}"]`);
+    const part = review?.parts.find((item) => item.type === "hunk" && item.id === id);
+    if (!span || !part || part.type !== "hunk") return;
+    const html = choice === "accept" ? part.insertHtml : part.deleteHtml;
+    const template = document.createElement("template");
+    template.innerHTML = html || "";
+    span.replaceWith(template.content);
+    pushSnapshot(el);
+    if (!el.querySelector("[data-diff-hunk]")) {
+      reviewRef.current = null;
+      setReviewing(false);
+      el.contentEditable = "true";
+      lockFixed(el);
+      el.focus();
+    }
+  }
+
+  function acceptAll(el: HTMLElement) {
+    const review = reviewRef.current;
+    if (!review) return;
+    el.innerHTML = applyChoices(review.parts, acceptAllChoices(review.parts));
+    reviewRef.current = null;
+    setReviewing(false);
+    el.contentEditable = "true";
+    lockFixed(el);
+    pushSnapshot(el);
+    el.focus();
+  }
+
+  function rejectAll(el: HTMLElement) {
+    const review = reviewRef.current;
+    if (!review || !historyRef.current) return;
+    historyRef.current = discardUntil(historyRef.current, review.baseHtml);
+    reviewRef.current = null;
+    restoreHistory(el);
     el.focus();
   }
 
@@ -258,29 +463,105 @@ function Editor() {
   }, [pencilEl, save]);
 
   useEffect(() => {
+    if (!editing || reviewing) return;
+    const schedule = () => {
+      removeGhost(editing);
+      continueAbort.current?.abort();
+      if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
+      if (snapshotTimer.current != null) window.clearTimeout(snapshotTimer.current);
+      snapshotTimer.current = window.setTimeout(() => pushSnapshot(editing), 400);
+      ghostTimer.current = window.setTimeout(() => {
+        if (!atSentenceEnd(editing)) return;
+        void requestSuggestion(editing, "continue");
+      }, 1500);
+    };
+    const onInput = () => schedule();
+    const onSelect = () => {
+      if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
+      ghostTimer.current = window.setTimeout(() => {
+        if (!atSentenceEnd(editing)) return;
+        void requestSuggestion(editing, "continue");
+      }, 1500);
+    };
+    editing.addEventListener("input", onInput);
+    document.addEventListener("selectionchange", onSelect);
+    return () => {
+      editing.removeEventListener("input", onInput);
+      document.removeEventListener("selectionchange", onSelect);
+      if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
+      if (snapshotTimer.current != null) window.clearTimeout(snapshotTimer.current);
+      continueAbort.current?.abort();
+    };
+    // The pause timer must stay armed across renders. The request reads refs.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editing, pushSnapshot, reviewing]);
+
+  useEffect(() => {
     if (!editing) return;
     const onKey = (event: KeyboardEvent) => {
-      if (!editing.contains(document.activeElement) && event.key !== "Escape") return;
+      const inField =
+        editing.contains(document.activeElement) ||
+        (event.target instanceof Element &&
+          event.target.closest("[data-inline-edit-ui]") != null);
+      if (!inField && event.key !== "Escape") return;
+      const mod = event.metaKey || event.ctrlKey;
+      if (mod && !event.altKey && event.key.toLowerCase() === "z") {
+        event.preventDefault();
+        if (!historyRef.current) return;
+        historyRef.current = event.shiftKey
+          ? redoHistory(historyRef.current)
+          : undoHistory(historyRef.current);
+        restoreHistory(editing);
+        return;
+      }
+      if (event.key === "Tab" && editing.querySelector("[data-inline-ghost]")) {
+        event.preventDefault();
+        if (acceptGhost(editing)) pushSnapshot(editing);
+        return;
+      }
       if (event.key === "Escape") {
         event.preventDefault();
+        if (editing.querySelector("[data-inline-ghost]")) {
+          removeGhost(editing);
+          return;
+        }
+        if (reviewRef.current) {
+          rejectAll(editing);
+          return;
+        }
         cancel(editing);
         return;
       }
       if (event.key === "Enter") {
         event.preventDefault();
-        return;
       }
-      const mod = event.metaKey || event.ctrlKey;
-      if (!mod || event.altKey) return;
+      if (!mod || event.altKey || reviewing) return;
       const key = event.key.toLowerCase();
       if (key === "b" || key === "i") {
         event.preventDefault();
         document.execCommand(key === "b" ? "bold" : "italic");
       }
     };
+    const onClick = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const button = target.closest("[data-hunk-choice]");
+      if (!button || !editing.contains(button)) return;
+      event.preventDefault();
+      const id = button.getAttribute("data-hunk-id");
+      const choice = button.getAttribute("data-hunk-choice");
+      if (!id || (choice !== "accept" && choice !== "reject")) return;
+      chooseHunk(editing, id, choice);
+    };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [cancel, editing]);
+    editing.addEventListener("click", onClick);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      editing.removeEventListener("click", onClick);
+    };
+    // Hunk actions read the review ref. Rebinding them would drop keystrokes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cancel, editing, pushSnapshot, restoreHistory]);
 
   const checking = Boolean(editing);
   const showPencil = Boolean(pencilEl && box && box.width > 0 && box.height > 0);
@@ -289,23 +570,39 @@ function Editor() {
       {showPencil && box ? (
         <div
           data-inline-edit-ui=""
-          className="pointer-events-none fixed z-40"
-          style={{ top: Math.max(8, box.top - 6), left: Math.max(8, box.right - 28) }}
+          className="pointer-events-none fixed z-40 flex items-start gap-1"
+          style={{ top: Math.max(8, box.top - 6), left: Math.max(8, box.right - 60) }}
         >
+          {checking ? (
+            <button
+              type="button"
+              className="pointer-events-auto flex h-6 w-6 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-800 shadow-sm hover:border-neutral-800 disabled:opacity-40"
+              aria-label="Improve writing"
+              title="Suggest wording fixes"
+              disabled={suggesting || reviewing || save?.phase === "saving"}
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => {
+                if (editing) void requestSuggestion(editing, "improve");
+              }}
+            >
+              <HiSparkles aria-hidden className="text-sm" />
+            </button>
+          ) : null}
           <button
             type="button"
-            className="pointer-events-auto flex h-6 w-6 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-800 shadow-sm hover:border-neutral-800"
+            className="pointer-events-auto flex h-6 w-6 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-800 shadow-sm hover:border-neutral-800 disabled:opacity-40"
             aria-label={checking ? "Save edit" : "Edit text"}
             title={
               checking
                 ? "Save edit"
-                : "Edit this text. Esc cancels. Ctrl or Cmd B is bold, I is italic."
+                : "Edit this text. Esc cancels. Ctrl or Cmd Z undoes. Ctrl or Cmd B is bold, I is italic."
             }
-            disabled={save?.phase === "saving"}
+            disabled={save?.phase === "saving" || reviewing || suggesting}
             onMouseDown={(event) => event.preventDefault()}
             onClick={() => {
               if (!pencilEl) return;
               if (editing) {
+                removeGhost(editing);
                 void commit(editing);
                 return;
               }
@@ -314,6 +611,37 @@ function Editor() {
           >
             {checking ? <CheckIcon /> : <PencilIcon />}
           </button>
+          {reviewing && editing ? (
+            <span className="pointer-events-auto flex gap-1">
+              <button
+                type="button"
+                className="rounded border border-neutral-300 bg-white px-1.5 text-[10px] font-sans text-neutral-800"
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => acceptAll(editing)}
+              >
+                Accept all
+              </button>
+              <button
+                type="button"
+                className="rounded border border-neutral-300 bg-white px-1.5 text-[10px] font-sans text-neutral-800"
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => rejectAll(editing)}
+              >
+                Reject all
+              </button>
+            </span>
+          ) : null}
+        </div>
+      ) : null}
+      <style>{`[data-diff-hunk] del{background:#fee2e2;text-decoration:line-through}[data-diff-hunk] mark{background:#d1fae5}[data-inline-ghost]{color:#a3a3a3}`}</style>
+      {suggestError && box ? (
+        <div
+          data-inline-edit-ui=""
+          role="status"
+          className="pointer-events-auto fixed z-40 max-w-56 rounded border border-red-200 bg-white px-1.5 py-0.5 font-sans text-[11px] text-red-800 shadow-sm"
+          style={{ top: Math.max(8, box.bottom + 4), left: Math.max(8, box.left) }}
+        >
+          {suggestError}
         </div>
       ) : null}
       {save && badgeBox ? (
