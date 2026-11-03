@@ -19,6 +19,7 @@ import {
   listSlideComponentOptions,
   type SlideComponentId,
 } from "@/lib/lectures/component-registry";
+import { inlineEditDataProps } from "@/lib/inline-edit/mark";
 import { htmlToSlideText, slideTextToHtml } from "@/lib/lectures/slide-markup";
 import type { LectureSlideDensity } from "@/lib/lectures/types";
 import LectureCodeBlock from "./LectureCodeBlock";
@@ -60,14 +61,20 @@ function BulletView({
   return (
     <div className={fontClass(block.fontSize)}>
       {block.title ? (
-        <p className="lecture-slide-block-title mb-2 font-sans font-semibold">
-          {block.title}
+        <p
+          className="lecture-slide-block-title mb-2 font-sans font-semibold"
+          {...inlineEditDataProps(block.titleLoc)}
+        >
+          <SlideText text={block.title} density={density} bare />
         </p>
       ) : null}
       {block.items.length > 0 ? (
         <ul className={`lecture-slide-bullets ${color}`}>
           {block.items.map((item, index) => (
-            <li key={`${block.id}-${index}`}>
+            <li
+              key={`${block.id}-${index}`}
+              {...inlineEditDataProps(block.itemLocs?.[index])}
+            >
               <SlideText text={item} density={density} />
             </li>
           ))}

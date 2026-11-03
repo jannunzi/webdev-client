@@ -1,16 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import { inlineEditDataProps, type InlineLoc } from "@/lib/inline-edit/mark";
+import SlideText from "./SlideText";
 
 export default function LectureSlideImage({
   src,
   alt,
   caption,
+  captionLoc,
   stage = false,
 }: {
   src: string;
   alt: string;
   caption?: string;
+  captionLoc?: InlineLoc;
   /** Fill the lecture stage — used for book Canvas/Kambaz target screenshots. */
   stage?: boolean;
 }) {
@@ -45,8 +49,11 @@ export default function LectureSlideImage({
         onError={() => setFailed(true)}
       />
       {caption ? (
-        <figcaption className="m-0 border-t border-neutral-200 bg-neutral-100 px-3 py-2 text-center font-sans text-base text-neutral-700 sm:text-lg">
-          {caption}
+        <figcaption
+          className="m-0 border-t border-neutral-200 bg-neutral-100 px-3 py-2 text-center font-sans text-base text-neutral-700 sm:text-lg"
+          {...inlineEditDataProps(captionLoc)}
+        >
+          <SlideText text={caption} bare />
         </figcaption>
       ) : null}
     </figure>

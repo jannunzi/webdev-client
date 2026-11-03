@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import InlineEditMount from "@/app/inline-edit/InlineEditMount";
 import CourseSiteHeader from "@/app/course-info/CourseSiteHeader";
 import "../book/book.css";
 
@@ -16,6 +17,7 @@ export default function SlidesLayout({
     <div className="book-shell min-h-dvh">
       <CourseSiteHeader />
       {children}
+      <InlineEditMount />
     </div>
   );
 }

@@ -44,6 +44,7 @@ import LectureDiagram from "./diagrams/LectureDiagram";
 import LectureFilmstrip from "./LectureFilmstrip";
 import LectureSlideImage from "./LectureSlideImage";
 import { SlideBlockEditor, SlideBlockView } from "./SlideBlocks";
+import { inlineEditDataProps } from "@/lib/inline-edit/mark";
 import SlideText from "./SlideText";
 
 const NEXT_SLIDE_KEYS = new Set(["ArrowRight", "PageDown", " ", "n", "N"]);
@@ -579,7 +580,9 @@ export default function LectureDeckShell({
               aria-label="Slide title"
             />
           ) : (
-            <h2 className={titleClass}>{slide.title}</h2>
+            <h2 className={titleClass} {...inlineEditDataProps(slide.titleLoc)}>
+              <SlideText text={slide.title} bare />
+            </h2>
           )}
           {editMode && onSlideChange ? (
             <SlideBlockEditor
@@ -596,6 +599,7 @@ export default function LectureDeckShell({
               src={slide.imageSrc}
               alt={slide.imageAlt ?? slide.title}
               caption={slide.imageCaption}
+              captionLoc={slide.captionLoc}
               stage={targetFigure}
             />
           ) : null}
@@ -608,7 +612,11 @@ export default function LectureDeckShell({
               }`}
             >
               <span className="font-semibold">Try this: </span>
-              <SlideText text={slide.interactiveHint} density={density} />
+              <SlideText
+                text={slide.interactiveHint}
+                density={density}
+                loc={slide.hintLoc}
+              />
             </p>
           ) : null}
           {showContinue && continueHref && nextDeck ? (
