@@ -13,6 +13,12 @@ import {
   isSlideComponentId,
   type SlideComponentId,
 } from "./component-registry";
+import {
+  isEditableMark,
+  locOf,
+  textOf,
+  type InlineLoc,
+} from "@/lib/inline-edit/mark";
 
 export type BlockFontSize = "sm" | "md" | "lg" | "xl";
 export type BlockFrameSize = "sm" | "md" | "lg";
@@ -26,6 +32,10 @@ export type BulletsBlock = {
   title?: string;
   items: string[];
   fontSize?: BlockFontSize;
+  /** Compile-time locator for `title`, when that string is a unique literal. */
+  titleLoc?: InlineLoc;
+  /** Parallel to `items`. Missing entries are generated text and stay read-only. */
+  itemLocs?: Array<InlineLoc | undefined>;
 };
 
 export type CodeContentBlock = {
@@ -66,6 +76,10 @@ export type BlockSlide = {
   imageSrc?: string;
   imageAlt?: string;
   imageCaption?: string;
+  /** Compile-time locators. Present only for unique string literals. */
+  titleLoc?: InlineLoc;
+  hintLoc?: InlineLoc;
+  captionLoc?: InlineLoc;
   density?: LectureSlideDensity;
   /** "split": bullets on the left, component on the right. */
   layout?: "split";
@@ -145,10 +159,10 @@ export function createBlockSlide(
 export function authoredSlideBullets(slide: AuthoredSlide): string[] {
   if (isBlockSlide(slide)) {
     return slide.blocks.flatMap((block) =>
-      block.type === "bullets" ? block.items : [],
+      block.type === "bullets" ? block.items.map((item) => textOf(item)) : [],
     );
   }
-  return slide.bullets ?? [];
+  return (slide.bullets ?? []).map((item) => textOf(item));
 }
 
 export function authoredSlideEmbed(
@@ -226,16 +240,70 @@ export function authoredSlideDensity(slide: AuthoredSlide): LectureSlideDensity 
   return "spacious";
 }
 
+function blockSlideHasMark(slide: BlockSlide): boolean {
+  if (
+    isEditableMark(slide.title) ||
+    isEditableMark(slide.interactiveHint) ||
+    isEditableMark(slide.imageCaption)
+  ) {
+    return true;
+  }
+  return slide.blocks.some((block) => {
+    if (block.type !== "bullets") return false;
+    return isEditableMark(block.title) || block.items.some((item) => isEditableMark(item));
+  });
+}
+
+function normalizeBullets(block: BulletsBlock): BulletsBlock {
+  if (!isEditableMark(block.title) && !block.items.some((item) => isEditableMark(item))) {
+    return block;
+  }
+  const titleLoc = locOf(block.title);
+  const itemLocs = block.items.map((item) => locOf(item));
+  return {
+    ...block,
+    ...(block.title !== undefined ? { title: textOf(block.title) } : {}),
+    ...(titleLoc ? { titleLoc } : {}),
+    items: block.items.map((item) => textOf(item)),
+    ...(itemLocs.some(Boolean) ? { itemLocs } : {}),
+  };
+}
+
+function normalizeBlockSlide(slide: BlockSlide): BlockSlide {
+  const titleLoc = locOf(slide.title) ?? slide.titleLoc;
+  const hintLoc = locOf(slide.interactiveHint) ?? slide.hintLoc;
+  const captionLoc = locOf(slide.imageCaption) ?? slide.captionLoc;
+  return {
+    ...slide,
+    title: textOf(slide.title),
+    ...(titleLoc ? { titleLoc } : {}),
+    ...(slide.interactiveHint !== undefined
+      ? { interactiveHint: textOf(slide.interactiveHint) }
+      : {}),
+    ...(hintLoc ? { hintLoc } : {}),
+    ...(slide.imageCaption !== undefined
+      ? { imageCaption: textOf(slide.imageCaption) }
+      : {}),
+    ...(captionLoc ? { captionLoc } : {}),
+    blocks: slide.blocks.map((block) =>
+      block.type === "bullets" ? normalizeBullets(block) : block,
+    ),
+  };
+}
+
 export function toBlockSlide(slide: AuthoredSlide): BlockSlide {
-  if (isBlockSlide(slide)) return slide;
+  if (isBlockSlide(slide)) {
+    return blockSlideHasMark(slide) ? normalizeBlockSlide(slide) : slide;
+  }
   const blocks: SlideBlock[] = [];
   if (slide.bullets && slide.bullets.length > 0) {
-    blocks.push(
-      createBulletsBlock({
-        id: `${slide.id}-bullets`,
-        items: slide.bullets,
-      }),
-    );
+    const itemLocs = slide.bullets.map((item) => locOf(item));
+    const bullets = createBulletsBlock({
+      id: `${slide.id}-bullets`,
+      items: slide.bullets.map((item) => textOf(item)),
+    });
+    if (itemLocs.some(Boolean)) bullets.itemLocs = itemLocs;
+    blocks.push(bullets);
   }
   lectureSlideCodeBlocks(slide).forEach((block, index) => {
     blocks.push(
@@ -259,16 +327,26 @@ export function toBlockSlide(slide: AuthoredSlide): BlockSlide {
       }),
     );
   }
+  const titleLoc = locOf(slide.title);
+  const hintLoc = locOf(slide.interactiveHint);
+  const captionLoc = locOf(slide.imageCaption);
   return {
     id: slide.id,
-    title: slide.title,
+    title: textOf(slide.title),
+    ...(titleLoc ? { titleLoc } : {}),
     kind: slide.kind,
     blocks,
-    interactiveHint: slide.interactiveHint,
+    interactiveHint: isEditableMark(slide.interactiveHint)
+      ? slide.interactiveHint.text
+      : slide.interactiveHint,
+    ...(hintLoc ? { hintLoc } : {}),
     diagram: slide.diagram,
     imageSrc: slide.imageSrc,
     imageAlt: slide.imageAlt,
-    imageCaption: slide.imageCaption,
+    imageCaption: isEditableMark(slide.imageCaption)
+      ? slide.imageCaption.text
+      : slide.imageCaption,
+    ...(captionLoc ? { captionLoc } : {}),
     density: slide.density,
     layout: slide.layout,
   };

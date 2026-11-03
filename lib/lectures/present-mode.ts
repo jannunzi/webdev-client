@@ -109,7 +109,7 @@ export function isLectureNextUpSlide(slide: {
   title?: string;
 }): boolean {
   if (slide.id === "next-up") return true;
-  const title = slide.title?.trim() ?? "";
+  const title = typeof slide.title === "string" ? slide.title.trim() : "";
   return /^Next(?:\s*:|\s*$)/i.test(title);
 }
 

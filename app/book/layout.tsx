@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import CourseSiteHeader from "@/app/course-info/CourseSiteHeader";
 import { AccountProvider } from "@/lib/account/AccountContext";
 import BookTOC from "./TOC";
+import InlineEditMount from "@/app/inline-edit/InlineEditMount";
 import BookAffiliateBanner from "./components/BookAffiliateBanner";
 import "./book.css";
 
@@ -19,6 +20,7 @@ export default function BookLayout({
           </main>
         </div>
         <BookAffiliateBanner />
+        <InlineEditMount />
       </div>
     </AccountProvider>
   );
