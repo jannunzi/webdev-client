@@ -151,32 +151,40 @@ git push`}</CodeBlock>
           and the Vercel deployment URL there. Your grade is posted in Canvas.
         </p>
       </Section>
-
-      <Section id="sec-1-7" title="1.7 Conclusion">
-        <p>By the end of this chapter you should have:</p>
-        <ol>
-          <li>Installed Node.js and created <code>webdev-client</code>.</li>
-          <li>Completed all Lab 1 HTML exercises.</li>
-          <li>Prototyped Kambaz screens with HTML and React.</li>
-          <li>Pushed the project to GitHub.</li>
-          <li>
-            Added your full name, your section, and a{" "}
-            <code>wd-github</code>{" "}link to your repository on the Labs page (
-            <a href="#labs-name-github">§1.5</a>).
-          </li>
-          <li>
-            Deployed to Vercel and submitted both URLs on{" "}
-            <HandInLink id="a1" />.
-          </li>
-        </ol>
-        <p>
-          Continue practicing in{" "}
-          <Link href="/labs">Labs</Link>, browse{" "}
-          <Link href="/labs/lab1/intermediates">Lab 1 intermediate steps</Link>,
-          or open the live{" "}
-          <Link href="/account/signin">Kambaz</Link> prototype.
-        </p>
-      </Section>
     </>
+  );
+}
+
+export function Chapter1Conclusion() {
+  return (
+    <Section id="sec-1-8" title="1.8 Conclusion">
+      <p>By the end of this chapter you should have:</p>
+      <ol>
+        <li>Installed Node.js and created <code>webdev-client</code>.</li>
+        <li>Completed all Lab 1 HTML exercises.</li>
+        <li>Prototyped Kambaz screens with HTML and React.</li>
+        <li>Pushed the project to GitHub.</li>
+        <li>
+          Added your full name, your section, and a{" "}
+          <code>wd-github</code>{" "}link to your repository on the Labs page (
+          <a href="#labs-name-github">§1.5</a>).
+        </li>
+        <li>
+          Deployed to Vercel and submitted both URLs on{" "}
+          <HandInLink id="a1" />.
+        </li>
+      </ol>
+      <p>
+        Continue practicing in{" "}
+        <Link href="/labs">Labs</Link>, browse{" "}
+        <Link href="/labs/lab1/intermediates">Lab 1 intermediate steps</Link>,
+        or open the live{" "}
+        <Link href="/account/signin">Kambaz</Link> prototype.
+      </p>
+      <p>
+        <SectionLink to="1.7" />{" "}is the assistant practice on a feature
+        branch, and it is separate from the checklist above.
+      </p>
+    </Section>
   );
 }

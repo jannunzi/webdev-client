@@ -93,3 +93,53 @@ describe("Chapter 1 A1 wording", () => {
     assert.match(prose(kambaz), /Build all three for this chapter\./);
   });
 });
+
+describe("Chapter 1 Engineering with AI", () => {
+  const ai = readFileSync("app/book/ch1/sections/EngineeringWithAI.tsx", "utf8");
+  const toc = readFileSync("app/book/TOC.tsx", "utf8");
+  const chapter = readFileSync("app/book/ch1/Chapter1.tsx", "utf8");
+
+  it("is optional, ungraded, and last in the chapter", () => {
+    assert.match(ai, /optional, not graded/);
+    assert.doesNotMatch(ai, /Optional\. Not graded\./);
+    assert.match(ai, /In a product team/);
+    assert.match(ai, /Jira/);
+    assert.match(ai, /GitHub Issues/);
+    assert.match(ai, /Continuous integration/);
+    assert.match(ai, /monitors/);
+    assert.match(ai, /AI Assisted Course Builder/);
+    assert.doesNotMatch(ai, /does not invent the feature/);
+    assert.doesNotMatch(ai, /happily write/);
+    assert.doesNotMatch(ai, /walked away/);
+    assert.match(ai, /already have a Claude account/);
+    assert.doesNotMatch(ai, /fake endpoint that pretends/);
+    assert.doesNotMatch(ai, /skip a review, to hide a change/);
+    const engineering = toc.indexOf('id: "sec-1-7"');
+    const conclusion = toc.indexOf('id: "sec-1-8"');
+    const endMatter = toc.indexOf("...chapterEndToc(ch1EndMatter)");
+    assert.ok(
+      engineering !== -1 && engineering < conclusion && conclusion < endMatter,
+      "§1.7 Engineering with AI precedes the conclusion and the end matter",
+    );
+    assert.match(toc, /1\.7 Engineering with AI/);
+    assert.match(toc, /1\.8 Conclusion/);
+    assert.ok(
+      chapter.indexOf("<EngineeringWithAI") <
+        chapter.indexOf("<Chapter1Conclusion"),
+    );
+    assert.ok(
+      chapter.indexOf("<Chapter1Conclusion") < chapter.indexOf("<ChapterEndMatter"),
+    );
+    assert.doesNotMatch(ai, /Northeastern|university|Annunziato/i);
+    assert.match(ai, /feature\/ai-buttons/);
+    assert.match(ai, /Generate description from title/);
+    assert.match(ai, /Generate title from description/);
+    assert.match(ai, /AI: suggest modules/);
+    assert.match(ai, /AI: next module/);
+    assert.match(ai, /AI: next lesson/);
+    assert.match(ai, /Generate lessons/);
+    assert.match(ai, /no mock AI/i);
+    assert.match(prose(ai), /Chapter 1 has no course editor/);
+    assert.match(prose(ai), /Modules screen from/);
+  });
+});

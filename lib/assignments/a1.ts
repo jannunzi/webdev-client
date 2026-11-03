@@ -33,8 +33,8 @@ export const A1_RUBRIC: AssignmentRubric = {
           label: "Name on Labs",
           description: ASSIGNMENT_STUDENT_COPY.nameAndSection,
           points: 3,
-          bookHref: "/book/ch1#sec-1-7",
-          bookLabel: "§1.7",
+          bookHref: "/book/ch1#sec-1-8",
+          bookLabel: "§1.8",
         },
         {
           id: "a1-delivery-github",

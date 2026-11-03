@@ -4,7 +4,7 @@ import {
   type ChapterEndMatterData,
 } from "../chapter-end/types";
 
-const sections = numberedEndMatter(1, 8);
+const sections = numberedEndMatter(1, 9);
 
 export const ch1EndMatter: ChapterEndMatterData = {
   chapter: 1,
@@ -58,6 +58,18 @@ export const ch1EndMatter: ChapterEndMatterData = {
       "prettier",
       "react-developer-tools",
       "git",
+      "software-development-lifecycle",
+      "user-story",
+      "acceptance-criteria",
+      "issue-tracker",
+      "jira",
+      "linear",
+      "feature-branch",
+      "diff",
+      "pull-request",
+      "code-review",
+      "continuous-integration",
+      "command-line-interface",
       "claude",
       "anthropic",
       "claude-code",
@@ -94,7 +106,7 @@ export const ch1EndMatter: ChapterEndMatterData = {
   },
   aiTools: {
     ...sections.aiTools,
-    lead: "While the screens are still plain HTML, these AI and design tools are useful for exploring layouts, icons, and prompts before you write every tag by hand.",
+    lead: "While the screens are still plain HTML, these AI and design tools are useful for exploring layouts, icons, and prompts before you write every tag by hand. Section 1.7 walks through that habit on a feature branch.",
     items: DESIGN_AI_TOOLS,
   },
 };
