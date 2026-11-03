@@ -81,4 +81,88 @@ describe("source replacement", () => {
     assert.match(result.source, /Use \*\*titles\*\* here/);
     assert.match(result.source, /const title = \\"Headings\\"/);
   });
+
+  it("keeps a heading id and a section id when the visible text changes", () => {
+    const source = `export function Page() {
+  return (
+    <Section id="sec-1-5" title="1.5 Old title">
+      <h2 id="intro" className="keep">Introduction <code>HTML</code></h2>
+      <li className="item">Use <code>npm</code> today</li>
+    </Section>
+  );
+}
+`;
+    const nodes = uniqueEditable(source, FILE);
+    const heading = nodes.find(
+      (node) => node.kind === "jsx" && source.slice(node.start, node.end).startsWith("<h2"),
+    );
+    const item = nodes.find(
+      (node) => node.kind === "jsx" && source.slice(node.start, node.end).includes("npm"),
+    );
+    const sectionTitle = nodes.find(
+      (node) => node.kind === "text" && source.slice(node.start, node.end).includes("1.5"),
+    );
+    assert.ok(heading && item && sectionTitle);
+
+    const renamed = replaceEditableSource(
+      source,
+      FILE,
+      heading.hash,
+      'Hello <strong>web</strong> <slot data-i="0"></slot>',
+    );
+    assert.equal(renamed.ok, true);
+    if (!renamed.ok) return;
+    assert.match(renamed.source, /<h2 id="intro" className="keep">/);
+    assert.match(renamed.source, /<strong>\{"web"\}<\/strong>/);
+    assert.match(renamed.source, /<code>HTML<\/code>/);
+    assert.match(renamed.source, /id="sec-1-5"/);
+    assert.doesNotMatch(renamed.source, /id="hello-web"/);
+
+    const retitled = replaceEditableSource(
+      renamed.source,
+      FILE,
+      sectionTitle.hash,
+      "1.5 New title",
+    );
+    assert.equal(retitled.ok, true);
+    if (!retitled.ok) return;
+    assert.match(retitled.source, /id="sec-1-5"/);
+    assert.match(retitled.source, /title="1\.5 New title"/);
+    assert.doesNotMatch(retitled.source, /title="1\.5 Old title"/);
+
+    const reworded = replaceEditableSource(
+      retitled.source,
+      FILE,
+      item.hash,
+      'Run <slot data-i="0"></slot> first',
+    );
+    assert.equal(reworded.ok, true);
+    if (!reworded.ok) return;
+    assert.match(reworded.source, /<li className="item">/);
+    assert.match(reworded.source, /<code>npm<\/code>/);
+    assert.match(reworded.source, /\{"Run "\}/);
+    assert.match(reworded.source, /id="sec-1-5"/);
+    assert.match(reworded.source, /id="intro"/);
+  });
+
+  it("replaces one slide title and one bullet without touching a repeated bullet", () => {
+    const deck = "lib/lectures/decks/headings-and-paragraphs.ts";
+    const source = `export const SLIDES = [
+  {
+    title: "Headings",
+    bullets: ["Unique point", "Same", "Same"],
+  },
+];
+`;
+    const texts = uniqueEditable(source, deck).filter((node) => node.kind === "text");
+    assert.equal(texts.length, 2);
+    const bullet = texts.find((node) => source.slice(node.start, node.end).includes("Unique"));
+    assert.ok(bullet);
+    const result = replaceEditableSource(source, deck, bullet.hash, "Edited <strong>point</strong>");
+    assert.equal(result.ok, true);
+    if (!result.ok) return;
+    assert.match(result.source, /title: "Headings"/);
+    assert.match(result.source, /"Edited \*\*point\*\*"/);
+    assert.match(result.source, /"Same", "Same"/);
+  });
 });

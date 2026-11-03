@@ -55,7 +55,7 @@ function replaceParagraph(
   let updated: string;
   if (node.closeStart == null) {
     const open = source.slice(node.start, node.end).replace(/\s*\/\s*>$/, ">");
-    updated = `${source.slice(0, node.start)}${open}${jsx.value}</p>${source.slice(node.end)}`;
+    updated = `${source.slice(0, node.start)}${open}${jsx.value}</${node.tag}>${source.slice(node.end)}`;
   } else {
     updated = `${source.slice(0, node.openEnd)}${jsx.value}${source.slice(node.closeStart)}`;
   }

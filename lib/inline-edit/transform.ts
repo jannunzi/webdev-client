@@ -12,9 +12,11 @@ type Edit = { start: number; end: number; text: string };
  * slice. Line numbers move when an earlier edit lands; the slice does not,
  * until that node itself changes. The stamp is applied only when the node is
  * static (no variables, no `.map()`) and the slice is unique in the file.
- * Duplicates and generated paragraphs are left alone, so they never show a
- * pencil. The attributes exist in the compiled output only — GitHub keeps
- * the original file, and the route recomputes the same hash from it.
+ * Duplicates and generated paragraphs, headings, and list items are left
+ * alone, so they never show a pencil. Section `id` attributes are not part
+ * of the hashed title string, so editing a title cannot change a TOC slug.
+ * The attributes exist in the compiled output only — GitHub keeps the
+ * original file, and the route recomputes the same hash from it.
  */
 export function transformForBuild(source: string, filePath: string): string {
   if (source.includes(MARKER)) return source;
@@ -60,10 +62,11 @@ function jsxEdits(source: string, file: string, node: JsxParagraph): Edit[] {
 
 function literalEdit(source: string, file: string, node: TextLiteral): Edit {
   const original = source.slice(node.start, node.end);
+  const call = `inlineEditMark(${original}, ${JSON.stringify(file)}, ${JSON.stringify(node.hash)})`;
   return {
     start: node.start,
     end: node.end,
-    text: `inlineEditMark(${original}, ${JSON.stringify(file)}, ${JSON.stringify(node.hash)})`,
+    text: node.brace ? `{${call}}` : call,
   };
 }
 

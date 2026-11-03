@@ -1,4 +1,6 @@
 import type { ReactNode } from "react";
+import SlideText from "@/app/slides/_components/SlideText";
+import { inlineEditDataProps, locOf, textOf } from "@/lib/inline-edit/mark";
 import BookSectionVideosLink from "./BookSectionVideosLink";
 import BookSectionSlidesLink from "./BookSectionSlidesLink";
 
@@ -14,6 +16,8 @@ export default function Section({
   /** 2 = chapter section (e.g. 1.3); 3 = subsection (e.g. 1.3.1), matching 1.2.4 */
   level?: 2 | 3;
 }) {
+  const headingText = textOf(title);
+  const headingLoc = locOf(title);
   const Heading = level === 3 ? "h3" : "h2";
   const headingClass =
     level === 3
@@ -27,7 +31,9 @@ export default function Section({
   return (
     <section id={id} className="scroll-mt-6 py-4">
       <div className={wrapClass}>
-        <Heading className={headingClass}>{title}</Heading>
+        <Heading className={headingClass} {...inlineEditDataProps(headingLoc)}>
+          <SlideText text={headingText} bare />
+        </Heading>
         <BookSectionSlidesLink sectionId={id} />
         <BookSectionVideosLink sectionId={id} />
       </div>

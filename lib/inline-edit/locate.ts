@@ -11,12 +11,14 @@ export type SlotSpan = {
 
 export type JsxParagraph = {
   kind: "jsx";
+  /** Intrinsic tag, so a self-closing rewrite closes the same element. */
+  tag: string;
   hash: string;
   start: number;
   end: number;
   nameEnd: number;
   openEnd: number;
-  /** Null when the paragraph is self-closing. */
+  /** Null when the element is self-closing. */
   closeStart: number | null;
   slots: SlotSpan[];
 };
@@ -26,11 +28,44 @@ export type TextLiteral = {
   hash: string;
   start: number;
   end: number;
+  /**
+   * `title="..."` has no braces. The compiled call has to be
+   * `title={inlineEditMark(...)}` or the JSX will not parse.
+   */
+  brace?: boolean;
 };
 
 export type EditableNode = JsxParagraph | TextLiteral;
 
 const FORMAT_TAGS = new Set(["strong", "em", "b", "i"]);
+
+/** Book prose containers. Ids and class names stay on the opening tag. */
+const TEXT_TAGS = new Set(["p", "li", "h1", "h2", "h3", "h4", "h5", "h6"]);
+
+/**
+ * A parent that contains one of these is a container, not a single text
+ * block. The inner element is located on its own, so the two edits cannot
+ * overlap.
+ */
+const BLOCK_TAGS = new Set([
+  ...TEXT_TAGS,
+  "ul",
+  "ol",
+  "div",
+  "section",
+  "article",
+  "header",
+  "footer",
+  "nav",
+  "aside",
+  "pre",
+  "blockquote",
+  "table",
+  "figure",
+]);
+
+/** Components whose `title` prop is the visible heading, not a tooltip. */
+const HEADING_TITLE_COMPONENTS = new Set(["Section"]);
 
 export function listEditable(source: string, file: string): EditableNode[] {
   const relative = repoRelativePath(file);
@@ -48,6 +83,8 @@ export function listEditable(source: string, file: string): EditableNode[] {
     if (relative.endsWith(".tsx")) {
       const paragraph = paragraphFrom(node, sourceFile, relative, source);
       if (paragraph) found.push(paragraph);
+      const headingTitle = headingTitleFrom(node, sourceFile, relative, source);
+      if (headingTitle) found.push(headingTitle);
     } else {
       const literal = literalFrom(node, sourceFile, relative, source);
       if (literal) found.push(literal);
@@ -98,13 +135,15 @@ function paragraphFrom(
   source: string,
 ): JsxParagraph | null {
   if (!ts.isJsxElement(node) && !ts.isJsxSelfClosingElement(node)) return null;
-  if (jsxTag(node) !== "p") return null;
+  const tag = jsxTag(node);
+  if (!tag || !TEXT_TAGS.has(tag)) return null;
   const classified = classifyParagraph(node, sourceFile);
   if (!classified) return null;
   const start = node.getStart(sourceFile);
   const end = node.end;
   return {
     kind: "jsx",
+    tag,
     hash: sourceHash(file, source.slice(start, end)),
     start,
     end,
@@ -112,6 +151,25 @@ function paragraphFrom(
     openEnd: classified.openEnd,
     closeStart: classified.closeStart,
     slots: classified.slots,
+  };
+}
+
+function headingTitleFrom(
+  node: ts.Node,
+  sourceFile: ts.SourceFile,
+  file: string,
+  source: string,
+): TextLiteral | null {
+  if (!isHeadingTitleLiteral(node)) return null;
+  const start = node.getStart(sourceFile);
+  const end = node.end;
+  const parent = node.parent;
+  return {
+    kind: "text",
+    hash: sourceHash(file, source.slice(start, end)),
+    start,
+    end,
+    brace: Boolean(parent && ts.isJsxAttribute(parent)),
   };
 }
 
@@ -157,6 +215,7 @@ function classifyParagraph(
       return null;
     }
     if (ts.isJsxElement(child) || ts.isJsxSelfClosingElement(child)) {
+      if (isBlockTag(child)) return null;
       if (isPureFormat(child)) continue;
       const span = slotSpan(child, sourceFile);
       if (!span) return null;
@@ -221,6 +280,47 @@ function slotSpan(
     intrinsic,
     nameEnd: tag.end,
   };
+}
+
+function isBlockTag(node: ts.JsxElement | ts.JsxSelfClosingElement): boolean {
+  const tag = jsxTag(node);
+  return Boolean(tag && BLOCK_TAGS.has(tag));
+}
+
+/**
+ * `<Section id="sec-1-5" title="1.5 …">` — the id stays put. Only a static
+ * string (or a no-substitution template) is located. `title={section.title}`
+ * is generated and gets no pencil.
+ */
+function isHeadingTitleLiteral(node: ts.Node): boolean {
+  if (!ts.isStringLiteral(node) && !ts.isNoSubstitutionTemplateLiteral(node)) {
+    return false;
+  }
+  const attribute = jsxAttributeOf(node);
+  if (!attribute || !ts.isIdentifier(attribute.name) || attribute.name.text !== "title") {
+    return false;
+  }
+  const opening = attribute.parent?.parent;
+  if (!opening || (!ts.isJsxOpeningElement(opening) && !ts.isJsxSelfClosingElement(opening))) {
+    return false;
+  }
+  return ts.isIdentifier(opening.tagName) && HEADING_TITLE_COMPONENTS.has(opening.tagName.text);
+}
+
+function jsxAttributeOf(node: ts.Node): ts.JsxAttribute | null {
+  const parent = node.parent;
+  if (!parent) return null;
+  if (ts.isJsxAttribute(parent) && parent.initializer === node) return parent;
+  if (
+    ts.isJsxExpression(parent) &&
+    parent.expression === node &&
+    parent.parent &&
+    ts.isJsxAttribute(parent.parent) &&
+    parent.parent.initializer === parent
+  ) {
+    return parent.parent;
+  }
+  return null;
 }
 
 function jsxTag(node: ts.Node): string | null {
