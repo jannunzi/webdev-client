@@ -4,7 +4,7 @@ import {
   type ChapterEndMatterData,
 } from "../chapter-end/types";
 
-const sections = numberedEndMatter(1, 8);
+const sections = numberedEndMatter(1, 9);
 
 export const ch1EndMatter: ChapterEndMatterData = {
   chapter: 1,
@@ -94,7 +94,7 @@ export const ch1EndMatter: ChapterEndMatterData = {
   },
   aiTools: {
     ...sections.aiTools,
-    lead: "While the screens are still plain HTML, these AI and design tools are useful for exploring layouts, icons, and prompts before you write every tag by hand. Section 1.11 is an optional, ungraded walkthrough of that habit on a feature branch.",
+    lead: "While the screens are still plain HTML, these AI and design tools are useful for exploring layouts, icons, and prompts before you write every tag by hand. Section 1.7 walks through that habit on a feature branch.",
     items: DESIGN_AI_TOOLS,
   },
 };

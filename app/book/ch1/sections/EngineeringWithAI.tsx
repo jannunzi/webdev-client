@@ -1,5 +1,6 @@
 import Section from "../../components/Section";
 import SectionLink from "../../components/SectionLink";
+import ChapterLink from "../../components/ChapterLink";
 import CodeBlock from "../../components/CodeBlock";
 import LiveDemo from "../../components/LiveDemo";
 import { OnYourOwn, WithAI } from "../../components/Practice";
@@ -52,179 +53,199 @@ Later chapters of this same feature style the controls with Tailwind, show sampl
 export default function EngineeringWithAI() {
   return (
     <Section
-      id="sec-1-11"
-      title="1.11 Engineering with AI (optional, not graded)"
+      id="sec-1-7"
+      title="1.7 Engineering with AI (optional, not graded)"
     >
       <p>
-        In a product team, a change follows one path from a written
-        requirement to a running product. An AI assistant can draft or
-        search at several steps on that path. A person decides, reviews,
-        and stays accountable for the step. Teams at a company such as
-        Amazon use that split: the assistant speeds the step up, and an
-        engineer owns what leaves the step.
+        This section is where you practice using an AI assistant the way a
+        software engineer does on a professional team, because the{" "}
+        <strong>AI Assisted Course Builder</strong> you start here is a
+        feature you will keep building in later chapters. A course author
+        uses it to draft a course title from a description, a description
+        from a title, a list of modules, and the lessons inside a module,
+        and in this chapter those controls are static HTML, so clicking a
+        button leaves the text on the page exactly as you typed it.{" "}
+        <ChapterLink to={2} />{" "}styles the same controls with Tailwind,{" "}
+        <ChapterLink to={3} />{" "}fills them from a local JSON file of sample
+        suggestions, <ChapterLink to={4} />{" "}stores the draft in Zustand, a
+        client-side store, and a later chapter calls Claude from a Next.js{" "}
+        <strong>route handler</strong>, which is a function on the server
+        that receives a request and sends back a response. Learning the
+        engineering process now, while the buttons still do not call
+        Claude, means you already know who writes the requirement, who
+        reviews the code, and who is accountable when the assistant is
+        allowed to edit files.
       </p>
       <p>
-        The path starts with requirements. Product requirements say what
-        the user can do. A <strong>user story</strong> puts one of those
-        capabilities in a single sentence: who the user is, what they can
-        do, and why. <strong>Acceptance criteria</strong> are the checks
-        that define done — which labels appear, where they sit, and what
-        happens when the user acts. An assistant can draft stories from
-        notes, or turn notes into criteria. The person who accepts the
-        document decides what done means.
+        In a product team, a new feature or bug fix moves through the{" "}
+        <strong>software development lifecycle</strong>, the sequence of
+        stages that takes the work from an idea to{" "}
+        <strong>production</strong>, the deployed application that users
+        open. A product manager first writes the product requirements,
+        including user stories and acceptance criteria, and the team files
+        that work as an issue in a tracker such as Jira. A software
+        engineer then designs the change, creates a feature branch,
+        implements it, and tests it against those criteria. The same
+        engineer opens a pull request for code review, continuous
+        integration runs the project&apos;s checks, and after the review
+        the engineer merges the branch and deploys it, then monitors the
+        running application. An AI assistant can draft or search inside
+        many of those stages, and the software engineer, the developer
+        doing the work, or the product manager who owns the requirement
+        remains the one who decides and who answers for the result. The
+        exercises later in this section take the AI Assisted Course Builder
+        through the requirements, the branch, the implementation, the
+        manual test, and the pull request, and they stop before merge,
+        which you already practice for the chapter itself in{" "}
+        <SectionLink to="1.5" />{" "}and <SectionLink to="1.6" />.
       </p>
       <p>
-        The team records the work as an <strong>issue</strong>, also
-        called a ticket, in an issue tracker. Jira is a common tracker.
-        GitHub Issues and Linear are others. The issue holds the
-        requirement, the acceptance criteria, and a status such as to do,
-        in progress, in review, or done. An engineer picks up an issue and
-        does the work it names. An assistant can draft the issue text from
-        the requirements. A person creates the issue, sets its scope, and
-        assigns it.
+        The lifecycle begins when a product manager writes down what the
+        user can do. A <strong>user story</strong> is one sentence of that
+        document, naming who the user is, what they can do, and why it
+        matters, and <strong>acceptance criteria</strong> are the checks
+        that define finished work, such as which labels appear on the
+        screen and what stays unchanged when the user clicks. The team
+        then records the story as an <strong>issue</strong>, also called a
+        ticket, in an <strong>issue tracker</strong>, the shared list of
+        work. Jira is a common tracker, and GitHub Issues and Linear are
+        others. The issue stores the requirement, the acceptance criteria,
+        and a status that moves from to do, to in progress, to in review,
+        and then to done, so a software engineer can pick up that issue
+        and know exactly which feature or bug fix it describes. An
+        assistant can draft the user stories, the acceptance criteria, or
+        the issue text from the product manager&apos;s notes, while the
+        product manager is accountable for accepting the document and the
+        software engineer who takes the issue is accountable for building
+        what it says.
       </p>
       <p>
-        Design comes before the edit. The engineer decides which screens
-        change, which files those screens live in, and what this issue
-        leaves out. An assistant can list options from the requirements.
-        The engineer chooses one and keeps that choice with the issue, so
-        the implementation has a target.
+        With the issue assigned, the software engineer designs the change
+        by choosing which screens will move, which files those screens
+        live in, and which requests belong in a later issue, and an
+        assistant can propose that list of files while the engineer
+        selects the design and writes it on the issue so the
+        implementation has a target. The engineer then creates a{" "}
+        <strong>feature branch</strong>, a separate line of Git commits
+        started from <code>main</code> with <code>git checkout -b</code>,
+        which keeps the unfinished commits off <code>main</code> until
+        code review, using the same commits you already make in{" "}
+        <SectionLink to="1.5" />. During implementation the assistant can
+        draft the code from the requirements and from the files named in
+        the design, after which the software engineer reads the{" "}
+        <strong>diff</strong>, Git&apos;s line-by-line record of which
+        lines were added and which were removed, compares that record with
+        the acceptance criteria, and keeps only the lines they can
+        explain, because the engineer is accountable for every line that
+        remains in the branch.
       </p>
       <p>
-        Implementation happens on a <strong>feature branch</strong>. A
-        branch is a separate line of commits, started from the main line
-        with <code>git checkout -b</code>, so unfinished work stays off{" "}
-        <code>main</code> until review. You already commit in{" "}
-        <SectionLink to="1.5" />. An assistant can draft the code from the
-        requirements and from the files the design named. The engineer
-        reads the <strong>diff</strong> — Git&apos;s line-by-line picture
-        of what was added and removed — compares it with the acceptance
-        criteria, and keeps the lines they can explain. The engineer owns
-        the code that remains.
-      </p>
-      <p>
-        Tests check that the change matches the acceptance criteria. Some
-        tests are automated and run from a command. Some are a pass
-        through the screens by hand. An assistant can draft a test or a
-        checklist. The engineer runs the checks and decides whether the
-        behavior is the behavior the issue asked for.
-      </p>
-      <p>
-        The engineer then opens a <strong>pull request</strong>. A pull
-        request is the page on GitHub that proposes merging the feature
-        branch into the main line and shows the diff for review. Reviewers
-        comment on that diff. An assistant can draft the description and
-        can comment as well. The author reads each comment, keeps the ones
-        that match the requirements, and leaves the ones that ask for work
-        the issue did not include. The author is accountable for the pull
-        request.
-      </p>
-      <p>
+        The software engineer next checks the branch with tests, which may
+        be an automated command or a manual pass through the screens, and
+        an assistant can draft a test or a checklist while the engineer
+        runs it and judges whether the behavior is the behavior the issue
+        requested. When that check is satisfactory, the engineer opens a{" "}
+        <strong>pull request</strong>, the GitHub page that proposes
+        merging the feature branch into <code>main</code> and shows the
+        diff for <strong>code review</strong>, the reading of that diff by
+        the reviewers. An assistant can draft the pull request description
+        and can add review comments, and the software engineer who opened
+        the pull request decides which comments match the requirements and
+        which ask for work the issue did not include, remaining
+        accountable for what the pull request contains.{" "}
         <strong>Continuous integration</strong>, or <strong>CI</strong>,
-        runs the project&apos;s checks on that pull request: the build, and
-        the tests the repository defines. An assistant can help read the
-        log when a check fails. A green check is evidence that the
-        automated steps passed. A person decides whether the change is
-        ready to merge.
+        then runs the repository&apos;s build and its tests on that pull
+        request. An assistant can help the engineer read the log when a
+        check fails, a green result is evidence that those automated steps
+        passed, and the engineer decides whether the feature is ready to
+        merge.
       </p>
       <p>
-        Merge copies the reviewed branch onto the main line. Deploy
-        publishes that line so people can open the app, which you already
-        do for this chapter in <SectionLink to="1.6" />. An assistant can
-        draft a short note about what changed. A person merges, a person
-        deploys, and the engineer confirms that the deployed app is the
-        one that was reviewed.
-      </p>
-      <p>
-        After deploy, the team <strong>monitors</strong> the running app:
-        error logs, failed requests, and whether the feature still matches
-        the acceptance criteria. An assistant can summarize a log. A person
-        decides whether the behavior is an incident and which issue to
-        file next.
-      </p>
-      <p>
-        To practice how engineers use AI assistants in production teams,
-        this section demonstrates building an{" "}
-        <strong>AI Assisted Course Builder</strong> feature for Kambaz,
-        following that path through the requirements, a feature branch, the
-        implementation, a manual check against the acceptance criteria, and
-        a pull request. The exercises stop before merge. The buttons let a
-        course author draft a title, a description, a module list, and
-        lessons. In this chapter those buttons are static HTML. They show
-        up on the screen, and clicking them does not ask Claude to write
-        anything or change any text. Later chapters of this same optional
-        thread style those controls with Tailwind, fill them from a local
-        JSON file of sample suggestions, store the draft in Zustand — a
-        client-side store you will meet later — and only then call Claude
-        from a Next.js route handler, a function on the server that answers
-        a request. Leave that work for those chapters.
+        Merge copies the reviewed feature branch onto <code>main</code>,
+        and deploy publishes <code>main</code> so users can open the
+        application, which you already do for this chapter in{" "}
+        <SectionLink to="1.6" />. An assistant can draft the short note
+        that describes what changed, and the software engineer who merges
+        and deploys confirms that the deployed application is the one the
+        reviewers read. After deploy, the software engineer{" "}
+        <strong>monitors</strong> the running application by reading error
+        logs and failed requests and by checking that the feature still
+        meets the acceptance criteria. An assistant can summarize a log,
+        and the engineer decides whether the behavior is an incident and
+        which new issue to file so the lifecycle starts again.
       </p>
 
       <h3
-        id="sec-1-11-1"
+        id="sec-1-7-1"
         className="scroll-mt-6 font-sans text-xl font-semibold"
       >
-        1.11.1 Owning the code
+        1.7.1 Owning the code
       </h3>
       <p>
-        An assistant drafts from the requirements and the files you put in
-        the prompt. The issue, the acceptance criteria, and the file list
-        are in the reply only when you include them. Paste the requirements
-        document first, then name the few files the task touches. After the
-        reply, read the diff against the acceptance criteria and save only
-        what matches.
+        During implementation you are the software engineer, so the
+        assistant drafts only from what you place in the prompt, which
+        means the issue, the acceptance criteria, and the list of files
+        appear in the reply when you include them and are absent when you
+        leave them out. Paste the requirements document first, then name
+        the few files the issue covers, and after the reply read the diff
+        against the acceptance criteria and save only the lines that match,
+        because those lines will be the ones you can explain in code
+        review.
       </p>
       <p>
-        Keep secrets out of the chat, out of the command-line tool, and out
-        of the panel in the editor. A <strong>secret</strong> here means
-        anything that would let someone else act as you or read private
-        data: the personal access token from <SectionLink to="1.5" />,
-        anything sitting in a <code>.env</code> file, passwords, and private
-        details about real people. If the assistant needs to know that a
-        file exists, describe the file in a sentence. Do not paste its
-        contents. Once a secret has been pasted into the conversation, you
-        should assume it has left your machine.
+        The same accountability covers secrets, which are values that would
+        let someone else act as you or read private data, including the
+        personal access token from <SectionLink to="1.5" />, anything in a{" "}
+        <code>.env</code> file, passwords, and private details about real
+        people. Keep those values out of the browser chat, out of the
+        command-line tool, and out of the panel in the editor. When the
+        assistant needs to know that a file exists, describe the file in a
+        sentence and leave its contents on your machine, since a value
+        pasted into the conversation has left your machine.
       </p>
 
       <h3
-        id="sec-1-11-2"
+        id="sec-1-7-2"
         className="scroll-mt-6 font-sans text-xl font-semibold"
       >
-        1.11.2 Chat, the CLI, and the IDE
+        1.7.2 Chat, the CLI, and the IDE
       </h3>
       <p>
-        This section assumes you already have a Claude account. A personal
-        account works, and a Team or Enterprise account from your
-        organization would work too. You can use that account in three
-        ways. You can talk to it in a browser chat and copy back only the
-        text you still agree with. You can run it in the terminal, against
-        the files in your project, and let it apply an edit. You can open
-        it inside your editor, beside the file you are already changing.
-        The terminal way is a command-line interface, usually called a{" "}
-        <strong>CLI</strong>: you type the program&apos;s name instead of
-        clicking an icon. These three ways of working are called{" "}
-        <strong>surfaces</strong>. Pick one surface for a given task.
-        Doing the same edit on all three means you pay for the work three
-        times and then have three diffs to reconcile.
+        This section assumes you already have a Claude account, whether
+        that account is a personal account or a Team or Enterprise account
+        from your organization, and you will use it in whichever of three
+        places fits the stage you are in. You can talk to Claude in a
+        browser chat and copy the reply into your project yourself, which
+        suits a plan, a checklist, a commit message, or a pull request
+        description. You can run Claude in the terminal against the files
+        in your project and let it apply an edit, which suits a change
+        that spans more than one file. You can also open Claude inside
+        your editor, beside the file you are already changing, which suits
+        a change in one or two files you have open. Typing a program&apos;s
+        name in the terminal, instead of clicking an icon, is a{" "}
+        <strong>command-line interface</strong>, usually shortened to{" "}
+        <strong>CLI</strong>, and these three places — the browser, the
+        CLI, and the editor — are called <strong>surfaces</strong>. Choose
+        one surface for a given task, because repeating the same edit on
+        all three bills your account three times and leaves you with three
+        diffs to reconcile.
       </p>
       <p>
-        Start with the browser chat. Open{" "}
+        For the browser surface, open{" "}
         <a href="https://claude.ai" target="_blank" rel="noreferrer">
           claude.ai
         </a>
         , start a new chat, and paste the requirements document before you
-        ask for anything else, so the reply stays on that document. Use the
-        chat when you want a plan, a checklist, a commit message, or the
-        pull request description from the process above. Chat returns text.
-        It does not edit your repository. You copy the parts that match the
-        requirements after you have read them.
+        ask for the plan or the checklist, so the reply stays on that
+        document. The chat returns text and does not edit your repository,
+        which means you read the reply and copy into the project only the
+        parts that match the acceptance criteria.
       </p>
       <p>
-        The terminal surface is <strong>Claude Code</strong>, the same
-        assistant run as a CLI in your project folder. Reach for it when
-        the change spans more than one file and you want the edit applied
-        on disk, rather than pasted back as a message you then have to
-        retype. Install it from the{" "}
+        For a change that should land in several files, use the CLI
+        surface, <strong>Claude Code</strong>, which is the same assistant
+        started as a command in your project folder so it can write the
+        edit to disk. Install it from the{" "}
         <a
           href="https://code.claude.com/docs/en/setup"
           target="_blank"
@@ -248,68 +269,61 @@ claude`}</CodeBlock>
         <code>path/to/your/webdev-client</code> with the real folder. The
         second line starts Claude in that folder, so the session is about
         this project. When it asks which files to change, name the modules
-        page and <code>Module.tsx</code>, the files this issue changes.
+        page and <code>Module.tsx</code>, because those are the files the
+        issue tells you to edit, and then read the diff before you accept
+        it so the files change only after you have compared them with the
+        acceptance criteria.
       </p>
       <p>
-        The editor surface is the extension you installed in{" "}
-        <SectionLink to="1.2.3" />. It is the same assistant, sitting beside
-        the file you already have open, which makes it the right choice
-        when the change is one or two files you are looking at. Open the
-        file, start Claude Code the way that section showed, and paste the
-        same requirements. In Cursor, that panel is still Claude Code,
-        separate from the editor&apos;s built-in chat — the built-in chat
-        is a different product, and this exercise uses the Claude account
-        you signed into in <SectionLink to="1.2.3" />.
+        When the edit is confined to a file you already have open, use the
+        editor surface, which is the Claude Code extension you installed
+        in <SectionLink to="1.2.3" />. Open the file, start Claude Code the
+        way that section showed, and paste the same requirements document,
+        so the suggestion appears next to the code you are reviewing. In
+        Cursor that panel is still Claude Code, separate from the
+        editor&apos;s built-in chat, and this exercise uses the Claude
+        account you signed into in <SectionLink to="1.2.3" />.
       </p>
 
       <h3
-        id="sec-1-11-3"
+        id="sec-1-7-3"
         className="scroll-mt-6 font-sans text-xl font-semibold"
       >
-        1.11.3 Token budgeting
+        1.7.3 Token budgeting
       </h3>
       <p>
-        A <strong>token</strong> is a small chunk of text Claude reads or
-        writes. Your prompt, the files you attach, and the reply are all
-        counted, and on these three surfaces that count is billed to your
-        own Claude account. A short prompt that includes the requirements
-        and the two files you are changing costs less than a chat that
-        rereads the whole repository, because the repository is mostly
-        files this task does not touch.
+        Each of those surfaces bills your Claude account by the{" "}
+        <strong>token</strong>, a small chunk of text that Claude reads or
+        writes, so the prompt, the files you attach, and the reply are all
+        counted together. A prompt that carries the requirements document
+        and the two files you are changing therefore costs less than a chat
+        that rereads the whole repository, because most of the repository
+        is files this issue does not name, which is why you send the
+        requirements and those files, leave the rest out, and attach the
+        same requirements file again when you start a fresh chat so you do
+        not retype the user stories from memory.
       </p>
       <p>
-        Send the requirements document and the files you are changing, and
-        leave the rest of the repository out of the prompt. When you start
-        a fresh chat, paste or attach that same requirements file again
-        instead of retyping the story from memory. The file is the stable
-        description; the chat is just the place you are working today.
-      </p>
-      <p>
-        The account also lets you pick a <strong>model</strong>, which is
-        the particular assistant behind the reply. The picker lists a
-        cheaper, faster model and a stronger, slower one. Use the cheaper
-        model for a commit message, for the short description at the top of
-        a pull request, or for a yes-or-no check against the acceptance
-        criteria.
-        Use a stronger model when it has to edit several files and keep
-        them consistent. The cheaper model is enough for a short text task.
-        The stronger model is the one to spend on a multi-file edit.
-      </p>
-      <p>
-        Keep a short <strong>cost log</strong> on your machine: one row per
-        task, written before you start the next task, while you still
-        remember what you sent. If a task takes
-        many retries, stop and narrow the prompt instead of attaching more
-        files. Leave the log out of the commit. It is a notebook, not
-        project source, and it is easy to jot an account detail into it by
-        accident.
+        The account also lets you pick a <strong>model</strong>, the
+        particular assistant that produces the reply, and the picker offers
+        a cheaper, faster model alongside a stronger, slower one. Use the
+        cheaper model when the task is a commit message, the pull request
+        description, or a yes-or-no check against the acceptance criteria,
+        and use the stronger model when the edit touches several files and
+        has to keep them consistent. Record each task in a short{" "}
+        <strong>cost log</strong> on your machine, one row written before
+        you start the next task, while you still remember which surface you
+        used, which model you picked, which file names you sent, and
+        whether you kept the result. If a task takes many retries, stop and
+        narrow the prompt to the files the issue names, and leave the log
+        out of the commit, because it is your notebook and it can pick up
+        an account detail that does not belong in the repository.
       </p>
       <p>
         Copy the header below and replace the two sample rows with your
-        own. The columns are the date, the task in a few words, which
-        surface you used, whether you picked the cheaper or the stronger
-        model, what you actually sent (file names, not secrets), and
-        whether you kept the result:
+        own. The columns are the date, a few words naming the task, the
+        surface, whether you picked the cheaper or the stronger model, the
+        file names you sent, and whether you kept the result:
       </p>
       <CodeBlock language="text" name="Cost log">{`Date       Task                     Tool   Model     Context sent                          Kept?
 ---------- ------------------------ ------ --------- ------------------------------------- -----
@@ -317,33 +331,33 @@ claude`}</CodeBlock>
 2026-11-02 Commit message           chat   cheaper   staged file names only               yes`}</CodeBlock>
 
       <h3
-        id="sec-1-11-4"
+        id="sec-1-7-4"
         className="scroll-mt-6 font-sans text-xl font-semibold"
       >
-        1.11.4 Requirements for the AI Assisted Course Builder
+        1.7.4 Requirements for the AI Assisted Course Builder
       </h3>
       <p>
-        The implementation follows the requirements document. The sample
-        below has the four parts from the process above. The{" "}
-        <strong>overview</strong> says what this chapter builds and, just as
-        important, what it is not yet. The <strong>user stories</strong>{" "}
-        are one sentence each, in the form &quot;as a course author, I can
-        …, so that …&quot;, so you can tell who the control is for and why
-        it is on the screen. The <strong>acceptance criteria</strong> are
-        the checks you will run in the browser when the edit is done: which
-        labels appear, where they sit, and what must not happen when you
-        click. <strong>Out of scope</strong> lists work this chapter does
-        not include: a model call, a mock AI service, styling, and client
-        state.
+        The implementation follows a requirements document the product
+        manager could review, and the sample below is that document for the
+        AI Assisted Course Builder, written with the four parts you just
+        met in the lifecycle. The <strong>overview</strong> says what this
+        chapter builds and what later chapters will add, each{" "}
+        <strong>user story</strong> is one sentence in the form &quot;as a
+        course author, I can …, so that …&quot;, the{" "}
+        <strong>acceptance criteria</strong> are the checks you will run in
+        the browser, and <strong>out of scope</strong> lists the work this
+        chapter does not include, which you can read at the bottom of the
+        document.
       </p>
       <p>
         Save the sample as <code>docs/ai-course-builder.md</code> on the
-        feature branch you create in <SectionLink to="1.11.6" />. Later
-        prompts point at that filename instead of pasting the whole story
-        again, which is the token habit from the previous section. When you
-        open the file you should see the overview, five user stories, the
-        acceptance criteria, and the out-of-scope list, with the button
-        labels written out so you can compare them to the screen.
+        feature branch you create in <SectionLink to="1.7.6" />, so the
+        later prompts can point at that filename and you can attach the
+        file again instead of pasting the user stories into every chat.
+        When you open the file you should see the overview, five user
+        stories, the acceptance criteria, and the out-of-scope list, with
+        the button labels written out so you can compare them with the
+        screen.
       </p>
       <CodeBlock
         language="markdown"
@@ -354,43 +368,45 @@ claude`}</CodeBlock>
       </CodeBlock>
 
       <h3
-        id="sec-1-11-5"
+        id="sec-1-7-5"
         className="scroll-mt-6 font-sans text-xl font-semibold"
       >
-        1.11.5 Course editor starter
+        1.7.5 Course editor starter
       </h3>
       <p>
         The Modules screen from <SectionLink to="1.4.5" />{" "}is already in
-        your project: the toolbar with <code>+ Module</code>, and the weeks
-        built from <code>Module</code> and <code>Lesson</code>. You will
-        extend that page and <code>Module.tsx</code>. Do not paste a second
-        Modules page over the one you wrote, or you will lose the weeks you
-        already typed.
+        your project, with the toolbar that contains <code>+ Module</code>{" "}
+        and the weeks built from <code>Module</code> and <code>Lesson</code>,
+        so you extend that page and <code>Module.tsx</code> and you keep
+        every week you have already typed.
       </p>
       <p>
-        Chapter 1 has no course editor. The Dashboard in this chapter is a
-        list of course cards, and the title and description form arrives
-        later, on that Dashboard, in <SectionLink to="4.10.2" />. Leave
-        that exercise where it is. This section needs a short static page
-        with a title field and a description field, so the generate buttons
-        have fields to sit under.
+        Chapter 1 has no course editor, because the Dashboard in this
+        chapter is a list of course cards and the title and description
+        form arrives later, on that Dashboard, in{" "}
+        <SectionLink to="4.10.2" />, which is where that exercise stays.
+        What this section needs today is a short static page with a title
+        field and a description field, so the generate buttons have fields
+        to sit under while you practice the lifecycle.
       </p>
       <p>
         Create <code>app/(kambaz)/courses/[cid]/editor/page.tsx</code> and
         paste the starter below. A <code>page.tsx</code> file is the route,
         the same rule as <SectionLink to="1.2.5" />{" "}and{" "}
-        <SectionLink to="1.4.4" />: the folder path becomes the URL, so this
-        file is <code>/courses/1234/editor</code> when <code>1234</code> is
-        the course id. The page is a <strong>Server Component</strong> by
-        default, which means the browser receives the HTML and there is no{" "}
-        <code>use client</code> line at the top. That is what you want while
-        the buttons do nothing. Adding <code>onClick</code> would force the
-        file to become a Client Component, and that behavior belongs in a
-        later chapter. The courses layout from{" "}
-        <SectionLink to="1.4.4.1" />{" "}wraps every page under{" "}
-        <code>[cid]</code>, including this new one, so Course Navigation
-        stays as it is. You do not add an Editor link to that sidebar. Open{" "}
-        <code>/courses/1234/editor</code> yourself in the dev server.
+        <SectionLink to="1.4.4" />, because the folder path becomes the
+        URL, which makes this file <code>/courses/1234/editor</code> when{" "}
+        <code>1234</code> is the course id. The page is a{" "}
+        <strong>Server Component</strong> by default, which means the
+        browser receives the HTML and there is no <code>use client</code>{" "}
+        line at the top, and that is what you want while the buttons do
+        nothing. Adding <code>onClick</code> would require the file to
+        become a <strong>Client Component</strong>, a component that runs
+        in the browser, and that behavior belongs in a later chapter. The
+        courses layout from <SectionLink to="1.4.4.1" />{" "}wraps every page
+        under <code>[cid]</code>, including this new one, so Course
+        Navigation stays as you built it and you leave that sidebar without
+        an Editor link. Open <code>/courses/1234/editor</code> in the dev
+        server you started with <code>npm run dev</code>.
       </p>
       <CodeBlock
         language="tsx"
@@ -417,30 +433,31 @@ claude`}</CodeBlock>
   );
 }`}</CodeBlock>
       <p>
-        The starter is only the fields. The heading says Course Editor, the
-        label <code>Title</code> is tied to the input with{" "}
-        <code>htmlFor</code> and <code>id=&quot;wd-course-title&quot;</code>,
-        and the description is a <code>textarea</code> with a sample
-        sentence already filled in so the page is not blank.{" "}
-        <code>defaultValue</code> sets that initial text without{" "}
-        <code>useState</code>. The <code>id</code> values are suggestions,
-        the same <code>wd-</code> habit as the rest of the chapter. A
-        control that appears once on the page can have an id. A control
-        that is copied into every module should use a <code>class</code>{" "}
-        instead, because an id is supposed to be unique and a repeated id
-        is invalid HTML.
+        The starter is only the fields. The heading reads Course Editor,
+        the label <code>Title</code> is tied to the input by{" "}
+        <code>htmlFor</code> matching{" "}
+        <code>id=&quot;wd-course-title&quot;</code>, and the description is
+        a <code>textarea</code> whose <code>defaultValue</code> already
+        holds a sample sentence, which sets that initial text without{" "}
+        <code>useState</code> so the page is not blank when you first open
+        it. The <code>id</code> values are suggestions, the same{" "}
+        <code>wd-</code> names you have used since the HTML labs, and a
+        control that appears once on the page can carry an id while a
+        control copied into every module should use a <code>class</code>,
+        because an id is unique in the document and a repeated id is
+        invalid HTML.
       </p>
       <p>
-        Try the prompt in <SectionLink to="1.11.6" />{" "}before you paste the
-        finished controls by hand. The snippets that follow are the
-        reference you compare the assistant&apos;s diff against, and the
-        markup you copy only if the diff missed a label. Under the
-        textarea, the two generate buttons read{" "}
+        Try the prompt in <SectionLink to="1.7.6" />{" "}before you paste the
+        finished controls by hand, and use the snippets that follow as the
+        reference you compare the assistant&apos;s diff against, copying
+        them only when the diff missed a label. Under the textarea, the
+        two generate buttons read{" "}
         <code>Generate description from title</code> and{" "}
-        <code>Generate title from description</code>.{" "}
-        <code>type=&quot;button&quot;</code> keeps them from submitting
-        anything. There is no <code>onClick</code>, so clicking one leaves
-        both fields exactly as they were:
+        <code>Generate title from description</code>, and{" "}
+        <code>type=&quot;button&quot;</code> keeps them from submitting a
+        form. There is no <code>onClick</code>, so clicking either button
+        leaves both fields exactly as they were:
       </p>
       <CodeBlock language="tsx" name="Editor buttons">{`<button type="button" id="wd-generate-description">
   Generate description from title
@@ -450,10 +467,10 @@ claude`}</CodeBlock>
 </button>`}</CodeBlock>
       <p>
         On the Modules page, leave Collapse All, View Progress, and the
-        publish select alone. The new button sits immediately after the
-        existing <code>+ Module</code> button, and its label is{" "}
-        <code>AI: suggest modules</code>, so it is obvious that this is
-        where a suggested list of modules will eventually start. The{" "}
+        publish select as you wrote them, and place the new button
+        immediately after the existing <code>+ Module</code> button, with
+        the label <code>AI: suggest modules</code>, which is where a
+        suggested list of modules will eventually start. The{" "}
         <code>{`{" "}`}</code> between the two buttons is the same space
         you already use so the labels do not run together:
       </p>
@@ -462,30 +479,31 @@ claude`}</CodeBlock>
   AI: suggest modules
 </button>`}</CodeBlock>
       <p>
-        After the module list — after the closing <code>&lt;/ul&gt;</code>{" "}
-        of <code>wd-modules</code>, not inside any week — add one more
-        button, <code>AI: next module</code>. It appears once, under every
-        week, because it offers the next module for the whole course rather
-        than a lesson inside one week:
+        After the module list, which means after the closing{" "}
+        <code>&lt;/ul&gt;</code> of <code>wd-modules</code> and outside
+        every week, add one button labeled <code>AI: next module</code>.
+        It appears once, under the whole list, because the next module
+        belongs to the course, while a new lesson belongs inside one week:
       </p>
       <CodeBlock language="tsx" name="After the module list">{`<button type="button" id="wd-ai-next-module">
   AI: next module
 </button>`}</CodeBlock>
       <p>
         Inside each module the new controls belong on <code>Module</code>,
-        so every week gets them without you copying the markup into{" "}
-        <code>page.tsx</code>. Under the title, a label reads Lesson type
-        and wraps a <code>select</code>. The options are exactly Reading,
-        Slides, and Quiz. <strong>Slides</strong> here means a slides.js
-        lesson, the same kind of deck the book&apos;s own slides use. This
-        chapter only shows the option in the select. It does not build the
-        deck, and there is no Video option to add. <code>Generate lessons</code>{" "}
-        sits next to the select, above the lessons you already wrote.{" "}
-        <code>AI: next lesson</code> sits after <code>wd-lessons</code>, so
-        it is the last thing in that week, under the lessons rather than
-        mixed into them. The select uses <code>className=&quot;wd-lesson-type&quot;</code>,
-        and the two buttons use classes as well, because this component
-        renders once per week and an id would be duplicated:
+        so every week receives them from that one component and you do not
+        copy the markup into <code>page.tsx</code>. Under the title, a
+        label reads Lesson type and wraps a <code>select</code> whose
+        options are exactly Reading, Slides, and Quiz. <strong>Slides</strong>{" "}
+        here means a slides.js lesson, the same kind of deck this book uses
+        for its own slides, and this chapter only shows that option in the
+        select, leaving the deck itself, and any Video option, out of the
+        file. <code>Generate lessons</code> sits beside the select and
+        above the lessons you already wrote, and{" "}
+        <code>AI: next lesson</code> sits after <code>wd-lessons</code>,
+        which places it last in the week, under those lessons. The select
+        uses <code>className=&quot;wd-lesson-type&quot;</code> and the two
+        buttons use classes as well, because this component renders once
+        per week and an id would be duplicated on every week:
       </p>
       <CodeBlock
         language="tsx"
@@ -524,13 +542,14 @@ export default function Module({
       <p>
         If your <code>Module.tsx</code> still matches the component from{" "}
         <SectionLink to="1.4.5" />, the reference above is a safe
-        replacement: it is that component plus the label, the select, and
-        the two buttons. If you already changed the file, do not overwrite
-        it. Add those three controls around the title and the{" "}
+        replacement, because it is that component plus the label, the
+        select, and the two buttons. If you have already changed the file,
+        add those three controls around the title and the{" "}
         <code>children</code> you already render, and leave your own markup
-        in place. When you open Modules you should still see every week you
-        wrote. The figure below shows one sample module so the new controls
-        are easy to find; your page keeps the rest of the weeks around it.
+        in place, so that when you open Modules you still see every week
+        you wrote. The figure below shows one sample module so the new
+        controls are easy to find, and your page keeps the rest of the
+        weeks around it.
       </p>
       <LiveDemo
         name="AiCourseBuilderDemo"
@@ -540,63 +559,62 @@ export default function Module({
       </LiveDemo>
 
       <h3
-        id="sec-1-11-6"
+        id="sec-1-7-6"
         className="scroll-mt-6 font-sans text-xl font-semibold"
       >
-        1.11.6 Exercises
+        1.7.6 Exercises
       </h3>
       <p>
-        Work through the steps below on your own project, in order. Each
-        violet block is a sample prompt, the same kind of copyable prompt
-        as the With AI blocks earlier in the chapter. Treat it as a start:
-        add the file names and the mismatch you actually see, and read the
-        reply before you keep it. Add a row to the cost log after each
-        prompt you send.
+        The steps below are the part of the lifecycle you carry out on
+        your own project, from the feature branch through the pull request,
+        and each violet block is a sample prompt of the same kind you have
+        copied since <SectionLink to="1.2.3" />. Add the file names and the
+        mismatch you actually see, read the reply before you keep it, and
+        add a row to the cost log after each prompt you send.
       </p>
       <ol>
         <li>
           <p>
-            Create the feature branch from the process above, so this work
-            stays off <code>main</code> until the pull request is reviewed.
-            Commit what you want to keep, or stash it — set the uncommitted
-            edits aside without making a commit — then look at{" "}
-            <code>git status</code>. It
-            should list nothing left to commit. <code>git checkout -b</code>{" "}
-            creates a new branch and switches to it. Name it{" "}
-            <code>feature/ai-buttons</code>, which is the branch the later
-            prompts refer to:
+            Create the feature branch described above so this work stays
+            off <code>main</code> until the pull request is reviewed. Commit
+            what you want to keep, or stash it, which sets the uncommitted
+            edits aside without making a commit, and then look at{" "}
+            <code>git status</code>, which should list nothing left to
+            commit, before <code>git checkout -b</code> creates the branch
+            named <code>feature/ai-buttons</code> and switches you onto it,
+            the name the later prompts refer to:
           </p>
           <CodeBlock language="shell">{`git status
 git checkout -b feature/ai-buttons`}</CodeBlock>
           <p>
-            After the second command, <code>git status</code> should say
-            you are on <code>feature/ai-buttons</code>. Everything you
-            commit from here stays off <code>main</code> until you open the
-            pull request.
+            After the second command, <code>git status</code> should report
+            that you are on <code>feature/ai-buttons</code>, and everything
+            you commit from here stays off <code>main</code> until you open
+            the pull request.
           </p>
         </li>
         <li>
           <p>
             Save <code>docs/ai-course-builder.md</code> from{" "}
-            <SectionLink to="1.11.4" />{" "}and create the course editor file
-            from the starter in <SectionLink to="1.11.5" />. Do these two
-            copies yourself, before you ask the assistant for anything, so
-            the requirements file and the empty fields already exist when
-            the prompt runs. Leave <code>page.tsx</code> and{" "}
+            <SectionLink to="1.7.4" />{" "}and create the course editor file
+            from the starter in <SectionLink to="1.7.5" />{" "}yourself, before
+            you ask the assistant for anything, so the requirements file
+            and the title and description fields already exist when the
+            prompt runs. Leave <code>page.tsx</code> and{" "}
             <code>Module.tsx</code> under <code>modules</code> for the
-            assistant. Those files already contain your weeks, and the
-            point of the next step is to watch whether the edit keeps them.
+            assistant, because those files already contain your weeks and
+            the next step is where you check that the edit keeps them.
           </p>
         </li>
         <li>
           <p>
-            Prompt Claude with the requirements. If you are in the CLI or
-            the IDE, let it edit the files and then read the diff before
-            you accept it. If you are in the website chat, the reply is
-            text: apply only the parts you have checked against the
-            reference snippets. The prompt tells it to show the diff and
-            stop, so the reply is a diff you can read before any further
-            edit.
+            Prompt Claude with the requirements, and if you are using the
+            CLI or the editor, let it edit the files and then read the diff
+            before you accept it, while if you are using the browser chat
+            the reply is text that you apply only after you have checked it
+            against the reference snippets. The prompt tells the assistant
+            to show the diff and stop, so the reply is a diff you can read
+            before any further edit.
           </p>
           <WithAI
             prompt={`Read docs/ai-course-builder.md. Add the static controls from the acceptance criteria. The course editor file already exists; add the two generate buttons and keep the Title and Description fields. Edit app/(kambaz)/courses/[cid]/modules/page.tsx and Module.tsx. Keep every module, lesson, and content item, including Week 1. Put AI: suggest modules immediately after the + Module button. Put AI: next module after the module list. Inside each module, put a Lesson type select (Reading, Slides, Quiz only) and Generate lessons above the lessons, and AI: next lesson after the lessons. Use a class, not a repeated id, on those per-module controls. Buttons are type button, with no onClick and no fetch. Do not add a use client line, Tailwind, Bootstrap, useState, a JSON file, an API route, or a Video option. Do not edit Course Navigation. Show the diff and stop.`}
@@ -608,53 +626,47 @@ git checkout -b feature/ai-buttons`}</CodeBlock>
         </li>
         <li>
           <p>
-            Review the diff the way you would review a teammate&apos;s pull
-            request: open every changed file, and reject a line you cannot
-            explain. Then run <code>npm run dev</code> and walk both
-            screens against the acceptance criteria, which is the same
-            check you will ask the assistant to make in a moment.
-          </p>
-          <p>
-            On <code>/courses/1234/editor</code> you should see the title,
-            the description, and both generate buttons. Click each button.
-            The text in the fields stays put, and the address bar does not
-            change, because the buttons have no handler and no form to
-            submit.
-          </p>
-          <p>
-            On <code>/courses/1234/modules</code> your weeks are still
-            there, including Week 1. <code>AI: suggest modules</code> sits
-            beside <code>+ Module</code>, and <code>AI: next module</code>{" "}
-            sits once, after the list. Each module shows the lesson-type
-            select, then <code>Generate lessons</code>, then the lessons
-            you already had, then <code>AI: next lesson</code>. Open the
-            select and confirm the only options are Reading, Slides, and
-            Quiz.
-          </p>
-          <p>
-            The browser console stays quiet, and clicking a new button
-            does not navigate away. If any of that is missing, you have a
-            mismatch to fix before you commit.
+            Review the diff the way a software engineer reviews a
+            teammate&apos;s pull request, which means you open every changed
+            file and remove a line you cannot explain, and then run{" "}
+            <code>npm run dev</code> and compare both screens with the
+            acceptance criteria, the same check you will ask the assistant
+            to make in a moment. On <code>/courses/1234/editor</code> you
+            should see the title, the description, and both generate
+            buttons, and clicking each button leaves the text in place and
+            the address bar unchanged, because the buttons have no handler
+            and no form to submit. On <code>/courses/1234/modules</code>{" "}
+            your weeks are still there, including Week 1, with{" "}
+            <code>AI: suggest modules</code> beside <code>+ Module</code>{" "}
+            and <code>AI: next module</code> once after the list, while
+            each module shows the lesson-type select, then{" "}
+            <code>Generate lessons</code>, then the lessons you already
+            had, then <code>AI: next lesson</code>, and the select lists
+            only Reading, Slides, and Quiz. The browser console stays
+            quiet, and clicking a new button does not navigate away, so
+            any of that which is missing is a mismatch you fix before you
+            commit.
           </p>
           <WithAI
             prompt={`Compare the current diff to docs/ai-course-builder.md. List mismatches as a checklist. Do not edit files.`}
           >
             This prompt asks for a checklist and tells the assistant not to
-            edit. You should get a list, not another diff. Fix the
-            mismatches yourself, or send a follow-up that quotes the
-            checklist and says to leave every other file alone.
+            edit, so the reply should be a list you can fix yourself, or a
+            follow-up you send that quotes the checklist and tells the
+            assistant to leave every other file alone.
           </WithAI>
         </li>
         <li>
           <p>
-            A commit message is a one-line summary of the diff, in the
-            imperative mood you already used in <SectionLink to="1.5" />{" "}
-            (&quot;Add …&quot;, not &quot;Added …&quot;). Ask for that line
-            with the cheaper model, then read it. Reject a message that
-            claims an API or a model call, because this commit only adds
-            static buttons. The prompt says not to run{" "}
-            <code>git commit</code>, so the assistant should hand you the
-            sentence and stop.
+            A commit message is the one-line summary of the diff, written
+            in the imperative mood you already used in{" "}
+            <SectionLink to="1.5" />, such as &quot;Add …&quot; where the
+            verb names the change that is happening now. Ask for that line
+            with the cheaper model, then read it, and discard a message
+            that claims an API or a model call, because this commit only
+            adds static buttons. The prompt tells the assistant not to run{" "}
+            <code>git commit</code>, so the reply should be the sentence
+            and nothing further.
           </p>
           <WithAI
             prompt={`Write a one-line git commit message for the staged diff on feature/ai-buttons. Imperative mood, 72 characters or fewer. Describe the static buttons. Do not run git commit.`}
@@ -664,30 +676,30 @@ git checkout -b feature/ai-buttons`}</CodeBlock>
             shorten it yourself before you use it.
           </WithAI>
           <p>
-            Stage only the files you reviewed. Paths that contain
-            parentheses must be quoted, or the shell treats{" "}
-            <code>(kambaz)</code> as a grouping and the add fails. Then
-            commit with the message you accepted, and push the branch.
+            Stage only the files you reviewed, and quote any path that
+            contains parentheses, because the shell otherwise treats{" "}
+            <code>(kambaz)</code> as a grouping and the add fails. Commit
+            with the message you accepted, then push the branch.{" "}
             <code>git push -u</code> uploads it and remembers{" "}
-            <code>origin</code> as the remote for later pushes:
+            <code>origin</code>, the remote you added in{" "}
+            <SectionLink to="1.5" />, for later pushes:
           </p>
           <CodeBlock language="shell">{`git add docs/ai-course-builder.md "app/(kambaz)/courses/[cid]/editor" "app/(kambaz)/courses/[cid]/modules"
 git commit -m "Add static AI Assisted Course Builder buttons"
 git push -u origin feature/ai-buttons`}</CodeBlock>
           <p>
-            Replace the sample message with the line you actually reviewed.
-            After the push, GitHub has the branch, and <code>main</code> on
+            Replace the sample message with the line you reviewed, and
+            after the push GitHub has the branch while <code>main</code> on
             the remote is unchanged.
           </p>
         </li>
         <li>
           <p>
             On GitHub, open a pull request from{" "}
-            <code>feature/ai-buttons</code> into <code>main</code>. The
-            description is the note at the top of that page. Paste a
-            description you have already read, create the pull request, and
-            leave it open. Merging would put the buttons on{" "}
-            <code>main</code>, and this exercise stops at the review.
+            <code>feature/ai-buttons</code> into <code>main</code>, paste a
+            description you have already read, and leave the pull request
+            open, because this exercise stops at code review and the merge
+            onto <code>main</code> is a later decision.
           </p>
           <WithAI
             prompt={`Draft a GitHub pull request description for feature/ai-buttons. Use two headings: Summary and Test plan. State that the controls are static HTML, that this work is optional and not graded, and that the buttons do not call a model. Do not claim checks you did not run.`}
@@ -701,14 +713,15 @@ git push -u origin feature/ai-buttons`}</CodeBlock>
         </li>
         <li>
           <p>
-            Ask the assistant to review the pull request, then decide which
-            comments are worth applying. A comment is valid when it matches{" "}
+            Ask the assistant to review the pull request, and then decide,
+            as the software engineer who opened it, which comments to
+            apply. A comment is valid when it matches{" "}
             <code>docs/ai-course-builder.md</code> or when it points at a
-            real bug, such as a deleted week or an id copied onto every
-            module. A comment is out of scope when it asks for an API, for
-            styling, for state, for a mock service, or for a Video lesson.
-            Apply only the valid ones, as a new commit on the same branch,
-            and push again so the pull request updates.
+            bug, such as a deleted week or an id copied onto every module,
+            and a comment is outside this issue when it asks for an API,
+            for styling, for state, or for a Video lesson. Apply only the
+            valid comments, as a new commit on the same branch, and push
+            again so the pull request shows the update.
           </p>
           <WithAI
             prompt={`Review comments are below. For each one, answer valid or skip. Valid means it matches docs/ai-course-builder.md or fixes a real bug. Skip means it asks for an API, styling, state, a mock service, or a Video lesson. Do not edit files.
@@ -718,13 +731,14 @@ git push -u origin feature/ai-buttons`}</CodeBlock>
 3. Week 1 lessons were removed.
 4. Suggest modules sits next to + Module.`}
           >
-            Walk the four sample comments before you paste your own. The
-            first asks for a fetch to an API, so you skip it. The second
-            reports that the select offers Video, which the requirements
-            forbid, so it is valid and you remove that option. The third
-            reports that Week 1 was removed, which is a real bug, so it is
-            valid and you restore the lessons. The fourth only observes
-            that suggest-modules already sits next to <code>+ Module</code>,
+            Read the four sample comments before you paste your own, so
+            you can see the judgment in action. The first asks for a fetch
+            to an API, which this issue does not include, so you skip it.
+            The second reports that the select offers Video, which the
+            requirements exclude, so you remove that option. The third
+            reports that Week 1 was removed, which breaks the acceptance
+            criteria, so you restore the lessons. The fourth observes that
+            suggest-modules already sits next to <code>+ Module</code>,
             which is where the requirements put it, so there is nothing to
             edit. Then replace the list with the comments on your pull
             request and judge those the same way.
@@ -732,18 +746,20 @@ git push -u origin feature/ai-buttons`}</CodeBlock>
         </li>
       </ol>
       <p>
-        <strong>What the assistant got wrong.</strong> Compare the diff
-        with the requirements. A click handler, a Tailwind or Bootstrap
-        class, a Video option, a new route, or a rewrite of Week 1 is
-        outside the acceptance criteria. Remove it, and write down what you
-        changed while you still remember the prompt.
+        <strong>What the assistant got wrong.</strong> When you compare
+        the diff with the requirements, look for a click handler, a
+        Tailwind or Bootstrap class, a Video option, a new route, or a
+        rewrite of Week 1, each of which sits outside the acceptance
+        criteria, and remove it, then write down what you changed while
+        you still remember the prompt that produced it.
       </p>
       <OnYourOwn>
-        In the cost log, write three sentences: what you asked, what you
-        rejected or fixed, and what you will put in the next prompt so that
-        mistake does not repeat. One row per prompt is enough. The
-        sentences are the review. The assistant&apos;s own list, in the
-        next block, is only a second opinion.
+        In the cost log, write three sentences that record what you asked,
+        what you rejected or fixed, and what you will put in the next
+        prompt so that the same mismatch does not repeat, with one row for
+        each prompt you sent. Those sentences are your code review, and
+        the assistant&apos;s list in the next block is a second reading of
+        the same diff.
       </OnYourOwn>
       <WithAI
         prompt={`From the diff on feature/ai-buttons, list three mistakes you introduced that I had to reject or fix. One sentence each. If the diff matches the requirements, name three changes that would have been out of scope. Do not edit files.`}

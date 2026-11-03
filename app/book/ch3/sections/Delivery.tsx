@@ -48,7 +48,7 @@ git push -u origin a3`}</CodeBlock>
           <code>wd-github</code>, which helps us test your work) and your
           full name (first name first, last name second, matching Canvas)
           on the Labs page — the same requirements from{" "}
-          <SectionLink to="1.7" />, now revisited for this chapter. Run{" "}
+          <SectionLink to="1.8" />, now revisited for this chapter. Run{" "}
           <code>npm run build</code>{" "}before you push: a page that works in{" "}
           <code>npm run dev</code>{" "}can still fail the build, and then the
           Vercel deployment fails too.

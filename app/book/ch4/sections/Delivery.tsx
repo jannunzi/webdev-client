@@ -67,7 +67,7 @@ git push -u origin a4`}</CodeBlock>
           Kambaz, plus a link to your GitHub repository with id{" "}
           <code>wd-github</code>{" "}and your full name (first name first,
           last name second, matching Canvas) on the Labs page — the same
-          requirements from <SectionLink to="1.7" />, now revisited for
+          requirements from <SectionLink to="1.8" />, now revisited for
           this chapter. Style the Labs table of contents with the
           existing Tailwind pills; do not switch the course navigation
           to a different CSS framework for this deliverable.

@@ -179,23 +179,23 @@ export const CH1_TOC: TocEntry[] = [
   },
   { id: "sec-1-5", label: "1.5 Committing Code to Source Control" },
   { id: "sec-1-6", label: "1.6 Deploying Next.js Projects to the Web" },
-  { id: "sec-1-7", label: "1.7 Conclusion" },
-  ...chapterEndToc(ch1EndMatter),
   {
-    id: "sec-1-11",
-    label: "1.11 Engineering with AI (optional, not graded)",
+    id: "sec-1-7",
+    label: "1.7 Engineering with AI (optional, not graded)",
     children: [
-      { id: "sec-1-11-1", label: "1.11.1 Owning the code" },
-      { id: "sec-1-11-2", label: "1.11.2 Chat, the CLI, and the IDE" },
-      { id: "sec-1-11-3", label: "1.11.3 Token budgeting" },
+      { id: "sec-1-7-1", label: "1.7.1 Owning the code" },
+      { id: "sec-1-7-2", label: "1.7.2 Chat, the CLI, and the IDE" },
+      { id: "sec-1-7-3", label: "1.7.3 Token budgeting" },
       {
-        id: "sec-1-11-4",
-        label: "1.11.4 Requirements for the AI Assisted Course Builder",
+        id: "sec-1-7-4",
+        label: "1.7.4 Requirements for the AI Assisted Course Builder",
       },
-      { id: "sec-1-11-5", label: "1.11.5 Course editor starter" },
-      { id: "sec-1-11-6", label: "1.11.6 Exercises" },
+      { id: "sec-1-7-5", label: "1.7.5 Course editor starter" },
+      { id: "sec-1-7-6", label: "1.7.6 Exercises" },
     ],
   },
+  { id: "sec-1-8", label: "1.8 Conclusion" },
+  ...chapterEndToc(ch1EndMatter),
 ];
 
 export const CH2_TOC: TocEntry[] = [

@@ -53,7 +53,7 @@ git push -u origin a2`}</CodeBlock>
           plus a link to your GitHub repository with id{" "}
           <code>wd-github</code>{" "}and your full name (first name first,
           last name second, matching Canvas) on the Labs page — the same
-          requirements from <SectionLink to="1.7" />, now revisited for this chapter.
+          requirements from <SectionLink to="1.8" />, now revisited for this chapter.
         </li>
         <li>
           Push any remaining changes to the <code>a2</code>{" "}branch and

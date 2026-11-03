@@ -78,7 +78,7 @@ describe("§1.5 name, section, and GitHub link on Labs", () => {
     assert.doesNotMatch(renderToStaticMarkup(createElement(LabsNameGithub)), /lab4|lab5/);
   });
 
-  it("is linked from the §1.7 checklist", () => {
+  it("is linked from the §1.8 checklist", () => {
     assert.match(read(closing), /id="labs-name-github"/);
     assert.match(read(closing), /href="#labs-name-github"/);
   });

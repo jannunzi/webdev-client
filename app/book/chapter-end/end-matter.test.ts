@@ -36,7 +36,7 @@ describe("chapter end matter", () => {
       assert.equal(toc[1]?.id, chapter.tools.id);
       assert.equal(toc[2]?.id, chapter.aiTools.id);
     }
-    assert.equal(ch1EndMatter.references.id, "sec-1-8");
+    assert.equal(ch1EndMatter.references.id, "sec-1-9");
     assert.equal(ch2EndMatter.references.id, "sec-2-6");
     assert.equal(ch3EndMatter.references.id, "sec-3-11");
     assert.equal(ch4EndMatter.references.id, "sec-4-13");

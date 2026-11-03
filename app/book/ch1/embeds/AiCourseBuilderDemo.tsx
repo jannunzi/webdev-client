@@ -1,5 +1,5 @@
 /**
- * Plain expected output for §1.11 — static AI Assisted Course Builder controls.
+ * Plain expected output for §1.7 — static AI Assisted Course Builder controls.
  * Buttons do nothing. No Tailwind (Chapter 2 styles this thread later).
  */
 export default function AiCourseBuilderDemo() {

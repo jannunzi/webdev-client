@@ -114,12 +114,21 @@ describe("Chapter 1 Engineering with AI", () => {
     assert.match(ai, /already have a Claude account/);
     assert.doesNotMatch(ai, /fake endpoint that pretends/);
     assert.doesNotMatch(ai, /skip a review, to hide a change/);
-    assert.match(toc, /1\.11 Engineering with AI \(optional, not graded\)/);
+    const engineering = toc.indexOf('id: "sec-1-7"');
+    const conclusion = toc.indexOf('id: "sec-1-8"');
     const endMatter = toc.indexOf("...chapterEndToc(ch1EndMatter)");
-    const section = toc.indexOf('id: "sec-1-11"');
-    assert.ok(endMatter !== -1 && section > endMatter, "section 1.11 follows end matter");
     assert.ok(
-      chapter.indexOf("<ChapterEndMatter") < chapter.indexOf("<EngineeringWithAI"),
+      engineering !== -1 && engineering < conclusion && conclusion < endMatter,
+      "§1.7 Engineering with AI precedes the conclusion and the end matter",
+    );
+    assert.match(toc, /1\.7 Engineering with AI/);
+    assert.match(toc, /1\.8 Conclusion/);
+    assert.ok(
+      chapter.indexOf("<EngineeringWithAI") <
+        chapter.indexOf("<Chapter1Conclusion"),
+    );
+    assert.ok(
+      chapter.indexOf("<Chapter1Conclusion") < chapter.indexOf("<ChapterEndMatter"),
     );
     assert.doesNotMatch(ai, /Northeastern|university|Annunziato/i);
     assert.match(ai, /feature\/ai-buttons/);
