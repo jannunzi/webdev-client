@@ -1,6 +1,7 @@
 import Section from "../../components/Section";
 import SectionLink from "../../components/SectionLink";
 import ChapterLink from "../../components/ChapterLink";
+import OfficialLink from "../../components/OfficialLink";
 import CodeBlock from "../../components/CodeBlock";
 import LiveDemo from "../../components/LiveDemo";
 import { OnYourOwn, WithAI } from "../../components/Practice";
@@ -57,122 +58,197 @@ export default function EngineeringWithAI() {
       title="1.7 Engineering with AI (optional, not graded)"
     >
       <p>
-        This section is where you practice using an AI assistant the way a
-        software engineer does on a professional team, because the{" "}
-        <strong>AI Assisted Course Builder</strong> you start here is a
-        feature you will keep building in later chapters. A course author
-        uses it to draft a course title from a description, a description
-        from a title, a list of modules, and the lessons inside a module,
-        and in this chapter those controls are static HTML, so clicking a
-        button leaves the text on the page exactly as you typed it.{" "}
-        <ChapterLink to={2} />{" "}styles the same controls with Tailwind,{" "}
-        <ChapterLink to={3} />{" "}fills them from a local JSON file of sample
-        suggestions, <ChapterLink to={4} />{" "}stores the draft in Zustand, a
-        client-side store, and a later chapter calls Claude from a Next.js{" "}
-        <strong>route handler</strong>, which is a function on the server
-        that receives a request and sends back a response. Learning the
-        engineering process now, while the buttons still do not call
-        Claude, means you already know who writes the requirement, who
-        reviews the code, and who is accountable when the assistant is
-        allowed to edit files.
+        This section is where you start the{" "}
+        <strong>AI Assisted Course Builder</strong> for Kambaz, and where
+        you learn to use an AI assistant the way a software engineer does
+        on a professional team. You will keep building that feature in the
+        chapters that follow. A course author will be able to use it to
+        draft a course title from a description, a description from a
+        title, a list of modules, and the lessons inside a module. In this
+        chapter the controls are static HTML, so clicking a button leaves
+        the text on the page exactly as you typed it.{" "}
+        <ChapterLink to={2} />{" "}will style those controls with{" "}
+        <OfficialLink href="https://tailwindcss.com/">
+          <strong>Tailwind CSS</strong>
+        </OfficialLink>
+        . <ChapterLink to={3} />{" "}will fill them from a local JSON file of
+        sample suggestions. <ChapterLink to={4} />{" "}will store the draft
+        in{" "}
+        <OfficialLink href="https://zustand.docs.pmnd.rs/">
+          <strong>Zustand</strong>
+        </OfficialLink>
+        , a client-side store. A later chapter will call Claude from a
+        Next.js{" "}
+        <OfficialLink
+          href="https://nextjs.org/docs/app/building-your-application/routing/route-handlers"
+          term="Route Handlers"
+        >
+          <strong>route handler</strong>
+        </OfficialLink>
+        , a function on the server that receives a request and sends back a
+        response. At each of those steps you will learn how to use AI
+        assistants in the production process, the way production teams at
+        companies such as Amazon or Google use them.
       </p>
       <p>
         In a product team, a new feature or bug fix moves through the{" "}
-        <strong>software development lifecycle</strong>, the sequence of
-        stages that takes the work from an idea to{" "}
-        <strong>production</strong>, the deployed application that users
-        open. A product manager first writes the product requirements,
-        including user stories and acceptance criteria, and the team files
-        that work as an issue in a tracker such as Jira. A software
-        engineer then designs the change, creates a feature branch,
-        implements it, and tests it against those criteria. The same
-        engineer opens a pull request for code review, continuous
-        integration runs the project&apos;s checks, and after the review
-        the engineer merges the branch and deploys it, then monitors the
-        running application. An AI assistant can draft or search inside
-        many of those stages, and the software engineer, the developer
-        doing the work, or the product manager who owns the requirement
-        remains the one who decides and who answers for the result. The
-        exercises later in this section take the AI Assisted Course Builder
-        through the requirements, the branch, the implementation, the
-        manual test, and the pull request, and they stop before merge,
-        which you already practice for the chapter itself in{" "}
+        <OfficialLink href="https://en.wikipedia.org/wiki/Systems_development_life_cycle">
+          <strong>software development lifecycle</strong>
+        </OfficialLink>
+        , the sequence of stages from the written requirement to production.
+        Production is the environment where the released application runs
+        for its users, separate from the copy on the developer&apos;s
+        machine. A product manager writes what the user needs and how the
+        team will recognize finished work, the team tracks that work, and a
+        software engineer designs the change, isolates it, writes the code,
+        and checks it. The engineer then asks other developers to read the
+        change, the project runs its automated checks, and the engineer
+        combines the change into the main line, publishes it, and watches
+        the released application. Across those stages an assistant helps
+        the software engineer build a prototype or implement a feature, and
+        it helps write unit tests, which check one piece of code, and
+        integration tests, which check that the pieces work together. The
+        same assistant can create a branch, rebase, merge, and open the
+        proposal to merge, review that proposal, draft the requirements and
+        the tracked work item, debug a failure, write documentation, and
+        automate a repeated process such as the script those automated
+        checks run. The software engineer and the product manager stay
+        accountable for the decisions, and the exercises below follow the
+        lifecycle through the requirements, the isolated branch, the
+        implementation, a manual check, and the proposal to merge, stopping
+        before the merge you already practice for this chapter in{" "}
         <SectionLink to="1.5" />{" "}and <SectionLink to="1.6" />.
       </p>
       <p>
-        The lifecycle begins when a product manager writes down what the
-        user can do. A <strong>user story</strong> is one sentence of that
-        document, naming who the user is, what they can do, and why it
-        matters, and <strong>acceptance criteria</strong> are the checks
-        that define finished work, such as which labels appear on the
-        screen and what stays unchanged when the user clicks. The team
-        then records the story as an <strong>issue</strong>, also called a
-        ticket, in an <strong>issue tracker</strong>, the shared list of
-        work. Jira is a common tracker, and GitHub Issues and Linear are
-        others. The issue stores the requirement, the acceptance criteria,
-        and a status that moves from to do, to in progress, to in review,
-        and then to done, so a software engineer can pick up that issue
-        and know exactly which feature or bug fix it describes. An
-        assistant can draft the user stories, the acceptance criteria, or
-        the issue text from the product manager&apos;s notes, while the
-        product manager is accountable for accepting the document and the
-        software engineer who takes the issue is accountable for building
+        The lifecycle begins with the product requirements, which a product
+        manager writes so the team agrees on the feature or the bug fix
+        before a software engineer edits any code. A{" "}
+        <OfficialLink href="https://www.atlassian.com/agile/project-management/user-stories">
+          <strong>user story</strong>
+        </OfficialLink>{" "}
+        is one sentence of that document. It names who the user is, what
+        they can do, and why that capability matters.{" "}
+        <OfficialLink href="https://www.atlassian.com/work-management/project-management/acceptance-criteria">
+          <strong>Acceptance criteria</strong>
+        </OfficialLink>{" "}
+        are the checks that define finished work, such as which labels
+        appear on the screen and what stays unchanged when the user clicks.
+        An assistant can draft the stories and the criteria from the
+        product manager&apos;s notes. The product manager is accountable
+        for accepting the document the software engineer will build.
+      </p>
+      <p>
+        The team then files that agreed work as an issue, also called a
+        ticket, in an{" "}
+        <OfficialLink href="https://docs.github.com/en/issues">
+          <strong>issue tracker</strong>
+        </OfficialLink>
+        , the shared list where the team records work and its status.{" "}
+        <OfficialLink href="https://www.atlassian.com/software/jira">
+          <strong>Jira</strong>
+        </OfficialLink>{" "}
+        is a common tracker, and GitHub Issues and{" "}
+        <OfficialLink href="https://linear.app/">
+          <strong>Linear</strong>
+        </OfficialLink>{" "}
+        are others. The issue stores the requirement, the acceptance
+        criteria, and a status that moves from to do, to in progress, to in
+        review, and then to done, so a software engineer can pick the issue
+        up and know which feature or bug fix it describes. An assistant can
+        draft the issue text from the requirements. The product manager, or
+        the developer who files the issue, sets its scope and assigns it,
+        and the software engineer who takes it is accountable for building
         what it says.
       </p>
       <p>
-        With the issue assigned, the software engineer designs the change
-        by choosing which screens will move, which files those screens
-        live in, and which requests belong in a later issue, and an
-        assistant can propose that list of files while the engineer
-        selects the design and writes it on the issue so the
-        implementation has a target. The engineer then creates a{" "}
-        <strong>feature branch</strong>, a separate line of Git commits
-        started from <code>main</code> with <code>git checkout -b</code>,
-        which keeps the unfinished commits off <code>main</code> until
-        code review, using the same commits you already make in{" "}
-        <SectionLink to="1.5" />. During implementation the assistant can
-        draft the code from the requirements and from the files named in
-        the design, after which the software engineer reads the{" "}
-        <strong>diff</strong>, Git&apos;s line-by-line record of which
-        lines were added and which were removed, compares that record with
-        the acceptance criteria, and keeps only the lines they can
-        explain, because the engineer is accountable for every line that
-        remains in the branch.
+        Design is the stage in which the software engineer decides the
+        shape of the change before editing files. The engineer chooses
+        which screens will change, which files those screens live in, and
+        which requests belong in a later issue. An assistant can propose
+        that list of files from the requirements. The engineer selects the
+        design and writes it on the issue, so the implementation has a
+        target the reviewer can compare with the code.
       </p>
       <p>
-        The software engineer next checks the branch with tests, which may
-        be an automated command or a manual pass through the screens, and
-        an assistant can draft a test or a checklist while the engineer
-        runs it and judges whether the behavior is the behavior the issue
-        requested. When that check is satisfactory, the engineer opens a{" "}
-        <strong>pull request</strong>, the GitHub page that proposes
-        merging the feature branch into <code>main</code> and shows the
-        diff for <strong>code review</strong>, the reading of that diff by
-        the reviewers. An assistant can draft the pull request description
-        and can add review comments, and the software engineer who opened
-        the pull request decides which comments match the requirements and
-        which ask for work the issue did not include, remaining
-        accountable for what the pull request contains.{" "}
-        <strong>Continuous integration</strong>, or <strong>CI</strong>,
-        then runs the repository&apos;s build and its tests on that pull
-        request. An assistant can help the engineer read the log when a
-        check fails, a green result is evidence that those automated steps
-        passed, and the engineer decides whether the feature is ready to
-        merge.
+        The software engineer then isolates the work on a{" "}
+        <OfficialLink href="https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell">
+          <strong>feature branch</strong>
+        </OfficialLink>
+        , a separate line of Git commits started from <code>main</code>{" "}
+        with <code>git checkout -b</code>. The unfinished commits stay off{" "}
+        <code>main</code> until code review, using the same commits you
+        already make in <SectionLink to="1.5" />. An assistant can create
+        that branch. The software engineer chooses the branch name and
+        remains accountable for every commit on it.
       </p>
       <p>
-        Merge copies the reviewed feature branch onto <code>main</code>,
-        and deploy publishes <code>main</code> so users can open the
-        application, which you already do for this chapter in{" "}
+        Implementation is the stage in which the code for the issue is
+        written on that branch. An assistant can draft the code from the
+        requirements and from the files named in the design. The software
+        engineer then reads the{" "}
+        <OfficialLink href="https://git-scm.com/docs/git-diff">
+          <strong>diff</strong>
+        </OfficialLink>
+        , Git&apos;s line-by-line record of which lines were added and
+        which were removed, and compares that record with the acceptance
+        criteria. The engineer keeps only the lines they can explain,
+        because those are the lines they will defend in review.
+      </p>
+      <p>
+        Tests are the stage in which the software engineer checks that the
+        branch behaves as the issue requested. The check may be an
+        automated command, or a manual pass through the screens. An
+        assistant can draft a unit test, an integration test, or a
+        checklist for that pass. The engineer runs the check and judges
+        whether the behavior matches the acceptance criteria, and the
+        engineer is accountable for that judgment.
+      </p>
+      <p>
+        When the check is satisfactory, the software engineer opens a{" "}
+        <OfficialLink href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests">
+          <strong>pull request</strong>
+        </OfficialLink>
+        , the GitHub page that proposes merging the feature branch into{" "}
+        <code>main</code> and shows the diff to reviewers.{" "}
+        <OfficialLink href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews">
+          <strong>Code review</strong>
+        </OfficialLink>{" "}
+        is that reading of the diff. An assistant can draft the pull
+        request description and can add review comments. The software
+        engineer who opened the pull request decides which comments match
+        the requirements and which ask for work the issue did not include,
+        and that engineer is accountable for what the pull request
+        contains.
+      </p>
+      <p>
+        <OfficialLink href="https://docs.github.com/en/actions/concepts/overview/about-continuous-integration-with-github-actions">
+          <strong>Continuous integration</strong>
+        </OfficialLink>
+        , or CI, is the stage in which the repository runs its build and
+        its tests on the pull request automatically. An assistant can help
+        the software engineer read the log when a check fails, and it can
+        draft the script those checks run. A green result is evidence that
+        the automated steps passed. The engineer decides whether the
+        feature is ready to merge.
+      </p>
+      <p>
+        Merge is the stage that copies the reviewed feature branch onto{" "}
+        <code>main</code>, and deploy is the stage that publishes{" "}
+        <code>main</code> to the environment where the released application
+        runs, which you already do for this chapter in{" "}
         <SectionLink to="1.6" />. An assistant can draft the short note
-        that describes what changed, and the software engineer who merges
-        and deploys confirms that the deployed application is the one the
-        reviewers read. After deploy, the software engineer{" "}
-        <strong>monitors</strong> the running application by reading error
-        logs and failed requests and by checking that the feature still
-        meets the acceptance criteria. An assistant can summarize a log,
-        and the engineer decides whether the behavior is an incident and
-        which new issue to file so the lifecycle starts again.
+        that describes what changed, and it can run the merge or the deploy
+        when the software engineer asks it to. The engineer who merges and
+        deploys confirms that the released application is the one the
+        reviewers read.
+      </p>
+      <p>
+        After deploy, the software engineer monitors the released
+        application. Monitoring means reading error logs and failed
+        requests, and checking that the feature still meets the acceptance
+        criteria. An assistant can summarize a log. The engineer decides
+        whether the behavior is an incident and which new issue to file,
+        which starts the lifecycle again.
       </p>
 
       <h3
@@ -182,25 +258,25 @@ export default function EngineeringWithAI() {
         1.7.1 Owning the code
       </h3>
       <p>
-        During implementation you are the software engineer, so the
-        assistant drafts only from what you place in the prompt, which
-        means the issue, the acceptance criteria, and the list of files
-        appear in the reply when you include them and are absent when you
-        leave them out. Paste the requirements document first, then name
-        the few files the issue covers, and after the reply read the diff
-        against the acceptance criteria and save only the lines that match,
-        because those lines will be the ones you can explain in code
-        review.
+        During implementation you are the software engineer, which means
+        you decide what the assistant is allowed to see and which lines you
+        keep. The assistant drafts from the requirements and the files you
+        put in the prompt. The issue, the acceptance criteria, and the file
+        list are in the reply when you include them, and they are absent
+        when you leave them out. Paste the requirements document first,
+        name the few files the issue covers, and after the reply save only
+        the lines that match the acceptance criteria, because those are the
+        lines you will explain in code review.
       </p>
       <p>
-        The same accountability covers secrets, which are values that would
-        let someone else act as you or read private data, including the
+        That accountability also covers secrets, the values that would let
+        someone else act as you or read private data. A secret includes the
         personal access token from <SectionLink to="1.5" />, anything in a{" "}
-        <code>.env</code> file, passwords, and private details about real
+        <code>.env</code> file, a password, and private details about real
         people. Keep those values out of the browser chat, out of the
         command-line tool, and out of the panel in the editor. When the
         assistant needs to know that a file exists, describe the file in a
-        sentence and leave its contents on your machine, since a value
+        sentence and leave its contents on your machine, because a value
         pasted into the conversation has left your machine.
       </p>
 
@@ -211,41 +287,56 @@ export default function EngineeringWithAI() {
         1.7.2 Chat, the CLI, and the IDE
       </h3>
       <p>
-        This section assumes you already have a Claude account, whether
-        that account is a personal account or a Team or Enterprise account
-        from your organization, and you will use it in whichever of three
-        places fits the stage you are in. You can talk to Claude in a
-        browser chat and copy the reply into your project yourself, which
-        suits a plan, a checklist, a commit message, or a pull request
-        description. You can run Claude in the terminal against the files
-        in your project and let it apply an edit, which suits a change
-        that spans more than one file. You can also open Claude inside
-        your editor, beside the file you are already changing, which suits
-        a change in one or two files you have open. Typing a program&apos;s
-        name in the terminal, instead of clicking an icon, is a{" "}
-        <strong>command-line interface</strong>, usually shortened to{" "}
-        <strong>CLI</strong>, and these three places — the browser, the
-        CLI, and the editor — are called <strong>surfaces</strong>. Choose
-        one surface for a given task, because repeating the same edit on
-        all three bills your account three times and leaves you with three
-        diffs to reconcile.
+        <OfficialLink href="https://claude.ai">
+          <strong>Claude</strong>
+        </OfficialLink>{" "}
+        is an AI assistant from{" "}
+        <OfficialLink href="https://www.anthropic.com/">
+          <strong>Anthropic</strong>
+        </OfficialLink>{" "}
+        that a software engineer can use in three places, depending on
+        whether the task is advice, an edit across files, or a suggestion
+        beside one open file. In the browser you talk to Claude and copy
+        the reply into the project, which fits a plan, a checklist, a
+        commit message, or a pull request description. In the terminal you
+        run Claude against the project so it can apply an edit, which fits
+        a change that spans more than one file. In the editor you open
+        Claude next to the file you are changing, which fits a smaller
+        edit. This section assumes you already have a Claude account. A
+        personal account works, and so does a Team or Enterprise account
+        from your organization.
       </p>
       <p>
-        For the browser surface, open{" "}
+        The terminal way of working has a name of its own. Typing a
+        program&apos;s name in the terminal, instead of clicking an icon,
+        is a{" "}
+        <OfficialLink href="https://en.wikipedia.org/wiki/Command-line_interface">
+          <strong>command-line interface</strong>
+        </OfficialLink>
+        , shortened to CLI. The browser, the CLI, and the editor are called
+        surfaces, the places where you type to the same assistant. Choose
+        one surface for a task. Repeating the edit on all three bills the
+        account three times and produces three diffs to reconcile.
+      </p>
+      <p>
+        The browser surface is the chat at{" "}
         <a href="https://claude.ai" target="_blank" rel="noreferrer">
           claude.ai
         </a>
-        , start a new chat, and paste the requirements document before you
-        ask for the plan or the checklist, so the reply stays on that
-        document. The chat returns text and does not edit your repository,
-        which means you read the reply and copy into the project only the
-        parts that match the acceptance criteria.
+        , which you use when you want text back and you will apply the edit
+        yourself. Start a new chat and paste the requirements document
+        before you ask for the plan or the checklist, so the reply stays on
+        that document. The chat returns text and does not edit the
+        repository. You copy into the project only the parts that match the
+        acceptance criteria.
       </p>
       <p>
-        For a change that should land in several files, use the CLI
-        surface, <strong>Claude Code</strong>, which is the same assistant
-        started as a command in your project folder so it can write the
-        edit to disk. Install it from the{" "}
+        <OfficialLink href="https://code.claude.com/docs/en/vs-code">
+          <strong>Claude Code</strong>
+        </OfficialLink>{" "}
+        is the CLI surface, the same assistant started as a command in your
+        project folder when the edit should change more than one file.
+        Install it from the{" "}
         <a
           href="https://code.claude.com/docs/en/setup"
           target="_blank"
@@ -270,9 +361,9 @@ claude`}</CodeBlock>
         second line starts Claude in that folder, so the session is about
         this project. When it asks which files to change, name the modules
         page and <code>Module.tsx</code>, because those are the files the
-        issue tells you to edit, and then read the diff before you accept
-        it so the files change only after you have compared them with the
-        acceptance criteria.
+        issue tells you to edit. Read the diff before you accept it, so the
+        files change only after you have compared them with the acceptance
+        criteria.
       </p>
       <p>
         When the edit is confined to a file you already have open, use the
@@ -281,8 +372,8 @@ claude`}</CodeBlock>
         way that section showed, and paste the same requirements document,
         so the suggestion appears next to the code you are reviewing. In
         Cursor that panel is still Claude Code, separate from the
-        editor&apos;s built-in chat, and this exercise uses the Claude
-        account you signed into in <SectionLink to="1.2.3" />.
+        editor&apos;s built-in chat. This exercise uses the Claude account
+        you signed into in <SectionLink to="1.2.3" />.
       </p>
 
       <h3
@@ -296,28 +387,30 @@ claude`}</CodeBlock>
         <strong>token</strong>, a small chunk of text that Claude reads or
         writes, so the prompt, the files you attach, and the reply are all
         counted together. A prompt that carries the requirements document
-        and the two files you are changing therefore costs less than a chat
-        that rereads the whole repository, because most of the repository
-        is files this issue does not name, which is why you send the
-        requirements and those files, leave the rest out, and attach the
-        same requirements file again when you start a fresh chat so you do
-        not retype the user stories from memory.
+        and the two files you are changing costs less than a chat that
+        rereads the whole repository. Most of the repository is files this
+        issue does not name. Send the requirements and those two files,
+        leave the rest out, and attach the same requirements file again
+        when you start a fresh chat, so you do not retype the user stories
+        from memory.
       </p>
       <p>
         The account also lets you pick a <strong>model</strong>, the
-        particular assistant that produces the reply, and the picker offers
-        a cheaper, faster model alongside a stronger, slower one. Use the
-        cheaper model when the task is a commit message, the pull request
-        description, or a yes-or-no check against the acceptance criteria,
-        and use the stronger model when the edit touches several files and
-        has to keep them consistent. Record each task in a short{" "}
-        <strong>cost log</strong> on your machine, one row written before
-        you start the next task, while you still remember which surface you
-        used, which model you picked, which file names you sent, and
-        whether you kept the result. If a task takes many retries, stop and
-        narrow the prompt to the files the issue names, and leave the log
-        out of the commit, because it is your notebook and it can pick up
-        an account detail that does not belong in the repository.
+        particular assistant that produces the reply. The picker offers a
+        cheaper, faster model and a stronger, slower one. Use the cheaper
+        model for a commit message, for the pull request description, or
+        for a yes-or-no check against the acceptance criteria. Use the
+        stronger model when the edit touches several files and has to keep
+        them consistent.
+      </p>
+      <p>
+        A <strong>cost log</strong> is the notebook where you record that
+        choice, one row per task, written before you start the next task.
+        Each row notes the surface, the model, the file names you sent, and
+        whether you kept the result, while you still remember them. If a
+        task takes many retries, stop and narrow the prompt to the files
+        the issue names. Leave the log out of the commit, because it can
+        pick up an account detail that does not belong in the repository.
       </p>
       <p>
         Copy the header below and replace the two sample rows with your
@@ -337,26 +430,25 @@ claude`}</CodeBlock>
         1.7.4 Requirements for the AI Assisted Course Builder
       </h3>
       <p>
-        The implementation follows a requirements document the product
-        manager could review, and the sample below is that document for the
-        AI Assisted Course Builder, written with the four parts you just
-        met in the lifecycle. The <strong>overview</strong> says what this
-        chapter builds and what later chapters will add, each{" "}
-        <strong>user story</strong> is one sentence in the form &quot;as a
-        course author, I can …, so that …&quot;, the{" "}
-        <strong>acceptance criteria</strong> are the checks you will run in
-        the browser, and <strong>out of scope</strong> lists the work this
-        chapter does not include, which you can read at the bottom of the
-        document.
+        The implementation follows a requirements document a product
+        manager could review. The sample below is that document for the AI
+        Assisted Course Builder, written with the four parts from the
+        lifecycle. The overview says what this chapter will build and what
+        later chapters will add. Each user story is one sentence in the
+        form &quot;as a course author, I can …, so that …&quot;, which
+        describes the capability the course author will have. The
+        acceptance criteria are the checks you will run in the browser.
+        Out of scope, at the bottom of the document, lists the work this
+        chapter does not include.
       </p>
       <p>
         Save the sample as <code>docs/ai-course-builder.md</code> on the
-        feature branch you create in <SectionLink to="1.7.6" />, so the
-        later prompts can point at that filename and you can attach the
+        feature branch you create in <SectionLink to="1.7.6" />. Later
+        prompts can then point at that filename, and you can attach the
         file again instead of pasting the user stories into every chat.
         When you open the file you should see the overview, five user
-        stories, the acceptance criteria, and the out-of-scope list, with
-        the button labels written out so you can compare them with the
+        stories, the acceptance criteria, and the out-of-scope list. The
+        button labels are written out so you can compare them with the
         screen.
       </p>
       <CodeBlock
