@@ -5,6 +5,11 @@ import usersJson from "../database/users.json";
 
 export type User = (typeof usersJson)[number];
 
+const emptyUser: User = {
+  _id: "0", username: "new_user", password: "", firstName: "New", lastName: "User",
+  email: "", role: "STUDENT", loginId: "", section: "S101", lastActivity: "", totalActivity: "",
+};
+
 type AccountContextValue = {
   currentUser: User | null;
   setCurrentUser: (user: User | null) => void;
@@ -33,14 +38,9 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   return (
     <AccountContext.Provider
       value={{
-        currentUser,
-        setCurrentUser,
-        users,
-        createUser,
-        updateUser,
-        deleteUser,
-      }}
-    >
+        currentUser, setCurrentUser, users,
+        createUser,  updateUser,     deleteUser,
+      }} >
       {children}
     </AccountContext.Provider>
   );
@@ -53,3 +53,5 @@ export function useAccountContext() {
   }
   return value;
 }
+
+export { emptyUser };
