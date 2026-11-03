@@ -140,7 +140,7 @@ export default function Dashboard() {
   },
   {
     id: "delete",
-    title: "Adding Edit and Delete Buttons to the CourseCard Component",
+    title: "Edit and Delete Buttons on CourseCard",
     kind: "content",
     bullets: [
       "Each course card needs Edit and Delete buttons",
