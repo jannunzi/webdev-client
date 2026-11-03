@@ -58,27 +58,42 @@ export default function EngineeringWithAI() {
       title="1.7 Engineering with AI (optional, not graded)"
     >
       <p>
-        This section is where you start the{" "}
-        <strong>AI Assisted Course Builder</strong> for Kambaz, and where
-        you learn to use an AI assistant the way a software engineer does
-        on a professional team. You will keep building that feature in the
-        chapters that follow. A course author will be able to use it to
-        draft a course title from a description, a description from a
-        title, a list of modules, and the lessons inside a module. In this
-        chapter the controls are static HTML, so clicking a button leaves
-        the text on the page exactly as you typed it.{" "}
-        <ChapterLink to={2} />{" "}will style those controls with{" "}
+        AI is quickly becoming an indispensable tool in most industries,
+        bringing unprecedented opportunity as well as uncertainty and angst.
+        As software engineers in general, and full stack developers in
+        particular, we must learn to use AI throughout the day-to-day{" "}
+        <OfficialLink href="https://en.wikipedia.org/wiki/Systems_development_life_cycle">
+          <strong>software development lifecycle</strong>
+        </OfficialLink>
+        . This section is the first of several throughout the book that
+        teach industry-leading practices for using AI to build Web
+        applications. To practice these skills, we will build a new feature
+        for Kambaz, the <strong>AI-Assisted Course Builder</strong>, and
+        learn to work with an AI assistant the way a software engineer does
+        on a professional team. A course author will be able to use the
+        Course Builder to draft a course title from a description, a
+        description from a title, a list of modules, and the lessons inside
+        each module. We will build the feature one layer at a time over the
+        next several chapters, and at each layer AI will take on a different
+        part of the work. In this chapter, you will ask an AI assistant to
+        turn the feature&apos;s requirements into a static HTML prototype,
+        and then you will review its markup line by line before you commit
+        it. In <ChapterLink to={2} />, you will ask the assistant to style
+        those controls with{" "}
         <OfficialLink href="https://tailwindcss.com/">
           <strong>Tailwind CSS</strong>
-        </OfficialLink>
-        . <ChapterLink to={3} />{" "}will fill them from a local JSON file of
-        sample suggestions. <ChapterLink to={4} />{" "}will store the draft
-        in{" "}
+        </OfficialLink>{" "}
+        and to explain the classes it chose, so that you understand every
+        style you accept. In <ChapterLink to={3} />, the assistant will
+        generate a local JSON file of realistic sample suggestions, and you
+        will check that the data matches the shape your components expect.
+        In <ChapterLink to={4} />, the assistant will draft the{" "}
         <OfficialLink href="https://zustand.docs.pmnd.rs/">
           <strong>Zustand</strong>
-        </OfficialLink>
-        , a client-side store. A later chapter will call Claude from a
-        Next.js{" "}
+        </OfficialLink>{" "}
+        client-side store that holds the draft, along with tests that
+        confirm it behaves as specified. A later chapter will call an AI
+        model directly from a Next.js{" "}
         <OfficialLink
           href="https://nextjs.org/docs/app/building-your-application/routing/route-handlers"
           term="Route Handlers"
@@ -86,9 +101,10 @@ export default function EngineeringWithAI() {
           <strong>route handler</strong>
         </OfficialLink>
         , a function on the server that receives a request and sends back a
-        response. At each of those steps you will learn how to use AI
-        assistants in the production process, the way production teams at
-        companies such as Amazon or Google use them.
+        response, so that the Course Builder can generate real suggestions.
+        Throughout, AI will draft and explain while you decide what ships,
+        which is how production teams at companies such as Amazon and Google
+        use AI assistants.
       </p>
       <p>
         In a product team, a new feature or bug fix moves through the{" "}
@@ -98,17 +114,28 @@ export default function EngineeringWithAI() {
         , the sequence of stages from the written requirement to production.
         Production is the environment where the released application runs
         for its users, separate from the copy on the developer&apos;s
-        machine. A product manager writes what the user needs and how the
+        machine. A{" "}
+        <OfficialLink href="https://en.wikipedia.org/wiki/Product_manager">
+          <strong>product manager</strong>
+        </OfficialLink>{" "}
+        writes what the user needs and how the
         team will recognize finished work, the team tracks that work, and a
         software engineer designs the change, isolates it, writes the code,
         and checks it. The engineer then asks other developers to read the
         change, the project runs its automated checks, and the engineer
         combines the change into the main line, publishes it, and watches
-        the released application. Across those stages an assistant helps
+        the released application. Across those stages an AI assistant helps
         the software engineer build a prototype or implement a feature, and
-        it helps write unit tests, which check one piece of code, and
-        integration tests, which check that the pieces work together. The
-        same assistant can create a branch, rebase, merge, and open the
+        it helps write{" "}
+        <OfficialLink href="https://en.wikipedia.org/wiki/Unit_testing">
+          <strong>unit tests</strong>
+        </OfficialLink>
+        , which check one piece of code, and{" "}
+        <OfficialLink href="https://en.wikipedia.org/wiki/Integration_testing">
+          <strong>integration tests</strong>
+        </OfficialLink>
+        , which check that the pieces work together. The
+        same AI assistant can create a branch, rebase, merge, and open the
         proposal to merge, review that proposal, draft the requirements and
         the tracked work item, debug a failure, write documentation, and
         automate a repeated process such as the script those automated
@@ -120,7 +147,11 @@ export default function EngineeringWithAI() {
         <SectionLink to="1.5" />{" "}and <SectionLink to="1.6" />.
       </p>
       <p>
-        The lifecycle begins with the product requirements, which a product
+        The lifecycle begins with the{" "}
+        <OfficialLink href="https://en.wikipedia.org/wiki/Product_requirements_document">
+          <strong>product requirements</strong>
+        </OfficialLink>
+        , which a product
         manager writes so the team agrees on the feature or the bug fix
         before a software engineer edits any code. A{" "}
         <OfficialLink href="https://www.atlassian.com/agile/project-management/user-stories">
@@ -147,14 +178,18 @@ export default function EngineeringWithAI() {
         <OfficialLink href="https://www.atlassian.com/software/jira">
           <strong>Jira</strong>
         </OfficialLink>{" "}
-        is a common tracker, and GitHub Issues and{" "}
+        is a common tracker, and{" "}
+        <OfficialLink href="https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues">
+          <strong>GitHub Issues</strong>
+        </OfficialLink>{" "}
+        and{" "}
         <OfficialLink href="https://linear.app/">
           <strong>Linear</strong>
         </OfficialLink>{" "}
         are others. The issue stores the requirement, the acceptance
         criteria, and a status that moves from to do, to in progress, to in
         review, and then to done, so a software engineer can pick the issue
-        up and know which feature or bug fix it describes. An assistant can
+        up and know which feature or bug fix it describes. An AI assistant can
         draft the issue text from the requirements. The product manager, or
         the developer who files the issue, sets its scope and assigns it,
         and the software engineer who takes it is accountable for building
@@ -164,7 +199,7 @@ export default function EngineeringWithAI() {
         Design is the stage in which the software engineer decides the
         shape of the change before editing files. The engineer chooses
         which screens will change, which files those screens live in, and
-        which requests belong in a later issue. An assistant can propose
+        which requests belong in a later issue. An AI assistant can propose
         that list of files from the requirements. The engineer selects the
         design and writes it on the issue, so the implementation has a
         target the reviewer can compare with the code.
@@ -177,13 +212,13 @@ export default function EngineeringWithAI() {
         , a separate line of Git commits started from <code>main</code>{" "}
         with <code>git checkout -b</code>. The unfinished commits stay off{" "}
         <code>main</code> until code review, using the same commits you
-        already make in <SectionLink to="1.5" />. An assistant can create
+        already make in <SectionLink to="1.5" />. An AI assistant can create
         that branch. The software engineer chooses the branch name and
         remains accountable for every commit on it.
       </p>
       <p>
         Implementation is the stage in which the code for the issue is
-        written on that branch. An assistant can draft the code from the
+        written on that branch. An AI assistant can draft the code from the
         requirements and from the files named in the design. The software
         engineer then reads the{" "}
         <OfficialLink href="https://git-scm.com/docs/git-diff">
@@ -213,7 +248,7 @@ export default function EngineeringWithAI() {
         <OfficialLink href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews">
           <strong>Code review</strong>
         </OfficialLink>{" "}
-        is that reading of the diff. An assistant can draft the pull
+        is that reading of the diff. An AI assistant can draft the pull
         request description and can add review comments. The software
         engineer who opened the pull request decides which comments match
         the requirements and which ask for work the issue did not include,
@@ -236,7 +271,7 @@ export default function EngineeringWithAI() {
         <code>main</code>, and deploy is the stage that publishes{" "}
         <code>main</code> to the environment where the released application
         runs, which you already do for this chapter in{" "}
-        <SectionLink to="1.6" />. An assistant can draft the short note
+        <SectionLink to="1.6" />. An AI assistant can draft the short note
         that describes what changed, and it can run the merge or the deploy
         when the software engineer asks it to. The engineer who merges and
         deploys confirms that the released application is the one the
@@ -260,7 +295,7 @@ export default function EngineeringWithAI() {
       <p>
         During implementation you are the software engineer, which means
         you decide what the assistant is allowed to see and which lines you
-        keep. The assistant drafts from the requirements and the files you
+        keep. The AI assistant drafts from the requirements and the files you
         put in the prompt. The issue, the acceptance criteria, and the file
         list are in the reply when you include them, and they are absent
         when you leave them out. Paste the requirements document first,
@@ -314,7 +349,7 @@ export default function EngineeringWithAI() {
           <strong>command-line interface</strong>
         </OfficialLink>
         , shortened to CLI. The browser, the CLI, and the editor are called
-        surfaces, the places where you type to the same assistant. Choose
+        surfaces, the places where you type to the same AI assistant. Choose
         one surface for a task. Repeating the edit on all three bills the
         account three times and produces three diffs to reconcile.
       </p>
@@ -334,7 +369,7 @@ export default function EngineeringWithAI() {
         <OfficialLink href="https://code.claude.com/docs/en/vs-code">
           <strong>Claude Code</strong>
         </OfficialLink>{" "}
-        is the CLI surface, the same assistant started as a command in your
+        is the CLI surface, the same AI assistant started as a command in your
         project folder when the edit should change more than one file.
         Install it from the{" "}
         <a
@@ -722,7 +757,7 @@ git checkout -b feature/ai-buttons`}</CodeBlock>
             teammate&apos;s pull request, which means you open every changed
             file and remove a line you cannot explain, and then run{" "}
             <code>npm run dev</code> and compare both screens with the
-            acceptance criteria, the same check you will ask the assistant
+            acceptance criteria, the same check you will ask the AI assistant
             to make in a moment. On <code>/courses/1234/editor</code> you
             should see the title, the description, and both generate
             buttons, and clicking each button leaves the text in place and
@@ -805,7 +840,7 @@ git push -u origin feature/ai-buttons`}</CodeBlock>
         </li>
         <li>
           <p>
-            Ask the assistant to review the pull request, and then decide,
+            Ask the AI assistant to review the pull request, and then decide,
             as the software engineer who opened it, which comments to
             apply. A comment is valid when it matches{" "}
             <code>docs/ai-course-builder.md</code> or when it points at a
@@ -838,7 +873,7 @@ git push -u origin feature/ai-buttons`}</CodeBlock>
         </li>
       </ol>
       <p>
-        <strong>What the assistant got wrong.</strong> When you compare
+        <strong>What the AI assistant got wrong.</strong> When you compare
         the diff with the requirements, look for a click handler, a
         Tailwind or Bootstrap class, a Video option, a new route, or a
         rewrite of Week 1, each of which sits outside the acceptance
@@ -850,7 +885,7 @@ git push -u origin feature/ai-buttons`}</CodeBlock>
         what you rejected or fixed, and what you will put in the next
         prompt so that the same mismatch does not repeat, with one row for
         each prompt you sent. Those sentences are your code review, and
-        the assistant&apos;s list in the next block is a second reading of
+        the AI assistant&apos;s list in the next block is a second reading of
         the same diff.
       </OnYourOwn>
       <WithAI

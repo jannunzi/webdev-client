@@ -89,6 +89,36 @@ const TERM_LIST: TermEntry[] = [
     chapters: [1],
   },
   {
+    term: "product manager",
+    officialUrl: "https://en.wikipedia.org/wiki/Product_manager",
+    searchQuery: "product manager role explained",
+    chapters: [1],
+  },
+  {
+    term: "product requirements",
+    officialUrl: "https://en.wikipedia.org/wiki/Product_requirements_document",
+    searchQuery: "product requirements document explained",
+    chapters: [1],
+  },
+  {
+    term: "unit tests",
+    officialUrl: "https://en.wikipedia.org/wiki/Unit_testing",
+    searchQuery: "unit testing explained",
+    chapters: [1],
+  },
+  {
+    term: "integration tests",
+    officialUrl: "https://en.wikipedia.org/wiki/Integration_testing",
+    searchQuery: "integration testing explained",
+    chapters: [1],
+  },
+  {
+    term: "GitHub Issues",
+    officialUrl: "https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues",
+    searchQuery: "GitHub Issues explained",
+    chapters: [1],
+  },
+  {
     term: "user story",
     officialUrl: "https://www.atlassian.com/agile/project-management/user-stories",
     searchQuery: "user story agile explained",
