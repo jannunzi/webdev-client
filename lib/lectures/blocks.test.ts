@@ -30,6 +30,7 @@ import {
   type SlidesStorage,
 } from "./draft-storage";
 import { applyHubOverlay, overlayThumb } from "./hub-overlay";
+import { inlineEditMark } from "@/lib/inline-edit/mark";
 import { htmlToSlideText, lectureEditHref, lectureSearchIsEdit } from "./slide-markup";
 import { listChapterTopicGroups } from "./catalog";
 import type { LectureSlide } from "./types";
@@ -128,6 +129,31 @@ describe("slide block model", () => {
     assert.ok(createCodeBlock({ language: "bash" }).type === "code");
     assert.ok(createBulletsBlock().items.length > 0);
     assert.ok(createComponentBlock().componentId);
+  });
+
+  it("keeps slide title and bullet locators beside the plain strings", () => {
+    const hash = "a".repeat(24);
+    const bulletHash = "b".repeat(24);
+    const slide = toBlockSlide({
+      id: "s",
+      title: inlineEditMark("Title", "lib/lectures/decks/x.ts", hash) as unknown as string,
+      bullets: [
+        inlineEditMark("Point", "lib/lectures/decks/x.ts", bulletHash) as unknown as string,
+        "plain",
+      ],
+    });
+    assert.equal(slide.title, "Title");
+    assert.deepEqual(slide.titleLoc, {
+      file: "lib/lectures/decks/x.ts",
+      hash,
+    });
+    const bullets = slide.blocks[0];
+    assert.equal(bullets?.type, "bullets");
+    if (bullets?.type === "bullets") {
+      assert.deepEqual(bullets.items, ["Point", "plain"]);
+      assert.equal(bullets.itemLocs?.[0]?.hash, bulletHash);
+      assert.equal(bullets.itemLocs?.[1], undefined);
+    }
   });
 
   it("treats book target screenshots and demo-only embeds as full-stage slides", () => {
