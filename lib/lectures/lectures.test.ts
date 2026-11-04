@@ -3563,6 +3563,7 @@ describe("lecture decks", () => {
       "chatgpt-api": { project: "openai-project-key-mock" },
       "chatgpt-text": { "roles-code": "openai-roles-flow" },
       "grok-api": { tokens: "grok-token-flow", key: "xai-key-mock" },
+      "http-server": { sibling: "two-ports" },
     } as const;
 
     const used = new Set<string>();
