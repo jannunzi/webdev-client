@@ -59,6 +59,18 @@ export default function CoursesDao(db) {
     codeHighlightLines: [[6, 13]],
   },
   {
+    id: "url-to-route",
+    title: "Client URL to server route",
+    kind: "content",
+    bullets: [
+      "The Dashboard calls `GET /api/users/current/courses`",
+      "It matches `/api/users/:userId/courses` with `req.params = { userId: \"current\" }`",
+      "`current` means the signed-in user, read from the session",
+      "The DAO filters courses by that user’s enrollments",
+      "JSON comes back as `response.data` for the Dashboard to render",
+    ],
+  },
+  {
     id: "routes-intro",
     title: "GET /api/courses and mine",
     kind: "demo",

@@ -51,6 +51,17 @@ export default function WorkingWithArrays(app) {
     codeHighlightLines: [[8, 11]],
   },
   {
+    id: "id-how",
+    title: "How :id picks one todo",
+    kind: "content",
+    bullets: [
+      "Pattern `/lab5/todos/:id`, URL `/lab5/todos/1`",
+      "Express builds `req.params = { id: \"1\" }`",
+      "Ids in the array are numbers, so compare after `parseInt`",
+      "`find` returns the one todo whose `id` matches",
+    ],
+  },
+  {
     id: "get-id",
     links: ["http://localhost:4000/lab5/todos/1"],
     title: "GET one todo by id",

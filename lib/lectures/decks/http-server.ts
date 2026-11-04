@@ -141,6 +141,18 @@ npm init`,
     codeHighlightLines: [5, 6, 10],
   },
   {
+    id: "request-trip",
+    title: "A request’s trip to a handler",
+    kind: "content",
+    bullets: [
+      "Browser sends `GET http://localhost:4000/hello`",
+      "Node delivers it to the process listening on port 4000",
+      "Express compares the method and path with each registered route",
+      "The match runs its handler with `req` (the request) and `res` (the reply)",
+      "Whatever the handler sends becomes the response body in the browser",
+    ],
+  },
+  {
     id: "express-intro",
     title: "Express GET /hello on 4000",
     kind: "demo",

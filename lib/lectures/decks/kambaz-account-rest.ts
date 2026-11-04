@@ -88,6 +88,18 @@ app.post("/api/users/signin", signin);`,
     codeHighlightLines: [[2, 4]],
   },
   {
+    id: "signin-flow",
+    title: "Sign in, end to end",
+    kind: "content",
+    bullets: [
+      "Form state `{ username: \"iron_man\", password: \"stark123\" }`",
+      "axios POSTs it as JSON to `/api/users/signin`",
+      "Express routes it to `signin`, which reads `req.body`",
+      "The DAO finds a matching user, and the route sends it back as JSON",
+      "The client stores `response.data` as the current user",
+    ],
+  },
+  {
     id: "client",
     title: "axios posts credentials",
     kind: "demo",

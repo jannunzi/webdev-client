@@ -26,6 +26,18 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "json-how",
+    title: "From object to JSON response",
+    kind: "content",
+    bullets: [
+      "Server memory holds a JavaScript object such as `{ id: 1, title: \"NodeJS Assignment\" }`",
+      "`res.json(obj)` serializes it to JSON text",
+      "It also labels the response as JSON",
+      "The browser shows the text. A client can parse it back into an object",
+      "The object lives until the server restarts",
+    ],
+  },
+  {
     id: "assignment-intro",
     title: "res.json sends an object",
     kind: "demo",

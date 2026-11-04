@@ -27,6 +27,19 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "path-how",
+    title: "How Express fills req.params",
+    kind: "content",
+    bullets: [
+      "Route pattern: `/lab5/add/:a/:b` — `:a` and `:b` are placeholders",
+      "Browser asks for URL `/lab5/add/2/5`",
+      "Express parses the path and matches it segment by segment",
+      "It builds `req.params = { a: \"2\", b: \"5\" }` and calls the handler",
+      "Values are strings: `parseInt` turns `\"2\" + \"5\"` into `2 + 5`",
+      "The handler sends back `7` as text",
+    ],
+  },
+  {
     id: "path-server-intro",
     title: "Path params live in the URL",
     kind: "demo",
@@ -107,6 +120,19 @@ const [b, setB] = useState("23");
       "The browser navigates to the Express response",
     ],
     embed: "lab5-path",
+  },
+  {
+    id: "query-how",
+    title: "How Express fills req.query",
+    kind: "content",
+    bullets: [
+      "Route pattern: `/lab5/calculator` — no placeholders",
+      "URL: `/lab5/calculator?operation=add&a=2&b=5`",
+      "Express matches the path before `?`, then splits the rest on `&` and `=`",
+      "It builds `req.query = { operation: \"add\", a: \"2\", b: \"5\" }`",
+      "Strings again: `parseInt` before the math, then send `7`",
+      "Order doesn’t matter, and missing names are `undefined`",
+    ],
   },
   {
     id: "query-server-intro",

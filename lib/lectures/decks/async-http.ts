@@ -83,6 +83,18 @@ export const fetchWelcomeMessage = async () => {
     codeHighlightLines: [[3, 6]],
   },
   {
+    id: "axios-how",
+    title: "What axios does on a click",
+    kind: "content",
+    bullets: [
+      "The handler calls `axios.get(url)` and the page stays put",
+      "The browser sends the request to port 4000 in the background",
+      "`await` waits for the reply. The reply object has a `data` property",
+      "`response.data` is the body — text, or JSON parsed into an object",
+      "Storing it in state re-renders the component",
+    ],
+  },
+  {
     id: "http-client",
     title: "Fetch on click with axios",
     kind: "demo",
@@ -158,6 +170,18 @@ export const fetchWelcomeMessage = async () => {
     code: "const [todos, setTodos] = useState([]);\nconst fetchTodos = async () => {\n  setTodos(await client.fetchTodos());\n};\nuseEffect(() => { fetchTodos(); }, []);\n{todos.map((todo) => (\n  <li key={todo.id}>\n    <input type=\"checkbox\" defaultChecked={todo.completed} />\n    <span className={todo.completed ? \"line-through\" : \"\"}>{todo.title}</span>\n  </li>\n))}",
     codeLanguage: "tsx",
     codeFile: "app/labs/lab5/WorkingWithArraysAsync.tsx",
+  },
+  {
+    id: "body-how",
+    title: "How a JSON body reaches req.body",
+    kind: "content",
+    bullets: [
+      "Client: `axios.post(url, { title: \"New Task\" })` puts JSON in the request body",
+      "Request arrives with header `Content-Type: application/json`",
+      "Without a parser, Express leaves the body unread and `req.body` is `undefined`",
+      "`express.json()` reads the body and sets `req.body = { title: \"New Task\" }`",
+      "Routes registered after it can use `req.body`",
+    ],
   },
   {
     id: "json-body",
