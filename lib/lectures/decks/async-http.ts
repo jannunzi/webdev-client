@@ -39,6 +39,17 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     codeLanguage: "bash",
   },
   {
+    id: "async-await",
+    title: "Waiting for Replies with async and await",
+    kind: "content",
+    bullets: [
+      "A request to the server takes time, and the page must not freeze while it waits",
+      "`axios.get` returns a promise: a value that arrives later",
+      "`await` pauses only that function until the promise delivers the reply",
+      "A function that uses `await` must be marked `async`",
+    ],
+  },
+  {
     id: "axios-how",
     title: "Fetching Data with Axios",
     kind: "content",
