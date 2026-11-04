@@ -8,38 +8,32 @@ export const LAB5_ENV_SLIDES: LectureSlide[] = [
     cover: {
       color: "#339933",
       icon: "code",
-      headline: "Environment Variables",
+      headline: "Configuring Environment Variables",
     },
     bullets: [
       "Chapter 5 · Lab 5 Environment",
-      "Two terminals and an env var",
+      "The server URL in a .env file",
     ],
   },
   {
-    id: "two-terminals",
-    title: "Running Client and Server Together",
-    kind: "demo",
+    id: "purpose",
+    title: "Why Use Environment Variables",
+    kind: "content",
     bullets: [
-      "Terminal 1: Next.js UI on 3000. Terminal 2: Express on 4000",
-      "Leave both running for the rest of the chapter",
-      "Next.js Route Handlers stay on same-origin `/api` and do not need 4000",
+      "The server URL is `http://localhost:4000` on your laptop, but different once deployed",
+      "An environment variable is a named value set outside the code, like `NEXT_PUBLIC_HTTP_SERVER`",
+      "A `.env` file sets it for each environment: `.env.development` on your laptop",
+      "Code reads it with `process.env.NEXT_PUBLIC_HTTP_SERVER`, so no URL is hardcoded",
     ],
-    code: `# terminal 1 — Next.js UI (port 3000)
-npm run dev
-
-# terminal 2 — sibling Express (port 4000)
-cd webdev-server
-npm run dev`,
-    codeLanguage: "bash",
   },
   {
     id: "welcome-route",
     links: ["http://localhost:4000/lab5/welcome"],
-    title: "Implementing the Lab 5 Welcome Route",
+    title: "Creating the Lab 5 Route File",
     kind: "demo",
     bullets: [
       "In a new `Lab5/index.ts`, export the Lab 5 routes",
-      "Confirm `http://localhost:4000/lab5/welcome` greets you",
+      "Keep `npm run dev` running in both projects, then try the link",
       "Import into `index.ts`, as the next slide shows",
     ],
     code: `export default function Lab5(app) {
@@ -71,7 +65,7 @@ app.listen(4000);`,
   },
   {
     id: "lab5-page-intro",
-    title: "Linking the Lab 5 Page to the Server",
+    title: "Linking a Page to the Server",
     kind: "demo",
     bullets: [
       "In a new `app/labs/lab5/page.tsx`, create the page as shown below",
@@ -81,7 +75,7 @@ app.listen(4000);`,
   },
   {
     id: "lab5-page",
-    title: "Implementing the Lab 5 Welcome Link",
+    title: "Hardcoding the Server URL in a Link",
     kind: "demo",
     code: `export default function Lab5() {
   return (
@@ -99,7 +93,7 @@ app.listen(4000);`,
   },
   {
     id: "env-file",
-    title: "Exposing NEXT_PUBLIC_ Variables",
+    title: "Defining Variables in .env Files",
     kind: "demo",
     bullets: [
       "`.env.development` at the Next.js root. No quotes or spaces around `=`",
@@ -112,7 +106,7 @@ app.listen(4000);`,
   },
   {
     id: "environment",
-    title: "Reading the Server URL from the Env",
+    title: "Reading Environment Variables in Code",
     kind: "demo",
     bullets: [
       "In a new `Environment.tsx` component, create the link as shown below",
@@ -141,17 +135,17 @@ app.listen(4000);`,
   },
   {
     id: "recap",
-    title: "Recap: The Lab 5 Environment",
+    title: "Recap: Configuring Environment Variables",
     kind: "content",
     bullets: [
-      "Two processes: Next.js 3000 and Express 4000",
+      "`.env.development` sets `NEXT_PUBLIC_HTTP_SERVER`; restart `next dev` after changes",
       "`const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER` — no host literals",
       "Server `PORT` is the matching remote knob",
     ],
   },
   {
     id: "next-up",
-    title: "Next: Path and Query Parameters",
+    title: "Next: Sending Data to the Server",
     kind: "title",
     bullets: [
       "Send `a` and `b` in the path, then after `?`",

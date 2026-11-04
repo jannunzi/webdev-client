@@ -17,12 +17,13 @@ export const DEPLOY_API_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing API Deployment",
+    title: "Putting the Server Online",
     kind: "content",
     bullets: [
-      "Finish locally first. Then replicate the two-process setup",
+      "Everything runs on your laptop; nobody else can reach localhost",
       "Next.js already deploys to Vercel on `git push`",
-      "Express needs its own host — Render (or Heroku)",
+      "Express needs its own host, such as Render",
+      "Environment variables point the deployed client at the deployed server",
     ],
   },
   {

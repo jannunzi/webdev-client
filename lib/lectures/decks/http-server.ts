@@ -17,13 +17,13 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing an HTTP Server",
+    title: "Why the App Needs Its Own Server",
     kind: "content",
     bullets: [
-      "Chapters 1–4 built the Next.js UI. Refresh still resets Kambaz",
-      "A browser cannot be the permanent store — it crashes, closes, and is untrusted",
-      "This chapter adds the other half: an Express HTTP server in `webdev-server`",
-      "MongoDB is Chapter 6. Here the arrays live in process memory",
+      "Chapters 1–4 built the Next.js user interface. Refresh still resets Kambaz",
+      "The browser cannot keep data safely: it closes, crashes, and anyone can edit it",
+      "A server keeps the data in one place and answers requests from every browser",
+      "This chapter builds that server with Express in `webdev-server`",
     ],
   },
   {
@@ -159,7 +159,7 @@ npm init`,
   },
   {
     id: "express-intro",
-    title: "Implementing GET /hello with Express",
+    title: "Defining a GET Route with Express",
     kind: "demo",
     bullets: [
       "Goal: answer `GET /hello` with Hello World! on port 4000",
@@ -170,20 +170,29 @@ npm init`,
   {
     id: "express",
     links: ["http://localhost:4000/hello"],
-    title: "Writing the Hello Route Handler",
+    title: "Writing a Route Handler",
     kind: "demo",
-    code: `import express from "express";
+    code: `// load the Express library
+import express from "express";
+
+// create the server application
 const app = express();
+
+// answer GET /hello requests
 app.get("/hello", (req, res) => {
+  // send the text back to the browser
   res.send("Hello World!");
 });
+
+// listen for requests on port 4000
 app.listen(4000);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/index.ts",
   },
   {
     id: "visit",
-    title: "Testing the Hello Route in a Browser",
+    links: ["http://localhost:4000/hello"],
+    title: "Testing a Route in the Browser",
     kind: "demo",
     bullets: [
       "The browser is the client. Your Node process is the server",
@@ -208,11 +217,11 @@ app.listen(4000);`,
   },
   {
     id: "next-up",
-    title: "Next: Nodemon and ES6 Routes",
+    title: "Next: Nodemon, tsx, and Routes",
     kind: "title",
     bullets: [
-      "Restart on save, how modules load, then routes",
-      "Nodemon, module loading, and `Hello(app)`",
+      "Restart on save, then group routes in files",
+      "Nodemon and `Hello(app)`",
     ],
   },
 ];

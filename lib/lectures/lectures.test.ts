@@ -1357,18 +1357,18 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-course-enrollments"], 21);
     assert.equal(counts["kambaz-people-table"], 12);
     assert.equal(counts["http-server"], 16);
-    assert.equal(counts["nodemon-es6-routes"], 10);
+    assert.equal(counts["nodemon-es6-routes"], 9);
     assert.equal(counts["lab5-env"], 10);
-    assert.equal(counts["path-and-query"], 13);
-    assert.equal(counts["remote-objects"], 12);
-    assert.equal(counts["remote-arrays"], 15);
-    assert.equal(counts["async-http"], 27);
+    assert.equal(counts["path-and-query"], 17);
+    assert.equal(counts["remote-objects"], 14);
+    assert.equal(counts["remote-arrays"], 19);
+    assert.equal(counts["async-http"], 31);
     assert.equal(counts["next-routes"], 21);
     assert.equal(counts["ch5-check-understanding"], 7);
     assert.equal(counts["kambaz-migrate-db"], 6);
-    assert.equal(counts["kambaz-account-rest"], 13);
-    assert.equal(counts["kambaz-sessions"], 11);
-    assert.equal(counts["kambaz-courses-api"], 11);
+    assert.equal(counts["kambaz-account-rest"], 15);
+    assert.equal(counts["kambaz-sessions"], 12);
+    assert.equal(counts["kambaz-courses-api"], 14);
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 13);
     assert.equal(counts["mongoose"], 12);
@@ -3955,7 +3955,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 267);
+    assert.equal(intros, 266);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
@@ -4122,6 +4122,18 @@ describe("Chapter 4 account §4.10.7 assignment slides", () => {
     const text = ["kambaz-account-pages", "kambaz-course-enrollments", "kambaz-people-table"].map(slideText).join("\n");
     for (const name of ["enrollIntoCourse", "unenrollFromCourse", "createUser", "updateUser", "deleteUser"]) {
       assert.match(text, new RegExp(name), name);
+    }
+  });
+});
+
+describe("Chapter 5 next-up slides", () => {
+  it("name the next deck by its cover title", () => {
+    for (const l of listLectures().filter((l) => l.chapter === 5)) {
+      const next = adjacentLectureSlugs(l.slug).next?.slug;
+      const nextDeck = next ? getLectureDeck(next) : undefined;
+      if (!nextDeck || nextDeck.slides[0]?.cover === undefined || getLecture(next!)?.chapter !== 5) continue;
+      const nextUp = getLectureDeck(l.slug)!.slides.filter((s) => s.title.startsWith("Next:")).pop();
+      assert.equal(nextUp?.title, `Next: ${nextDeck.slides[0].cover!.headline}`, l.slug);
     }
   });
 });

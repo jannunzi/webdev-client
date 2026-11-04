@@ -16,6 +16,17 @@ export const KAMBAZ_ACCOUNT_REST_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "purpose",
+    title: "Signing In Through the Server",
+    kind: "content",
+    bullets: [
+      "Sign in and sign up still check users stored in the browser",
+      "Anyone can read or edit browser data, and it resets on refresh",
+      "The server keeps the users list and checks credentials in its routes",
+      "The account pages call those routes instead of reading users directly",
+    ],
+  },
+  {
     id: "dao-intro",
     title: "Implementing the Users DAO",
     kind: "demo",
@@ -89,7 +100,7 @@ app.post("/api/users/signin", signin);`,
   },
   {
     id: "signin-flow",
-    title: "Signing In",
+    title: "Following a Sign-In Request",
     kind: "content",
     bullets: [
       "Form state `{ username: \"iron_man\", password: \"stark123\" }`",
@@ -154,7 +165,7 @@ const signin = async () => {
   },
   {
     id: "signup-ui-live",
-    title: "Signup Live Demo",
+    title: "Sign-Up Live Demo",
     kind: "demo",
     bullets: [
       "Fill in a new username and password",
@@ -201,7 +212,7 @@ app.post("/api/users/signup", signup);`,
   },
   {
     id: "next-up",
-    title: "Next: Sessions and Cookies",
+    title: "Next: Sessions and Axios",
     kind: "title",
     bullets: [
       "Cookies (small values the browser sends back on each request) so more than one browser can be signed in",

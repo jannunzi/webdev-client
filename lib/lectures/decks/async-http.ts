@@ -16,6 +16,17 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "purpose",
+    title: "Fetching Data Without Leaving the Page",
+    kind: "content",
+    bullets: [
+      "Links to the server replace the whole page with the raw reply",
+      "Real apps fetch data in the background and update just part of the page",
+      "Axios sends the request from a component and waits for the reply",
+      "POST, PUT, and DELETE then let the page create, change, and remove server data",
+    ],
+  },
+  {
     id: "ajax",
     title: "Staying on the Page with Axios",
     kind: "demo",
@@ -133,7 +144,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "http-client-live",
-    title: "HttpClient Live Demo",
+    title: "Axios Requests Live Demo",
     kind: "demo",
     bullets: [
       "The on-load message appears without a click",
@@ -157,7 +168,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "objects-async-live",
-    title: "WorkingWithRemoteObjectsAsync Live Demo",
+    title: "Async Remote Objects Live Demo",
     kind: "demo",
     bullets: [
       "The assignment renders as JSON on load",
@@ -168,7 +179,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "arrays-async",
-    title: "Rendering Todos Fetched on Load",
+    title: "Rendering an Array Fetched on Load",
     kind: "demo",
     bullets: [
       "In a new `WorkingWithArraysAsync.tsx` component, add the code below",
@@ -220,7 +231,7 @@ Lab5(app);`,
   },
   {
     id: "icon-flow",
-    title: "Deleting a Todo Asynchronously",
+    title: "Deleting Items Asynchronously",
     kind: "content",
     bullets: [
       "Click the trash icon on todo 1",
@@ -232,7 +243,7 @@ Lab5(app);`,
   },
   {
     id: "arrays-async-remove",
-    title: "Removing a Todo with a Trash Icon",
+    title: "Deleting an Item from a Button",
     kind: "demo",
     bullets: [
       "In `WorkingWithArraysAsync.tsx`, add the remove handler",
@@ -244,7 +255,7 @@ Lab5(app);`,
   },
   {
     id: "arrays-async-create",
-    title: "Creating a Todo with a Plus Icon",
+    title: "Creating an Item from a Button",
     kind: "demo",
     bullets: [
       "In `WorkingWithArraysAsync.tsx`, add the create handler",
@@ -290,7 +301,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "post-flow",
-    title: "Posting a New Todo",
+    title: "Creating Items with HTTP POST",
     kind: "content",
     bullets: [
       "`axios.post(TODOS_API, todo)` sends `todo` as a JSON body",
@@ -301,7 +312,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "arrays-async-post",
-    title: "Posting a Todo from the Client",
+    title: "Sending a POST Request with Axios",
     kind: "demo",
     bullets: [
       "In `WorkingWithArraysAsync.tsx`, switch create to POST",
@@ -313,7 +324,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "arrays-async-delete",
-    title: "Deleting a Todo with HTTP DELETE",
+    title: "Deleting Items with HTTP DELETE",
     kind: "demo",
     bullets: [
       "In `WorkingWithArraysAsync.tsx`, switch delete to DELETE",
@@ -325,7 +336,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "put-server",
-    title: "Implementing the PUT Todo Route",
+    title: "Updating Items with HTTP PUT",
     kind: "demo",
     bullets: [
       "In `WorkingWithArrays.ts`, add the route as shown below",
@@ -338,7 +349,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "arrays-async-put",
-    title: "Updating a Todo with HTTP PUT",
+    title: "Sending a PUT Request with Axios",
     kind: "demo",
     bullets: [
       "In `WorkingWithArraysAsync.tsx`, add editing as shown below",
@@ -350,7 +361,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "error-server",
-    title: "Responding 404 for a Missing Todo",
+    title: "Responding 404 for a Missing Item",
     kind: "demo",
     bullets: [
       "In `WorkingWithArrays.ts`, update the route as shown below",
@@ -375,7 +386,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "arrays-async-live",
-    title: "ArraysAsync Live Demo",
+    title: "Async Remote Arrays Live Demo",
     kind: "demo",
     bullets: [
       "Create, post, edit, check, and delete todos",
@@ -396,7 +407,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "next-up",
-    title: "Next: Next.js Route Handlers",
+    title: "Next: Next.js Server Routes",
     kind: "title",
     bullets: [
       "Same-origin `/api` when you do not need a second process",

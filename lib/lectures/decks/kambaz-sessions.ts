@@ -17,12 +17,13 @@ export const KAMBAZ_SESSIONS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing Sessions",
+    title: "Remembering Who Is Signed In",
     kind: "content",
     bullets: [
-      "A module-level `currentUser` cannot serve two browsers",
-      "Sessions store the signed-in user per cookie",
-      "CORS must allow cookies and only the React origin",
+      "The server keeps one `currentUser` variable shared by every browser",
+      "If two people sign in, the second replaces the first",
+      "Sessions keep a separate signed-in user for each browser, using a cookie",
+      "The server must accept cookies from the Next.js app only",
     ],
   },
   {
@@ -86,7 +87,7 @@ app.use(express.json());`,
   },
   {
     id: "cookie-flow",
-    title: "Session Cookies",
+    title: "How Session Cookies Work",
     kind: "content",
     bullets: [
       "Sign in: the server stores the user in `req.session` on its side",
@@ -175,7 +176,7 @@ export const profile = async () => {
   },
   {
     id: "next-up",
-    title: "Next: The Courses API",
+    title: "Next: Courses API",
     kind: "title",
     bullets: [
       "Dashboard fetches enrolled courses from Express",

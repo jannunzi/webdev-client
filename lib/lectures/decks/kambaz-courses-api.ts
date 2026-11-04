@@ -17,12 +17,13 @@ export const KAMBAZ_COURSES_API_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing the Courses API",
+    title: "Saving Courses on the Server",
     kind: "content",
     bullets: [
-      "Chapter 4 Zustand was the published list. Refresh still resets it",
-      "Express owns the array. Dashboard `useEffect` fetches on load",
-      "AccountContext still holds who is signed in",
+      "Course Add, Edit, and Delete still live in the browser and reset on refresh",
+      "The server now owns the courses list; the Dashboard loads it when it opens",
+      "Each change calls a server route, so it survives refresh",
+      "The signed-in user still comes from the account context",
     ],
   },
   {
@@ -153,7 +154,7 @@ export const findMyCourses = async () => {
   },
   {
     id: "create-flow",
-    title: "Creating a Course",
+    title: "Creating a Resource with POST",
     kind: "content",
     bullets: [
       "Dashboard Add sends the course draft to the client function",
@@ -210,7 +211,7 @@ app.post("/api/courses/:courseId/modules", createModuleForCourse);`,
   },
   {
     id: "next-up",
-    title: "Next: Deploying the API",
+    title: "Next: Deploy the API",
     kind: "title",
     bullets: [
       "A second GitHub repo, Render, then a Vercel env var",
