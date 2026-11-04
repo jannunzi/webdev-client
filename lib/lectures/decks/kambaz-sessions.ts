@@ -27,7 +27,7 @@ export const KAMBAZ_SESSIONS_SLIDES: LectureSlide[] = [
   },
   {
     id: "install",
-    title: "Sessions, CORS, and cookies",
+    title: "Installing express-session",
     kind: "demo",
     bullets: [
       "`express-session` plus `dotenv` on the server",
@@ -47,7 +47,7 @@ SESSION_SECRET=super secret session phrase`,
   },
   {
     id: "config-intro",
-    title: "CORS, then session, then JSON",
+    title: "Ordering CORS, Session, and JSON",
     kind: "demo",
     bullets: [
       "Production: `proxy`, `sameSite: \"none\"`, `secure` cookies",
@@ -56,7 +56,7 @@ SESSION_SECRET=super secret session phrase`,
   },
   {
     id: "config",
-    title: "CORS, then session, then JSON (code)",
+    title: "Configuring Session Middleware",
     kind: "demo",
     code: `import "dotenv/config";
 import session from "express-session";
@@ -99,7 +99,7 @@ app.use(express.json());`,
   },
   {
     id: "session-auth-intro",
-    title: "Store the user on the session",
+    title: "Storing the User on the Session",
     kind: "demo",
     bullets: [
       "Signin 401 if credentials miss. Profile 401 if nobody is signed in",
@@ -108,7 +108,7 @@ app.use(express.json());`,
   },
   {
     id: "session-auth",
-    title: "Store the user on the session (code)",
+    title: "Reading the User from the Session",
     kind: "demo",
     code: `const signin = (req, res) => {
   const { username, password } = req.body;
@@ -138,7 +138,7 @@ const signout = (req, res) => {
   },
   {
     id: "axios-cookies-intro",
-    title: "axios withCredentials",
+    title: "Sending Cookies with Axios",
     kind: "demo",
     bullets: [
       "Default axios drops cookies. `axios.create({ withCredentials: true })`",
@@ -147,7 +147,7 @@ const signout = (req, res) => {
   },
   {
     id: "axios-cookies",
-    title: "axios withCredentials (code)",
+    title: "Configuring Axios withCredentials",
     kind: "demo",
     code: `import axios from "axios";
 const axiosWithCredentials = axios.create({ withCredentials: true });
@@ -165,7 +165,7 @@ export const profile = async () => {
   },
   {
     id: "recap",
-    title: "Sessions recap",
+    title: "Recap: Sessions and Cookies",
     kind: "content",
     bullets: [
       "`req.session.currentUser` per browser cookie",
@@ -175,7 +175,7 @@ export const profile = async () => {
   },
   {
     id: "next-up",
-    title: "Next: a courses API",
+    title: "Next: The Courses API",
     kind: "title",
     bullets: [
       "Dashboard fetches enrolled courses from Express",

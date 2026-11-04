@@ -28,7 +28,7 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
   },
   {
     id: "sibling",
-    title: "Sibling folders, two ports",
+    title: "Placing Client and Server Side by Side",
     kind: "content",
     diagram: "two-ports",
     bullets: [
@@ -40,7 +40,7 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
   },
   {
     id: "node-intro-intro",
-    title: "Node runs JS outside the browser",
+    title: "Running JavaScript with Node.js",
     kind: "content",
     bullets: [
       "Browser JS cannot open files, sockets, or a database driver",
@@ -51,7 +51,7 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
   },
   {
     id: "node-intro",
-    title: "Node runs JS outside the browser (code)",
+    title: "Running a Node.js Script",
     kind: "content",
     code: `node -v
 # v22.11.0`,
@@ -59,7 +59,7 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
   },
   {
     id: "project",
-    title: "Create the sibling server project",
+    title: "Creating the Server Project",
     kind: "demo",
     bullets: [
       "Lowercase, dashes, no spaces. Accept `npm init` defaults",
@@ -75,7 +75,7 @@ npm init`,
   },
   {
     id: "toolchain-intro",
-    title: "Toolchain before the first file",
+    title: "Choosing the Server Toolchain",
     kind: "demo",
     bullets: [
       "Goal: the editor resolves `express`, `req`, and `res` on day one",
@@ -85,7 +85,7 @@ npm init`,
   },
   {
     id: "toolchain",
-    title: "Express, type module, and tsx (code)",
+    title: "Installing Express and tsx",
     kind: "demo",
     codeBlocks: [
       {
@@ -111,7 +111,7 @@ npm init`,
   },
   {
     id: "tsconfig-intro",
-    title: "A tsconfig for the server",
+    title: "Configuring TypeScript for the Server",
     kind: "demo",
     bullets: [
       "Goal: the editor accepts extensionless and JSON imports",
@@ -121,7 +121,7 @@ npm init`,
   },
   {
     id: "tsconfig",
-    title: "A tsconfig for the server (code)",
+    title: "Writing the Server tsconfig.json",
     kind: "demo",
     code: `{
   "compilerOptions": {
@@ -154,7 +154,7 @@ npm init`,
   },
   {
     id: "express-intro",
-    title: "Express GET /hello on 4000",
+    title: "Implementing GET /hello with Express",
     kind: "demo",
     bullets: [
       "Goal: answer `GET /hello` with Hello World! on port 4000",
@@ -178,7 +178,7 @@ app.listen(4000);`,
   },
   {
     id: "visit",
-    title: "Visit localhost:4000/hello",
+    title: "Testing the Hello Route in a Browser",
     kind: "demo",
     bullets: [
       "The browser is the client. Your Node process is the server",
@@ -193,7 +193,7 @@ app.listen(4000);`,
   },
   {
     id: "recap",
-    title: "HTTP server recap",
+    title: "Recap: Implementing an HTTP Server",
     kind: "content",
     bullets: [
       "Sibling `webdev-server` — never inside the Next.js app",
@@ -203,7 +203,7 @@ app.listen(4000);`,
   },
   {
     id: "next-up",
-    title: "Next: nodemon, tsx, and routes",
+    title: "Next: Nodemon and ES6 Routes",
     kind: "title",
     bullets: [
       "Restart on save, how modules load, then routes",

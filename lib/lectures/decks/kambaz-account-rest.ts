@@ -17,7 +17,7 @@ export const KAMBAZ_ACCOUNT_REST_SLIDES: LectureSlide[] = [
   },
   {
     id: "dao-intro",
-    title: "Users DAO, then HTTP routes",
+    title: "Implementing the Users DAO",
     kind: "demo",
     bullets: [
       "A DAO hides the array. Routes turn HTTP into function calls",
@@ -26,7 +26,7 @@ export const KAMBAZ_ACCOUNT_REST_SLIDES: LectureSlide[] = [
   },
   {
     id: "dao",
-    title: "Users DAO, then HTTP routes (code)",
+    title: "Writing the Users DAO Functions",
     kind: "demo",
     code: `import { v4 as uuidv4 } from "uuid";
 export default function UsersDao(db) {
@@ -46,7 +46,7 @@ export default function UsersDao(db) {
   },
   {
     id: "routes",
-    title: "Four POST account routes",
+    title: "Defining the Account POST Routes",
     kind: "demo",
     bullets: [
       "Register after CORS, the session (server memory of who is signed in), and `express.json()`",
@@ -70,7 +70,7 @@ export default function UserRoutes(app, db) {
   },
   {
     id: "signin",
-    title: "POST /api/users/signin",
+    title: "Implementing POST /api/users/signin",
     kind: "demo",
     bullets: [
       "Read `username` and `password` from `req.body`",
@@ -101,7 +101,7 @@ app.post("/api/users/signin", signin);`,
   },
   {
     id: "client",
-    title: "axios posts credentials",
+    title: "Posting Credentials with Axios",
     kind: "demo",
     bullets: [
       "`HTTP_SERVER` is `process.env.NEXT_PUBLIC_HTTP_SERVER` from Lab 5",
@@ -123,7 +123,7 @@ export const signin = async (credentials: { username: string; password: string }
   },
   {
     id: "signin-ui",
-    title: "Sign in writes AccountContext",
+    title: "Storing the Signed-In User",
     kind: "demo",
     bullets: [
       "Chapter 4 Context — not a Redux `accountReducer`",
@@ -143,7 +143,7 @@ const signin = async () => {
   },
   {
     id: "signup-ui",
-    title: "Sign up writes AccountContext",
+    title: "Storing the Signed-Up User",
     kind: "demo",
     bullets: [
       "Same pattern as sign in, then go to Profile",
@@ -154,7 +154,7 @@ const signin = async () => {
   },
   {
     id: "signup-ui-live",
-    title: "Signup: live demo",
+    title: "Signup Live Demo",
     kind: "demo",
     bullets: [
       "Fill in a new username and password",
@@ -164,7 +164,7 @@ const signin = async () => {
   },
   {
     id: "signup-profile-intro",
-    title: "Signup 400, profile, update",
+    title: "Implementing Signup and Profile",
     kind: "demo",
     bullets: [
       "Signup: 400 if the username is taken, else `createUser`",
@@ -173,7 +173,7 @@ const signin = async () => {
   },
   {
     id: "signup-profile",
-    title: "Signup 400, profile, update (code)",
+    title: "Handling Duplicates and Updates",
     kind: "demo",
     code: `const signup = (req, res) => {
   const user = dao.findUserByUsername(req.body.username);
@@ -191,7 +191,7 @@ app.post("/api/users/signup", signup);`,
   },
   {
     id: "recap",
-    title: "Account REST recap",
+    title: "Recap: Account REST APIs",
     kind: "content",
     bullets: [
       "DAO for the array. Routes for `/api/users/*`",
@@ -201,7 +201,7 @@ app.post("/api/users/signup", signup);`,
   },
   {
     id: "next-up",
-    title: "Next: sessions and Axios",
+    title: "Next: Sessions and Cookies",
     kind: "title",
     bullets: [
       "Cookies (small values the browser sends back on each request) so more than one browser can be signed in",

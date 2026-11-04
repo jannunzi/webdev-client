@@ -17,7 +17,7 @@ export const LAB5_ENV_SLIDES: LectureSlide[] = [
   },
   {
     id: "two-terminals",
-    title: "Two terminals for Lab 5",
+    title: "Running Client and Server Together",
     kind: "demo",
     bullets: [
       "Terminal 1: Next.js UI on 3000. Terminal 2: Express on 4000",
@@ -52,7 +52,7 @@ npm run dev`,
   },
   {
     id: "register",
-    title: "Register Lab5 from index.ts",
+    title: "Registering Lab5 Routes in index.ts",
     kind: "demo",
     bullets: [
       "Import `./Lab5/index` with no extension; pass the shared `app`",
@@ -70,7 +70,7 @@ app.listen(4000);`,
   },
   {
     id: "lab5-page-intro",
-    title: "A Lab 5 page with a Welcome link",
+    title: "Linking the Lab 5 Page to the Server",
     kind: "demo",
     bullets: [
       "Add the route to the Labs TOC. Do not hard-code the host for long",
@@ -79,7 +79,7 @@ app.listen(4000);`,
   },
   {
     id: "lab5-page",
-    title: "A Lab 5 page with a Welcome link (code)",
+    title: "Implementing the Lab 5 Welcome Link",
     kind: "demo",
     code: `export default function Lab5() {
   return (
@@ -97,7 +97,7 @@ app.listen(4000);`,
   },
   {
     id: "env-file",
-    title: "NEXT_PUBLIC_ reaches the browser",
+    title: "Exposing NEXT_PUBLIC_ Variables",
     kind: "demo",
     bullets: [
       "`.env.development` at the Next.js root. No quotes or spaces around `=`",
@@ -110,7 +110,7 @@ app.listen(4000);`,
   },
   {
     id: "environment",
-    title: "Print the origin, never a literal",
+    title: "Reading the Server URL from the Env",
     kind: "demo",
     bullets: [
       "`const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER`",
@@ -139,7 +139,7 @@ app.listen(4000);`,
   },
   {
     id: "recap",
-    title: "Environment recap",
+    title: "Recap: The Lab 5 Environment",
     kind: "content",
     bullets: [
       "Two processes: Next.js 3000 and Express 4000",
@@ -149,7 +149,7 @@ app.listen(4000);`,
   },
   {
     id: "next-up",
-    title: "Next: path and query params",
+    title: "Next: Path and Query Parameters",
     kind: "title",
     bullets: [
       "Send `a` and `b` in the path, then after `?`",

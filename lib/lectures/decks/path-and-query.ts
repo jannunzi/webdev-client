@@ -17,7 +17,7 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
   },
   {
     id: "three-ways",
-    title: "Three ways to send data to a server",
+    title: "Three Ways to Send Data to a Server",
     kind: "content",
     bullets: [
       "**Path parameters** — `/lab5/add/2/5` as URL segments",
@@ -41,7 +41,7 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
   },
   {
     id: "path-server-intro",
-    title: "Path params live in the URL",
+    title: "Implementing the Add Route",
     kind: "demo",
     bullets: [
       "`req.params` are strings. `parseInt`, then `.toString()`",
@@ -104,7 +104,7 @@ export default function Lab5(app) {
   },
   {
     id: "path-client",
-    title: "Encode a and b in the href",
+    title: "Calling the Add Route from React",
     kind: "demo",
     bullets: [
       "State holds the operands. The link is the request",
@@ -124,7 +124,7 @@ const [b, setB] = useState("23");
   },
   {
     id: "path-client-live",
-    title: "PathParameters: live demo",
+    title: "PathParameters Live Demo",
     kind: "demo",
     bullets: [
       "Change a and b, then click Add or Subtract",
@@ -148,7 +148,7 @@ const [b, setB] = useState("23");
   },
   {
     id: "query-server-intro",
-    title: "Query params after the ?",
+    title: "Implementing the Calculator Route",
     kind: "demo",
     bullets: [
       "`req.query` is `{ a, b, operation }` — still strings",
@@ -195,7 +195,7 @@ const [b, setB] = useState("23");
   },
   {
     id: "query-client",
-    title: "Name-value pairs in the href",
+    title: "Calling the Calculator from React",
     kind: "demo",
     bullets: [
       "Add 34 and 23 → 57. Subtract → 11",
@@ -211,7 +211,7 @@ const [b, setB] = useState("23");
   },
   {
     id: "query-client-live",
-    title: "QueryParameters: live demo",
+    title: "QueryParameters Live Demo",
     kind: "demo",
     bullets: [
       "Same operands, now sent as `?a=\u2026&b=\u2026&operation=\u2026`",
@@ -221,7 +221,7 @@ const [b, setB] = useState("23");
   },
   {
     id: "recap",
-    title: "Sending data recap",
+    title: "Recap: Sending Data to the Server",
     kind: "content",
     bullets: [
       "`req.params` vs `req.query` — both arrive as strings",
@@ -232,7 +232,7 @@ const [b, setB] = useState("23");
   },
   {
     id: "next-up",
-    title: "Next: remote objects",
+    title: "Next: Remote Objects",
     kind: "title",
     bullets: [
       "`res.json` for an assignment object that survives until reboot",

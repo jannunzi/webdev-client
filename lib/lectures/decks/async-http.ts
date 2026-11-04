@@ -17,7 +17,7 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
   },
   {
     id: "ajax",
-    title: "Axios stays on the page",
+    title: "Staying on the Page with Axios",
     kind: "demo",
     bullets: [
       "Hyperlinks leave Lab 5. AJAX fetches without navigating",
@@ -44,7 +44,7 @@ const fetchWelcomeOnClick = async () => {
   },
   {
     id: "cors",
-    title: "CORS lets 3000 talk to 4000",
+    title: "Allowing Cross-Origin Requests",
     kind: "demo",
     bullets: [
       "The UI origin is 3000. Express is 4000 — a different origin",
@@ -66,7 +66,7 @@ Lab5(app);`,
   },
   {
     id: "client-lib",
-    title: "A reusable client library",
+    title: "Creating a Reusable Client Library",
     kind: "demo",
     bullets: [
       "Screens share one file so the welcome URL changes once",
@@ -96,7 +96,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "http-client",
-    title: "Fetch on click with axios",
+    title: "Fetching on Click with Axios",
     kind: "demo",
     bullets: [
       "The page stays put. axios returns the response data",
@@ -107,7 +107,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "http-client-lib",
-    title: "Call the client library instead",
+    title: "Calling the Client Library",
     kind: "demo",
     bullets: [
       "Components call `client.ts`, never axios directly",
@@ -118,7 +118,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "http-client-load",
-    title: "Fetch when the component loads",
+    title: "Fetching When the Component Loads",
     kind: "demo",
     bullets: [
       "`useEffect` with `[]` runs once after the first render",
@@ -129,7 +129,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "http-client-live",
-    title: "HttpClient: live demo",
+    title: "HttpClient Live Demo",
     kind: "demo",
     bullets: [
       "The on-load message appears without a click",
@@ -140,7 +140,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "objects-async",
-    title: "Objects without leaving the page",
+    title: "Updating Remote Objects Asynchronously",
     kind: "demo",
     bullets: [
       "Load the assignment on mount. Update the title in place",
@@ -151,7 +151,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "objects-async-live",
-    title: "ObjectsAsync: live demo",
+    title: "ObjectsAsync Live Demo",
     kind: "demo",
     bullets: [
       "The assignment renders as JSON on load",
@@ -162,7 +162,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "arrays-async",
-    title: "Render todos fetched on load",
+    title: "Rendering Todos Fetched on Load",
     kind: "demo",
     bullets: [
       "Fetch the array once, then map it to list items",
@@ -185,7 +185,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "json-body",
-    title: "JSON in the HTTP body",
+    title: "Sending JSON in the HTTP Body",
     kind: "content",
     bullets: [
       "URLs are short, strings-only, and visible on the wire",
@@ -201,7 +201,7 @@ Lab5(app);`,
   },
   {
     id: "verbs",
-    title: "Use the right HTTP verb",
+    title: "Choosing the Right HTTP Verb",
     kind: "content",
     bullets: [
       "**GET** — retrieve only. We misused it for create/delete",
@@ -212,7 +212,7 @@ Lab5(app);`,
   },
   {
     id: "post-delete-intro",
-    title: "POST create, DELETE remove",
+    title: "Implementing POST and DELETE Routes",
     kind: "demo",
     bullets: [
       "POST `/lab5/todos` spreads `req.body` and assigns an id",
@@ -221,7 +221,7 @@ Lab5(app);`,
   },
   {
     id: "post-delete",
-    title: "POST create, DELETE remove (code)",
+    title: "Writing the POST and DELETE Handlers",
     kind: "demo",
     code: `const postNewTodo = (req, res) => {
   const newTodo = { ...req.body, id: new Date().getTime() };
@@ -258,7 +258,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "arrays-async-remove",
-    title: "Remove with a trash icon",
+    title: "Removing a Todo with a Trash Icon",
     kind: "demo",
     bullets: [
       "The GET-style delete route returns the new array",
@@ -269,7 +269,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "arrays-async-create",
-    title: "Create with a plus icon",
+    title: "Creating a Todo with a Plus Icon",
     kind: "demo",
     code: "const createNewTodo = async () => {\n  setTodos(await client.createNewTodo());\n};\n<FaPlusCircle onClick={createNewTodo} id=\"wd-create-todo\"\n  className=\"cursor-pointer text-green-600\" />",
     codeLanguage: "tsx",
@@ -288,7 +288,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "arrays-async-post",
-    title: "POST a new todo",
+    title: "Posting a Todo from the Client",
     kind: "demo",
     bullets: [
       "The server returns only the new todo. Append it",
@@ -299,7 +299,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "arrays-async-delete",
-    title: "DELETE a todo",
+    title: "Deleting a Todo with HTTP DELETE",
     kind: "demo",
     bullets: [
       "The server returns a status. Filter it out locally",
@@ -310,7 +310,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "arrays-async-put",
-    title: "Edit and PUT a todo",
+    title: "Updating a Todo with HTTP PUT",
     kind: "demo",
     bullets: [
       "Pencil enters edit mode. The checkbox PUTs at once",
@@ -321,7 +321,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "arrays-async-error",
-    title: "Show the server\u2019s error message",
+    title: "Showing the Server's Error Message",
     kind: "demo",
     bullets: [
       "A failed request throws. Show `response.data.message`",
@@ -332,7 +332,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "arrays-async-live",
-    title: "ArraysAsync: live demo",
+    title: "ArraysAsync Live Demo",
     kind: "demo",
     bullets: [
       "Create, post, edit, check, and delete todos",
@@ -343,7 +343,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "recap",
-    title: "Async HTTP recap",
+    title: "Recap: Asynchronous HTTP with Axios",
     kind: "content",
     bullets: [
       "axios + `async`/`await` keep the Lab 5 page on screen",

@@ -39,7 +39,7 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "assignment-intro",
-    title: "res.json sends an object",
+    title: "Sending an Object with res.json",
     kind: "demo",
     bullets: [
       "Import in `Lab5/index.ts` and visit `/lab5/assignment`",
@@ -119,7 +119,7 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
   },
   {
     id: "client",
-    title: "Links retrieve, then update",
+    title: "Linking to the Assignment Routes",
     kind: "demo",
     bullets: [
       "Get Assignment / Get Title navigate to Express JSON",
@@ -137,7 +137,7 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
   },
   {
     id: "client-title",
-    title: "Retrieve one property",
+    title: "Retrieving One Object Property",
     kind: "demo",
     bullets: [
       "`/lab5/assignment/title` returns just the string",
@@ -148,7 +148,7 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
   },
   {
     id: "client-update",
-    title: "Modify a property from an input",
+    title: "Updating a Property from an Input",
     kind: "demo",
     bullets: [
       "The input edits local state. The link sends it to Express",
@@ -159,7 +159,7 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
   },
   {
     id: "client-live",
-    title: "WorkingWithObjects: live demo",
+    title: "WorkingWithObjects Live Demo",
     kind: "demo",
     bullets: [
       "Get Assignment, then Get Title",
@@ -170,7 +170,7 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
   },
   {
     id: "recap",
-    title: "Remote objects recap",
+    title: "Recap: Remote Objects",
     kind: "content",
     bullets: [
       "`res.json` for objects. `res.send` for plain strings",
@@ -180,7 +180,7 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
   },
   {
     id: "next-up",
-    title: "Next: remote arrays",
+    title: "Next: Remote Arrays",
     kind: "title",
     bullets: [
       "CRUD on a todos collection — create, read, update, delete",

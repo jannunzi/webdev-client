@@ -27,7 +27,7 @@ export const KAMBAZ_MIGRATE_DB_SLIDES: LectureSlide[] = [
   },
   {
     id: "courses-json",
-    title: "Copy the JSON files as they are",
+    title: "Copying the Kambaz JSON Files",
     kind: "demo",
     bullets: [
       "Keep `courses.json`, `users.json`, … as JSON — no rename",
@@ -43,7 +43,7 @@ export const KAMBAZ_MIGRATE_DB_SLIDES: LectureSlide[] = [
   },
   {
     id: "barrel",
-    title: "One barrel re-exports the arrays",
+    title: "Re-exporting Data from a Barrel",
     kind: "demo",
     bullets: [
       "`resolveJsonModule` lets TypeScript import each `.json` file",
@@ -63,7 +63,7 @@ export default { courses, modules, assignments, users, enrollments };`,
   },
   {
     id: "recap",
-    title: "Database migrate recap",
+    title: "Recap: Migrating the Database",
     kind: "content",
     bullets: [
       "`Kambaz/Database/*.json` — imported directly, no rename",
@@ -73,7 +73,7 @@ export default { courses, modules, assignments, users, enrollments };`,
   },
   {
     id: "next-up",
-    title: "Next: account REST APIs",
+    title: "Next: Account REST APIs",
     kind: "title",
     bullets: [
       "A Users DAO, then signin / signup / profile / signout",

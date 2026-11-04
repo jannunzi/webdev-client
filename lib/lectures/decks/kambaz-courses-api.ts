@@ -27,7 +27,7 @@ export const KAMBAZ_COURSES_API_SLIDES: LectureSlide[] = [
   },
   {
     id: "dao-intro",
-    title: "Courses DAO filters enrollments",
+    title: "Filtering Courses by Enrollment",
     kind: "demo",
     bullets: [
       "`findAllCourses` is the raw array",
@@ -36,7 +36,7 @@ export const KAMBAZ_COURSES_API_SLIDES: LectureSlide[] = [
   },
   {
     id: "dao",
-    title: "Courses DAO filters enrollments (code)",
+    title: "Writing the Courses DAO",
     kind: "demo",
     code: `import { v4 as uuidv4 } from "uuid";
 export default function CoursesDao(db) {
@@ -71,7 +71,7 @@ export default function CoursesDao(db) {
   },
   {
     id: "routes-intro",
-    title: "GET /api/courses and mine",
+    title: "Defining the Courses Routes",
     kind: "demo",
     bullets: [
       "`userId === \"current\"` reads the session — 401 if anonymous",
@@ -110,7 +110,7 @@ export default function CourseRoutes(app, db) {
   },
   {
     id: "client",
-    title: "Dashboard fetches on load",
+    title: "Fetching Courses on Dashboard Load",
     kind: "demo",
     bullets: [
       "`findMyCourses` uses cookies. Drop client-side enrollment filters",
@@ -148,7 +148,7 @@ export const findMyCourses = async () => {
   },
   {
     id: "create",
-    title: "POST enrolls the creator",
+    title: "Enrolling the Course Creator",
     kind: "demo",
     bullets: [
       "POST `/api/users/current/courses` creates and enrolls",
@@ -182,7 +182,7 @@ app.post("/api/courses/:courseId/modules", createModuleForCourse);`,
   },
   {
     id: "recap",
-    title: "Courses API recap",
+    title: "Recap: The Courses API",
     kind: "content",
     bullets: [
       "DAO joins enrollments. Routes expose `/api/courses`",
@@ -192,7 +192,7 @@ app.post("/api/courses/:courseId/modules", createModuleForCourse);`,
   },
   {
     id: "next-up",
-    title: "Next: deploy the API",
+    title: "Next: Deploying the API",
     kind: "title",
     bullets: [
       "A second GitHub repo, Render, then a Vercel env var",

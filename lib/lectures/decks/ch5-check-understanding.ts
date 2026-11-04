@@ -28,7 +28,7 @@ export const CH5_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
   },
   {
     id: "topics",
-    title: "What the quiz samples",
+    title: "Topics the Chapter 5 Quiz Samples",
     kind: "content",
     bullets: [
       "Sibling `webdev-server`, Nodemon, `\"type\": \"module\"`",
@@ -39,7 +39,7 @@ export const CH5_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
   },
   {
     id: "lab-checklist",
-    title: "Lab 5 coverage before you quiz",
+    title: "Lab 5 Checklist Before the Quiz",
     kind: "content",
     bullets: [
       "The Lab 5 walkthrough covers — multiply and divide on both encodings",
@@ -49,7 +49,7 @@ export const CH5_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
   },
   {
     id: "where",
-    title: "Open the practice quiz",
+    title: "Opening the Chapter 5 Practice Quiz",
     kind: "content",
     bullets: [
       "Book: `/book/ch5#sec-5-check` — the Check Your Understanding card",
@@ -59,7 +59,7 @@ export const CH5_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
   },
   {
     id: "recap",
-    title: "Chapter 5 so far",
+    title: "Recap: Chapter 5 So Far",
     kind: "content",
     bullets: [
       "A sibling HTTP server, env vars, path and query, remote JSON",
@@ -69,7 +69,7 @@ export const CH5_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
   },
   {
     id: "next-up",
-    title: "Next: migrate the database",
+    title: "Next: Migrating the Database",
     kind: "title",
     bullets: [
       "Copy courses and users JSON into `webdev-server/Kambaz`",

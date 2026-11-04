@@ -17,7 +17,7 @@ export const NODEMON_ES6_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "nodemon",
-    title: "Nodemon restarts on save",
+    title: "Restarting the Server with Nodemon",
     kind: "demo",
     bullets: [
       "React already reloads. Node does not unless you install nodemon",
@@ -66,7 +66,7 @@ app.listen(4000);`,
   },
   {
     id: "modules-intro",
-    title: "How server modules load",
+    title: "Loading ES6 Modules on the Server",
     kind: "demo",
     bullets: [
       "Every server file is a TypeScript module: `import`, no `require()`",
@@ -76,7 +76,7 @@ app.listen(4000);`,
   },
   {
     id: "modules",
-    title: "How server modules load (code)",
+    title: "Importing Modules and JSON Files",
     kind: "demo",
     code: `import Hello from "./Hello"; // loads Hello.ts
 import courses from "./courses.json";`,
@@ -84,7 +84,7 @@ import courses from "./courses.json";`,
   },
   {
     id: "hello-fn-intro",
-    title: "Move hello routes to Hello.ts",
+    title: "Moving Hello Routes to Hello.ts",
     kind: "demo",
     bullets: [
       "Too many routes will not fit in `index.ts`",
@@ -134,7 +134,7 @@ app.listen(4000);`,
   },
   {
     id: "recap",
-    title: "Nodemon and routes recap",
+    title: "Recap: Nodemon and ES6 Routes",
     kind: "content",
     bullets: [
       "`npm run dev` is nodemon + tsx. `npm start` is `tsx index.ts`",
@@ -144,7 +144,7 @@ app.listen(4000);`,
   },
   {
     id: "next-up",
-    title: "Next: Lab 5 environment",
+    title: "Next: The Lab 5 Environment",
     kind: "title",
     bullets: [
       "A welcome route, then never hard-code localhost",
