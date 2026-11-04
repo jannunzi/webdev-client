@@ -5,6 +5,11 @@ export const KAMBAZ_MIGRATE_DB_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#C8102E",
+      icon: "database",
+      headline: "Migrating the Database",
+    },
     bullets: [
       "Chapter 5 · Migrating the Database",
       "§5.4.1 · JSON files become server modules",

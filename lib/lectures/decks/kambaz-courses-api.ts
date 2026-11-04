@@ -5,6 +5,11 @@ export const KAMBAZ_COURSES_API_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#C8102E",
+      icon: "database",
+      headline: "Courses API",
+    },
     bullets: [
       "Chapter 5 · Courses API",
       "§5.4.5 · CRUD leaves the Zustand store",

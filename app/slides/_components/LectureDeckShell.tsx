@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { Oswald } from "next/font/google";
+import { type CSSProperties, useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import {
   authoredSlideDensity,
   isDemoStageSlide,
@@ -10,6 +11,7 @@ import {
 } from "@/lib/lectures/blocks";
 import {
   lectureChapterLabel,
+  type LectureCoverIcon,
   type LectureHubItem,
 } from "@/lib/lectures/types";
 import {
@@ -46,6 +48,45 @@ import LectureSlideImage from "./LectureSlideImage";
 import { SlideBlockEditor, SlideBlockView } from "./SlideBlocks";
 import { inlineEditDataProps } from "@/lib/inline-edit/mark";
 import SlideText from "./SlideText";
+
+const coverFont = Oswald({ subsets: ["latin"], weight: ["700"] });
+
+const COVER_ICON_PATHS: Record<LectureCoverIcon, string> = {
+  server: "M3 4h18v6H3zM3 14h18v6H3zM7 7h.01M7 17h.01",
+  code: "M8 6l-6 6 6 6M16 6l6 6-6 6",
+  link: "M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1",
+  check: "M4 12l5 5L20 6",
+  database: "M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3",
+  user: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 3.6-7 8-7s8 3 8 7",
+  cloud: "M7 18h10a4 4 0 0 0 .5-8A6 6 0 0 0 6 9a4.5 4.5 0 0 0 1 9z",
+};
+
+/**
+ * Up to two balanced lines: size for the longer of half the headline or its
+ * longest word, so no single word can overflow the slide.
+ */
+function coverHeadlineSize(headline: string): string {
+  const longestWord = Math.max(...headline.split(/\s+/).map((w) => w.length));
+  const perLine = Math.max(longestWord, Math.ceil(headline.length * 0.55), 6);
+  return `min(11rem, ${(150 / perLine).toFixed(2)}cqi)`;
+}
+
+function LectureCoverIconMark({ icon }: { icon: LectureCoverIcon }) {
+  return (
+    <svg
+      className="lecture-cover-icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.4}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d={COVER_ICON_PATHS[icon]} />
+    </svg>
+  );
+}
 
 const NEXT_SLIDE_KEYS = new Set(["ArrowRight", "PageDown", " ", "n", "N"]);
 const PREV_SLIDE_KEYS = new Set(["ArrowLeft", "PageUp", "Backspace", "p", "P"]);
@@ -426,6 +467,7 @@ export default function LectureDeckShell({
 
   const percent = slides.length === 0 ? 0 : ((index + 1) / slides.length) * 100;
   const titleClass = titleClasses({ kind });
+  const cover = kind === "title" ? slide.cover : undefined;
   const hintSize = "lecture-slide-hint";
   const showContinue = lectureShouldShowContinue({
     slide,
@@ -561,8 +603,26 @@ export default function LectureDeckShell({
           data-lecture-present={
             fallbackPresent ? "fallback" : isNativeFullscreen ? "native" : undefined
           }
-          className={stageClass}
+          data-slide-cover={cover ? "true" : undefined}
+          className={`${stageClass}${cover ? " lecture-slide-cover" : ""}`}
+          style={
+            cover
+              ? ({ "--lecture-cover-color": cover.color } as CSSProperties)
+              : undefined
+          }
         >
+          {cover ? (
+            <>
+              <LectureCoverIconMark icon={cover.icon} />
+              <h2
+                className={`lecture-cover-headline ${coverFont.className}`}
+                style={{ fontSize: coverHeadlineSize(cover.headline) }}
+              >
+                {cover.headline}
+              </h2>
+              <p className="lecture-cover-brand">WebDevTV</p>
+            </>
+          ) : (<>
           <p
             className={`m-0 text-sm font-semibold uppercase tracking-wide sm:text-base ${
               kind === "title" ? "text-neutral-300" : "text-neutral-500"
@@ -619,6 +679,7 @@ export default function LectureDeckShell({
               />
             </p>
           ) : null}
+          </>)}
           {showContinue && continueHref && nextDeck ? (
             <p className="lecture-slide-continue">
               <Link

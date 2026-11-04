@@ -5,6 +5,11 @@ export const LAB5_ENV_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#339933",
+      icon: "code",
+      headline: "Environment Variables",
+    },
     bullets: [
       "Chapter 5 · Lab 5 Environment",
       "§5.2.1 · two terminals and an env var",

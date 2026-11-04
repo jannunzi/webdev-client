@@ -5,6 +5,11 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#171717",
+      icon: "server",
+      headline: "Next.js Server Routes",
+    },
     bullets: [
       "Chapter 5 · Next.js Server Routes",
       "§5.3 · Route Handlers, not a replacement",

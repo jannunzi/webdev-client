@@ -5,6 +5,11 @@ export const NODEMON_ES6_ROUTES_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#339933",
+      icon: "code",
+      headline: "Nodemon, ES6, and Routes",
+    },
     bullets: [
       "Chapter 5 · Nodemon, ES6, Routes",
       "§5.1.6–5.1.8 · restart, modules, Hello(app)",

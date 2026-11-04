@@ -5,6 +5,11 @@ export const KAMBAZ_SESSIONS_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#C8102E",
+      icon: "user",
+      headline: "Sessions and Axios",
+    },
     bullets: [
       "Chapter 5 · Sessions and Axios",
       "§5.4.3 · many users, one cookie each",

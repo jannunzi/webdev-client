@@ -951,3 +951,41 @@ html.lecture-presenting body {
   max-width: 100%;
   min-width: 0;
 }
+
+/* Opt-in thumbnail-style cover (slide.cover): solid topic color, one icon. */
+.lecture-slide-cover {
+  position: relative;
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  color: #fff;
+  border-color: var(--lecture-cover-color) !important;
+  background: var(--lecture-cover-color) !important;
+}
+.lecture-cover-icon {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.5rem;
+  width: clamp(2.8rem, 8.4cqi, 5.6rem);
+  height: clamp(2.8rem, 8.4cqi, 5.6rem);
+}
+.lecture-cover-headline {
+  margin: 0;
+  text-transform: uppercase;
+  line-height: 1.05;
+  max-width: 100%;
+  text-wrap: balance;
+  overflow-wrap: normal;
+}
+.lecture-cover-brand {
+  position: absolute;
+  bottom: 1rem;
+  left: 1.5rem;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: clamp(0.9rem, 2.2cqi, 1.4rem);
+}

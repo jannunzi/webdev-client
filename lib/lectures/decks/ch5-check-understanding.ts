@@ -5,6 +5,11 @@ export const CH5_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#F59E0B",
+      icon: "check",
+      headline: "Check Your Understanding",
+    },
     bullets: [
       "Chapter 5 · Check Your Understanding",
       "§5-check · a self-check before Kambaz APIs",

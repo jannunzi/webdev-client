@@ -5,6 +5,11 @@ export const KAMBAZ_ACCOUNT_REST_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#C8102E",
+      icon: "user",
+      headline: "Account REST APIs",
+    },
     bullets: [
       "Chapter 5 · Account REST APIs",
       "§5.4.2 · signin, signup, profile, signout",

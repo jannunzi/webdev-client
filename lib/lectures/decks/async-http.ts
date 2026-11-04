@@ -5,6 +5,11 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#5A29E4",
+      icon: "link",
+      headline: "Async HTTP and JSON",
+    },
     bullets: [
       "Chapter 5 · Async HTTP and JSON",
       "§5.2.5–5.2.6 · axios, CORS, POST/PUT/DELETE",

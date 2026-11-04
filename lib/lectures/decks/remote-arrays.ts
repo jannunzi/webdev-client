@@ -5,6 +5,11 @@ export const REMOTE_ARRAYS_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#339933",
+      icon: "server",
+      headline: "Remote Arrays",
+    },
     bullets: [
       "Chapter 5 · Remote Arrays",
       "§5.2.4 · CRUD on a todos collection",

@@ -8,6 +8,7 @@ import {
   type LectureSlide,
   type LectureSlideDensity,
   type SlideKind,
+  type LectureCover,
 } from "./types";
 import {
   isSlideComponentId,
@@ -83,6 +84,7 @@ export type BlockSlide = {
   density?: LectureSlideDensity;
   /** "split": bullets on the left, component on the right. */
   layout?: "split";
+  cover?: LectureCover;
 };
 
 export type AuthoredSlide = LectureSlide | BlockSlide;
@@ -349,6 +351,7 @@ export function toBlockSlide(slide: AuthoredSlide): BlockSlide {
     ...(captionLoc ? { captionLoc } : {}),
     density: slide.density,
     layout: slide.layout,
+    ...(slide.cover ? { cover: slide.cover } : {}),
   };
 }
 
