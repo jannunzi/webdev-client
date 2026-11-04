@@ -27,6 +27,7 @@ export const REMOTE_ARRAYS_SLIDES: LectureSlide[] = [
   },
   {
     id: "get-all",
+    links: ["http://localhost:4000/lab5/todos"],
     title: "GET the whole todos array",
     kind: "demo",
     bullets: [
@@ -51,6 +52,7 @@ export default function WorkingWithArrays(app) {
   },
   {
     id: "get-id",
+    links: ["http://localhost:4000/lab5/todos/1"],
     title: "GET one todo by id",
     kind: "demo",
     bullets: [
@@ -78,6 +80,7 @@ app.get("/lab5/todos/:id", getTodoById);`,
   },
   {
     id: "create-delete",
+    links: ["http://localhost:4000/lab5/todos/create", "http://localhost:4000/lab5/todos/1/delete"],
     title: "Create and delete via GET first (code)",
     kind: "demo",
     code: `const createNewTodo = (req, res) => {

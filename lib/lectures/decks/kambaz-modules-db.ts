@@ -64,6 +64,7 @@ export default schema;`,
   },
   {
     id: "find",
+    links: ["http://localhost:4000/api/courses/RS101/modules"],
     title: "Find modules by course id (code)",
     kind: "demo",
     code: `function findModulesForCourse(courseId) {

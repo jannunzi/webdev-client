@@ -34,6 +34,7 @@ npm run dev`,
   },
   {
     id: "welcome-route",
+    links: ["http://localhost:4000/lab5/welcome"],
     title: "Welcome route in Lab5/index.ts",
     kind: "demo",
     bullets: [

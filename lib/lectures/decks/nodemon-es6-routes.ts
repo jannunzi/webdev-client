@@ -31,6 +31,7 @@ npx nodemon --exec tsx index.ts
   },
   {
     id: "two-routes",
+    links: ["http://localhost:4000/hello", "http://localhost:4000/"],
     title: "Change /hello and add /",
     kind: "demo",
     bullets: [
@@ -98,7 +99,7 @@ app.listen(4000);`,
     title: "A tsconfig for the server (code)",
     kind: "demo",
     codeBlocks: [
-      { code: "npm i -D typescript @types/node @types/express", language: "bash" },
+      { code: "npm i -D typescript@^5.9.3 @types/node@^22 @types/express", language: "bash" },
       {
         file: "webdev-server/tsconfig.json",
         language: "json",
@@ -131,6 +132,7 @@ app.listen(4000);`,
   },
   {
     id: "hello-fn",
+    links: ["http://localhost:4000/hello", "http://localhost:4000/"],
     title: "Move hello routes to Hello.ts (code)",
     kind: "demo",
     code: `import type { Express, Request, Response } from "express";
@@ -151,6 +153,7 @@ export default function Hello(app: Express) {
   },
   {
     id: "wire-hello",
+    links: ["http://localhost:4000/hello", "http://localhost:4000/"],
     title: "index.ts creates app once",
     kind: "demo",
     bullets: [

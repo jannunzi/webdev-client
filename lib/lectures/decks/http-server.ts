@@ -99,6 +99,7 @@ npm init`,
   },
   {
     id: "express",
+    links: ["http://localhost:4000/hello"],
     title: "Express GET /hello on 4000 (code)",
     kind: "demo",
     codeBlocks: [

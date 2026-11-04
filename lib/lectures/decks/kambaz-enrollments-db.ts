@@ -129,6 +129,7 @@ app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);`,
   },
   {
     id: "people",
+    links: ["http://localhost:4000/api/courses/RS101/users"],
     title: "Course People is enrolled users",
     kind: "demo",
     bullets: [

@@ -655,6 +655,16 @@ export default function LectureDeckShell({
           ) : (
             <SlideBlockView slide={slide} density={density} />
           )}
+          {slide.links?.length ? (
+            <p className="lecture-slide-links">
+              <span className="font-semibold">Try it: </span>
+              {slide.links.map((href) => (
+                <a key={href} href={href} target="_blank" rel="noopener noreferrer">
+                  {href}
+                </a>
+              ))}
+            </p>
+          ) : null}
           {slide.diagram ? <LectureDiagram id={slide.diagram} /> : null}
           {slide.imageSrc ? (
             <LectureSlideImage

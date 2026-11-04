@@ -36,6 +36,7 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "assignment",
+    links: ["http://localhost:4000/lab5/assignment"],
     title: "res.json sends an object (code)",
     kind: "demo",
     code: `const assignment = {
@@ -58,6 +59,7 @@ export default function WorkingWithObjects(app) {
   },
   {
     id: "title-get",
+    links: ["http://localhost:4000/lab5/assignment/title"],
     title: "GET a single property",
     kind: "demo",
     bullets: [
@@ -74,6 +76,7 @@ app.get("/lab5/assignment/title", getAssignmentTitle);`,
   },
   {
     id: "title-put",
+    links: ["http://localhost:4000/lab5/assignment/title/NewTitle"],
     title: "Mutate title from the path",
     kind: "demo",
     bullets: [

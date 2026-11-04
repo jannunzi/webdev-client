@@ -93,6 +93,7 @@ export const findUsersByPartialName = async (name: string) => {
   },
   {
     id: "by-id",
+    links: ["http://localhost:4000/api/users/123"],
     title: "findById loads one document",
     kind: "demo",
     bullets: [

@@ -69,6 +69,7 @@ const signup = async (req, res) => {
   },
   {
     id: "find-all-route",
+    links: ["http://localhost:4000/api/users"],
     title: "GET /api/users returns JSON",
     kind: "demo",
     bullets: [

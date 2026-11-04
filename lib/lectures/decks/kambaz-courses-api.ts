@@ -69,6 +69,7 @@ export default function CoursesDao(db) {
   },
   {
     id: "routes",
+    links: ["http://localhost:4000/api/courses", "http://localhost:4000/api/users/123/courses"],
     title: "GET /api/courses and mine (code)",
     kind: "demo",
     code: `import CoursesDao from "./dao";
@@ -143,6 +144,7 @@ export const findMyCourses = async () => {
   },
   {
     id: "modules-oyo",
+    links: ["http://localhost:4000/api/courses/RS101/modules"],
     title: "Modules nest under a course",
     kind: "content",
     bullets: [
