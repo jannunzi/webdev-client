@@ -89,7 +89,7 @@ app.post("/api/users/signin", signin);`,
   },
   {
     id: "signin-flow",
-    title: "Sign in, end to end",
+    title: "Signing In",
     kind: "content",
     bullets: [
       "Form state `{ username: \"iron_man\", password: \"stark123\" }`",

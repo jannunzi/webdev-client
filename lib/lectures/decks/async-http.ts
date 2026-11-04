@@ -84,7 +84,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "axios-how",
-    title: "What axios does on a click",
+    title: "Fetching Data with Axios",
     kind: "content",
     bullets: [
       "The handler calls `axios.get(url)` and the page stays put",
@@ -173,7 +173,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "body-how",
-    title: "How a JSON body reaches req.body",
+    title: "Reading a JSON Request Body",
     kind: "content",
     bullets: [
       "Client: `axios.post(url, { title: \"New Task\" })` puts JSON in the request body",
@@ -246,7 +246,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "icon-flow",
-    title: "From an icon click to a new list",
+    title: "Deleting a Todo Asynchronously",
     kind: "content",
     bullets: [
       "Click the trash icon on todo 1",
@@ -277,7 +277,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "post-flow",
-    title: "POST, step by step",
+    title: "Posting a New Todo",
     kind: "content",
     bullets: [
       "`axios.post(TODOS_API, todo)` sends `todo` as a JSON body",

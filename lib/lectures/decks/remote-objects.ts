@@ -27,7 +27,7 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "json-how",
-    title: "From object to JSON response",
+    title: "Sending Objects as JSON",
     kind: "content",
     bullets: [
       "Server memory holds a JavaScript object such as `{ id: 1, title: \"NodeJS Assignment\" }`",
@@ -107,7 +107,7 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
   },
   {
     id: "objects-click",
-    title: "Links that read and write the object",
+    title: "Reading and Writing a Remote Object",
     kind: "content",
     bullets: [
       "`HTTP_SERVER/lab5/assignment` shows the whole object as JSON",

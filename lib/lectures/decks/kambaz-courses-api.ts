@@ -60,7 +60,7 @@ export default function CoursesDao(db) {
   },
   {
     id: "url-to-route",
-    title: "Client URL to server route",
+    title: "Fetching Enrolled Courses",
     kind: "content",
     bullets: [
       "The Dashboard calls `GET /api/users/current/courses`",
@@ -136,7 +136,7 @@ export const findMyCourses = async () => {
   },
   {
     id: "create-flow",
-    title: "Creating a course, end to end",
+    title: "Creating a Course",
     kind: "content",
     bullets: [
       "Dashboard Add sends the course draft to the client function",

@@ -28,7 +28,7 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
   },
   {
     id: "path-how",
-    title: "How Express fills req.params",
+    title: "Matching Path Parameters",
     kind: "content",
     bullets: [
       "Route pattern: `/lab5/add/:a/:b` — `:a` and `:b` are placeholders",
@@ -92,7 +92,7 @@ export default function Lab5(app) {
   },
   {
     id: "path-click",
-    title: "From a click to the add route",
+    title: "Parsing Path Parameters",
     kind: "content",
     bullets: [
       "Example state: `a = 34`, `b = 23`",
@@ -135,7 +135,7 @@ const [b, setB] = useState("23");
   },
   {
     id: "query-how",
-    title: "How Express fills req.query",
+    title: "Matching Query Parameters",
     kind: "content",
     bullets: [
       "Route pattern: `/lab5/calculator` — no placeholders",
@@ -184,7 +184,7 @@ const [b, setB] = useState("23");
   },
   {
     id: "query-click",
-    title: "From a click to the calculator",
+    title: "Parsing Query Parameters",
     kind: "content",
     bullets: [
       "Example state: `a = 34`, `b = 23`, operation `add`",

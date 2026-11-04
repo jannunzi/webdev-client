@@ -86,7 +86,7 @@ app.use(express.json());`,
   },
   {
     id: "cookie-flow",
-    title: "How a session cookie flows",
+    title: "Session Cookies",
     kind: "content",
     bullets: [
       "Sign in: the server stores the user in `req.session` on its side",

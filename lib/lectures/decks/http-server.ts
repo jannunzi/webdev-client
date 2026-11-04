@@ -142,7 +142,7 @@ npm init`,
   },
   {
     id: "request-trip",
-    title: "A request’s trip to a handler",
+    title: "Handling an HTTP Request",
     kind: "content",
     bullets: [
       "Browser sends `GET http://localhost:4000/hello`",

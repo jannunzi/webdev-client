@@ -52,7 +52,7 @@ export default function WorkingWithArrays(app) {
   },
   {
     id: "id-how",
-    title: "How :id picks one todo",
+    title: "Finding an Item by ID",
     kind: "content",
     bullets: [
       "Pattern `/lab5/todos/:id`, URL `/lab5/todos/1`",
@@ -117,7 +117,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
   },
   {
     id: "arrays-click",
-    title: "Links that map to todo routes",
+    title: "Mapping Links to Array Routes",
     kind: "content",
     bullets: [
       "`API` is `http://localhost:4000/lab5/todos`",
