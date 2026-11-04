@@ -17,12 +17,13 @@ export const KAMBAZ_MIGRATE_DB_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing the Server Database",
+    title: "Moving Kambaz Data to the Server",
     kind: "content",
     bullets: [
-      "Dashboard Add / Edit / Delete still die on refresh",
-      "Copy Chapter 3 JSON into `webdev-server/Kambaz/Database`",
-      "URLs stay the same in Chapter 6 — only the storage changes",
+      "Dashboard Add, Edit, and Delete still reset on refresh: the data lives in the browser",
+      "Data on the server survives refresh and is shared by every browser",
+      "Copy the Chapter 3 JSON files into `webdev-server/Kambaz/Database`",
+      "Chapter 6 swaps these files for a database; the URLs stay the same",
     ],
   },
   {

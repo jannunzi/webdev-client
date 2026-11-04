@@ -16,6 +16,17 @@ export const NODEMON_ES6_ROUTES_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "purpose",
+    title: "Restarting and Organizing the Server",
+    kind: "content",
+    bullets: [
+      "Every code change means stopping and restarting the server by hand",
+      "Nodemon watches your files and restarts the server when you save",
+      "As routes grow, one `index.ts` gets hard to read",
+      "Route files group related routes, like the hello routes in `Hello.ts`",
+    ],
+  },
+  {
     id: "nodemon",
     title: "Restarting the Server with Nodemon",
     kind: "demo",

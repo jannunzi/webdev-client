@@ -17,12 +17,13 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing Remote Objects",
+    title: "Keeping Objects on the Server",
     kind: "content",
     bullets: [
-      "Integers and strings were a start. Objects and arrays persist too",
-      "State lasts until you reboot Express — then the seed returns",
-      "`res.json(assignment)` turns the object into a JSON string and tells the browser it is JSON (`Content-Type: application/json`)",
+      "Numbers and strings were a start. Real apps keep objects, like an assignment",
+      "The server holds one assignment object in memory for every client",
+      "Clients read and change it through URLs, so changes survive a page refresh",
+      "It lasts until the server restarts. A database comes in Chapter 6",
     ],
   },
   {

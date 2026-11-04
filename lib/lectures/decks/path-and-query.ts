@@ -16,14 +16,14 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "three-ways",
+    id: "purpose",
     title: "Three Ways to Send Data to a Server",
     kind: "content",
     bullets: [
+      "So far the server sends fixed text. Real apps need input, like which course or what to add",
       "**Path parameters** — `/lab5/add/2/5` as URL segments",
       "**Query parameters** — `/lab5/add?a=2&b=5` after `?`",
-      "**JSON request body** — `{a: 2, b: 5}` with POST/PUT",
-      "Today: path and query. JSON bodies: Async HTTP and JSON deck",
+      "**JSON request body** — `{a: 2, b: 5}`, covered in the Async HTTP and JSON deck",
     ],
   },
   {

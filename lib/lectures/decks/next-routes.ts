@@ -17,13 +17,13 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing Next.js Route Handlers",
+    title: "Serving APIs from Next.js Itself",
     kind: "content",
     bullets: [
-      "Express is this chapter’s spine — sibling process, port 4000",
-      "`app/api/.../route.ts` is a same-app alternative",
-      "Export `GET`, `POST`, … — the file becomes the endpoint",
-      "Same origin as the page: no CORS. Only `npm run dev`",
+      "Express runs as a separate server on port 4000",
+      "Next.js can also answer API requests from files in `app/api/`",
+      "Same app as the page: no second server and no cross-origin setup",
+      "Kambaz keeps using Express; this is a lighter alternative",
     ],
   },
   {

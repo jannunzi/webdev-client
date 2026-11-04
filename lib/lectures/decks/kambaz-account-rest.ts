@@ -16,6 +16,17 @@ export const KAMBAZ_ACCOUNT_REST_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "purpose",
+    title: "Signing In Through the Server",
+    kind: "content",
+    bullets: [
+      "Sign in and sign up still check users stored in the browser",
+      "Anyone can read or edit browser data, and it resets on refresh",
+      "The server keeps the users list and checks credentials in its routes",
+      "The account pages call those routes instead of reading users directly",
+    ],
+  },
+  {
     id: "dao-intro",
     title: "Implementing the Users DAO",
     kind: "demo",

@@ -17,12 +17,12 @@ export const REMOTE_ARRAYS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing Remote Arrays",
+    title: "Managing Lists on the Server",
     kind: "content",
     bullets: [
-      "**Create**, **Read**, **Update**, **Delete** — every list you will ship",
-      "Same process memory as the assignment: reboot resets the seed",
-      "Encode the item id in the path — not as a query parameter",
+      "Most app data is lists: todos, courses, users",
+      "The server keeps a todos array with routes to create, read, update, and delete",
+      "Every client sees the same list until the server restarts",
     ],
   },
   {

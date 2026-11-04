@@ -17,13 +17,13 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing an HTTP Server",
+    title: "Why the App Needs Its Own Server",
     kind: "content",
     bullets: [
-      "Chapters 1–4 built the Next.js UI. Refresh still resets Kambaz",
-      "A browser cannot be the permanent store — it crashes, closes, and is untrusted",
-      "This chapter adds the other half: an Express HTTP server in `webdev-server`",
-      "MongoDB is Chapter 6. Here the arrays live in process memory",
+      "Chapters 1–4 built the Next.js user interface. Refresh still resets Kambaz",
+      "The browser cannot keep data safely: it closes, crashes, and anyone can edit it",
+      "A server keeps the data in one place and answers requests from every browser",
+      "This chapter builds that server with Express in `webdev-server`",
     ],
   },
   {
