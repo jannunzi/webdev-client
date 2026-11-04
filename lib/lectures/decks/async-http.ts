@@ -27,41 +27,58 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "ajax",
-    title: "Staying on the Page with Axios",
+    id: "axios-lib",
+    title: "Using the Axios Library",
     kind: "demo",
     bullets: [
-      "Hyperlinks leave Lab 5. Axios fetches without navigating",
-      "Install axios. In a new `HttpClient.tsx` component, add the button",
+      "Links to the server leave the page. Axios sends requests from code instead",
+      "Axios is a small, popular library for HTTP requests in the browser",
+      "Install it in the Next.js project",
+    ],
+    code: "npm install axios",
+    codeLanguage: "bash",
+  },
+  {
+    id: "axios-how",
+    title: "Fetching Data with Axios",
+    kind: "content",
+    bullets: [
+      "The handler calls `axios.get(url)` and the page stays put",
+      "The browser sends the request to port 4000 in the background",
+      "`await` waits for the reply. The reply object has a `data` property",
+      "`response.data` is the body — text, or JSON already turned into an object",
+      "Storing it in state re-renders the component",
+    ],
+  },
+  {
+    id: "http-client",
+    title: "Fetching on Click with Axios",
+    kind: "demo",
+    bullets: [
+      "Create a new `HttpClient.tsx` client component as shown below",
+      "Clicking Fetch Welcome calls the server and shows the reply",
       "Import into `app/labs/lab5/page.tsx`. The first click throws CORS",
     ],
-    codeBlocks: [
-      { code: "npm install axios", language: "bash" },
-      {
-        file: "app/labs/lab5/HttpClient.tsx",
-        language: "tsx",
-        code: `import axios from "axios";
-const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
-const [welcomeOnClick, setWelcomeOnClick] = useState("");
-const fetchWelcomeOnClick = async () => {
-  const response = await axios.get(\`\${HTTP_SERVER}/lab5/welcome\`);
-  setWelcomeOnClick(response.data);
-};
-<button type="button" onClick={fetchWelcomeOnClick}>Fetch Welcome</button>
-<p>Response from server: <b>{welcomeOnClick}</b></p>`,
-        addedLines: [[4, 7]],
-      },
+    code: "import axios from \"axios\";\nconst HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;\nconst [welcomeOnClick, setWelcomeOnClick] = useState(\"\");\nconst fetchWelcomeOnClick = async () => {\n  const response = await axios.get(`${HTTP_SERVER}/lab5/welcome`);\n  setWelcomeOnClick(response.data);\n};\n<button type=\"button\" onClick={fetchWelcomeOnClick}>Fetch Welcome</button>\n<p>Response from server: <b>{welcomeOnClick}</b></p>",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/HttpClient.tsx",
+  },
+  {
+    id: "cors-why",
+    title: "Understanding Cross-Origin Requests",
+    kind: "content",
+    bullets: [
+      "An origin is a scheme, host, and port. The page is on port 3000, Express on 4000",
+      "Browsers block reading replies from another origin, so other sites can't use your sessions",
+      "CORS (Cross-Origin Resource Sharing) lets the server list which origins may call it",
+      "Install `cors` in the server and call `app.use(cors())` before the routes",
+      "We'll revisit CORS in more detail with sessions and cookies",
     ],
   },
   {
     id: "cors",
     title: "Allowing Cross-Origin Requests",
     kind: "demo",
-    bullets: [
-      "The UI origin is 3000. Express is 4000 — a different origin",
-      "The browser asks Express first. `cors()` answers yes",
-      "Use it right after `express()` and before the routes",
-    ],
     codeBlocks: [
       { code: "npm install cors\nnpm i -D @types/cors", language: "bash" },
       {
@@ -82,7 +99,6 @@ Lab5(app);`,
     bullets: [
       "In a new `app/labs/lab5/client.ts`, add the request function",
       "Screens share one file so the welcome URL changes once",
-      "`useEffect` later loads data when the component mounts",
     ],
     code: `import axios from "axios";
 const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
@@ -93,30 +109,6 @@ export const fetchWelcomeMessage = async () => {
     codeLanguage: "ts",
     codeFile: "app/labs/lab5/client.ts",
     codeHighlightLines: [[3, 6]],
-  },
-  {
-    id: "axios-how",
-    title: "Fetching Data with Axios",
-    kind: "content",
-    bullets: [
-      "The handler calls `axios.get(url)` and the page stays put",
-      "The browser sends the request to port 4000 in the background",
-      "`await` waits for the reply. The reply object has a `data` property",
-      "`response.data` is the body — text, or JSON already turned into an object",
-      "Storing it in state re-renders the component",
-    ],
-  },
-  {
-    id: "http-client",
-    title: "Fetching on Click with Axios",
-    kind: "demo",
-    bullets: [
-      "In `HttpClient.tsx`, add the button as shown below",
-      "The page stays put. axios returns the response data",
-    ],
-    code: "import axios from \"axios\";\nconst HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;\nconst [welcomeOnClick, setWelcomeOnClick] = useState(\"\");\nconst fetchWelcomeOnClick = async () => {\n  const response = await axios.get(`${HTTP_SERVER}/lab5/welcome`);\n  setWelcomeOnClick(response.data);\n};\n<button type=\"button\" onClick={fetchWelcomeOnClick}>Fetch Welcome</button>\n<p>Response from server: <b>{welcomeOnClick}</b></p>",
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/HttpClient.tsx",
   },
   {
     id: "http-client-lib",
@@ -182,13 +174,13 @@ export const fetchWelcomeMessage = async () => {
     title: "Rendering an Array Fetched on Load",
     kind: "demo",
     bullets: [
-      "In a new `WorkingWithArraysAsync.tsx` component, add the code below",
+      "In a new `WorkingWithRemoteArraysAsync.tsx` component, add the code below",
       "Fetch the array once, then map it to list items",
       "Import into `app/labs/lab5/page.tsx`",
     ],
     code: "const [todos, setTodos] = useState([]);\nconst fetchTodos = async () => {\n  setTodos(await client.fetchTodos());\n};\nuseEffect(() => { fetchTodos(); }, []);\n{todos.map((todo) => (\n  <li key={todo.id}>\n    <input type=\"checkbox\" defaultChecked={todo.completed} />\n    <span className={todo.completed ? \"line-through\" : \"\"}>{todo.title}</span>\n  </li>\n))}",
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArraysAsync.tsx",
+    codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
   },
   {
     id: "body-how",
@@ -246,30 +238,30 @@ Lab5(app);`,
     title: "Deleting an Item from a Button",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArraysAsync.tsx`, add the remove handler",
+      "In `WorkingWithRemoteArraysAsync.tsx`, add the remove handler",
       "The GET-style delete route returns the new array",
     ],
     code: "const removeTodo = async (todo) => {\n  setTodos(await client.removeTodo(todo));\n};\n<FaTrash onClick={() => removeTodo(todo)} id=\"wd-remove-todo\"\n  className=\"cursor-pointer text-red-600\" />",
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArraysAsync.tsx",
+    codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
   },
   {
     id: "arrays-async-create",
     title: "Creating an Item from a Button",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArraysAsync.tsx`, add the create handler",
+      "In `WorkingWithRemoteArraysAsync.tsx`, add the create handler",
     ],
     code: "const createNewTodo = async () => {\n  setTodos(await client.createNewTodo());\n};\n<FaPlusCircle onClick={createNewTodo} id=\"wd-create-todo\"\n  className=\"cursor-pointer text-green-600\" />",
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArraysAsync.tsx",
+    codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
   },
   {
     id: "post-delete-intro",
     title: "Implementing POST and DELETE Routes",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArrays.ts`, add both routes as shown below",
+      "In `WorkingWithRemoteArrays.ts`, add both routes as shown below",
       "POST `/lab5/todos` spreads `req.body` and assigns an id",
       "DELETE `/lab5/todos/:id` returns 404 when the id is missing",
     ],
@@ -296,7 +288,7 @@ const deleteTodo = (req, res) => {
 app.post("/lab5/todos", postNewTodo);
 app.delete("/lab5/todos/:id", deleteTodo);`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
+    codeFile: "webdev-server/Lab5/WorkingWithRemoteArrays.ts",
     codeHighlightLines: [[16, 17]],
   },
   {
@@ -315,74 +307,74 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
     title: "Sending a POST Request with Axios",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArraysAsync.tsx`, switch create to POST",
+      "In `WorkingWithRemoteArraysAsync.tsx`, switch create to POST",
       "The server returns only the new todo. Append it",
     ],
     code: "const postNewTodo = async () => {\n  const newTodo = await client.postNewTodo({\n    title: \"New Posted Todo\",\n    completed: false,\n  });\n  setTodos([...todos, newTodo]);\n};\n<FaPlusCircle onClick={postNewTodo} id=\"wd-post-todo\"\n  className=\"cursor-pointer text-blue-600\" />",
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArraysAsync.tsx",
+    codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
   },
   {
     id: "arrays-async-delete",
     title: "Deleting Items with HTTP DELETE",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArraysAsync.tsx`, switch delete to DELETE",
+      "In `WorkingWithRemoteArraysAsync.tsx`, switch delete to DELETE",
       "The server returns a status. Filter it out locally",
     ],
     code: "const deleteTodo = async (todo) => {\n  await client.deleteTodo(todo);\n  setTodos(todos.filter((t) => t.id !== todo.id));\n};\n<TiDelete onClick={() => deleteTodo(todo)} id=\"wd-delete-todo\"\n  className=\"cursor-pointer text-2xl text-red-600\" />",
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArraysAsync.tsx",
+    codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
   },
   {
     id: "put-server",
     title: "Updating Items with HTTP PUT",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArrays.ts`, add the route as shown below",
+      "In `WorkingWithRemoteArrays.ts`, add the route as shown below",
       "`req.body` holds the changed fields. They overwrite the old ones",
       "Replies `200` with no body. The client already has the todo",
     ],
     code: "const updateTodo = (req, res) => {\n  const { id } = req.params;\n  todos = todos.map((t) => {\n    if (t.id === parseInt(id)) {\n      return { ...t, ...req.body };\n    }\n    return t;\n  });\n  res.sendStatus(200);\n};\napp.put(\"/lab5/todos/:id\", updateTodo);",
     codeLanguage: "ts",
-    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
+    codeFile: "webdev-server/Lab5/WorkingWithRemoteArrays.ts",
   },
   {
     id: "arrays-async-put",
     title: "Sending a PUT Request with Axios",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArraysAsync.tsx`, add editing as shown below",
+      "In `WorkingWithRemoteArraysAsync.tsx`, add editing as shown below",
       "Pencil enters edit mode. The checkbox PUTs at once",
     ],
     code: "const editTodo = (todo) => {\n  setTodos(todos.map((t) => (t.id === todo.id ? { ...todo, editing: true } : t)));\n};\nconst updateTodo = async (todo) => {\n  await client.updateTodo(todo);\n  setTodos(todos.map((t) => (t.id === todo.id ? todo : t)));\n};\n<FaPencilAlt onClick={() => editTodo(todo)} className=\"cursor-pointer text-blue-600\" />\n<input type=\"checkbox\" checked={todo.completed}\n  onChange={(e) => updateTodo({ ...todo, completed: e.target.checked })} />",
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArraysAsync.tsx",
+    codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
   },
   {
     id: "error-server",
     title: "Responding 404 for a Missing Item",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArrays.ts`, update the route as shown below",
+      "In `WorkingWithRemoteArrays.ts`, update the route as shown below",
       "No matching id: reply `404` with a `message`",
       "The same check goes in `updateTodo`",
     ],
     code: "const deleteTodo = (req, res) => {\n  const { id } = req.params;\n  const todoIndex = todos.findIndex((t) => t.id === parseInt(id));\n  if (todoIndex === -1) {\n    res.status(404).json({ message: `Unable to delete Todo with ID ${id}` });\n    return;\n  }\n  todos.splice(todoIndex, 1);\n  res.sendStatus(200);\n};",
     codeLanguage: "ts",
-    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
+    codeFile: "webdev-server/Lab5/WorkingWithRemoteArrays.ts",
   },
   {
     id: "arrays-async-error",
     title: "Showing the Server's Error Message",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArraysAsync.tsx`, add the error message",
+      "In `WorkingWithRemoteArraysAsync.tsx`, add the error message",
       "A failed request throws. Show `response.data.message`",
     ],
     code: "const [errorMessage, setErrorMessage] = useState(null);\nconst deleteTodo = async (todo) => {\n  try {\n    await client.deleteTodo(todo);\n    setTodos(todos.filter((t) => t.id !== todo.id));\n  } catch (error) {\n    setErrorMessage(error.response.data.message);\n  }\n};\n{errorMessage && (\n  <p id=\"wd-todo-error-message\" className=\"rounded bg-red-100 px-3 py-2 text-red-800\">\n    {errorMessage}\n  </p>\n)}",
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArraysAsync.tsx",
+    codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
   },
   {
     id: "arrays-async-live",
