@@ -132,7 +132,7 @@ app.listen(4000);`,
   );
 }`,
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/intermediates/5-2-1-Environment.tsx",
+    codeFile: "app/labs/lab5/Environment.tsx",
     codeAddedLines: [2, [9, 12]],
     embed: "lab5-env",
   },
