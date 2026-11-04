@@ -121,23 +121,35 @@ export const findUsersByPartialName = async (name: string) => {
   },
   {
     id: "by-id",
-    links: ["http://localhost:4000/api/users/123"],
     title: "Loading One User by ID",
     kind: "demo",
     bullets: [
-      "In `dao.ts`, add `findUserById`, then its route in `routes.ts`, as shown below",
+      "In `Users/dao.ts`, add `findUserById` as shown below",
       "`findById(id)` is short for `findOne({ _id: id })`",
+    ],
+    code: `const findUserById = (userId) => model.findById(userId);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
+    codeAddedLines: [1],
+  },
+  {
+    id: "by-id-route",
+    links: ["http://localhost:4000/api/users/123"],
+    title: "Serving One User with GET",
+    kind: "demo",
+    bullets: [
+      "In `Users/routes.ts`, add the route as shown below",
+      "It reads `userId` from the path and awaits the DAO",
       "Confirm in the browser: `/api/users/` plus an `_id` from Compass",
     ],
-    code: `const findUserById = (userId) => model.findById(userId);
-const findUserById = async (req, res) => {
+    code: `const findUserById = async (req, res) => {
   const user = await dao.findUserById(req.params.userId);
   res.json(user);
 };
 app.get("/api/users/:userId", findUserById);`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Users/dao.ts",
-    codeAddedLines: [[2, 6]],
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
+    codeAddedLines: [[1, 5]],
   },
   {
     id: "details",
@@ -161,17 +173,30 @@ app.get("/api/users/:userId", findUserById);`,
     title: "Deleting a User by ID",
     kind: "demo",
     bullets: [
-      "In `dao.ts`, add `deleteUser` and its route as shown below",
+      "In `Users/dao.ts`, add `deleteUser` as shown below",
       "`findByIdAndDelete` or `deleteOne({ _id })` — same result",
-      "Details: red Delete, then `onClose`. Cancel leaves Compass unchanged",
     ],
-    code: `const deleteUser = (userId) => model.findByIdAndDelete(userId);
-app.delete("/api/users/:userId", async (req, res) => {
-  const status = await dao.deleteUser(req.params.userId);
-  res.json(status);
-});`,
+    code: `const deleteUser = (userId) => model.findByIdAndDelete(userId);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/dao.ts",
+    codeAddedLines: [1],
+  },
+  {
+    id: "delete-route",
+    title: "Removing a User with DELETE",
+    kind: "demo",
+    bullets: [
+      "In `Users/routes.ts`, add the route as shown below",
+      "The client sends the user's id as a path parameter",
+      "Details: red Delete, then `onClose`. Cancel leaves Compass unchanged",
+    ],
+    code: `const deleteUser = async (req, res) => {
+  const status = await dao.deleteUser(req.params.userId);
+  res.json(status);
+};
+app.delete("/api/users/:userId", deleteUser);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeAddedLines: [[1, 5]],
   },
   {
@@ -182,7 +207,7 @@ app.delete("/api/users/:userId", async (req, res) => {
       "Stored: `{ _id: \"123\", firstName: \"Tony\", lastName: \"Stark\" }`",
       "`updateOne({ _id: \"123\" }, { $set: { firstName: \"Anthony\" } })`",
       "Result: `firstName` is `Anthony`. `lastName` is still `Stark`",
-      "The first argument picks the document. `$set` lists only what changes",
+      "Mongoose wraps a plain object in `$set` anyway. The listing writes it out to be explicit",
     ],
   },
   {

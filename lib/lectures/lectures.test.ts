@@ -1373,7 +1373,7 @@ describe("lecture decks", () => {
     assert.equal(counts["local-mongo"], 13);
     assert.equal(counts["mongoose"], 15);
     assert.equal(counts["mongo-apis"], 13);
-    assert.equal(counts["mongo-users-crud"], 17);
+    assert.equal(counts["mongo-users-crud"], 19);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
     assert.equal(counts["atlas-node"], 11);
@@ -1381,7 +1381,7 @@ describe("lecture decks", () => {
     assert.equal(counts["ch6-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-db"], 14);
     assert.equal(counts["kambaz-modules-db"], 10);
-    assert.equal(counts["kambaz-enrollments-db"], 14);
+    assert.equal(counts["kambaz-enrollments-db"], 16);
     assert.equal(counts["youtube-api"], 11);
     assert.equal(counts["youtube-search"], 11);
     assert.equal(counts["youtube-details"], 23);
@@ -3955,7 +3955,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 267);
+    assert.equal(intros, 268);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {

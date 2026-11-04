@@ -31,10 +31,10 @@ export const KAMBAZ_MODULES_DB_SLIDES: LectureSlide[] = [
     title: "Three Ways to Store One-to-Many",
     kind: "content",
     bullets: [
-      "Parent id on each child, a foreign key: `{ name: \"Week 1\", course: \"RS101\" }`",
+      "Parent id on each child: `{ name: \"Week 1\", course: \"RS101\" }` — **Kambaz uses this**",
       "Child ids on the parent: `{ _id: \"RS101\", moduleIds: [\"M101\", \"M102\"] }`",
-      "Children inside the parent: a `modules` array, no second collection",
-      "Pick one per project. Do not insert the same module in two places",
+      "Alternative design: embed a `modules` array in the course, no second collection",
+      "Kambaz keeps a separate `modules` collection. Never store a module in two places",
     ],
   },
   {
@@ -44,19 +44,22 @@ export const KAMBAZ_MODULES_DB_SLIDES: LectureSlide[] = [
     bullets: [
       "In a new `Kambaz/Modules/schema.ts` file, create the schema as shown below",
       "`course` holds the parent course id — the foreign key",
-      "Add `Kambaz/Modules/model.ts` the same way as the course model",
+      "`{ collection: \"modules\" }` names the collection instead of letting Mongoose guess",
     ],
     code: `import mongoose from "mongoose";
-const schema = new mongoose.Schema({
-  _id: String,
-  name: String,
-  description: String,
-  course: String,
-});
+const schema = new mongoose.Schema(
+  {
+    _id: String,
+    name: String,
+    description: String,
+    course: String,
+  },
+  { collection: "modules" },
+);
 export default schema;`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Modules/schema.ts",
-    codeHighlightLines: [6],
+    codeHighlightLines: [8, 10],
   },
   {
     id: "find-intro",

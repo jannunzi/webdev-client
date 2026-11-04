@@ -121,9 +121,9 @@ const deleteCourse = async (req, res) => {
     title: "Enrolling and Unenrolling Users",
     kind: "demo",
     bullets: [
-      "In `Kambaz/Enrollments/dao.ts`, add both functions and routes on your own",
+      "In `Kambaz/Enrollments/dao.ts`, add both functions on your own",
       "`enrollUserInCourse` inserts `{ user, course, _id: userId-courseId }`",
-      "`uid === \"current\"` reads the session, same as enrolled-courses",
+      "`unenrollUserFromCourse` deletes the matching pair",
     ],
   },
   {
@@ -139,12 +139,55 @@ const deleteCourse = async (req, res) => {
 }
 function unenrollUserFromCourse(user, course) {
   return model.deleteOne({ user, course });
-}
+}`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Enrollments/dao.ts",
+  },
+  {
+    id: "enroll-routes-intro",
+    title: "Enrolling Through the Users Routes",
+    kind: "demo",
+    bullets: [
+      "In `Users/routes.ts`, add both handlers as shown below",
+      "When `uid` is `\"current\"`, use the session user. No session → 401",
+      "Then call the Enrollments DAO and send the result",
+    ],
+  },
+  {
+    id: "enroll-routes",
+    title: "Writing Enroll and Unenroll Routes",
+    kind: "demo",
+    code: `const enrollUserInCourse = async (req, res) => {
+  let { uid, cid } = req.params;
+  if (uid === "current") {
+    const currentUser = req.session["currentUser"];
+    if (!currentUser) {
+      res.sendStatus(401);
+      return;
+    }
+    uid = currentUser._id;
+  }
+  const status = await enrollmentsDao.enrollUserInCourse(uid, cid);
+  res.send(status);
+};
+const unenrollUserFromCourse = async (req, res) => {
+  let { uid, cid } = req.params;
+  if (uid === "current") {
+    const currentUser = req.session["currentUser"];
+    if (!currentUser) {
+      res.sendStatus(401);
+      return;
+    }
+    uid = currentUser._id;
+  }
+  const status = await enrollmentsDao.unenrollUserFromCourse(uid, cid);
+  res.send(status);
+};
 app.post("/api/users/:uid/courses/:cid", enrollUserInCourse);
 app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Enrollments/dao.ts",
-    codeHighlightLines: [[11, 12]],
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
+    codeHighlightLines: [[3, 10], [27, 28]],
   },
   {
     id: "people",
