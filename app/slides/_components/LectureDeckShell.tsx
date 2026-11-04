@@ -581,7 +581,12 @@ export default function LectureDeckShell({
                 </span>
                 {cover.label}
               </p>
-              <h2 className={`lecture-cover-headline ${coverFont.className}`}>
+              <h2
+                className={`lecture-cover-headline ${coverFont.className}`}
+                style={{
+                  fontSize: `min(8rem, ${(165 / Math.max(cover.headline.length, 8)).toFixed(2)}cqi)`,
+                }}
+              >
                 {cover.headline}
               </h2>
               <p className="lecture-cover-subtitle">

@@ -955,6 +955,8 @@ html.lecture-presenting body {
 /* Opt-in thumbnail-style cover (slide.cover), G2 video-thumb look. */
 .lecture-slide-cover {
   position: relative;
+  container-type: inline-size;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -992,7 +994,6 @@ html.lecture-presenting body {
   line-height: 1.05;
   white-space: nowrap;
   text-shadow: 0 0.06em 0 rgba(0, 0, 0, 0.35);
-  font-size: min(10cqi, 7rem);
 }
 .lecture-cover-subtitle {
   margin: 0.75rem 0 0.25rem;
