@@ -31,7 +31,7 @@ export const REMOTE_ARRAYS_SLIDES: LectureSlide[] = [
     title: "Returning an Array as JSON",
     kind: "demo",
     bullets: [
-      "In a new `Lab5/WorkingWithArrays.ts`, add the route as shown below",
+      "In a new `Lab5/WorkingWithRemoteArrays.ts`, add the route as shown below",
       "Visit `/lab5/todos` and confirm four seed tasks",
       "Import into `Lab5/index.ts`",
     ],
@@ -41,14 +41,14 @@ export const REMOTE_ARRAYS_SLIDES: LectureSlide[] = [
   { id: 3, title: "Task 3", completed: false },
   { id: 4, title: "Task 4", completed: true },
 ];
-export default function WorkingWithArrays(app) {
+export default function WorkingWithRemoteArrays(app) {
   const getTodos = (req, res) => {
     res.json(todos);
   };
   app.get("/lab5/todos", getTodos);
 }`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
+    codeFile: "webdev-server/Lab5/WorkingWithRemoteArrays.ts",
     codeHighlightLines: [[8, 11]],
   },
   {
@@ -56,14 +56,14 @@ export default function WorkingWithArrays(app) {
     title: "Linking to an Array Route",
     kind: "demo",
     bullets: [
-      "In a new `WorkingWithArrays.tsx` component, create the link as shown below",
+      "In a new `WorkingWithRemoteArrays.tsx` component, create the link as shown below",
       "Get Todos navigates to the route you just wrote",
       "Import into `app/labs/lab5/page.tsx`",
     ],
     code: `const API = \`\${HTTP_SERVER}/lab5/todos\`;
 <a id="wd-retrieve-todos" href={API}>Get Todos</a>`,
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
+    codeFile: "app/labs/lab5/WorkingWithRemoteArrays.tsx",
     codeHighlightLines: [2],
   },
   {
@@ -83,7 +83,7 @@ export default function WorkingWithArrays(app) {
     title: "Returning One Item by ID",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArrays.ts`, add the route as shown below",
+      "In `WorkingWithRemoteArrays.ts`, add the route as shown below",
       "`/lab5/todos/:id` finds the matching object",
       "Primary keys belong in the path",
     ],
@@ -94,7 +94,7 @@ export default function WorkingWithArrays(app) {
 };
 app.get("/lab5/todos/:id", getTodoById);`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
+    codeFile: "webdev-server/Lab5/WorkingWithRemoteArrays.ts",
     codeAddedLines: [[1, 6]],
   },
   {
@@ -102,12 +102,12 @@ app.get("/lab5/todos/:id", getTodoById);`,
     title: "Sending an Item ID in the Path",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArrays.tsx`, add the input and link as shown below",
+      "In `WorkingWithRemoteArrays.tsx`, add the input and link as shown below",
       "The input picks the ID. The link puts it in the path",
     ],
     code: "const [todo, setTodo] = useState({ id: \"1\" });\n<a id=\"wd-retrieve-todo-by-id\" href={`${API}/${todo.id}`}>\n  Get Todo by ID\n</a>\n<input id=\"wd-todo-id\" value={todo.id}\n  onChange={(e) => setTodo({ ...todo, id: e.target.value })} />",
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
+    codeFile: "app/labs/lab5/WorkingWithRemoteArrays.tsx",
   },
   {
     id: "filter-server",
@@ -115,31 +115,31 @@ app.get("/lab5/todos/:id", getTodoById);`,
     title: "Filtering an Array by Query",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArrays.ts`, update the route as shown below",
+      "In `WorkingWithRemoteArrays.ts`, update the route as shown below",
       "`req.query.completed` is a string, so compare with `\"true\"`",
       "No `completed` in the URL: return every todo",
     ],
     code: "const getTodos = (req, res) => {\n  const { completed } = req.query;\n  if (completed !== undefined) {\n    const completedBool = completed === \"true\";\n    res.json(todos.filter((t) => t.completed === completedBool));\n    return;\n  }\n  res.json(todos);\n};",
     codeLanguage: "ts",
-    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
+    codeFile: "webdev-server/Lab5/WorkingWithRemoteArrays.ts",
   },
   {
     id: "client-filter",
     title: "Linking to a Filtered Array",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArrays.tsx`, add the filter link as shown below",
+      "In `WorkingWithRemoteArrays.tsx`, add the filter link as shown below",
     ],
     code: "<a id=\"wd-retrieve-completed-todos\" href={`${API}?completed=true`}>\n  Get Completed Todos\n</a>",
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
+    codeFile: "app/labs/lab5/WorkingWithRemoteArrays.tsx",
   },
   {
     id: "create-delete-intro",
     title: "Adding and Removing Array Items",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArrays.ts`, add both routes as shown below",
+      "In `WorkingWithRemoteArrays.ts`, add both routes as shown below",
       "GET `/create` pushes a New Task onto the array",
       "GET `/:id/delete` splices that item out",
       "Misusing GET is a teaching step. The Async HTTP and JSON deck switches to POST and DELETE",
@@ -168,7 +168,7 @@ const removeTodo = (req, res) => {
 app.get("/lab5/todos/create", createNewTodo);
 app.get("/lab5/todos/:id/delete", removeTodo);`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
+    codeFile: "webdev-server/Lab5/WorkingWithRemoteArrays.ts",
     codeHighlightLines: [[16, 17]],
   },
   {
@@ -176,22 +176,22 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
     title: "Linking to Add an Item",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArrays.tsx`, add the following link.",
+      "In `WorkingWithRemoteArrays.tsx`, add the following link.",
     ],
     code: "<a id=\"wd-create-todo\" href={`${API}/create`}>Create Todo</a>",
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
+    codeFile: "app/labs/lab5/WorkingWithRemoteArrays.tsx",
   },
   {
     id: "client-remove",
     title: "Linking to Remove an Item by ID",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArrays.tsx`, add the delete link as shown below",
+      "In `WorkingWithRemoteArrays.tsx`, add the delete link as shown below",
     ],
     code: "<a id=\"wd-remove-todo\" href={`${API}/${todo.id}/delete`}>\n  Remove Todo with ID = {todo.id}\n</a>",
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
+    codeFile: "app/labs/lab5/WorkingWithRemoteArrays.tsx",
   },
   {
     id: "title-server",
@@ -199,25 +199,25 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
     title: "Updating an Item from the Path",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArrays.ts`, add the route as shown below",
+      "In `WorkingWithRemoteArrays.ts`, add the route as shown below",
       "The path carries both the todo id and its new title",
       "On your own: completed and description routes the same way",
     ],
     code: "const updateTodoTitle = (req, res) => {\n  const { id, title } = req.params;\n  const todo = todos.find((t) => t.id === parseInt(id));\n  todo.title = title;\n  res.json(todos);\n};\napp.get(\"/lab5/todos/:id/title/:title\", updateTodoTitle);",
     codeLanguage: "ts",
-    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
+    codeFile: "webdev-server/Lab5/WorkingWithRemoteArrays.ts",
   },
   {
     id: "client-update",
     title: "Linking to Update an Item",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArrays.tsx`, add the inputs and link as shown below",
+      "In `WorkingWithRemoteArrays.tsx`, add the inputs and link as shown below",
       "Two inputs: which todo, and its new title",
     ],
     code: "<a href={`${API}/${todo.id}/title/${todo.title}`} id=\"wd-update-todo-title\">\n  Update Todo\n</a>\n<input value={todo.id} onChange={(e) => setTodo({ ...todo, id: e.target.value })} />\n<input value={todo.title} onChange={(e) => setTodo({ ...todo, title: e.target.value })} />",
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
+    codeFile: "app/labs/lab5/WorkingWithRemoteArrays.tsx",
   },
   {
     id: "arrays-click",

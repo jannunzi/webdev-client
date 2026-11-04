@@ -12,7 +12,7 @@ type Todo = {
   editing?: boolean;
 };
 
-export default function WorkingWithArraysAsynchronously() {
+export default function WorkingWithRemoteArraysAsynchronously() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const fetchTodos = async () => {
