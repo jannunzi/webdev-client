@@ -8,22 +8,22 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
     cover: {
       color: "#339933",
       icon: "link",
-      headline: "Path and Query Parameters",
+      headline: "Sending Data to the Server",
     },
     bullets: [
-      "Chapter 5 · Path and Query Parameters",
-      "§5.2.2 · three ways to send data",
+      "Chapter 5 · Sending Data to the Server",
+      "§5.2.2 · path, query, and JSON body",
     ],
   },
   {
     id: "three-ways",
-    title: "Implementing Path and Query Parameters",
+    title: "Three ways to send data to a server",
     kind: "content",
     bullets: [
       "**Path parameters** — `/lab5/add/2/5` as URL segments",
       "**Query parameters** — `/lab5/add?a=2&b=5` after `?`",
-      "**Request body** — JSON `{a: 2, b: 5}` in §5.2.6",
-      "Today is path and query. Body waits for axios POST",
+      "**JSON request body** — `{a: 2, b: 5}` with POST/PUT",
+      "Today: path and query. JSON bodies: Async HTTP deck",
     ],
   },
   {
@@ -172,12 +172,13 @@ const [b, setB] = useState("23");
   },
   {
     id: "recap",
-    title: "Path and query recap",
+    title: "Sending data recap",
     kind: "content",
     bullets: [
       "`req.params` vs `req.query` — both arrive as strings",
       "Send results with `.toString()` so the body is not a status",
       "Implement × and ÷ on both encodings",
+      "JSON bodies (`req.body`) arrive in Async HTTP and JSON",
     ],
   },
   {

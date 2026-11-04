@@ -1035,9 +1035,9 @@ const LECTURE_SUMMARIES: Record<
     slides: LAB5_ENV_SLIDES,
   },
   "path-and-query": {
-    title: "Path and Query Parameters",
+    title: "Sending Data to the Server",
     summary:
-      "req.params vs req.query, .toString() on results, then multiply and divide on your own — §5.2.2.",
+      "Ways to send data: path params, query strings, and JSON bodies (later in §5.2.6). req.params vs req.query, .toString() on results, then multiply and divide on your own — §5.2.2.",
     chapter: 5,
     topicId: "lab5-api",
     bookSectionId: "sec-5-2-2",
