@@ -7,8 +7,8 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
     kind: "title",
     cover: {
       color: "#339933",
-      label: "NODE.JS",
-      headline: "Your First Express Server",
+      icon: "server",
+      headline: "Creating Express Servers",
     },
     bullets: [
       "Chapter 5 · HTTP Server",

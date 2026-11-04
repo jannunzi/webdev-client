@@ -952,63 +952,45 @@ html.lecture-presenting body {
   min-width: 0;
 }
 
-/* Opt-in thumbnail-style cover (slide.cover), G2 video-thumb look. */
+/* Opt-in thumbnail-style cover (slide.cover): solid topic color, one icon. */
 .lecture-slide-cover {
   position: relative;
   container-type: inline-size;
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  border-color: var(--lecture-cover-color) !important;
+  text-align: center;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
   color: #fff;
-  background-color: var(--lecture-cover-color) !important;
-  background-image:
-    radial-gradient(circle at 85% 20%, rgba(255, 255, 255, 0.22) 0 12%, transparent 12.5%),
-    radial-gradient(circle at 92% 85%, rgba(0, 0, 0, 0.18) 0 22%, transparent 22.5%),
-    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0 18px, transparent 18px 36px),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0.35));
+  border-color: var(--lecture-cover-color) !important;
+  background: var(--lecture-cover-color) !important;
 }
-.lecture-cover-label {
+.lecture-cover-icon {
   position: absolute;
   top: 1.25rem;
   left: 1.5rem;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: clamp(1.1rem, 3cqi, 2rem);
-  font-weight: 800;
-  letter-spacing: 0.06em;
-}
-.lecture-cover-mark {
-  font-family: ui-monospace, monospace;
-  background: #fff;
-  color: var(--lecture-cover-color);
-  border-radius: 0.4rem;
-  padding: 0.05em 0.35em;
+  width: clamp(2rem, 6cqi, 4rem);
+  height: clamp(2rem, 6cqi, 4rem);
 }
 .lecture-cover-headline {
   margin: 0;
   text-transform: uppercase;
   line-height: 1.05;
   white-space: nowrap;
-  text-shadow: 0 0.06em 0 rgba(0, 0, 0, 0.35);
-}
-.lecture-cover-subtitle {
-  margin: 0.75rem 0 0.25rem;
-  font-size: clamp(1.1rem, 3.4cqi, 2.2rem);
-  font-weight: 700;
-  opacity: 0.9;
 }
 .lecture-slide-cover .lecture-slide-bullets {
-  color: rgba(255, 255, 255, 0.9);
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: clamp(1rem, 2.6cqi, 1.6rem);
 }
 .lecture-cover-brand {
   position: absolute;
   bottom: 1rem;
   left: 1.5rem;
   margin: 0;
-  font-weight: 800;
+  color: rgba(255, 255, 255, 0.6);
   font-size: clamp(0.9rem, 2.2cqi, 1.4rem);
 }

@@ -7,8 +7,8 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
     kind: "title",
     cover: {
       color: "#339933",
-      label: "EXPRESS",
-      headline: "Objects That Live on the Server",
+      icon: "server",
+      headline: "Remote Objects",
     },
     bullets: [
       "Chapter 5 · Remote Objects",

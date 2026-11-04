@@ -7,8 +7,8 @@ export const CH5_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
     kind: "title",
     cover: {
       color: "#F59E0B",
-      label: "CHAPTER 5",
-      headline: "Do You Really Know REST?",
+      icon: "check",
+      headline: "Check Your Understanding",
     },
     bullets: [
       "Chapter 5 · Check Your Understanding",

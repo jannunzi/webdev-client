@@ -7,8 +7,8 @@ export const REMOTE_ARRAYS_SLIDES: LectureSlide[] = [
     kind: "title",
     cover: {
       color: "#339933",
-      label: "EXPRESS",
-      headline: "Full CRUD on a Server Array",
+      icon: "server",
+      headline: "Remote Arrays",
     },
     bullets: [
       "Chapter 5 · Remote Arrays",

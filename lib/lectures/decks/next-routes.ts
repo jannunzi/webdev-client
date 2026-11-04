@@ -7,8 +7,8 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
     kind: "title",
     cover: {
       color: "#171717",
-      label: "NEXT.JS",
-      headline: "APIs Inside Next.js",
+      icon: "server",
+      headline: "Next.js Server Routes",
     },
     bullets: [
       "Chapter 5 · Next.js Server Routes",

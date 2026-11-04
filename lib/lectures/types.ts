@@ -792,14 +792,23 @@ export type LectureSlide = {
 };
 
 /**
- * Thumbnail-style cover (G2 video thumbs: solid brand color, white mark +
- * topic label top-left, big bold Oswald headline, WebDevTV bottom-left).
+ * Thumbnail-style cover (G2 video thumbs: solid topic color, one white icon
+ * top-left, big bold Oswald headline, WebDevTV bottom-left).
  */
+export type LectureCoverIcon =
+  | "server"
+  | "code"
+  | "link"
+  | "check"
+  | "database"
+  | "user"
+  | "cloud";
+
 export type LectureCover = {
   /** Topic brand color, e.g. Node green `#339933`. */
   color: string;
-  /** Short topic label shown top-left, e.g. "EXPRESS". */
-  label: string;
+  /** One simple white icon at the top left, like the video thumbs' mark. */
+  icon: LectureCoverIcon;
   /** Punchy one-line headline, 42 characters or fewer. */
   headline: string;
 };

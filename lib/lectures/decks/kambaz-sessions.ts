@@ -7,8 +7,8 @@ export const KAMBAZ_SESSIONS_SLIDES: LectureSlide[] = [
     kind: "title",
     cover: {
       color: "#C8102E",
-      label: "KAMBAZ",
-      headline: "One Cookie Per User",
+      icon: "user",
+      headline: "Sessions and Axios",
     },
     bullets: [
       "Chapter 5 · Sessions and Axios",

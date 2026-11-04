@@ -7,8 +7,8 @@ export const LAB5_ENV_SLIDES: LectureSlide[] = [
     kind: "title",
     cover: {
       color: "#339933",
-      label: "EXPRESS",
-      headline: "Two Servers, One Env Var",
+      icon: "code",
+      headline: "Environment Variables",
     },
     bullets: [
       "Chapter 5 · Lab 5 Environment",

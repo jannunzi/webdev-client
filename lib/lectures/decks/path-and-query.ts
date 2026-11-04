@@ -7,8 +7,8 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
     kind: "title",
     cover: {
       color: "#339933",
-      label: "EXPRESS",
-      headline: "Path vs Query Params",
+      icon: "link",
+      headline: "Path and Query Parameters",
     },
     bullets: [
       "Chapter 5 · Path and Query Parameters",

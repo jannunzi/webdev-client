@@ -7,8 +7,8 @@ export const KAMBAZ_MIGRATE_DB_SLIDES: LectureSlide[] = [
     kind: "title",
     cover: {
       color: "#C8102E",
-      label: "KAMBAZ",
-      headline: "Move the Data to the Server",
+      icon: "database",
+      headline: "Migrating the Database",
     },
     bullets: [
       "Chapter 5 · Migrating the Database",

@@ -7,8 +7,8 @@ export const DEPLOY_API_SLIDES: LectureSlide[] = [
     kind: "title",
     cover: {
       color: "#0E7C66",
-      label: "RENDER",
-      headline: "Ship Your API to the Cloud",
+      icon: "cloud",
+      headline: "Deploy the API",
     },
     bullets: [
       "Chapter 5 · Deploy the API",

@@ -7,8 +7,8 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     kind: "title",
     cover: {
       color: "#5A29E4",
-      label: "AXIOS",
-      headline: "Fetch Data Without Reloading",
+      icon: "link",
+      headline: "Async HTTP and JSON",
     },
     bullets: [
       "Chapter 5 · Async HTTP and JSON",

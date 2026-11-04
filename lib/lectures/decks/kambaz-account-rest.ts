@@ -7,8 +7,8 @@ export const KAMBAZ_ACCOUNT_REST_SLIDES: LectureSlide[] = [
     kind: "title",
     cover: {
       color: "#C8102E",
-      label: "KAMBAZ",
-      headline: "Sign In for Real",
+      icon: "user",
+      headline: "Account REST APIs",
     },
     bullets: [
       "Chapter 5 · Account REST APIs",

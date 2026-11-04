@@ -7,8 +7,8 @@ export const KAMBAZ_COURSES_API_SLIDES: LectureSlide[] = [
     kind: "title",
     cover: {
       color: "#C8102E",
-      label: "KAMBAZ",
-      headline: "Courses CRUD Goes Remote",
+      icon: "database",
+      headline: "Courses API",
     },
     bullets: [
       "Chapter 5 · Courses API",

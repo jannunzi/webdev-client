@@ -11,6 +11,7 @@ import {
 } from "@/lib/lectures/blocks";
 import {
   lectureChapterLabel,
+  type LectureCoverIcon,
   type LectureHubItem,
 } from "@/lib/lectures/types";
 import {
@@ -49,6 +50,33 @@ import { inlineEditDataProps } from "@/lib/inline-edit/mark";
 import SlideText from "./SlideText";
 
 const coverFont = Oswald({ subsets: ["latin"], weight: ["700"] });
+
+const COVER_ICON_PATHS: Record<LectureCoverIcon, string> = {
+  server: "M3 4h18v6H3zM3 14h18v6H3zM7 7h.01M7 17h.01",
+  code: "M8 6l-6 6 6 6M16 6l6 6-6 6",
+  link: "M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1",
+  check: "M4 12l5 5L20 6",
+  database: "M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3",
+  user: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 3.6-7 8-7s8 3 8 7",
+  cloud: "M7 18h10a4 4 0 0 0 .5-8A6 6 0 0 0 6 9a4.5 4.5 0 0 0 1 9z",
+};
+
+function LectureCoverIconMark({ icon }: { icon: LectureCoverIcon }) {
+  return (
+    <svg
+      className="lecture-cover-icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.4}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d={COVER_ICON_PATHS[icon]} />
+    </svg>
+  );
+}
 
 const NEXT_SLIDE_KEYS = new Set(["ArrowRight", "PageDown", " ", "n", "N"]);
 const PREV_SLIDE_KEYS = new Set(["ArrowLeft", "PageUp", "Backspace", "p", "P"]);
@@ -575,12 +603,7 @@ export default function LectureDeckShell({
         >
           {cover ? (
             <>
-              <p className="lecture-cover-label">
-                <span aria-hidden="true" className="lecture-cover-mark">
-                  {"{ }"}
-                </span>
-                {cover.label}
-              </p>
+              <LectureCoverIconMark icon={cover.icon} />
               <h2
                 className={`lecture-cover-headline ${coverFont.className}`}
                 style={{
@@ -589,9 +612,6 @@ export default function LectureDeckShell({
               >
                 {cover.headline}
               </h2>
-              <p className="lecture-cover-subtitle">
-                <SlideText text={slide.title} bare />
-              </p>
               <SlideBlockView slide={slide} density={density} />
               <p className="lecture-cover-brand">WebDevTV</p>
             </>

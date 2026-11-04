@@ -7,8 +7,8 @@ export const NODEMON_ES6_ROUTES_SLIDES: LectureSlide[] = [
     kind: "title",
     cover: {
       color: "#339933",
-      label: "EXPRESS",
-      headline: "Auto-Restart, Modules, Routes",
+      icon: "code",
+      headline: "Nodemon, ES6, and Routes",
     },
     bullets: [
       "Chapter 5 · Nodemon, ES6, Routes",
