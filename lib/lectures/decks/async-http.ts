@@ -147,7 +147,7 @@ export const fetchWelcomeMessage = async () => {
     title: "Updating Remote Objects Asynchronously",
     kind: "demo",
     bullets: [
-      "In a new `WorkingWithObjectsAsync.tsx` component, add the code below",
+      "In a new `WorkingWithRemoteObjectsAsync.tsx` component, add the code below",
       "Load the assignment on mount. Update the title in place",
       "Import into `app/labs/lab5/page.tsx`",
     ],

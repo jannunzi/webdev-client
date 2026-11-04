@@ -42,7 +42,7 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
     title: "Sending an Object with res.json",
     kind: "demo",
     bullets: [
-      "In a new `Lab5/WorkingWithObjects.ts`, add the route as shown below",
+      "In a new `Lab5/WorkingWithRemoteObjects.ts`, add the route as shown below",
       "Goal: the browser shows the whole assignment as JSON",
       "Import into `Lab5/index.ts`",
     ],
@@ -75,7 +75,7 @@ export default function WorkingWithRemoteObjects(app) {
     title: "Linking to Get Assignment",
     kind: "demo",
     bullets: [
-      "In a new `WorkingWithObjects.tsx` component, create the link as shown below",
+      "In a new `WorkingWithRemoteObjects.tsx` component, create the link as shown below",
       "Get Assignment navigates to the route you just wrote",
       "Import into `app/labs/lab5/page.tsx`",
     ],
@@ -95,7 +95,7 @@ export default function WorkingWithRemoteObjects(app) {
     title: "Implementing GET Assignment Title",
     kind: "demo",
     bullets: [
-      "In `WorkingWithObjects.ts`, add the route as shown below",
+      "In `WorkingWithRemoteObjects.ts`, add the route as shown below",
       "`/lab5/assignment/title` responds with just the string",
     ],
     code: `const getAssignmentTitle = (req, res) => {
@@ -111,7 +111,7 @@ app.get("/lab5/assignment/title", getAssignmentTitle);`,
     title: "Retrieving One Object Property",
     kind: "demo",
     bullets: [
-      "In `WorkingWithObjects.tsx`, add the link as shown below",
+      "In `WorkingWithRemoteObjects.tsx`, add the link as shown below",
       "`/lab5/assignment/title` returns just the string",
     ],
     code: "<h4>Retrieving Properties</h4>\n<a id=\"wd-retrieve-assignment-title\"\n  href={`${HTTP_SERVER}/lab5/assignment/title`}>\n  Get Title\n</a>",
@@ -124,7 +124,7 @@ app.get("/lab5/assignment/title", getAssignmentTitle);`,
     title: "Updating the Title from the Path",
     kind: "demo",
     bullets: [
-      "In `WorkingWithObjects.ts`, add the route as shown below",
+      "In `WorkingWithRemoteObjects.ts`, add the route as shown below",
       "A path segment writes `assignment.title`, then returns the object",
       "Refresh Get Assignment — the new title stays until reboot",
     ],
@@ -143,7 +143,7 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
     title: "Updating a Property from an Input",
     kind: "demo",
     bullets: [
-      "In `WorkingWithObjects.tsx`, add the state, link, and input",
+      "In `WorkingWithRemoteObjects.tsx`, add the state, link, and input",
       "The input edits local state. The link sends it to Express",
     ],
     code: "const [assignment, setAssignment] = useState({\n  id: 1, title: \"NodeJS Assignment\",\n  description: \"Create a NodeJS server with ExpressJS\",\n  due: \"2021-10-10\", completed: false, score: 0,\n});\nconst ASSIGNMENT_API_URL = `${HTTP_SERVER}/lab5/assignment`;\n<a id=\"wd-update-assignment-title\"\n  href={`${ASSIGNMENT_API_URL}/title/${assignment.title}`}>\n  Update Title\n</a>\n<input id=\"wd-assignment-title\" value={assignment.title}\n  onChange={(e) => setAssignment({ ...assignment, title: e.target.value })} />",
