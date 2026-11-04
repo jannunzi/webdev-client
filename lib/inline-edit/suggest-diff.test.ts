@@ -5,8 +5,10 @@ import {
   applyChoices,
   buildDiff,
   continuationSentence,
+  fitGhost,
   maskPreservedHtml,
   placeholdersIntact,
+  splitGhostWord,
 } from "./suggest-diff.ts";
 
 describe("suggestion placeholders and hunks", () => {
@@ -66,5 +68,32 @@ describe("suggestion placeholders and hunks", () => {
       "Next you install Node.",
     );
     assert.equal(continuationSentence("Use ⟦0⟧ <strong>CSS</strong> now."), "Use CSS now.");
+    assert.equal(continuationSentence(" finishes the word."), " finishes the word.");
+  });
+
+  it("accepts the next ghost word and fits an insertion before the following text", () => {
+    assert.deepEqual(splitGhostWord(" next sentence."), { take: " next", rest: " sentence." });
+    assert.deepEqual(splitGhostWord("word rest"), { take: "word", rest: " rest" });
+    assert.equal(splitGhostWord("   "), null);
+
+    assert.equal(
+      fitGhost(
+        " finishes the idea. paints the page when CSS is ready.",
+        "paints the page when CSS is ready.",
+      ),
+      " finishes the idea.",
+    );
+    assert.equal(
+      fitGhost("paints the page when CSS is ready.", "paints the page when CSS is ready and more."),
+      "",
+    );
+    assert.equal(fitGhost("ser paints the page.", "the page for real users."), "ser paints the page.");
+    assert.equal(
+      fitGhost(
+        " Save the file, then paints the page when CSS is ready.",
+        "paints the page when CSS is ready.",
+      ),
+      " Save the file, then",
+    );
   });
 });

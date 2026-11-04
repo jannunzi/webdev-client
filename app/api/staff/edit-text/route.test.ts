@@ -127,9 +127,63 @@ describe("POST /api/staff/edit-text", () => {
     );
   });
 
-  it("opens a pull request on main instead of committing to it", async () => {
-    const { fetchImpl, calls } = githubFetch(SOURCE);
-    const response = await handleEditTextRequest(
+  it("commits directly to main on production and when the ref is main", async () => {
+    for (const ref of ["main", undefined] as const) {
+      const { fetchImpl, calls } = githubFetch(SOURCE);
+      const response = await handleEditTextRequest(
+        editRequest('Hi <slot data-i="0"></slot> there'),
+        {
+          staff: { email: "staff@example.com" },
+          env: ref ? { ...env, VERCEL_GIT_COMMIT_REF: ref } : env,
+          fetchImpl,
+        },
+      );
+      assert.equal(response.status, 200);
+      const body = (await response.json()) as { mode: string; branch: string };
+      assert.equal(body.mode, "commit");
+      assert.equal(body.branch, "main");
+      const put = calls.find((call) => call.method === "PUT");
+      assert.ok(put);
+      const payload = JSON.parse(put.body) as { branch: string; message: string };
+      assert.equal(payload.branch, "main");
+      assert.equal(payload.message, `Inline edit by staff@example.com in ${FILE}`);
+      assert.equal(calls.some((call) => call.url.includes("/pulls")), false);
+      assert.equal(calls.some((call) => call.url.includes("/git/refs")), false);
+    }
+  });
+
+  it("retries a sha conflict once when the edited region still matches", async () => {
+    const drifted = `// comment added elsewhere\n${SOURCE}`;
+    let gets = 0;
+    let puts = 0;
+    const fetchImpl: FetchLike = async (url, init) => {
+      const method = init?.method ?? "GET";
+      if (url.includes("/contents/") && method === "GET") {
+        gets += 1;
+        const source = gets === 1 ? SOURCE : drifted;
+        return response({
+          content: Buffer.from(source).toString("base64"),
+          sha: gets === 1 ? "sha-1" : "sha-2",
+          encoding: "base64",
+        });
+      }
+      if (url.includes("/contents/") && method === "PUT") {
+        puts += 1;
+        const payload = JSON.parse(String(init?.body)) as { sha: string; branch: string; content: string };
+        if (puts === 1) {
+          assert.equal(payload.sha, "sha-1");
+          return response({ message: "sha conflict" }, 409);
+        }
+        assert.equal(payload.sha, "sha-2");
+        assert.equal(payload.branch, "main");
+        const written = Buffer.from(payload.content, "base64").toString("utf8");
+        assert.match(written, /comment added elsewhere/);
+        assert.match(written, /\{"Hi "\}/);
+        return response({ commit: { sha: "commit-sha" } });
+      }
+      return response({ message: "missing" }, 404);
+    };
+    const saved = await handleEditTextRequest(
       editRequest('Hi <slot data-i="0"></slot> there'),
       {
         staff: { email: "staff@example.com" },
@@ -137,20 +191,48 @@ describe("POST /api/staff/edit-text", () => {
         fetchImpl,
       },
     );
-    assert.equal(response.status, 200);
-    const body = (await response.json()) as { mode: string; url: string; branch: string };
-    assert.equal(body.mode, "pr");
-    assert.equal(body.url, "https://github.com/octo/web/pull/9");
-    assert.match(body.branch, /^inline-edit\//);
-    const pull = calls.find((call) => call.url.includes("/pulls"));
-    assert.ok(pull);
-    const pullBody = JSON.parse(pull.body) as { title: string; base: string; head: string };
-    assert.equal(pullBody.title, `Inline edit: ${FILE}`);
-    assert.equal(pullBody.base, "main");
-    assert.equal(pullBody.head, body.branch);
-    const put = calls.find((call) => call.method === "PUT");
-    assert.ok(put);
-    assert.notEqual(JSON.parse(put.body).branch, "main");
+    assert.equal(saved.status, 200);
+    const body = (await saved.json()) as { mode: string; branch: string };
+    assert.equal(body.mode, "commit");
+    assert.equal(body.branch, "main");
+    assert.equal(gets, 2);
+    assert.equal(puts, 2);
+  });
+
+  it("stops after a sha conflict when the edited region no longer matches", async () => {
+    const changed = SOURCE.replace("Hello", "Goodbye");
+    let gets = 0;
+    let puts = 0;
+    const fetchImpl: FetchLike = async (url, init) => {
+      const method = init?.method ?? "GET";
+      if (url.includes("/contents/") && method === "GET") {
+        gets += 1;
+        const source = gets === 1 ? SOURCE : changed;
+        return response({
+          content: Buffer.from(source).toString("base64"),
+          sha: `sha-${gets}`,
+          encoding: "base64",
+        });
+      }
+      if (url.includes("/contents/") && method === "PUT") {
+        puts += 1;
+        return response({ message: "sha conflict" }, 409);
+      }
+      return response({ message: "missing" }, 404);
+    };
+    const saved = await handleEditTextRequest(
+      editRequest('Hi <slot data-i="0"></slot> there'),
+      {
+        staff: { email: "staff@example.com" },
+        env: { ...env, VERCEL_GIT_COMMIT_REF: "main" },
+        fetchImpl,
+      },
+    );
+    assert.equal(saved.status, 409);
+    const body = (await saved.json()) as { error: string };
+    assert.match(body.error, /no longer matches/);
+    assert.equal(gets, 2);
+    assert.equal(puts, 1);
   });
 
   it("tells staff to set GITHUB_EDIT_TOKEN when it is missing", async () => {

@@ -2,7 +2,7 @@ import { generateText } from "ai";
 import type { StaffGate } from "./handle-edit";
 import { suggestRateLimit } from "./rate-limit";
 import {
-  continuationSentence,
+  fitGhost,
   placeholdersIntact,
   stripModelFence,
 } from "./suggest-diff";
@@ -16,10 +16,14 @@ The only markup you may use is <strong> and <em>.
 Placeholders written ⟦n⟧ stand for links or code. Keep every placeholder exactly once. Do not invent new placeholders.
 Return only the rewritten passage.`;
 
-const CONTINUE_SYSTEM = `You continue one passage from a web development textbook.
-Write the single next sentence in the same style: precise terms, no new scenario, no list, no heading.
-Do not use placeholders. Do not use markup.
-Return only that sentence.`;
+const CONTINUE_SYSTEM = `You insert text at the caret in a web development textbook.
+BEFORE is the text up to the caret. AFTER is the text that already follows it.
+If BEFORE ends a sentence, write the next sentence.
+If BEFORE is mid-sentence, finish that sentence so it reads into AFTER.
+Begin with a single space when the insertion starts a new word. Do not begin with a space when it finishes the word at the caret.
+Do not repeat AFTER. Do not invent a scenario, list, or heading.
+Do not use placeholders or markup.
+Return only the insertion.`;
 
 export type SuggestMode = "improve" | "continue";
 
@@ -63,11 +67,14 @@ export async function handleAiSuggestRequest(
   const body = payload && typeof payload === "object" ? (payload as Record<string, unknown>) : {};
   const mode = body.mode === "improve" || body.mode === "continue" ? body.mode : null;
   const text = typeof body.text === "string" ? body.text : "";
+  const before = typeof body.before === "string" ? body.before : text;
+  const after = typeof body.after === "string" ? body.after : "";
   const maskCount = typeof body.maskCount === "number" ? body.maskCount : 0;
   if (!mode) {
     return Response.json({ ok: false, error: "Unknown suggestion mode." }, { status: 400 });
   }
-  if (!text.trim() || text.length > 8_000) {
+  const passage = mode === "continue" ? `${before}${after}` : text;
+  if (!passage.trim() || passage.length > 8_000) {
     return Response.json(
       { ok: false, error: "There is no text to suggest from." },
       { status: 400 },
@@ -88,7 +95,10 @@ export async function handleAiSuggestRequest(
     raw = await generate({
       model,
       system: mode === "improve" ? IMPROVE_SYSTEM : CONTINUE_SYSTEM,
-      prompt: text,
+      prompt:
+        mode === "continue"
+          ? `BEFORE:\n${before}\n\nAFTER:\n${after}`
+          : text,
       maxOutputTokens: mode === "continue" ? 120 : 800,
     });
   } catch {
@@ -104,7 +114,7 @@ export async function handleAiSuggestRequest(
 
   const cleaned = stripModelFence(raw);
   if (mode === "continue") {
-    const sentence = continuationSentence(cleaned);
+    const sentence = fitGhost(cleaned, after);
     if (!sentence) {
       return Response.json({ ok: false, error: "The model returned an empty sentence." }, { status: 502 });
     }
