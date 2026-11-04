@@ -99,7 +99,6 @@ Lab5(app);`,
     bullets: [
       "In a new `app/labs/lab5/client.ts`, add the request function",
       "Screens share one file so the welcome URL changes once",
-      "`useEffect` later loads data when the component mounts",
     ],
     code: `import axios from "axios";
 const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
