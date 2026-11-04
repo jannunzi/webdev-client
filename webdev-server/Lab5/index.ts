@@ -1,6 +1,6 @@
 import PathParameters from "./PathParameters";
 import QueryParameters from "./QueryParameters";
-import WorkingWithObjects from "./WorkingWithObjects";
+import WorkingWithRemoteObjects from "./WorkingWithRemoteObjects";
 import WorkingWithArrays from "./WorkingWithArrays";
 
 export default function Lab5(app) {
@@ -9,6 +9,6 @@ export default function Lab5(app) {
   });
   PathParameters(app);
   QueryParameters(app);
-  WorkingWithObjects(app);
+  WorkingWithRemoteObjects(app);
   WorkingWithArrays(app);
 }

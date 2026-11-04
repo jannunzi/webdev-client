@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import * as client from "../client";
 
-export default function WorkingWithObjectsAsynchronously() {
+export default function WorkingWithRemoteObjectsAsynchronously() {
   const [assignment, setAssignment] = useState<{
     title?: string;
     description?: string;
