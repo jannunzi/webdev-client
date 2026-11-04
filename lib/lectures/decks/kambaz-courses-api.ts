@@ -136,6 +136,18 @@ export const findMyCourses = async () => {
     embed: "kambaz-styled-dashboard",
   },
   {
+    id: "create-flow",
+    title: "Creating a course, end to end",
+    kind: "content",
+    bullets: [
+      "Dashboard Add sends the course draft to the client function",
+      "axios POSTs it as JSON to `/api/users/current/courses`, with the cookie",
+      "The server reads the user from the session and creates the course",
+      "It enrolls that user, then replies with the new course",
+      "The Dashboard then reloads its course list",
+    ],
+  },
+  {
     id: "create",
     title: "POST enrolls the creator",
     kind: "demo",

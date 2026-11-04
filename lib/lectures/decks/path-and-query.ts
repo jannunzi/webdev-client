@@ -91,6 +91,19 @@ export default function Lab5(app) {
     codeAddedLines: [1, 6],
   },
   {
+    id: "path-click",
+    title: "From a click to the add route",
+    kind: "content",
+    bullets: [
+      "`.env.development` sets `NEXT_PUBLIC_HTTP_SERVER=http://localhost:4000`",
+      "Example state: `a = 34`, `b = 23`",
+      "The link becomes `http://localhost:4000/lab5/add/34/23`",
+      "Click: the browser sends `GET` for that URL to Express",
+      "The add route sees `req.params = { a: \"34\", b: \"23\" }`",
+      "It responds with `57`, and the browser shows it",
+    ],
+  },
+  {
     id: "path-client",
     title: "Encode a and b in the href",
     kind: "demo",
@@ -169,6 +182,18 @@ const [b, setB] = useState("23");
     codeLanguage: "ts",
     codeFile: "webdev-server/Lab5/QueryParameters.ts",
     codeHighlightLines: [3, [5, 13], 17],
+  },
+  {
+    id: "query-click",
+    title: "From a click to the calculator",
+    kind: "content",
+    bullets: [
+      "Same `HTTP_SERVER` from `.env.development`",
+      "Example state: `a = 34`, `b = 23`, operation `add`",
+      "Link: `http://localhost:4000/lab5/calculator?operation=add&a=34&b=23`",
+      "Express sees `req.query = { operation: \"add\", a: \"34\", b: \"23\" }`",
+      "The calculator responds with `57`",
+    ],
   },
   {
     id: "query-client",

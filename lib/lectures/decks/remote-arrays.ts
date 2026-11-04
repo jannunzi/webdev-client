@@ -116,6 +116,18 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
     codeHighlightLines: [[16, 17]],
   },
   {
+    id: "arrays-click",
+    title: "Links that map to todo routes",
+    kind: "content",
+    bullets: [
+      "`API` is `http://localhost:4000/lab5/todos`",
+      "`API` → every todo. `API/1` → the todo with id 1",
+      "`API?completed=true` → only finished todos",
+      "`API/create` → appends New Task and returns the array",
+      "`API/1/delete` → removes todo 1 and returns the array",
+    ],
+  },
+  {
     id: "client",
     title: "A Get Todos hyperlink",
     kind: "demo",

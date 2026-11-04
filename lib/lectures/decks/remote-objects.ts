@@ -106,6 +106,18 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
     codeAddedLines: [[1, 6]],
   },
   {
+    id: "objects-click",
+    title: "Links that read and write the object",
+    kind: "content",
+    bullets: [
+      "`HTTP_SERVER/lab5/assignment` shows the whole object as JSON",
+      "`HTTP_SERVER/lab5/assignment/title` shows only `NodeJS Assignment`",
+      "Type `New Title`, and the link becomes `/lab5/assignment/title/New Title`",
+      "The server sets `newTitle` from the path and replies with the updated object",
+      "Get Title again now shows `New Title` until Express restarts",
+    ],
+  },
+  {
     id: "client",
     title: "Links retrieve, then update",
     kind: "demo",
