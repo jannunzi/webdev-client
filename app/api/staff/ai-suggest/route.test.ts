@@ -60,6 +60,29 @@ describe("POST /api/staff/ai-suggest", () => {
     assert.equal(body.text, "CSS then sets the color.");
   });
 
+  it("completes from the caret using the text before and after it", async () => {
+    let prompt = "";
+    const response = await handleAiSuggestRequest(
+      request({
+        mode: "continue",
+        before: "The brow",
+        after: "for the people who use it.",
+        maskCount: 0,
+      }),
+      {
+        staff: { email: "staff@example.com" },
+        generate: async (input) => {
+          prompt = input.prompt;
+          return "ser paints the page. for the people who use it.";
+        },
+      },
+    );
+    assert.match(prompt, /BEFORE:\nThe brow\n\nAFTER:\nfor the people who use it\./);
+    assert.equal(response.status, 200);
+    const body = (await response.json()) as { text: string };
+    assert.equal(body.text, "ser paints the page.");
+  });
+
   it("rate limits one staff member", async () => {
     const allow = createRateLimit(2, 60_000);
     const send = () =>

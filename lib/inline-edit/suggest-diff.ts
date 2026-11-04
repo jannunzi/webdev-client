@@ -46,15 +46,49 @@ export function stripModelFence(text: string): string {
   return (fenced?.[1] ?? trimmed).trim();
 }
 
-/** One sentence for ghost text. Placeholders and tags from the model are dropped. */
-export function continuationSentence(raw: string): string {
-  const cleaned = stripModelFence(raw)
-    .replace(/⟦\d+⟧/g, "")
-    .replace(/<[^>]+>/g, "")
+/** The next ghost word, including any leading space, and the remainder. */
+export function splitGhostWord(ghost: string): { take: string; rest: string } | null {
+  const match = /^(\s*\S+)([\s\S]*)$/.exec(ghost);
+  if (!match?.[1]) return null;
+  return { take: match[1], rest: match[2] ?? "" };
+}
+
+/**
+ * Insertion that belongs between the caret and the following text.
+ * One sentence, with a repeated tail of the following text removed.
+ */
+export function fitGhost(raw: string, after: string): string {
+  let sentence = continuationSentence(raw);
+  const afterPlain = after
+    .replace(/⟦\d+⟧/g, " ")
+    .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+  if (afterPlain.length >= 12) {
+    const probe = afterPlain.slice(0, 12).toLowerCase();
+    const at = sentence.toLowerCase().indexOf(probe);
+    if (at === 0) return "";
+    if (at > 0) {
+      const lead = sentence.startsWith(" ") ? " " : "";
+      const cut = sentence.slice(0, at).trim();
+      sentence = cut ? `${lead}${cut}` : "";
+    }
+  }
+  return sentence;
+}
+
+/**
+ * One sentence for ghost text. Placeholders and tags from the model are
+ * dropped. A single leading space is kept so a new word stays separate from
+ * the caret and a mid-word completion stays attached.
+ */
+export function continuationSentence(raw: string): string {
+  const lead = /^\s/.test(raw) ? " " : "";
+  const stripped = stripModelFence(raw).replace(/⟦\d+⟧/g, "").replace(/<[^>]+>/g, "");
+  const cleaned = stripped.replace(/\s+/g, " ").trim();
   const match = cleaned.match(/^[\s\S]*?[.!](?=\s|$)|^[\s\S]*?\?(?=\s|$)/);
-  return (match?.[0] ?? cleaned).trim();
+  const text = (match?.[0] ?? cleaned).trim();
+  return text ? `${lead}${text}` : "";
 }
 
 export function buildDiff(

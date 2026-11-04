@@ -17,6 +17,7 @@ import {
   buildDiff,
   maskPreservedHtml,
   renderReview,
+  splitGhostWord,
   type DiffPart,
   type HunkChoice,
 } from "@/lib/inline-edit/suggest-diff";
@@ -118,20 +119,77 @@ function removeGhost(el: HTMLElement) {
   el.querySelectorAll("[data-inline-ghost]").forEach((node) => node.remove());
 }
 
-function atSentenceEnd(root: HTMLElement): boolean {
+function serializeFragment(root: HTMLElement, fragment: DocumentFragment): string {
+  const holder = document.createElement(root.tagName);
+  if (root.dataset.editKind) holder.dataset.editKind = root.dataset.editKind;
+  holder.append(fragment);
+  return serializeEditable(holder);
+}
+
+/** HTML on each side of the caret, so a suggestion can be inserted mid-paragraph. */
+function caretHalves(root: HTMLElement): { beforeHtml: string; afterHtml: string } | null {
+  const selection = window.getSelection();
+  if (!selection || !selection.isCollapsed || selection.rangeCount === 0) return null;
+  const anchor = selection.anchorNode;
+  if (!anchor || !root.contains(anchor)) return null;
+  if (root.querySelector("[data-inline-ghost], [data-diff-hunk]")) return null;
+  const range = selection.getRangeAt(0);
+  const beforeRange = range.cloneRange();
+  beforeRange.selectNodeContents(root);
+  beforeRange.setEnd(range.endContainer, range.endOffset);
+  const afterRange = range.cloneRange();
+  afterRange.selectNodeContents(root);
+  afterRange.setStart(range.endContainer, range.endOffset);
+  const beforeHtml = serializeFragment(root, beforeRange.cloneContents());
+  const afterHtml = serializeFragment(root, afterRange.cloneContents());
+  if (!beforeHtml.trim() && !afterHtml.trim()) return null;
+  return { beforeHtml, afterHtml };
+}
+
+let suppressCaretDismiss = false;
+
+function caretIsBefore(node: Node): boolean {
   const selection = window.getSelection();
   if (!selection || !selection.isCollapsed || selection.rangeCount === 0) return false;
-  const anchor = selection.anchorNode;
-  if (!anchor || !root.contains(anchor) || root.querySelector("[data-inline-ghost]")) return false;
   const range = selection.getRangeAt(0);
-  const after = range.cloneRange();
-  after.selectNodeContents(root);
-  after.setStart(range.endContainer, range.endOffset);
-  if (after.toString().trim() !== "") return false;
-  const before = range.cloneRange();
-  before.selectNodeContents(root);
-  before.setEnd(range.endContainer, range.endOffset);
-  return /[.!?]["']?\s*$/.test(before.toString().replaceAll("\u00a0", " "));
+  if (range.endContainer === node.parentNode) {
+    return node.parentNode?.childNodes[range.endOffset] === node;
+  }
+  return (
+    range.endContainer.nodeType === Node.TEXT_NODE &&
+    range.endOffset === (range.endContainer.textContent?.length ?? 0) &&
+    range.endContainer.nextSibling === node
+  );
+}
+
+function textBeforeCaret(): string {
+  const selection = window.getSelection();
+  if (!selection || selection.rangeCount === 0) return "";
+  const range = selection.getRangeAt(0);
+  if (range.endContainer.nodeType !== Node.TEXT_NODE) return "";
+  return (range.endContainer.textContent ?? "").slice(0, range.endOffset);
+}
+
+/** Keep a model-supplied gap, and add one only when the next sentence follows punctuation. */
+function ghostText(sentence: string): string {
+  if (!sentence || /^\s/.test(sentence) || /^[,.;:!?]/.test(sentence)) return sentence;
+  if (/[.!?]["']?$/.test(textBeforeCaret())) return ` ${sentence}`;
+  return sentence;
+}
+
+function placeCaretAfter(node: Node) {
+  const selection = window.getSelection();
+  if (!selection) return;
+  suppressCaretDismiss = true;
+  try {
+    const range = document.createRange();
+    range.setStartAfter(node);
+    range.collapse(true);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  } finally {
+    suppressCaretDismiss = false;
+  }
 }
 
 function showGhost(root: HTMLElement, sentence: string) {
@@ -142,21 +200,41 @@ function showGhost(root: HTMLElement, sentence: string) {
   span.dataset.inlineGhost = "1";
   span.contentEditable = "false";
   span.className = "text-neutral-400";
-  span.textContent = sentence.startsWith(" ") ? sentence : ` ${sentence}`;
-  const range = selection.getRangeAt(0);
-  range.collapse(false);
-  range.insertNode(span);
-  const caret = document.createRange();
-  caret.setStartBefore(span);
-  caret.collapse(true);
-  selection.removeAllRanges();
-  selection.addRange(caret);
+  span.textContent = ghostText(sentence);
+  suppressCaretDismiss = true;
+  try {
+    const range = selection.getRangeAt(0);
+    range.collapse(false);
+    range.insertNode(span);
+    const caret = document.createRange();
+    caret.setStartBefore(span);
+    caret.collapse(true);
+    selection.removeAllRanges();
+    selection.addRange(caret);
+  } finally {
+    suppressCaretDismiss = false;
+  }
 }
 
 function acceptGhost(root: HTMLElement) {
   const ghost = root.querySelector("[data-inline-ghost]");
   if (!ghost) return false;
-  ghost.replaceWith(document.createTextNode(ghost.textContent ?? ""));
+  const node = document.createTextNode(ghost.textContent ?? "");
+  ghost.replaceWith(node);
+  placeCaretAfter(node);
+  return true;
+}
+
+function acceptGhostWord(root: HTMLElement) {
+  const ghost = root.querySelector("[data-inline-ghost]");
+  if (!ghost) return false;
+  const split = splitGhostWord(ghost.textContent ?? "");
+  if (!split) return false;
+  const node = document.createTextNode(split.take);
+  ghost.before(node);
+  if (split.rest) ghost.textContent = split.rest;
+  else ghost.remove();
+  placeCaretAfter(node);
   return true;
 }
 
@@ -288,6 +366,18 @@ function Editor() {
   async function requestSuggestion(el: HTMLElement, mode: "improve" | "continue") {
     const html = serializeEditable(el);
     const masked = maskPreservedHtml(html);
+    let text = masked.prompt;
+    let after = "";
+    let maskCount = masked.masks.length;
+    if (mode === "continue") {
+      const halves = caretHalves(el);
+      if (!halves) return;
+      const joined = maskPreservedHtml(`${halves.beforeHtml}\u0001${halves.afterHtml}`);
+      const parts = joined.prompt.split("\u0001");
+      text = parts[0] ?? "";
+      after = parts[1] ?? "";
+      maskCount = 0;
+    }
     const controller = new AbortController();
     continueAbort.current?.abort();
     if (mode === "continue") continueAbort.current = controller;
@@ -298,11 +388,7 @@ function Editor() {
         method: "POST",
         headers: { "content-type": "application/json" },
         signal: controller.signal,
-        body: JSON.stringify({
-          mode,
-          text: masked.prompt,
-          maskCount: masked.masks.length,
-        }),
+        body: JSON.stringify({ mode, text, before: text, after, maskCount }),
       });
       const data = (await response.json().catch(() => null)) as {
         ok?: boolean;
@@ -315,7 +401,11 @@ function Editor() {
         return;
       }
       if (mode === "continue") {
-        if (!reviewRef.current && atSentenceEnd(el)) showGhost(el, data.text);
+        const halves = caretHalves(el);
+        const again = halves
+          ? maskPreservedHtml(`${halves.beforeHtml}\u0001${halves.afterHtml}`).prompt.split("\u0001")[0]
+          : null;
+        if (!reviewRef.current && again === text) showGhost(el, data.text);
         return;
       }
       const diff = buildDiff(masked.prompt, data.text, masked.masks);
@@ -464,28 +554,44 @@ function Editor() {
 
   useEffect(() => {
     if (!editing || reviewing) return;
-    const schedule = () => {
-      removeGhost(editing);
+    const armGhost = () => {
+      if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
+      if (editing.querySelector("[data-inline-ghost]")) return;
+      ghostTimer.current = window.setTimeout(() => {
+        void requestSuggestion(editing, "continue");
+      }, 600);
+    };
+    const onBeforeInput = (event: InputEvent) => {
       continueAbort.current?.abort();
       if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
+      const ghost = editing.querySelector("[data-inline-ghost]");
+      if (!ghost) return;
+      if (event.inputType === "insertText" && event.data && (ghost.textContent ?? "").startsWith(event.data)) {
+        const rest = (ghost.textContent ?? "").slice(event.data.length);
+        if (rest) ghost.textContent = rest;
+        else ghost.remove();
+        return;
+      }
+      ghost.remove();
+    };
+    const onInput = () => {
       if (snapshotTimer.current != null) window.clearTimeout(snapshotTimer.current);
       snapshotTimer.current = window.setTimeout(() => pushSnapshot(editing), 400);
-      ghostTimer.current = window.setTimeout(() => {
-        if (!atSentenceEnd(editing)) return;
-        void requestSuggestion(editing, "continue");
-      }, 1500);
+      armGhost();
     };
-    const onInput = () => schedule();
     const onSelect = () => {
-      if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
-      ghostTimer.current = window.setTimeout(() => {
-        if (!atSentenceEnd(editing)) return;
-        void requestSuggestion(editing, "continue");
-      }, 1500);
+      if (suppressCaretDismiss) return;
+      const ghost = editing.querySelector("[data-inline-ghost]");
+      if (ghost && caretIsBefore(ghost)) return;
+      continueAbort.current?.abort();
+      if (ghost) ghost.remove();
+      armGhost();
     };
+    editing.addEventListener("beforeinput", onBeforeInput);
     editing.addEventListener("input", onInput);
     document.addEventListener("selectionchange", onSelect);
     return () => {
+      editing.removeEventListener("beforeinput", onBeforeInput);
       editing.removeEventListener("input", onInput);
       document.removeEventListener("selectionchange", onSelect);
       if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
@@ -514,6 +620,15 @@ function Editor() {
         restoreHistory(editing);
         return;
       }
+      if (
+        mod &&
+        event.key === "ArrowRight" &&
+        editing.querySelector("[data-inline-ghost]")
+      ) {
+        event.preventDefault();
+        if (acceptGhostWord(editing)) pushSnapshot(editing);
+        return;
+      }
       if (event.key === "Tab" && editing.querySelector("[data-inline-ghost]")) {
         event.preventDefault();
         if (acceptGhost(editing)) pushSnapshot(editing);
@@ -521,6 +636,8 @@ function Editor() {
       }
       if (event.key === "Escape") {
         event.preventDefault();
+        continueAbort.current?.abort();
+        if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
         if (editing.querySelector("[data-inline-ghost]")) {
           removeGhost(editing);
           return;
