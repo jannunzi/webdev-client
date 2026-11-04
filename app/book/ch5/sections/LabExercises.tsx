@@ -175,7 +175,7 @@ app.listen(4000);`}</CodeBlock>
         <CodeBlock
           language="tsx"
           name="Environment"
-          file="app/labs/lab5/intermediates/5-2-1-Environment.tsx"
+          file="app/labs/lab5/Environment.tsx"
         >{`export default function Environment() {
   const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
   return (
@@ -202,7 +202,7 @@ app.listen(4000);`}</CodeBlock>
         </p>
         <LiveDemo
           name="Environment"
-          file="app/labs/lab5/intermediates/5-2-1-Environment.tsx"
+          file="app/labs/lab5/Environment.tsx"
           mode="styled"
         >
           <Environment />
@@ -353,7 +353,7 @@ export default function Lab5(app) {
           <CodeBlock
             language="tsx"
             name="PathParameters"
-            file="app/labs/lab5/intermediates/5-2-2-1-PathParameters.tsx"
+            file="app/labs/lab5/PathParameters.tsx"
           >{`const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 const [a, setA] = useState("34");
 const [b, setB] = useState("23");
@@ -363,7 +363,7 @@ const [b, setB] = useState("23");
 </a>`}</CodeBlock>
           <LiveDemo
             name="PathParameters"
-            file="app/labs/lab5/intermediates/5-2-2-1-PathParameters.tsx"
+            file="app/labs/lab5/PathParameters.tsx"
             mode="styled"
           >
             <PathParameters />
@@ -439,14 +439,14 @@ const [b, setB] = useState("23");
           <CodeBlock
             language="tsx"
             name="QueryParameters"
-            file="app/labs/lab5/intermediates/5-2-2-2-QueryParameters.tsx"
+            file="app/labs/lab5/QueryParameters.tsx"
           >{`<a id="wd-query-parameter-add"
   href={\`\${HTTP_SERVER}/lab5/calculator?operation=add&a=\${a}&b=\${b}\`}>
   Add {a} + {b}
 </a>`}</CodeBlock>
           <LiveDemo
             name="QueryParameters"
-            file="app/labs/lab5/intermediates/5-2-2-2-QueryParameters.tsx"
+            file="app/labs/lab5/QueryParameters.tsx"
             mode="styled"
           >
             <QueryParameters />
@@ -530,7 +530,7 @@ export default function WorkingWithObjects(app) {
           <CodeBlock
             language="tsx"
             name="Retrieving Objects"
-            file="app/labs/lab5/intermediates/5-2-3-WorkingWithObjects.tsx"
+            file="app/labs/lab5/WorkingWithObjects.tsx"
           >{`<h4>Retrieving Objects</h4>
 <a id="wd-retrieve-assignments"
   className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white"
@@ -568,7 +568,7 @@ app.get("/lab5/assignment", getAssignment);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="Retrieving Properties"
-            file="app/labs/lab5/intermediates/5-2-3-WorkingWithObjects.tsx"
+            file="app/labs/lab5/WorkingWithObjects.tsx"
           >{`<h4>Retrieving Properties</h4>
 <a id="wd-retrieve-assignment-title"
   href={\`\${HTTP_SERVER}/lab5/assignment/title\`}>
@@ -617,7 +617,7 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="Modifying Properties"
-            file="app/labs/lab5/intermediates/5-2-3-WorkingWithObjects.tsx"
+            file="app/labs/lab5/WorkingWithObjects.tsx"
           >{`const [assignment, setAssignment] = useState({
   id: 1, title: "NodeJS Assignment",
   description: "Create a NodeJS server with ExpressJS",
@@ -673,7 +673,7 @@ const ASSIGNMENT_API_URL = \`\${HTTP_SERVER}/lab5/assignment\`;
           </p>
           <LiveDemo
             name="WorkingWithObjects"
-            file="app/labs/lab5/intermediates/5-2-3-WorkingWithObjects.tsx"
+            file="app/labs/lab5/WorkingWithObjects.tsx"
             mode="styled"
           >
             <WorkingWithObjects />
@@ -753,7 +753,7 @@ export default function WorkingWithArrays(app) {
           <CodeBlock
             language="tsx"
             name="Retrieving Arrays"
-            file="app/labs/lab5/intermediates/5-2-4-WorkingWithArrays.tsx"
+            file="app/labs/lab5/WorkingWithArrays.tsx"
           >{`const API = \`\${HTTP_SERVER}/lab5/todos\`;
 <a id="wd-retrieve-todos" href={API}>Get Todos</a>`}</CodeBlock>
         </Section>
@@ -791,7 +791,7 @@ app.get("/lab5/todos/:id", getTodoById);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="Get Todo by ID"
-            file="app/labs/lab5/intermediates/5-2-4-WorkingWithArrays.tsx"
+            file="app/labs/lab5/WorkingWithArrays.tsx"
           >{`const [todo, setTodo] = useState({ id: "1" });
 <a id="wd-retrieve-todo-by-id" href={\`\${API}/\${todo.id}\`}>
   Get Todo by ID
@@ -840,7 +840,7 @@ app.get("/lab5/todos/:id", getTodoById);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="Filtering Array Items"
-            file="app/labs/lab5/intermediates/5-2-4-WorkingWithArrays.tsx"
+            file="app/labs/lab5/WorkingWithArrays.tsx"
           >{`<a id="wd-retrieve-completed-todos" href={\`\${API}?completed=true\`}>
   Get Completed Todos
 </a>`}</CodeBlock>
@@ -898,7 +898,7 @@ app.get("/lab5/todos/:id", getTodoById);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="Creating new Items"
-            file="app/labs/lab5/intermediates/5-2-4-WorkingWithArrays.tsx"
+            file="app/labs/lab5/WorkingWithArrays.tsx"
           >{`<a id="wd-create-todo" href={\`\${API}/create\`}>Create Todo</a>`}</CodeBlock>
         </Section>
 
@@ -935,7 +935,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="Removing from an Array"
-            file="app/labs/lab5/intermediates/5-2-4-WorkingWithArrays.tsx"
+            file="app/labs/lab5/WorkingWithArrays.tsx"
           >{`<a id="wd-remove-todo" href={\`\${API}/\${todo.id}/delete\`}>
   Remove Todo with ID = {todo.id}
 </a>`}</CodeBlock>
@@ -974,7 +974,7 @@ app.get("/lab5/todos/:id/title/:title", updateTodoTitle);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="Updating an Item"
-            file="app/labs/lab5/intermediates/5-2-4-WorkingWithArrays.tsx"
+            file="app/labs/lab5/WorkingWithArrays.tsx"
           >{`<a href={\`\${API}/\${todo.id}/title/\${todo.title}\`} id="wd-update-todo-title">
   Update Todo
 </a>
@@ -1015,7 +1015,7 @@ app.get("/lab5/todos/:id/title/:title", updateTodoTitle);`}</CodeBlock>
           </ul>
           <LiveDemo
             name="WorkingWithArrays"
-            file="app/labs/lab5/intermediates/5-2-4-WorkingWithArrays.tsx"
+            file="app/labs/lab5/WorkingWithArrays.tsx"
             mode="styled"
           >
             <WorkingWithArrays />
@@ -1096,7 +1096,7 @@ app.get("/lab5/todos/:id/title/:title", updateTodoTitle);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="HttpClient"
-            file="app/labs/lab5/intermediates/5-2-5-HttpClient.tsx"
+            file="app/labs/lab5/HttpClient.tsx"
           >{`import axios from "axios";
 const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 const [welcomeOnClick, setWelcomeOnClick] = useState("");
@@ -1207,7 +1207,7 @@ export const fetchWelcomeMessage = async () => {
           <CodeBlock
             language="tsx"
             name="HttpClient uses client"
-            file="app/labs/lab5/intermediates/5-2-5-HttpClient.tsx"
+            file="app/labs/lab5/HttpClient.tsx"
           >{`import * as client from "../client";
 const fetchWelcomeOnClick = async () => {
   const message = await client.fetchWelcomeMessage();
@@ -1238,7 +1238,7 @@ const fetchWelcomeOnClick = async () => {
           <CodeBlock
             language="tsx"
             name="useEffect load"
-            file="app/labs/lab5/intermediates/5-2-5-HttpClient.tsx"
+            file="app/labs/lab5/HttpClient.tsx"
           >{`const [welcomeOnLoad, setWelcomeOnLoad] = useState("");
 const fetchWelcomeOnLoad = async () => {
   const welcome = await client.fetchWelcomeMessage();
@@ -1249,7 +1249,7 @@ useEffect(() => {
 }, []);`}</CodeBlock>
           <LiveDemo
             name="HttpClient"
-            file="app/labs/lab5/intermediates/5-2-5-HttpClient.tsx"
+            file="app/labs/lab5/HttpClient.tsx"
             mode="styled"
           >
             <HttpClient />
@@ -1298,7 +1298,7 @@ export const updateTitle = async (title: string) => {
           <CodeBlock
             language="tsx"
             name="WorkingWithObjectsAsynchronously"
-            file="app/labs/lab5/intermediates/5-2-5-WorkingWithObjectsAsync.tsx"
+            file="app/labs/lab5/WorkingWithObjectsAsync.tsx"
           >{`const [assignment, setAssignment] = useState({});
 const fetchAssignment = async () => {
   setAssignment(await client.fetchAssignment());
@@ -1309,7 +1309,7 @@ const updateTitle = async () => {
 useEffect(() => { fetchAssignment(); }, []);`}</CodeBlock>
           <LiveDemo
             name="WorkingWithObjectsAsynchronously"
-            file="app/labs/lab5/intermediates/5-2-5-WorkingWithObjectsAsync.tsx"
+            file="app/labs/lab5/WorkingWithObjectsAsync.tsx"
             mode="styled"
           >
             <WorkingWithObjectsAsynchronously />
@@ -1356,7 +1356,7 @@ export const fetchTodos = async () => {
           <CodeBlock
             language="tsx"
             name="WorkingWithArraysAsynchronously"
-            file="app/labs/lab5/intermediates/5-2-6-WorkingWithArraysAsync.tsx"
+            file="app/labs/lab5/WorkingWithArraysAsync.tsx"
           >{`const [todos, setTodos] = useState([]);
 const fetchTodos = async () => {
   setTodos(await client.fetchTodos());
@@ -1400,7 +1400,7 @@ useEffect(() => { fetchTodos(); }, []);
           <CodeBlock
             language="tsx"
             name="remove button"
-            file="app/labs/lab5/intermediates/5-2-6-WorkingWithArraysAsync.tsx"
+            file="app/labs/lab5/WorkingWithArraysAsync.tsx"
           >{`const removeTodo = async (todo) => {
   setTodos(await client.removeTodo(todo));
 };
@@ -1437,7 +1437,7 @@ useEffect(() => { fetchTodos(); }, []);
           <CodeBlock
             language="tsx"
             name="create button"
-            file="app/labs/lab5/intermediates/5-2-6-WorkingWithArraysAsync.tsx"
+            file="app/labs/lab5/WorkingWithArraysAsync.tsx"
           >{`const createNewTodo = async () => {
   setTodos(await client.createNewTodo());
 };
@@ -1586,7 +1586,7 @@ app.post("/lab5/todos", postNewTodo);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="post button"
-            file="app/labs/lab5/intermediates/5-2-6-WorkingWithArraysAsync.tsx"
+            file="app/labs/lab5/WorkingWithArraysAsync.tsx"
           >{`const postNewTodo = async () => {
   const newTodo = await client.postNewTodo({
     title: "New Posted Todo",
@@ -1666,7 +1666,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="X delete"
-            file="app/labs/lab5/intermediates/5-2-6-WorkingWithArraysAsync.tsx"
+            file="app/labs/lab5/WorkingWithArraysAsync.tsx"
           >{`const deleteTodo = async (todo) => {
   await client.deleteTodo(todo);
   setTodos(todos.filter((t) => t.id !== todo.id));
@@ -1742,7 +1742,7 @@ app.put("/lab5/todos/:id", updateTodo);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="edit and PUT"
-            file="app/labs/lab5/intermediates/5-2-6-WorkingWithArraysAsync.tsx"
+            file="app/labs/lab5/WorkingWithArraysAsync.tsx"
           >{`const editTodo = (todo) => {
   setTodos(todos.map((t) => (t.id === todo.id ? { ...todo, editing: true } : t)));
 };
@@ -1819,7 +1819,7 @@ const updateTodo = (req, res) => {
           <CodeBlock
             language="tsx"
             name="try/catch"
-            file="app/labs/lab5/intermediates/5-2-6-WorkingWithArraysAsync.tsx"
+            file="app/labs/lab5/WorkingWithArraysAsync.tsx"
           >{`const [errorMessage, setErrorMessage] = useState(null);
 const deleteTodo = async (todo) => {
   try {
@@ -1836,7 +1836,7 @@ const deleteTodo = async (todo) => {
 )}`}</CodeBlock>
           <LiveDemo
             name="WorkingWithArraysAsynchronously"
-            file="app/labs/lab5/intermediates/5-2-6-WorkingWithArraysAsync.tsx"
+            file="app/labs/lab5/WorkingWithArraysAsync.tsx"
             mode="styled"
           >
             <WorkingWithArraysAsynchronously />

@@ -221,6 +221,14 @@ import {
 } from "./EnrollmentsEmbeds";
 import {
   Lab5CalculatorEmbed,
+  Lab5PathEmbed,
+  Lab5QueryEmbed,
+  Lab5ObjectsEmbed,
+  Lab5ArraysEmbed,
+  Lab5HttpClientEmbed,
+  Lab5ObjectsAsyncEmbed,
+  Lab5ArraysAsyncEmbed,
+
   Lab5EnvEmbed,
   Lab5HelloEmbed,
 } from "./Lab5Embeds";
@@ -651,6 +659,20 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <Lab5HelloEmbed />;
     case "lab5-calculator":
       return <Lab5CalculatorEmbed />;
+    case "lab5-path":
+      return <Lab5PathEmbed />;
+    case "lab5-query":
+      return <Lab5QueryEmbed />;
+    case "lab5-objects":
+      return <Lab5ObjectsEmbed />;
+    case "lab5-arrays":
+      return <Lab5ArraysEmbed />;
+    case "lab5-http-client":
+      return <Lab5HttpClientEmbed />;
+    case "lab5-objects-async":
+      return <Lab5ObjectsAsyncEmbed />;
+    case "lab5-arrays-async":
+      return <Lab5ArraysAsyncEmbed />;
     case "lab6-status":
       return <Lab6StatusEmbed />;
     case "lab6-todos":

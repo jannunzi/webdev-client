@@ -130,6 +130,27 @@ const signin = async () => {
     embed: "kambaz-styled-signin",
   },
   {
+    id: "signup-ui",
+    title: "Sign up writes AccountContext",
+    kind: "demo",
+    bullets: [
+      "Same pattern as sign in, then go to Profile",
+    ],
+    code: "const { setCurrentUser } = useAccountContext();\nconst signup = async () => {\n  const current = await client.signup(user);\n  setCurrentUser(current);\n  router.push(\"/account/profile\");\n};",
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/account/signup/page.tsx",
+  },
+  {
+    id: "signup-ui-live",
+    title: "Signup: live demo",
+    kind: "demo",
+    bullets: [
+      "Fill in a new username and password",
+      "Submit lands on Profile as the new user",
+    ],
+    embed: "kambaz-ch4-signup",
+  },
+  {
     id: "signup-profile-intro",
     title: "Signup 400, profile, update",
     kind: "demo",

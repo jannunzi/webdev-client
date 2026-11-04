@@ -1359,14 +1359,14 @@ describe("lecture decks", () => {
     assert.equal(counts["http-server"], 15);
     assert.equal(counts["nodemon-es6-routes"], 10);
     assert.equal(counts["lab5-env"], 10);
-    assert.equal(counts["path-and-query"], 11);
-    assert.equal(counts["remote-objects"], 9);
-    assert.equal(counts["remote-arrays"], 9);
-    assert.equal(counts["async-http"], 10);
-    assert.equal(counts["next-routes"], 8);
+    assert.equal(counts["path-and-query"], 13);
+    assert.equal(counts["remote-objects"], 12);
+    assert.equal(counts["remote-arrays"], 15);
+    assert.equal(counts["async-http"], 27);
+    assert.equal(counts["next-routes"], 21);
     assert.equal(counts["ch5-check-understanding"], 7);
     assert.equal(counts["kambaz-migrate-db"], 6);
-    assert.equal(counts["kambaz-account-rest"], 11);
+    assert.equal(counts["kambaz-account-rest"], 13);
     assert.equal(counts["kambaz-sessions"], 11);
     assert.equal(counts["kambaz-courses-api"], 11);
     assert.equal(counts["deploy-api"], 8);
@@ -1949,8 +1949,8 @@ describe("lecture decks", () => {
       "kambaz-people-table": { "people-table-live": "kambaz-people-crud" },
       "lab5-env": { environment: "lab5-env" },
       "next-routes": {
-        hello: "lab5-hello",
-        client: "lab5-calculator",
+        "hello-ui-live": "lab5-hello",
+        "client-live": "lab5-calculator",
       },
       "kambaz-account-rest": { "signin-ui": "kambaz-styled-signin" },
       "kambaz-courses-api": { client: "kambaz-styled-dashboard" },
@@ -3565,6 +3565,7 @@ describe("lecture decks", () => {
       "chatgpt-api": { project: "openai-project-key-mock" },
       "chatgpt-text": { "roles-code": "openai-roles-flow" },
       "grok-api": { tokens: "grok-token-flow", key: "xai-key-mock" },
+      "http-server": { sibling: "two-ports" },
     } as const;
 
     const used = new Set<string>();
@@ -3954,7 +3955,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 266);
+    assert.equal(intros, 268);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {

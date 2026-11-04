@@ -108,8 +108,41 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
   Get Assignment
 </a>`,
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/intermediates/5-2-3-WorkingWithObjects.tsx",
+    codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
     codeHighlightLines: [4],
+  },
+  {
+    id: "client-title",
+    title: "Retrieve one property",
+    kind: "demo",
+    bullets: [
+      "`/lab5/assignment/title` returns just the string",
+    ],
+    code: "<h4>Retrieving Properties</h4>\n<a id=\"wd-retrieve-assignment-title\"\n  href={`${HTTP_SERVER}/lab5/assignment/title`}>\n  Get Title\n</a>",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
+  },
+  {
+    id: "client-update",
+    title: "Modify a property from an input",
+    kind: "demo",
+    bullets: [
+      "The input edits local state. The link sends it to Express",
+    ],
+    code: "const [assignment, setAssignment] = useState({\n  id: 1, title: \"NodeJS Assignment\",\n  description: \"Create a NodeJS server with ExpressJS\",\n  due: \"2021-10-10\", completed: false, score: 0,\n});\nconst ASSIGNMENT_API_URL = `${HTTP_SERVER}/lab5/assignment`;\n<a id=\"wd-update-assignment-title\"\n  href={`${ASSIGNMENT_API_URL}/title/${assignment.title}`}>\n  Update Title\n</a>\n<input id=\"wd-assignment-title\" value={assignment.title}\n  onChange={(e) => setAssignment({ ...assignment, title: e.target.value })} />",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
+  },
+  {
+    id: "client-live",
+    title: "WorkingWithObjects: live demo",
+    kind: "demo",
+    bullets: [
+      "Get Assignment, then Get Title",
+      "Type a new title, click Update Title, then Get again",
+      "Start Express on port 4000 first (`npm start` in webdev-server)",
+    ],
+    embed: "lab5-objects",
   },
   {
     id: "recap",

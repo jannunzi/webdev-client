@@ -24,7 +24,7 @@ function Lab6Demo({
 
 export function Lab6StatusEmbed() {
   return (
-    <Lab6Demo label="6-2-1-Connection.tsx">
+    <Lab6Demo label="app/labs/lab6/Connection.tsx">
       <ConnectionStatus />
     </Lab6Demo>
   );
@@ -32,7 +32,7 @@ export function Lab6StatusEmbed() {
 
 export function Lab6TodosEmbed() {
   return (
-    <Lab6Demo label="6-2-5-Todos.tsx">
+    <Lab6Demo label="app/labs/lab6/Todos.tsx">
       <Lab6Todos />
     </Lab6Demo>
   );
@@ -40,7 +40,7 @@ export function Lab6TodosEmbed() {
 
 export function Lab6UsersEmbed() {
   return (
-    <Lab6Demo label="6-2-6-Users.tsx">
+    <Lab6Demo label="app/labs/lab6/Users.tsx">
       <Lab6Users />
     </Lab6Demo>
   );

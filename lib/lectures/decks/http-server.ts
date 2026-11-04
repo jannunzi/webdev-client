@@ -30,6 +30,7 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
     id: "sibling",
     title: "Sibling folders, two ports",
     kind: "content",
+    diagram: "two-ports",
     bullets: [
       "`webdev-client` is Next.js on port 3000 — the user interface",
       "`webdev-server` is Express on port 4000 — HTTP and later Mongo",
