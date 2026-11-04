@@ -175,9 +175,8 @@ export default function NextRoutes() {
         </p>
         <p>
           Create the{" "}
-          <code>CalculatorNextWebApiClient</code>{" "}component (this
-          book keeps it under{" "}
-          <code>app/labs/lab5/intermediates/</code>) and import it from
+          <code>CalculatorNextWebApiClient</code>{" "}component in{" "}
+          <code>app/labs/lab5/Calculator.tsx</code>{" "}and import it from
           the Lab 5 page. Confirm the browser displays as shown. Type
           two numbers, choose an operation, and confirm the JSON from
           the route appears as an equation. Because the request stays
