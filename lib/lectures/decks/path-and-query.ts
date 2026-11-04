@@ -5,6 +5,11 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#339933",
+      label: "EXPRESS",
+      headline: "Path vs Query: Talk to Your Server",
+    },
     bullets: [
       "Chapter 5 · Path and Query Parameters",
       "§5.2.2 · three ways to send data",

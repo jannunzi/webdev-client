@@ -787,6 +787,21 @@ export type LectureSlide = {
   density?: LectureSlideDensity;
   /** "split": bullets on the left, embed on the right (portrait demos). */
   layout?: "split";
+  /** Opt-in thumbnail-style cover for `kind: "title"` slides. */
+  cover?: LectureCover;
+};
+
+/**
+ * Thumbnail-style cover (G2 video thumbs: solid brand color, white mark +
+ * topic label top-left, big bold Oswald headline, WebDevTV bottom-left).
+ */
+export type LectureCover = {
+  /** Topic brand color, e.g. Node green `#339933`. */
+  color: string;
+  /** Short topic label shown top-left, e.g. "EXPRESS". */
+  label: string;
+  /** Punchy one-line headline, 42 characters or fewer. */
+  headline: string;
 };
 
 export type LectureHubItem = {

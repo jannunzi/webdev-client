@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { Oswald } from "next/font/google";
+import { type CSSProperties, useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import {
   authoredSlideDensity,
   isDemoStageSlide,
@@ -46,6 +47,8 @@ import LectureSlideImage from "./LectureSlideImage";
 import { SlideBlockEditor, SlideBlockView } from "./SlideBlocks";
 import { inlineEditDataProps } from "@/lib/inline-edit/mark";
 import SlideText from "./SlideText";
+
+const coverFont = Oswald({ subsets: ["latin"], weight: ["700"] });
 
 const NEXT_SLIDE_KEYS = new Set(["ArrowRight", "PageDown", " ", "n", "N"]);
 const PREV_SLIDE_KEYS = new Set(["ArrowLeft", "PageUp", "Backspace", "p", "P"]);
@@ -426,6 +429,7 @@ export default function LectureDeckShell({
 
   const percent = slides.length === 0 ? 0 : ((index + 1) / slides.length) * 100;
   const titleClass = titleClasses({ kind });
+  const cover = kind === "title" ? slide.cover : undefined;
   const hintSize = "lecture-slide-hint";
   const showContinue = lectureShouldShowContinue({
     slide,
@@ -561,8 +565,32 @@ export default function LectureDeckShell({
           data-lecture-present={
             fallbackPresent ? "fallback" : isNativeFullscreen ? "native" : undefined
           }
-          className={stageClass}
+          data-slide-cover={cover ? "true" : undefined}
+          className={`${stageClass}${cover ? " lecture-slide-cover" : ""}`}
+          style={
+            cover
+              ? ({ "--lecture-cover-color": cover.color } as CSSProperties)
+              : undefined
+          }
         >
+          {cover ? (
+            <>
+              <p className="lecture-cover-label">
+                <span aria-hidden="true" className="lecture-cover-mark">
+                  {"{ }"}
+                </span>
+                {cover.label}
+              </p>
+              <h2 className={`lecture-cover-headline ${coverFont.className}`}>
+                {cover.headline}
+              </h2>
+              <p className="lecture-cover-subtitle">
+                <SlideText text={slide.title} bare />
+              </p>
+              <SlideBlockView slide={slide} density={density} />
+              <p className="lecture-cover-brand">WebDevTV</p>
+            </>
+          ) : (<>
           <p
             className={`m-0 text-sm font-semibold uppercase tracking-wide sm:text-base ${
               kind === "title" ? "text-neutral-300" : "text-neutral-500"
@@ -619,6 +647,7 @@ export default function LectureDeckShell({
               />
             </p>
           ) : null}
+          </>)}
           {showContinue && continueHref && nextDeck ? (
             <p className="lecture-slide-continue">
               <Link
