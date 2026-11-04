@@ -35,7 +35,7 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: "5-es6-type",
-    section: "5.1.7",
+    section: "5.1.5",
     kind: "syntax",
     prompt: "What package.json field marks the server as an ES module so index.ts can use import and export?",
     choices: [
