@@ -51,7 +51,7 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
   {
     id: "path-server",
     links: ["http://localhost:4000/lab5/add/6/4", "http://localhost:4000/lab5/subtract/6/4"],
-    title: "Path params live in the URL (code)",
+    title: "Writing the Add and Subtract Routes",
     kind: "demo",
     code: `export default function PathParameters(app) {
   const add = (req, res) => {
@@ -73,7 +73,7 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
   {
     id: "path-import",
     links: ["http://localhost:4000/lab5/welcome"],
-    title: "Import PathParameters into Lab5",
+    title: "Registering PathParameters in Lab5",
     kind: "demo",
     bullets: [
       "Confirm `/lab5/add/6/4` is 10 and `/lab5/subtract/6/4` is 2",
@@ -158,7 +158,7 @@ const [b, setB] = useState("23");
   {
     id: "query-server",
     links: ["http://localhost:4000/lab5/calculator?operation=add&a=2&b=4"],
-    title: "Query params after the ? (code)",
+    title: "Writing the Calculator Route",
     kind: "demo",
     code: `export default function QueryParameters(app) {
   const calculator = (req, res) => {

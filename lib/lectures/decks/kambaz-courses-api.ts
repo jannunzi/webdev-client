@@ -81,7 +81,7 @@ export default function CoursesDao(db) {
   {
     id: "routes",
     links: ["http://localhost:4000/api/courses", "http://localhost:4000/api/users/123/courses"],
-    title: "GET /api/courses and mine (code)",
+    title: "Writing the Courses GET Routes",
     kind: "demo",
     code: `import CoursesDao from "./dao";
 export default function CourseRoutes(app, db) {
@@ -135,6 +135,18 @@ export const findMyCourses = async () => {
     embed: "kambaz-styled-dashboard",
   },
   {
+    id: "create-route",
+    title: "Enrolling the Course Creator",
+    kind: "demo",
+    bullets: [
+      "The session says who is signed in",
+      "Create the course, enroll that user, return the new course",
+    ],
+    code: "const createCourse = (req, res) => {\n  const currentUser = req.session[\"currentUser\"];\n  const newCourse = dao.createCourse(req.body);\n  enrollmentsDao.enrollUserInCourse(currentUser._id, newCourse._id);\n  res.json(newCourse);\n};\napp.post(\"/api/users/current/courses\", createCourse);",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/routes.ts",
+  },
+  {
     id: "create-flow",
     title: "Creating a Course",
     kind: "content",
@@ -148,10 +160,10 @@ export const findMyCourses = async () => {
   },
   {
     id: "create",
-    title: "Enrolling the Course Creator",
+    title: "Posting a New Course from the Client",
     kind: "demo",
     bullets: [
-      "POST `/api/users/current/courses` creates and enrolls",
+      "POST the draft to `/api/users/current/courses`",
       "Add, refresh, and the new course is still listed while Express runs",
     ],
     code: `export const createCourse = async (course: unknown) => {
@@ -168,7 +180,7 @@ export const findMyCourses = async () => {
   {
     id: "modules-oyo",
     links: ["http://localhost:4000/api/courses/RS101/modules"],
-    title: "Modules nest under a course",
+    title: "Nesting Module Routes Under a Course",
     kind: "content",
     bullets: [
       "`GET/POST /api/courses/:courseId/modules`",

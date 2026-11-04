@@ -43,13 +43,13 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
     kind: "demo",
     bullets: [
       "Import in `Lab5/index.ts` and visit `/lab5/assignment`",
-      "Get Assignment is a hyperlink to the raw JSON",
+      "Goal: the browser shows the whole assignment as JSON",
     ],
   },
   {
     id: "assignment",
     links: ["http://localhost:4000/lab5/assignment"],
-    title: "res.json sends an object (code)",
+    title: "Returning the Assignment as JSON",
     kind: "demo",
     code: `const assignment = {
   id: 1,
@@ -70,13 +70,30 @@ export default function WorkingWithObjects(app) {
     codeHighlightLines: [[10, 13]],
   },
   {
+    id: "client",
+    title: "Linking to Get Assignment",
+    kind: "demo",
+    bullets: [
+      "Get Assignment navigates to the route you just wrote",
+    ],
+    code: `<h4>Retrieving Objects</h4>
+<a id="wd-retrieve-assignments"
+  className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white"
+  href={\`\${HTTP_SERVER}/lab5/assignment\`}>
+  Get Assignment
+</a>`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
+    codeHighlightLines: [4],
+  },
+  {
     id: "title-get",
     links: ["http://localhost:4000/lab5/assignment/title"],
-    title: "GET a single property",
+    title: "Implementing GET Assignment Title",
     kind: "demo",
     bullets: [
       "`/lab5/assignment/title` responds with just the string",
-      "Add a Get Title link next to Get Assignment",
+      "Try it: the link below shows just the title",
     ],
     code: `const getAssignmentTitle = (req, res) => {
   res.json(assignment.title);
@@ -87,9 +104,20 @@ app.get("/lab5/assignment/title", getAssignmentTitle);`,
     codeAddedLines: [[1, 4]],
   },
   {
+    id: "client-title",
+    title: "Retrieving One Object Property",
+    kind: "demo",
+    bullets: [
+      "`/lab5/assignment/title` returns just the string",
+    ],
+    code: "<h4>Retrieving Properties</h4>\n<a id=\"wd-retrieve-assignment-title\"\n  href={`${HTTP_SERVER}/lab5/assignment/title`}>\n  Get Title\n</a>",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
+  },
+  {
     id: "title-put",
     links: ["http://localhost:4000/lab5/assignment/title/NewTitle"],
-    title: "Mutate title from the path",
+    title: "Updating the Title from the Path",
     kind: "demo",
     bullets: [
       "A path segment writes `assignment.title`, then returns the object",
@@ -106,6 +134,17 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
     codeAddedLines: [[1, 6]],
   },
   {
+    id: "client-update",
+    title: "Updating a Property from an Input",
+    kind: "demo",
+    bullets: [
+      "The input edits local state. The link sends it to Express",
+    ],
+    code: "const [assignment, setAssignment] = useState({\n  id: 1, title: \"NodeJS Assignment\",\n  description: \"Create a NodeJS server with ExpressJS\",\n  due: \"2021-10-10\", completed: false, score: 0,\n});\nconst ASSIGNMENT_API_URL = `${HTTP_SERVER}/lab5/assignment`;\n<a id=\"wd-update-assignment-title\"\n  href={`${ASSIGNMENT_API_URL}/title/${assignment.title}`}>\n  Update Title\n</a>\n<input id=\"wd-assignment-title\" value={assignment.title}\n  onChange={(e) => setAssignment({ ...assignment, title: e.target.value })} />",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
+  },
+  {
     id: "objects-click",
     title: "Reading and Writing a Remote Object",
     kind: "content",
@@ -116,46 +155,6 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
       "The server sets `newTitle` from the path and replies with the updated object",
       "Get Title again now shows `New Title` until Express restarts",
     ],
-  },
-  {
-    id: "client",
-    title: "Linking to the Assignment Routes",
-    kind: "demo",
-    bullets: [
-      "Get Assignment / Get Title navigate to Express JSON",
-      "An input plus Update Title encodes the new string in the path",
-    ],
-    code: `<h4>Retrieving Objects</h4>
-<a id="wd-retrieve-assignments"
-  className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white"
-  href={\`\${HTTP_SERVER}/lab5/assignment\`}>
-  Get Assignment
-</a>`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
-    codeHighlightLines: [4],
-  },
-  {
-    id: "client-title",
-    title: "Retrieving One Object Property",
-    kind: "demo",
-    bullets: [
-      "`/lab5/assignment/title` returns just the string",
-    ],
-    code: "<h4>Retrieving Properties</h4>\n<a id=\"wd-retrieve-assignment-title\"\n  href={`${HTTP_SERVER}/lab5/assignment/title`}>\n  Get Title\n</a>",
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
-  },
-  {
-    id: "client-update",
-    title: "Updating a Property from an Input",
-    kind: "demo",
-    bullets: [
-      "The input edits local state. The link sends it to Express",
-    ],
-    code: "const [assignment, setAssignment] = useState({\n  id: 1, title: \"NodeJS Assignment\",\n  description: \"Create a NodeJS server with ExpressJS\",\n  due: \"2021-10-10\", completed: false, score: 0,\n});\nconst ASSIGNMENT_API_URL = `${HTTP_SERVER}/lab5/assignment`;\n<a id=\"wd-update-assignment-title\"\n  href={`${ASSIGNMENT_API_URL}/title/${assignment.title}`}>\n  Update Title\n</a>\n<input id=\"wd-assignment-title\" value={assignment.title}\n  onChange={(e) => setAssignment({ ...assignment, title: e.target.value })} />",
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
   },
   {
     id: "client-live",

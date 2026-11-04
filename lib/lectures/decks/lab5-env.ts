@@ -35,7 +35,7 @@ npm run dev`,
   {
     id: "welcome-route",
     links: ["http://localhost:4000/lab5/welcome"],
-    title: "Welcome route in Lab5/index.ts",
+    title: "Implementing the Lab 5 Welcome Route",
     kind: "demo",
     bullets: [
       "Same pattern as `Hello.ts`: export a function that receives `app`",

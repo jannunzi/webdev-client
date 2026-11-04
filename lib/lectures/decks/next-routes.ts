@@ -28,6 +28,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "hello",
+    links: ["http://localhost:3000/api/lab5/hello"],
     title: "Implementing GET /api/lab5/hello",
     kind: "demo",
     bullets: [
@@ -89,6 +90,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "calculator",
+    links: ["http://localhost:3000/api/lab5/calculator?a=34&b=23&operation=add"],
     title: "Implementing the Calculator Handler",
     kind: "demo",
     code: `export async function GET(request: NextRequest) {

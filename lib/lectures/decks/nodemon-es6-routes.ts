@@ -42,7 +42,7 @@ export const NODEMON_ES6_ROUTES_SLIDES: LectureSlide[] = [
   {
     id: "two-routes",
     links: ["http://localhost:4000/hello", "http://localhost:4000/"],
-    title: "Change /hello and add /",
+    title: "Adding a Root Route Beside /hello",
     kind: "demo",
     bullets: [
       "Edit the string to `Life is good!` and refresh — nodemon restarts",
@@ -95,7 +95,7 @@ import courses from "./courses.json";`,
   {
     id: "hello-fn",
     links: ["http://localhost:4000/hello", "http://localhost:4000/"],
-    title: "Move hello routes to Hello.ts (code)",
+    title: "Exporting Hello Routes from Hello.ts",
     kind: "demo",
     code: `import type { Express, Request, Response } from "express";
 
@@ -116,7 +116,7 @@ export default function Hello(app: Express) {
   {
     id: "wire-hello",
     links: ["http://localhost:4000/hello", "http://localhost:4000/"],
-    title: "index.ts creates app once",
+    title: "Passing app to Hello from index.ts",
     kind: "demo",
     bullets: [
       "Import `./Hello` — no extension. tsx loads `Hello.ts`",

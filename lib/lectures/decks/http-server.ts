@@ -165,7 +165,7 @@ npm init`,
   {
     id: "express",
     links: ["http://localhost:4000/hello"],
-    title: "Express GET /hello on 4000 (code)",
+    title: "Writing the Hello Route Handler",
     kind: "demo",
     code: `import express from "express";
 const app = express();
