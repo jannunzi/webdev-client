@@ -990,7 +990,7 @@ app.post("/api/users", createUser);`}</CodeBlock>
         </p>
         <LiveDemo
           name="Lab6Users"
-          file="app/labs/lab6/intermediates/6-2-6-Users.tsx"
+          file="app/labs/lab6/Users.tsx"
           mode="styled"
         >
           <Lab6Users />
