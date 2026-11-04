@@ -93,7 +93,7 @@ npm init`,
       {
         file: "webdev-server/index.js",
         language: "js",
-        code: `import express from "express";
+        code: `const express = require("express");
 const app = express();
 app.get("/hello", (req, res) => {
   res.send("Hello World!");
