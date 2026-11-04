@@ -64,14 +64,21 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     codeFile: "app/labs/lab5/HttpClient.tsx",
   },
   {
+    id: "cors-why",
+    title: "Understanding Cross-Origin Requests",
+    kind: "content",
+    bullets: [
+      "An origin is a scheme, host, and port. The page is on port 3000, Express on 4000",
+      "Browsers block reading replies from another origin, so other sites can't use your sessions",
+      "CORS (Cross-Origin Resource Sharing) lets the server list which origins may call it",
+      "Install `cors` in the server and call `app.use(cors())` before the routes",
+      "We'll revisit CORS in more detail with sessions and cookies",
+    ],
+  },
+  {
     id: "cors",
     title: "Allowing Cross-Origin Requests",
     kind: "demo",
-    bullets: [
-      "The UI origin is 3000. Express is 4000 — a different origin",
-      "The browser asks Express first. `cors()` answers yes",
-      "Use it right after `express()` and before the routes",
-    ],
     codeBlocks: [
       { code: "npm install cors\nnpm i -D @types/cors", language: "bash" },
       {
