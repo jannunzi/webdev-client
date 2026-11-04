@@ -96,6 +96,17 @@ const [b, setB] = useState("23");
     codeHighlightLines: [4],
   },
   {
+    id: "path-client-live",
+    title: "PathParameters: live demo",
+    kind: "demo",
+    bullets: [
+      "Change a and b, then click Add or Subtract",
+      "Start Express on port 4000 first (`npm start` in webdev-server)",
+      "The browser navigates to the Express response",
+    ],
+    embed: "lab5-path",
+  },
+  {
     id: "query-server-intro",
     title: "Query params after the ?",
     kind: "demo",
@@ -145,6 +156,16 @@ const [b, setB] = useState("23");
     codeLanguage: "tsx",
     codeFile: "app/labs/lab5/QueryParameters.tsx",
     codeHighlightLines: [2],
+  },
+  {
+    id: "query-client-live",
+    title: "QueryParameters: live demo",
+    kind: "demo",
+    bullets: [
+      "Same operands, now sent as `?a=\u2026&b=\u2026&operation=\u2026`",
+      "Start Express on port 4000 first (`npm start` in webdev-server)",
+    ],
+    embed: "lab5-query",
   },
   {
     id: "recap",
