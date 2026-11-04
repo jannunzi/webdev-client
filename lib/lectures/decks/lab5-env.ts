@@ -38,8 +38,9 @@ npm run dev`,
     title: "Implementing the Lab 5 Welcome Route",
     kind: "demo",
     bullets: [
-      "Same pattern as `Hello.ts`: export a function that receives `app`",
+      "In a new `Lab5/index.ts`, export the Lab 5 routes",
       "Confirm `http://localhost:4000/lab5/welcome` greets you",
+      "Import into `index.ts`, as the next slide shows",
     ],
     code: `export default function Lab5(app) {
   app.get("/lab5/welcome", (req, res) => {
@@ -73,6 +74,7 @@ app.listen(4000);`,
     title: "Linking the Lab 5 Page to the Server",
     kind: "demo",
     bullets: [
+      "In a new `app/labs/lab5/page.tsx`, create the page as shown below",
       "Add the route to the Labs TOC. Do not hard-code the host for long",
       "The next slide replaces `localhost:4000` with an environment variable",
     ],
@@ -113,9 +115,9 @@ app.listen(4000);`,
     title: "Reading the Server URL from the Env",
     kind: "demo",
     bullets: [
-      "`const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER`",
+      "In a new `Environment.tsx` component, create the link as shown below",
       "The Welcome `href` is `${HTTP_SERVER}/lab5/welcome`",
-      "Express `listen` uses `process.env.PORT || 4000` for Render",
+      "Import into `app/labs/lab5/page.tsx`",
     ],
     code: `export default function Environment() {
   const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;

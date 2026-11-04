@@ -44,6 +44,7 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
     title: "Implementing the Add Route",
     kind: "demo",
     bullets: [
+      "In a new `Lab5/PathParameters.ts`, add the routes as shown below",
       "`req.params` are strings. `parseInt`, then `.toString()`",
       "A bare `res.send(6)` can look like HTTP status 6",
     ],
@@ -107,9 +108,9 @@ export default function Lab5(app) {
     title: "Calling the Add Route from React",
     kind: "demo",
     bullets: [
+      "In a new `PathParameters.tsx` component, create the links as shown below",
       "State holds the operands. The link is the request",
-      "Clicking navigates to Express — later axios stays on the page",
-      "Path IDs start with `wd-path-parameter-`",
+      "Import into `app/labs/lab5/page.tsx`",
     ],
     code: `const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 const [a, setA] = useState("34");
@@ -151,8 +152,10 @@ const [b, setB] = useState("23");
     title: "Implementing the Calculator Route",
     kind: "demo",
     bullets: [
+      "In a new `Lab5/QueryParameters.ts`, add the route as shown below",
       "`req.query` is `{ a, b, operation }` — still strings",
       "One `/lab5/calculator` route, a `switch` on `operation`",
+      "Import into `Lab5/index.ts`",
     ],
   },
   {
@@ -198,8 +201,9 @@ const [b, setB] = useState("23");
     title: "Calling the Calculator from React",
     kind: "demo",
     bullets: [
-      "Add 34 and 23 → 57. Subtract → 11",
-      "On your own: multiply and divide. IDs `wd-query-parameter-`",
+      "In a new `QueryParameters.tsx` component, create the links as shown below",
+      "Add 34 and 23 → 57. On your own: multiply and divide",
+      "Import into `app/labs/lab5/page.tsx`",
     ],
     code: `<a id="wd-query-parameter-add"
   href={\`\${HTTP_SERVER}/lab5/calculator?operation=add&a=\${a}&b=\${b}\`}>
