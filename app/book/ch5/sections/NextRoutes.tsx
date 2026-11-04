@@ -116,7 +116,7 @@ export default function NextRoutes() {
           <code>{`{ "a": 10, "b": 5, "operation": "add", "result": 15 }`}</code>
           . Extend the switch with multiply and divide so the four
           operations match the Express calculator you already built in{" "}
-          <code>Lab5/QueryParameters.js</code>.
+          <code>Lab5/QueryParameters.ts</code>.
         </p>
         <CodeBlock
           language="ts"

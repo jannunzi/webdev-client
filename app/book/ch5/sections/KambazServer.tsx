@@ -54,43 +54,39 @@ export default function KambazServer() {
           <code>Kambaz</code>{" "}at the root of the Node.js project.
           Inside the Kambaz folder, create a Database directory and
           copy all JSON files from the React project — the same arrays
-          you exported in{" "}
-          <SectionLink to="3.10.2" />. Then change the file extensions
-          of the JSON files to JavaScript, for example, rename{" "}
-          <code>users.json</code>{" "}to{" "}
-          <code>users.js</code>{" "}and{" "}
-          <code>courses.json</code>{" "}to{" "}
-          <code>courses.js</code>. At the top of each newly converted
-          JavaScript file, include an{" "}
-          <code>export default</code>{" "}statement, as shown below.
+          exported in <SectionLink to="3.10.2" />. Leave each file as
+          JSON. <code>courses.json</code>{" "}stays{" "}
+          <code>courses.json</code>, and the same for users, modules,
+          assignments, and enrollments. tsx, the runner from{" "}
+          <SectionLink to="5.1.7" />, imports that JSON directly, as
+          shown below.
         </p>
         <CodeBlock
-          language="js"
+          language="json"
           name="courses"
-          file="webdev-server/Kambaz/Database/courses.js"
-        >{`export default [
-  { _id: "RS101", name: "Rocket Propulsion", number: "RS4550",
-    startDate: "2023-01-10", endDate: "2023-05-15",
-    department: "D123", credits: 4, description: "..." },
-  // … remaining courses from Chapter 3
-];`}</CodeBlock>
+          file="webdev-server/Kambaz/Database/courses.json"
+        >{`[
+  { "_id": "RS101", "name": "Rocket Propulsion", "number": "RS4550",
+    "startDate": "2023-01-10", "endDate": "2023-05-15",
+    "department": "D123", "credits": 4, "description": "..." }
+]`}</CodeBlock>
         <p>
-          Do the same for all the JSON files and update the import
-          statements in a barrel file that re-exports them as one
-          object. Use the same data files from previous chapters. Feel
-          free to modify the data in the files to customize the content
+          Copy the remaining JSON files the same way and update the
+          import statements in a barrel file that re-exports them as
+          one object. Use the same data files from previous chapters.
+          The data in the files can be edited to customize the content
           or meet requirements in this chapter. Ignore unnecessary data
           files.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="database"
-          file="webdev-server/Kambaz/Database/index.js"
-        >{`import courses from "./courses.js";
-import modules from "./modules.js";
-import assignments from "./assignments.js";
-import users from "./users.js";
-import enrollments from "./enrollments.js";
+          file="webdev-server/Kambaz/Database/index.ts"
+        >{`import courses from "./courses.json";
+import modules from "./modules.json";
+import assignments from "./assignments.json";
+import users from "./users.json";
+import enrollments from "./enrollments.json";
 export default { courses, modules, assignments, users, enrollments };`}</CodeBlock>
       </Section>
 
@@ -102,16 +98,16 @@ export default { courses, modules, assignments, users, enrollments };`}</CodeBlo
         <p>
           The Data Access Object (DAO) design pattern organizes data
           access by grouping it based on data types or collections. The
-          following <code>Kambaz/Users/dao.js</code>{" "}file implements
+          following <code>Kambaz/Users/dao.ts</code>{" "}file implements
           various CRUD operations for handling the users array in the
           Database. Later sections in the chapter will create
           additional DAOs for each of the data arrays: courses,
           modules, and so on.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="Users DAO"
-          file="webdev-server/Kambaz/Users/dao.js"
+          file="webdev-server/Kambaz/Users/dao.ts"
         >{`import { v4 as uuidv4 } from "uuid";
 export default function UsersDao(db) {
   let { users } = db;
@@ -186,14 +182,14 @@ export default function UsersDao(db) {
             implementation of each function will be covered in the
             following sections. This chapter uses the Database
             component implemented in{" "}
-            <code>Kambaz/Database/index.js</code>. Later chapters will
+            <code>Kambaz/Database/index.ts</code>. Later chapters will
             refactor this by using an actual database.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="UserRoutes"
-            file="webdev-server/Kambaz/Users/routes.js"
-          >{`import UsersDao from "./dao.js";
+            file="webdev-server/Kambaz/Users/routes.ts"
+          >{`import UsersDao from "./dao";
 export default function UserRoutes(app, db) {
   const dao = UsersDao(db);
   const signup = (req, res) => { };
@@ -207,19 +203,19 @@ export default function UserRoutes(app, db) {
 }`}</CodeBlock>
           <p>
             Import and configure the routes in{" "}
-            <code>index.js</code>{" "}and pass a reference to the
+            <code>index.ts</code>{" "}and pass a reference to the
             database to each of the route modules. Work after CORS,
             session, and{" "}
             <code>express.json()</code>{" "}are configured —{" "}
             <SectionLink to="5.4.3.1" />{" "}fills those in.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="index"
-            file="webdev-server/index.js"
+            file="webdev-server/index.ts"
           >{`import express from "express";
-import db from "./Kambaz/Database/index.js";
-import UserRoutes from "./Kambaz/Users/routes.js";
+import db from "./Kambaz/Database/index";
+import UserRoutes from "./Kambaz/Users/routes";
 const app = express();
 UserRoutes(app, db);
 app.listen(process.env.PORT || 4000);`}</CodeBlock>
@@ -241,9 +237,9 @@ app.listen(process.env.PORT || 4000);`}</CodeBlock>
             the database.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="signin route"
-            file="webdev-server/Kambaz/Users/routes.js"
+            file="webdev-server/Kambaz/Users/routes.ts"
           >{`const signin = (req, res) => {
   const { username, password } = req.body;
   currentUser = dao.findUserByCredentials(username, password);
@@ -336,9 +332,9 @@ const signin = async () => {
             <code>/api/users/signup</code>{" "}path.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="signup route"
-            file="webdev-server/Kambaz/Users/routes.js"
+            file="webdev-server/Kambaz/Users/routes.ts"
           >{`const signup = (req, res) => {
   const user = dao.findUserByUsername(req.body.username);
   if (user) {
@@ -399,9 +395,9 @@ const signup = async () => {
             user so the client can refresh Context.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="updateUser route"
-            file="webdev-server/Kambaz/Users/routes.js"
+            file="webdev-server/Kambaz/Users/routes.ts"
           >{`const updateUser = (req, res) => {
   const userId = req.params.userId;
   const userUpdates = req.body;
@@ -452,9 +448,9 @@ app.put("/api/users/:userId", updateUser);`}</CodeBlock>
             <code>currentUser</code>{" "}as shown below.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="profile route"
-            file="webdev-server/Kambaz/Users/routes.js"
+            file="webdev-server/Kambaz/Users/routes.ts"
           >{`const profile = (req, res) => {
   res.json(currentUser);
 };
@@ -504,9 +500,9 @@ app.post("/api/users/profile", profile);`}</CodeBlock>
             navigate to the Sign in screen.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="signout route"
-            file="webdev-server/Kambaz/Users/routes.js"
+            file="webdev-server/Kambaz/Users/routes.ts"
           >{`const signout = (req, res) => {
   currentUser = null;
   res.sendStatus(200);
@@ -569,10 +565,14 @@ app.post("/api/users/signout", signout);`}</CodeBlock>
             from environment variables on the server.
           </p>
           <CodeBlock language="shell">{`npm install express-session
+npm i -D @types/express-session
 npm install dotenv`}</CodeBlock>
           <p>
-            In a new <code>.env</code>{" "}file at the root of the Node
-            project, declare the following environment variables. Do
+            <code>@types/express-session</code>{" "}describes the
+            session API for the editor; tsx does not need it at
+            runtime. In a new <code>.env</code>{" "}file at the root of
+            the Node project, declare the following environment
+            variables. Do
             not commit that file —{" "}
             <SectionLink to="5.5.1" />{" "}already listed it in{" "}
             <code>.gitignore</code>.
@@ -582,7 +582,7 @@ CLIENT_URL=http://localhost:3000
 SERVER_URL=http://localhost:4000
 SESSION_SECRET=super secret session phrase`}</CodeBlock>
           <p>
-            In <code>index.js</code>, import the dotenv library to
+            In <code>index.ts</code>, import the dotenv library to
             determine whether the application is running in the
             development environment, and configure the session as
             shown below. Make sure to configure sessions{" "}
@@ -596,9 +596,9 @@ SESSION_SECRET=super secret session phrase`}</CodeBlock>
             been tested on Google Chrome and Apple Safari.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="session"
-            file="webdev-server/index.js"
+            file="webdev-server/index.ts"
           >{`import "dotenv/config";
 import session from "express-session";
 const app = express();
@@ -642,9 +642,9 @@ app.use(express.json());`}</CodeBlock>
             then the session must be kept in synch.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="session auth"
-            file="webdev-server/Kambaz/Users/routes.js"
+            file="webdev-server/Kambaz/Users/routes.ts"
           >{`const signin = (req, res) => {
   const { username, password } = req.body;
   const currentUser = dao.findUserByCredentials(username, password);
@@ -747,9 +747,9 @@ export const profile = async () => {
             uses that DAO.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="Courses DAO"
-            file="webdev-server/Kambaz/Courses/dao.js"
+            file="webdev-server/Kambaz/Courses/dao.ts"
           >{`import { v4 as uuidv4 } from "uuid";
 export default function CoursesDao(db) {
   function findAllCourses() {
@@ -767,10 +767,10 @@ export default function CoursesDao(db) {
   return { findAllCourses, findCoursesForEnrolledUser };
 }`}</CodeBlock>
           <CodeBlock
-            language="js"
+            language="ts"
             name="CourseRoutes"
-            file="webdev-server/Kambaz/Courses/routes.js"
-          >{`import CoursesDao from "./dao.js";
+            file="webdev-server/Kambaz/Courses/routes.ts"
+          >{`import CoursesDao from "./dao";
 export default function CourseRoutes(app, db) {
   const dao = CoursesDao(db);
   const findAllCourses = (req, res) => {
@@ -792,7 +792,7 @@ export default function CourseRoutes(app, db) {
   app.get("/api/users/:userId/courses", findCoursesForEnrolledUser);
 }`}</CodeBlock>
           <p>
-            In <code>index.js</code>{" "}import the new routes and pass a
+            In <code>index.ts</code>{" "}import the new routes and pass a
             reference to the express module. Make sure to work AFTER
             the cors, session, and json{" "}
             <code>use</code>{" "}statements. Point your browser to{" "}
@@ -859,33 +859,33 @@ export const findMyCourses = async () => {
             array. The new course is given a new unique identifier and
             sent back to the client in the response. When a course is
             created, it needs to be associated with the creator. In{" "}
-            <code>Kambaz/Enrollments/dao.js</code>, implement{" "}
+            <code>Kambaz/Enrollments/dao.ts</code>, implement{" "}
             <code>enrollUserInCourse</code>{" "}to enroll, or associate,
             a user to a course. Creating a course posts to{" "}
             <code>/api/users/current/courses</code>{" "}and enrolls the
             current user.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="createCourse"
-            file="webdev-server/Kambaz/Courses/dao.js"
+            file="webdev-server/Kambaz/Courses/dao.ts"
           >{`function createCourse(course) {
   const newCourse = { ...course, _id: uuidv4() };
   db.courses = [...db.courses, newCourse];
   return newCourse;
 }`}</CodeBlock>
           <CodeBlock
-            language="js"
+            language="ts"
             name="enrollUserInCourse"
-            file="webdev-server/Kambaz/Enrollments/dao.js"
+            file="webdev-server/Kambaz/Enrollments/dao.ts"
           >{`function enrollUserInCourse(userId, courseId) {
   const { enrollments } = db;
   enrollments.push({ _id: uuidv4(), user: userId, course: courseId });
 }`}</CodeBlock>
           <CodeBlock
-            language="js"
+            language="ts"
             name="createCourse route"
-            file="webdev-server/Kambaz/Courses/routes.js"
+            file="webdev-server/Kambaz/Courses/routes.ts"
           >{`const createCourse = (req, res) => {
   const currentUser = req.session["currentUser"];
   const newCourse = dao.createCourse(req.body);
@@ -932,9 +932,9 @@ app.post("/api/users/current/courses", createCourse);`}</CodeBlock>
             top and the route declarations at the bottom.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="deleteCourse"
-            file="webdev-server/Kambaz/Courses/dao.js"
+            file="webdev-server/Kambaz/Courses/dao.ts"
           >{`function deleteCourse(courseId) {
   const { courses, enrollments } = db;
   db.courses = courses.filter((course) => course._id !== courseId);
@@ -976,9 +976,9 @@ app.post("/api/users/current/courses", createCourse);`}</CodeBlock>
             body.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="updateCourse"
-            file="webdev-server/Kambaz/Courses/dao.js"
+            file="webdev-server/Kambaz/Courses/dao.ts"
           >{`function updateCourse(courseId, courseUpdates) {
   const { courses } = db;
   const course = courses.find((course) => course._id === courseId);
@@ -1179,13 +1179,13 @@ export default function Dashboard() {
             for the Module with a route to retrieve the modules for a
             course by its ID encoded in the path. Parse the course ID
             from the path and then use the module&apos;s DAO. In{" "}
-            <code>index.js</code>, import the new route file and pass
+            <code>index.ts</code>, import the new route file and pass
             it a reference to the app and db.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="Modules DAO"
-            file="webdev-server/Kambaz/Modules/dao.js"
+            file="webdev-server/Kambaz/Modules/dao.ts"
           >{`export default function ModulesDao(db) {
   function findModulesForCourse(courseId) {
     const { modules } = db;
@@ -1194,10 +1194,10 @@ export default function Dashboard() {
   return { findModulesForCourse };
 }`}</CodeBlock>
           <CodeBlock
-            language="js"
+            language="ts"
             name="ModuleRoutes"
-            file="webdev-server/Kambaz/Modules/routes.js"
-          >{`import ModulesDao from "./dao.js";
+            file="webdev-server/Kambaz/Modules/routes.ts"
+          >{`import ModulesDao from "./dao";
 export default function ModuleRoutes(app, db) {
   const dao = ModulesDao(db);
   const findModulesForCourse = (req, res) => {
@@ -1245,18 +1245,18 @@ export default function ModuleRoutes(app, db) {
             with the new module.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="createModule"
-            file="webdev-server/Kambaz/Modules/dao.js"
+            file="webdev-server/Kambaz/Modules/dao.ts"
           >{`function createModule(module) {
   const newModule = { ...module, _id: uuidv4() };
   db.modules = [...db.modules, newModule];
   return newModule;
 }`}</CodeBlock>
           <CodeBlock
-            language="js"
+            language="ts"
             name="createModuleForCourse"
-            file="webdev-server/Kambaz/Modules/routes.js"
+            file="webdev-server/Kambaz/Modules/routes.ts"
           >{`const createModuleForCourse = (req, res) => {
   const { courseId } = req.params;
   const module = { ...req.body, course: courseId };
@@ -1303,17 +1303,17 @@ app.post("/api/courses/:courseId/modules", createModuleForCourse);`}</CodeBlock>
             DELETE to the server.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="deleteModule"
-            file="webdev-server/Kambaz/Modules/dao.js"
+            file="webdev-server/Kambaz/Modules/dao.ts"
           >{`function deleteModule(moduleId) {
   const { modules } = db;
   db.modules = modules.filter((module) => module._id !== moduleId);
 }`}</CodeBlock>
           <CodeBlock
-            language="js"
+            language="ts"
             name="deleteModule route"
-            file="webdev-server/Kambaz/Modules/routes.js"
+            file="webdev-server/Kambaz/Modules/routes.ts"
           >{`const deleteModule = (req, res) => {
   const { moduleId } = req.params;
   dao.deleteModule(moduleId);
@@ -1362,9 +1362,9 @@ app.delete("/api/modules/:moduleId", deleteModule);`}</CodeBlock>
             module has been modified.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="updateModule"
-            file="webdev-server/Kambaz/Modules/dao.js"
+            file="webdev-server/Kambaz/Modules/dao.ts"
           >{`function updateModule(moduleId, moduleUpdates) {
   const { modules } = db;
   const module = modules.find((module) => module._id === moduleId);

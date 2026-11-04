@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { lab6Status } from "./status.js";
+import { lab6Status } from "./status";
 
 const NOTE_UNSET = "DATABASE_CONNECTION_STRING is not set.";
 

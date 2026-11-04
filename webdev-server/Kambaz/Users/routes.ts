@@ -1,5 +1,5 @@
-import UsersDao from "./dao.js";
-import EnrollmentsDao from "../Enrollments/dao.js";
+import UsersDao from "./dao";
+import EnrollmentsDao from "../Enrollments/dao";
 
 export default function UserRoutes(app, db) {
   const dao = UsersDao(db);

@@ -222,6 +222,12 @@ export const TOOL = {
     description:
       "A development helper that restarts the Node server whenever you save a file.",
   },
+  tsx: {
+    name: "tsx",
+    href: "https://tsx.hirok.io/",
+    description:
+      "A Node runner for the same .js server files, so relative imports omit the file extension and JSON imports directly.",
+  },
   render: {
     name: "Render",
     href: "https://render.com/",

@@ -1,4 +1,4 @@
-export default [
+[
   {
     "_id": "123",
     "username": "iron_man",
@@ -116,4 +116,4 @@ export default [
     "lastActivity": "2020-12-01",
     "totalActivity": "40:00:00"
   }
-];
+]

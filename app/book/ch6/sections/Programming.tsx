@@ -76,9 +76,9 @@ npm install mongoose`}</CodeBlock>
           remote machine hosted by MongoDB&apos;s Atlas cloud service.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="index"
-          file="webdev-server/index.js"
+          file="webdev-server/index.ts"
         >{`import express from "express";
 import mongoose from "mongoose";
 // load the mongoose library
@@ -90,7 +90,7 @@ const app = express();
 // ...`}</CodeBlock>
         <p>
           Place the <code>connect</code>{" "}call near the top of{" "}
-          <code>index.js</code>{" "}so the connection is established
+          <code>index.ts</code>{" "}so the connection is established
           before any route handler tries to run a query. If MongoDB
           is not running, a database request such as{" "}
           <code>model.find()</code>{" "}fails after about 10 seconds,
@@ -128,7 +128,7 @@ SERVER_URL=http://localhost:4000
 SESSION_SECRET=super secret session phrase
 DATABASE_CONNECTION_STRING=mongodb://127.0.0.1:27017/kambaz`}</CodeBlock>
         <p>
-          Then in <code>index.js</code>, read the connection string as
+          Then in <code>index.ts</code>, read the connection string as
           shown below. The <code>dotenv/config</code>{" "}import loads{" "}
           <code>.env</code>{" "}into <code>process.env</code>{" "}before
           any other module reads those keys. If the variable is
@@ -136,9 +136,9 @@ DATABASE_CONNECTION_STRING=mongodb://127.0.0.1:27017/kambaz`}</CodeBlock>
           line does not silently point at nothing.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="index"
-          file="webdev-server/index.js"
+          file="webdev-server/index.ts"
         >{`import "dotenv/config";
 import mongoose from "mongoose";
 
@@ -197,9 +197,9 @@ mongoose.connect(CONNECTION_STRING);`}</CodeBlock>
           schema in a Users directory in your Node.js project.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="userSchema"
-          file="webdev-server/Kambaz/Users/schema.js"
+          file="webdev-server/Kambaz/Users/schema.ts"
         >{`import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   _id: String,
@@ -274,7 +274,7 @@ export default userSchema;`}</CodeBlock>
           <code>updateOne()</code>, <code>deleteOne()</code>, and{" "}
           <code>findById()</code>. Those names are deliberately generic
           because they can interact with any collection configured in
-          the schema. In <code>Kambaz/Users/model.js</code>{" "}below,
+          the schema. In <code>Kambaz/Users/model.ts</code>{" "}below,
           create a Mongoose model from the users schema. In the next
           section we will create a data access object that implements
           higher-level functions specific to the domain of Kambaz —
@@ -282,11 +282,11 @@ export default userSchema;`}</CodeBlock>
           <code>findOne</code>.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="UserModel"
-          file="webdev-server/Kambaz/Users/model.js"
+          file="webdev-server/Kambaz/Users/model.ts"
         >{`import mongoose from "mongoose";
-import schema from "./schema.js";
+import schema from "./schema";
 const model = mongoose.model("UserModel", schema);
 export default model;`}</CodeBlock>
         <p>
@@ -322,19 +322,19 @@ export default model;`}</CodeBlock>
           <code>findUsers()</code>, <code>findUserById()</code>, or{" "}
           <code>findUserByUsername()</code>. A previous chapter
           implemented a data access object using arrays declared in the{" "}
-          <code>Database/index.js</code>{" "}files. This chapter
+          <code>Database/index.ts</code>{" "}files. This chapter
           refactors the DAOs so they use an actual database.{" "}
           <ChapterLink to={5} />&apos;s DAO read arrays from that barrel file. This chapter
           keeps the same function names and reimplements them with the
-          model. The following <code>Kambaz/Users/dao.js</code>{" "}
+          model. The following <code>Kambaz/Users/dao.ts</code>{" "}
           re-implements the CRUD operations for the users collection
           written in terms of the low-level Mongoose model operations.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="UsersDao"
-          file="webdev-server/Kambaz/Users/dao.js"
-        >{`import model from "./model.js";
+          file="webdev-server/Kambaz/Users/dao.ts"
+        >{`import model from "./model";
 import { v4 as uuidv4 } from "uuid";
 export default function UsersDao() {
   const findAllUsers = () => model.find();

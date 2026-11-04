@@ -1,17 +1,17 @@
 import "dotenv/config";
 // Before models, so the connection hook is on every schema.
-import { connectDatabase, databaseErrorHandler } from "./Kambaz/Database/mongo.js";
+import { connectDatabase, databaseErrorHandler } from "./Kambaz/Database/mongo";
 import cors from "cors";
 import express from "express";
-import session from "express-session";
-import Hello from "./Hello.js";
-import Lab5 from "./Lab5/index.js";
-import Lab6 from "./Lab6/index.js";
-import db from "./Kambaz/Database/index.js";
-import UserRoutes from "./Kambaz/Users/routes.js";
-import CourseRoutes from "./Kambaz/Courses/routes.js";
-import ModuleRoutes from "./Kambaz/Modules/routes.js";
-import AssignmentRoutes from "./Kambaz/Assignments/routes.js";
+import session, { type SessionOptions } from "express-session";
+import Hello from "./Hello";
+import Lab5 from "./Lab5/index";
+import Lab6 from "./Lab6/index";
+import db from "./Kambaz/Database/index";
+import UserRoutes from "./Kambaz/Users/routes";
+import CourseRoutes from "./Kambaz/Courses/routes";
+import ModuleRoutes from "./Kambaz/Modules/routes";
+import AssignmentRoutes from "./Kambaz/Assignments/routes";
 
 const app = express();
 const port = Number(process.env.PORT) || 4000;
@@ -40,7 +40,7 @@ app.use(
   }),
 );
 
-const sessionOptions = {
+const sessionOptions: SessionOptions = {
   secret: process.env.SESSION_SECRET ?? "super secret session phrase",
   resave: false,
   saveUninitialized: false,

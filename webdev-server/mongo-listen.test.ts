@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
+import { createRequire } from "node:module";
 import net from "node:net";
 import { once } from "node:events";
 import { describe, it } from "node:test";
@@ -7,8 +8,18 @@ import { fileURLToPath } from "node:url";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
+const require = createRequire(import.meta.url);
+
 const serverRoot = fileURLToPath(new URL(".", import.meta.url));
 const SEED_NAME = "From Mongo";
+
+type CourseSeed = {
+  _id: string;
+  name: string;
+  number: string;
+  credits: number;
+  description: string;
+};
 
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -85,7 +96,7 @@ function startWebdev(port, env) {
     delete childEnv[key];
   }
   Object.assign(childEnv, env);
-  const child = spawn(process.execPath, ["index.js"], {
+  const child = spawn(process.execPath, [require.resolve("tsx/cli"), "index.ts"], {
     cwd: serverRoot,
     env: childEnv,
     stdio: ["ignore", "pipe", "pipe"],
@@ -134,7 +145,7 @@ describe("Express listen vs Mongo connection", { timeout: 60_000 }, () => {
     const seed = mongoose.createConnection(direct);
     try {
       await seed.asPromise();
-      await seed.collection("courses").insertOne({
+      await seed.collection<CourseSeed>("courses").insertOne({
         _id: "DELAY1",
         name: SEED_NAME,
         number: "DL1",
@@ -281,7 +292,7 @@ describe("Express listen vs Mongo connection", { timeout: 60_000 }, () => {
         const direct = mongod.getUri("kambaz");
         const seed = mongoose.createConnection(direct);
         await seed.asPromise();
-        await seed.collection("courses").insertOne({
+        await seed.collection<CourseSeed>("courses").insertOne({
           _id: "RECOVER1",
           name: "After Recovery",
           number: "RC1",

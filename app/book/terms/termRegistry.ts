@@ -196,6 +196,12 @@ const TERM_LIST: TermEntry[] = [
   { term: "nodejs.org", officialUrl: "https://nodejs.org/en", searchQuery: "Node.js explained tutorial", chapters: [5] },
   { term: "Express", officialUrl: "https://expressjs.com/", searchQuery: "Express.js Node explained", chapters: [5] },
   { term: "nodemon", officialUrl: "https://nodemon.io/", chapters: [5] },
+  {
+    term: "tsx",
+    officialUrl: "https://tsx.hirok.io/",
+    searchQuery: "tsx Node.js runner explained",
+    chapters: [5],
+  },
   { term: "Render", officialUrl: "https://render.com/", searchQuery: "Render.com hosting explained", chapters: [5, 6] },
   { term: "Mongoose", officialUrl: "https://mongoosejs.com/", searchQuery: "Mongoose MongoDB explained", chapters: [6] },
   { term: "mongodb.com", officialUrl: "https://www.mongodb.com/", searchQuery: "MongoDB explained tutorial", chapters: [6] },

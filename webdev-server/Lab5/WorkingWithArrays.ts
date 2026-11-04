@@ -1,4 +1,9 @@
-let todos = [
+let todos: {
+  id: number;
+  title: string;
+  completed: boolean;
+  description?: string;
+}[] = [
   { id: 1, title: "Task 1", completed: false },
   { id: 2, title: "Task 2", completed: true },
   { id: 3, title: "Task 3", completed: false },

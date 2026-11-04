@@ -118,13 +118,18 @@ npm init`}</CodeBlock>
           project and the author. Each question provides a default
           answer which can be accepted or skipped by just pressing
           enter. It is fine to initially keep all the default values
-          since they can be configured later. A sample interaction looks
-          like this:
+          since they can be configured later, except the entry point:
+          the prompt suggests <code>index.js</code>. Type{" "}
+          <code>index.ts</code>{" "}instead. That name is only a field
+          in <code>package.json</code>{" "}until{" "}
+          <SectionLink to="5.1.5" />{" "}writes the file, after Express
+          and the TypeScript toolchain are installed. A sample
+          interaction looks like this:
         </p>
         <CodeBlock language="shell">{`package name: (webdev-server)
 version: (1.0.0)
 description: Node.js HTTP Web server for the Kambaz application
-entry point: (index.js)
+entry point: (index.js) index.ts
 test command:
 git repository: https://github.com/<you>/webdev-server
 keywords: Node, REST, Server, HTTP, Web Development
@@ -153,48 +158,33 @@ license: (ISC)`}</CodeBlock>
       <Section
         level={3}
         id="sec-5-1-4"
-        title="5.1.4 Creating a Simple Hello World Node.js Program"
+        title="5.1.4 The First File Waits for the Toolchain"
       >
         <p>
-          Open the Node.js project directory created earlier with an
-          IDE such as Visual Studio Code or IntelliJ, and at the root of
-          the project, create a JavaScript file called{" "}
-          <code>Hello.js</code>{" "}with the content shown below. The
-          script uses the <code>console.log()</code>{" "}function to
-          print the string{" "}
-          <code>Hello World!</code>{" "}to the console and it is a
-          common first program to write when learning a new language or
-          infrastructure.
+          The directory from <SectionLink to="5.1.3" />{" "}holds{" "}
+          <code>package.json</code>{" "}and no server source yet.{" "}
+          <code>npm init</code>{" "}stored the entry point{" "}
+          <code>index.ts</code>, but that file is still unwritten.
+          Creating it now leaves the package as CommonJS, so the editor
+          cannot resolve <code>express</code>{" "}or the{" "}
+          <code>req</code>{" "}and <code>res</code>{" "}parameters on a
+          route.
         </p>
-        <CodeBlock language="js" name="Hello" file="webdev-server/Hello.js">{`console.log("Hello World!");`}</CodeBlock>
         <p>
-          At the command line, run the{" "}
-          <code>Hello.js</code>{" "}application by using the{" "}
-          <code>node</code>{" "}command and confirm the application
-          prints Hello World! to the console as shown below.
-        </p>
-        <CodeBlock language="shell">{`node Hello.js
-# Hello World!`}</CodeBlock>
-        <p>
-          Node.js programs consist of JavaScript files that are executed
-          with the <code>node</code>{" "}command-line interpreter. The
-          following sections describe writing JavaScript applications
-          that implement HTTP Web servers and RESTful Web APIs to
-          integrate with React user interfaces. Upcoming chapters
-          describe writing JavaScript applications that store and
-          retrieve data from databases such as{" "}
-          <OfficialLink href="https://www.mongodb.com/">
-            MongoDB
-          </OfficialLink>
-          . Later files turn this hello script into HTTP routes; the
-          file name stays because we will export a function from it.
+          <SectionLink to="5.1.5" />{" "}installs Express, records{" "}
+          <code>&quot;type&quot;: &quot;module&quot;</code>, adds the
+          TypeScript toolchain and the{" "}
+          <code>tsx</code>{" "}runner, and only then writes{" "}
+          <code>index.ts</code>. The first hello greeting is the HTTP
+          response in that file. <SectionLink to="5.1.8" />{" "}later
+          moves those routes into <code>Hello.ts</code>.
         </p>
       </Section>
 
       <Section
         level={3}
         id="sec-5-1-5"
-        title="5.1.5 Creating a Node.js HTTP Web Server"
+        title="5.1.5 Express, the TypeScript Toolchain, and index.ts"
       >
         <p>
           <OfficialLink href="https://expressjs.com/">
@@ -226,19 +216,74 @@ license: (ISC)`}</CodeBlock>
           .
         </p>
         <p>
+          Configure the project before writing{" "}
+          <code>index.ts</code>. Add{" "}
+          <code>&quot;type&quot;: &quot;module&quot;</code>{" "}so the
+          package is an ES module and <code>import</code>{" "}is the
+          module syntax. Install{" "}
+          <OfficialLink href="https://tsx.hirok.io/">tsx</OfficialLink>{" "}
+          as a dependency and a <code>start</code>{" "}script that runs
+          the server. tsx is a runner for <code>.ts</code>{" "}files. It
+          is not a file type, and it does not emit a separate{" "}
+          <code>.js</code>{" "}build. Then install the TypeScript
+          compiler and the type packages the editor uses for Node and
+          Express:
+        </p>
+        <CodeBlock language="shell">{`npm i tsx
+npm i -D typescript@^5.9.3 @types/node@^22 @types/express`}</CodeBlock>
+        <CodeBlock language="json" name="package" file="webdev-server/package.json">{`{
+  "type": "module",
+  "scripts": {
+    "start": "tsx index.ts"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "tsx": "^4.20.5"
+  }
+}`}</CodeBlock>
+        <p>
+          <code>typescript</code>, <code>@types/node</code>, and{" "}
+          <code>@types/express</code>{" "}are development dependencies.
+          They describe types for the editor. tsx erases them at run
+          time. Render sets <code>NODE_ENV</code>{" "}to{" "}
+          <code>production</code>{" "}and installs{" "}
+          <code>dependencies</code>{" "}only, so <code>tsx</code>{" "}sits
+          next to <code>express</code>{" "}and <code>npm start</code>{" "}
+          can launch the server on that host. Add{" "}
+          <code>tsconfig.json</code>{" "}at the server root.{" "}
+          <code>noEmit</code>{" "}means tsx runs the{" "}
+          <code>.ts</code>{" "}files and the compiler writes no build
+          folder. <code>moduleResolution</code>{" "}
+          <code>&quot;bundler&quot;</code>{" "}allows extensionless
+          relative imports. <code>resolveJsonModule</code>{" "}allows{" "}
+          <code>import courses from &quot;./courses.json&quot;</code>.{" "}
+          <code>strict</code>{" "}stays off so the listings in this
+          chapter typecheck as written.
+        </p>
+        <CodeBlock language="json" name="tsconfig" file="webdev-server/tsconfig.json">{`{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": false,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": ["**/*.ts"]
+}`}</CodeBlock>
+        <p>
           The following{" "}
-          <code>index.js</code>{" "}implements an HTTP server that
+          <code>index.ts</code>{" "}implements an HTTP server that
           responds Hello World! when the server receives an HTTP request
           at the URL{" "}
           <code>http://localhost:4000/hello</code>. Copy and paste the
           URL in a browser to send the HTTP request and the browser
-          will render the response from the server. The{" "}
-          <code>require</code>{" "}function is equivalent to the{" "}
-          <code>import</code>{" "}keyword and loads a library into the
-          local source — we start with{" "}
-          <code>require</code>{" "}so you see the older Node style, then{" "}
-          <SectionLink to="5.1.7" />{" "}switches the project to ES
-          modules. The <code>express()</code>{" "}function call creates
+          will render the response from the server. The file is a
+          TypeScript module and loads Express with{" "}
+          <code>import</code>, the same keyword the Next.js client
+          uses. The <code>express()</code>{" "}function call creates
           an instance of the express library and assigns it to a local
           constant <code>app</code>. The{" "}
           <code>app</code>{" "}instance is used to configure the server
@@ -250,10 +295,10 @@ license: (ISC)`}</CodeBlock>
           request.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="index"
-          file="webdev-server/index.js"
-        >{`const express = require("express");
+          file="webdev-server/index.ts"
+        >{`import express from "express";
 const app = express();
 app.get("/hello", (req, res) => {
   res.send("Hello World!");
@@ -268,11 +313,12 @@ app.listen(4000);`}</CodeBlock>
           <code>res</code>{" "}which allow the function to participate
           in the request/response interaction, common in client/server
           applications. The <code>res.send()</code>{" "}function
-          responds to the request with the text Hello World! Use{" "}
-          <code>node</code>{" "}to run the server from the root of the
-          project as shown below.
+          responds to the request with the text Hello World! From the
+          project root, <code>npm start</code>{" "}runs the{" "}
+          <code>start</code>{" "}script, which is{" "}
+          <code>tsx index.ts</code>:
         </p>
-        <CodeBlock language="shell">{`node index.js`}</CodeBlock>
+        <CodeBlock language="shell">{`npm start`}</CodeBlock>
         <p>
           The application will run, start the server, and wait at port
           4000 for incoming HTTP requests. Point your browser to{" "}
@@ -302,20 +348,30 @@ app.listen(4000);`}</CodeBlock>
           which monitors file changes and automatically restarts the
           Node application. Install nodemon as a development dependency
           of the server project — that way colleagues and Render get the
-          same script without a global install:
+          same script without a global install. Add a{" "}
+          <code>dev</code>{" "}script next to the{" "}
+          <code>start</code>{" "}script from <SectionLink to="5.1.5" />,
+          then start the server with it:
         </p>
+        <CodeBlock language="json" name="package scripts" file="webdev-server/package.json">{`{
+  "scripts": {
+    "dev": "nodemon --exec tsx index.ts",
+    "start": "tsx index.ts"
+  }
+}`}</CodeBlock>
         <CodeBlock language="shell">{`npm install nodemon --save-dev
-npx nodemon index.js
-# later: npm run dev   (same command, after the script in 5.1.7)`}</CodeBlock>
+npm run dev`}</CodeBlock>
         <p>
           You can also install nodemon globally with{" "}
           <code>npm install nodemon -g</code>{" "}(and{" "}
           <code>sudo</code>{" "}on macOS). Either works; this book
           prefers the project-local install so{" "}
-          <code>package.json</code>{" "}records the tool. Now instead of
-          using the <code>node</code>{" "}command to start the server,
-          use nodemon. Confirm the server is still responding Hello
-          World!. Change the response string to{" "}
+          <code>package.json</code>{" "}records the tool. The{" "}
+          <code>start</code>{" "}script from <SectionLink to="5.1.5" />{" "}
+          stays. The <code>dev</code>{" "}script asks nodemon to restart
+          through tsx. Nodemon sees the <code>.ts</code>{" "}script and
+          watches TypeScript and JSON files. Confirm the server is
+          still responding Hello World! Change the response string to{" "}
           <code>Life is good!</code>{" "}and without stopping and
           restarting the server, refresh the browser and confirm that
           the server now responds with the new string. Keep this process
@@ -331,10 +387,10 @@ npx nodemon index.js
           Development!
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="index"
-          file="webdev-server/index.js"
-        >{`const express = require("express");
+          file="webdev-server/index.ts"
+        >{`import express from "express";
 const app = express();
 app.get("/hello", (req, res) => {
   res.send("Life is good!");
@@ -349,7 +405,7 @@ app.listen(4000);`}</CodeBlock>
           <code>/hello</code>{" "}in two tabs and confirm both strings.
         </OnYourOwn>
         <WithAI
-          prompt={`In webdev-server/index.js, keep my /hello route. Add a sample GET / that sends Welcome to Full Stack Development! Do not remove hello.`}
+          prompt={`In webdev-server/index.ts, keep my /hello route. Add a sample GET / that sends Welcome to Full Stack Development! Do not remove hello.`}
         >
           Ask the assistant to add the root route — you still refresh
           both tabs:
@@ -359,56 +415,38 @@ app.listen(4000);`}</CodeBlock>
       <Section
         level={3}
         id="sec-5-1-7"
-        title="5.1.7 Configuring Node.js to Use ES6"
+        title="5.1.7 How Server Modules Load"
       >
         <p>
-          The React Web application created in earlier chapters has
-          used the <code>import</code>{" "}keyword to load ES6 modules,
-          but older Node samples used the{" "}
-          <code>require</code>{" "}keyword instead to accomplish the
-          same thing. Since Node version 12, ES6 syntax is supported by
-          configuring the <code>package.json</code>{" "}file and adding a
-          new <code>&quot;type&quot;</code>{" "}property with value{" "}
-          <code>&quot;module&quot;</code>{" "}as shown below. Add a{" "}
-          <code>start</code>{" "}script so{" "}
-          <code>npm start</code>{" "}runs the server the same way
-          Render will, and a{" "}
-          <code>dev</code>{" "}script so nodemon is one command:
+          Every server file from <SectionLink to="5.1.5" />{" "}onward is
+          a TypeScript module. <code>import</code>{" "}and{" "}
+          <code>export</code>{" "}are the module syntax. There is no{" "}
+          <code>require()</code>{" "}step. tsx, installed in that
+          section, runs these <code>.ts</code>{" "}files. It is a runner,
+          not a file type, and <code>index.ts</code>{" "}stays{" "}
+          <code>index.ts</code>.
         </p>
-        <CodeBlock language="json" name="package" file="webdev-server/package.json">{`{
-  "type": "module",
-  "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
-  }
-}`}</CodeBlock>
         <p>
-          Now, instead of using{" "}
-          <code>require()</code>{" "}to load libraries, the familiar{" "}
-          <code>import</code>{" "}statement can be used instead. Here is{" "}
-          <code>index.js</code>{" "}refactored to use{" "}
-          <code>import</code>{" "}instead of{" "}
-          <code>require</code>. Restart the server, refresh the
-          browser, and confirm that the server responds as expected.
-          From here on every server file in this chapter is an ES
-          module, including the{" "}
-          <code>.js</code>{" "}extension on relative imports — Node
-          requires that extension when{" "}
-          <code>&quot;type&quot;: &quot;module&quot;</code>{" "}is set.
+          A relative import omits the extension.{" "}
+          <code>./Hello</code>{" "}loads <code>Hello.ts</code>. A JSON
+          file imports directly, the same shape the Next.js client
+          already uses:
         </p>
-        <CodeBlock
-          language="js"
-          name="index"
-          file="webdev-server/index.js"
-        >{`import express from "express";
-const app = express();
-app.get("/hello", (req, res) => {
-  res.send("Life is good!");
-});
-app.get("/", (req, res) => {
-  res.send("Welcome to Full Stack Development!");
-});
-app.listen(4000);`}</CodeBlock>
+        <CodeBlock language="ts">{`import courses from "./courses.json";`}</CodeBlock>
+        <p>
+          <code>resolveJsonModule</code>{" "}in the{" "}
+          <code>tsconfig.json</code>{" "}from{" "}
+          <SectionLink to="5.1.5" />{" "}is what lets the editor accept
+          that import. <SectionLink to="5.4.1" />{" "}uses it for{" "}
+          <code>courses.json</code>{" "}and the other Database files.
+          Inline <code>app.get</code>{" "}callbacks receive{" "}
+          <code>req</code>{" "}and <code>res</code>{" "}types from
+          Express. A function declared on its own writes{" "}
+          <code>Request</code>{" "}and <code>Response</code>{" "}from{" "}
+          <code>@types/express</code>, also installed in{" "}
+          <SectionLink to="5.1.5" />. <SectionLink to="5.1.8" />{" "}shows
+          that form.
+        </p>
       </Section>
 
       <Section
@@ -417,24 +455,24 @@ app.listen(4000);`}</CodeBlock>
         title="5.1.8 Creating HTTP Routes"
       >
         <p>
-          The <code>index.js</code>{" "}file creates and configures an
+          The <code>index.ts</code>{" "}file creates and configures an
           HTTP server listening for incoming HTTP requests. So far we
           have created a simple hello HTTP route that responds with a
           simple string. Throughout this and later chapters, we are
           going to create quite a few other HTTP routes, too many to
           define them all in{" "}
-          <code>index.js</code>. Instead, it is best practice to group
+          <code>index.ts</code>. Instead, it is best practice to group
           routes into dedicated routing files that collect related HTTP
-          routes. To illustrate this principle, move the routes defined
-          in <code>index.js</code>{" "}to the{" "}
-          <code>Hello.js</code>{" "}file created earlier.
+          routes. To illustrate this principle, create{" "}
+          <code>Hello.ts</code>{" "}and move the routes defined in{" "}
+          <code>index.ts</code>{" "}into it.
         </p>
         <p>
           In our case{" "}
-          <code>Hello.js</code>{" "}handles HTTP requests for a hello
+          <code>Hello.ts</code>{" "}handles HTTP requests for a hello
           greeting and responds with a friendly reply. We are not done
           though. Notice that{" "}
-          <code>Hello.js</code>{" "}would reference{" "}
+          <code>Hello.ts</code>{" "}would reference{" "}
           <code>app</code>{" "}which is undefined in that file if we
           merely copy the two{" "}
           <code>app.get</code>{" "}calls. The{" "}
@@ -445,17 +483,19 @@ app.listen(4000);`}</CodeBlock>
           express instance, pass{" "}
           <code>app</code>{" "}as a parameter in a function we can
           import and invoke from{" "}
-          <code>index.js</code>{" "}as shown below.
+          <code>index.ts</code>{" "}as shown below.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="Hello"
-          file="webdev-server/Hello.js"
-        >{`export default function Hello(app) {
-  const sayHello = (req, res) => {
+          file="webdev-server/Hello.ts"
+        >{`import type { Express, Request, Response } from "express";
+
+export default function Hello(app: Express) {
+  const sayHello = (req: Request, res: Response) => {
     res.send("Life is good!");
   };
-  const sayWelcome = (req, res) => {
+  const sayWelcome = (req: Request, res: Response) => {
     res.send("Welcome to Full Stack Development!");
   };
   app.get("/hello", sayHello);
@@ -467,19 +507,27 @@ app.listen(4000);`}</CodeBlock>
           challenging for some. An alternative — arguably better —
           syntax is to declare the callback functions on their own and
           then reference them in the route declarations, which is what
-          the listing above does. Import{" "}
-          <code>Hello.js</code>{" "}and pass{" "}
-          <code>app</code>{" "}to the function as shown below. Note the{" "}
-          <code>.js</code>{" "}extension on the import statement. Test{" "}
+          the listing above does. An inline{" "}
+          <code>app.get</code>{" "}callback already receives{" "}
+          <code>req</code>{" "}and <code>res</code>{" "}types from
+          Express. A function declared on its own writes them out:{" "}
+          <code>Express</code>, <code>Request</code>, and{" "}
+          <code>Response</code>{" "}come from{" "}
+          <code>@types/express</code>, installed in{" "}
+          <SectionLink to="5.1.5" />. Import{" "}
+          <code>Hello.ts</code>{" "}and pass{" "}
+          <code>app</code>{" "}to the function as shown below. The
+          import path is <code>./Hello</code>; tsx loads{" "}
+          <code>Hello.ts</code>. Test{" "}
           <code>http://localhost:4000/hello</code>{" "}from the browser
           and confirm the reply is still friendly.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="index"
-          file="webdev-server/index.js"
+          file="webdev-server/index.ts"
         >{`import express from "express";
-import Hello from "./Hello.js";
+import Hello from "./Hello";
 const app = express();
 Hello(app);
 app.listen(4000);`}</CodeBlock>
@@ -488,10 +536,10 @@ app.listen(4000);`}</CodeBlock>
           <code>/hello</code>{" "}still replies Life is good! and the
           root still welcomes you to full stack development.{" "}
           <SectionLink to="5.2" />{" "}adds{" "}
-          <code>Lab5/index.js</code>{" "}the same way: export a function
+          <code>Lab5/index.ts</code>{" "}the same way: export a function
           that receives <code>app</code>, register it from{" "}
-          <code>index.js</code>, and keep{" "}
-          <code>index.js</code>{" "}as the one place that creates the
+          <code>index.ts</code>, and keep{" "}
+          <code>index.ts</code>{" "}as the one place that creates the
           server.
         </p>
       </Section>

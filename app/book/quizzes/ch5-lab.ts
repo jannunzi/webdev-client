@@ -35,9 +35,9 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: "5-es6-type",
-    section: "5.1.7",
+    section: "5.1.5",
     kind: "syntax",
-    prompt: "What package.json field lets index.js use import instead of require?",
+    prompt: "What package.json field marks the server as an ES module so index.ts can use import and export?",
     choices: [
       { id: "a", text: "\"module\": \"commonjs\"" },
       { id: "b", text: "\"type\": \"module\"" },
@@ -45,7 +45,8 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
       { id: "d", text: "\"private\": true" },
     ],
     answer: "b",
-    explanation: "\"type\": \"module\" turns on ESM so import express from \"express\" works.",
+    explanation:
+      "\"type\": \"module\" records ES modules. tsx runs index.ts; the server listings use import, not require().",
   },
   {
     id: "5-env-name",
@@ -134,10 +135,10 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
     kind: "syntax",
     prompt: "Which file serves GET /api/hello inside a Next.js App Router app?",
     choices: [
-      { id: "a", text: "server/Hello.js" },
+      { id: "a", text: "server/Hello.ts" },
       { id: "b", text: "app/api/hello/route.ts" },
       { id: "c", text: "app/hello.ts" },
-      { id: "d", text: "pages/api/hello.js" },
+      { id: "d", text: "pages/api/hello.ts" },
     ],
     answer: "b",
     explanation:
@@ -164,12 +165,13 @@ export const CH5_LAB_QUESTIONS: QuizQuestion[] = [
     prompt: "Before adding a database, where does an Express REST API typically store courses and todos?",
     choices: [
       { id: "a", text: "MongoDB Atlas collections created in the same step" },
-      { id: "b", text: "In-memory arrays (and JS copies of JSON seed files) on the Express process" },
+      { id: "b", text: "In-memory arrays loaded from JSON seed files on the Express process" },
       { id: "c", text: "Only in localStorage" },
       { id: "d", text: "Only in Zustand" },
     ],
     answer: "b",
-    explanation: "A first Express API often keeps data in memory. Restarting Node reseeds the arrays. A later step can add a database.",
+    explanation:
+      "A first Express API keeps data in memory, seeded from JSON files such as courses.json. Restarting the process reseeds the arrays. A later step can add a database.",
   },
   {
     id: "5-render-env",
