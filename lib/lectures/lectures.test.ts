@@ -1371,9 +1371,9 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-courses-api"], 14);
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 13);
-    assert.equal(counts["mongoose"], 12);
+    assert.equal(counts["mongoose"], 15);
     assert.equal(counts["mongo-apis"], 13);
-    assert.equal(counts["mongo-users-crud"], 14);
+    assert.equal(counts["mongo-users-crud"], 19);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
     assert.equal(counts["atlas-node"], 11);
@@ -1381,7 +1381,7 @@ describe("lecture decks", () => {
     assert.equal(counts["ch6-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-db"], 14);
     assert.equal(counts["kambaz-modules-db"], 10);
-    assert.equal(counts["kambaz-enrollments-db"], 13);
+    assert.equal(counts["kambaz-enrollments-db"], 16);
     assert.equal(counts["youtube-api"], 11);
     assert.equal(counts["youtube-search"], 11);
     assert.equal(counts["youtube-details"], 23);
@@ -3955,7 +3955,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 267);
+    assert.equal(intros, 268);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
@@ -4126,12 +4126,12 @@ describe("Chapter 4 account §4.10.7 assignment slides", () => {
   });
 });
 
-describe("Chapter 5 next-up slides", () => {
+describe("Chapter 5 and 6 next-up slides", () => {
   it("name the next deck by its cover title", () => {
-    for (const l of listLectures().filter((l) => l.chapter === 5)) {
+    for (const l of listLectures().filter((l) => l.chapter === 5 || l.chapter === 6)) {
       const next = adjacentLectureSlugs(l.slug).next?.slug;
       const nextDeck = next ? getLectureDeck(next) : undefined;
-      if (!nextDeck || nextDeck.slides[0]?.cover === undefined || getLecture(next!)?.chapter !== 5) continue;
+      if (!nextDeck || nextDeck.slides[0]?.cover === undefined || getLecture(next!)?.chapter !== l.chapter) continue;
       const nextUp = getLectureDeck(l.slug)!.slides.filter((s) => s.title.startsWith("Next:")).pop();
       assert.equal(nextUp?.title, `Next: ${nextDeck.slides[0].cover!.headline}`, l.slug);
     }

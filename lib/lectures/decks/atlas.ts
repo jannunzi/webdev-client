@@ -5,6 +5,11 @@ export const ATLAS_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#00684A",
+      icon: "cloud",
+      headline: "Hosting MongoDB on Atlas",
+    },
     bullets: [
       "Chapter 6 · Integrating with Atlas",
       "Hosted Mongo, then remote sessions",
@@ -12,18 +17,18 @@ export const ATLAS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing a Cloud Database",
+    title: "Why the Deployed Server Needs Atlas",
     kind: "content",
     bullets: [
       "Local `mongod` lives on your laptop — Compass at `27017`",
-      "The remote Express VM has no `kambaz` and no Compass documents",
+      "The Express server on Render has no `kambaz` database to read",
       "A public Node process needs a database that is also public",
       "Atlas hosts MongoDB and gives you a connection string",
     ],
   },
   {
     id: "why",
-    title: "Atlas is the public MongoDB",
+    title: "What Atlas Provides",
     kind: "content",
     bullets: [
       "Free cluster, Compass import, Network Access, then a **new** Render service",
@@ -34,7 +39,7 @@ export const ATLAS_SLIDES: LectureSlide[] = [
   },
   {
     id: "signup",
-    title: "Sign in at mongodb.com",
+    title: "Creating an Atlas Account",
     kind: "content",
     bullets: [
       "Google account or email — confirm the validation message if asked",
@@ -44,7 +49,7 @@ export const ATLAS_SLIDES: LectureSlide[] = [
   },
   {
     id: "cluster",
-    title: "Free cluster named Kambaz",
+    title: "Creating a Free Cluster",
     kind: "content",
     bullets: [
       "Name the cluster `Kambaz` so the hostname is easy to recognize",
@@ -54,7 +59,7 @@ export const ATLAS_SLIDES: LectureSlide[] = [
   },
   {
     id: "user",
-    title: "A user Mongoose will remember",
+    title: "Creating a Database User",
     kind: "content",
     bullets: [
       "Create a database user on the Connect screen — for example `giuseppi`",
@@ -65,12 +70,12 @@ export const ATLAS_SLIDES: LectureSlide[] = [
   },
   {
     id: "scheme",
-    title: "The URI is mongodb+srv",
+    title: "Reading an Atlas Connection String",
     kind: "demo",
     bullets: [
-      "Atlas URIs use `mongodb+srv://`, not `mongodb://127.0.0.1`",
+      "Atlas connection strings use `mongodb+srv://`, not `mongodb://127.0.0.1`",
       "The host will differ. Scheme, username, password, and cluster matter",
-      "Next lecture pastes this into Compass. Later, Drivers add `/kambaz?`",
+      "The next deck pastes this into Compass. Later, the Node.js version adds `/kambaz?`",
     ],
     code: `mongodb+srv://giuseppi:supersecretpassword@kambaz.jxui0bc.mongodb.net/`,
     codeLanguage: "text",
@@ -89,7 +94,7 @@ export const ATLAS_SLIDES: LectureSlide[] = [
   },
   {
     id: "next-up",
-    title: "Next: connect Compass",
+    title: "Next: Connecting Compass to Atlas",
     kind: "title",
     bullets: [
       "Paste the Compass `mongodb+srv` string and import the JSON",

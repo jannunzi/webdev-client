@@ -5,6 +5,11 @@ export const MONGO_APIS_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#47A248",
+      icon: "server",
+      headline: "Database-Backed User APIs",
+    },
     bullets: [
       "Chapter 6 · Mongo APIs",
       "Async routes, then find all",
@@ -12,21 +17,22 @@ export const MONGO_APIS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing MongoDB APIs",
+    title: "Serving Database Data over HTTP",
     kind: "content",
     bullets: [
-      "DAO hides the vendor. Routes turn HTTP into function calls",
+      "The DAO now reads MongoDB, but the routes still expect instant answers",
+      "Database calls take time, so each route must wait for its reply",
       "React still posts to `/api/users/signin` and receives JSON",
-      "Each verb is implemented three times: DAO, Express, axios client",
+      "This deck updates the account routes, then lists every user for admins",
     ],
   },
   {
     id: "async",
-    title: "Database calls are promises",
+    title: "Awaiting Database Calls in Routes",
     kind: "demo",
     bullets: [
-      "Chapter 5 arrays were **synchronous**. Mongo answers later",
-      "Tag handlers `async` and `await` every DAO call",
+      "In `Kambaz/Users/routes.ts`, make the handlers `async` as shown below",
+      "Chapter 5 arrays answered at once. MongoDB answers later, so `await` every DAO call",
       "Do the same for profile, signout, and course routes",
     ],
     code: `const signin = async (req, res) => {
@@ -57,10 +63,10 @@ const signup = async (req, res) => {
   },
   {
     id: "find-all-dao",
-    title: "find() with no predicate",
+    title: "Finding Every Document",
     kind: "demo",
     bullets: [
-      "Same `findAllUsers` you returned from the DAO",
+      "In `Kambaz/Users/dao.ts`, confirm `findAllUsers` as shown below",
       "Empty `find()` returns every document in `users`",
     ],
     code: `const findAllUsers = () => model.find();`,
@@ -70,9 +76,10 @@ const signup = async (req, res) => {
   {
     id: "find-all-route",
     links: ["http://localhost:4000/api/users"],
-    title: "GET /api/users returns JSON",
+    title: "Listing Users with GET /api/users",
     kind: "demo",
     bullets: [
+      "In `routes.ts`, add the route as shown below",
       "Open `http://localhost:4000/api/users` in the browser",
       "Length should match Compass `kambaz.users`. Empty? Re-import JSON",
     ],
@@ -87,9 +94,10 @@ app.get("/api/users", findAllUsers);`,
   },
   {
     id: "find-all-client",
-    title: "Client GETs with credentials",
+    title: "Fetching All Users from the Client",
     kind: "demo",
     bullets: [
+      "In `account/client.ts`, add `findAllUsers` as shown below",
       "`USERS_API` already prefixes `NEXT_PUBLIC_HTTP_SERVER`",
       "Credentials so a later admin-only check can read the session cookie",
     ],
@@ -103,11 +111,11 @@ app.get("/api/users", findAllUsers);`,
   },
   {
     id: "people-table",
-    title: "PeopleTable takes a users prop",
+    title: "Passing Users into a Table",
     kind: "demo",
     bullets: [
-      "Stop joining enrollments in the browser — the server filters",
-      "Users screen passes every user; course People later passes a subset",
+      "In `people/Table.tsx`, add a `users` prop as shown below",
+      "The server picks the users now: all of them here, a course's later",
       "A full-width collapsed table with a light border and striped odd rows",
     ],
     code: `export default function PeopleTable({
@@ -138,16 +146,17 @@ app.get("/api/users", findAllUsers);`,
   },
   {
     id: "users-screen-intro",
-    title: "Users fetches on mount",
+    title: "Loading Users When the Page Opens",
     kind: "demo",
     bullets: [
-      "Client Component: `useState` plus `useEffect`",
+      "In a new `account/users/page.tsx` page, create the Users screen as shown below",
+      "Client Component: `useState` holds the list, `useEffect` fetches it once",
       "`fetchUsers` is passed into the table so Details can refresh",
     ],
   },
   {
     id: "users-screen",
-    title: "Users fetches on mount (code)",
+    title: "Fetching Users into State",
     kind: "demo",
     code: `"use client";
 import { useState, useEffect } from "react";
@@ -176,17 +185,18 @@ export default function Users() {
   },
   {
     id: "admin-link-intro",
-    title: "Users link is ADMIN only",
+    title: "Showing Links by User Role",
     kind: "demo",
     bullets: [
-      "Read `currentUser` from `useAccountContext()` — not a Redux slice",
+      "In `account/Navigation.tsx`, add the Users link as shown below",
+      "Read `currentUser` from `useAccountContext()` and check its `role`",
       "Seed `nick_fury` / `fury123` is an administrator",
       "Faculty and student sessions must not show the link",
     ],
   },
   {
     id: "admin-link",
-    title: "Users link is ADMIN only (code)",
+    title: "Hiding Admin Links from Other Users",
     kind: "demo",
     code: `{currentUser && currentUser.role === "ADMIN" && (
   <Link
@@ -206,7 +216,7 @@ export default function Users() {
   },
   {
     id: "recap",
-    title: "Find-all recap",
+    title: "User APIs recap",
     kind: "content",
     bullets: [
       "`async` / `await` on every DAO call — Sign in still sets the session",
@@ -216,7 +226,7 @@ export default function Users() {
   },
   {
     id: "next-up",
-    title: "Next: filter and user CRUD",
+    title: "Next: User CRUD with MongoDB",
     kind: "title",
     bullets: [
       "Predicates, find by id, then delete, update, and create",

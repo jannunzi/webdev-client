@@ -5,6 +5,11 @@ export const ATLAS_SESSIONS_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#00684A",
+      icon: "cloud",
+      headline: "Remote Sessions with Atlas",
+    },
     bullets: [
       "Chapter 6 · Atlas remote sessions",
       "Five keys, then sign in",
@@ -12,18 +17,18 @@ export const ATLAS_SESSIONS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing Remote Sessions",
+    title: "Keeping Users Signed In on Render",
     kind: "content",
     bullets: [
       "Local Node already stores `currentUser` in a cookie",
       "Render must do the same so Vercel can send that cookie back",
       "CORS and `sameSite` read `CLIENT_URL` and `SERVER_ENV`",
-      "The Atlas URI is one of the five keys — not the only one",
+      "The Atlas connection string is one of five keys — not the only one",
     ],
   },
   {
     id: "keys",
-    title: "Five Render environment keys",
+    title: "Setting Five Render Environment Keys",
     kind: "demo",
     bullets: [
       "Use these **keys**. Do not copy the sample values",
@@ -41,7 +46,7 @@ SESSION_SECRET=a long random phrase`,
   },
   {
     id: "client",
-    title: "CLIENT_URL is the Vercel origin",
+    title: "Allowing the Vercel Origin with CORS",
     kind: "demo",
     bullets: [
       "Must be the Vercel `a6` origin — CORS and cookie `sameSite`",
@@ -59,17 +64,17 @@ SESSION_SECRET=a long random phrase`,
   },
   {
     id: "secure-intro",
-    title: "SERVER_ENV turns on cookies",
+    title: "Turning On Secure Cookies",
     kind: "demo",
     bullets: [
-      "`SERVER_ENV=production` is what turns on secure cookies",
-      "`sameSite: \"none\"` plus `secure: true` so Vercel can send them",
+      "In `index.ts`, switch the cookie settings on `SERVER_ENV` as shown below",
+      "`SERVER_ENV=production` sets `sameSite: \"none\"` and `secure: true` so Vercel can send cookies",
       "Leave this as `development` on your laptop",
     ],
   },
   {
     id: "secure",
-    title: "SERVER_ENV turns on cookies (code)",
+    title: "Configuring Cookies for Production",
     kind: "demo",
     code: `if (process.env.SERVER_ENV === "production") {
   app.set("trust proxy", 1);
@@ -85,7 +90,7 @@ SESSION_SECRET=a long random phrase`,
   },
   {
     id: "host",
-    title: "SERVER_URL has no https://",
+    title: "Setting SERVER_URL Without https://",
     kind: "content",
     bullets: [
       "Render hostname only — `your-webdev-server.onrender.com`",
@@ -95,7 +100,7 @@ SESSION_SECRET=a long random phrase`,
   },
   {
     id: "redeploy",
-    title: "Redeploy after every env change",
+    title: "Redeploying After Env Changes",
     kind: "content",
     bullets: [
       "Render: Manual Deploy → Deploy latest commit",
@@ -105,18 +110,18 @@ SESSION_SECRET=a long random phrase`,
   },
   {
     id: "verify",
-    title: "Sign in against Atlas",
+    title: "Testing Sign In Against Atlas",
     kind: "content",
     bullets: [
       "Open the Vercel `a6` URL, sign in, confirm Dashboard lists courses",
       "Network error? Check `NEXT_PUBLIC_HTTP_SERVER` matches Render",
-      "Empty Dashboard? Drivers URI is missing `/kambaz?` or Network Access",
+      "Empty Dashboard? Drivers string is missing `/kambaz?` or Network Access",
       "Compass on the Atlas connection should show the same documents",
     ],
   },
   {
     id: "secrets",
-    title: "Keep the URI off the client",
+    title: "Keeping Database Secrets on the Server",
     kind: "content",
     bullets: [
       "Atlas credentials live on Render — never in `NEXT_PUBLIC_*`",
@@ -126,7 +131,7 @@ SESSION_SECRET=a long random phrase`,
   },
   {
     id: "project",
-    title: "Project week uses this cluster",
+    title: "Using Atlas for the Final Project",
     kind: "content",
     bullets: [
       "Quizzes, Pazza, and open-ended all persist through Atlas",
@@ -140,14 +145,14 @@ SESSION_SECRET=a long random phrase`,
     title: "Remote sessions recap",
     kind: "content",
     bullets: [
-      "Five keys: Atlas URI, `CLIENT_URL`, `SERVER_URL`, `SERVER_ENV`, secret",
+      "Five keys: Atlas string, `CLIENT_URL`, `SERVER_URL`, `SERVER_ENV`, secret",
       "`SERVER_ENV=production` plus a Vercel origin with no trailing slash",
       "Manual Deploy, then sign in. Secrets stay on Render",
     ],
   },
   {
     id: "next-up",
-    title: "Next: check your understanding",
+    title: "Next: Check Your Understanding",
     kind: "title",
     bullets: [
       "A 10-item self-check on schemas, DAOs, and Atlas",
