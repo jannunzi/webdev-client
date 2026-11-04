@@ -156,7 +156,7 @@ mongoose.connect(CONNECTION_STRING);`}</CodeBlock>
         </p>
         <LiveDemo
           name="ConnectionStatus"
-          file="app/labs/lab6/intermediates/6-2-1-Connection.tsx"
+          file="app/labs/lab6/Connection.tsx"
           mode="styled"
         >
           <ConnectionStatus />
@@ -381,7 +381,7 @@ export default function UsersDao() {
         </p>
         <LiveDemo
           name="Lab6Todos"
-          file="app/labs/lab6/intermediates/6-2-5-Todos.tsx"
+          file="app/labs/lab6/Todos.tsx"
           mode="styled"
         >
           <Lab6Todos />
