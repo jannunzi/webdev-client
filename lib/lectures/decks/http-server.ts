@@ -39,20 +39,14 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "node-intro-intro",
+    id: "node-intro",
     title: "Running JavaScript with Node.js",
     kind: "content",
     bullets: [
-      "Browser JS cannot open files, sockets, or a database driver",
-      "Node is a runtime plus `npm` — V8 with filesystem and network APIs",
-      "You already installed it for `next dev`. Confirm with `node -v`",
-      "LTS 20.9+ is enough. 22.x is fine",
+      "Browser JavaScript cannot open files, sockets, or databases",
+      "Node.js runs JavaScript outside the browser and ships with `npm`",
+      "Confirm it is installed: version 20.9 or newer is enough",
     ],
-  },
-  {
-    id: "node-intro",
-    title: "Running a Node.js Script",
-    kind: "content",
     code: `node -v
 # v22.11.0`,
     codeLanguage: "bash",
@@ -92,6 +86,17 @@ npm init`,
         code: "npm install express\nnpm i tsx\nnpm i -D typescript@^5.9.3 @types/node@^22 @types/express",
         language: "bash",
       },
+    ],
+  },
+  {
+    id: "toolchain-config",
+    title: "Configuring package.json for ES Modules",
+    kind: "demo",
+    bullets: [
+      "`\"type\": \"module\"` lets the server use `import` and `export`",
+      "`npm start` runs `index.ts` with tsx",
+    ],
+    codeBlocks: [
       {
         file: "webdev-server/package.json",
         language: "json",
