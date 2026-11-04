@@ -418,7 +418,7 @@ app.listen(4000);`}</CodeBlock>
           <code>strict</code>{" "}stays off so the early listings
           typecheck as written.
         </p>
-        <CodeBlock language="shell">{`npm i -D typescript @types/node @types/express`}</CodeBlock>
+        <CodeBlock language="shell">{`npm i -D typescript@^5.9.3 @types/node@^22 @types/express`}</CodeBlock>
         <CodeBlock language="json" name="tsconfig" file="webdev-server/tsconfig.json">{`{
   "compilerOptions": {
     "target": "ES2022",
