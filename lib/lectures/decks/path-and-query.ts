@@ -45,8 +45,8 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
     kind: "demo",
     bullets: [
       "In a new `Lab5/PathParameters.ts`, add the routes as shown below",
-      "`req.params` are strings. `parseInt`, then `.toString()`",
-      "A bare `res.send(6)` can look like HTTP status 6",
+      "`:a` and `:b` in the route name the parameters. `req.params` holds them as strings",
+      "`parseInt` before the math, then `.toString()`: a bare `res.send(6)` looks like status 6",
     ],
   },
   {
@@ -69,7 +69,7 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Lab5/PathParameters.ts",
-    codeHighlightLines: [3, 5, [11, 12]],
+    codeHighlightLines: [3, 4, 5, 11],
   },
   {
     id: "path-import",
