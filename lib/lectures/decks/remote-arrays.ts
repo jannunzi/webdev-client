@@ -175,7 +175,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
     title: "Linking to Add an Item",
     kind: "demo",
     bullets: [
-      "In `WorkingWithArrays.tsx`, add the create link as shown below",
+      "In `WorkingWithArrays.tsx`, add the following link.",
     ],
     code: "<a id=\"wd-create-todo\" href={`${API}/create`}>Create Todo</a>",
     codeLanguage: "tsx",
