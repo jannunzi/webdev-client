@@ -91,12 +91,13 @@ export async function handleAiSuggestRequest(
       prompt: text,
       maxOutputTokens: mode === "continue" ? 120 : 800,
     });
-  } catch {
+  } catch (err) {
+    const detail = err instanceof Error ? err.message : String(err);
+    console.error("[ai-suggest] gateway call failed:", detail);
     return Response.json(
       {
         ok: false,
-        error:
-          "AI suggestions are unavailable. On Vercel the deployment uses its OIDC token. Locally set AI_GATEWAY_API_KEY.",
+        error: `AI suggestions are unavailable: ${detail.slice(0, 300)}`,
       },
       { status: 503 },
     );
