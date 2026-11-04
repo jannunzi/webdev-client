@@ -7,7 +7,7 @@ export const TAILWIND_COLORS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · Tailwind Colors",
-      "§2.3.3 · backgrounds and contrast",
+      "Backgrounds and contrast",
     ],
   },
   {

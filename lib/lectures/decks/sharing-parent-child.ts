@@ -7,7 +7,7 @@ export const SHARING_PARENT_CHILD_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · Sharing Parent and Child",
-      "§4.3.1 · lift the value, pass the setter",
+      "Lift the value, pass the setter",
     ],
   },
   {
@@ -118,7 +118,7 @@ export default function ParentStateComponent() {
     kind: "title",
     bullets: [
       "A middle component that only forwards props is a smell",
-      "§4.3.2–4.3.3: drilling, then encode the next page in the URL",
+      "Drilling, then encode the next page in the URL",
     ],
   },
 ];

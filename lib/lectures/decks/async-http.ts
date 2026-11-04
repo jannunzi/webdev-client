@@ -12,12 +12,12 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Async HTTP and JSON",
-      "§5.2.5–5.2.6 · axios, CORS, POST/PUT/DELETE",
+      "Axios, CORS, POST/PUT/DELETE",
     ],
   },
   {
     id: "ajax",
-    title: "Axios stays on the page",
+    title: "Staying on the Page with Axios",
     kind: "demo",
     bullets: [
       "Hyperlinks leave Lab 5. AJAX fetches without navigating",
@@ -44,7 +44,7 @@ const fetchWelcomeOnClick = async () => {
   },
   {
     id: "cors",
-    title: "CORS lets 3000 talk to 4000",
+    title: "Allowing Cross-Origin Requests",
     kind: "demo",
     bullets: [
       "The UI origin is 3000. Express is 4000 — a different origin",
@@ -66,7 +66,7 @@ Lab5(app);`,
   },
   {
     id: "client-lib",
-    title: "A reusable client library",
+    title: "Creating a Reusable Client Library",
     kind: "demo",
     bullets: [
       "Screens share one file so the welcome URL changes once",
@@ -83,8 +83,20 @@ export const fetchWelcomeMessage = async () => {
     codeHighlightLines: [[3, 6]],
   },
   {
+    id: "axios-how",
+    title: "Fetching Data with Axios",
+    kind: "content",
+    bullets: [
+      "The handler calls `axios.get(url)` and the page stays put",
+      "The browser sends the request to port 4000 in the background",
+      "`await` waits for the reply. The reply object has a `data` property",
+      "`response.data` is the body — text, or JSON already turned into an object",
+      "Storing it in state re-renders the component",
+    ],
+  },
+  {
     id: "http-client",
-    title: "Fetch on click with axios",
+    title: "Fetching on Click with Axios",
     kind: "demo",
     bullets: [
       "The page stays put. axios returns the response data",
@@ -95,7 +107,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "http-client-lib",
-    title: "Call the client library instead",
+    title: "Calling the Client Library",
     kind: "demo",
     bullets: [
       "Components call `client.ts`, never axios directly",
@@ -106,7 +118,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "http-client-load",
-    title: "Fetch when the component loads",
+    title: "Fetching When the Component Loads",
     kind: "demo",
     bullets: [
       "`useEffect` with `[]` runs once after the first render",
@@ -117,7 +129,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "http-client-live",
-    title: "HttpClient: live demo",
+    title: "HttpClient Live Demo",
     kind: "demo",
     bullets: [
       "The on-load message appears without a click",
@@ -128,7 +140,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "objects-async",
-    title: "Objects without leaving the page",
+    title: "Updating Remote Objects Asynchronously",
     kind: "demo",
     bullets: [
       "Load the assignment on mount. Update the title in place",
@@ -139,7 +151,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "objects-async-live",
-    title: "ObjectsAsync: live demo",
+    title: "ObjectsAsync Live Demo",
     kind: "demo",
     bullets: [
       "The assignment renders as JSON on load",
@@ -150,7 +162,7 @@ export const fetchWelcomeMessage = async () => {
   },
   {
     id: "arrays-async",
-    title: "Render todos fetched on load",
+    title: "Rendering Todos Fetched on Load",
     kind: "demo",
     bullets: [
       "Fetch the array once, then map it to list items",
@@ -160,12 +172,24 @@ export const fetchWelcomeMessage = async () => {
     codeFile: "app/labs/lab5/WorkingWithArraysAsync.tsx",
   },
   {
+    id: "body-how",
+    title: "Reading a JSON Request Body",
+    kind: "content",
+    bullets: [
+      "Client: `axios.post(url, { title: \"New Task\" })` puts JSON in the request body",
+      "A header on the request, `Content-Type: application/json`, says the body is JSON",
+      "By default Express does not read the body, so `req.body` is `undefined`",
+      "`express.json()` reads the body and sets `req.body = { title: \"New Task\" }`",
+      "Routes registered after it can use `req.body`",
+    ],
+  },
+  {
     id: "json-body",
-    title: "JSON in the HTTP body",
+    title: "Sending JSON in the HTTP Body",
     kind: "content",
     bullets: [
       "URLs are short, strings-only, and visible on the wire",
-      "`express.json()` parses the body into `req.body`",
+      "`express.json()` reads the JSON body and turns it into the `req.body` object",
       "Place it after CORS and before the routes",
     ],
     code: `app.use(cors());
@@ -177,18 +201,49 @@ Lab5(app);`,
   },
   {
     id: "verbs",
-    title: "Use the right HTTP verb",
+    title: "Choosing the Right HTTP Verb",
     kind: "content",
     bullets: [
       "**GET** — retrieve only. We misused it for create/delete",
       "**POST** — create. **PUT** — update. **DELETE** — remove",
-      "**OPTIONS** — the CORS preflight for those verbs",
+      "**OPTIONS** — the browser asks first whether the server allows those verbs from another origin",
       "Keep the older GET routes so earlier links still work",
     ],
   },
   {
+    id: "icon-flow",
+    title: "Deleting a Todo Asynchronously",
+    kind: "content",
+    bullets: [
+      "Click the trash icon on todo 1",
+      "`client.removeTodo` calls `axios.get(\"…/lab5/todos/1/delete\")`",
+      "Express removes it and responds with the remaining array",
+      "`response.data` is that array",
+      "`setTodos` stores it, and the list re-renders without todo 1",
+    ],
+  },
+  {
+    id: "arrays-async-remove",
+    title: "Removing a Todo with a Trash Icon",
+    kind: "demo",
+    bullets: [
+      "The GET-style delete route returns the new array",
+    ],
+    code: "const removeTodo = async (todo) => {\n  setTodos(await client.removeTodo(todo));\n};\n<FaTrash onClick={() => removeTodo(todo)} id=\"wd-remove-todo\"\n  className=\"cursor-pointer text-red-600\" />",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithArraysAsync.tsx",
+  },
+  {
+    id: "arrays-async-create",
+    title: "Creating a Todo with a Plus Icon",
+    kind: "demo",
+    code: "const createNewTodo = async () => {\n  setTodos(await client.createNewTodo());\n};\n<FaPlusCircle onClick={createNewTodo} id=\"wd-create-todo\"\n  className=\"cursor-pointer text-green-600\" />",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithArraysAsync.tsx",
+  },
+  {
     id: "post-delete-intro",
-    title: "POST create, DELETE remove",
+    title: "Implementing POST and DELETE Routes",
     kind: "demo",
     bullets: [
       "POST `/lab5/todos` spreads `req.body` and assigns an id",
@@ -197,7 +252,7 @@ Lab5(app);`,
   },
   {
     id: "post-delete",
-    title: "POST create, DELETE remove (code)",
+    title: "Writing the POST and DELETE Handlers",
     kind: "demo",
     code: `const postNewTodo = (req, res) => {
   const newTodo = { ...req.body, id: new Date().getTime() };
@@ -221,27 +276,19 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
     codeHighlightLines: [[16, 17]],
   },
   {
-    id: "arrays-async-remove",
-    title: "Remove with a trash icon",
-    kind: "demo",
+    id: "post-flow",
+    title: "Posting a New Todo",
+    kind: "content",
     bullets: [
-      "The GET-style delete route returns the new array",
+      "`axios.post(TODOS_API, todo)` sends `todo` as a JSON body",
+      "Example body: `{ title: \"New Posted Todo\", completed: false }`",
+      "The server adds an id, stores it, and replies with the new todo",
+      "The client appends `response.data` to its `todos` state",
     ],
-    code: "const removeTodo = async (todo) => {\n  setTodos(await client.removeTodo(todo));\n};\n<FaTrash onClick={() => removeTodo(todo)} id=\"wd-remove-todo\"\n  className=\"cursor-pointer text-red-600\" />",
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArraysAsync.tsx",
-  },
-  {
-    id: "arrays-async-create",
-    title: "Create with a plus icon",
-    kind: "demo",
-    code: "const createNewTodo = async () => {\n  setTodos(await client.createNewTodo());\n};\n<FaPlusCircle onClick={createNewTodo} id=\"wd-create-todo\"\n  className=\"cursor-pointer text-green-600\" />",
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArraysAsync.tsx",
   },
   {
     id: "arrays-async-post",
-    title: "POST a new todo",
+    title: "Posting a Todo from the Client",
     kind: "demo",
     bullets: [
       "The server returns only the new todo. Append it",
@@ -252,7 +299,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "arrays-async-delete",
-    title: "DELETE a todo",
+    title: "Deleting a Todo with HTTP DELETE",
     kind: "demo",
     bullets: [
       "The server returns a status. Filter it out locally",
@@ -262,8 +309,20 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
     codeFile: "app/labs/lab5/WorkingWithArraysAsync.tsx",
   },
   {
+    id: "put-server",
+    title: "Implementing the PUT Todo Route",
+    kind: "demo",
+    bullets: [
+      "`req.body` holds the changed fields. They overwrite the old ones",
+      "Replies `200` with no body. The client already has the todo",
+    ],
+    code: "const updateTodo = (req, res) => {\n  const { id } = req.params;\n  todos = todos.map((t) => {\n    if (t.id === parseInt(id)) {\n      return { ...t, ...req.body };\n    }\n    return t;\n  });\n  res.sendStatus(200);\n};\napp.put(\"/lab5/todos/:id\", updateTodo);",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
+  },
+  {
     id: "arrays-async-put",
-    title: "Edit and PUT a todo",
+    title: "Updating a Todo with HTTP PUT",
     kind: "demo",
     bullets: [
       "Pencil enters edit mode. The checkbox PUTs at once",
@@ -273,8 +332,20 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
     codeFile: "app/labs/lab5/WorkingWithArraysAsync.tsx",
   },
   {
+    id: "error-server",
+    title: "Responding 404 for a Missing Todo",
+    kind: "demo",
+    bullets: [
+      "No matching id: reply `404` with a `message`",
+      "The same check goes in `updateTodo`",
+    ],
+    code: "const deleteTodo = (req, res) => {\n  const { id } = req.params;\n  const todoIndex = todos.findIndex((t) => t.id === parseInt(id));\n  if (todoIndex === -1) {\n    res.status(404).json({ message: `Unable to delete Todo with ID ${id}` });\n    return;\n  }\n  todos.splice(todoIndex, 1);\n  res.sendStatus(200);\n};",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
+  },
+  {
     id: "arrays-async-error",
-    title: "Show the server\u2019s error message",
+    title: "Showing the Server's Error Message",
     kind: "demo",
     bullets: [
       "A failed request throws. Show `response.data.message`",
@@ -285,7 +356,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "arrays-async-live",
-    title: "ArraysAsync: live demo",
+    title: "ArraysAsync Live Demo",
     kind: "demo",
     bullets: [
       "Create, post, edit, check, and delete todos",
@@ -296,7 +367,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "recap",
-    title: "Async HTTP recap",
+    title: "Recap: Asynchronous HTTP with Axios",
     kind: "content",
     bullets: [
       "axios + `async`/`await` keep the Lab 5 page on screen",
@@ -310,7 +381,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
     kind: "title",
     bullets: [
       "Same-origin `/api` when you do not need a second process",
-      "§5.3: hello JSON, then a calculator query API",
+      "Hello JSON, then a calculator query API",
     ],
   },
 ];

@@ -12,7 +12,7 @@ export const CH5_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Check Your Understanding",
-      "§5-check · a self-check before Kambaz APIs",
+      "A self-check before Kambaz APIs",
     ],
   },
   {
@@ -28,7 +28,7 @@ export const CH5_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
   },
   {
     id: "topics",
-    title: "What the quiz samples",
+    title: "Topics the Chapter 5 Quiz Samples",
     kind: "content",
     bullets: [
       "Sibling `webdev-server`, Nodemon, `\"type\": \"module\"`",
@@ -39,17 +39,17 @@ export const CH5_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
   },
   {
     id: "lab-checklist",
-    title: "Lab 5 coverage before you quiz",
+    title: "Lab 5 Checklist Before the Quiz",
     kind: "content",
     bullets: [
-      "§5.2 is the walkthrough — multiply and divide on both encodings",
+      "The Lab 5 walkthrough covers — multiply and divide on both encodings",
       "Welcome via axios after `cors()`, then JSON body verbs",
-      "§5.3 calculator is same-origin `/api` — Express still required for Lab 5",
+      "The Next.js calculator is same-origin `/api` — Express still required for Lab 5",
     ],
   },
   {
     id: "where",
-    title: "Open the practice quiz",
+    title: "Opening the Chapter 5 Practice Quiz",
     kind: "content",
     bullets: [
       "Book: `/book/ch5#sec-5-check` — the Check Your Understanding card",
@@ -59,7 +59,7 @@ export const CH5_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
   },
   {
     id: "recap",
-    title: "Chapter 5 so far",
+    title: "Recap: Chapter 5 So Far",
     kind: "content",
     bullets: [
       "A sibling HTTP server, env vars, path and query, remote JSON",
@@ -69,11 +69,11 @@ export const CH5_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
   },
   {
     id: "next-up",
-    title: "Next: migrate the database",
+    title: "Next: Migrating the Database",
     kind: "title",
     bullets: [
       "Copy courses and users JSON into `webdev-server/Kambaz`",
-      "§5.4.1: JSON files stay JSON and are imported directly",
+      "JSON files stay JSON and are imported directly",
     ],
   },
 ];

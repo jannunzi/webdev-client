@@ -7,7 +7,7 @@ export const KAMBAZ_ACCOUNT_CONTEXT_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · Account Context and Sign In",
-      "§4.10.5.1–3 · context, Sign in, Dashboard",
+      "Context, Sign in, Dashboard",
     ],
   },
   {
@@ -17,7 +17,7 @@ export const KAMBAZ_ACCOUNT_CONTEXT_SLIDES: LectureSlide[] = [
     bullets: [
       "Sign in, Profile, Dashboard and Account Navigation all need the signed-in user",
       "That user changes only at sign in and sign out, not while typing",
-      "React Context suits a value like this, as in the §4.4 counter",
+      "React Context suits a value like this, as in the Context counter",
       "Zustand would also work; using both here is practice",
     ],
   },
@@ -28,7 +28,7 @@ export const KAMBAZ_ACCOUNT_CONTEXT_SLIDES: LectureSlide[] = [
     bullets: [
       "Goal: one place that holds who is signed in, readable from any screen",
       "Nobody is signed in until the Sign in screen sets a user",
-      "Reading it outside its provider should fail loudly, as in §4.4",
+      "Reading it outside its provider should fail loudly, as in the Context counter",
       "The next two slides build the context, its provider and its hook",
     ],
   },
@@ -184,7 +184,7 @@ export default function Signin() {
     title: "Sign In Demo",
     kind: "demo",
     bullets: [
-      "Each field uses the object-spread update from §4.2.8",
+      "Each field uses the object-spread update from Chapter 4",
       "`type=\"password\"` hides the value as you type",
       "Try `iron_man` / `stark123`: a match lands on Dashboard",
       "A wrong password stays on Sign in",

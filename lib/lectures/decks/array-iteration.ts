@@ -7,7 +7,7 @@ export const ARRAY_ITERATION_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Array Iteration",
-      "§3.4.3–3.4.4 · for loops, then map",
+      "For loops, then map",
     ],
   },
   {
@@ -121,7 +121,7 @@ export const ARRAY_ITERATION_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "`map` transforms every item. The next tools pick some of them",
-      "§3.4.5–3.4.8: find, findIndex, filter, includes / some / every",
+      "Find, findIndex, filter, includes / some / every",
     ],
   },
 ];

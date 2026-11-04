@@ -7,7 +7,7 @@ export const JAVASCRIPT_ARRAYS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · JavaScript Arrays",
-      "§3.4–3.4.2 · gather values, then grow and shrink them",
+      "Gather values, then grow and shrink them",
     ],
   },
   {
@@ -168,7 +168,7 @@ export const JAVASCRIPT_ARRAYS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "A loop (or `map`) turns one array into another",
-      "§3.4.3–3.4.4: `for`, then `map` to JSX",
+      "`for`, then `map` to JSX",
     ],
   },
 ];

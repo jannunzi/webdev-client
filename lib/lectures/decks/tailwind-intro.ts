@@ -7,7 +7,7 @@ export const TAILWIND_INTRO_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · Tailwind Intro",
-      "§2.3 · Utility-first CSS, scoped to a Lab 2 sub-route",
+      "Utility-first CSS, scoped to a Lab 2 sub-route",
     ],
   },
   {
@@ -30,7 +30,7 @@ export const TAILWIND_INTRO_SLIDES: LectureSlide[] = [
       "A length in **rem** is relative to the root font size, usually 16px, so 2rem = 32px.",
       "`gap` is the space between items in a row. `flex gap-3 text-3xl` is a row, a 0.75rem gap, and large type",
       "You are not inventing selector names. You are picking utilities",
-      "Plain CSS from §2.1 still matters — utilities compile down to the same properties",
+      "Plain CSS still matters — utilities compile down to the same properties",
     ],
   },
   {
@@ -126,7 +126,7 @@ export default function TailwindLab() {
     kind: "title",
     bullets: [
       "You can opt a route into Tailwind without resetting the rest of Lab 2",
-      "§2.3.1: `m-*` and `p-*` with direction letters",
+      "`m-*` and `p-*` with direction letters",
     ],
   },
 ];

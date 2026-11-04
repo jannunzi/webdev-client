@@ -12,7 +12,7 @@ export const KAMBAZ_COURSES_API_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Courses API",
-      "§5.4.5 · CRUD leaves the Zustand store",
+      "CRUD leaves the Zustand store",
     ],
   },
   {
@@ -27,7 +27,7 @@ export const KAMBAZ_COURSES_API_SLIDES: LectureSlide[] = [
   },
   {
     id: "dao-intro",
-    title: "Courses DAO filters enrollments",
+    title: "Filtering Courses by Enrollment",
     kind: "demo",
     bullets: [
       "`findAllCourses` is the raw array",
@@ -36,7 +36,7 @@ export const KAMBAZ_COURSES_API_SLIDES: LectureSlide[] = [
   },
   {
     id: "dao",
-    title: "Courses DAO filters enrollments (code)",
+    title: "Writing the Courses DAO",
     kind: "demo",
     code: `import { v4 as uuidv4 } from "uuid";
 export default function CoursesDao(db) {
@@ -59,8 +59,19 @@ export default function CoursesDao(db) {
     codeHighlightLines: [[6, 13]],
   },
   {
+    id: "url-to-route",
+    title: "Fetching Enrolled Courses",
+    kind: "content",
+    bullets: [
+      "The Dashboard calls `GET /api/users/current/courses`",
+      "It matches `/api/users/:userId/courses` with `req.params = { userId: \"current\" }`",
+      "`current` means the signed-in user, read from the session",
+      "The DAO filters courses by that user’s enrollments",
+    ],
+  },
+  {
     id: "routes-intro",
-    title: "GET /api/courses and mine",
+    title: "Defining the Courses Routes",
     kind: "demo",
     bullets: [
       "`userId === \"current\"` reads the session — 401 if anonymous",
@@ -70,7 +81,7 @@ export default function CoursesDao(db) {
   {
     id: "routes",
     links: ["http://localhost:4000/api/courses", "http://localhost:4000/api/users/123/courses"],
-    title: "GET /api/courses and mine (code)",
+    title: "Writing the Courses GET Routes",
     kind: "demo",
     code: `import CoursesDao from "./dao";
 export default function CourseRoutes(app, db) {
@@ -99,7 +110,7 @@ export default function CourseRoutes(app, db) {
   },
   {
     id: "client",
-    title: "Dashboard fetches on load",
+    title: "Fetching Courses on Dashboard Load",
     kind: "demo",
     bullets: [
       "`findMyCourses` uses cookies. Drop client-side enrollment filters",
@@ -124,11 +135,35 @@ export const findMyCourses = async () => {
     embed: "kambaz-styled-dashboard",
   },
   {
-    id: "create",
-    title: "POST enrolls the creator",
+    id: "create-route",
+    title: "Enrolling the Course Creator",
     kind: "demo",
     bullets: [
-      "POST `/api/users/current/courses` creates and enrolls",
+      "The session says who is signed in",
+      "Create the course, enroll that user, return the new course",
+    ],
+    code: "const createCourse = (req, res) => {\n  const currentUser = req.session[\"currentUser\"];\n  const newCourse = dao.createCourse(req.body);\n  enrollmentsDao.enrollUserInCourse(currentUser._id, newCourse._id);\n  res.json(newCourse);\n};\napp.post(\"/api/users/current/courses\", createCourse);",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/routes.ts",
+  },
+  {
+    id: "create-flow",
+    title: "Creating a Course",
+    kind: "content",
+    bullets: [
+      "Dashboard Add sends the course draft to the client function",
+      "axios POSTs it as JSON to `/api/users/current/courses`, with the cookie",
+      "The server reads the user from the session and creates the course",
+      "It enrolls that user, then replies with the new course",
+      "The Dashboard then reloads its course list",
+    ],
+  },
+  {
+    id: "create",
+    title: "Posting a New Course from the Client",
+    kind: "demo",
+    bullets: [
+      "POST the draft to `/api/users/current/courses`",
       "Add, refresh, and the new course is still listed while Express runs",
     ],
     code: `export const createCourse = async (course: unknown) => {
@@ -145,10 +180,10 @@ export const findMyCourses = async () => {
   {
     id: "modules-oyo",
     links: ["http://localhost:4000/api/courses/RS101/modules"],
-    title: "Modules nest under a course",
+    title: "Nesting Module Routes Under a Course",
     kind: "content",
     bullets: [
-      "§5.4.6: `GET/POST /api/courses/:courseId/modules`",
+      "`GET/POST /api/courses/:courseId/modules`",
       "`PUT/DELETE /api/modules/:moduleId` — nested in the UI, flat on the server",
       "Assignments and enrollments are On your own — same DAO + client pattern",
     ],
@@ -159,7 +194,7 @@ app.post("/api/courses/:courseId/modules", createModuleForCourse);`,
   },
   {
     id: "recap",
-    title: "Courses API recap",
+    title: "Recap: The Courses API",
     kind: "content",
     bullets: [
       "DAO joins enrollments. Routes expose `/api/courses`",
@@ -169,11 +204,11 @@ app.post("/api/courses/:courseId/modules", createModuleForCourse);`,
   },
   {
     id: "next-up",
-    title: "Next: deploy the API",
+    title: "Next: Deploying the API",
     kind: "title",
     bullets: [
       "A second GitHub repo, Render, then a Vercel env var",
-      "§5.5: `NEXT_PUBLIC_HTTP_SERVER` points at Render",
+      "`NEXT_PUBLIC_HTTP_SERVER` points at Render",
     ],
   },
 ];

@@ -7,7 +7,7 @@ export const INTRO_TO_JAVASCRIPT_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Introduction to JavaScript",
-      "§3.1–3.2 · Logic in the page — Lab 3 starts here",
+      "Logic in the page — Lab 3 starts here",
     ],
   },
   {
@@ -87,7 +87,7 @@ export const INTRO_TO_JAVASCRIPT_SLIDES: LectureSlide[] = [
       "Each section is a throwaway drill — one idea per file",
       "Import the new component into `page.tsx` and confirm the output",
       "Kambaz later in the chapter is the application you keep",
-      "Checklists in §3.8.5 and §3.10.10 are recaps, not a reason to skip ahead",
+      "Checklists are recaps, not a reason to skip ahead",
       "Run `npm run build` now and then — Vercel runs the build, and some mistakes only show up there",
       "Build fails on uncached data or `<Suspense>`? Apply the Next.js 16.4 fix from Chapter 1",
     ],
@@ -98,7 +98,7 @@ export const INTRO_TO_JAVASCRIPT_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "You have a Lab 3 route. Now store values in it",
-      "§3.2.1: `var`, `let`, `const`, and `{value}` in JSX",
+      "`var`, `let`, `const`, and `{value}` in JSX",
     ],
   },
 ];

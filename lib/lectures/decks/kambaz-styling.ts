@@ -7,7 +7,7 @@ export const KAMBAZ_STYLING_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · Kambaz Styling",
-      "§2.4 · Style all of Kambaz, then each screen",
+      "Style all of Kambaz, then each screen",
     ],
   },
   {
@@ -17,7 +17,7 @@ export const KAMBAZ_STYLING_SLIDES: LectureSlide[] = [
     bullets: [
       "**Tailwind CSS** is a utility-first framework: you style by combining **utility classes**, small single-purpose classes like `p-3` or `flex`, in the markup",
       "The **theme** is the design values — colors, spacing, and fonts — those utilities use",
-      "Chapter 1 forced columns with tables. §2.1.18–2.1.19 replaced that with CSS Grid and Flexbox layouts",
+      "Chapter 1 forced columns with tables. Floats and Flexbox replaced that with CSS Grid and Flexbox layouts",
       "Now restyle each Kambaz screen with utility classes on the same markup",
     ],
   },
@@ -116,12 +116,12 @@ export default function KambazLayout({
   },
   {
     id: "checklist",
-    title: "Coverage is §2.4.10",
+    title: "Coverage is the checklist",
     kind: "content",
     bullets: [
-      "§2.4 walks through Kambaz Navigation, Dashboard, Course Navigation, Modules, Home, People, and Assignments",
+      "The book walks through Kambaz Navigation, Dashboard, Course Navigation, Modules, Home, People, and Assignments",
       "Assignment Editor and Account stay **On your own**: match the figures and interactive demos in those sections",
-      "Use the §2.4.10 checklist after you restyle, not instead of walking the screens",
+      "Use the coverage checklist after you restyle, not instead of walking the screens",
     ],
   },
   {
@@ -130,7 +130,7 @@ export default function KambazLayout({
     kind: "title",
     bullets: [
       "Kambaz now loads the theme and utilities without Preflight",
-      "§2.4.1: pin Kambaz Navigation as a fixed icon column",
+      "Pin Kambaz Navigation as a fixed icon column",
     ],
   },
 ];

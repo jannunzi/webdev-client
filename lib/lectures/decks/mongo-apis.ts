@@ -7,7 +7,7 @@ export const MONGO_APIS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 6 · Mongo APIs",
-      "§6.2.6 · async routes, then find all",
+      "Async routes, then find all",
     ],
   },
   {
@@ -220,7 +220,7 @@ export default function Users() {
     kind: "title",
     bullets: [
       "Predicates, find by id, then delete, update, and create",
-      "§6.2.6.3–6.2.6.7: `?role=` and People Details",
+      "`?role=` and People Details",
     ],
   },
 ];

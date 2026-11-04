@@ -7,7 +7,7 @@ export const TYPESCRIPT_TYPES_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · TypeScript Types",
-      "§3.5 · describe what each value holds",
+      "Describe what each value holds",
     ],
   },
   {
@@ -451,7 +451,7 @@ export default function TypedProps() {
       "TypeScript treats `null` and `undefined` as their own types",
       "A value that might be missing is a union, such as `string | null`, and you check it before use",
       "After a check like `value === null` or `typeof value === \"number\"`, TypeScript **narrows** the type: you can call methods only that type has",
-      "`?.` and `??` from §3.4.17 do the same for optional properties",
+      "`?.` and `??` from Chapter 3 do the same for optional properties",
     ],
   },
   {
@@ -629,7 +629,7 @@ export default function UtilityTypes() {
     kind: "title",
     bullets: [
       "Classes and inline styles can follow a variable",
-      "§3.6: `className={`wd-bg-${color}`}` and `style={bgBlue}`",
+      "`className={`wd-bg-${color}`}` and `style={bgBlue}`",
     ],
   },
 ];

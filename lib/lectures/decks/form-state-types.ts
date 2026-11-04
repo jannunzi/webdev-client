@@ -7,7 +7,7 @@ export const FORM_STATE_TYPES_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · Form State Types",
-      "§4.2.5–4.2.9 · boolean through array, same hook",
+      "Boolean through array, same hook",
     ],
   },
   {
@@ -567,7 +567,7 @@ export default function ProfileFields({
     kind: "content",
     bullets: [
       "Shows nothing until the form has been submitted",
-      "As in §3.4.11, `Object.keys(errors).length` counts the fields with an error. Zero means saved",
+      "`Object.keys(errors).length` counts the fields with an error. Zero means saved",
       "`role=\"alert\"` is announced by screen readers. `role=\"status\"` is quieter",
     ],
   },
@@ -676,7 +676,7 @@ export default function ProfileForm() {
     kind: "title",
     bullets: [
       "`useState` belongs to the component that calls it",
-      "§4.3.1: lift the counter so a child can increment it",
+      "Lift the counter so a child can increment it",
     ],
   },
 ];

@@ -12,7 +12,7 @@ export const DEPLOY_API_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Deploy the API",
-      "§5.5 · GitHub, Render, Vercel env",
+      "GitHub, Render, Vercel env",
     ],
   },
   {
@@ -27,7 +27,7 @@ export const DEPLOY_API_SLIDES: LectureSlide[] = [
   },
   {
     id: "github",
-    title: "Push webdev-server to GitHub",
+    title: "Pushing the Server to GitHub",
     kind: "demo",
     bullets: [
       "A **separate** public repo so graders see server history alone",
@@ -55,7 +55,7 @@ git push -u origin main`,
   },
   {
     id: "render",
-    title: "Render Web Service + env",
+    title: "Creating a Render Web Service",
     kind: "content",
     bullets: [
       "Add New → Web Service → the `webdev-server` repo",
@@ -66,7 +66,7 @@ git push -u origin main`,
   },
   {
     id: "render-env",
-    title: "Render environment values",
+    title: "Setting Render Environment Variables",
     kind: "demo",
     bullets: [
       "`CLIENT_URL` is your Vercel origin — no trailing slash",
@@ -80,7 +80,7 @@ SESSION_SECRET=a phrase that is not committed`,
   },
   {
     id: "vercel",
-    title: "Vercel points at Render",
+    title: "Pointing Vercel at the Render API",
     kind: "demo",
     bullets: [
       "Project Settings → Environment Variables → Production",
@@ -94,7 +94,7 @@ SESSION_SECRET=a phrase that is not committed`,
   },
   {
     id: "recap",
-    title: "Deploy recap",
+    title: "Recap: Deploying the API",
     kind: "content",
     bullets: [
       "Second GitHub repo. Render runs `npm start`",
@@ -104,11 +104,11 @@ SESSION_SECRET=a phrase that is not committed`,
   },
   {
     id: "next-up",
-    title: "Next: conclusion and a5",
+    title: "Next: Conclusion and Assignment 5",
     kind: "title",
     bullets: [
       "Push `a5` on both repos and submit the Vercel URL",
-      "§5.6–5.7: what shipped, then the deliverable list",
+      "What shipped, then the deliverable list",
     ],
   },
 ];

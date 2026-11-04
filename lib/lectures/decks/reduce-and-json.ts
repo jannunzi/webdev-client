@@ -7,7 +7,7 @@ export const REDUCE_AND_JSON_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Reduce and JSON",
-      "§3.4.9–3.4.10 · fold an array, then show its shape",
+      "Fold an array, then show its shape",
     ],
   },
   {
@@ -96,7 +96,7 @@ export const REDUCE_AND_JSON_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Arrays index by position. Objects name each field",
-      "§3.4.11: a house with nested address and owners",
+      "A house with nested address and owners",
     ],
   },
 ];

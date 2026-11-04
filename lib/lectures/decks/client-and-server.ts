@@ -7,7 +7,7 @@ export const CLIENT_AND_SERVER_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Client and Server",
-      "§3.7 · where the component is allowed to run",
+      "Where the component is allowed to run",
     ],
   },
   {
@@ -960,7 +960,7 @@ export default async function ChildProcessDemo() {
     kind: "title",
     bullets: [
       "Attributes become a props object. Children are the body",
-      "§3.8: `<Add a={3} b={4} />`, then `Square` and `Highlight`",
+      "`<Add a={3} b={4} />`, then `Square` and `Highlight`",
     ],
   },
 ];

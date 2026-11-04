@@ -7,7 +7,7 @@ export const KAMBAZ_COURSES_STYLING_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · Courses Chrome",
-      "§2.4.3–2.4.5 · Course Nav, Modules, Home + Status",
+      "Course Nav, Modules, Home + Status",
     ],
   },
   {
@@ -438,7 +438,7 @@ export default function CourseStatus() {
     kind: "content",
     bullets: [
       "Course layout: nav `hidden md:block` at 140px, children `flex-1`",
-      "Home imports the Modules page from §2.4.4: Modules `flex-1`, Status `hidden lg:block` at 250px",
+      "Home imports the Modules page: Modules `flex-1`, Status `hidden lg:block` at 250px",
       "Status vanishes first. Both sidebars leave together below `md`",
     ],
   },
@@ -493,7 +493,7 @@ export default function Home() {
     kind: "title",
     bullets: [
       "You can style course chrome and hide columns in the right order",
-      "§2.4.6–2.4.8: People table, assignment rows, then the editor form",
+      "People table, assignment rows, then the editor form",
     ],
   },
 ];

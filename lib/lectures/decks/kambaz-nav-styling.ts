@@ -7,7 +7,7 @@ export const KAMBAZ_NAV_STYLING_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · Kambaz Navigation",
-      "§2.4.1 · Fixed black column of icon-and-label tiles",
+      "Fixed black column of icon-and-label tiles",
     ],
   },
   {
@@ -241,7 +241,7 @@ export default function KambazNavigation() {
     kind: "title",
     bullets: [
       "You can pin a fixed icon rail and offset the page beside it",
-      "§2.4.2: `CourseCard` borders + a responsive course grid",
+      "`CourseCard` borders + a responsive course grid",
     ],
   },
 ];

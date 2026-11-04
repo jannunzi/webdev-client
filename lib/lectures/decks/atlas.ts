@@ -7,7 +7,7 @@ export const ATLAS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 6 · Integrating with Atlas",
-      "§6.3 · hosted Mongo, then remote sessions",
+      "Hosted Mongo, then remote sessions",
     ],
   },
   {
@@ -93,7 +93,7 @@ export const ATLAS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Paste the Compass `mongodb+srv` string and import the JSON",
-      "§6.3.1.1: a second Compass window, not `127.0.0.1`",
+      "A second Compass window, not `127.0.0.1`",
     ],
   },
 ];

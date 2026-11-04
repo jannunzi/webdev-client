@@ -7,7 +7,7 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · A Courses Store",
-      "§4.10.1 · Zustand holds the published list",
+      "Zustand holds the published list",
     ],
   },
   {
@@ -140,7 +140,7 @@ export { emptyCourse };`,
     kind: "title",
     bullets: [
       "Select the store. Keep a local `course` draft for the form",
-      "§4.10.2: Add, Delete with `preventDefault`, Edit then Update",
+      "Add, Delete with `preventDefault`, Edit then Update",
     ],
   },
 ];

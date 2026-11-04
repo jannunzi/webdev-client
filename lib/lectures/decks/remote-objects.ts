@@ -12,7 +12,7 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Remote Objects",
-      "§5.2.3 · one assignment in process memory",
+      "One assignment in process memory",
     ],
   },
   {
@@ -22,22 +22,34 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
     bullets: [
       "Integers and strings were a start. Objects and arrays persist too",
       "State lasts until you reboot Express — then the seed returns",
-      "`res.json` sets the content type and serializes for you",
+      "`res.json(assignment)` turns the object into a JSON string and tells the browser it is JSON (`Content-Type: application/json`)",
+    ],
+  },
+  {
+    id: "json-how",
+    title: "Sending Objects as JSON",
+    kind: "content",
+    bullets: [
+      "Server memory holds a JavaScript object such as `{ id: 1, title: \"NodeJS Assignment\" }`",
+      "`res.json(obj)` converts the object into a JSON string",
+      "It also tells the browser the response is JSON (`Content-Type: application/json`)",
+      "The browser shows the text. Client code can turn it back into an object",
+      "The object lives until the server restarts",
     ],
   },
   {
     id: "assignment-intro",
-    title: "res.json sends an object",
+    title: "Sending an Object with res.json",
     kind: "demo",
     bullets: [
       "Import in `Lab5/index.ts` and visit `/lab5/assignment`",
-      "Get Assignment is a hyperlink to the raw JSON",
+      "Goal: the browser shows the whole assignment as JSON",
     ],
   },
   {
     id: "assignment",
     links: ["http://localhost:4000/lab5/assignment"],
-    title: "res.json sends an object (code)",
+    title: "Returning the Assignment as JSON",
     kind: "demo",
     code: `const assignment = {
   id: 1,
@@ -58,13 +70,30 @@ export default function WorkingWithObjects(app) {
     codeHighlightLines: [[10, 13]],
   },
   {
+    id: "client",
+    title: "Linking to Get Assignment",
+    kind: "demo",
+    bullets: [
+      "Get Assignment navigates to the route you just wrote",
+    ],
+    code: `<h4>Retrieving Objects</h4>
+<a id="wd-retrieve-assignments"
+  className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white"
+  href={\`\${HTTP_SERVER}/lab5/assignment\`}>
+  Get Assignment
+</a>`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
+    codeHighlightLines: [4],
+  },
+  {
     id: "title-get",
     links: ["http://localhost:4000/lab5/assignment/title"],
-    title: "GET a single property",
+    title: "Implementing GET Assignment Title",
     kind: "demo",
     bullets: [
       "`/lab5/assignment/title` responds with just the string",
-      "Add a Get Title link next to Get Assignment",
+      "Try it: the link below shows just the title",
     ],
     code: `const getAssignmentTitle = (req, res) => {
   res.json(assignment.title);
@@ -75,9 +104,20 @@ app.get("/lab5/assignment/title", getAssignmentTitle);`,
     codeAddedLines: [[1, 4]],
   },
   {
+    id: "client-title",
+    title: "Retrieving One Object Property",
+    kind: "demo",
+    bullets: [
+      "`/lab5/assignment/title` returns just the string",
+    ],
+    code: "<h4>Retrieving Properties</h4>\n<a id=\"wd-retrieve-assignment-title\"\n  href={`${HTTP_SERVER}/lab5/assignment/title`}>\n  Get Title\n</a>",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
+  },
+  {
     id: "title-put",
     links: ["http://localhost:4000/lab5/assignment/title/NewTitle"],
-    title: "Mutate title from the path",
+    title: "Updating the Title from the Path",
     kind: "demo",
     bullets: [
       "A path segment writes `assignment.title`, then returns the object",
@@ -94,37 +134,8 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
     codeAddedLines: [[1, 6]],
   },
   {
-    id: "client",
-    title: "Links retrieve, then update",
-    kind: "demo",
-    bullets: [
-      "Get Assignment / Get Title navigate to Express JSON",
-      "An input plus Update Title encodes the new string in the path",
-    ],
-    code: `<h4>Retrieving Objects</h4>
-<a id="wd-retrieve-assignments"
-  className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white"
-  href={\`\${HTTP_SERVER}/lab5/assignment\`}>
-  Get Assignment
-</a>`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
-    codeHighlightLines: [4],
-  },
-  {
-    id: "client-title",
-    title: "Retrieve one property",
-    kind: "demo",
-    bullets: [
-      "`/lab5/assignment/title` returns just the string",
-    ],
-    code: "<h4>Retrieving Properties</h4>\n<a id=\"wd-retrieve-assignment-title\"\n  href={`${HTTP_SERVER}/lab5/assignment/title`}>\n  Get Title\n</a>",
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
-  },
-  {
     id: "client-update",
-    title: "Modify a property from an input",
+    title: "Updating a Property from an Input",
     kind: "demo",
     bullets: [
       "The input edits local state. The link sends it to Express",
@@ -134,8 +145,20 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
     codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
   },
   {
+    id: "objects-click",
+    title: "Reading and Writing a Remote Object",
+    kind: "content",
+    bullets: [
+      "`HTTP_SERVER/lab5/assignment` shows the whole object as JSON",
+      "`HTTP_SERVER/lab5/assignment/title` shows only `NodeJS Assignment`",
+      "Type `New Title`, and the link becomes `/lab5/assignment/title/New Title`",
+      "The server sets `newTitle` from the path and replies with the updated object",
+      "Get Title again now shows `New Title` until Express restarts",
+    ],
+  },
+  {
     id: "client-live",
-    title: "WorkingWithObjects: live demo",
+    title: "WorkingWithObjects Live Demo",
     kind: "demo",
     bullets: [
       "Get Assignment, then Get Title",
@@ -146,7 +169,7 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
   },
   {
     id: "recap",
-    title: "Remote objects recap",
+    title: "Recap: Remote Objects",
     kind: "content",
     bullets: [
       "`res.json` for objects. `res.send` for plain strings",
@@ -156,11 +179,11 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
   },
   {
     id: "next-up",
-    title: "Next: remote arrays",
+    title: "Next: Remote Arrays",
     kind: "title",
     bullets: [
       "CRUD on a todos collection — create, read, update, delete",
-      "§5.2.4: `/lab5/todos` plus an id in the path",
+      "`/lab5/todos` plus an id in the path",
     ],
   },
 ];

@@ -7,7 +7,7 @@ export const TAILWIND_FLEX_AND_GRID_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · Filters and Grid",
-      "§2.3.5–2.3.6 · blur utilities, then CSS Grid",
+      "Blur utilities, then CSS Grid",
     ],
   },
   {
@@ -15,7 +15,7 @@ export const TAILWIND_FLEX_AND_GRID_SLIDES: LectureSlide[] = [
     title: "Implementing Tailwind Filters and Grids",
     kind: "content",
     bullets: [
-      "§2.3.5: `blur-*`, `grayscale`, `brightness-*`, `contrast-*` on the element",
+      "`blur-*`, `grayscale`, `brightness-*`, `contrast-*` on the element",
       "**CSS Grid** places children into columns. `grid` turns the grid on and `grid-cols-*` sets how many columns",
       "`gap` is the gutter, the space between those cells",
       "`col-span-*` stretches one cell across that many columns",
@@ -282,7 +282,7 @@ export const TAILWIND_FLEX_AND_GRID_SLIDES: LectureSlide[] = [
     kind: "demo",
     bullets: [
       "Four-column wrap, a 3-column grid with `col-span-2`, then the 12-column splits",
-      "§2.1’s float “grid” was percentages. This is CSS Grid",
+      "Chapter 2’s float “grid” was percentages. This is CSS Grid",
     ],
     embed: "tw-grids",
   },
@@ -333,7 +333,7 @@ export const TAILWIND_FLEX_AND_GRID_SLIDES: LectureSlide[] = [
     title: "Finished Lab 2 page: imports",
     kind: "content",
     bullets: [
-      "Here is the finished `app/labs/lab2/page.tsx`, with every §2.1 and §2.2 sample imported in order",
+      "Here is the finished `app/labs/lab2/page.tsx`, with every CSS and React Icons sample imported in order",
       "Compare it with yours: a missing import means a missing sample on `/labs/lab2`",
     ],
   },
@@ -366,7 +366,7 @@ import ReactIconsSampler from "./ReactIconsSampler";`,
     title: "Finished Lab 2 page: link and style",
     kind: "content",
     bullets: [
-      "The link to the Tailwind lab from §2.3 sits under the heading",
+      "The link to the Tailwind lab sits under the heading",
       "The Tailwind samples themselves stay in `app/labs/lab2/tailwind/page.tsx`",
     ],
   },
@@ -396,7 +396,7 @@ import ReactIconsSampler from "./ReactIconsSampler";`,
     title: "Finished Lab 2 page: id and class",
     kind: "content",
     bullets: [
-      "The id selector section from §2.1.3, then the class selector section from §2.1.4",
+      "The id selector section, then the class selector section",
     ],
     code: `      <div id="wd-css-id-selectors">
         <h3>ID selectors</h3>
@@ -428,7 +428,7 @@ import ReactIconsSampler from "./ReactIconsSampler";`,
     title: "Finished Lab 2 page: document structure",
     kind: "content",
     bullets: [
-      "The document structure section from §2.1.5",
+      "The document structure section",
     ],
     code: `      <div id="wd-css-document-structure">
         <div className="wd-selector-1">
@@ -497,7 +497,7 @@ import ReactIconsSampler from "./ReactIconsSampler";`,
     kind: "title",
     bullets: [
       "You can blur an image, span grid tracks with utilities, and check your finished Lab 2 page",
-      "§2.4: wire Tailwind into the Kambaz shell — theme + utilities, no Preflight",
+      "Wire Tailwind into the Kambaz shell — theme + utilities, no Preflight",
     ],
   },
 ];

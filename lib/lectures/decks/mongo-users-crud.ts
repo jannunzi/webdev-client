@@ -7,7 +7,7 @@ export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 6 · User CRUD",
-      "§6.2.6.3–6.2.6.7 · filter, id, mutate",
+      "Filter, id, mutate",
     ],
   },
   {
@@ -213,7 +213,7 @@ app.post("/api/users", createUser);`,
     kind: "title",
     bullets: [
       "127.0.0.1 is empty on Render — Atlas is the public cluster",
-      "§6.3: free Kambaz cluster, Compass, then a new Render service",
+      "Free Kambaz cluster, Compass, then a new Render service",
     ],
   },
 ];

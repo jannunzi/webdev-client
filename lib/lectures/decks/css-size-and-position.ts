@@ -7,7 +7,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · Size and Position",
-      "Chapter 2 §2.1.12–2.1.16 · `Dimensions`, `Display`, `Positions`, `Zindex`",
+      "`Dimensions`, `Display`, `Positions`, `Zindex`",
     ],
   },
   {
@@ -517,7 +517,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "You can size a box, change how it flows, and stack overlaps on purpose",
-      "§2.1.17: `float` to wrap text, then percentage columns",
+      "`float` to wrap text, then percentage columns",
     ],
   },
 ];

@@ -7,7 +7,7 @@ export const KAMBAZ_ACCOUNT_STYLING_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · Account Styling",
-      "§2.4.9 · Form utilities on Sign in, Sign up, Profile — On your own",
+      "Form utilities on Sign in, Sign up, Profile — On your own",
     ],
   },
   {
@@ -15,7 +15,7 @@ export const KAMBAZ_ACCOUNT_STYLING_SLIDES: LectureSlide[] = [
     title: "Implementing Account Screen Styling",
     kind: "content",
     bullets: [
-      "Sign in, Sign up, and Profile from §1.4.2 get Tailwind form classes",
+      "Sign in, Sign up, and Profile from Chapter 1 get Tailwind form classes",
       "Account Navigation reuses the `kambaz.css` list-group + active border",
       "`/account/signin` stays the first Kambaz screen a visitor sees",
     ],
@@ -87,10 +87,10 @@ export const KAMBAZ_ACCOUNT_STYLING_SLIDES: LectureSlide[] = [
     title: "Chapter 2 styling recap",
     kind: "content",
     bullets: [
-      "§2.2 React Icons — components, not `<i class=\"fa\">`",
-      "§2.3 Tailwind utilities on `/labs/lab2/tailwind`",
-      "§2.4 Kambaz: theme + utilities, no Preflight; flex instead of tables",
-      "Checklist: §2.4.10. Assignment Editor and Account stay On your own",
+      "React Icons — components, not `<i class=\"fa\">`",
+      "Tailwind utilities on `/labs/lab2/tailwind`",
+      "Kambaz: theme + utilities, no Preflight; flex instead of tables",
+      "Use the coverage checklist. Assignment Editor and Account stay On your own",
     ],
   },
   {

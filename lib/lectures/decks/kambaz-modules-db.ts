@@ -7,7 +7,7 @@ export const KAMBAZ_MODULES_DB_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 6 · Modules 1:N",
-      "§6.4.2 · one course, many modules",
+      "One course, many modules",
     ],
   },
   {
@@ -132,7 +132,7 @@ function updateModule(moduleId, moduleUpdates) {
     kind: "title",
     bullets: [
       "A mapping collection turns many-to-many into two 1:N links",
-      "§6.4.3: `ref`, `populate(\"course\")`, then enroll / unenroll",
+      "`ref`, `populate(\"course\")`, then enroll / unenroll",
     ],
   },
 ];
