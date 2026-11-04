@@ -35,40 +35,40 @@ npm run dev
 
 # terminal 2 — sibling Express (port 4000), from webdev-server
 cd webdev-server
-npm run dev          # nodemon index.js
-# or: npm start      # node index.js`}</CodeBlock>
+npm run dev          # nodemon --exec tsx index.ts
+# or: npm start      # tsx index.ts`}</CodeBlock>
       <p>
         In your server application, create and import file{" "}
-        <code>Lab5/index.js</code>{" "}where we will be implementing
+        <code>Lab5/index.ts</code>{" "}where we will be implementing
         several server-side exercises. Create a route that welcomes
         users to Lab 5. Export a default function that accepts the
         shared <code>app</code>{" "}reference — the same pattern as{" "}
-        <code>Hello.js</code>{" "}in{" "}
+        <code>Hello.ts</code>{" "}in{" "}
         <SectionLink to="5.1.8" />.
       </p>
       <CodeBlock
-        language="js"
+        language="ts"
         name="Lab5"
-        file="webdev-server/Lab5/index.js"
+        file="webdev-server/Lab5/index.ts"
       >{`export default function Lab5(app) {
   app.get("/lab5/welcome", (req, res) => {
     res.send("Welcome to Lab 5");
   });
 }`}</CodeBlock>
       <p>
-        Import <code>Lab5/index.js</code>{" "}into the server{" "}
-        <code>index.js</code>{" "}and pass it a reference to express as
+        Import <code>Lab5/index.ts</code>{" "}into the server{" "}
+        <code>index.ts</code>{" "}and pass it a reference to express as
         shown below. Restart the server and confirm that{" "}
         <code>http://localhost:4000/lab5/welcome</code>{" "}responds with
         the expected greeting.
       </p>
       <CodeBlock
-        language="js"
+        language="ts"
         name="index"
-        file="webdev-server/index.js"
+        file="webdev-server/index.ts"
       >{`import express from "express";
-import Hello from "./Hello.js";
-import Lab5 from "./Lab5/index.js";
+import Hello from "./Hello";
+import Lab5 from "./Lab5/index";
 const app = express();
 Lab5(app);
 Hello(app);
@@ -195,7 +195,7 @@ app.listen(4000);`}</CodeBlock>
           Similarly, the Node Express server needs to be configured to
           run locally on your computer as well as when it is deployed
           in the remote environment. Refactor{" "}
-          <code>index.js</code>{" "}so that it uses the remote{" "}
+          <code>index.ts</code>{" "}so that it uses the remote{" "}
           <code>PORT</code>{" "}environment variable if available, or
           port 4000 when running locally:{" "}
           <code>app.listen(process.env.PORT || 4000)</code>.
@@ -272,9 +272,9 @@ app.listen(4000);`}</CodeBlock>
             <code>b</code>{" "}encoded in paths{" "}
             <code>/lab5/add/:a/:b</code>{" "}and{" "}
             <code>/lab5/subtract/:a/:b</code>. In{" "}
-            <code>PathParameters.js</code>, implement the routes below
+            <code>PathParameters.ts</code>, implement the routes below
             and import it in{" "}
-            <code>Lab5/index.js</code>. On your own create routes{" "}
+            <code>Lab5/index.ts</code>. On your own create routes{" "}
             <code>/lab5/multiply/:a/:b</code>{" "}and{" "}
             <code>/lab5/divide/:a/:b</code>{" "}that calculate the
             arithmetic multiplication and division.
@@ -290,9 +290,9 @@ app.listen(4000);`}</CodeBlock>
             <code>.toString()</code>.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="PathParameters"
-            file="webdev-server/Lab5/PathParameters.js"
+            file="webdev-server/Lab5/PathParameters.ts"
           >{`export default function PathParameters(app) {
   const add = (req, res) => {
     const { a, b } = req.params;
@@ -307,9 +307,9 @@ app.listen(4000);`}</CodeBlock>
   app.get("/lab5/subtract/:a/:b", subtract);
 }`}</CodeBlock>
           <p>
-            Note when you import, make sure to include the extension{" "}
-            <code>.js</code>. Pass a reference of{" "}
-            <code>app</code>{" "}to the PathParameters function. Confirm
+            The import path is <code>./PathParameters</code>. Pass a
+            reference of <code>app</code>{" "}to the PathParameters
+            function. Confirm
             that <code>http://localhost:4000/lab5/add/6/4</code>{" "}
             responds with 10 and{" "}
             <code>http://localhost:4000/lab5/subtract/6/4</code>{" "}
@@ -317,10 +317,10 @@ app.listen(4000);`}</CodeBlock>
             on your own.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="Lab5"
-            file="webdev-server/Lab5/index.js"
-          >{`import PathParameters from "./PathParameters.js";
+            file="webdev-server/Lab5/index.ts"
+          >{`import PathParameters from "./PathParameters";
 export default function Lab5(app) {
   app.get("/lab5/welcome", (req, res) => {
     res.send("Welcome to Lab 5");
@@ -387,7 +387,7 @@ const [b, setB] = useState("23");
             the ampersand character (
             <code>&amp;</code>) as shown below:{" "}
             <code>/lab5/calculator?operation=add&amp;a=2&amp;b=4</code>.
-            In <code>Lab5/QueryParameters.js</code>, in your server
+            In <code>Lab5/QueryParameters.ts</code>, in your server
             application, create a route that can parse an operation and
             its parameters <code>a</code>{" "}and{" "}
             <code>b</code>. If the operation is add the route responds
@@ -395,17 +395,17 @@ const [b, setB] = useState("23");
             subtract, the route responds with the subtraction of the
             parameters. On your own, also handle operations multiply
             and divide. Import{" "}
-            <code>QueryParameters.js</code>{" "}in{" "}
-            <code>Lab5/index.js</code>{" "}and pass it a reference of{" "}
+            <code>QueryParameters.ts</code>{" "}in{" "}
+            <code>Lab5/index.ts</code>{" "}and pass it a reference of{" "}
             <code>app</code>. Read the values from{" "}
             <code>req.query</code>{" "}— they arrive as strings, the
             same as path parameters — and send the result as a string
             so the browser does not treat it as a status code.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="QueryParameters"
-            file="webdev-server/Lab5/QueryParameters.js"
+            file="webdev-server/Lab5/QueryParameters.ts"
           >{`export default function QueryParameters(app) {
   const calculator = (req, res) => {
     const { a, b, operation } = req.query;
@@ -484,7 +484,7 @@ const [b, setB] = useState("23");
           including objects and arrays. The example below declares an
           assignment object accessible at the route{" "}
           <code>/lab5/assignment</code>. Import it into your{" "}
-          <code>Lab5/index.js</code>{" "}in your server. The object
+          <code>Lab5/index.ts</code>{" "}in your server. The object
           state persists as long as the server is running; changes to
           the object persist until you reboot, which resets the object
           to the seed values. Use{" "}
@@ -494,9 +494,9 @@ const [b, setB] = useState("23");
           serializes the object for you.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="WorkingWithObjects"
-          file="webdev-server/Lab5/WorkingWithObjects.js"
+          file="webdev-server/Lab5/WorkingWithObjects.ts"
         >{`const assignment = {
   id: 1,
   title: "NodeJS Assignment",
@@ -557,9 +557,9 @@ export default function WorkingWithObjects(app) {
             retrieves the assignment&apos;s title as a JSON string.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="getAssignmentTitle"
-            file="webdev-server/Lab5/WorkingWithObjects.js"
+            file="webdev-server/Lab5/WorkingWithObjects.ts"
           >{`const getAssignmentTitle = (req, res) => {
   res.json(assignment.title);
 };
@@ -590,9 +590,9 @@ app.get("/lab5/assignment", getAssignment);`}</CodeBlock>
             the object state to the constants at the top of the file.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="setAssignmentTitle"
-            file="webdev-server/Lab5/WorkingWithObjects.js"
+            file="webdev-server/Lab5/WorkingWithObjects.ts"
           >{`const setAssignmentTitle = (req, res) => {
   const { newTitle } = req.params;
   assignment.title = newTitle;
@@ -724,14 +724,14 @@ const ASSIGNMENT_API_URL = \`\${HTTP_SERVER}/lab5/assignment\`;
             to retrieve all the instances of some collection. To
             illustrate this, create a route that retrieves the array of
             todo objects as shown below. Import the new route to{" "}
-            <code>Lab5/index.js</code>. Point the browser to{" "}
+            <code>Lab5/index.ts</code>. Point the browser to{" "}
             <code>http://localhost:4000/lab5/todos</code>{" "}and confirm
             the server responds with the array of todos.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="WorkingWithArrays"
-            file="webdev-server/Lab5/WorkingWithArrays.js"
+            file="webdev-server/Lab5/WorkingWithArrays.ts"
           >{`let todos = [
   { id: 1, title: "Task 1", completed: false },
   { id: 2, title: "Task 2", completed: true },
@@ -778,9 +778,9 @@ export default function WorkingWithArrays(app) {
             retrieves the corresponding item.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="getTodoById"
-            file="webdev-server/Lab5/WorkingWithArrays.js"
+            file="webdev-server/Lab5/WorkingWithArrays.ts"
           >{`const getTodoById = (req, res) => {
   const { id } = req.params;
   const todo = todos.find((t) => t.id === parseInt(id));
@@ -825,9 +825,9 @@ app.get("/lab5/todos/:id", getTodoById);`}</CodeBlock>
             retrieving all completed todos.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="filter todos"
-            file="webdev-server/Lab5/WorkingWithArrays.js"
+            file="webdev-server/Lab5/WorkingWithArrays.ts"
           >{`const getTodos = (req, res) => {
   const { completed } = req.query;
   if (completed !== undefined) {
@@ -874,9 +874,9 @@ app.get("/lab5/todos/:id", getTodoById);`}</CodeBlock>
             <code>newTodo</code>.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="createNewTodo"
-            file="webdev-server/Lab5/WorkingWithArrays.js"
+            file="webdev-server/Lab5/WorkingWithArrays.ts"
           >{`const createNewTodo = (req, res) => {
   const newTodo = {
     id: new Date().getTime(),
@@ -922,9 +922,9 @@ app.get("/lab5/todos/:id", getTodoById);`}</CodeBlock>
             that the corresponding item is removed from the array.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="removeTodo"
-            file="webdev-server/Lab5/WorkingWithArrays.js"
+            file="webdev-server/Lab5/WorkingWithArrays.ts"
           >{`const removeTodo = (req, res) => {
   const { id } = req.params;
   const todoIndex = todos.findIndex((t) => t.id === parseInt(id));
@@ -961,9 +961,9 @@ app.get("/lab5/todos/:id/delete", removeTodo);`}</CodeBlock>
             property as shown below.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="updateTodoTitle"
-            file="webdev-server/Lab5/WorkingWithArrays.js"
+            file="webdev-server/Lab5/WorkingWithArrays.ts"
           >{`const updateTodoTitle = (req, res) => {
   const { id, title } = req.params;
   const todo = todos.find((t) => t.id === parseInt(id));
@@ -1145,11 +1145,13 @@ const fetchWelcomeOnClick = async () => {
             exception. We can configure the CORS security policies by
             installing the cors Node.js library as shown below.
           </p>
-          <CodeBlock language="shell">{`npm install cors`}</CodeBlock>
+          <CodeBlock language="shell">{`npm install cors
+npm i -D @types/cors`}</CodeBlock>
           <p>
-            In <code>index.js</code>, import the cors library and
+            In <code>index.ts</code>, import the cors library and
             configure it as shown below to allow all requests from any
-            origin. We will narrow down this policy in a later section
+            origin. <code>@types/cors</code>{" "}describes that library
+            for the editor; tsx does not need it at runtime. We will narrow down this policy in a later section
             when sessions and cookies arrive. Make sure cors is used
             right after creating the{" "}
             <code>app</code>{" "}express instance and before the
@@ -1159,9 +1161,9 @@ const fetchWelcomeOnClick = async () => {
             without errors.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="cors"
-            file="webdev-server/index.js"
+            file="webdev-server/index.ts"
           >{`import cors from "cors";
 const app = express();
 app.use(cors());
@@ -1463,16 +1465,16 @@ useEffect(() => { fetchTodos(); }, []);
           secure data encryption. To enable the server to parse JSON
           data from the request body, add the following{" "}
           <code>app.use()</code>{" "}statement in{" "}
-          <code>index.js</code>. Make sure that it is implemented
+          <code>index.ts</code>. Make sure that it is implemented
           right after the CORS configuration statement. Now JSON data
           coming from the client is available in the request body in
           the <code>request.body</code>{" "}property in the server
           routes.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="express.json"
-          file="webdev-server/index.js"
+          file="webdev-server/index.ts"
         >{`app.use(cors());
 app.use(express.json());
 Lab5(app);`}</CodeBlock>
@@ -1542,9 +1544,9 @@ Lab5(app);`}</CodeBlock>
             already has most of this data already displayed.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="postNewTodo"
-            file="webdev-server/Lab5/WorkingWithArrays.js"
+            file="webdev-server/Lab5/WorkingWithArrays.ts"
           >{`const postNewTodo = (req, res) => {
   const newTodo = { ...req.body, id: new Date().getTime() };
   todos.push(newTodo);
@@ -1621,9 +1623,9 @@ app.post("/lab5/todos", postNewTodo);`}</CodeBlock>
             between the client and server.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="deleteTodo"
-            file="webdev-server/Lab5/WorkingWithArrays.js"
+            file="webdev-server/Lab5/WorkingWithArrays.ts"
           >{`const deleteTodo = (req, res) => {
   const { id } = req.params;
   const todoIndex = todos.findIndex((t) => t.id === parseInt(id));
@@ -1694,9 +1696,9 @@ app.get("/lab5/todos/:id/delete", removeTodo);`}</CodeBlock>
             item in the todos state variable.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="updateTodo PUT"
-            file="webdev-server/Lab5/WorkingWithArrays.js"
+            file="webdev-server/Lab5/WorkingWithArrays.ts"
           >{`const updateTodo = (req, res) => {
   const { id } = req.params;
   todos = todos.map((t) => {
@@ -1772,9 +1774,9 @@ const updateTodo = async (todo) => {
             inform the user of what went wrong.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="404 handling"
-            file="webdev-server/Lab5/WorkingWithArrays.js"
+            file="webdev-server/Lab5/WorkingWithArrays.ts"
           >{`const deleteTodo = (req, res) => {
   const { id } = req.params;
   const todoIndex = todos.findIndex((t) => t.id === parseInt(id));

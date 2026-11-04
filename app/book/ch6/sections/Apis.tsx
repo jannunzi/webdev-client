@@ -69,9 +69,9 @@ export default function Apis() {
           <ChapterLink to={5} />.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="UserRoutes"
-          file="webdev-server/Kambaz/Users/routes.js"
+          file="webdev-server/Kambaz/Users/routes.ts"
         >{`const signin = async (req, res) => {
   const { username, password } = req.body;
   const currentUser = await dao.findUserByCredentials(username, password);
@@ -139,9 +139,9 @@ const signup = async (req, res) => {
           route, the client, and the Users screen all depend on it.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="findAllUsers"
-          file="webdev-server/Kambaz/Users/dao.js"
+          file="webdev-server/Kambaz/Users/dao.ts"
         >{`const findAllUsers = () => model.find();`}</CodeBlock>
         <p>
           Routes implement RESTful Web APIs that user interface
@@ -159,9 +159,9 @@ const signup = async (req, res) => {
           refresh.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="findAllUsers route"
-          file="webdev-server/Kambaz/Users/routes.js"
+          file="webdev-server/Kambaz/Users/routes.ts"
         >{`const findAllUsers = async (req, res) => {
   const users = await dao.findAllUsers();
   res.json(users);
@@ -375,9 +375,9 @@ export default function AccountNavigation() {
           the field to that string.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="predicates"
-          file="webdev-server/Kambaz/Users/dao.js"
+          file="webdev-server/Kambaz/Users/dao.ts"
         >{`const findUsersByRole = (role) => model.find({ role });
 const findUsersByPartialName = (partialName) => {
   const regex = new RegExp(partialName, "i");
@@ -415,9 +415,9 @@ const findUsersByPartialName = (partialName) => {
           <code>?name=thor</code>.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="findAllUsers query"
-          file="webdev-server/Kambaz/Users/routes.js"
+          file="webdev-server/Kambaz/Users/routes.ts"
         >{`const findAllUsers = async (req, res) => {
   const { role, name } = req.query;
   if (role) {
@@ -548,9 +548,9 @@ const filterUsersByName = async (name: string) => {
           <code>_id</code>.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="findUserById"
-          file="webdev-server/Kambaz/Users/dao.js"
+          file="webdev-server/Kambaz/Users/dao.ts"
         >{`const findUserById = (userId) => model.findById(userId);
 // route:
 const findUserById = async (req, res) => {
@@ -700,9 +700,9 @@ onClick={() => {
           the other one-argument filters.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="deleteUser"
-          file="webdev-server/Kambaz/Users/dao.js"
+          file="webdev-server/Kambaz/Users/dao.ts"
         >{`const deleteUser = (userId) => model.findByIdAndDelete(userId);
 app.delete("/api/users/:userId", async (req, res) => {
   const status = await dao.deleteUser(req.params.userId);
@@ -785,9 +785,9 @@ app.delete("/api/users/:userId", async (req, res) => {
           only the keys present in <code>user</code>{" "}change.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="updateUser"
-          file="webdev-server/Kambaz/Users/dao.js"
+          file="webdev-server/Kambaz/Users/dao.ts"
         >{`const updateUser = (userId, user) =>
   model.updateOne({ _id: userId }, { $set: user });`}</CodeBlock>
         <p>
@@ -811,9 +811,9 @@ app.delete("/api/users/:userId", async (req, res) => {
           signed-in person is the one being saved.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="updateUser route"
-          file="webdev-server/Kambaz/Users/routes.js"
+          file="webdev-server/Kambaz/Users/routes.ts"
         >{`const updateUser = async (req, res) => {
   const { userId } = req.params;
   const userUpdates = req.body;
@@ -914,9 +914,9 @@ const saveUser = async () => {
           that property if present, then assign the new uuid.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="createUser"
-          file="webdev-server/Kambaz/Users/dao.js"
+          file="webdev-server/Kambaz/Users/dao.ts"
         >{`const createUser = (user) => {
   const newUser = { ...user, _id: uuidv4() };
   return model.create(newUser);
@@ -931,9 +931,9 @@ const saveUser = async () => {
           the screen can append it without an extra GET.
         </p>
         <CodeBlock
-          language="js"
+          language="ts"
           name="createUser route"
-          file="webdev-server/Kambaz/Users/routes.js"
+          file="webdev-server/Kambaz/Users/routes.ts"
         >{`const createUser = async (req, res) => {
   const user = await dao.createUser(req.body);
   res.json(user);

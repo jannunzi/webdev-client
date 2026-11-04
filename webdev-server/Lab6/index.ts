@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
-import model from "./model.js";
+import model from "./model";
 import {
   isMongoConfigured,
   isMongoConnected,
   mongoConnectionString,
-} from "../Kambaz/Database/mongo.js";
-import { lab6Status } from "./status.js";
+} from "../Kambaz/Database/mongo";
+import { lab6Status } from "./status";
 
 const memory = [
   {

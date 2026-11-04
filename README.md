@@ -33,7 +33,7 @@ npm run dev
 ```
 
 Or from this repo root: `npm run server:dev`. Root `npm test` runs
-`webdev-server/mongo-listen.test.js`, so that `npm install` is required
+`webdev-server/mongo-listen.test.ts`, so that `npm install` is required
 first.
 
 ## Book term pages

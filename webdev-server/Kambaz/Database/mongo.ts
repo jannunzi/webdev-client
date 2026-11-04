@@ -77,7 +77,7 @@ function startConnect() {
   // Fail fast until the cooldown elapses, then the next request may connect.
   if (coolingDown()) return Promise.resolve(false);
   const timeout = serverSelectionTimeoutMS();
-  const options = { bufferCommands: true };
+  const options: mongoose.ConnectOptions = { bufferCommands: true };
   if (timeout) {
     options.serverSelectionTimeoutMS = timeout;
     mongoose.set("bufferTimeoutMS", timeout);
@@ -109,10 +109,10 @@ function startConnect() {
 }
 
 export class DatabaseUnavailableError extends Error {
+  statusCode = 503;
   constructor() {
     super("Database unavailable");
     this.name = "DatabaseUnavailableError";
-    this.statusCode = 503;
   }
 }
 
@@ -135,7 +135,7 @@ const queryOps = [
   "deleteMany",
   "replaceOne",
   "countDocuments",
-];
+] as const;
 
 mongoose.plugin((schema) => {
   for (const op of queryOps) {
@@ -156,7 +156,7 @@ export async function connectDatabase() {
     );
     return false;
   }
-  // Start the connection and return. index.js awaits this before listen;
+  // Start the connection and return. index.ts awaits this before listen;
   // awaiting the driver here would block on server selection (~30s).
   startConnect();
   return false;

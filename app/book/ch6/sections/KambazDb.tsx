@@ -44,7 +44,7 @@ export default function KambazDb() {
       >
         <p>
           The current server application implements RESTful Web APIs
-          to access courses stored in the <code>courses.js</code>{" "}
+          to access courses stored in the <code>courses.json</code>{" "}
           file. This section replaces the source of the courses with a
           MongoDB <code>courses</code>{" "}collection. The basic
           operations on any data source are create, read, update, and
@@ -74,9 +74,9 @@ export default function KambazDb() {
             sort or filter numerically later if you wish.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="courseSchema"
-            file="webdev-server/Kambaz/Courses/schema.js"
+            file="webdev-server/Kambaz/Courses/schema.ts"
           >{`import mongoose from "mongoose";
 const courseSchema = new mongoose.Schema({
   _id: String,
@@ -100,11 +100,11 @@ export default courseSchema;`}</CodeBlock>
             <SectionLink to="6.4.3.1" />.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="CourseModel"
-            file="webdev-server/Kambaz/Courses/model.js"
+            file="webdev-server/Kambaz/Courses/model.ts"
           >{`import mongoose from "mongoose";
-import schema from "./schema.js";
+import schema from "./schema";
 const model = mongoose.model("CourseModel", schema);
 export default model;`}</CodeBlock>
           <p>
@@ -122,10 +122,10 @@ export default model;`}</CodeBlock>
             full course list against the in-memory enrollments array.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="findAllCourses"
-            file="webdev-server/Kambaz/Courses/dao.js"
-          >{`import model from "./model.js";
+            file="webdev-server/Kambaz/Courses/dao.ts"
+          >{`import model from "./model";
 
 function findAllCourses() {
   // return Database.courses;
@@ -161,9 +161,9 @@ async function findCoursesForEnrolledUser(userId) {
             lookup behind it is now a promise.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="CourseRoutes find"
-            file="webdev-server/Kambaz/Courses/routes.js"
+            file="webdev-server/Kambaz/Courses/routes.ts"
           >{`const findAllCourses = async (req, res) => {
   const courses = await dao.findAllCourses();
   res.send(courses);
@@ -200,9 +200,9 @@ const findCoursesForEnrolledUser = async (req, res) => {
             sources of truth.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="createCourse"
-            file="webdev-server/Kambaz/Courses/dao.js"
+            file="webdev-server/Kambaz/Courses/dao.ts"
           >{`function createCourse(course) {
   const newCourse = { ...course, _id: uuidv4() };
   return model.create(newCourse);
@@ -221,9 +221,9 @@ const findCoursesForEnrolledUser = async (req, res) => {
             you typed.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="createCourse route"
-            file="webdev-server/Kambaz/Courses/routes.js"
+            file="webdev-server/Kambaz/Courses/routes.ts"
           >{`const createCourse = async (req, res) => {
   const newCourse = await dao.createCourse(req.body);
   const currentUser = req.session["currentUser"];
@@ -248,9 +248,9 @@ app.post("/api/courses", createCourse);`}</CodeBlock>
             the related enrollment documents.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="deleteCourse"
-            file="webdev-server/Kambaz/Courses/dao.js"
+            file="webdev-server/Kambaz/Courses/dao.ts"
           >{`function deleteCourse(courseId) {
   return model.deleteOne({ _id: courseId });
 }`}</CodeBlock>
@@ -265,9 +265,9 @@ app.post("/api/courses", createCourse);`}</CodeBlock>
             <code>GET /api/courses</code>{" "}should omit it.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="deleteCourse route"
-            file="webdev-server/Kambaz/Courses/routes.js"
+            file="webdev-server/Kambaz/Courses/routes.ts"
           >{`const deleteCourse = async (req, res) => {
   const { courseId } = req.params;
   const status = await dao.deleteCourse(courseId);
@@ -294,9 +294,9 @@ app.delete("/api/courses/:courseId", deleteCourse);`}</CodeBlock>
             lets MongoDB do that merge.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="updateCourse"
-            file="webdev-server/Kambaz/Courses/dao.js"
+            file="webdev-server/Kambaz/Courses/dao.ts"
           >{`function updateCourse(courseId, courseUpdates) {
   return model.updateOne({ _id: courseId }, { $set: courseUpdates });
 }`}</CodeBlock>
@@ -311,9 +311,9 @@ app.delete("/api/courses/:courseId", deleteCourse);`}</CodeBlock>
             time.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="updateCourse route"
-            file="webdev-server/Kambaz/Courses/routes.js"
+            file="webdev-server/Kambaz/Courses/routes.ts"
           >{`const updateCourse = async (req, res) => {
   const { courseId } = req.params;
   const courseUpdates = req.body;
@@ -419,9 +419,9 @@ app.put("/api/courses/:courseId", updateCourse);`}</CodeBlock>
             already is the course.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="moduleSchema embed"
-            file="webdev-server/Kambaz/Modules/schema.js"
+            file="webdev-server/Kambaz/Modules/schema.ts"
           >{`import mongoose from "mongoose";
 const schema = new mongoose.Schema({
   _id: String,
@@ -436,11 +436,11 @@ export default schema;`}</CodeBlock>
             following the embed design.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="courseSchema modules"
-            file="webdev-server/Kambaz/Courses/schema.js"
+            file="webdev-server/Kambaz/Courses/schema.ts"
           >{`import mongoose from "mongoose";
-import moduleSchema from "../Modules/schema.js";
+import moduleSchema from "../Modules/schema";
 const courseSchema = new mongoose.Schema({
   _id: String,
   name: String,
@@ -463,9 +463,9 @@ export default courseSchema;`}</CodeBlock>
             right inside the parent module schema.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="moduleSchema lessons"
-            file="webdev-server/Kambaz/Modules/schema.js"
+            file="webdev-server/Kambaz/Modules/schema.ts"
           >{`import mongoose from "mongoose";
 const schema = new mongoose.Schema({
   _id: String,
@@ -497,9 +497,9 @@ export default schema;`}</CodeBlock>
             those two properties.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="findAllCourses projection"
-            file="webdev-server/Kambaz/Courses/dao.js"
+            file="webdev-server/Kambaz/Courses/dao.ts"
           >{`function findAllCourses() {
   return model.find({}, { name: 1, description: 1 });
 }`}</CodeBlock>
@@ -511,9 +511,9 @@ export default schema;`}</CodeBlock>
             <code>ref</code>.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="moduleSchema"
-            file="webdev-server/Kambaz/Modules/schema.js"
+            file="webdev-server/Kambaz/Modules/schema.ts"
           >{`import mongoose from "mongoose";
 const schema = new mongoose.Schema({
   _id: String,
@@ -540,9 +540,9 @@ export default schema;`}</CodeBlock>
             answers are an array the Modules screen can map.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="findModulesForCourse"
-            file="webdev-server/Kambaz/Modules/dao.js"
+            file="webdev-server/Kambaz/Modules/dao.ts"
           >{`function findModulesForCourse(courseId) {
   return model.find({ course: courseId });
 }`}</CodeBlock>
@@ -554,9 +554,9 @@ export default schema;`}</CodeBlock>
             already used.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="findModulesForCourse route"
-            file="webdev-server/Kambaz/Modules/routes.js"
+            file="webdev-server/Kambaz/Modules/routes.ts"
           >{`const findModulesForCourse = async (req, res) => {
   const { courseId } = req.params;
   const modules = await dao.findModulesForCourse(courseId);
@@ -583,17 +583,17 @@ app.get("/api/courses/:courseId/modules", findModulesForCourse);`}</CodeBlock>
             insert the same module in two places.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="createModule"
-            file="webdev-server/Kambaz/Modules/dao.js"
+            file="webdev-server/Kambaz/Modules/dao.ts"
           >{`function createModule(module) {
   const newModule = { ...module, _id: uuidv4() };
   return model.create(newModule);
 }`}</CodeBlock>
           <CodeBlock
-            language="js"
+            language="ts"
             name="createModule embed"
-            file="webdev-server/Kambaz/Modules/dao.js"
+            file="webdev-server/Kambaz/Modules/dao.ts"
           >{`async function createModule(courseId, module) {
   const newModule = { ...module, _id: uuidv4() };
   await courseModel.updateOne(
@@ -630,16 +630,16 @@ app.get("/api/courses/:courseId/modules", findModulesForCourse);`}</CodeBlock>
             module id.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="deleteModule"
-            file="webdev-server/Kambaz/Modules/dao.js"
+            file="webdev-server/Kambaz/Modules/dao.ts"
           >{`function deleteModule(moduleId) {
   return model.deleteOne({ _id: moduleId });
 }`}</CodeBlock>
           <CodeBlock
-            language="js"
+            language="ts"
             name="deleteModule embed"
-            file="webdev-server/Kambaz/Modules/dao.js"
+            file="webdev-server/Kambaz/Modules/dao.ts"
           >{`async function deleteModule(courseId, moduleId) {
   return courseModel.updateOne(
     { _id: courseId },
@@ -673,16 +673,16 @@ app.get("/api/courses/:courseId/modules", findModulesForCourse);`}</CodeBlock>
             nested array back.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="updateModule"
-            file="webdev-server/Kambaz/Modules/dao.js"
+            file="webdev-server/Kambaz/Modules/dao.ts"
           >{`function updateModule(moduleId, moduleUpdates) {
   return model.updateOne({ _id: moduleId }, { $set: moduleUpdates });
 }`}</CodeBlock>
           <CodeBlock
-            language="js"
+            language="ts"
             name="updateModule embed"
-            file="webdev-server/Kambaz/Modules/dao.js"
+            file="webdev-server/Kambaz/Modules/dao.ts"
           >{`async function updateModule(courseId, moduleId, moduleUpdates) {
   const course = await courseModel.findById(courseId);
   const module = course.modules.id(moduleId);
@@ -899,9 +899,9 @@ export default function Dashboard() {
             <code>populate</code>.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="enrollmentSchema"
-            file="webdev-server/Kambaz/Enrollments/schema.js"
+            file="webdev-server/Kambaz/Enrollments/schema.ts"
           >{`import mongoose from "mongoose";
 const enrollmentSchema = new mongoose.Schema({
   _id: String,
@@ -932,11 +932,11 @@ export default enrollmentSchema;`}</CodeBlock>
             detail.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="EnrollmentModel"
-            file="webdev-server/Kambaz/Enrollments/model.js"
+            file="webdev-server/Kambaz/Enrollments/model.ts"
           >{`import mongoose from "mongoose";
-import schema from "./schema.js";
+import schema from "./schema";
 const model = mongoose.model("EnrollmentModel", schema);
 export default model;`}</CodeBlock>
         </Section>
@@ -971,9 +971,9 @@ export default model;`}</CodeBlock>
             expects.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="findCoursesForUser"
-            file="webdev-server/Kambaz/Enrollments/dao.js"
+            file="webdev-server/Kambaz/Enrollments/dao.ts"
           >{`async function findCoursesForUser(userId) {
   const enrollments = await model.find({ user: userId }).populate("course");
   return enrollments.map((enrollment) => enrollment.course);
@@ -992,9 +992,9 @@ export default model;`}</CodeBlock>
             <code>course</code>{" "}is the course you just added.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="findCoursesForEnrolledUser"
-            file="webdev-server/Kambaz/Courses/routes.js"
+            file="webdev-server/Kambaz/Courses/routes.ts"
           >{`const findCoursesForEnrolledUser = async (req, res) => {
   let { userId } = req.params;
   if (userId === "current") {
@@ -1026,9 +1026,9 @@ export default model;`}</CodeBlock>
             <code>deleteOne</code>.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="unenrollAllUsersFromCourse"
-            file="webdev-server/Kambaz/Enrollments/dao.js"
+            file="webdev-server/Kambaz/Enrollments/dao.ts"
           >{`function unenrollAllUsersFromCourse(courseId) {
   return model.deleteMany({ course: courseId });
 }`}</CodeBlock>
@@ -1044,9 +1044,9 @@ export default model;`}</CodeBlock>
             removed for the course.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="deleteCourse with enrollments"
-            file="webdev-server/Kambaz/Courses/routes.js"
+            file="webdev-server/Kambaz/Courses/routes.ts"
           >{`const deleteCourse = async (req, res) => {
   const { courseId } = req.params;
   await enrollmentsDao.unenrollAllUsersFromCourse(courseId);
@@ -1080,9 +1080,9 @@ export default model;`}</CodeBlock>
             course they were enrolled in.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="enroll DAO"
-            file="webdev-server/Kambaz/Enrollments/dao.js"
+            file="webdev-server/Kambaz/Enrollments/dao.ts"
           >{`function enrollUserInCourse(userId, courseId) {
   return model.create({
     user: userId,
@@ -1104,9 +1104,9 @@ function unenrollUserFromCourse(user, course) {
             functions instead or refactor at your own discretion.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="enroll routes"
-            file="webdev-server/Kambaz/Courses/routes.js"
+            file="webdev-server/Kambaz/Courses/routes.ts"
           >{`const enrollUserInCourse = async (req, res) => {
   let { uid, cid } = req.params;
   if (uid === "current") {
@@ -1189,9 +1189,9 @@ export const unenrollFromCourse = async (userId: string, courseId: string) => {
             user documents.
           </p>
           <CodeBlock
-            language="js"
+            language="ts"
             name="findUsersForCourse route"
-            file="webdev-server/Kambaz/Courses/routes.js"
+            file="webdev-server/Kambaz/Courses/routes.ts"
           >{`const findUsersForCourse = async (req, res) => {
   const { cid } = req.params;
   const users = await enrollmentsDao.findUsersForCourse(cid);

@@ -1,4 +1,4 @@
-import AssignmentsDao from "./dao.js";
+import AssignmentsDao from "./dao";
 
 export default function AssignmentRoutes(app, db) {
   const dao = AssignmentsDao(db);

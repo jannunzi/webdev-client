@@ -1,7 +1,7 @@
 export default function QueryParameters(app) {
   const calculator = (req, res) => {
     const { a, b, operation } = req.query;
-    let result = 0;
+    let result: number | string = 0;
     switch (operation) {
       case "add":
         result = parseInt(a) + parseInt(b);

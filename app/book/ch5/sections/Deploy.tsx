@@ -124,8 +124,19 @@ git push -u origin main`}</CodeBlock>
           repository <code>webdev-server</code>, or something similar.
           In the Build Command field type{" "}
           <code>npm install</code>. In the Start Command field type{" "}
-          <code>npm start</code>{" "}or{" "}
-          <code>node index.js</code>. Under the Instance Type select{" "}
+          <code>npm start</code>, which runs{" "}
+          <code>tsx index.ts</code>{" "}(
+          <SectionLink to="5.1.7" />
+          ). Render sets <code>NODE_ENV</code>{" "}to{" "}
+          <code>production</code>{" "}for that install and omits{" "}
+          <code>devDependencies</code>. <code>tsx</code>{" "}is therefore
+          a runtime dependency: the install command is{" "}
+          <code>npm i tsx</code>, and the{" "}
+          <code>package.json</code>{" "}listing in{" "}
+          <SectionLink to="5.1.7" />{" "}puts <code>tsx</code>{" "}under{" "}
+          <code>dependencies</code>{" "}with the same{" "}
+          <code>dev</code>{" "}and <code>start</code>{" "}scripts. Under
+          the Instance Type select{" "}
           <strong>Free</strong>{" "}— the first request after idle can
           be slow while Render wakes the service. In the Environment
           Variables section click Add Environment Variable to create

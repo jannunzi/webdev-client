@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import moduleSchema from "../Modules/schema.js";
+import moduleSchema from "../Modules/schema";
 
 const courseSchema = new mongoose.Schema(
   {

@@ -1,4 +1,4 @@
-export default [
+[
   {
     "_id": "A101",
     "title": "A1",
@@ -80,4 +80,4 @@ export default [
     "due": "2024-05-27",
     "available": "2024-05-20"
   }
-];
+]

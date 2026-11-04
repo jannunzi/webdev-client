@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
-import model from "./model.js";
-import { isMongoConfigured } from "../Database/mongo.js";
+import model from "./model";
+import { isMongoConfigured } from "../Database/mongo";
 
 export default function ModulesDao(db) {
   async function findModulesForCourse(courseId) {
