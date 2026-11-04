@@ -5,6 +5,11 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#339933",
+      label: "EXPRESS",
+      headline: "Objects That Live on the Server",
+    },
     bullets: [
       "Chapter 5 · Remote Objects",
       "§5.2.3 · one assignment in process memory",

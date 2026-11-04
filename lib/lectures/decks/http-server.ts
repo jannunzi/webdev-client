@@ -5,6 +5,11 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#339933",
+      label: "NODE.JS",
+      headline: "Your First Express Server",
+    },
     bullets: [
       "Chapter 5 · HTTP Server",
       "§5.1 · sibling Express on port 4000",

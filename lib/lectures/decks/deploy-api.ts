@@ -5,6 +5,11 @@ export const DEPLOY_API_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#46E3B7",
+      label: "RENDER",
+      headline: "Ship Your API to the Cloud",
+    },
     bullets: [
       "Chapter 5 · Deploy the API",
       "§5.5 · GitHub, Render, Vercel env",
