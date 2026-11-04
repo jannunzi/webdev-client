@@ -211,7 +211,7 @@ app.post("/api/courses/:courseId/modules", createModuleForCourse);`,
   },
   {
     id: "next-up",
-    title: "Next: Deploying the API",
+    title: "Next: Deploy the API",
     kind: "title",
     bullets: [
       "A second GitHub repo, Render, then a Vercel env var",

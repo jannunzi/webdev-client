@@ -4125,3 +4125,15 @@ describe("Chapter 4 account §4.10.7 assignment slides", () => {
     }
   });
 });
+
+describe("Chapter 5 next-up slides", () => {
+  it("name the next deck by its cover title", () => {
+    for (const l of listLectures().filter((l) => l.chapter === 5)) {
+      const next = adjacentLectureSlugs(l.slug).next?.slug;
+      const nextDeck = next ? getLectureDeck(next) : undefined;
+      if (!nextDeck || nextDeck.slides[0]?.cover === undefined || getLecture(next!)?.chapter !== 5) continue;
+      const nextUp = getLectureDeck(l.slug)!.slides.filter((s) => s.title.startsWith("Next:")).pop();
+      assert.equal(nextUp?.title, `Next: ${nextDeck.slides[0].cover!.headline}`, l.slug);
+    }
+  });
+});

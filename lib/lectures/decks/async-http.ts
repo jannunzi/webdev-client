@@ -407,7 +407,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
   },
   {
     id: "next-up",
-    title: "Next: Next.js Route Handlers",
+    title: "Next: Next.js Server Routes",
     kind: "title",
     bullets: [
       "Same-origin `/api` when you do not need a second process",

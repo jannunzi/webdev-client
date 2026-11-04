@@ -253,7 +253,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
   },
   {
     id: "next-up",
-    title: "Next: Asynchronous HTTP with Axios",
+    title: "Next: Async HTTP and JSON",
     kind: "title",
     bullets: [
       "Stay on the page. Then POST, PUT, and DELETE for real",

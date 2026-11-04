@@ -8,7 +8,7 @@ export const LAB5_ENV_SLIDES: LectureSlide[] = [
     cover: {
       color: "#339933",
       icon: "code",
-      headline: "Environment Variables",
+      headline: "Configuring Environment Variables",
     },
     bullets: [
       "Chapter 5 · Lab 5 Environment",
@@ -145,7 +145,7 @@ app.listen(4000);`,
   },
   {
     id: "next-up",
-    title: "Next: Path and Query Parameters",
+    title: "Next: Sending Data to the Server",
     kind: "title",
     bullets: [
       "Send `a` and `b` in the path, then after `?`",

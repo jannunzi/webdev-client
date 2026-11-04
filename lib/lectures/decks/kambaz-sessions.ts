@@ -176,7 +176,7 @@ export const profile = async () => {
   },
   {
     id: "next-up",
-    title: "Next: The Courses API",
+    title: "Next: Courses API",
     kind: "title",
     bullets: [
       "Dashboard fetches enrolled courses from Express",

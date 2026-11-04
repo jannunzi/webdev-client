@@ -217,7 +217,7 @@ app.listen(4000);`,
   },
   {
     id: "next-up",
-    title: "Next: Nodemon and ES6 Routes",
+    title: "Next: Nodemon, tsx, and Routes",
     kind: "title",
     bullets: [
       "Restart on save, then group routes in files",
