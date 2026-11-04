@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function WorkingWithObjects() {
+export default function WorkingWithRemoteObjects() {
   const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
   const ASSIGNMENT_API_URL = `${HTTP_SERVER}/lab5/assignment`;
   const MODULE_API_URL = `${HTTP_SERVER}/lab5/module`;

@@ -153,11 +153,11 @@ export const fetchWelcomeMessage = async () => {
     ],
     code: "const [assignment, setAssignment] = useState({});\nconst fetchAssignment = async () => {\n  setAssignment(await client.fetchAssignment());\n};\nconst updateTitle = async () => {\n  setAssignment(await client.updateTitle(assignment.title));\n};\nuseEffect(() => { fetchAssignment(); }, []);",
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithObjectsAsync.tsx",
+    codeFile: "app/labs/lab5/WorkingWithRemoteObjectsAsync.tsx",
   },
   {
     id: "objects-async-live",
-    title: "ObjectsAsync Live Demo",
+    title: "WorkingWithRemoteObjectsAsync Live Demo",
     kind: "demo",
     bullets: [
       "The assignment renders as JSON on load",

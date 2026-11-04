@@ -14,7 +14,7 @@ const module = {
   course: "RS101",
 };
 
-export default function WorkingWithObjects(app) {
+export default function WorkingWithRemoteObjects(app) {
   const getAssignment = (req, res) => {
     res.json(assignment);
   };

@@ -9,10 +9,10 @@ import { CH5_LAB_EXERCISES } from "../../exercise-lists/catalogs";
 import Environment from "@/app/labs/lab5/intermediates/5-2-1-Environment";
 import PathParameters from "@/app/labs/lab5/intermediates/5-2-2-1-PathParameters";
 import QueryParameters from "@/app/labs/lab5/intermediates/5-2-2-2-QueryParameters";
-import WorkingWithObjects from "@/app/labs/lab5/intermediates/5-2-3-WorkingWithObjects";
+import WorkingWithRemoteObjects from "@/app/labs/lab5/intermediates/5-2-3-WorkingWithRemoteObjects";
 import WorkingWithArrays from "@/app/labs/lab5/intermediates/5-2-4-WorkingWithArrays";
 import HttpClient from "@/app/labs/lab5/intermediates/5-2-5-HttpClient";
-import WorkingWithObjectsAsynchronously from "@/app/labs/lab5/intermediates/5-2-5-WorkingWithObjectsAsync";
+import WorkingWithRemoteObjectsAsynchronously from "@/app/labs/lab5/intermediates/5-2-5-WorkingWithRemoteObjectsAsync";
 import WorkingWithArraysAsynchronously from "@/app/labs/lab5/intermediates/5-2-6-WorkingWithArraysAsync";
 
 export default function LabExercises() {
@@ -495,8 +495,8 @@ const [b, setB] = useState("23");
         </p>
         <CodeBlock
           language="ts"
-          name="WorkingWithObjects"
-          file="webdev-server/Lab5/WorkingWithObjects.ts"
+          name="WorkingWithRemoteObjects"
+          file="webdev-server/Lab5/WorkingWithRemoteObjects.ts"
         >{`const assignment = {
   id: 1,
   title: "NodeJS Assignment",
@@ -505,7 +505,7 @@ const [b, setB] = useState("23");
   completed: false,
   score: 0,
 };
-export default function WorkingWithObjects(app) {
+export default function WorkingWithRemoteObjects(app) {
   const getAssignment = (req, res) => {
     res.json(assignment);
   };
@@ -519,7 +519,7 @@ export default function WorkingWithObjects(app) {
         >
           <p>
             In your React project, create a{" "}
-            <code>WorkingWithObjects</code>{" "}component to test the
+            <code>WorkingWithRemoteObjects</code>{" "}component to test the
             new route as shown below. Import it in Lab 5 and confirm
             that <code>http://localhost:4000/lab5/assignment</code>{" "}
             responds with the assignment object. The Get Assignment
@@ -530,7 +530,7 @@ export default function WorkingWithObjects(app) {
           <CodeBlock
             language="tsx"
             name="Retrieving Objects"
-            file="app/labs/lab5/WorkingWithObjects.tsx"
+            file="app/labs/lab5/WorkingWithRemoteObjects.tsx"
           >{`<h4>Retrieving Objects</h4>
 <a id="wd-retrieve-assignments"
   className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white"
@@ -552,14 +552,14 @@ export default function WorkingWithObjects(app) {
             <code>/lab5/assignment/title</code>. Confirm that{" "}
             <code>http://localhost:4000/lab5/assignment/title</code>{" "}
             retrieves the assignment&apos;s title. In{" "}
-            <code>WorkingWithObjects</code>, add a link that retrieves
+            <code>WorkingWithRemoteObjects</code>, add a link that retrieves
             the title as shown below. Confirm that clicking the link
             retrieves the assignment&apos;s title as a JSON string.
           </p>
           <CodeBlock
             language="ts"
             name="getAssignmentTitle"
-            file="webdev-server/Lab5/WorkingWithObjects.ts"
+            file="webdev-server/Lab5/WorkingWithRemoteObjects.ts"
           >{`const getAssignmentTitle = (req, res) => {
   res.json(assignment.title);
 };
@@ -568,7 +568,7 @@ app.get("/lab5/assignment", getAssignment);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="Retrieving Properties"
-            file="app/labs/lab5/WorkingWithObjects.tsx"
+            file="app/labs/lab5/WorkingWithRemoteObjects.tsx"
           >{`<h4>Retrieving Properties</h4>
 <a id="wd-retrieve-assignment-title"
   href={\`\${HTTP_SERVER}/lab5/assignment/title\`}>
@@ -592,7 +592,7 @@ app.get("/lab5/assignment", getAssignment);`}</CodeBlock>
           <CodeBlock
             language="ts"
             name="setAssignmentTitle"
-            file="webdev-server/Lab5/WorkingWithObjects.ts"
+            file="webdev-server/Lab5/WorkingWithRemoteObjects.ts"
           >{`const setAssignmentTitle = (req, res) => {
   const { newTitle } = req.params;
   assignment.title = newTitle;
@@ -601,7 +601,7 @@ app.get("/lab5/assignment", getAssignment);`}</CodeBlock>
 app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`}</CodeBlock>
           <p>
             In the{" "}
-            <code>WorkingWithObjects</code>{" "}component in your React
+            <code>WorkingWithRemoteObjects</code>{" "}component in your React
             project, create an assignment state variable to test
             editing the assignment object on the server. Create an
             input field where we can type the new assignment title, and
@@ -617,7 +617,7 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="Modifying Properties"
-            file="app/labs/lab5/WorkingWithObjects.tsx"
+            file="app/labs/lab5/WorkingWithRemoteObjects.tsx"
           >{`const [assignment, setAssignment] = useState({
   id: 1, title: "NodeJS Assignment",
   description: "Create a NodeJS server with ExpressJS",
@@ -657,7 +657,7 @@ const ASSIGNMENT_API_URL = \`\${HTTP_SERVER}/lab5/assignment\`;
           </p>
           <p>
             On your own, in{" "}
-            <code>WorkingWithObjects.tsx</code>, create a module state
+            <code>WorkingWithRemoteObjects.tsx</code>, create a module state
             variable to test editing the module object on the server.
             Create an input field where we can type the new module
             name, and a link that invokes the route that updates the
@@ -672,11 +672,11 @@ const ASSIGNMENT_API_URL = \`\${HTTP_SERVER}/lab5/assignment\`;
             create routes and UI to edit the module&apos;s description.
           </p>
           <LiveDemo
-            name="WorkingWithObjects"
-            file="app/labs/lab5/WorkingWithObjects.tsx"
+            name="WorkingWithRemoteObjects"
+            file="app/labs/lab5/WorkingWithRemoteObjects.tsx"
             mode="styled"
           >
-            <WorkingWithObjects />
+            <WorkingWithRemoteObjects />
           </LiveDemo>
           <OnYourOwn>
             Add a module object at <code>/lab5/module</code>, Get Module
@@ -1263,7 +1263,7 @@ useEffect(() => {
         >
           <p>
             Let us now revisit the APIs that worked with the
-            assignment object in WorkingWithObjects and create an
+            assignment object in WorkingWithRemoteObjects and create an
             asynchronous version. Let us add client functions to{" "}
             <code>client.ts</code>{" "}to fetch the assignment object
             from the server and update its title as shown below.
@@ -1283,7 +1283,7 @@ export const updateTitle = async (title: string) => {
 };`}</CodeBlock>
           <p>
             Then, in a new{" "}
-            <code>WorkingWithObjectsAsynchronously</code>{" "}component,
+            <code>WorkingWithRemoteObjectsAsynchronously</code>{" "}component,
             create a UI that fetches the assignment on load and then
             allows you to edit its title. Import the component in Lab
             5 and confirm that the assignment is displayed on load.
@@ -1297,8 +1297,8 @@ export const updateTitle = async (title: string) => {
           </p>
           <CodeBlock
             language="tsx"
-            name="WorkingWithObjectsAsynchronously"
-            file="app/labs/lab5/WorkingWithObjectsAsync.tsx"
+            name="WorkingWithRemoteObjectsAsynchronously"
+            file="app/labs/lab5/WorkingWithRemoteObjectsAsync.tsx"
           >{`const [assignment, setAssignment] = useState({});
 const fetchAssignment = async () => {
   setAssignment(await client.fetchAssignment());
@@ -1308,11 +1308,11 @@ const updateTitle = async () => {
 };
 useEffect(() => { fetchAssignment(); }, []);`}</CodeBlock>
           <LiveDemo
-            name="WorkingWithObjectsAsynchronously"
-            file="app/labs/lab5/WorkingWithObjectsAsync.tsx"
+            name="WorkingWithRemoteObjectsAsynchronously"
+            file="app/labs/lab5/WorkingWithRemoteObjectsAsync.tsx"
             mode="styled"
           >
-            <WorkingWithObjectsAsynchronously />
+            <WorkingWithRemoteObjectsAsynchronously />
           </LiveDemo>
           <OnYourOwn>
             Change the assignment title, click Update Title, refresh, and

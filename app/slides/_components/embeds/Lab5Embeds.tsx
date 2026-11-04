@@ -6,10 +6,10 @@ import HelloRoute from "@/app/labs/lab5/intermediates/5-3-1-HelloRoute";
 import CalculatorNextWebApiClient from "@/app/labs/lab5/intermediates/5-3-1-Calculator";
 import PathParameters from "@/app/labs/lab5/intermediates/5-2-2-1-PathParameters";
 import QueryParameters from "@/app/labs/lab5/intermediates/5-2-2-2-QueryParameters";
-import WorkingWithObjects from "@/app/labs/lab5/intermediates/5-2-3-WorkingWithObjects";
+import WorkingWithRemoteObjects from "@/app/labs/lab5/intermediates/5-2-3-WorkingWithRemoteObjects";
 import WorkingWithArrays from "@/app/labs/lab5/intermediates/5-2-4-WorkingWithArrays";
 import HttpClient from "@/app/labs/lab5/intermediates/5-2-5-HttpClient";
-import WorkingWithObjectsAsynchronously from "@/app/labs/lab5/intermediates/5-2-5-WorkingWithObjectsAsync";
+import WorkingWithRemoteObjectsAsynchronously from "@/app/labs/lab5/intermediates/5-2-5-WorkingWithRemoteObjectsAsync";
 import WorkingWithArraysAsynchronously from "@/app/labs/lab5/intermediates/5-2-6-WorkingWithArraysAsync";
 import LectureDemoFrame from "./LectureDemoFrame";
 
@@ -71,8 +71,8 @@ export function Lab5QueryEmbed() {
 
 export function Lab5ObjectsEmbed() {
   return (
-    <Lab5Demo label="app/labs/lab5/WorkingWithObjects.tsx">
-      <WorkingWithObjects />
+    <Lab5Demo label="app/labs/lab5/WorkingWithRemoteObjects.tsx">
+      <WorkingWithRemoteObjects />
     </Lab5Demo>
   );
 }
@@ -95,8 +95,8 @@ export function Lab5HttpClientEmbed() {
 
 export function Lab5ObjectsAsyncEmbed() {
   return (
-    <Lab5Demo label="app/labs/lab5/WorkingWithObjectsAsync.tsx">
-      <WorkingWithObjectsAsynchronously />
+    <Lab5Demo label="app/labs/lab5/WorkingWithRemoteObjectsAsync.tsx">
+      <WorkingWithRemoteObjectsAsynchronously />
     </Lab5Demo>
   );
 }
