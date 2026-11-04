@@ -30,6 +30,7 @@ export const KAMBAZ_COURSES_API_SLIDES: LectureSlide[] = [
     title: "Filtering Courses by Enrollment",
     kind: "demo",
     bullets: [
+      "In a new `Kambaz/Courses/dao.ts`, add the functions below",
       "`findAllCourses` is the raw array",
       "`findCoursesForEnrolledUser` joins enrollments on the server",
     ],
@@ -74,8 +75,10 @@ export default function CoursesDao(db) {
     title: "Defining the Courses Routes",
     kind: "demo",
     bullets: [
+      "In a new `Kambaz/Courses/routes.ts`, add the routes below",
       "`userId === \"current\"` reads the session — 401 if anonymous",
       "Confirm `http://localhost:4000/api/courses` returns the array",
+      "Import into `index.ts` and pass it `app`",
     ],
   },
   {
@@ -113,6 +116,7 @@ export default function CourseRoutes(app, db) {
     title: "Fetching Courses on Dashboard Load",
     kind: "demo",
     bullets: [
+      "In `courses/client.ts`, add the functions as shown below",
       "`findMyCourses` uses cookies. Drop client-side enrollment filters",
       "`currentUser` is a `useEffect` dependency so a new sign-in reloads",
     ],
@@ -139,6 +143,7 @@ export const findMyCourses = async () => {
     title: "Enrolling the Course Creator",
     kind: "demo",
     bullets: [
+      "In `Courses/routes.ts`, add the route as shown below",
       "The session says who is signed in",
       "Create the course, enroll that user, return the new course",
     ],
@@ -163,8 +168,9 @@ export const findMyCourses = async () => {
     title: "Posting a New Course from the Client",
     kind: "demo",
     bullets: [
+      "In `courses/client.ts`, add the function as shown below",
       "POST the draft to `/api/users/current/courses`",
-      "Add, refresh, and the new course is still listed while Express runs",
+      "Add, refresh, and the course stays listed while Express runs",
     ],
     code: `export const createCourse = async (course: unknown) => {
   const { data } = await axiosWithCredentials.post(
