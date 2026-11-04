@@ -263,8 +263,8 @@ git push -u origin main`}</CodeBlock>
           <code>.env.development</code>{" "}at{" "}
           <code>http://localhost:4000</code>{" "}so{" "}
           <SectionLink to="5.2" />{" "}demos stay on the companion
-          process. Same <code>httpServer()</code>{" "}helper — only the
-          env value changes. Lab 5 demos do{" "}
+          process. Only the value of{" "}
+          <code>NEXT_PUBLIC_HTTP_SERVER</code>{" "}changes. Lab 5 demos do{" "}
           <em>not</em>{" "}need this Vercel step; they already work
           against <code>http://localhost:4000</code>. Route Handler
           demos in{" "}

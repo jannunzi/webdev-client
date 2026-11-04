@@ -1,7 +1,6 @@
 import axios from "axios";
-import { httpServer } from "@/app/lib/httpServer";
 
-const HTTP_SERVER = httpServer();
+const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 const ASSIGNMENT_API = `${HTTP_SERVER}/lab5/assignment`;
 const TODOS_API = `${HTTP_SERVER}/lab5/todos`;
 

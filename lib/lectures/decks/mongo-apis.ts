@@ -89,7 +89,7 @@ app.get("/api/users", findAllUsers);`,
     title: "Client GETs with credentials",
     kind: "demo",
     bullets: [
-      "`USERS_API` already prefixes `httpServer()`",
+      "`USERS_API` already prefixes `NEXT_PUBLIC_HTTP_SERVER`",
       "Credentials so a later admin-only check can read the session cookie",
     ],
     code: `export const findAllUsers = async () => {

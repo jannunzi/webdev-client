@@ -85,7 +85,7 @@ SESSION_SECRET=a phrase that is not committed`,
     code: `NEXT_PUBLIC_HTTP_SERVER=https://webdev-server.onrender.com`,
     codeLanguage: "bash",
     interactiveHint:
-      "Local .env.development stays http://localhost:4000. Same httpServer() helper — only the value changes.",
+      "Local .env.development stays http://localhost:4000. Same NEXT_PUBLIC_HTTP_SERVER variable — only the value changes.",
   },
   {
     id: "recap",

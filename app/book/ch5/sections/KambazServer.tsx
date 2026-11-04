@@ -258,19 +258,20 @@ app.post("/api/users/signin", signin);`}</CodeBlock>
             <code>signin</code>{" "}posts a credentials object containing
             the username and password expected by the server. If the
             credentials are found, the response should contain the
-            logged in user. Use{" "}
-            <code>httpServer()</code>{" "}so the same helper from Lab 5
-            points at localhost or Render.
+            logged in user. Assign{" "}
+            <code>const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;</code>{" "}
+            so the same variable from Lab 5 points at localhost or
+            Render.
           </p>
           <CodeBlock
             language="ts"
             name="account client"
             file="app/(kambaz)/account/client.ts"
           >{`import axios from "axios";
-import { httpServer } from "@/app/lib/httpServer";
 
 const axiosWithCredentials = axios.create({ withCredentials: true });
-const USERS_API = \`\${httpServer()}/api/users\`;
+const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
+const USERS_API = \`\${HTTP_SERVER}/api/users\`;
 
 export const signin = async (credentials: { username: string; password: string }) => {
   const response = await axiosWithCredentials.post(\`\${USERS_API}/signin\`, credentials);
@@ -832,10 +833,10 @@ export default function CourseRoutes(app, db) {
             name="courses client"
             file="app/(kambaz)/courses/client.ts"
           >{`import axios from "axios";
-import { httpServer } from "@/app/lib/httpServer";
 const axiosWithCredentials = axios.create({ withCredentials: true });
-const COURSES_API = \`\${httpServer()}/api/courses\`;
-const USERS_API = \`\${httpServer()}/api/users\`;
+const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
+const COURSES_API = \`\${HTTP_SERVER}/api/courses\`;
+const USERS_API = \`\${HTTP_SERVER}/api/users\`;
 export const fetchAllCourses = async () => {
   const { data } = await axios.get(COURSES_API);
   return data;
@@ -1012,10 +1013,10 @@ app.post("/api/users/current/courses", createCourse);`}</CodeBlock>
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { httpServer } from "@/app/lib/httpServer";
 import CourseCard from "./CourseCard";
 
-const COURSES_API = \`\${httpServer()}/api/courses\`;
+const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
+const COURSES_API = \`\${HTTP_SERVER}/api/courses\`;
 
 type Course = {
   _id: string;

@@ -25,7 +25,7 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
         file: "app/labs/lab5/intermediates/5-2-5-HttpClient.tsx",
         language: "tsx",
         code: `import axios from "axios";
-const HTTP_SERVER = httpServer();
+const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 const [welcomeOnClick, setWelcomeOnClick] = useState("");
 const fetchWelcomeOnClick = async () => {
   const response = await axios.get(\`\${HTTP_SERVER}/lab5/welcome\`);
@@ -68,15 +68,14 @@ Lab5(app);`,
       "`useEffect` later loads data when the component mounts",
     ],
     code: `import axios from "axios";
-import { httpServer } from "@/app/lib/httpServer";
-const HTTP_SERVER = httpServer();
+const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 export const fetchWelcomeMessage = async () => {
   const response = await axios.get(\`\${HTTP_SERVER}/lab5/welcome\`);
   return response.data;
 };`,
     codeLanguage: "ts",
     codeFile: "app/labs/lab5/client.ts",
-    codeHighlightLines: [[4, 7]],
+    codeHighlightLines: [[3, 6]],
   },
   {
     id: "json-body",

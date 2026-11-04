@@ -109,7 +109,7 @@ mongoose.connect(CONNECTION_STRING);`,
     codeLanguage: "bash",
     codeFile: "Vercel Environment",
     interactiveHint:
-      "Local `.env.development` stays `http://localhost:4000`. Same `httpServer()` helper.",
+      "Local `.env.development` stays `http://localhost:4000`. Same `NEXT_PUBLIC_HTTP_SERVER` variable.",
   },
   {
     id: "recap",

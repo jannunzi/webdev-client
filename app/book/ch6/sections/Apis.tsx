@@ -177,13 +177,12 @@ app.get("/api/users", findAllUsers);`}</CodeBlock>
           sends credentials so a later admin-only check can read the
           session cookie. The{" "}
           <code>USERS_API</code>{" "}constant already prefixes{" "}
-          <code>httpServer()</code>{" "}or{" "}
           <code>NEXT_PUBLIC_HTTP_SERVER</code>{" "}so the same function
           works on localhost and on{" "}
           <OfficialLink href="https://vercel.com/">
             Vercel
           </OfficialLink>{" "}
-          once you point the public env var at the new Render origin.
+          once the public env var points at the new Render origin.
         </p>
         <CodeBlock
           language="ts"

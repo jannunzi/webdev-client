@@ -32,9 +32,9 @@ npm run dev          # nodemon index.js
 # or: npm start      # node index.js
 ```
 
-Listens on **port 4000**. In the Next.js app set
-`NEXT_PUBLIC_HTTP_SERVER=http://localhost:4000` (the book helper defaults to
-that origin if the var is omitted).
+Listens on **port 4000**. The Next.js app reads
+`NEXT_PUBLIC_HTTP_SERVER`. The committed `.env` sets
+`http://localhost:4000` when the variable is otherwise unset.
 
 Shortcut from the Next.js root in this monorepo only: `npm run server:dev`.
 

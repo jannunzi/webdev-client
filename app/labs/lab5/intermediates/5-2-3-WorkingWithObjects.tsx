@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { httpServer } from "@/app/lib/httpServer";
 
 export default function WorkingWithObjects() {
-  const HTTP_SERVER = httpServer();
+  const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
   const ASSIGNMENT_API_URL = `${HTTP_SERVER}/lab5/assignment`;
   const MODULE_API_URL = `${HTTP_SERVER}/lab5/module`;
   const [assignment, setAssignment] = useState({
