@@ -282,7 +282,6 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
     bullets: [
       "`axios.post(TODOS_API, todo)` sends `todo` as a JSON body",
       "Example body: `{ title: \"New Posted Todo\", completed: false }`",
-      "`express.json()` turns it into `req.body`",
       "The server adds an id, stores it, and replies with the new todo",
       "The client appends `response.data` to its `todos` state",
     ],

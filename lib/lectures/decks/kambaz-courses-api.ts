@@ -67,7 +67,6 @@ export default function CoursesDao(db) {
       "It matches `/api/users/:userId/courses` with `req.params = { userId: \"current\" }`",
       "`current` means the signed-in user, read from the session",
       "The DAO filters courses by that user’s enrollments",
-      "JSON comes back as `response.data` for the Dashboard to render",
     ],
   },
   {

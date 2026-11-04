@@ -95,7 +95,6 @@ export default function Lab5(app) {
     title: "From a click to the add route",
     kind: "content",
     bullets: [
-      "`.env.development` sets `NEXT_PUBLIC_HTTP_SERVER=http://localhost:4000`",
       "Example state: `a = 34`, `b = 23`",
       "The link becomes `http://localhost:4000/lab5/add/34/23`",
       "Click: the browser sends `GET` for that URL to Express",
@@ -188,7 +187,6 @@ const [b, setB] = useState("23");
     title: "From a click to the calculator",
     kind: "content",
     bullets: [
-      "Same `HTTP_SERVER` from `.env.development`",
       "Example state: `a = 34`, `b = 23`, operation `add`",
       "Link: `http://localhost:4000/lab5/calculator?operation=add&a=34&b=23`",
       "Express sees `req.query = { operation: \"add\", a: \"34\", b: \"23\" }`",
