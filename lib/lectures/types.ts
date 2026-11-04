@@ -706,6 +706,7 @@ export type LectureEmbedId = (typeof LECTURE_EMBED_IDS)[number];
 export const LECTURE_DIAGRAM_IDS = [
   "network-of-networks",
   "client-server",
+  "two-ports",
   "ssr",
   "csr",
   "course-stack",
