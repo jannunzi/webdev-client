@@ -61,6 +61,16 @@ const COVER_ICON_PATHS: Record<LectureCoverIcon, string> = {
   cloud: "M7 18h10a4 4 0 0 0 .5-8A6 6 0 0 0 6 9a4.5 4.5 0 0 0 1 9z",
 };
 
+/**
+ * Up to two balanced lines: size for the longer of half the headline or its
+ * longest word, so no single word can overflow the slide.
+ */
+function coverHeadlineSize(headline: string): string {
+  const longestWord = Math.max(...headline.split(/\s+/).map((w) => w.length));
+  const perLine = Math.max(longestWord, Math.ceil(headline.length * 0.55), 6);
+  return `min(11rem, ${(150 / perLine).toFixed(2)}cqi)`;
+}
+
 function LectureCoverIconMark({ icon }: { icon: LectureCoverIcon }) {
   return (
     <svg
@@ -606,13 +616,10 @@ export default function LectureDeckShell({
               <LectureCoverIconMark icon={cover.icon} />
               <h2
                 className={`lecture-cover-headline ${coverFont.className}`}
-                style={{
-                  fontSize: `min(8rem, ${(165 / Math.max(cover.headline.length, 8)).toFixed(2)}cqi)`,
-                }}
+                style={{ fontSize: coverHeadlineSize(cover.headline) }}
               >
                 {cover.headline}
               </h2>
-              <SlideBlockView slide={slide} density={density} />
               <p className="lecture-cover-brand">WebDevTV</p>
             </>
           ) : (<>

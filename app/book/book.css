@@ -970,21 +970,16 @@ html.lecture-presenting body {
   position: absolute;
   top: 1.25rem;
   left: 1.5rem;
-  width: clamp(2rem, 6cqi, 4rem);
-  height: clamp(2rem, 6cqi, 4rem);
+  width: clamp(2.8rem, 8.4cqi, 5.6rem);
+  height: clamp(2.8rem, 8.4cqi, 5.6rem);
 }
 .lecture-cover-headline {
   margin: 0;
   text-transform: uppercase;
   line-height: 1.05;
-  white-space: nowrap;
-}
-.lecture-slide-cover .lecture-slide-bullets {
-  list-style: none;
-  padding: 0;
-  margin-top: 1rem;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: clamp(1rem, 2.6cqi, 1.6rem);
+  max-width: 100%;
+  text-wrap: balance;
+  overflow-wrap: normal;
 }
 .lecture-cover-brand {
   position: absolute;
