@@ -27,31 +27,41 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "ajax",
-    title: "Staying on the Page with Axios",
+    id: "axios-lib",
+    title: "Using the Axios Library",
     kind: "demo",
     bullets: [
-      "Hyperlinks leave Lab 5. Axios fetches without navigating",
-      "Install axios. In a new `HttpClient.tsx` component, add the button",
+      "Links to the server leave the page. Axios sends requests from code instead",
+      "Axios is a small, popular library for HTTP requests in the browser",
+      "Install it in the Next.js project",
+    ],
+    code: "npm install axios",
+    codeLanguage: "bash",
+  },
+  {
+    id: "axios-how",
+    title: "Fetching Data with Axios",
+    kind: "content",
+    bullets: [
+      "The handler calls `axios.get(url)` and the page stays put",
+      "The browser sends the request to port 4000 in the background",
+      "`await` waits for the reply. The reply object has a `data` property",
+      "`response.data` is the body — text, or JSON already turned into an object",
+      "Storing it in state re-renders the component",
+    ],
+  },
+  {
+    id: "http-client",
+    title: "Fetching on Click with Axios",
+    kind: "demo",
+    bullets: [
+      "Create a new `HttpClient.tsx` client component as shown below",
+      "Clicking Fetch Welcome calls the server and shows the reply",
       "Import into `app/labs/lab5/page.tsx`. The first click throws CORS",
     ],
-    codeBlocks: [
-      { code: "npm install axios", language: "bash" },
-      {
-        file: "app/labs/lab5/HttpClient.tsx",
-        language: "tsx",
-        code: `import axios from "axios";
-const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
-const [welcomeOnClick, setWelcomeOnClick] = useState("");
-const fetchWelcomeOnClick = async () => {
-  const response = await axios.get(\`\${HTTP_SERVER}/lab5/welcome\`);
-  setWelcomeOnClick(response.data);
-};
-<button type="button" onClick={fetchWelcomeOnClick}>Fetch Welcome</button>
-<p>Response from server: <b>{welcomeOnClick}</b></p>`,
-        addedLines: [[4, 7]],
-      },
-    ],
+    code: "import axios from \"axios\";\nconst HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;\nconst [welcomeOnClick, setWelcomeOnClick] = useState(\"\");\nconst fetchWelcomeOnClick = async () => {\n  const response = await axios.get(`${HTTP_SERVER}/lab5/welcome`);\n  setWelcomeOnClick(response.data);\n};\n<button type=\"button\" onClick={fetchWelcomeOnClick}>Fetch Welcome</button>\n<p>Response from server: <b>{welcomeOnClick}</b></p>",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/HttpClient.tsx",
   },
   {
     id: "cors",
@@ -93,30 +103,6 @@ export const fetchWelcomeMessage = async () => {
     codeLanguage: "ts",
     codeFile: "app/labs/lab5/client.ts",
     codeHighlightLines: [[3, 6]],
-  },
-  {
-    id: "axios-how",
-    title: "Fetching Data with Axios",
-    kind: "content",
-    bullets: [
-      "The handler calls `axios.get(url)` and the page stays put",
-      "The browser sends the request to port 4000 in the background",
-      "`await` waits for the reply. The reply object has a `data` property",
-      "`response.data` is the body — text, or JSON already turned into an object",
-      "Storing it in state re-renders the component",
-    ],
-  },
-  {
-    id: "http-client",
-    title: "Fetching on Click with Axios",
-    kind: "demo",
-    bullets: [
-      "In `HttpClient.tsx`, add the button as shown below",
-      "The page stays put. axios returns the response data",
-    ],
-    code: "import axios from \"axios\";\nconst HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;\nconst [welcomeOnClick, setWelcomeOnClick] = useState(\"\");\nconst fetchWelcomeOnClick = async () => {\n  const response = await axios.get(`${HTTP_SERVER}/lab5/welcome`);\n  setWelcomeOnClick(response.data);\n};\n<button type=\"button\" onClick={fetchWelcomeOnClick}>Fetch Welcome</button>\n<p>Response from server: <b>{welcomeOnClick}</b></p>",
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/HttpClient.tsx",
   },
   {
     id: "http-client-lib",
