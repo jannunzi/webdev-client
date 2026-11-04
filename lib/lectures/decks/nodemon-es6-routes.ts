@@ -79,7 +79,7 @@ app.listen(4000);`,
     title: "How server modules load (code)",
     kind: "demo",
     code: `import Hello from "./Hello"; // loads Hello.ts
-import courses from "./courses.json"; `,
+import courses from "./courses.json";`,
     codeLanguage: "ts",
   },
   {

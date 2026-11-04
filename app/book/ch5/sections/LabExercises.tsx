@@ -1847,7 +1847,7 @@ const deleteTodo = async (todo) => {
             the same id and confirm the 404 alert.
           </OnYourOwn>
           <WithAI
-            prompt={`In app/labs/lab5/intermediates/5-2-6-WorkingWithArraysAsync.tsx, keep my deleteTodo try/catch. If the catch runs, keep showing errorMessage. Do not remove the FaPlusCircle POST button.`}
+            prompt={`In app/labs/lab5/WorkingWithArraysAsync.tsx, keep my deleteTodo try/catch. If the catch runs, keep showing errorMessage. Do not remove the FaPlusCircle POST button.`}
           >
             Ask the assistant not to strip error handling — you still
             trigger the 404:
