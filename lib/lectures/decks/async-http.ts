@@ -27,7 +27,7 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     codeBlocks: [
       { code: "npm install axios", language: "bash" },
       {
-        file: "app/labs/lab5/intermediates/5-2-5-HttpClient.tsx",
+        file: "app/labs/lab5/HttpClient.tsx",
         language: "tsx",
         code: `import axios from "axios";
 const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;

@@ -112,7 +112,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
     code: `const API = \`\${HTTP_SERVER}/lab5/todos\`;
 <a id="wd-retrieve-todos" href={API}>Get Todos</a>`,
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/intermediates/5-2-4-WorkingWithArrays.tsx",
+    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
     codeHighlightLines: [2],
   },
   {

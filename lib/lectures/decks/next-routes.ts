@@ -108,7 +108,7 @@ if (!res.ok) {
   setResult(data.result);
 }`,
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/intermediates/5-3-1-Calculator.tsx",
+    codeFile: "app/labs/lab5/Calculator.tsx",
     codeHighlightLines: [[1, 3]],
     embed: "lab5-calculator",
   },

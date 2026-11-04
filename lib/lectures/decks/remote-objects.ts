@@ -105,7 +105,7 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
   Get Assignment
 </a>`,
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/intermediates/5-2-3-WorkingWithObjects.tsx",
+    codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
     codeHighlightLines: [4],
   },
   {

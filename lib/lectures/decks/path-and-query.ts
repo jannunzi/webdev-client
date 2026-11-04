@@ -92,7 +92,7 @@ const [b, setB] = useState("23");
   Add {a} + {b}
 </a>`,
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/intermediates/5-2-2-1-PathParameters.tsx",
+    codeFile: "app/labs/lab5/PathParameters.tsx",
     codeHighlightLines: [4],
   },
   {
@@ -143,7 +143,7 @@ const [b, setB] = useState("23");
   Add {a} + {b}
 </a>`,
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/intermediates/5-2-2-2-QueryParameters.tsx",
+    codeFile: "app/labs/lab5/QueryParameters.tsx",
     codeHighlightLines: [2],
   },
   {
