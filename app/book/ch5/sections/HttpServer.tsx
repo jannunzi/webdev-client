@@ -253,7 +253,7 @@ license: (ISC)`}</CodeBlock>
           language="js"
           name="index"
           file="webdev-server/index.js"
-        >{`import express from "express";
+        >{`const express = require("express");
 const app = express();
 app.get("/hello", (req, res) => {
   res.send("Hello World!");
@@ -334,7 +334,7 @@ npx nodemon index.js
           language="js"
           name="index"
           file="webdev-server/index.js"
-        >{`import express from "express";
+        >{`const express = require("express");
 const app = express();
 app.get("/hello", (req, res) => {
   res.send("Life is good!");
@@ -396,6 +396,19 @@ app.listen(4000);`}</CodeBlock>
           requires that extension when{" "}
           <code>&quot;type&quot;: &quot;module&quot;</code>{" "}is set.
         </p>
+        <CodeBlock
+          language="js"
+          name="index"
+          file="webdev-server/index.js"
+        >{`import express from "express";
+const app = express();
+app.get("/hello", (req, res) => {
+  res.send("Life is good!");
+});
+app.get("/", (req, res) => {
+  res.send("Welcome to Full Stack Development!");
+});
+app.listen(4000);`}</CodeBlock>
       </Section>
 
       <Section
