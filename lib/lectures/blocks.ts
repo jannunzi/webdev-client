@@ -85,6 +85,8 @@ export type BlockSlide = {
   /** "split": bullets on the left, component on the right. */
   layout?: "split";
   cover?: LectureCover;
+  /** Clickable route URLs (open in a new tab). */
+  links?: string[];
 };
 
 export type AuthoredSlide = LectureSlide | BlockSlide;
@@ -352,6 +354,7 @@ export function toBlockSlide(slide: AuthoredSlide): BlockSlide {
     density: slide.density,
     layout: slide.layout,
     ...(slide.cover ? { cover: slide.cover } : {}),
+    ...(slide.links?.length ? { links: slide.links } : {}),
   };
 }
 

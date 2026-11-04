@@ -52,10 +52,10 @@ const fetchWelcomeOnClick = async () => {
       "Use it right after `express()` and before the routes",
     ],
     codeBlocks: [
-      { code: "npm install cors", language: "bash" },
+      { code: "npm install cors\nnpm i -D @types/cors", language: "bash" },
       {
-        file: "webdev-server/index.js",
-        language: "js",
+        file: "webdev-server/index.ts",
+        language: "ts",
         code: `import cors from "cors";
 const app = express();
 app.use(cors());
@@ -171,8 +171,8 @@ export const fetchWelcomeMessage = async () => {
     code: `app.use(cors());
 app.use(express.json());
 Lab5(app);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/index.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/index.ts",
     codeAddedLines: [2],
   },
   {
@@ -216,8 +216,8 @@ const deleteTodo = (req, res) => {
 };
 app.post("/lab5/todos", postNewTodo);
 app.delete("/lab5/todos/:id", deleteTodo);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/WorkingWithArrays.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
     codeHighlightLines: [[16, 17]],
   },
   {

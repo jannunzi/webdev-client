@@ -38,7 +38,7 @@ npm install mongoose`,
     kind: "demo",
     bullets: [
       "The URL is the **connection string** — localhost, port 27017, `/kambaz`",
-      "Place `connect` near the top of `index.js`",
+      "Place `connect` near the top of `index.ts`",
       "If `mongod` is down, Mongoose retries and then fails",
     ],
     code: `import express from "express";
@@ -46,8 +46,8 @@ import mongoose from "mongoose";
 const CONNECTION_STRING = "mongodb://127.0.0.1:27017/kambaz";
 mongoose.connect(CONNECTION_STRING);
 const app = express();`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/index.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/index.ts",
     codeAddedLines: [2, [3, 4]],
   },
   {
@@ -84,8 +84,8 @@ const CONNECTION_STRING =
   process.env.DATABASE_CONNECTION_STRING ||
   "mongodb://127.0.0.1:27017/kambaz";
 mongoose.connect(CONNECTION_STRING);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/index.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/index.ts",
     codeAddedLines: [1, [4, 6]],
   },
   {
@@ -123,8 +123,8 @@ const userSchema = new mongoose.Schema({
 },
 { collection: "users" });
 export default userSchema;`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/schema.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/schema.ts",
     codeHighlightLines: [3, [4, 5], [10, 15], 20],
   },
   {
@@ -136,11 +136,11 @@ export default userSchema;`,
       "You do not instantiate it. Import and call `model.find()`",
     ],
     code: `import mongoose from "mongoose";
-import schema from "./schema.js";
+import schema from "./schema";
 const model = mongoose.model("UserModel", schema);
 export default model;`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/model.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/model.ts",
     codeAddedLines: [3],
   },
   {
@@ -152,7 +152,7 @@ export default model;`,
       "`createUser` assigns `uuidv4()` so enrollments stay string ids",
       "`updateUser` uses `$set` so omitted fields stay as they were",
     ],
-    code: `import model from "./model.js";
+    code: `import model from "./model";
 import { v4 as uuidv4 } from "uuid";
 export default function UsersDao() {
   const findAllUsers = () => model.find();
@@ -173,8 +173,8 @@ export default function UsersDao() {
     findUserByUsername, findUserByCredentials, updateUser, deleteUser,
   };
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/dao.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
     codeHighlightLines: [4, [10, 11], [13, 16]],
     embed: "lab6-todos",
   },

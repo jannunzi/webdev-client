@@ -37,6 +37,7 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
   },
   {
     id: "path-server",
+    links: ["http://localhost:4000/lab5/add/6/4", "http://localhost:4000/lab5/subtract/6/4"],
     title: "Path params live in the URL (code)",
     kind: "demo",
     code: `export default function PathParameters(app) {
@@ -52,27 +53,28 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
   app.get("/lab5/add/:a/:b", add);
   app.get("/lab5/subtract/:a/:b", subtract);
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/PathParameters.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/PathParameters.ts",
     codeHighlightLines: [3, 5, [11, 12]],
   },
   {
     id: "path-import",
+    links: ["http://localhost:4000/lab5/welcome"],
     title: "Import PathParameters into Lab5",
     kind: "demo",
     bullets: [
       "Confirm `/lab5/add/6/4` is 10 and `/lab5/subtract/6/4` is 2",
       "On your own: `/lab5/multiply/:a/:b` and `/lab5/divide/:a/:b`",
     ],
-    code: `import PathParameters from "./PathParameters.js";
+    code: `import PathParameters from "./PathParameters";
 export default function Lab5(app) {
   app.get("/lab5/welcome", (req, res) => {
     res.send("Welcome to Lab 5");
   });
   PathParameters(app);
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/index.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/index.ts",
     codeAddedLines: [1, 6],
   },
   {
@@ -117,6 +119,7 @@ const [b, setB] = useState("23");
   },
   {
     id: "query-server",
+    links: ["http://localhost:4000/lab5/calculator?operation=add&a=2&b=4"],
     title: "Query params after the ? (code)",
     kind: "demo",
     code: `export default function QueryParameters(app) {
@@ -137,8 +140,8 @@ const [b, setB] = useState("23");
   };
   app.get("/lab5/calculator", calculator);
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/QueryParameters.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/QueryParameters.ts",
     codeHighlightLines: [3, [5, 13], 17],
   },
   {

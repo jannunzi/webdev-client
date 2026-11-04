@@ -797,6 +797,8 @@ export type LectureSlide = {
   layout?: "split";
   /** Opt-in thumbnail-style cover for `kind: "title"` slides. */
   cover?: LectureCover;
+  /** Server routes to try, e.g. `http://localhost:4000/hello`. Open in a new tab. */
+  links?: string[];
 };
 
 /**

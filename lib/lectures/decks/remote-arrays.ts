@@ -27,6 +27,7 @@ export const REMOTE_ARRAYS_SLIDES: LectureSlide[] = [
   },
   {
     id: "get-all",
+    links: ["http://localhost:4000/lab5/todos"],
     title: "GET the whole todos array",
     kind: "demo",
     bullets: [
@@ -45,12 +46,13 @@ export default function WorkingWithArrays(app) {
   };
   app.get("/lab5/todos", getTodos);
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/WorkingWithArrays.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
     codeHighlightLines: [[8, 11]],
   },
   {
     id: "get-id",
+    links: ["http://localhost:4000/lab5/todos/1"],
     title: "GET one todo by id",
     kind: "demo",
     bullets: [
@@ -63,8 +65,8 @@ export default function WorkingWithArrays(app) {
   res.json(todo);
 };
 app.get("/lab5/todos/:id", getTodoById);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/WorkingWithArrays.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
     codeAddedLines: [[1, 6]],
   },
   {
@@ -78,6 +80,7 @@ app.get("/lab5/todos/:id", getTodoById);`,
   },
   {
     id: "create-delete",
+    links: ["http://localhost:4000/lab5/todos/create", "http://localhost:4000/lab5/todos/1/delete"],
     title: "Create and delete via GET first (code)",
     kind: "demo",
     code: `const createNewTodo = (req, res) => {
@@ -97,8 +100,8 @@ const removeTodo = (req, res) => {
 };
 app.get("/lab5/todos/create", createNewTodo);
 app.get("/lab5/todos/:id/delete", removeTodo);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/WorkingWithArrays.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
     codeHighlightLines: [[16, 17]],
   },
   {

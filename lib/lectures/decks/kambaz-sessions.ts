@@ -34,7 +34,7 @@ export const KAMBAZ_SESSIONS_SLIDES: LectureSlide[] = [
       "Do not commit `.env` — `.gitignore` already lists it",
     ],
     codeBlocks: [
-      { code: "npm install express-session\nnpm install dotenv", language: "bash" },
+      { code: "npm install express-session\nnpm i -D @types/express-session\nnpm install dotenv", language: "bash" },
       {
         file: "webdev-server/.env",
         language: "bash",
@@ -80,8 +80,8 @@ if (process.env.SERVER_ENV !== "development") {
 }
 app.use(session(sessionOptions));
 app.use(express.json());`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/index.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/index.ts",
     codeHighlightLines: [[4, 7], [21, 22]],
   },
   {
@@ -119,8 +119,8 @@ const signout = (req, res) => {
   req.session.destroy();
   res.sendStatus(200);
 };`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/routes.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeHighlightLines: [5, 12, 20],
   },
   {
