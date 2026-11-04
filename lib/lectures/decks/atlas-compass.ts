@@ -5,6 +5,11 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#00684A",
+      icon: "cloud",
+      headline: "Connecting Compass to Atlas",
+    },
     bullets: [
       "Chapter 6 · Atlas Compass",
       "Connect, then import JSON",
@@ -12,7 +17,7 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Connecting Compass to Atlas",
+    title: "Viewing Cloud Data in Compass",
     kind: "content",
     bullets: [
       "Local Compass is still on `mongodb://127.0.0.1:27017`",
@@ -22,10 +27,10 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
   },
   {
     id: "copy",
-    title: "Copy the Compass +srv string",
+    title: "Copying the Compass Connection String",
     kind: "demo",
     bullets: [
-      "Choose a connection method → Compass",
+      "In Atlas, choose a connection method → Compass",
       "Copy the string from **Access your data through tools**",
       "The host will differ. Scheme, username, password, and hostname matter",
     ],
@@ -36,28 +41,28 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
   },
   {
     id: "paste",
-    title: "Connect Compass in a new window",
+    title: "Opening Atlas in a New Compass Window",
     kind: "content",
     bullets: [
       "Click Done in Atlas, then Compass → Connect → New Window",
-      "Paste the URI and click Connect",
+      "Paste the connection string and click Connect",
       "Compass is now talking to the cloud — not `127.0.0.1`",
       "Leave the localhost connection open for daily development",
     ],
   },
   {
     id: "create",
-    title: "Create kambaz if Atlas did not",
+    title: "Creating the kambaz Database on Atlas",
     kind: "content",
     bullets: [
       "Same steps as the local Compass setup: Create database, name `kambaz`",
       "First collection can be `users` — Mongo creates the database with it",
-      "Keep the name **kambaz** — the Drivers URI later ends with `/kambaz?`",
+      "Keep the name **kambaz** — the Node.js connection string later ends with `/kambaz?`",
     ],
   },
   {
     id: "import",
-    title: "Import JSON on the remote DB",
+    title: "Importing Collections into Atlas",
     kind: "content",
     bullets: [
       "ADD DATA → Import JSON for `courses`, `modules`, `users`, `assignments`, `enrollments`",
@@ -68,11 +73,11 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
   },
   {
     id: "two",
-    title: "Two Compass connections",
+    title: "Keeping Local and Cloud Connections",
     kind: "demo",
     bullets: [
-      "Local URI stays `mongodb://127.0.0.1:27017` for `nodemon`",
-      "Remote URI is `mongodb+srv://…` for Render and the project",
+      "Local string stays `mongodb://127.0.0.1:27017` for `nodemon`",
+      "Remote string is `mongodb+srv://…` for Render and the project",
       "Dashboard on Vercel reads Atlas. Dashboard on localhost reads `mongod`",
     ],
     codeBlocks: [
@@ -101,10 +106,10 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
   },
   {
     id: "next-up",
-    title: "Next: connect from Node.js",
+    title: "Next: Connecting Node.js to Atlas",
     kind: "title",
     bullets: [
-      "Network Access, then the Drivers URI with `/kambaz?`",
+      "Network Access, then the Drivers string with `/kambaz?`",
       "Same env key, new Render service",
     ],
   },

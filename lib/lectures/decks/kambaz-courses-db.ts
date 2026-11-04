@@ -5,6 +5,11 @@ export const KAMBAZ_COURSES_DB_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#47A248",
+      icon: "database",
+      headline: "Kambaz Courses in MongoDB",
+    },
     bullets: [
       "Chapter 6 · Kambaz Courses DB",
       "CRUD courses in Mongo",
@@ -12,26 +17,28 @@ export const KAMBAZ_COURSES_DB_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing Courses in MongoDB",
+    title: "Storing Courses in MongoDB",
     kind: "content",
     bullets: [
-      "Chapter 5 routes still own `/api/courses` — arrays become documents",
+      "Courses still live in a server array, so new courses vanish on restart",
+      "`/api/courses` keeps its URLs. Only where the documents come from changes",
       "Account Context and Zustand cache what the routes return",
       "Confirm each verb in Compass before you move on",
     ],
   },
   {
     id: "schema-intro",
-    title: "Course schema keeps string ids",
+    title: "Creating the Course Schema",
     kind: "demo",
     bullets: [
+      "In a new `Kambaz/Courses/schema.ts` file, create the schema as shown below",
       "`_id` stays `String` — enrollments and modules already store those ids",
       "`CourseModel` is the name enrollments will `ref` later",
     ],
   },
   {
     id: "schema",
-    title: "Course schema keeps string ids (code)",
+    title: "Defining Course Fields",
     kind: "demo",
     code: `import mongoose from "mongoose";
 const courseSchema = new mongoose.Schema({
@@ -49,9 +56,10 @@ export default courseSchema;`,
   },
   {
     id: "model",
-    title: "CourseModel from the schema",
+    title: "Creating the Course Model",
     kind: "demo",
     bullets: [
+      "In a new `Kambaz/Courses/model.ts` file, create the model as shown below",
       "Same pattern as `UserModel` — one compiled model per process",
     ],
     code: `import mongoose from "mongoose";
@@ -64,16 +72,17 @@ export default model;`,
   },
   {
     id: "find-intro",
-    title: "find() replaces Database.courses",
+    title: "Reading Courses from MongoDB",
     kind: "demo",
     bullets: [
+      "In `Kambaz/Courses/dao.ts`, replace the array reads as shown below",
       "Comment out the array return so you do not keep two sources of truth",
       "Enrolled-user helper can still filter against in-memory enrollments for now",
     ],
   },
   {
     id: "find",
-    title: "find() replaces Database.courses (code)",
+    title: "Replacing Array Reads with find()",
     kind: "demo",
     code: `import model from "./model";
 
@@ -99,16 +108,18 @@ async function findCoursesForEnrolledUser(userId) {
   },
   {
     id: "async-routes-intro",
-    title: "Await every course lookup",
+    title: "Awaiting Course Lookups in Routes",
     kind: "demo",
     bullets: [
+      "In `Kambaz/Courses/routes.ts`, make both lookups `async` as shown below",
       "`userId === \"current\"` still reads the session — 401 if anonymous",
       "Only the lookup behind it is now a promise",
     ],
   },
   {
     id: "async-routes",
-    title: "Await every course lookup (code)",
+    links: ["http://localhost:4000/api/courses", "http://localhost:4000/api/users/123/courses"],
+    title: "Waiting for Courses Before Replying",
     kind: "demo",
     code: `const findAllCourses = async (req, res) => {
   const courses = await dao.findAllCourses();
@@ -134,16 +145,17 @@ const findCoursesForEnrolledUser = async (req, res) => {
   },
   {
     id: "create-intro",
-    title: "createCourse assigns a uuid",
+    title: "Creating a Course with a New ID",
     kind: "demo",
     bullets: [
+      "In `dao.ts`, add `createCourse`, then `await` it in the route, as shown below",
       "Spread, `_id: uuidv4()`, `model.create`",
       "Route still enrolls the current user — that write becomes Mongo later",
     ],
   },
   {
     id: "create",
-    title: "createCourse assigns a uuid (code)",
+    title: "Saving New Courses to MongoDB",
     kind: "demo",
     code: `function createCourse(course) {
   const newCourse = { ...course, _id: uuidv4() };
@@ -163,9 +175,10 @@ app.post("/api/courses", createCourse);`,
   },
   {
     id: "delete-update",
-    title: "deleteOne and updateOne $set",
+    title: "Deleting and Updating Courses",
     kind: "demo",
     bullets: [
+      "In `dao.ts`, add delete and update as shown below",
       "Dashboard Delete — refresh Compass; the document is gone",
       "Edit a name, save, reopen in Compass before you refresh the browser again",
     ],
@@ -192,7 +205,7 @@ function updateCourse(courseId, courseUpdates) {
   },
   {
     id: "next-up",
-    title: "Next: modules are 1:N",
+    title: "Next: Kambaz Modules: One-to-Many",
     kind: "title",
     bullets: [
       "A course has many modules — foreign key, id array, or embed",

@@ -5,6 +5,11 @@ export const MONGOOSE_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#880000",
+      icon: "database",
+      headline: "Programming with Mongoose",
+    },
     bullets: [
       "Chapter 6 · Mongoose",
       "Connect, env, schema, DAO",
@@ -12,33 +17,45 @@ export const MONGOOSE_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing Mongoose",
+    title: "Talking to MongoDB from Node.js",
     kind: "content",
     bullets: [
-      "Applications need `find`, `create`, `updateOne`, and `deleteOne`",
+      "Compass lets people edit data. The Express server needs to do it in code",
+      "Mongoose is a library that connects Node.js to MongoDB",
+      "It checks document shapes and gives you `find`, `create`, `updateOne`, and `deleteOne`",
       "Work on branch `a6` in both `webdev-client` and `webdev-server`",
-      "Set the connection URI in `webdev-server` and the server uses Mongoose",
     ],
   },
   {
     id: "install",
-    title: "npm install mongoose",
+    title: "Installing the Mongoose Library",
     kind: "demo",
     bullets: [
-      "From the Node project root — not the Next.js app",
-      "Schemas and models once, then CRUD on those models",
+      "From the `webdev-server` folder — not the Next.js app",
+      "You write schemas and models once, then call them from the routes",
     ],
     code: `cd webdev-server
 npm install mongoose`,
     codeLanguage: "bash",
   },
   {
+    id: "connection-how",
+    title: "Reading a Connection String",
+    kind: "content",
+    bullets: [
+      "A connection string is the database's address: `mongodb://127.0.0.1:27017/kambaz`",
+      "`mongodb://` is the scheme. `127.0.0.1` is your own laptop",
+      "`27017` is the port `mongod` listens on. `/kambaz` names the database",
+      "`mongoose.connect` opens that connection once, when the server starts",
+    ],
+  },
+  {
     id: "connect",
-    title: "Connect before any route runs",
+    title: "Connecting When the Server Starts",
     kind: "demo",
     bullets: [
-      "The URL is the **connection string** — localhost, port 27017, `/kambaz`",
-      "Place `connect` near the top of `index.ts`",
+      "In `index.ts`, import mongoose and connect as shown below",
+      "Connect near the top, before any route runs",
       "If `mongod` is down, Mongoose retries and then fails",
     ],
     code: `import express from "express";
@@ -52,12 +69,12 @@ const app = express();`,
   },
   {
     id: "env",
-    title: "Put the URI in .env",
+    title: "Storing the Connection String in .env",
     kind: "demo",
     bullets: [
-      "Node `.env` — not the Next.js `.env.local`",
-      "Same key later holds the Atlas `mongodb+srv://` string",
-      "Alongside the session keys from Chapter 5",
+      "In `webdev-server/.env`, add `DATABASE_CONNECTION_STRING` as shown below",
+      "This is the server's `.env` — not the Next.js `.env.local`",
+      "Later the same key holds the Atlas `mongodb+srv://` string",
     ],
     code: `SERVER_ENV=development
 CLIENT_URL=http://localhost:3000
@@ -71,11 +88,12 @@ DATABASE_CONNECTION_STRING=mongodb://127.0.0.1:27017/kambaz`,
   },
   {
     id: "read-env",
-    title: "Read process.env, then connect",
+    title: "Reading the Connection String in Code",
     kind: "demo",
     bullets: [
+      "In `index.ts`, read the key from `process.env` as shown below",
       "`dotenv/config` loads `.env` before other modules read keys",
-      "Fallback keeps you on localhost if the line is missing",
+      "The fallback keeps you on localhost if the line is missing",
     ],
     code: `import "dotenv/config";
 import mongoose from "mongoose";
@@ -89,18 +107,30 @@ mongoose.connect(CONNECTION_STRING);`,
     codeAddedLines: [1, [4, 6]],
   },
   {
+    id: "schema-how",
+    title: "What a Schema Checks",
+    kind: "content",
+    bullets: [
+      "MongoDB itself accepts any document shape",
+      "A schema lists each field and its type: `username: String`, `dob: Date`",
+      "Saving `{ password: \"stark123\" }` with no `username` fails because `username` is required",
+      "A `role` of `\"PILOT\"` fails because it is not in the allowed list",
+    ],
+  },
+  {
     id: "schema-intro",
-    title: "A schema validates writes",
+    title: "Creating the User Schema",
     kind: "demo",
     bullets: [
+      "In a new `Kambaz/Users/schema.ts` file, create the schema as shown below",
       "`_id` is `String` so Chapter 3 ids still match enrollments",
-      "`username` required + unique. `role` is an enum, default `USER`",
+      "`username` is required and unique. `role` defaults to `USER`",
       "`{ collection: \"users\" }` — do not let Mongoose invent a name",
     ],
   },
   {
     id: "schema",
-    title: "A schema validates writes (code)",
+    title: "Defining Fields, Types, and Defaults",
     kind: "demo",
     code: `import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
@@ -129,11 +159,12 @@ export default userSchema;`,
   },
   {
     id: "model",
-    title: "One compiled UserModel",
+    title: "Compiling a Schema into a Model",
     kind: "demo",
     bullets: [
+      "In a new `Kambaz/Users/model.ts` file, create the model as shown below",
       "`\"UserModel\"` is the name other schemas `ref` — enrollments later",
-      "You do not instantiate it. Import and call `model.find()`",
+      "You do not instantiate it. Import it and call `model.find()`",
     ],
     code: `import mongoose from "mongoose";
 import schema from "./schema";
@@ -144,11 +175,22 @@ export default model;`,
     codeAddedLines: [3],
   },
   {
+    id: "dao-how",
+    title: "Hiding the Database Behind a DAO",
+    kind: "content",
+    bullets: [
+      "A data access object (DAO) is the one file that talks to the model",
+      "Routes call `dao.findUserById(\"123\")` and never touch Mongoose directly",
+      "Same function names as Chapter 5, but each now returns a promise",
+      "`await dao.findUserById(\"123\")` gives back the `iron_man` document",
+    ],
+  },
+  {
     id: "dao",
-    title: "DAO wraps generic model verbs",
+    title: "Rewriting the Users DAO with Mongoose",
     kind: "demo",
     bullets: [
-      "Same function names as Chapter 5 — now they return promises",
+      "In `Kambaz/Users/dao.ts`, replace the array code as shown below",
       "`createUser` assigns `uuidv4()` so enrollments stay string ids",
       "`updateUser` uses `$set` so omitted fields stay as they were",
     ],
@@ -183,14 +225,14 @@ export default function UsersDao() {
     title: "Mongoose recap",
     kind: "content",
     bullets: [
-      "`npm install mongoose`, then `mongoose.connect` from env",
+      "`npm install mongoose`, then `mongoose.connect` from `.env`",
       "Schema describes `users`. Model exposes CRUD",
       "DAO names stay `findUserByCredentials` — routes `await` them next",
     ],
   },
   {
     id: "next-up",
-    title: "Next: async account APIs",
+    title: "Next: Database-Backed User APIs",
     kind: "title",
     bullets: [
       "Tag routes `async` and expose find-all on `/api/users`",

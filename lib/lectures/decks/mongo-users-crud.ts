@@ -5,24 +5,50 @@ export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#47A248",
+      icon: "user",
+      headline: "User CRUD with MongoDB",
+    },
     bullets: [
       "Chapter 6 · User CRUD",
       "Filter, id, mutate",
     ],
   },
   {
+    id: "purpose",
+    title: "Searching and Editing Users",
+    kind: "content",
+    bullets: [
+      "The Users screen lists everyone. Admins also need to search, edit, and remove",
+      "MongoDB does the filtering, so the browser only receives matching users",
+      "This deck adds filters, find by id, delete, update, and create",
+    ],
+  },
+  {
+    id: "predicates-how",
+    title: "Filtering with Query Objects",
+    kind: "content",
+    bullets: [
+      "`find()` takes an object describing which documents match",
+      "`model.find({ role: \"FACULTY\" })` returns only faculty users",
+      "`$regex` matches part of a text: `thor` matches `Thor`, and flag `i` ignores case",
+      "`$or` matches when either condition holds — first name or last name",
+    ],
+  },
+  {
     id: "predicates-intro",
-    title: "find() accepts a predicate",
+    title: "Finding Users by Role and Name",
     kind: "demo",
     bullets: [
+      "In `Kambaz/Users/dao.ts`, add both finders as shown below",
       "`{ role }` is shorthand for `{ role: role }`",
-      "`$or` + `$regex` with flag `i` — `thor` finds Thor",
       "Export both so the route can call them",
     ],
   },
   {
     id: "predicates",
-    title: "find() accepts a predicate (code)",
+    title: "Writing Role and Name Queries",
     kind: "demo",
     code: `const findUsersByRole = (role) => model.find({ role });
 const findUsersByPartialName = (partialName) => {
@@ -40,17 +66,18 @@ const findUsersByPartialName = (partialName) => {
   },
   {
     id: "query-route-intro",
-    title: "One GET, two query filters",
+    title: "Filtering Users with Query Parameters",
     kind: "demo",
     bullets: [
-      "Parse `role` and `name` from `req.query`",
-      "Client encodes `?role=FACULTY` or `?name=thor`",
+      "In `routes.ts`, update `findAllUsers` as shown below",
+      "Read `role` and `name` from `req.query`: `?role=FACULTY` or `?name=thor`",
       "Independent filters are required — combining them is extra",
     ],
   },
   {
     id: "query-route",
-    title: "One GET, two query filters (code)",
+    links: ["http://localhost:4000/api/users?role=FACULTY", "http://localhost:4000/api/users?name=thor"],
+    title: "Choosing a Query from the URL",
     kind: "demo",
     code: `const findAllUsers = async (req, res) => {
   const { role, name } = req.query;
@@ -73,11 +100,12 @@ const findUsersByPartialName = (partialName) => {
   },
   {
     id: "filter-ui",
-    title: "Role select and name input",
+    title: "Filtering Users from the Client",
     kind: "demo",
     bullets: [
+      "In `account/client.ts`, add both filter calls as shown below",
+      "On the Users screen, add a bordered role select and a name input",
       "All Roles clears the filter and calls `fetchUsers` again",
-      "Style the select with Tailwind: a bordered control about a quarter of the width",
     ],
     code: `export const findUsersByRole = async (role: string) => {
   const response = await axios.get(\`\${USERS_API}?role=\${role}\`);
@@ -94,10 +122,11 @@ export const findUsersByPartialName = async (name: string) => {
   {
     id: "by-id",
     links: ["http://localhost:4000/api/users/123"],
-    title: "findById loads one document",
+    title: "Loading One User by ID",
     kind: "demo",
     bullets: [
-      "Convenience for `findOne({ _id: userId })`",
+      "In `dao.ts`, add `findUserById`, then its route in `routes.ts`, as shown below",
+      "`findById(id)` is short for `findOne({ _id: id })`",
       "Confirm in the browser: `/api/users/` plus an `_id` from Compass",
     ],
     code: `const findUserById = (userId) => model.findById(userId);
@@ -112,11 +141,11 @@ app.get("/api/users/:userId", findUserById);`,
   },
   {
     id: "details",
-    title: "People Details on a name click",
+    title: "Fetching One User from the Client",
     kind: "demo",
     bullets: [
-      "Parse `uid`. If missing, return `null` so the panel does not render",
-      "`useEffect` depends on `uid` so a second click reloads",
+      "In `account/client.ts`, add `findUserById` as shown below",
+      "People Details calls it with the clicked `uid`. No `uid`, no panel",
       "The panel is a fixed column on the right: `fixed top-0 end-0 bottom-0`, a white background, and a shadow",
     ],
     code: `export const findUserById = async (id: string) => {
@@ -129,9 +158,10 @@ app.get("/api/users/:userId", findUserById);`,
   },
   {
     id: "delete",
-    title: "DELETE by primary key",
+    title: "Deleting a User by ID",
     kind: "demo",
     bullets: [
+      "In `dao.ts`, add `deleteUser` and its route as shown below",
       "`findByIdAndDelete` or `deleteOne({ _id })` — same result",
       "Details: red Delete, then `onClose`. Cancel leaves Compass unchanged",
     ],
@@ -145,17 +175,29 @@ app.delete("/api/users/:userId", async (req, res) => {
     codeAddedLines: [[1, 5]],
   },
   {
+    id: "update-how",
+    title: "Changing Only Some Fields with $set",
+    kind: "content",
+    bullets: [
+      "Stored: `{ _id: \"123\", firstName: \"Tony\", lastName: \"Stark\" }`",
+      "`updateOne({ _id: \"123\" }, { $set: { firstName: \"Anthony\" } })`",
+      "Result: `firstName` is `Anthony`. `lastName` is still `Stark`",
+      "The first argument picks the document. `$set` lists only what changes",
+    ],
+  },
+  {
     id: "update-intro",
-    title: "$set, then refresh the session",
+    title: "Updating a User and the Session",
     kind: "demo",
     bullets: [
-      "Without `$set`, Mongoose replaces the whole document",
-      "If the path id matches `currentUser`, merge into `req.session`",
+      "In `routes.ts`, add the update route as shown below",
+      "If the path id matches `currentUser`, merge the changes into `req.session`",
+      "Otherwise the signed-in user would keep seeing the old profile",
     ],
   },
   {
     id: "update",
-    title: "$set, then refresh the session (code)",
+    title: "Keeping the Session in Sync",
     kind: "demo",
     code: `const updateUser = (userId, user) =>
   model.updateOne({ _id: userId }, { $set: user });
@@ -177,9 +219,10 @@ app.put("/api/users/:userId", updateUser);`,
   },
   {
     id: "create",
-    title: "POST assigns a fresh uuid",
+    title: "Creating a User with a New ID",
     kind: "demo",
     bullets: [
+      "In `routes.ts`, add the create route as shown below",
       "Strip a leftover `_id` — an empty string would collide",
       "`Date.now()` in the username so two clicks stay unique",
     ],
@@ -209,7 +252,7 @@ app.post("/api/users", createUser);`,
   },
   {
     id: "next-up",
-    title: "Next: host the database",
+    title: "Next: Hosting MongoDB on Atlas",
     kind: "title",
     bullets: [
       "127.0.0.1 is empty on Render — Atlas is the public cluster",

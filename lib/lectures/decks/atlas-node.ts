@@ -5,6 +5,11 @@ export const ATLAS_NODE_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#00684A",
+      icon: "cloud",
+      headline: "Connecting Node.js to Atlas",
+    },
     bullets: [
       "Chapter 6 · Atlas from Node.js",
       "Network Access, then Drivers",
@@ -12,28 +17,28 @@ export const ATLAS_NODE_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Connecting Node.js to Atlas",
+    title: "Letting the Server Reach Atlas",
     kind: "content",
     bullets: [
       "Compass can see Atlas. Mongoose on Render still cannot",
-      "Open Network Access so free Render outbound IPs can reach the cluster",
-      "Then copy the **Drivers** string — it includes `/kambaz?`",
+      "Atlas blocks unknown computers, so open Network Access for Render",
+      "Then copy the **Drivers** connection string — it includes `/kambaz?`",
     ],
   },
   {
     id: "network-intro",
-    title: "Allow access from anywhere",
+    title: "Allowing Connections from Anywhere",
     kind: "demo",
     bullets: [
       "Atlas → Network Access → + ADD IP ADDRESS",
       "ALLOW ACCESS FROM ANYWHERE adds `0.0.0.0/0`",
-      "Free Render outbound IPs change. A laptop-only allow list will fail",
+      "Free Render IP addresses change. A laptop-only allow list will fail",
       "Without this entry, Mongoose hangs even if the password is correct",
     ],
   },
   {
     id: "network",
-    title: "Allow access from anywhere (code)",
+    title: "Adding 0.0.0.0/0 to Network Access",
     kind: "demo",
     code: `0.0.0.0/0`,
     codeLanguage: "text",
@@ -41,12 +46,12 @@ export const ATLAS_NODE_SLIDES: LectureSlide[] = [
   },
   {
     id: "drivers",
-    title: "Drivers URI includes /kambaz",
+    title: "Copying the Node.js Connection String",
     kind: "demo",
     bullets: [
       "Database → Connect → Drivers → Node.js 5.5 or later",
       "`kambaz` must sit between the last `/` and the `?`",
-      "Replace `<password>`. Do not commit the completed URI",
+      "Replace `<password>`. Do not commit the completed string",
     ],
     code: `mongodb+srv://giuseppi:<password>@kambaz.jxui0bc.mongodb.net/kambaz?retryWrites=true&w=majority&appName=Kambaz`,
     codeLanguage: "text",
@@ -56,7 +61,7 @@ export const ATLAS_NODE_SLIDES: LectureSlide[] = [
   },
   {
     id: "omit",
-    title: "Omit the path and you write test",
+    title: "Why the Database Name Matters",
     kind: "content",
     bullets: [
       "Mongoose connects to the cluster even if the path is missing",
@@ -67,11 +72,11 @@ export const ATLAS_NODE_SLIDES: LectureSlide[] = [
   },
   {
     id: "env",
-    title: "Same key, Atlas string",
+    title: "Using One Key for Local and Atlas",
     kind: "demo",
     bullets: [
-      "Local `.env` can stay on `127.0.0.1` while you develop",
-      "Render Environment holds the `mongodb+srv` value",
+      "In `index.ts`, the connect code you wrote already reads the key",
+      "Local `.env` stays on `127.0.0.1`. Render holds the `mongodb+srv` value",
     ],
     code: `const CONNECTION_STRING =
   process.env.DATABASE_CONNECTION_STRING ||
@@ -84,12 +89,12 @@ mongoose.connect(CONNECTION_STRING);`,
   },
   {
     id: "render",
-    title: "New Render service, same key",
+    title: "Deploying a New Render Service",
     kind: "demo",
     bullets: [
       "Push branch `a6`. Deploy a **new** Render (or Heroku) service",
       "Do not overwrite the Chapter 5 `a5` URL while TAs are grading",
-      "Environment: `DATABASE_CONNECTION_STRING` = the Atlas Drivers URI",
+      "Environment: `DATABASE_CONNECTION_STRING` = the Atlas Drivers string",
     ],
     code: `DATABASE_CONNECTION_STRING=mongodb+srv://USER:PASSWORD@cluster/kambaz?retryWrites=true&w=majority`,
     codeLanguage: "bash",
@@ -98,7 +103,7 @@ mongoose.connect(CONNECTION_STRING);`,
   },
   {
     id: "vercel",
-    title: "Point Vercel at the new origin",
+    title: "Pointing Vercel at the New Server",
     kind: "demo",
     bullets: [
       "Vercel `a6`: `NEXT_PUBLIC_HTTP_SERVER` = new Render origin",
@@ -116,14 +121,14 @@ mongoose.connect(CONNECTION_STRING);`,
     title: "Node.js recap",
     kind: "content",
     bullets: [
-      "`0.0.0.0/0`, Drivers URI with `/kambaz?`, same env key",
+      "`0.0.0.0/0`, Drivers string with `/kambaz?`, same env key",
       "New Render service — do not overwrite `a5`",
       "Vercel `NEXT_PUBLIC_HTTP_SERVER` points at the new origin",
     ],
   },
   {
     id: "next-up",
-    title: "Next: remote session env",
+    title: "Next: Remote Sessions with Atlas",
     kind: "title",
     bullets: [
       "Sign in still needs a cookie the Vercel app can send back",
