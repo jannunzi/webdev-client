@@ -12,7 +12,7 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · HTTP Server",
-      "§5.1 · sibling Express on port 4000",
+      "Sibling Express on port 4000",
     ],
   },
   {
@@ -195,7 +195,7 @@ app.listen(4000);`,
     kind: "title",
     bullets: [
       "Restart on save, how modules load, then routes",
-      "§5.1.6–5.1.8: Nodemon, module loading, and `Hello(app)`",
+      "Nodemon, module loading, and `Hello(app)`",
     ],
   },
 ];

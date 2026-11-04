@@ -12,7 +12,7 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Remote Objects",
-      "§5.2.3 · one assignment in process memory",
+      "One assignment in process memory",
     ],
   },
   {
@@ -160,7 +160,7 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
     kind: "title",
     bullets: [
       "CRUD on a todos collection — create, read, update, delete",
-      "§5.2.4: `/lab5/todos` plus an id in the path",
+      "`/lab5/todos` plus an id in the path",
     ],
   },
 ];

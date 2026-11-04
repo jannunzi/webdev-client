@@ -7,7 +7,7 @@ export const MONGOOSE_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 6 · Mongoose",
-      "§6.2 · connect, env, schema, DAO",
+      "Connect, env, schema, DAO",
     ],
   },
   {
@@ -194,7 +194,7 @@ export default function UsersDao() {
     kind: "title",
     bullets: [
       "Tag routes `async` and expose find-all on `/api/users`",
-      "§6.2.6.1–6.2.6.2: Sign in still works, then an ADMIN Users screen",
+      "Sign in still works, then an ADMIN Users screen",
     ],
   },
 ];

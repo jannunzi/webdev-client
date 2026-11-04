@@ -7,7 +7,7 @@ export const KAMBAZ_COURSES_DB_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 6 · Kambaz Courses DB",
-      "§6.4.1 · CRUD courses in Mongo",
+      "CRUD courses in Mongo",
     ],
   },
   {
@@ -26,7 +26,7 @@ export const KAMBAZ_COURSES_DB_SLIDES: LectureSlide[] = [
     kind: "demo",
     bullets: [
       "`_id` stays `String` — enrollments and modules already store those ids",
-      "`CourseModel` is the name enrollments will `ref` in §6.4.3.1",
+      "`CourseModel` is the name enrollments will `ref` later",
     ],
   },
   {
@@ -138,7 +138,7 @@ const findCoursesForEnrolledUser = async (req, res) => {
     kind: "demo",
     bullets: [
       "Spread, `_id: uuidv4()`, `model.create`",
-      "Route still enrolls the current user — that write becomes Mongo in §6.4.3.4",
+      "Route still enrolls the current user — that write becomes Mongo later",
     ],
   },
   {
@@ -196,7 +196,7 @@ function updateCourse(courseId, courseUpdates) {
     kind: "title",
     bullets: [
       "A course has many modules — foreign key, id array, or embed",
-      "§6.4.2: keep a `modules` collection with `course`",
+      "Keep a `modules` collection with `course`",
     ],
   },
 ];

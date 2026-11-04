@@ -7,7 +7,7 @@ export const CH6_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 6 · Check Your Understanding",
-      "§6-check · a self-check before Kambaz DB",
+      "A self-check before Kambaz DB",
     ],
   },
   {
@@ -38,7 +38,7 @@ export const CH6_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
     bullets: [
       "Connection status, todos CRUD, then the Users screen",
       "Sign in as `iron_man`, open Profile, then ADMIN Users as `nick_fury`",
-      "Atlas cluster can wait until after the quiz — §6.4 is Kambaz collections",
+      "Atlas cluster can wait until after the quiz — Kambaz collections come next",
     ],
   },
   {
@@ -67,7 +67,7 @@ export const CH6_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Same URLs as Chapter 5. Only the source of documents changes",
-      "§6.4.1: course schema, `model.find`, then create / delete / update",
+      "Course schema, `model.find`, then create / delete / update",
     ],
   },
 ];

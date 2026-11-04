@@ -7,7 +7,7 @@ export const CSS_INTRO_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · CSS Intro",
-      "Chapter 2 §2.1.1–2.1.6 · Lab 2 starts here",
+      "Lab 2 starts here",
     ],
   },
   {
@@ -68,7 +68,7 @@ export const CSS_INTRO_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "Add a link in both `app/labs/page.tsx` and `app/labs/TOC.tsx`",
-      "Same two files you updated for Lab 1 (§1.3.10–1.3.11)",
+      "Same two files you updated for Lab 1",
       "Confirm `/labs/lab2` opens from the Labs table of contents before continuing",
     ],
     code: `<Link href="/labs/lab2" id="wd-lab2-link">

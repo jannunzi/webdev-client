@@ -7,7 +7,7 @@ export const KAMBAZ_ACCOUNT_PAGES_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · Account Pages and Sign Up",
-      "§4.10.5.4–5 · Account Nav and Profile, plus Sign up",
+      "Account Nav and Profile, plus Sign up",
     ],
   },
   {

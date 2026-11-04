@@ -7,7 +7,7 @@ export const OPTIONAL_CHAINING_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Optional Chaining",
-      "§3.4.17 · stop at missing, then fill a default",
+      "Stop at missing, then fill a default",
     ],
   },
   {
@@ -82,7 +82,7 @@ export default function OptionalChaining() {
     kind: "title",
     bullets: [
       "Types describe what each variable, object, and function holds",
-      "§3.5: annotations, object types, unions, and narrowing",
+      "Annotations, object types, unions, and narrowing",
     ],
   },
 ];

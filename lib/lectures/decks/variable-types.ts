@@ -7,7 +7,7 @@ export const VARIABLE_TYPES_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Variable Types",
-      "§3.2.2 · number, string, boolean, and `typeof`",
+      "Number, string, boolean, and `typeof`",
     ],
   },
   {
@@ -89,7 +89,7 @@ export const VARIABLE_TYPES_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Types tell you what a value is. Booleans decide what to render",
-      "§3.2.3–3.2.6: `===`, `&&`, the ternary, welcome vs login",
+      "`===`, `&&`, the ternary, welcome vs login",
     ],
   },
 ];

@@ -7,7 +7,7 @@ export const KAMBAZ_MODULES_DATA_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Modules from Data",
-      "§3.10.7 · filter by course, then map lessons",
+      "Filter by course, then map lessons",
     ],
   },
   {
@@ -129,9 +129,9 @@ export default function Modules() {
     title: "Array Methods on Real Data",
     kind: "content",
     bullets: [
-      "`filter` from §3.4.7 keeps this course’s modules",
-      "`map` from §3.4.4 renders each `Module` and `Lesson`",
-      "`?.` from §3.4.17 skips a missing `lessons` array",
+      "`filter` keeps this course’s modules",
+      "`map` renders each `Module` and `Lesson`",
+      "`?.` skips a missing `lessons` array",
       "Add a lesson in JSON and confirm it appears only for that course",
     ],
   },
@@ -151,7 +151,7 @@ export default function Modules() {
     kind: "title",
     bullets: [
       "Assignments filter the same way. People joins two JSON files",
-      "§3.10.8–3.10.9: list, editor, then `enrollments.some`",
+      "List, editor, then `enrollments.some`",
     ],
   },
 ];

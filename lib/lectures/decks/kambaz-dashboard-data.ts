@@ -7,7 +7,7 @@ export const KAMBAZ_DASHBOARD_DATA_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Dashboard from Data",
-      "§3.10.3 · map courses onto cards",
+      "Map courses onto cards",
     ],
   },
   {
@@ -15,7 +15,7 @@ export const KAMBAZ_DASHBOARD_DATA_SLIDES: LectureSlide[] = [
     title: "Implementing a Data-Driven Dashboard",
     kind: "content",
     bullets: [
-      "Refactor the §2.4.2 dashboard so it maps JSON, not three hardcoded cards",
+      "Refactor the Chapter 2 dashboard so it maps JSON, not three hardcoded cards",
       "Pass each course as one `course` prop and key the card by `course._id`",
       "The published count interpolates `courses.length`",
       "Clicking a card lands on `/courses/RS101/home` (or whichever `_id`)",
@@ -140,7 +140,7 @@ export default function CourseCard({
     kind: "title",
     bullets: [
       "The layout awaits `[cid]`, then `find`s the course",
-      "§3.10.4–3.10.6: layout, course nav, breadcrumb",
+      "Layout, course nav, breadcrumb",
     ],
   },
 ];

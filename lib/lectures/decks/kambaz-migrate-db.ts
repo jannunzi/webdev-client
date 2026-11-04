@@ -12,7 +12,7 @@ export const KAMBAZ_MIGRATE_DB_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Migrating the Database",
-      "§5.4.1 · JSON files imported by the server",
+      "JSON files imported by the server",
     ],
   },
   {
@@ -77,7 +77,7 @@ export default { courses, modules, assignments, users, enrollments };`,
     kind: "title",
     bullets: [
       "A Users DAO, then signin / signup / profile / signout",
-      "§5.4.2: axios posts credentials; Context stores the user",
+      "Axios posts credentials; Context stores the user",
     ],
   },
 ];

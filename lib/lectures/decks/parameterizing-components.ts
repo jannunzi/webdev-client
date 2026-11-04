@@ -7,7 +7,7 @@ export const PARAMETERIZING_COMPONENTS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Parameterizing Components",
-      "§3.8–3.8.1 · props and children",
+      "Props and children",
     ],
   },
   {
@@ -16,7 +16,7 @@ export const PARAMETERIZING_COMPONENTS_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "HTML-style attributes become one object argument",
-      "Destructure it in the parameter list — same as §3.4.15",
+      "Destructure it in the parameter list — same as object destructuring",
       "`a={3}` passes a **number**. `a=\"3\"` would pass a string",
       "Render `<Add a={3} b={4} />` from Lab 3 — the sum is `7`",
     ],
@@ -535,7 +535,7 @@ export default function CardDemo() {
     kind: "title",
     bullets: [
       "`usePathname` highlights the TOC. `[a]/[b]` captures segments",
-      "§3.8.2–3.8.4: path params (values in URL segments), then a JSON todo list",
+      "Path params (values in URL segments), then a JSON todo list",
     ],
   },
 ];

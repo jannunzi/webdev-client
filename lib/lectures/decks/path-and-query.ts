@@ -12,7 +12,7 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Sending Data to the Server",
-      "§5.2.2 · path, query, and JSON body",
+      "Path, query, and JSON body",
     ],
   },
   {
@@ -23,7 +23,7 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
       "**Path parameters** — `/lab5/add/2/5` as URL segments",
       "**Query parameters** — `/lab5/add?a=2&b=5` after `?`",
       "**JSON request body** — `{a: 2, b: 5}` with POST/PUT",
-      "Today: path and query. JSON bodies: Async HTTP deck",
+      "Today: path and query. JSON bodies: Async HTTP and JSON deck",
     ],
   },
   {
@@ -187,7 +187,7 @@ const [b, setB] = useState("23");
     kind: "title",
     bullets: [
       "`res.json` for an assignment object that survives until reboot",
-      "§5.2.3: GET the object, then mutate title via the path",
+      "GET the object, then mutate title via the path",
     ],
   },
 ];

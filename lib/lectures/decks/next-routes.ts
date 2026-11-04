@@ -12,7 +12,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Next.js Server Routes",
-      "§5.3 · Route Handlers, not a replacement",
+      "Route Handlers, not a replacement",
     ],
   },
   {
@@ -231,7 +231,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "A 10-item self-check before Kambaz moves onto Express",
-      "§5-check: CORS, axios, and the calculator",
+      "CORS, axios, and the calculator",
     ],
   },
 ];

@@ -7,7 +7,7 @@ export const KAMBAZ_ASSIGNMENTS_STYLING_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · People and Assignments",
-      "§2.4.6–2.4.8 · Table utilities, then assignment rows and the editor",
+      "Table utilities, then assignment rows and the editor",
     ],
   },
   {
@@ -16,7 +16,7 @@ export const KAMBAZ_ASSIGNMENTS_STYLING_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "People is new in this chapter — no Chapter 1 prototype",
-      "Assignments reuse `AssignmentItem` from §1.4.7 with Tailwind + icons",
+      "Assignments reuse `AssignmentItem` from Chapter 1 with Tailwind + icons",
       "The editor gets labeled fields in a grid instead of a raw table",
     ],
   },
@@ -384,7 +384,7 @@ export default function AssignmentEditor() {
     kind: "title",
     bullets: [
       "You can style a roster table and assignment rows with the same utilities",
-      "§2.4.9: Sign in, Sign up, Profile, and Account Navigation — On your own",
+      "Sign in, Sign up, Profile, and Account Navigation — On your own",
     ],
   },
 ];

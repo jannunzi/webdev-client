@@ -12,7 +12,7 @@ export const KAMBAZ_ACCOUNT_REST_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Account REST APIs",
-      "§5.4.2 · signin, signup, profile, signout",
+      "Signin, signup, profile, signout",
     ],
   },
   {
@@ -75,7 +75,7 @@ export default function UserRoutes(app, db) {
     bullets: [
       "Read `username` and `password` from `req.body`",
       "Store the user, then `res.json` it back",
-      "§5.4.3 moves `currentUser` into the session",
+      "Sessions move `currentUser` into the session",
     ],
     code: `const signin = (req, res) => {
   const { username, password } = req.body;
@@ -193,7 +193,7 @@ app.post("/api/users/signup", signup);`,
     kind: "title",
     bullets: [
       "Cookies (small values the browser sends back on each request) so more than one browser can be signed in",
-      "§5.4.3: CORS origin, `express-session`, `withCredentials`",
+      "CORS origin, `express-session`, `withCredentials`",
     ],
   },
 ];

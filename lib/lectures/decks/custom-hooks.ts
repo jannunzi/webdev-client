@@ -7,7 +7,7 @@ export const CUSTOM_HOOKS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · Writing Your Own Hooks",
-      "§4.7.1 · share stateful logic between components",
+      "Share stateful logic between components",
     ],
   },
   {
@@ -25,7 +25,7 @@ export const CUSTOM_HOOKS_SLIDES: LectureSlide[] = [
     title: "Step 1: useWindowSize",
     kind: "content",
     bullets: [
-      "The §3.7.4 window demo kept the size in `useState` and filled it from `useEffect`",
+      "The window demo kept the size in `useState` and filled it from `useEffect`",
       "Moving that logic into `useWindowSize` makes it a hook",
       "It returns the size, or `null` until the browser has measured it",
     ],
@@ -295,7 +295,7 @@ export default function IndependentToggles() {
     title: "Step 5: useProfileForm",
     kind: "content",
     bullets: [
-      "The §4.2.10 form kept three state variables and a `save` that validates on submit",
+      "The profile form kept three state variables and a `save` that validates on submit",
       "`useProfileForm` holds all of that, so the form keeps only its JSX",
       "It returns an object, not a pair: five things read more clearly by name",
     ],
@@ -357,7 +357,7 @@ export default function HookProfileForm() {
     title: "HookProfileForm: live demo",
     kind: "demo",
     bullets: [
-      "Reuses `ProfileFields` and `ProfileAlert` from §4.2.10 unchanged",
+      "Reuses `ProfileFields` and `ProfileAlert` unchanged",
       "Press Save with empty fields to see the same errors as before",
       "Each form that calls `useProfileForm` gets its own profile, unlike Context or a store",
     ],
@@ -414,7 +414,7 @@ export default function HooksPage() {
     kind: "title",
     bullets: [
       "A 10-item self-check before stateful Kambaz",
-      "§4.9: events, `useState`, Context, Zustand, `useEffect`",
+      "Events, `useState`, Context, Zustand, `useEffect`",
     ],
   },
 ];

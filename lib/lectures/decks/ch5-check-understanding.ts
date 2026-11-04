@@ -12,7 +12,7 @@ export const CH5_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Check Your Understanding",
-      "§5-check · a self-check before Kambaz APIs",
+      "A self-check before Kambaz APIs",
     ],
   },
   {
@@ -42,9 +42,9 @@ export const CH5_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
     title: "Lab 5 coverage before you quiz",
     kind: "content",
     bullets: [
-      "§5.2 is the walkthrough — multiply and divide on both encodings",
+      "The Lab 5 walkthrough covers — multiply and divide on both encodings",
       "Welcome via axios after `cors()`, then JSON body verbs",
-      "§5.3 calculator is same-origin `/api` — Express still required for Lab 5",
+      "The Next.js calculator is same-origin `/api` — Express still required for Lab 5",
     ],
   },
   {
@@ -73,7 +73,7 @@ export const CH5_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Copy courses and users JSON into `webdev-server/Kambaz`",
-      "§5.4.1: JSON files stay JSON and are imported directly",
+      "JSON files stay JSON and are imported directly",
     ],
   },
 ];

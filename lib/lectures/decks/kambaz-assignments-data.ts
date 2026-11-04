@@ -7,7 +7,7 @@ export const KAMBAZ_ASSIGNMENTS_DATA_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Assignments and People",
-      "§3.10.8–3.10.9 · filter rows, then join enrollments",
+      "Filter rows, then join enrollments",
     ],
   },
   {
@@ -184,7 +184,7 @@ export default async function Assignments({
     kind: "content",
     bullets: [
       "Await `cid` and `aid`, then `db.assignments.find((a) => a._id === aid)`",
-      "`assignment?.title ?? \"\"` — the same `?.` / `??` as §3.4.17",
+      "`assignment?.title ?? \"\"` — the same `?.` / `??` as before",
       "Points, due, and available use that same `assignment?.` read",
       "The page is four folders below `app/(kambaz)` (`courses/[cid]/assignments/[aid]`), so the import climbs four levels: `../../../../database`",
       "Keep your Chapter 2 fields and classes; fill only the ones with data",
@@ -363,7 +363,7 @@ export default async function PeopleTable({
     title: "People joins users to enrollments demo",
     kind: "demo",
     bullets: [
-      "`enrollments.some` — the same `some` as §3.4.8",
+      "`enrollments.some` — the same `some` as before",
       "Keep users whose enrollment `user` and `course` both match",
       "Each row shows name, login id, section, role, and activity",
       "Open People for RS101 vs RS102 and confirm the names change",
@@ -386,7 +386,7 @@ export default async function PeopleTable({
     kind: "title",
     bullets: [
       "Lab 3 taught the language. Kambaz now renders from JSON",
-      "§3.10.10 is the coverage checklist — then Chapter 4 adds state",
+      "The book's coverage checklist is next — then Chapter 4 adds state",
     ],
   },
 ];

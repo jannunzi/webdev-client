@@ -12,7 +12,7 @@ export const REMOTE_ARRAYS_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Remote Arrays",
-      "§5.2.4 · CRUD on a todos collection",
+      "CRUD on a todos collection",
     ],
   },
   {
@@ -75,7 +75,7 @@ app.get("/lab5/todos/:id", getTodoById);`,
     kind: "demo",
     bullets: [
       "GET `/create` pushes a New Task. GET `/:id/delete` splices it out",
-      "Misusing GET is a teaching step. §5.2.6 switches to POST and DELETE",
+      "Misusing GET is a teaching step. The Async HTTP and JSON deck switches to POST and DELETE",
     ],
   },
   {
@@ -191,7 +191,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
     kind: "title",
     bullets: [
       "Stay on the page. Then POST, PUT, and DELETE for real",
-      "§5.2.5–5.2.6: AJAX (requests without a page reload), CORS (letting another origin call the server), `express.json()`",
+      "AJAX (requests without a page reload), CORS (letting another origin call the server), `express.json()`",
     ],
   },
 ];

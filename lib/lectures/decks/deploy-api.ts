@@ -12,7 +12,7 @@ export const DEPLOY_API_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Deploy the API",
-      "§5.5 · GitHub, Render, Vercel env",
+      "GitHub, Render, Vercel env",
     ],
   },
   {
@@ -108,7 +108,7 @@ SESSION_SECRET=a phrase that is not committed`,
     kind: "title",
     bullets: [
       "Push `a5` on both repos and submit the Vercel URL",
-      "§5.6–5.7: what shipped, then the deliverable list",
+      "What shipped, then the deliverable list",
     ],
   },
 ];

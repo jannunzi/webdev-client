@@ -7,7 +7,7 @@ export const PASSING_DATA_AND_FUNCTIONS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · Passing Data and Functions",
-      "§4.2.2–4.2.3 · closures, then callbacks as props",
+      "Closures, then callbacks as props",
     ],
   },
   {
@@ -158,7 +158,7 @@ export default function PassingDataOnEvent() {
     kind: "title",
     bullets: [
       "A click that only alerts does not change the page",
-      "§4.2.4: a `let` stays at 7; `useState` paints again",
+      "A `let` stays at 7; `useState` paints again",
     ],
   },
 ];

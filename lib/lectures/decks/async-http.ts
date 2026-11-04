@@ -12,7 +12,7 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Async HTTP and JSON",
-      "§5.2.5–5.2.6 · axios, CORS, POST/PUT/DELETE",
+      "Axios, CORS, POST/PUT/DELETE",
     ],
   },
   {
@@ -310,7 +310,7 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
     kind: "title",
     bullets: [
       "Same-origin `/api` when you do not need a second process",
-      "§5.3: hello JSON, then a calculator query API",
+      "Hello JSON, then a calculator query API",
     ],
   },
 ];

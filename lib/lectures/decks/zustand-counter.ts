@@ -7,7 +7,7 @@ export const ZUSTAND_COUNTER_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · Zustand Counter",
-      "§4.5.1 · a store hook with no Provider",
+      "A store hook with no Provider",
     ],
   },
   {
@@ -114,7 +114,7 @@ export default function ZustandCounter() {
     kind: "title",
     bullets: [
       "Array plus a draft, then add / update / delete",
-      "§4.5.2: the create, read, update, and delete (CRUD) Kambaz will reuse for courses",
+      "The create, read, update, and delete (CRUD) Kambaz will reuse for courses",
     ],
   },
 ];

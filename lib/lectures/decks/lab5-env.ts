@@ -12,7 +12,7 @@ export const LAB5_ENV_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Lab 5 Environment",
-      "§5.2.1 · two terminals and an env var",
+      "Two terminals and an env var",
     ],
   },
   {
@@ -22,7 +22,7 @@ export const LAB5_ENV_SLIDES: LectureSlide[] = [
     bullets: [
       "Terminal 1: Next.js UI on 3000. Terminal 2: Express on 4000",
       "Leave both running for the rest of the chapter",
-      "§5.3 Route Handlers stay on same-origin `/api` and do not need 4000",
+      "Next.js Route Handlers stay on same-origin `/api` and do not need 4000",
     ],
     code: `# terminal 1 — Next.js UI (port 3000)
 npm run dev
@@ -153,7 +153,7 @@ app.listen(4000);`,
     kind: "title",
     bullets: [
       "Send `a` and `b` in the path, then after `?`",
-      "§5.2.2: `/lab5/add/:a/:b` and `/lab5/calculator`",
+      "`/lab5/add/:a/:b` and `/lab5/calculator`",
     ],
   },
 ];

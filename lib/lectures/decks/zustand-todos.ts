@@ -7,7 +7,7 @@ export const ZUSTAND_TODOS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · Zustand Todo List",
-      "§4.5.2 · array CRUD without passing props",
+      "Array CRUD without passing props",
     ],
   },
   {
@@ -324,7 +324,7 @@ export default function ZustandProfileForm() {
     kind: "title",
     bullets: [
       "Render computes JSX. Effects run after React paints",
-      "§4.7: `document.title` from `name` and `count`",
+      "`document.title` from `name` and `count`",
     ],
   },
 ];

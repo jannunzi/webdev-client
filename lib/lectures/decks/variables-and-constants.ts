@@ -7,7 +7,7 @@ export const VARIABLES_AND_CONSTANTS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Variables and Constants",
-      "§3.2.1 · `var`, `let`, `const`, and JSX interpolation",
+      "`var`, `let`, `const`, and JSX interpolation",
     ],
   },
   {
@@ -109,7 +109,7 @@ export default function Lab3() {
     kind: "title",
     bullets: [
       "You can store a number. Next: ask JavaScript what kind it is",
-      "§3.2.2: `typeof` and why `{true}` prints nothing",
+      "`typeof` and why `{true}` prints nothing",
     ],
   },
 ];

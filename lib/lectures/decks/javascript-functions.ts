@@ -7,7 +7,7 @@ export const JAVASCRIPT_FUNCTIONS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · JavaScript Functions",
-      "§3.3 · reuse an algorithm from JSX",
+      "Reuse an algorithm from JSX",
     ],
   },
   {
@@ -18,7 +18,7 @@ export const JAVASCRIPT_FUNCTIONS_SLIDES: LectureSlide[] = [
       "Wrap an algorithm, call it from JavaScript **or** from JSX",
       "Two styles: the older `function` keyword, then ES6 arrows",
       "TypeScript annotations (`a: number`) are compile-time only",
-      "`console.log` writes to the browser console — inspect it later in §3.4.12",
+      "`console.log` writes to the browser console — inspect it later",
     ],
   },
   {
@@ -120,7 +120,7 @@ export default function ArrowFunctions() {
     bullets: [
       "`(a, b) => a * b` is the same as `(a, b) => { return a * b; }`",
       "Use it when the body is a single expression",
-      "That one-liner is what you will pass into `map` and `filter` in §3.4",
+      "That one-liner is what you will pass into `map` and `filter` later",
     ],
     embed: "js-implied-return",
   },
@@ -179,7 +179,7 @@ export default function ArrowFunctions() {
     kind: "title",
     bullets: [
       "Functions reuse logic. Arrays and objects reuse data",
-      "§3.4: index, map, find, filter, spread — next modules",
+      "Index, map, find, filter, spread — next modules",
     ],
   },
 ];

@@ -12,7 +12,7 @@ export const NODEMON_ES6_ROUTES_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Nodemon, tsx, Routes",
-      "§5.1.6–5.1.8 · restart, module loading, Hello(app)",
+      "Restart, module loading, Hello(app)",
     ],
   },
   {
@@ -79,7 +79,7 @@ app.listen(4000);`,
     title: "How server modules load (code)",
     kind: "demo",
     code: `import Hello from "./Hello"; // loads Hello.ts
-import courses from "./courses.json"; // §5.4.1`,
+import courses from "./courses.json"; `,
     codeLanguage: "ts",
   },
   {
@@ -148,7 +148,7 @@ app.listen(4000);`,
     kind: "title",
     bullets: [
       "A welcome route, then never hard-code localhost",
-      "§5.2.1: `const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER`",
+      "`const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER`",
     ],
   },
 ];

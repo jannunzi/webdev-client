@@ -7,7 +7,7 @@ export const REACT_CONTEXT_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · React Context",
-      "§4.4 · a provider for a stable shared value",
+      "A provider for a stable shared value",
     ],
   },
   {
@@ -179,7 +179,7 @@ export default function ContextExamples() {
     title: "Moving the Profile Form to Context",
     kind: "content",
     bullets: [
-      "The §4.2.10 profile form can keep its data in Context instead",
+      "The profile form can keep its data in Context instead",
       "Its data file, fields and alert stay exactly as they were",
       "Only where the profile state lives changes",
       "The next slide builds the profile context and its provider",
@@ -289,7 +289,7 @@ export default function ContextProfileForm() {
     bullets: [
       "Provider + hook + throw if missing — that is the whole pattern",
       "Stable values only. Lists that change often belong in Zustand",
-      "§4.10.5 wraps Kambaz in `AccountProvider` the same way",
+      "Later, Kambaz wraps itself in `AccountProvider` the same way",
     ],
   },
   {
@@ -298,7 +298,7 @@ export default function ContextProfileForm() {
     kind: "title",
     bullets: [
       "No provider. Import a hook. Select the fields you read",
-      "§4.5.1: the same counter, then a todo list",
+      "The same counter, then a todo list",
     ],
   },
 ];

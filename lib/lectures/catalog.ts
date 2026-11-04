@@ -457,7 +457,7 @@ const LECTURE_SUMMARIES: Record<
   "react-icons": {
     title: "React Icons",
     summary:
-      "Install react-icons, import families as components, and size them with className — §2.2 sampler.",
+      "Install react-icons, import families as components, and size them with className.",
     chapter: 2,
     canvasLecture: 6,
     topicId: "react-icons",
@@ -477,7 +477,7 @@ const LECTURE_SUMMARIES: Record<
   "tailwind-spacing": {
     title: "Tailwind Spacing",
     summary:
-      "m-* and p-* with direction letters from TailwindSpacing — §2.3.1.",
+      "m-* and p-* with direction letters from TailwindSpacing.",
     chapter: 2,
     canvasLecture: 6,
     topicId: "tailwind",
@@ -487,7 +487,7 @@ const LECTURE_SUMMARIES: Record<
   "tailwind-typography": {
     title: "Tailwind Typography",
     summary:
-      "text-* sizes and font-* weights from TailwindTypography — §2.3.2.",
+      "text-* sizes and font-* weights from TailwindTypography.",
     chapter: 2,
     canvasLecture: 6,
     topicId: "tailwind",
@@ -497,7 +497,7 @@ const LECTURE_SUMMARIES: Record<
   "tailwind-colors": {
     title: "Tailwind Colors",
     summary:
-      "bg-{color}-{shade} bands from TailwindBackgroundColors — §2.3.3.",
+      "bg-{color}-{shade} bands from TailwindBackgroundColors.",
     chapter: 2,
     canvasLecture: 6,
     topicId: "tailwind",
@@ -507,7 +507,7 @@ const LECTURE_SUMMARIES: Record<
   "tailwind-filters-and-grid": {
     title: "Tailwind Filters and Grid",
     summary:
-      "blur utilities, then grid-cols / col-span — §2.3.5 and §2.3.6. A flex-class map follows.",
+      "blur utilities, then grid-cols / col-span. A flex-class map follows.",
     chapter: 2,
     canvasLecture: 6,
     topicId: "tailwind",
@@ -517,7 +517,7 @@ const LECTURE_SUMMARIES: Record<
   "tailwind-responsive": {
     title: "Tailwind Responsive",
     summary:
-      "Five small responsive demos, then the Lab 2 card — color, show/hide, row, grid, spacing — §2.3.4.",
+      "Five small responsive demos, then the Lab 2 card — color, show/hide, row, grid, spacing.",
     chapter: 2,
     canvasLecture: 6,
     topicId: "tailwind",
@@ -537,7 +537,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-nav-styling": {
     title: "Kambaz Nav Styling",
     summary:
-      "Fixed 120px icon sidebar, React Icons tiles, and wd-main-content-offset — §2.4.1.",
+      "Fixed 120px icon sidebar, React Icons tiles, and wd-main-content-offset.",
     chapter: 2,
     canvasLecture: 7,
     topicId: "kambaz-styling",
@@ -547,7 +547,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-dashboard-styling": {
     title: "Dashboard Styling",
     summary:
-      "CourseCard borders and a 1/2/3/4-column responsive grid — §2.4.2.",
+      "CourseCard borders and a 1/2/3/4-column responsive grid.",
     chapter: 2,
     canvasLecture: 7,
     topicId: "kambaz-styling",
@@ -557,7 +557,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-courses-styling": {
     title: "Courses Chrome",
     summary:
-      "Course Navigation via kambaz.css list-group, Modules, Home flex, and hide-order — §2.4.3–2.4.5.",
+      "Course Navigation via kambaz.css list-group, Modules, Home flex, and hide-order.",
     chapter: 2,
     canvasLecture: 7,
     topicId: "kambaz-styling",
@@ -567,7 +567,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-assignments-styling": {
     title: "People and Assignments",
     summary:
-      "People table utilities, AssignmentItem rows, and the On-your-own editor — §2.4.6–2.4.8.",
+      "People table utilities, AssignmentItem rows, and the On-your-own editor.",
     chapter: 2,
     canvasLecture: 7,
     topicId: "kambaz-styling",
@@ -577,7 +577,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-account-styling": {
     title: "Account Styling",
     summary:
-      "Sign in form utilities as the template for Sign up, Profile, and Account Nav — §2.4.9.",
+      "Sign in form utilities as the template for Sign up, Profile, and Account Nav.",
     chapter: 2,
     canvasLecture: 7,
     topicId: "kambaz-styling",
@@ -647,7 +647,7 @@ const LECTURE_SUMMARIES: Record<
   "javascript-arrays": {
     title: "JavaScript Arrays",
     summary:
-      "Gather values, print them in JSX, then length, indexOf, push, and splice — §3.4–3.4.2.",
+      "Gather values, print them in JSX, then length, indexOf, push, and splice.",
     chapter: 3,
     topicId: "js-data",
     bookSectionId: "sec-3-4",
@@ -657,7 +657,7 @@ const LECTURE_SUMMARIES: Record<
   "array-iteration": {
     title: "Array Iteration",
     summary:
-      "A for loop builds a second array; map returns one — including a todo list of li — §3.4.3–3.4.4.",
+      "A for loop builds a second array; map returns one — including a todo list of li.",
     chapter: 3,
     topicId: "js-data",
     bookSectionId: "sec-3-4-3",
@@ -687,7 +687,7 @@ const LECTURE_SUMMARIES: Record<
   "javascript-objects": {
     title: "JavaScript Objects",
     summary:
-      "A nested house object, pretty-printed JSON, and console.log in DevTools — §3.4.11–3.4.12.",
+      "A nested house object, pretty-printed JSON, and console.log in DevTools.",
     chapter: 3,
     topicId: "js-data",
     bookSectionId: "sec-3-4-11",
@@ -707,7 +707,7 @@ const LECTURE_SUMMARIES: Record<
   "optional-chaining": {
     title: "Optional Chaining",
     summary:
-      "?. stops at missing; ?? fills a default only for null or undefined — §3.4.17.",
+      "?. stops at missing; ?? fills a default only for null or undefined.",
     chapter: 3,
     topicId: "js-data",
     bookSectionId: "sec-3-4-17",
@@ -717,7 +717,7 @@ const LECTURE_SUMMARIES: Record<
   "typescript-types": {
     title: "TypeScript Types",
     summary:
-      "Annotations, object types, unions, enums, typed props, narrowing, and utility types — §3.5.",
+      "Annotations, object types, unions, enums, typed props, narrowing, and utility types.",
     chapter: 3,
     topicId: "typescript-types",
     bookSectionId: "sec-3-5",
@@ -727,7 +727,7 @@ const LECTURE_SUMMARIES: Record<
   "dynamic-styling": {
     title: "Dynamic Styling",
     summary:
-      "Build className from a variable or ternary, then apply camelCase style objects — §3.6.",
+      "Build className from a variable or ternary, then apply camelCase style objects.",
     chapter: 3,
     topicId: "dynamic-styling",
     bookSectionId: "sec-3-6",
@@ -737,7 +737,7 @@ const LECTURE_SUMMARIES: Record<
   "client-and-server": {
     title: "Client and Server",
     summary:
-      "\"use client\" for usePathname; omit it to read process and fs on the server — §3.7.",
+      "\"use client\" for usePathname; omit it to read process and fs on the server.",
     chapter: 3,
     topicId: "client-server",
     bookSectionId: "sec-3-7",
@@ -747,7 +747,7 @@ const LECTURE_SUMMARIES: Record<
   "parameterizing-components": {
     title: "Parameterizing Components",
     summary:
-      "Destructure props on Add, then children on Square and Highlight — §3.8–3.8.1.",
+      "Destructure props on Add, then children on Square and Highlight.",
     chapter: 3,
     topicId: "parameterizing",
     bookSectionId: "sec-3-8",
@@ -757,7 +757,7 @@ const LECTURE_SUMMARIES: Record<
   "path-params-and-todos": {
     title: "Path Parameters and Todos",
     summary:
-      "usePathname on the Labs TOC, [a]/[b] path params, map todos.json, then the complete Lab 3 page — §3.8.2–3.8.5.",
+      "usePathname on the Labs TOC, [a]/[b] path params, map todos.json, then the complete Lab 3 page.",
     chapter: 3,
     topicId: "parameterizing",
     bookSectionId: "sec-3-8-2",
@@ -777,7 +777,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-dashboard-data": {
     title: "Dashboard from Data",
     summary:
-      "Map db.courses onto CourseCard, key by _id, and encode the course in the card href — §3.10.3.",
+      "Map db.courses onto CourseCard, key by _id, and encode the course in the card href.",
     chapter: 3,
     topicId: "kambaz-data",
     bookSectionId: "sec-3-10-3",
@@ -787,7 +787,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-courses-data": {
     title: "Courses from Data",
     summary:
-      "Await [cid], find the course, map course nav, and breadcrumb the last segment — §3.10.4–3.10.6.",
+      "Await [cid], find the course, map course nav, and breadcrumb the last segment.",
     chapter: 3,
     topicId: "kambaz-data",
     bookSectionId: "sec-3-10-4",
@@ -797,7 +797,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-modules-data": {
     title: "Modules from Data",
     summary:
-      "Filter modules by cid, map Module and Lesson with keys, optional-chain lessons — §3.10.7.",
+      "Filter modules by cid, map Module and Lesson with keys, optional-chain lessons.",
     chapter: 3,
     topicId: "kambaz-data",
     bookSectionId: "sec-3-10-7",
@@ -807,7 +807,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-assignments-data": {
     title: "Assignments and People",
     summary:
-      "Filter assignments, find the editor row, then join users to enrollments with some — §3.10.8–3.10.9.",
+      "Filter assignments, find the editor row, then join users to enrollments with some.",
     chapter: 3,
     topicId: "kambaz-data",
     bookSectionId: "sec-3-10-8",
@@ -847,7 +847,7 @@ const LECTURE_SUMMARIES: Record<
   "form-state-types": {
     title: "Form State Types",
     summary:
-      "Boolean checked, string and date value/onChange, then spread objects and copy arrays — §4.2.5–4.2.9.",
+      "Boolean checked, string and date value/onChange, then spread objects and copy arrays.",
     chapter: 4,
     topicId: "events-state",
     bookSectionId: "sec-4-2-5",
@@ -927,7 +927,7 @@ const LECTURE_SUMMARIES: Record<
   "ch4-check-understanding": {
     title: "Check Your Understanding",
     summary:
-      "A 10-item self-check on events, useState, Context, Zustand, and useEffect before stateful Kambaz — §4.9.",
+      "A 10-item self-check on events, useState, Context, Zustand, and useEffect before stateful Kambaz.",
     chapter: 4,
     topicId: "ch4-check",
     bookSectionId: "sec-4-9",
@@ -937,7 +937,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-courses-store": {
     title: "A Courses Store",
     summary:
-      "Dashboard useState alone would not name a new course on Home. Zustand holds the published list — §4.10.1.",
+      "Dashboard useState alone would not name a new course on Home. Zustand holds the published list.",
     chapter: 4,
     topicId: "kambaz-state",
     bookSectionId: "sec-4-10-1",
@@ -957,7 +957,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-modules-store": {
     title: "A Modules Store",
     summary:
-      "A controlled ModuleEditor dialog, then modulesStore so Home sees the same array as Modules — §4.10.4.",
+      "A controlled ModuleEditor dialog, then modulesStore so Home sees the same array as Modules.",
     chapter: 4,
     topicId: "kambaz-state",
     bookSectionId: "sec-4-10-4",
@@ -1007,7 +1007,7 @@ const LECTURE_SUMMARIES: Record<
   "http-server": {
     title: "HTTP Server",
     summary:
-      "Sibling webdev-server, Hello.ts run by tsx, and Express GET /hello on port 4000 — §5.1.",
+      "Sibling webdev-server, Hello.ts run by tsx, and Express GET /hello on port 4000.",
     chapter: 5,
     topicId: "http-server",
     bookSectionId: "sec-5-1",
@@ -1017,7 +1017,7 @@ const LECTURE_SUMMARIES: Record<
   "nodemon-es6-routes": {
     title: "Nodemon, tsx, and Routes",
     summary:
-      "Nodemon with tsx, \"type\": \"module\", npm scripts, tsconfig.json, then a typed Hello(app) extracted from index.ts — §5.1.6–5.1.8.",
+      "Nodemon with tsx, \"type\": \"module\", npm scripts, tsconfig.json, then a typed Hello(app) extracted from index.ts.",
     chapter: 5,
     topicId: "http-server",
     bookSectionId: "sec-5-1-6",
@@ -1027,7 +1027,7 @@ const LECTURE_SUMMARIES: Record<
   "lab5-env": {
     title: "Lab 5 Environment",
     summary:
-      "Two terminals, /lab5/welcome, and NEXT_PUBLIC_HTTP_SERVER — §5.2.1.",
+      "Two terminals, /lab5/welcome, and NEXT_PUBLIC_HTTP_SERVER.",
     chapter: 5,
     topicId: "lab5-api",
     bookSectionId: "sec-5-2-1",
@@ -1037,7 +1037,7 @@ const LECTURE_SUMMARIES: Record<
   "path-and-query": {
     title: "Sending Data to the Server",
     summary:
-      "Ways to send data: path params, query strings, and JSON bodies (later in §5.2.6). req.params vs req.query, .toString() on results, then multiply and divide on your own — §5.2.2.",
+      "Ways to send data: path params, query strings, and JSON bodies (in the Async HTTP and JSON deck). req.params vs req.query, .toString() on results, then multiply and divide on your own.",
     chapter: 5,
     topicId: "lab5-api",
     bookSectionId: "sec-5-2-2",
@@ -1047,7 +1047,7 @@ const LECTURE_SUMMARIES: Record<
   "remote-objects": {
     title: "Remote Objects",
     summary:
-      "res.json an assignment, GET a property, then mutate title from the path — §5.2.3.",
+      "res.json an assignment, GET a property, then mutate title from the path.",
     chapter: 5,
     topicId: "lab5-api",
     bookSectionId: "sec-5-2-3",
@@ -1057,7 +1057,7 @@ const LECTURE_SUMMARIES: Record<
   "remote-arrays": {
     title: "Remote Arrays",
     summary:
-      "CRUD on /lab5/todos — get all, get by id, then create and delete via GET first — §5.2.4.",
+      "CRUD on /lab5/todos — get all, get by id, then create and delete via GET first.",
     chapter: 5,
     topicId: "lab5-api",
     bookSectionId: "sec-5-2-4",
@@ -1067,7 +1067,7 @@ const LECTURE_SUMMARIES: Record<
   "async-http": {
     title: "Async HTTP and JSON",
     summary:
-      "axios, CORS, a client library, express.json(), then POST / PUT / DELETE — §5.2.5–5.2.6.",
+      "axios, CORS, a client library, express.json(), then POST / PUT / DELETE.",
     chapter: 5,
     topicId: "lab5-api",
     bookSectionId: "sec-5-2-5",
@@ -1077,7 +1077,7 @@ const LECTURE_SUMMARIES: Record<
   "next-routes": {
     title: "Next.js Server Routes",
     summary:
-      "Same-origin /api/lab5/hello and a calculator Route Handler — not a replacement for Express — §5.3.",
+      "Same-origin /api/lab5/hello and a calculator Route Handler — not a replacement for Express.",
     chapter: 5,
     topicId: "next-routes",
     bookSectionId: "sec-5-3",
@@ -1087,7 +1087,7 @@ const LECTURE_SUMMARIES: Record<
   "ch5-check-understanding": {
     title: "Check Your Understanding",
     summary:
-      "A 10-item self-check on Express setup, CORS, axios, and the Next.js calculator — §5-check.",
+      "A 10-item self-check on Express setup, CORS, axios, and the Next.js calculator.",
     chapter: 5,
     topicId: "ch5-check",
     bookSectionId: "sec-5-check",
@@ -1097,7 +1097,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-migrate-db": {
     title: "Migrating the Database",
     summary:
-      "Copy Chapter 3 JSON into Kambaz/Database as export default modules — §5.4.1.",
+      "Copy Chapter 3 JSON into Kambaz/Database as export default modules.",
     chapter: 5,
     topicId: "kambaz-server",
     bookSectionId: "sec-5-4-1",
@@ -1107,7 +1107,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-account-rest": {
     title: "Account REST APIs",
     summary:
-      "Users DAO, POST signin/signup/profile/signout, axios, and setCurrentUser — §5.4.2.",
+      "Users DAO, POST signin/signup/profile/signout, axios, and setCurrentUser.",
     chapter: 5,
     topicId: "kambaz-server",
     bookSectionId: "sec-5-4-2",
@@ -1117,7 +1117,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-sessions": {
     title: "Sessions and Axios",
     summary:
-      "express-session, CORS credentials, req.session.currentUser, and axios withCredentials — §5.4.3.",
+      "express-session, CORS credentials, req.session.currentUser, and axios withCredentials.",
     chapter: 5,
     topicId: "kambaz-server",
     bookSectionId: "sec-5-4-3",
@@ -1127,7 +1127,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-courses-api": {
     title: "Courses API",
     summary:
-      "Courses DAO, GET enrolled courses, POST that enrolls the creator, modules on your own — §5.4.5.",
+      "Courses DAO, GET enrolled courses, POST that enrolls the creator, modules on your own.",
     chapter: 5,
     topicId: "kambaz-server",
     bookSectionId: "sec-5-4-5",
@@ -1137,7 +1137,7 @@ const LECTURE_SUMMARIES: Record<
   "deploy-api": {
     title: "Deploy the API",
     summary:
-      "Second GitHub repo, Render npm start, then Vercel NEXT_PUBLIC_HTTP_SERVER — §5.5.",
+      "Second GitHub repo, Render npm start, then Vercel NEXT_PUBLIC_HTTP_SERVER.",
     chapter: 5,
     topicId: "deploy-api",
     bookSectionId: "sec-5-5",
@@ -1147,7 +1147,7 @@ const LECTURE_SUMMARIES: Record<
   "local-mongo": {
     title: "Local MongoDB",
     summary:
-      "Install Community, Compass on 27017, create kambaz, then import the five JSON files — §6.1.",
+      "Install Community, Compass on 27017, create kambaz, then import the five JSON files.",
     chapter: 6,
     topicId: "local-mongo",
     bookSectionId: "sec-6-1",
@@ -1157,7 +1157,7 @@ const LECTURE_SUMMARIES: Record<
   mongoose: {
     title: "Mongoose",
     summary:
-      "Install mongoose, connect from env, User schema and model, then a promise DAO — §6.2.1–6.2.5.",
+      "Install mongoose, connect from env, User schema and model, then a promise DAO.",
     chapter: 6,
     topicId: "mongoose",
     bookSectionId: "sec-6-2",
@@ -1167,7 +1167,7 @@ const LECTURE_SUMMARIES: Record<
   "mongo-apis": {
     title: "Mongo APIs",
     summary:
-      "async account routes, GET /api/users, PeopleTable, and an ADMIN Users screen — §6.2.6.1–6.2.6.2.",
+      "async account routes, GET /api/users, PeopleTable, and an ADMIN Users screen.",
     chapter: 6,
     topicId: "mongo-apis",
     bookSectionId: "sec-6-2-6",
@@ -1177,7 +1177,7 @@ const LECTURE_SUMMARIES: Record<
   "mongo-users-crud": {
     title: "User CRUD",
     summary:
-      "Filter by role and name, findById, then delete, $set update, and create — §6.2.6.3–6.2.6.7.",
+      "Filter by role and name, findById, then delete, $set update, and create.",
     chapter: 6,
     topicId: "mongo-apis",
     bookSectionId: "sec-6-2-6-3",
@@ -1187,7 +1187,7 @@ const LECTURE_SUMMARIES: Record<
   atlas: {
     title: "Integrating with Atlas",
     summary:
-      "Why Render cannot use 127.0.0.1, then a free Kambaz cluster and database user — §6.3–6.3.1.",
+      "Why Render cannot use 127.0.0.1, then a free Kambaz cluster and database user.",
     chapter: 6,
     topicId: "atlas",
     bookSectionId: "sec-6-3",
@@ -1197,7 +1197,7 @@ const LECTURE_SUMMARIES: Record<
   "atlas-compass": {
     title: "Atlas Compass",
     summary:
-      "Paste the Compass mongodb+srv string, create kambaz, import the five JSON files — §6.3.1.1.",
+      "Paste the Compass mongodb+srv string, create kambaz, import the five JSON files.",
     chapter: 6,
     topicId: "atlas",
     bookSectionId: "sec-6-3-1-1",
@@ -1207,7 +1207,7 @@ const LECTURE_SUMMARIES: Record<
   "atlas-node": {
     title: "Atlas from Node.js",
     summary:
-      "0.0.0.0/0, Drivers URI with /kambaz?, new Render service, Vercel origin — §6.3.1.2.",
+      "0.0.0.0/0, Drivers URI with /kambaz?, new Render service, Vercel origin.",
     chapter: 6,
     topicId: "atlas",
     bookSectionId: "sec-6-3-1-2",
@@ -1217,7 +1217,7 @@ const LECTURE_SUMMARIES: Record<
   "atlas-sessions": {
     title: "Atlas Remote Sessions",
     summary:
-      "Five Render keys, secure cookies, then sign in so 12/7 graders read Atlas — §6.3.2.",
+      "Five Render keys, secure cookies, then sign in so 12/7 graders read Atlas.",
     chapter: 6,
     topicId: "atlas",
     bookSectionId: "sec-6-3-2",
@@ -1227,7 +1227,7 @@ const LECTURE_SUMMARIES: Record<
   "ch6-check-understanding": {
     title: "Check Your Understanding",
     summary:
-      "A 10-item self-check on schemas, DAOs, async routes, and Atlas — §6-check.",
+      "A 10-item self-check on schemas, DAOs, async routes, and Atlas.",
     chapter: 6,
     topicId: "ch6-check",
     bookSectionId: "sec-6-check",
@@ -1237,7 +1237,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-courses-db": {
     title: "Kambaz Courses DB",
     summary:
-      "Course schema and model, then find / create / delete / update on Mongo — §6.4.1.",
+      "Course schema and model, then find / create / delete / update on Mongo.",
     chapter: 6,
     topicId: "kambaz-db",
     bookSectionId: "sec-6-4-1",
@@ -1247,7 +1247,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-modules-db": {
     title: "Kambaz Modules 1:N",
     summary:
-      "One course, many modules — collection plus course foreign key, then CRUD — §6.4.2.",
+      "One course, many modules — collection plus course foreign key, then CRUD.",
     chapter: 6,
     topicId: "kambaz-db",
     bookSectionId: "sec-6-4-2",
@@ -1257,7 +1257,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-enrollments-db": {
     title: "Kambaz Enrollments M:N",
     summary:
-      "Mapping collection, populate, deleteMany, enroll / unenroll, course People — §6.4.3.",
+      "Mapping collection, populate, deleteMany, enroll / unenroll, course People.",
     chapter: 6,
     topicId: "kambaz-db",
     bookSectionId: "sec-6-4-3",

@@ -7,7 +7,7 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 6 · Atlas Compass",
-      "§6.3.1.1 · connect, then import JSON",
+      "Connect, then import JSON",
     ],
   },
   {
@@ -50,7 +50,7 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
     title: "Create kambaz if Atlas did not",
     kind: "content",
     bullets: [
-      "Same steps as §6.1.4: Create database, name `kambaz`",
+      "Same steps as the local Compass setup: Create database, name `kambaz`",
       "First collection can be `users` — Mongo creates the database with it",
       "Keep the name **kambaz** — the Drivers URI later ends with `/kambaz?`",
     ],
@@ -105,7 +105,7 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Network Access, then the Drivers URI with `/kambaz?`",
-      "§6.3.1.2: same env key, new Render service",
+      "Same env key, new Render service",
     ],
   },
 ];

@@ -12,7 +12,7 @@ export const KAMBAZ_COURSES_API_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Courses API",
-      "§5.4.5 · CRUD leaves the Zustand store",
+      "CRUD leaves the Zustand store",
     ],
   },
   {
@@ -148,7 +148,7 @@ export const findMyCourses = async () => {
     title: "Modules nest under a course",
     kind: "content",
     bullets: [
-      "§5.4.6: `GET/POST /api/courses/:courseId/modules`",
+      "`GET/POST /api/courses/:courseId/modules`",
       "`PUT/DELETE /api/modules/:moduleId` — nested in the UI, flat on the server",
       "Assignments and enrollments are On your own — same DAO + client pattern",
     ],
@@ -173,7 +173,7 @@ app.post("/api/courses/:courseId/modules", createModuleForCourse);`,
     kind: "title",
     bullets: [
       "A second GitHub repo, Render, then a Vercel env var",
-      "§5.5: `NEXT_PUBLIC_HTTP_SERVER` points at Render",
+      "`NEXT_PUBLIC_HTTP_SERVER` points at Render",
     ],
   },
 ];

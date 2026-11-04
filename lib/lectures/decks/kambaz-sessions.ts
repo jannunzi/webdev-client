@@ -12,7 +12,7 @@ export const KAMBAZ_SESSIONS_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Sessions and Axios",
-      "§5.4.3 · many users, one cookie each",
+      "Many users, one cookie each",
     ],
   },
   {
@@ -166,7 +166,7 @@ export const profile = async () => {
     kind: "title",
     bullets: [
       "Dashboard fetches enrolled courses from Express",
-      "§5.4.5: `GET /api/courses` and `/api/users/current/courses`",
+      "`GET /api/courses` and `/api/users/current/courses`",
     ],
   },
 ];

@@ -7,7 +7,7 @@ export const SPREAD_AND_DESTRUCTURING_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Spread and Destructuring",
-      "§3.4.13–3.4.16 · copy, unpack, then import",
+      "Copy, unpack, then import",
     ],
   },
   {
@@ -259,7 +259,7 @@ export default function DestructingImports() {
     kind: "title",
     bullets: [
       "Reading `house.address.city` throws if `address` is missing",
-      "§3.4.17: `?.` and `??`",
+      "`?.` and `??`",
     ],
   },
 ];

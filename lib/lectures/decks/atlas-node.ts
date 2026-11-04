@@ -7,7 +7,7 @@ export const ATLAS_NODE_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 6 · Atlas from Node.js",
-      "§6.3.1.2 · Network Access, then Drivers",
+      "Network Access, then Drivers",
     ],
   },
   {
@@ -127,7 +127,7 @@ mongoose.connect(CONNECTION_STRING);`,
     kind: "title",
     bullets: [
       "Sign in still needs a cookie the Vercel app can send back",
-      "§6.3.2: five Render keys, then Manual Deploy",
+      "Five Render keys, then Manual Deploy",
     ],
   },
 ];

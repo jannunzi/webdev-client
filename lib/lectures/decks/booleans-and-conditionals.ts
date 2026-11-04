@@ -7,7 +7,7 @@ export const BOOLEANS_AND_CONDITIONALS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Booleans and Conditionals",
-      "§3.2.3–3.2.6 · decisions that change the tree",
+      "Decisions that change the tree",
     ],
   },
   {
@@ -199,7 +199,7 @@ export const BOOLEANS_AND_CONDITIONALS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Two values mean “no value,” and they are not the same",
-      "§3.2.7: assigned empty vs never assigned",
+      "Assigned empty vs never assigned",
     ],
   },
 ];
