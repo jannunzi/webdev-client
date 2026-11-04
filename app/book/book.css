@@ -952,10 +952,21 @@ html.lecture-presenting body {
   min-width: 0;
 }
 
-/* Opt-in thumbnail-style cover (slide.cover): solid topic color, one icon. */
-.lecture-slide-cover {
+.lecture-slide-cover:not(.lecture-slide-present-fallback):not(
+    .lecture-slide-present-native
+  ) {
   position: relative;
-  container-type: inline-size;
+}
+
+/* Opt-in thumbnail-style cover (slide.cover): solid topic color, one icon. */
+/*
+ * Do not set `position` here: this rule comes after the present-mode
+ * `position: fixed; inset: 0` and would override it, shrinking the cover to
+ * its content height in full screen. Normal view gets `relative` below.
+ * `size` containment (the stage always has a definite height) enables cqh.
+ */
+.lecture-slide-cover {
+  container-type: size;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -68,7 +68,9 @@ const COVER_ICON_PATHS: Record<LectureCoverIcon, string> = {
 function coverHeadlineSize(headline: string): string {
   const longestWord = Math.max(...headline.split(/\s+/).map((w) => w.length));
   const perLine = Math.max(longestWord, Math.ceil(headline.length * 0.55), 6);
-  return `min(11rem, ${(150 / perLine).toFixed(2)}cqi)`;
+  // Two lines at line-height 1.05 stay within ~50% of the slide height,
+  // leaving room for the icon above and the WebDevTV mark below.
+  return `min(11rem, ${(150 / perLine).toFixed(2)}cqw, 24cqh)`;
 }
 
 function LectureCoverIconMark({ icon }: { icon: LectureCoverIcon }) {
