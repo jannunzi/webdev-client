@@ -30,6 +30,7 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
     id: "sibling",
     title: "Sibling folders, two ports",
     kind: "content",
+    diagram: "two-ports",
     bullets: [
       "`webdev-client` is Next.js on port 3000 — the user interface",
       "`webdev-server` is Express on port 4000 — HTTP and later Mongo",
@@ -62,6 +63,7 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
     kind: "demo",
     bullets: [
       "Lowercase, dashes, no spaces. Accept `npm init` defaults",
+      "Except the entry point: type `index.ts`, not `index.js`",
       "That writes `package.json` — Node’s project manifest",
     ],
     code: `mkdir webdev-server
@@ -72,41 +74,95 @@ npm init`,
       "Create the `webdev-server` folder yourself, as a sibling of the Next.js app.",
   },
   {
-    id: "hello-js",
-    title: "Hello World from Node",
+    id: "toolchain-intro",
+    title: "Toolchain before the first file",
     kind: "demo",
     bullets: [
-      "A Node program is a `.js` file the `node` command runs",
-      "Later we export a function from this same `Hello.js`",
+      "Goal: the editor resolves `express`, `req`, and `res` on day one",
+      "Install Express, then make the package an ES module",
+      "Add the tsx runner and the TypeScript types before any `.ts` file",
     ],
-    code: `console.log("Hello World!");`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Hello.js",
-    codeBlocks: [{ code: "node Hello.js\n# Hello World!", language: "bash" }],
   },
   {
-    id: "express",
+    id: "toolchain",
+    title: "Express, type module, and tsx (code)",
+    kind: "demo",
+    codeBlocks: [
+      {
+        code: "npm install express\nnpm i tsx\nnpm i -D typescript@^5.9.3 @types/node@^22 @types/express",
+        language: "bash",
+      },
+      {
+        file: "webdev-server/package.json",
+        language: "json",
+        code: `{
+  "type": "module",
+  "scripts": {
+    "start": "tsx index.ts"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "tsx": "^4.20.5"
+  }
+}`,
+        highlightLines: [2, [3, 5], 8],
+      },
+    ],
+  },
+  {
+    id: "tsconfig-intro",
+    title: "A tsconfig for the server",
+    kind: "demo",
+    bullets: [
+      "Goal: the editor accepts extensionless and JSON imports",
+      "Types are dev dependencies; tsx erases them at run time",
+      "`noEmit`: tsx runs the `.ts` files, no build folder",
+    ],
+  },
+  {
+    id: "tsconfig",
+    title: "A tsconfig for the server (code)",
+    kind: "demo",
+    code: `{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": false,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": ["**/*.ts"]
+}`,
+    codeLanguage: "json",
+    codeFile: "webdev-server/tsconfig.json",
+    codeHighlightLines: [5, 6, 10],
+  },
+  {
+    id: "express-intro",
     title: "Express GET /hello on 4000",
     kind: "demo",
     bullets: [
-      "Install Express so colleagues and Render can `npm install`",
-      "`app.get` maps a URL pattern to a `(req, res)` handler",
-      "`res.send` writes the HTTP body. Port 4000 leaves 3000 for Next.js",
+      "Goal: answer `GET /hello` with Hello World! on port 4000",
+      "`index.ts` is a TypeScript module. It loads Express with `import`",
+      "Port 4000 leaves 3000 for Next.js",
     ],
-    codeBlocks: [
-      { code: "npm install express", language: "bash" },
-      {
-        file: "webdev-server/index.js",
-        language: "js",
-        code: `const express = require("express");
+  },
+  {
+    id: "express",
+    links: ["http://localhost:4000/hello"],
+    title: "Express GET /hello on 4000 (code)",
+    kind: "demo",
+    code: `import express from "express";
 const app = express();
 app.get("/hello", (req, res) => {
   res.send("Hello World!");
 });
 app.listen(4000);`,
-        addedLines: [[3, 6]],
-      },
-    ],
+    codeLanguage: "ts",
+    codeFile: "webdev-server/index.ts",
   },
   {
     id: "visit",
@@ -117,7 +173,7 @@ app.listen(4000);`,
       "Stop with Ctrl+C. A later host can set `PORT`",
     ],
     codeBlocks: [
-      { code: "node index.js", language: "bash" },
+      { code: "npm start   # tsx index.ts", language: "bash" },
       { code: "http://localhost:4000/hello", language: "text" },
     ],
     interactiveHint:
@@ -129,17 +185,17 @@ app.listen(4000);`,
     kind: "content",
     bullets: [
       "Sibling `webdev-server` — never inside the Next.js app",
-      "`Hello.js` prints. `index.js` listens on 4000",
+      "Type module, tsx, and types first. `index.ts` listens on 4000",
       "Express `app.get(\"/hello\", …)` plus `res.send`",
     ],
   },
   {
     id: "next-up",
-    title: "Next: nodemon and ES modules",
+    title: "Next: nodemon, tsx, and routes",
     kind: "title",
     bullets: [
-      "Restart on save, `\"type\": \"module\"`, then extract routes",
-      "§5.1.6–5.1.8: Nodemon, ES6, and `Hello(app)`",
+      "Restart on save, how modules load, then routes",
+      "§5.1.6–5.1.8: Nodemon, module loading, and `Hello(app)`",
     ],
   },
 ];

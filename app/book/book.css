@@ -1000,3 +1000,19 @@ html.lecture-presenting body {
   color: rgba(255, 255, 255, 0.6);
   font-size: clamp(0.9rem, 2.2cqi, 1.4rem);
 }
+
+/* Clickable server routes on Ch5/Ch6 code slides (open in a new tab). */
+.book-shell .lecture-slide-links {
+  margin: 0.5rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  font-size: 1.125rem;
+  color: #404040;
+}
+.book-shell .lecture-slide-links a {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #1d4ed8;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

@@ -1356,17 +1356,17 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-account-pages"], 22);
     assert.equal(counts["kambaz-course-enrollments"], 21);
     assert.equal(counts["kambaz-people-table"], 12);
-    assert.equal(counts["http-server"], 11);
-    assert.equal(counts["nodemon-es6-routes"], 9);
+    assert.equal(counts["http-server"], 15);
+    assert.equal(counts["nodemon-es6-routes"], 10);
     assert.equal(counts["lab5-env"], 10);
-    assert.equal(counts["path-and-query"], 11);
-    assert.equal(counts["remote-objects"], 9);
-    assert.equal(counts["remote-arrays"], 9);
-    assert.equal(counts["async-http"], 10);
-    assert.equal(counts["next-routes"], 8);
+    assert.equal(counts["path-and-query"], 13);
+    assert.equal(counts["remote-objects"], 12);
+    assert.equal(counts["remote-arrays"], 15);
+    assert.equal(counts["async-http"], 27);
+    assert.equal(counts["next-routes"], 21);
     assert.equal(counts["ch5-check-understanding"], 7);
     assert.equal(counts["kambaz-migrate-db"], 6);
-    assert.equal(counts["kambaz-account-rest"], 11);
+    assert.equal(counts["kambaz-account-rest"], 13);
     assert.equal(counts["kambaz-sessions"], 11);
     assert.equal(counts["kambaz-courses-api"], 11);
     assert.equal(counts["deploy-api"], 8);
@@ -1949,8 +1949,8 @@ describe("lecture decks", () => {
       "kambaz-people-table": { "people-table-live": "kambaz-people-crud" },
       "lab5-env": { environment: "lab5-env" },
       "next-routes": {
-        hello: "lab5-hello",
-        client: "lab5-calculator",
+        "hello-ui-live": "lab5-hello",
+        "client-live": "lab5-calculator",
       },
       "kambaz-account-rest": { "signin-ui": "kambaz-styled-signin" },
       "kambaz-courses-api": { client: "kambaz-styled-dashboard" },
@@ -3070,14 +3070,16 @@ describe("lecture decks", () => {
     const http = slideText("http-server");
     assert.match(http, /webdev-server/);
     assert.match(http, /sibling/);
-    assert.match(http, /Hello\.js/);
+    assert.doesNotMatch(http, /Hello\.ts/);
+    assert.match(http, /"type": "module"/);
+    assert.match(http, /typescript@\^5\.9\.3/);
     assert.match(http, /app\.get\("\/hello"/);
     assert.match(http, /localhost:4000\/hello/);
     assert.doesNotMatch(http, /Kanbas/);
 
     const nodemon = slideText("nodemon-es6-routes");
     assert.match(nodemon, /nodemon/);
-    assert.match(nodemon, /"type": "module"/);
+    assert.match(nodemon, /courses\.json/);
     assert.match(nodemon, /Hello\(app\)/);
     assert.match(nodemon, /Life is good!/);
 
@@ -3126,7 +3128,7 @@ describe("lecture decks", () => {
     const migrate = slideText("kambaz-migrate-db");
     assert.match(migrate, /Kambaz\/Database/);
     assert.match(migrate, /export default/);
-    assert.match(migrate, /courses\.js/);
+    assert.match(migrate, /courses\.json/);
 
     const accountRest = slideText("kambaz-account-rest");
     assert.match(accountRest, /\/api\/users\/signin/);
@@ -3563,6 +3565,7 @@ describe("lecture decks", () => {
       "chatgpt-api": { project: "openai-project-key-mock" },
       "chatgpt-text": { "roles-code": "openai-roles-flow" },
       "grok-api": { tokens: "grok-token-flow", key: "xai-key-mock" },
+      "http-server": { sibling: "two-ports" },
     } as const;
 
     const used = new Set<string>();
@@ -3952,7 +3955,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 262);
+    assert.equal(intros, 268);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {

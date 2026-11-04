@@ -40,8 +40,8 @@ export default function UsersDao(db) {
     users.find((user) => user.username === username && user.password === password);
   return { createUser, findUserByCredentials };
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/dao.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
     codeHighlightLines: [[4, 8], [9, 10]],
   },
   {
@@ -52,7 +52,7 @@ export default function UsersDao(db) {
       "Register after CORS, the session (server memory of who is signed in), and `express.json()`",
       "Pass `db` into the route module",
     ],
-    code: `import UsersDao from "./dao.js";
+    code: `import UsersDao from "./dao";
 export default function UserRoutes(app, db) {
   const dao = UsersDao(db);
   const signup = (req, res) => { };
@@ -64,8 +64,8 @@ export default function UserRoutes(app, db) {
   app.post("/api/users/signout", signout);
   app.post("/api/users/profile", profile);
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/routes.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeHighlightLines: [[8, 11]],
   },
   {
@@ -83,8 +83,8 @@ export default function UserRoutes(app, db) {
   res.json(currentUser);
 };
 app.post("/api/users/signin", signin);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/routes.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeHighlightLines: [[2, 4]],
   },
   {
@@ -130,6 +130,27 @@ const signin = async () => {
     embed: "kambaz-styled-signin",
   },
   {
+    id: "signup-ui",
+    title: "Sign up writes AccountContext",
+    kind: "demo",
+    bullets: [
+      "Same pattern as sign in, then go to Profile",
+    ],
+    code: "const { setCurrentUser } = useAccountContext();\nconst signup = async () => {\n  const current = await client.signup(user);\n  setCurrentUser(current);\n  router.push(\"/account/profile\");\n};",
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/account/signup/page.tsx",
+  },
+  {
+    id: "signup-ui-live",
+    title: "Signup: live demo",
+    kind: "demo",
+    bullets: [
+      "Fill in a new username and password",
+      "Submit lands on Profile as the new user",
+    ],
+    embed: "kambaz-ch4-signup",
+  },
+  {
     id: "signup-profile-intro",
     title: "Signup 400, profile, update",
     kind: "demo",
@@ -152,8 +173,8 @@ const signin = async () => {
   res.json(currentUser);
 };
 app.post("/api/users/signup", signup);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/routes.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeHighlightLines: [[3, 6]],
   },
   {

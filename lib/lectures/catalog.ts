@@ -1007,7 +1007,7 @@ const LECTURE_SUMMARIES: Record<
   "http-server": {
     title: "HTTP Server",
     summary:
-      "Sibling webdev-server, Hello.js, and Express GET /hello on port 4000 — §5.1.",
+      "Sibling webdev-server, Hello.ts run by tsx, and Express GET /hello on port 4000 — §5.1.",
     chapter: 5,
     topicId: "http-server",
     bookSectionId: "sec-5-1",
@@ -1015,9 +1015,9 @@ const LECTURE_SUMMARIES: Record<
     slides: HTTP_SERVER_SLIDES,
   },
   "nodemon-es6-routes": {
-    title: "Nodemon, ES6, and Routes",
+    title: "Nodemon, tsx, and Routes",
     summary:
-      "Nodemon, \"type\": \"module\", npm scripts, then Hello(app) extracted from index.js — §5.1.6–5.1.8.",
+      "Nodemon with tsx, \"type\": \"module\", npm scripts, tsconfig.json, then a typed Hello(app) extracted from index.ts — §5.1.6–5.1.8.",
     chapter: 5,
     topicId: "http-server",
     bookSectionId: "sec-5-1-6",

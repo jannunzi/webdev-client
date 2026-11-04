@@ -34,10 +34,11 @@ npm run dev`,
   },
   {
     id: "welcome-route",
-    title: "Welcome route in Lab5/index.js",
+    links: ["http://localhost:4000/lab5/welcome"],
+    title: "Welcome route in Lab5/index.ts",
     kind: "demo",
     bullets: [
-      "Same pattern as `Hello.js`: export a function that receives `app`",
+      "Same pattern as `Hello.ts`: export a function that receives `app`",
       "Confirm `http://localhost:4000/lab5/welcome` greets you",
     ],
     code: `export default function Lab5(app) {
@@ -45,26 +46,26 @@ npm run dev`,
     res.send("Welcome to Lab 5");
   });
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/index.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/index.ts",
     codeHighlightLines: [[2, 4]],
   },
   {
     id: "register",
-    title: "Register Lab5 from index.js",
+    title: "Register Lab5 from index.ts",
     kind: "demo",
     bullets: [
-      "Import with the `.js` extension and pass the shared `app`",
+      "Import `./Lab5/index` with no extension; pass the shared `app`",
     ],
     code: `import express from "express";
-import Hello from "./Hello.js";
-import Lab5 from "./Lab5/index.js";
+import Hello from "./Hello";
+import Lab5 from "./Lab5/index";
 const app = express();
 Lab5(app);
 Hello(app);
 app.listen(4000);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/index.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/index.ts",
     codeAddedLines: [3, 5],
   },
   {
@@ -132,7 +133,7 @@ app.listen(4000);`,
   );
 }`,
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/intermediates/5-2-1-Environment.tsx",
+    codeFile: "app/labs/lab5/Environment.tsx",
     codeAddedLines: [2, [9, 12]],
     embed: "lab5-env",
   },

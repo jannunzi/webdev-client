@@ -1,5 +1,6 @@
 import type { LectureDiagramId } from "@/lib/lectures/types";
 import ClientServerDiagram from "./ClientServerDiagram";
+import TwoPortsDiagram from "./TwoPortsDiagram";
 import CourseStackDiagram from "./CourseStackDiagram";
 import CsrDiagram from "./CsrDiagram";
 import DomTreeDiagram from "./DomTreeDiagram";
@@ -35,6 +36,8 @@ export default function LectureDiagram({ id }: { id: LectureDiagramId }) {
       return <NetworkOfNetworksDiagram />;
     case "client-server":
       return <ClientServerDiagram />;
+    case "two-ports":
+      return <TwoPortsDiagram />;
     case "ssr":
       return <SsrDiagram />;
     case "csr":

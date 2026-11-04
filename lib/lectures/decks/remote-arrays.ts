@@ -27,6 +27,7 @@ export const REMOTE_ARRAYS_SLIDES: LectureSlide[] = [
   },
   {
     id: "get-all",
+    links: ["http://localhost:4000/lab5/todos"],
     title: "GET the whole todos array",
     kind: "demo",
     bullets: [
@@ -45,12 +46,13 @@ export default function WorkingWithArrays(app) {
   };
   app.get("/lab5/todos", getTodos);
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/WorkingWithArrays.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
     codeHighlightLines: [[8, 11]],
   },
   {
     id: "get-id",
+    links: ["http://localhost:4000/lab5/todos/1"],
     title: "GET one todo by id",
     kind: "demo",
     bullets: [
@@ -63,8 +65,8 @@ export default function WorkingWithArrays(app) {
   res.json(todo);
 };
 app.get("/lab5/todos/:id", getTodoById);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/WorkingWithArrays.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
     codeAddedLines: [[1, 6]],
   },
   {
@@ -78,6 +80,7 @@ app.get("/lab5/todos/:id", getTodoById);`,
   },
   {
     id: "create-delete",
+    links: ["http://localhost:4000/lab5/todos/create", "http://localhost:4000/lab5/todos/1/delete"],
     title: "Create and delete via GET first (code)",
     kind: "demo",
     code: `const createNewTodo = (req, res) => {
@@ -97,8 +100,8 @@ const removeTodo = (req, res) => {
 };
 app.get("/lab5/todos/create", createNewTodo);
 app.get("/lab5/todos/:id/delete", removeTodo);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/WorkingWithArrays.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
     codeHighlightLines: [[16, 17]],
   },
   {
@@ -112,8 +115,65 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
     code: `const API = \`\${HTTP_SERVER}/lab5/todos\`;
 <a id="wd-retrieve-todos" href={API}>Get Todos</a>`,
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/intermediates/5-2-4-WorkingWithArrays.tsx",
+    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
     codeHighlightLines: [2],
+  },
+  {
+    id: "client-by-id",
+    title: "Get one todo by ID",
+    kind: "demo",
+    bullets: [
+      "The input picks the ID. The link puts it in the path",
+    ],
+    code: "const [todo, setTodo] = useState({ id: \"1\" });\n<a id=\"wd-retrieve-todo-by-id\" href={`${API}/${todo.id}`}>\n  Get Todo by ID\n</a>\n<input id=\"wd-todo-id\" value={todo.id}\n  onChange={(e) => setTodo({ ...todo, id: e.target.value })} />",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
+  },
+  {
+    id: "client-filter",
+    title: "Filter with a query string",
+    kind: "demo",
+    code: "<a id=\"wd-retrieve-completed-todos\" href={`${API}?completed=true`}>\n  Get Completed Todos\n</a>",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
+  },
+  {
+    id: "client-create",
+    title: "Create a todo",
+    kind: "demo",
+    code: "<a id=\"wd-create-todo\" href={`${API}/create`}>Create Todo</a>",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
+  },
+  {
+    id: "client-remove",
+    title: "Remove a todo by ID",
+    kind: "demo",
+    code: "<a id=\"wd-remove-todo\" href={`${API}/${todo.id}/delete`}>\n  Remove Todo with ID = {todo.id}\n</a>",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
+  },
+  {
+    id: "client-update",
+    title: "Update a todo title",
+    kind: "demo",
+    bullets: [
+      "Two inputs: which todo, and its new title",
+    ],
+    code: "<a href={`${API}/${todo.id}/title/${todo.title}`} id=\"wd-update-todo-title\">\n  Update Todo\n</a>\n<input value={todo.id} onChange={(e) => setTodo({ ...todo, id: e.target.value })} />\n<input value={todo.title} onChange={(e) => setTodo({ ...todo, title: e.target.value })} />",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
+  },
+  {
+    id: "client-live",
+    title: "WorkingWithArrays: live demo",
+    kind: "demo",
+    bullets: [
+      "Get Todos, then Get Todo by ID and Get Completed",
+      "Create, Remove, Update \u2014 then Get Todos again",
+      "Start Express on port 4000 first (`npm start` in webdev-server)",
+    ],
+    embed: "lab5-arrays",
   },
   {
     id: "recap",

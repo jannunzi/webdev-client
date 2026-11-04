@@ -30,12 +30,13 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
     title: "res.json sends an object",
     kind: "demo",
     bullets: [
-      "Import in `Lab5/index.js` and visit `/lab5/assignment`",
+      "Import in `Lab5/index.ts` and visit `/lab5/assignment`",
       "Get Assignment is a hyperlink to the raw JSON",
     ],
   },
   {
     id: "assignment",
+    links: ["http://localhost:4000/lab5/assignment"],
     title: "res.json sends an object (code)",
     kind: "demo",
     code: `const assignment = {
@@ -52,12 +53,13 @@ export default function WorkingWithObjects(app) {
   };
   app.get("/lab5/assignment", getAssignment);
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/WorkingWithObjects.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithObjects.ts",
     codeHighlightLines: [[10, 13]],
   },
   {
     id: "title-get",
+    links: ["http://localhost:4000/lab5/assignment/title"],
     title: "GET a single property",
     kind: "demo",
     bullets: [
@@ -68,12 +70,13 @@ export default function WorkingWithObjects(app) {
   res.json(assignment.title);
 };
 app.get("/lab5/assignment/title", getAssignmentTitle);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/WorkingWithObjects.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithObjects.ts",
     codeAddedLines: [[1, 4]],
   },
   {
     id: "title-put",
+    links: ["http://localhost:4000/lab5/assignment/title/NewTitle"],
     title: "Mutate title from the path",
     kind: "demo",
     bullets: [
@@ -86,8 +89,8 @@ app.get("/lab5/assignment/title", getAssignmentTitle);`,
   res.json(assignment);
 };
 app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/WorkingWithObjects.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithObjects.ts",
     codeAddedLines: [[1, 6]],
   },
   {
@@ -105,8 +108,41 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
   Get Assignment
 </a>`,
     codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/intermediates/5-2-3-WorkingWithObjects.tsx",
+    codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
     codeHighlightLines: [4],
+  },
+  {
+    id: "client-title",
+    title: "Retrieve one property",
+    kind: "demo",
+    bullets: [
+      "`/lab5/assignment/title` returns just the string",
+    ],
+    code: "<h4>Retrieving Properties</h4>\n<a id=\"wd-retrieve-assignment-title\"\n  href={`${HTTP_SERVER}/lab5/assignment/title`}>\n  Get Title\n</a>",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
+  },
+  {
+    id: "client-update",
+    title: "Modify a property from an input",
+    kind: "demo",
+    bullets: [
+      "The input edits local state. The link sends it to Express",
+    ],
+    code: "const [assignment, setAssignment] = useState({\n  id: 1, title: \"NodeJS Assignment\",\n  description: \"Create a NodeJS server with ExpressJS\",\n  due: \"2021-10-10\", completed: false, score: 0,\n});\nconst ASSIGNMENT_API_URL = `${HTTP_SERVER}/lab5/assignment`;\n<a id=\"wd-update-assignment-title\"\n  href={`${ASSIGNMENT_API_URL}/title/${assignment.title}`}>\n  Update Title\n</a>\n<input id=\"wd-assignment-title\" value={assignment.title}\n  onChange={(e) => setAssignment({ ...assignment, title: e.target.value })} />",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithObjects.tsx",
+  },
+  {
+    id: "client-live",
+    title: "WorkingWithObjects: live demo",
+    kind: "demo",
+    bullets: [
+      "Get Assignment, then Get Title",
+      "Type a new title, click Update Title, then Get again",
+      "Start Express on port 4000 first (`npm start` in webdev-server)",
+    ],
+    embed: "lab5-objects",
   },
   {
     id: "recap",

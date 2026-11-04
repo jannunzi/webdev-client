@@ -12,7 +12,7 @@ export const KAMBAZ_MIGRATE_DB_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Migrating the Database",
-      "§5.4.1 · JSON files become server modules",
+      "§5.4.1 · JSON files imported by the server",
     ],
   },
   {
@@ -26,39 +26,39 @@ export const KAMBAZ_MIGRATE_DB_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "courses-js",
-    title: "Copy JSON into .js modules",
+    id: "courses-json",
+    title: "Copy the JSON files as they are",
     kind: "demo",
     bullets: [
-      "Rename `courses.json` → `courses.js`. Same for users, modules, …",
-      "`export default` the array. Keep the Chapter 3 `_id`s",
+      "Keep `courses.json`, `users.json`, … as JSON — no rename",
+      "Keep the Chapter 3 `_id`s so the client data still lines up",
     ],
-    code: `export default [
-  { _id: "RS101", name: "Rocket Propulsion", number: "RS4550",
-    startDate: "2023-01-10", endDate: "2023-05-15",
-    department: "D123", credits: 4, description: "..." },
-  // … remaining courses from Chapter 3
-];`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Database/courses.js",
-    codeHighlightLines: [1],
+    code: `[
+  { "_id": "RS101", "name": "Rocket Propulsion", "number": "RS4550",
+    "startDate": "2023-01-10", "endDate": "2023-05-15",
+    "department": "D123", "credits": 4, "description": "..." }
+]`,
+    codeLanguage: "json",
+    codeFile: "webdev-server/Kambaz/Database/courses.json",
   },
   {
     id: "barrel",
     title: "One barrel re-exports the arrays",
     kind: "demo",
     bullets: [
+      "`resolveJsonModule` lets TypeScript import each `.json` file",
       "Routes receive `db` and read `db.courses`, `db.users`, …",
       "Customize the seed if you want — the shape stays",
     ],
-    code: `import courses from "./courses.js";
-import modules from "./modules.js";
-import assignments from "./assignments.js";
-import users from "./users.js";
-import enrollments from "./enrollments.js";
+    code: `import courses from "./courses.json";
+import modules from "./modules.json";
+import assignments from "./assignments.json";
+import users from "./users.json";
+import enrollments from "./enrollments.json";
 export default { courses, modules, assignments, users, enrollments };`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Database/index.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Database/index.ts",
+    codeHighlightLines: [[1, 5]],
     codeAddedLines: [6],
   },
   {
@@ -66,7 +66,7 @@ export default { courses, modules, assignments, users, enrollments };`,
     title: "Database migrate recap",
     kind: "content",
     bullets: [
-      "`Kambaz/Database/*.js` — arrays, not React imports",
+      "`Kambaz/Database/*.json` — imported directly, no rename",
       "Barrel `export default { courses, users, … }`",
       "Mongo replaces these arrays in Chapter 6",
     ],
