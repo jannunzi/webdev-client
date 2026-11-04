@@ -81,7 +81,6 @@ npm init`,
     id: "toolchain",
     title: "Installing Express and tsx",
     kind: "demo",
-    bullets: ["Install Express, the tsx runner, and the TypeScript types"],
     codeBlocks: [
       {
         code: "npm install express\nnpm i tsx\nnpm i -D typescript@^5.9.3 @types/node@^22 @types/express",
