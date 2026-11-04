@@ -7,10 +7,10 @@ import CalculatorNextWebApiClient from "@/app/labs/lab5/intermediates/5-3-1-Calc
 import PathParameters from "@/app/labs/lab5/intermediates/5-2-2-1-PathParameters";
 import QueryParameters from "@/app/labs/lab5/intermediates/5-2-2-2-QueryParameters";
 import WorkingWithRemoteObjects from "@/app/labs/lab5/intermediates/5-2-3-WorkingWithRemoteObjects";
-import WorkingWithArrays from "@/app/labs/lab5/intermediates/5-2-4-WorkingWithArrays";
+import WorkingWithRemoteArrays from "@/app/labs/lab5/intermediates/5-2-4-WorkingWithRemoteArrays";
 import HttpClient from "@/app/labs/lab5/intermediates/5-2-5-HttpClient";
 import WorkingWithRemoteObjectsAsynchronously from "@/app/labs/lab5/intermediates/5-2-5-WorkingWithRemoteObjectsAsync";
-import WorkingWithArraysAsynchronously from "@/app/labs/lab5/intermediates/5-2-6-WorkingWithArraysAsync";
+import WorkingWithRemoteArraysAsynchronously from "@/app/labs/lab5/intermediates/5-2-6-WorkingWithRemoteArraysAsync";
 import LectureDemoFrame from "./LectureDemoFrame";
 
 function Lab5Demo({
@@ -79,8 +79,8 @@ export function Lab5ObjectsEmbed() {
 
 export function Lab5ArraysEmbed() {
   return (
-    <Lab5Demo label="app/labs/lab5/WorkingWithArrays.tsx">
-      <WorkingWithArrays />
+    <Lab5Demo label="app/labs/lab5/WorkingWithRemoteArrays.tsx">
+      <WorkingWithRemoteArrays />
     </Lab5Demo>
   );
 }
@@ -103,8 +103,8 @@ export function Lab5ObjectsAsyncEmbed() {
 
 export function Lab5ArraysAsyncEmbed() {
   return (
-    <Lab5Demo label="app/labs/lab5/WorkingWithArraysAsync.tsx">
-      <WorkingWithArraysAsynchronously />
+    <Lab5Demo label="app/labs/lab5/WorkingWithRemoteArraysAsync.tsx">
+      <WorkingWithRemoteArraysAsynchronously />
     </Lab5Demo>
   );
 }

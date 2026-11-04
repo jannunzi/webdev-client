@@ -10,7 +10,7 @@ let todos: {
   { id: 4, title: "Task 4", completed: true },
 ];
 
-export default function WorkingWithArrays(app) {
+export default function WorkingWithRemoteArrays(app) {
   const getTodos = (req, res) => {
     const { completed } = req.query;
     if (completed !== undefined) {

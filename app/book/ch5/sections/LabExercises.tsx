@@ -10,10 +10,10 @@ import Environment from "@/app/labs/lab5/intermediates/5-2-1-Environment";
 import PathParameters from "@/app/labs/lab5/intermediates/5-2-2-1-PathParameters";
 import QueryParameters from "@/app/labs/lab5/intermediates/5-2-2-2-QueryParameters";
 import WorkingWithRemoteObjects from "@/app/labs/lab5/intermediates/5-2-3-WorkingWithRemoteObjects";
-import WorkingWithArrays from "@/app/labs/lab5/intermediates/5-2-4-WorkingWithArrays";
+import WorkingWithRemoteArrays from "@/app/labs/lab5/intermediates/5-2-4-WorkingWithRemoteArrays";
 import HttpClient from "@/app/labs/lab5/intermediates/5-2-5-HttpClient";
 import WorkingWithRemoteObjectsAsynchronously from "@/app/labs/lab5/intermediates/5-2-5-WorkingWithRemoteObjectsAsync";
-import WorkingWithArraysAsynchronously from "@/app/labs/lab5/intermediates/5-2-6-WorkingWithArraysAsync";
+import WorkingWithRemoteArraysAsynchronously from "@/app/labs/lab5/intermediates/5-2-6-WorkingWithRemoteArraysAsync";
 
 export default function LabExercises() {
   return (
@@ -730,15 +730,15 @@ const ASSIGNMENT_API_URL = \`\${HTTP_SERVER}/lab5/assignment\`;
           </p>
           <CodeBlock
             language="ts"
-            name="WorkingWithArrays"
-            file="webdev-server/Lab5/WorkingWithArrays.ts"
+            name="WorkingWithRemoteArrays"
+            file="webdev-server/Lab5/WorkingWithRemoteArrays.ts"
           >{`let todos = [
   { id: 1, title: "Task 1", completed: false },
   { id: 2, title: "Task 2", completed: true },
   { id: 3, title: "Task 3", completed: false },
   { id: 4, title: "Task 4", completed: true },
 ];
-export default function WorkingWithArrays(app) {
+export default function WorkingWithRemoteArrays(app) {
   const getTodos = (req, res) => {
     res.json(todos);
   };
@@ -753,7 +753,7 @@ export default function WorkingWithArrays(app) {
           <CodeBlock
             language="tsx"
             name="Retrieving Arrays"
-            file="app/labs/lab5/WorkingWithArrays.tsx"
+            file="app/labs/lab5/WorkingWithRemoteArrays.tsx"
           >{`const API = \`\${HTTP_SERVER}/lab5/todos\`;
 <a id="wd-retrieve-todos" href={API}>Get Todos</a>`}</CodeBlock>
         </Section>
@@ -780,7 +780,7 @@ export default function WorkingWithArrays(app) {
           <CodeBlock
             language="ts"
             name="getTodoById"
-            file="webdev-server/Lab5/WorkingWithArrays.ts"
+            file="webdev-server/Lab5/WorkingWithRemoteArrays.ts"
           >{`const getTodoById = (req, res) => {
   const { id } = req.params;
   const todo = todos.find((t) => t.id === parseInt(id));
@@ -791,7 +791,7 @@ app.get("/lab5/todos/:id", getTodoById);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="Get Todo by ID"
-            file="app/labs/lab5/WorkingWithArrays.tsx"
+            file="app/labs/lab5/WorkingWithRemoteArrays.tsx"
           >{`const [todo, setTodo] = useState({ id: "1" });
 <a id="wd-retrieve-todo-by-id" href={\`\${API}/\${todo.id}\`}>
   Get Todo by ID
@@ -827,7 +827,7 @@ app.get("/lab5/todos/:id", getTodoById);`}</CodeBlock>
           <CodeBlock
             language="ts"
             name="filter todos"
-            file="webdev-server/Lab5/WorkingWithArrays.ts"
+            file="webdev-server/Lab5/WorkingWithRemoteArrays.ts"
           >{`const getTodos = (req, res) => {
   const { completed } = req.query;
   if (completed !== undefined) {
@@ -840,7 +840,7 @@ app.get("/lab5/todos/:id", getTodoById);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="Filtering Array Items"
-            file="app/labs/lab5/WorkingWithArrays.tsx"
+            file="app/labs/lab5/WorkingWithRemoteArrays.tsx"
           >{`<a id="wd-retrieve-completed-todos" href={\`\${API}?completed=true\`}>
   Get Completed Todos
 </a>`}</CodeBlock>
@@ -876,7 +876,7 @@ app.get("/lab5/todos/:id", getTodoById);`}</CodeBlock>
           <CodeBlock
             language="ts"
             name="createNewTodo"
-            file="webdev-server/Lab5/WorkingWithArrays.ts"
+            file="webdev-server/Lab5/WorkingWithRemoteArrays.ts"
           >{`const createNewTodo = (req, res) => {
   const newTodo = {
     id: new Date().getTime(),
@@ -890,7 +890,7 @@ app.get("/lab5/todos/create", createNewTodo);
 app.get("/lab5/todos/:id", getTodoById);`}</CodeBlock>
           <p>
             Add a Create Todo hyperlink to the{" "}
-            <code>WorkingWithArrays</code>{" "}component to test the new
+            <code>WorkingWithRemoteArrays</code>{" "}component to test the new
             route. Confirm that clicking the link creates the new item
             in the array — Get Todos afterwards should include New
             Task.
@@ -898,7 +898,7 @@ app.get("/lab5/todos/:id", getTodoById);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="Creating new Items"
-            file="app/labs/lab5/WorkingWithArrays.tsx"
+            file="app/labs/lab5/WorkingWithRemoteArrays.tsx"
           >{`<a id="wd-create-todo" href={\`\${API}/create\`}>Create Todo</a>`}</CodeBlock>
         </Section>
 
@@ -924,7 +924,7 @@ app.get("/lab5/todos/:id", getTodoById);`}</CodeBlock>
           <CodeBlock
             language="ts"
             name="removeTodo"
-            file="webdev-server/Lab5/WorkingWithArrays.ts"
+            file="webdev-server/Lab5/WorkingWithRemoteArrays.ts"
           >{`const removeTodo = (req, res) => {
   const { id } = req.params;
   const todoIndex = todos.findIndex((t) => t.id === parseInt(id));
@@ -935,7 +935,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="Removing from an Array"
-            file="app/labs/lab5/WorkingWithArrays.tsx"
+            file="app/labs/lab5/WorkingWithRemoteArrays.tsx"
           >{`<a id="wd-remove-todo" href={\`\${API}/\${todo.id}/delete\`}>
   Remove Todo with ID = {todo.id}
 </a>`}</CodeBlock>
@@ -963,7 +963,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`}</CodeBlock>
           <CodeBlock
             language="ts"
             name="updateTodoTitle"
-            file="webdev-server/Lab5/WorkingWithArrays.ts"
+            file="webdev-server/Lab5/WorkingWithRemoteArrays.ts"
           >{`const updateTodoTitle = (req, res) => {
   const { id, title } = req.params;
   const todo = todos.find((t) => t.id === parseInt(id));
@@ -974,7 +974,7 @@ app.get("/lab5/todos/:id/title/:title", updateTodoTitle);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="Updating an Item"
-            file="app/labs/lab5/WorkingWithArrays.tsx"
+            file="app/labs/lab5/WorkingWithRemoteArrays.tsx"
           >{`<a href={\`\${API}/\${todo.id}/title/\${todo.title}\`} id="wd-update-todo-title">
   Update Todo
 </a>
@@ -993,7 +993,7 @@ app.get("/lab5/todos/:id/title/:title", updateTodoTitle);`}</CodeBlock>
             description properties of todo items identified by their
             ID. Create the routes below in the Node.js HTTP server
             project. In the{" "}
-            <code>WorkingWithArrays</code>{" "}component, add a text
+            <code>WorkingWithRemoteArrays</code>{" "}component, add a text
             input field to edit the description and a checkbox input
             field to edit the completed property. Create a link that
             updates the description of the todo item whose id is
@@ -1014,11 +1014,11 @@ app.get("/lab5/todos/:id/title/:title", updateTodoTitle);`}</CodeBlock>
             </li>
           </ul>
           <LiveDemo
-            name="WorkingWithArrays"
-            file="app/labs/lab5/WorkingWithArrays.tsx"
+            name="WorkingWithRemoteArrays"
+            file="app/labs/lab5/WorkingWithRemoteArrays.tsx"
             mode="styled"
           >
-            <WorkingWithArrays />
+            <WorkingWithRemoteArrays />
           </LiveDemo>
           <OnYourOwn>
             Add{" "}
@@ -1355,8 +1355,8 @@ export const fetchTodos = async () => {
 };`}</CodeBlock>
           <CodeBlock
             language="tsx"
-            name="WorkingWithArraysAsynchronously"
-            file="app/labs/lab5/WorkingWithArraysAsync.tsx"
+            name="WorkingWithRemoteArraysAsynchronously"
+            file="app/labs/lab5/WorkingWithRemoteArraysAsync.tsx"
           >{`const [todos, setTodos] = useState([]);
 const fetchTodos = async () => {
   setTodos(await client.fetchTodos());
@@ -1380,7 +1380,7 @@ useEffect(() => { fetchTodos(); }, []);
             <code>removeTodo</code>{" "}client function that sends a
             delete request to the server. The server will respond with
             an array with the surviving todos. In the
-            WorkingWithArraysAsynchronously component, add remove
+            WorkingWithRemoteArraysAsynchronously component, add remove
             buttons to each of the todos that invoke a new{" "}
             <code>removeTodo</code>{" "}function that uses the client to
             send an asynchronous delete request to the server and
@@ -1400,7 +1400,7 @@ useEffect(() => { fetchTodos(); }, []);
           <CodeBlock
             language="tsx"
             name="remove button"
-            file="app/labs/lab5/WorkingWithArraysAsync.tsx"
+            file="app/labs/lab5/WorkingWithRemoteArraysAsync.tsx"
           >{`const removeTodo = async (todo) => {
   setTodos(await client.removeTodo(todo));
 };
@@ -1419,7 +1419,7 @@ useEffect(() => { fetchTodos(); }, []);
             <code>client.ts</code>{" "}implement a{" "}
             <code>createNewTodo</code>{" "}client function that requests
             creating a new todo item from the server as shown below. In
-            the WorkingWithArraysAsynchronously component, add a +
+            the WorkingWithRemoteArraysAsynchronously component, add a +
             button icon to invoke the{" "}
             <code>createNewTodo</code>{" "}client function and update
             the todos state variable with the todos from the server.
@@ -1437,7 +1437,7 @@ useEffect(() => { fetchTodos(); }, []);
           <CodeBlock
             language="tsx"
             name="create button"
-            file="app/labs/lab5/WorkingWithArraysAsync.tsx"
+            file="app/labs/lab5/WorkingWithRemoteArraysAsync.tsx"
           >{`const createNewTodo = async () => {
   setTodos(await client.createNewTodo());
 };
@@ -1546,7 +1546,7 @@ Lab5(app);`}</CodeBlock>
           <CodeBlock
             language="ts"
             name="postNewTodo"
-            file="webdev-server/Lab5/WorkingWithArrays.ts"
+            file="webdev-server/Lab5/WorkingWithRemoteArrays.ts"
           >{`const postNewTodo = (req, res) => {
   const newTodo = { ...req.body, id: new Date().getTime() };
   todos.push(newTodo);
@@ -1563,7 +1563,7 @@ app.post("/lab5/todos", postNewTodo);`}</CodeBlock>
             todo object instance sent to the server. The response this
             time contains the todo instance added to the todos array
             in the server instead of all the todos on the server. In
-            the WorkingWithArraysAsynchronously component, create a
+            the WorkingWithRemoteArraysAsynchronously component, create a
             new + button icon to invoke the new{" "}
             <code>postNewTodo</code>{" "}client function to send a new
             todo object to the server containing a default title and
@@ -1586,7 +1586,7 @@ app.post("/lab5/todos", postNewTodo);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="post button"
-            file="app/labs/lab5/WorkingWithArraysAsync.tsx"
+            file="app/labs/lab5/WorkingWithRemoteArraysAsync.tsx"
           >{`const postNewTodo = async () => {
   const newTodo = await client.postNewTodo({
     title: "New Posted Todo",
@@ -1625,7 +1625,7 @@ app.post("/lab5/todos", postNewTodo);`}</CodeBlock>
           <CodeBlock
             language="ts"
             name="deleteTodo"
-            file="webdev-server/Lab5/WorkingWithArrays.ts"
+            file="webdev-server/Lab5/WorkingWithRemoteArrays.ts"
           >{`const deleteTodo = (req, res) => {
   const { id } = req.params;
   const todoIndex = todos.findIndex((t) => t.id === parseInt(id));
@@ -1666,7 +1666,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="X delete"
-            file="app/labs/lab5/WorkingWithArraysAsync.tsx"
+            file="app/labs/lab5/WorkingWithRemoteArraysAsync.tsx"
           >{`const deleteTodo = async (todo) => {
   await client.deleteTodo(todo);
   setTodos(todos.filter((t) => t.id !== todo.id));
@@ -1698,7 +1698,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`}</CodeBlock>
           <CodeBlock
             language="ts"
             name="updateTodo PUT"
-            file="webdev-server/Lab5/WorkingWithArrays.ts"
+            file="webdev-server/Lab5/WorkingWithRemoteArrays.ts"
           >{`const updateTodo = (req, res) => {
   const { id } = req.params;
   todos = todos.map((t) => {
@@ -1718,7 +1718,7 @@ app.put("/lab5/todos/:id", updateTodo);`}</CodeBlock>
             <code>axios.put()</code>{" "}method containing the updated
             todo object instance sent to the server. The response
             contains a status. In the
-            WorkingWithArraysAsynchronously component, add an input
+            WorkingWithRemoteArraysAsynchronously component, add an input
             field that shows up when you click a new pencil icon by
             setting the todo&apos;s{" "}
             <code>editing</code>{" "}property to true. Pressing the
@@ -1742,7 +1742,7 @@ app.put("/lab5/todos/:id", updateTodo);`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="edit and PUT"
-            file="app/labs/lab5/WorkingWithArraysAsync.tsx"
+            file="app/labs/lab5/WorkingWithRemoteArraysAsync.tsx"
           >{`const editTodo = (todo) => {
   setTodos(todos.map((t) => (t.id === todo.id ? { ...todo, editing: true } : t)));
 };
@@ -1776,7 +1776,7 @@ const updateTodo = async (todo) => {
           <CodeBlock
             language="ts"
             name="404 handling"
-            file="webdev-server/Lab5/WorkingWithArrays.ts"
+            file="webdev-server/Lab5/WorkingWithRemoteArrays.ts"
           >{`const deleteTodo = (req, res) => {
   const { id } = req.params;
   const todoIndex = todos.findIndex((t) => t.id === parseInt(id));
@@ -1819,7 +1819,7 @@ const updateTodo = (req, res) => {
           <CodeBlock
             language="tsx"
             name="try/catch"
-            file="app/labs/lab5/WorkingWithArraysAsync.tsx"
+            file="app/labs/lab5/WorkingWithRemoteArraysAsync.tsx"
           >{`const [errorMessage, setErrorMessage] = useState(null);
 const deleteTodo = async (todo) => {
   try {
@@ -1835,11 +1835,11 @@ const deleteTodo = async (todo) => {
   </p>
 )}`}</CodeBlock>
           <LiveDemo
-            name="WorkingWithArraysAsynchronously"
-            file="app/labs/lab5/WorkingWithArraysAsync.tsx"
+            name="WorkingWithRemoteArraysAsynchronously"
+            file="app/labs/lab5/WorkingWithRemoteArraysAsync.tsx"
             mode="styled"
           >
-            <WorkingWithArraysAsynchronously />
+            <WorkingWithRemoteArraysAsynchronously />
           </LiveDemo>
           <OnYourOwn>
             Delete a todo with the GET{" "}
@@ -1847,7 +1847,7 @@ const deleteTodo = async (todo) => {
             the same id and confirm the 404 alert.
           </OnYourOwn>
           <WithAI
-            prompt={`In app/labs/lab5/WorkingWithArraysAsync.tsx, keep my deleteTodo try/catch. If the catch runs, keep showing errorMessage. Do not remove the FaPlusCircle POST button.`}
+            prompt={`In app/labs/lab5/WorkingWithRemoteArraysAsync.tsx, keep my deleteTodo try/catch. If the catch runs, keep showing errorMessage. Do not remove the FaPlusCircle POST button.`}
           >
             Ask the assistant not to strip error handling — you still
             trigger the 404:

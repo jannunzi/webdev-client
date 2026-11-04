@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function WorkingWithArrays() {
+export default function WorkingWithRemoteArrays() {
   const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
   const API = `${HTTP_SERVER}/lab5/todos`;
   const [todo, setTodo] = useState({

@@ -2,10 +2,10 @@ import Environment from "./intermediates/5-2-1-Environment";
 import PathParameters from "./intermediates/5-2-2-1-PathParameters";
 import QueryParameters from "./intermediates/5-2-2-2-QueryParameters";
 import WorkingWithRemoteObjects from "./intermediates/5-2-3-WorkingWithRemoteObjects";
-import WorkingWithArrays from "./intermediates/5-2-4-WorkingWithArrays";
+import WorkingWithRemoteArrays from "./intermediates/5-2-4-WorkingWithRemoteArrays";
 import HttpClient from "./intermediates/5-2-5-HttpClient";
 import WorkingWithRemoteObjectsAsynchronously from "./intermediates/5-2-5-WorkingWithRemoteObjectsAsync";
-import WorkingWithArraysAsynchronously from "./intermediates/5-2-6-WorkingWithArraysAsync";
+import WorkingWithRemoteArraysAsynchronously from "./intermediates/5-2-6-WorkingWithRemoteArraysAsync";
 import HelloRoute from "./intermediates/5-3-1-HelloRoute";
 import CalculatorNextWebApiClient from "./intermediates/5-3-1-Calculator";
 
@@ -26,10 +26,10 @@ export default function Lab5() {
       <PathParameters />
       <QueryParameters />
       <WorkingWithRemoteObjects />
-      <WorkingWithArrays />
+      <WorkingWithRemoteArrays />
       <HttpClient />
       <WorkingWithRemoteObjectsAsynchronously />
-      <WorkingWithArraysAsynchronously />
+      <WorkingWithRemoteArraysAsynchronously />
       <HelloRoute />
       <CalculatorNextWebApiClient />
     </div>
