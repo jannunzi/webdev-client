@@ -73,18 +73,71 @@ npm init`,
       "Create the `webdev-server` folder yourself, as a sibling of the Next.js app.",
   },
   {
-    id: "hello-ts",
-    title: "Hello World in TypeScript",
+    id: "toolchain-intro",
+    title: "Toolchain before the first file",
     kind: "demo",
     bullets: [
-      "The server is TypeScript, like the Next.js client",
-      "tsx runs `.ts` files — no separate `.js` build",
-      "Later we export a function from this same `Hello.ts`",
+      "Goal: the editor resolves `express`, `req`, and `res` on day one",
+      "Install Express, then make the package an ES module",
+      "Add the tsx runner and the TypeScript types before any `.ts` file",
     ],
-    code: `console.log("Hello World!");`,
-    codeLanguage: "ts",
-    codeFile: "webdev-server/Hello.ts",
-    codeBlocks: [{ code: "npm i tsx\nnpx tsx Hello.ts\n# Hello World!", language: "bash" }],
+  },
+  {
+    id: "toolchain",
+    title: "Express, type module, and tsx (code)",
+    kind: "demo",
+    codeBlocks: [
+      {
+        code: "npm install express\nnpm i tsx\nnpm i -D typescript@^5.9.3 @types/node@^22 @types/express",
+        language: "bash",
+      },
+      {
+        file: "webdev-server/package.json",
+        language: "json",
+        code: `{
+  "type": "module",
+  "scripts": {
+    "start": "tsx index.ts"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "tsx": "^4.20.5"
+  }
+}`,
+        highlightLines: [2, [3, 5], 8],
+      },
+    ],
+  },
+  {
+    id: "tsconfig-intro",
+    title: "A tsconfig for the server",
+    kind: "demo",
+    bullets: [
+      "Goal: the editor accepts extensionless and JSON imports",
+      "Types are dev dependencies; tsx erases them at run time",
+      "`noEmit`: tsx runs the `.ts` files, no build folder",
+    ],
+  },
+  {
+    id: "tsconfig",
+    title: "A tsconfig for the server (code)",
+    kind: "demo",
+    code: `{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": false,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": ["**/*.ts"]
+}`,
+    codeLanguage: "json",
+    codeFile: "webdev-server/tsconfig.json",
+    codeHighlightLines: [5, 6, 10],
   },
   {
     id: "express-intro",
@@ -92,7 +145,6 @@ npm init`,
     kind: "demo",
     bullets: [
       "Goal: answer `GET /hello` with Hello World! on port 4000",
-      "Install Express so colleagues and Render can `npm install`",
       "`index.ts` is a TypeScript module. It loads Express with `import`",
       "Port 4000 leaves 3000 for Next.js",
     ],
@@ -102,20 +154,14 @@ npm init`,
     links: ["http://localhost:4000/hello"],
     title: "Express GET /hello on 4000 (code)",
     kind: "demo",
-    codeBlocks: [
-      { code: "npm install express", language: "bash" },
-      {
-        file: "webdev-server/index.ts",
-        language: "ts",
-        code: `import express from "express";
+    code: `import express from "express";
 const app = express();
 app.get("/hello", (req, res) => {
   res.send("Hello World!");
 });
 app.listen(4000);`,
-        addedLines: [[3, 6]],
-      },
-    ],
+    codeLanguage: "ts",
+    codeFile: "webdev-server/index.ts",
   },
   {
     id: "visit",
@@ -126,7 +172,7 @@ app.listen(4000);`,
       "Stop with Ctrl+C. A later host can set `PORT`",
     ],
     codeBlocks: [
-      { code: "npx tsx index.ts", language: "bash" },
+      { code: "npm start   # tsx index.ts", language: "bash" },
       { code: "http://localhost:4000/hello", language: "text" },
     ],
     interactiveHint:
@@ -138,7 +184,7 @@ app.listen(4000);`,
     kind: "content",
     bullets: [
       "Sibling `webdev-server` — never inside the Next.js app",
-      "`Hello.ts` prints. `index.ts` listens on 4000",
+      "Type module, tsx, and types first. `index.ts` listens on 4000",
       "Express `app.get(\"/hello\", …)` plus `res.send`",
     ],
   },
@@ -147,8 +193,8 @@ app.listen(4000);`,
     title: "Next: nodemon, tsx, and routes",
     kind: "title",
     bullets: [
-      "Restart on save, npm scripts, `tsconfig.json`, then routes",
-      "§5.1.6–5.1.8: Nodemon, the tsx runner, and `Hello(app)`",
+      "Restart on save, how modules load, then routes",
+      "§5.1.6–5.1.8: Nodemon, module loading, and `Hello(app)`",
     ],
   },
 ];

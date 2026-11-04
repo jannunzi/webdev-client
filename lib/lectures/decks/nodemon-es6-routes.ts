@@ -12,7 +12,7 @@ export const NODEMON_ES6_ROUTES_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Nodemon, tsx, Routes",
-      "§5.1.6–5.1.8 · restart, TypeScript modules, Hello(app)",
+      "§5.1.6–5.1.8 · restart, module loading, Hello(app)",
     ],
   },
   {
@@ -22,12 +22,22 @@ export const NODEMON_ES6_ROUTES_SLIDES: LectureSlide[] = [
     bullets: [
       "React already reloads. Node does not unless you install nodemon",
       "Prefer `--save-dev` so `package.json` records the tool",
-      "`--exec tsx` restarts the `.ts` server through tsx",
+      "Add a `dev` script next to `start`. It restarts through tsx",
     ],
-    code: `npm install nodemon --save-dev
-npx nodemon --exec tsx index.ts
-# later: npm run dev   (the script in 5.1.7)`,
-    codeLanguage: "bash",
+    codeBlocks: [
+      {
+        file: "webdev-server/package.json",
+        language: "json",
+        code: `{
+  "scripts": {
+    "dev": "nodemon --exec tsx index.ts",
+    "start": "tsx index.ts"
+  }
+}`,
+        addedLines: [3],
+      },
+      { code: "npm install nodemon --save-dev\nnpm run dev", language: "bash" },
+    ],
   },
   {
     id: "two-routes",
@@ -55,70 +65,22 @@ app.listen(4000);`,
     ],
   },
   {
-    id: "tsx-intro",
-    title: "TypeScript modules and tsx",
+    id: "modules-intro",
+    title: "How server modules load",
     kind: "demo",
     bullets: [
-      "Server files are TypeScript modules: `import`, no `require()`",
-      "Record `\"type\": \"module\"` plus `dev` and `start` scripts",
-      "tsx is a runner, not a file type. `index.ts` stays `index.ts`",
-      "`start` is what Render runs; tsx sits in `dependencies`",
+      "Every server file is a TypeScript module: `import`, no `require()`",
+      "Relative imports omit the extension. `./Hello` loads `Hello.ts`",
+      "JSON imports directly, thanks to `resolveJsonModule`",
     ],
   },
   {
-    id: "tsx",
-    title: "TypeScript modules and tsx (code)",
+    id: "modules",
+    title: "How server modules load (code)",
     kind: "demo",
-    code: `{
-  "type": "module",
-  "scripts": {
-    "dev": "nodemon --exec tsx index.ts",
-    "start": "tsx index.ts"
-  },
-  "dependencies": {
-    "express": "^5.1.0",
-    "tsx": "^4.20.5"
-  }
-}`,
-    codeLanguage: "json",
-    codeFile: "webdev-server/package.json",
-    codeHighlightLines: [2, [3, 6], 9],
-  },
-  {
-    id: "tsconfig-intro",
-    title: "A tsconfig for the server",
-    kind: "demo",
-    bullets: [
-      "Goal: the editor understands extensionless and JSON imports",
-      "`./Hello` loads `Hello.ts`. `./courses.json` imports directly",
-      "Types are dev dependencies. `noEmit`: no build folder",
-    ],
-  },
-  {
-    id: "tsconfig",
-    title: "A tsconfig for the server (code)",
-    kind: "demo",
-    codeBlocks: [
-      { code: "npm i -D typescript@^5.9.3 @types/node@^22 @types/express", language: "bash" },
-      {
-        file: "webdev-server/tsconfig.json",
-        language: "json",
-        code: `{
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "strict": false,
-    "skipLibCheck": true,
-    "noEmit": true
-  },
-  "include": ["**/*.ts"]
-}`,
-        highlightLines: [5, 6, 10],
-      },
-    ],
+    code: `import Hello from "./Hello"; // loads Hello.ts
+import courses from "./courses.json"; // §5.4.1`,
+    codeLanguage: "ts",
   },
   {
     id: "hello-fn-intro",
@@ -176,7 +138,7 @@ app.listen(4000);`,
     kind: "content",
     bullets: [
       "`npm run dev` is nodemon + tsx. `npm start` is `tsx index.ts`",
-      "`tsconfig.json`: extensionless imports and JSON modules",
+      "Extensionless relative imports; JSON imports directly",
       "Group routes in files that receive `app`",
     ],
   },

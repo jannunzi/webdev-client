@@ -1356,8 +1356,8 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-account-pages"], 22);
     assert.equal(counts["kambaz-course-enrollments"], 21);
     assert.equal(counts["kambaz-people-table"], 12);
-    assert.equal(counts["http-server"], 12);
-    assert.equal(counts["nodemon-es6-routes"], 12);
+    assert.equal(counts["http-server"], 15);
+    assert.equal(counts["nodemon-es6-routes"], 10);
     assert.equal(counts["lab5-env"], 10);
     assert.equal(counts["path-and-query"], 11);
     assert.equal(counts["remote-objects"], 9);
@@ -3070,14 +3070,16 @@ describe("lecture decks", () => {
     const http = slideText("http-server");
     assert.match(http, /webdev-server/);
     assert.match(http, /sibling/);
-    assert.match(http, /Hello\.ts/);
+    assert.doesNotMatch(http, /Hello\.ts/);
+    assert.match(http, /"type": "module"/);
+    assert.match(http, /typescript@\^5\.9\.3/);
     assert.match(http, /app\.get\("\/hello"/);
     assert.match(http, /localhost:4000\/hello/);
     assert.doesNotMatch(http, /Kanbas/);
 
     const nodemon = slideText("nodemon-es6-routes");
     assert.match(nodemon, /nodemon/);
-    assert.match(nodemon, /"type": "module"/);
+    assert.match(nodemon, /courses\.json/);
     assert.match(nodemon, /Hello\(app\)/);
     assert.match(nodemon, /Life is good!/);
 
@@ -3952,7 +3954,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 265);
+    assert.equal(intros, 266);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
