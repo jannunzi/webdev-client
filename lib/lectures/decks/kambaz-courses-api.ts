@@ -54,8 +54,8 @@ export default function CoursesDao(db) {
   }
   return { findAllCourses, findCoursesForEnrolledUser };
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Courses/dao.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/dao.ts",
     codeHighlightLines: [[6, 13]],
   },
   {
@@ -71,7 +71,7 @@ export default function CoursesDao(db) {
     id: "routes",
     title: "GET /api/courses and mine (code)",
     kind: "demo",
-    code: `import CoursesDao from "./dao.js";
+    code: `import CoursesDao from "./dao";
 export default function CourseRoutes(app, db) {
   const dao = CoursesDao(db);
   const findAllCourses = (req, res) => {
@@ -92,8 +92,8 @@ export default function CourseRoutes(app, db) {
   app.get("/api/courses", findAllCourses);
   app.get("/api/users/:userId/courses", findCoursesForEnrolledUser);
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Courses/routes.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/routes.ts",
     codeHighlightLines: [[9, 16], [19, 20]],
   },
   {
@@ -152,8 +152,8 @@ export const findMyCourses = async () => {
     ],
     code: `app.get("/api/courses/:courseId/modules", findModulesForCourse);
 app.post("/api/courses/:courseId/modules", createModuleForCourse);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Modules/routes.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Modules/routes.ts",
   },
   {
     id: "recap",

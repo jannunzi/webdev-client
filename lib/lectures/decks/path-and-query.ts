@@ -52,8 +52,8 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
   app.get("/lab5/add/:a/:b", add);
   app.get("/lab5/subtract/:a/:b", subtract);
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/PathParameters.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/PathParameters.ts",
     codeHighlightLines: [3, 5, [11, 12]],
   },
   {
@@ -64,15 +64,15 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
       "Confirm `/lab5/add/6/4` is 10 and `/lab5/subtract/6/4` is 2",
       "On your own: `/lab5/multiply/:a/:b` and `/lab5/divide/:a/:b`",
     ],
-    code: `import PathParameters from "./PathParameters.js";
+    code: `import PathParameters from "./PathParameters";
 export default function Lab5(app) {
   app.get("/lab5/welcome", (req, res) => {
     res.send("Welcome to Lab 5");
   });
   PathParameters(app);
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/index.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/index.ts",
     codeAddedLines: [1, 6],
   },
   {
@@ -126,8 +126,8 @@ const [b, setB] = useState("23");
   };
   app.get("/lab5/calculator", calculator);
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/QueryParameters.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/QueryParameters.ts",
     codeHighlightLines: [3, [5, 13], 17],
   },
   {

@@ -34,8 +34,8 @@ const findUsersByPartialName = (partialName) => {
     ],
   });
 };`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/dao.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
     codeAddedLines: [[1, 11]],
   },
   {
@@ -67,8 +67,8 @@ const findUsersByPartialName = (partialName) => {
   const users = await dao.findAllUsers();
   res.json(users);
 };`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/routes.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeAddedLines: [[2, 12]],
   },
   {
@@ -105,8 +105,8 @@ const findUserById = async (req, res) => {
   res.json(user);
 };
 app.get("/api/users/:userId", findUserById);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/dao.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
     codeAddedLines: [[2, 6]],
   },
   {
@@ -139,8 +139,8 @@ app.delete("/api/users/:userId", async (req, res) => {
   const status = await dao.deleteUser(req.params.userId);
   res.json(status);
 });`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/dao.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
     codeAddedLines: [[1, 5]],
   },
   {
@@ -170,8 +170,8 @@ const updateUser = async (req, res) => {
   res.json(currentUser);
 };
 app.put("/api/users/:userId", updateUser);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/routes.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeHighlightLines: [2, [8, 10]],
   },
   {
@@ -191,8 +191,8 @@ const createUser = async (req, res) => {
   res.json(user);
 };
 app.post("/api/users", createUser);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/routes.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeAddedLines: [[5, 9]],
     embed: "lab6-users",
   },

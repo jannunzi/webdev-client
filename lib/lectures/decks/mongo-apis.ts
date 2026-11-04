@@ -50,8 +50,8 @@ const signup = async (req, res) => {
   req.session["currentUser"] = currentUser;
   res.json(currentUser);
 };`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/routes.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeHighlightLines: [1, 3, 13, 18],
     embed: "kambaz-styled-signin",
   },
@@ -64,8 +64,8 @@ const signup = async (req, res) => {
       "Empty `find()` returns every document in `users`",
     ],
     code: `const findAllUsers = () => model.find();`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/dao.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
   },
   {
     id: "find-all-route",
@@ -80,8 +80,8 @@ const signup = async (req, res) => {
   res.json(users);
 };
 app.get("/api/users", findAllUsers);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/routes.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeAddedLines: [[1, 5]],
   },
   {

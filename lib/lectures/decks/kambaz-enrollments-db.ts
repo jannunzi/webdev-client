@@ -51,8 +51,8 @@ const enrollmentSchema = new mongoose.Schema({
 },
 { collection: "enrollments" });
 export default enrollmentSchema;`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Enrollments/schema.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Enrollments/schema.ts",
     codeHighlightLines: [[4, 5], [9, 12], 15],
   },
   {
@@ -67,8 +67,8 @@ export default enrollmentSchema;`,
   const enrollments = await model.find({ user: userId }).populate("course");
   return enrollments.map((enrollment) => enrollment.course);
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Enrollments/dao.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Enrollments/dao.ts",
     codeHighlightLines: [2, 3],
   },
   {
@@ -94,8 +94,8 @@ const deleteCourse = async (req, res) => {
   const status = await dao.deleteCourse(courseId);
   res.send(status);
 };`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Courses/routes.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/routes.ts",
     codeAddedLines: [[5, 10]],
   },
   {
@@ -123,8 +123,8 @@ function unenrollUserFromCourse(user, course) {
 }
 app.post("/api/users/:uid/courses/:cid", enrollUserInCourse);
 app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Enrollments/dao.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Enrollments/dao.ts",
     codeHighlightLines: [[11, 12]],
   },
   {
@@ -141,8 +141,8 @@ app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);`,
   res.json(users);
 };
 app.get("/api/courses/:cid/users", findUsersForCourse);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Courses/routes.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/routes.ts",
     codeAddedLines: [[1, 6]],
     embed: "kambaz-styled-people",
   },

@@ -30,7 +30,7 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
     title: "res.json sends an object",
     kind: "demo",
     bullets: [
-      "Import in `Lab5/index.js` and visit `/lab5/assignment`",
+      "Import in `Lab5/index.ts` and visit `/lab5/assignment`",
       "Get Assignment is a hyperlink to the raw JSON",
     ],
   },
@@ -52,8 +52,8 @@ export default function WorkingWithObjects(app) {
   };
   app.get("/lab5/assignment", getAssignment);
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/WorkingWithObjects.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithObjects.ts",
     codeHighlightLines: [[10, 13]],
   },
   {
@@ -68,8 +68,8 @@ export default function WorkingWithObjects(app) {
   res.json(assignment.title);
 };
 app.get("/lab5/assignment/title", getAssignmentTitle);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/WorkingWithObjects.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithObjects.ts",
     codeAddedLines: [[1, 4]],
   },
   {
@@ -86,8 +86,8 @@ app.get("/lab5/assignment/title", getAssignmentTitle);`,
   res.json(assignment);
 };
 app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Lab5/WorkingWithObjects.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithObjects.ts",
     codeAddedLines: [[1, 6]],
   },
   {

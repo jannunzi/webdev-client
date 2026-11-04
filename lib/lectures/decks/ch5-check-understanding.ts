@@ -73,7 +73,7 @@ export const CH5_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Copy courses and users JSON into `webdev-server/Kambaz`",
-      "§5.4.1: `.json` becomes `.js` with `export default`",
+      "§5.4.1: JSON files stay JSON and are imported directly",
     ],
   },
 ];

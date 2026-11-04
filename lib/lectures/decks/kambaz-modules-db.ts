@@ -48,8 +48,8 @@ const schema = new mongoose.Schema({
   course: String,
 });
 export default schema;`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Modules/schema.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Modules/schema.ts",
     codeHighlightLines: [6],
   },
   {
@@ -76,8 +76,8 @@ const findModulesForCourse = async (req, res) => {
   res.json(modules);
 };
 app.get("/api/courses/:courseId/modules", findModulesForCourse);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Modules/dao.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Modules/dao.ts",
     codeAddedLines: [[5, 10]],
   },
   {
@@ -92,8 +92,8 @@ app.get("/api/courses/:courseId/modules", findModulesForCourse);`,
   const newModule = { ...module, _id: uuidv4() };
   return model.create(newModule);
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Modules/dao.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Modules/dao.ts",
     codeAddedLines: [[1, 4]],
   },
   {
@@ -110,8 +110,8 @@ app.get("/api/courses/:courseId/modules", findModulesForCourse);`,
 function updateModule(moduleId, moduleUpdates) {
   return model.updateOne({ _id: moduleId }, { $set: moduleUpdates });
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Modules/dao.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Modules/dao.ts",
     codeAddedLines: [[1, 6]],
     embed: "kambaz-styled-modules",
   },

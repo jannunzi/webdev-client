@@ -1356,8 +1356,8 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-account-pages"], 22);
     assert.equal(counts["kambaz-course-enrollments"], 21);
     assert.equal(counts["kambaz-people-table"], 12);
-    assert.equal(counts["http-server"], 11);
-    assert.equal(counts["nodemon-es6-routes"], 9);
+    assert.equal(counts["http-server"], 12);
+    assert.equal(counts["nodemon-es6-routes"], 12);
     assert.equal(counts["lab5-env"], 10);
     assert.equal(counts["path-and-query"], 11);
     assert.equal(counts["remote-objects"], 9);
@@ -3070,7 +3070,7 @@ describe("lecture decks", () => {
     const http = slideText("http-server");
     assert.match(http, /webdev-server/);
     assert.match(http, /sibling/);
-    assert.match(http, /Hello\.js/);
+    assert.match(http, /Hello\.ts/);
     assert.match(http, /app\.get\("\/hello"/);
     assert.match(http, /localhost:4000\/hello/);
     assert.doesNotMatch(http, /Kanbas/);
@@ -3126,7 +3126,7 @@ describe("lecture decks", () => {
     const migrate = slideText("kambaz-migrate-db");
     assert.match(migrate, /Kambaz\/Database/);
     assert.match(migrate, /export default/);
-    assert.match(migrate, /courses\.js/);
+    assert.match(migrate, /courses\.json/);
 
     const accountRest = slideText("kambaz-account-rest");
     assert.match(accountRest, /\/api\/users\/signin/);
@@ -3952,7 +3952,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 262);
+    assert.equal(intros, 265);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {

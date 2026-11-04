@@ -40,8 +40,8 @@ export default function UsersDao(db) {
     users.find((user) => user.username === username && user.password === password);
   return { createUser, findUserByCredentials };
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/dao.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
     codeHighlightLines: [[4, 8], [9, 10]],
   },
   {
@@ -52,7 +52,7 @@ export default function UsersDao(db) {
       "Register after CORS, the session (server memory of who is signed in), and `express.json()`",
       "Pass `db` into the route module",
     ],
-    code: `import UsersDao from "./dao.js";
+    code: `import UsersDao from "./dao";
 export default function UserRoutes(app, db) {
   const dao = UsersDao(db);
   const signup = (req, res) => { };
@@ -64,8 +64,8 @@ export default function UserRoutes(app, db) {
   app.post("/api/users/signout", signout);
   app.post("/api/users/profile", profile);
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/routes.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeHighlightLines: [[8, 11]],
   },
   {
@@ -83,8 +83,8 @@ export default function UserRoutes(app, db) {
   res.json(currentUser);
 };
 app.post("/api/users/signin", signin);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/routes.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeHighlightLines: [[2, 4]],
   },
   {
@@ -152,8 +152,8 @@ const signin = async () => {
   res.json(currentUser);
 };
 app.post("/api/users/signup", signup);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Users/routes.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeHighlightLines: [[3, 6]],
   },
   {

@@ -43,8 +43,8 @@ const courseSchema = new mongoose.Schema({
 },
 { collection: "courses" });
 export default courseSchema;`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Courses/schema.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/schema.ts",
     codeHighlightLines: [3, 9],
   },
   {
@@ -55,11 +55,11 @@ export default courseSchema;`,
       "Same pattern as `UserModel` — one compiled model per process",
     ],
     code: `import mongoose from "mongoose";
-import schema from "./schema.js";
+import schema from "./schema";
 const model = mongoose.model("CourseModel", schema);
 export default model;`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Courses/model.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/model.ts",
     codeAddedLines: [3],
   },
   {
@@ -75,7 +75,7 @@ export default model;`,
     id: "find",
     title: "find() replaces Database.courses (code)",
     kind: "demo",
-    code: `import model from "./model.js";
+    code: `import model from "./model";
 
 function findAllCourses() {
   // return Database.courses;
@@ -93,8 +93,8 @@ async function findCoursesForEnrolledUser(userId) {
   );
   return enrolledCourses;
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Courses/dao.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/dao.ts",
     codeAddedLines: [5, [8, 18]],
   },
   {
@@ -128,8 +128,8 @@ const findCoursesForEnrolledUser = async (req, res) => {
   const courses = await dao.findCoursesForEnrolledUser(userId);
   res.json(courses);
 };`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Courses/routes.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/routes.ts",
     codeHighlightLines: [1, 2, 6, 16],
   },
   {
@@ -157,8 +157,8 @@ const createCourse = async (req, res) => {
   res.json(newCourse);
 };
 app.post("/api/courses", createCourse);`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Courses/dao.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/dao.ts",
     codeAddedLines: [[6, 12]],
   },
   {
@@ -175,8 +175,8 @@ app.post("/api/courses", createCourse);`,
 function updateCourse(courseId, courseUpdates) {
   return model.updateOne({ _id: courseId }, { $set: courseUpdates });
 }`,
-    codeLanguage: "js",
-    codeFile: "webdev-server/Kambaz/Courses/dao.js",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/dao.ts",
     codeAddedLines: [[1, 6]],
     embed: "kambaz-styled-dashboard",
   },
