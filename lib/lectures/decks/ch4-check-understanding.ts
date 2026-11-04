@@ -7,7 +7,7 @@ export const CH4_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · Check Your Understanding",
-      "§4.9 · a self-check before Kambaz state",
+      "A self-check before Kambaz state",
     ],
   },
   {
@@ -37,9 +37,9 @@ export const CH4_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
     title: "Lab 4 coverage before you quiz",
     kind: "content",
     bullets: [
-      "§4.8 is the Lab 4 checklist — import every component in order",
+      "The Lab 4 checklist says — import every component in order",
       "Complete each section’s On your own and With AI blocks",
-      "Redux in §4.6 is literacy. Kambaz will not use those reducers",
+      "Redux is literacy. Kambaz will not use those reducers",
       "Kambaz later in the chapter is the application you keep",
     ],
   },
@@ -69,7 +69,7 @@ export const CH4_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Dashboard `useState` alone would not name a new course on Home",
-      "§4.10.1: Zustand holds the published list",
+      "Zustand holds the published list",
     ],
   },
 ];

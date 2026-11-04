@@ -7,7 +7,7 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Array Search",
-      "§3.4.5–3.4.8 · find one, or keep many",
+      "Find one, or keep many",
     ],
   },
   {
@@ -173,7 +173,7 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "`reduce` collapses an array to one value",
-      "§3.4.9–3.4.10: a sum, then `JSON.stringify`",
+      "A sum, then `JSON.stringify`",
     ],
   },
 ];

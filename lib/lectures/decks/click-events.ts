@@ -7,7 +7,7 @@ export const CLICK_EVENTS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · Click Events",
-      "§4.2.1 · `onClick` needs `\"use client\"`",
+      "`onClick` needs `\"use client\"`",
     ],
   },
   {
@@ -117,7 +117,7 @@ export default function ClickEvent() {
     kind: "title",
     bullets: [
       "A click often needs an argument or a parent callback",
-      "§4.2.2–4.2.3: closures (functions that remember values around them), then functions as props",
+      "Closures (functions that remember values around them), then functions as props",
     ],
   },
 ];

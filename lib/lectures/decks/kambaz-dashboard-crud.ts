@@ -7,7 +7,7 @@ export const KAMBAZ_DASHBOARD_CRUD_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · Dashboard Create Edit Delete",
-      "§4.10.2 · store list, local form draft",
+      "Store list, local form draft",
     ],
   },
   {
@@ -254,7 +254,7 @@ export default function CourseCard({
     kind: "title",
     bullets: [
       "Same sharing problem on Modules vs Home",
-      "§4.10.4: a dialog, then `modulesStore`",
+      "A dialog, then `modulesStore`",
     ],
   },
 ];

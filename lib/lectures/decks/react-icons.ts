@@ -7,7 +7,7 @@ export const REACT_ICONS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · React Icons",
-      "§2.2 · `ReactIconsSampler.tsx` — icons as React components",
+      "`ReactIconsSampler.tsx` — icons as React components",
     ],
   },
   {
@@ -138,7 +138,7 @@ export default function ReactIconsSampler() {
     bullets: [
       "Dashboard link → `AiOutlineDashboard`",
       "Account → `FaRegCircleUser` / `VscAccount`",
-      "Calendar, Inbox, checkmarks — pick a fitting family in §2.4",
+      "Calendar, Inbox, checkmarks — pick a fitting family for Kambaz",
       "Import the sampler into Lab 2 so it stays on the growing page",
     ],
   },
@@ -148,7 +148,7 @@ export default function ReactIconsSampler() {
     kind: "title",
     bullets: [
       "You can import an icon from a family path and size it with `className`",
-      "§2.3: scope Tailwind to `/labs/lab2/tailwind` and learn utility classes",
+      "Scope Tailwind to `/labs/lab2/tailwind` and learn utility classes",
     ],
   },
 ];

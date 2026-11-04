@@ -7,7 +7,7 @@ export const KAMBAZ_ENROLLMENTS_DB_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 6 · Enrollments M:N",
-      "§6.4.3 · a mapping collection",
+      "A mapping collection",
     ],
   },
   {
@@ -152,7 +152,7 @@ app.get("/api/courses/:cid/users", findUsersForCourse);`,
     title: "Assignments are 1:N too",
     kind: "content",
     bullets: [
-      "§6.4.4 On your own — schema, model, DAO, `await` the Chapter 5 routes",
+      "On your own — schema, model, DAO, `await` the Chapter 5 routes",
       "Own collection + `course` FK, or embed on the course",
       "`findAssignmentsForCourse`, create, update, delete — mirror modules",
     ],
@@ -174,7 +174,7 @@ app.get("/api/courses/:cid/users", findUsersForCourse);`,
     kind: "title",
     bullets: [
       "Branch `a6` in both repos. New Render. Canvas gets the Vercel URL",
-      "§6.5: checklist — Labs TOC, Atlas, then sign in remotely",
+      "Checklist — Labs TOC, Atlas, then sign in remotely",
     ],
   },
 ];

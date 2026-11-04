@@ -7,7 +7,7 @@ export const USE_EFFECT_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · Side Effects with useEffect",
-      "§4.7 · work that is not the return value",
+      "Work that is not the return value",
     ],
   },
   {
@@ -114,7 +114,7 @@ export default function Effect() {
     kind: "title",
     bullets: [
       "Move `useState` and `useEffect` logic into a `use` function",
-      "§4.7.1: share stateful logic between components",
+      "Share stateful logic between components",
     ],
   },
 ];

@@ -7,7 +7,7 @@ export const USESTATE_COUNTER_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · useState and the Counter",
-      "§4.2.4 · a setter that tells React to paint",
+      "A setter that tells React to paint",
     ],
   },
   {
@@ -162,7 +162,7 @@ export default function Counter() {
     bullets: [
       "An **effect** is code that reaches outside the component, such as reading the window size",
       "`useEffect(fn, deps)` runs `fn` after render and paint, and again only when a value in the **dependency array** `deps` changes",
-      "The §3.7.4 window demo read `window` in `useEffect`. The geolocation demo kept coordinates in `useState`",
+      "The window demo read `window` in `useEffect`. The geolocation demo kept coordinates in `useState`",
     ],
   },
   {
@@ -200,7 +200,7 @@ export default function Counter() {
     kind: "title",
     bullets: [
       "Boolean, string, date, object, and array — same hook",
-      "§4.2.5–4.2.9: `checked`, `value`, and spread copies",
+      "`checked`, `value`, and spread copies",
     ],
   },
 ];

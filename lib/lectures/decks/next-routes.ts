@@ -12,7 +12,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Next.js Server Routes",
-      "§5.3 · Route Handlers, not a replacement",
+      "Route Handlers, not a replacement",
     ],
   },
   {
@@ -28,11 +28,12 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "hello",
-    title: "GET /api/lab5/hello",
+    links: ["http://localhost:3000/api/lab5/hello"],
+    title: "Implementing GET /api/lab5/hello",
     kind: "demo",
     bullets: [
       "Not Express `/lab5/welcome`. Next.js serves this on 3000",
-      "`Response.json` sets `Content-Type` and serializes",
+      "`Response.json(obj)` turns the object into a JSON string and marks the reply as JSON",
     ],
     code: `export async function GET() {
   return Response.json({ message: "Hello from Lab 5 API!" });
@@ -43,7 +44,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "hello-ui-intro",
-    title: "Call the route from a component",
+    title: "Calling a Route Handler from React",
     kind: "demo",
     bullets: [
       "Goal: show the route’s JSON message on the page",
@@ -52,7 +53,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "hello-ui",
-    title: "Fetch the route on load",
+    title: "Fetching the Hello Route on Load",
     kind: "demo",
     code: "\"use client\";\n\nimport { useEffect, useState } from \"react\";\n\nexport default function HelloRoute() {\n  const [hello, setHello] = useState<{ message?: string }>({});\n  useEffect(() => {\n    fetch(\"/api/lab5/hello\")\n      .then((response) => response.json())\n      .then(setHello);\n  }, []);",
     codeLanguage: "tsx",
@@ -60,7 +61,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "hello-ui-part-2",
-    title: "Render the JSON message",
+    title: "Rendering the Hello JSON Message",
     kind: "demo",
     code: "  return (\n    <div id=\"wd-lab5-next-hello\">\n      <h4>GET /api/lab5/hello (Next.js Route Handler)</h4>\n      <pre>{JSON.stringify(hello, null, 2)}</pre>\n      <hr />\n    </div>\n  );\n}",
     codeLanguage: "tsx",
@@ -69,7 +70,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "hello-ui-live",
-    title: "HelloRoute: live demo",
+    title: "HelloRoute Live Demo",
     kind: "demo",
     bullets: [
       "The JSON message renders on load",
@@ -79,7 +80,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "calculator-intro",
-    title: "Calculator query parameters",
+    title: "Parsing Query Parameters in a Handler",
     kind: "demo",
     bullets: [
       "Read `a`, `b`, and `operation` from `request.nextUrl.searchParams`",
@@ -89,7 +90,8 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "calculator",
-    title: "Calculator query parameters (code)",
+    links: ["http://localhost:3000/api/lab5/calculator?a=34&b=23&operation=add"],
+    title: "Implementing the Calculator Handler",
     kind: "demo",
     code: `export async function GET(request: NextRequest) {
   const a = parseFloat(request.nextUrl.searchParams.get("a") ?? "");
@@ -126,7 +128,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "client-intro",
-    title: "A client calculator UI",
+    title: "Designing the Calculator UI",
     kind: "demo",
     bullets: [
       "Goal: two number inputs, an operation, and a Calculate button",
@@ -136,7 +138,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "client",
-    title: "Calculator state",
+    title: "Declaring the Calculator State",
     kind: "demo",
     code: "\"use client\";\n\nimport { useState } from \"react\";\n\nconst OPERATIONS = [\n  { label: \"+\", value: \"add\" },\n  { label: \"-\", value: \"subtract\" },\n  { label: \"\u00d7\", value: \"multiply\" },\n  { label: \"\u00f7\", value: \"divide\" },\n];\n\nexport default function CalculatorNextWebApiClient() {\n  const [a, setA] = useState(\"\");\n  const [b, setB] = useState(\"\");\n  const [operation, setOperation] = useState(\"add\");\n  const [result, setResult] = useState<number | null>(null);\n  const [error, setError] = useState<string | null>(null);\n  const [loading, setLoading] = useState(false);",
     codeLanguage: "tsx",
@@ -144,7 +146,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "client-part-2",
-    title: "Call the calculator route",
+    title: "Calling the Calculator Route",
     kind: "demo",
     code: "  const calculate = async (op?: string) => {\n    const nextOp = op ?? operation;\n    setOperation(nextOp);\n    setResult(null);\n    setError(null);\n    setLoading(true);\n    try {\n      const res = await fetch(\n        `/api/lab5/calculator?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}&operation=${nextOp}`,\n      );\n      const data = await res.json();",
     codeLanguage: "tsx",
@@ -153,7 +155,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "client-part-3",
-    title: "Handle the response",
+    title: "Handling the Calculator Response",
     kind: "demo",
     code: "      if (!res.ok) {\n        setError(data.error ?? \"Unknown error\");\n      } else {\n        setResult(data.result);\n      }\n    } catch {\n      setError(\"Failed to reach the server\");\n    } finally {\n      setLoading(false);\n    }\n  };\n  const operationSymbol =\n    OPERATIONS.find((op) => op.value === operation)?.label ?? \"\";",
     codeLanguage: "tsx",
@@ -162,7 +164,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "client-part-4",
-    title: "Input for A",
+    title: "Binding the Input for A",
     kind: "demo",
     code: "  return (\n    <div id=\"wd-lab5-next-calculator\" className=\"p-2\">\n      <h3>Calculator (Next.js Web API)</h3>\n      <label htmlFor=\"a-input\" className=\"mr-2\">\n        A:\n      </label>\n      <input\n        type=\"number\"\n        value={a}\n        placeholder=\"A\"\n        id=\"a-input\"\n        className=\"mb-2 rounded border border-neutral-300 px-2 py-1\"\n        onChange={(e) => setA(e.target.value)}\n      />\n      <br />",
     codeLanguage: "tsx",
@@ -171,7 +173,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "client-part-5",
-    title: "Input for B",
+    title: "Binding the Input for B",
     kind: "demo",
     code: "      <label htmlFor=\"b-input\" className=\"mr-2\">\n        B:\n      </label>\n      <input\n        type=\"number\"\n        value={b}\n        placeholder=\"B\"\n        id=\"b-input\"\n        className=\"mb-2 rounded border border-neutral-300 px-2 py-1\"\n        onChange={(e) => setB(e.target.value)}\n      />\n      <br />",
     codeLanguage: "tsx",
@@ -180,7 +182,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "client-part-6",
-    title: "Operation select",
+    title: "Selecting the Operation",
     kind: "demo",
     code: "      <label htmlFor=\"operation-select\" className=\"mr-2\">\n        Operation:\n      </label>\n      <select\n        id=\"operation-select\"\n        value={operation}\n        className=\"mb-2 rounded border border-neutral-300 px-2 py-1\"\n        onChange={(e) => {\n          calculate(e.target.value);\n        }}\n      >",
     codeLanguage: "tsx",
@@ -189,7 +191,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "client-part-7",
-    title: "Options and Calculate button",
+    title: "Adding Options and a Calculate Button",
     kind: "demo",
     code: "        {OPERATIONS.map((op) => (\n          <option key={op.value} value={op.value}>\n            {op.label}\n          </option>\n        ))}\n      </select>\n      <br />\n      <button\n        type=\"button\"\n        className=\"mt-2 rounded bg-blue-600 px-4 py-1.5 text-white disabled:opacity-50\"\n        disabled={loading || a === \"\" || b === \"\"}\n        onClick={() => calculate(operation)}\n      >\n        {loading ? \"Calculating...\" : \"Calculate\"}\n      </button>\n      <br />",
     codeLanguage: "tsx",
@@ -198,7 +200,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "client-part-8",
-    title: "Show the result or the error",
+    title: "Showing the Result or the Error",
     kind: "demo",
     code: "      {result !== null ? (\n        <p className=\"mt-2\">\n          Result: {a} {operationSymbol} {b} = {result}\n        </p>\n      ) : null}\n      {error ? <p className=\"mt-2 text-red-700\">{error}</p> : null}\n      <hr />\n    </div>\n  );\n}",
     codeLanguage: "tsx",
@@ -207,7 +209,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "client-live",
-    title: "Calculator: live demo",
+    title: "Calculator Live Demo",
     kind: "demo",
     bullets: [
       "Enter A and B, pick an operation, Calculate",
@@ -217,7 +219,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "recap",
-    title: "Next.js routes recap",
+    title: "Recap: Next.js Route Handlers",
     kind: "content",
     bullets: [
       "`app/api/.../route.ts` exports the HTTP method",
@@ -227,11 +229,11 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "next-up",
-    title: "Next: check your understanding",
+    title: "Next: Check Your Understanding",
     kind: "title",
     bullets: [
       "A 10-item self-check before Kambaz moves onto Express",
-      "§5-check: CORS, axios, and the calculator",
+      "CORS, axios, and the calculator",
     ],
   },
 ];

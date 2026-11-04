@@ -12,7 +12,7 @@ export const REMOTE_ARRAYS_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Remote Arrays",
-      "§5.2.4 · CRUD on a todos collection",
+      "CRUD on a todos collection",
     ],
   },
   {
@@ -28,11 +28,11 @@ export const REMOTE_ARRAYS_SLIDES: LectureSlide[] = [
   {
     id: "get-all",
     links: ["http://localhost:4000/lab5/todos"],
-    title: "GET the whole todos array",
+    title: "Implementing GET All Todos",
     kind: "demo",
     bullets: [
       "Visit `/lab5/todos` and confirm four seed tasks",
-      "A Get Todos link on the client retrieves the same JSON",
+      "Try it: the link below returns the same JSON",
     ],
     code: `let todos = [
   { id: 1, title: "Task 1", completed: false },
@@ -51,9 +51,33 @@ export default function WorkingWithArrays(app) {
     codeHighlightLines: [[8, 11]],
   },
   {
+    id: "client",
+    title: "Linking to Get All Todos",
+    kind: "demo",
+    bullets: [
+      "Get Todos navigates to the route you just wrote",
+    ],
+    code: `const API = \`\${HTTP_SERVER}/lab5/todos\`;
+<a id="wd-retrieve-todos" href={API}>Get Todos</a>`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
+    codeHighlightLines: [2],
+  },
+  {
+    id: "id-how",
+    title: "Finding an Item by ID",
+    kind: "content",
+    bullets: [
+      "Pattern `/lab5/todos/:id`, URL `/lab5/todos/1`",
+      "Express builds `req.params = { id: \"1\" }`",
+      "Ids in the array are numbers, so compare after `parseInt`",
+      "`find` returns the one todo whose `id` matches",
+    ],
+  },
+  {
     id: "get-id",
     links: ["http://localhost:4000/lab5/todos/1"],
-    title: "GET one todo by id",
+    title: "Implementing GET a Todo by ID",
     kind: "demo",
     bullets: [
       "`/lab5/todos/:id` finds the matching object",
@@ -70,18 +94,50 @@ app.get("/lab5/todos/:id", getTodoById);`,
     codeAddedLines: [[1, 6]],
   },
   {
+    id: "client-by-id",
+    title: "Linking to Get a Todo by ID",
+    kind: "demo",
+    bullets: [
+      "The input picks the ID. The link puts it in the path",
+    ],
+    code: "const [todo, setTodo] = useState({ id: \"1\" });\n<a id=\"wd-retrieve-todo-by-id\" href={`${API}/${todo.id}`}>\n  Get Todo by ID\n</a>\n<input id=\"wd-todo-id\" value={todo.id}\n  onChange={(e) => setTodo({ ...todo, id: e.target.value })} />",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
+  },
+  {
+    id: "filter-server",
+    links: ["http://localhost:4000/lab5/todos?completed=true"],
+    title: "Filtering Todos by Completed",
+    kind: "demo",
+    bullets: [
+      "`req.query.completed` is a string, so compare with `\"true\"`",
+      "No `completed` in the URL: return every todo",
+    ],
+    code: "const getTodos = (req, res) => {\n  const { completed } = req.query;\n  if (completed !== undefined) {\n    const completedBool = completed === \"true\";\n    res.json(todos.filter((t) => t.completed === completedBool));\n    return;\n  }\n  res.json(todos);\n};",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
+  },
+  {
+    id: "client-filter",
+    title: "Filtering Todos with a Query String",
+    kind: "demo",
+    code: "<a id=\"wd-retrieve-completed-todos\" href={`${API}?completed=true`}>\n  Get Completed Todos\n</a>",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
+  },
+  {
     id: "create-delete-intro",
-    title: "Create and delete via GET first",
+    title: "Creating and Deleting with GET",
     kind: "demo",
     bullets: [
       "GET `/create` pushes a New Task. GET `/:id/delete` splices it out",
-      "Misusing GET is a teaching step. §5.2.6 switches to POST and DELETE",
+      "Misusing GET is a teaching step. The Async HTTP and JSON deck switches to POST and DELETE",
     ],
   },
   {
     id: "create-delete",
     links: ["http://localhost:4000/lab5/todos/create", "http://localhost:4000/lab5/todos/1/delete"],
-    title: "Create and delete via GET first (code)",
+    title: "Writing the Create and Delete Routes",
     kind: "demo",
     code: `const createNewTodo = (req, res) => {
   const newTodo = {
@@ -105,41 +161,8 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
     codeHighlightLines: [[16, 17]],
   },
   {
-    id: "client",
-    title: "A Get Todos hyperlink",
-    kind: "demo",
-    bullets: [
-      "Build more links for create, delete, and title updates",
-      "On your own: completed and description path routes",
-    ],
-    code: `const API = \`\${HTTP_SERVER}/lab5/todos\`;
-<a id="wd-retrieve-todos" href={API}>Get Todos</a>`,
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
-    codeHighlightLines: [2],
-  },
-  {
-    id: "client-by-id",
-    title: "Get one todo by ID",
-    kind: "demo",
-    bullets: [
-      "The input picks the ID. The link puts it in the path",
-    ],
-    code: "const [todo, setTodo] = useState({ id: \"1\" });\n<a id=\"wd-retrieve-todo-by-id\" href={`${API}/${todo.id}`}>\n  Get Todo by ID\n</a>\n<input id=\"wd-todo-id\" value={todo.id}\n  onChange={(e) => setTodo({ ...todo, id: e.target.value })} />",
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
-  },
-  {
-    id: "client-filter",
-    title: "Filter with a query string",
-    kind: "demo",
-    code: "<a id=\"wd-retrieve-completed-todos\" href={`${API}?completed=true`}>\n  Get Completed Todos\n</a>",
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
-  },
-  {
     id: "client-create",
-    title: "Create a todo",
+    title: "Linking to Create a Todo",
     kind: "demo",
     code: "<a id=\"wd-create-todo\" href={`${API}/create`}>Create Todo</a>",
     codeLanguage: "tsx",
@@ -147,15 +170,28 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
   },
   {
     id: "client-remove",
-    title: "Remove a todo by ID",
+    title: "Linking to Remove a Todo by ID",
     kind: "demo",
     code: "<a id=\"wd-remove-todo\" href={`${API}/${todo.id}/delete`}>\n  Remove Todo with ID = {todo.id}\n</a>",
     codeLanguage: "tsx",
     codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
   },
   {
+    id: "title-server",
+    links: ["http://localhost:4000/lab5/todos/1/title/NewTitle"],
+    title: "Implementing the Update Title Route",
+    kind: "demo",
+    bullets: [
+      "The path carries both the todo id and its new title",
+      "On your own: completed and description routes the same way",
+    ],
+    code: "const updateTodoTitle = (req, res) => {\n  const { id, title } = req.params;\n  const todo = todos.find((t) => t.id === parseInt(id));\n  todo.title = title;\n  res.json(todos);\n};\napp.get(\"/lab5/todos/:id/title/:title\", updateTodoTitle);",
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithArrays.ts",
+  },
+  {
     id: "client-update",
-    title: "Update a todo title",
+    title: "Linking to Update a Todo Title",
     kind: "demo",
     bullets: [
       "Two inputs: which todo, and its new title",
@@ -165,8 +201,20 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
     codeFile: "app/labs/lab5/WorkingWithArrays.tsx",
   },
   {
+    id: "arrays-click",
+    title: "Mapping Links to Array Routes",
+    kind: "content",
+    bullets: [
+      "`API` is `http://localhost:4000/lab5/todos`",
+      "`API` → every todo. `API/1` → the todo with id 1",
+      "`API?completed=true` → only finished todos",
+      "`API/create` → appends New Task and returns the array",
+      "`API/1/delete` → removes todo 1 and returns the array",
+    ],
+  },
+  {
     id: "client-live",
-    title: "WorkingWithArrays: live demo",
+    title: "WorkingWithArrays Live Demo",
     kind: "demo",
     bullets: [
       "Get Todos, then Get Todo by ID and Get Completed",
@@ -177,7 +225,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
   },
   {
     id: "recap",
-    title: "Remote arrays recap",
+    title: "Recap: Remote Arrays",
     kind: "content",
     bullets: [
       "`res.json(todos)` for the collection. `find` / `splice` for one id",
@@ -187,11 +235,11 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
   },
   {
     id: "next-up",
-    title: "Next: axios, CORS, JSON body",
+    title: "Next: Asynchronous HTTP with Axios",
     kind: "title",
     bullets: [
       "Stay on the page. Then POST, PUT, and DELETE for real",
-      "§5.2.5–5.2.6: AJAX (requests without a page reload), CORS (letting another origin call the server), `express.json()`",
+      "AJAX (requests without a page reload), CORS (letting another origin call the server), `express.json()`",
     ],
   },
 ];

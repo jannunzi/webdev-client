@@ -7,7 +7,7 @@ export const TAILWIND_RESPONSIVE_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · Tailwind Responsive",
-      "§2.3.4 · five small ideas, then the card",
+      "Five small ideas, then the card",
     ],
   },
   {
@@ -16,7 +16,7 @@ export const TAILWIND_RESPONSIVE_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "A **responsive** page changes as the viewport — the browser window — gets wider",
-      "As in §2.1.20, a **breakpoint** is a viewport width at which styles change. Tailwind names five of those widths",
+      "As with media queries, a **breakpoint** is a viewport width at which styles change. Tailwind names five of those widths",
       "Five small components each teach one idea. The card at the end combines them",
     ],
   },
@@ -26,7 +26,7 @@ export const TAILWIND_RESPONSIVE_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "Tailwind is **mobile-first**: no prefix means every width, and a prefix applies from that breakpoint up",
-      "§2.1.17: 1rem is usually 16px, so 48rem is 768px",
+      "1rem is usually 16px, so 48rem is 768px",
       "`sm:` 40rem (640px)",
       "`md:` 48rem (768px)",
       "`lg:` 64rem (1024px)",
@@ -137,7 +137,7 @@ export const TAILWIND_RESPONSIVE_SLIDES: LectureSlide[] = [
     title: "Grid uses the prefixes",
     kind: "content",
     bullets: [
-      "**CSS Grid** places children into columns, with a gap between the cells. `grid` turns the grid on, `grid-cols-*` sets how many columns, and `gap-4` sets that gap. §2.3.6 goes further with grid utilities",
+      "**CSS Grid** places children into columns, with a gap between the cells. `grid` turns the grid on, `grid-cols-*` sets how many columns, and `gap-4` sets that gap. The next deck goes further with grid utilities",
       "Column count uses those same prefixes. A later prefix overrides an earlier one from its width up",
     ],
   },
@@ -376,7 +376,7 @@ export default function TailwindLab() {
     kind: "title",
     bullets: [
       "You can change color, visibility, direction, columns, spacing, and type with a prefix",
-      "§2.3.5: `blur-*` on an image, then §2.3.6 grid",
+      "`blur-*` on an image, then grid",
     ],
   },
 ];

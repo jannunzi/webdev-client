@@ -12,12 +12,12 @@ export const NODEMON_ES6_ROUTES_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Nodemon, tsx, Routes",
-      "§5.1.6–5.1.8 · restart, module loading, Hello(app)",
+      "Restart, module loading, Hello(app)",
     ],
   },
   {
     id: "nodemon",
-    title: "Nodemon restarts on save",
+    title: "Restarting the Server with Nodemon",
     kind: "demo",
     bullets: [
       "React already reloads. Node does not unless you install nodemon",
@@ -42,7 +42,7 @@ export const NODEMON_ES6_ROUTES_SLIDES: LectureSlide[] = [
   {
     id: "two-routes",
     links: ["http://localhost:4000/hello", "http://localhost:4000/"],
-    title: "Change /hello and add /",
+    title: "Adding a Root Route Beside /hello",
     kind: "demo",
     bullets: [
       "Edit the string to `Life is good!` and refresh — nodemon restarts",
@@ -66,7 +66,7 @@ app.listen(4000);`,
   },
   {
     id: "modules-intro",
-    title: "How server modules load",
+    title: "Loading ES6 Modules on the Server",
     kind: "demo",
     bullets: [
       "Every server file is a TypeScript module: `import`, no `require()`",
@@ -76,7 +76,7 @@ app.listen(4000);`,
   },
   {
     id: "modules",
-    title: "How server modules load (code)",
+    title: "Importing Modules and JSON Files",
     kind: "demo",
     code: `import Hello from "./Hello"; // loads Hello.ts
 import courses from "./courses.json";`,
@@ -84,7 +84,7 @@ import courses from "./courses.json";`,
   },
   {
     id: "hello-fn-intro",
-    title: "Move hello routes to Hello.ts",
+    title: "Moving Hello Routes to Hello.ts",
     kind: "demo",
     bullets: [
       "Too many routes will not fit in `index.ts`",
@@ -95,7 +95,7 @@ import courses from "./courses.json";`,
   {
     id: "hello-fn",
     links: ["http://localhost:4000/hello", "http://localhost:4000/"],
-    title: "Move hello routes to Hello.ts (code)",
+    title: "Exporting Hello Routes from Hello.ts",
     kind: "demo",
     code: `import type { Express, Request, Response } from "express";
 
@@ -116,7 +116,7 @@ export default function Hello(app: Express) {
   {
     id: "wire-hello",
     links: ["http://localhost:4000/hello", "http://localhost:4000/"],
-    title: "index.ts creates app once",
+    title: "Passing app to Hello from index.ts",
     kind: "demo",
     bullets: [
       "Import `./Hello` — no extension. tsx loads `Hello.ts`",
@@ -134,7 +134,7 @@ app.listen(4000);`,
   },
   {
     id: "recap",
-    title: "Nodemon and routes recap",
+    title: "Recap: Nodemon and ES6 Routes",
     kind: "content",
     bullets: [
       "`npm run dev` is nodemon + tsx. `npm start` is `tsx index.ts`",
@@ -144,11 +144,11 @@ app.listen(4000);`,
   },
   {
     id: "next-up",
-    title: "Next: Lab 5 environment",
+    title: "Next: The Lab 5 Environment",
     kind: "title",
     bullets: [
       "A welcome route, then never hard-code localhost",
-      "§5.2.1: `const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER`",
+      "`const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER`",
     ],
   },
 ];

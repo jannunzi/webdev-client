@@ -7,7 +7,7 @@ export const CSS_FLOAT_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · Float",
-      "Chapter 2 §2.1.17–2.1.18 · wrap text, then a float “grid”",
+      "Wrap text, then a float “grid”",
     ],
   },
   {
@@ -212,7 +212,7 @@ export default function Float() {
     kind: "title",
     bullets: [
       "Float wraps text and can fake columns if you clear each row",
-      "§2.1.19: `display: flex` — rows without floats, clearing, or percentage math",
+      "`display: flex` — rows without floats, clearing, or percentage math",
     ],
   },
 ];

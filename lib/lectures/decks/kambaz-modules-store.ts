@@ -7,7 +7,7 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · A Modules Store",
-      "§4.10.4 · dialog first, then share the array",
+      "Dialog first, then share the array",
     ],
   },
   {
@@ -114,7 +114,7 @@ type ModulesStore = {
     kind: "demo",
     bullets: [
       "Reuse the list-group chrome. The store is in place; the dialog comes next",
-      "Filter `module.course === cid` the same way §3.10.7 did",
+      "Filter `module.course === cid` the same way the Modules page did",
       "Home imports the Modules page — both screens now see the same array",
     ],
     embed: "kambaz-styled-modules",
@@ -455,7 +455,7 @@ export default function Modules() {
     kind: "title",
     bullets: [
       "Who is signed in is a stable tree value — Context, not Zustand",
-      "§4.10.5: `AccountProvider` around the Kambaz layout",
+      "`AccountProvider` around the Kambaz layout",
     ],
   },
 ];

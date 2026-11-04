@@ -7,7 +7,7 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · JavaScript Objects",
-      "§3.4.11–3.4.12 · named fields, then the console",
+      "Named fields, then the console",
     ],
   },
   {
@@ -177,7 +177,7 @@ export default function Lab3() {
     kind: "title",
     bullets: [
       "Spread copies. Destructuring names the pieces",
-      "§3.4.13–3.4.16: `...`, `{ name, age }`, and imports",
+      "`...`, `{ name, age }`, and imports",
     ],
   },
 ];

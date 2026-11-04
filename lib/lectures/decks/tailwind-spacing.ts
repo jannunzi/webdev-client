@@ -7,7 +7,7 @@ export const TAILWIND_SPACING_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · Tailwind Spacing",
-      "§2.3.1 · `TailwindSpacing.tsx` — margin and padding utilities",
+      "`TailwindSpacing.tsx` — margin and padding utilities",
     ],
   },
   {
@@ -92,7 +92,7 @@ export const TAILWIND_SPACING_SLIDES: LectureSlide[] = [
     title: "Same job as Lab 2 Padding.tsx",
     kind: "content",
     bullets: [
-      "§2.1 wrote `.wd-padded-top-left { padding-top: 50px; }`",
+      "Plain CSS wrote `.wd-padded-top-left { padding-top: 50px; }`",
       "`pt-4` is the utility version of that idea — a scale, not a one-off pixel",
       "Use custom CSS when you need a value Tailwind does not ship",
     ],
@@ -103,7 +103,7 @@ export const TAILWIND_SPACING_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "You can space a box with `m-*` / `p-*` and a direction letter",
-      "§2.3.2: `text-*` sizes and `font-*` weights",
+      "`text-*` sizes and `font-*` weights",
     ],
   },
 ];

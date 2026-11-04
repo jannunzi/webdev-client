@@ -7,7 +7,7 @@ export const TAILWIND_TYPOGRAPHY_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · Tailwind Typography",
-      "§2.3.2 · `TailwindTypography.tsx` — size and weight",
+      "`TailwindTypography.tsx` — size and weight",
     ],
   },
   {
@@ -104,7 +104,7 @@ export const TAILWIND_TYPOGRAPHY_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "You can set type size and weight without a CSS file",
-      "§2.3.3: `bg-{color}-{shade}` plus a contrasting `text-*`",
+      "`bg-{color}-{shade}` plus a contrasting `text-*`",
     ],
   },
 ];

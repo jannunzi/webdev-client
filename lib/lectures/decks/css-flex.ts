@@ -7,7 +7,7 @@ export const CSS_FLEX_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · Flex",
-      "Chapter 2 §2.1.19 · `Flex.tsx` row, grow, then a pinned column",
+      "`Flex.tsx` row, grow, then a pinned column",
     ],
   },
   {
@@ -209,7 +209,7 @@ export const CSS_FLEX_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "You can line children up, grow leftover space, and pin a sidebar column",
-      "§2.1.20: **media queries** (`@media` rules that apply only at some viewport widths) restyle the same markup",
+      "**media queries** (`@media` rules that apply only at some viewport widths) restyle the same markup",
     ],
   },
 ];

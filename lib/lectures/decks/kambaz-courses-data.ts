@@ -7,7 +7,7 @@ export const KAMBAZ_COURSES_DATA_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Courses from Data",
-      "§3.10.4–3.10.6 · find the course, then map its nav",
+      "Find the course, then map its nav",
     ],
   },
   {
@@ -28,7 +28,7 @@ export const KAMBAZ_COURSES_DATA_SLIDES: LectureSlide[] = [
     bullets: [
       "Client Component so it can call `usePathname`",
       "Course name from the object the layout found; section from the URL",
-      "`course?.name` guards a missing `find` — the same `?.` as §3.4.17",
+      "`course?.name` guards a missing `find` — the same `?.` as before",
       "On Home it reads `Rocket Propulsion > Home`; the part after `>` follows the URL",
     ],
   },
@@ -64,7 +64,7 @@ export default function Breadcrumb({
     kind: "content",
     bullets: [
       "`params` is a `Promise` — `const { cid } = await params`",
-      "`courses.find((c) => c._id === cid)` — the same `find` as §3.4.5",
+      "`courses.find((c) => c._id === cid)` — the same `find` as before",
       "`Breadcrumb` is the heading text: the course name this layout just found",
       "Open two dashboard cards and confirm the heading name changes",
     ],
@@ -200,7 +200,7 @@ const LINKS = [
     kind: "title",
     bullets: [
       "Each module JSON row has a `course` field",
-      "§3.10.7: `filter` then nested `lessons?.map`",
+      "`filter` then nested `lessons?.map`",
     ],
   },
 ];

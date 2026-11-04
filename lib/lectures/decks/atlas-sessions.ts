@@ -7,7 +7,7 @@ export const ATLAS_SESSIONS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 6 · Atlas remote sessions",
-      "§6.3.2 · five keys, then sign in",
+      "Five keys, then sign in",
     ],
   },
   {
@@ -151,7 +151,7 @@ SESSION_SECRET=a long random phrase`,
     kind: "title",
     bullets: [
       "A 10-item self-check on schemas, DAOs, and Atlas",
-      "§6-check, then migrate Kambaz collections in §6.4",
+      "Self-check, then migrate Kambaz collections",
     ],
   },
 ];

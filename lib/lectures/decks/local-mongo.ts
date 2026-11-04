@@ -7,7 +7,7 @@ export const LOCAL_MONGO_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 6 · Local MongoDB",
-      "§6.1 · install, Compass, then kambaz",
+      "Install, Compass, then kambaz",
     ],
   },
   {
@@ -86,7 +86,7 @@ mkdir data
     code: `mongodb://127.0.0.1:27017`,
     codeLanguage: "text",
     interactiveHint:
-      "Same host and port Mongoose uses in §6.2.1.",
+      "Same host and port Mongoose uses next.",
   },
   {
     id: "create-db",
@@ -150,7 +150,7 @@ mkdir data
     kind: "title",
     bullets: [
       "Install the library, connect, then schemas and a DAO",
-      "§6.2.1–6.2.5: connect, env string, UserModel",
+      "Connect, env string, UserModel",
     ],
   },
 ];

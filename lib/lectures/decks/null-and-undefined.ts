@@ -7,7 +7,7 @@ export const NULL_AND_UNDEFINED_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 3 · Null and Undefined",
-      "§3.2.7 · two kinds of “no value”",
+      "Two kinds of “no value”",
     ],
   },
   {
@@ -63,7 +63,7 @@ export const NULL_AND_UNDEFINED_SLIDES: LectureSlide[] = [
     bullets: [
       "`null` — a field you cleared: no course selected, signed-out user",
       "`undefined` — a key that was never set, or a function with no `return`",
-      "Optional chaining (`?.`) and `??` come later in §3.4.17",
+      "Optional chaining (`?.`) and `??` come later",
       "For now: know they exist, print them, do not treat them as `false`",
     ],
   },
@@ -84,7 +84,7 @@ export const NULL_AND_UNDEFINED_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Reuse an algorithm by wrapping it in a named block",
-      "§3.3: legacy `function`, arrows, implied return, templates",
+      "Legacy `function`, arrows, implied return, templates",
     ],
   },
 ];

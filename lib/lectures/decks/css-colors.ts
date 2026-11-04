@@ -7,7 +7,7 @@ export const CSS_COLORS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · Colors",
-      "Chapter 2 §2.1.7–2.1.8 · `ForegroundColors.tsx` and `BackgroundColors.tsx`",
+      "`ForegroundColors.tsx` and `BackgroundColors.tsx`",
     ],
   },
   {

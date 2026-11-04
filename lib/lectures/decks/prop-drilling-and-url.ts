@@ -7,7 +7,7 @@ export const PROP_DRILLING_AND_URL_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 4 · Prop Drilling and URLs",
-      "§4.3.2–4.3.3 · forward props, or put data in the address",
+      "Forward props, or put data in the address",
     ],
   },
   {
@@ -104,10 +104,10 @@ export default function PropDrilling() {
   },
   {
     id: "query-suspense",
-    title: "Suspense, as in §3.7.3",
+    title: "Suspense, as before",
     kind: "content",
     bullets: [
-      "As in §3.7.3, `<Suspense>` shows its `fallback` until the part inside is ready",
+      "As before, `<Suspense>` shows its `fallback` until the part inside is ready",
       "The query page reads the URL, so it wraps that part in `<Suspense>`",
     ],
   },
@@ -353,7 +353,7 @@ export default function UrlEncoding() {
     kind: "title",
     bullets: [
       "A **provider** is a component that publishes a value any descendant can read",
-      "§4.4: **Context** shares the same counter with no props through the middle",
+      "**Context** shares the same counter with no props through the middle",
     ],
   },
 ];
