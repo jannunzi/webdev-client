@@ -33,7 +33,7 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
     bullets: [
       "Route pattern: `/lab5/add/:a/:b` — `:a` and `:b` are placeholders",
       "Browser asks for URL `/lab5/add/2/5`",
-      "Express parses the path and matches it segment by segment",
+      "Express compares the URL with the pattern, one `/` segment at a time",
       "It builds `req.params = { a: \"2\", b: \"5\" }` and calls the handler",
       "Values are strings: `parseInt` turns `\"2\" + \"5\"` into `2 + 5`",
       "The handler sends back `7` as text",

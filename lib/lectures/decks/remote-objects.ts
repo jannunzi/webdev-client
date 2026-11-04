@@ -22,7 +22,7 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
     bullets: [
       "Integers and strings were a start. Objects and arrays persist too",
       "State lasts until you reboot Express — then the seed returns",
-      "`res.json` sets the content type and serializes for you",
+      "`res.json(assignment)` turns the object into a JSON string and tells the browser it is JSON (`Content-Type: application/json`)",
     ],
   },
   {
@@ -31,9 +31,9 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "Server memory holds a JavaScript object such as `{ id: 1, title: \"NodeJS Assignment\" }`",
-      "`res.json(obj)` serializes it to JSON text",
-      "It also labels the response as JSON",
-      "The browser shows the text. A client can parse it back into an object",
+      "`res.json(obj)` converts the object into a JSON string",
+      "It also tells the browser the response is JSON (`Content-Type: application/json`)",
+      "The browser shows the text. Client code can turn it back into an object",
       "The object lives until the server restarts",
     ],
   },

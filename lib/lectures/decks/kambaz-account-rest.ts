@@ -20,7 +20,7 @@ export const KAMBAZ_ACCOUNT_REST_SLIDES: LectureSlide[] = [
     title: "Implementing the Users DAO",
     kind: "demo",
     bullets: [
-      "A DAO hides the array. Routes turn HTTP into function calls",
+      "A DAO (data access object) is the only code that touches the users array. Routes call its functions for each request",
       "`npm install uuid` for new `_id`s on signup",
     ],
   },

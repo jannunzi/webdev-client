@@ -32,7 +32,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
     kind: "demo",
     bullets: [
       "Not Express `/lab5/welcome`. Next.js serves this on 3000",
-      "`Response.json` sets `Content-Type` and serializes",
+      "`Response.json(obj)` turns the object into a JSON string and marks the reply as JSON",
     ],
     code: `export async function GET() {
   return Response.json({ message: "Hello from Lab 5 API!" });

@@ -90,7 +90,7 @@ export const fetchWelcomeMessage = async () => {
       "The handler calls `axios.get(url)` and the page stays put",
       "The browser sends the request to port 4000 in the background",
       "`await` waits for the reply. The reply object has a `data` property",
-      "`response.data` is the body — text, or JSON parsed into an object",
+      "`response.data` is the body — text, or JSON already turned into an object",
       "Storing it in state re-renders the component",
     ],
   },
@@ -177,8 +177,8 @@ export const fetchWelcomeMessage = async () => {
     kind: "content",
     bullets: [
       "Client: `axios.post(url, { title: \"New Task\" })` puts JSON in the request body",
-      "Request arrives with header `Content-Type: application/json`",
-      "Without a parser, Express leaves the body unread and `req.body` is `undefined`",
+      "A header on the request, `Content-Type: application/json`, says the body is JSON",
+      "By default Express does not read the body, so `req.body` is `undefined`",
       "`express.json()` reads the body and sets `req.body = { title: \"New Task\" }`",
       "Routes registered after it can use `req.body`",
     ],
@@ -189,7 +189,7 @@ export const fetchWelcomeMessage = async () => {
     kind: "content",
     bullets: [
       "URLs are short, strings-only, and visible on the wire",
-      "`express.json()` parses the body into `req.body`",
+      "`express.json()` reads the JSON body and turns it into the `req.body` object",
       "Place it after CORS and before the routes",
     ],
     code: `app.use(cors());
@@ -206,7 +206,7 @@ Lab5(app);`,
     bullets: [
       "**GET** — retrieve only. We misused it for create/delete",
       "**POST** — create. **PUT** — update. **DELETE** — remove",
-      "**OPTIONS** — the CORS preflight for those verbs",
+      "**OPTIONS** — the browser asks first whether the server allows those verbs from another origin",
       "Keep the older GET routes so earlier links still work",
     ],
   },
