@@ -1027,7 +1027,7 @@ const LECTURE_SUMMARIES: Record<
   "lab5-env": {
     title: "Lab 5 Environment",
     summary:
-      "Two terminals, /lab5/welcome, NEXT_PUBLIC_HTTP_SERVER, and httpServer() — §5.2.1.",
+      "Two terminals, /lab5/welcome, and NEXT_PUBLIC_HTTP_SERVER — §5.2.1.",
     chapter: 5,
     topicId: "lab5-api",
     bookSectionId: "sec-5-2-1",

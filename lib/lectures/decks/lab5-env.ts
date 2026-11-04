@@ -103,34 +103,16 @@ app.listen(4000);`,
     codeFile: ".env.development",
   },
   {
-    id: "helper",
-    title: "httpServer() wraps the env var",
-    kind: "demo",
-    bullets: [
-      "Unset, the helper still points at the companion on 4000",
-      "§5.5 later points the same helper at Render — screens do not change",
-    ],
-    code: `export function httpServer(): string {
-  const raw =
-    process.env.NEXT_PUBLIC_HTTP_SERVER ??
-    "http://localhost:4000";
-  return raw.replace(/\\/$/, "");
-}`,
-    codeLanguage: "ts",
-    codeFile: "app/lib/httpServer.ts",
-    codeHighlightLines: [[2, 4]],
-  },
-  {
     id: "environment",
     title: "Print the origin, never a literal",
     kind: "demo",
     bullets: [
+      "`const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER`",
       "The Welcome `href` is `${HTTP_SERVER}/lab5/welcome`",
       "Express `listen` uses `process.env.PORT || 4000` for Render",
     ],
-    code: `import { httpServer } from "@/app/lib/httpServer";
-export default function Environment() {
-  const HTTP_SERVER = httpServer();
+    code: `export default function Environment() {
+  const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
   return (
     <div id="wd-lab5-environment">
       <h4>Environment</h4>
@@ -146,7 +128,7 @@ export default function Environment() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab5/intermediates/5-2-1-Environment.tsx",
-    codeAddedLines: [1, 3, [10, 12]],
+    codeAddedLines: [2, [9, 12]],
     embed: "lab5-env",
   },
   {
@@ -155,7 +137,7 @@ export default function Environment() {
     kind: "content",
     bullets: [
       "Two processes: Next.js 3000 and Express 4000",
-      "`NEXT_PUBLIC_HTTP_SERVER` plus `httpServer()` — no host literals",
+      "`const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER` — no host literals",
       "Server `PORT` is the matching remote knob",
     ],
   },

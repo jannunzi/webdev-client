@@ -25,8 +25,8 @@ export default function LabExercises() {
         <strong>two terminals</strong>: one for the Next.js user
         interface on port 3000 and one for the sibling Express server
         on port 4000. Leave both running for the rest of the chapter.
-        The interactive demos below call the companion through{" "}
-        <code>httpServer()</code>.{" "}
+        The interactive demos below call the companion at{" "}
+        <code>NEXT_PUBLIC_HTTP_SERVER</code>.{" "}
         <SectionLink to="5.3" />{" "}Route Handler demos stay on
         same-origin <code>/api/...</code>{" "}and do not need port 4000.
       </p>
@@ -159,46 +159,25 @@ app.listen(4000);`}</CodeBlock>
           <code>process.env.NEXT_PUBLIC_HTTP_SERVER</code>.
         </p>
         <p>
-          The variable is{" "}
-          <code>NEXT_PUBLIC_HTTP_SERVER</code>. Wrap it in{" "}
-          <code>httpServer()</code>{" "}so every Express demo uses
-          the same client code — locally{" "}
-          <code>http://localhost:4000</code>, and later whatever origin
-          you set for deploy. Unset, the helper still points at the
-          companion on 4000, which is enough for every interactive demo in this
-          chapter. <SectionLink to="5.5" />{" "}is when you point the
-          same helper at a deployed origin. Do not hard-code the host
-          in screens.
-        </p>
-        <CodeBlock
-          language="ts"
-          name="httpServer"
-          file="app/lib/httpServer.ts"
-        >{`export function httpServer(): string {
-  const raw =
-    process.env.NEXT_PUBLIC_HTTP_SERVER ??
-    "http://localhost:4000";
-  return raw.replace(/\\/$/, "");
-}`}</CodeBlock>
-        <p>
           To practice declaring and using environment variables, create
           the <code>Environment</code>{" "}component below and import it
-          from the Lab 5 page. Confirm the browser displays the remote
-          server URL as shown. Make sure the URL to the remote server
-          is never used as a literal in the React source code; instead
-          prefer the environment variable. Replace the{" "}
-          <code>http://localhost:4000</code>{" "}in the previous Welcome
-          hyperlink with the helper (or a constant assigned from{" "}
-          <code>process.env.NEXT_PUBLIC_HTTP_SERVER</code>). Confirm
-          that the Welcome hyperlink still works.
+          from the Lab 5 page. Confirm the browser displays the server
+          URL as shown. The server URL is never a literal in the React
+          source. Assign{" "}
+          <code>const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;</code>{" "}
+          and replace <code>http://localhost:4000</code>{" "}in the
+          previous Welcome hyperlink with <code>HTTP_SERVER</code>.
+          Locally the value is <code>http://localhost:4000</code>.{" "}
+          <SectionLink to="5.5" />{" "}sets the same variable to a
+          deployed origin. Confirm that the Welcome hyperlink still
+          works.
         </p>
         <CodeBlock
           language="tsx"
           name="Environment"
           file="app/labs/lab5/intermediates/5-2-1-Environment.tsx"
-        >{`import { httpServer } from "@/app/lib/httpServer";
-export default function Environment() {
-  const HTTP_SERVER = httpServer();
+        >{`export default function Environment() {
+  const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
   return (
     <div id="wd-lab5-environment">
       <h4>Environment</h4>
@@ -233,7 +212,7 @@ export default function Environment() {
           page.
         </OnYourOwn>
         <WithAI
-          prompt={`Do not hard-code localhost:4000 in my Lab 5 Welcome link. Use process.env.NEXT_PUBLIC_HTTP_SERVER (or httpServer()) and keep id wd-welcome-link.`}
+          prompt={`Do not hard-code localhost:4000 in my Lab 5 Welcome link. Use const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER and keep id wd-welcome-link.`}
         >
           Ask the assistant to use the env var — you still click Welcome:
         </WithAI>
@@ -375,7 +354,7 @@ export default function Lab5(app) {
             language="tsx"
             name="PathParameters"
             file="app/labs/lab5/intermediates/5-2-2-1-PathParameters.tsx"
-          >{`const HTTP_SERVER = httpServer();
+          >{`const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 const [a, setA] = useState("34");
 const [b, setB] = useState("23");
 <a id="wd-path-parameter-add"
@@ -449,9 +428,9 @@ const [b, setB] = useState("23");
             In a new component{" "}
             <code>QueryParameters.tsx</code>, in your React Web
             application, create hyperlinks to test the new route.
-            You will need a constant initialized to the environment
-            variable through{" "}
-            <code>httpServer()</code>. Confirm the following
+            The component needs{" "}
+            <code>const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;</code>.
+            Confirm the following
             hyperlinks work as expected: add with 34 and 23 should
             respond 57; subtract should respond 11. Create additional
             links to test multiply and divide, using IDs starting with{" "}
@@ -1119,7 +1098,7 @@ app.get("/lab5/todos/:id/title/:title", updateTodoTitle);`}</CodeBlock>
             name="HttpClient"
             file="app/labs/lab5/intermediates/5-2-5-HttpClient.tsx"
           >{`import axios from "axios";
-const HTTP_SERVER = httpServer();
+const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 const [welcomeOnClick, setWelcomeOnClick] = useState("");
 const fetchWelcomeOnClick = async () => {
   const response = await axios.get(\`\${HTTP_SERVER}/lab5/welcome\`);
@@ -1212,8 +1191,7 @@ Lab5(app);`}</CodeBlock>
             name="client"
             file="app/labs/lab5/client.ts"
           >{`import axios from "axios";
-import { httpServer } from "@/app/lib/httpServer";
-const HTTP_SERVER = httpServer();
+const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 export const fetchWelcomeMessage = async () => {
   const response = await axios.get(\`\${HTTP_SERVER}/lab5/welcome\`);
   return response.data;
@@ -1221,8 +1199,8 @@ export const fetchWelcomeMessage = async () => {
           <p>
             Now refactor HttpClient to use the client as shown below.
             Confirm that clicking on Fetch Welcome still works. Screens
-            share one library so when the welcome URL or the helper
-            changes, you edit one file.
+            share one library, so a change to the welcome URL is one
+            edit.
           </p>
           <CodeBlock
             language="tsx"

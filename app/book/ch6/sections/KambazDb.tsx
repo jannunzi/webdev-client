@@ -707,10 +707,10 @@ app.get("/api/courses/:courseId/modules", findModulesForCourse);`}</CodeBlock>
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { httpServer } from "@/app/lib/httpServer";
 import CourseCard from "./CourseCard";
 
-const COURSES_API = \`\${httpServer()}/api/courses\`;
+const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
+const COURSES_API = \`\${HTTP_SERVER}/api/courses\`;
 
 type Course = {
   _id: string;

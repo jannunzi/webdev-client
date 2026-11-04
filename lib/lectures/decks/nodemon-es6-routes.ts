@@ -128,7 +128,7 @@ app.listen(4000);`,
     kind: "title",
     bullets: [
       "A welcome route, then never hard-code localhost",
-      "§5.2.1: `NEXT_PUBLIC_HTTP_SERVER` and `httpServer()`",
+      "§5.2.1: `const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER`",
     ],
   },
 ];

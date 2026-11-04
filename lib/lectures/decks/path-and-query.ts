@@ -79,7 +79,7 @@ export default function Lab5(app) {
       "Clicking navigates to Express — later axios stays on the page",
       "Path IDs start with `wd-path-parameter-`",
     ],
-    code: `const HTTP_SERVER = httpServer();
+    code: `const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 const [a, setA] = useState("34");
 const [b, setB] = useState("23");
 <a id="wd-path-parameter-add"

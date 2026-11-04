@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { httpServer } from "@/app/lib/httpServer";
 
 export default function PathParameters() {
-  const HTTP_SERVER = httpServer();
+  const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
   const [a, setA] = useState("34");
   const [b, setB] = useState("23");
   return (

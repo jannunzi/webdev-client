@@ -1358,7 +1358,7 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-people-table"], 12);
     assert.equal(counts["http-server"], 11);
     assert.equal(counts["nodemon-es6-routes"], 9);
-    assert.equal(counts["lab5-env"], 11);
+    assert.equal(counts["lab5-env"], 10);
     assert.equal(counts["path-and-query"], 11);
     assert.equal(counts["remote-objects"], 9);
     assert.equal(counts["remote-arrays"], 9);
@@ -3083,7 +3083,8 @@ describe("lecture decks", () => {
 
     const env = slideText("lab5-env");
     assert.match(env, /NEXT_PUBLIC_HTTP_SERVER/);
-    assert.match(env, /httpServer\(\)/);
+    assert.match(env, /const HTTP_SERVER = process\.env\.NEXT_PUBLIC_HTTP_SERVER/);
+    assert.doesNotMatch(env, /httpServer/);
     assert.match(env, /\/lab5\/welcome/);
     assert.match(env, /wd-welcome-link/);
 

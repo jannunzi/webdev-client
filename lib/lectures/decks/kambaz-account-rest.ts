@@ -87,14 +87,14 @@ app.post("/api/users/signin", signin);`,
     title: "axios posts credentials",
     kind: "demo",
     bullets: [
-      "`httpServer()` is the same Lab 5 helper",
+      "`HTTP_SERVER` is `process.env.NEXT_PUBLIC_HTTP_SERVER` from Lab 5",
       "`withCredentials` is required once sessions arrive",
     ],
     code: `import axios from "axios";
-import { httpServer } from "@/app/lib/httpServer";
 
 const axiosWithCredentials = axios.create({ withCredentials: true });
-const USERS_API = \`\${httpServer()}/api/users\`;
+const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
+const USERS_API = \`\${HTTP_SERVER}/api/users\`;
 
 export const signin = async (credentials: { username: string; password: string }) => {
   const response = await axiosWithCredentials.post(\`\${USERS_API}/signin\`, credentials);

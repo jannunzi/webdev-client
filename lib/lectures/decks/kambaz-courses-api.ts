@@ -100,10 +100,10 @@ export default function CourseRoutes(app, db) {
       "`currentUser` is a `useEffect` dependency so a new sign-in reloads",
     ],
     code: `import axios from "axios";
-import { httpServer } from "@/app/lib/httpServer";
 const axiosWithCredentials = axios.create({ withCredentials: true });
-const COURSES_API = \`\${httpServer()}/api/courses\`;
-const USERS_API = \`\${httpServer()}/api/users\`;
+const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
+const COURSES_API = \`\${HTTP_SERVER}/api/courses\`;
+const USERS_API = \`\${HTTP_SERVER}/api/users\`;
 export const fetchAllCourses = async () => {
   const { data } = await axios.get(COURSES_API);
   return data;

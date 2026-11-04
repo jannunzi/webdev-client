@@ -890,7 +890,7 @@ export const CH5_LAB_EXERCISES: readonly BookExerciseParent[] = [
     tasks: [
       lab(
         "5.2.1-lab",
-        "Declare NEXT_PUBLIC_HTTP_SERVER, wrap it in httpServer(), and use it on the Welcome link.",
+        "Declare NEXT_PUBLIC_HTTP_SERVER, assign const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER, and use it on the Welcome link.",
       ),
       oyo(
         "5.2.1-oyo",
@@ -898,7 +898,7 @@ export const CH5_LAB_EXERCISES: readonly BookExerciseParent[] = [
       ),
       ai(
         "5.2.1-ai",
-        "Use process.env.NEXT_PUBLIC_HTTP_SERVER (or httpServer()) and keep id wd-welcome-link — do not hard-code localhost:4000.",
+        "Use const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER and keep id wd-welcome-link — do not hard-code localhost:4000.",
       ),
     ],
   },
