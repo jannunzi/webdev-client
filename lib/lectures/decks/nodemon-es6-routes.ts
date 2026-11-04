@@ -12,7 +12,7 @@ export const NODEMON_ES6_ROUTES_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Nodemon, tsx, Routes",
-      "Restart, module loading, Hello(app)",
+      "Restart on save, route files",
     ],
   },
   {
@@ -65,29 +65,11 @@ app.listen(4000);`,
     ],
   },
   {
-    id: "modules-intro",
-    title: "Loading ES6 Modules on the Server",
-    kind: "demo",
-    bullets: [
-      "Every server file is a TypeScript module: `import`, no `require()`",
-      "Relative imports omit the extension. `./Hello` loads `Hello.ts`",
-      "JSON imports directly, thanks to `resolveJsonModule`",
-    ],
-  },
-  {
-    id: "modules",
-    title: "Importing Modules and JSON Files",
-    kind: "demo",
-    code: `import Hello from "./Hello"; // loads Hello.ts
-import courses from "./courses.json";`,
-    codeLanguage: "ts",
-  },
-  {
     id: "hello-fn-intro",
     title: "Moving Hello Routes to Hello.ts",
     kind: "demo",
     bullets: [
-      "Too many routes will not fit in `index.ts`",
+      "Group related routes in their own route file, `Hello.ts`",
       "Export a function that receives the shared `app`",
       "Do not call `express()` again — one instance per server",
     ],
@@ -138,13 +120,14 @@ app.listen(4000);`,
     kind: "content",
     bullets: [
       "`npm run dev` is nodemon + tsx. `npm start` is `tsx index.ts`",
-      "Extensionless relative imports; JSON imports directly",
-      "Group routes in files that receive `app`",
+      "Relative imports omit the extension: `./Hello` loads `Hello.ts`",
+      "JSON files import directly: `import courses from \"./courses.json\"`",
+      "Group related routes in route files that receive `app`",
     ],
   },
   {
     id: "next-up",
-    title: "Next: The Lab 5 Environment",
+    title: "Next: Configuring Environment Variables",
     kind: "title",
     bullets: [
       "A welcome route, then never hard-code localhost",

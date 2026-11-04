@@ -172,17 +172,26 @@ npm init`,
     links: ["http://localhost:4000/hello"],
     title: "Writing the Hello Route Handler",
     kind: "demo",
-    code: `import express from "express";
+    code: `// load the Express library
+import express from "express";
+
+// create the server application
 const app = express();
+
+// answer GET /hello requests
 app.get("/hello", (req, res) => {
+  // send the text back to the browser
   res.send("Hello World!");
 });
+
+// listen for requests on port 4000
 app.listen(4000);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/index.ts",
   },
   {
     id: "visit",
+    links: ["http://localhost:4000/hello"],
     title: "Testing the Hello Route in a Browser",
     kind: "demo",
     bullets: [
@@ -211,8 +220,8 @@ app.listen(4000);`,
     title: "Next: Nodemon and ES6 Routes",
     kind: "title",
     bullets: [
-      "Restart on save, how modules load, then routes",
-      "Nodemon, module loading, and `Hello(app)`",
+      "Restart on save, then group routes in files",
+      "Nodemon and `Hello(app)`",
     ],
   },
 ];
