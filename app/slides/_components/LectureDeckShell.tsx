@@ -1,5 +1,6 @@
 "use client";
 
+import { openSlideLinksInNewTab } from "./slideLinks";
 import Link from "next/link";
 import { Oswald } from "next/font/google";
 import { type CSSProperties, useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
@@ -598,6 +599,7 @@ export default function LectureDeckShell({
 
         <article
           ref={stageRef}
+          onClickCapture={editMode ? undefined : openSlideLinksInNewTab}
           data-slide-density={density}
           data-slide-kind={kind}
           data-demo-stage={demoStage ? "true" : undefined}
