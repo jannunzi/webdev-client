@@ -100,7 +100,7 @@ app.post("/api/users/signin", signin);`,
   },
   {
     id: "signin-flow",
-    title: "Signing In",
+    title: "Following a Sign-In Request",
     kind: "content",
     bullets: [
       "Form state `{ username: \"iron_man\", password: \"stark123\" }`",
@@ -165,7 +165,7 @@ const signin = async () => {
   },
   {
     id: "signup-ui-live",
-    title: "Signup Live Demo",
+    title: "Sign-Up Live Demo",
     kind: "demo",
     bullets: [
       "Fill in a new username and password",

@@ -29,7 +29,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   {
     id: "hello",
     links: ["http://localhost:3000/api/lab5/hello"],
-    title: "Implementing GET /api/lab5/hello",
+    title: "Writing a GET Route Handler",
     kind: "demo",
     bullets: [
       "Not Express `/lab5/welcome`. Next.js serves this on 3000",
@@ -53,7 +53,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "hello-ui",
-    title: "Fetching the Hello Route on Load",
+    title: "Fetching a Route Handler on Load",
     kind: "demo",
     code: "\"use client\";\n\nimport { useEffect, useState } from \"react\";\n\nexport default function HelloRoute() {\n  const [hello, setHello] = useState<{ message?: string }>({});\n  useEffect(() => {\n    fetch(\"/api/lab5/hello\")\n      .then((response) => response.json())\n      .then(setHello);\n  }, []);",
     codeLanguage: "tsx",
@@ -61,7 +61,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "hello-ui-part-2",
-    title: "Rendering the Hello JSON Message",
+    title: "Rendering a JSON Response",
     kind: "demo",
     code: "  return (\n    <div id=\"wd-lab5-next-hello\">\n      <h4>GET /api/lab5/hello (Next.js Route Handler)</h4>\n      <pre>{JSON.stringify(hello, null, 2)}</pre>\n      <hr />\n    </div>\n  );\n}",
     codeLanguage: "tsx",
@@ -70,7 +70,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "hello-ui-live",
-    title: "HelloRoute Live Demo",
+    title: "Route Handler Live Demo",
     kind: "demo",
     bullets: [
       "The JSON message renders on load",
@@ -91,7 +91,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   {
     id: "calculator",
     links: ["http://localhost:3000/api/lab5/calculator?a=34&b=23&operation=add"],
-    title: "Implementing the Calculator Handler",
+    title: "Writing a Handler with Query Parameters",
     kind: "demo",
     code: `export async function GET(request: NextRequest) {
   const a = parseFloat(request.nextUrl.searchParams.get("a") ?? "");
@@ -209,7 +209,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   },
   {
     id: "client-live",
-    title: "Calculator Live Demo",
+    title: "Query Handler Live Demo",
     kind: "demo",
     bullets: [
       "Enter A and B, pick an operation, Calculate",

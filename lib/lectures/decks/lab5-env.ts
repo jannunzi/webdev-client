@@ -29,7 +29,7 @@ export const LAB5_ENV_SLIDES: LectureSlide[] = [
   {
     id: "welcome-route",
     links: ["http://localhost:4000/lab5/welcome"],
-    title: "Implementing the Lab 5 Welcome Route",
+    title: "Creating the Lab 5 Route File",
     kind: "demo",
     bullets: [
       "In a new `Lab5/index.ts`, export the Lab 5 routes",
@@ -65,7 +65,7 @@ app.listen(4000);`,
   },
   {
     id: "lab5-page-intro",
-    title: "Linking the Lab 5 Page to the Server",
+    title: "Linking a Page to the Server",
     kind: "demo",
     bullets: [
       "In a new `app/labs/lab5/page.tsx`, create the page as shown below",
@@ -75,7 +75,7 @@ app.listen(4000);`,
   },
   {
     id: "lab5-page",
-    title: "Implementing the Lab 5 Welcome Link",
+    title: "Hardcoding the Server URL in a Link",
     kind: "demo",
     code: `export default function Lab5() {
   return (
@@ -93,7 +93,7 @@ app.listen(4000);`,
   },
   {
     id: "env-file",
-    title: "Exposing NEXT_PUBLIC_ Variables",
+    title: "Defining Variables in .env Files",
     kind: "demo",
     bullets: [
       "`.env.development` at the Next.js root. No quotes or spaces around `=`",
@@ -106,7 +106,7 @@ app.listen(4000);`,
   },
   {
     id: "environment",
-    title: "Reading the Server URL from the Env",
+    title: "Reading Environment Variables in Code",
     kind: "demo",
     bullets: [
       "In a new `Environment.tsx` component, create the link as shown below",

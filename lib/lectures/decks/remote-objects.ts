@@ -40,7 +40,7 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "assignment-intro",
-    title: "Sending an Object with res.json",
+    title: "Implementing a Route That Returns JSON",
     kind: "demo",
     bullets: [
       "In a new `Lab5/WorkingWithRemoteObjects.ts`, add the route as shown below",
@@ -51,7 +51,7 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
   {
     id: "assignment",
     links: ["http://localhost:4000/lab5/assignment"],
-    title: "Returning the Assignment as JSON",
+    title: "Writing a JSON Object Route",
     kind: "demo",
     code: `const assignment = {
   id: 1,
@@ -73,7 +73,7 @@ export default function WorkingWithRemoteObjects(app) {
   },
   {
     id: "client",
-    title: "Linking to Get Assignment",
+    title: "Linking to a JSON Object Route",
     kind: "demo",
     bullets: [
       "In a new `WorkingWithRemoteObjects.tsx` component, create the link as shown below",
@@ -93,7 +93,7 @@ export default function WorkingWithRemoteObjects(app) {
   {
     id: "title-get",
     links: ["http://localhost:4000/lab5/assignment/title"],
-    title: "Implementing GET Assignment Title",
+    title: "Returning One Object Property",
     kind: "demo",
     bullets: [
       "In `WorkingWithRemoteObjects.ts`, add the route as shown below",
@@ -109,7 +109,7 @@ app.get("/lab5/assignment/title", getAssignmentTitle);`,
   },
   {
     id: "client-title",
-    title: "Retrieving One Object Property",
+    title: "Linking to One Object Property",
     kind: "demo",
     bullets: [
       "In `WorkingWithRemoteObjects.tsx`, add the link as shown below",
@@ -122,7 +122,7 @@ app.get("/lab5/assignment/title", getAssignmentTitle);`,
   {
     id: "title-put",
     links: ["http://localhost:4000/lab5/assignment/title/NewTitle"],
-    title: "Updating the Title from the Path",
+    title: "Updating a Property from the Path",
     kind: "demo",
     bullets: [
       "In `WorkingWithRemoteObjects.ts`, add the route as shown below",
@@ -153,7 +153,7 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
   },
   {
     id: "objects-click",
-    title: "Reading and Writing a Remote Object",
+    title: "Following Remote Object Requests",
     kind: "content",
     bullets: [
       "`HTTP_SERVER/lab5/assignment` shows the whole object as JSON",
@@ -165,7 +165,7 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
   },
   {
     id: "client-live",
-    title: "WorkingWithRemoteObjects Live Demo",
+    title: "Remote Objects Live Demo",
     kind: "demo",
     bullets: [
       "Get Assignment, then Get Title",

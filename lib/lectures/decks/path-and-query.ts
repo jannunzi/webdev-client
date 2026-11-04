@@ -41,7 +41,7 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
   },
   {
     id: "path-server-intro",
-    title: "Implementing the Add Route",
+    title: "Reading Path Parameters from the URL",
     kind: "demo",
     bullets: [
       "In a new `Lab5/PathParameters.ts`, add the routes as shown below",
@@ -52,7 +52,7 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
   {
     id: "path-server",
     links: ["http://localhost:4000/lab5/add/6/4", "http://localhost:4000/lab5/subtract/6/4"],
-    title: "Writing the Add and Subtract Routes",
+    title: "Writing Routes with Path Parameters",
     kind: "demo",
     code: `export default function PathParameters(app) {
   const add = (req, res) => {
@@ -74,7 +74,7 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
   {
     id: "path-import",
     links: ["http://localhost:4000/lab5/welcome"],
-    title: "Registering PathParameters in Lab5",
+    title: "Registering the Path Parameter Routes",
     kind: "demo",
     bullets: [
       "Confirm `/lab5/add/6/4` is 10 and `/lab5/subtract/6/4` is 2",
@@ -93,7 +93,7 @@ export default function Lab5(app) {
   },
   {
     id: "path-click",
-    title: "Parsing Path Parameters",
+    title: "Following a Path Parameter Request",
     kind: "content",
     bullets: [
       "Example state: `a = 34`, `b = 23`",
@@ -105,7 +105,7 @@ export default function Lab5(app) {
   },
   {
     id: "path-client",
-    title: "Calling the Add Route from React",
+    title: "Building Path URLs from React State",
     kind: "demo",
     bullets: [
       "In a new `PathParameters.tsx` component, create the links as shown below",
@@ -125,7 +125,7 @@ const [b, setB] = useState("23");
   },
   {
     id: "path-client-live",
-    title: "PathParameters Live Demo",
+    title: "Path Parameters Live Demo",
     kind: "demo",
     bullets: [
       "Change a and b, then click Add or Subtract",
@@ -149,7 +149,7 @@ const [b, setB] = useState("23");
   },
   {
     id: "query-server-intro",
-    title: "Implementing the Calculator Route",
+    title: "Reading Query Parameters from the URL",
     kind: "demo",
     bullets: [
       "In a new `Lab5/QueryParameters.ts`, add the route as shown below",
@@ -161,7 +161,7 @@ const [b, setB] = useState("23");
   {
     id: "query-server",
     links: ["http://localhost:4000/lab5/calculator?operation=add&a=2&b=4"],
-    title: "Writing the Calculator Route",
+    title: "Writing a Route with Query Parameters",
     kind: "demo",
     code: `export default function QueryParameters(app) {
   const calculator = (req, res) => {
@@ -187,7 +187,7 @@ const [b, setB] = useState("23");
   },
   {
     id: "query-click",
-    title: "Parsing Query Parameters",
+    title: "Following a Query Parameter Request",
     kind: "content",
     bullets: [
       "Example state: `a = 34`, `b = 23`, operation `add`",
@@ -198,7 +198,7 @@ const [b, setB] = useState("23");
   },
   {
     id: "query-client",
-    title: "Calling the Calculator from React",
+    title: "Building Query Strings from React State",
     kind: "demo",
     bullets: [
       "In a new `QueryParameters.tsx` component, create the links as shown below",
@@ -215,7 +215,7 @@ const [b, setB] = useState("23");
   },
   {
     id: "query-client-live",
-    title: "QueryParameters Live Demo",
+    title: "Query Parameters Live Demo",
     kind: "demo",
     bullets: [
       "Same operands, now sent as `?a=\u2026&b=\u2026&operation=\u2026`",

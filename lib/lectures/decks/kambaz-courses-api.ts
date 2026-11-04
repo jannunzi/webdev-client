@@ -154,7 +154,7 @@ export const findMyCourses = async () => {
   },
   {
     id: "create-flow",
-    title: "Creating a Course",
+    title: "Creating a Resource with POST",
     kind: "content",
     bullets: [
       "Dashboard Add sends the course draft to the client function",

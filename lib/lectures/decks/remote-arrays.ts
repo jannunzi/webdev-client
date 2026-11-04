@@ -28,7 +28,7 @@ export const REMOTE_ARRAYS_SLIDES: LectureSlide[] = [
   {
     id: "get-all",
     links: ["http://localhost:4000/lab5/todos"],
-    title: "Implementing GET All Todos",
+    title: "Returning an Array as JSON",
     kind: "demo",
     bullets: [
       "In a new `Lab5/WorkingWithArrays.ts`, add the route as shown below",
@@ -53,7 +53,7 @@ export default function WorkingWithArrays(app) {
   },
   {
     id: "client",
-    title: "Linking to Get All Todos",
+    title: "Linking to an Array Route",
     kind: "demo",
     bullets: [
       "In a new `WorkingWithArrays.tsx` component, create the link as shown below",
@@ -80,7 +80,7 @@ export default function WorkingWithArrays(app) {
   {
     id: "get-id",
     links: ["http://localhost:4000/lab5/todos/1"],
-    title: "Implementing GET a Todo by ID",
+    title: "Returning One Item by ID",
     kind: "demo",
     bullets: [
       "In `WorkingWithArrays.ts`, add the route as shown below",
@@ -99,7 +99,7 @@ app.get("/lab5/todos/:id", getTodoById);`,
   },
   {
     id: "client-by-id",
-    title: "Linking to Get a Todo by ID",
+    title: "Sending an Item ID in the Path",
     kind: "demo",
     bullets: [
       "In `WorkingWithArrays.tsx`, add the input and link as shown below",
@@ -112,7 +112,7 @@ app.get("/lab5/todos/:id", getTodoById);`,
   {
     id: "filter-server",
     links: ["http://localhost:4000/lab5/todos?completed=true"],
-    title: "Filtering Todos by Completed",
+    title: "Filtering an Array by Query",
     kind: "demo",
     bullets: [
       "In `WorkingWithArrays.ts`, update the route as shown below",
@@ -125,7 +125,7 @@ app.get("/lab5/todos/:id", getTodoById);`,
   },
   {
     id: "client-filter",
-    title: "Filtering Todos with a Query String",
+    title: "Linking to a Filtered Array",
     kind: "demo",
     bullets: [
       "In `WorkingWithArrays.tsx`, add the filter link as shown below",
@@ -136,7 +136,7 @@ app.get("/lab5/todos/:id", getTodoById);`,
   },
   {
     id: "create-delete-intro",
-    title: "Creating and Deleting with GET",
+    title: "Adding and Removing Array Items",
     kind: "demo",
     bullets: [
       "In `WorkingWithArrays.ts`, add both routes as shown below",
@@ -147,7 +147,7 @@ app.get("/lab5/todos/:id", getTodoById);`,
   {
     id: "create-delete",
     links: ["http://localhost:4000/lab5/todos/create", "http://localhost:4000/lab5/todos/1/delete"],
-    title: "Writing the Create and Delete Routes",
+    title: "Writing Add and Remove Item Routes",
     kind: "demo",
     code: `const createNewTodo = (req, res) => {
   const newTodo = {
@@ -172,7 +172,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
   },
   {
     id: "client-create",
-    title: "Linking to Create a Todo",
+    title: "Linking to Add an Item",
     kind: "demo",
     bullets: [
       "In `WorkingWithArrays.tsx`, add the create link as shown below",
@@ -183,7 +183,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
   },
   {
     id: "client-remove",
-    title: "Linking to Remove a Todo by ID",
+    title: "Linking to Remove an Item by ID",
     kind: "demo",
     bullets: [
       "In `WorkingWithArrays.tsx`, add the delete link as shown below",
@@ -195,7 +195,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
   {
     id: "title-server",
     links: ["http://localhost:4000/lab5/todos/1/title/NewTitle"],
-    title: "Implementing the Update Title Route",
+    title: "Updating an Item from the Path",
     kind: "demo",
     bullets: [
       "In `WorkingWithArrays.ts`, add the route as shown below",
@@ -208,7 +208,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
   },
   {
     id: "client-update",
-    title: "Linking to Update a Todo Title",
+    title: "Linking to Update an Item",
     kind: "demo",
     bullets: [
       "In `WorkingWithArrays.tsx`, add the inputs and link as shown below",
@@ -232,7 +232,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
   },
   {
     id: "client-live",
-    title: "WorkingWithArrays Live Demo",
+    title: "Remote Arrays Live Demo",
     kind: "demo",
     bullets: [
       "Get Todos, then Get Todo by ID and Get Completed",

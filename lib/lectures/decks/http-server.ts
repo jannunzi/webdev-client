@@ -159,7 +159,7 @@ npm init`,
   },
   {
     id: "express-intro",
-    title: "Implementing GET /hello with Express",
+    title: "Defining a GET Route with Express",
     kind: "demo",
     bullets: [
       "Goal: answer `GET /hello` with Hello World! on port 4000",
@@ -170,7 +170,7 @@ npm init`,
   {
     id: "express",
     links: ["http://localhost:4000/hello"],
-    title: "Writing the Hello Route Handler",
+    title: "Writing a Route Handler",
     kind: "demo",
     code: `// load the Express library
 import express from "express";
@@ -192,7 +192,7 @@ app.listen(4000);`,
   {
     id: "visit",
     links: ["http://localhost:4000/hello"],
-    title: "Testing the Hello Route in a Browser",
+    title: "Testing a Route in the Browser",
     kind: "demo",
     bullets: [
       "The browser is the client. Your Node process is the server",
