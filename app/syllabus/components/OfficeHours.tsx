@@ -47,7 +47,13 @@ export default function OfficeHours({
                   <td className="px-3 py-2">{row.role}</td>
                   <td className="px-3 py-2">{row.hours}</td>
                   <td className="px-3 py-2">{row.location}</td>
-                  <td className="px-3 py-2">{row.contact}</td>
+                  <td className="px-3 py-2">
+                    {row.contact.includes("@") ? (
+                      <a href={`mailto:${row.contact}`}>{row.contact}</a>
+                    ) : (
+                      row.contact
+                    )}
+                  </td>
                 </tr>
               ))
             )}
