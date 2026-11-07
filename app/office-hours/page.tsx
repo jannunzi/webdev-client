@@ -4,18 +4,16 @@ import CourseInfoHeader from "@/app/course-info/CourseInfoHeader";
 import CourseInfoSection from "@/app/course-info/CourseInfoSection";
 import {
   course,
+  formatInstructorOfficeHours,
+  formatInstructorOfficeLocation,
+  instructorOfficeBlocks,
+  instructorOfficeHourRows,
   officeHourColumns,
   officeHourRows,
   officeHoursPlaceholder,
 } from "@/app/syllabus/data";
 
-const instructorRow = {
-  name: course.instructor.name,
-  role: course.instructor.role,
-  hours: "TBA",
-  location: "TBA",
-  contact: course.instructor.email,
-};
+const instructorRows = instructorOfficeHourRows(course.instructor);
 
 export default function OfficeHoursPage() {
   return (
@@ -37,17 +35,20 @@ export default function OfficeHoursPage() {
             {course.instructor.email}
           </a>
         </p>
-        <p>
-          Office hours and location for the instructor are TBA. Do not assume a
-          Zoom link or room number until they appear in this table.
-        </p>
+        <ul className="list-disc space-y-1 pl-6">
+          {instructorOfficeBlocks.map((block) => (
+            <li key={block.id}>
+              {formatInstructorOfficeHours(block)}.{" "}
+              {formatInstructorOfficeLocation(block)}.
+            </li>
+          ))}
+        </ul>
       </CourseInfoSection>
 
       <CourseInfoSection id="schedule" title="Schedule">
         <p>{officeHoursPlaceholder}</p>
         <p>
-          Hours will be posted when teaching assistants are assigned. Check this
-          page and the{" "}
+          Check this page and the{" "}
           <Link href="/syllabus#office-hours">syllabus office-hours section</Link>{" "}
           for updates.
         </p>
@@ -63,37 +64,32 @@ export default function OfficeHoursPage() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-neutral-200">
-                <td className="px-3 py-2">{instructorRow.name}</td>
-                <td className="px-3 py-2">{instructorRow.role}</td>
-                <td className="px-3 py-2">{instructorRow.hours}</td>
-                <td className="px-3 py-2">{instructorRow.location}</td>
-                <td className="px-3 py-2">
-                  <a href={`mailto:${instructorRow.contact}`}>
-                    {instructorRow.contact}
-                  </a>
-                </td>
-              </tr>
-              {officeHourRows.length === 0 ? (
-                <tr className="border-b border-neutral-200">
-                  <td
-                    className="px-3 py-3 text-neutral-500 italic"
-                    colSpan={officeHourColumns.length}
-                  >
-                    Teaching assistants — TBA
+              {instructorRows.map((row) => (
+                <tr key={row.hours} className="border-b border-neutral-200">
+                  <td className="px-3 py-2">{row.name}</td>
+                  <td className="px-3 py-2">{row.role}</td>
+                  <td className="px-3 py-2">{row.hours}</td>
+                  <td className="px-3 py-2">{row.location}</td>
+                  <td className="px-3 py-2">
+                    <a href={`mailto:${row.contact}`}>{row.contact}</a>
                   </td>
                 </tr>
-              ) : (
-                officeHourRows.map((row) => (
-                  <tr key={row.name} className="border-b border-neutral-200">
-                    <td className="px-3 py-2">{row.name}</td>
-                    <td className="px-3 py-2">{row.role}</td>
-                    <td className="px-3 py-2">{row.hours}</td>
-                    <td className="px-3 py-2">{row.location}</td>
-                    <td className="px-3 py-2">{row.contact}</td>
-                  </tr>
-                ))
-              )}
+              ))}
+              {officeHourRows.map((row) => (
+                <tr key={row.name} className="border-b border-neutral-200">
+                  <td className="px-3 py-2">{row.name}</td>
+                  <td className="px-3 py-2">{row.role}</td>
+                  <td className="px-3 py-2">{row.hours}</td>
+                  <td className="px-3 py-2">{row.location}</td>
+                  <td className="px-3 py-2">
+                    {row.contact.includes("@") ? (
+                      <a href={`mailto:${row.contact}`}>{row.contact}</a>
+                    ) : (
+                      row.contact
+                    )}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

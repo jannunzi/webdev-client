@@ -54,6 +54,10 @@ export {
 export { assignments, assignmentsIntro } from "./assignments";
 export { projectBlurb } from "./project";
 export {
+  formatInstructorOfficeHours,
+  formatInstructorOfficeLocation,
+  instructorOfficeBlocks,
+  instructorOfficeHourRows,
   officeHourColumns,
   officeHourRows,
   officeHoursPlaceholder,
