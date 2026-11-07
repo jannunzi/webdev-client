@@ -58,54 +58,36 @@ export default function EngineeringWithAI() {
       title="1.7 Engineering with AI (optional, not graded)"
     >
       <p>
-        AI is quickly becoming an indispensable tool in most industries,
-        bringing unprecedented opportunity as well as uncertainty and angst.
-        As software engineers in general, and full stack developers in
-        particular, we must learn to use AI throughout the day-to-day{" "}
-        <OfficialLink href="https://en.wikipedia.org/wiki/Systems_development_life_cycle">
+{"AI is quickly becoming an indispensable tool in most industries, bringing unprecedented opportunity as well as uncertainty and angst. As software engineers in general, and full stack developers in particular, we must learn to use AI throughout the day-to-day "}
+<OfficialLink href="https://en.wikipedia.org/wiki/Systems_development_life_cycle">
           <strong>software development lifecycle</strong>
         </OfficialLink>
-        . This section is the first of several throughout the book that
-        teach industry-leading practices for using AI to build Web
-        applications. To practice these skills, we will build a new feature
-        for Kambaz, the <strong>AI-Assisted Course Builder</strong>, and
-        learn to work with an AI assistant the way a software engineer does
-        on a professional team. A course author will be able to use the
-        Course Builder to draft a course title from a description, a
-        description from a title, a list of modules, and the lessons inside
-        each module. We will build the feature one layer at a time over the
-        next several chapters, and at each layer AI will take on a different
-        part of the work. In this chapter, you will ask an AI assistant to
-        turn the feature&apos;s requirements into a static HTML prototype,
-        and then you will review its markup line by line before you commit
-        it. In <ChapterLink to={2} />, you will ask the assistant to style
-        those controls with{" "}
-        <OfficialLink href="https://tailwindcss.com/">
+{". This section is the first of several throughout the book that teach industry-leading practices for using AI to build Web applications. To practice these skills, we will build a new feature for Kambaz, the "}
+<strong>{"AI-Assisted Course Builder"}</strong>
+{", and learn to work with an AI assistant the way a software engineer does on a professional team. A course author will be able to use the Course Builder to draft a course title from a description, a description from a title, a list of modules, and the lessons inside each module. We will build the feature one layer at a time over the next several chapters, and at each layer AI will take on a different part of the work. In this chapter, you will ask an AI assistant to turn the feature's requirements into a static HTML prototype, and then you will review its markup line by line before you commit it. In "}
+<ChapterLink to={2} />
+{", you will ask the assistant to style those controls with "}
+<OfficialLink href="https://tailwindcss.com/">
           <strong>Tailwind CSS</strong>
-        </OfficialLink>{" "}
-        and to explain the classes it chose, so that you understand every
-        style you accept. In <ChapterLink to={3} />, the assistant will
-        generate a local JSON file of realistic sample suggestions, and you
-        will check that the data matches the shape your components expect.
-        In <ChapterLink to={4} />, the assistant will draft the{" "}
-        <OfficialLink href="https://zustand.docs.pmnd.rs/">
+        </OfficialLink>
+{" and to explain the classes it chose, so that you understand every style you accept. In "}
+<ChapterLink to={3} />
+{", the assistant will generate a local JSON file of realistic sample suggestions, and you will check that the data matches the shape your components expect. In "}
+<ChapterLink to={4} />
+{", the assistant will draft the "}
+<OfficialLink href="https://zustand.docs.pmnd.rs/">
           <strong>Zustand</strong>
-        </OfficialLink>{" "}
-        client-side store that holds the draft, along with tests that
-        confirm it behaves as specified. A later chapter will call an AI
-        model directly from a Next.js{" "}
-        <OfficialLink
+        </OfficialLink>
+{" client-side store that holds the draft, along with tests that confirm it behaves as specified. A later chapter will call an AI model directly from a Next.js "}
+<OfficialLink
           href="https://nextjs.org/docs/app/building-your-application/routing/route-handlers"
           term="Route Handlers"
         >
           <strong>route handler</strong>
         </OfficialLink>
-        , a function on the server that receives a request and sends back a
-        response, so that the Course Builder can generate real suggestions.
-        Throughout, AI will draft and explain while you decide what ships,
-        which is how production teams at companies such as Amazon and Google
-        use AI assistants.
-      </p>
+{", a function on the server that receives a request and sends back a response, so that the Course Builder can generate real suggestions. Throughout, AI will draft and explain while you decide what ships, which is how production teams at companies such as Amazon and Google use AI assistants."}
+</p>
+      <p>{"Describe the sofware development cycle"}</p>
       <p>
         In a product team, a new feature or bug fix moves through the{" "}
         <OfficialLink href="https://en.wikipedia.org/wiki/Systems_development_life_cycle">
