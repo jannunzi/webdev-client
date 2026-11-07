@@ -46,6 +46,20 @@ export function stripModelFence(text: string): string {
   return (fenced?.[1] ?? trimmed).trim();
 }
 
+/**
+ * Text left in a ghost after the user types `typed`.
+ * A ghost may keep one leading space that the keystroke does not include.
+ * Returns null when the keystroke does not continue the ghost.
+ */
+export function consumeGhost(ghost: string, typed: string): string | null {
+  if (!typed) return null;
+  if (ghost.startsWith(typed)) return ghost.slice(typed.length);
+  if (ghost.startsWith(" ") && ghost.slice(1).startsWith(typed)) {
+    return ghost.slice(1 + typed.length);
+  }
+  return null;
+}
+
 /** The next ghost word, including any leading space, and the remainder. */
 export function splitGhostWord(ghost: string): { take: string; rest: string } | null {
   const match = /^(\s*\S+)([\s\S]*)$/.exec(ghost);

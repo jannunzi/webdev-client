@@ -64,6 +64,54 @@ function emitNodes(
   return { ok: true, value: "" };
 }
 
+/** JSX for a new paragraph or list item. Slots are refused; code and links are real elements. */
+export function freshNodesToJsx(nodes: readonly SanitizedNode[]): EmitResult {
+  if (nodes.some(containsSlot)) {
+    return { ok: false, error: "A new paragraph can't include an editor placeholder." };
+  }
+  const parts: string[] = [];
+  const emitted = emitFresh(nodes, parts);
+  if (!emitted.ok) return emitted;
+  return { ok: true, value: parts.join("") };
+}
+
+function containsSlot(node: SanitizedNode): boolean {
+  if (node.type === "slot") return true;
+  if (node.type === "strong" || node.type === "em" || node.type === "link") {
+    return node.children.some(containsSlot);
+  }
+  return false;
+}
+
+function emitFresh(nodes: readonly SanitizedNode[], parts: string[]): EmitResult {
+  for (const node of nodes) {
+    if (node.type === "text") {
+      if (node.text) parts.push(`{${JSON.stringify(node.text)}}`);
+      continue;
+    }
+    if (node.type === "slot") {
+      return { ok: false, error: "A new paragraph can't include an editor placeholder." };
+    }
+    if (node.type === "code") {
+      parts.push(`<code>{${JSON.stringify(node.text)}}</code>`);
+      continue;
+    }
+    if (node.type === "link") {
+      const inner: string[] = [];
+      const nested = emitFresh(node.children, inner);
+      if (!nested.ok) return nested;
+      parts.push(`<a href={${JSON.stringify(node.href)}}>${inner.join("")}</a>`);
+      continue;
+    }
+    const inner: string[] = [];
+    const nested = emitFresh(node.children, inner);
+    if (!nested.ok) return nested;
+    const tag = node.type === "strong" ? "strong" : "em";
+    parts.push(`<${tag}>${inner.join("")}</${tag}>`);
+  }
+  return { ok: true, value: "" };
+}
+
 function textOf(node: SanitizedNode): string {
   if (node.type === "text" || node.type === "code") return node.text;
   if (node.type === "slot") return "";

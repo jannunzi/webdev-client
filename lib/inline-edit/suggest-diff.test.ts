@@ -4,6 +4,7 @@ import {
   acceptAllChoices,
   applyChoices,
   buildDiff,
+  consumeGhost,
   continuationSentence,
   fitGhost,
   maskPreservedHtml,
@@ -72,6 +73,9 @@ describe("suggestion placeholders and hunks", () => {
   });
 
   it("accepts the next ghost word and fits an insertion before the following text", () => {
+    assert.equal(consumeGhost(" the page.", "t"), "he page.");
+    assert.equal(consumeGhost(" the page.", " the"), " page.");
+    assert.equal(consumeGhost(" the page.", "x"), null);
     assert.deepEqual(splitGhostWord(" next sentence."), { take: " next", rest: " sentence." });
     assert.deepEqual(splitGhostWord("word rest"), { take: "word", rest: " rest" });
     assert.equal(splitGhostWord("   "), null);

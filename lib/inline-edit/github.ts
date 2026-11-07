@@ -1,3 +1,4 @@
+import type { ParagraphStructure } from "./blocks";
 import { replaceEditableSource } from "./replace";
 
 export type Env = Record<string, string | undefined>;
@@ -85,6 +86,7 @@ export async function publishInlineEdit(
     hash: string;
     html: string;
     email: string;
+    structure?: ParagraphStructure;
     fetchImpl?: FetchLike;
   },
 ): Promise<PublishResult> {
@@ -94,7 +96,13 @@ export async function publishInlineEdit(
   const message = commitMessage(input.email, input.file);
   let current = await readRepoFile(fetchImpl, config, input.file, branch);
   if (!current.ok) return current;
-  let replaced = replaceEditableSource(current.source, input.file, input.hash, input.html);
+  let replaced = replaceEditableSource(
+    current.source,
+    input.file,
+    input.hash,
+    input.html,
+    input.structure,
+  );
   if (!replaced.ok) return { ok: false, status: 409, error: replaced.error };
   if (replaced.unchanged) return { ok: true, mode: "unchanged" };
 
@@ -110,7 +118,13 @@ export async function publishInlineEdit(
 
   current = await readRepoFile(fetchImpl, config, input.file, branch);
   if (!current.ok) return current;
-  replaced = replaceEditableSource(current.source, input.file, input.hash, input.html);
+  replaced = replaceEditableSource(
+    current.source,
+    input.file,
+    input.hash,
+    input.html,
+    input.structure,
+  );
   if (!replaced.ok) {
     return {
       ok: false,

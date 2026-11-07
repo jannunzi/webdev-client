@@ -235,6 +235,76 @@ describe("POST /api/staff/edit-text", () => {
     assert.equal(puts, 1);
   });
 
+  it("commits a removed paragraph and an inserted list without an instruction", async () => {
+    const source = `export function Page() {
+  return (
+    <section id="sec-1-1">
+      <h2 id="intro">Title</h2>
+      <p>Hello <code>HTML</code> there.</p>
+      <p>Neighbor stays.</p>
+    </section>
+  );
+}
+`;
+    const paragraph = uniqueEditable(source, FILE).find(
+      (node) => node.kind === "jsx" && source.slice(node.start, node.end).includes("HTML"),
+    );
+    assert.ok(paragraph);
+    const { fetchImpl, calls } = githubFetch(source);
+    const response = await handleEditTextRequest(
+      new Request("http://localhost/api/staff/edit-text", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          file: FILE,
+          hash: paragraph.hash,
+          html: 'Hello <slot data-i="0"></slot> there. <div data-ai-instruction="1">Create a list of terms introduced in this section</div>',
+          insertsAfter: [
+            {
+              kind: "ul",
+              items: ["<strong>HTML</strong> — the markup language."],
+            },
+          ],
+        }),
+      }),
+      {
+        staff: { email: "staff@example.com" },
+        env: { ...env, VERCEL_GIT_COMMIT_REF: "main" },
+        fetchImpl,
+      },
+    );
+    assert.equal(response.status, 200);
+    const body = (await response.json()) as { mode: string; branch: string };
+    assert.equal(body.mode, "commit");
+    assert.equal(body.branch, "main");
+    const put = calls.find((call) => call.method === "PUT");
+    assert.ok(put);
+    const payload = JSON.parse(put.body) as { branch: string; content: string };
+    assert.equal(payload.branch, "main");
+    const written = Buffer.from(payload.content, "base64").toString("utf8");
+    assert.match(written, /<code>HTML<\/code>/);
+    assert.match(written, /<ul>/);
+    assert.match(written, /<strong>\{"HTML"\}<\/strong>/);
+    assert.match(written, /Neighbor stays/);
+    assert.match(written, /id="intro"/);
+    assert.doesNotMatch(written, /Create a list of terms/);
+    assert.doesNotMatch(written, /data-ai-instruction/);
+  });
+
+  it("does not write when a caller who is not staff removes a paragraph", async () => {
+    const { fetchImpl, calls } = githubFetch(SOURCE);
+    const response = await handleEditTextRequest(
+      new Request("http://localhost/api/staff/edit-text", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ file: FILE, hash: hashFor(SOURCE), html: "", remove: true }),
+      }),
+      { staff: { error: "Staff only.", status: 403 }, env, fetchImpl },
+    );
+    assert.equal(response.status, 403);
+    assert.equal(calls.length, 0);
+  });
+
   it("tells staff to set GITHUB_EDIT_TOKEN when it is missing", async () => {
     const denied = await handleEditTextRequest(editRequest("Hi"), {
       staff: { email: "staff@example.com" },
