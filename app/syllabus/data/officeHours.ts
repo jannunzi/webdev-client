@@ -2,12 +2,11 @@ import type { OfficeHourRow } from "./types";
 
 /**
  * Teaching-assistant slots reported by Giuseppe.
- * These are typical or recent times, not a guaranteed weekly schedule.
  * Every TA meets on Microsoft Teams. No join URL was published — do not add one.
  * Giuseppe Marotta holds no office hours. His email was not provided.
  */
 export const officeHoursPlaceholder =
-  "Teaching-assistant times are typical or recent slots, not a guaranteed recurring schedule. Actual times are announced weekly on each section’s Piazza. Teaching assistants meet on Microsoft Teams. No join link is published — check that section’s Piazza announcements or email the TA for how to join.";
+  "Actual times are announced weekly on each section’s Piazza. Teaching assistants meet on Microsoft Teams. No join link is published — check that section’s Piazza announcements or email the TA for how to join.";
 
 const teamsLocation = "Microsoft Teams — no join link posted";
 

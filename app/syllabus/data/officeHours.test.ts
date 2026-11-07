@@ -63,7 +63,8 @@ describe("instructor office hours", () => {
     assert.equal(rows[0]?.location, "In person — room not yet posted");
     assert.equal(rows[1]?.hours, "Thursday and Friday on Zoom — time not yet posted");
     assert.equal(rows[1]?.location, "Zoom — join link not yet posted");
-    assert.match(officeHoursPlaceholder, /not a guaranteed recurring schedule/);
+    assert.doesNotMatch(officeHoursPlaceholder, /not a guaranteed/);
+    assert.doesNotMatch(officeHoursPlaceholder, /guaranteed recurring/);
     assert.match(officeHoursPlaceholder, /announced weekly/);
     assert.match(officeHoursPlaceholder, /Microsoft Teams/);
     assert.match(officeHoursPlaceholder, /No join link is published/);
@@ -135,7 +136,9 @@ describe("instructor office hours", () => {
     assert.match(html, /In person — room not yet posted/);
     assert.match(html, /Thursday and Friday on Zoom — time not yet posted/);
     assert.match(html, /Zoom — join link not yet posted/);
-    assert.match(html, /not a guaranteed recurring schedule/);
+    assert.doesNotMatch(html, /not a guaranteed/);
+    assert.doesNotMatch(html, /guaranteed recurring/);
+    assert.match(html, /Actual times are announced weekly on each section/);
     assert.match(html, /href="mailto:j\.annunziato@northeastern\.edu"/);
     assert.match(html, /href="mailto:trivedi\.shl@northeastern\.edu"/);
     assert.match(html, /href="mailto:bheemappagnanamurt\.a@northeastern\.edu"/);
