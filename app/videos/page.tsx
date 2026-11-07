@@ -1,14 +1,16 @@
 import { redirect } from "next/navigation";
+import { defaultSectionId } from "@/app/syllabus/data/sections";
 import {
   defaultVideoCourseId,
   defaultVideoSemester,
   videoCourseOptions,
 } from "@/lib/videos/courses";
 import { listVideoHubChapters } from "@/lib/videos/hub";
+import { currentLectureTerm, parseLectureFilterSearch } from "@/lib/videos/lecture-filter";
 import { listLectureClipSets } from "@/lib/videos/lectures";
 import { lectureClipMap } from "@/lib/videos/map";
 import { publishedCoursePlaylists } from "@/lib/videos/playlists";
-import { parseVideosQuery, videosHref, videosHubHref } from "@/lib/videos/query";
+import { parseVideosQuery, videosHref, videosHubHref, withLectureFilterParams } from "@/lib/videos/query";
 import VideosHub from "./components/VideosHub";
 
 type VideosSearchParams = {
@@ -16,6 +18,9 @@ type VideosSearchParams = {
   bookSectionId?: string | string[];
   course?: string | string[];
   semester?: string | string[];
+  lectureSection?: string | string[];
+  lectureYear?: string | string[];
+  lectureSeason?: string | string[];
 };
 
 function one(value: string | string[] | undefined): string | undefined {
@@ -48,15 +53,22 @@ export default async function VideosPage({
     courses.map((option) => option.id),
   );
 
+  const lectureSearch = {
+    lectureSection: one(params.lectureSection),
+    lectureYear: one(params.lectureYear),
+    lectureSeason: one(params.lectureSeason),
+  };
+
   if (!query.canonical) {
     const preference = {
       course: courseSet ? query.course : undefined,
       semester: semesterSet ? query.semester : undefined,
     };
     redirect(
-      query.section
-        ? videosHref(query.section, preference)
-        : videosHubHref(preference),
+      withLectureFilterParams(
+        query.section ? videosHref(query.section, preference) : videosHubHref(preference),
+        lectureSearch,
+      ),
     );
   }
 
@@ -70,6 +82,9 @@ export default async function VideosPage({
       activeSection={query.section || null}
       playlists={publishedCoursePlaylists()}
       lectures={listLectureClipSets()}
+      lectureTerm={currentLectureTerm(new Date())}
+      lectureQuery={parseLectureFilterSearch(lectureSearch)}
+      defaultLectureSectionId={defaultSectionId}
     />
   );
 }
