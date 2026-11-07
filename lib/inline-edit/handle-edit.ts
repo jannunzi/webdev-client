@@ -1,3 +1,4 @@
+import { parseInsertList, type ParagraphStructure } from "./blocks";
 import { githubConfigFromEnv, publishInlineEdit, type Env, type FetchLike } from "./github";
 import { isAllowedEditFile, SOURCE_HASH_RE } from "./source-hash";
 
@@ -37,6 +38,21 @@ export async function handleEditTextRequest(
   const file = typeof body.file === "string" ? body.file : "";
   const hash = typeof body.hash === "string" ? body.hash : "";
   const html = typeof body.html === "string" ? body.html : "";
+  const remove = body.remove === true;
+  const insertsBefore = parseInsertList(body.insertsBefore);
+  if (!insertsBefore.ok) {
+    return Response.json({ ok: false, error: insertsBefore.error }, { status: 400 });
+  }
+  const insertsAfter = parseInsertList(body.insertsAfter);
+  if (!insertsAfter.ok) {
+    return Response.json({ ok: false, error: insertsAfter.error }, { status: 400 });
+  }
+  const structure: ParagraphStructure = {
+    remove,
+    insertsBefore: insertsBefore.items,
+    insertsAfter: insertsAfter.items,
+  };
+  const structural = Boolean(remove || insertsBefore.items.length || insertsAfter.items.length);
   if (!isAllowedEditFile(file) || file.length > 240) {
     return Response.json(
       { ok: false, error: "That file can't be edited from the book or slides." },
@@ -49,7 +65,13 @@ export async function handleEditTextRequest(
       { status: 400 },
     );
   }
-  if (!html || html.length > MAX_HTML) {
+  if (html.length > MAX_HTML) {
+    return Response.json(
+      { ok: false, error: "The edited text is empty or too long." },
+      { status: 400 },
+    );
+  }
+  if (!html && !structural) {
     return Response.json(
       { ok: false, error: "The edited text is empty or too long." },
       { status: 400 },
@@ -65,6 +87,7 @@ export async function handleEditTextRequest(
     file,
     hash,
     html,
+    structure: structural ? structure : undefined,
     email,
     fetchImpl: options.fetchImpl,
   });

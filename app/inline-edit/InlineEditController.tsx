@@ -15,14 +15,40 @@ import {
   applyChoices,
   acceptAllChoices,
   buildDiff,
+  consumeGhost,
   maskPreservedHtml,
   renderReview,
   splitGhostWord,
   type DiffPart,
   type HunkChoice,
 } from "@/lib/inline-edit/suggest-diff";
+import type { GeneratedBlock } from "@/lib/inline-edit/sanitize";
+import {
+  buildSavePayload,
+  captureSession,
+  clearSessionNodes,
+  editableHost,
+  insertInstruction,
+  insertParagraphBelow,
+  instructionText,
+  markParagraphRemoved,
+  paragraphEditable,
+  renderGeneratedBlocks,
+  restoreSession,
+  sectionContext,
+  serializeEditable,
+  setInstructionError,
+  stripInstructionNodes,
+} from "./session-dom";
 
-type SavePayload = { file: string; hash: string; html: string };
+type SavePayload = {
+  file: string;
+  hash: string;
+  html: string;
+  remove?: boolean;
+  insertsBefore?: { kind: string; html?: string; items?: string[] }[];
+  insertsAfter?: { kind: string; html?: string; items?: string[] }[];
+};
 type SaveState = {
   el: HTMLElement;
   phase: "saving" | "committed" | "error";
@@ -30,42 +56,7 @@ type SaveState = {
   payload: SavePayload;
 };
 
-function escapeHtml(text: string): string {
-  return text
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;");
-}
-
-/** Walk the edited element. JSX slots stay as placeholders; slide markup stays as tags. */
-export function serializeEditable(root: HTMLElement): string {
-  const kind = root.dataset.editKind === "jsx" ? "jsx" : "text";
-  const walk = (node: Node): string => {
-    if (node.nodeType === Node.TEXT_NODE) return escapeHtml(node.textContent ?? "");
-    if (node.nodeType !== Node.ELEMENT_NODE) return "";
-    const el = node as HTMLElement;
-    if (el.dataset.inlineGhost != null) return "";
-    if (kind === "jsx" && el.dataset.editSlot != null) {
-      const index = Number(el.dataset.editSlot);
-      return Number.isInteger(index) ? `<slot data-i="${index}"></slot>` : "";
-    }
-    const tag = el.tagName.toLowerCase();
-    const inner = () => Array.from(el.childNodes).map(walk).join("");
-    if (tag === "br") return " ";
-    if (tag === "b" || tag === "strong") return `<strong>${inner()}</strong>`;
-    if (tag === "i" || tag === "em") return `<em>${inner()}</em>`;
-    if (tag === "code") return `<code>${escapeHtml(el.textContent ?? "")}</code>`;
-    if (tag === "a") {
-      return `<a href="${escapeHtml(el.getAttribute("href") ?? "")}">${inner()}</a>`;
-    }
-    const style = el.getAttribute("style") ?? "";
-    if (/font-weight\s*:\s*(bold|[6-9]00)/i.test(style)) return `<strong>${inner()}</strong>`;
-    if (/font-style\s*:\s*italic/i.test(style)) return `<em>${inner()}</em>`;
-    return inner();
-  };
-  return Array.from(root.childNodes).map(walk).join("");
-}
+export { serializeEditable };
 
 function lockFixed(root: HTMLElement) {
   root.querySelectorAll<HTMLElement>("[data-edit-slot], [data-edit-lock]").forEach((node) => {
@@ -115,8 +106,22 @@ function currentHtml(el: HTMLElement): string {
   return clone.innerHTML;
 }
 
+function findGhost(anchor: HTMLElement): HTMLElement | null {
+  const inside = anchor.querySelector("[data-inline-ghost]");
+  if (inside instanceof HTMLElement) return inside;
+  const hash = anchor.dataset.srcHash ?? "";
+  const outer = anchor.parentElement?.querySelector(
+    `[data-inline-session="${hash}"] [data-inline-ghost]`,
+  );
+  return outer instanceof HTMLElement ? outer : null;
+}
+
 function removeGhost(el: HTMLElement) {
   el.querySelectorAll("[data-inline-ghost]").forEach((node) => node.remove());
+  const hash = el.dataset.srcHash ?? "";
+  el.parentElement
+    ?.querySelectorAll(`[data-inline-session="${hash}"] [data-inline-ghost]`)
+    .forEach((node) => node.remove());
 }
 
 function serializeFragment(root: HTMLElement, fragment: DocumentFragment): string {
@@ -253,7 +258,16 @@ function CheckIcon() {
   );
 }
 
-export default function InlineEditController() {
+export default function InlineEditController({
+  forceEnabled = false,
+}: {
+  forceEnabled?: boolean;
+} = {}) {
+  if (forceEnabled) return <Editor />;
+  return <StaffGatedEditor />;
+}
+
+function StaffGatedEditor() {
   const { isLoaded, isSignedIn } = useUser();
   const [enabled, setEnabled] = useState(false);
 
@@ -284,6 +298,7 @@ function Editor() {
   const [reviewing, setReviewing] = useState(false);
   const [suggesting, setSuggesting] = useState(false);
   const [suggestError, setSuggestError] = useState("");
+  const [sessionVersion, setSessionVersion] = useState(0);
   const originals = useRef(new Map<HTMLElement, string>());
   const outlines = useRef(new Map<HTMLElement, string>());
   const holds = useRef(new Map<string, () => void>());
@@ -292,10 +307,11 @@ function Editor() {
   const ghostTimer = useRef<number | null>(null);
   const snapshotTimer = useRef<number | null>(null);
   const continueAbort = useRef<AbortController | null>(null);
+  const instructionRunner = useRef<(block: HTMLElement, anchor: HTMLElement) => void>(() => {});
   const pencilEl = editing ?? hover;
 
   const pushSnapshot = useCallback((el: HTMLElement) => {
-    const html = currentHtml(el);
+    const html = captureSession(el);
     const history = historyRef.current ?? createHistory(html);
     historyRef.current = pushHistory(history, html);
   }, []);
@@ -304,16 +320,27 @@ function Editor() {
     const history = historyRef.current;
     if (!history) return;
     removeGhost(el);
-    el.innerHTML = history.present;
+    restoreSession(el, history.present);
     const stillReviewing = Boolean(el.querySelector("[data-diff-hunk]"));
     setReviewing(stillReviewing);
-    if (stillReviewing) {
+    el.style.outline = el.dataset.inlineRemoved === "1" ? "2px solid #b91c1c" : "2px solid #2563eb";
+    if (stillReviewing || el.dataset.inlineRemoved === "1") {
       el.contentEditable = "false";
       return;
     }
     reviewRef.current = null;
     el.contentEditable = "true";
     lockFixed(el);
+    setSessionVersion((version) => version + 1);
+    el.parentElement
+      ?.querySelectorAll<HTMLElement>("[data-ai-instruction-text], [data-inline-draft] [contenteditable='true']")
+      .forEach((node) => {
+        const owner = node.closest("[data-inline-session]");
+        const ownerHash = owner instanceof HTMLElement ? owner.dataset.inlineSession : undefined;
+        if (node.dataset.inlineSession === el.dataset.srcHash || ownerHash === el.dataset.srcHash) {
+          node.contentEditable = "true";
+        }
+      });
   }, []);
 
   const release = useCallback((el: HTMLElement) => {
@@ -335,7 +362,10 @@ function Editor() {
     if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
     if (snapshotTimer.current != null) window.clearTimeout(snapshotTimer.current);
     release(el);
+    clearSessionNodes(el);
     if (original !== undefined) el.innerHTML = original;
+    el.removeAttribute("data-inline-removed");
+    el.style.display = "";
     originals.current.delete(el);
     historyRef.current = null;
     reviewRef.current = null;
@@ -350,7 +380,7 @@ function Editor() {
     if (editing && editing !== el) return;
     originals.current.set(el, el.innerHTML);
     outlines.current.set(el, el.style.outline);
-    historyRef.current = createHistory(el.innerHTML);
+    historyRef.current = createHistory(captureSession(el));
     reviewRef.current = null;
     el.style.outline = "2px solid #2563eb";
     el.contentEditable = "true";
@@ -364,13 +394,20 @@ function Editor() {
   }
 
   async function requestSuggestion(el: HTMLElement, mode: "improve" | "continue") {
-    const html = serializeEditable(el);
+    const target =
+      mode === "continue"
+        ? editableHost(el, document.getSelection()?.anchorNode ?? null) ?? el
+        : el;
+    if (mode === "continue" && (el.dataset.inlineRemoved === "1" || target.closest("[data-ai-instruction]"))) {
+      return;
+    }
+    const html = serializeEditable(target);
     const masked = maskPreservedHtml(html);
     let text = masked.prompt;
     let after = "";
     let maskCount = masked.masks.length;
     if (mode === "continue") {
-      const halves = caretHalves(el);
+      const halves = caretHalves(target);
       if (!halves) return;
       const joined = maskPreservedHtml(`${halves.beforeHtml}\u0001${halves.afterHtml}`);
       const parts = joined.prompt.split("\u0001");
@@ -401,16 +438,20 @@ function Editor() {
         return;
       }
       if (mode === "continue") {
-        const halves = caretHalves(el);
+        const halves = caretHalves(target);
         const again = halves
           ? maskPreservedHtml(`${halves.beforeHtml}\u0001${halves.afterHtml}`).prompt.split("\u0001")[0]
           : null;
-        if (!reviewRef.current && again === text) showGhost(el, data.text);
+        if (!reviewRef.current && again === text) showGhost(target, data.text);
         return;
       }
       const diff = buildDiff(masked.prompt, data.text, masked.masks);
       if (!diff.ok) {
         setSuggestError(diff.error);
+        return;
+      }
+      if (!diff.parts.some((part) => part.type === "hunk")) {
+        setSuggestError("No wording changes.");
         return;
       }
       pushSnapshot(el);
@@ -467,20 +508,76 @@ function Editor() {
     el.focus();
   }
 
+  async function runInstruction(block: HTMLElement, anchor: HTMLElement) {
+    const instruction = instructionText(block);
+    if (!instruction) {
+      setInstructionError(block, "Write an instruction in the instruction block.");
+      return;
+    }
+    const context = sectionContext(anchor);
+    const controller = new AbortController();
+    continueAbort.current?.abort();
+    continueAbort.current = controller;
+    setSuggesting(true);
+    setSuggestError("");
+    setInstructionError(block, "");
+    try {
+      const response = await fetch("/api/staff/ai-suggest", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        signal: controller.signal,
+        body: JSON.stringify({
+          mode: "instruct",
+          instruction,
+          before: context.before,
+          after: context.after,
+          section: context.section,
+        }),
+      });
+      const data = (await response.json().catch(() => null)) as {
+        ok?: boolean;
+        blocks?: GeneratedBlock[];
+        error?: string;
+      } | null;
+      if (controller.signal.aborted) return;
+      if (!response.ok || !data?.ok || !data.blocks?.length) {
+        setInstructionError(block, data?.error || "No insertion.");
+        const retry = block.querySelector<HTMLButtonElement>('[data-ai-action="retry"]');
+        if (retry) retry.hidden = false;
+        return;
+      }
+      renderGeneratedBlocks(block, data.blocks);
+      pushSnapshot(anchor);
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") return;
+      setInstructionError(block, "No insertion.");
+    } finally {
+      setSuggesting(false);
+    }
+  }
+
+  useEffect(() => {
+    instructionRunner.current = runInstruction;
+  });
+
   async function commit(el: HTMLElement, payload?: SavePayload) {
-    const html = payload?.html ?? serializeEditable(el);
+    const built = buildSavePayload(el);
     const nextPayload: SavePayload = payload ?? {
       file: el.dataset.srcFile ?? "",
       hash: el.dataset.srcHash ?? "",
-      html,
+      html: built.html,
+      remove: built.remove,
+      insertsBefore: built.insertsBefore,
+      insertsAfter: built.insertsAfter,
     };
     const visible = el.innerHTML;
     if (!payload) {
+      stripInstructionNodes(el);
       release(el);
       originals.current.delete(el);
       setEditing(null);
       const hash = el.dataset.srcHash ?? "";
-      holds.current.set(hash, holdHtml(el, visible));
+      if (!nextPayload.remove) holds.current.set(hash, holdHtml(el, el.innerHTML || visible));
     }
     setSave({ el, phase: "saving", message: "saving…", payload: nextPayload });
     try {
@@ -503,6 +600,7 @@ function Editor() {
         });
         return;
       }
+      if (nextPayload.remove) el.style.display = "none";
       setSave({
         el,
         phase: "committed",
@@ -554,45 +652,59 @@ function Editor() {
 
   useEffect(() => {
     if (!editing || reviewing) return;
+    const hostOf = (node: Node | null) => editableHost(editing, node);
     const armGhost = () => {
       if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
-      if (editing.querySelector("[data-inline-ghost]")) return;
+      if (editing.dataset.inlineRemoved === "1") return;
+      const host = hostOf(document.getSelection()?.anchorNode ?? null);
+      if (!host || host.querySelector("[data-inline-ghost]")) return;
       ghostTimer.current = window.setTimeout(() => {
         void requestSuggestion(editing, "continue");
       }, 600);
     };
     const onBeforeInput = (event: InputEvent) => {
+      const host = hostOf(event.target instanceof Node ? event.target : null);
+      if (!host) return;
       continueAbort.current?.abort();
       if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
-      const ghost = editing.querySelector("[data-inline-ghost]");
+      const ghost = host.querySelector("[data-inline-ghost]");
       if (!ghost) return;
-      if (event.inputType === "insertText" && event.data && (ghost.textContent ?? "").startsWith(event.data)) {
-        const rest = (ghost.textContent ?? "").slice(event.data.length);
-        if (rest) ghost.textContent = rest;
-        else ghost.remove();
-        return;
+      if (event.inputType === "insertText" && event.data) {
+        const rest = consumeGhost(ghost.textContent ?? "", event.data);
+        if (rest != null) {
+          if (rest) ghost.textContent = rest;
+          else ghost.remove();
+          return;
+        }
       }
       ghost.remove();
     };
-    const onInput = () => {
+    const onInput = (event: Event) => {
+      if (!hostOf(event.target instanceof Node ? event.target : null)) return;
       if (snapshotTimer.current != null) window.clearTimeout(snapshotTimer.current);
       snapshotTimer.current = window.setTimeout(() => pushSnapshot(editing), 400);
       armGhost();
     };
     const onSelect = () => {
       if (suppressCaretDismiss) return;
-      const ghost = editing.querySelector("[data-inline-ghost]");
+      const host = hostOf(document.getSelection()?.anchorNode ?? null);
+      const ghost = host?.querySelector("[data-inline-ghost]") ?? editing.querySelector("[data-inline-ghost]");
       if (ghost && caretIsBefore(ghost)) return;
       continueAbort.current?.abort();
       if (ghost) ghost.remove();
+      editing.parentElement
+        ?.querySelectorAll("[data-inline-ghost]")
+        .forEach((node) => {
+          if (node !== ghost) node.remove();
+        });
       armGhost();
     };
-    editing.addEventListener("beforeinput", onBeforeInput);
-    editing.addEventListener("input", onInput);
+    document.addEventListener("beforeinput", onBeforeInput);
+    document.addEventListener("input", onInput);
     document.addEventListener("selectionchange", onSelect);
     return () => {
-      editing.removeEventListener("beforeinput", onBeforeInput);
-      editing.removeEventListener("input", onInput);
+      document.removeEventListener("beforeinput", onBeforeInput);
+      document.removeEventListener("input", onInput);
       document.removeEventListener("selectionchange", onSelect);
       if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
       if (snapshotTimer.current != null) window.clearTimeout(snapshotTimer.current);
@@ -605,12 +717,20 @@ function Editor() {
   useEffect(() => {
     if (!editing) return;
     const onKey = (event: KeyboardEvent) => {
+      const active = document.activeElement;
+      const inSession = (node: EventTarget | null) =>
+        node instanceof Element &&
+        node.closest("[data-inline-session]")?.getAttribute("data-inline-session") ===
+          editing.dataset.srcHash;
       const inField =
-        editing.contains(document.activeElement) ||
+        editing.contains(active) ||
+        inSession(active) ||
+        inSession(event.target) ||
         (event.target instanceof Element &&
           event.target.closest("[data-inline-edit-ui]") != null);
-      if (!inField && event.key !== "Escape") return;
       const mod = event.metaKey || event.ctrlKey;
+      const undoKey = mod && !event.altKey && event.key.toLowerCase() === "z";
+      if (!inField && event.key !== "Escape" && !undoKey) return;
       if (mod && !event.altKey && event.key.toLowerCase() === "z") {
         event.preventDefault();
         if (!historyRef.current) return;
@@ -620,25 +740,22 @@ function Editor() {
         restoreHistory(editing);
         return;
       }
-      if (
-        mod &&
-        event.key === "ArrowRight" &&
-        editing.querySelector("[data-inline-ghost]")
-      ) {
+      const ghostHost = findGhost(editing)?.parentElement ?? null;
+      if (mod && event.key === "ArrowRight" && ghostHost) {
         event.preventDefault();
-        if (acceptGhostWord(editing)) pushSnapshot(editing);
+        if (acceptGhostWord(ghostHost)) pushSnapshot(editing);
         return;
       }
-      if (event.key === "Tab" && editing.querySelector("[data-inline-ghost]")) {
+      if (event.key === "Tab" && ghostHost?.querySelector("[data-inline-ghost]")) {
         event.preventDefault();
-        if (acceptGhost(editing)) pushSnapshot(editing);
+        if (acceptGhost(ghostHost)) pushSnapshot(editing);
         return;
       }
       if (event.key === "Escape") {
         event.preventDefault();
         continueAbort.current?.abort();
         if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
-        if (editing.querySelector("[data-inline-ghost]")) {
+        if (findGhost(editing)) {
           removeGhost(editing);
           return;
         }
@@ -648,6 +765,20 @@ function Editor() {
         }
         cancel(editing);
         return;
+      }
+      if (
+        (event.key === "Backspace" || event.key === "Delete") &&
+        event.target instanceof Element
+      ) {
+        const field = event.target.closest("[data-ai-instruction-text]");
+        const block = field?.closest("[data-ai-instruction]");
+        if (field && block instanceof HTMLElement && !field.textContent?.trim()) {
+          event.preventDefault();
+          pushSnapshot(editing);
+          block.remove();
+          pushSnapshot(editing);
+          return;
+        }
       }
       if (event.key === "Enter") {
         event.preventDefault();
@@ -662,6 +793,36 @@ function Editor() {
     const onClick = (event: MouseEvent) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
+      const ai = target.closest("[data-ai-action]");
+      if (ai instanceof HTMLElement && ai.closest("[data-inline-session]")?.getAttribute("data-inline-session") === editing.dataset.srcHash) {
+        event.preventDefault();
+        const block = ai.closest("[data-ai-instruction]");
+        const action = ai.dataset.aiAction;
+        if (!(block instanceof HTMLElement)) return;
+        if (action === "remove-instruction") {
+          pushSnapshot(editing);
+          block.remove();
+          pushSnapshot(editing);
+          return;
+        }
+        if (action === "generate" || action === "retry") {
+          instructionRunner.current(block, editing);
+        }
+        return;
+      }
+      const draftRemove = target.closest("[data-draft-action='remove']");
+      if (
+        draftRemove instanceof HTMLElement &&
+        draftRemove.closest("[data-inline-draft]")?.getAttribute("data-inline-session") === editing.dataset.srcHash
+      ) {
+        event.preventDefault();
+        const draft = draftRemove.closest("[data-inline-draft]");
+        if (!draft) return;
+        pushSnapshot(editing);
+        draft.remove();
+        pushSnapshot(editing);
+        return;
+      }
       const button = target.closest("[data-hunk-choice]");
       if (!button || !editing.contains(button)) return;
       event.preventDefault();
@@ -671,25 +832,81 @@ function Editor() {
       chooseHunk(editing, id, choice);
     };
     document.addEventListener("keydown", onKey);
-    editing.addEventListener("click", onClick);
+    document.addEventListener("click", onClick);
     return () => {
       document.removeEventListener("keydown", onKey);
-      editing.removeEventListener("click", onClick);
+      document.removeEventListener("click", onClick);
     };
     // Hunk actions read the review ref. Rebinding them would drop keystrokes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cancel, editing, pushSnapshot, restoreHistory]);
 
   const checking = Boolean(editing);
+  const paragraphRemoved = Boolean(editing?.dataset.inlineRemoved) && sessionVersion >= 0;
   const showPencil = Boolean(pencilEl && box && box.width > 0 && box.height > 0);
   return (
     <>
       {showPencil && box ? (
         <div
           data-inline-edit-ui=""
-          className="pointer-events-none fixed z-40 flex items-start gap-1"
-          style={{ top: Math.max(8, box.top - 6), left: Math.max(8, box.right - 60) }}
+          className="pointer-events-none fixed z-40 flex max-w-[16rem] flex-wrap items-start gap-1"
+          style={{
+            top: Math.max(8, box.top),
+            left: Math.min(Math.max(8, box.right + 8), Math.max(8, window.innerWidth - 220)),
+          }}
         >
+          {checking && editing && paragraphEditable(editing) ? (
+            <>
+              <button
+                type="button"
+                className="pointer-events-auto h-6 rounded-full border border-amber-600 bg-amber-50 px-2 text-[11px] font-sans text-amber-950 shadow-sm hover:border-amber-800 disabled:opacity-40"
+                aria-label="Insert AI instruction"
+                title="Insert an AI instruction here. The instruction is not saved."
+                disabled={suggesting || reviewing || paragraphRemoved || save?.phase === "saving"}
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => {
+                  pushSnapshot(editing);
+                  insertInstruction(editing);
+                  pushSnapshot(editing);
+                  setSessionVersion((version) => version + 1);
+                }}
+              >
+                AI
+              </button>
+              <button
+                type="button"
+                className="pointer-events-auto h-6 rounded-full border border-neutral-300 bg-white px-2 text-[11px] font-sans text-neutral-800 shadow-sm hover:border-neutral-800 disabled:opacity-40"
+                aria-label="Insert paragraph below"
+                title="Insert a paragraph below this one"
+                disabled={suggesting || reviewing || paragraphRemoved || save?.phase === "saving"}
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => {
+                  pushSnapshot(editing);
+                  insertParagraphBelow(editing);
+                  pushSnapshot(editing);
+                  setSessionVersion((version) => version + 1);
+                }}
+              >
+                + Paragraph
+              </button>
+              <button
+                type="button"
+                className="pointer-events-auto h-6 rounded-full border border-neutral-300 bg-white px-2 text-[11px] font-sans text-neutral-800 shadow-sm hover:border-neutral-800 disabled:opacity-40"
+                aria-label="Remove paragraph"
+                title="Remove this paragraph. Undo or Esc restores it before save."
+                disabled={suggesting || reviewing || paragraphRemoved || save?.phase === "saving"}
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => {
+                  pushSnapshot(editing);
+                  markParagraphRemoved(editing);
+                  pushSnapshot(editing);
+                  setSessionVersion((version) => version + 1);
+                }}
+              >
+                Remove
+              </button>
+            </>
+          ) : null}
           {checking ? (
             <button
               type="button"
@@ -750,7 +967,7 @@ function Editor() {
           ) : null}
         </div>
       ) : null}
-      <style>{`[data-diff-hunk] del{background:#fee2e2;text-decoration:line-through}[data-diff-hunk] mark{background:#d1fae5}[data-inline-ghost]{color:#a3a3a3}`}</style>
+      <style>{`[data-diff-hunk] del{background:#fee2e2;text-decoration:line-through}[data-diff-hunk] mark{background:#d1fae5}[data-inline-ghost]{color:#a3a3a3}[data-inline-removed]{opacity:.55;text-decoration:line-through;outline-color:#b91c1c}[data-ai-instruction]{box-shadow:inset 4px 0 0 #d97706}`}</style>
       {suggestError && box ? (
         <div
           data-inline-edit-ui=""

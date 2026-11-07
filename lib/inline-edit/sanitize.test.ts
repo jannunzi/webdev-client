@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { plainText, sanitizeEditedHtml } from "./sanitize.ts";
+import {
+  inlineToHtml,
+  plainText,
+  sanitizeEditedHtml,
+  sanitizeFreshInline,
+  sanitizeGeneratedMarkup,
+} from "./sanitize.ts";
 
 describe("edited HTML sanitizer", () => {
   it("keeps text and converts b/i to strong/em", () => {
@@ -51,5 +57,35 @@ describe("edited HTML sanitizer", () => {
       sanitizeEditedHtml('<a href="javascript:alert(1)">x</a>', "text").some((node) => node.type === "link"),
       false,
     );
+  });
+
+  it("drops an AI instruction and keeps the prose around it", () => {
+    const nodes = sanitizeEditedHtml(
+      'Before <div data-ai-instruction="1">Create a list of terms introduced in this section</div> after',
+      "jsx",
+    );
+    assert.equal(plainText(nodes), "Before  after");
+    assert.equal(inlineToHtml(nodes).includes("Create a list"), false);
+  });
+
+  it("turns a terms list into semantic items and drops scripts", () => {
+    const blocks = sanitizeGeneratedMarkup(
+      `<ul><li><script>alert(1)</script><strong>Internet</strong> — a network of networks.</li><li><em>HTML</em> — <code>markup</code> <a href="javascript:alert(1)">x</a></li></ul>`,
+    );
+    assert.equal(blocks.length, 1);
+    assert.equal(blocks[0]?.kind, "ul");
+    if (blocks[0]?.kind !== "ul") return;
+    assert.match(blocks[0].items[0] ?? "", /<strong>Internet<\/strong>/);
+    assert.doesNotMatch(blocks[0].items.join(""), /script|alert/);
+    assert.match(blocks[0].items[1] ?? "", /<code>markup<\/code>/);
+    assert.doesNotMatch(blocks[0].items[1] ?? "", /<a /);
+  });
+
+  it("refuses a nested block inside a new paragraph", () => {
+    const nested = sanitizeFreshInline("<ul><li>Term</li></ul>");
+    assert.equal(nested.ok, false);
+    const prose = sanitizeFreshInline("Create a list of terms introduced in this section");
+    assert.equal(prose.ok, true);
+    if (prose.ok) assert.match(prose.html, /Create a list of terms/);
   });
 });

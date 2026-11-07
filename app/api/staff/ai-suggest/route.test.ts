@@ -83,6 +83,135 @@ describe("POST /api/staff/ai-suggest", () => {
     assert.equal(body.text, "ser paints the page.");
   });
 
+  it("does not treat a prose sentence as an instruction", async () => {
+    let system = "";
+    let structured = false;
+    const response = await handleAiSuggestRequest(
+      request({
+        mode: "improve",
+        text: "Create a list of terms introduced in this section",
+        maskCount: 0,
+      }),
+      {
+        staff: { email: "staff@example.com" },
+        generate: async (input) => {
+          system = input.system;
+          structured = input.structured === true;
+          return "Create a list of terms introduced in this section.";
+        },
+      },
+    );
+    assert.equal(response.status, 200);
+    assert.equal(structured, false);
+    assert.match(system, /Fix typos/);
+    assert.doesNotMatch(system, /INSTRUCTION/);
+    const body = (await response.json()) as { text?: string; blocks?: unknown };
+    assert.equal(body.blocks, undefined);
+    assert.match(body.text ?? "", /Create a list of terms/);
+  });
+
+  it("returns a semantic terms list for an explicit instruction and rejects non-staff", async () => {
+    let called = false;
+    const denied = await handleAiSuggestRequest(
+      request({
+        mode: "instruct",
+        instruction: "Create a list of terms introduced in this section",
+        before: "The Internet uses HTML.",
+        after: "",
+        section: "1.1 Learning objectives",
+      }),
+      {
+        staff: { error: "Staff only.", status: 403 },
+        generate: async () => {
+          called = true;
+          return "<ul><li><strong>HTML</strong> — markup.</li></ul>";
+        },
+      },
+    );
+    assert.equal(denied.status, 403);
+    assert.equal(called, false);
+
+    let prompt = "";
+    let sawStructured = false;
+    const response = await handleAiSuggestRequest(
+      request({
+        mode: "instruct",
+        instruction: "Create a list of terms introduced in this section",
+        before: "The <a href=\"/book/terms/internet\">Internet</a> uses HTML.",
+        after: "Browsers request pages.",
+        section: "Networks",
+      }),
+      {
+        staff: { email: "staff@example.com" },
+        generate: async (input) => {
+          prompt = input.prompt;
+          sawStructured = input.structured === true;
+          return "- **Internet** — a global network.\n- **HTML** — the markup language.";
+        },
+      },
+    );
+    assert.equal(sawStructured, true);
+    assert.match(prompt, /INSTRUCTION:\nCreate a list of terms introduced in this section/);
+    assert.match(prompt, /BEFORE:/);
+    assert.match(prompt, /⟦0⟧/);
+    assert.equal(response.status, 200);
+    const body = (await response.json()) as {
+      blocks: { kind: string; items?: string[] }[];
+    };
+    assert.equal(body.blocks[0]?.kind, "ul");
+    assert.match(body.blocks[0]?.items?.[0] ?? "", /<strong>Internet<\/strong>/);
+    assert.match(body.blocks[0]?.items?.[1] ?? "", /<strong>HTML<\/strong>/);
+    assert.doesNotMatch(JSON.stringify(body), /data-ai-instruction/);
+  });
+
+  it("asks the installed structured-output API for an instruction and rejects a non-list", async () => {
+    let outputName = "";
+    const response = await handleAiSuggestRequest(
+      request({
+        mode: "instruct",
+        instruction: "Create a list of terms introduced in this section",
+        section: "The web.",
+      }),
+      {
+        staff: { email: "staff@example.com" },
+        generateTextImpl: async (options) => {
+          outputName = options.output && typeof options.output === "object" && "name" in options.output
+            ? String(options.output.name)
+            : "";
+          return {
+            output: {
+              blocks: [
+                {
+                  type: "list",
+                  ordered: false,
+                  items: ["<strong>HTML</strong> — the markup language."],
+                },
+              ],
+            },
+          };
+        },
+      },
+    );
+    assert.equal(outputName, "object");
+    assert.equal(response.status, 200);
+    const body = (await response.json()) as { blocks: { kind: string; items: string[] }[] };
+    assert.equal(body.blocks[0]?.kind, "ul");
+    assert.match(body.blocks[0]?.items[0] ?? "", /<strong>HTML<\/strong>/);
+
+    const prose = await handleAiSuggestRequest(
+      request({
+        mode: "instruct",
+        instruction: "Create a list of terms introduced in this section",
+        section: "The web.",
+      }),
+      {
+        staff: { email: "staff@example.com" },
+        generate: async () => "The Internet is a network.",
+      },
+    );
+    assert.equal(prose.status, 422);
+  });
+
   it("rate limits one staff member", async () => {
     const allow = createRateLimit(2, 60_000);
     const send = () =>

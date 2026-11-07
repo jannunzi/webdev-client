@@ -12,7 +12,11 @@ export type SanitizedNode =
   | { type: "link"; href: string; children: SanitizedNode[] }
   | { type: "slot"; index: number };
 
-export type SanitizeMode = "jsx" | "text";
+export type SanitizeMode = "jsx" | "text" | "fresh";
+
+export type GeneratedBlock =
+  | { kind: "p"; html: string }
+  | { kind: "ul" | "ol"; items: string[] };
 
 type RawNode =
   | { type: "text"; text: string }
@@ -59,6 +63,33 @@ export function sanitizeEditedHtml(
 ): SanitizedNode[] {
   const folded = foldNodes(parseHtml(html), mode);
   return trimEdges(mergeText(folded));
+}
+
+/**
+ * Model output becomes paragraphs and lists only. Scripts, JSX components,
+ * and editor chrome are dropped. Nested lists are lifted so a new block
+ * cannot contain another block.
+ */
+export function sanitizeGeneratedMarkup(html: string): GeneratedBlock[] {
+  return foldBlocks(parseHtml(html));
+}
+
+const BLOCK_OR_SCRIPT =
+  /<\s*\/?\s*(?:script|style|iframe|object|embed|svg|math|ul|ol|li|p|div|h[1-6]|table|form|section|article)\b/i;
+
+/** Inline HTML for a new paragraph or list item. Block tags are not allowed. */
+export function sanitizeFreshInline(html: string): { ok: true; html: string } | { ok: false; error: string } {
+  if (BLOCK_OR_SCRIPT.test(html)) {
+    return {
+      ok: false,
+      error: "A new paragraph or list item can't contain a nested block or script.",
+    };
+  }
+  return { ok: true, html: inlineToHtml(sanitizeEditedHtml(html, "fresh")) };
+}
+
+export function inlineToHtml(nodes: readonly SanitizedNode[]): string {
+  return nodes.map(inlineHtml).join("");
 }
 
 export function plainText(nodes: SanitizedNode[]): string {
@@ -172,7 +203,7 @@ function foldNodes(nodes: RawNode[], mode: SanitizeMode): SanitizedNode[] {
       continue;
     }
     const tag = node.tag;
-    if (DROP_TAGS.has(tag)) continue;
+    if (isEditorChrome(node.attrs) || DROP_TAGS.has(tag)) continue;
     if (tag === "slot" && mode === "jsx") {
       const index = Number(node.attrs["data-i"] ?? "");
       if (Number.isInteger(index) && index >= 0 && index < 1000) {
@@ -196,11 +227,11 @@ function foldNodes(nodes: RawNode[], mode: SanitizeMode): SanitizedNode[] {
       out.push(...wrapStyle(foldNodes(node.children, mode), node.attrs.style ?? ""));
       continue;
     }
-    if (tag === "code" && mode === "text") {
+    if (tag === "code" && (mode === "text" || mode === "fresh")) {
       out.push({ type: "code", text: rawText(node.children) });
       continue;
     }
-    if (tag === "a" && mode === "text") {
+    if (tag === "a" && (mode === "text" || mode === "fresh")) {
       const href = safeHref(decodeEntities(node.attrs.href ?? ""));
       const children = foldNodes(node.children, mode);
       if (!href) {
@@ -302,6 +333,136 @@ function decodeEntities(text: string): string {
 function fromCode(code: number): string {
   if (!Number.isInteger(code) || code <= 0 || code > 0x10ffff) return "";
   return String.fromCodePoint(code);
+}
+
+function isEditorChrome(attrs: Record<string, string>): boolean {
+  return (
+    "data-ai-instruction" in attrs ||
+    "data-inline-meta" in attrs ||
+    "data-inline-ghost" in attrs ||
+    "data-inline-removed-note" in attrs
+  );
+}
+
+function foldBlocks(nodes: RawNode[]): GeneratedBlock[] {
+  const blocks: GeneratedBlock[] = [];
+  let inline: SanitizedNode[] = [];
+  const flushInline = () => {
+    const html = inlineToHtml(trimEdges(mergeText(inline)));
+    inline = [];
+    if (html) blocks.push({ kind: "p", html });
+  };
+  for (const node of nodes) {
+    if (node.type === "text") {
+      const text = collapse(decodeEntities(node.text));
+      if (text.trim()) inline.push({ type: "text", text });
+      continue;
+    }
+    if (isEditorChrome(node.attrs) || DROP_TAGS.has(node.tag)) continue;
+    if (node.tag === "p") {
+      flushInline();
+      blocks.push(...paragraphBlocks(node));
+      continue;
+    }
+    if (node.tag === "ul" || node.tag === "ol") {
+      flushInline();
+      const items = listItems(node);
+      if (items.length > 0) blocks.push({ kind: node.tag, items });
+      continue;
+    }
+    if (node.tag === "li") {
+      flushInline();
+      const html = inlineToHtml(sanitizeEditedHtml(innerHtml(node), "fresh"));
+      if (html) blocks.push({ kind: "ul", items: [html] });
+      continue;
+    }
+    inline.push(...foldNodes([node], "fresh"));
+  }
+  flushInline();
+  return blocks;
+}
+
+function paragraphBlocks(node: RawNode & { type: "element" }): GeneratedBlock[] {
+  const blocks: GeneratedBlock[] = [];
+  const inlineChildren = node.children.filter(
+    (child) => !(child.type === "element" && (child.tag === "ul" || child.tag === "ol")),
+  );
+  const html = inlineToHtml(
+    sanitizeEditedHtml(innerHtml({ ...node, children: inlineChildren }), "fresh"),
+  );
+  if (html) blocks.push({ kind: "p", html });
+  for (const child of node.children) {
+    if (child.type === "element" && (child.tag === "ul" || child.tag === "ol")) {
+      const items = listItems(child);
+      if (items.length > 0) blocks.push({ kind: child.tag, items });
+    }
+  }
+  return blocks;
+}
+
+function listItems(node: RawNode & { type: "element" }): string[] {
+  const items: string[] = [];
+  for (const child of node.children) {
+    if (child.type === "text") continue;
+    if (isEditorChrome(child.attrs) || DROP_TAGS.has(child.tag)) continue;
+    if (child.tag === "li") {
+      const inlineChildren = child.children.filter(
+        (grand) => !(grand.type === "element" && (grand.tag === "ul" || grand.tag === "ol")),
+      );
+      const html = inlineToHtml(
+        sanitizeEditedHtml(innerHtml({ ...child, children: inlineChildren }), "fresh"),
+      );
+      if (html) items.push(html);
+      for (const nested of child.children) {
+        if (nested.type === "element" && (nested.tag === "ul" || nested.tag === "ol")) {
+          items.push(...listItems(nested));
+        }
+      }
+      continue;
+    }
+    if (child.tag === "ul" || child.tag === "ol") items.push(...listItems(child));
+  }
+  return items;
+}
+
+function innerHtml(node: RawNode & { type: "element" }): string {
+  return node.children.map(rawToHtml).join("");
+}
+
+function rawToHtml(node: RawNode): string {
+  if (node.type === "text") return node.text;
+  if (isEditorChrome(node.attrs) || DROP_TAGS.has(node.tag)) return "";
+  if (VOID_TAGS.has(node.tag)) return "";
+  return `<${node.tag}${attrHtml(node.attrs)}>${node.children.map(rawToHtml).join("")}</${node.tag}>`;
+}
+
+function attrHtml(attrs: Record<string, string>): string {
+  const href = attrs.href;
+  if (href == null) return "";
+  return ` href="${escapeAttr(href)}"`;
+}
+
+function inlineHtml(node: SanitizedNode): string {
+  if (node.type === "text") return escapeHtml(node.text);
+  if (node.type === "slot") return "";
+  if (node.type === "code") return `<code>${escapeHtml(node.text)}</code>`;
+  if (node.type === "strong") return `<strong>${inlineToHtml(node.children)}</strong>`;
+  if (node.type === "em") return `<em>${inlineToHtml(node.children)}</em>`;
+  if (node.type === "link") {
+    return `<a href="${escapeAttr(node.href)}">${inlineToHtml(node.children)}</a>`;
+  }
+  return "";
+}
+
+function escapeHtml(text: string): string {
+  return text
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+function escapeAttr(text: string): string {
+  return escapeHtml(text).replaceAll('"', "&quot;");
 }
 
 function safeHref(href: string): string | null {

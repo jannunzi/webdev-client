@@ -1,8 +1,10 @@
 import ts from "typescript";
+import { hasStructure, type ParagraphStructure } from "./blocks";
 import { sanitizedToJsx, sanitizedToSlideText, toJsStringLiteral } from "./jsx-emit";
 import { findEditable, type JsxParagraph } from "./locate";
 import { sanitizeEditedHtml } from "./sanitize";
 import { repoRelativePath } from "./source-hash";
+import { applyParagraphStructure } from "./structure";
 
 export type ReplaceResult =
   | { ok: true; source: string; unchanged: boolean }
@@ -18,6 +20,7 @@ export function replaceEditableSource(
   file: string,
   hash: string,
   html: string,
+  structure?: ParagraphStructure,
 ): ReplaceResult {
   const relative = repoRelativePath(file);
   if (!relative) {
@@ -25,8 +28,11 @@ export function replaceEditableSource(
   }
   const located = findEditable(source, relative, hash);
   if (!located.ok) return located;
-  const next =
-    located.node.kind === "jsx"
+  const next = hasStructure(structure)
+    ? located.node.kind === "jsx"
+      ? applyParagraphStructure(source, located.node, html, structure ?? {})
+      : { ok: false as const, error: "Only a paragraph can be added or removed." }
+    : located.node.kind === "jsx"
       ? replaceParagraph(source, located.node, html)
       : replaceLiteral(source, located.node.start, located.node.end, html);
   if (!next.ok) return next;
