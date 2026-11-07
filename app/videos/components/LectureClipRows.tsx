@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import {
   lectureClipEmbedUrl,
   lectureHeading,
@@ -8,17 +8,28 @@ import {
 } from "@/lib/videos/lectures";
 import { formatClipClock, youtubeThumbUrl } from "@/lib/videos/youtube";
 
-export default function LectureClipRows({ lectures }: { lectures: LectureClipSet[] }) {
+export default function LectureClipRows({
+  lectures,
+  toolbar,
+}: {
+  lectures: LectureClipSet[];
+  toolbar?: ReactNode;
+}) {
   const [openId, setOpenId] = useState<string | null>(null);
-  if (lectures.length === 0) return null;
   return (
-    <section aria-labelledby="lecture-clips-heading" className="mt-10">
+    <section aria-labelledby="lecture-clips-heading" className="mt-10" data-lecture-recordings>
       <h2
         id="lecture-clips-heading"
         className="mt-0 mb-1 border-b border-neutral-200 pb-3 font-sans text-2xl font-semibold tracking-tight"
       >
         Recent lectures
       </h2>
+      {toolbar}
+      {lectures.length === 0 ? (
+        <p className="mt-4 font-sans text-sm text-neutral-600" role="status">
+          No class recordings for this section and term.
+        </p>
+      ) : (
       <div className="mt-6 space-y-10">
         {lectures.map((lecture) => (
           <section key={lecture.lectureId} id={`lecture-${lecture.lectureId}`}>
@@ -85,6 +96,7 @@ export default function LectureClipRows({ lectures }: { lectures: LectureClipSet
           </section>
         ))}
       </div>
+      )}
     </section>
   );
 }

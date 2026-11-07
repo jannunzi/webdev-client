@@ -7,8 +7,9 @@ import { lectureChapterLabel } from "@/lib/lectures/types";
 import type { VideoHubCard, VideoHubChapter } from "@/lib/videos/hub";
 import type { PublishedCoursePlaylist } from "@/lib/videos/playlists";
 import { youtubeThumbUrl } from "@/lib/videos/youtube";
+import type { LectureFilterQuery, LectureTerm } from "@/lib/videos/lecture-filter";
 import type { LectureClipSet } from "@/lib/videos/lectures";
-import LectureClipRows from "./LectureClipRows";
+import LectureSectionFilter from "./LectureSectionFilter";
 import VideosHubNav from "./VideosHubNav";
 
 function PlayGlyph() {
@@ -139,13 +140,19 @@ export default function VideosHub({
   activeSection,
   playlists = [],
   lectures = [],
+  lectureTerm,
+  lectureQuery,
+  defaultLectureSectionId,
 }: {
   chapters: VideoHubChapter[];
   activeSection?: string | null;
   /** Published course, section, year, or term playlists. Empty until a URL is set. */
   playlists?: PublishedCoursePlaylist[];
-  /** Whole-lecture clip sets from data/videos/lectures/. */
+  /** Whole-lecture clip sets. Filtered in the browser; book chapters are not. */
   lectures?: LectureClipSet[];
+  lectureTerm: LectureTerm;
+  lectureQuery: LectureFilterQuery;
+  defaultLectureSectionId: string;
 }) {
   const [openId, setOpenId] = useState<string | null>(activeSection ?? null);
   const clipCount = chapters.reduce(
@@ -196,7 +203,12 @@ export default function VideosHub({
           the checklists on <Link href="/assignments">Assignments</Link>.
         </p>
         <CoursePlaylists playlists={playlists} />
-        <LectureClipRows lectures={lectures} />
+        <LectureSectionFilter
+          lectures={lectures}
+          defaultTerm={lectureTerm}
+          urlFilter={lectureQuery}
+          defaultSectionId={defaultLectureSectionId}
+        />
 
         {activeSection && !known.has(activeSection) ? (
           <p className="mt-4" role="status">
@@ -211,7 +223,7 @@ export default function VideosHub({
             <code>data/videos/lecture-clips.json</code>.
           </p>
         ) : (
-          <div className="mt-10 space-y-14">
+          <div className="mt-10 space-y-14" data-curated-chapters>
             {chapters.map((group) => {
               const count = group.sections.reduce(
                 (sum, section) => sum + section.clips.length,

@@ -29,6 +29,25 @@ export function videosHubHref(query?: {
   return search ? `/videos?${search}` : "/videos";
 }
 
+/** Keep class-recording filters when a book-clip query is canonicalized. */
+export function withLectureFilterParams(
+  href: string,
+  raw: {
+    lectureSection?: string;
+    lectureYear?: string;
+    lectureSeason?: string;
+  },
+): string {
+  const [path, search = ""] = href.split("?");
+  const params = new URLSearchParams(search);
+  for (const key of ["lectureSection", "lectureYear", "lectureSeason"] as const) {
+    const value = raw[key]?.trim();
+    if (value) params.set(key, value);
+  }
+  const next = params.toString();
+  return next ? `${path}?${next}` : path || "/videos";
+}
+
 export function parseVideosQuery(
   raw: {
     section?: string;
