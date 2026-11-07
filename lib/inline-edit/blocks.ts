@@ -1,3 +1,5 @@
+import { isSemanticallyEmptyParagraph } from "./sanitize";
+
 /** A sibling block inserted around one paragraph. Editor chrome is never a block. */
 export type InsertSpec =
   | { kind: "p"; html: string }
@@ -53,6 +55,11 @@ export function parseInsertList(
     return { ok: false, error: "A new block has to be a paragraph or a list." };
   }
   return { ok: true, items };
+}
+
+/** Drop inserted paragraphs that have no text, link, code, or slot. Lists stay. */
+export function withoutEmptyParagraphs(items: readonly InsertSpec[]): InsertSpec[] {
+  return items.filter((item) => item.kind !== "p" || !isSemanticallyEmptyParagraph(item.html));
 }
 
 export function hasStructure(structure: ParagraphStructure | undefined): boolean {

@@ -1,8 +1,8 @@
 import ts from "typescript";
-import { hasStructure, type ParagraphStructure } from "./blocks";
+import { hasStructure, withoutEmptyParagraphs, type ParagraphStructure } from "./blocks";
 import { sanitizedToJsx, sanitizedToSlideText, toJsStringLiteral } from "./jsx-emit";
 import { findEditable, type JsxParagraph } from "./locate";
-import { sanitizeEditedHtml } from "./sanitize";
+import { isSemanticallyEmptyParagraph, sanitizeEditedHtml } from "./sanitize";
 import { repoRelativePath } from "./source-hash";
 import { applyParagraphStructure } from "./structure";
 
@@ -28,9 +28,10 @@ export function replaceEditableSource(
   }
   const located = findEditable(source, relative, hash);
   if (!located.ok) return located;
-  const next = hasStructure(structure)
+  const resolved = resolveStructure(located.node, html, structure);
+  const next = hasStructure(resolved)
     ? located.node.kind === "jsx"
-      ? applyParagraphStructure(source, located.node, html, structure ?? {})
+      ? applyParagraphStructure(source, located.node, html, resolved ?? {})
       : { ok: false as const, error: "Only a paragraph can be added or removed." }
     : located.node.kind === "jsx"
       ? replaceParagraph(source, located.node, html)
@@ -47,6 +48,25 @@ export function replaceEditableSource(
     source: next.source,
     unchanged: next.source === source,
   };
+}
+
+/**
+ * Empty inserted paragraphs are dropped. Clearing a `<p>` deletes that
+ * paragraph only. Headings, list items, and other paragraphs in the file stay.
+ */
+function resolveStructure(
+  node: { kind: string; tag?: string },
+  html: string,
+  structure: ParagraphStructure | undefined,
+): ParagraphStructure | undefined {
+  const clearParagraph =
+    node.kind === "jsx" && node.tag === "p" && isSemanticallyEmptyParagraph(html);
+  const next: ParagraphStructure = {
+    remove: Boolean(structure?.remove) || clearParagraph,
+    insertsBefore: withoutEmptyParagraphs(structure?.insertsBefore ?? []),
+    insertsAfter: withoutEmptyParagraphs(structure?.insertsAfter ?? []),
+  };
+  return hasStructure(next) ? next : undefined;
 }
 
 function replaceParagraph(

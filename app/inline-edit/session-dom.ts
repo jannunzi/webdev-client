@@ -1,7 +1,10 @@
-import type { InsertSpec } from "@/lib/inline-edit/blocks";
-import type { GeneratedBlock } from "@/lib/inline-edit/sanitize";
-import { sanitizeEditedHtml } from "@/lib/inline-edit/sanitize";
-import type { SanitizedNode } from "@/lib/inline-edit/sanitize";
+import { withoutEmptyParagraphs, type InsertSpec } from "@/lib/inline-edit/blocks";
+import {
+  isSemanticallyEmptyParagraph,
+  sanitizeEditedHtml,
+  type GeneratedBlock,
+  type SanitizedNode,
+} from "@/lib/inline-edit/sanitize";
 
 export type SessionSave = {
   html: string;
@@ -157,13 +160,24 @@ function htmlToElement(html: string): HTMLElement | null {
 }
 
 export function buildSavePayload(anchor: HTMLElement): SessionSave {
-  const remove = anchor.dataset.inlineRemoved === "1";
+  const html = serializeEditable(anchor);
+  const remove =
+    anchor.dataset.inlineRemoved === "1" ||
+    (paragraphEditable(anchor) && isSemanticallyEmptyParagraph(html));
   return {
-    html: remove ? "" : serializeEditable(anchor),
+    html: remove ? "" : html,
     remove,
-    insertsBefore: sessionNodes(anchor, "before").flatMap(nodeToInserts),
-    insertsAfter: sessionNodes(anchor, "after").flatMap(nodeToInserts),
+    insertsBefore: withoutEmptyParagraphs(sessionNodes(anchor, "before").flatMap(nodeToInserts)),
+    insertsAfter: withoutEmptyParagraphs(sessionNodes(anchor, "after").flatMap(nodeToInserts)),
   };
+}
+
+/** True when the paragraph text matches what it was when editing started. */
+export function paragraphHtmlUnchanged(anchor: HTMLElement, originalInner: string): boolean {
+  const probe = document.createElement(anchor.tagName);
+  if (anchor.dataset.editKind) probe.dataset.editKind = anchor.dataset.editKind;
+  probe.innerHTML = originalInner;
+  return serializeEditable(probe) === serializeEditable(anchor);
 }
 
 function nodeToInserts(node: HTMLElement): InsertSpec[] {
@@ -180,6 +194,16 @@ function nodeToInserts(node: HTMLElement): InsertSpec[] {
   const paragraph = node.matches("p") ? node : node.querySelector("p");
   if (!paragraph) return [];
   return [{ kind: "p", html: serializeEditable(paragraph) }];
+}
+
+export function discardEmptyDrafts(anchor: HTMLElement) {
+  for (const node of [...sessionNodes(anchor, "before"), ...sessionNodes(anchor, "after")]) {
+    if (node.dataset.draftKind !== "p") continue;
+    const paragraph = node.matches("p") ? node : node.querySelector("p");
+    if (!(paragraph instanceof HTMLElement) || isSemanticallyEmptyParagraph(serializeEditable(paragraph))) {
+      node.remove();
+    }
+  }
 }
 
 export function stripInstructionNodes(anchor: HTMLElement) {
@@ -223,6 +247,7 @@ export function insertParagraphBelow(anchor: HTMLElement): HTMLElement {
   wrap.className = "my-2 rounded-sm outline outline-2 outline-dashed outline-blue-600";
   const paragraph = document.createElement("p");
   paragraph.contentEditable = "true";
+  paragraph.style.minHeight = "1.5rem";
   paragraph.append(document.createElement("br"));
   wrap.append(paragraph, removeDraftButton());
   let cursor: Element = anchor;
