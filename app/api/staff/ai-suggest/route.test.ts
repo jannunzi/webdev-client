@@ -164,7 +164,7 @@ describe("POST /api/staff/ai-suggest", () => {
     assert.doesNotMatch(JSON.stringify(body), /data-ai-instruction/);
   });
 
-  it("asks the installed structured-output API for an instruction and rejects a non-list", async () => {
+  it("asks the installed structured-output API and accepts a prose instruction", async () => {
     let outputName = "";
     const response = await handleAiSuggestRequest(
       request({
@@ -201,15 +201,18 @@ describe("POST /api/staff/ai-suggest", () => {
     const prose = await handleAiSuggestRequest(
       request({
         mode: "instruct",
-        instruction: "Create a list of terms introduced in this section",
+        instruction: "Describe the client and the server.",
         section: "The web.",
       }),
       {
         staff: { email: "staff@example.com" },
-        generate: async () => "The Internet is a network.",
+        generate: async () => "The client sends a request. The server sends a response.",
       },
     );
-    assert.equal(prose.status, 422);
+    assert.equal(prose.status, 200);
+    const proseBody = (await prose.json()) as { blocks: { kind: string }[] };
+    assert.equal(proseBody.blocks.every((block) => block.kind === "p"), true);
+    assert.equal(proseBody.blocks.some((block) => block.kind !== "p"), false);
   });
 
   it("rate limits one staff member", async () => {
@@ -223,5 +226,157 @@ describe("POST /api/staff/ai-suggest", () => {
     assert.equal((await send()).status, 200);
     assert.equal((await send()).status, 200);
     assert.equal((await send()).status, 429);
+  });
+});
+
+const CYCLE =
+  "Introduce the software development cycle. list the various steps/levels, and prepare the chapter with the purpose of identifying opportunities where AI could help at each step.";
+
+describe("software development cycle instruction", () => {
+  it("accepts an introduction plus an ordered list for the reported prompt", async () => {
+    let calls = 0;
+    const send = () =>
+      handleAiSuggestRequest(request({ mode: "instruct", instruction: CYCLE, section: "Engineering" }), {
+        staff: { email: "staff@example.com" },
+        generateTextImpl: async () => {
+          calls += 1;
+          return {
+            output: {
+              blocks: [
+                {
+                  type: "paragraph",
+                  text: "The software development cycle is the sequence of work from a need to a running system.",
+                },
+                {
+                  type: "list",
+                  ordered: true,
+                  items: [
+                    "<strong>Requirements</strong> — name what the program must do.",
+                    "<strong>Design</strong> — choose the structure. AI can compare options.",
+                    "<script>alert(1)</script><strong>Implementation</strong> — write the program.",
+                  ],
+                },
+              ],
+            },
+          };
+        },
+      });
+    const first = await send();
+    const second = await send();
+    assert.equal(calls, 2);
+    assert.equal(first.status, 200);
+    assert.equal(second.status, 200);
+    const body = (await first.json()) as {
+      blocks: { kind: string; html?: string; items?: string[] }[];
+    };
+    assert.equal(body.blocks[0]?.kind, "p");
+    assert.match(body.blocks[0]?.html ?? "", /software development cycle/);
+    assert.equal(body.blocks[1]?.kind, "ol");
+    assert.match(body.blocks[1]?.items?.[0] ?? "", /<strong>Requirements<\/strong>/);
+    assert.doesNotMatch(JSON.stringify(body), /<script|alert\(1\)/);
+    assert.doesNotMatch(JSON.stringify(body), /data-ai-instruction/);
+  });
+
+  it("keeps paragraph steps when the provider does not return a list block", async () => {
+    const response = await handleAiSuggestRequest(
+      request({ mode: "instruct", instruction: CYCLE, section: "Engineering" }),
+      {
+        staff: { email: "staff@example.com" },
+        generateTextImpl: async () => ({
+          output: {
+            blocks: [
+              {
+                type: "paragraph",
+                text: "The cycle moves from a need to a running system.\n\n1. Requirements name the work.\n2. Design chooses the structure.",
+              },
+            ],
+          },
+        }),
+      },
+    );
+    assert.equal(response.status, 200);
+    const body = (await response.json()) as { blocks: { kind: string; items?: string[] }[] };
+    assert.equal(body.blocks.some((block) => block.kind === "p"), true);
+    assert.equal(body.blocks.some((block) => block.kind === "ol"), true);
+  });
+
+  it("reads a JSON object from text when structured output is empty", async () => {
+    const response = await handleAiSuggestRequest(
+      request({ mode: "instruct", instruction: CYCLE, section: "Engineering" }),
+      {
+        staff: { email: "staff@example.com" },
+        generateTextImpl: async () => ({
+          output: null,
+          text: JSON.stringify({
+            blocks: [
+              { type: "paragraph", text: "The cycle has several levels." },
+              { type: "ol", items: ["Requirements", "Design"] },
+            ],
+          }),
+        }),
+      },
+    );
+    assert.equal(response.status, 200);
+    const body = (await response.json()) as { blocks: { kind: string }[] };
+    assert.deepEqual(
+      body.blocks.map((block) => block.kind),
+      ["p", "ol"],
+    );
+  });
+
+  it("does not invent a list when list items are not strings", async () => {
+    let calls = 0;
+    const response = await handleAiSuggestRequest(
+      request({ mode: "instruct", instruction: CYCLE, section: "Engineering" }),
+      {
+        staff: { email: "staff@example.com" },
+        generateTextImpl: async () => {
+          calls += 1;
+          return {
+            output: {
+              blocks: [
+                { type: "paragraph", text: "The cycle is a sequence of work." },
+                { type: "list", ordered: true, items: [{ text: "<script>alert(1)</script>Requirements" }] },
+              ],
+            },
+            text: "",
+          };
+        },
+      },
+    );
+    assert.equal(calls, 1);
+    assert.equal(response.status, 200);
+    const body = (await response.json()) as { blocks: { kind: string; html?: string }[] };
+    assert.deepEqual(
+      body.blocks.map((block) => block.kind),
+      ["p"],
+    );
+    assert.doesNotMatch(JSON.stringify(body), /script|Requirements/);
+  });
+
+  it("surfaces one structured-output failure instead of a made-up list", async () => {
+    const { NoObjectGeneratedError } = await import("ai");
+    let calls = 0;
+    const response = await handleAiSuggestRequest(
+      request({ mode: "instruct", instruction: CYCLE, section: "Engineering" }),
+      {
+        staff: { email: "staff@example.com" },
+        generateTextImpl: async () => {
+          calls += 1;
+          throw new NoObjectGeneratedError({
+            message: "No object generated.",
+            text: "not json",
+            response: { id: "r", timestamp: new Date(), modelId: "anthropic/claude-haiku-4.5" },
+            usage: { inputTokens: 1, outputTokens: 1, totalTokens: 2 },
+            finishReason: "stop",
+          });
+        },
+      },
+    );
+    assert.equal(calls, 1);
+    assert.equal(response.status, 503);
+    const body = (await response.json()) as { error?: string; blocks?: unknown };
+    assert.match(body.error ?? "", /No object generated/);
+    assert.equal(body.blocks, undefined);
   });
 });

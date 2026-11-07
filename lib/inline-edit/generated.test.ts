@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
   blocksFromModelText,
+  htmlFromModelResult,
   insertionObjectToHtml,
   instructionRequestsList,
 } from "./generated.ts";
@@ -36,6 +37,33 @@ describe("instruction blocks", () => {
     assert.equal(blocks[0]?.kind, "ul");
     if (blocks[0]?.kind !== "ul") return;
     assert.match(blocks[0].items[0] ?? "", /href="\/book\/terms\/internet"/);
+  });
+
+  it("turns markdown steps inside a paragraph field into an ordered list", () => {
+    const html = htmlFromModelResult(
+      {
+        blocks: [
+          {
+            type: "paragraph",
+            text: "The cycle moves from a need to a running system.\n\n1. Requirements name the work.\n2. Design chooses the structure.",
+          },
+        ],
+      },
+      "",
+    );
+    const blocks = blocksFromModelText(html);
+    assert.equal(blocks.some((block) => block.kind === "p"), true);
+    assert.equal(blocks.some((block) => block.kind === "ol"), true);
+  });
+
+  it("does not stringify object list items", () => {
+    const html = insertionObjectToHtml({
+      blocks: [{ type: "list", ordered: true, items: [{ text: "<script>alert(1)</script>Step" }] }],
+    });
+    assert.equal(html, "");
+    const blocks = blocksFromModelText(htmlFromModelResult({ blocks: [] }, "not-json"));
+    assert.equal(blocks.length, 1);
+    assert.equal(blocks[0]?.kind, "p");
   });
 
   it("serializes a structured insertion as a list", () => {
