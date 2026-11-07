@@ -42,6 +42,9 @@ function assertPlainScheduleCopy(text: string) {
   assert.doesNotMatch(text, /not guaranteed/i);
   assert.doesNotMatch(text, /time not yet posted/);
   assert.doesNotMatch(text, /join link not yet posted/);
+  assert.doesNotMatch(text, /no join link/i);
+  assert.doesNotMatch(text, /no link posted/i);
+  assert.doesNotMatch(text, /join link is published/i);
 }
 
 describe("instructor office hours", () => {
@@ -84,7 +87,7 @@ describe("instructor office hours", () => {
     assert.doesNotMatch(rows[1]?.location ?? "", /zoom\.us|https?:/);
     assert.equal(
       officeHoursPlaceholder,
-      "Teaching assistants meet on Microsoft Teams. No join link is published — check that section’s Piazza announcements or email the TA for how to join.",
+      "Teaching assistants meet on Microsoft Teams. Check that section’s Piazza announcements or email the TA for how to join.",
     );
     assertPlainScheduleCopy(
       `${officeHoursPlaceholder}\n${rows.map((row) => `${row.hours} ${row.location}`).join("\n")}`,
@@ -137,7 +140,7 @@ describe("instructor office hours", () => {
 
     for (const row of officeHourRows) {
       if (row.name === "Giuseppe Marotta") continue;
-      assert.equal(row.location, "Microsoft Teams — no join link posted");
+      assert.equal(row.location, "Microsoft Teams");
       assert.match(row.contact, /@northeastern\.edu$/);
     }
     const joined = officeHourRows
@@ -158,7 +161,10 @@ describe("instructor office hours", () => {
     assert.match(html, /Thursday and Friday, 10:00am–2:00pm ET/);
     assert.match(html, /Friday evenings, starting 7:00pm ET; end time varies/);
     assert.match(html, /Weekends; day and time vary/);
-    assert.match(html, /Microsoft Teams\. No join link is published/);
+    assert.match(
+      html,
+      /Teaching assistants meet on Microsoft Teams\. Check that section/,
+    );
     assert.doesNotMatch(html, /join link not yet posted/);
     assert.doesNotMatch(html, /room not yet posted/);
     assert.doesNotMatch(html, /not a guaranteed/);
@@ -194,8 +200,10 @@ describe("instructor office hours", () => {
         placeholder: officeHoursPlaceholder,
       }),
     );
-    assert.match(html, /Teaching assistants meet on Microsoft Teams/);
-    assert.match(html, /No join link is published/);
+    assert.match(
+      html,
+      /Teaching assistants meet on Microsoft Teams\. Check that section’s Piazza announcements or email the TA for how to join\./,
+    );
     assert.match(html, /Thursday and Friday, 10:00am–2:00pm ET/);
     assert.match(html, /Fridays, 5:00–11:00pm ET/);
     assert.match(html, /Friday evenings, starting 7:00pm ET; end time varies/);

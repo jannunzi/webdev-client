@@ -2,13 +2,13 @@ import type { OfficeHourRow } from "./types";
 
 /**
  * Teaching-assistant slots reported by Giuseppe.
- * Every TA meets on Microsoft Teams. No join URL was published — do not add one.
+ * Every TA meets on Microsoft Teams. Do not invent a join URL.
  * Giuseppe Marotta holds no office hours. His email was not provided.
  */
 export const officeHoursPlaceholder =
-  "Teaching assistants meet on Microsoft Teams. No join link is published — check that section’s Piazza announcements or email the TA for how to join.";
+  "Teaching assistants meet on Microsoft Teams. Check that section’s Piazza announcements or email the TA for how to join.";
 
-const teamsLocation = "Microsoft Teams — no join link posted";
+const teamsLocation = "Microsoft Teams";
 
 export const officeHourRows: OfficeHourRow[] = [
   {
