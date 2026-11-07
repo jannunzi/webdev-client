@@ -6,7 +6,7 @@ import type { OfficeHourRow } from "./types";
  * Giuseppe Marotta holds no office hours. His email was not provided.
  */
 export const officeHoursPlaceholder =
-  "Actual times are announced weekly on each section’s Piazza. Teaching assistants meet on Microsoft Teams. No join link is published — check that section’s Piazza announcements or email the TA for how to join.";
+  "Teaching assistants meet on Microsoft Teams. No join link is published — check that section’s Piazza announcements or email the TA for how to join.";
 
 const teamsLocation = "Microsoft Teams — no join link posted";
 
@@ -14,14 +14,14 @@ export const officeHourRows: OfficeHourRow[] = [
   {
     name: "Shloka Shreyans Trivedi",
     role: "Teaching assistant, CS 4550-01",
-    hours: "Typical recent slot: Thursday and Friday, about 10:00am–2:00pm ET",
+    hours: "Thursday and Friday, 10:00am–2:00pm ET",
     location: teamsLocation,
     contact: "trivedi.shl@northeastern.edu",
   },
   {
     name: "Anurag Bheemappa Gnanamurthy",
     role: "Teaching assistant, CS 4550-01",
-    hours: "Typical recent slot: Fridays, 5:00–11:00pm ET",
+    hours: "Fridays, 5:00–11:00pm ET",
     location: teamsLocation,
     contact: "bheemappagnanamurt.a@northeastern.edu",
   },
@@ -29,7 +29,7 @@ export const officeHourRows: OfficeHourRow[] = [
     name: "Tisha Sujal Kotadia",
     role: "Teaching assistant, CS 5610-02",
     hours:
-      "Typical recent slot: Friday evenings, starting 7:00pm ET; end time varies",
+      "Friday evenings, starting 7:00pm ET; end time varies",
     location: teamsLocation,
     contact: "kotadia.t@northeastern.edu",
   },
@@ -37,21 +37,21 @@ export const officeHourRows: OfficeHourRow[] = [
     name: "Aryan Alpesh Mehta",
     role: "Teaching assistant, CS 5610-02",
     hours:
-      "No fixed slot. Varies weekly; latest sessions were on weekends",
+      "Weekends; day and time vary",
     location: teamsLocation,
     contact: "mehta.arya@northeastern.edu",
   },
   {
     name: "Tanishq Neela",
     role: "Teaching assistant, CS 5610-09",
-    hours: "Typical recent slot: Monday and Wednesday, 7:00–11:00am ET",
+    hours: "Monday and Wednesday, 7:00–11:00am ET",
     location: teamsLocation,
     contact: "neela.t@northeastern.edu",
   },
   {
     name: "Geethanjali Ravichandra",
     role: "Teaching assistant, CS 5610-09",
-    hours: "Typical recent slot: Thursday and Friday, 7:00–11:00am ET",
+    hours: "Thursday and Friday, 7:00–11:00am ET",
     location: teamsLocation,
     contact: "ravichandra.g@northeastern.edu",
   },
@@ -66,9 +66,9 @@ export const officeHourRows: OfficeHourRow[] = [
 
 /**
  * Instructor blocks confirmed by Jose.
- * Monday and Wednesday are in person, 3:00–4:00pm America/New_York.
- * Thursday and Friday are on Zoom; no clock time was given.
- * `place` is only a room or join URL already posted in site data.
+ * Monday and Wednesday are in person, 3:00–4:00pm America/New_York,
+ * Meserve Hall 052 (basement). Thursday and Friday are on Zoom; no clock
+ * time and no join URL were given. The Zoom link goes out as a Piazza invite.
  */
 export type InstructorOfficeBlock = {
   id: string;
@@ -76,7 +76,7 @@ export type InstructorOfficeBlock = {
   /** Clock time only when it was explicitly confirmed. */
   time?: string;
   modality: "in-person" | "zoom";
-  /** Room or Zoom join URL. Omit when it has not been posted. */
+  /** Room when one has been confirmed. Do not store an unconfirmed Zoom URL. */
   place?: string;
 };
 
@@ -86,6 +86,7 @@ export const instructorOfficeBlocks: readonly InstructorOfficeBlock[] = [
     days: "Monday and Wednesday",
     time: "3:00–4:00pm ET",
     modality: "in-person",
+    place: "Meserve Hall 052 (basement)",
   },
   {
     id: "thu-fri-zoom",
@@ -102,15 +103,15 @@ export function formatInstructorOfficeHours(block: InstructorOfficeBlock): strin
     return `${block.days}, ${block.time}`;
   }
   if (block.modality === "zoom") {
-    return `${block.days} on Zoom — time not yet posted`;
+    return `${block.days} on Zoom`;
   }
-  return `${block.days} — time not yet posted`;
+  return block.days;
 }
 
 export function formatInstructorOfficeLocation(block: InstructorOfficeBlock): string {
   if (block.place) return block.place;
   if (block.modality === "in-person") return "In person — room not yet posted";
-  return "Zoom — join link not yet posted";
+  return "An invite with the Zoom link will be posted on Piazza.";
 }
 
 export function instructorOfficeHourRows(instructor: {

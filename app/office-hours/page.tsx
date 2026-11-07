@@ -36,12 +36,17 @@ export default function OfficeHoursPage() {
           </a>
         </p>
         <ul className="list-disc space-y-1 pl-6">
-          {instructorOfficeBlocks.map((block) => (
-            <li key={block.id}>
-              {formatInstructorOfficeHours(block)}.{" "}
-              {formatInstructorOfficeLocation(block)}.
-            </li>
-          ))}
+          {instructorOfficeBlocks.map((block) => {
+            const hours = formatInstructorOfficeHours(block);
+            const location = formatInstructorOfficeLocation(block);
+            const sentence = (text: string) =>
+              text.endsWith(".") ? text : `${text}.`;
+            return (
+              <li key={block.id}>
+                {sentence(hours)} {sentence(location)}
+              </li>
+            );
+          })}
         </ul>
       </CourseInfoSection>
 
