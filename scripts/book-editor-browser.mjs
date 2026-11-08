@@ -77,6 +77,27 @@ await page.route("**/api/staff/ai-suggest", async (route) => {
 
 await page.goto(`${base}/book-editor/chapter-1/harness`, { waitUntil: "networkidle" });
 await page.getByRole("toolbar", { name: "Formatting" }).waitFor();
+const iconLabels = await page.evaluate(() =>
+  [...document.querySelectorAll(".book-editor-tool")].map((button) => {
+    const label = button.querySelector(".book-editor-tool-label");
+    const style = label ? getComputedStyle(label) : null;
+    return {
+      name: button.getAttribute("aria-label"),
+      title: button.getAttribute("title"),
+      hidden: Boolean(style && style.position === "absolute" && style.width === "1px"),
+    };
+  }),
+);
+for (const name of ["Bold", "Italic", "Bullets", "Numbers"]) {
+  const item = iconLabels.find((entry) => entry.name === name);
+  assert(item?.hidden, `${name} word is still visible`);
+  assert(item.title, `${name} tooltip is missing`);
+}
+for (const name of ["Code", "Heading", "Link", "Restore"]) {
+  const item = iconLabels.find((entry) => entry.name === name);
+  assert(item && !item.hidden, `${name} label was removed`);
+}
+await page.screenshot({ path: "/opt/cursor/artifacts/chapter1-toolbar-icons.png" });
 await page.getByRole("link", { name: "Internet" }).first().waitFor();
 const embed = page.locator("[data-book-embed='HeadingTags']");
 await embed.scrollIntoViewIfNeeded();

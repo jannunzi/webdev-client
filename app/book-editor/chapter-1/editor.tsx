@@ -424,10 +424,10 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
       </p>
       <div className="book-editor-toolbar" role="toolbar" aria-label="Formatting" ref={toolbarRef}>
         <div className="book-editor-group" role="group" aria-label="Text style">
-          <ToolButton label="Bold" title="Bold" pressed={editor?.isActive("bold")} disabled={!ready} onClick={() => editor?.chain().focus().toggleBold().run()}>
+          <ToolButton label="Bold" title="Bold" iconOnly pressed={editor?.isActive("bold")} disabled={!ready} onClick={() => editor?.chain().focus().toggleBold().run()}>
             <FaBold aria-hidden />
           </ToolButton>
-          <ToolButton label="Italic" title="Italic" pressed={editor?.isActive("italic")} disabled={!ready} onClick={() => editor?.chain().focus().toggleItalic().run()}>
+          <ToolButton label="Italic" title="Italic" iconOnly pressed={editor?.isActive("italic")} disabled={!ready} onClick={() => editor?.chain().focus().toggleItalic().run()}>
             <FaItalic aria-hidden />
           </ToolButton>
           <ToolButton label="Code" title="Inline code" pressed={editor?.isActive("code")} disabled={!ready} onClick={() => editor?.chain().focus().toggleCode().run()}>
@@ -441,10 +441,10 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
           <ToolButton label="Subheading" title="Subheading" pressed={editor?.isActive("heading", { level: 3 })} disabled={!ready} onClick={() => editor?.chain().focus().toggleHeading({ level: 3 }).run()}>
             <LuPilcrow aria-hidden />
           </ToolButton>
-          <ToolButton label="Bullets" title="Bulleted list" pressed={editor?.isActive("bulletList")} disabled={!ready} onClick={() => editor?.chain().focus().toggleBulletList().run()}>
+          <ToolButton label="Bullets" title="Bulleted list" iconOnly pressed={editor?.isActive("bulletList")} disabled={!ready} onClick={() => editor?.chain().focus().toggleBulletList().run()}>
             <FaListUl aria-hidden />
           </ToolButton>
-          <ToolButton label="Numbers" title="Numbered list" pressed={editor?.isActive("orderedList")} disabled={!ready} onClick={() => editor?.chain().focus().toggleOrderedList().run()}>
+          <ToolButton label="Numbers" title="Numbered list" iconOnly pressed={editor?.isActive("orderedList")} disabled={!ready} onClick={() => editor?.chain().focus().toggleOrderedList().run()}>
             <FaListOl aria-hidden />
           </ToolButton>
         </div>
@@ -539,7 +539,8 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
         .book-editor-toolbar { position: sticky; top: var(--book-editor-stick, 2.75rem); z-index: 40; margin: 0.5rem 0 0.75rem; padding: 0.45rem; border: 1px solid #e5e5e5; border-radius: 0.5rem; background: #fff; box-shadow: 0 1px 2px rgba(23, 23, 23, 0.04); }
         .book-editor-group { display: flex; flex-wrap: wrap; gap: 0.25rem; align-items: center; }
         .book-editor-group + .book-editor-group { padding-left: 0.55rem; border-left: 1px solid #e5e5e5; }
-        .book-editor-tool, .book-editor-link button, .book-editor-suggestion button { display: inline-flex; align-items: center; gap: 0.3rem; border: 1px solid transparent; background: transparent; border-radius: 0.35rem; padding: 0.28rem 0.45rem; font-size: 0.82rem; line-height: 1; color: #171717; }
+        .book-editor-tool, .book-editor-link button, .book-editor-suggestion button { position: relative; display: inline-flex; align-items: center; gap: 0.3rem; border: 1px solid transparent; background: transparent; border-radius: 0.35rem; padding: 0.28rem 0.45rem; font-size: 0.82rem; line-height: 1; color: #171717; }
+        .book-editor-tool-label-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
         .book-editor-tool:hover, .book-editor-link button:hover, .book-editor-suggestion button:hover { background: #f5f5f5; }
         .book-editor-tool[aria-pressed="true"] { background: #f5f5f5; border-color: #d4d4d4; }
         .book-editor-tool:focus-visible, .book-editor-toolbar input:focus-visible, .book-editor-link button:focus-visible { outline: 2px solid #171717; outline-offset: 2px; }
@@ -571,6 +572,7 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
 function ToolButton({
   label,
   title,
+  iconOnly = false,
   pressed,
   disabled,
   busy,
@@ -579,6 +581,7 @@ function ToolButton({
 }: {
   label: string;
   title: string;
+  iconOnly?: boolean;
   pressed?: boolean;
   disabled?: boolean;
   busy?: boolean;
@@ -590,6 +593,7 @@ function ToolButton({
       type="button"
       className="book-editor-tool"
       title={title}
+      aria-label={label}
       aria-pressed={pressed}
       aria-busy={busy || undefined}
       disabled={disabled}
@@ -597,7 +601,7 @@ function ToolButton({
       onClick={onClick}
     >
       {children}
-      <span className="book-editor-tool-label">{label}</span>
+      <span className={iconOnly ? "book-editor-tool-label book-editor-tool-label-hidden" : "book-editor-tool-label"}>{label}</span>
     </button>
   );
 }
