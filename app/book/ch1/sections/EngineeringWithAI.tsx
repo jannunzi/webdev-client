@@ -87,7 +87,9 @@ export default function EngineeringWithAI() {
         </OfficialLink>
 {", a function on the server that receives a request and sends back a response, so that the Course Builder can generate real suggestions. Throughout, AI will draft and explain while you decide what ships, which is how production teams at companies such as Amazon and Google use AI assistants."}
 </p>
-      <p>{"Describe the sofware development cycle"}</p>
+      <p>
+{"The software development cycle has several key phases that guide teams from initial concept through deployment and maintenance. The first phase is planning and requirements gathering, where stakeholders define project goals, scope, and deliverables.The next phase is design, where architects and senior developers create the system architecture and detailed specifications for how the software will be structured and function.Following design, the development phase begins, where programmers write the actual code based on the specifications created during the design phase.Once the code is written, the testing phase commences, where quality assurance teams systematically verify that the software functions correctly and meets all specified requirements.After testing identifies and documents any defects, the deployment phase takes place, where the software is released to the production environment and made available to end users. In each phase, AI tools can assist teams by automating routine tasks, analyzing code quality, generating documentation, and predicting potential issues before they impact users."}
+</p>
       <p>
         In a product team, a new feature or bug fix moves through the{" "}
         <OfficialLink href="https://en.wikipedia.org/wiki/Systems_development_life_cycle">
