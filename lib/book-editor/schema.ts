@@ -15,6 +15,11 @@ const NODE_TYPES = new Set([
   "hardBreak",
   "bookEmbed",
   "bookFigure",
+  "bookSlides",
+  "bookVideos",
+  "bookPractice",
+  "bookTable",
+  "bookAsync",
   "unsupported",
 ]);
 
@@ -83,6 +88,42 @@ function checkNode(
     const src = node.attrs?.src;
     if (typeof src !== "string" || !src.startsWith("/") || src.startsWith("//") || src.includes("..")) {
       return { ok: false, error: "A figure image path is invalid." };
+    }
+  }
+  if (node.type === "bookSlides" || node.type === "bookVideos") {
+    const sectionId = node.attrs?.sectionId;
+    if (typeof sectionId !== "string" || !sectionId || sectionId.length > 80) {
+      return { ok: false, error: "A slide or video link is invalid." };
+    }
+  }
+  if (node.type === "bookPractice") {
+    const quizId = node.attrs?.quizId;
+    if (typeof quizId !== "string" || !quizId || quizId.length > 40) {
+      return { ok: false, error: "A practice card is invalid." };
+    }
+  }
+  if (node.type === "bookAsync") {
+    const component = node.attrs?.component;
+    if (component !== "AssignmentsStep" && component !== "AssignmentsFinished") {
+      return { ok: false, error: "An assignment demo is invalid." };
+    }
+  }
+  if (node.type === "bookTable") {
+    const rows = node.attrs?.rows;
+    if (!Array.isArray(rows) || rows.length > 80) {
+      return { ok: false, error: "A table is invalid." };
+    }
+    for (const row of rows) {
+      if (!Array.isArray(row) || row.length > 12) return { ok: false, error: "A table is invalid." };
+      for (const cell of row) {
+        if (!cell || typeof cell !== "object") return { ok: false, error: "A table is invalid." };
+        const text = (cell as { text?: unknown }).text;
+        const component = (cell as { component?: unknown }).component;
+        if (typeof text === "string" && text.length > 500) return { ok: false, error: "A table cell is too long." };
+        if (text === undefined && (typeof component !== "string" || component.length > 80)) {
+          return { ok: false, error: "A table cell is invalid." };
+        }
+      }
     }
   }
   if (node.type === "heading") {

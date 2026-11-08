@@ -7,7 +7,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import BookSectionSlidesLink from "../../app/book/components/BookSectionSlidesLink";
 import PracticeCard from "../../app/book/components/PracticeCard";
 import { PracticeQuizArticle } from "../../app/book/practice/[quizId]/page";
-import DraftChapter from "../../app/book2/draft-chapter";
+import { highlightCodeToHtml } from "../code-block/highlight";
 import { PublishedTable } from "../../app/book2/source-blocks";
 import { getPracticeQuiz } from "../../app/book/quizzes/registry";
 import { composeDraft } from "./book2-compose";
@@ -266,10 +266,17 @@ describe("book2 chapter editing", () => {
     const loaded = await loadSavedChapter1(store, plan);
     assert.equal(saves, 1);
     assert.equal(loaded?.doc.content?.[0]?.content?.[0]?.text, "const visible = \"code\";");
-    const html = renderToStaticMarkup(createElement(DraftChapter, { doc: loaded!.doc }));
-    assert.match(html, /book-plain-code/);
-    assert.match(html, /const visible = &quot;code&quot;|const visible = "code"/);
-    assert.doesNotMatch(html, /book-code-block-body/);
+    const highlighted = await highlightCodeToHtml({
+      code: "const visible = \"code\";\n  indented",
+      language: "tsx",
+      lineNumbers: true,
+    });
+    assert.match(highlighted, /data-line="1"/);
+    assert.match(highlighted, /data-line="2"/);
+    assert.match(highlighted, /const/);
+    assert.match(highlighted, /visible/);
+    assert.match(highlighted, /indented/);
+    assert.doesNotMatch(highlighted, />\s*1const/);
   });
 });
 

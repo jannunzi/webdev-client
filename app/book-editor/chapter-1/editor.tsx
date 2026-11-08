@@ -2,6 +2,9 @@
 
 import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import CodeBlock from "@tiptap/extension-code-block";
+import { ReactNodeViewRenderer } from "@tiptap/react";
+import CodeBlockView from "./code-block-view";
 import { DecorationSet } from "@tiptap/pm/view";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
@@ -22,9 +25,14 @@ import { bracketInstruction, bracketSpot } from "@/lib/book-editor/brackets";
 import type { ChapterPayload } from "@/lib/book-editor/handle";
 import { safeHref } from "@/lib/book-editor/schema";
 import {
+  BookAsync,
   BookEmbed,
   BookFigure,
   BookHeading,
+  BookPractice,
+  BookSlides,
+  BookTable,
+  BookVideos,
   BracketRun,
   Ghost,
   Unsupported,
@@ -91,6 +99,7 @@ export default function ChapterEditor({
       extensions: [
         StarterKit.configure({
           heading: false,
+          codeBlock: false,
           strike: false,
           link: {
             openOnClick: false,
@@ -100,8 +109,25 @@ export default function ChapterEditor({
           },
         }),
         BookHeading.configure({ levels: [1, 2, 3, 4, 5, 6] }),
+        CodeBlock.extend({
+          addAttributes() {
+            return {
+              ...this.parent?.(),
+              file: { default: "" },
+              name: { default: "" },
+            };
+          },
+          addNodeView() {
+            return ReactNodeViewRenderer(CodeBlockView);
+          },
+        }),
         BookEmbed,
         BookFigure,
+        BookSlides,
+        BookVideos,
+        BookPractice,
+        BookTable,
+        BookAsync,
         Unsupported,
         Ghost,
         BracketRun,
@@ -492,6 +518,43 @@ export default function ChapterEditor({
     };
   }, [linkOpen, busy, suggestion, status]);
 
+  async function resetPublished() {
+    if (!editor) return;
+    const confirmed = window.confirm(
+      "Replace this Chapter 1 draft with the published chapter? The current saved draft is kept as a revision you can restore. Unsaved typing in this box is not added to that backup.",
+    );
+    if (!confirmed) return;
+    setStatus("saving");
+    try {
+      const response = await fetch("/api/book-editor/chapter-1/reset", { method: "POST" });
+      const data = (await response.json().catch(() => null)) as {
+        revision?: number;
+        doc?: object;
+        error?: string;
+        backupRevision?: number | null;
+      } | null;
+      if (!response.ok || !data?.doc || typeof data.revision !== "number") {
+        setStatus("error");
+        setMessage(data?.error || "The published chapter could not be imported.");
+        return;
+      }
+      editor.commands.setContent(data.doc);
+      revision.current = data.revision;
+      savedJson.current = JSON.stringify(editor.getJSON());
+      setDirty(false);
+      onDirtyChangeRef.current?.(false);
+      setStatus("saved");
+      setMessage(
+        data.backupRevision == null
+          ? "Imported the published chapter. There was no earlier draft to archive."
+          : `Imported the published chapter. The previous draft is revision ${data.backupRevision}.`,
+      );
+    } catch {
+      setStatus("error");
+      setMessage("The published chapter could not be imported.");
+    }
+  }
+
   async function overwrite() {
     if (!editor || conflictRevision == null) return;
     revision.current = conflictRevision;
@@ -710,6 +773,17 @@ export default function ChapterEditor({
             </button>
           </div>
         ) : null}
+        <div className="book-editor-group" role="group" aria-label="Reset">
+          <button
+            type="button"
+            className="book-editor-tool"
+            disabled={!ready || status === "saving"}
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={() => void resetPublished()}
+          >
+            Reset to published chapter
+          </button>
+        </div>
         <div className="book-editor-group" role="group" aria-label="History">
           <ToolButton label="Restore" title="Restore the previous saved revision" disabled={!ready} onClick={() => void restoreLatest()}>
             <LuHistory aria-hidden />
@@ -803,9 +877,15 @@ export default function ChapterEditor({
           .book-editor-tool-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
         }
         .book-editor-document h1, .book-editor-document h2, .book-editor-document h3 { font-family: ui-sans-serif, system-ui, sans-serif; }
-        .book-editor-document pre { overflow-x: auto; background: #f6f8fa; color: #1a1a1a; padding: 0.75rem; }
-        .book-editor-document pre code { color: inherit; background: transparent; }
         .book-editor-document :not(pre) > code { color: #9f1239; background: #f3f4f6; }
+        .book-editor-code { display: grid; grid-template-columns: auto minmax(0, 1fr); margin: 0.75rem 0; overflow: hidden; border: 1px solid #30363d; border-radius: 0.4rem; background: #0d1117; color: #e6edf3; }
+        .book-editor-code-gutter { user-select: none; padding: 0.75rem 0.55rem; color: #6e7681; text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.8125rem; line-height: 1.6; }
+        .book-editor-code-gutter span { display: block; }
+        .book-editor-code-body { position: relative; min-width: 0; }
+        .book-editor-code-highlight, .book-editor-code-highlight pre { margin: 0; background: transparent !important; }
+        .book-editor-code .book-editor-code-highlight { position: absolute; inset: 0; overflow: hidden; pointer-events: none; padding: 0.75rem 1rem; white-space: pre; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.8125rem; line-height: 1.6; }
+        .book-editor-code pre { margin: 0; overflow-x: auto; background: transparent; color: transparent; caret-color: #e6edf3; padding: 0.75rem 1rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.8125rem; line-height: 1.6; white-space: pre; }
+        .book-editor-code:not(:has(.book-editor-code-highlight)) pre { color: #e6edf3; }
         .book-embed, .book-figure { margin: 1rem 0; border: 1px solid #d4d4d4; background: #fff; }
         .book-embed.is-selected, .book-figure.is-selected { outline: 1px solid #525252; }
         .book-embed-label, .book-figure figcaption { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.8rem; background: #f5f5f5; margin: 0; padding: 0.35rem 0.6rem; }

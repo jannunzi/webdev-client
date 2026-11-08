@@ -147,9 +147,8 @@ describe("book2 draft reader", () => {
               ],
             },
             {
-              type: "codeBlock",
-              attrs: { language: "html" },
-              content: [{ type: "text", text: "<h1>Hello</h1>" }],
+              type: "paragraph",
+              content: [{ type: "text", text: "Code stays in its own highlighted block." }],
             },
             {
               type: "bookFigure",
@@ -178,8 +177,7 @@ describe("book2 draft reader", () => {
     assert.match(html, /<u>/);
     assert.doesNotMatch(html, /javascript:alert/);
     assert.match(html, /<li>[\s\S]*Install Node/);
-    assert.match(html, /data-language="html"/);
-    assert.match(html, /&lt;h1&gt;Hello&lt;\/h1&gt;|<h1>Hello<\/h1>/);
+    assert.match(html, /Code stays in its own highlighted block/);
     assert.match(html, /alt="Example figure"/);
     assert.match(html, /src="\/book\/figures\/example.png"/);
     assert.match(html, /id="fig-1"/);

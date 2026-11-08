@@ -5,6 +5,13 @@ import BookFigure from "@/app/book/components/BookFigure";
 import { rewriteBookPath } from "@/lib/book-editor/book2-path";
 import { safeHref } from "@/lib/book-editor/schema";
 import DraftEmbed from "./draft-embed";
+import HighlightedCode from "./highlighted-code";
+import { PublishedTable } from "./source-blocks";
+import BookSectionSlidesLink from "@/app/book/components/BookSectionSlidesLink";
+import BookSectionVideosLink from "@/app/book/components/BookSectionVideosLink";
+import PracticeCard from "@/app/book/components/PracticeCard";
+import AssignmentsStep from "@/app/book/ch1/embeds/assignments-step/Assignments";
+import AssignmentsFinished from "@/app/book/ch1/embeds/assignments-finished/Assignments";
 
 export default function DraftChapter({ doc }: { doc: JSONContent }) {
   return (
@@ -35,7 +42,21 @@ export function DraftNode({ node }: { node: JSONContent }) {
         </blockquote>
       );
     case "codeBlock":
-      return <DraftCode node={node} />;
+      return <HighlightedCode node={node} />;
+    case "bookSlides":
+      return <BookSectionSlidesLink sectionId={stringAttr(node, "sectionId")} />;
+    case "bookVideos":
+      return <BookSectionVideosLink sectionId={stringAttr(node, "sectionId")} />;
+    case "bookPractice":
+      return <PracticeCard quizId={stringAttr(node, "quizId")} />;
+    case "bookTable":
+      return <PublishedTable rows={tableRows(node)} />;
+    case "bookAsync":
+      return stringAttr(node, "component") === "AssignmentsFinished" ? (
+        <AssignmentsFinished params={Promise.resolve({ cid: "1234" })} />
+      ) : (
+        <AssignmentsStep params={Promise.resolve({ cid: "1234" })} />
+      );
     case "bookFigure":
       return <DraftFigure node={node} />;
     case "bookEmbed":
@@ -80,16 +101,15 @@ function DraftHeading({ node }: { node: JSONContent }) {
   return <h6 id={id} className={className}>{children}</h6>;
 }
 
-function DraftCode({ node }: { node: JSONContent }) {
-  const language = typeof node.attrs?.language === "string" ? node.attrs.language : "text";
-  const text = (node.content ?? []).map((child) => child.text ?? "").join("");
-  return (
-    <div className="book-plain-code my-4">
-      <pre>
-        <code data-language={language}>{text}</code>
-      </pre>
-    </div>
-  );
+function stringAttr(node: JSONContent, key: string): string {
+  const value = node.attrs?.[key];
+  return typeof value === "string" ? value : "";
+}
+
+function tableRows(node: JSONContent): { text: string }[][] | { component: string }[][] | ({ text: string } | { component: string })[][] {
+  const rows = node.attrs?.rows;
+  if (!Array.isArray(rows)) return [];
+  return rows as ({ text: string } | { component: string })[][];
 }
 
 function DraftFigure({ node }: { node: JSONContent }) {

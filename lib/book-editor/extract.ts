@@ -171,6 +171,11 @@ function elementToBlocks(
 ): JSONContent[] {
   const tag = tagName(node);
   if (!tag) return [];
+  if (tag === "BookSectionSlidesLink" || tag === "BookSectionVideosLink") {
+    const sectionId = attr(node, "sectionId");
+    if (!sectionId) return [];
+    return [{ type: tag === "BookSectionSlidesLink" ? "bookSlides" : "bookVideos", attrs: { sectionId } }];
+  }
   if (CHROME.has(tag)) {
     note(ctx.chrome, tag, "Section navigation stays on the published chapter.");
     return [];
@@ -182,12 +187,21 @@ function elementToBlocks(
   if (tag === "OnYourOwn" || tag === "WithAI") return calloutBlocks(node, tag, ctx);
   if (tag === "A1LabExerciseList") return a1List();
   if (tag === "PracticeCard") {
-    note(ctx.notes, "PracticeCard", "The practice quiz stays on the published chapter.");
-    return [unsupported("PracticeCard", "The practice quiz stays on the published chapter.")];
+    const quizId = attr(node, "quizId");
+    if (!quizId) return [unsupported("PracticeCard", "The practice quiz stays on the published chapter.")];
+    return [{ type: "bookPractice", attrs: { quizId } }];
   }
-  if (tag === "p") return [paragraphNode(inlineOf(children(node), ctx))];
+  if (tag === "p") {
+    const links = chromeBlocks(children(node), ctx);
+    if (links.length && onlyChrome(children(node))) return links;
+    const paragraph = paragraphNode(inlineOf(children(node), ctx));
+    return links.length ? [paragraph, ...links] : [paragraph];
+  }
   if (/^h[1-6]$/.test(tag)) {
-    return [headingNode(Number(tag[1]), attr(node, "id"), inlineOf(children(node), ctx))];
+    return [
+      headingNode(Number(tag[1]), attr(node, "id"), inlineOf(children(node), ctx)),
+      ...chromeBlocks(children(node), ctx),
+    ];
   }
   if (tag === "ul" || tag === "ol") return [listNode(tag === "ol", children(node), ctx)];
   if (tag === "li") return listItemBlocks(node, ctx);
@@ -195,7 +209,7 @@ function elementToBlocks(
     return [{ type: "blockquote", content: flow(children(node), ctx) }];
   }
   if (tag === "pre") return codeBlocks(node, ctx);
-  if (tag === "table") return flattenedTable(node, ctx);
+  if (tag === "table") return tableBlock(node, ctx);
   if (tag === "header" || tag === "section" || tag === "div" || tag === "figure" || tag === "main" || tag === "article") {
     const id = attr(node, "id");
     const inner = flow(children(node), ctx);
@@ -209,6 +223,24 @@ function elementToBlocks(
   if (isComponentTag(tag)) return componentBlocks(node, tag, ctx);
   note(ctx.notes, tag, "This HTML element is kept as a named placeholder.");
   return [unsupported(tag, "This HTML element is kept as a named placeholder.")];
+}
+
+function chromeBlocks(nodes: readonly ts.Node[], ctx: Visit): JSONContent[] {
+  return nodes.flatMap((child) => {
+    const element = asElement(child);
+    const tag = element ? tagName(element) : null;
+    if (!element || (tag !== "BookSectionSlidesLink" && tag !== "BookSectionVideosLink")) return [];
+    return elementToBlocks(element, ctx);
+  });
+}
+
+function onlyChrome(nodes: readonly ts.Node[]): boolean {
+  return nodes.every((child) => {
+    if (ts.isJsxText(child)) return !child.getText().trim();
+    const element = asElement(child);
+    const tag = element ? tagName(element) : null;
+    return tag === "BookSectionSlidesLink" || tag === "BookSectionVideosLink";
+  });
 }
 
 function sectionBlocks(node: ts.JsxElement | ts.JsxSelfClosingElement, ctx: Visit): JSONContent[] {
@@ -257,6 +289,9 @@ function componentBlocks(
   }
   const imported = ctx.imports.get(tag);
   const serverKind = imported?.resolved ? serverComponentKind(imported.resolved) : null;
+  if (tag === "AssignmentsStep" || tag === "AssignmentsFinished") {
+    return [{ type: "bookAsync", attrs: { component: tag } }];
+  }
   if (!imported?.resolved || serverKind) {
     const reason = !imported?.resolved
       ? "This component is local to the chapter file and is not a registered demo."
@@ -299,7 +334,7 @@ function codeBlocks(node: ts.JsxElement | ts.JsxSelfClosingElement, ctx: Visit):
   if (label) blocks.push(paragraphNode([{ type: "text", text: label, marks: [{ type: "code" }] }]));
   const code: JSONContent = {
     type: "codeBlock",
-    attrs: { language },
+    attrs: { language, file, name },
     content: raw ? [{ type: "text", text: raw }] : [],
   };
   if (!raw) note(ctx.notes, "CodeBlock", "A code block had no static text.");
@@ -394,6 +429,48 @@ function listItemContent(node: ts.Node, ctx: Visit): JSONContent[] {
   );
   const content = [...(inline.length ? [paragraphNode(inline)] : []), ...blocks];
   return content.length ? content : [paragraphNode([])];
+}
+
+function tableBlock(node: ts.JsxElement | ts.JsxSelfClosingElement, ctx: Visit): JSONContent[] {
+  if (!ts.isJsxElement(node)) return [unsupported("table", "Empty table.")];
+  const rows: { text?: string; component?: string }[][] = [];
+  const visitRow = (rowNode: ts.Node) => {
+    const element = asElement(rowNode);
+    if (element && tagName(element) === "tr" && ts.isJsxElement(element)) {
+      const cells = element.children.map((cell) => {
+        const cellElement = asElement(cell);
+        const component = cellElement ? componentIn(cellElement) : null;
+        const text = plainText(cell).replace(/\s+/g, " ").trim();
+        if (component && !text) return { component };
+        if (!text && !component) return null;
+        return text ? { text } : { component: component! };
+      }).filter((cell) => cell !== null);
+      if (cells.length) rows.push(cells);
+      return;
+    }
+    if (ts.isJsxElement(rowNode) || ts.isJsxFragment(rowNode)) {
+      for (const child of children(rowNode)) visitRow(child);
+    }
+  };
+  for (const child of children(node)) visitRow(child);
+  if (!rows.length) {
+    note(ctx.notes, "table", "Empty table.");
+    return [unsupported("table", "Empty table.")];
+  }
+  return [{ type: "bookTable", attrs: { rows } }];
+}
+
+function componentIn(node: ts.JsxElement | ts.JsxSelfClosingElement): string | null {
+  const tag = tagName(node);
+  if (tag && tag[0] === tag[0].toUpperCase() && tag !== "Section") return tag;
+  if (!ts.isJsxElement(node)) return null;
+  for (const child of children(node)) {
+    const element = asElement(child);
+    if (!element) continue;
+    const found = componentIn(element);
+    if (found) return found;
+  }
+  return null;
 }
 
 function flattenedTable(node: ts.JsxElement | ts.JsxSelfClosingElement, ctx: Visit): JSONContent[] {

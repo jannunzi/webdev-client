@@ -3,7 +3,11 @@ import Heading from "@tiptap/extension-heading";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
 import { Decoration, DecorationSet } from "@tiptap/pm/view";
 import { ReactNodeViewRenderer, NodeViewWrapper, type NodeViewProps } from "@tiptap/react";
+import type { ReactNode } from "react";
 import { BOOK_EMBEDS } from "@/lib/book-editor/embed-registry";
+import BookSectionSlidesLink from "@/app/book/components/BookSectionSlidesLink";
+import BookSectionVideosLink from "@/app/book/components/BookSectionVideosLink";
+import PracticeCard from "@/app/book/components/PracticeCard";
 
 export const ghostKey = new PluginKey<DecorationSet>("bookGhost");
 
@@ -203,6 +207,89 @@ function UnsupportedView({ node }: NodeViewProps) {
     </NodeViewWrapper>
   );
 }
+
+function atomView(render: (node: NodeViewProps["node"]) => ReactNode) {
+  return ({ node }: NodeViewProps) => (
+    <NodeViewWrapper contentEditable={false}>{render(node)}</NodeViewWrapper>
+  );
+}
+
+export const BookSlides = Node.create({
+  name: "bookSlides",
+  group: "block",
+  atom: true,
+  selectable: true,
+  addAttributes() {
+    return { sectionId: { default: "" } };
+  },
+  renderHTML: ({ HTMLAttributes }) => ["div", mergeAttributes(HTMLAttributes, { "data-book-slides": HTMLAttributes.sectionId })],
+  addNodeView: () => ReactNodeViewRenderer(atomView((node) => <BookSectionSlidesLink sectionId={String(node.attrs.sectionId ?? "")} />)),
+});
+
+export const BookVideos = Node.create({
+  name: "bookVideos",
+  group: "block",
+  atom: true,
+  selectable: true,
+  addAttributes() {
+    return { sectionId: { default: "" } };
+  },
+  renderHTML: ({ HTMLAttributes }) => ["div", mergeAttributes(HTMLAttributes, { "data-book-videos": HTMLAttributes.sectionId })],
+  addNodeView: () => ReactNodeViewRenderer(atomView((node) => <BookSectionVideosLink sectionId={String(node.attrs.sectionId ?? "")} />)),
+});
+
+export const BookPractice = Node.create({
+  name: "bookPractice",
+  group: "block",
+  atom: true,
+  selectable: true,
+  addAttributes() {
+    return { quizId: { default: "" } };
+  },
+  renderHTML: ({ HTMLAttributes }) => ["div", mergeAttributes(HTMLAttributes, { "data-book-practice": HTMLAttributes.quizId })],
+  addNodeView: () => ReactNodeViewRenderer(atomView((node) => <PracticeCard quizId={String(node.attrs.quizId ?? "")} />)),
+});
+
+export const BookAsync = Node.create({
+  name: "bookAsync",
+  group: "block",
+  atom: true,
+  selectable: true,
+  addAttributes() {
+    return { component: { default: "" } };
+  },
+  renderHTML: ({ HTMLAttributes }) => ["aside", mergeAttributes(HTMLAttributes, { "data-book-async": HTMLAttributes.component })],
+  addNodeView: () => ReactNodeViewRenderer(atomView((node) => (
+    <p className="book-unsupported">{String(node.attrs.component ?? "Demo")} is shown in the reading view.</p>
+  ))),
+});
+
+export const BookTable = Node.create({
+  name: "bookTable",
+  group: "block",
+  atom: true,
+  selectable: true,
+  addAttributes() {
+    return { rows: { default: [] } };
+  },
+  renderHTML: () => ["div", { "data-book-table": "1" }],
+  addNodeView: () => ReactNodeViewRenderer(atomView((node) => {
+    const rows = Array.isArray(node.attrs.rows) ? node.attrs.rows as { text?: string; component?: string }[][] : [];
+    return (
+      <table className="book-editor-table">
+        <tbody>
+          {rows.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {row.map((cell, index) => (
+                <td key={index}>{cell.text ?? cell.component ?? ""}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  })),
+});
 
 export const Unsupported = Node.create({
   name: "unsupported",

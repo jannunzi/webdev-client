@@ -1,5 +1,6 @@
 import type { JSONContent } from "@tiptap/core";
 import type { StaffGate } from "@/lib/inline-edit/handle-edit";
+import { extractChapter1 } from "./extract";
 import { chapter1Seed } from "./seed";
 import { validateChapterDoc } from "./schema";
 import { CHAPTER_ID, storagePlan, type ChapterStore, type StoragePlan } from "./store";
@@ -98,6 +99,46 @@ export async function handleChapterPut(
     );
   }
   return Response.json(storedPayload(saved.record, plan));
+}
+
+/**
+ * Archives the current Chapter 1 draft as a revision, then replaces it with a
+ * fresh import of the published chapter source. Does not touch /book.
+ */
+export async function handleChapterReset(options: {
+  staff: StaffGate;
+  store: ChapterStore | null;
+  plan?: StoragePlan;
+}): Promise<Response> {
+  const actor = asStaff(options.staff);
+  if (actor instanceof Response) return actor;
+  const plan = options.plan ?? storagePlan();
+  if (!options.store || !plan.available) {
+    return Response.json({ ok: false, error: plan.message, storage: plan }, { status: 503 });
+  }
+  const current = await options.store.get(CHAPTER_ID);
+  const extracted = extractChapter1();
+  const embeds = new Set(extracted.embeds.map((item) => item.component));
+  const validated = validateChapterDoc(extracted.doc, embeds);
+  if (!validated.ok) {
+    return Response.json({ ok: false, error: validated.error }, { status: 500 });
+  }
+  const saved = await options.store.save({
+    id: CHAPTER_ID,
+    doc: validated.doc,
+    expectedRevision: current?.revision ?? 0,
+    email: actor.email,
+  });
+  if (!saved.ok) {
+    return Response.json(
+      { ok: false, error: "A newer copy is saved. Your draft is still in the editor.", conflict: saved.conflict },
+      { status: 409 },
+    );
+  }
+  return Response.json({
+    ...storedPayload(saved.record, plan),
+    backupRevision: current?.revision ?? null,
+  });
 }
 
 export async function handleRevisionList(options: {
