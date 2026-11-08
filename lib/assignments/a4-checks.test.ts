@@ -283,3 +283,84 @@ it("A4 dashboard form that starts blank still passes", async () => {
   const html = `<main><div><h1>Dashboard</h1><h5>New Course<button>Add</button><button>Update</button></h5><input value="" placeholder="Name"/><textarea placeholder="Description"></textarea><div><a href="/courses/1/home">A</a><a href="/courses/2/home">B</a></div></div></main>`;
   assert.equal(dashboardHasForm(html, { siteHost: "x.vercel.app" } as never), true);
 });
+
+/**
+ * Signed-out cards from a public a4 deploy: the form and Edit/Delete/Enroll
+ * controls render, but every card link stays on /dashboard until the viewer
+ * is enrolled. Sidebar links to /dashboard are not cards.
+ */
+function signedOutDashboard(options: {
+  cards?: number;
+  href?: (index: number) => string;
+  labels?: string[];
+  form?: "full" | "name" | "none";
+  nav?: number;
+  buttonsOutside?: boolean;
+}): string {
+  const cards = options.cards ?? 4;
+  const href = options.href ?? (() => "/dashboard");
+  const labels = options.labels ?? ["Go", "Edit", "Delete", "Enroll"];
+  const form =
+    options.form === "none"
+      ? ""
+      : options.form === "name"
+        ? `<h5>New Course<button type="button">Add</button><button type="button">Update</button></h5><input value="New Course"/><textarea>New Description</textarea>`
+        : `<button type="button">Show all courses</button><h5>New Course<button type="button">Add</button><button type="button">Update</button></h5><input value="New Course"/><textarea>New Description</textarea><input value="New Number"/><label>Starts: <input type="date" value="2023-09-10"/></label>`;
+  const nav = Array.from({ length: options.nav ?? 6 }, () => `<a href="/dashboard">Dashboard</a>`).join("");
+  const button = (label: string) => `<button type="button">${label}</button>`;
+  const card = (index: number) => {
+    const inside = options.buttonsOutside ? button(labels[0] ?? "Go") : labels.map(button).join("");
+    const outside = options.buttonsOutside ? labels.slice(1).map(button).join("") : "";
+    return `<div class="wd-dashboard-course"><a href="${href(index)}"><img alt="Course ${index}" src="/images/c.png"/><h5>Course ${index}</h5><p>Description ${index}</p>${inside}</a>${outside}</div>`;
+  };
+  return `<html><body><nav>${nav}<a href="/labs">Labs</a></nav><main><h1>Dashboard</h1>${form}<h2>Published Courses (${cards})</h2>${Array.from({ length: cards }, (_, index) => card(index)).join("")}</main></body></html>`;
+}
+
+const swapDashboard = (html: string): Serve => on(is("/dashboard"), () => html);
+
+describe("A4 signed-out dashboard cards", () => {
+  it("passes the book dashboard, whose cards link to /courses/<id>/home", async () => {
+    const { failed } = await grade(fromBuild);
+    assert.deepEqual(failed, []);
+  });
+
+  it("passes when four cards link to /dashboard and still show the form and Edit/Delete", async () => {
+    const { failed } = await grade(swapDashboard(signedOutDashboard({})));
+    assert.deepEqual(failed, []);
+  });
+
+  it("passes when Edit and Delete sit beside the card link instead of inside it", async () => {
+    const { failed } = await grade(swapDashboard(signedOutDashboard({ buttonsOutside: true })));
+    assert.deepEqual(failed, []);
+  });
+
+  it("does not count repeated Dashboard navigation toward the three cards", async () => {
+    const { failed } = await grade(swapDashboard(signedOutDashboard({ cards: 2, nav: 8 })));
+    assert.deepEqual(failed, ["a4-kambaz-card-buttons"]);
+  });
+
+  it("fails the form and the date row when the course form is absent", async () => {
+    const { failed } = await grade(swapDashboard(signedOutDashboard({ form: "none" })));
+    assert.deepEqual(failed, ["a4-kambaz-dashboard-form", "a4-kambaz-dashboard-fields"]);
+  });
+
+  it("fails only the number and date row when those fields are absent", async () => {
+    const { failed } = await grade(swapDashboard(signedOutDashboard({ form: "name" })));
+    assert.deepEqual(failed, ["a4-kambaz-dashboard-fields"]);
+  });
+
+  it("fails card buttons when a card has only Go", async () => {
+    const { failed } = await grade(swapDashboard(signedOutDashboard({ labels: ["Go"] })));
+    assert.deepEqual(failed, ["a4-kambaz-card-buttons"]);
+  });
+
+  it("does not treat a page of Dashboard links as course cards", async () => {
+    const { failed } = await grade(swapDashboard(signedOutDashboard({ cards: 0, nav: 8 })));
+    assert.deepEqual(failed, ["a4-kambaz-dashboard-form", "a4-kambaz-dashboard-fields", "a4-kambaz-card-buttons"]);
+  });
+
+  it("still counts several links to the same course home as one card", async () => {
+    const { failed } = await grade(swapDashboard(signedOutDashboard({ href: () => "/courses/RS101/home" })));
+    assert.deepEqual(failed, ["a4-kambaz-card-buttons"]);
+  });
+});

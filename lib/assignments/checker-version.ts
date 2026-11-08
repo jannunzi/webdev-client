@@ -47,8 +47,12 @@ export const A3_CHECKER_RULES_VERSION = "a3-rules-v5";
  *   v2: turned on for URL submit. Checked against the current Chapter 4
  *       (store-based components, CourseCard course prop, ModuleEditor owns
  *       + Module, FaCheckCircle); lowercase routes as A3.
+ *   v3: a signed-out course card still counts when its link stays on
+ *       /dashboard. The card needs a heading or an image and a button;
+ *       sidebar links to /dashboard are not cards. Links to the same
+ *       /courses/<id>/home still count once.
  */
-export const A4_CHECKER_RULES_VERSION = "a4-rules-v2";
+export const A4_CHECKER_RULES_VERSION = "a4-rules-v3";
 
 /** Short commit of the running deployment, when Vercel provides it. */
 export function deployedCommit(env: Record<string, string | undefined> = process.env): string {

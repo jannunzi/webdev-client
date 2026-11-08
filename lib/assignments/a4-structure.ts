@@ -238,14 +238,51 @@ export function lab4UrlEncoding(html: string, ctx: StructureContext): StructureV
 
 const COURSE_HOME = /^\/courses\/[^/]+\/home$/i;
 
-function courseLinks(source: string, siteHost?: string) {
-  return links(source, siteHost).filter((link) => link.path && COURSE_HOME.test(link.path));
+type DashLink = ReturnType<typeof links>[number];
+
+/**
+ * A course card is a link to /courses/<id>/home, or any other link that is
+ * itself a card: it holds a heading or an image and at least one button.
+ * Signed out, an enrollment gate may point every card at /dashboard; those
+ * links are still separate cards. A sidebar link to /dashboard is not a
+ * card unless it also has a button and a heading or an image.
+ */
+function dashboardCardAnchors(source: string, siteHost?: string): DashLink[] {
+  return links(source, siteHost).filter((link) => {
+    if (!link.path) return false;
+    if (COURSE_HOME.test(link.path)) return true;
+    if (buttons(link.el.inner).length < 1) return false;
+    return headings(link.el.inner).length > 0 || /<img\b/i.test(link.el.inner);
+  });
+}
+
+/** Home links to one course count once. Shared /dashboard hrefs stay separate. */
+function distinctCards(cards: DashLink[]): DashLink[] {
+  const seenHome = new Set<string>();
+  return cards.filter((card) => {
+    if (!card.path || !COURSE_HOME.test(card.path)) return true;
+    const key = card.path.toLowerCase();
+    if (seenHome.has(key)) return false;
+    seenHome.add(key);
+    return true;
+  });
+}
+
+/** Buttons on one card: inside its link, or in a box that holds no other card. */
+function buttonsForCard(source: string, card: DashLink, siteHost?: string): number {
+  const own = buttons(card.el.inner).length;
+  if (own >= 2) return own;
+  const box = container(source, card.el, () => true, ["div", "li", "article", "section"]);
+  if (!box) return own;
+  const slice = source.slice(box.start, box.end);
+  if (dashboardCardAnchors(slice, siteHost).length > 1) return own;
+  return buttons(slice).length;
 }
 
 /** Form fields and buttons above the first course card. */
 function dashboardForm(html: string, siteHost?: string): { fields: ReturnType<typeof fields>; buttons: number } | null {
   const source = rendered(html);
-  const first = courseLinks(source, siteHost)[0];
+  const first = dashboardCardAnchors(source, siteHost)[0];
   const top = first ? source.slice(0, first.el.start) : source;
   // Leave the Kambaz sidebar out: it sits in its own nav.
   const withoutNav = els(top, "nav").reduce((out, nav) => out.replace(top.slice(nav.start, nav.end), ""), top);
@@ -256,7 +293,7 @@ function dashboardForm(html: string, siteHost?: string): { fields: ReturnType<ty
 }
 
 export function dashboardHasForm(html: string, ctx: StructureContext): StructureVerdict {
-  if (courseLinks(rendered(html), ctx.siteHost).length === 0) return false;
+  if (dashboardCardAnchors(rendered(html), ctx.siteHost).length === 0) return false;
   const form = dashboardForm(html, ctx.siteHost);
   if (!form) return false;
   // Count the fields, not their values: a course state that starts blank is fine.
@@ -267,7 +304,7 @@ const DATE_VALUE = /^\d{4}-\d{2}-\d{2}/;
 
 export function dashboardHasNumberAndDate(html: string, ctx: StructureContext): StructureVerdict {
   const form = dashboardForm(html, ctx.siteHost);
-  if (!form || courseLinks(rendered(html), ctx.siteHost).length === 0) return false;
+  if (!form || dashboardCardAnchors(rendered(html), ctx.siteHost).length === 0) return false;
   const dated = form.fields.some((field) => field.type === "date" || DATE_VALUE.test(field.value.trim()));
   return form.fields.length >= 4 && dated;
 }
@@ -277,20 +314,9 @@ export const A4_MIN_CARDS = 3;
 /** Buttons that belong to one card: inside its link, or in the card box around it. */
 export function cardsWithEditDelete(html: string, ctx: StructureContext): StructureVerdict {
   const source = rendered(html);
-  const cards = courseLinks(source, ctx.siteHost);
-  const seen = new Set<string>();
-  const unique = cards.filter((card) => !seen.has(card.path!.toLowerCase()) && seen.add(card.path!.toLowerCase()));
-  if (unique.length < A4_MIN_CARDS) return false;
-  const counts = unique.map((card) => {
-    const own = buttons(card.el.inner).length;
-    if (own >= 2) return own;
-    const box = container(source, card.el, () => true, ["div", "li", "article", "section"]);
-    if (!box) return own;
-    // The box must hold only this card.
-    if (courseLinks(source.slice(box.start, box.end), ctx.siteHost).filter((l) => l.path!.toLowerCase() !== card.path!.toLowerCase()).length > 0) return own;
-    return buttons(source.slice(box.start, box.end)).length;
-  });
-  return counts.every((count) => count >= 2);
+  const cards = distinctCards(dashboardCardAnchors(source, ctx.siteHost));
+  if (cards.length < A4_MIN_CARDS) return false;
+  return cards.every((card) => buttonsForCard(source, card, ctx.siteHost) >= 2);
 }
 
 /** Module rows: list items that hold a nested lesson list. Controls: buttons and icons in the row's title part. */
