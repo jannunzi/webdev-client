@@ -29,6 +29,7 @@ import {
   writeLastPosition,
   writeMobileTocOpen,
 } from "./bookStorage";
+import { rewriteBookPath, type BookBase } from "@/lib/book-editor/book2-path";
 import { chapterEndToc } from "./chapter-end/types";
 import { ch1EndMatter } from "./ch1/end-matter";
 import { ch2EndMatter } from "./ch2/end-matter";
@@ -1009,6 +1010,8 @@ type TocPanelProps = {
   suppressScrollPauseRef: MutableRefObject<boolean>;
   resumeHref: string | null;
   resumeLabel: string | null;
+  homeHref: string;
+  practiceHref: string;
   prevChapter: ChapterToc | null;
   nextChapter: ChapterToc | null;
   onNavigate: () => void;
@@ -1032,6 +1035,8 @@ function TocPanel({
   suppressScrollPauseRef,
   resumeHref,
   resumeLabel,
+  homeHref,
+  practiceHref,
   prevChapter,
   nextChapter,
   onNavigate,
@@ -1079,7 +1084,7 @@ function TocPanel({
         ) : null}
         <li>
           <Link
-            href="/book"
+            href={homeHref}
             onClick={onNavigate}
             className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
           >
@@ -1100,7 +1105,7 @@ function TocPanel({
         </li>
         <li>
           <Link
-            href="/book/practice"
+            href={practiceHref}
             onClick={onNavigate}
             className="block rounded px-2 py-1 no-underline hover:bg-neutral-200"
           >
@@ -1210,8 +1215,14 @@ function TocPanel({
   );
 }
 
-export default function BookTOC() {
+export function chaptersForBase(base: BookBase = "/book"): ChapterToc[] {
+  if (base === "/book") return CHAPTERS;
+  return CHAPTERS.map((chapter) => ({ ...chapter, href: rewriteBookPath(chapter.href, base) }));
+}
+
+export default function BookTOC({ base = "/book" }: { base?: BookBase }) {
   const pathname = usePathname();
+  const chapters = useMemo(() => chaptersForBase(base), [base]);
   const [panelOpen, setPanelOpen] = useState(true);
   const [query, setQuery] = useState("");
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -1240,7 +1251,14 @@ export default function BookTOC() {
     getOpenSectionsSnapshot,
     getOpenSectionsServerSnapshot,
   );
-  const resume = pathname === "/book" ? describeLastPosition(lastPosition) : null;
+  const canonicalLast =
+    base === "/book2" && lastPosition
+      ? { ...lastPosition, pathname: lastPosition.pathname.replace(/^\/book2(?=\/|$)/, "/book") }
+      : lastPosition;
+  const described = pathname === base ? describeLastPosition(canonicalLast) : null;
+  const resume = described
+    ? { ...described, href: rewriteBookPath(described.href, base) }
+    : null;
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const drawerRef = useRef<HTMLElement>(null);
@@ -1252,16 +1270,16 @@ export default function BookTOC() {
   const restoredPathRef = useRef<string | null>(null);
 
   const currentChapter = useMemo(
-    () => CHAPTERS.find((c) => pathname === c.href || pathname.startsWith(`${c.href}/`)),
-    [pathname],
+    () => chapters.find((c) => pathname === c.href || pathname.startsWith(`${c.href}/`)),
+    [chapters, pathname],
   );
   const chapterIndex = currentChapter
-    ? CHAPTERS.findIndex((chapter) => chapter.id === currentChapter.id)
+    ? chapters.findIndex((chapter) => chapter.id === currentChapter.id)
     : -1;
-  const prevChapter = chapterIndex > 0 ? CHAPTERS[chapterIndex - 1]! : null;
+  const prevChapter = chapterIndex > 0 ? chapters[chapterIndex - 1]! : null;
   const nextChapter =
-    chapterIndex >= 0 && chapterIndex < CHAPTERS.length - 1
-      ? CHAPTERS[chapterIndex + 1]!
+    chapterIndex >= 0 && chapterIndex < chapters.length - 1
+      ? chapters[chapterIndex + 1]!
       : null;
 
   const sectionIds = useMemo(
@@ -1403,14 +1421,14 @@ export default function BookTOC() {
   const normalizedQuery = query.trim().toLowerCase();
 
   const filteredChapters = useMemo(() => {
-    return CHAPTERS.map((chapter) => {
+    return chapters.map((chapter) => {
       const chapterMatches = chapter.label.toLowerCase().includes(normalizedQuery);
       const sections = filterEntries(chapter.sections, normalizedQuery);
       if (!normalizedQuery) return chapter;
       if (!chapterMatches && sections.length === 0) return null;
       return { ...chapter, sections: chapterMatches && sections.length === 0 ? chapter.sections : sections };
     }).filter(Boolean) as ChapterToc[];
-  }, [normalizedQuery]);
+  }, [chapters, normalizedQuery]);
 
   const effectiveOpenSections = useMemo(() => {
     const next = new Set(openSections);
@@ -1525,6 +1543,8 @@ export default function BookTOC() {
       suppressScrollPauseRef={suppressScrollPauseRef}
       resumeHref={resume?.href ?? null}
       resumeLabel={resume?.label ?? null}
+      homeHref={base === "/book2" ? "/book2" : "/book"}
+      practiceHref={base === "/book2" ? "/book2/practice" : "/book/practice"}
       prevChapter={prevChapter}
       nextChapter={nextChapter}
       onNavigate={onNavigate}
