@@ -20,9 +20,6 @@ export default function Book2Links({ children }: { children: ReactNode }) {
       }
     };
     rewrite();
-    const observer = new MutationObserver(rewrite);
-    observer.observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ["href"] });
-    return () => observer.disconnect();
   }, [pathname]);
 
   function onClickCapture(event: MouseEvent<HTMLDivElement>) {
