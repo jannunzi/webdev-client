@@ -77,13 +77,34 @@ await page.route("**/api/staff/ai-suggest", async (route) => {
 
 await page.goto(`${base}/book-editor/chapter-1/harness`, { waitUntil: "networkidle" });
 await page.getByRole("toolbar", { name: "Formatting" }).waitFor();
+const iconLabels = await page.evaluate(() =>
+  [...document.querySelectorAll(".book-editor-tool")].map((button) => {
+    const label = button.querySelector(".book-editor-tool-label");
+    const style = label ? getComputedStyle(label) : null;
+    return {
+      name: button.getAttribute("aria-label"),
+      title: button.getAttribute("title"),
+      hidden: Boolean(style && style.position === "absolute" && style.width === "1px"),
+    };
+  }),
+);
+for (const name of ["Bold", "Italic", "Bullets", "Numbers"]) {
+  const item = iconLabels.find((entry) => entry.name === name);
+  assert(item?.hidden, `${name} word is still visible`);
+  assert(item.title, `${name} tooltip is missing`);
+}
+for (const name of ["Code", "Heading", "Link", "Restore"]) {
+  const item = iconLabels.find((entry) => entry.name === name);
+  assert(item && !item.hidden, `${name} label was removed`);
+}
+await page.screenshot({ path: "/opt/cursor/artifacts/chapter1-toolbar-icons.png" });
 await page.getByRole("link", { name: "Internet" }).first().waitFor();
 const embed = page.locator("[data-book-embed='HeadingTags']");
 await embed.scrollIntoViewIfNeeded();
 await embed.getByText("Heading Tags").waitFor();
-await page.screenshot({ path: "/opt/cursor/artifacts/chapter1-editor-demo.png" });
-await page.locator("h1").first().scrollIntoViewIfNeeded();
-await page.screenshot({ path: "/opt/cursor/artifacts/chapter1-editor-desktop.png" });
+await page.screenshot({ path: "/opt/cursor/artifacts/chapter1-toolbar-demo.png" });
+await page.evaluate(() => window.scrollTo(0, 0));
+await page.screenshot({ path: "/opt/cursor/artifacts/chapter1-toolbar-top.png" });
 
 const document = page.locator(".book-editor-document");
 const firstParagraph = document.locator("p").first();
@@ -117,12 +138,47 @@ assert(saved.includes("orderedList"), "generated list was not saved");
 assert(!saved.includes("data-book-ghost"), "ghost marker was serialized");
 assert(!saved.includes("data-ai-pending"), "draft marker was serialized");
 
+async function assertStuck(label) {
+  await page.evaluate(() => window.scrollTo(0, 1600));
+  await page.waitForTimeout(150);
+  const boxes = await page.evaluate(() => {
+    const header = document.querySelector(".course-site-header")?.getBoundingClientRect();
+    const toolbar = document.querySelector(".book-editor-toolbar")?.getBoundingClientRect();
+    const covered = document.elementFromPoint((toolbar?.left ?? 0) + 20, (toolbar?.bottom ?? 0) - 6);
+    const below = document.elementFromPoint((toolbar?.left ?? 0) + 20, (toolbar?.bottom ?? 0) + 10);
+    return {
+      headerBottom: header?.bottom ?? null,
+      toolbarTop: toolbar?.top ?? null,
+      coveredByToolbar: Boolean(covered?.closest(".book-editor-toolbar")),
+      belowIsToolbar: Boolean(below?.closest(".book-editor-toolbar")),
+    };
+  });
+  assert(boxes.headerBottom != null && boxes.toolbarTop != null, `${label} header or toolbar is missing`);
+  assert(Math.abs(boxes.toolbarTop - boxes.headerBottom) < 3, `${label} toolbar is not under the site header`);
+  assert(boxes.coveredByToolbar, `${label} toolbar does not receive hits on its bar`);
+  assert(!boxes.belowIsToolbar, `${label} toolbar covers the text below it`);
+}
+
+await page.setViewportSize({ width: 1100, height: 800 });
+await assertStuck("desktop");
+await page.getByRole("button", { name: "Bold" }).focus();
+const boldFocused = await page.evaluate(() => document.activeElement?.textContent?.includes("Bold"));
+assert(boldFocused, "Bold did not take keyboard focus");
+await page.keyboard.press("Tab");
+const italicFocused = await page.evaluate(() => document.activeElement?.textContent?.includes("Italic"));
+assert(italicFocused, "Tab did not move to Italic");
+await page.screenshot({ path: "/opt/cursor/artifacts/chapter1-toolbar-desktop.png" });
+await page.screenshot({ path: "/opt/cursor/artifacts/chapter1-toolbar-focus.png" });
+
 await page.setViewportSize({ width: 390, height: 800 });
-await page.locator(".book-editor-toolbar").scrollIntoViewIfNeeded();
-const toolbar = await page.getByRole("toolbar").boundingBox();
-const heading = await page.locator("h1").first().boundingBox();
-assert(toolbar && heading && toolbar.y + toolbar.height <= heading.y + 2, "toolbar overlaps the heading");
-await page.screenshot({ path: "/opt/cursor/artifacts/chapter1-editor-narrow.png" });
-await page.screenshot({ path: "/opt/cursor/artifacts/chapter1-editor-saved.png", fullPage: false });
+await assertStuck("narrow");
+await page.locator("h1").first().scrollIntoViewIfNeeded();
+const narrowHeading = await page.locator("h1").first().boundingBox();
+const narrowToolbar = await page.getByRole("toolbar").boundingBox();
+assert(
+  narrowToolbar && narrowHeading && narrowToolbar.y + narrowToolbar.height <= narrowHeading.y + 2,
+  "toolbar overlaps the heading",
+);
+await page.screenshot({ path: "/opt/cursor/artifacts/chapter1-toolbar-narrow.png" });
 await browser.close();
 console.log("browser checks passed");
