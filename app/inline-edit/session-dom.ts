@@ -1,7 +1,7 @@
+import { bracketCommandAt, unescapeLiteralBrackets } from "@/lib/inline-edit/bracket-instruction";
 import type { InsertSpec } from "@/lib/inline-edit/blocks";
-import type { GeneratedBlock } from "@/lib/inline-edit/sanitize";
+import type { GeneratedBlock, SanitizedNode } from "@/lib/inline-edit/sanitize";
 import { sanitizeEditedHtml } from "@/lib/inline-edit/sanitize";
-import type { SanitizedNode } from "@/lib/inline-edit/sanitize";
 
 export type SessionSave = {
   html: string;
@@ -42,7 +42,9 @@ function isChrome(el: HTMLElement): boolean {
 export function serializeEditable(root: HTMLElement): string {
   const kind = root.dataset.editKind === "jsx" ? "jsx" : "text";
   const walk = (node: Node): string => {
-    if (node.nodeType === Node.TEXT_NODE) return escapeHtml(node.textContent ?? "");
+    if (node.nodeType === Node.TEXT_NODE) {
+      return escapeHtml(unescapeLiteralBrackets(node.textContent ?? ""));
+    }
     if (node.nodeType !== Node.ELEMENT_NODE) return "";
     const el = node as HTMLElement;
     if (isChrome(el)) return "";
@@ -94,8 +96,12 @@ export function captureSession(anchor: HTMLElement): string {
     v: 1,
     anchorHtml: currentAnchorHtml(anchor),
     removed: anchor.dataset.inlineRemoved === "1",
-    beforeHtml: sessionNodes(anchor, "before").map((node) => node.outerHTML),
-    afterHtml: sessionNodes(anchor, "after").map((node) => node.outerHTML),
+    beforeHtml: sessionNodes(anchor, "before")
+      .filter((node) => node.dataset.inlineToolbar == null)
+      .map((node) => node.outerHTML),
+    afterHtml: sessionNodes(anchor, "after")
+      .filter((node) => node.dataset.inlineToolbar == null)
+      .map((node) => node.outerHTML),
   };
   return JSON.stringify(snap);
 }
@@ -167,7 +173,14 @@ export function buildSavePayload(anchor: HTMLElement): SessionSave {
 }
 
 function nodeToInserts(node: HTMLElement): InsertSpec[] {
-  if (node.dataset.aiInstruction != null || node.dataset.inlineRemovedNote != null) return [];
+  if (
+    node.dataset.aiInstruction != null ||
+    node.dataset.inlineRemovedNote != null ||
+    node.dataset.inlineToolbar != null ||
+    node.dataset.inlineBoundary != null
+  ) {
+    return [];
+  }
   if (node.dataset.inlineDraft == null) return [];
   const kind = node.dataset.draftKind;
   if (kind === "ul" || kind === "ol") {
@@ -190,6 +203,10 @@ export function stripInstructionNodes(anchor: HTMLElement) {
   anchor.querySelectorAll("[data-ai-instruction], [data-inline-meta], [data-inline-ghost]").forEach((node) => {
     node.remove();
   });
+  const hash = sessionHash(anchor);
+  anchor.parentElement
+    ?.querySelectorAll(`[data-inline-boundary][data-inline-session="${hash}"], [data-inline-toolbar][data-inline-session="${hash}"]`)
+    .forEach((node) => node.remove());
 }
 
 export function markParagraphRemoved(anchor: HTMLElement) {
@@ -242,89 +259,174 @@ export function insertParagraphBelow(anchor: HTMLElement): HTMLElement {
   return wrap;
 }
 
-export function insertInstruction(anchor: HTMLElement): HTMLElement {
+export function ensureToolbarHost(anchor: HTMLElement): HTMLElement {
   const hash = sessionHash(anchor);
+  const previous = anchor.previousElementSibling;
+  if (
+    previous instanceof HTMLElement &&
+    previous.dataset.inlineToolbar === "1" &&
+    previous.dataset.inlineSession === hash
+  ) {
+    return previous;
+  }
+  document.querySelectorAll("[data-inline-toolbar]").forEach((node) => {
+    if (node instanceof HTMLElement && node.dataset.inlineSession !== hash) node.remove();
+  });
+  const host = document.createElement("div");
+  host.dataset.inlineToolbar = "1";
+  host.dataset.inlineMeta = "1";
+  host.dataset.inlineSession = hash;
+  host.dataset.inlineEditUi = "";
+  host.style.cssText =
+    "display:flex;flex-wrap:wrap;align-items:center;gap:4px;max-width:100%;margin:0 0 6px;box-sizing:border-box;";
+  anchor.before(host);
+  return host;
+}
+
+/**
+ * Mark the `[instruction]` around the caret. Other brackets, including those
+ * in code, links, and escaped pairs, stay ordinary text.
+ */
+export function prepareBracketInstruction(
+  anchor: HTMLElement,
+  mode: "generate" | "retry" = "generate",
+): { ok: true; text: string; span: HTMLElement } | { ok: false; error: string } {
+  const marked = markedInstruction(anchor, mode);
+  if (marked) {
+    const raw = marked.textContent ?? "";
+    const wrapped = raw.match(/^\s*\[([\s\S]*)\]\s*$/);
+    const text = (wrapped?.[1] ?? raw).trim();
+    if (!text) return { ok: false, error: "Write the instruction inside [square brackets]." };
+    return { ok: true, text, span: marked };
+  }
+  const eligible = eligibleText(anchor);
+  if (!eligible) {
+    return {
+      ok: false,
+      error: "Type [instruction] in the paragraph, not inside code or a link.",
+    };
+  }
+  const command = bracketCommandAt(eligible.text, eligible.caret);
+  if (!command) {
+    return {
+      ok: false,
+      error: "Type [instruction] in the paragraph, then Generate. A backslash keeps brackets literal.",
+    };
+  }
+  if (!command.instruction) {
+    return { ok: false, error: "Write the instruction inside [square brackets]." };
+  }
+  const start = positionAt(eligible.pieces, command.start);
+  const end = positionAt(eligible.pieces, command.end);
+  if (!start || !end) {
+    return { ok: false, error: "Type [instruction] in the paragraph, then Generate." };
+  }
+  const range = document.createRange();
+  range.setStart(start.node, start.offset);
+  range.setEnd(end.node, end.offset);
+  const span = document.createElement("span");
   instructionCount += 1;
-  const id = `ai-${instructionCount}`;
-  const split = takeAfterCaret(anchor);
-  const block = document.createElement("div");
-  block.dataset.aiInstruction = "1";
-  block.dataset.aiId = id;
-  block.dataset.inlineSession = hash;
-  block.contentEditable = "false";
-  block.className =
-    "my-2 rounded border border-amber-500 bg-amber-50 px-2 py-1.5 font-sans text-sm text-amber-950";
-  block.setAttribute("role", "group");
-  block.setAttribute("aria-label", "AI instruction");
-
-  const label = document.createElement("div");
-  label.dataset.inlineMeta = "1";
-  label.className = "mb-1 text-[10px] font-semibold uppercase tracking-wide text-amber-800";
-  label.textContent = "AI instruction — not saved";
-
-  const field = document.createElement("div");
-  field.dataset.aiInstructionText = "1";
-  field.contentEditable = "true";
-  field.className = "min-h-[1.25em] rounded bg-white px-1 py-0.5 text-neutral-900 outline-none";
-  field.textContent = "Create a list of terms introduced in this section";
-
-  const controls = document.createElement("div");
-  controls.dataset.inlineMeta = "1";
-  controls.className = "mt-1 flex flex-wrap gap-1";
-  controls.append(
-    actionButton("generate", "Generate"),
-    actionButton("retry", "Retry"),
-    actionButton("remove-instruction", "Remove instruction"),
-  );
-  const retry = controls.querySelector<HTMLButtonElement>('[data-ai-action="retry"]');
-  if (retry) retry.hidden = true;
-
-  const error = document.createElement("p");
-  error.dataset.aiError = "1";
-  error.dataset.inlineMeta = "1";
-  error.className = "mt-1 hidden text-[11px] text-red-800";
-  error.setAttribute("role", "status");
-
-  block.append(label, field, controls, error);
-  const firstAfter = sessionNodes(anchor, "after")[0];
-  if (firstAfter) firstAfter.before(block);
-  else anchor.after(block);
-  if (split) block.after(split);
-  field.focus();
-  placeCaretAtEnd(field);
-  return block;
+  span.dataset.aiInstruction = "1";
+  span.dataset.aiId = `ai-${instructionCount}`;
+  span.dataset.inlineSession = sessionHash(anchor);
+  try {
+    range.surroundContents(span);
+  } catch {
+    span.append(range.extractContents());
+    range.insertNode(span);
+  }
+  return { ok: true, text: command.instruction, span };
 }
 
 export function renderGeneratedBlocks(instruction: HTMLElement, blocks: GeneratedBlock[]) {
+  const anchor = instruction.closest<HTMLElement>("[data-src-hash]");
+  if (!anchor) return;
   const id = instruction.dataset.aiId ?? "";
-  const anchor = instructionAnchor(instruction);
-  const hash = anchor ? sessionHash(anchor) : instruction.dataset.inlineSession ?? "";
-  instruction.parentElement
+  const hash = sessionHash(anchor);
+  anchor.parentElement
     ?.querySelectorAll(`[data-ai-for="${CSS.escape(id)}"]`)
     .forEach((node) => node.remove());
-  let cursor: Element = instruction;
+  let cursor: Element = anchor;
+  const trailing = takeNodesAfter(instruction);
   for (const block of blocks) {
-    const draft = block.kind === "p" ? draftParagraph(hash, block.html) : draftList(hash, block);
-    draft.dataset.aiOutput = "1";
-    draft.dataset.aiFor = id;
+    const draft = block.kind === "p" ? generatedParagraph(hash, id, block.html) : generatedList(hash, id, block);
     cursor.after(draft);
     cursor = draft;
   }
-  const retry = instruction.querySelector<HTMLButtonElement>('[data-ai-action="retry"]');
-  const generate = instruction.querySelector<HTMLButtonElement>('[data-ai-action="generate"]');
-  if (retry) retry.hidden = false;
-  if (generate) generate.hidden = true;
+  if (trailing) cursor.after(trailing);
 }
 
-export function setInstructionError(instruction: HTMLElement, message: string) {
-  const error = instruction.querySelector<HTMLElement>("[data-ai-error]");
-  if (!error) return;
-  error.textContent = message;
-  error.classList.toggle("hidden", !message);
+function markedInstruction(anchor: HTMLElement, mode: "generate" | "retry"): HTMLElement | null {
+  const selection = window.getSelection();
+  const node = selection?.anchorNode;
+  const element = node instanceof Element ? node : node?.parentElement;
+  const span = element?.closest<HTMLElement>("[data-ai-instruction]");
+  if (span && anchor.contains(span)) return span;
+  if (mode !== "retry") return null;
+  const marked = anchor.querySelectorAll<HTMLElement>("[data-ai-instruction]");
+  return marked.length > 0 ? marked[marked.length - 1] ?? null : null;
 }
 
-export function instructionText(instruction: HTMLElement): string {
-  return instruction.querySelector("[data-ai-instruction-text]")?.textContent?.trim() ?? "";
+function eligibleText(
+  anchor: HTMLElement,
+): { text: string; caret: number; pieces: { node: Text; start: number }[] } | null {
+  const pieces: { node: Text; start: number }[] = [];
+  let text = "";
+  const walker = document.createTreeWalker(anchor, NodeFilter.SHOW_TEXT);
+  let current = walker.nextNode();
+  while (current) {
+    const textNode = current as Text;
+    const parent = textNode.parentElement;
+    const blocked = parent?.closest("code, a, [data-edit-slot], [data-inline-ghost]");
+    if (!blocked) {
+      pieces.push({ node: textNode, start: text.length });
+      text += textNode.textContent ?? "";
+    }
+    current = walker.nextNode();
+  }
+  const selection = window.getSelection();
+  if (!selection || !selection.isCollapsed || selection.rangeCount === 0) return null;
+  const container = selection.anchorNode;
+  if (!(container instanceof Text) || !anchor.contains(container)) return null;
+  const piece = pieces.find((item) => item.node === container);
+  if (!piece) return null;
+  return { text, caret: piece.start + selection.anchorOffset, pieces };
+}
+
+function positionAt(
+  pieces: { node: Text; start: number }[],
+  index: number,
+): { node: Text; offset: number } | null {
+  for (let cursor = pieces.length - 1; cursor >= 0; cursor -= 1) {
+    const piece = pieces[cursor];
+    if (!piece) continue;
+    const length = piece.node.textContent?.length ?? 0;
+    if (index >= piece.start && index <= piece.start + length) {
+      return { node: piece.node, offset: index - piece.start };
+    }
+  }
+  return null;
+}
+
+/** Move plain text after an instruction into its own paragraph when that does not take a link or code span. */
+function takeNodesAfter(instruction: HTMLElement): HTMLElement | null {
+  const parent = instruction.parentElement;
+  if (!parent) return null;
+  const blocked = [...parent.querySelectorAll("code, a, [data-edit-slot]")].some((node) =>
+    instruction.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_FOLLOWING && parent.contains(node),
+  );
+  if (blocked) return null;
+  const range = document.createRange();
+  range.setStartAfter(instruction);
+  range.setEnd(parent, parent.childNodes.length);
+  if (!range.toString().trim()) return null;
+  const fragment = range.extractContents();
+  const paragraph = document.createElement("p");
+  paragraph.dataset.inlineDraft = "1";
+  paragraph.dataset.draftKind = "p";
+  paragraph.dataset.inlineSession = instruction.dataset.inlineSession ?? "";
+  paragraph.append(fragment);
+  return paragraph;
 }
 
 export function sectionContext(anchor: HTMLElement): { before: string; after: string; section: string } {
@@ -376,59 +478,43 @@ function contextHtml(root: HTMLElement): string {
 
 function draftPlain(node: HTMLElement): string {
   if (node.dataset.draftKind === "p") {
-    return node.querySelector("p")?.innerText ?? "";
+    const paragraph = node.matches("p") ? node : node.querySelector("p");
+    return paragraph?.innerText ?? "";
   }
   return [...node.querySelectorAll("li")].map((item) => item.innerText).join("\n");
 }
 
-function instructionAnchor(instruction: HTMLElement): HTMLElement | null {
-  const hash = instruction.dataset.inlineSession ?? "";
-  let node: Element | null = instruction.previousElementSibling;
-  while (node instanceof HTMLElement) {
-    if (node.dataset.srcHash === hash) return node;
-    if (node.dataset.inlineSession !== hash) break;
-    node = node.previousElementSibling;
-  }
-  node = instruction.nextElementSibling;
-  while (node instanceof HTMLElement) {
-    if (node.dataset.srcHash === hash) return node;
-    if (node.dataset.inlineSession !== hash) break;
-    node = node.nextElementSibling;
-  }
-  return null;
-}
-
-function draftParagraph(hash: string, html: string): HTMLElement {
-  const wrap = document.createElement("div");
-  wrap.dataset.inlineDraft = "1";
-  wrap.dataset.draftKind = "p";
-  wrap.dataset.inlineSession = hash;
-  wrap.className = "my-2 rounded-sm outline outline-2 outline-dashed outline-blue-600";
+function generatedParagraph(hash: string, id: string, html: string): HTMLElement {
   const paragraph = document.createElement("p");
+  markGenerated(paragraph, hash, id, "p");
   paragraph.contentEditable = "true";
   fillInline(paragraph, html);
-  if (!paragraph.textContent?.trim()) paragraph.append(document.createElement("br"));
-  wrap.append(paragraph, removeDraftButton());
-  return wrap;
+  return paragraph;
 }
 
-function draftList(hash: string, block: Extract<GeneratedBlock, { kind: "ul" | "ol" }>): HTMLElement {
-  const wrap = document.createElement("div");
-  wrap.dataset.inlineDraft = "1";
-  wrap.dataset.draftKind = block.kind;
-  wrap.dataset.inlineSession = hash;
-  wrap.className = "my-2 rounded-sm bg-white outline outline-2 outline-dashed outline-blue-600";
+function generatedList(
+  hash: string,
+  id: string,
+  block: Extract<GeneratedBlock, { kind: "ul" | "ol" }>,
+): HTMLElement {
   const list = document.createElement(block.kind);
-  list.className = "list-disc pl-6";
-  if (block.kind === "ol") list.className = "list-decimal pl-6";
+  markGenerated(list, hash, id, block.kind);
   for (const item of block.items) {
     const li = document.createElement("li");
     li.contentEditable = "true";
     fillInline(li, item);
     list.append(li);
   }
-  wrap.append(list, removeDraftButton());
-  return wrap;
+  return list;
+}
+
+function markGenerated(el: HTMLElement, hash: string, id: string, kind: string) {
+  el.dataset.inlineDraft = "1";
+  el.dataset.draftKind = kind;
+  el.dataset.inlineSession = hash;
+  el.dataset.aiOutput = "1";
+  el.dataset.aiFor = id;
+  el.dataset.aiPending = "1";
 }
 
 function removeDraftButton(): HTMLButtonElement {
@@ -439,16 +525,6 @@ function removeDraftButton(): HTMLButtonElement {
   button.className =
     "mt-1 rounded border border-neutral-300 bg-white px-1.5 text-[10px] font-sans text-neutral-800";
   button.textContent = "Remove";
-  return button;
-}
-
-function actionButton(action: string, label: string): HTMLButtonElement {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.dataset.aiAction = action;
-  button.className =
-    "rounded border border-amber-700 bg-white px-1.5 py-0.5 text-[11px] font-sans text-amber-950";
-  button.textContent = label;
   return button;
 }
 
@@ -478,45 +554,6 @@ function appendSanitized(parent: HTMLElement, node: SanitizedNode) {
     for (const child of node.children) appendSanitized(el, child);
   }
   parent.append(el);
-}
-
-function takeAfterCaret(anchor: HTMLElement): HTMLElement | null {
-  if (anchor.querySelector("[data-edit-slot], a, code")) return null;
-  const selection = window.getSelection();
-  if (!selection || !selection.isCollapsed || selection.rangeCount === 0) return null;
-  const range = selection.getRangeAt(0);
-  if (!anchor.contains(range.endContainer)) return null;
-  const after = range.cloneRange();
-  after.selectNodeContents(anchor);
-  after.setStart(range.endContainer, range.endOffset);
-  const before = range.cloneRange();
-  before.selectNodeContents(anchor);
-  before.setEnd(range.endContainer, range.endOffset);
-  const beforeText = before.toString().trim();
-  const afterText = after.toString().trim();
-  if (!beforeText || !afterText) return null;
-  const fragment = after.extractContents();
-  const wrap = document.createElement("div");
-  wrap.dataset.inlineDraft = "1";
-  wrap.dataset.draftKind = "p";
-  wrap.dataset.draftRole = "split";
-  wrap.dataset.inlineSession = sessionHash(anchor);
-  wrap.className = "my-2";
-  const paragraph = document.createElement("p");
-  paragraph.contentEditable = "true";
-  paragraph.append(fragment);
-  wrap.append(paragraph, removeDraftButton());
-  return wrap;
-}
-
-function placeCaretAtEnd(el: HTMLElement) {
-  const selection = window.getSelection();
-  if (!selection) return;
-  const range = document.createRange();
-  range.selectNodeContents(el);
-  range.collapse(false);
-  selection.removeAllRanges();
-  selection.addRange(range);
 }
 
 export function editableHost(anchor: HTMLElement, node: Node | null): HTMLElement | null {
