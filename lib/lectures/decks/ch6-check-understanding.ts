@@ -5,6 +5,11 @@ export const CH6_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#47A248",
+      icon: "check",
+      headline: "Check Your Understanding",
+    },
     bullets: [
       "Chapter 6 · Check Your Understanding",
       "A self-check before Kambaz DB",
@@ -12,7 +17,7 @@ export const CH6_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Introduction to the Chapter 6 Quiz",
+    title: "Testing What You Learned in Chapter 6",
     kind: "content",
     bullets: [
       "The practice quiz draws **10 items** from this chapter",
@@ -23,7 +28,7 @@ export const CH6_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
   },
   {
     id: "topics",
-    title: "What the quiz samples",
+    title: "Topics the Quiz Covers",
     kind: "content",
     bullets: [
       "Local `mongod`, Compass, `kambaz` collections",
@@ -33,7 +38,7 @@ export const CH6_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
   },
   {
     id: "lab-checklist",
-    title: "Lab 6 before you quiz",
+    title: "Finishing Lab 6 Before the Quiz",
     kind: "content",
     bullets: [
       "Connection status, todos CRUD, then the Users screen",
@@ -43,7 +48,7 @@ export const CH6_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
   },
   {
     id: "where",
-    title: "Open the practice quiz",
+    title: "Opening the Practice Quiz",
     kind: "content",
     bullets: [
       "Book: `/book/ch6#sec-6-check` — the Check Your Understanding card",
@@ -63,7 +68,7 @@ export const CH6_CHECK_UNDERSTANDING_SLIDES: LectureSlide[] = [
   },
   {
     id: "next-up",
-    title: "Next: persist Kambaz courses",
+    title: "Next: Kambaz Courses in MongoDB",
     kind: "title",
     bullets: [
       "Same URLs as Chapter 5. Only the source of documents changes",

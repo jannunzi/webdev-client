@@ -5,6 +5,11 @@ export const LOCAL_MONGO_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#47A248",
+      icon: "database",
+      headline: "Local MongoDB",
+    },
     bullets: [
       "Chapter 6 · Local MongoDB",
       "Install, Compass, then kambaz",
@@ -12,29 +17,29 @@ export const LOCAL_MONGO_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing a Local MongoDB",
+    title: "Why Data Needs a Database",
     kind: "content",
     bullets: [
-      "Chapter 5 stored courses and users in process memory",
-      "Restart `nodemon` and Dashboard reseeds from JSON files",
-      "MongoDB keeps **documents** in **collections** — JSON that survives reboot",
-      "This section installs a local instance before any Node code talks to it",
+      "Chapter 5 stored courses and users in server memory",
+      "Restart `nodemon` and every new course or user is gone",
+      "MongoDB is a database that keeps **documents** in **collections** on disk",
+      "This deck installs MongoDB on your laptop before any Node code talks to it",
     ],
   },
   {
     id: "nosql",
-    title: "Documents, not rows",
+    title: "Storing Data as Documents",
     kind: "content",
     bullets: [
-      "SQL tables store primitive columns; documents nest objects and arrays",
-      "No predefined schema — a library added later decides which shapes are valid",
-      "A course can hold modules and lessons without three foreign-key tables",
-      "Same `_id`, `username`, and `role` fields you already mapped in Account",
+      "A document is a JSON object: `{ \"_id\": \"123\", \"username\": \"iron_man\" }`",
+      "A collection groups documents of one kind: `users`, `courses`, `modules`",
+      "SQL tables store flat columns. Documents can nest objects and arrays",
+      "Same `_id`, `username`, and `role` fields you already used in Account",
     ],
   },
   {
     id: "install",
-    title: "Install Community as a service",
+    title: "Installing MongoDB as a Service",
     kind: "content",
     bullets: [
       "Download MongoDB Community Server for your OS",
@@ -45,10 +50,10 @@ export const LOCAL_MONGO_SLIDES: LectureSlide[] = [
   },
   {
     id: "manual",
-    title: "Optional: Homebrew or PATH",
+    title: "Installing MongoDB by Hand",
     kind: "demo",
     bullets: [
-      "The Atlas CLI (Atlas is MongoDB's hosted service) can stand up a local sandbox",
+      "On macOS, Homebrew's Atlas command-line tool can set up a local database",
       "Or unzip, add `bin` to PATH, then `which mongod`",
     ],
     code: `brew install mongodb-atlas
@@ -60,7 +65,7 @@ export PATH="$PATH:/usr/local/mongodb-macos-x86_64-8.0.4/bin"`,
   },
   {
     id: "mongod",
-    title: "mongod listens on 27017",
+    title: "Starting the Database Server",
     kind: "demo",
     bullets: [
       "Skip this if the installer already registered a service",
@@ -76,12 +81,12 @@ mkdir data
   },
   {
     id: "compass",
-    title: "Connect Compass to localhost",
+    title: "Browsing the Database with Compass",
     kind: "demo",
     bullets: [
-      "Compass is the GUI. Spotlight or the Windows search finds it",
-      "New Connection should already show the local URI",
-      "If Connect fails, the service or `mongod` is not listening",
+      "Compass is MongoDB's desktop app for viewing and editing data",
+      "New Connection should already show the local address below",
+      "If Connect fails, the service or `mongod` is not running",
     ],
     code: `mongodb://127.0.0.1:27017`,
     codeLanguage: "text",
@@ -90,7 +95,7 @@ mkdir data
   },
   {
     id: "create-db",
-    title: "Create kambaz and users",
+    title: "Creating a Database and Collection",
     kind: "content",
     bullets: [
       "Click the connection, then Create database",
@@ -101,16 +106,17 @@ mkdir data
   },
   {
     id: "insert-intro",
-    title: "Insert one user document",
+    title: "Inserting a Document by Hand",
     kind: "demo",
     bullets: [
-      "Select `kambaz` → `users`, then ADD DATA → Insert document",
-      "Shape matches `users.json` from Chapter 3 — `_id` is a string",
+      "In Compass, select `kambaz` → `users`, then ADD DATA → Insert document",
+      "Paste the user below. Its shape matches `users.json` from Chapter 3",
+      "`_id` is a string, so it matches the ids the app already uses",
     ],
   },
   {
     id: "insert",
-    title: "Insert one user document (code)",
+    title: "Writing a User Document",
     kind: "demo",
     code: `{
   "_id": "123",
@@ -125,13 +131,13 @@ mkdir data
   },
   {
     id: "import",
-    title: "Import the five JSON files",
+    title: "Importing Collections from JSON",
     kind: "content",
     bullets: [
       "ADD DATA → Import JSON: `users`, `courses`, `modules`, `assignments`, `enrollments`",
-      "Create a collection per file so names match later Mongoose `collection` options",
+      "Create one collection per file, named after the file",
       "Confirm counts. Open one course — `name` and `_id` look like the React database",
-      "Those string ids are why the user schema declares `_id` as `String`",
+      "Those string ids are why the user schema later declares `_id` as `String`",
     ],
   },
   {
@@ -140,17 +146,17 @@ mkdir data
     kind: "content",
     bullets: [
       "Community as a service, or `mongod --dbpath data` on 27017",
-      "Compass URI `mongodb://127.0.0.1:27017`",
+      "Compass address `mongodb://127.0.0.1:27017`",
       "Database `kambaz`, collections imported from Chapter 3 JSON",
     ],
   },
   {
     id: "next-up",
-    title: "Next: program with Mongoose",
+    title: "Next: Programming with Mongoose",
     kind: "title",
     bullets: [
-      "Install the library, connect, then schemas and a DAO",
-      "Connect, env string, UserModel",
+      "Install the library, connect, then schemas and data access",
+      "Connect, `.env` string, UserModel",
     ],
   },
 ];

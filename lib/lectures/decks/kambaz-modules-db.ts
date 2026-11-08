@@ -5,67 +5,76 @@ export const KAMBAZ_MODULES_DB_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#47A248",
+      icon: "database",
+      headline: "Kambaz Modules: One-to-Many",
+    },
     bullets: [
-      "Chapter 6 · Modules 1:N",
+      "Chapter 6 · Modules One-to-Many",
       "One course, many modules",
     ],
   },
   {
     id: "purpose",
-    title: "Implementing Modules in MongoDB",
+    title: "Linking Many Modules to One Course",
     kind: "content",
     bullets: [
-      "UML: `1` on the course end, `*` on the modules end",
-      "Parent / child, or ownership — courses have many modules",
+      "One course has many modules — a **one-to-many** relationship",
+      "Course `RS101` might own Week 1, Week 2, and Week 3",
       "Chapter 5 already stored `course` on each module JSON object",
+      "This deck moves modules into their own MongoDB collection",
     ],
   },
   {
     id: "shapes",
-    title: "Three ways to model 1:N",
+    title: "Three Ways to Store One-to-Many",
     kind: "content",
     bullets: [
-      "Foreign key on the child — `module.course === course._id`",
-      "Array of child ids on the parent — `course.moduleIds`",
-      "Embed children in the parent — a `modules` array, no second collection",
-      "Pick one per project. Do not insert the same module in two places",
+      "Parent id on each child: `{ name: \"Week 1\", course: \"RS101\" }` — **Kambaz uses this**",
+      "Child ids on the parent: `{ _id: \"RS101\", moduleIds: [\"M101\", \"M102\"] }`",
+      "Alternative design: embed a `modules` array in the course, no second collection",
+      "Kambaz keeps a separate `modules` collection. Never store a module in two places",
     ],
   },
   {
     id: "schema",
-    title: "Collection plus a course field",
+    title: "Creating the Module Schema",
     kind: "demo",
     bullets: [
-      "The running server keeps modules in their own collection",
-      "You can also embed modules inside the course document",
-      "`CourseModel` is still what enrollments `ref`",
+      "In a new `Kambaz/Modules/schema.ts` file, create the schema as shown below",
+      "`course` holds the parent course id — the foreign key",
+      "`{ collection: \"modules\" }` names the collection instead of letting Mongoose guess",
     ],
     code: `import mongoose from "mongoose";
-const schema = new mongoose.Schema({
-  _id: String,
-  name: String,
-  description: String,
-  course: String,
-});
+const schema = new mongoose.Schema(
+  {
+    _id: String,
+    name: String,
+    description: String,
+    course: String,
+  },
+  { collection: "modules" },
+);
 export default schema;`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Modules/schema.ts",
-    codeHighlightLines: [6],
+    codeHighlightLines: [8, 10],
   },
   {
     id: "find-intro",
-    title: "Find modules by course id",
+    title: "Finding Modules for a Course",
     kind: "demo",
     bullets: [
-      "Collection: `model.find({ course: courseId })`",
-      "Embed would `findById` the course and return `course.modules`",
+      "In `Kambaz/Modules/dao.ts`, add the finder and its route as shown below",
+      "`model.find({ course: courseId })` matches each module's `course` field",
       "Same nested URL Chapter 5 already used",
     ],
   },
   {
     id: "find",
     links: ["http://localhost:4000/api/courses/RS101/modules"],
-    title: "Find modules by course id (code)",
+    title: "Serving a Course's Modules",
     kind: "demo",
     code: `function findModulesForCourse(courseId) {
   return model.find({ course: courseId });
@@ -83,9 +92,10 @@ app.get("/api/courses/:courseId/modules", findModulesForCourse);`,
   },
   {
     id: "create",
-    title: "Create includes the course id",
+    title: "Creating a Module for a Course",
     kind: "demo",
     bullets: [
+      "In `dao.ts`, add `createModule` as shown below",
       "Collection: uuid + `model.create`, including `course`",
       "Embed: `$push: { modules: newModule }` on the parent course",
     ],
@@ -99,10 +109,11 @@ app.get("/api/courses/:courseId/modules", findModulesForCourse);`,
   },
   {
     id: "delete-update",
-    title: "deleteOne and updateOne $set",
+    title: "Deleting and Updating Modules",
     kind: "demo",
     bullets: [
-      "Client keeps `DELETE /api/modules/:moduleId` — the FK is on the document",
+      "In `dao.ts`, add delete and update as shown below",
+      "Client keeps `DELETE /api/modules/:moduleId` — the course id is on the document",
       "Embed would `$pull` / `course.modules.id(moduleId)` and `save()` the parent",
     ],
     code: `function deleteModule(moduleId) {
@@ -118,7 +129,7 @@ function updateModule(moduleId, moduleUpdates) {
   },
   {
     id: "recap",
-    title: "Modules 1:N recap",
+    title: "Modules recap",
     kind: "content",
     bullets: [
       "`modules` collection + `course` foreign key",
@@ -128,10 +139,10 @@ function updateModule(moduleId, moduleUpdates) {
   },
   {
     id: "next-up",
-    title: "Next: enrollments are M:N",
+    title: "Next: Kambaz Enrollments: Many-to-Many",
     kind: "title",
     bullets: [
-      "A mapping collection turns many-to-many into two 1:N links",
+      "A mapping collection turns many-to-many into two one-to-many links",
       "`ref`, `populate(\"course\")`, then enroll / unenroll",
     ],
   },

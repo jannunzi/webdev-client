@@ -5,35 +5,41 @@ export const KAMBAZ_ENROLLMENTS_DB_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#47A248",
+      icon: "database",
+      headline: "Kambaz Enrollments: Many-to-Many",
+    },
     bullets: [
-      "Chapter 6 · Enrollments M:N",
+      "Chapter 6 · Enrollments Many-to-Many",
       "A mapping collection",
     ],
   },
   {
     id: "purpose",
-    title: "Implementing Enrollments in MongoDB",
+    title: "Linking Users and Courses",
     kind: "content",
     bullets: [
-      "UML asterisks on both ends — keeping two arrays in sync is error-prone",
-      "A failed second write leaves the relationship half-applied",
-      "`enrollments` is a **mapping collection**: `user` + `course` refs",
+      "A user takes many courses, and a course has many users — **many-to-many**",
+      "Course lists on users plus user lists on courses means two writes that can disagree",
+      "A **mapping collection** stores one document per pair: `{ user: \"123\", course: \"RS101\" }`",
       "Users and courses no longer need to know about each other",
     ],
   },
   {
     id: "schema-intro",
-    title: "ref names, not copies",
+    title: "Creating the Enrollment Schema",
     kind: "demo",
     bullets: [
-      "`ref` stores the identifier and tells `populate` which model to load",
+      "In a new `Kambaz/Enrollments/schema.ts` file, create the schema as shown below",
+      "`ref` says which model an id points to: `course` → `CourseModel`",
       "`EnrollmentModel` + `collection: \"enrollments\"`",
       "DAO `_id` of `userId-courseId` keeps the pair unique",
     ],
   },
   {
     id: "schema",
-    title: "ref names, not copies (code)",
+    title: "Referencing Users and Courses",
     kind: "demo",
     code: `import mongoose from "mongoose";
 const enrollmentSchema = new mongoose.Schema({
@@ -56,11 +62,22 @@ export default enrollmentSchema;`,
     codeHighlightLines: [[4, 5], [9, 12], 15],
   },
   {
+    id: "populate-how",
+    title: "How populate Replaces IDs",
+    kind: "content",
+    bullets: [
+      "Stored enrollment: `{ user: \"123\", course: \"RS101\" }`",
+      "`populate(\"course\")` looks up `RS101` in `CourseModel` because of the `ref`",
+      "Result: `{ user: \"123\", course: { _id: \"RS101\", name: \"Rocket Propulsion\" } }`",
+      "One query returns the full courses, not just their ids",
+    ],
+  },
+  {
     id: "populate",
-    title: "populate unwraps the course",
+    title: "Finding a User's Courses",
     kind: "demo",
     bullets: [
-      "`populate(\"course\")` replaces the id with the course document",
+      "In `Kambaz/Enrollments/dao.ts`, add `findCoursesForUser` as shown below",
       "`map` returns the shape Dashboard already expects",
     ],
     code: `async function findCoursesForUser(userId) {
@@ -73,16 +90,17 @@ export default enrollmentSchema;`,
   },
   {
     id: "delete-course-intro",
-    title: "Delete a course, then its joins",
+    title: "Removing Enrollments with a Course",
     kind: "demo",
     bullets: [
+      "In `Courses/routes.ts`, unenroll everyone before deleting, as shown below",
       "`deleteMany` is the many-document cousin of `deleteOne`",
       "Otherwise Dashboard populates a course id that no longer exists",
     ],
   },
   {
     id: "delete-course",
-    title: "Delete a course, then its joins (code)",
+    title: "Deleting a Course and Its Enrollments",
     kind: "demo",
     code: `function unenrollAllUsersFromCourse(courseId) {
   return model.deleteMany({ course: courseId });
@@ -100,16 +118,17 @@ const deleteCourse = async (req, res) => {
   },
   {
     id: "enroll-intro",
-    title: "Enroll / unenroll on your own",
+    title: "Enrolling and Unenrolling Users",
     kind: "demo",
     bullets: [
+      "In `Kambaz/Enrollments/dao.ts`, add both functions on your own",
       "`enrollUserInCourse` inserts `{ user, course, _id: userId-courseId }`",
-      "`uid === \"current\"` reads the session, same as enrolled-courses",
+      "`unenrollUserFromCourse` deletes the matching pair",
     ],
   },
   {
     id: "enroll",
-    title: "Enroll / unenroll on your own (code)",
+    title: "Writing Enroll and Unenroll Functions",
     kind: "demo",
     code: `function enrollUserInCourse(userId, courseId) {
   return model.create({
@@ -120,19 +139,63 @@ const deleteCourse = async (req, res) => {
 }
 function unenrollUserFromCourse(user, course) {
   return model.deleteOne({ user, course });
-}
+}`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Enrollments/dao.ts",
+  },
+  {
+    id: "enroll-routes-intro",
+    title: "Enrolling Through the Users Routes",
+    kind: "demo",
+    bullets: [
+      "In `Users/routes.ts`, add both handlers as shown below",
+      "When `uid` is `\"current\"`, use the session user. No session → 401",
+      "Then call the Enrollments DAO and send the result",
+    ],
+  },
+  {
+    id: "enroll-routes",
+    title: "Writing Enroll and Unenroll Routes",
+    kind: "demo",
+    code: `const enrollUserInCourse = async (req, res) => {
+  let { uid, cid } = req.params;
+  if (uid === "current") {
+    const currentUser = req.session["currentUser"];
+    if (!currentUser) {
+      res.sendStatus(401);
+      return;
+    }
+    uid = currentUser._id;
+  }
+  const status = await enrollmentsDao.enrollUserInCourse(uid, cid);
+  res.send(status);
+};
+const unenrollUserFromCourse = async (req, res) => {
+  let { uid, cid } = req.params;
+  if (uid === "current") {
+    const currentUser = req.session["currentUser"];
+    if (!currentUser) {
+      res.sendStatus(401);
+      return;
+    }
+    uid = currentUser._id;
+  }
+  const status = await enrollmentsDao.unenrollUserFromCourse(uid, cid);
+  res.send(status);
+};
 app.post("/api/users/:uid/courses/:cid", enrollUserInCourse);
 app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Enrollments/dao.ts",
-    codeHighlightLines: [[11, 12]],
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
+    codeHighlightLines: [[3, 10], [27, 28]],
   },
   {
     id: "people",
     links: ["http://localhost:4000/api/courses/RS101/users"],
-    title: "Course People is enrolled users",
+    title: "Listing a Course's Enrolled Users",
     kind: "demo",
     bullets: [
+      "In `Courses/routes.ts`, add the route as shown below",
       "Mirror `findCoursesForUser`: find, `populate(\"user\")`, map",
       "Same PeopleTable — only the fetch changes",
     ],
@@ -149,11 +212,11 @@ app.get("/api/courses/:cid/users", findUsersForCourse);`,
   },
   {
     id: "assignments",
-    title: "Assignments are 1:N too",
+    title: "Storing Assignments One-to-Many",
     kind: "content",
     bullets: [
       "On your own — schema, model, DAO, `await` the Chapter 5 routes",
-      "Own collection + `course` FK, or embed on the course",
+      "Own collection with a `course` field, or embed on the course",
       "`findAssignmentsForCourse`, create, update, delete — mirror modules",
     ],
     embed: "kambaz-styled-assignments",
