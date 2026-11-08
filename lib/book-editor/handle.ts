@@ -57,8 +57,8 @@ export async function handleChapterGet(options: {
   store: ChapterStore | null;
   plan?: StoragePlan;
 }): Promise<Response> {
-  const denied = deny(options.staff);
-  if (denied) return denied;
+  const actor = asStaff(options.staff);
+  if (actor instanceof Response) return actor;
   return Response.json(await readChapter(options.store, options.plan ?? storagePlan()));
 }
 
@@ -66,8 +66,8 @@ export async function handleChapterPut(
   request: Request,
   options: { staff: StaffGate; store: ChapterStore | null; plan?: StoragePlan },
 ): Promise<Response> {
-  const denied = deny(options.staff);
-  if (denied) return denied;
+  const actor = asStaff(options.staff);
+  if (actor instanceof Response) return actor;
   const plan = options.plan ?? storagePlan();
   if (!options.store || !plan.available) {
     return Response.json({ ok: false, error: plan.message, storage: plan }, { status: 503 });
@@ -85,7 +85,7 @@ export async function handleChapterPut(
     id: CHAPTER_ID,
     doc: validated.doc,
     expectedRevision: expected,
-    email: options.staff.email,
+    email: actor.email,
   });
   if (!saved.ok) {
     return Response.json(
@@ -104,8 +104,8 @@ export async function handleRevisionList(options: {
   staff: StaffGate;
   store: ChapterStore | null;
 }): Promise<Response> {
-  const denied = deny(options.staff);
-  if (denied) return denied;
+  const actor = asStaff(options.staff);
+  if (actor instanceof Response) return actor;
   if (!options.store) {
     return Response.json({ ok: true, revisions: [] });
   }
@@ -124,8 +124,8 @@ export async function handleRevisionRestore(
   request: Request,
   options: { staff: StaffGate; store: ChapterStore | null; plan?: StoragePlan },
 ): Promise<Response> {
-  const denied = deny(options.staff);
-  if (denied) return denied;
+  const actor = asStaff(options.staff);
+  if (actor instanceof Response) return actor;
   const plan = options.plan ?? storagePlan();
   if (!options.store || !plan.available) {
     return Response.json({ ok: false, error: plan.message, storage: plan }, { status: 503 });
@@ -146,7 +146,7 @@ export async function handleRevisionRestore(
     id: CHAPTER_ID,
     doc: validated.doc,
     expectedRevision: expected,
-    email: options.staff.email,
+    email: actor.email,
   });
   if (!saved.ok) {
     return Response.json(
@@ -157,11 +157,11 @@ export async function handleRevisionRestore(
   return Response.json(storedPayload(saved.record, plan));
 }
 
-function deny(staff: StaffGate): Response | null {
+function asStaff(staff: StaffGate): { email: string } | Response {
   if ("error" in staff) {
     return Response.json({ ok: false, error: staff.error }, { status: staff.status });
   }
-  return null;
+  return staff;
 }
 
 async function readJson(

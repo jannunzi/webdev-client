@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { extractChapter1 } from "../lib/book-editor/extract.ts";
+import { extractChapter1 } from "../lib/book-editor/extract";
 
 const root = process.cwd();
 const extracted = extractChapter1(root);

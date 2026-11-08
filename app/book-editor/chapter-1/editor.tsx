@@ -21,7 +21,11 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
   const ghostTimer = useRef<number | null>(null);
   const ghostToken = useRef(0);
   const showingGhost = useRef(false);
-  const keys = useRef({ tab: () => false, word: () => false, instruct: () => false });
+  const keys = useRef<{ tab: () => boolean; word: () => boolean; instruct: () => boolean }>({
+    tab: () => false,
+    word: () => false,
+    instruct: () => false,
+  });
   const [status, setStatus] = useState<Status>(initial.persisted ? "saved" : "idle");
   const [message, setMessage] = useState(initial.storage.message);
   const [conflictRevision, setConflictRevision] = useState<number | null>(null);

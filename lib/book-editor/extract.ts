@@ -876,7 +876,9 @@ function toAlias(file: string, root: string): string {
   return `@/${rel}`;
 }
 
-function findFunction(sf: ts.SourceFile, name: string): ts.SignatureDeclaration | null {
+type ChapterFunction = ts.FunctionDeclaration | ts.ArrowFunction | ts.FunctionExpression;
+
+function findFunction(sf: ts.SourceFile, name: string): ChapterFunction | null {
   for (const statement of sf.statements) {
     if (ts.isFunctionDeclaration(statement) && statement.name?.text === name) return statement;
     if (ts.isVariableStatement(statement)) {
@@ -890,7 +892,7 @@ function findFunction(sf: ts.SourceFile, name: string): ts.SignatureDeclaration 
   return null;
 }
 
-function findReturnedJsx(fn: ts.SignatureDeclaration): ts.Node | null {
+function findReturnedJsx(fn: ChapterFunction): ts.Node | null {
   if (!fn.body) return null;
   if (!ts.isBlock(fn.body)) return fn.body;
   let found: ts.Node | null = null;
