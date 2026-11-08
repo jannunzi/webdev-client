@@ -7,14 +7,14 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   FaBold,
   FaCode,
-  FaHeading,
   FaItalic,
   FaLink,
   FaListOl,
   FaListUl,
+  FaUnderline,
 } from "react-icons/fa";
 import { HiSparkles } from "react-icons/hi2";
-import { LuHistory, LuPilcrow } from "react-icons/lu";
+import { LuHistory } from "react-icons/lu";
 import { blocksFromModelText } from "@/lib/inline-edit/generated";
 import { maskPreservedHtml, placeholdersIntact, splitGhostWord } from "@/lib/inline-edit/suggest-diff";
 import { blocksToNodes, parseInline } from "@/lib/book-editor/ai-insert";
@@ -46,6 +46,9 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
   const [suggestError, setSuggestError] = useState("");
   const [suggestion, setSuggestion] = useState<{ from: number; to: number; html: string } | null>(null);
   const [busy, setBusy] = useState<"improve" | "instruct" | null>(null);
+  const [blockStyle, setBlockStyle] = useState("paragraph");
+  const [styleOpen, setStyleOpen] = useState(false);
+  const styleSelection = useRef<{ from: number; to: number } | null>(null);
   const shellRef = useRef<HTMLDivElement>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
 
@@ -55,6 +58,7 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
       extensions: [
         StarterKit.configure({
           heading: false,
+          strike: false,
           link: {
             openOnClick: false,
             autolink: false,
@@ -62,7 +66,7 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
             isAllowedUri: (url) => safeHref(url),
           },
         }),
-        BookHeading.configure({ levels: [1, 2, 3, 4] }),
+        BookHeading.configure({ levels: [1, 2, 3, 4, 5, 6] }),
         BookEmbed,
         BookFigure,
         Unsupported,
@@ -81,8 +85,10 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
         if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
         scheduleSave(current);
         armGhost(current);
+        setBlockStyle(readBlockStyle(current));
       },
       onSelectionUpdate: ({ editor: current }) => {
+        setBlockStyle(readBlockStyle(current));
         if (showingGhost.current) return;
         ghostToken.current += 1;
         const marks = ghostKey.getState(current.state);
@@ -412,6 +418,37 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
     setLinkOpen(false);
   }
 
+  function applyBlockStyle(style: string) {
+    if (!editor) return;
+    const range = styleSelection.current;
+    const headingId = editor.getAttributes("heading").id;
+    const id = typeof headingId === "string" && headingId ? headingId : null;
+    let chain = editor.chain();
+    if (range) chain = chain.setTextSelection(range);
+    chain = chain.focus();
+    const inCode = editor.isActive("codeBlock");
+    if (style === "codeBlock") {
+      if (!inCode) chain = chain.setCodeBlock();
+    } else if (style === "paragraph") {
+      if (inCode) chain = chain.toggleCodeBlock();
+      else chain = chain.setParagraph();
+    } else {
+      const level = Number(style.slice(1));
+      if (level < 1 || level > 6) return;
+      if (inCode) chain = chain.toggleCodeBlock();
+      chain = chain.setHeading({ level: level as 1 | 2 | 3 | 4 | 5 | 6 });
+      if (id) chain = chain.updateAttributes("heading", { id });
+    }
+    chain.run();
+    setStyleOpen(false);
+    setBlockStyle(style);
+  }
+
+  useEffect(() => {
+    if (!styleOpen) return;
+    toolbarRef.current?.querySelector<HTMLButtonElement>("[role='option'][aria-selected='true']")?.focus();
+  }, [styleOpen]);
+
   const label =
     status === "saving" ? "Saving…" : status === "saved" ? "Saved" : status === "conflict" ? "Conflict" : status === "error" ? "Not saved" : "Draft";
 
@@ -430,17 +467,75 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
           <ToolButton label="Italic" title="Italic" iconOnly pressed={editor?.isActive("italic")} disabled={!ready} onClick={() => editor?.chain().focus().toggleItalic().run()}>
             <FaItalic aria-hidden />
           </ToolButton>
+          <ToolButton label="Underline" title="Underline" iconOnly pressed={editor?.isActive("underline")} disabled={!ready} onClick={() => editor?.chain().focus().toggleUnderline().run()}>
+            <FaUnderline aria-hidden />
+          </ToolButton>
           <ToolButton label="Code" title="Inline code" pressed={editor?.isActive("code")} disabled={!ready} onClick={() => editor?.chain().focus().toggleCode().run()}>
             <FaCode aria-hidden />
           </ToolButton>
         </div>
         <div className="book-editor-group" role="group" aria-label="Structure">
-          <ToolButton label="Heading" title="Heading" pressed={editor?.isActive("heading", { level: 2 })} disabled={!ready} onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()}>
-            <FaHeading aria-hidden />
-          </ToolButton>
-          <ToolButton label="Subheading" title="Subheading" pressed={editor?.isActive("heading", { level: 3 })} disabled={!ready} onClick={() => editor?.chain().focus().toggleHeading({ level: 3 }).run()}>
-            <LuPilcrow aria-hidden />
-          </ToolButton>
+          <div className="book-editor-style">
+            <button
+              type="button"
+              className="book-editor-style-button"
+              aria-haspopup="listbox"
+              aria-expanded={styleOpen}
+              aria-label={`Text style, ${styleLabel(blockStyle)}`}
+              disabled={!ready}
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => {
+                if (!editor) return;
+                styleSelection.current = { from: editor.state.selection.from, to: editor.state.selection.to };
+                setStyleOpen((open) => !open);
+              }}
+              onKeyDown={(event) => {
+                if (event.key !== "ArrowDown" && event.key !== "Enter" && event.key !== " ") return;
+                event.preventDefault();
+                if (!editor) return;
+                styleSelection.current = { from: editor.state.selection.from, to: editor.state.selection.to };
+                setStyleOpen(true);
+              }}
+            >
+              {styleLabel(blockStyle)}
+            </button>
+            {styleOpen ? (
+              <ul
+                role="listbox"
+                aria-label="Text style"
+                className="book-editor-style-menu"
+                onKeyDown={(event) => {
+                  const options = [...event.currentTarget.querySelectorAll<HTMLButtonElement>("[role='option']")];
+                  const index = options.indexOf(document.activeElement as HTMLButtonElement);
+                  if (event.key === "ArrowDown") {
+                    event.preventDefault();
+                    options[Math.min(index + 1, options.length - 1)]?.focus();
+                  } else if (event.key === "ArrowUp") {
+                    event.preventDefault();
+                    options[Math.max(index - 1, 0)]?.focus();
+                  } else if (event.key === "Escape") {
+                    event.preventDefault();
+                    setStyleOpen(false);
+                    event.currentTarget.parentElement?.querySelector<HTMLButtonElement>("button")?.focus();
+                  }
+                }}
+              >
+                {styleChoices(blockStyle).map(([value, name]) => (
+                  <li key={value} role="none">
+                    <button
+                      type="button"
+                      role="option"
+                      aria-selected={value === blockStyle}
+                      onMouseDown={(event) => event.preventDefault()}
+                      onClick={() => applyBlockStyle(value)}
+                    >
+                      {name}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
           <ToolButton label="Bullets" title="Bulleted list" iconOnly pressed={editor?.isActive("bulletList")} disabled={!ready} onClick={() => editor?.chain().focus().toggleBulletList().run()}>
             <FaListUl aria-hidden />
           </ToolButton>
@@ -551,7 +646,15 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
         .book-editor-insert-mark { font-weight: 600; }
         .book-editor-status { flex-basis: 100%; margin: 0; color: #525252; font-size: 0.75rem; }
         .book-editor-banner, .book-editor-inventory { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.85rem; color: #404040; }
+        .book-editor-style { position: relative; }
+        .book-editor-style-button { min-width: 7.5rem; border: 1px solid #e5e5e5; background: #fff; border-radius: 0.35rem; padding: 0.28rem 0.55rem; font: inherit; font-size: 0.82rem; text-align: left; color: #171717; }
+        .book-editor-style-button:focus-visible, .book-editor-style-menu button:focus-visible { outline: 2px solid #171717; outline-offset: 2px; }
+        .book-editor-style-button:disabled { opacity: 0.4; }
+        .book-editor-style-menu { position: absolute; z-index: 5; top: calc(100% + 0.25rem); left: 0; margin: 0; padding: 0.25rem; list-style: none; min-width: 9.5rem; background: #fff; border: 1px solid #e5e5e5; border-radius: 0.4rem; box-shadow: 0 8px 20px rgba(23, 23, 23, 0.08); }
+        .book-editor-style-menu button { display: block; width: 100%; text-align: left; border: 0; background: transparent; border-radius: 0.3rem; padding: 0.35rem 0.5rem; font: inherit; font-size: 0.85rem; color: #171717; }
+        .book-editor-style-menu button[aria-selected="true"], .book-editor-style-menu button:hover { background: #f5f5f5; }
         .book-editor-document { outline: none; min-height: 50vh; }
+        .book-editor-document u { text-decoration: underline; }
         @media (max-width: 40rem) {
           .book-editor-group + .book-editor-group { padding-left: 0; border-left: 0; }
           .book-editor-tool-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
@@ -567,6 +670,34 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
       `}</style>
     </div>
   );
+}
+
+function readBlockStyle(current: Editor): string {
+  if (current.isActive("codeBlock")) return "codeBlock";
+  if (current.isActive("heading")) {
+    const level = Number(current.getAttributes("heading").level) || 1;
+    return `h${level}`;
+  }
+  return "paragraph";
+}
+
+function styleLabel(style: string): string {
+  if (style === "codeBlock") return "Code block";
+  if (style === "paragraph") return "Paragraph";
+  if (/^h\d$/.test(style)) return `Heading ${style.slice(1)}`;
+  return "Paragraph";
+}
+
+function styleChoices(current: string): [string, string][] {
+  const choices: [string, string][] = [
+    ["paragraph", "Paragraph"],
+    ["h1", "Heading 1"],
+    ["h2", "Heading 2"],
+    ["h3", "Heading 3"],
+    ["codeBlock", "Code block"],
+  ];
+  if (/^h[4-6]$/.test(current)) choices.splice(4, 0, [current, `Heading ${current.slice(1)}`]);
+  return choices;
 }
 
 function ToolButton({

@@ -141,6 +141,83 @@ describe("chapter editor storage", () => {
     assert.equal(again.persisted, true);
     assert.equal(again.doc.content?.[0]?.content?.[0]?.text, "Kept");
   });
+
+  it("saves bold, italic, and underline together and reloads headings and code", async () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "book-editor-"));
+    const store = createFileStore(dir);
+    const embeds = new Set<string>();
+    const doc: JSONContent = {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [
+            {
+              type: "text",
+              text: "Styled",
+              marks: [{ type: "bold" }, { type: "italic" }, { type: "underline" }],
+            },
+            {
+              type: "text",
+              text: " link",
+              marks: [{ type: "link", attrs: { href: "/book/ch1" } }, { type: "italic" }],
+            },
+            { type: "text", text: " code", marks: [{ type: "code" }] },
+          ],
+        },
+        {
+          type: "heading",
+          attrs: { level: 2, id: "sec-keep" },
+          content: [{ type: "text", text: "Kept anchor" }],
+        },
+        {
+          type: "codeBlock",
+          attrs: { language: "text" },
+          content: [{ type: "text", text: "array[0] = 1" }],
+        },
+      ],
+    };
+    assert.equal(validateChapterDoc(doc, embeds).ok, true);
+    const strike = validateChapterDoc(
+      {
+        type: "doc",
+        content: [{ type: "paragraph", content: [{ type: "text", text: "no", marks: [{ type: "strike" }] }] }],
+      },
+      embeds,
+    );
+    assert.equal(strike.ok, false);
+    if (!strike.ok) assert.match(strike.error, /unsupported mark/);
+    const response = await handleChapterPut(
+      new Request("http://local", { method: "PUT", body: JSON.stringify({ expectedRevision: 0, doc }) }),
+      { staff, store, plan },
+    );
+    assert.equal(response.status, 200);
+    const reloaded = await readChapter(createFileStore(dir), plan);
+    const saved = JSON.stringify(reloaded.doc);
+    assert.match(saved, /underline/);
+    assert.match(saved, /bold/);
+    assert.match(saved, /italic/);
+    assert.match(saved, /sec-keep/);
+    assert.match(saved, /codeBlock/);
+    assert.match(saved, /array\[0\]/);
+    const failed = await handleChapterPut(
+      new Request("http://local", {
+        method: "PUT",
+        body: JSON.stringify({
+          expectedRevision: 1,
+          doc: {
+            type: "doc",
+            content: [{ type: "paragraph", content: [{ type: "text", text: "wipe", marks: [{ type: "strike" }] }] }],
+          },
+        }),
+      }),
+      { staff, store: createFileStore(dir), plan },
+    );
+    assert.equal(failed.status, 400);
+    const kept = await readChapter(createFileStore(dir), plan);
+    assert.match(JSON.stringify(kept.doc), /Styled/);
+    assert.doesNotMatch(JSON.stringify(kept.doc), /wipe/);
+  });
 });
 
 describe("chapter editor content", () => {
@@ -164,6 +241,9 @@ describe("chapter editor content", () => {
     const caret = text.indexOf("Name");
     assert.equal(bracketInstruction(text, caret), "Name the steps.");
     assert.equal(bracketInstruction("array[0] = 1", 7), null);
+    const pancakes = "[make a list of how to make pancakes]";
+    assert.equal(bracketInstruction(pancakes, pancakes.length), "make a list of how to make pancakes");
+    assert.equal(bracketInstruction("See [1] later", 6), null);
     const nodes = blocksToNodes([
       { kind: "p", html: "<p>Hello <strong>world</strong></p>" },
       { kind: "ol", items: ["<strong>Requirements</strong> — name the work.", "<script>alert(1)</script>Design"] },

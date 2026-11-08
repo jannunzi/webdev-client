@@ -18,7 +18,7 @@ const NODE_TYPES = new Set([
   "unsupported",
 ]);
 
-const MARK_TYPES = new Set(["bold", "italic", "code", "link"]);
+const MARK_TYPES = new Set(["bold", "italic", "underline", "code", "link"]);
 
 export function validateChapterDoc(
   value: unknown,
