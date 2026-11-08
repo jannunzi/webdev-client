@@ -7,7 +7,7 @@ import type { JSONContent } from "@tiptap/core";
 import { blocksToNodes, parseInline } from "./ai-insert.ts";
 import { bracketInstruction, bracketSpot } from "./brackets.ts";
 import { extractChapter1 } from "./extract.ts";
-import { handleChapterGet, handleChapterPut, handleRevisionRestore, readChapter } from "./handle.ts";
+import { handleChapterGet, handleChapterPut, handleChapterReset, handleRevisionRestore, readChapter } from "./handle.ts";
 import { chapter1Seed } from "./seed.ts";
 import { validateChapterDoc } from "./schema.ts";
 import { createFileStore, storagePlan } from "./store.ts";
@@ -220,6 +220,34 @@ describe("chapter editor storage", () => {
   });
 });
 
+describe("chapter reset", () => {
+  it("archives the current draft and replaces only that document with the published chapter", async () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "book-editor-reset-"));
+    const store = createFileStore(dir);
+    const oldDoc = paragraph("Keep this backup");
+    await store.save({ id: "chapter-1", doc: oldDoc, expectedRevision: 0, email: staff.email });
+    const response = await handleChapterReset({ staff, store, plan });
+    assert.equal(response.status, 200);
+    const body = await response.json() as { backupRevision: number | null; revision: number; doc: JSONContent };
+    assert.equal(body.backupRevision, 1);
+    assert.equal(body.revision, 2);
+    const backup = await store.revision("chapter-1", 1);
+    assert.equal(backup?.doc.content?.[0]?.content?.[0]?.text, "Keep this backup");
+    const current = await store.get("chapter-1");
+    const json = JSON.stringify(current?.doc);
+    assert.match(json, /"type":"bookSlides"/);
+    assert.match(json, /"type":"bookTable"/);
+    assert.match(json, /"type":"bookPractice"/);
+    assert.match(json, /"id":"intro"/);
+    const code = current?.doc.content?.find((node) => node.type === "codeBlock" && typeof node.content?.[0]?.text === "string" && node.content[0].text.includes("\n"));
+    assert.ok(code);
+    assert.equal(typeof code?.attrs?.language, "string");
+    assert.equal(code?.content?.[0]?.text, code?.content?.[0]?.text?.replace(/^\d+\s/, ""));
+    assert.doesNotMatch(json, /Keep this backup/);
+    assert.equal(fs.existsSync(path.join(process.cwd(), "app/book/ch1/Chapter1.tsx")), true);
+  });
+});
+
 describe("chapter editor content", () => {
   it("imports Chapter 1 prose, a glossary link, and a live demo", () => {
     const seed = chapter1Seed();
@@ -233,7 +261,9 @@ describe("chapter editor content", () => {
     assert.match(json, /\/book\/terms\/internet/);
     assert.match(json, /"id":"intro"/);
     assert.doesNotMatch(json, /<script|data-inline-ghost|data-ai-pending/);
-    assert.ok(seed.inventory.unsupported.some((item) => item.name === "PracticeCard"));
+    assert.ok(json.includes("\"type\":\"bookPractice\""));
+    assert.ok(json.includes("\"type\":\"bookSlides\""));
+    assert.ok(json.includes("\"type\":\"bookTable\""));
   });
 
   it("keeps literal brackets and turns generated html into paragraphs and lists", () => {

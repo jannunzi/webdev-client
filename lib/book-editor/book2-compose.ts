@@ -13,7 +13,23 @@ export type DraftPiece =
  * for practice cards and async demos become the real blocks. Links the draft
  * never stored sit at the matching heading, or in an appendix when that heading is gone.
  */
+const STORED_PUBLISHED_BLOCKS = new Set([
+  "bookSlides",
+  "bookVideos",
+  "bookPractice",
+  "bookTable",
+  "bookAsync",
+]);
+
+function storesPublishedBlocks(node: JSONContent): boolean {
+  if (node.type && STORED_PUBLISHED_BLOCKS.has(node.type)) return true;
+  return (node.content ?? []).some(storesPublishedBlocks);
+}
+
 export function composeDraft(doc: JSONContent, supplements: readonly Supplement[]): DraftPiece[] {
+  if (storesPublishedBlocks(doc)) {
+    return (doc.content ?? []).map((node) => ({ kind: "node" as const, node }));
+  }
   const content = doc.content ?? [];
   const used = new Set<string>();
   const pieces: DraftPiece[] = [];
