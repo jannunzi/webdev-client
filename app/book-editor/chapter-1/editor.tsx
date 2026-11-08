@@ -3,7 +3,18 @@
 import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { DecorationSet } from "@tiptap/pm/view";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  FaBold,
+  FaCode,
+  FaHeading,
+  FaItalic,
+  FaLink,
+  FaListOl,
+  FaListUl,
+} from "react-icons/fa";
+import { HiSparkles } from "react-icons/hi2";
+import { LuHistory, LuPilcrow } from "react-icons/lu";
 import { blocksFromModelText } from "@/lib/inline-edit/generated";
 import { maskPreservedHtml, placeholdersIntact, splitGhostWord } from "@/lib/inline-edit/suggest-diff";
 import { blocksToNodes, parseInline } from "@/lib/book-editor/ai-insert";
@@ -35,6 +46,8 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
   const [suggestError, setSuggestError] = useState("");
   const [suggestion, setSuggestion] = useState<{ from: number; to: number; html: string } | null>(null);
   const [busy, setBusy] = useState<"improve" | "instruct" | null>(null);
+  const shellRef = useRef<HTMLDivElement>(null);
+  const toolbarRef = useRef<HTMLDivElement>(null);
 
   const editor = useEditor(
     {
@@ -333,6 +346,28 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
     };
   }, []);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    const measure = () => {
+      const header = document.querySelector(".course-site-header");
+      const headerHeight = header?.getBoundingClientRect().height ?? 0;
+      const toolbarHeight = toolbarRef.current?.getBoundingClientRect().height ?? 0;
+      shellRef.current?.style.setProperty("--book-editor-stick", `${headerHeight}px`);
+      root.style.scrollPaddingTop = `${headerHeight + toolbarHeight + 12}px`;
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    const header = document.querySelector(".course-site-header");
+    if (header) observer.observe(header);
+    if (toolbarRef.current) observer.observe(toolbarRef.current);
+    window.addEventListener("resize", measure);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+      root.style.scrollPaddingTop = "";
+    };
+  }, [linkOpen, busy, suggestion, status]);
+
   async function overwrite() {
     if (!editor || conflictRevision == null) return;
     revision.current = conflictRevision;
@@ -380,55 +415,92 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
   const label =
     status === "saving" ? "Saving…" : status === "saved" ? "Saved" : status === "conflict" ? "Conflict" : status === "error" ? "Not saved" : "Draft";
 
+  const ready = Boolean(editor);
+
   return (
-    <div className="book-editor">
+    <div className="book-editor" ref={shellRef}>
       <p className="book-editor-banner">
-        Chapter 1 pilot. Autosave stays in the book editor store and does not change the public book at /book/ch1.
+        Chapter 1 is one saved document, not a document per section. Autosave does not change the public book at /book/ch1.
       </p>
-      <div className="book-editor-toolbar" role="toolbar" aria-label="Formatting">
-        <button type="button" aria-pressed={editor?.isActive("bold")} onClick={() => editor?.chain().focus().toggleBold().run()}>Bold</button>
-        <button type="button" aria-pressed={editor?.isActive("italic")} onClick={() => editor?.chain().focus().toggleItalic().run()}>Italic</button>
-        <button type="button" aria-pressed={editor?.isActive("heading", { level: 2 })} onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()}>Heading</button>
-        <button type="button" aria-pressed={editor?.isActive("heading", { level: 3 })} onClick={() => editor?.chain().focus().toggleHeading({ level: 3 }).run()}>Subheading</button>
-        <button type="button" aria-pressed={editor?.isActive("bulletList")} onClick={() => editor?.chain().focus().toggleBulletList().run()}>Bullets</button>
-        <button type="button" aria-pressed={editor?.isActive("orderedList")} onClick={() => editor?.chain().focus().toggleOrderedList().run()}>Numbers</button>
-        <button type="button" aria-pressed={editor?.isActive("code")} onClick={() => editor?.chain().focus().toggleCode().run()}>Code</button>
-        <button type="button" onClick={() => setLinkOpen((open) => !open)}>Link</button>
-        <button type="button" disabled={!editor || editor.state.selection.empty || busy != null} onClick={() => void improve()}>
-          Improve
-        </button>
-        <label>
-          Instruction
-          <input
-            value={instruction}
-            onChange={(event) => setInstruction(event.target.value)}
-            placeholder="Write a paragraph or a list"
-            aria-label="Instruction"
-          />
-        </label>
-        <button type="button" disabled={busy != null} onClick={() => void instruct()}>
-          Insert
-        </button>
-        <button type="button" onClick={() => void restoreLatest()}>Restore previous</button>
-      </div>
-      {linkOpen ? (
-        <form
-          className="book-editor-link"
-          onSubmit={(event) => {
-            event.preventDefault();
-            applyLink();
-          }}
-        >
-          <label>
-            Address
-            <input value={linkHref} onChange={(event) => setLinkHref(event.target.value)} aria-label="Link address" />
+      <div className="book-editor-toolbar" role="toolbar" aria-label="Formatting" ref={toolbarRef}>
+        <div className="book-editor-group" role="group" aria-label="Text style">
+          <ToolButton label="Bold" title="Bold" pressed={editor?.isActive("bold")} disabled={!ready} onClick={() => editor?.chain().focus().toggleBold().run()}>
+            <FaBold aria-hidden />
+          </ToolButton>
+          <ToolButton label="Italic" title="Italic" pressed={editor?.isActive("italic")} disabled={!ready} onClick={() => editor?.chain().focus().toggleItalic().run()}>
+            <FaItalic aria-hidden />
+          </ToolButton>
+          <ToolButton label="Code" title="Inline code" pressed={editor?.isActive("code")} disabled={!ready} onClick={() => editor?.chain().focus().toggleCode().run()}>
+            <FaCode aria-hidden />
+          </ToolButton>
+        </div>
+        <div className="book-editor-group" role="group" aria-label="Structure">
+          <ToolButton label="Heading" title="Heading" pressed={editor?.isActive("heading", { level: 2 })} disabled={!ready} onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()}>
+            <FaHeading aria-hidden />
+          </ToolButton>
+          <ToolButton label="Subheading" title="Subheading" pressed={editor?.isActive("heading", { level: 3 })} disabled={!ready} onClick={() => editor?.chain().focus().toggleHeading({ level: 3 }).run()}>
+            <LuPilcrow aria-hidden />
+          </ToolButton>
+          <ToolButton label="Bullets" title="Bulleted list" pressed={editor?.isActive("bulletList")} disabled={!ready} onClick={() => editor?.chain().focus().toggleBulletList().run()}>
+            <FaListUl aria-hidden />
+          </ToolButton>
+          <ToolButton label="Numbers" title="Numbered list" pressed={editor?.isActive("orderedList")} disabled={!ready} onClick={() => editor?.chain().focus().toggleOrderedList().run()}>
+            <FaListOl aria-hidden />
+          </ToolButton>
+        </div>
+        <div className="book-editor-group" role="group" aria-label="Link">
+          <ToolButton label="Link" title="Add or edit a link" pressed={linkOpen} disabled={!ready} onClick={() => setLinkOpen((open) => !open)}>
+            <FaLink aria-hidden />
+          </ToolButton>
+        </div>
+        <div className="book-editor-group" role="group" aria-label="Assistant">
+          <ToolButton
+            label={busy === "improve" ? "Improving" : "Improve"}
+            title="Suggest edits for the selection"
+            disabled={!ready || editor?.state.selection.empty || busy != null}
+            busy={busy === "improve"}
+            onClick={() => void improve()}
+          >
+            <HiSparkles aria-hidden />
+          </ToolButton>
+          <label className="book-editor-instruction">
+            <span>Instruction</span>
+            <input
+              value={instruction}
+              onChange={(event) => setInstruction(event.target.value)}
+              placeholder="Write a paragraph or a list"
+              aria-label="Instruction"
+              disabled={busy != null}
+            />
           </label>
-          <button type="submit">Apply link</button>
-        </form>
-      ) : null}
-      <p role="status" className="book-editor-status" data-save-status={status}>
-        {label}. {message}
-      </p>
+          <ToolButton label={busy === "instruct" ? "Inserting" : "Insert"} title="Insert the instruction at the caret" disabled={!ready || busy != null} busy={busy === "instruct"} onClick={() => void instruct()}>
+            <span aria-hidden className="book-editor-insert-mark">+</span>
+          </ToolButton>
+        </div>
+        <div className="book-editor-group" role="group" aria-label="History">
+          <ToolButton label="Restore" title="Restore the previous saved revision" disabled={!ready} onClick={() => void restoreLatest()}>
+            <LuHistory aria-hidden />
+          </ToolButton>
+        </div>
+        <p role="status" className="book-editor-status" data-save-status={status}>
+          {label}. {message}
+        </p>
+        {linkOpen ? (
+          <form
+            className="book-editor-link"
+            onSubmit={(event) => {
+              event.preventDefault();
+              applyLink();
+            }}
+          >
+            <label>
+              Address
+              <input value={linkHref} onChange={(event) => setLinkHref(event.target.value)} aria-label="Link address" />
+            </label>
+            <button type="submit">Apply link</button>
+          </form>
+        ) : null}
+      </div>
       {status === "conflict" ? (
         <p>
           <button type="button" onClick={() => void overwrite()}>Keep my draft</button>
@@ -463,13 +535,26 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
         </ul>
       </details>
       <style>{`
-        .book-editor-toolbar, .book-editor-link { display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; margin: 0.5rem 0; font-family: ui-sans-serif, system-ui, sans-serif; }
-        .book-editor-toolbar { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 0.4rem 0; }
-        .book-editor-toolbar button, .book-editor-link button, .book-editor-suggestion button { border: 1px solid #d4d4d4; background: #fff; border-radius: 0.25rem; padding: 0.15rem 0.45rem; font-size: 0.85rem; }
-        .book-editor-toolbar button[aria-pressed="true"] { border-color: #171717; }
-        .book-editor-toolbar input, .book-editor-link input { border: 1px solid #d4d4d4; border-radius: 0.25rem; padding: 0.15rem 0.35rem; min-width: 12rem; }
-        .book-editor-banner, .book-editor-status, .book-editor-inventory { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.85rem; color: #404040; }
+        .book-editor-toolbar, .book-editor-link { display: flex; flex-wrap: wrap; gap: 0.4rem 0.55rem; align-items: center; font-family: ui-sans-serif, system-ui, sans-serif; }
+        .book-editor-toolbar { position: sticky; top: var(--book-editor-stick, 2.75rem); z-index: 40; margin: 0.5rem 0 0.75rem; padding: 0.45rem; border: 1px solid #e5e5e5; border-radius: 0.5rem; background: #fff; box-shadow: 0 1px 2px rgba(23, 23, 23, 0.04); }
+        .book-editor-group { display: flex; flex-wrap: wrap; gap: 0.25rem; align-items: center; }
+        .book-editor-group + .book-editor-group { padding-left: 0.55rem; border-left: 1px solid #e5e5e5; }
+        .book-editor-tool, .book-editor-link button, .book-editor-suggestion button { display: inline-flex; align-items: center; gap: 0.3rem; border: 1px solid transparent; background: transparent; border-radius: 0.35rem; padding: 0.28rem 0.45rem; font-size: 0.82rem; line-height: 1; color: #171717; }
+        .book-editor-tool:hover, .book-editor-link button:hover, .book-editor-suggestion button:hover { background: #f5f5f5; }
+        .book-editor-tool[aria-pressed="true"] { background: #f5f5f5; border-color: #d4d4d4; }
+        .book-editor-tool:focus-visible, .book-editor-toolbar input:focus-visible, .book-editor-link button:focus-visible { outline: 2px solid #171717; outline-offset: 2px; }
+        .book-editor-tool:disabled { opacity: 0.4; }
+        .book-editor-tool[aria-busy="true"] { opacity: 0.7; }
+        .book-editor-instruction { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; color: #525252; }
+        .book-editor-toolbar input, .book-editor-link input { border: 1px solid #e5e5e5; border-radius: 0.35rem; padding: 0.28rem 0.4rem; min-width: 10rem; background: #fff; }
+        .book-editor-insert-mark { font-weight: 600; }
+        .book-editor-status { flex-basis: 100%; margin: 0; color: #525252; font-size: 0.75rem; }
+        .book-editor-banner, .book-editor-inventory { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.85rem; color: #404040; }
         .book-editor-document { outline: none; min-height: 50vh; }
+        @media (max-width: 40rem) {
+          .book-editor-group + .book-editor-group { padding-left: 0; border-left: 0; }
+          .book-editor-tool-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+        }
         .book-editor-document h1, .book-editor-document h2, .book-editor-document h3 { font-family: ui-sans-serif, system-ui, sans-serif; }
         .book-editor-document pre { overflow-x: auto; background: #f5f5f5; padding: 0.75rem; }
         .book-embed, .book-figure { margin: 1rem 0; border: 1px solid #d4d4d4; background: #fff; }
@@ -480,6 +565,40 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
         [data-book-ghost] { color: #595959; }
       `}</style>
     </div>
+  );
+}
+
+function ToolButton({
+  label,
+  title,
+  pressed,
+  disabled,
+  busy,
+  onClick,
+  children,
+}: {
+  label: string;
+  title: string;
+  pressed?: boolean;
+  disabled?: boolean;
+  busy?: boolean;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      className="book-editor-tool"
+      title={title}
+      aria-pressed={pressed}
+      aria-busy={busy || undefined}
+      disabled={disabled}
+      onMouseDown={(event) => event.preventDefault()}
+      onClick={onClick}
+    >
+      {children}
+      <span className="book-editor-tool-label">{label}</span>
+    </button>
   );
 }
 

@@ -5,6 +5,7 @@ import { readChapter } from "@/lib/book-editor/handle";
 import { openChapterStore } from "@/lib/book-editor/resolve";
 import { storagePlan } from "@/lib/book-editor/store";
 import { getStaffAccess } from "@/lib/roster/staff-access";
+import CourseSiteHeader from "@/app/course-info/CourseSiteHeader";
 import ChapterEditor from "./editor";
 import "@/app/book/book.css";
 
@@ -27,11 +28,12 @@ export default async function Chapter1EditorPage() {
   const plan = storagePlan();
   const initial = await readChapter(await openChapterStore(), plan);
   return (
-    <main className="book-shell">
-      <article className="book-content px-6 py-8">
+    <div className="book-shell flex min-h-screen flex-col">
+      <CourseSiteHeader />
+      <main className="book-content px-4 py-6 sm:px-6">
         <ChapterEditor initial={initial} />
-      </article>
-    </main>
+      </main>
+    </div>
   );
 }
 
