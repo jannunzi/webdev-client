@@ -58,13 +58,13 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
   const [status, setStatus] = useState<Status>(initial.persisted ? "saved" : "idle");
   const [message, setMessage] = useState(initial.storage.message);
   const [conflictRevision, setConflictRevision] = useState<number | null>(null);
-  const [instruction, setInstruction] = useState("");
   const [linkHref, setLinkHref] = useState("");
   const [linkOpen, setLinkOpen] = useState(false);
   const [suggestError, setSuggestError] = useState("");
   const [suggestion, setSuggestion] = useState<{ from: number; to: number; html: string } | null>(null);
   const [busy, setBusy] = useState<"improve" | "instruct" | null>(null);
   const [blockStyle, setBlockStyle] = useState("paragraph");
+  const [bracketReady, setBracketReady] = useState(false);
   const [styleOpen, setStyleOpen] = useState(false);
   const styleSelection = useRef<{ from: number; to: number } | null>(null);
   const shellRef = useRef<HTMLDivElement>(null);
@@ -201,6 +201,7 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
     const caret = current.state.selection.from - start;
     const spot = parent.isTextblock ? bracketSpot(parent.textContent ?? "", caret, inCode) : null;
     const readySpot = spot?.state === "ready" ? spot : null;
+    setBracketReady(Boolean(readySpot));
     const isBusy = busyRef.current === "instruct";
     const signature = readySpot ? `${start + readySpot.end + 1}:${isBusy ? "1" : "0"}:${readySpot.prompt}` : "off";
     if (bracketSig.current === signature) return;
@@ -327,10 +328,10 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
     const parent = editor.state.selection.$from.parent;
     const text = parent.isTextblock ? parent.textContent ?? "" : "";
     const caret = editor.state.selection.from - editor.state.selection.$from.start();
-    const fromBrackets = instruction.trim() ? null : bracketInstruction(text, caret);
-    const prompt = explicit || instruction.trim() || fromBrackets || "";
+    const fromBrackets = bracketInstruction(text, caret);
+    const prompt = explicit || fromBrackets || "";
     if (!prompt) {
-      setSuggestError("Write an instruction, or put one in [brackets].");
+      setSuggestError("Put the caret in a [bracket instruction].");
       return true;
     }
     instructLock.current = true;
@@ -380,7 +381,6 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
         .focus()
         .insertContentAt(whole ? { from: $from.before(), to: $from.after() } : $from.after(), nodes)
         .run();
-      setInstruction("");
     } catch {
       setSuggestError("No insertion.");
     } finally {
@@ -549,7 +549,10 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
       <p className="book-editor-banner">
         Chapter 1 is one saved document, not a document per section. Autosave does not change the public book at /book/ch1.
       </p>
-      <div className="book-editor-toolbar" role="toolbar" aria-label="Formatting" ref={toolbarRef}>
+      <p className="book-editor-hint" id="book-editor-bracket-hint">
+        Type [an instruction] in the text, then tap the checkmark. Select words and use Improve to rewrite them.
+      </p>
+      <div className="book-editor-toolbar" role="toolbar" aria-label="Formatting" aria-describedby="book-editor-bracket-hint" ref={toolbarRef}>
         <div className="book-editor-group" role="group" aria-label="Text style">
           <ToolButton label="Bold" title="Bold" iconOnly pressed={editor?.isActive("bold")} disabled={!ready} onClick={() => editor?.chain().focus().toggleBold().run()}>
             <FaBold aria-hidden />
@@ -648,17 +651,7 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
           >
             <HiSparkles aria-hidden />
           </ToolButton>
-          <label className="book-editor-instruction">
-            <span>Instruction</span>
-            <input
-              value={instruction}
-              onChange={(event) => setInstruction(event.target.value)}
-              placeholder="Write a paragraph or a list"
-              aria-label="Instruction"
-              disabled={busy != null}
-            />
-          </label>
-          <ToolButton label={busy === "instruct" ? "Inserting" : "Insert"} title="Insert the instruction at the caret" disabled={!ready || busy != null} busy={busy === "instruct"} onClick={() => void instruct()}>
+          <ToolButton label={busy === "instruct" ? "Inserting" : "Insert"} title="Run the bracket instruction at the caret" disabled={!ready || busy != null || !bracketReady} busy={busy === "instruct"} onClick={() => void instruct()}>
             <span aria-hidden className="book-editor-insert-mark">+</span>
           </ToolButton>
         </div>
@@ -731,8 +724,8 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
         .book-editor-tool:focus-visible, .book-editor-toolbar input:focus-visible, .book-editor-link button:focus-visible { outline: 2px solid #171717; outline-offset: 2px; }
         .book-editor-tool:disabled { opacity: 0.4; }
         .book-editor-tool[aria-busy="true"] { opacity: 0.7; }
-        .book-editor-instruction { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; color: #525252; }
         .book-editor-toolbar input, .book-editor-link input { border: 1px solid #e5e5e5; border-radius: 0.35rem; padding: 0.28rem 0.4rem; min-width: 10rem; background: #fff; }
+        .book-editor-hint { margin: 0.35rem 0 0; font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.8rem; color: #525252; }
         .book-editor-insert-mark { font-weight: 600; }
         .book-editor-status { flex-basis: 100%; margin: 0; color: #525252; font-size: 0.75rem; }
         .book-editor-banner, .book-editor-inventory { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.85rem; color: #404040; }

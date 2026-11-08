@@ -53,6 +53,14 @@ await page.route("**/api/book-editor/chapter-1", async (route) => {
 });
 await page.route("**/api/staff/ai-suggest", async (route) => {
   const body = route.request().postDataJSON();
+  if (body.mode === "improve") {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ ok: true, mode: "improve", text: "Clearer wording" }),
+    });
+    return;
+  }
   if (body.mode === "continue") {
     continueCalls += 1;
     await route.fulfill({
@@ -88,6 +96,19 @@ async function typeCommand() {
 
 await page.goto(`${base}/book-editor/chapter-1/harness`, { waitUntil: "networkidle" });
 await page.getByRole("toolbar", { name: "Formatting" }).waitFor();
+assert((await page.getByRole("textbox", { name: "Instruction" }).count()) === 0, "instruction field is still present");
+await page.getByText("Type [an instruction] in the text, then tap the checkmark.").waitFor();
+await page.screenshot({ path: "/opt/cursor/artifacts/chapter1-no-instruction-field.png" });
+const improveTarget = page.locator(".book-editor-document p").first();
+await improveTarget.click({ position: { x: 12, y: 8 } });
+await page.keyboard.press("Home");
+await page.keyboard.down("Shift");
+await page.keyboard.press("ArrowRight");
+await page.keyboard.press("ArrowRight");
+await page.keyboard.up("Shift");
+await page.getByRole("button", { name: "Improve" }).click();
+await page.getByRole("button", { name: "Accept suggestion" }).click();
+await page.getByText("Clearer wording").waitFor();
 
 for (const width of [1100, 390, 320]) {
   await page.setViewportSize({ width, height: 800 });
