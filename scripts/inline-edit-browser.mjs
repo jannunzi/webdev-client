@@ -185,20 +185,54 @@ try {
     " [Introduce the software development cycle. list the various steps/levels, and prepare the chapter with the purpose of identifying opportunities where AI could help at each step.]",
   );
   await page.getByRole("button", { name: "Generate", exact: true }).click();
-  await page.locator("[data-ai-output] ol li").nth(1).waitFor();
-  const listTag = await page.locator("[data-ai-output] ol").evaluate((node) => node.tagName);
-  assert(listTag === "OL", "steps were not an ordered list");
-  const outputBox = await page.locator("[data-ai-output]").first().boundingBox();
+  await page.locator("ol[data-ai-output] li").nth(1).waitFor();
+  const flow = await page.locator("ol[data-ai-output]").evaluate((node) => {
+    const style = getComputedStyle(node);
+    const paragraph = node.previousElementSibling;
+    return {
+      tag: node.tagName,
+      parentTag: node.parentElement?.tagName ?? "",
+      outline: style.outlineStyle,
+      color: style.color,
+      pending: node.getAttribute("data-ai-pending"),
+      text: node.parentElement?.innerText ?? "",
+      previousTag: paragraph?.tagName ?? "",
+    };
+  });
+  assert(flow.tag === "OL", "steps were not an ordered list");
+  assert(flow.previousTag === "P", "ordered list does not follow the generated paragraph");
+  const sameParent = await page.evaluate(() => {
+    const source = document.querySelector("[data-src-hash]");
+    const list = document.querySelector("ol[data-ai-output]");
+    return source?.parentElement === list?.parentElement;
+  });
+  assert(sameParent, "generated list is not in the paragraph flow");
+  assert(flow.parentTag !== "DIV" || !flow.text.includes("Generated draft"), "draft is wrapped as a card");
+  assert(flow.outline === "none" || flow.outline === "", "generated list has a box");
+  assert(flow.pending === "1", "draft is not marked pending");
+  assert(flow.color === "rgb(89, 89, 89)", "draft gray is missing or inaccessible");
+  assert(!flow.text.includes("Generated draft"), "boundary label is in the page");
+  assert((await page.locator("[data-inline-boundary]").count()) === 0, "boundary element remains");
   const instructionBox = await page.locator("[data-ai-instruction]").boundingBox();
-  const boundaryBox = await page.locator("[data-inline-boundary]").boundingBox();
-  assert(instructionBox && boundaryBox && outputBox, "generation layout is missing");
-  assert(instructionBox.y + instructionBox.height <= boundaryBox.y + 1, "boundary is not below the instruction");
-  assert(boundaryBox.y + boundaryBox.height <= outputBox.y + 1, "draft is not below the boundary");
-  await page.screenshot({ path: `${outDir}/inline-bracket-generate.png` });
+  const outputBox = await page.locator("ol[data-ai-output]").boundingBox();
+  const flowToolbar = await page.locator("[data-inline-toolbar]").boundingBox();
+  const editedBox = await paragraph.boundingBox();
+  assert(instructionBox && outputBox && flowToolbar && editedBox, "generation layout is missing");
+  assert(flowToolbar.y + flowToolbar.height <= editedBox.y + 1, "toolbar overlaps the paragraph");
+  assert(instructionBox.y + instructionBox.height <= outputBox.y + 1, "draft is not below the instruction");
+  await page.screenshot({ path: `${outDir}/inline-draft-flow.png` });
+  await page.setViewportSize({ width: 390, height: 900 });
+  const narrowOut = await page.locator("p[data-ai-output]").boundingBox();
+  const narrowList = await page.locator("ol[data-ai-output]").boundingBox();
+  assert(narrowOut && narrowList, "narrow draft has no box");
+  assert(narrowOut.y + narrowOut.height <= narrowList.y + 1, "narrow list does not follow the paragraph");
+  assert(narrowList.x + narrowList.width <= 391, "draft overflows the narrow viewport");
+  await page.screenshot({ path: `${outDir}/inline-draft-flow-narrow.png` });
+  await page.setViewportSize({ width: 1100, height: 800 });
 
   await page.getByRole("button", { name: "Retry" }).click();
   await page.getByText("edited before save").waitFor();
-  const firstItem = page.locator("[data-ai-output] li").first();
+  const firstItem = page.locator("ol[data-ai-output] li").first();
   await firstItem.click();
   await page.keyboard.press("Control+A");
   await page.keyboard.type("Requirements — a step edited before save.");
@@ -211,7 +245,11 @@ try {
   });
   await page.keyboard.press("Backspace");
   assert((await page.locator("[data-ai-instruction]").count()) === 0, "instruction remained");
-  assert((await page.locator("[data-ai-output] ol li").count()) === 2, "generated list was removed");
+  assert((await page.locator("ol[data-ai-output] li").count()) === 2, "generated list was removed");
+  assert(
+    (await page.locator("ol[data-ai-output]").getAttribute("data-ai-pending")) === null,
+    "editing left the gray draft marker",
+  );
   await page.getByRole("button", { name: "Save edit" }).click();
   await page.getByText("committed").waitFor();
   const saved = saves.at(-1);
@@ -223,6 +261,9 @@ try {
   assert(saved.remove !== true, "paragraph was removed");
   assert(saved.insertsAfter?.some((block) => block.kind === "ol"), "ordered list was not saved");
   assert(savedJson.includes("a step edited before save"), "edited step was not saved");
+  assert(!savedJson.includes("Generated draft"), "boundary text was saved");
+  assert(!savedJson.includes("data-ai-pending"), "draft marker was saved");
+  assert(!savedJson.includes("outline"), "draft box style was saved");
   assert(/href="\/book\/terms\/internet\/?"/.test(saved.html), "glossary link was dropped");
   assert(saved.html.includes("<code>HTML</code>"), "code in the paragraph was dropped");
   assert(

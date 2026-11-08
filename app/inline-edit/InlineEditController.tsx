@@ -678,7 +678,11 @@ function Editor() {
       ghost.remove();
     };
     const onInput = (event: Event) => {
-      if (!hostOf(event.target instanceof Node ? event.target : null)) return;
+      const node = event.target instanceof Node ? event.target : null;
+      const pendingHost = node instanceof Element ? node : node?.parentElement;
+      const pending = pendingHost?.closest<HTMLElement>("[data-ai-pending]");
+      if (pending) pending.removeAttribute("data-ai-pending");
+      if (!hostOf(node)) return;
       if (snapshotTimer.current != null) window.clearTimeout(snapshotTimer.current);
       snapshotTimer.current = window.setTimeout(() => pushSnapshot(editing), 400);
       armGhost();
@@ -965,7 +969,7 @@ function Editor() {
             toolbarHost,
           )
         : null}
-      <style>{`[data-diff-hunk] del{background:#fee2e2;text-decoration:line-through}[data-diff-hunk] mark{background:#d1fae5}[data-inline-ghost]{color:#a3a3a3}[data-inline-removed]{opacity:.55;text-decoration:line-through;outline:2px solid #b91c1c}[data-ai-instruction]{text-decoration:underline dotted #9a3412;text-underline-offset:2px}[data-inline-boundary]{border-top:1px dashed #737373;margin:4px 0;padding-top:2px;font:11px/1.3 sans-serif;color:#404040}`}</style>
+      <style>{`[data-diff-hunk] del{background:#fee2e2;text-decoration:line-through}[data-diff-hunk] mark{background:#d1fae5}[data-inline-ghost]{color:#a3a3a3}[data-inline-removed]{opacity:.55;text-decoration:line-through;outline:2px solid #b91c1c}[data-ai-instruction]{text-decoration:underline dotted #9a3412;text-underline-offset:2px}[data-ai-pending]{color:#595959}`}</style>
     </>
   );
 }

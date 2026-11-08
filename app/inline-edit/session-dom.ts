@@ -346,20 +346,10 @@ export function renderGeneratedBlocks(instruction: HTMLElement, blocks: Generate
   anchor.parentElement
     ?.querySelectorAll(`[data-ai-for="${CSS.escape(id)}"]`)
     .forEach((node) => node.remove());
-  const boundary = document.createElement("div");
-  boundary.dataset.inlineBoundary = "1";
-  boundary.dataset.inlineMeta = "1";
-  boundary.dataset.inlineSession = hash;
-  boundary.dataset.aiFor = id;
-  boundary.textContent = "Generated draft";
   let cursor: Element = anchor;
   const trailing = takeNodesAfter(instruction);
-  cursor.after(boundary);
-  cursor = boundary;
   for (const block of blocks) {
-    const draft = block.kind === "p" ? draftParagraph(hash, block.html) : draftList(hash, block);
-    draft.dataset.aiOutput = "1";
-    draft.dataset.aiFor = id;
+    const draft = block.kind === "p" ? generatedParagraph(hash, id, block.html) : generatedList(hash, id, block);
     cursor.after(draft);
     cursor = draft;
   }
@@ -488,42 +478,43 @@ function contextHtml(root: HTMLElement): string {
 
 function draftPlain(node: HTMLElement): string {
   if (node.dataset.draftKind === "p") {
-    return node.querySelector("p")?.innerText ?? "";
+    const paragraph = node.matches("p") ? node : node.querySelector("p");
+    return paragraph?.innerText ?? "";
   }
   return [...node.querySelectorAll("li")].map((item) => item.innerText).join("\n");
 }
 
-function draftParagraph(hash: string, html: string): HTMLElement {
-  const wrap = document.createElement("div");
-  wrap.dataset.inlineDraft = "1";
-  wrap.dataset.draftKind = "p";
-  wrap.dataset.inlineSession = hash;
-  wrap.className = "my-2 rounded-sm outline outline-2 outline-dashed outline-blue-600";
+function generatedParagraph(hash: string, id: string, html: string): HTMLElement {
   const paragraph = document.createElement("p");
+  markGenerated(paragraph, hash, id, "p");
   paragraph.contentEditable = "true";
   fillInline(paragraph, html);
-  if (!paragraph.textContent?.trim()) paragraph.append(document.createElement("br"));
-  wrap.append(paragraph, removeDraftButton());
-  return wrap;
+  return paragraph;
 }
 
-function draftList(hash: string, block: Extract<GeneratedBlock, { kind: "ul" | "ol" }>): HTMLElement {
-  const wrap = document.createElement("div");
-  wrap.dataset.inlineDraft = "1";
-  wrap.dataset.draftKind = block.kind;
-  wrap.dataset.inlineSession = hash;
-  wrap.className = "my-2 rounded-sm bg-white outline outline-2 outline-dashed outline-blue-600";
+function generatedList(
+  hash: string,
+  id: string,
+  block: Extract<GeneratedBlock, { kind: "ul" | "ol" }>,
+): HTMLElement {
   const list = document.createElement(block.kind);
-  list.className = "list-disc pl-6";
-  if (block.kind === "ol") list.className = "list-decimal pl-6";
+  markGenerated(list, hash, id, block.kind);
   for (const item of block.items) {
     const li = document.createElement("li");
     li.contentEditable = "true";
     fillInline(li, item);
     list.append(li);
   }
-  wrap.append(list, removeDraftButton());
-  return wrap;
+  return list;
+}
+
+function markGenerated(el: HTMLElement, hash: string, id: string, kind: string) {
+  el.dataset.inlineDraft = "1";
+  el.dataset.draftKind = kind;
+  el.dataset.inlineSession = hash;
+  el.dataset.aiOutput = "1";
+  el.dataset.aiFor = id;
+  el.dataset.aiPending = "1";
 }
 
 function removeDraftButton(): HTMLButtonElement {
