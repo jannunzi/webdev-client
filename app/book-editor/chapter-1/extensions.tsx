@@ -45,6 +45,33 @@ export const Ghost = Extension.create({
   },
 });
 
+export const bracketRunKey = new PluginKey<DecorationSet>("bracketRun");
+
+export const BracketRun = Extension.create({
+  name: "bracketRun",
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        key: bracketRunKey,
+        state: {
+          init: () => DecorationSet.empty,
+          apply(tr, old) {
+            const next = tr.getMeta(bracketRunKey) as DecorationSet | undefined;
+            if (next) return next;
+            if (tr.docChanged) return old.map(tr.mapping, tr.doc);
+            return old;
+          },
+        },
+        props: {
+          decorations(state) {
+            return bracketRunKey.getState(state);
+          },
+        },
+      }),
+    ];
+  },
+});
+
 export function ghostDecorations(doc: Parameters<typeof DecorationSet.create>[0], pos: number, text: string) {
   const span = () => {
     const node = document.createElement("span");
@@ -55,6 +82,39 @@ export function ghostDecorations(doc: Parameters<typeof DecorationSet.create>[0]
     return node;
   };
   return DecorationSet.create(doc, [Decoration.widget(pos, span, { side: 1, ignoreSelection: true })]);
+}
+
+export function bracketRunDecorations(
+  doc: Parameters<typeof DecorationSet.create>[0],
+  pos: number,
+  options: { busy: boolean; onRun: () => void },
+) {
+  const button = () => {
+    const node = document.createElement("button");
+    node.type = "button";
+    node.dataset.bracketRun = "1";
+    node.className = "book-bracket-run";
+    node.setAttribute("aria-label", "Run bracket instruction");
+    node.title = "Run this instruction";
+    node.disabled = options.busy;
+    if (options.busy) node.setAttribute("aria-busy", "true");
+    node.textContent = options.busy ? "…" : "✓";
+    const keep = (event: Event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+    node.addEventListener("pointerdown", keep);
+    node.addEventListener("mousedown", keep);
+    node.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (!node.disabled) options.onRun();
+    });
+    return node;
+  };
+  return DecorationSet.create(doc, [
+    Decoration.widget(pos, button, { side: 1, ignoreSelection: true, key: "bracket-run" }),
+  ]);
 }
 
 function EmbedView({ node, selected }: NodeViewProps) {

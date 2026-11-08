@@ -18,10 +18,21 @@ import { LuHistory } from "react-icons/lu";
 import { blocksFromModelText } from "@/lib/inline-edit/generated";
 import { maskPreservedHtml, placeholdersIntact, splitGhostWord } from "@/lib/inline-edit/suggest-diff";
 import { blocksToNodes, parseInline } from "@/lib/book-editor/ai-insert";
-import { bracketInstruction } from "@/lib/book-editor/brackets";
+import { bracketInstruction, bracketSpot } from "@/lib/book-editor/brackets";
 import type { ChapterPayload } from "@/lib/book-editor/handle";
 import { safeHref } from "@/lib/book-editor/schema";
-import { BookEmbed, BookFigure, BookHeading, Ghost, Unsupported, ghostDecorations, ghostKey } from "./extensions";
+import {
+  BookEmbed,
+  BookFigure,
+  BookHeading,
+  BracketRun,
+  Ghost,
+  Unsupported,
+  bracketRunDecorations,
+  bracketRunKey,
+  ghostDecorations,
+  ghostKey,
+} from "./extensions";
 
 type Status = "idle" | "saving" | "saved" | "error" | "conflict";
 
@@ -31,7 +42,14 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
   const timer = useRef<number | null>(null);
   const ghostTimer = useRef<number | null>(null);
   const ghostToken = useRef(0);
+  const ghostAbort = useRef<AbortController | null>(null);
   const showingGhost = useRef(false);
+  const placingBracket = useRef(false);
+  const instructLock = useRef(false);
+  const bracketSig = useRef("");
+  const busyRef = useRef<"improve" | "instruct" | null>(null);
+  const instructRef = useRef<(explicit?: string) => Promise<boolean>>(async () => false);
+  const syncRef = useRef<(current: Editor) => void>(() => {});
   const keys = useRef<{ tab: () => boolean; word: () => boolean; instruct: () => boolean }>({
     tab: () => false,
     word: () => false,
@@ -71,6 +89,7 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
         BookFigure,
         Unsupported,
         Ghost,
+        BracketRun,
       ],
       content: initial.doc,
       editorProps: {
@@ -84,12 +103,14 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
         ghostToken.current += 1;
         if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
         scheduleSave(current);
+        syncRef.current(current);
         armGhost(current);
         setBlockStyle(readBlockStyle(current));
       },
       onSelectionUpdate: ({ editor: current }) => {
         setBlockStyle(readBlockStyle(current));
-        if (showingGhost.current) return;
+        if (showingGhost.current || placingBracket.current) return;
+        syncRef.current(current);
         ghostToken.current += 1;
         const marks = ghostKey.getState(current.state);
         if (marks && marks.find().length) {
@@ -154,8 +175,58 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
     }
   }
 
+  function insideBracket(current: Editor): boolean {
+    if (current.isActive("codeBlock") || current.isActive("bookEmbed") || current.isActive("bookFigure")) return false;
+    const parent = current.state.selection.$from.parent;
+    if (!parent.isTextblock) return false;
+    const caret = current.state.selection.from - current.state.selection.$from.start();
+    return bracketSpot(parent.textContent ?? "", caret, false) != null;
+  }
+
+  function dropGhost(current: Editor) {
+    ghostAbort.current?.abort();
+    ghostToken.current += 1;
+    if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
+    const marks = ghostKey.getState(current.state);
+    if (!marks || marks.find().length === 0) return;
+    showingGhost.current = true;
+    current.view.dispatch(current.state.tr.setMeta(ghostKey, DecorationSet.empty));
+    showingGhost.current = false;
+  }
+
+  function syncBracket(current: Editor) {
+    const inCode = current.isActive("codeBlock");
+    const parent = current.state.selection.$from.parent;
+    const start = current.state.selection.$from.start();
+    const caret = current.state.selection.from - start;
+    const spot = parent.isTextblock ? bracketSpot(parent.textContent ?? "", caret, inCode) : null;
+    const readySpot = spot?.state === "ready" ? spot : null;
+    const isBusy = busyRef.current === "instruct";
+    const signature = readySpot ? `${start + readySpot.end + 1}:${isBusy ? "1" : "0"}:${readySpot.prompt}` : "off";
+    if (bracketSig.current === signature) return;
+    bracketSig.current = signature;
+    const blockFrom = current.state.selection.$from.before();
+    const blockEnd = current.state.selection.$from.end();
+    const decorations = readySpot
+      ? bracketRunDecorations(current.state.doc, Math.min(start + readySpot.end + 1, blockEnd), {
+          busy: isBusy,
+          onRun: () => {
+            editor?.chain().focus().setTextSelection(Math.min(blockFrom + 1, blockEnd)).run();
+            void instructRef.current(readySpot.prompt);
+          },
+        })
+      : DecorationSet.empty;
+    placingBracket.current = true;
+    current.view.dispatch(current.state.tr.setMeta(bracketRunKey, decorations));
+    placingBracket.current = false;
+  }
+
   function armGhost(current: Editor) {
     if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
+    if (insideBracket(current)) {
+      dropGhost(current);
+      return;
+    }
     const plugin = ghostKey.getState(current.state);
     if (plugin && plugin.find().length) return;
     if (!current.state.selection.empty) return;
@@ -167,7 +238,7 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
   }
 
   async function requestGhost(current: Editor, token: number) {
-    if (token !== ghostToken.current || !current.state.selection.empty) return;
+    if (token !== ghostToken.current || !current.state.selection.empty || insideBracket(current)) return;
     const parent = current.state.selection.$from.parent;
     if (!parent.isTextblock) return;
     const start = current.state.selection.$from.start();
@@ -175,13 +246,22 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
     const before = parent.textBetween(0, offset, "\n", "\n");
     const after = parent.textBetween(offset, parent.content.size, "\n", "\n");
     if (!before.trim() && !after.trim()) return;
-    const response = await fetch("/api/staff/ai-suggest", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ mode: "continue", before, after, text: before, maskCount: 0 }),
-    });
+    ghostAbort.current?.abort();
+    const controller = new AbortController();
+    ghostAbort.current = controller;
+    let response: Response;
+    try {
+      response = await fetch("/api/staff/ai-suggest", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        signal: controller.signal,
+        body: JSON.stringify({ mode: "continue", before, after, text: before, maskCount: 0 }),
+      });
+    } catch {
+      return;
+    }
     const data = (await response.json().catch(() => null)) as { text?: string } | null;
-    if (token !== ghostToken.current || !data?.text || !current.state.selection.empty) return;
+    if (token !== ghostToken.current || !data?.text || !current.state.selection.empty || insideBracket(current)) return;
     const pos = current.state.selection.from;
     showingGhost.current = true;
     current.view.dispatch(current.state.tr.setMeta(ghostKey, ghostDecorations(current.state.doc, pos, data.text)));
@@ -242,19 +322,22 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
     setSuggestion(null);
   }
 
-  async function instruct() {
-    if (!editor) return false;
+  async function instruct(explicit?: string) {
+    if (!editor || instructLock.current) return false;
     const parent = editor.state.selection.$from.parent;
     const text = parent.isTextblock ? parent.textContent ?? "" : "";
     const caret = editor.state.selection.from - editor.state.selection.$from.start();
     const fromBrackets = instruction.trim() ? null : bracketInstruction(text, caret);
-    const prompt = instruction.trim() || fromBrackets || "";
+    const prompt = explicit || instruction.trim() || fromBrackets || "";
     if (!prompt) {
       setSuggestError("Write an instruction, or put one in [brackets].");
       return true;
     }
+    instructLock.current = true;
+    busyRef.current = "instruct";
     setBusy("instruct");
     setSuggestError("");
+    bracketSig.current = "";
     try {
       const response = await fetch("/api/staff/ai-suggest", {
         method: "POST",
@@ -301,12 +384,19 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
     } catch {
       setSuggestError("No insertion.");
     } finally {
+      instructLock.current = false;
+      busyRef.current = null;
       setBusy(null);
+      bracketSig.current = "";
+      if (editor) syncRef.current(editor);
     }
     return true;
   }
 
   useEffect(() => {
+    instructRef.current = instruct;
+    syncRef.current = syncBracket;
+    busyRef.current = busy;
     keys.current = {
       tab: () => acceptGhost("all"),
       word: () => acceptGhost("word"),
@@ -655,6 +745,9 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
         .book-editor-style-menu button[aria-selected="true"], .book-editor-style-menu button:hover { background: #f5f5f5; }
         .book-editor-document { outline: none; min-height: 50vh; }
         .book-editor-document u { text-decoration: underline; }
+        .book-bracket-run { display: inline-flex; align-items: center; justify-content: center; min-width: 2.75rem; min-height: 2.75rem; margin: 0 0.2rem; vertical-align: middle; border: 1px solid #171717; border-radius: 999px; background: #171717; color: #fff; font: 1rem/1 ui-sans-serif, system-ui, sans-serif; }
+        .book-bracket-run:focus-visible { outline: 2px solid #171717; outline-offset: 2px; }
+        .book-bracket-run:disabled { opacity: 0.45; }
         @media (max-width: 40rem) {
           .book-editor-group + .book-editor-group { padding-left: 0; border-left: 0; }
           .book-editor-tool-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }

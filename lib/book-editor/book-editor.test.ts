@@ -5,7 +5,7 @@ import path from "node:path";
 import { describe, it } from "node:test";
 import type { JSONContent } from "@tiptap/core";
 import { blocksToNodes, parseInline } from "./ai-insert.ts";
-import { bracketInstruction } from "./brackets.ts";
+import { bracketInstruction, bracketSpot } from "./brackets.ts";
 import { extractChapter1 } from "./extract.ts";
 import { handleChapterGet, handleChapterPut, handleRevisionRestore, readChapter } from "./handle.ts";
 import { chapter1Seed } from "./seed.ts";
@@ -244,6 +244,21 @@ describe("chapter editor content", () => {
     const pancakes = "[make a list of how to make pancakes]";
     assert.equal(bracketInstruction(pancakes, pancakes.length), "make a list of how to make pancakes");
     assert.equal(bracketInstruction("See [1] later", 6), null);
+    const ready = bracketSpot(pancakes, pancakes.length);
+    assert.equal(ready?.state, "ready");
+    if (ready?.state === "ready") assert.equal(ready.prompt, "make a list of how to make pancakes");
+    const unfinished = "Before [make a list of how";
+    assert.equal(bracketSpot(unfinished, unfinished.length)?.state, "composing");
+    assert.equal(bracketInstruction(unfinished, unfinished.length), null);
+    assert.equal(bracketSpot("See [1] later", 6), null);
+    assert.equal(bracketSpot("See [1]", 5), null);
+    assert.equal(bracketSpot("array[0] = 1", 7), null);
+    const escaped = "Keep \\[make a list of how to make pancakes\\]";
+    assert.equal(bracketSpot(escaped, escaped.indexOf("list")), null);
+    assert.equal(bracketSpot(pancakes, pancakes.length, true), null);
+    const wrapped = `Keep ${pancakes} after`;
+    assert.equal(bracketSpot(wrapped, wrapped.indexOf("after")), null);
+    assert.equal(bracketSpot(wrapped, `Keep ${pancakes}`.length)?.state, "ready");
     const nodes = blocksToNodes([
       { kind: "p", html: "<p>Hello <strong>world</strong></p>" },
       { kind: "ol", items: ["<strong>Requirements</strong> — name the work.", "<script>alert(1)</script>Design"] },
