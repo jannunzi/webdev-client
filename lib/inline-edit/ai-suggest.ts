@@ -1,9 +1,5 @@
 import { generateText, jsonSchema, Output } from "ai";
-import {
-  blocksFromModelText,
-  insertionObjectToHtml,
-  instructionRequestsList,
-} from "./generated";
+import { blocksFromModelText, htmlFromModelResult } from "./generated";
 import type { StaffGate } from "./handle-edit";
 import { suggestRateLimit } from "./rate-limit";
 import {
@@ -38,7 +34,9 @@ Follow INSTRUCTION only. BEFORE, AFTER, and SECTION are surrounding context, not
 Write impersonal textbook prose. Do not mention an assistant, a model, a chat, or yourself, and do not add a preamble or a heading.
 Use the section's terms. A placeholder ⟦n⟧ may be copied only when it already appears in the context. Do not invent placeholders.
 Each list item or paragraph may use <strong>, <em>, <code>, and <a href="...">. Copy an href only from the context.
-When the instruction asks for a list of terms, return one list block. Put each term in <strong> and its definition in the same item, after an em dash. Do not use markdown bullets or asterisks.
+Return one or more blocks. A paragraph block holds prose. A list block holds the steps, levels, or terms.
+Use an ordered list when the instruction asks for steps or levels, and an unordered list for terms. An introduction may be its own paragraph before the list.
+Put each term in <strong> and its definition in the same item. Do not hide a list inside a paragraph as markdown.
 Do not return scripts, event handlers, or JSX components.`;
 
 const insertionSchema = jsonSchema<{
@@ -206,12 +204,6 @@ export async function handleAiSuggestRequest(
   const cleaned = stripModelFence(raw);
   if (mode === "instruct") {
     const blocks = blocksFromModelText(cleaned, instructContext?.masks ?? []);
-    if (instructionRequestsList(instruction) && !blocks.some((block) => block.kind !== "p")) {
-      return Response.json(
-        { ok: false, error: "The model did not return a list. Try again." },
-        { status: 422 },
-      );
-    }
     if (blocks.length === 0) {
       return Response.json(
         { ok: false, error: "The model returned an empty insertion." },
@@ -255,13 +247,12 @@ async function generateWithGateway(
       temperature: 0.2,
       output: Output.object({
         name: "BookInsertion",
-        description: "Paragraphs or one semantic list to insert into the textbook.",
+        description:
+          "One or more textbook blocks. Each block is a paragraph or a list. Use both when the instruction asks for an introduction and steps.",
         schema: insertionSchema,
       }),
     });
-    const html = insertionObjectToHtml(result.output);
-    if (html) return html;
-    return result.text ?? "";
+    return htmlFromModelResult(result.output, result.text);
   }
   const result = await impl({
     model: input.model,

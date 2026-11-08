@@ -45,8 +45,11 @@ export function insertionObjectToHtml(value: unknown): string {
     .map((block) => {
       if (!block || typeof block !== "object") return "";
       const record = block as InsertionBlock;
-      if (record.type === "list" && Array.isArray(record.items)) {
-        const tag = record.ordered ? "ol" : "ul";
+      if (
+        (record.type === "list" || record.type === "ul" || record.type === "ol") &&
+        Array.isArray(record.items)
+      ) {
+        const tag = record.ordered === true || record.type === "ol" ? "ol" : "ul";
         const items = record.items.filter(
           (item): item is string => typeof item === "string" && item.trim().length > 0,
         );
@@ -54,12 +57,43 @@ export function insertionObjectToHtml(value: unknown): string {
         return `<${tag}>${items.map((item) => `<li>${item}</li>`).join("")}</${tag}>`;
       }
       if (record.type === "paragraph" && typeof record.text === "string" && record.text.trim()) {
-        return `<p>${record.text}</p>`;
+        return paragraphFieldToHtml(record.text);
       }
       return "";
     })
     .filter(Boolean)
     .join("");
+}
+
+/** Structured output when present, otherwise one JSON object in the text, otherwise the text. */
+export function htmlFromModelResult(output: unknown, text: string | undefined): string {
+  const fromOutput = insertionObjectToHtml(output);
+  if (fromOutput) return fromOutput;
+  const fromText = insertionObjectToHtml(parseJsonObject(text));
+  if (fromText) return fromText;
+  return text ?? "";
+}
+
+function parseJsonObject(text: string | undefined): unknown {
+  if (!text) return null;
+  const trimmed = stripModelFence(text).trim();
+  if (!trimmed.startsWith("{")) return null;
+  try {
+    return JSON.parse(trimmed) as unknown;
+  } catch {
+    return null;
+  }
+}
+
+function paragraphFieldToHtml(text: string): string {
+  if (!/<\s*(?:p|ul|ol|li)\b/i.test(text) && hasMarkdownList(text)) {
+    return markdownToHtml(text);
+  }
+  return `<p>${text}</p>`;
+}
+
+function hasMarkdownList(text: string): boolean {
+  return /(?:^|\n)\s*(?:[-*]|\d+[.)])\s+\S/.test(text);
 }
 
 function stripUnsafe(text: string): string {
