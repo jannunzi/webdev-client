@@ -3,6 +3,7 @@
 import { useUser } from "@clerk/nextjs";
 import { HiSparkles } from "react-icons/hi2";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   createHistory,
   discardUntil,
@@ -28,16 +29,15 @@ import {
   captureSession,
   clearSessionNodes,
   editableHost,
-  insertInstruction,
+  ensureToolbarHost,
   insertParagraphBelow,
-  instructionText,
   markParagraphRemoved,
   paragraphEditable,
+  prepareBracketInstruction,
   renderGeneratedBlocks,
   restoreSession,
   sectionContext,
   serializeEditable,
-  setInstructionError,
   stripInstructionNodes,
 } from "./session-dom";
 
@@ -292,8 +292,7 @@ function StaffGatedEditor() {
 function Editor() {
   const [hover, setHover] = useState<HTMLElement | null>(null);
   const [editing, setEditing] = useState<HTMLElement | null>(null);
-  const [box, setBox] = useState<DOMRect | null>(null);
-  const [badgeBox, setBadgeBox] = useState<DOMRect | null>(null);
+  const [toolbarHost, setToolbarHost] = useState<HTMLElement | null>(null);
   const [save, setSave] = useState<SaveState | null>(null);
   const [reviewing, setReviewing] = useState(false);
   const [suggesting, setSuggesting] = useState(false);
@@ -307,8 +306,8 @@ function Editor() {
   const ghostTimer = useRef<number | null>(null);
   const snapshotTimer = useRef<number | null>(null);
   const continueAbort = useRef<AbortController | null>(null);
-  const instructionRunner = useRef<(block: HTMLElement, anchor: HTMLElement) => void>(() => {});
-  const pencilEl = editing ?? hover;
+  const instructAbort = useRef<AbortController | null>(null);
+  const generateRef = useRef<(anchor: HTMLElement) => void>(() => {});
 
   const pushSnapshot = useCallback((el: HTMLElement) => {
     const html = captureSession(el);
@@ -321,6 +320,7 @@ function Editor() {
     if (!history) return;
     removeGhost(el);
     restoreSession(el, history.present);
+    setToolbarHost(ensureToolbarHost(el));
     const stillReviewing = Boolean(el.querySelector("[data-diff-hunk]"));
     setReviewing(stillReviewing);
     el.style.outline = el.dataset.inlineRemoved === "1" ? "2px solid #b91c1c" : "2px solid #2563eb";
@@ -359,6 +359,7 @@ function Editor() {
   const cancel = useCallback((el: HTMLElement) => {
     const original = originals.current.get(el);
     continueAbort.current?.abort();
+    instructAbort.current?.abort();
     if (ghostTimer.current != null) window.clearTimeout(ghostTimer.current);
     if (snapshotTimer.current != null) window.clearTimeout(snapshotTimer.current);
     release(el);
@@ -374,6 +375,7 @@ function Editor() {
     setSuggestError("");
     setEditing(null);
     setSave(null);
+    setToolbarHost(null);
   }, [release]);
 
   function begin(el: HTMLElement) {
@@ -390,7 +392,19 @@ function Editor() {
     setEditing(el);
     setHover(el);
     setSave(null);
+    setToolbarHost(ensureToolbarHost(el));
     el.focus();
+  }
+
+  function generateFromBrackets(anchor: HTMLElement, mode: "generate" | "retry" = "generate") {
+    removeGhost(anchor);
+    const prepared = prepareBracketInstruction(anchor, mode);
+    if (!prepared.ok) {
+      setSuggestError(prepared.error);
+      return;
+    }
+    setSuggestError("");
+    void runInstruction(anchor, prepared.text, prepared.span);
   }
 
   async function requestSuggestion(el: HTMLElement, mode: "improve" | "continue") {
@@ -508,19 +522,14 @@ function Editor() {
     el.focus();
   }
 
-  async function runInstruction(block: HTMLElement, anchor: HTMLElement) {
-    const instruction = instructionText(block);
-    if (!instruction) {
-      setInstructionError(block, "Write an instruction in the instruction block.");
-      return;
-    }
+  async function runInstruction(anchor: HTMLElement, instruction: string, marker: HTMLElement) {
     const context = sectionContext(anchor);
     const controller = new AbortController();
     continueAbort.current?.abort();
-    continueAbort.current = controller;
+    instructAbort.current?.abort();
+    instructAbort.current = controller;
     setSuggesting(true);
     setSuggestError("");
-    setInstructionError(block, "");
     try {
       const response = await fetch("/api/staff/ai-suggest", {
         method: "POST",
@@ -541,23 +550,21 @@ function Editor() {
       } | null;
       if (controller.signal.aborted) return;
       if (!response.ok || !data?.ok || !data.blocks?.length) {
-        setInstructionError(block, data?.error || "No insertion.");
-        const retry = block.querySelector<HTMLButtonElement>('[data-ai-action="retry"]');
-        if (retry) retry.hidden = false;
+        setSuggestError(data?.error || "No insertion.");
         return;
       }
-      renderGeneratedBlocks(block, data.blocks);
+      renderGeneratedBlocks(marker, data.blocks);
       pushSnapshot(anchor);
     } catch (error) {
       if (error instanceof DOMException && error.name === "AbortError") return;
-      setInstructionError(block, "No insertion.");
+      setSuggestError("No insertion.");
     } finally {
       setSuggesting(false);
     }
   }
 
   useEffect(() => {
-    instructionRunner.current = runInstruction;
+    generateRef.current = generateFromBrackets;
   });
 
   async function commit(el: HTMLElement, payload?: SavePayload) {
@@ -629,26 +636,17 @@ function Editor() {
       const target = event.target;
       if (!(target instanceof Element)) return;
       if (target.closest("[data-inline-edit-ui]")) return;
-      setHover(target.closest<HTMLElement>("[data-src-hash][data-src-file]"));
+      const next = target.closest<HTMLElement>("[data-src-hash][data-src-file]");
+      setHover(next);
+      if (next) setToolbarHost(ensureToolbarHost(next));
+      else {
+        document.querySelectorAll("[data-inline-toolbar]").forEach((node) => node.remove());
+        setToolbarHost(null);
+      }
     };
     document.addEventListener("mouseover", onOver);
     return () => document.removeEventListener("mouseover", onOver);
   }, [editing]);
-
-  useEffect(() => {
-    const update = () => {
-      setBox(pencilEl ? pencilEl.getBoundingClientRect() : null);
-      const saved = save?.el;
-      setBadgeBox(saved?.isConnected ? saved.getBoundingClientRect() : null);
-    };
-    update();
-    window.addEventListener("scroll", update, true);
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update, true);
-      window.removeEventListener("resize", update);
-    };
-  }, [pencilEl, save]);
 
   useEffect(() => {
     if (!editing || reviewing) return;
@@ -766,19 +764,10 @@ function Editor() {
         cancel(editing);
         return;
       }
-      if (
-        (event.key === "Backspace" || event.key === "Delete") &&
-        event.target instanceof Element
-      ) {
-        const field = event.target.closest("[data-ai-instruction-text]");
-        const block = field?.closest("[data-ai-instruction]");
-        if (field && block instanceof HTMLElement && !field.textContent?.trim()) {
-          event.preventDefault();
-          pushSnapshot(editing);
-          block.remove();
-          pushSnapshot(editing);
-          return;
-        }
+      if (mod && event.key === "Enter" && paragraphEditable(editing)) {
+        event.preventDefault();
+        generateRef.current(editing);
+        return;
       }
       if (event.key === "Enter") {
         event.preventDefault();
@@ -793,23 +782,6 @@ function Editor() {
     const onClick = (event: MouseEvent) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
-      const ai = target.closest("[data-ai-action]");
-      if (ai instanceof HTMLElement && ai.closest("[data-inline-session]")?.getAttribute("data-inline-session") === editing.dataset.srcHash) {
-        event.preventDefault();
-        const block = ai.closest("[data-ai-instruction]");
-        const action = ai.dataset.aiAction;
-        if (!(block instanceof HTMLElement)) return;
-        if (action === "remove-instruction") {
-          pushSnapshot(editing);
-          block.remove();
-          pushSnapshot(editing);
-          return;
-        }
-        if (action === "generate" || action === "retry") {
-          instructionRunner.current(block, editing);
-        }
-        return;
-      }
       const draftRemove = target.closest("[data-draft-action='remove']");
       if (
         draftRemove instanceof HTMLElement &&
@@ -843,161 +815,157 @@ function Editor() {
 
   const checking = Boolean(editing);
   const paragraphRemoved = Boolean(editing?.dataset.inlineRemoved) && sessionVersion >= 0;
-  const showPencil = Boolean(pencilEl && box && box.width > 0 && box.height > 0);
+  const target = editing ?? hover;
+  const buttonClass =
+    "h-6 rounded-full border border-neutral-300 bg-white px-2 text-[11px] font-sans text-neutral-800 shadow-sm hover:border-neutral-800 disabled:opacity-40";
   return (
     <>
-      {showPencil && box ? (
-        <div
-          data-inline-edit-ui=""
-          className="pointer-events-none fixed z-40 flex max-w-[16rem] flex-wrap items-start gap-1"
-          style={{
-            top: Math.max(8, box.top),
-            left: Math.min(Math.max(8, box.right + 8), Math.max(8, window.innerWidth - 220)),
-          }}
-        >
-          {checking && editing && paragraphEditable(editing) ? (
+      {toolbarHost && target
+        ? createPortal(
             <>
+              {checking && editing && paragraphEditable(editing) ? (
+                <>
+                  <button
+                    type="button"
+                    className={buttonClass}
+                    aria-label="Generate"
+                    title="Generate from the [instruction] at the caret. Ctrl or Cmd Enter does this too."
+                    disabled={suggesting || reviewing || paragraphRemoved || save?.phase === "saving"}
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => generateFromBrackets(editing)}
+                  >
+                    Generate
+                  </button>
+                  <button
+                    type="button"
+                    className={buttonClass}
+                    aria-label="Retry"
+                    title="Generate again from the [instruction] at the caret."
+                    disabled={suggesting || reviewing || paragraphRemoved || save?.phase === "saving"}
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => generateFromBrackets(editing, "retry")}
+                  >
+                    Retry
+                  </button>
+                  <button
+                    type="button"
+                    className={buttonClass}
+                    aria-label="Insert paragraph below"
+                    title="Insert a paragraph below this one"
+                    disabled={suggesting || reviewing || paragraphRemoved || save?.phase === "saving"}
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => {
+                      pushSnapshot(editing);
+                      insertParagraphBelow(editing);
+                      pushSnapshot(editing);
+                      setSessionVersion((version) => version + 1);
+                    }}
+                  >
+                    + Paragraph
+                  </button>
+                  <button
+                    type="button"
+                    className={buttonClass}
+                    aria-label="Remove paragraph"
+                    title="Remove this paragraph. Undo or Esc restores it before save."
+                    disabled={suggesting || reviewing || paragraphRemoved || save?.phase === "saving"}
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => {
+                      pushSnapshot(editing);
+                      markParagraphRemoved(editing);
+                      pushSnapshot(editing);
+                      setSessionVersion((version) => version + 1);
+                    }}
+                  >
+                    Remove
+                  </button>
+                </>
+              ) : null}
+              {checking && editing ? (
+                <button
+                  type="button"
+                  className="flex h-6 w-6 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-800 shadow-sm hover:border-neutral-800 disabled:opacity-40"
+                  aria-label="Improve writing"
+                  title="Suggest wording fixes"
+                  disabled={suggesting || reviewing || save?.phase === "saving"}
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={() => void requestSuggestion(editing, "improve")}
+                >
+                  <HiSparkles aria-hidden className="text-sm" />
+                </button>
+              ) : null}
               <button
                 type="button"
-                className="pointer-events-auto h-6 rounded-full border border-amber-600 bg-amber-50 px-2 text-[11px] font-sans text-amber-950 shadow-sm hover:border-amber-800 disabled:opacity-40"
-                aria-label="Insert AI instruction"
-                title="Insert an AI instruction here. The instruction is not saved."
-                disabled={suggesting || reviewing || paragraphRemoved || save?.phase === "saving"}
+                className="flex h-6 w-6 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-800 shadow-sm hover:border-neutral-800 disabled:opacity-40"
+                aria-label={checking ? "Save edit" : "Edit text"}
+                title={
+                  checking
+                    ? "Save edit"
+                    : "Edit this text. Esc cancels. Ctrl or Cmd Z undoes. Ctrl or Cmd B is bold, I is italic."
+                }
+                disabled={save?.phase === "saving" || reviewing || suggesting}
                 onMouseDown={(event) => event.preventDefault()}
                 onClick={() => {
-                  pushSnapshot(editing);
-                  insertInstruction(editing);
-                  pushSnapshot(editing);
-                  setSessionVersion((version) => version + 1);
+                  if (editing) {
+                    removeGhost(editing);
+                    void commit(editing);
+                    return;
+                  }
+                  begin(target);
                 }}
               >
-                AI
+                {checking ? <CheckIcon /> : <PencilIcon />}
               </button>
-              <button
-                type="button"
-                className="pointer-events-auto h-6 rounded-full border border-neutral-300 bg-white px-2 text-[11px] font-sans text-neutral-800 shadow-sm hover:border-neutral-800 disabled:opacity-40"
-                aria-label="Insert paragraph below"
-                title="Insert a paragraph below this one"
-                disabled={suggesting || reviewing || paragraphRemoved || save?.phase === "saving"}
-                onMouseDown={(event) => event.preventDefault()}
-                onClick={() => {
-                  pushSnapshot(editing);
-                  insertParagraphBelow(editing);
-                  pushSnapshot(editing);
-                  setSessionVersion((version) => version + 1);
-                }}
-              >
-                + Paragraph
-              </button>
-              <button
-                type="button"
-                className="pointer-events-auto h-6 rounded-full border border-neutral-300 bg-white px-2 text-[11px] font-sans text-neutral-800 shadow-sm hover:border-neutral-800 disabled:opacity-40"
-                aria-label="Remove paragraph"
-                title="Remove this paragraph. Undo or Esc restores it before save."
-                disabled={suggesting || reviewing || paragraphRemoved || save?.phase === "saving"}
-                onMouseDown={(event) => event.preventDefault()}
-                onClick={() => {
-                  pushSnapshot(editing);
-                  markParagraphRemoved(editing);
-                  pushSnapshot(editing);
-                  setSessionVersion((version) => version + 1);
-                }}
-              >
-                Remove
-              </button>
-            </>
-          ) : null}
-          {checking ? (
-            <button
-              type="button"
-              className="pointer-events-auto flex h-6 w-6 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-800 shadow-sm hover:border-neutral-800 disabled:opacity-40"
-              aria-label="Improve writing"
-              title="Suggest wording fixes"
-              disabled={suggesting || reviewing || save?.phase === "saving"}
-              onMouseDown={(event) => event.preventDefault()}
-              onClick={() => {
-                if (editing) void requestSuggestion(editing, "improve");
-              }}
-            >
-              <HiSparkles aria-hidden className="text-sm" />
-            </button>
-          ) : null}
-          <button
-            type="button"
-            className="pointer-events-auto flex h-6 w-6 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-800 shadow-sm hover:border-neutral-800 disabled:opacity-40"
-            aria-label={checking ? "Save edit" : "Edit text"}
-            title={
-              checking
-                ? "Save edit"
-                : "Edit this text. Esc cancels. Ctrl or Cmd Z undoes. Ctrl or Cmd B is bold, I is italic."
-            }
-            disabled={save?.phase === "saving" || reviewing || suggesting}
-            onMouseDown={(event) => event.preventDefault()}
-            onClick={() => {
-              if (!pencilEl) return;
-              if (editing) {
-                removeGhost(editing);
-                void commit(editing);
-                return;
-              }
-              begin(pencilEl);
-            }}
-          >
-            {checking ? <CheckIcon /> : <PencilIcon />}
-          </button>
-          {reviewing && editing ? (
-            <span className="pointer-events-auto flex gap-1">
-              <button
-                type="button"
-                className="rounded border border-neutral-300 bg-white px-1.5 text-[10px] font-sans text-neutral-800"
-                onMouseDown={(event) => event.preventDefault()}
-                onClick={() => acceptAll(editing)}
-              >
-                Accept all
-              </button>
-              <button
-                type="button"
-                className="rounded border border-neutral-300 bg-white px-1.5 text-[10px] font-sans text-neutral-800"
-                onMouseDown={(event) => event.preventDefault()}
-                onClick={() => rejectAll(editing)}
-              >
-                Reject all
-              </button>
-            </span>
-          ) : null}
-        </div>
-      ) : null}
-      <style>{`[data-diff-hunk] del{background:#fee2e2;text-decoration:line-through}[data-diff-hunk] mark{background:#d1fae5}[data-inline-ghost]{color:#a3a3a3}[data-inline-removed]{opacity:.55;text-decoration:line-through;outline-color:#b91c1c}[data-ai-instruction]{box-shadow:inset 4px 0 0 #d97706}`}</style>
-      {suggestError && box ? (
-        <div
-          data-inline-edit-ui=""
-          role="status"
-          className="pointer-events-auto fixed z-40 max-w-56 rounded border border-red-200 bg-white px-1.5 py-0.5 font-sans text-[11px] text-red-800 shadow-sm"
-          style={{ top: Math.max(8, box.bottom + 4), left: Math.max(8, box.left) }}
-        >
-          {suggestError}
-        </div>
-      ) : null}
-      {save && badgeBox ? (
-        <div
-          data-inline-edit-ui=""
-          role="status"
-          className="pointer-events-auto fixed z-40 max-w-56 rounded border border-neutral-300 bg-white px-1.5 py-0.5 font-sans text-[11px] leading-snug text-neutral-800 shadow-sm"
-          style={{ top: Math.max(8, badgeBox.bottom + 4), left: Math.max(8, badgeBox.left) }}
-        >
-          {save.message}
-          {save.phase === "error" ? (
-            <button
-              type="button"
-              className="ml-1 underline"
-              onMouseDown={(event) => event.preventDefault()}
-              onClick={() => void commit(save.el, save.payload)}
-            >
-              Retry
-            </button>
-          ) : null}
-        </div>
-      ) : null}
+              {reviewing && editing ? (
+                <span className="flex gap-1">
+                  <button
+                    type="button"
+                    className={buttonClass}
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => acceptAll(editing)}
+                  >
+                    Accept all
+                  </button>
+                  <button
+                    type="button"
+                    className={buttonClass}
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => rejectAll(editing)}
+                  >
+                    Reject all
+                  </button>
+                </span>
+              ) : null}
+              {checking && editing && paragraphEditable(editing) ? (
+                <p className="m-0 basis-full text-[11px] leading-snug text-neutral-600">
+                  Type [instruction] in the paragraph, then Generate. Ctrl+Enter generates. Other brackets are saved as typed. \[ keeps a bracket literal.
+                </p>
+              ) : null}
+              {suggestError ? (
+                <p role="status" className="m-0 basis-full text-[11px] leading-snug text-red-800">
+                  {suggestError}
+                </p>
+              ) : null}
+              {save ? (
+                <p role="status" className="m-0 basis-full text-[11px] leading-snug text-neutral-800">
+                  {save.message}
+                  {save.phase === "error" ? (
+                    <button
+                      type="button"
+                      className="ml-1 underline"
+                      onMouseDown={(event) => event.preventDefault()}
+                      onClick={() => void commit(save.el, save.payload)}
+                    >
+                      Retry save
+                    </button>
+                  ) : null}
+                </p>
+              ) : null}
+            </>,
+            toolbarHost,
+          )
+        : null}
+      <style>{`[data-diff-hunk] del{background:#fee2e2;text-decoration:line-through}[data-diff-hunk] mark{background:#d1fae5}[data-inline-ghost]{color:#a3a3a3}[data-inline-removed]{opacity:.55;text-decoration:line-through;outline:2px solid #b91c1c}[data-ai-instruction]{text-decoration:underline dotted #9a3412;text-underline-offset:2px}[data-inline-boundary]{border-top:1px dashed #737373;margin:4px 0;padding-top:2px;font:11px/1.3 sans-serif;color:#404040}`}</style>
     </>
   );
 }
