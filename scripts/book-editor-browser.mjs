@@ -53,6 +53,21 @@ await page.route("**/api/book-editor/chapter-1", async (route) => {
 });
 await page.route("**/api/staff/ai-suggest", async (route) => {
   const body = route.request().postDataJSON();
+  if (String(body.instruction ?? "").includes("pancakes")) {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        ok: true,
+        mode: "instruct",
+        blocks: [
+          { kind: "p", html: "<p>Pancakes start with a batter.</p>" },
+          { kind: "ul", items: ["Mix the batter.", "Heat the pan."] },
+        ],
+      }),
+    });
+    return;
+  }
   if (body.mode === "continue") {
     await route.fulfill({
       status: 200,
@@ -93,10 +108,13 @@ for (const name of ["Bold", "Italic", "Bullets", "Numbers"]) {
   assert(item?.hidden, `${name} word is still visible`);
   assert(item.title, `${name} tooltip is missing`);
 }
-for (const name of ["Code", "Heading", "Link", "Restore"]) {
+for (const name of ["Code", "Link", "Restore"]) {
   const item = iconLabels.find((entry) => entry.name === name);
   assert(item && !item.hidden, `${name} label was removed`);
 }
+const underline = iconLabels.find((entry) => entry.name === "Underline");
+assert(underline?.hidden, "Underline word is still visible");
+assert(underline?.title === "Underline", "Underline tooltip is missing");
 await page.screenshot({ path: "/opt/cursor/artifacts/chapter1-toolbar-icons.png" });
 await page.getByRole("link", { name: "Internet" }).first().waitFor();
 const embed = page.locator("[data-book-embed='HeadingTags']");
@@ -180,5 +198,51 @@ assert(
   "toolbar overlaps the heading",
 );
 await page.screenshot({ path: "/opt/cursor/artifacts/chapter1-toolbar-narrow.png" });
+
+await page.setViewportSize({ width: 1100, height: 800 });
+await page.evaluate(() => window.scrollTo(0, 0));
+const prose = page.locator(".book-editor-document p").first();
+await prose.click({ position: { x: 12, y: 8 } });
+await page.keyboard.press("Home");
+await page.keyboard.down("Shift");
+await page.keyboard.press("ArrowRight");
+await page.keyboard.press("ArrowRight");
+await page.keyboard.up("Shift");
+await page.getByRole("button", { name: "Underline" }).click();
+await page.locator(".book-editor-document u").first().waitFor();
+let underlined = "";
+for (let attempt = 0; attempt < 25; attempt += 1) {
+  underlined = fs.readFileSync(`${dir}/chapter-1.json`, "utf8");
+  if (underlined.includes('"type":"underline"')) break;
+  await page.waitForTimeout(200);
+}
+assert(underlined.includes('"type":"underline"'), "underline was not saved");
+assert(underlined.includes("bold"), "existing bold marks were dropped");
+await page.reload({ waitUntil: "networkidle" });
+await page.locator(".book-editor-document u").first().waitFor();
+const anchor = await page.locator("#intro").count();
+assert(anchor === 1, "chapter anchor was lost");
+
+await page.getByRole("button", { name: /Text style/ }).click();
+await page.getByRole("option", { name: "Heading 2" }).click();
+const firstTag = await page.locator(".book-editor-document").evaluate((node) => {
+  const editor = node.querySelector(".ProseMirror") ?? node;
+  return editor.firstElementChild?.tagName ?? "";
+});
+assert(firstTag === "H2" || firstTag === "H1", `style dropdown did not change the block (${firstTag})`);
+await page.screenshot({ path: "/opt/cursor/artifacts/chapter1-style-dropdown.png" });
+
+await page.locator(".ProseMirror").click();
+await page.keyboard.press("Control+End");
+await page.keyboard.press("Enter");
+await page.keyboard.type("[make a list of how to make pancakes]");
+await page.keyboard.press("Control+Enter");
+await page.getByText("Mix the batter.").waitFor({ timeout: 8000 });
+await page.getByText("Heat the pan.").waitFor();
+await page.screenshot({ path: "/opt/cursor/artifacts/chapter1-bracket-list.png" });
+
+await page.setViewportSize({ width: 390, height: 800 });
+await page.evaluate(() => window.scrollTo(0, 0));
+await page.screenshot({ path: "/opt/cursor/artifacts/chapter1-style-narrow.png" });
 await browser.close();
 console.log("browser checks passed");
