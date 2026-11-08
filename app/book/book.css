@@ -210,6 +210,8 @@ code.quiz-prompt-code {
   margin: 0;
   overflow-x: auto;
   background: #0d1117 !important;
+  /* Shiki sets its own token colors. Plain text must not inherit the page's near-black. */
+  color: #e6edf3;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.8125rem;
   line-height: 1.6;
@@ -225,6 +227,27 @@ code.quiz-prompt-code {
 
 .book-code-block-body code {
   display: grid;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: transparent;
+}
+
+/* Saved editor code has no syntax tokens. Keep it dark-on-light instead of the Shiki plate. */
+.book-plain-code pre {
+  margin: 0;
+  overflow-x: auto;
+  background: #f6f8fa;
+  color: #1a1a1a;
+  padding: 0.75rem 1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.book-plain-code code {
+  color: inherit;
+  background: transparent;
   font-family: inherit;
   font-size: inherit;
 }

@@ -36,8 +36,22 @@ import {
 
 type Status = "idle" | "saving" | "saved" | "error" | "conflict";
 
-export default function ChapterEditor({ initial }: { initial: ChapterPayload }) {
+export default function ChapterEditor({
+  initial,
+  manualSave = false,
+  onDirtyChange,
+}: {
+  initial: ChapterPayload;
+  /** Book2 edits save only from the Save button. The standalone editor still autosaves. */
+  manualSave?: boolean;
+  onDirtyChange?: (dirty: boolean) => void;
+}) {
   const revision = useRef(initial.revision);
+  const manualSaveRef = useRef(manualSave);
+  manualSaveRef.current = manualSave;
+  const onDirtyChangeRef = useRef(onDirtyChange);
+  onDirtyChangeRef.current = onDirtyChange;
+  const [dirty, setDirty] = useState(false);
   const savedJson = useRef(JSON.stringify(initial.doc));
   const timer = useRef<number | null>(null);
   const ghostTimer = useRef<number | null>(null);
@@ -69,6 +83,7 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
   const styleSelection = useRef<{ from: number; to: number } | null>(null);
   const shellRef = useRef<HTMLDivElement>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
+  const scheduleSaveRef = useRef<(current: Editor) => void>(() => {});
 
   const editor = useEditor(
     {
@@ -123,14 +138,25 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
   );
 
   function scheduleSave(current: Editor) {
+    scheduleSaveRef.current(current);
+  }
+  scheduleSaveRef.current = (current: Editor) => {
     const json = JSON.stringify(current.getJSON());
-    if (json === savedJson.current) return;
+    const nextDirty = json !== savedJson.current;
+    setDirty(nextDirty);
+    onDirtyChangeRef.current?.(nextDirty);
+    if (!nextDirty) {
+      if (timer.current != null) window.clearTimeout(timer.current);
+      setStatus(initial.persisted ? "saved" : "idle");
+      return;
+    }
     setStatus("idle");
     if (timer.current != null) window.clearTimeout(timer.current);
+    if (manualSaveRef.current) return;
     timer.current = window.setTimeout(() => {
       void save(current, revision.current);
     }, 800);
-  }
+  };
 
   async function save(current: Editor, expected: number) {
     const doc = current.getJSON();
@@ -167,6 +193,8 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
         scheduleSave(current);
         return;
       }
+      setDirty(false);
+      onDirtyChangeRef.current?.(false);
       setStatus("saved");
       setMessage(initial.storage.message);
     } catch {
@@ -540,14 +568,26 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
   }, [styleOpen]);
 
   const label =
-    status === "saving" ? "Saving…" : status === "saved" ? "Saved" : status === "conflict" ? "Conflict" : status === "error" ? "Not saved" : "Draft";
+    status === "saving"
+      ? "Saving…"
+      : status === "saved"
+        ? "Saved"
+        : status === "conflict"
+          ? "Conflict"
+          : status === "error"
+            ? "Not saved"
+            : manualSave && dirty
+              ? "Unsaved"
+              : "Draft";
 
   const ready = Boolean(editor);
 
   return (
     <div className="book-editor" ref={shellRef}>
       <p className="book-editor-banner">
-        Chapter 1 is one saved document, not a document per section. Autosave does not change the public book at /book/ch1.
+        {manualSave
+          ? "Chapter 1 is one saved document. Save stores it. Done does not keep unsaved edits. The public book at /book/ch1 is unchanged."
+          : "Chapter 1 is one saved document, not a document per section. Autosave does not change the public book at /book/ch1."}
       </p>
       <p className="book-editor-hint" id="book-editor-bracket-hint">
         Type [an instruction] in the text, then tap the checkmark. Select words and use Improve to rewrite them.
@@ -655,6 +695,21 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
             <span aria-hidden className="book-editor-insert-mark">+</span>
           </ToolButton>
         </div>
+        {manualSave ? (
+          <div className="book-editor-group" role="group" aria-label="Save">
+            <button
+              type="button"
+              className="book-editor-save"
+              disabled={!ready || !dirty || status === "saving"}
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => {
+                if (editor) void save(editor, revision.current);
+              }}
+            >
+              Save
+            </button>
+          </div>
+        ) : null}
         <div className="book-editor-group" role="group" aria-label="History">
           <ToolButton label="Restore" title="Restore the previous saved revision" disabled={!ready} onClick={() => void restoreLatest()}>
             <LuHistory aria-hidden />
@@ -717,7 +772,9 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
         .book-editor-toolbar { position: sticky; top: var(--book-editor-stick, 2.75rem); z-index: 40; margin: 0.5rem 0 0.75rem; padding: 0.45rem; border: 1px solid #e5e5e5; border-radius: 0.5rem; background: #fff; box-shadow: 0 1px 2px rgba(23, 23, 23, 0.04); }
         .book-editor-group { display: flex; flex-wrap: wrap; gap: 0.25rem; align-items: center; }
         .book-editor-group + .book-editor-group { padding-left: 0.55rem; border-left: 1px solid #e5e5e5; }
-        .book-editor-tool, .book-editor-link button, .book-editor-suggestion button { position: relative; display: inline-flex; align-items: center; gap: 0.3rem; border: 1px solid transparent; background: transparent; border-radius: 0.35rem; padding: 0.28rem 0.45rem; font-size: 0.82rem; line-height: 1; color: #171717; }
+        .book-editor-tool, .book-editor-link button, .book-editor-suggestion button, .book-editor-save { position: relative; display: inline-flex; align-items: center; gap: 0.3rem; border: 1px solid transparent; background: transparent; border-radius: 0.35rem; padding: 0.28rem 0.45rem; font-size: 0.82rem; line-height: 1; color: #171717; }
+        .book-editor-save { border-color: #171717; background: #171717; color: #fff; font-weight: 600; padding: 0.4rem 0.7rem; }
+        .book-editor-save:disabled { opacity: 0.45; }
         .book-editor-tool-label-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
         .book-editor-tool:hover, .book-editor-link button:hover, .book-editor-suggestion button:hover { background: #f5f5f5; }
         .book-editor-tool[aria-pressed="true"] { background: #f5f5f5; border-color: #d4d4d4; }
@@ -746,7 +803,9 @@ export default function ChapterEditor({ initial }: { initial: ChapterPayload }) 
           .book-editor-tool-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
         }
         .book-editor-document h1, .book-editor-document h2, .book-editor-document h3 { font-family: ui-sans-serif, system-ui, sans-serif; }
-        .book-editor-document pre { overflow-x: auto; background: #f5f5f5; padding: 0.75rem; }
+        .book-editor-document pre { overflow-x: auto; background: #f6f8fa; color: #1a1a1a; padding: 0.75rem; }
+        .book-editor-document pre code { color: inherit; background: transparent; }
+        .book-editor-document :not(pre) > code { color: #9f1239; background: #f3f4f6; }
         .book-embed, .book-figure { margin: 1rem 0; border: 1px solid #d4d4d4; background: #fff; }
         .book-embed.is-selected, .book-figure.is-selected { outline: 1px solid #525252; }
         .book-embed-label, .book-figure figcaption { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.8rem; background: #f5f5f5; margin: 0; padding: 0.35rem 0.6rem; }
