@@ -285,6 +285,10 @@ describe("book2 boundaries", () => {
     const editor = readFileSync(join(root, "app/book-editor/chapter-1/editor.tsx"), "utf8");
     assert.match(editor, /if \(manualSaveRef\.current\) return/);
     assert.match(editor, /className="book-editor-save"/);
+    const editBar = readFileSync(join(root, "app/book2/chapter1-edit.tsx"), "utf8");
+    assert.match(editBar, /book2-edit-bar/);
+    assert.match(editBar, /aria-label="Edit Chapter 1"/);
+    assert.match(editBar, /ml-auto/);
     assert.doesNotMatch(page, /\.save\(/);
     const fixture = readFileSync(join(root, "app/book2-fixture/page.tsx"), "utf8");
     assert.match(fixture, /book2FixtureEnabled/);

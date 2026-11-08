@@ -22,10 +22,15 @@ export const metadata = {
  * Local screenshot of the draft-plus-published-blocks reader.
  * Production always 404s. This page does not read or write a saved chapter.
  */
-export default function Book2FixturePage() {
+export default async function Book2FixturePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ doc?: string }>;
+}) {
   if (!book2FixtureEnabled()) notFound();
-  const supplements = fixtureSupplements(chapter1Supplements());
-  const doc = fixtureDoc(supplements);
+  const { doc: which } = await searchParams;
+  const supplements = which === "seed" ? chapter1Supplements() : fixtureSupplements(chapter1Supplements());
+  const doc = which === "seed" ? chapter1Seed().doc : fixtureDoc(supplements);
   return (
     <div className="book-shell flex min-h-screen flex-col">
       <CourseSiteHeader />
@@ -39,7 +44,7 @@ export default function Book2FixturePage() {
                 data-book-source="fixture"
                 className="rounded border border-amber-400 bg-amber-50 px-3 py-2 font-sans text-sm text-amber-950"
               >
-                Fixture. Not a signed-in session and not the saved chapter. The blocks below are a sample of the published Chapter 1 source placed around made-up draft text.
+                Fixture. Not a signed-in session and not a production save. doc=seed uses the checked-in Chapter 1 import only. Nothing is written.
               </p>
               <Book2Chapter1
                 initial={{
