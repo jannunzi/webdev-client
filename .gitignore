@@ -52,3 +52,6 @@ next-env.d.ts
 
 # Clerk account provisioning output (student emails; never commit)
 /provision-results.json
+
+# Local chapter-editor autosave. Production uses MongoDB.
+/.data/
