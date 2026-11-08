@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
+import { rewriteBookPath, type BookBase } from "@/lib/book-editor/book2-path";
 import { describeLastPosition } from "./TOC";
 import {
   getLastPositionServerSnapshot,
@@ -9,13 +10,20 @@ import {
   subscribeLastPosition,
 } from "./bookStorage";
 
-export default function ResumeReading() {
+export default function ResumeReading({ base = "/book" }: { base?: BookBase }) {
   const last = useSyncExternalStore(
     subscribeLastPosition,
     getLastPositionSnapshot,
     getLastPositionServerSnapshot,
   );
-  const resume = describeLastPosition(last);
+  const position =
+    base === "/book2" && last
+      ? { ...last, pathname: last.pathname.replace(/^\/book2(?=\/|$)/, "/book") }
+      : last;
+  const described = describeLastPosition(position);
+  const resume = described
+    ? { ...described, href: rewriteBookPath(described.href, base) }
+    : null;
 
   if (!resume) return null;
 

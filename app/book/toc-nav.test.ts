@@ -9,8 +9,10 @@ const layout = readFileSync(join(process.cwd(), "app/book/layout.tsx"), "utf8");
 
 describe("book TOC is book-only", () => {
   it("keeps chapter navigation, practice, and a syllabus exit hatch", () => {
-    assert.match(toc, /href="\/book"/);
-    assert.match(toc, /href="\/book\/practice"/);
+    assert.match(toc, /href: "\/book\/ch1"/);
+    assert.match(toc, /"\/book2" \? "\/book2" : "\/book"/);
+    assert.match(toc, /"\/book2\/practice" : "\/book\/practice"/);
+    assert.match(toc, /base = "\/book"/);
     assert.match(toc, /href="\/syllabus"/);
     assert.match(toc, /Exit book/);
     assert.match(toc, /Previous chapter/);

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { rewriteBookPath, type BookBase } from "@/lib/book-editor/book2-path";
 import {
   PRACTICE_QUIZZES,
   practicePath,
@@ -30,7 +31,7 @@ function groupByChapter(quizzes: PracticeQuiz[]) {
   return groups;
 }
 
-export default function PracticeIndexPage() {
+export function PracticeIndex({ linkBase = "/book" }: { linkBase?: BookBase }) {
   const groups = groupByChapter(PRACTICE_QUIZZES);
 
   return (
@@ -50,13 +51,13 @@ export default function PracticeIndexPage() {
         history stays in this browser.
       </p>
       <p>
-        <Link href="/book">Back to the book</Link>
+        <Link href={linkBase}>Back to the book</Link>
       </p>
 
       {groups.map((group) => (
         <section key={group.chapterHref} className="mt-8">
           <h2 className="mb-3 border-b border-neutral-300 pb-2 font-sans text-xl font-semibold">
-            <Link href={group.chapterHref}>{group.chapterLabel}</Link>
+            <Link href={rewriteBookPath(group.chapterHref, linkBase)}>{group.chapterLabel}</Link>
           </h2>
           <ul className="m-0 list-none space-y-3 p-0">
             {group.items.map((quiz) => (
@@ -69,7 +70,7 @@ export default function PracticeIndexPage() {
                 </h3>
                 <p className="mb-3 mt-0 font-sans text-sm text-neutral-700">
                   From{" "}
-                  <Link href={`${quiz.chapterHref}#${quiz.sectionId}`}>
+                  <Link href={`${rewriteBookPath(quiz.chapterHref, linkBase)}#${quiz.sectionId}`}>
                     {quiz.sectionLabel}
                   </Link>
                   {" — "}
@@ -88,4 +89,8 @@ export default function PracticeIndexPage() {
       ))}
     </article>
   );
+}
+
+export default function PracticeIndexPage() {
+  return <PracticeIndex />;
 }
