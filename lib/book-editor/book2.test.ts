@@ -220,8 +220,8 @@ describe("book2 route boundaries", () => {
     const publicLayout = readFileSync(join(root, "app/book/layout.tsx"), "utf8");
     const nav = readFileSync(join(root, "app/course-info/CourseSiteNav.tsx"), "utf8");
     const body = page.slice(page.indexOf("export default async function"));
-    assert.ok(body.indexOf("canSeeBook2") < body.indexOf("loadSavedChapter1"));
-    assert.ok(body.indexOf("if (!allowed) return null") < body.indexOf("loadSavedChapter1"));
+    assert.ok(body.indexOf("if (!allowed) return null") < body.indexOf("readChapter"));
+    assert.match(page, /Book2Chapter1/);
     assert.match(layout, /getStaffAccess/);
     assert.match(layout, /base="\/book2"/);
     assert.doesNotMatch(layout, /InlineEditMount/);

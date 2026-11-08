@@ -5,6 +5,7 @@ import BookAffiliateBanner from "@/app/book/components/BookAffiliateBanner";
 import BookTOC from "@/app/book/TOC";
 import { AccountProvider } from "@/lib/account/AccountContext";
 import { getStaffAccess } from "@/lib/roster/staff-access";
+import Book2Links from "./book2-links";
 import Book2Gate from "./gate";
 import "@/app/book/book.css";
 
@@ -31,7 +32,9 @@ export default async function Book2Layout({ children }: { children: ReactNode })
         <div className="flex min-h-0 flex-1">
           <BookTOC base="/book2" />
           <main className="min-w-0 w-full flex-1 overflow-x-auto py-6">
-            <div className="page-content px-4 sm:px-6">{children}</div>
+            <div className="page-content px-4 sm:px-6">
+              <Book2Links>{children}</Book2Links>
+            </div>
           </main>
         </div>
         <BookAffiliateBanner />

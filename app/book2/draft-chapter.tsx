@@ -16,7 +16,7 @@ export default function DraftChapter({ doc }: { doc: JSONContent }) {
   );
 }
 
-function DraftNode({ node }: { node: JSONContent }) {
+export function DraftNode({ node }: { node: JSONContent }) {
   switch (node.type) {
     case "paragraph":
       return <p>{inline(node.content)}</p>;
@@ -84,12 +84,10 @@ function DraftCode({ node }: { node: JSONContent }) {
   const language = typeof node.attrs?.language === "string" ? node.attrs.language : "text";
   const text = (node.content ?? []).map((child) => child.text ?? "").join("");
   return (
-    <div className="book-code-block book-code-block-plain my-4">
-      <div className="book-code-block-body">
-        <pre>
-          <code data-language={language}>{text}</code>
-        </pre>
-      </div>
+    <div className="book-plain-code my-4">
+      <pre>
+        <code data-language={language}>{text}</code>
+      </pre>
     </div>
   );
 }

@@ -16,6 +16,7 @@ export type BookChapterNumber = (typeof BOOK2_CHAPTERS)[number]["chapter"];
 export type Book2View =
   | { kind: "home" }
   | { kind: "practice" }
+  | { kind: "practice-quiz"; quizId: string }
   | { kind: "draft"; chapter: 1 }
   | { kind: "published"; chapter: BookChapterNumber }
   | { kind: "missing" };
@@ -26,9 +27,49 @@ export function rewriteBookPath(href: string, base: BookBase): string {
   return href.replace(/^\/book(?=\/|#|$)/, "/book2");
 }
 
+/** Chapter, home, and practice URLs that book2 actually renders. */
+/** Local screenshot route only. Production always stays closed. */
+export function book2FixtureEnabled(env: { NODE_ENV?: string; BOOK2_FIXTURE?: string } = process.env): boolean {
+  return env.NODE_ENV !== "production" && env.BOOK2_FIXTURE === "1";
+}
+
+export function book2CanHost(pathname: string): boolean {
+  if (pathname === "/book") return true;
+  if (/^\/book\/ch[1-6]$/.test(pathname)) return true;
+  if (pathname === "/book/practice") return true;
+  if (/^\/book\/practice\/[^/]+$/.test(pathname)) return true;
+  return false;
+}
+
+/**
+ * Rewrite a same-origin book href onto book2 when this preview has that page.
+ * Anything else, including term pages and external sites, stays as written.
+ */
+export function book2Destination(href: string): string | null {
+  if (!href.startsWith("/") || href.startsWith("//") || href.includes("\\")) return null;
+  const hashAt = href.indexOf("#");
+  const beforeHash = hashAt === -1 ? href : href.slice(0, hashAt);
+  const hash = hashAt === -1 ? "" : href.slice(hashAt);
+  const queryAt = beforeHash.indexOf("?");
+  const pathname = queryAt === -1 ? beforeHash : beforeHash.slice(0, queryAt);
+  const search = queryAt === -1 ? "" : beforeHash.slice(queryAt);
+  if (!book2CanHost(pathname)) return null;
+  const rewritten = rewriteBookPath(pathname, "/book2");
+  if (rewritten === pathname) return null;
+  return `${rewritten}${search}${hash}`;
+}
+
 export function book2View(path: readonly string[], savedChapter1: boolean): Book2View {
   if (path.length === 0) return { kind: "home" };
-  if (path.length === 1 && path[0] === "practice") return { kind: "practice" };
+  if (path[0] === "practice" && path.length === 1) return { kind: "practice" };
+  if (path[0] === "practice" && path.length === 2 && path[1]) {
+    try {
+      const quizId = decodeURIComponent(path[1]);
+      if (quizId && !quizId.includes("/")) return { kind: "practice-quiz", quizId };
+    } catch {
+      return { kind: "missing" };
+    }
+  }
   if (path.length !== 1) return { kind: "missing" };
   const match = /^ch([1-6])$/.exec(path[0] ?? "");
   if (!match) return { kind: "missing" };

@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { rewriteBookPath, type BookBase } from "@/lib/book-editor/book2-path";
 import SelfCheck from "../../components/SelfCheck";
 import {
   PRACTICE_QUIZZES,
-  chapterSectionHref,
   getPracticeQuiz,
+  type PracticeQuiz,
 } from "../../quizzes/registry";
 
 type PageProps = {
@@ -30,20 +31,24 @@ export async function generateMetadata({
   };
 }
 
-export default async function PracticeQuizPage({ params }: PageProps) {
-  const { quizId } = await params;
-  const quiz = getPracticeQuiz(quizId);
-  if (!quiz) notFound();
-
+export function PracticeQuizArticle({
+  quiz,
+  linkBase = "/book",
+}: {
+  quiz: PracticeQuiz;
+  linkBase?: BookBase;
+}) {
+  const sectionHref = `${rewriteBookPath(quiz.chapterHref, linkBase)}#${quiz.sectionId}`;
+  const practiceHref = rewriteBookPath("/book/practice", linkBase);
   return (
     <article className="book-content">
       <nav
         aria-label="Practice breadcrumb"
         className="mb-4 font-sans text-sm text-neutral-600"
       >
-        <Link href="/book">Book</Link>
+        <Link href={linkBase}>Book</Link>
         {" · "}
-        <Link href="/book/practice">Practice</Link>
+        <Link href={practiceHref}>Practice</Link>
         {" · "}
         <span>{quiz.title}</span>
       </nav>
@@ -58,20 +63,27 @@ export default async function PracticeQuizPage({ params }: PageProps) {
       </p>
       <p>
         Drawn from{" "}
-        <Link href={chapterSectionHref(quiz)}>{quiz.sectionLabel}</Link>
+        <Link href={sectionHref}>{quiz.sectionLabel}</Link>
         {" in "}
-        <Link href={quiz.chapterHref}>{quiz.chapterLabel}</Link>.
+        <Link href={rewriteBookPath(quiz.chapterHref, linkBase)}>{quiz.chapterLabel}</Link>.
       </p>
 
       <SelfCheck quizId={quiz.quizId} bank={quiz.bank} count={quiz.count} />
 
       <p className="mt-6 font-sans text-sm">
-        <Link href={chapterSectionHref(quiz)}>
+        <Link href={sectionHref}>
           Back to {quiz.sectionLabel}
         </Link>
         {" · "}
-        <Link href="/book/practice">All practice quizzes</Link>
+        <Link href={practiceHref}>All practice quizzes</Link>
       </p>
     </article>
   );
+}
+
+export default async function PracticeQuizPage({ params }: PageProps) {
+  const { quizId } = await params;
+  const quiz = getPracticeQuiz(quizId);
+  if (!quiz) notFound();
+  return <PracticeQuizArticle quiz={quiz} />;
 }
