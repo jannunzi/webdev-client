@@ -332,6 +332,9 @@ app.put("/api/courses/:courseId", updateCourse);`}</CodeBlock>
         <p>
           In Kambaz, each course contains several modules,
           establishing a <strong>one-to-many</strong>{" "}relationship.
+          This chapter keeps modules in their own{" "}
+          <code>modules</code>{" "}collection, and each module document
+          stores the course id in <code>course</code>.
           Currently the relationship is implemented by each module
           having a field that refers to the course they belong to.
           This section demonstrates how to use Mongoose to implement
@@ -515,12 +518,15 @@ export default schema;`}</CodeBlock>
             name="moduleSchema"
             file="webdev-server/Kambaz/Modules/schema.ts"
           >{`import mongoose from "mongoose";
-const schema = new mongoose.Schema({
-  _id: String,
-  name: String,
-  description: String,
-  course: String,
-});
+const schema = new mongoose.Schema(
+  {
+    _id: String,
+    name: String,
+    description: String,
+    course: String,
+  },
+  { collection: "modules" },
+);
 export default schema;`}</CodeBlock>
         </Section>
 
@@ -1094,23 +1100,27 @@ function unenrollUserFromCourse(user, course) {
   return model.deleteOne({ user, course });
 }`}</CodeBlock>
           <p>
-            In the Courses routes implement post and delete routes
-            that create or remove an enrollment using the
-            corresponding DAO functions. If the path{" "}
-            <code>uid</code>{" "}is <code>&quot;current&quot;</code>,
-            read the session user the same way the enrolled-courses
-            route does. If you had already implemented these
-            functions in a prior assignment, feel free to use those
-            functions instead or refactor at your own discretion.
+            In the Users routes, implement post and delete handlers
+            that read <code>uid</code> and <code>cid</code> from the
+            path, call the Enrollments DAO, and send the result. When{" "}
+            <code>uid</code> is <code>&quot;current&quot;</code>,
+            resolve the session user the same way the enrolled-courses
+            route does, and respond 401 when the session has no
+            current user.
           </p>
           <CodeBlock
             language="ts"
             name="enroll routes"
-            file="webdev-server/Kambaz/Courses/routes.ts"
+            file="webdev-server/Kambaz/Users/routes.ts"
           >{`const enrollUserInCourse = async (req, res) => {
   let { uid, cid } = req.params;
   if (uid === "current") {
-    uid = req.session["currentUser"]._id;
+    const currentUser = req.session["currentUser"];
+    if (!currentUser) {
+      res.sendStatus(401);
+      return;
+    }
+    uid = currentUser._id;
   }
   const status = await enrollmentsDao.enrollUserInCourse(uid, cid);
   res.send(status);
@@ -1118,7 +1128,12 @@ function unenrollUserFromCourse(user, course) {
 const unenrollUserFromCourse = async (req, res) => {
   let { uid, cid } = req.params;
   if (uid === "current") {
-    uid = req.session["currentUser"]._id;
+    const currentUser = req.session["currentUser"];
+    if (!currentUser) {
+      res.sendStatus(401);
+      return;
+    }
+    uid = currentUser._id;
   }
   const status = await enrollmentsDao.unenrollUserFromCourse(uid, cid);
   res.send(status);
