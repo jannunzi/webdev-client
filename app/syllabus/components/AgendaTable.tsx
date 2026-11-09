@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { holidayMeetingNote } from "../data/holidays";
 import { formatAgendaDate, formatWeekOf } from "../data/dates";
+import { CANVAS_QUIZ_WINDOWS_NOTE } from "../data/quiz-windows";
 import type { AgendaGroup, AgendaRow, CourseSection } from "../data/types";
+import QuizSectionWindows from "./QuizSectionWindows";
 import SyllabusSection from "./SyllabusSection";
 
 function rowClass(row: AgendaRow): string {
@@ -62,6 +64,7 @@ export default function AgendaTable({
         Showing {section.tabLabel}. Due dates in the last column are the shared Canvas
         dates when they fall in that week.
       </p>
+      <p>{CANVAS_QUIZ_WINDOWS_NOTE}</p>
       <div
         id="syllabus-agenda-panel"
         role="tabpanel"
@@ -95,13 +98,13 @@ export default function AgendaTable({
                   key={`${section.id}-${group.id}-${row.date}-${row.kind}-${index}`}
                   className={rowClass(row)}
                 >
-                  <td className="px-3 py-2 font-sans">
+                  <td className="px-3 py-2 align-top font-sans">
                     {dateLabel(row)}
                   </td>
-                  <td className="px-3 py-2 tabular-nums text-neutral-600">
+                  <td className="px-3 py-2 align-top tabular-nums text-neutral-600">
                     {row.kind === "orientation" ? "—" : row.lectureNumber}
                   </td>
-                  <td className="px-3 py-2">
+                  <td className="px-3 py-2 align-top">
                     {row.kind === "orientation" ? (
                       <span className="font-medium italic">{row.topic}</span>
                     ) : row.href ? (
@@ -115,8 +118,16 @@ export default function AgendaTable({
                       </div>
                     ) : null}
                   </td>
-                  <td className="px-3 py-2">
-                    {row.deadlines.map((deadline) => deadline.label).join(" · ")}
+                  <td className="px-3 py-2 align-top">
+                    {row.deadlines.map((deadline, deadlineIndex) => (
+                      <div key={`${deadline.kind}-${deadline.label}`}>
+                        {deadlineIndex > 0 ? " · " : null}
+                        {deadline.label}
+                        {deadline.kind === "quiz" ? (
+                          <QuizSectionWindows label={deadline.label} />
+                        ) : null}
+                      </div>
+                    ))}
                   </td>
                 </tr>
               ))}

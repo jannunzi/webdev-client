@@ -6,12 +6,14 @@ import type { Deadline, IsoDate } from "./types";
  * project dates per section.
  *
  * Assignment dues are Canvas Sunday 23:59 ET (`all_day_date`). Keep the
- * published A1–A3 Sundays. Do not invent A4–A6 Sunday dues — Jose is still
- * settling those with Canvas.
+ * published A1–A3 Sundays. Exact A4–A6 due dates are in Canvas; do not
+ * invent Sunday dues for them here.
  *
  * Quizzes (Piazza Post 33) are the week after that chapter’s assignment is
  * due. The quiz `date` is the shared Monday of that week. Student-facing
- * calendar and schedule entries name that week only. How a quiz is taken
+ * calendar and schedule entries keep that “week of” label. Confirmed
+ * per-section Canvas windows (not the website lock or answer dates) are
+ * listed beside Q4 and Q5 in `quiz-windows.ts`. How a quiz is taken
  * (in person at the end of lecture, online open for the whole week) is
  * stated once on the Evaluation Quizzes row.
  *
@@ -87,4 +89,4 @@ export const deadlines: Deadline[] = [
 ];
 
 export const deadlinesNote =
-  "Assignment, exam, and project dates are one Canvas calendar for every section. Assignments are due Sunday 11:59pm ET. Quizzes (Q1–Q6) are the week after each chapter’s assignment is due. X1 is taken in the second half of lecture the week of November 2. The project is due Sunday, December 6; grading begins the week of December 7. X2 is due Sunday 11:59pm ET the week of December 14 (finals week). A4–A6 due dates will be posted on Canvas.";
+  "Assignment, exam, and project dates are one Canvas calendar for every section. Assignments are due Sunday 11:59pm ET. Quizzes (Q1–Q6) are the week after each chapter’s assignment is due. X1 is taken in the second half of lecture the week of November 2. The project is due Sunday, December 6; grading begins the week of December 7. X2 is due Sunday 11:59pm ET the week of December 14 (finals week). Exact assignment due dates are in Canvas.";

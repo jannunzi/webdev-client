@@ -14,6 +14,8 @@ import {
   quizWeekOfLabel,
   syllabusTakeWindowSentence,
 } from "@/lib/quiz-exam/schedule";
+import QuizSectionWindows from "@/app/syllabus/components/QuizSectionWindows";
+import { CANVAS_QUIZ_WINDOWS_NOTE } from "@/app/syllabus/data/quiz-windows";
 import QuizAccessOverrides from "./components/QuizAccessOverrides";
 import StaffAttemptsLink from "../staff/components/StaffAttemptsLink";
 
@@ -50,6 +52,7 @@ export default function TakeQuizIndexPage() {
         <strong>{CANVAS_ONLY_QUIZ_SENTENCE}</strong> Open each quiz from your
         Canvas course. You cannot start a graded quiz here.
       </p>
+      <p className="text-sm text-neutral-700">{CANVAS_QUIZ_WINDOWS_NOTE}</p>
       <p className="text-sm text-neutral-700">
         {STUDENT_COPY.takeIndexLead} After you submit an exam, the same URL is
         how you come back for your score and — during the class-wide review
@@ -80,10 +83,13 @@ export default function TakeQuizIndexPage() {
                 </p>
               )}
               {isCanvasOnlyQuiz(quizId) ? (
-                <p className="text-sm text-neutral-700">
-                  This quiz is the week of {quizWeekOfLabel(quizId)}.{" "}
-                  {CANVAS_ONLY_QUIZ_SENTENCE}
-                </p>
+                <>
+                  <p className="text-sm text-neutral-700">
+                    This quiz is the week of {quizWeekOfLabel(quizId)}.{" "}
+                    {CANVAS_ONLY_QUIZ_SENTENCE}
+                  </p>
+                  <QuizSectionWindows quizId={quizId} />
+                </>
               ) : schedule ? (
                 <p className="text-sm text-neutral-700">
                   {syllabusTakeWindowSentence(schedule)}
