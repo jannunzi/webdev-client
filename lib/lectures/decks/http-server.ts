@@ -149,6 +149,7 @@ npm init`,
     id: "request-trip",
     title: "Handling an HTTP Request",
     kind: "content",
+    diagram: "http-request-flow",
     bullets: [
       "Browser sends `GET http://localhost:4000/hello`",
       "Node delivers it to the process listening on port 4000",
@@ -177,17 +178,18 @@ import express from "express";
 
 // create the server application
 const app = express();
-
-// answer GET /hello requests
-app.get("/hello", (req, res) => {
-  // send the text back to the browser
+const helloWorld = (req, res) => {
   res.send("Hello World!");
+};
+app.get("/hello", (req, res) => {
+  helloWorld(req, res);
 });
 
 // listen for requests on port 4000
 app.listen(4000);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/index.ts",
+    codeAddedLines: [[6, 8], 10],
   },
   {
     id: "visit",

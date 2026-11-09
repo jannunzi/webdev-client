@@ -8,7 +8,9 @@ export const LAB5_ENV_SLIDES: LectureSlide[] = [
     cover: {
       color: "#339933",
       icon: "code",
-      headline: "Configuring Environment Variables",
+      headline: "ENVIRONMENT VARIABLES",
+      stackWords: true,
+      headlineScale: 2,
     },
     bullets: [
       "Chapter 5 · Lab 5 Environment",
@@ -19,6 +21,7 @@ export const LAB5_ENV_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Why Use Environment Variables",
     kind: "content",
+    diagram: "env-same-code",
     bullets: [
       "The server URL is `http://localhost:4000` on your laptop, but different once deployed",
       "An environment variable is a named value set outside the code, like `NEXT_PUBLIC_HTTP_SERVER`",

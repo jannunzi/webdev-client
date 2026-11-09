@@ -74,6 +74,83 @@ function coverHeadlineSize(headline: string): string {
   return `min(11rem, ${(150 / perLine).toFixed(2)}cqw, 24cqh)`;
 }
 
+/** Scaled cover title. Default covers keep `coverHeadlineSize` unchanged. */
+function scaledCoverHeadlineSize(headline: string, scale: number): string {
+  const words = headline.split(/\s+/).filter(Boolean);
+  const longestWord = Math.max(...words.map((word) => word.length), 1);
+  const perLine = Math.max(longestWord, Math.ceil(headline.length * 0.55), 6);
+  const width = ((150 / perLine) * scale).toFixed(2);
+  const rem = (11 * scale).toFixed(2);
+  const height = (24 * scale).toFixed(2);
+  return `min(${rem}rem, ${width}cqw, ${height}cqh)`;
+}
+
+function CoverHeadline({
+  headline,
+  scale = 1,
+  stackWords = false,
+}: {
+  headline: string;
+  scale?: number;
+  stackWords?: boolean;
+}) {
+  const ref = useRef<HTMLHeadingElement>(null);
+  const words = headline.split(/\s+/).filter(Boolean);
+  const fontSize = scale === 1 && !stackWords
+    ? coverHeadlineSize(headline)
+    : scaledCoverHeadlineSize(headline, scale);
+
+  useLayoutEffect(() => {
+    const node = ref.current;
+    const slide = node?.closest(".lecture-slide");
+    if (!node || !(slide instanceof HTMLElement)) return;
+
+    const fit = () => {
+      node.style.fontSize = fontSize;
+      const slideRect = slide.getBoundingClientRect();
+      if (slideRect.width < 8 || slideRect.height < 8) return;
+      const maxW = slideRect.width * 0.86;
+      const maxH = slideRect.height * 0.58;
+      let size = Number.parseFloat(getComputedStyle(node).fontSize);
+      if (!Number.isFinite(size)) return;
+      const floor = Math.min(size, 28);
+      for (let step = 0; step < 32 && size > floor; step += 1) {
+        const lines = [...node.querySelectorAll(".lecture-cover-headline-line")];
+        const widest = lines.length
+          ? Math.max(...lines.map((line) => (line as HTMLElement).scrollWidth))
+          : node.scrollWidth;
+        const height = node.getBoundingClientRect().height;
+        if (widest <= maxW && height <= maxH) break;
+        size *= 0.94;
+        node.style.fontSize = `${size}px`;
+      }
+    };
+
+    fit();
+    const observer = new ResizeObserver(fit);
+    observer.observe(slide);
+    const fonts = document.fonts;
+    if (fonts?.ready) void fonts.ready.then(fit);
+    return () => observer.disconnect();
+  }, [fontSize]);
+
+  return (
+    <h2
+      ref={ref}
+      className={`lecture-cover-headline ${stackWords ? "lecture-cover-headline-stacked " : ""}${coverFont.className}`}
+      style={{ fontSize }}
+    >
+      {stackWords
+        ? words.map((word, index) => (
+            <span key={`${word}-${index}`} className="lecture-cover-headline-line">
+              {word}
+            </span>
+          ))
+        : headline}
+    </h2>
+  );
+}
+
 function LectureCoverIconMark({ icon }: { icon: LectureCoverIcon }) {
   return (
     <svg
@@ -618,12 +695,20 @@ export default function LectureDeckShell({
           {cover ? (
             <>
               <LectureCoverIconMark icon={cover.icon} />
-              <h2
-                className={`lecture-cover-headline ${coverFont.className}`}
-                style={{ fontSize: coverHeadlineSize(cover.headline) }}
-              >
-                {cover.headline}
-              </h2>
+              {cover.stackWords || (cover.headlineScale ?? 1) !== 1 ? (
+                <CoverHeadline
+                  headline={cover.headline}
+                  scale={cover.headlineScale ?? 1}
+                  stackWords={Boolean(cover.stackWords)}
+                />
+              ) : (
+                <h2
+                  className={`lecture-cover-headline ${coverFont.className}`}
+                  style={{ fontSize: coverHeadlineSize(cover.headline) }}
+                >
+                  {cover.headline}
+                </h2>
+              )}
               <p className="lecture-cover-brand">WebDevTV</p>
             </>
           ) : (<>

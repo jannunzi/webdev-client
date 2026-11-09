@@ -3074,6 +3074,9 @@ describe("lecture decks", () => {
     assert.match(http, /"type": "module"/);
     assert.match(http, /typescript@\^5\.9\.3/);
     assert.match(http, /app\.get\("\/hello"/);
+    assert.match(http, /const helloWorld = \(req, res\) =>/);
+    assert.match(http, /helloWorld\(req, res\)/);
+    assert.deepEqual(findSlide("http-server", "express").codeAddedLines, [[6, 8], 10]);
     assert.match(http, /localhost:4000\/hello/);
     assert.doesNotMatch(http, /Kanbas/);
 
@@ -3082,6 +3085,14 @@ describe("lecture decks", () => {
     assert.match(nodemon, /courses\.json/);
     assert.match(nodemon, /Hello\(app\)/);
     assert.match(nodemon, /Life is good!/);
+    assert.match(nodemon, /const helloWorld = \(req: Request, res: Response\)/);
+    assert.match(nodemon, /res\.send\("Hello World!"\)/);
+    assert.doesNotMatch(nodemon, /sayHello/);
+    assert.deepEqual(findSlide("nodemon-es6-routes", "hello-fn").codeAddedLines, [4, 5, 10]);
+    assert.equal(findSlide("nodemon-es6-routes", "hello-fn").codeHighlightLines, undefined);
+    assert.equal(findSlide("lab5-env", "title").cover?.headline, "ENVIRONMENT VARIABLES");
+    assert.equal(findSlide("lab5-env", "title").cover?.stackWords, true);
+    assert.equal(findSlide("lab5-env", "title").cover?.headlineScale, 2);
 
     const env = slideText("lab5-env");
     assert.match(env, /NEXT_PUBLIC_HTTP_SERVER/);
@@ -3565,7 +3576,8 @@ describe("lecture decks", () => {
       "chatgpt-api": { project: "openai-project-key-mock" },
       "chatgpt-text": { "roles-code": "openai-roles-flow" },
       "grok-api": { tokens: "grok-token-flow", key: "xai-key-mock" },
-      "http-server": { sibling: "two-ports" },
+      "http-server": { sibling: "two-ports", "request-trip": "http-request-flow" },
+      "lab5-env": { purpose: "env-same-code" },
     } as const;
 
     const used = new Set<string>();

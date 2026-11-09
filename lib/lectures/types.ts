@@ -741,6 +741,8 @@ export const LECTURE_DIAGRAM_IDS = [
   "openai-roles-flow",
   "xai-key-mock",
   "grok-token-flow",
+  "http-request-flow",
+  "env-same-code",
 ] as const;
 
 export type LectureDiagramId = (typeof LECTURE_DIAGRAM_IDS)[number];
@@ -819,8 +821,15 @@ export type LectureCover = {
   color: string;
   /** One simple white icon at the top left, like the video thumbs' mark. */
   icon: LectureCoverIcon;
-  /** Punchy one-line headline, 42 characters or fewer. */
+  /** Punchy headline, 42 characters or fewer. */
   headline: string;
+  /** Draw each word on its own line. Other covers keep balanced wrapping. */
+  stackWords?: boolean;
+  /**
+   * Multiply this cover's headline size. The shell still shrinks the type
+   * when the scaled title would overflow the slide. Default 1.
+   */
+  headlineScale?: number;
 };
 
 export type LectureHubItem = {
