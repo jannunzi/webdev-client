@@ -37,9 +37,6 @@ export const REMOTE_ARRAYS_SLIDES: LectureSlide[] = [
       "Visit `/lab5/todos` and confirm four seed tasks",
       "Import into `Lab5/index.ts`",
     ],
-    imageSrc: "/lectures/remote-arrays/remote-arrays-slide2-diagram.png",
-    imageAlt:
-      "GET /lab5/todos reads the in-memory todos array of Task 1 through Task 4 and res.json returns that array.",
     code: `let todos = [
   { id: 1, title: "Task 1", completed: false },
   { id: 2, title: "Task 2", completed: true },
@@ -70,6 +67,9 @@ export default function WorkingWithRemoteArrays(app) {
     codeLanguage: "tsx",
     codeFile: "app/labs/lab5/WorkingWithRemoteArrays.tsx",
     codeHighlightLines: [2],
+    imageSrc: "/lectures/remote-arrays/remote-arrays-slide2-diagram.png",
+    imageAlt:
+      "GET /lab5/todos reads the in-memory todos array of Task 1 through Task 4 and res.json returns that array.",
   },
   {
     id: "id-how",
