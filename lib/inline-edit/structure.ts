@@ -1,7 +1,7 @@
+import { withoutEmptyParagraphs, type InsertSpec, type ParagraphStructure } from "./blocks";
 import { freshNodesToJsx, sanitizedToJsx } from "./jsx-emit";
 import type { JsxParagraph } from "./locate";
-import { sanitizeEditedHtml, sanitizeFreshInline } from "./sanitize";
-import type { InsertSpec, ParagraphStructure } from "./blocks";
+import { isSemanticallyEmptyParagraph, sanitizeEditedHtml, sanitizeFreshInline } from "./sanitize";
 
 export type StructureResult =
   | { ok: true; source: string }
@@ -21,9 +21,9 @@ export function applyParagraphStructure(
     return { ok: false, error: "Only a paragraph can be added or removed." };
   }
   const indent = indentAt(source, node.start);
-  const before = emitAll(structure.insertsBefore ?? [], indent);
+  const before = emitAll(withoutEmptyParagraphs(structure.insertsBefore ?? []), indent);
   if (!before.ok) return before;
-  const after = emitAll(structure.insertsAfter ?? [], indent);
+  const after = emitAll(withoutEmptyParagraphs(structure.insertsAfter ?? []), indent);
   if (!after.ok) return after;
 
   let nodeText: string | null = null;
@@ -53,6 +53,7 @@ function emitBlock(
   indent: string,
 ): { ok: true; value: string } | { ok: false; error: string } {
   if (block.kind === "p") {
+    if (isSemanticallyEmptyParagraph(block.html)) return { ok: true, value: "" };
     const fresh = sanitizeFreshInline(block.html);
     if (!fresh.ok) return fresh;
     const inner = freshNodesToJsx(sanitizeEditedHtml(fresh.html, "fresh"));
