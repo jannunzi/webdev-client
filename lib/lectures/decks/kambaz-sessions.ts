@@ -8,10 +8,12 @@ export const KAMBAZ_SESSIONS_SLIDES: LectureSlide[] = [
     cover: {
       color: "#C8102E",
       icon: "user",
-      headline: "Sessions and Axios",
+      headline: "Server Sessions",
+      stackWords: true,
+      headlineScale: 2,
     },
     bullets: [
-      "Chapter 5 · Sessions and Axios",
+      "Chapter 5 · Server Sessions",
       "Many users, one cookie each",
     ],
   },
@@ -142,7 +144,8 @@ const signout = (req, res) => {
     title: "Sending Cookies with Axios",
     kind: "demo",
     bullets: [
-      "Default axios drops cookies. `axios.create({ withCredentials: true })`",
+      "Default axios drops cookies.",
+      "`axios.create({ withCredentials: true })`",
       "Profile, signout, update, and later `/current/courses` must use it",
     ],
   },

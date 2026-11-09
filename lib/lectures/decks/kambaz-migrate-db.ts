@@ -47,9 +47,9 @@ export const KAMBAZ_MIGRATE_DB_SLIDES: LectureSlide[] = [
     title: "Re-exporting Data from a Barrel",
     kind: "demo",
     bullets: [
-      "`resolveJsonModule` lets TypeScript import each `.json` file",
-      "Routes receive `db` and read `db.courses`, `db.users`, …",
-      "Customize the seed if you want — the shape stays",
+      "A barrel is an `index.ts` that imports several files and re-exports them from one place",
+      "Other files import the whole database with",
+      "`import db from \"./Kambaz/Database\"`",
     ],
     code: `import courses from "./courses.json";
 import modules from "./modules.json";

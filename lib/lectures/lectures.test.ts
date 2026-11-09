@@ -1363,7 +1363,7 @@ describe("lecture decks", () => {
     assert.equal(counts["remote-objects"], 14);
     assert.equal(counts["remote-arrays"], 19);
     assert.equal(counts["async-http"], 31);
-    assert.equal(counts["next-routes"], 21);
+    assert.equal(counts["next-routes"], 23);
     assert.equal(counts["ch5-check-understanding"], 7);
     assert.equal(counts["kambaz-migrate-db"], 6);
     assert.equal(counts["kambaz-account-rest"], 15);
@@ -3154,6 +3154,11 @@ describe("lecture decks", () => {
     assert.match(accountRest, /axiosWithCredentials/);
 
     const sessions = slideText("kambaz-sessions");
+    assert.equal(findSlide("kambaz-sessions", "title").cover?.headline, "Server Sessions");
+    assert.equal(findSlide("kambaz-sessions", "title").cover?.stackWords, true);
+    assert.equal(findSlide("kambaz-sessions", "title").cover?.headlineScale, 2);
+    assert.equal(getLecture("kambaz-sessions")?.title, "Server Sessions");
+    assert.doesNotMatch(findSlide("kambaz-sessions", "title").cover?.headline ?? "", /axios/i);
     assert.match(sessions, /express-session/);
     assert.match(sessions, /withCredentials/);
     assert.match(sessions, /req\.session/);
@@ -3610,10 +3615,20 @@ describe("lecture decks", () => {
     for (const deck of listLectureDecks()) {
       for (const slide of deck.slides) {
         if (slide.imageSrc) {
+          const flowPng =
+            /^\/lectures\/(?:path-and-query|remote-objects|remote-arrays)\/[\w.-]+-diagram\.png$/.test(
+              slide.imageSrc,
+            );
           assert.ok(
-            isBookKambazTargetSrc(slide.imageSrc),
-            `${deck.slug} ${slide.id} may only use a book Kambaz target PNG, got ${slide.imageSrc}`,
+            isBookKambazTargetSrc(slide.imageSrc) || flowPng,
+            `${deck.slug} ${slide.id} may only use a book Kambaz target PNG or a Lab 5 request diagram, got ${slide.imageSrc}`,
           );
+          if (flowPng) {
+            assert.ok(
+              (slide.imageAlt ?? "").length > 40,
+              `${deck.slug} ${slide.id} needs alt text describing the flow`,
+            );
+          }
           assert.ok(
             existsSync(join(process.cwd(), "public", slide.imageSrc.replace(/^\//, ""))),
             `${deck.slug} ${slide.id} missing ${slide.imageSrc}`,
@@ -3626,6 +3641,44 @@ describe("lecture decks", () => {
         }
       }
     }
+  });
+
+  it("places Jose-approved request/response diagrams on the Lab 5 slides", () => {
+    const placed = [
+      ["path-and-query", "purpose", "/lectures/path-and-query/path-query-diagram.png"],
+      ["path-and-query", "path-server-intro", "/lectures/path-and-query/path-query-slide4-diagram.png"],
+      ["path-and-query", "path-click", "/lectures/path-and-query/path-query-slide7-diagram.png"],
+      ["path-and-query", "query-server-intro", "/lectures/path-and-query/path-query-slide11-diagram.png"],
+      ["path-and-query", "query-click", "/lectures/path-and-query/path-query-slide13-diagram.png"],
+      ["remote-objects", "assignment-intro", "/lectures/remote-objects/remote-objects-slide4-diagram.png"],
+      ["remote-objects", "title-get", "/lectures/remote-objects/remote-objects-slide7-diagram.png"],
+      ["remote-objects", "title-put", "/lectures/remote-objects/remote-objects-slide9-diagram.png"],
+      ["remote-arrays", "get-all", "/lectures/remote-arrays/remote-arrays-slide2-diagram.png"],
+      ["remote-arrays", "id-how", "/lectures/remote-arrays/remote-arrays-slide5-diagram.png"],
+      ["remote-arrays", "client-filter", "/lectures/remote-arrays/remote-arrays-slide9-diagram.png"],
+      ["remote-arrays", "create-delete-intro", "/lectures/remote-arrays/remote-arrays-slide10-diagram.png"],
+      ["remote-arrays", "client-create", "/lectures/remote-arrays/remote-arrays-slide10-diagram.png"],
+      ["remote-arrays", "client-remove", "/lectures/remote-arrays/remote-arrays-slide13-diagram.png"],
+    ] as const;
+    for (const [slug, id, src] of placed) {
+      const slide = findSlide(slug, id);
+      assert.equal(slide.imageSrc, src, `${slug}#${id}`);
+      assert.match(slide.imageAlt ?? "", /\S/);
+    }
+    // #slide-2 is the purpose slide; the GET /lab5/todos figure belongs on get-all.
+    assert.equal(findSlide("remote-arrays", "purpose").imageSrc, undefined);
+    const routes = getLectureDeck("next-routes")!.slides.map((slide) => slide.id);
+    const hello = routes.indexOf("hello-ui");
+    assert.equal(routes[hello - 1], "fetch");
+    assert.equal(routes[hello - 2], "hello-ui-intro");
+    const calc = findSlide("next-routes", "calculator");
+    const calc2 = findSlide("next-routes", "calculator-part-2");
+    assert.equal(calc.code?.split("\n").length, 8);
+    assert.equal(calc2.codeStartLine, 9);
+    assert.match(calc.code ?? "", /let result: number;$/);
+    assert.match(calc2.code ?? "", /^ {2}switch \(operation\)/);
+    assert.match(calc2.code ?? "", /return Response\.json\(\{ a, b, operation, result \}\);\n\}$/);
+    assert.equal(calc2.code?.split("\n").length, 21);
   });
 
   it("keeps commands and source in code blocks, not bullets", () => {
@@ -3962,7 +4015,11 @@ describe("explanation text never buries the code", () => {
         const base = slide.id.replace(/-(intro|why)$/, "");
         if (base === slide.id || !ids.includes(base) || slide.code) return;
         intros += 1;
-        const code = deck.slides[index + 1]!;
+        let code = deck.slides[index + 1]!;
+        // fetch is introduced on its own slide immediately before the first call.
+        if (deck.slug === "next-routes" && slide.id === "hello-ui-intro" && code.id === "fetch") {
+          code = deck.slides[index + 2]!;
+        }
         assert.equal(code.id, base, `${deck.slug}#${slide.id} comes right before ${base}`);
         assert.ok(code.code || code.codeBlocks?.length, `${deck.slug}#${base} has the code`);
         assert.ok(!code.bullets?.length, `${deck.slug}#${base} keeps its text on the intro`);

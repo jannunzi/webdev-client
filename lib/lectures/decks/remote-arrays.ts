@@ -37,6 +37,9 @@ export const REMOTE_ARRAYS_SLIDES: LectureSlide[] = [
       "Visit `/lab5/todos` and confirm four seed tasks",
       "Import into `Lab5/index.ts`",
     ],
+    imageSrc: "/lectures/remote-arrays/remote-arrays-slide2-diagram.png",
+    imageAlt:
+      "GET /lab5/todos reads the in-memory todos array of Task 1 through Task 4 and res.json returns that array.",
     code: `let todos = [
   { id: 1, title: "Task 1", completed: false },
   { id: 2, title: "Task 2", completed: true },
@@ -78,6 +81,9 @@ export default function WorkingWithRemoteArrays(app) {
       "Ids in the array are numbers, so compare after `parseInt`",
       "`find` returns the one todo whose `id` matches",
     ],
+    imageSrc: "/lectures/remote-arrays/remote-arrays-slide5-diagram.png",
+    imageAlt:
+      "GET /lab5/todos/1 sets req.params.id to 1, find returns the todo whose id is 1, and res.json sends Task 1.",
   },
   {
     id: "get-id",
@@ -135,6 +141,9 @@ app.get("/lab5/todos/:id", getTodoById);`,
     code: "<a id=\"wd-retrieve-completed-todos\" href={`${API}?completed=true`}>\n  Get Completed Todos\n</a>",
     codeLanguage: "tsx",
     codeFile: "app/labs/lab5/WorkingWithRemoteArrays.tsx",
+    imageSrc: "/lectures/remote-arrays/remote-arrays-slide9-diagram.png",
+    imageAlt:
+      "GET /lab5/todos?completed=true sets req.query.completed to the string true, filters to Task 2 and Task 4, and res.json returns those two todos.",
   },
   {
     id: "create-delete-intro",
@@ -146,6 +155,9 @@ app.get("/lab5/todos/:id", getTodoById);`,
       "GET `/:id/delete` splices that item out",
       "Misusing GET is a teaching step. The Async HTTP and JSON deck switches to POST and DELETE",
     ],
+    imageSrc: "/lectures/remote-arrays/remote-arrays-slide10-diagram.png",
+    imageAlt:
+      "GET /lab5/todos/create builds a New Task, pushes it onto the todos array, and res.json returns the full array including that task.",
   },
   {
     id: "create-delete",
@@ -183,6 +195,9 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
     code: "<a id=\"wd-create-todo\" href={`${API}/create`}>Create Todo</a>",
     codeLanguage: "tsx",
     codeFile: "app/labs/lab5/WorkingWithRemoteArrays.tsx",
+    imageSrc: "/lectures/remote-arrays/remote-arrays-slide10-diagram.png",
+    imageAlt:
+      "GET /lab5/todos/create builds a New Task, pushes it onto the todos array, and res.json returns the full array including that task.",
   },
   {
     id: "client-remove",
@@ -194,6 +209,9 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
     code: "<a id=\"wd-remove-todo\" href={`${API}/${todo.id}/delete`}>\n  Remove Todo with ID = {todo.id}\n</a>",
     codeLanguage: "tsx",
     codeFile: "app/labs/lab5/WorkingWithRemoteArrays.tsx",
+    imageSrc: "/lectures/remote-arrays/remote-arrays-slide13-diagram.png",
+    imageAlt:
+      "With todo.id 1, GET /lab5/todos/1/delete finds that id, splices it out, and res.json returns the remaining todos.",
   },
   {
     id: "title-server",

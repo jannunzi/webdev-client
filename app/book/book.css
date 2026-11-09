@@ -1056,3 +1056,71 @@ html.lecture-presenting body {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+/*
+ * Lab 5 request/response PNGs share the 1280×800 stage with the existing
+ * copy. Below: the figure takes leftover height. Side: tall code stays
+ * full width of the left column and the PNG sits beside it.
+ */
+.lecture-slide[data-flow-diagram="below"] {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.lecture-slide[data-flow-diagram="below"] > :not(.lecture-flow-figure) {
+  flex: 0 0 auto;
+}
+
+.lecture-slide[data-flow-diagram="below"] > .lecture-flow-figure,
+.lecture-slide[data-flow-diagram="side"] > .lecture-flow-figure {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.lecture-slide[data-flow-diagram="below"] > .lecture-flow-figure {
+  flex: 1 1 auto;
+  margin: 0.35rem 0 0;
+}
+
+.lecture-flow-image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.lecture-slide[data-flow-diagram="side"] {
+  display: grid;
+  grid-template-columns: minmax(0, 1.58fr) minmax(220px, 0.62fr);
+  column-gap: 0.75rem;
+  align-items: start;
+  overflow: hidden;
+  --lecture-block-font-scale: 0.74;
+}
+
+.lecture-slide[data-flow-diagram="side"] > .lecture-slide-kicker,
+.lecture-slide[data-flow-diagram="side"] > .lecture-slide-title {
+  grid-column: 1 / -1;
+}
+
+.lecture-slide[data-flow-diagram="side"] > :not(.lecture-flow-figure):not(.lecture-slide-kicker):not(.lecture-slide-title) {
+  grid-column: 1;
+  min-width: 0;
+}
+
+.lecture-slide[data-flow-diagram="side"] > .lecture-flow-figure {
+  grid-column: 2;
+  grid-row: 3 / span 8;
+  align-self: center;
+  margin: 0;
+}
+
+.lecture-slide[data-flow-diagram="side"] .lecture-flow-image {
+  width: 100%;
+}

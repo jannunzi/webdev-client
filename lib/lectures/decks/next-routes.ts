@@ -52,6 +52,20 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "fetch",
+    title: "Introducing the fetch Function",
+    kind: "demo",
+    bullets: [
+      "`fetch` is the browser's built-in function for HTTP requests",
+      "It returns a promise of a Response. Call `response.json()` to read JSON",
+      "Axios comes later: `axios.get` does the same with less code",
+    ],
+    code: `const response = await fetch("/api/lab5/hello");
+const data = await response.json();`,
+    codeLanguage: "ts",
+    codeHighlightLines: [[1, 2]],
+  },
+  {
     id: "hello-ui",
     title: "Fetching a Route Handler on Load",
     kind: "demo",
@@ -100,8 +114,16 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   if (Number.isNaN(a) || Number.isNaN(b)) {
     return Response.json({ error: "Invalid numbers" }, { status: 400 });
   }
-  let result: number;
-  switch (operation) {
+  let result: number;`,
+    codeLanguage: "ts",
+    codeFile: "app/api/lab5/calculator/route.ts",
+    codeHighlightLines: [[2, 4]],
+  },
+  {
+    id: "calculator-part-2",
+    title: "Switching on the Operation",
+    kind: "demo",
+    code: `  switch (operation) {
     case "add":
       result = a + b;
       break;
@@ -124,7 +146,8 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "ts",
     codeFile: "app/api/lab5/calculator/route.ts",
-    codeHighlightLines: [[2, 4], [9, 21], 28],
+    codeStartLine: 9,
+    codeHighlightLines: [[1, 13], 20],
   },
   {
     id: "client-intro",

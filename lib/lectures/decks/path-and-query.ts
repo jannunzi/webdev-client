@@ -25,6 +25,9 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
       "**Query parameters** — `/lab5/add?a=2&b=5` after `?`",
       "**JSON request body** — `{a: 2, b: 5}`, covered in the Async HTTP and JSON deck",
     ],
+    imageSrc: "/lectures/path-and-query/path-query-diagram.png",
+    imageAlt:
+      "Three requests from the browser to Express: path parameters GET /lab5/add/2/5 become req.params in handleParams, query parameters GET /lab5/calculator?operation=add&a=2&b=5 become req.query in handleQueries, and a JSON body POST /lab5/calculator becomes req.body in handleBody.",
   },
   {
     id: "path-how",
@@ -48,6 +51,9 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
       "`:a` and `:b` in the route name the parameters. `req.params` holds them as strings",
       "`parseInt` before the math, then `.toString()`: a bare `res.send(6)` looks like status 6",
     ],
+    imageSrc: "/lectures/path-and-query/path-query-slide4-diagram.png",
+    imageAlt:
+      "GET /lab5/add/2/5 matches route /lab5/add/:a/:b. Express sets req.params to a \"2\" and b \"5\", parseInt adds them to 7, and res.send returns the text 7.",
   },
   {
     id: "path-server",
@@ -102,6 +108,9 @@ export default function Lab5(app) {
       "The add route sees `req.params = { a: \"34\", b: \"23\" }`",
       "It responds with `57`, and the browser shows it",
     ],
+    imageSrc: "/lectures/path-and-query/path-query-slide7-diagram.png",
+    imageAlt:
+      "With React state a = 34 and b = 23, the browser sends GET /lab5/add/34/23. Express reads req.params, adds 34 and 23, and res.send returns 57.",
   },
   {
     id: "path-client",
@@ -157,6 +166,9 @@ const [b, setB] = useState("23");
       "One `/lab5/calculator` route, a `switch` on `operation`",
       "Import into `Lab5/index.ts`",
     ],
+    imageSrc: "/lectures/path-and-query/path-query-slide11-diagram.png",
+    imageAlt:
+      "GET /lab5/calculator?operation=add&a=2&b=5 matches /lab5/calculator. req.query holds operation add and the string operands, the switch adds them with parseInt, and res.send returns 7.",
   },
   {
     id: "query-server",
@@ -195,6 +207,9 @@ const [b, setB] = useState("23");
       "Express sees `req.query = { operation: \"add\", a: \"34\", b: \"23\" }`",
       "The calculator responds with `57`",
     ],
+    imageSrc: "/lectures/path-and-query/path-query-slide13-diagram.png",
+    imageAlt:
+      "React state a = 34, b = 23, and operation add builds GET /lab5/calculator?operation=add&a=34&b=23. The calculator switch adds 34 and 23 and res.send returns 57.",
   },
   {
     id: "query-client",

@@ -212,7 +212,7 @@ app.post("/api/users/signup", signup);`,
   },
   {
     id: "next-up",
-    title: "Next: Sessions and Axios",
+    title: "Next: Server Sessions",
     kind: "title",
     bullets: [
       "Cookies (small values the browser sends back on each request) so more than one browser can be signed in",
