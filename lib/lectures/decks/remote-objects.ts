@@ -9,6 +9,8 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
       color: "#339933",
       icon: "server",
       headline: "Remote Objects",
+      stackWords: true,
+      headlineScale: 2,
     },
     bullets: [
       "Chapter 5 · Remote Objects",
