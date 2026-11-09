@@ -32,3 +32,4 @@ assets under `/book`.
 PNG exports from classroom Google Slides may remain on disk as historical
 reference. They are **not** the slide figures and are **not** the index
 cards.
+
