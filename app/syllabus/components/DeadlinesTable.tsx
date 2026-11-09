@@ -1,5 +1,7 @@
 import { formatAgendaDate, formatWeekOf } from "../data/dates";
+import { CANVAS_QUIZ_WINDOWS_NOTE } from "../data/quiz-windows";
 import type { Deadline } from "../data/types";
+import QuizSectionWindows from "./QuizSectionWindows";
 import SyllabusSection from "./SyllabusSection";
 
 const KIND_LABEL: Record<Deadline["kind"], string> = {
@@ -34,6 +36,7 @@ export default function DeadlinesTable({
   return (
     <SyllabusSection id="deadlines" title="Shared deadlines">
       <p>{note}</p>
+      <p>{CANVAS_QUIZ_WINDOWS_NOTE}</p>
       <div className="overflow-x-auto rounded-md border border-neutral-200">
         <table className="w-full border-collapse text-left text-sm">
           <thead>
@@ -53,11 +56,16 @@ export default function DeadlinesTable({
                     : "border-b border-neutral-200"
                 }
               >
-                <td className="px-3 py-2 font-sans">
+                <td className="px-3 py-2 align-top font-sans">
                   {formatDeadlineDate(deadline)}
                 </td>
-                <td className="px-3 py-2">{KIND_LABEL[deadline.kind]}</td>
-                <td className="px-3 py-2">{deadline.label}</td>
+                <td className="px-3 py-2 align-top">{KIND_LABEL[deadline.kind]}</td>
+                <td className="px-3 py-2 align-top">
+                  {deadline.label}
+                  {deadline.kind === "quiz" ? (
+                    <QuizSectionWindows label={deadline.label} />
+                  ) : null}
+                </td>
               </tr>
             ))}
           </tbody>

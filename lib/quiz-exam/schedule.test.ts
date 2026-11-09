@@ -240,6 +240,15 @@ describe("answer-window copy", () => {
     const q2 = getQuizSchedule("q2");
     assert.ok(q2);
     assert.match(syllabusTakeWindowSentence(q2), /week of Oct 12/);
+    const q4 = getQuizSchedule("q4");
+    assert.ok(q4);
+    const q4Sentence = syllabusTakeWindowSentence(q4);
+    assert.match(q4Sentence, /week of Nov 9/);
+    assert.equal(quizWeekOfLabel("q4"), "Nov 9");
+    assert.doesNotMatch(
+      q4Sentence,
+      /Nov 15|Nov 16|Nov 18|Nov 23|November 15|November 16|November 23/,
+    );
   });
 
   it("tells closed graded quizzes they are taken in Canvas, with no answer dates", () => {
