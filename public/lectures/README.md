@@ -11,6 +11,11 @@ Kambaz **target** screenshot under `/images/book/kambaz/` (the same
 `BookFigure` assets as `app/book`). Place those slides **before** the
 code + live-demo pair for that screen. Do not invent UI mockups.
 
+Exception: the Lab 5 path, object, and array decks may set `imageSrc` to a
+Jose-approved request/response PNG under `/lectures/<slug>/*-diagram.png`,
+with `imageAlt` that describes the flow. Those files are the slide figures.
+They are not Google Slides crops and not index cards.
+
 `LECTURE_DIAGRAM_IDS` in `lib/lectures/types.ts` is the catalog of
 diagrams and product-UI mocks (browser chrome + key labels, not
 screenshots). Live React demos stay on `embed` (User card, Welcome

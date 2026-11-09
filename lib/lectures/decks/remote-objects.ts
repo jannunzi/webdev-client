@@ -49,6 +49,9 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
       "Goal: the browser shows the whole assignment as JSON",
       "Import into `Lab5/index.ts`",
     ],
+    imageSrc: "/lectures/remote-objects/remote-objects-slide4-diagram.png",
+    imageAlt:
+      "GET /lab5/assignment reads the in-memory assignment and res.json returns id, title NodeJS Assignment, description, due, completed, and score as JSON.",
   },
   {
     id: "assignment",
@@ -101,6 +104,9 @@ export default function WorkingWithRemoteObjects(app) {
       "In `WorkingWithRemoteObjects.ts`, add the route as shown below",
       "`/lab5/assignment/title` responds with just the string",
     ],
+    imageSrc: "/lectures/remote-objects/remote-objects-slide7-diagram.png",
+    imageAlt:
+      "GET /lab5/assignment/title reads assignment.title and res.json returns the JSON string NodeJS Assignment.",
     code: `const getAssignmentTitle = (req, res) => {
   res.json(assignment.title);
 };
@@ -131,6 +137,9 @@ app.get("/lab5/assignment/title", getAssignmentTitle);`,
       "A path segment writes `assignment.title`, then returns the object",
       "Refresh Get Assignment — the new title stays until reboot",
     ],
+    imageSrc: "/lectures/remote-objects/remote-objects-slide9-diagram.png",
+    imageAlt:
+      "GET /lab5/assignment/title/NewTitle sets req.params.newTitle, changes assignment.title from NodeJS Assignment to NewTitle, and res.json returns the updated object.",
     code: `const setAssignmentTitle = (req, res) => {
   const { newTitle } = req.params;
   assignment.title = newTitle;

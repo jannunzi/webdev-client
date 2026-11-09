@@ -1,6 +1,7 @@
 import type { CodeLineMarks } from "@/lib/code-block/lines";
 import {
   LECTURE_EMBED_IDS,
+  isBookKambazTargetSrc,
   lectureSlideCodeBlocks,
   type LectureCodeBlock,
   type LectureDiagramId,
@@ -476,7 +477,7 @@ export function isDemoStageSlide(slide: BlockSlide): boolean {
 
 /** Book target screenshot owns the stage — no code or live embed. */
 export function isTargetFigureSlide(slide: BlockSlide): boolean {
-  if (!slide.imageSrc) return false;
+  if (!isBookKambazTargetSrc(slide.imageSrc)) return false;
   return !slide.blocks.some(
     (block) => block.type === "code" || block.type === "component",
   );

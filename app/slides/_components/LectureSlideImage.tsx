@@ -10,6 +10,7 @@ export default function LectureSlideImage({
   caption,
   captionLoc,
   stage = false,
+  flow = false,
 }: {
   src: string;
   alt: string;
@@ -17,6 +18,8 @@ export default function LectureSlideImage({
   captionLoc?: InlineLoc;
   /** Fill the lecture stage — used for book Canvas/Kambaz target screenshots. */
   stage?: boolean;
+  /** Request/response PNG. The slide CSS scales it into the leftover stage. */
+  flow?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
 
@@ -30,10 +33,14 @@ export default function LectureSlideImage({
     );
   }
 
-  const frame = stage
+  const frame = flow
+    ? "lecture-flow-figure"
+    : stage
     ? "lecture-target-figure my-3 w-full max-h-[min(72vh,46rem)] overflow-hidden rounded border border-neutral-300 bg-white shadow-sm"
     : "my-4 max-h-[min(42vh,24rem)] w-full max-w-full overflow-hidden rounded border border-neutral-300 bg-white shadow-sm";
-  const image = stage
+  const image = flow
+    ? "lecture-flow-image"
+    : stage
     ? "mx-auto max-h-[min(64vh,40rem)] w-auto max-w-full object-contain"
     : "mx-auto max-h-[min(42vh,24rem)] w-auto max-w-full object-contain";
 

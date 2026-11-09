@@ -1115,7 +1115,7 @@ const LECTURE_SUMMARIES: Record<
     slides: KAMBAZ_ACCOUNT_REST_SLIDES,
   },
   "kambaz-sessions": {
-    title: "Sessions and Axios",
+    title: "Server Sessions",
     summary:
       "express-session, CORS credentials, req.session.currentUser, and axios withCredentials.",
     chapter: 5,

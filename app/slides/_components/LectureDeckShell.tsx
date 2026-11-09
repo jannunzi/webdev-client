@@ -11,6 +11,7 @@ import {
   type BlockSlide,
 } from "@/lib/lectures/blocks";
 import {
+  isBookKambazTargetSrc,
   lectureChapterLabel,
   type LectureCoverIcon,
   type LectureHubItem,
@@ -212,6 +213,15 @@ function replaceLocation({
   }
 }
 
+/** Tall code sits beside the diagram. Shorter slides stack and let the PNG take the rest. */
+function flowDiagramPlacement(slide: BlockSlide): "side" | "below" | undefined {
+  if (!slide.imageSrc || isBookKambazTargetSrc(slide.imageSrc)) return undefined;
+  if (!slide.imageSrc.includes("-diagram.png")) return undefined;
+  const code = slide.blocks.find((block) => block.type === "code");
+  const lines = code?.type === "code" ? code.code.split("\n").length : 0;
+  return lines >= 10 ? "side" : "below";
+}
+
 function titleClasses({
   kind,
 }: {
@@ -255,6 +265,7 @@ export default function LectureDeckShell({
   const density = slide ? authoredSlideDensity(slide) : "spacious";
   const demoStage = slide ? isDemoStageSlide(slide) : false;
   const targetFigure = slide ? isTargetFigureSlide(slide) : false;
+  const flowPlacement = slide ? flowDiagramPlacement(slide) : undefined;
   const chapterNumber = chapter ?? prevDeck?.chapter ?? nextDeck?.chapter;
   const isPresenting = isNativeFullscreen || fallbackPresent;
   fallbackPresentRef.current = fallbackPresent;
@@ -681,6 +692,7 @@ export default function LectureDeckShell({
           data-slide-kind={kind}
           data-demo-stage={demoStage ? "true" : undefined}
           data-target-figure={targetFigure ? "true" : undefined}
+          data-flow-diagram={flowPlacement}
           data-lecture-present={
             fallbackPresent ? "fallback" : isNativeFullscreen ? "native" : undefined
           }
@@ -713,7 +725,7 @@ export default function LectureDeckShell({
             </>
           ) : (<>
           <p
-            className={`m-0 text-sm font-semibold uppercase tracking-wide sm:text-base ${
+            className={`lecture-slide-kicker m-0 text-sm font-semibold uppercase tracking-wide sm:text-base ${
               kind === "title" ? "text-neutral-300" : "text-neutral-500"
             }`}
           >
@@ -760,6 +772,7 @@ export default function LectureDeckShell({
               caption={slide.imageCaption}
               captionLoc={slide.captionLoc}
               stage={targetFigure}
+              flow={Boolean(flowPlacement)}
             />
           ) : null}
           {slide.interactiveHint ? (
