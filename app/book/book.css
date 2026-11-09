@@ -1020,6 +1020,18 @@ html.lecture-presenting body {
   text-wrap: balance;
   overflow-wrap: normal;
 }
+/* Per-cover stacked headline (lab5-env). Does not change the balanced covers. */
+.lecture-cover-headline-stacked {
+  width: max-content;
+  max-width: none;
+  line-height: 0.92;
+  text-wrap: wrap;
+  text-align: center;
+}
+.lecture-cover-headline-line {
+  display: block;
+  white-space: nowrap;
+}
 .lecture-cover-brand {
   position: absolute;
   bottom: 1rem;

@@ -93,18 +93,18 @@ app.listen(4000);`,
     code: `import type { Express, Request, Response } from "express";
 
 export default function Hello(app: Express) {
-  const sayHello = (req: Request, res: Response) => {
-    res.send("Life is good!");
+  const helloWorld = (req: Request, res: Response) => {
+    res.send("Hello World!");
   };
   const sayWelcome = (req: Request, res: Response) => {
     res.send("Welcome to Full Stack Development!");
   };
-  app.get("/hello", sayHello);
+  app.get("/hello", helloWorld);
   app.get("/", sayWelcome);
 }`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Hello.ts",
-    codeHighlightLines: [1, 3, [10, 11]],
+    codeAddedLines: [4, 5, 10],
   },
   {
     id: "wire-hello",
@@ -138,7 +138,7 @@ app.listen(4000);`,
   },
   {
     id: "next-up",
-    title: "Next: Configuring Environment Variables",
+    title: "Next: ENVIRONMENT VARIABLES",
     kind: "title",
     bullets: [
       "A welcome route, then never hard-code localhost",
