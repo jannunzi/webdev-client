@@ -58,7 +58,8 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
     bullets: [
       "`fetch` is the browser's built-in function for HTTP requests",
       "It returns a promise of a Response. Call `response.json()` to read JSON",
-      "Axios comes later: `axios.get` does the same with less code",
+      "Same job as the `axios.get` calls from the browser earlier, but built in",
+      "With fetch, call `response.json()` yourself. Axios hands you `response.data`",
     ],
     code: `const response = await fetch("/api/lab5/hello");
 const data = await response.json();`,

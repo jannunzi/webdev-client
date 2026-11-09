@@ -11,8 +11,9 @@ Kambaz **target** screenshot under `/images/book/kambaz/` (the same
 `BookFigure` assets as `app/book`). Place those slides **before** the
 code + live-demo pair for that screen. Do not invent UI mockups.
 
-Exception: the Lab 5 path, object, and array decks may set `imageSrc` to a
-Jose-approved request/response PNG under `/lectures/<slug>/*-diagram.png`,
+Exception: the Lab 5 path, object, array, and HTTP-server decks may set
+`imageSrc` to a Jose-approved request/response PNG under
+`/lectures/<slug>/*-diagram.png`,
 with `imageAlt` that describes the flow. Those files are the slide figures.
 They are not Google Slides crops and not index cards.
 

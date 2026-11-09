@@ -741,7 +741,6 @@ export const LECTURE_DIAGRAM_IDS = [
   "openai-roles-flow",
   "xai-key-mock",
   "grok-token-flow",
-  "http-request-flow",
   "env-same-code",
 ] as const;
 

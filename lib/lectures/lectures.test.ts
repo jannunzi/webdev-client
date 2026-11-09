@@ -3587,7 +3587,7 @@ describe("lecture decks", () => {
       "chatgpt-api": { project: "openai-project-key-mock" },
       "chatgpt-text": { "roles-code": "openai-roles-flow" },
       "grok-api": { tokens: "grok-token-flow", key: "xai-key-mock" },
-      "http-server": { sibling: "two-ports", "request-trip": "http-request-flow" },
+      "http-server": { sibling: "two-ports" },
       "lab5-env": { purpose: "env-same-code" },
     } as const;
 
@@ -3616,7 +3616,7 @@ describe("lecture decks", () => {
       for (const slide of deck.slides) {
         if (slide.imageSrc) {
           const flowPng =
-            /^\/lectures\/(?:path-and-query|remote-objects|remote-arrays)\/[\w.-]+-diagram\.png$/.test(
+            /^\/lectures\/(?:path-and-query|remote-objects|remote-arrays|http-server)\/[\w.-]+-diagram\.png$/.test(
               slide.imageSrc,
             );
           assert.ok(
@@ -3653,20 +3653,22 @@ describe("lecture decks", () => {
       ["remote-objects", "assignment-intro", "/lectures/remote-objects/remote-objects-slide4-diagram.png"],
       ["remote-objects", "title-get", "/lectures/remote-objects/remote-objects-slide7-diagram.png"],
       ["remote-objects", "title-put", "/lectures/remote-objects/remote-objects-slide9-diagram.png"],
-      ["remote-arrays", "get-all", "/lectures/remote-arrays/remote-arrays-slide2-diagram.png"],
+      ["remote-arrays", "client", "/lectures/remote-arrays/remote-arrays-slide2-diagram.png"],
       ["remote-arrays", "id-how", "/lectures/remote-arrays/remote-arrays-slide5-diagram.png"],
       ["remote-arrays", "client-filter", "/lectures/remote-arrays/remote-arrays-slide9-diagram.png"],
       ["remote-arrays", "create-delete-intro", "/lectures/remote-arrays/remote-arrays-slide10-diagram.png"],
       ["remote-arrays", "client-create", "/lectures/remote-arrays/remote-arrays-slide10-diagram.png"],
       ["remote-arrays", "client-remove", "/lectures/remote-arrays/remote-arrays-slide13-diagram.png"],
+      ["http-server", "request-trip", "/lectures/http-server/request-trip-diagram.png"],
     ] as const;
     for (const [slug, id, src] of placed) {
       const slide = findSlide(slug, id);
       assert.equal(slide.imageSrc, src, `${slug}#${id}`);
       assert.match(slide.imageAlt ?? "", /\S/);
     }
-    // #slide-2 is the purpose slide; the GET /lab5/todos figure belongs on get-all.
+    // #slide-2 is purpose and #slide-3 is the get-all code. The GET /lab5/todos figure is on the next slide.
     assert.equal(findSlide("remote-arrays", "purpose").imageSrc, undefined);
+    assert.equal(findSlide("remote-arrays", "get-all").imageSrc, undefined);
     const routes = getLectureDeck("next-routes")!.slides.map((slide) => slide.id);
     const hello = routes.indexOf("hello-ui");
     assert.equal(routes[hello - 1], "fetch");
