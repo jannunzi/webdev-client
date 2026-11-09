@@ -7,10 +7,12 @@ import {
   type AppRouterInstance,
 } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import OfficeHoursPage from "../../office-hours/page.tsx";
+import SyllabusOfficeHours from "../components/OfficeHours.tsx";
 import { course } from "./course.ts";
 import {
   instructorOfficeBlocks,
   instructorOfficeHourRows,
+  officeHourColumns,
   officeHourRows,
   officeHoursPlaceholder,
 } from "./officeHours.ts";
@@ -30,14 +32,30 @@ function markup(node: ReactNode): string {
   );
 }
 
+function assertPlainScheduleCopy(text: string) {
+  assert.doesNotMatch(text, /Actual times are announced weekly/);
+  assert.doesNotMatch(text, /Typical recent slot/);
+  assert.doesNotMatch(text, /\btypical\b/i);
+  assert.doesNotMatch(text, /\brecent\b/i);
+  assert.doesNotMatch(text, /\babout\b/i);
+  assert.doesNotMatch(text, /\blatest\b/i);
+  assert.doesNotMatch(text, /not guaranteed/i);
+  assert.doesNotMatch(text, /time not yet posted/);
+  assert.doesNotMatch(text, /join link not yet posted/);
+  assert.doesNotMatch(text, /no join link/i);
+  assert.doesNotMatch(text, /no link posted/i);
+  assert.doesNotMatch(text, /join link is published/i);
+}
+
 describe("instructor office hours", () => {
-  it("keeps Monday and Wednesday at 3:00–4:00pm ET in person, with no room", () => {
+  it("keeps Monday and Wednesday at 3:00–4:00pm ET in Meserve Hall 052", () => {
     const block = instructorOfficeBlocks.find((item) => item.id === "mon-wed-in-person");
     assert.ok(block);
     assert.equal(block.days, "Monday and Wednesday");
     assert.equal(block.time, "3:00–4:00pm ET");
     assert.equal(block.modality, "in-person");
-    assert.equal(block.place, undefined);
+    assert.equal(block.place, "Meserve Hall 052 (basement)");
+    assert.doesNotMatch(block.place, /105|Shillman/);
   });
 
   it("keeps Thursday and Friday on Zoom with no clock time and no join link", () => {
@@ -50,7 +68,7 @@ describe("instructor office hours", () => {
     assert.equal(instructorOfficeBlocks.length, 2);
   });
 
-  it("preserves the posted instructor email and leaves his room and Zoom unset", () => {
+  it("preserves the posted instructor email, room, and unposted Zoom time", () => {
     const rows = instructorOfficeHourRows(course.instructor);
     assert.equal(course.instructor.email, "j.annunziato@northeastern.edu");
     assert.equal(rows.length, 2);
@@ -60,14 +78,20 @@ describe("instructor office hours", () => {
       assert.equal(row.contact, "j.annunziato@northeastern.edu");
     }
     assert.equal(rows[0]?.hours, "Monday and Wednesday, 3:00–4:00pm ET");
-    assert.equal(rows[0]?.location, "In person — room not yet posted");
-    assert.equal(rows[1]?.hours, "Thursday and Friday on Zoom — time not yet posted");
-    assert.equal(rows[1]?.location, "Zoom — join link not yet posted");
-    assert.match(officeHoursPlaceholder, /not a guaranteed recurring schedule/);
-    assert.match(officeHoursPlaceholder, /announced weekly/);
-    assert.match(officeHoursPlaceholder, /Microsoft Teams/);
-    assert.match(officeHoursPlaceholder, /No join link is published/);
-    assert.doesNotMatch(officeHoursPlaceholder, /3:00–4:00pm/);
+    assert.equal(rows[0]?.location, "Meserve Hall 052 (basement)");
+    assert.equal(rows[1]?.hours, "Thursday and Friday on Zoom");
+    assert.equal(
+      rows[1]?.location,
+      "An invite with the Zoom link will be posted on Piazza.",
+    );
+    assert.doesNotMatch(rows[1]?.location ?? "", /zoom\.us|https?:/);
+    assert.equal(
+      officeHoursPlaceholder,
+      "Teaching assistants meet on Microsoft Teams. Check that section’s Piazza announcements or email the TA for how to join.",
+    );
+    assertPlainScheduleCopy(
+      `${officeHoursPlaceholder}\n${rows.map((row) => `${row.hours} ${row.location}`).join("\n")}`,
+    );
   });
 
   it("records each section's recent TA slots and verified emails, without join links", () => {
@@ -77,8 +101,7 @@ describe("instructor office hours", () => {
     const shloka = byName["Shloka Shreyans Trivedi"];
     assert.equal(shloka?.role, "Teaching assistant, CS 4550-01");
     assert.equal(shloka?.contact, "trivedi.shl@northeastern.edu");
-    assert.match(shloka?.hours ?? "", /about 10:00am–2:00pm ET/);
-    assert.match(shloka?.hours ?? "", /Typical recent slot/);
+    assert.equal(shloka?.hours, "Thursday and Friday, 10:00am–2:00pm ET");
 
     const anurag = byName["Anurag Bheemappa Gnanamurthy"];
     assert.equal(anurag?.role, "Teaching assistant, CS 4550-01");
@@ -95,8 +118,7 @@ describe("instructor office hours", () => {
     const aryan = byName["Aryan Alpesh Mehta"];
     assert.equal(aryan?.role, "Teaching assistant, CS 5610-02");
     assert.equal(aryan?.contact, "mehta.arya@northeastern.edu");
-    assert.match(aryan?.hours ?? "", /No fixed slot/);
-    assert.match(aryan?.hours ?? "", /weekends/);
+    assert.equal(aryan?.hours, "Weekends; day and time vary");
     assert.doesNotMatch(aryan?.hours ?? "", /\d:00/);
 
     const tanishq = byName["Tanishq Neela"];
@@ -118,7 +140,7 @@ describe("instructor office hours", () => {
 
     for (const row of officeHourRows) {
       if (row.name === "Giuseppe Marotta") continue;
-      assert.equal(row.location, "Microsoft Teams — no join link posted");
+      assert.equal(row.location, "Microsoft Teams");
       assert.match(row.contact, /@northeastern\.edu$/);
     }
     const joined = officeHourRows
@@ -126,16 +148,28 @@ describe("instructor office hours", () => {
       .join("\n");
     assert.doesNotMatch(joined, /https?:|teams\.microsoft|zoom\.us|\d{10,}/);
     assert.doesNotMatch(joined, /phone/i);
+    assertPlainScheduleCopy(joined);
   });
 
-  it("renders the confirmed schedule without a room, join link, or unpublished meeting id", () => {
+  it("renders the room and Piazza Zoom note without a join URL or posted time", () => {
     const html = markup(createElement(OfficeHoursPage));
     assert.match(html, /All times are America\/New_York \(Eastern Time\)/);
     assert.match(html, /Monday and Wednesday, 3:00–4:00pm ET/);
-    assert.match(html, /In person — room not yet posted/);
-    assert.match(html, /Thursday and Friday on Zoom — time not yet posted/);
-    assert.match(html, /Zoom — join link not yet posted/);
-    assert.match(html, /not a guaranteed recurring schedule/);
+    assert.match(html, /Meserve Hall 052 \(basement\)/);
+    assert.match(html, /Thursday and Friday on Zoom/);
+    assert.match(html, /An invite with the Zoom link will be posted on Piazza/);
+    assert.match(html, /Thursday and Friday, 10:00am–2:00pm ET/);
+    assert.match(html, /Friday evenings, starting 7:00pm ET; end time varies/);
+    assert.match(html, /Weekends; day and time vary/);
+    assert.match(
+      html,
+      /Teaching assistants meet on Microsoft Teams\. Check that section/,
+    );
+    assert.doesNotMatch(html, /join link not yet posted/);
+    assert.doesNotMatch(html, /room not yet posted/);
+    assert.doesNotMatch(html, /not a guaranteed/);
+    assert.doesNotMatch(html, /guaranteed recurring/);
+    assertPlainScheduleCopy(html);
     assert.match(html, /href="mailto:j\.annunziato@northeastern\.edu"/);
     assert.match(html, /href="mailto:trivedi\.shl@northeastern\.edu"/);
     assert.match(html, /href="mailto:bheemappagnanamurt\.a@northeastern\.edu"/);
@@ -156,5 +190,29 @@ describe("instructor office hours", () => {
     assert.doesNotMatch(html, /WVH/);
     assert.doesNotMatch(html, /Teaching assistants — TBA/);
     assert.doesNotMatch(html, /24\/7/);
+  });
+
+  it("uses the same plain schedule copy in the syllabus office-hours section", () => {
+    const html = markup(
+      createElement(SyllabusOfficeHours, {
+        rows: officeHourRows,
+        columns: officeHourColumns,
+        placeholder: officeHoursPlaceholder,
+      }),
+    );
+    assert.match(
+      html,
+      /Teaching assistants meet on Microsoft Teams\. Check that section’s Piazza announcements or email the TA for how to join\./,
+    );
+    assert.match(html, /Thursday and Friday, 10:00am–2:00pm ET/);
+    assert.match(html, /Fridays, 5:00–11:00pm ET/);
+    assert.match(html, /Friday evenings, starting 7:00pm ET; end time varies/);
+    assert.match(html, /Weekends; day and time vary/);
+    assert.match(html, /Monday and Wednesday, 7:00–11:00am ET/);
+    assert.match(html, /Thursday and Friday, 7:00–11:00am ET/);
+    assert.match(html, /href="mailto:trivedi\.shl@northeastern\.edu"/);
+    assert.match(html, /href="\/office-hours"/);
+    assertPlainScheduleCopy(html);
+    assert.doesNotMatch(html, /7:00–9:00|7:00–11:00pm|7–9|7–11/);
   });
 });
