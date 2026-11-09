@@ -1,7 +1,6 @@
 import type { LectureDiagramId } from "@/lib/lectures/types";
 import ClientServerDiagram from "./ClientServerDiagram";
 import EnvSameCodeDiagram from "./EnvSameCodeDiagram";
-import HttpRequestFlow from "./HttpRequestFlow";
 import TwoPortsDiagram from "./TwoPortsDiagram";
 import CourseStackDiagram from "./CourseStackDiagram";
 import CsrDiagram from "./CsrDiagram";
@@ -94,8 +93,6 @@ export default function LectureDiagram({ id }: { id: LectureDiagramId }) {
       return <XaiKeyMock />;
     case "grok-token-flow":
       return <GrokTokenFlow />;
-    case "http-request-flow":
-      return <HttpRequestFlow />;
     case "env-same-code":
       return <EnvSameCodeDiagram />;
     default: {
