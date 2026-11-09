@@ -3109,6 +3109,12 @@ describe("lecture decks", () => {
     assert.match(params, /wd-query-parameter-add/);
 
     const objects = slideText("remote-objects");
+    assert.equal(findSlide("remote-objects", "title").cover?.headline, "Remote Objects");
+    assert.equal(findSlide("remote-objects", "title").cover?.stackWords, true);
+    assert.equal(findSlide("remote-objects", "title").cover?.headlineScale, 2);
+    assert.equal(findSlide("remote-arrays", "title").cover?.headline, "Remote Arrays");
+    assert.equal(findSlide("remote-arrays", "title").cover?.stackWords, true);
+    assert.equal(findSlide("remote-arrays", "title").cover?.headlineScale, 2);
     assert.match(objects, /res\.json/);
     assert.match(objects, /\/lab5\/assignment/);
     assert.match(objects, /assignment\.title/);
