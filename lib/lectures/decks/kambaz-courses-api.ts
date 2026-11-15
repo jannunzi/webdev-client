@@ -140,6 +140,36 @@ export const findMyCourses = async () => {
     embed: "kambaz-styled-dashboard",
   },
   {
+    id: "create-dao",
+    title: "Adding Course Create and Enroll",
+    kind: "demo",
+    bullets: [
+      "In `Courses/dao.ts`, add create as shown below",
+      "In `Enrollments/dao.ts`, add enroll as shown below",
+    ],
+    codeBlocks: [
+      {
+        file: "webdev-server/Kambaz/Courses/dao.ts",
+        language: "ts",
+        code: `function createCourse(course) {
+  const newCourse = { ...course, _id: uuidv4() };
+  db.courses = [...db.courses, newCourse];
+  return newCourse;
+}`,
+        addedLines: [[1, 5]],
+      },
+      {
+        file: "webdev-server/Kambaz/Enrollments/dao.ts",
+        language: "ts",
+        code: `function enrollUserInCourse(userId, courseId) {
+  const { enrollments } = db;
+  enrollments.push({ _id: uuidv4(), user: userId, course: courseId });
+}`,
+        addedLines: [[1, 4]],
+      },
+    ],
+  },
+  {
     id: "create-route",
     title: "Enrolling the Course Creator",
     kind: "demo",

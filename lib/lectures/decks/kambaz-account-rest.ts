@@ -153,6 +153,21 @@ const signin = async () => {
     embed: "kambaz-styled-signin",
   },
   {
+    id: "signup-client",
+    title: "Adding Signup to the Account Client",
+    kind: "demo",
+    bullets: [
+      "In `account/client.ts`, add signup as shown below",
+    ],
+    code: `export const signup = async (user: { username: string; password: string }) => {
+  const response = await axiosWithCredentials.post(\`\${USERS_API}/signup\`, user);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/account/client.ts",
+    codeAddedLines: [[1, 4]],
+  },
+  {
     id: "signup-ui",
     title: "Storing the Signed-Up User",
     kind: "demo",
@@ -172,6 +187,19 @@ const signin = async () => {
       "Submit lands on Profile as the new user",
     ],
     embed: "kambaz-ch4-signup",
+  },
+  {
+    id: "find-by-username",
+    title: "Finding a User by Username",
+    kind: "demo",
+    bullets: [
+      "In `Users/dao.ts`, add the lookup as shown below",
+    ],
+    code: `const findUserByUsername = (username) =>
+  users.find((user) => user.username === username);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
+    codeAddedLines: [[1, 2]],
   },
   {
     id: "signup-profile-intro",

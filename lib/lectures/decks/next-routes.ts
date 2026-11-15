@@ -32,7 +32,8 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
     title: "Writing a GET Route Handler",
     kind: "demo",
     bullets: [
-      "Not Express `/lab5/welcome`. Next.js serves this on 3000",
+      "Earlier, the Express server on port 4000 answered `/lab5/welcome`",
+      "This route is served by the Next.js app itself on port 3000",
       "`Response.json(obj)` turns the object into a JSON string and marks the reply as JSON",
     ],
     code: `export async function GET() {
