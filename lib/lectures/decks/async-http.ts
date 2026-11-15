@@ -208,6 +208,26 @@ export const fetchWelcomeMessage = async () => {
     embed: "lab5-http-client",
   },
   {
+    id: "assignment-client",
+    title: "Adding Assignment Requests to the Client",
+    kind: "demo",
+    bullets: [
+      "In `client.ts`, add the assignment requests as shown below",
+    ],
+    code: `const ASSIGNMENT_API = \`\${HTTP_SERVER}/lab5/assignment\`;
+export const fetchAssignment = async () => {
+  const response = await axios.get(ASSIGNMENT_API);
+  return response.data;
+};
+export const updateTitle = async (title: string) => {
+  const response = await axios.get(\`\${ASSIGNMENT_API}/title/\${title}\`);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/labs/lab5/client.ts",
+    codeAddedLines: [[1, 8]],
+  },
+  {
     id: "objects-async",
     title: "Updating Remote Objects Asynchronously",
     kind: "demo",
