@@ -1,5 +1,6 @@
 import type { LectureDiagramId } from "@/lib/lectures/types";
 import ClientServerDiagram from "./ClientServerDiagram";
+import AccountDaoDiagram from "./AccountDaoDiagram";
 import EnvSameCodeDiagram from "./EnvSameCodeDiagram";
 import TwoPortsDiagram from "./TwoPortsDiagram";
 import CourseStackDiagram from "./CourseStackDiagram";
@@ -95,6 +96,8 @@ export default function LectureDiagram({ id }: { id: LectureDiagramId }) {
       return <GrokTokenFlow />;
     case "env-same-code":
       return <EnvSameCodeDiagram />;
+    case "account-dao":
+      return <AccountDaoDiagram />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;

@@ -742,6 +742,7 @@ export const LECTURE_DIAGRAM_IDS = [
   "xai-key-mock",
   "grok-token-flow",
   "env-same-code",
+  "account-dao",
 ] as const;
 
 export type LectureDiagramId = (typeof LECTURE_DIAGRAM_IDS)[number];

@@ -47,6 +47,15 @@ export const KAMBAZ_ACCOUNT_REST_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "dao-architecture",
+    title: "From the Account UI to the JSON",
+    kind: "demo",
+    bullets: [
+      "Four hops: uses, HTTP requests, calls, then reads/writes",
+    ],
+    diagram: "account-dao",
+  },
+  {
     id: "dao",
     title: "Writing the Users DAO Functions",
     kind: "demo",
