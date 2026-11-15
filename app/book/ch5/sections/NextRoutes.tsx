@@ -208,11 +208,28 @@ useEffect(() => {
           <code>b</code>, and <code>operation</code>.
           Invalid inputs like missing numbers or an unrecognized
           operation return error messages with the appropriate status
-          code — 400 for a bad request. A request to{" "}
-          <LocalUrl href="/api/lab5/calculator?a=10&b=5&operation=add" />{" "}
-          should produce{" "}
+          code — 400 for a bad request. These four requests use{" "}
+          <code>a = 10</code> and <code>b = 5</code>. Add should
+          produce{" "}
           <code>{`{ "a": 10, "b": 5, "operation": "add", "result": 15 }`}</code>
-          . Extend the switch with multiply and divide so the four
+          .
+        </p>
+        <ul>
+          <li>
+            <LocalUrl href="/api/lab5/calculator?a=10&b=5&operation=add" />
+          </li>
+          <li>
+            <LocalUrl href="/api/lab5/calculator?a=10&b=5&operation=subtract" />
+          </li>
+          <li>
+            <LocalUrl href="/api/lab5/calculator?a=10&b=5&operation=multiply" />
+          </li>
+          <li>
+            <LocalUrl href="/api/lab5/calculator?a=10&b=5&operation=divide" />
+          </li>
+        </ul>
+        <p>
+          Extend the switch with multiply and divide so the four
           operations match the Express calculator you already built in{" "}
           <code>Lab5/QueryParameters.ts</code>.
         </p>
