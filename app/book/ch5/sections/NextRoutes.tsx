@@ -202,8 +202,9 @@ useEffect(() => {
           constructing a new{" "}
           <code>URL(request.url)</code>, but the meaning is the same:
           read three strings, parse the numbers, and decide what to do.
-          Store that object in <code>params</code>{" "}and call{" "}
-          <code>params.get</code>{" "}for <code>a</code>,{" "}
+          Destructure <code>searchParams</code>{" "}from{" "}
+          <code>request.nextUrl</code>, then call{" "}
+          <code>searchParams.get</code>{" "}for <code>a</code>,{" "}
           <code>b</code>, and <code>operation</code>.
           Invalid inputs like missing numbers or an unrecognized
           operation return error messages with the appropriate status
@@ -220,10 +221,10 @@ useEffect(() => {
           name="calculator"
           file="app/api/lab5/calculator/route.ts"
         >{`export async function GET(request: NextRequest) {
-  const params = request.nextUrl.searchParams;
-  const a = parseFloat(params.get("a") ?? "");
-  const b = parseFloat(params.get("b") ?? "");
-  const operation = params.get("operation");
+  const { searchParams } = request.nextUrl;
+  const a = parseFloat(searchParams.get("a") ?? "");
+  const b = parseFloat(searchParams.get("b") ?? "");
+  const operation = searchParams.get("operation");
   if (Number.isNaN(a) || Number.isNaN(b)) {
     return Response.json({ error: "Invalid numbers" }, { status: 400 });
   }

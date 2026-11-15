@@ -1,10 +1,10 @@
 import type { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const params = request.nextUrl.searchParams;
-  const a = parseFloat(params.get("a") ?? "");
-  const b = parseFloat(params.get("b") ?? "");
-  const operation = params.get("operation");
+  const { searchParams } = request.nextUrl;
+  const a = parseFloat(searchParams.get("a") ?? "");
+  const b = parseFloat(searchParams.get("b") ?? "");
+  const operation = searchParams.get("operation");
   if (Number.isNaN(a) || Number.isNaN(b)) {
     return Response.json({ error: "Invalid numbers" }, { status: 400 });
   }
