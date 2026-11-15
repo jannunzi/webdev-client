@@ -1367,7 +1367,7 @@ describe("lecture decks", () => {
     assert.equal(counts["next-routes"], 28);
     assert.equal(counts["ch5-check-understanding"], 7);
     assert.equal(counts["kambaz-migrate-db"], 7);
-    assert.equal(counts["kambaz-account-rest"], 18);
+    assert.equal(counts["kambaz-account-rest"], 17);
     assert.equal(counts["kambaz-sessions"], 12);
     assert.equal(counts["kambaz-courses-api"], 15);
     assert.equal(counts["deploy-api"], 8);
@@ -3169,15 +3169,15 @@ describe("lecture decks", () => {
     const daoIntro = findSlide("kambaz-account-rest", "dao-intro").bullets ?? [];
     assert.match(daoIntro[0] ?? "", /Data Access Object \(DAO\) is a design pattern/);
     assert.equal(findSlide("kambaz-account-rest", "dao-intro").density, undefined);
-    assert.equal(findSlide("kambaz-account-rest", "uuid-install").code, "npm install uuid");
+    assert.equal(findSlide("kambaz-account-rest", "dao").codeBlocks?.[0]?.code, "npm install uuid");
     assert.doesNotMatch(daoIntro.join("\n"), /npm install uuid/);
+    assert.match(findSlide("kambaz-account-rest", "signup-profile").code ?? "", /findUserByUsername/);
     assert.match(daoIntro.join("\n"), /findUserByUsername/);
     assert.match(daoIntro.join("\n"), /later chapter uses a database/);
     assert.doesNotMatch(daoIntro.join("\n"), /MongoDB|Mongoose/);
-    assert.equal(
-      getLectureDeck("kambaz-account-rest")!.slides.map((slide) => slide.id).indexOf("dao"),
-      getLectureDeck("kambaz-account-rest")!.slides.map((slide) => slide.id).indexOf("dao-intro") + 1,
-    );
+    const accountIds = getLectureDeck("kambaz-account-rest")!.slides.map((slide) => slide.id);
+    assert.equal(accountIds[accountIds.indexOf("dao-intro") + 1], "dao-architecture");
+    assert.equal(accountIds[accountIds.indexOf("dao-architecture") + 1], "dao");
     assert.match(accountRest, /\/api\/users\/signin/);
     assert.match(accountRest, /setCurrentUser/);
     assert.match(accountRest, /findUserByCredentials/);
@@ -3619,6 +3619,7 @@ describe("lecture decks", () => {
       "grok-api": { tokens: "grok-token-flow", key: "xai-key-mock" },
       "http-server": { sibling: "two-ports" },
       "lab5-env": { purpose: "env-same-code" },
+      "kambaz-account-rest": { "dao-architecture": "account-dao" },
     } as const;
 
     const used = new Set<string>();
@@ -4082,6 +4083,9 @@ describe("explanation text never buries the code", () => {
         if (deck.slug === "next-routes" && slide.id === "hello-ui-intro" && code.id === "fetch") {
           assert.equal(deck.slides[index + 2]?.id, "fetch-styles");
           code = deck.slides[index + 3]!;
+        }
+        if (deck.slug === "kambaz-account-rest" && slide.id === "dao-intro" && code.id === "dao-architecture") {
+          code = deck.slides[index + 2]!;
         }
         assert.equal(code.id, base, `${deck.slug}#${slide.id} comes right before ${base}`);
         assert.ok(code.code || code.codeBlocks?.length, `${deck.slug}#${base} has the code`);

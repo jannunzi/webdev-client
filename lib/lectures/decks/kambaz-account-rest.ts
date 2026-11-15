@@ -27,14 +27,6 @@ export const KAMBAZ_ACCOUNT_REST_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "uuid-install",
-    title: "Installing the uuid Package",
-    kind: "demo",
-    bullets: ["In the Node.js project, install uuid as shown below"],
-    code: "npm install uuid",
-    codeLanguage: "bash",
-  },
-  {
     id: "dao-intro",
     title: "Defining a Data Access Object",
     kind: "demo",
@@ -45,6 +37,15 @@ export const KAMBAZ_ACCOUNT_REST_SLIDES: LectureSlide[] = [
       "Swapping storage does not change the routes",
       "This DAO reads in-memory JSON. A later chapter uses a database with the same routes",
     ],
+  },
+  {
+    id: "dao-architecture",
+    title: "From the Account UI to the JSON",
+    kind: "demo",
+    bullets: [
+      "Four hops: uses, HTTP requests, calls, then reads/writes",
+    ],
+    diagram: "account-dao",
   },
   {
     id: "dao",
@@ -65,6 +66,12 @@ export default function UsersDao(db) {
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/dao.ts",
     codeHighlightLines: [[4, 8], [9, 10]],
+    codeBlocks: [
+      {
+        language: "bash",
+        code: "npm install uuid",
+      },
+    ],
   },
   {
     id: "routes",
@@ -200,19 +207,6 @@ const signin = async () => {
     embed: "kambaz-ch4-signup",
   },
   {
-    id: "find-by-username",
-    title: "Finding a User by Username",
-    kind: "demo",
-    bullets: [
-      "In `Users/dao.ts`, add the lookup as shown below",
-    ],
-    code: `const findUserByUsername = (username) =>
-  users.find((user) => user.username === username);`,
-    codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Users/dao.ts",
-    codeAddedLines: [[1, 2]],
-  },
-  {
     id: "signup-profile-intro",
     title: "Implementing Signup and Profile",
     kind: "demo",
@@ -225,7 +219,16 @@ const signin = async () => {
     id: "signup-profile",
     title: "Handling Duplicates and Updates",
     kind: "demo",
-    code: `const signup = (req, res) => {
+    code: `const findUserByUsername = (username) =>
+  users.find((user) => user.username === username);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
+    codeAddedLines: [[1, 2]],
+    codeBlocks: [
+      {
+        language: "ts",
+        file: "webdev-server/Kambaz/Users/routes.ts",
+        code: `const signup = (req, res) => {
   const user = dao.findUserByUsername(req.body.username);
   if (user) {
     res.status(400).json({ message: "Username already in use" });
@@ -235,9 +238,9 @@ const signin = async () => {
   res.json(currentUser);
 };
 app.post("/api/users/signup", signup);`,
-    codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Users/routes.ts",
-    codeHighlightLines: [[3, 6]],
+        highlightLines: [[3, 6]],
+      },
+    ],
   },
   {
     id: "recap",
