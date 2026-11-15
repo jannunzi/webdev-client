@@ -1058,72 +1058,160 @@ html.lecture-presenting body {
 }
 
 /*
- * Lab 5 request/response PNGs share the 1280×800 stage with the existing
- * copy. Below: the figure takes leftover height. Side: tall code stays
- * full width of the left column and the PNG sits beside it.
+ * Every diagram — authored SVG and request/response PNG — sits under the
+ * copy and grows into the leftover height. The graphic scales uniformly
+ * inside that slot (see DiagramFit) and does not spill past the slide.
  */
-.lecture-slide[data-flow-diagram="below"] {
+.lecture-slide[data-diagram-fit="stack"] {
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
-.lecture-slide[data-flow-diagram="below"] > :not(.lecture-flow-figure) {
+.lecture-slide[data-diagram-fit="stack"] > .lecture-diagram-copy {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.lecture-slide[data-diagram-fit="stack"] > .lecture-diagram-fit {
+  flex: 1 1 0;
+  min-height: 7.5rem;
+  min-width: 0;
+  margin-top: 0.35rem;
+}
+
+.lecture-slide[data-diagram-fit="stack"] > .lecture-slide-continue {
   flex: 0 0 auto;
 }
 
-.lecture-slide[data-flow-diagram="below"] > .lecture-flow-figure,
-.lecture-slide[data-flow-diagram="side"] > .lecture-flow-figure {
+.lecture-diagram-fit {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  min-height: 0;
-  overflow: visible;
+  overflow: hidden;
+  width: 100%;
 }
 
-.lecture-slide[data-flow-diagram="below"] > .lecture-flow-figure {
-  flex: 1 1 auto;
-  margin: 0.35rem 0 0;
+.lecture-diagram-fit-inner {
+  flex: 0 0 auto;
+  width: max-content;
+  max-width: none;
+  height: max-content;
+}
+
+.lecture-slide .lecture-diagram-fit figure {
+  width: max-content;
+  max-width: none;
+  margin: 0;
 }
 
 .lecture-flow-image {
   display: block;
   width: auto;
   height: auto;
-  /* 25% past the leftover-stage cap. Bullet type is unchanged. */
-  max-width: 125%;
-  max-height: 125%;
   object-fit: contain;
 }
 
-.lecture-slide[data-flow-diagram="side"] {
-  display: grid;
-  grid-template-columns: minmax(0, 1.58fr) minmax(220px, 0.62fr);
-  column-gap: 0.75rem;
-  align-items: start;
-  overflow-x: hidden;
-  overflow-y: auto;
-  --lecture-block-font-scale: 0.74;
+/* lab5-env: the drawing fills the leftover slot. Type scales with that slot. */
+.lecture-diagram-fit:has([data-diagram-stretch]) {
+  container-type: size;
 }
 
-.lecture-slide[data-flow-diagram="side"] > .lecture-slide-kicker,
-.lecture-slide[data-flow-diagram="side"] > .lecture-slide-title {
-  grid-column: 1 / -1;
-}
-
-.lecture-slide[data-flow-diagram="side"] > :not(.lecture-flow-figure):not(.lecture-slide-kicker):not(.lecture-slide-title) {
-  grid-column: 1;
-  min-width: 0;
-}
-
-.lecture-slide[data-flow-diagram="side"] > .lecture-flow-figure {
-  grid-column: 2;
-  grid-row: 3 / span 8;
-  align-self: center;
-  margin: 0;
-}
-
-.lecture-slide[data-flow-diagram="side"] .lecture-flow-image {
+.env-same-code {
+  box-sizing: border-box;
   width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 0.22fr) minmax(0, 1fr);
+  gap: 0.4cqh;
+  overflow: hidden;
+  color: #111827;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.env-same-code-source {
+  justify-self: center;
+  width: min(100%, 34rem);
+  box-sizing: border-box;
+  border: 3px solid #111827;
+  border-radius: 16px;
+  background: #fff;
+  text-align: center;
+  padding: 0.35rem 0.9rem 0.5rem;
+}
+
+.env-same-code-source strong {
+  display: block;
+  margin: 0 0 0.25rem;
+  font-size: clamp(1rem, 5.2cqh, 2rem);
+  line-height: 1.15;
+}
+
+.book-shell .env-same-code code {
+  display: block;
+  color: #111827;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 700;
+  font-size: clamp(0.72rem, 3.1cqh, 1.3rem);
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.env-same-code-arrows {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.env-same-code-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  min-height: 0;
+}
+
+.env-panel {
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  border-style: solid;
+  border-width: 4px;
+  border-radius: 16px;
+  padding: 0.55rem 0.7rem 0.7rem;
+}
+
+.env-panel h3 {
+  margin: 0 0 0.45rem;
+  text-align: center;
+  font-size: clamp(1rem, 4.6cqh, 1.85rem);
+  line-height: 1.1;
+}
+
+.env-panel-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  border-style: solid;
+  border-width: 3px;
+  border-radius: 12px;
+  padding: 0.35rem 0.5rem;
+}
+
+.env-panel-body code {
+  max-width: 100%;
+  font-size: clamp(0.62rem, 2.5cqh, 1.05rem);
 }

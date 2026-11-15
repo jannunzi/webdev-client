@@ -55,6 +55,7 @@ import {
   lectureThumbPath,
 } from "./types";
 import { expandLineMarks } from "../code-block/lines";
+import { diagramFitScale } from "./diagram-fit";
 import { slidePaneOverflows, slidePaneScrollStep } from "./slide-pane";
 import {
   LECTURE_PRESENT_STATE,
@@ -4200,6 +4201,78 @@ describe("Chapter 4 account §4.10.7 assignment slides", () => {
     for (const name of ["enrollIntoCourse", "unenrollFromCourse", "createUser", "updateUser", "deleteUser"]) {
       assert.match(text, new RegExp(name), name);
     }
+  });
+});
+
+describe("diagram fit", () => {
+  it("scales uniformly to the leftover slot and does not overflow either axis", () => {
+    const wide = diagramFitScale(800, 600, 1600, 400);
+    assert.equal(wide, 0.5);
+    assert.ok(1600 * wide <= 800);
+    assert.ok(400 * wide <= 600);
+
+    const fillHeight = diagramFitScale(1100, 480, 1480, 660);
+    assert.ok(Math.abs(660 * fillHeight - 480) < 0.02);
+    assert.ok(1480 * fillHeight <= 1100 + 0.02);
+
+    assert.equal(diagramFitScale(0, 400, 100, 50), 1);
+    assert.equal(diagramFitScale(400, 400, 0, 50), 1);
+  });
+
+  it("fits every diagram in the leftover slide height", () => {
+    const css = readFileSync(join(process.cwd(), "app/book/book.css"), "utf8");
+    const shell = readFileSync(
+      join(process.cwd(), "app/slides/_components/LectureDeckShell.tsx"),
+      "utf8",
+    );
+    assert.match(css, /data-diagram-fit="stack"/);
+    assert.match(css, /\.lecture-diagram-fit \{/);
+    assert.doesNotMatch(css, /max-height:\s*125%/);
+    assert.doesNotMatch(css, /max-width:\s*125%/);
+    assert.match(shell, /data-diagram-fit=\{hasFittedDiagram \? "stack"/);
+    assert.match(shell, /<DiagramFit>/);
+    assert.doesNotMatch(shell, /data-flow-diagram/);
+
+    const env = readFileSync(
+      join(process.cwd(), "app/slides/_components/diagrams/EnvSameCodeDiagram.tsx"),
+      "utf8",
+    );
+    assert.match(env, /#ffe59a/);
+    assert.match(env, /#a4c2f4/);
+    assert.match(env, /#dc2626/);
+    assert.match(env, /data-diagram-stretch/);
+    assert.match(css, /\.book-shell \.env-same-code code \{[^}]*white-space:\s*nowrap/);
+    assert.match(css, /\.book-shell \.env-same-code code \{[^}]*background:\s*transparent/);
+    assert.doesNotMatch(env, /DiagramFrame/);
+    assert.doesNotMatch(env, /useLayoutEffect/);
+    assert.doesNotMatch(env, /border-neutral-800/);
+  });
+
+  it("opens hub deck links in a new tab", () => {
+    const hub = readFileSync(
+      join(process.cwd(), "app/slides/_components/SlidesHub.tsx"),
+      "utf8",
+    );
+    assert.equal(hub.match(/target="_blank"/g)?.length, 2);
+    assert.equal(hub.match(/rel="noopener noreferrer"/g)?.length, 2);
+    assert.match(hub, /href=\{`\/slides\/\$\{deck\.slug\}`\} target="_blank"/);
+  });
+
+  it("does not name Axios on the async-http opener before the library slide defines it", () => {
+    const purpose = findSlide("async-http", "purpose");
+    assert.equal(
+      purpose.bullets?.[2],
+      "An HTTP library sends the request from a component and waits for the reply",
+    );
+    assert.doesNotMatch((purpose.bullets ?? []).join("\n"), /axios/i);
+    const slides = getLectureDeck("async-http")!.slides;
+    const purposeAt = slides.findIndex((slide) => slide.id === "purpose");
+    const definedAt = slides.findIndex((slide) => slide.id === "axios-lib");
+    assert.ok(purposeAt >= 0 && definedAt > purposeAt);
+    assert.match(
+      (slides[definedAt]?.bullets ?? []).join("\n"),
+      /Axios is a small, popular library for HTTP requests in the browser/,
+    );
   });
 });
 

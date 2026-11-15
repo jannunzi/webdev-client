@@ -22,7 +22,7 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     bullets: [
       "Links to the server replace the whole page with the raw reply",
       "Real apps fetch data in the background and update just part of the page",
-      "Axios sends the request from a component and waits for the reply",
+      "An HTTP library sends the request from a component and waits for the reply",
       "POST, PUT, and DELETE then let the page create, change, and remove server data",
     ],
   },
