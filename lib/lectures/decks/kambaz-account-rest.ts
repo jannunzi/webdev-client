@@ -40,10 +40,10 @@ export const KAMBAZ_ACCOUNT_REST_SLIDES: LectureSlide[] = [
   },
   {
     id: "dao-architecture",
-    title: "From the Account UI to the JSON",
+    title: "From the Account UI to the Database",
     kind: "demo",
     bullets: [
-      "Four hops: uses, HTTP requests, calls, then reads/writes",
+      "The database is an in-memory object. Edits change the arrays, not the JSON files. MongoDB comes later for permanent storage",
     ],
     diagram: "account-dao",
   },

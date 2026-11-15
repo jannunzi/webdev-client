@@ -90,44 +90,49 @@ function HArrow({ x1, x2, y, label }: { x1: number; x2: number; y: number; label
     <g>
       <line x1={x1} y1={y} x2={base} y2={y} stroke="#171717" strokeWidth={3} />
       <polygon points={`${tip},${y} ${base},${y - 7} ${base},${y + 7}`} fill="#171717" />
-      <text
-        x={(x1 + x2) / 2}
-        y={y - 12}
-        textAnchor="middle"
-        fontFamily={FONT}
-        fontSize={15}
-        fontWeight={700}
-        fill="#171717"
-      >
-        {label}
-      </text>
+      {label.split("\n").map((line, index, lines) => (
+        <text
+          key={line}
+          x={(x1 + x2) / 2}
+          y={y - 10 - (lines.length - 1 - index) * 16}
+          textAnchor="middle"
+          fontFamily={FONT}
+          fontSize={15}
+          fontWeight={700}
+          fill="#171717"
+        >
+          {line}
+        </text>
+      ))}
     </g>
   );
 }
 
 export default function AccountDaoDiagram() {
-  const uiX = 36;
-  const clientX = 360;
-  const routesX = 780;
-  const daoX = 1104;
-  const dbX = 1504;
+  const uiX = 32;
+  const clientX = 352;
+  const routesX = 756;
+  const daoX = 1076;
+  const dbX = 1488;
   const midY = BOX_Y + BOX_H / 2;
   const groupY = 12;
   const groupH = BOX_Y + BOX_H + 16 - groupY;
   const clientGroupX = uiX - 16;
   const clientGroupW = clientX + BOX_W + 16 - clientGroupX;
   const serverGroupX = routesX - 16;
-  const serverGroupW = daoX + BOX_W + 16 - serverGroupX;
+  const serverGroupW = dbX + BOX_W + 16 - serverGroupX;
+  const filesX = dbX + BOX_W + 88;
+  const filesY = BOX_Y + 36;
 
   return (
     <svg
       role="img"
-      viewBox="0 0 1788 292"
+      viewBox="0 0 2048 292"
       aria-labelledby="account-dao-title"
     >
       <title id="account-dao-title">
         AccountUI uses AccountClient. HTTP requests reach UserRoutes, which calls UserDao.
-        UserDao reads and writes the JSON files.
+        UserDao reads and updates the in-memory Database. JSON files are imported once at startup and are not written.
       </title>
       <rect x={clientGroupX} y={groupY} width={clientGroupW} height={groupH} rx={16} fill={BLUE.group} stroke={BLUE.stroke} strokeWidth={3} />
       <text x={uiX} y={groupY + 28} fontFamily={FONT} fontSize={18} fontWeight={700} fill={BLUE.stroke}>
@@ -181,21 +186,67 @@ export default function AccountDaoDiagram() {
       <ClassBox
         x={dbX}
         name="Database"
-        stereotype="<<JSON>>"
-        members={[
-          "courses.json",
-          "modules.json",
-          "assignments.json",
-          "users.json",
-          "enrollments.json",
-        ]}
+        stereotype="<<in-memory object>>"
+        members={["courses", "modules", "assignments", "users", "enrollments"]}
         tone={RED}
       />
+
+      <g>
+        <rect
+          x={filesX}
+          y={filesY}
+          width={176}
+          height={148}
+          rx={8}
+          fill="#fff"
+          stroke={RED.stroke}
+          strokeWidth={2}
+          strokeDasharray="7 5"
+        />
+        {["courses.json", "modules.json", "assignments.json", "users.json", "enrollments.json"].map(
+          (file, index) => (
+            <text
+              key={file}
+              x={filesX + 12}
+              y={filesY + 28 + index * 24}
+              fontFamily={MONO}
+              fontSize={14}
+              fill="#171717"
+            >
+              {file}
+            </text>
+          ),
+        )}
+        <line
+          x1={filesX}
+          y1={filesY + 74}
+          x2={dbX + BOX_W + 12}
+          y2={midY}
+          stroke={RED.stroke}
+          strokeWidth={2}
+          strokeDasharray="7 5"
+        />
+        <polygon
+          points={`${dbX + BOX_W},${midY} ${dbX + BOX_W + 12},${midY - 6} ${dbX + BOX_W + 12},${midY + 6}`}
+          fill={RED.stroke}
+        />
+        <text
+          x={(filesX + dbX + BOX_W) / 2}
+          y={filesY + 52}
+          textAnchor="middle"
+          fontFamily={FONT}
+          fontSize={14}
+          fontWeight={700}
+          fill={RED.stroke}
+        >
+          imported at startup
+        </text>
+      </g>
 
       <HArrow x1={uiX + BOX_W} x2={clientX} y={midY} label="uses" />
       <HArrow x1={clientX + BOX_W} x2={routesX} y={midY} label="HTTP requests" />
       <HArrow x1={routesX + BOX_W} x2={daoX} y={midY} label="calls" />
-      <HArrow x1={daoX + BOX_W} x2={dbX} y={midY} label="reads/writes" />
+      <HArrow x1={daoX + BOX_W} x2={dbX} y={midY} label={"reads/updates\nin memory"} />
     </svg>
   );
 }

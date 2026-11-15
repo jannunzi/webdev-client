@@ -123,10 +123,16 @@ export default { courses, modules, assignments, users, enrollments };`}</CodeBlo
         </p>
         <p>
           <code>Kambaz/Users/dao.ts</code>{" "}is the users DAO. It
-          works over the in-memory JSON arrays. A later chapter
-          reimplements these same functions for a database, and the
-          routes stay the same. Later sections in this chapter add a
-          DAO for each remaining array: courses, modules, and so on.
+          works over the in-memory object exported from{" "}
+          <code>Database/index.ts</code>{" "}— the{" "}
+          <code>users</code>, <code>courses</code>,{" "}
+          <code>modules</code>, <code>assignments</code>, and{" "}
+          <code>enrollments</code>{" "}arrays. Create and update change
+          those arrays in memory. They do not rewrite the JSON files
+          the server imported at startup. A later chapter reimplements
+          these same functions with MongoDB, and the routes stay the
+          same. Later sections in this chapter add a DAO for each
+          remaining array: courses, modules, and so on.
         </p>
         <CodeBlock
           language="ts"
