@@ -110,13 +110,23 @@ export default { courses, modules, assignments, users, enrollments };`}</CodeBlo
         title="5.4.2 Integrating the Account Screens with the Server with RESTful Web APIs"
       >
         <p>
-          The Data Access Object (DAO) design pattern organizes data
-          access by grouping it based on data types or collections. The
-          following <code>Kambaz/Users/dao.ts</code>{" "}file implements
-          various CRUD operations for handling the users array in the
-          Database. Later sections in the chapter will create
-          additional DAOs for each of the data arrays: courses,
-          modules, and so on.
+          A Data Access Object (DAO) is a design pattern that
+          encapsulates all access to a data source behind a small set
+          of functions, such as <code>findUserByUsername</code>{" "}and{" "}
+          <code>createUser</code>. The rest of the app — the routes —
+          calls those functions and never touches the storage directly.
+        </p>
+        <p>
+          That split keeps route logic away from storage details.
+          Queries live in one place, so they are easier to change and
+          to test. Swapping the storage does not change the callers.
+        </p>
+        <p>
+          <code>Kambaz/Users/dao.ts</code>{" "}is the users DAO. It
+          works over the in-memory JSON arrays. A later chapter
+          reimplements these same functions for a database, and the
+          routes stay the same. Later sections in this chapter add a
+          DAO for each remaining array: courses, modules, and so on.
         </p>
         <CodeBlock
           language="ts"
