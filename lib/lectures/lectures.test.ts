@@ -1363,7 +1363,7 @@ describe("lecture decks", () => {
     assert.equal(counts["path-and-query"], 17);
     assert.equal(counts["remote-objects"], 14);
     assert.equal(counts["remote-arrays"], 19);
-    assert.equal(counts["async-http"], 31);
+    assert.equal(counts["async-http"], 37);
     assert.equal(counts["next-routes"], 23);
     assert.equal(counts["ch5-check-understanding"], 7);
     assert.equal(counts["kambaz-migrate-db"], 6);
@@ -4273,6 +4273,11 @@ describe("diagram fit", () => {
       (slides[definedAt]?.bullets ?? []).join("\n"),
       /Axios is a small, popular library for HTTP requests in the browser/,
     );
+    assert.deepEqual(
+      slides.slice(definedAt + 1, definedAt + 5).map((slide) => slide.id),
+      ["http-methods-crud", "what-is-rest", "rest-conventions", "crud-courses"],
+    );
+    assert.equal(slides.length, 37);
   });
 });
 
