@@ -70,9 +70,103 @@ export default function NextRoutes() {
         <code>Response</code>{" "}constructor. Next.js 16 accepts that
         the same way it accepts{" "}
         <code>NextResponse.json</code>{" "}from{" "}
-        <code>next/server</code>. To practice the hello route, confirm the
-        demo below fetches that JSON and prints the message without
-        leaving the Labs page.
+        <code>next/server</code>.
+      </p>
+      <p>
+        The page that shows this JSON can call the route in four ways.
+        Each one stores the body in the same{" "}
+        <code>hello</code>{" "}state and reads{" "}
+        <code>/api/lab5/hello</code>. The live sample below uses the
+        first style.
+      </p>
+      <p>
+        <strong>Style 1.</strong>{" "}Put{" "}
+        <code>fetch().then().then()</code>{" "}directly inside{" "}
+        <code>useEffect</code>{" "}in{" "}
+        <code>app/labs/lab5/HelloRoute.tsx</code>.
+      </p>
+      <CodeBlock
+        language="tsx"
+        name="fetch inside useEffect"
+        file="app/labs/lab5/HelloRoute.tsx"
+      >{`const [hello, setHello] = useState<{ message?: string }>({});
+useEffect(() => {
+  fetch("/api/lab5/hello")
+    .then((response) => response.json())
+    .then(setHello);
+}, []);`}</CodeBlock>
+      <p>
+        <strong>Style 2.</strong>{" "}Move that same{" "}
+        <code>fetch().then().then()</code>{" "}chain into a named
+        function in the component, and call the function from{" "}
+        <code>useEffect</code>.
+      </p>
+      <CodeBlock
+        language="tsx"
+        name="named fetchHello"
+        file="app/labs/lab5/HelloRoute.tsx"
+      >{`const [hello, setHello] = useState<{ message?: string }>({});
+const fetchHello = () => {
+  fetch("/api/lab5/hello")
+    .then((response) => response.json())
+    .then(setHello);
+};
+useEffect(() => {
+  fetchHello();
+}, []);`}</CodeBlock>
+      <p>
+        <strong>Style 3.</strong>{" "}Keep the named function in the
+        component, and write it with{" "}
+        <code>async</code>/<code>await</code>{" "}instead of{" "}
+        <code>.then()</code>.
+      </p>
+      <CodeBlock
+        language="tsx"
+        name="async fetchHello"
+        file="app/labs/lab5/HelloRoute.tsx"
+      >{`const [hello, setHello] = useState<{ message?: string }>({});
+const fetchHello = async () => {
+  const response = await fetch("/api/lab5/hello");
+  const data = await response.json();
+  setHello(data);
+};
+useEffect(() => {
+  fetchHello();
+}, []);`}</CodeBlock>
+      <p>
+        <strong>Style 4.</strong>{" "}Lab 5 already has{" "}
+        <code>app/labs/lab5/client.ts</code>{" "}for the Express calls.
+        Add a hello function there, then import it and call it from{" "}
+        <code>useEffect</code>. This URL is same-origin, so the
+        function uses <code>fetch</code>{" "}and does not prefix{" "}
+        <code>HTTP_SERVER</code>.
+      </p>
+      <CodeBlock
+        language="ts"
+        name="fetchHello client"
+        file="app/labs/lab5/client.ts"
+      >{`export const fetchHello = async () => {
+  const response = await fetch("/api/lab5/hello");
+  return response.json();
+};`}</CodeBlock>
+      <CodeBlock
+        language="tsx"
+        name="call fetchHello"
+        file="app/labs/lab5/HelloRoute.tsx"
+      >{`import * as client from "./client";
+const [hello, setHello] = useState<{ message?: string }>({});
+useEffect(() => {
+  client.fetchHello().then(setHello);
+}, []);`}</CodeBlock>
+      <p>
+        The four styles do the same thing. Best practice is style 4:
+        one function in <code>client.ts</code>{" "}owns the URL, and the
+        component only calls it. The request can be reused and tested
+        without rendering the page.
+      </p>
+      <p>
+        Confirm the demo below fetches that JSON and prints the message
+        without leaving the Labs page.
       </p>
       <LiveDemo
         name="HelloRoute"
@@ -108,13 +202,34 @@ export default function NextRoutes() {
           constructing a new{" "}
           <code>URL(request.url)</code>, but the meaning is the same:
           read three strings, parse the numbers, and decide what to do.
+          Destructure <code>searchParams</code>{" "}from{" "}
+          <code>request.nextUrl</code>, then call{" "}
+          <code>searchParams.get</code>{" "}for <code>a</code>,{" "}
+          <code>b</code>, and <code>operation</code>.
           Invalid inputs like missing numbers or an unrecognized
           operation return error messages with the appropriate status
-          code — 400 for a bad request. A request to{" "}
-          <LocalUrl href="/api/lab5/calculator?a=10&b=5&operation=add" />{" "}
-          should produce{" "}
+          code — 400 for a bad request. These four requests use{" "}
+          <code>a = 10</code> and <code>b = 5</code>. Add should
+          produce{" "}
           <code>{`{ "a": 10, "b": 5, "operation": "add", "result": 15 }`}</code>
-          . Extend the switch with multiply and divide so the four
+          .
+        </p>
+        <ul>
+          <li>
+            <LocalUrl href="/api/lab5/calculator?a=10&b=5&operation=add" />
+          </li>
+          <li>
+            <LocalUrl href="/api/lab5/calculator?a=10&b=5&operation=subtract" />
+          </li>
+          <li>
+            <LocalUrl href="/api/lab5/calculator?a=10&b=5&operation=multiply" />
+          </li>
+          <li>
+            <LocalUrl href="/api/lab5/calculator?a=10&b=5&operation=divide" />
+          </li>
+        </ul>
+        <p>
+          Extend the switch with multiply and divide so the four
           operations match the Express calculator you already built in{" "}
           <code>Lab5/QueryParameters.ts</code>.
         </p>
@@ -123,9 +238,10 @@ export default function NextRoutes() {
           name="calculator"
           file="app/api/lab5/calculator/route.ts"
         >{`export async function GET(request: NextRequest) {
-  const a = parseFloat(request.nextUrl.searchParams.get("a") ?? "");
-  const b = parseFloat(request.nextUrl.searchParams.get("b") ?? "");
-  const operation = request.nextUrl.searchParams.get("operation");
+  const { searchParams } = request.nextUrl;
+  const a = parseFloat(searchParams.get("a") ?? "");
+  const b = parseFloat(searchParams.get("b") ?? "");
+  const operation = searchParams.get("operation");
   if (Number.isNaN(a) || Number.isNaN(b)) {
     return Response.json({ error: "Invalid numbers" }, { status: 400 });
   }
