@@ -165,7 +165,7 @@ export default function AccountDaoDiagram() {
           "POST /api/users/signup",
           "POST /api/users/signin",
           "POST /api/users/signout",
-          "POST /api/users/profile",
+          "GET /api/users/profile",
           "PUT /api/users/:userId",
         ]}
         tone={YELLOW}

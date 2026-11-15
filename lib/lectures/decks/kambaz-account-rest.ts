@@ -91,11 +91,22 @@ export default function UserRoutes(app, db) {
   app.post("/api/users/signup", signup);
   app.post("/api/users/signin", signin);
   app.post("/api/users/signout", signout);
-  app.post("/api/users/profile", profile);
+  app.get("/api/users/profile", profile);
 }`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeHighlightLines: [[8, 11]],
+  },
+  {
+    id: "why-post",
+    title: "Why Sign-In Uses POST",
+    kind: "content",
+    bullets: [
+      "POST keeps the username and password in the body, not the URL",
+      "History, logs, and caches keep the URL. HTTPS encrypts the query string too — this is not about encryption",
+      "Sign-in, sign-up, and sign-out change server state, so they are not safe GETs",
+      "REST mapped POST to create. Auth actions bend that, and that is standard",
+    ],
   },
   {
     id: "signin",
@@ -212,7 +223,7 @@ const signin = async () => {
     kind: "demo",
     bullets: [
       "Signup: 400 if the username is taken, else `createUser`",
-      "`PUT /api/users/:userId` updates, then profile POSTs `currentUser`",
+      "`PUT /api/users/:userId` updates, then profile GETs `currentUser`",
     ],
   },
   {

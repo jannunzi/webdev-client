@@ -1367,7 +1367,7 @@ describe("lecture decks", () => {
     assert.equal(counts["next-routes"], 28);
     assert.equal(counts["ch5-check-understanding"], 7);
     assert.equal(counts["kambaz-migrate-db"], 7);
-    assert.equal(counts["kambaz-account-rest"], 17);
+    assert.equal(counts["kambaz-account-rest"], 18);
     assert.equal(counts["kambaz-sessions"], 12);
     assert.equal(counts["kambaz-courses-api"], 15);
     assert.equal(counts["deploy-api"], 8);
