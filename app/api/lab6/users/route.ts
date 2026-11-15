@@ -1,7 +1,8 @@
+import type { NextRequest } from "next/server";
 import { lab6Users } from "../store";
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
+export async function GET(request: NextRequest) {
+  const { searchParams } = request.nextUrl;
   const role = searchParams.get("role");
   const name = searchParams.get("name");
   let users = lab6Users();

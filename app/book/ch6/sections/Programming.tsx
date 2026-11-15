@@ -84,7 +84,7 @@ import mongoose from "mongoose";
 // load the mongoose library
 // ...
 const CONNECTION_STRING = "mongodb://127.0.0.1:27017/kambaz";
-mongoose.connect(CONNECTION_STRING);
+await mongoose.connect(CONNECTION_STRING);
 // connect to the kambaz database
 const app = express();
 // ...`}</CodeBlock>
@@ -145,7 +145,7 @@ import mongoose from "mongoose";
 const CONNECTION_STRING =
   process.env.DATABASE_CONNECTION_STRING ||
   "mongodb://127.0.0.1:27017/kambaz";
-mongoose.connect(CONNECTION_STRING);`}</CodeBlock>
+await mongoose.connect(CONNECTION_STRING);`}</CodeBlock>
         <p>
           Use <code>DATABASE_CONNECTION_STRING</code>. After you add the
           line and restart <code>nodemon</code>, the status demo below
@@ -204,7 +204,7 @@ mongoose.connect(CONNECTION_STRING);`}</CodeBlock>
 const userSchema = new mongoose.Schema({
   _id: String,
   username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  password: { type: String, required: true, select: false },
   firstName: String,
   email: String,
   lastName: String,
@@ -228,13 +228,18 @@ export default userSchema;`}</CodeBlock>
           JSON files still work; if we omitted it, MongoDB would assign
           ObjectIds and every enrollment that stored{" "}
           <code>&quot;123&quot;</code>{" "}would stop matching.{" "}
-          <code>username</code>{" "}is a string that is required and
-          unique — two signups cannot share it, which is the same rule
-          the signup route already enforced in memory.{" "}
-          <code>password</code>{" "}is required but not unique; several
-          people may coincidentally pick the same password, and this
-          course stores it in plain text only so Sign in can compare
-          strings the way <ChapterLink to={5} />{" "}did.{" "}
+          <code>username</code>{" "}is required, so a missing name is
+          rejected before the write. <code>unique: true</code>{" "}is
+          not that check. It asks MongoDB for a unique index, and a
+          second document with the same username fails with a
+          duplicate-key error once the index exists.{" "}
+          <code>password</code>{" "}is required.{" "}
+          <code>select: false</code>{" "}leaves it off documents that{" "}
+          <code>find</code>{" "}and <code>findOne</code>{" "}return. Sign
+          in still matches it: the credentials query filters on{" "}
+          <code>password</code>{" "}even when the field is hidden from
+          the result. This course stores it in plain text only so that
+          comparison works the way <ChapterLink to={5} />{" "}did.{" "}
           <code>firstName</code>, <code>lastName</code>, and{" "}
           <code>email</code>{" "}are plain strings with no extra
           configuration; they may be empty on a newly created user
@@ -287,7 +292,8 @@ export default userSchema;`}</CodeBlock>
           file="webdev-server/Kambaz/Users/model.ts"
         >{`import mongoose from "mongoose";
 import schema from "./schema";
-const model = mongoose.model("UserModel", schema);
+const model = mongoose.models.UserModel ||
+  mongoose.model("UserModel", schema);
 export default model;`}</CodeBlock>
         <p>
           The first argument, <code>&quot;UserModel&quot;</code>, is
