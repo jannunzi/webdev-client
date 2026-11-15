@@ -3687,6 +3687,21 @@ describe("lecture decks", () => {
     const calc2 = findSlide("next-routes", "calculator-part-2");
     assert.equal(calc.code?.split("\n").length, 9);
     assert.deepEqual(calc.codeHighlightLines, [[2, 5]]);
+    assert.deepEqual(calc.links, [
+      "http://localhost:3000/api/lab5/calculator?a=34&b=23&operation=add",
+      "http://localhost:3000/api/lab5/calculator?a=34&b=23&operation=subtract",
+      "http://localhost:3000/api/lab5/calculator?a=34&b=23&operation=multiply",
+      "http://localhost:3000/api/lab5/calculator?a=34&b=23&operation=divide",
+    ]);
+    const shell = readFileSync(
+      join(process.cwd(), "app/slides/_components/LectureDeckShell.tsx"),
+      "utf8",
+    );
+    assert.match(shell, /lecture-slide-links-stack/);
+    assert.match(shell, /slide\.links\.length > 2/);
+    assert.match(shell, /target="_blank" rel="noopener noreferrer"/);
+    const css = readFileSync(join(process.cwd(), "app/book/book.css"), "utf8");
+    assert.match(css, /\.lecture-slide-links-stack\s*\{[^}]*flex-direction:\s*column/);
     assert.match(calc.code ?? "", /const \{ searchParams \} = request\.nextUrl;/);
     assert.match(calc.code ?? "", /searchParams\.get\("operation"\)/);
     assert.doesNotMatch(calc.code ?? "", /request\.nextUrl\.searchParams\.get/);

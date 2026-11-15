@@ -626,7 +626,11 @@ export default function LectureDeckShell({
         <SlideBlockView slide={slide} density={density} />
       )}
       {slide.links?.length ? (
-        <p className="lecture-slide-links">
+        <p
+          className={`lecture-slide-links${
+            slide.links.length > 2 ? " lecture-slide-links-stack" : ""
+          }`}
+        >
           <span className="font-semibold">Try it: </span>
           {slide.links.map((href) => (
             <a key={href} href={href} target="_blank" rel="noopener noreferrer">

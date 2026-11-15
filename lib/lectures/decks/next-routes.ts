@@ -200,7 +200,12 @@ useEffect(() => {
   },
   {
     id: "calculator",
-    links: ["http://localhost:3000/api/lab5/calculator?a=34&b=23&operation=add"],
+    links: [
+      "http://localhost:3000/api/lab5/calculator?a=34&b=23&operation=add",
+      "http://localhost:3000/api/lab5/calculator?a=34&b=23&operation=subtract",
+      "http://localhost:3000/api/lab5/calculator?a=34&b=23&operation=multiply",
+      "http://localhost:3000/api/lab5/calculator?a=34&b=23&operation=divide",
+    ],
     title: "Writing a Handler with Query Parameters",
     kind: "demo",
     code: `export async function GET(request: NextRequest) {
