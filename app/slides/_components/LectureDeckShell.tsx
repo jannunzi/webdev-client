@@ -173,6 +173,10 @@ function LectureCoverIconMark({ icon }: { icon: LectureCoverIcon }) {
 const NEXT_SLIDE_KEYS = new Set(["ArrowRight", "PageDown", " ", "n", "N"]);
 const PREV_SLIDE_KEYS = new Set(["ArrowLeft", "PageUp", "Backspace", "p", "P"]);
 
+function databaseDownloads(hrefs: string[]): boolean {
+  return hrefs.every((href) => /\/downloads\/kambaz-database\/[^/?#]+\.json$/.test(href));
+}
+
 function kindLabel(kind: BlockSlide["kind"]): string {
   if (kind === "demo") return "Demo";
   if (kind === "break") return "Break";
@@ -631,10 +635,15 @@ export default function LectureDeckShell({
             slide.links.length > 2 ? " lecture-slide-links-stack" : ""
           }`}
         >
-          <span className="font-semibold">Try it: </span>
+          <span className="font-semibold">{databaseDownloads(slide.links) ? "Download: " : "Try it: "}</span>
           {slide.links.map((href) => (
-            <a key={href} href={href} target="_blank" rel="noopener noreferrer">
-              {href}
+            <a
+              key={href}
+              href={href}
+              target="_blank" rel="noopener noreferrer"
+              download={databaseDownloads([href]) ? "" : undefined}
+            >
+              {databaseDownloads([href]) ? href.slice(href.lastIndexOf("/") + 1) : href}
             </a>
           ))}
         </p>

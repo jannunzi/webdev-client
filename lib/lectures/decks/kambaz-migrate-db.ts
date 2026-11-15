@@ -34,6 +34,13 @@ export const KAMBAZ_MIGRATE_DB_SLIDES: LectureSlide[] = [
       "Keep `courses.json`, `users.json`, … as JSON — no rename",
       "Keep the Chapter 3 `_id`s so the client data still lines up",
     ],
+    links: [
+      "https://kambaz.dev/downloads/kambaz-database/courses.json",
+      "https://kambaz.dev/downloads/kambaz-database/modules.json",
+      "https://kambaz.dev/downloads/kambaz-database/assignments.json",
+      "https://kambaz.dev/downloads/kambaz-database/users.json",
+      "https://kambaz.dev/downloads/kambaz-database/enrollments.json",
+    ],
     code: `[
   { "_id": "RS101", "name": "Rocket Propulsion", "number": "RS4550",
     "startDate": "2023-01-10", "endDate": "2023-05-15",

@@ -3147,6 +3147,16 @@ describe("lecture decks", () => {
     assert.match(migrate, /Kambaz\/Database/);
     assert.match(migrate, /export default/);
     assert.match(migrate, /courses\.json/);
+    const dbFiles = ["courses", "modules", "assignments", "users", "enrollments"];
+    const kambazData = readFileSync(join(process.cwd(), "app/book/ch3/sections/KambazData.tsx"), "utf8");
+    assert.deepEqual(
+      findSlide("kambaz-migrate-db", "courses-json").links,
+      dbFiles.map((file) => `https://kambaz.dev/downloads/kambaz-database/${file}.json`),
+    );
+    for (const file of dbFiles) {
+      assert.match(kambazData, new RegExp(`href="/downloads/kambaz-database/${file}\\.json" download`));
+      assert.match(kambazData, new RegExp(`https://kambaz\\.dev/downloads/kambaz-database/${file}\\.json`));
+    }
 
     const accountRest = slideText("kambaz-account-rest");
     assert.match(accountRest, /\/api\/users\/signin/);
@@ -3700,6 +3710,8 @@ describe("lecture decks", () => {
     assert.match(shell, /lecture-slide-links-stack/);
     assert.match(shell, /slide\.links\.length > 2/);
     assert.match(shell, /target="_blank" rel="noopener noreferrer"/);
+    assert.match(shell, /databaseDownloads\(slide\.links\) \? "Download: " : "Try it: "/);
+    assert.match(shell, /download=\{databaseDownloads\(\[href\]\) \? "" : undefined\}/);
     const css = readFileSync(join(process.cwd(), "app/book/book.css"), "utf8");
     assert.match(css, /\.lecture-slide-links-stack\s*\{[^}]*flex-direction:\s*column/);
     assert.match(calc.code ?? "", /const \{ searchParams \} = request\.nextUrl;/);
