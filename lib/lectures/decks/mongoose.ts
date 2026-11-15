@@ -44,7 +44,7 @@ npm install mongoose`,
     code: `import express from "express";
 import mongoose from "mongoose";
 const CONNECTION_STRING = "mongodb://127.0.0.1:27017/kambaz";
-mongoose.connect(CONNECTION_STRING);
+await mongoose.connect(CONNECTION_STRING);
 const app = express();`,
     codeLanguage: "ts",
     codeFile: "webdev-server/index.ts",
@@ -83,7 +83,7 @@ import mongoose from "mongoose";
 const CONNECTION_STRING =
   process.env.DATABASE_CONNECTION_STRING ||
   "mongodb://127.0.0.1:27017/kambaz";
-mongoose.connect(CONNECTION_STRING);`,
+await mongoose.connect(CONNECTION_STRING);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/index.ts",
     codeAddedLines: [1, [4, 6]],
@@ -94,7 +94,7 @@ mongoose.connect(CONNECTION_STRING);`,
     kind: "demo",
     bullets: [
       "`_id` is `String` so Chapter 3 ids still match enrollments",
-      "`username` required + unique. `role` is an enum, default `USER`",
+      "`required` validates username. `unique: true` is an index, not a validator",
       "`{ collection: \"users\" }` — do not let Mongoose invent a name",
     ],
   },
@@ -106,7 +106,7 @@ mongoose.connect(CONNECTION_STRING);`,
 const userSchema = new mongoose.Schema({
   _id: String,
   username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  password: { type: String, required: true, select: false },
   firstName: String,
   email: String,
   lastName: String,
@@ -137,11 +137,12 @@ export default userSchema;`,
     ],
     code: `import mongoose from "mongoose";
 import schema from "./schema";
-const model = mongoose.model("UserModel", schema);
+const model = mongoose.models.UserModel ||
+  mongoose.model("UserModel", schema);
 export default model;`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/model.ts",
-    codeAddedLines: [3],
+    codeAddedLines: [[3, 4]],
   },
   {
     id: "dao",
