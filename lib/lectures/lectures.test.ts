@@ -1363,13 +1363,13 @@ describe("lecture decks", () => {
     assert.equal(counts["path-and-query"], 17);
     assert.equal(counts["remote-objects"], 14);
     assert.equal(counts["remote-arrays"], 19);
-    assert.equal(counts["async-http"], 37);
+    assert.equal(counts["async-http"], 41);
     assert.equal(counts["next-routes"], 23);
     assert.equal(counts["ch5-check-understanding"], 7);
     assert.equal(counts["kambaz-migrate-db"], 6);
-    assert.equal(counts["kambaz-account-rest"], 15);
+    assert.equal(counts["kambaz-account-rest"], 17);
     assert.equal(counts["kambaz-sessions"], 12);
-    assert.equal(counts["kambaz-courses-api"], 14);
+    assert.equal(counts["kambaz-courses-api"], 15);
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 13);
     assert.equal(counts["mongoose"], 12);
@@ -4277,7 +4277,29 @@ describe("diagram fit", () => {
       slides.slice(definedAt + 1, definedAt + 5).map((slide) => slide.id),
       ["http-methods-crud", "what-is-rest", "rest-conventions", "crud-courses"],
     );
-    assert.equal(slides.length, 37);
+    assert.equal(slides.length, 41);
+    const assignmentClient = findSlide("async-http", "assignment-client");
+    const objectsAsync = findSlide("async-http", "objects-async");
+    assert.ok(
+      slides.findIndex((slide) => slide.id === "assignment-client") ===
+        slides.findIndex((slide) => slide.id === "objects-async") - 1,
+    );
+    assert.equal(assignmentClient.codeFile, "app/labs/lab5/client.ts");
+    assert.deepEqual(assignmentClient.codeAddedLines, [[1, 8]]);
+    assert.equal(
+      assignmentClient.code,
+      `const ASSIGNMENT_API = \`\${HTTP_SERVER}/lab5/assignment\`;
+export const fetchAssignment = async () => {
+  const response = await axios.get(ASSIGNMENT_API);
+  return response.data;
+};
+export const updateTitle = async (title: string) => {
+  const response = await axios.get(\`\${ASSIGNMENT_API}/title/\${title}\`);
+  return response.data;
+};`,
+    );
+    assert.match(objectsAsync.code ?? "", /client\.fetchAssignment\(\)/);
+    assert.match(objectsAsync.code ?? "", /client\.updateTitle\(/);
   });
 });
 

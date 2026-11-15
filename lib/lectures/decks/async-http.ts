@@ -208,6 +208,26 @@ export const fetchWelcomeMessage = async () => {
     embed: "lab5-http-client",
   },
   {
+    id: "assignment-client",
+    title: "Adding Assignment Requests to the Client",
+    kind: "demo",
+    bullets: [
+      "In `client.ts`, add the assignment requests as shown below",
+    ],
+    code: `const ASSIGNMENT_API = \`\${HTTP_SERVER}/lab5/assignment\`;
+export const fetchAssignment = async () => {
+  const response = await axios.get(ASSIGNMENT_API);
+  return response.data;
+};
+export const updateTitle = async (title: string) => {
+  const response = await axios.get(\`\${ASSIGNMENT_API}/title/\${title}\`);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/labs/lab5/client.ts",
+    codeAddedLines: [[1, 8]],
+  },
+  {
     id: "objects-async",
     title: "Updating Remote Objects Asynchronously",
     kind: "demo",
@@ -230,6 +250,22 @@ export const fetchWelcomeMessage = async () => {
       "Start Express on port 4000 first (`npm start` in webdev-server)",
     ],
     embed: "lab5-objects-async",
+  },
+  {
+    id: "todos-fetch",
+    title: "Fetching Todos from the Client",
+    kind: "demo",
+    bullets: [
+      "In `client.ts`, add the todos request as shown below",
+    ],
+    code: `const TODOS_API = \`\${HTTP_SERVER}/lab5/todos\`;
+export const fetchTodos = async () => {
+  const response = await axios.get(TODOS_API);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/labs/lab5/client.ts",
+    codeAddedLines: [[1, 5]],
   },
   {
     id: "arrays-async",
@@ -296,6 +332,25 @@ Lab5(app);`,
       "`response.data` is that array",
       "`setTodos` stores it, and the list re-renders without todo 1",
     ],
+  },
+  {
+    id: "todos-get-writes",
+    title: "Adding GET-style Todo Requests",
+    kind: "demo",
+    bullets: [
+      "In `client.ts`, add remove and create as shown below",
+    ],
+    code: `export const removeTodo = async (todo: { id: number }) => {
+  const response = await axios.get(\`\${TODOS_API}/\${todo.id}/delete\`);
+  return response.data;
+};
+export const createNewTodo = async () => {
+  const response = await axios.get(\`\${TODOS_API}/create\`);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/labs/lab5/client.ts",
+    codeAddedLines: [[1, 8]],
   },
   {
     id: "arrays-async-remove",
@@ -365,6 +420,29 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
       "The server adds an id, stores it, and replies with the new todo",
       "The client appends `response.data` to its `todos` state",
     ],
+  },
+  {
+    id: "todos-verbs",
+    title: "Adding POST, DELETE, and PUT Clients",
+    kind: "demo",
+    bullets: [
+      "In `client.ts`, add the three requests as shown below",
+    ],
+    code: `export const postNewTodo = async (todo: { title: string; completed: boolean }) => {
+  const response = await axios.post(TODOS_API, todo);
+  return response.data;
+};
+export const deleteTodo = async (todo: { id: number }) => {
+  const response = await axios.delete(\`\${TODOS_API}/\${todo.id}\`);
+  return response.data;
+};
+export const updateTodo = async (todo: { id: number }) => {
+  const response = await axios.put(\`\${TODOS_API}/\${todo.id}\`, todo);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/labs/lab5/client.ts",
+    codeAddedLines: [[1, 12]],
   },
   {
     id: "arrays-async-post",
