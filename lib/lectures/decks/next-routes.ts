@@ -68,12 +68,105 @@ const data = await response.json();`,
     codeHighlightLines: [[1, 2]],
   },
   {
+    id: "fetch-styles",
+    title: "Four Ways to Load the Hello JSON",
+    kind: "content",
+    bullets: [
+      "Each style stores `/api/lab5/hello` in the `hello` state",
+      "First: `fetch().then().then()` directly inside `useEffect`",
+      "Then a named function, then `async`/`await`, then `client.ts`",
+      "The live demo uses the first style",
+    ],
+  },
+  {
     id: "hello-ui",
-    title: "Fetching a Route Handler on Load",
+    title: "Fetching Inside useEffect",
     kind: "demo",
     code: "\"use client\";\n\nimport { useEffect, useState } from \"react\";\n\nexport default function HelloRoute() {\n  const [hello, setHello] = useState<{ message?: string }>({});\n  useEffect(() => {\n    fetch(\"/api/lab5/hello\")\n      .then((response) => response.json())\n      .then(setHello);\n  }, []);",
     codeLanguage: "tsx",
     codeFile: "app/labs/lab5/HelloRoute.tsx",
+    codeHighlightLines: [[7, 11]],
+  },
+  {
+    id: "hello-named",
+    title: "Naming the fetch Function",
+    kind: "demo",
+    bullets: [
+      "In `HelloRoute.tsx`, move the fetch chain into `fetchHello` as shown below",
+    ],
+    code: `const [hello, setHello] = useState<{ message?: string }>({});
+const fetchHello = () => {
+  fetch("/api/lab5/hello")
+    .then((response) => response.json())
+    .then(setHello);
+};
+useEffect(() => {
+  fetchHello();
+}, []);`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/HelloRoute.tsx",
+    codeHighlightLines: [[2, 8]],
+  },
+  {
+    id: "hello-async",
+    title: "Awaiting fetch in the Component",
+    kind: "demo",
+    bullets: [
+      "In `HelloRoute.tsx`, write `fetchHello` with `async`/`await` as shown below",
+    ],
+    code: `const [hello, setHello] = useState<{ message?: string }>({});
+const fetchHello = async () => {
+  const response = await fetch("/api/lab5/hello");
+  const data = await response.json();
+  setHello(data);
+};
+useEffect(() => {
+  fetchHello();
+}, []);`,
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/HelloRoute.tsx",
+    codeHighlightLines: [[2, 5]],
+  },
+  {
+    id: "hello-client",
+    title: "Moving the Request into client.ts",
+    kind: "demo",
+    bullets: [
+      "In `client.ts`, add the hello request as shown below",
+      "In `HelloRoute.tsx`, call `client.fetchHello` from `useEffect`",
+    ],
+    codeBlocks: [
+      {
+        file: "app/labs/lab5/client.ts",
+        language: "ts",
+        code: `export const fetchHello = async () => {
+  const response = await fetch("/api/lab5/hello");
+  return response.json();
+};`,
+        addedLines: [[1, 4]],
+      },
+      {
+        file: "app/labs/lab5/HelloRoute.tsx",
+        language: "tsx",
+        code: `import * as client from "./client";
+const [hello, setHello] = useState<{ message?: string }>({});
+useEffect(() => {
+  client.fetchHello().then(setHello);
+}, []);`,
+        highlightLines: [1, 4],
+      },
+    ],
+  },
+  {
+    id: "hello-best",
+    title: "Preferring a Reusable Client",
+    kind: "content",
+    bullets: [
+      "The four styles do the same thing",
+      "Best practice is the `client.ts` function",
+      "One function owns the URL",
+      "The component only calls it, so the request is reusable and testable",
+    ],
   },
   {
     id: "hello-ui-part-2",
@@ -99,7 +192,8 @@ const data = await response.json();`,
     title: "Parsing Query Parameters in a Handler",
     kind: "demo",
     bullets: [
-      "Read `a`, `b`, and `operation` from `request.nextUrl.searchParams`",
+      "Destructure `searchParams` from `request.nextUrl`",
+      "Call `searchParams.get` for `a`, `b`, and `operation`",
       "400 for bad numbers or an unknown operation",
       "`?a=10&b=5&operation=add` → `{ result: 15 }`",
     ],
@@ -110,16 +204,17 @@ const data = await response.json();`,
     title: "Writing a Handler with Query Parameters",
     kind: "demo",
     code: `export async function GET(request: NextRequest) {
-  const a = parseFloat(request.nextUrl.searchParams.get("a") ?? "");
-  const b = parseFloat(request.nextUrl.searchParams.get("b") ?? "");
-  const operation = request.nextUrl.searchParams.get("operation");
+  const { searchParams } = request.nextUrl;
+  const a = parseFloat(searchParams.get("a") ?? "");
+  const b = parseFloat(searchParams.get("b") ?? "");
+  const operation = searchParams.get("operation");
   if (Number.isNaN(a) || Number.isNaN(b)) {
     return Response.json({ error: "Invalid numbers" }, { status: 400 });
   }
   let result: number;`,
     codeLanguage: "ts",
     codeFile: "app/api/lab5/calculator/route.ts",
-    codeHighlightLines: [[2, 4]],
+    codeHighlightLines: [[2, 5]],
   },
   {
     id: "calculator-part-2",
@@ -148,7 +243,7 @@ const data = await response.json();`,
 }`,
     codeLanguage: "ts",
     codeFile: "app/api/lab5/calculator/route.ts",
-    codeStartLine: 9,
+    codeStartLine: 10,
     codeHighlightLines: [[1, 13], 20],
   },
   {

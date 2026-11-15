@@ -1364,7 +1364,7 @@ describe("lecture decks", () => {
     assert.equal(counts["remote-objects"], 14);
     assert.equal(counts["remote-arrays"], 19);
     assert.equal(counts["async-http"], 41);
-    assert.equal(counts["next-routes"], 23);
+    assert.equal(counts["next-routes"], 28);
     assert.equal(counts["ch5-check-understanding"], 7);
     assert.equal(counts["kambaz-migrate-db"], 6);
     assert.equal(counts["kambaz-account-rest"], 17);
@@ -3672,12 +3672,25 @@ describe("lecture decks", () => {
     assert.equal(findSlide("remote-arrays", "get-all").imageSrc, undefined);
     const routes = getLectureDeck("next-routes")!.slides.map((slide) => slide.id);
     const hello = routes.indexOf("hello-ui");
-    assert.equal(routes[hello - 1], "fetch");
-    assert.equal(routes[hello - 2], "hello-ui-intro");
+    assert.equal(routes[hello - 1], "fetch-styles");
+    assert.equal(routes[hello - 2], "fetch");
+    assert.equal(routes[hello - 3], "hello-ui-intro");
+    assert.deepEqual(routes.slice(hello, hello + 6), [
+      "hello-ui",
+      "hello-named",
+      "hello-async",
+      "hello-client",
+      "hello-best",
+      "hello-ui-part-2",
+    ]);
     const calc = findSlide("next-routes", "calculator");
     const calc2 = findSlide("next-routes", "calculator-part-2");
-    assert.equal(calc.code?.split("\n").length, 8);
-    assert.equal(calc2.codeStartLine, 9);
+    assert.equal(calc.code?.split("\n").length, 9);
+    assert.deepEqual(calc.codeHighlightLines, [[2, 5]]);
+    assert.match(calc.code ?? "", /const \{ searchParams \} = request\.nextUrl;/);
+    assert.match(calc.code ?? "", /searchParams\.get\("operation"\)/);
+    assert.doesNotMatch(calc.code ?? "", /request\.nextUrl\.searchParams\.get/);
+    assert.equal(calc2.codeStartLine, 10);
     assert.match(calc.code ?? "", /let result: number;$/);
     assert.match(calc2.code ?? "", /^ {2}switch \(operation\)/);
     assert.match(calc2.code ?? "", /return Response\.json\(\{ a, b, operation, result \}\);\n\}$/);
@@ -4021,7 +4034,8 @@ describe("explanation text never buries the code", () => {
         let code = deck.slides[index + 1]!;
         // fetch is introduced on its own slide immediately before the first call.
         if (deck.slug === "next-routes" && slide.id === "hello-ui-intro" && code.id === "fetch") {
-          code = deck.slides[index + 2]!;
+          assert.equal(deck.slides[index + 2]?.id, "fetch-styles");
+          code = deck.slides[index + 3]!;
         }
         assert.equal(code.id, base, `${deck.slug}#${slide.id} comes right before ${base}`);
         assert.ok(code.code || code.codeBlocks?.length, `${deck.slug}#${base} has the code`);
