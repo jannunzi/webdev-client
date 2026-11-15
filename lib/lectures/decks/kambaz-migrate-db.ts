@@ -50,14 +50,21 @@ export const KAMBAZ_MIGRATE_DB_SLIDES: LectureSlide[] = [
     codeFile: "webdev-server/Kambaz/Database/courses.json",
   },
   {
+    id: "barrel-intro",
+    title: "Collecting the JSON in One File",
+    kind: "content",
+    bullets: [
+      "Collect every JSON import in `Database/index.ts` and re-export one object so the server loads them together",
+      "This file is a barrel: an `index.ts` that re-exports a folder so other code imports from one place",
+      "One short import, `import db from \"./Kambaz/Database\"`, instead of one import per file",
+      "Callers do not need the individual file names",
+      "Adding a file means updating only the barrel",
+    ],
+  },
+  {
     id: "barrel",
     title: "Re-exporting Data from a Barrel",
     kind: "demo",
-    bullets: [
-      "A barrel is an `index.ts` that imports several files and re-exports them from one place",
-      "Other files import the whole database with",
-      "`import db from \"./Kambaz/Database\"`",
-    ],
     code: `import courses from "./courses.json";
 import modules from "./modules.json";
 import assignments from "./assignments.json";

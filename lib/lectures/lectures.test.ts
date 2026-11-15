@@ -1366,7 +1366,7 @@ describe("lecture decks", () => {
     assert.equal(counts["async-http"], 41);
     assert.equal(counts["next-routes"], 28);
     assert.equal(counts["ch5-check-understanding"], 7);
-    assert.equal(counts["kambaz-migrate-db"], 6);
+    assert.equal(counts["kambaz-migrate-db"], 7);
     assert.equal(counts["kambaz-account-rest"], 17);
     assert.equal(counts["kambaz-sessions"], 12);
     assert.equal(counts["kambaz-courses-api"], 15);
@@ -3147,6 +3147,13 @@ describe("lecture decks", () => {
     assert.match(migrate, /Kambaz\/Database/);
     assert.match(migrate, /export default/);
     assert.match(migrate, /courses\.json/);
+    const migrateIds = getLectureDeck("kambaz-migrate-db")!.slides.map((slide) => slide.id);
+    assert.equal(migrateIds[migrateIds.indexOf("barrel") - 1], "barrel-intro");
+    assert.equal(findSlide("kambaz-migrate-db", "barrel").bullets, undefined);
+    const barrelIntro = findSlide("kambaz-migrate-db", "barrel-intro").bullets ?? [];
+    assert.match(barrelIntro[0] ?? "", /re-export one object/);
+    assert.match(barrelIntro.join("\n"), /This file is a barrel/);
+    assert.ok(barrelIntro.findIndex((line) => /re-export one object/.test(line)) < barrelIntro.findIndex((line) => /This file is a barrel/.test(line)));
     const dbFiles = ["courses", "modules", "assignments", "users", "enrollments"];
     const kambazData = readFileSync(join(process.cwd(), "app/book/ch3/sections/KambazData.tsx"), "utf8");
     assert.deepEqual(
@@ -3159,6 +3166,15 @@ describe("lecture decks", () => {
     }
 
     const accountRest = slideText("kambaz-account-rest");
+    const daoIntro = findSlide("kambaz-account-rest", "dao-intro").bullets ?? [];
+    assert.match(daoIntro[0] ?? "", /Data Access Object \(DAO\)/);
+    assert.match(daoIntro.join("\n"), /findUserByUsername/);
+    assert.match(daoIntro.join("\n"), /later chapter uses a database/);
+    assert.doesNotMatch(daoIntro.join("\n"), /MongoDB|Mongoose/);
+    assert.equal(
+      getLectureDeck("kambaz-account-rest")!.slides.map((slide) => slide.id).indexOf("dao"),
+      getLectureDeck("kambaz-account-rest")!.slides.map((slide) => slide.id).indexOf("dao-intro") + 1,
+    );
     assert.match(accountRest, /\/api\/users\/signin/);
     assert.match(accountRest, /setCurrentUser/);
     assert.match(accountRest, /findUserByCredentials/);
@@ -4074,7 +4090,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 267);
+    assert.equal(intros, 268);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
