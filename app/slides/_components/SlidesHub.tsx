@@ -71,6 +71,8 @@ function DeckCard({
       ) : null}
       <Link
         href={editMode ? `/slides/${deck.slug}?edit=1` : `/slides/${deck.slug}`}
+        target="_blank"
+        rel="noopener noreferrer"
         className="group block no-underline"
       >
         <div className="aspect-video overflow-hidden bg-neutral-100">
@@ -88,7 +90,9 @@ function DeckCard({
           />
         ) : (
           <h3 className="mt-0 mb-1 font-sans text-lg font-semibold text-neutral-900">
-            <Link href={`/slides/${deck.slug}`}>{deck.title}</Link>
+            <Link href={`/slides/${deck.slug}`} target="_blank" rel="noopener noreferrer">
+              {deck.title}
+            </Link>
           </h3>
         )}
         <p className="mb-0 line-clamp-2 font-sans text-sm leading-6 text-neutral-700">

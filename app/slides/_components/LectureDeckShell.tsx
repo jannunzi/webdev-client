@@ -44,6 +44,7 @@ import {
   fitDemoScale,
   setDemoScale,
 } from "@/lib/lectures/demo-fit";
+import DiagramFit from "./diagrams/DiagramFit";
 import LectureDiagram from "./diagrams/LectureDiagram";
 import LectureFilmstrip from "./LectureFilmstrip";
 import LectureSlideImage from "./LectureSlideImage";
@@ -213,13 +214,10 @@ function replaceLocation({
   }
 }
 
-/** Tall code sits beside the diagram. Shorter slides stack and let the PNG take the rest. */
-function flowDiagramPlacement(slide: BlockSlide): "side" | "below" | undefined {
-  if (!slide.imageSrc || isBookKambazTargetSrc(slide.imageSrc)) return undefined;
-  if (!slide.imageSrc.includes("-diagram.png")) return undefined;
-  const code = slide.blocks.find((block) => block.type === "code");
-  const lines = code?.type === "code" ? code.code.split("\n").length : 0;
-  return lines >= 10 ? "side" : "below";
+/** Lab 5 request/response PNG. Book screenshots are not diagrams. */
+function isRequestDiagramImage(slide: BlockSlide): boolean {
+  if (!slide.imageSrc || isBookKambazTargetSrc(slide.imageSrc)) return false;
+  return slide.imageSrc.includes("-diagram.png");
 }
 
 function titleClasses({
@@ -265,7 +263,7 @@ export default function LectureDeckShell({
   const density = slide ? authoredSlideDensity(slide) : "spacious";
   const demoStage = slide ? isDemoStageSlide(slide) : false;
   const targetFigure = slide ? isTargetFigureSlide(slide) : false;
-  const flowPlacement = slide ? flowDiagramPlacement(slide) : undefined;
+  const flowDiagram = slide ? isRequestDiagramImage(slide) : false;
   const chapterNumber = chapter ?? prevDeck?.chapter ?? nextDeck?.chapter;
   const isPresenting = isNativeFullscreen || fallbackPresent;
   fallbackPresentRef.current = fallbackPresent;
@@ -573,6 +571,97 @@ export default function LectureDeckShell({
         present: isPresenting,
       })
     : undefined;
+  const hasFittedDiagram = Boolean(slide.diagram) || flowDiagram;
+  const fittedDiagram = hasFittedDiagram ? (
+    <>
+      {slide.diagram ? (
+        <DiagramFit>
+          <LectureDiagram id={slide.diagram} />
+        </DiagramFit>
+      ) : null}
+      {flowDiagram && slide.imageSrc ? (
+        <DiagramFit>
+          <LectureSlideImage
+            src={slide.imageSrc}
+            alt={slide.imageAlt ?? slide.title}
+            caption={slide.imageCaption}
+            captionLoc={slide.captionLoc}
+            stage={targetFigure}
+            flow
+          />
+        </DiagramFit>
+      ) : null}
+    </>
+  ) : null;
+  const slideCopy = (
+    <>
+      <p
+        className={`lecture-slide-kicker m-0 text-sm font-semibold uppercase tracking-wide sm:text-base ${
+          kind === "title" ? "text-neutral-300" : "text-neutral-500"
+        }`}
+      >
+        {kindLabel(kind)}
+      </p>
+      {editMode && onSlideChange ? (
+        <input
+          className={`${titleClass} w-full border-0 bg-transparent outline-none`}
+          value={slide.title}
+          onChange={(event) =>
+            onSlideChange(index, { ...slide, title: event.target.value })
+          }
+          aria-label="Slide title"
+        />
+      ) : (
+        <h2 className={titleClass} {...inlineEditDataProps(slide.titleLoc)}>
+          <SlideText text={slide.title} bare />
+        </h2>
+      )}
+      {editMode && onSlideChange ? (
+        <SlideBlockEditor
+          slide={slide}
+          density={density}
+          onChange={(next) => onSlideChange(index, next)}
+        />
+      ) : (
+        <SlideBlockView slide={slide} density={density} />
+      )}
+      {slide.links?.length ? (
+        <p className="lecture-slide-links">
+          <span className="font-semibold">Try it: </span>
+          {slide.links.map((href) => (
+            <a key={href} href={href} target="_blank" rel="noopener noreferrer">
+              {href}
+            </a>
+          ))}
+        </p>
+      ) : null}
+      {slide.imageSrc && !flowDiagram ? (
+        <LectureSlideImage
+          src={slide.imageSrc}
+          alt={slide.imageAlt ?? slide.title}
+          caption={slide.imageCaption}
+          captionLoc={slide.captionLoc}
+          stage={targetFigure}
+        />
+      ) : null}
+      {slide.interactiveHint ? (
+        <p
+          className={`${hintSize} ${
+            kind === "title"
+              ? "border-neutral-600 bg-neutral-800 text-neutral-100"
+              : "border-neutral-300 bg-white text-neutral-800"
+          }`}
+        >
+          <span className="font-semibold">Try this: </span>
+          <SlideText
+            text={slide.interactiveHint}
+            density={density}
+            loc={slide.hintLoc}
+          />
+        </p>
+      ) : null}
+    </>
+  );
   const stageClass = isPresenting
     ? `lecture-slide lecture-slide-${density} box-border h-full w-full min-w-0 overflow-x-hidden overflow-y-auto px-5 py-6 sm:px-8 sm:py-7 ${kindFrame(kind)}${
         fallbackPresent ? " lecture-slide-present-fallback" : isNativeFullscreen ? " lecture-slide-present-native" : ""
@@ -692,7 +781,7 @@ export default function LectureDeckShell({
           data-slide-kind={kind}
           data-demo-stage={demoStage ? "true" : undefined}
           data-target-figure={targetFigure ? "true" : undefined}
-          data-flow-diagram={flowPlacement}
+          data-diagram-fit={hasFittedDiagram ? "stack" : undefined}
           data-lecture-present={
             fallbackPresent ? "fallback" : isNativeFullscreen ? "native" : undefined
           }
@@ -723,75 +812,14 @@ export default function LectureDeckShell({
               )}
               <p className="lecture-cover-brand">WebDevTV</p>
             </>
-          ) : (<>
-          <p
-            className={`lecture-slide-kicker m-0 text-sm font-semibold uppercase tracking-wide sm:text-base ${
-              kind === "title" ? "text-neutral-300" : "text-neutral-500"
-            }`}
-          >
-            {kindLabel(kind)}
-          </p>
-          {editMode && onSlideChange ? (
-            <input
-              className={`${titleClass} w-full border-0 bg-transparent outline-none`}
-              value={slide.title}
-              onChange={(event) =>
-                onSlideChange(index, { ...slide, title: event.target.value })
-              }
-              aria-label="Slide title"
-            />
+          ) : hasFittedDiagram ? (
+            <>
+              <div className="lecture-diagram-copy">{slideCopy}</div>
+              {fittedDiagram}
+            </>
           ) : (
-            <h2 className={titleClass} {...inlineEditDataProps(slide.titleLoc)}>
-              <SlideText text={slide.title} bare />
-            </h2>
+            slideCopy
           )}
-          {editMode && onSlideChange ? (
-            <SlideBlockEditor
-              slide={slide}
-              density={density}
-              onChange={(next) => onSlideChange(index, next)}
-            />
-          ) : (
-            <SlideBlockView slide={slide} density={density} />
-          )}
-          {slide.links?.length ? (
-            <p className="lecture-slide-links">
-              <span className="font-semibold">Try it: </span>
-              {slide.links.map((href) => (
-                <a key={href} href={href} target="_blank" rel="noopener noreferrer">
-                  {href}
-                </a>
-              ))}
-            </p>
-          ) : null}
-          {slide.diagram ? <LectureDiagram id={slide.diagram} /> : null}
-          {slide.imageSrc ? (
-            <LectureSlideImage
-              src={slide.imageSrc}
-              alt={slide.imageAlt ?? slide.title}
-              caption={slide.imageCaption}
-              captionLoc={slide.captionLoc}
-              stage={targetFigure}
-              flow={Boolean(flowPlacement)}
-            />
-          ) : null}
-          {slide.interactiveHint ? (
-            <p
-              className={`${hintSize} ${
-                kind === "title"
-                  ? "border-neutral-600 bg-neutral-800 text-neutral-100"
-                  : "border-neutral-300 bg-white text-neutral-800"
-              }`}
-            >
-              <span className="font-semibold">Try this: </span>
-              <SlideText
-                text={slide.interactiveHint}
-                density={density}
-                loc={slide.hintLoc}
-              />
-            </p>
-          ) : null}
-          </>)}
           {showContinue && continueHref && nextDeck ? (
             <p className="lecture-slide-continue">
               <Link
