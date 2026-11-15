@@ -1364,9 +1364,9 @@ describe("lecture decks", () => {
     assert.equal(counts["remote-objects"], 14);
     assert.equal(counts["remote-arrays"], 19);
     assert.equal(counts["async-http"], 41);
-    assert.equal(counts["next-routes"], 23);
+    assert.equal(counts["next-routes"], 28);
     assert.equal(counts["ch5-check-understanding"], 7);
-    assert.equal(counts["kambaz-migrate-db"], 6);
+    assert.equal(counts["kambaz-migrate-db"], 7);
     assert.equal(counts["kambaz-account-rest"], 17);
     assert.equal(counts["kambaz-sessions"], 12);
     assert.equal(counts["kambaz-courses-api"], 15);
@@ -3147,8 +3147,34 @@ describe("lecture decks", () => {
     assert.match(migrate, /Kambaz\/Database/);
     assert.match(migrate, /export default/);
     assert.match(migrate, /courses\.json/);
+    const migrateIds = getLectureDeck("kambaz-migrate-db")!.slides.map((slide) => slide.id);
+    assert.equal(migrateIds[migrateIds.indexOf("barrel") - 1], "barrel-intro");
+    assert.equal(findSlide("kambaz-migrate-db", "barrel").bullets, undefined);
+    const barrelIntro = findSlide("kambaz-migrate-db", "barrel-intro").bullets ?? [];
+    assert.match(barrelIntro[0] ?? "", /re-export one object/);
+    assert.match(barrelIntro.join("\n"), /This file is a barrel/);
+    assert.ok(barrelIntro.findIndex((line) => /re-export one object/.test(line)) < barrelIntro.findIndex((line) => /This file is a barrel/.test(line)));
+    const dbFiles = ["courses", "modules", "assignments", "users", "enrollments"];
+    const kambazData = readFileSync(join(process.cwd(), "app/book/ch3/sections/KambazData.tsx"), "utf8");
+    assert.deepEqual(
+      findSlide("kambaz-migrate-db", "courses-json").links,
+      dbFiles.map((file) => `https://kambaz.dev/downloads/kambaz-database/${file}.json`),
+    );
+    for (const file of dbFiles) {
+      assert.match(kambazData, new RegExp(`href="/downloads/kambaz-database/${file}\\.json" download`));
+      assert.match(kambazData, new RegExp(`https://kambaz\\.dev/downloads/kambaz-database/${file}\\.json`));
+    }
 
     const accountRest = slideText("kambaz-account-rest");
+    const daoIntro = findSlide("kambaz-account-rest", "dao-intro").bullets ?? [];
+    assert.match(daoIntro[0] ?? "", /Data Access Object \(DAO\)/);
+    assert.match(daoIntro.join("\n"), /findUserByUsername/);
+    assert.match(daoIntro.join("\n"), /later chapter uses a database/);
+    assert.doesNotMatch(daoIntro.join("\n"), /MongoDB|Mongoose/);
+    assert.equal(
+      getLectureDeck("kambaz-account-rest")!.slides.map((slide) => slide.id).indexOf("dao"),
+      getLectureDeck("kambaz-account-rest")!.slides.map((slide) => slide.id).indexOf("dao-intro") + 1,
+    );
     assert.match(accountRest, /\/api\/users\/signin/);
     assert.match(accountRest, /setCurrentUser/);
     assert.match(accountRest, /findUserByCredentials/);
@@ -3672,12 +3698,42 @@ describe("lecture decks", () => {
     assert.equal(findSlide("remote-arrays", "get-all").imageSrc, undefined);
     const routes = getLectureDeck("next-routes")!.slides.map((slide) => slide.id);
     const hello = routes.indexOf("hello-ui");
-    assert.equal(routes[hello - 1], "fetch");
-    assert.equal(routes[hello - 2], "hello-ui-intro");
+    assert.equal(routes[hello - 1], "fetch-styles");
+    assert.equal(routes[hello - 2], "fetch");
+    assert.equal(routes[hello - 3], "hello-ui-intro");
+    assert.deepEqual(routes.slice(hello, hello + 6), [
+      "hello-ui",
+      "hello-named",
+      "hello-async",
+      "hello-client",
+      "hello-best",
+      "hello-ui-part-2",
+    ]);
     const calc = findSlide("next-routes", "calculator");
     const calc2 = findSlide("next-routes", "calculator-part-2");
-    assert.equal(calc.code?.split("\n").length, 8);
-    assert.equal(calc2.codeStartLine, 9);
+    assert.equal(calc.code?.split("\n").length, 9);
+    assert.deepEqual(calc.codeHighlightLines, [[2, 5]]);
+    assert.deepEqual(calc.links, [
+      "http://localhost:3000/api/lab5/calculator?a=34&b=23&operation=add",
+      "http://localhost:3000/api/lab5/calculator?a=34&b=23&operation=subtract",
+      "http://localhost:3000/api/lab5/calculator?a=34&b=23&operation=multiply",
+      "http://localhost:3000/api/lab5/calculator?a=34&b=23&operation=divide",
+    ]);
+    const shell = readFileSync(
+      join(process.cwd(), "app/slides/_components/LectureDeckShell.tsx"),
+      "utf8",
+    );
+    assert.match(shell, /lecture-slide-links-stack/);
+    assert.match(shell, /slide\.links\.length > 2/);
+    assert.match(shell, /target="_blank" rel="noopener noreferrer"/);
+    assert.match(shell, /databaseDownloads\(slide\.links\) \? "Download: " : "Try it: "/);
+    assert.match(shell, /download=\{databaseDownloads\(\[href\]\) \? "" : undefined\}/);
+    const css = readFileSync(join(process.cwd(), "app/book/book.css"), "utf8");
+    assert.match(css, /\.lecture-slide-links-stack\s*\{[^}]*flex-direction:\s*column/);
+    assert.match(calc.code ?? "", /const \{ searchParams \} = request\.nextUrl;/);
+    assert.match(calc.code ?? "", /searchParams\.get\("operation"\)/);
+    assert.doesNotMatch(calc.code ?? "", /request\.nextUrl\.searchParams\.get/);
+    assert.equal(calc2.codeStartLine, 10);
     assert.match(calc.code ?? "", /let result: number;$/);
     assert.match(calc2.code ?? "", /^ {2}switch \(operation\)/);
     assert.match(calc2.code ?? "", /return Response\.json\(\{ a, b, operation, result \}\);\n\}$/);
@@ -4021,7 +4077,8 @@ describe("explanation text never buries the code", () => {
         let code = deck.slides[index + 1]!;
         // fetch is introduced on its own slide immediately before the first call.
         if (deck.slug === "next-routes" && slide.id === "hello-ui-intro" && code.id === "fetch") {
-          code = deck.slides[index + 2]!;
+          assert.equal(deck.slides[index + 2]?.id, "fetch-styles");
+          code = deck.slides[index + 3]!;
         }
         assert.equal(code.id, base, `${deck.slug}#${slide.id} comes right before ${base}`);
         assert.ok(code.code || code.codeBlocks?.length, `${deck.slug}#${base} has the code`);
@@ -4033,7 +4090,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 267);
+    assert.equal(intros, 268);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
