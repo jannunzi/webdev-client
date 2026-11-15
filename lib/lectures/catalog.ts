@@ -1107,7 +1107,7 @@ const LECTURE_SUMMARIES: Record<
   "kambaz-account-rest": {
     title: "Account REST APIs",
     summary:
-      "Users DAO, POST signin/signup/profile/signout, axios, and setCurrentUser.",
+      "Users DAO, POST signin/signup/signout, GET profile, axios, and setCurrentUser.",
     chapter: 5,
     topicId: "kambaz-server",
     bookSectionId: "sec-5-4-2",

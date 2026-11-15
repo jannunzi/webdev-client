@@ -159,7 +159,7 @@ export const signin = async (credentials: { username: string; password: string }
   return response.data;
 };
 export const profile = async () => {
-  const response = await axiosWithCredentials.post(\`\${USERS_API}/profile\`);
+  const response = await axiosWithCredentials.get(\`\${USERS_API}/profile\`);
   return response.data;
 };`,
     codeLanguage: "ts",
