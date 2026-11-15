@@ -174,15 +174,26 @@ export default function UsersDao(db) {
         <p>
           Routes post{" "}
           <code>/api/users/signin</code>,{" "}
-          <code>/signup</code>,{" "}
-          <code>/profile</code>,{" "}
-          and{" "}
-          <code>/signout</code>. The React client posts credentials
-          with axios and then stores the returned user. Call{" "}
+          <code>/signup</code>, and{" "}
+          <code>/signout</code>. Profile is a read, so it is{" "}
+          <code>GET /api/users/profile</code>. The React client posts
+          credentials with axios and then stores the returned user.
+          Call{" "}
           <code>setCurrentUser</code>{" "}from{" "}
           <code>useAccountContext()</code>{" "}— the{" "}
           <code>AccountContext</code>{" "}from{" "}
           <ChapterLink to={4} />.
+        </p>
+        <p>
+          Sign-in uses POST so the username and password stay in the
+          request body. A GET would put them in the URL, which the
+          browser keeps in history and servers often write into logs
+          and caches. HTTPS encrypts the query string too, so this is
+          not about encryption. Sign-in, sign-up, and sign-out also
+          change server state: sign-up creates a user, and sign-in and
+          sign-out start or end a session. Those are not safe GETs.
+          Earlier, POST mapped to create. Auth actions bend that
+          mapping, and that is standard practice.
         </p>
 
         <Section
@@ -229,7 +240,7 @@ export default function UserRoutes(app, db) {
   app.post("/api/users/signup", signup);
   app.post("/api/users/signin", signin);
   app.post("/api/users/signout", signout);
-  app.post("/api/users/profile", profile);
+  app.get("/api/users/profile", profile);
 }`}</CodeBlock>
           <p>
             Import and configure the routes in{" "}
@@ -484,7 +495,7 @@ app.put("/api/users/:userId", updateUser);`}</CodeBlock>
           >{`const profile = (req, res) => {
   res.json(currentUser);
 };
-app.post("/api/users/profile", profile);`}</CodeBlock>
+app.get("/api/users/profile", profile);`}</CodeBlock>
           <p>
             Then in the React Web app, implement a function to retrieve
             the account information from that server route. Create a
@@ -507,7 +518,7 @@ app.post("/api/users/profile", profile);`}</CodeBlock>
             name="profile client"
             file="app/(kambaz)/account/client.ts"
           >{`export const profile = async () => {
-  const response = await axiosWithCredentials.post(\`\${USERS_API}/profile\`);
+  const response = await axiosWithCredentials.get(\`\${USERS_API}/profile\`);
   return response.data;
 };`}</CodeBlock>
         </Section>
@@ -723,7 +734,7 @@ export const signin = async (credentials: { username: string; password: string }
   return response.data;
 };
 export const profile = async () => {
-  const response = await axiosWithCredentials.post(\`\${USERS_API}/profile\`);
+  const response = await axiosWithCredentials.get(\`\${USERS_API}/profile\`);
   return response.data;
 };`}</CodeBlock>
           <p>
