@@ -71,9 +71,23 @@ export default function KambazServer() {
     "department": "D123", "credits": 4, "description": "..." }
 ]`}</CodeBlock>
         <p>
-          Copy the remaining JSON files the same way and update the
-          import statements in a barrel file that re-exports them as
-          one object. Use the same data files from previous chapters.
+          Copy the remaining JSON files the same way. Collect every
+          import in <code>Database/index.ts</code>{" "}and re-export
+          them as one object, so the server can load courses, modules,
+          assignments, users, and enrollments together.
+        </p>
+        <p>
+          That file is a barrel: an <code>index.ts</code>{" "}that
+          re-exports everything in a folder. Other code imports from
+          one place,{" "}
+          <code>import db from &quot;./Kambaz/Database&quot;</code>,
+          instead of opening each JSON file. One short import path
+          replaces an import per file. Callers do not need the
+          individual file names, and adding a file means updating
+          only the barrel.
+        </p>
+        <p>
+          Use the same data files from previous chapters.
           The data in the files can be edited to customize the content
           or meet requirements in this chapter. Ignore unnecessary data
           files.
