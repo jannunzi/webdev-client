@@ -147,6 +147,9 @@ useEffect(() => {
         file="app/labs/lab5/client.ts"
       >{`export const fetchHello = async () => {
   const response = await fetch("/api/lab5/hello");
+  if (!response.ok) {
+    throw new Error(\`HTTP \${response.status}\`);
+  }
   return response.json();
 };`}</CodeBlock>
       <CodeBlock

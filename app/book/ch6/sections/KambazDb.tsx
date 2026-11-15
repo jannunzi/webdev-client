@@ -105,7 +105,8 @@ export default courseSchema;`}</CodeBlock>
             file="webdev-server/Kambaz/Courses/model.ts"
           >{`import mongoose from "mongoose";
 import schema from "./schema";
-const model = mongoose.model("CourseModel", schema);
+const model = mongoose.models.CourseModel ||
+  mongoose.model("CourseModel", schema);
 export default model;`}</CodeBlock>
           <p>
             Using the Mongoose model, refactor the courses DAO file
@@ -937,7 +938,8 @@ export default enrollmentSchema;`}</CodeBlock>
             file="webdev-server/Kambaz/Enrollments/model.ts"
           >{`import mongoose from "mongoose";
 import schema from "./schema";
-const model = mongoose.model("EnrollmentModel", schema);
+const model = mongoose.models.EnrollmentModel ||
+  mongoose.model("EnrollmentModel", schema);
 export default model;`}</CodeBlock>
         </Section>
 

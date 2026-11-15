@@ -110,9 +110,9 @@ export default { courses, modules, assignments, users, enrollments };`}</CodeBlo
         title="5.4.2 Integrating the Account Screens with the Server with RESTful Web APIs"
       >
         <p>
-          A Data Access Object (DAO) is a design pattern that
-          encapsulates all access to a data source behind a small set
-          of functions, such as <code>findUserByUsername</code>{" "}and{" "}
+          The Data Access Object (DAO) is a design pattern that
+          encapsulates access to a data source behind a set of
+          functions, such as <code>findUserByUsername</code>{" "}and{" "}
           <code>createUser</code>. The rest of the app — the routes —
           calls those functions and never touches the storage directly.
         </p>
@@ -640,7 +640,6 @@ if (process.env.SERVER_ENV !== "development") {
   sessionOptions.cookie = {
     sameSite: "none",
     secure: true,
-    domain: process.env.SERVER_URL,
   };
 }
 app.use(session(sessionOptions));

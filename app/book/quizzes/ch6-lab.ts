@@ -89,7 +89,7 @@ export const CH6_LAB_QUESTIONS: QuizQuestion[] = [
       { id: "d", text: "Atlas IP allow lists" },
     ],
     answer: "b",
-    explanation: "Mongoose/Mongo reject a second insert with the same username.",
+    explanation: "unique: true builds a unique index. Once that index exists, MongoDB rejects a second document with the same username.",
   },
   {
     id: "6-model",

@@ -1,7 +1,8 @@
+import type { NextRequest } from "next/server";
 import { lab6Todos } from "../store";
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
+export async function GET(request: NextRequest) {
+  const { searchParams } = request.nextUrl;
   const completed = searchParams.get("completed");
   let todos = lab6Todos();
   if (completed === "true" || completed === "false") {
