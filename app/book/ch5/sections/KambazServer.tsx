@@ -71,9 +71,23 @@ export default function KambazServer() {
     "department": "D123", "credits": 4, "description": "..." }
 ]`}</CodeBlock>
         <p>
-          Copy the remaining JSON files the same way and update the
-          import statements in a barrel file that re-exports them as
-          one object. Use the same data files from previous chapters.
+          Copy the remaining JSON files the same way. Collect every
+          import in <code>Database/index.ts</code>{" "}and re-export
+          them as one object, so the server can load courses, modules,
+          assignments, users, and enrollments together.
+        </p>
+        <p>
+          That file is a barrel: an <code>index.ts</code>{" "}that
+          re-exports everything in a folder. Other code imports from
+          one place,{" "}
+          <code>import db from &quot;./Kambaz/Database&quot;</code>,
+          instead of opening each JSON file. One short import path
+          replaces an import per file. Callers do not need the
+          individual file names, and adding a file means updating
+          only the barrel.
+        </p>
+        <p>
+          Use the same data files from previous chapters.
           The data in the files can be edited to customize the content
           or meet requirements in this chapter. Ignore unnecessary data
           files.
@@ -96,13 +110,23 @@ export default { courses, modules, assignments, users, enrollments };`}</CodeBlo
         title="5.4.2 Integrating the Account Screens with the Server with RESTful Web APIs"
       >
         <p>
-          The Data Access Object (DAO) design pattern organizes data
-          access by grouping it based on data types or collections. The
-          following <code>Kambaz/Users/dao.ts</code>{" "}file implements
-          various CRUD operations for handling the users array in the
-          Database. Later sections in the chapter will create
-          additional DAOs for each of the data arrays: courses,
-          modules, and so on.
+          A Data Access Object (DAO) is a design pattern that
+          encapsulates all access to a data source behind a small set
+          of functions, such as <code>findUserByUsername</code>{" "}and{" "}
+          <code>createUser</code>. The rest of the app — the routes —
+          calls those functions and never touches the storage directly.
+        </p>
+        <p>
+          That split keeps route logic away from storage details.
+          Queries live in one place, so they are easier to change and
+          to test. Swapping the storage does not change the callers.
+        </p>
+        <p>
+          <code>Kambaz/Users/dao.ts</code>{" "}is the users DAO. It
+          works over the in-memory JSON arrays. A later chapter
+          reimplements these same functions for a database, and the
+          routes stay the same. Later sections in this chapter add a
+          DAO for each remaining array: courses, modules, and so on.
         </p>
         <CodeBlock
           language="ts"
