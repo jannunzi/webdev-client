@@ -56,11 +56,12 @@ export default courseSchema;`,
     ],
     code: `import mongoose from "mongoose";
 import schema from "./schema";
-const model = mongoose.model("CourseModel", schema);
+const model = mongoose.models.CourseModel ||
+  mongoose.model("CourseModel", schema);
 export default model;`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Courses/model.ts",
-    codeAddedLines: [3],
+    codeAddedLines: [[3, 4]],
   },
   {
     id: "find-intro",

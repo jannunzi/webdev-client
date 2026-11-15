@@ -78,14 +78,13 @@ if (process.env.SERVER_ENV !== "development") {
   sessionOptions.cookie = {
     sameSite: "none",
     secure: true,
-    domain: process.env.SERVER_URL,
   };
 }
 app.use(session(sessionOptions));
 app.use(express.json());`,
     codeLanguage: "ts",
     codeFile: "webdev-server/index.ts",
-    codeHighlightLines: [[4, 7], [21, 22]],
+    codeHighlightLines: [[4, 7], [20, 21]],
   },
   {
     id: "cookie-flow",

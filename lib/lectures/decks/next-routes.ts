@@ -141,9 +141,12 @@ useEffect(() => {
         language: "ts",
         code: `export const fetchHello = async () => {
   const response = await fetch("/api/lab5/hello");
+  if (!response.ok) {
+    throw new Error(\`HTTP \${response.status}\`);
+  }
   return response.json();
 };`,
-        addedLines: [[1, 4]],
+        addedLines: [[1, 7]],
       },
       {
         file: "app/labs/lab5/HelloRoute.tsx",

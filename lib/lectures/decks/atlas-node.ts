@@ -76,7 +76,7 @@ export const ATLAS_NODE_SLIDES: LectureSlide[] = [
     code: `const CONNECTION_STRING =
   process.env.DATABASE_CONNECTION_STRING ||
   "mongodb://127.0.0.1:27017/kambaz";
-mongoose.connect(CONNECTION_STRING);`,
+await mongoose.connect(CONNECTION_STRING);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/index.ts",
     codeHighlightLines: [[1, 3]],

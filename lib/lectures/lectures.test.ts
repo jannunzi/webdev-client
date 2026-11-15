@@ -1367,7 +1367,7 @@ describe("lecture decks", () => {
     assert.equal(counts["next-routes"], 28);
     assert.equal(counts["ch5-check-understanding"], 7);
     assert.equal(counts["kambaz-migrate-db"], 7);
-    assert.equal(counts["kambaz-account-rest"], 17);
+    assert.equal(counts["kambaz-account-rest"], 18);
     assert.equal(counts["kambaz-sessions"], 12);
     assert.equal(counts["kambaz-courses-api"], 15);
     assert.equal(counts["deploy-api"], 8);
@@ -3167,7 +3167,10 @@ describe("lecture decks", () => {
 
     const accountRest = slideText("kambaz-account-rest");
     const daoIntro = findSlide("kambaz-account-rest", "dao-intro").bullets ?? [];
-    assert.match(daoIntro[0] ?? "", /Data Access Object \(DAO\)/);
+    assert.match(daoIntro[0] ?? "", /Data Access Object \(DAO\) is a design pattern/);
+    assert.equal(findSlide("kambaz-account-rest", "dao-intro").density, undefined);
+    assert.equal(findSlide("kambaz-account-rest", "uuid-install").code, "npm install uuid");
+    assert.doesNotMatch(daoIntro.join("\n"), /npm install uuid/);
     assert.match(daoIntro.join("\n"), /findUserByUsername/);
     assert.match(daoIntro.join("\n"), /later chapter uses a database/);
     assert.doesNotMatch(daoIntro.join("\n"), /MongoDB|Mongoose/);
