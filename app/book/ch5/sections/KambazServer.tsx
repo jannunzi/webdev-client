@@ -247,19 +247,23 @@ export default function UserRoutes(app, db) {
           <p>
             Import and configure the routes in{" "}
             <code>index.ts</code>{" "}and pass a reference to the
-            database to each of the route modules. Work after CORS,
-            session, and{" "}
-            <code>express.json()</code>{" "}are configured —{" "}
-            <SectionLink to="5.4.3.1" />{" "}fills those in.
+            database to each of the route modules. Call{" "}
+            <code>app.use(cors())</code>{" "}and{" "}
+            <code>express.json()</code>{" "}before the routes.{" "}
+            <SectionLink to="5.4.3.1" />{" "}replaces this CORS setup
+            when sessions start.
           </p>
           <CodeBlock
             language="ts"
             name="index"
             file="webdev-server/index.ts"
           >{`import express from "express";
+import cors from "cors";
 import db from "./Kambaz/Database/index";
 import UserRoutes from "./Kambaz/Users/routes";
 const app = express();
+app.use(cors());
+app.use(express.json());
 UserRoutes(app, db);
 app.listen(process.env.PORT || 4000);`}</CodeBlock>
           <p>
@@ -308,12 +312,11 @@ app.post("/api/users/signin", signin);`}</CodeBlock>
             file="app/(kambaz)/account/client.ts"
           >{`import axios from "axios";
 
-const axiosWithCredentials = axios.create({ withCredentials: true });
 const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 const USERS_API = \`\${HTTP_SERVER}/api/users\`;
 
 export const signin = async (credentials: { username: string; password: string }) => {
-  const response = await axiosWithCredentials.post(\`\${USERS_API}/signin\`, credentials);
+  const response = await axios.post(\`\${USERS_API}/signin\`, credentials);
   return response.data;
 };`}</CodeBlock>
           <p>
@@ -406,7 +409,7 @@ app.post("/api/users/signup", signup);`}</CodeBlock>
             name="signup client"
             file="app/(kambaz)/account/client.ts"
           >{`export const signup = async (user: { username: string; password: string }) => {
-  const response = await axiosWithCredentials.post(\`\${USERS_API}/signup\`, user);
+  const response = await axios.post(\`\${USERS_API}/signup\`, user);
   return response.data;
 };`}</CodeBlock>
           <CodeBlock
@@ -465,7 +468,7 @@ app.put("/api/users/:userId", updateUser);`}</CodeBlock>
             name="updateUser client"
             file="app/(kambaz)/account/client.ts"
           >{`export const updateUser = async (user: { _id: string }) => {
-  const response = await axiosWithCredentials.put(\`\${USERS_API}/\${user._id}\`, user);
+  const response = await axios.put(\`\${USERS_API}/\${user._id}\`, user);
   return response.data;
 };`}</CodeBlock>
         </Section>
@@ -520,7 +523,7 @@ app.get("/api/users/profile", profile);`}</CodeBlock>
             name="profile client"
             file="app/(kambaz)/account/client.ts"
           >{`export const profile = async () => {
-  const response = await axiosWithCredentials.get(\`\${USERS_API}/profile\`);
+  const response = await axios.get(\`\${USERS_API}/profile\`);
   return response.data;
 };`}</CodeBlock>
         </Section>
@@ -556,7 +559,7 @@ app.post("/api/users/signout", signout);`}</CodeBlock>
             name="signout client"
             file="app/(kambaz)/account/client.ts"
           >{`export const signout = async () => {
-  const response = await axiosWithCredentials.post(\`\${USERS_API}/signout\`);
+  const response = await axios.post(\`\${USERS_API}/signout\`);
   return response.data;
 };`}</CodeBlock>
           <OnYourOwn>
@@ -596,7 +599,11 @@ app.post("/api/users/signout", signout);`}</CodeBlock>
             First, it is necessary to narrow down who is allowed to
             authenticate. Configure CORS to support cookies and
             restrict network access to come only from the React
-            application. Install{" "}
+            application. A request that sends cookies needs{" "}
+            <code>credentials: true</code>{" "}and an explicit{" "}
+            <code>origin</code>. The <code>*</code>{" "}wildcard from{" "}
+            <code>app.use(cors())</code>{" "}is rejected by the browser
+            once cookies are included. Install{" "}
             <OfficialLink href="https://www.npmjs.com/package/express-session">
               express-session
             </OfficialLink>{" "}
@@ -717,13 +724,11 @@ const signout = (req, res) => {
           title="5.4.3.2 Configuring Axios to Support Server Sessions"
         >
           <p>
-            By default axios does not support cookies. To configure
-            axios to include cookies in requests, use{" "}
-            <code>axios.create()</code>{" "}to create an instance of the
-            library that includes cookies for credentials as shown
-            below. Then replace all occurrences of the axios library
-            used for account and enrolled-course calls with this new
-            version <code>axiosWithCredentials</code>.
+            By default axios does not send cookies. Create an instance
+            with <code>axios.create()</code>{" "}and replace{" "}
+            <code>axios</code>{" "}with{" "}
+            <code>axiosWithCredentials</code>{" "}in each account client
+            function: signin, signup, updateUser, profile, and signout.
           </p>
           <CodeBlock
             language="ts"
@@ -735,16 +740,28 @@ export const signin = async (credentials: { username: string; password: string }
   const response = await axiosWithCredentials.post(\`\${USERS_API}/signin\`, credentials);
   return response.data;
 };
+export const signup = async (user: { username: string; password: string }) => {
+  const response = await axiosWithCredentials.post(\`\${USERS_API}/signup\`, user);
+  return response.data;
+};
+export const updateUser = async (user: { _id: string }) => {
+  const response = await axiosWithCredentials.put(\`\${USERS_API}/\${user._id}\`, user);
+  return response.data;
+};
 export const profile = async () => {
   const response = await axiosWithCredentials.get(\`\${USERS_API}/profile\`);
   return response.data;
+};
+export const signout = async () => {
+  const response = await axiosWithCredentials.post(\`\${USERS_API}/signout\`);
+  return response.data;
 };`}</CodeBlock>
           <p>
-            Every signed-in request — profile, signout, update user,
-            and later{" "}
-            <code>/api/users/current/courses</code> — must use that
-            instance, or the session cookie never leaves the browser
-            and Express will treat you as anonymous.
+            Later{" "}
+            <code>/api/users/current/courses</code>{" "}uses the same
+            instance. If a signed-in call stays on plain{" "}
+            <code>axios</code>, the session cookie never leaves the
+            browser and Express treats the request as anonymous.
           </p>
         </Section>
       </Section>

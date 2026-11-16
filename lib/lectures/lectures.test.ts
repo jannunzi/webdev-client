@@ -3181,7 +3181,8 @@ describe("lecture decks", () => {
     assert.match(accountRest, /\/api\/users\/signin/);
     assert.match(accountRest, /setCurrentUser/);
     assert.match(accountRest, /findUserByCredentials/);
-    assert.match(accountRest, /axiosWithCredentials/);
+    assert.match(accountRest, /axios\.post/);
+    assert.doesNotMatch(accountRest, /withCredentials/);
 
     const sessions = slideText("kambaz-sessions");
     assert.equal(findSlide("kambaz-sessions", "title").cover?.headline, "Server Sessions");

@@ -148,21 +148,23 @@ app.post("/api/users/signin", signin);`,
     kind: "demo",
     bullets: [
       "`HTTP_SERVER` is `process.env.NEXT_PUBLIC_HTTP_SERVER` from Lab 5",
-      "`withCredentials` is required once sessions arrive",
+      "`axios.post` sends the username and password as JSON",
     ],
     code: `import axios from "axios";
 
-const axiosWithCredentials = axios.create({ withCredentials: true });
 const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 const USERS_API = \`\${HTTP_SERVER}/api/users\`;
 
 export const signin = async (credentials: { username: string; password: string }) => {
-  const response = await axiosWithCredentials.post(\`\${USERS_API}/signin\`, credentials);
+  const response = await axios.post(
+    \`\${USERS_API}/signin\`,
+    credentials,
+  );
   return response.data;
 };`,
     codeLanguage: "ts",
     codeFile: "app/(kambaz)/account/client.ts",
-    codeHighlightLines: [4, [7, 10]],
+    codeHighlightLines: [[7, 10]],
   },
   {
     id: "signin-ui",
@@ -192,12 +194,15 @@ const signin = async () => {
       "In `account/client.ts`, add signup as shown below",
     ],
     code: `export const signup = async (user: { username: string; password: string }) => {
-  const response = await axiosWithCredentials.post(\`\${USERS_API}/signup\`, user);
+  const response = await axios.post(
+    \`\${USERS_API}/signup\`,
+    user,
+  );
   return response.data;
 };`,
     codeLanguage: "ts",
     codeFile: "app/(kambaz)/account/client.ts",
-    codeAddedLines: [[1, 4]],
+    codeAddedLines: [[1, 6]],
   },
   {
     id: "signup-ui",
@@ -272,7 +277,7 @@ app.post("/api/users/signup", signup);`,
     kind: "title",
     bullets: [
       "Cookies (small values the browser sends back on each request) so more than one browser can be signed in",
-      "CORS origin, `express-session`, `withCredentials`",
+      "`express-session` and a specific CORS origin",
     ],
   },
 ];
