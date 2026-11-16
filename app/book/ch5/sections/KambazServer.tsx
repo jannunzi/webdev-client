@@ -141,43 +141,10 @@ export default { courses, modules, assignments, users, enrollments };`}</CodeBlo
           same. Later sections in this chapter add a DAO for each
           remaining array: courses, modules, and so on.
         </p>
-        <CodeBlock
-          language="ts"
-          name="Users DAO"
-          file="webdev-server/Kambaz/Users/dao.ts"
-        >{`import { v4 as uuidv4 } from "uuid";
-export default function UsersDao(db) {
-  let { users } = db;
-  const createUser = (user) => {
-    const newUser = { ...user, _id: uuidv4() };
-    users = [...users, newUser];
-    return newUser;
-  };
-  const findAllUsers = () => users;
-  const findUserById = (userId) => users.find((user) => user._id === userId);
-  const findUserByUsername = (username) =>
-    users.find((user) => user.username === username);
-  const findUserByCredentials = (username, password) =>
-    users.find((user) => user.username === username && user.password === password);
-  const updateUser = (userId, user) =>
-    (users = users.map((u) => (u._id === userId ? user : u)));
-  const deleteUser = (userId) =>
-    (users = users.filter((u) => u._id !== userId));
-  return {
-    createUser, findAllUsers, findUserById, findUserByUsername,
-    findUserByCredentials, updateUser, deleteUser,
-  };
-}`}</CodeBlock>
         <p>
-          Like in the React project, install the{" "}
-          <OfficialLink href="https://www.npmjs.com/package/uuid">
-            uuid
-          </OfficialLink>{" "}
-          library in the Node.js project as shown below to generate
-          unique identifiers when creating new instances of courses,
-          modules, and other object instances.
+          Sign-in, sign-up, and profile each add the DAO function that
+          screen calls, then its route, then its client.
         </p>
-        <CodeBlock language="shell">{`npm install uuid`}</CodeBlock>
         <p>
           Routes post{" "}
           <code>/api/users/signin</code>,{" "}
@@ -242,6 +209,7 @@ export default function UsersDao(db) {
           >{`import UsersDao from "./dao";
 export default function UserRoutes(app, db) {
   const dao = UsersDao(db);
+  let currentUser = null;
   const signup = (req, res) => { };
   const signin = (req, res) => { };
   const signout = (req, res) => { };
@@ -251,6 +219,10 @@ export default function UserRoutes(app, db) {
   app.post("/api/users/signout", signout);
   app.get("/api/users/profile", profile);
 }`}</CodeBlock>
+          <p>
+            <code>currentUser</code> is a single server-side variable
+            holding the signed-in user, which sessions replace later.
+          </p>
           <p>
             Import and configure the routes in{" "}
             <code>index.ts</code>. Import the Database barrel,{" "}
@@ -279,6 +251,20 @@ app.use(cors());
 app.use(express.json());
 UserRoutes(app, db);
 app.listen(process.env.PORT || 4000);`}</CodeBlock>
+          <p>
+            Sign-in looks the user up by username and password. Add{" "}
+            <code>findUserByCredentials</code>{" "}to the users DAO.
+          </p>
+          <CodeBlock
+            language="ts"
+            name="findUserByCredentials"
+            file="webdev-server/Kambaz/Users/dao.ts"
+          >{`export default function UsersDao(db) {
+  let { users } = db;
+  const findUserByCredentials = (username, password) =>
+    users.find((user) => user.username === username && user.password === password);
+  return { findUserByCredentials };
+}`}</CodeBlock>
           <p>
             Routes implement RESTful Web APIs that clients can use to
             integrate with server functionality. The signin route
@@ -338,7 +324,10 @@ export const signin = async (credentials: { username: string; password: string }
             variable <code>credentials</code>{" "}to edit the username
             and password. Clicking the Sign in button posts the
             credentials to the server using the{" "}
-            <code>client.signin</code>{" "}function. When the server
+            <code>client.signin</code>{" "}function. Import the account
+            client with{" "}
+            <code>import * as client from &quot;../client&quot;</code>.
+            When the server
             responds successfully, the currently logged in user is
             stored with{" "}
             <code>setCurrentUser</code>{" "}from{" "}
@@ -351,7 +340,9 @@ export const signin = async (credentials: { username: string; password: string }
             language="tsx"
             name="Signin"
             file="app/(kambaz)/account/signin/page.tsx"
-          >{`const { setCurrentUser } = useAccountContext();
+          >{`import * as client from "../client";
+
+const { setCurrentUser } = useAccountContext();
 const signin = async () => {
   const user = await client.signin(credentials);
   if (!user) return;
@@ -377,6 +368,27 @@ const signin = async () => {
             username. Those two functions implement the sign up
             operation for users to sign up to the application.
           </p>
+          <p>
+            Install the{" "}
+            <OfficialLink href="https://www.npmjs.com/package/uuid">
+              uuid
+            </OfficialLink>{" "}
+            library so <code>createUser</code>{" "}can assign an id.
+            Add both functions to the users DAO.
+          </p>
+          <CodeBlock language="shell">{`npm install uuid`}</CodeBlock>
+          <CodeBlock
+            language="ts"
+            name="signup DAO"
+            file="webdev-server/Kambaz/Users/dao.ts"
+          >{`import { v4 as uuidv4 } from "uuid";
+const createUser = (user) => {
+  const newUser = { ...user, _id: uuidv4() };
+  users = [...users, newUser];
+  return newUser;
+};
+const findUserByUsername = (username) =>
+  users.find((user) => user.username === username);`}</CodeBlock>
           <p>
             The signup route expects a user object with at least the
             properties <code>username</code>{" "}and{" "}
@@ -446,12 +458,24 @@ const signup = async () => {
             In the User&apos;s DAO, implement{" "}
             <code>updateUser</code>{" "}to update a single document by
             first identifying it by its primary key, and then updating
-            the matching fields in the user parameter. In the
-            User&apos;s routes, make the DAO function available as a
-            RESTful Web API. Map a route that accepts a user&apos;s
-            primary key as a path parameter, passes the ID and request
-            body to the DAO function, and responds with the updated
-            user so the client can refresh Context.
+            the matching fields in the user parameter.{" "}
+            <code>findUserById</code>{" "}reads that user back afterward.
+          </p>
+          <CodeBlock
+            language="ts"
+            name="profile DAO"
+            file="webdev-server/Kambaz/Users/dao.ts"
+          >{`const findUserById = (userId) =>
+  users.find((user) => user._id === userId);
+const updateUser = (userId, user) =>
+  (users = users.map((u) => (u._id === userId ? user : u)));`}</CodeBlock>
+          <p>
+            In the User&apos;s routes, make{" "}
+            <code>updateUser</code>{" "}available as a RESTful Web API.
+            Map a route that accepts a user&apos;s primary key as a
+            path parameter, passes the ID and request body to the DAO
+            function, and responds with the updated user so the client
+            can refresh Context.
           </p>
           <CodeBlock
             language="ts"
@@ -468,13 +492,8 @@ app.put("/api/users/:userId", updateUser);`}</CodeBlock>
           <p>
             In the React client application, add client function{" "}
             <code>updateUser</code>{" "}to send user updates to the
-            server to be saved. In the Profile screen implement the{" "}
-            <code>updateProfile</code>{" "}event handler to update the
-            profile on the server and then{" "}
-            <code>setCurrentUser</code>{" "}with the response. Add an
-            Update button that invokes the new handler. Confirm that
-            the profile changed by logging out and then logging back
-            in.
+            server to be saved. Confirm that the profile changed by
+            logging out and then logging back in.
           </p>
           <CodeBlock
             language="ts"
@@ -483,6 +502,23 @@ app.put("/api/users/:userId", updateUser);`}</CodeBlock>
           >{`export const updateUser = async (user: { _id: string }) => {
   const response = await axios.put(\`\${USERS_API}/\${user._id}\`, user);
   return response.data;
+};`}</CodeBlock>
+          <p>
+            In the Profile screen, <code>updateProfile</code>{" "}sends
+            the form through that client and stores the response with{" "}
+            <code>setCurrentUser</code>. Import the account client the
+            same way Sign in does.
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="Profile update"
+            file="app/(kambaz)/account/profile/page.tsx"
+          >{`import * as client from "../client";
+
+const { setCurrentUser } = useAccountContext();
+const updateProfile = async () => {
+  const user = await client.updateUser(profile);
+  setCurrentUser(user);
 };`}</CodeBlock>
         </Section>
 
