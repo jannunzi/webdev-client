@@ -120,17 +120,29 @@ import { useRouter } from "next/navigation";
 import { useAccountContext, type User } from "../AccountContext";
 
 export default function Profile() {
-  const [profile, setProfile] = useState<User | null>(null);
-  const { currentUser, setCurrentUser } = useAccountContext();
+  const { currentUser } = useAccountContext();
   const router = useRouter();
 
   useEffect(() => {
     if (!currentUser) {
       router.push("/account/signin");
-      return;
     }
-    setProfile(currentUser);
   }, [currentUser, router]);
+
+  if (!currentUser) return null;
+  return <ProfileForm key={currentUser._id} user={currentUser} />;
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/account/profile/page.tsx",
+  },
+  {
+    id: "profile-part-2",
+    title: "Draft state and text inputs",
+    kind: "content",
+    code: `function ProfileForm({ user }: { user: User }) {
+  const [profile, setProfile] = useState(user);
+  const { setCurrentUser } = useAccountContext();
+  const router = useRouter();
 
   const update = () => {
     setCurrentUser(profile);
@@ -140,38 +152,50 @@ export default function Profile() {
     setCurrentUser(null);
     router.push("/account/signin");
   };
-`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/account/profile/page.tsx",
-  },
-  {
-    id: "profile-part-2",
-    title: "Profile Text Inputs",
-    kind: "content",
-    code: `  if (!profile) return null;
+
   return (
     <div id="wd-profile-screen">
       <h3>Profile</h3>
-      <input value={profile.username} id="wd-username"
-        onChange={(e) => setProfile({ ...profile, username: e.target.value })} />
-      <input value={profile.password} type="password" id="wd-password"
-        onChange={(e) => setProfile({ ...profile, password: e.target.value })} />
-      <input value={profile.firstName} id="wd-firstname"
-        onChange={(e) => setProfile({ ...profile, firstName: e.target.value })} />
-      <input value={profile.lastName} id="wd-lastname"
-        onChange={(e) => setProfile({ ...profile, lastName: e.target.value })} />
-      <input value={profile.email} type="email" id="wd-email"
-        onChange={(e) => setProfile({ ...profile, email: e.target.value })} />`,
+      <input
+        id="wd-username"
+        value={profile.username}
+        onChange={(e) => setProfile({ ...profile, username: e.target.value })}
+      />
+      <input
+        id="wd-password"
+        type="password"
+        value={profile.password}
+        onChange={(e) => setProfile({ ...profile, password: e.target.value })}
+      />
+      <input
+        id="wd-firstname"
+        value={profile.firstName}
+        onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
+      />
+      <input
+        id="wd-lastname"
+        value={profile.lastName}
+        onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
+      />
+      <input
+        id="wd-email"
+        type="email"
+        value={profile.email}
+        onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+      />`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/profile/page.tsx",
-    codeStartLine: 29,
+    codeStartLine: 21,
   },
   {
     id: "profile-part-3",
     title: "Profile Role and Account Buttons",
     kind: "content",
-    code: `      <select value={profile.role} id="wd-role"
-        onChange={(e) => setProfile({ ...profile, role: e.target.value })} >
+    code: `      <select
+        id="wd-role"
+        value={profile.role}
+        onChange={(e) => setProfile({ ...profile, role: e.target.value })}
+      >
         <option value="USER">User</option>
         <option value="ADMIN">Admin</option>
         <option value="FACULTY">Faculty</option>
@@ -188,7 +212,7 @@ export default function Profile() {
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/profile/page.tsx",
-    codeStartLine: 43,
+    codeStartLine: 65,
   },
   {
     id: "profile-live",

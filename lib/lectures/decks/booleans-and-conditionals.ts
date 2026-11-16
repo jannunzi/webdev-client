@@ -26,16 +26,16 @@ export const BOOLEANS_AND_CONDITIONALS_SLIDES: LectureSlide[] = [
     title: "Compute booleans with && || ! ===",
     kind: "content",
     code: `export default function BooleanVariables() {
-  let numberVariable = 123,
-    floatingPointNumber = 234.345;
-  let true1 = true,
+  const numberVariable = 123,
+    floatingPointNumber: number = 234.345;
+  const true1 = true,
     false1 = false;
-  let false2 = true1 && false1;
-  let true2 = true1 || false1;
-  let true3 = !false2;
-  let true4 = numberVariable === 123;
-  let true5 = floatingPointNumber !== 321.432;
-  let false3 = numberVariable < 100;`,
+  const false2 = true1 && false1;
+  const true2 = true1 || false1;
+  const true3 = !false2;
+  const true4 = numberVariable === 123;
+  const true5 = floatingPointNumber !== 321.432;
+  const false3 = numberVariable < 100;`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/BooleanVariables.tsx",
     codeHighlightLines: [6, 7, 8, 9, 10, 11],
@@ -79,7 +79,7 @@ export const BOOLEANS_AND_CONDITIONALS_SLIDES: LectureSlide[] = [
     title: "Short-circuit a paragraph",
     kind: "content",
     code: `export default function IfElse() {
-  let true1 = true,
+  const true1 = true,
     false1 = false;
   return (
     <div id="wd-if-else">
@@ -110,7 +110,7 @@ export const BOOLEANS_AND_CONDITIONALS_SLIDES: LectureSlide[] = [
     title: "A ternary picks one of two trees",
     kind: "content",
     code: `export default function TernaryOperator() {
-  let loggedIn = true;
+  const loggedIn = true;
   return (
     <div id="wd-ternary-operator">
       <h4>Logged In</h4>

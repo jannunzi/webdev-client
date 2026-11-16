@@ -49,11 +49,20 @@ export default function EffectsAndExercises() {
           what you want.
         </p>
         <p>
-          Kambaz Profile will use the same hook: if there is no current
-          user the screen redirects to Sign in; otherwise it copies the
-          current user into a local form, and a{" "}
-          <code>useEffect</code>{" "}with an empty dependency array calls
-          that fetch-profile function after the first paint. Chapter 5
+          Do not call <code>setState</code>{" "}inside an effect to copy
+          props or other state into state. That write happens after
+          paint, so it causes an extra render, and if the effect&apos;s
+          dependencies include the state it just set, the effect can
+          run again and loop. A value that can be computed from props
+          or state should be computed during render. A form that starts
+          as a copy of something else should take that value as its
+          initial state, not sync it in an effect.
+        </p>
+        <p>
+          Kambaz Profile will use the same hook for one outside job: if
+          there is no current user, the screen redirects to Sign in.
+          The form itself starts from the current user as its initial
+          state, which <SectionLink to="4.10.5.5" />{" "}shows. Chapter 5
           will use the same hook to retrieve welcome messages, objects,
           and arrays from an HTTP server when a lab component loads. This
           section practices the hook in isolation so those later calls

@@ -698,23 +698,123 @@ export default function ModuleControlButtons({
   );
 }`}</CodeBlock>
         <p>
-          <code>Module</code>{" "}now takes a single{" "}
-          <code>module</code>{" "}prop instead of a title and an{" "}
-          <code>extra</code>{" "}slot. It renders the name, or the rename
-          input when <code>module.editing</code>{" "}is set, calling the
-          store&apos;s <code>updateModule</code>{" "}itself, places{" "}
-          <code>{`<ModuleControlButtons moduleId={module._id} />`}</code>{" "}
-          at the right of the title, and renders the lessons inside as
-          before. The Modules page keeps only the store&apos;s{" "}
-          <code>modules</code>{" "}filtered by <code>cid</code>{" "}and maps
-          each one to{" "}
-          <code>{`<Module key={module._id} module={module} />`}</code>. Home
-          updates for free because it already renders{" "}
-          <code>Modules</code>. Confirm you
-          can still add, remove, and edit modules as before. Also
-          confirm the modules still work on the Home screen: add a
-          module on Modules, switch to Home without reloading, and
-          confirm the new row is there.
+          <code>Lesson</code> is the row inside a module. The final
+          screen uses the styled version below:
+        </p>
+        <CodeBlock
+          language="tsx"
+          name="Lesson"
+          file="app/(kambaz)/courses/[cid]/modules/Lesson.tsx"
+        >{`import type { ReactNode } from "react";
+import { FaCheckCircle } from "react-icons/fa";
+
+export default function Lesson({
+  title,
+  children,
+}: {
+  title: string;
+  children?: ReactNode;
+}) {
+  return (
+    <li className="wd-lesson border-l-[3px] border-green-600 p-3 pl-1">
+      <div className="flex items-center justify-between">
+        <span className="wd-title">{title}</span>
+        <FaCheckCircle className="text-green-600" />
+      </div>
+      <ul className="wd-content mt-2 list-disc pl-6">{children}</ul>
+    </li>
+  );
+}`}</CodeBlock>
+        <p>
+          <code>Module</code> now takes a single 
+          <code>module</code> prop. It renders the name, or a rename
+          input when <code>module.editing</code> is set, and it calls
+          the store&apos;s <code>updateModule</code> itself. 
+          <code>ModuleControlButtons</code> sits at the right of the
+          title, and the lessons render inside:
+        </p>
+        <CodeBlock
+          language="tsx"
+          name="Module"
+          file="app/(kambaz)/courses/[cid]/modules/Module.tsx"
+        >{`import ModuleControlButtons from "./ModuleControlButtons";
+import Lesson from "./Lesson";
+import { useModulesStore, type CourseModule } from "../../../store/modulesStore";
+
+export default function Module({ module }: { module: CourseModule }) {
+  const updateModule = useModulesStore((state) => state.updateModule);
+  return (
+    <li className="wd-module mb-5 overflow-hidden border border-neutral-400 p-0 text-xl">
+      <div className="wd-title flex items-center justify-between bg-neutral-200 p-3 ps-2">
+        <span className="min-w-0 flex-1">
+          {module.editing ? (
+            <input
+              className="w-1/2 rounded border border-neutral-300 px-2 py-1 text-base"
+              defaultValue={module.name}
+              onChange={(e) =>
+                updateModule({ ...module, name: e.target.value })
+              }
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  updateModule({ ...module, editing: false });
+                }
+              }}
+            />
+          ) : (
+            module.name
+          )}
+        </span>
+        <span className="ms-2 flex items-center gap-2">
+          <ModuleControlButtons moduleId={module._id} />
+        </span>
+      </div>
+      <ul className="wd-lessons m-0 list-none p-0">
+        {module.lessons?.map((lesson) => (
+          <Lesson key={lesson._id} title={lesson.name} />
+        ))}
+      </ul>
+    </li>
+  );
+}`}</CodeBlock>
+        <p>
+          The Modules page keeps only the store&apos;s 
+          <code>modules</code>, filtered by <code>cid</code>, and maps
+          each one to a <code>Module</code>. Home updates for free
+          because it already renders <code>Modules</code>:
+        </p>
+        <CodeBlock
+          language="tsx"
+          name="Modules"
+          file="app/(kambaz)/courses/[cid]/modules/page.tsx"
+        >{`"use client";
+
+import { useParams } from "next/navigation";
+import Module from "./Module";
+import ModulesControls from "./ModulesControls";
+import { useModulesStore } from "../../../store/modulesStore";
+
+export default function Modules() {
+  const { cid } = useParams();
+  const modules = useModulesStore((state) => state.modules);
+
+  return (
+    <div className="wd-modules">
+      <ModulesControls />
+      <ul id="wd-modules" className="m-0 list-none p-0">
+        {modules
+          .filter((module) => module.course === cid)
+          .map((module) => (
+            <Module key={module._id} module={module} />
+          ))}
+      </ul>
+    </div>
+  );
+}`}</CodeBlock>
+        <p>
+          Confirm you can still add, remove, and edit modules as
+          before. Also confirm the modules still work on the Home
+          screen: add a module on Modules, switch to Home without
+          reloading, and confirm the new row is there.
         </p>
         <OnYourOwn>
           Add a module on Modules, switch to Home without reloading, and

@@ -25,8 +25,14 @@ export default function JsBasics() {
           user information, preferences, courses, and enrollments.
           JavaScript offers three declarations: <code>var</code>{" "}is
           function-scoped and the old default; <code>let</code>{" "}is
-          block-scoped and the usual choice when the value will change;
-          and <code>const</code>{" "}is block-scoped and not reassigned. To
+          block-scoped and can be reassigned; and <code>const</code>{" "}is
+          block-scoped and cannot be reassigned. Use{" "}
+          <code>const</code>{" "}by default, because a binding that never
+          changes is easier to follow, and use <code>let</code>{" "}only
+          when the value will change. The sample assigns{" "}
+          <code>functionScoped</code>{" "}and <code>blockScoped</code>{" "}
+          twice, so <code>let</code>{" "}is the right declaration, then
+          stores their difference in a <code>const</code>. To
           practice declaring variables and constants, create the{" "}
           <code>VariablesAndConstants</code>{" "}component below and import
           it from the Lab 3 component. Confirm the browser displays as
@@ -40,8 +46,10 @@ export default function JsBasics() {
           name="VariablesAndConstants"
           file="app/labs/lab3/VariablesAndConstants.tsx"
         >{`export default function VariablesAndConstants() {
-  var functionScoped = 2;
-  let blockScoped = 5;
+  let functionScoped = 1;
+  functionScoped = 2;
+  let blockScoped = 4;
+  blockScoped = 5;
   const constant1 = functionScoped - blockScoped;
   return (
     <div id="wd-variables-and-constants">
@@ -120,13 +128,13 @@ export default function Lab3() {
           name="VariableTypes"
           file="app/labs/lab3/VariableTypes.tsx"
         >{`export default function VariableTypes() {
-  let numberVariable = 123;
-  let floatingPointNumber = 234.345;
-  let stringVariable = "Hello World!";
-  let booleanVariable = true;
-  let isNumber = typeof numberVariable;
-  let isString = typeof stringVariable;
-  let isBoolean = typeof booleanVariable;
+  const numberVariable = 123;
+  const floatingPointNumber = 234.345;
+  const stringVariable = "Hello World!";
+  const booleanVariable = true;
+  const isNumber = typeof numberVariable;
+  const isString = typeof stringVariable;
+  const isBoolean = typeof booleanVariable;
   return (
     <div id="wd-variable-types">
       <h4>Variables Types</h4>
@@ -210,16 +218,16 @@ export default function Lab3() {
           name="BooleanVariables"
           file="app/labs/lab3/BooleanVariables.tsx"
         >{`export default function BooleanVariables() {
-  let numberVariable = 123,
-    floatingPointNumber = 234.345;
-  let true1 = true,
+  const numberVariable = 123,
+    floatingPointNumber: number = 234.345;
+  const true1 = true,
     false1 = false;
-  let false2 = true1 && false1;
-  let true2 = true1 || false1;
-  let true3 = !false2;
-  let true4 = numberVariable === 123;
-  let true5 = floatingPointNumber !== 321.432;
-  let false3 = numberVariable < 100;
+  const false2 = true1 && false1;
+  const true2 = true1 || false1;
+  const true3 = !false2;
+  const true4 = numberVariable === 123;
+  const true5 = floatingPointNumber !== 321.432;
+  const false3 = numberVariable < 100;
   return (
     <div id="wd-boolean-variables">
       <h4>Boolean Variables</h4>
@@ -305,7 +313,7 @@ export default function Lab3() {
           name="IfElse"
           file="app/labs/lab3/IfElse.tsx"
         >{`export default function IfElse() {
-  let true1 = true,
+  const true1 = true,
     false1 = false;
   return (
     <div id="wd-if-else">
@@ -389,7 +397,7 @@ export default function Lab3() {
           name="TernaryOperator"
           file="app/labs/lab3/TernaryOperator.tsx"
         >{`export default function TernaryOperator() {
-  let loggedIn = true;
+  const loggedIn = true;
   return (
     <div id="wd-ternary-operator">
       <h4>Logged In</h4>

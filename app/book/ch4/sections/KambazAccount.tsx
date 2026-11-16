@@ -375,11 +375,11 @@ export default function AccountPage() {
             information. Refactor Profile to retrieve the current user
             from <code>AccountContext</code>. If there is no{" "}
             <code>currentUser</code>, the screen should navigate to Sign
-            in. If there is a <code>currentUser</code>, the screen
-            should populate a form with the user&apos;s information. Copy
-            that user into a local <code>profile</code>{" "}state in{" "}
-            <code>useEffect</code>{" "}so the form can edit fields without
-            writing the context on every keystroke. If the current user
+            in. If there is a <code>currentUser</code>, render a form
+            whose draft starts as that user. Give the form a{" "}
+            <code>key</code>{" "}of the user id so a different signed-in
+            user starts a fresh draft. Editing the draft does not write
+            the context on every keystroke. If the current user
             clicks Sign out, the current user should be set to{" "}
             <code>null</code>{" "}and the app should navigate to Sign in.
             To practice Profile, update{" "}
@@ -399,24 +399,29 @@ import { useRouter } from "next/navigation";
 import { useAccountContext, type User } from "../AccountContext";
 
 export default function Profile() {
-  const [profile, setProfile] = useState<User | null>(null);
-  const { currentUser, setCurrentUser } = useAccountContext();
+  const { currentUser } = useAccountContext();
   const router = useRouter();
 
   useEffect(() => {
     if (!currentUser) {
       router.push("/account/signin");
-      return;
     }
-    setProfile(currentUser);
   }, [currentUser, router]);
+
+  if (!currentUser) return null;
+  return <ProfileForm key={currentUser._id} user={currentUser} />;
+}
+
+function ProfileForm({ user }: { user: User }) {
+  const [profile, setProfile] = useState(user);
+  const { setCurrentUser } = useAccountContext();
+  const router = useRouter();
 
   const signout = () => {
     setCurrentUser(null);
     router.push("/account/signin");
   };
 
-  if (!profile) return null;
   return (
     <div id="wd-profile-screen">
       <h3>Profile</h3>

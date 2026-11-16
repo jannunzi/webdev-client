@@ -17,7 +17,7 @@ export default function OptionalChaining() {
     <div id="wd-optional-chaining">
       <h4>Optional Chaining</h4>
       house.address?.city = {house.address?.city} <br />
-      missing?.prop ?? "n/a" = {missing?.prop ?? "n/a"}
+      missing?.prop ?? &quot;n/a&quot; = {missing?.prop ?? "n/a"}
       <hr />
     </div>
   );

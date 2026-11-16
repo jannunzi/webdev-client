@@ -26,16 +26,16 @@ export const JAVASCRIPT_ARRAYS_SLIDES: LectureSlide[] = [
     title: "Declare number, string and li arrays",
     kind: "content",
     code: `export default function SimpleArrays() {
-  var functionScoped = 2;
-  let blockScoped = 5;
+  const functionScoped = 2;
+  const blockScoped = 5;
   const constant1 = functionScoped - blockScoped;
-  let numberArray1 = [1, 2, 3, 4, 5];
-  let stringArray1 = ["string1", "string2"];
-  let htmlArray1 = [
+  const numberArray1 = [1, 2, 3, 4, 5];
+  const stringArray1 = ["string1", "string2"];
+  const htmlArray1 = [
     <li key={1}>Buy milk</li>,
     <li key={2}>Feed the pets</li>,
   ];
-  let variableArray1 = [
+  const variableArray1 = [
     functionScoped,
     blockScoped,
     constant1,
@@ -83,7 +83,7 @@ export const JAVASCRIPT_ARRAYS_SLIDES: LectureSlide[] = [
     title: "length and indexOf",
     kind: "content",
     code: `export default function ArrayIndexAndLength() {
-  let numberArray1 = [1, 2, 3, 4, 5];
+  const numberArray1 = [1, 2, 3, 4, 5];
   const length1 = numberArray1.length;
   const index1 = numberArray1.indexOf(3);
   return (
@@ -115,9 +115,9 @@ export const JAVASCRIPT_ARRAYS_SLIDES: LectureSlide[] = [
     title: "push appends; splice cuts",
     kind: "content",
     code: `export default function AddingAndRemovingToFromArrays() {
-  let numberArray1 = [1, 2, 3, 4, 5];
-  let stringArray1 = ["string1", "string2"];
-  let todoArray = [
+  const numberArray1 = [1, 2, 3, 4, 5];
+  const stringArray1 = ["string1", "string2"];
+  const todoArray = [
     <li key={1}>Buy milk</li>,
     <li key={2}>Feed the pets</li>,
   ];
