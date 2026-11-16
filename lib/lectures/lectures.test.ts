@@ -1369,7 +1369,7 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-migrate-db"], 7);
     assert.equal(counts["kambaz-account-rest"], 23);
     assert.equal(counts["kambaz-sessions"], 21);
-    assert.equal(counts["kambaz-courses-api"], 45);
+    assert.equal(counts["kambaz-courses-api"], 56);
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 13);
     assert.equal(counts["mongoose"], 12);
