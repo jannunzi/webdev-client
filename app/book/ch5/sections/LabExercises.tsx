@@ -1231,7 +1231,9 @@ const fetchWelcomeOnClick = async () => {
             <code>useEffect</code>{" "}invokes{" "}
             <code>fetchWelcomeOnLoad</code>{" "}which retrieves the
             message from the server and sets the new{" "}
-            <code>welcomeOnLoad</code>{" "}state variable. Confirm that
+            <code>welcomeOnLoad</code>{" "}state variable. The JSX under
+            the Requesting on Load heading displays{" "}
+            <code>welcomeOnLoad</code>. Confirm that
             if you refresh the screen, the welcome message appears
             without having to click on the Fetch Welcome button.
           </p>
@@ -1246,7 +1248,15 @@ const fetchWelcomeOnLoad = async () => {
 };
 useEffect(() => {
   fetchWelcomeOnLoad();
-}, []);`}</CodeBlock>
+}, []);
+return (
+  ...
+  <h4>Requesting on Load</h4>
+  <p>
+    Response from server: <b>{welcomeOnLoad}</b>
+  </p>
+  ...
+);`}</CodeBlock>
           <LiveDemo
             name="HttpClient"
             file="app/labs/lab5/HttpClient.tsx"

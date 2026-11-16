@@ -191,10 +191,27 @@ export const fetchWelcomeMessage = async () => {
     bullets: [
       "In `HttpClient.tsx`, add the effect as shown below",
       "`useEffect` with `[]` runs once after the first render",
+      "The Requesting on Load heading shows `welcomeOnLoad`",
     ],
-    code: "const [welcomeOnLoad, setWelcomeOnLoad] = useState(\"\");\nconst fetchWelcomeOnLoad = async () => {\n  const welcome = await client.fetchWelcomeMessage();\n  setWelcomeOnLoad(welcome);\n};\nuseEffect(() => {\n  fetchWelcomeOnLoad();\n}, []);",
+    code: `const [welcomeOnLoad, setWelcomeOnLoad] = useState("");
+const fetchWelcomeOnLoad = async () => {
+  const welcome = await client.fetchWelcomeMessage();
+  setWelcomeOnLoad(welcome);
+};
+useEffect(() => {
+  fetchWelcomeOnLoad();
+}, []);
+return (
+  ...
+  <h4>Requesting on Load</h4>
+  <p>
+    Response from server: <b>{welcomeOnLoad}</b>
+  </p>
+  ...
+);`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab5/HttpClient.tsx",
+    codeHighlightLines: [[11, 14]],
   },
   {
     id: "http-client-live",
