@@ -1367,7 +1367,7 @@ describe("lecture decks", () => {
     assert.equal(counts["next-routes"], 28);
     assert.equal(counts["ch5-check-understanding"], 7);
     assert.equal(counts["kambaz-migrate-db"], 7);
-    assert.equal(counts["kambaz-account-rest"], 19);
+    assert.equal(counts["kambaz-account-rest"], 23);
     assert.equal(counts["kambaz-sessions"], 20);
     assert.equal(counts["kambaz-courses-api"], 16);
     assert.equal(counts["deploy-api"], 8);
@@ -3169,9 +3169,12 @@ describe("lecture decks", () => {
     const daoIntro = findSlide("kambaz-account-rest", "dao-intro").bullets ?? [];
     assert.match(daoIntro[0] ?? "", /Data Access Object \(DAO\) is a design pattern/);
     assert.equal(findSlide("kambaz-account-rest", "dao-intro").density, undefined);
-    assert.equal(findSlide("kambaz-account-rest", "dao").codeBlocks?.[0]?.code, "npm install uuid");
+    assert.equal(findSlide("kambaz-account-rest", "signup-dao").codeBlocks?.[0]?.code, "npm install uuid");
     assert.doesNotMatch(daoIntro.join("\n"), /npm install uuid/);
-    assert.match(findSlide("kambaz-account-rest", "signup-profile").code ?? "", /findUserByUsername/);
+    assert.match(findSlide("kambaz-account-rest", "signup").code ?? "", /findUserByUsername/);
+    assert.match(findSlide("kambaz-account-rest", "signup-dao").code ?? "", /findUserByUsername/);
+    assert.match(findSlide("kambaz-account-rest", "dao").code ?? "", /findUserByCredentials/);
+    assert.doesNotMatch(findSlide("kambaz-account-rest", "dao").code ?? "", /findUserByUsername/);
     assert.match(daoIntro.join("\n"), /findUserByUsername/);
     assert.match(daoIntro.join("\n"), /later chapter uses a database/);
     assert.doesNotMatch(daoIntro.join("\n"), /MongoDB|Mongoose/);
@@ -3184,6 +3187,25 @@ describe("lecture decks", () => {
     assert.match(accountRest, /axios\.post/);
     assert.doesNotMatch(accountRest, /withCredentials/);
     assert.equal(accountIds[accountIds.indexOf("routes") + 1], "wire-db");
+    assert.deepEqual(accountIds.slice(accountIds.indexOf("dao"), accountIds.indexOf("signin-ui") + 1), [
+      "dao",
+      "signin",
+      "signin-flow",
+      "client",
+      "signin-ui",
+    ]);
+    assert.deepEqual(accountIds.slice(accountIds.indexOf("signup-dao"), accountIds.indexOf("signup-ui") + 1), [
+      "signup-dao",
+      "signup",
+      "signup-client",
+      "signup-ui",
+    ]);
+    assert.deepEqual(accountIds.slice(accountIds.indexOf("profile-dao"), accountIds.indexOf("profile-ui") + 1), [
+      "profile-dao",
+      "update",
+      "update-client",
+      "profile-ui",
+    ]);
     assert.match(findSlide("kambaz-account-rest", "wire-db").code ?? "", /from "\.\/Kambaz\/Database"/);
     assert.doesNotMatch(findSlide("kambaz-account-rest", "wire-db").code ?? "", /users\.json/);
 
@@ -4108,7 +4130,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 268);
+    assert.equal(intros, 267);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {

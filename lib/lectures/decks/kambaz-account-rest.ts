@@ -27,63 +27,18 @@ export const KAMBAZ_ACCOUNT_REST_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "dao-intro",
-    title: "Defining a Data Access Object",
-    kind: "demo",
-    bullets: [
-      "The Data Access Object (DAO) is a design pattern that encapsulates access to a data source behind a set of functions",
-      "Routes call `findUserByUsername` and `createUser` and never touch storage",
-      "Queries live in one place, so they are easier to change and to test",
-      "Swapping storage does not change the routes",
-      "This DAO reads in-memory JSON. A later chapter uses a database with the same routes",
-    ],
-  },
-  {
-    id: "dao-architecture",
-    title: "From the Account UI to the Database",
-    kind: "demo",
-    bullets: [
-      "The database is an in-memory object. Edits change the arrays, not the JSON files. MongoDB comes later for permanent storage",
-    ],
-    diagram: "account-dao",
-  },
-  {
-    id: "dao",
-    title: "Writing the Users DAO Functions",
-    kind: "demo",
-    code: `import { v4 as uuidv4 } from "uuid";
-export default function UsersDao(db) {
-  let { users } = db;
-  const createUser = (user) => {
-    const newUser = { ...user, _id: uuidv4() };
-    users = [...users, newUser];
-    return newUser;
-  };
-  const findUserByCredentials = (username, password) =>
-    users.find((user) => user.username === username && user.password === password);
-  return { createUser, findUserByCredentials };
-}`,
-    codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Users/dao.ts",
-    codeHighlightLines: [[4, 8], [9, 10]],
-    codeBlocks: [
-      {
-        language: "bash",
-        code: "npm install uuid",
-      },
-    ],
-  },
-  {
     id: "routes",
     title: "Defining the Account POST Routes",
     kind: "demo",
     bullets: [
       "`UserRoutes(app, db)` receives the database object and builds the DAO",
+      "`currentUser` holds the signed-in user on the server; sessions replace it later",
       "The next slide imports that object in `index.ts` and registers the routes",
     ],
     code: `import UsersDao from "./dao";
 export default function UserRoutes(app, db) {
   const dao = UsersDao(db);
+  let currentUser = null;
   const signup = (req, res) => { };
   const signin = (req, res) => { };
   const signout = (req, res) => { };
@@ -95,7 +50,7 @@ export default function UserRoutes(app, db) {
 }`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/routes.ts",
-    codeHighlightLines: [[8, 11]],
+    codeHighlightLines: [4, [9, 12]],
   },
   {
     id: "wire-db",
@@ -134,12 +89,47 @@ app.listen(process.env.PORT || 4000);`,
     ],
   },
   {
+    id: "dao-intro",
+    title: "Defining a Data Access Object",
+    kind: "demo",
+    bullets: [
+      "The Data Access Object (DAO) is a design pattern that encapsulates access to a data source behind a set of functions",
+      "Routes call `findUserByUsername` and `createUser` and never touch storage",
+      "Queries live in one place, so they are easier to change and to test",
+      "Swapping storage does not change the routes",
+      "This DAO reads in-memory JSON. A later chapter uses a database with the same routes",
+    ],
+  },
+  {
+    id: "dao-architecture",
+    title: "From the Account UI to the Database",
+    kind: "demo",
+    bullets: [
+      "The database is an in-memory object. Edits change the arrays, not the JSON files. MongoDB comes later for permanent storage",
+    ],
+    diagram: "account-dao",
+  },
+  {
+    id: "dao",
+    title: "Finding a User by Credentials",
+    kind: "demo",
+    code: `export default function UsersDao(db) {
+  let { users } = db;
+  const findUserByCredentials = (username, password) =>
+    users.find((user) => user.username === username && user.password === password);
+  return { findUserByCredentials };
+}`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
+    codeHighlightLines: [[3, 4]],
+  },
+  {
     id: "signin",
     title: "Implementing POST /api/users/signin",
     kind: "demo",
     bullets: [
       "Read `username` and `password` from `req.body`",
-      "Store the user, then `res.json` it back",
+      "Store the user in `currentUser`, then `res.json` it back",
       "Sessions move `currentUser` into the session",
     ],
     code: `const signin = (req, res) => {
@@ -196,7 +186,9 @@ export const signin = async (credentials: { username: string; password: string }
       "Chapter 4 Context — not a Redux `accountReducer`",
       "`setCurrentUser(user)` then navigate to Dashboard",
     ],
-    code: `const { setCurrentUser } = useAccountContext();
+    code: `import * as client from "../client";
+
+const { setCurrentUser } = useAccountContext();
 const signin = async () => {
   const user = await client.signin(credentials);
   if (!user) return;
@@ -205,8 +197,56 @@ const signin = async () => {
 };`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/signin/page.tsx",
-    codeHighlightLines: [[3, 6]],
+    codeHighlightLines: [1, [5, 8]],
     embed: "kambaz-styled-signin",
+  },
+  {
+    id: "signup-dao",
+    title: "Adding Sign-Up to the Users DAO",
+    kind: "demo",
+    bullets: [
+      "`createUser` copies the new user and assigns an `_id`",
+      "`findUserByUsername` finds a taken name before insert",
+    ],
+    code: `import { v4 as uuidv4 } from "uuid";
+const createUser = (user) => {
+  const newUser = { ...user, _id: uuidv4() };
+  users = [...users, newUser];
+  return newUser;
+};
+const findUserByUsername = (username) =>
+  users.find((user) => user.username === username);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
+    codeHighlightLines: [[2, 6], [7, 8]],
+    codeBlocks: [
+      {
+        language: "bash",
+        code: "npm install uuid",
+      },
+    ],
+  },
+  {
+    id: "signup",
+    title: "Implementing POST /api/users/signup",
+    kind: "demo",
+    bullets: [
+      "400 if `findUserByUsername` already has that name",
+      "Otherwise store `createUser` in `currentUser` and send it back",
+    ],
+    code: `const signup = (req, res) => {
+  const user = dao.findUserByUsername(req.body.username);
+  if (user) {
+    res.status(400).json({ message: "Username already in use" });
+    return;
+  }
+  currentUser = dao.createUser(req.body);
+  res.json(currentUser);
+};
+app.post("/api/users/signup", signup);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
+    codeHighlightLines: [[6, 8]],
   },
   {
     id: "signup-client",
@@ -248,40 +288,73 @@ const signin = async () => {
     embed: "kambaz-ch4-signup",
   },
   {
-    id: "signup-profile-intro",
-    title: "Implementing Signup and Profile",
+    id: "profile-dao",
+    title: "Updating a User in the DAO",
     kind: "demo",
     bullets: [
-      "Signup: 400 if the username is taken, else `createUser`",
-      "`PUT /api/users/:userId` updates, then profile GETs `currentUser`",
+      "`updateUser` replaces the matching user in the array",
+      "`findUserById` reads that user back",
     ],
-  },
-  {
-    id: "signup-profile",
-    title: "Handling Duplicates and Updates",
-    kind: "demo",
-    code: `const findUserByUsername = (username) =>
-  users.find((user) => user.username === username);`,
+    code: `const findUserById = (userId) =>
+  users.find((user) => user._id === userId);
+const updateUser = (userId, user) =>
+  (users = users.map((u) => (u._id === userId ? user : u)));`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/dao.ts",
-    codeAddedLines: [[1, 2]],
-    codeBlocks: [
-      {
-        language: "ts",
-        file: "webdev-server/Kambaz/Users/routes.ts",
-        code: `const signup = (req, res) => {
-  const user = dao.findUserByUsername(req.body.username);
-  if (user) {
-    res.status(400).json({ message: "Username already in use" });
-    return;
-  }
-  currentUser = dao.createUser(req.body);
+    codeHighlightLines: [[3, 4]],
+  },
+  {
+    id: "update",
+    title: "Implementing PUT /api/users/:userId",
+    kind: "demo",
+    bullets: [
+      "The path id and the body go to `dao.updateUser`",
+      "Read the saved user back into `currentUser`",
+    ],
+    code: `const updateUser = (req, res) => {
+  const userId = req.params.userId;
+  const userUpdates = req.body;
+  dao.updateUser(userId, userUpdates);
+  currentUser = dao.findUserById(userId);
   res.json(currentUser);
 };
-app.post("/api/users/signup", signup);`,
-        highlightLines: [[3, 6]],
-      },
+app.put("/api/users/:userId", updateUser);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
+    codeHighlightLines: [[5, 6]],
+  },
+  {
+    id: "update-client",
+    title: "Sending Profile Updates with Axios",
+    kind: "demo",
+    bullets: [
+      "PUT the edited user to `/api/users/:userId`",
     ],
+    code: `export const updateUser = async (user: { _id: string }) => {
+  const response = await axios.put(\`\${USERS_API}/\${user._id}\`, user);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/account/client.ts",
+    codeAddedLines: [[1, 4]],
+  },
+  {
+    id: "profile-ui",
+    title: "Storing the Updated Profile",
+    kind: "demo",
+    bullets: [
+      "`client.updateUser` saves the form, then `setCurrentUser` stores it",
+    ],
+    code: `import * as client from "../client";
+
+const { setCurrentUser } = useAccountContext();
+const updateProfile = async () => {
+  const user = await client.updateUser(profile);
+  setCurrentUser(user);
+};`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/account/profile/page.tsx",
+    codeHighlightLines: [1, [5, 6]],
   },
   {
     id: "recap",
@@ -289,7 +362,7 @@ app.post("/api/users/signup", signup);`,
     kind: "content",
     bullets: [
       "DAO for the array. Routes for `/api/users/*`",
-      "Client posts; `setCurrentUser` from AccountContext",
+      "The client calls each route; `setCurrentUser` stores the user",
       "One module-level `currentUser` is one user — sessions next",
     ],
   },
