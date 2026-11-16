@@ -114,12 +114,12 @@ export default function CourseRoutes(app, db) {
   },
   {
     id: "client",
-    title: "Fetching Courses on Dashboard Load",
+    title: "Fetching Courses from the Client",
     kind: "demo",
     bullets: [
-      "In `courses/client.ts`, add the functions as shown below",
-      "`findMyCourses` uses cookies. Drop client-side enrollment filters",
-      "`currentUser` is a `useEffect` dependency so a new sign-in reloads",
+      "In `courses/client.ts`, add both functions below",
+      "`fetchAllCourses` is a plain GET of `/api/courses`",
+      "`findMyCourses` sends cookies to `/api/users/current/courses`",
     ],
     code: `import axios from "axios";
 const axiosWithCredentials = axios.create({ withCredentials: true });
@@ -131,12 +131,24 @@ export const fetchAllCourses = async () => {
   return data;
 };
 export const findMyCourses = async () => {
-  const { data } = await axiosWithCredentials.get(\`\${USERS_API}/current/courses\`);
+  const { data } = await axiosWithCredentials.get(
+    \`\${USERS_API}/current/courses\`,
+  );
   return data;
 };`,
     codeLanguage: "ts",
     codeFile: "app/(kambaz)/courses/client.ts",
-    codeHighlightLines: [[6, 12]],
+    codeHighlightLines: [[6, 8], [10, 15]],
+  },
+  {
+    id: "client-live",
+    title: "Dashboard Loads Enrolled Courses",
+    kind: "demo",
+    bullets: [
+      "The Dashboard calls `findMyCourses` in `useEffect` when it appears",
+      "`currentUser` is a dependency, so a new sign-in reloads the list",
+      "Drop the client-side enrollment filter. The server already filtered",
+    ],
     embed: "kambaz-styled-dashboard",
   },
   {
