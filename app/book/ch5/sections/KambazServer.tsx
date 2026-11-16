@@ -6,6 +6,13 @@ import CodeBlock from "../../components/CodeBlock";
 import LiveDemo from "../../components/LiveDemo";
 import { OnYourOwn, WithAI } from "../../components/Practice";
 import MemoryDashboard from "../embeds/MemoryDashboard";
+import {
+  ManySessionsDiagram,
+  OneCurrentUserDiagram,
+  SessionCreateDiagram,
+  SessionReadDiagram,
+  SessionUpdateDiagram,
+} from "@/app/slides/_components/diagrams/SessionDiagrams";
 
 export default function KambazServer() {
   return (
@@ -580,13 +587,26 @@ app.post("/api/users/signout", signout);`}</CodeBlock>
         title="5.4.3 Supporting Multiple User Sessions"
       >
         <p>
-          The user authentication implemented so far is simple but
-          supports only one signed-in user at a time. Web applications
-          typically support multiple users signed in simultaneously.
-          This section describes how to add session handling to the
-          Node.js server to allow multiple users to be signed in at the
-          same time.
+          HTTP is stateless. Each request is independent, and the
+          server does not remember previous requests. Sign-in has to
+          store the user somewhere the next request can find.
         </p>
+        <p>
+          The account routes so far keep one{" "}
+          <code>currentUser</code>{" "}variable on the server, shared by
+          every browser. That variable can hold only one person. If
+          browser A signs in as Alice and then browser B signs in as
+          Bob, Bob overwrites <code>currentUser</code>. Browser A’s
+          next profile request sees Bob.
+        </p>
+        <OneCurrentUserDiagram />
+        <p>
+          A session gives each browser its own record. Alice, Bob, and
+          Carol can be signed in at the same time. Each browser keeps a
+          cookie whose id selects one object in the session store, and
+          that object holds that browser’s <code>currentUser</code>.
+        </p>
+        <ManySessionsDiagram />
 
         <Section
           level={3}
@@ -714,6 +734,30 @@ const signout = (req, res) => {
   req.session.destroy();
   res.sendStatus(200);
 };`}</CodeBlock>
+          <p>
+            <code>saveUninitialized</code>{" "}is <code>false</code>, so
+            a request that never writes <code>req.session</code>{" "}does
+            not create a session and does not set a cookie. The first
+            write is sign-in. It finds the user, stores{" "}
+            <code>{`{ currentUser: user }`}</code>{" "}under a new session
+            id, and sends that id back as{" "}
+            <code>Set-Cookie: connect.sid</code>.
+          </p>
+          <SessionCreateDiagram />
+          <p>
+            A later request that already has the cookie can change the
+            stored user. <code>PUT /api/users/:userId</code>{" "}does that
+            when the id is the signed-in user: it looks up the session
+            and sets <code>req.session.currentUser</code>{" "}to the
+            updated user.
+          </p>
+          <SessionUpdateDiagram />
+          <p>
+            <code>GET /api/users/profile</code>{" "}sends the same cookie.
+            The server looks up session <code>abc123</code>, reads{" "}
+            <code>req.session.currentUser</code>, and returns that user.
+          </p>
+          <SessionReadDiagram />
         </Section>
 
         <Section

@@ -18,15 +18,32 @@ export const KAMBAZ_SESSIONS_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "purpose",
-    title: "Remembering Who Is Signed In",
+    id: "stateless",
+    title: "HTTP Does Not Remember",
     kind: "content",
     bullets: [
-      "The server keeps one `currentUser` variable shared by every browser",
-      "If two people sign in, the second replaces the first",
-      "Sessions keep a separate signed-in user for each browser, using a cookie",
-      "The server must accept cookies from the Next.js app only",
+      "Each request is independent",
+      "The server does not remember previous requests",
+      "Sign-in has to store the user somewhere the next request can find",
     ],
+  },
+  {
+    id: "one-user",
+    title: "One currentUser for Every Browser",
+    kind: "content",
+    bullets: [
+      "Browser B signs in and overwrites `currentUser`, so browser A sees B",
+    ],
+    diagram: "session-one-user",
+  },
+  {
+    id: "many-sessions",
+    title: "A Session for Each Browser",
+    kind: "content",
+    bullets: [
+      "Each cookie maps to its own session and its own `currentUser`",
+    ],
+    diagram: "session-many",
   },
   {
     id: "install",
@@ -99,6 +116,33 @@ app.use(express.json());`,
       "So `req.session.currentUser` is the right user for each browser",
       "axios needs `withCredentials` or the cookie is never sent",
     ],
+  },
+  {
+    id: "session-create",
+    title: "Sign-In Creates the Session",
+    kind: "content",
+    bullets: [
+      "A request that never writes `req.session` gets no cookie. `saveUninitialized` is false",
+    ],
+    diagram: "session-create",
+  },
+  {
+    id: "session-update",
+    title: "Updating a Value in the Session",
+    kind: "content",
+    bullets: [
+      "`PUT /api/users/:userId` sets `req.session.currentUser` when the id matches",
+    ],
+    diagram: "session-update",
+  },
+  {
+    id: "session-read",
+    title: "Reading a Value from the Session",
+    kind: "content",
+    bullets: [
+      "`GET /api/users/profile` returns `req.session.currentUser`",
+    ],
+    diagram: "session-read",
   },
   {
     id: "session-auth-intro",

@@ -1,6 +1,13 @@
 import type { LectureDiagramId } from "@/lib/lectures/types";
 import ClientServerDiagram from "./ClientServerDiagram";
 import AccountDaoDiagram from "./AccountDaoDiagram";
+import {
+  ManySessionsDiagram,
+  OneCurrentUserDiagram,
+  SessionCreateDiagram,
+  SessionReadDiagram,
+  SessionUpdateDiagram,
+} from "./SessionDiagrams";
 import EnvSameCodeDiagram from "./EnvSameCodeDiagram";
 import TwoPortsDiagram from "./TwoPortsDiagram";
 import CourseStackDiagram from "./CourseStackDiagram";
@@ -98,6 +105,16 @@ export default function LectureDiagram({ id }: { id: LectureDiagramId }) {
       return <EnvSameCodeDiagram />;
     case "account-dao":
       return <AccountDaoDiagram />;
+    case "session-one-user":
+      return <OneCurrentUserDiagram />;
+    case "session-many":
+      return <ManySessionsDiagram />;
+    case "session-create":
+      return <SessionCreateDiagram />;
+    case "session-update":
+      return <SessionUpdateDiagram />;
+    case "session-read":
+      return <SessionReadDiagram />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;

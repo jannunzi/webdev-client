@@ -743,6 +743,11 @@ export const LECTURE_DIAGRAM_IDS = [
   "grok-token-flow",
   "env-same-code",
   "account-dao",
+  "session-one-user",
+  "session-many",
+  "session-create",
+  "session-update",
+  "session-read",
 ] as const;
 
 export type LectureDiagramId = (typeof LECTURE_DIAGRAM_IDS)[number];
