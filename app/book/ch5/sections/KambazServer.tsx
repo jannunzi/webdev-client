@@ -191,8 +191,11 @@ export default function UsersDao(db) {
           and caches. Sign-in, sign-up, and sign-out also change
           server state: sign-up creates a user, and sign-in and
           sign-out start or end a session. Those are not safe GETs.
-          Earlier, POST mapped to create. Auth actions bend that
-          mapping, and that is standard practice.
+          They are actions rather than reads of a resource, so they
+          do not map neatly onto REST&apos;s create, read, update, and
+          delete. The standard practice is to send such actions as
+          POST, which is never triggered by just visiting a link.
+          Profile only reads the current user, so it stays a GET.
         </p>
 
         <Section
