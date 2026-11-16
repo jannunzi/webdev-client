@@ -19,6 +19,7 @@ export const USE_EFFECT_SLIDES: LectureSlide[] = [
       "Talking to `document`, a timer, or a network is a side effect",
       "Those belong in `useEffect`, which runs after React paints",
       "Do not `fetch` or set `document.title` in the function body",
+      "Do not call `setState` in an effect to copy props or state. That extra render can loop; initialize or compute the value instead",
     ],
   },
   {
@@ -84,7 +85,7 @@ export default function Effect() {
     bullets: [
       "Type in the field and click the button. Watch the browser tab",
       "The title string is `` `${name} — clicked ${count}` ``",
-      "Kambaz Profile will use `[]` to copy the current user after mount",
+      "Kambaz Profile redirects when nobody is signed in. The form starts from the current user",
     ],
     embed: "use-effect",
   },
@@ -93,7 +94,7 @@ export default function Effect() {
     title: "Where Kambaz uses the same hook",
     kind: "content",
     bullets: [
-      "Profile: if nobody is signed in, redirect; else fill the form",
+      "Profile: if nobody is signed in, redirect. The form starts from the current user",
       "Chapter 5: load welcome messages and arrays from an HTTP server",
       "Practice the hook here so those screens are not the first time",
     ],

@@ -16,7 +16,7 @@ export const VARIABLES_AND_CONSTANTS_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "User info, preferences, courses, enrollments — all values in memory",
-      "JavaScript offers three declarations. Prefer `let` and `const`",
+      "Use `const` by default. Use `let` only when the value will change",
       "Create `VariablesAndConstants` and import it from Lab 3",
       "Confirm the browser prints the numbers from the sample",
     ],
@@ -28,7 +28,7 @@ export const VARIABLES_AND_CONSTANTS_SLIDES: LectureSlide[] = [
     bullets: [
       "`var` — function-scoped, the old default. Avoid in new code",
       "`let` — block-scoped, use when the value will change",
-      "`const` — block-scoped, not reassigned after the first write",
+      "`const` by default — a binding that never changes is easier to follow",
       "A `const` object’s *properties* can still change. The binding cannot",
     ],
   },
@@ -37,8 +37,10 @@ export const VARIABLES_AND_CONSTANTS_SLIDES: LectureSlide[] = [
     title: "Declare, compute, interpolate",
     kind: "content",
     code: `export default function VariablesAndConstants() {
-  var functionScoped = 2;
-  let blockScoped = 5;
+  let functionScoped = 1;
+  functionScoped = 2;
+  let blockScoped = 4;
+  blockScoped = 5;
   const constant1 = functionScoped - blockScoped;
   return (
     <div id="wd-variables-and-constants">
@@ -52,7 +54,7 @@ export const VARIABLES_AND_CONSTANTS_SLIDES: LectureSlide[] = [
 }`,
     codeLanguage: "tsx",
     codeFile: "app/labs/lab3/VariablesAndConstants.tsx",
-    codeHighlightLines: [2, 3, 4, 8, 9, 10],
+    codeHighlightLines: [2, 3, 4, 5, 6, 10, 11, 12],
   },
   {
     id: "sample-live",

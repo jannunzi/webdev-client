@@ -26,8 +26,8 @@ export const ARRAY_ITERATION_SLIDES: LectureSlide[] = [
     title: "for builds a second array",
     kind: "content",
     code: `export default function ForLoops() {
-  let stringArray1 = ["string1", "string3"];
-  let stringArray2: string[] = [];
+  const stringArray1 = ["string1", "string3"];
+  const stringArray2: string[] = [];
   for (let i = 0; i < stringArray1.length; i++) {
     const string1 = stringArray1[i];
     stringArray2.push(string1.toUpperCase());
@@ -60,7 +60,7 @@ export const ARRAY_ITERATION_SLIDES: LectureSlide[] = [
     title: "map returns a new array",
     kind: "content",
     code: `export default function MapFunction() {
-  let numberArray1 = [1, 2, 3, 4, 5, 6];
+  const numberArray1 = [1, 2, 3, 4, 5, 6];
   const square = (a: number) => a * a;
   const todos = ["Buy milk", "Feed the pets"];
   const squares = numberArray1.map(square);

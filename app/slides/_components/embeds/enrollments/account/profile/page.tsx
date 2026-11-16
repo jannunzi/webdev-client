@@ -5,17 +5,23 @@ import { useRouter } from "next/navigation";
 import { useAccountContext, type User } from "../AccountContext";
 
 export default function Profile() {
-  const [profile, setProfile] = useState<User | null>(null);
-  const { currentUser, setCurrentUser } = useAccountContext();
+  const { currentUser } = useAccountContext();
   const router = useRouter();
 
   useEffect(() => {
     if (!currentUser) {
       router.push("/account/signin");
-      return;
     }
-    setProfile(currentUser);
   }, [currentUser, router]);
+
+  if (!currentUser) return null;
+  return <ProfileForm key={currentUser._id} user={currentUser} />;
+}
+
+function ProfileForm({ user }: { user: User }) {
+  const [profile, setProfile] = useState(user);
+  const { setCurrentUser } = useAccountContext();
+  const router = useRouter();
 
   const update = () => {
     setCurrentUser(profile);
@@ -26,7 +32,6 @@ export default function Profile() {
     router.push("/account/signin");
   };
 
-  if (!profile) return null;
   return (
     <div id="wd-profile-screen">
       <h3>Profile</h3>

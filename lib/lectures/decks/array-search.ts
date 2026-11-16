@@ -26,8 +26,8 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
     title: "find stops at the first hit",
     kind: "content",
     code: `export default function FindFunction() {
-  let numberArray1 = [1, 2, 3, 4, 5];
-  let stringArray1 = ["string1", "string2", "string3"];
+  const numberArray1 = [1, 2, 3, 4, 5];
+  const stringArray1 = ["string1", "string2", "string3"];
   const four = numberArray1.find((a) => a === 4);
   const string3 = stringArray1.find((a) => a === "string3");
   return (
@@ -59,8 +59,8 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
     title: "findIndex returns a position",
     kind: "content",
     code: `export default function FindIndex() {
-  let numberArray1 = [1, 2, 4, 5, 6];
-  let stringArray1 = ["string1", "string3"];
+  const numberArray1 = [1, 2, 4, 5, 6];
+  const stringArray1 = ["string1", "string3"];
   const fourIndex = numberArray1.findIndex((a) => a === 4);
   const string3Index = stringArray1.findIndex((a) => a === "string3");
   return (
@@ -92,7 +92,7 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
     title: "filter keeps every match",
     kind: "content",
     code: `export default function FilterFunction() {
-  let numberArray1 = [1, 2, 4, 5, 6];
+  const numberArray1 = [1, 2, 4, 5, 6];
   const numbersGreaterThan2 = numberArray1.filter((a) => a > 2);
   const evenNumbers = numberArray1.filter((a) => a % 2 === 0);
   const oddNumbers = numberArray1.filter((a) => a % 2 !== 0);

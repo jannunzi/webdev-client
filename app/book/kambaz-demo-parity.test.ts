@@ -197,6 +197,21 @@ const SNAPSHOTS: Array<{ book: string; name: string; file: string }> = [
     file: "app/book/ch4/embeds/_styled/store/modulesStore.ts",
   },
   {
+    book: "app/book/ch4/sections/KambazModules.tsx",
+    name: "Lesson",
+    file: "app/book/ch4/embeds/_styled/courses/cid/modules/Lesson.tsx",
+  },
+  {
+    book: "app/book/ch4/sections/KambazModules.tsx",
+    name: "Module",
+    file: "app/book/ch4/embeds/_styled/courses/cid/modules/Module.tsx",
+  },
+  {
+    book: "app/book/ch4/sections/KambazModules.tsx",
+    name: "Modules",
+    file: "app/book/ch4/embeds/_styled/courses/cid/modules/page.tsx",
+  },
+  {
     book: "app/book/ch3/sections/KambazData.tsx",
     name: "KambazNavigation",
     file: "app/book/ch3/embeds/_styled/Navigation.tsx",

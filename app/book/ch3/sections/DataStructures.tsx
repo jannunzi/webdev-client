@@ -48,16 +48,16 @@ export default function DataStructures() {
         name="SimpleArrays"
         file="app/labs/lab3/SimpleArrays.tsx"
       >{`export default function SimpleArrays() {
-  var functionScoped = 2;
-  let blockScoped = 5;
+  const functionScoped = 2;
+  const blockScoped = 5;
   const constant1 = functionScoped - blockScoped;
-  let numberArray1 = [1, 2, 3, 4, 5];
-  let stringArray1 = ["string1", "string2"];
-  let htmlArray1 = [
+  const numberArray1 = [1, 2, 3, 4, 5];
+  const stringArray1 = ["string1", "string2"];
+  const htmlArray1 = [
     <li key={1}>Buy milk</li>,
     <li key={2}>Feed the pets</li>,
   ];
-  let variableArray1 = [
+  const variableArray1 = [
     functionScoped,
     blockScoped,
     constant1,
@@ -163,7 +163,7 @@ export default function Lab3() {
           name="ArrayIndexAndLength"
           file="app/labs/lab3/ArrayIndexAndLength.tsx"
         >{`export default function ArrayIndexAndLength() {
-  let numberArray1 = [1, 2, 3, 4, 5];
+  const numberArray1 = [1, 2, 3, 4, 5];
   const length1 = numberArray1.length;
   const index1 = numberArray1.indexOf(3);
   return (
@@ -263,9 +263,9 @@ export default function Lab3() {
           name="AddingAndRemovingToFromArrays"
           file="app/labs/lab3/AddingAndRemovingToFromArrays.tsx"
         >{`export default function AddingAndRemovingToFromArrays() {
-  let numberArray1 = [1, 2, 3, 4, 5];
-  let stringArray1 = ["string1", "string2"];
-  let todoArray = [
+  const numberArray1 = [1, 2, 3, 4, 5];
+  const stringArray1 = ["string1", "string2"];
+  const todoArray = [
     <li key={1}>Buy milk</li>,
     <li key={2}>Feed the pets</li>,
   ];
@@ -371,8 +371,8 @@ export default function Lab3() {
           name="ForLoops"
           file="app/labs/lab3/ForLoops.tsx"
         >{`export default function ForLoops() {
-  let stringArray1 = ["string1", "string3"];
-  let stringArray2: string[] = [];
+  const stringArray1 = ["string1", "string3"];
+  const stringArray2: string[] = [];
   for (let i = 0; i < stringArray1.length; i++) {
     const string1 = stringArray1[i];
     stringArray2.push(string1.toUpperCase());
@@ -476,7 +476,7 @@ export default function Lab3() {
           name="MapFunction"
           file="app/labs/lab3/MapFunction.tsx"
         >{`export default function MapFunction() {
-  let numberArray1 = [1, 2, 3, 4, 5, 6];
+  const numberArray1 = [1, 2, 3, 4, 5, 6];
   const square = (a: number) => a * a;
   const todos = ["Buy milk", "Feed the pets"];
   const squares = numberArray1.map(square);
@@ -590,8 +590,8 @@ export default function Lab3() {
           name="FindFunction"
           file="app/labs/lab3/FindFunction.tsx"
         >{`export default function FindFunction() {
-  let numberArray1 = [1, 2, 3, 4, 5];
-  let stringArray1 = ["string1", "string2", "string3"];
+  const numberArray1 = [1, 2, 3, 4, 5];
+  const stringArray1 = ["string1", "string2", "string3"];
   const four = numberArray1.find((a) => a === 4);
   const string3 = stringArray1.find((a) => a === "string3");
   return (
@@ -686,8 +686,8 @@ export default function Lab3() {
           name="FindIndex"
           file="app/labs/lab3/FindIndex.tsx"
         >{`export default function FindIndex() {
-  let numberArray1 = [1, 2, 4, 5, 6];
-  let stringArray1 = ["string1", "string3"];
+  const numberArray1 = [1, 2, 4, 5, 6];
+  const stringArray1 = ["string1", "string3"];
   const fourIndex = numberArray1.findIndex((a) => a === 4);
   const string3Index = stringArray1.findIndex((a) => a === "string3");
   return (
@@ -793,7 +793,7 @@ export default function Lab3() {
           name="FilterFunction"
           file="app/labs/lab3/FilterFunction.tsx"
         >{`export default function FilterFunction() {
-  let numberArray1 = [1, 2, 4, 5, 6];
+  const numberArray1 = [1, 2, 4, 5, 6];
   const numbersGreaterThan2 = numberArray1.filter((a) => a > 2);
   const evenNumbers = numberArray1.filter((a) => a % 2 === 0);
   const oddNumbers = numberArray1.filter((a) => a % 2 !== 0);
@@ -1667,11 +1667,11 @@ export default function Lab3() {
     <div id="wd-destructing">
       <h2>Destructing</h2>
       <h3>Object Destructing</h3>
-      const &#123; name, age &#125; = &#123; name: "John", age: 25 &#125; <br /> <br />
+      const &#123; name, age &#125; = &#123; name: &quot;John&quot;, age: 25 &#125; <br /> <br />
       name = {name}     <br />
       age = {age}
       <h3>Array Destructing</h3>
-      const [first, second, third] = ["one","two","three"] <br /> <br />
+      const [first, second, third] = [&quot;one&quot;,&quot;two&quot;,&quot;three&quot;] <br /> <br />
       first = {first}   <br />
       second = {second} <br />
       third = {third}
@@ -2176,7 +2176,7 @@ export default function OptionalChaining() {
     <div id="wd-optional-chaining">
       <h4>Optional Chaining</h4>
       house.address?.city = {house.address?.city} <br />
-      missing?.prop ?? "n/a" = {missing?.prop ?? "n/a"}
+      missing?.prop ?? &quot;n/a&quot; = {missing?.prop ?? "n/a"}
       <hr />
     </div>
   );
