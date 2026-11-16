@@ -155,6 +155,8 @@ const signout = (req, res) => {
     kind: "demo",
     code: `import axios from "axios";
 const axiosWithCredentials = axios.create({ withCredentials: true });
+const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
+const USERS_API = \`\${HTTP_SERVER}/api/users\`;
 export const signin = async (credentials: { username: string; password: string }) => {
   const response = await axiosWithCredentials.post(
     \`\${USERS_API}/signin\`,
@@ -190,7 +192,7 @@ export const signout = async () => {
 };`,
     codeLanguage: "ts",
     codeFile: "app/(kambaz)/account/client.ts",
-    codeHighlightLines: [2],
+    codeHighlightLines: [[2, 4]],
   },
   {
     id: "recap",

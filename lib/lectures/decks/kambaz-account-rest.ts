@@ -213,7 +213,7 @@ const signin = async () => {
     title: "Adding Signup to the Account Client",
     kind: "demo",
     bullets: [
-      "In `account/client.ts`, add signup as shown below",
+      "Add signup beside signin. `HTTP_SERVER` and `USERS_API` are already declared there",
     ],
     code: `export const signup = async (user: { username: string; password: string }) => {
   const response = await axios.post(
