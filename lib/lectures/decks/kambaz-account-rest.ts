@@ -103,7 +103,7 @@ export default function UserRoutes(app, db) {
     kind: "content",
     bullets: [
       "POST keeps the username and password in the body, not the URL",
-      "History, logs, and caches keep the URL. HTTPS encrypts the query string too — this is not about encryption",
+      "History, logs, and caches keep the URL",
       "Sign-in, sign-up, and sign-out change server state, so they are not safe GETs",
       "REST mapped POST to create. Auth actions bend that, and that is standard",
     ],
