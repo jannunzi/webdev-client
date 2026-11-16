@@ -134,7 +134,6 @@ app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);`,
     kind: "demo",
     bullets: [
       "Mirror `findCoursesForUser`: find, `populate(\"user\")`, map",
-      "Same PeopleTable — only the fetch changes",
     ],
     code: `const findUsersForCourse = async (req, res) => {
   const { cid } = req.params;
@@ -145,6 +144,50 @@ app.get("/api/courses/:cid/users", findUsersForCourse);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Courses/routes.ts",
     codeAddedLines: [[1, 6]],
+  },
+  {
+    id: "people-client",
+    title: "Fetching Enrolled Users",
+    kind: "demo",
+    code: `export const findUsersForCourse = async (courseId: string) => {
+  const response = await axios.get(\`\${COURSES_API}/\${courseId}/users\`);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/courses/client.ts",
+    codeAddedLines: [[1, 4]],
+  },
+  {
+    id: "people-load",
+    title: "People Page Loads Enrolled Users",
+    kind: "demo",
+    bullets: [
+      "Pass that array to `PeopleTable`. The enrollment filter is gone",
+    ],
+    code: `import * as client from "../../../client";
+...
+const [users, setUsers] = useState<User[]>([]);
+...
+const fetchUsers = async () => {
+  setUsers(await client.findUsersForCourse(cid));
+};
+useEffect(() => {
+  fetchUsers();
+}, [cid]);
+...
+return <PeopleTable users={users} fetchUsers={fetchUsers} />;`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/table/page.tsx",
+    codeHighlightLines: [1, 3, [5, 10], 12],
+  },
+  {
+    id: "people-live",
+    title: "Course People Live Demo",
+    kind: "demo",
+    bullets: [
+      "Open People and the names are the users enrolled in the course",
+      "A student who is not enrolled does not appear",
+    ],
     embed: "kambaz-styled-people",
   },
   {

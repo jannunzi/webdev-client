@@ -1,6 +1,10 @@
 import type { LectureDiagramId } from "@/lib/lectures/types";
 import ClientServerDiagram from "./ClientServerDiagram";
-import AccountDaoDiagram from "./AccountDaoDiagram";
+import AccountDaoDiagram, {
+  AssignmentsTierDiagram,
+  CoursesTierDiagram,
+  ModulesTierDiagram,
+} from "./AccountDaoDiagram";
 import {
   ManySessionsDiagram,
   OneCurrentUserDiagram,
@@ -105,6 +109,12 @@ export default function LectureDiagram({ id }: { id: LectureDiagramId }) {
       return <EnvSameCodeDiagram />;
     case "account-dao":
       return <AccountDaoDiagram />;
+    case "courses-dao":
+      return <CoursesTierDiagram />;
+    case "modules-dao":
+      return <ModulesTierDiagram />;
+    case "assignments-dao":
+      return <AssignmentsTierDiagram />;
     case "session-one-user":
       return <OneCurrentUserDiagram />;
     case "session-many":

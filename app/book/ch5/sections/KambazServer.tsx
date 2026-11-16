@@ -727,17 +727,16 @@ app.use(express.json());`}</CodeBlock>
           <p>
             Store{" "}
             <code>req.session.currentUser</code>{" "}on signin and
-            signup instead of a module-level variable. The signup route
+            signup instead of a module-level variable. The signin route
+            looks up the user by their credentials, stores it in the
+            session, and responds with the user if they exist;
+            otherwise it responds with a 401. The signup route
             retrieves the username from the request body. If a user
             with that username already exists, an error is returned.
             Otherwise, create the new user and store it in the
             session&apos;s{" "}
             <code>currentUser</code>{" "}property to remember that this
-            new user is now the currently logged-in user. An existing
-            user can identify themselves by providing credentials. The
-            signin route looks up the user by their credentials, stores
-            it in the session, and responds with the user if they
-            exist; otherwise it responds with a 401. If a user has
+            new user is now the currently logged-in user. If a user has
             already signed in, the current user can be retrieved from
             the session by using the profile route; if there is no
             current user, return 401. Users can be signed out by
@@ -757,6 +756,16 @@ app.use(express.json());`}</CodeBlock>
   } else {
     res.status(401).json({ message: "Unable to login. Try again later." });
   }
+};
+const signup = (req, res) => {
+  const user = dao.findUserByUsername(req.body.username);
+  if (user) {
+    res.status(400).json({ message: "Username already in use" });
+    return;
+  }
+  const currentUser = dao.createUser(req.body);
+  req.session["currentUser"] = currentUser;
+  res.json(currentUser);
 };
 const profile = (req, res) => {
   const currentUser = req.session["currentUser"];
@@ -1093,6 +1102,36 @@ export const findMyCourses = async () => {
   const { data } = await axiosWithCredentials.get(\`\${USERS_API}/current/courses\`);
   return data;
 };`}</CodeBlock>
+          <p>
+            The server is the source of truth. The Zustand store is
+            only a client cache: after each{" "}
+            <code>await</code>, write the server&apos;s data into the
+            store. <code>findMyCourses</code>{" "}runs when the Dashboard
+            loads and again when <code>currentUser</code>{" "}changes.
+            Map <code>courses</code>{" "}from the store. The client-side
+            enrollment filter is gone.
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="Dashboard load"
+            file="app/(kambaz)/dashboard/page.tsx"
+          >{`import * as client from "../courses/client";
+import { useCoursesStore } from "../store/coursesStore";
+...
+const { currentUser } = useAccountContext();
+const courses = useCoursesStore((state) => state.courses);
+const setCourses = useCoursesStore((state) => state.setCourses);
+...
+useEffect(() => {
+  const load = async () => {
+    setCourses(await client.findMyCourses());
+  };
+  load();
+}, [currentUser]);
+...
+{courses.map((course) => (
+  ...
+))}`}</CodeBlock>
         </Section>
 
         <Section
@@ -1162,6 +1201,33 @@ app.post("/api/users/current/courses", createCourse);`}</CodeBlock>
   );
   return data;
 };`}</CodeBlock>
+          <p>
+            <code>addCourse</code>{" "}in the Chapter 4 store mints{" "}
+            <code>_id</code>{" "}with <code>crypto.randomUUID()</code>.
+            Stop doing that. The server already assigned the id.
+            Append the object it returned, and add{" "}
+            <code>setCourses</code>{" "}so a fetch can replace the cache.
+          </p>
+          <CodeBlock
+            language="ts"
+            name="courses store cache"
+            file="app/(kambaz)/store/coursesStore.ts"
+          >{`addCourse: (course) =>
+  set((state) => ({
+    courses: [...state.courses, course],
+  })),
+...
+setCourses: (courses) => set({ courses }),`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="onAddCourse"
+            file="app/(kambaz)/dashboard/page.tsx"
+          >{`const addCourse = useCoursesStore((state) => state.addCourse);
+...
+const onAddCourse = async () => {
+  const newCourse = await client.createCourse(course);
+  addCourse(newCourse);
+};`}</CodeBlock>
         </Section>
 
         <Section
@@ -1188,6 +1254,16 @@ app.post("/api/users/current/courses", createCourse);`}</CodeBlock>
   db.courses = courses.filter((course) => course._id !== courseId);
   db.enrollments = enrollments.filter((enrollment) => enrollment.course !== courseId);
 }`}</CodeBlock>
+          <CodeBlock
+            language="ts"
+            name="deleteCourse route"
+            file="webdev-server/Kambaz/Courses/routes.ts"
+          >{`const deleteCourse = (req, res) => {
+  const { courseId } = req.params;
+  dao.deleteCourse(courseId);
+  res.sendStatus(200);
+};
+app.delete("/api/courses/:courseId", deleteCourse);`}</CodeBlock>
           <p>
             In the course client, add a{" "}
             <code>deleteCourse</code>{" "}function that deletes an
@@ -1204,6 +1280,16 @@ app.post("/api/users/current/courses", createCourse);`}</CodeBlock>
           >{`export const deleteCourse = async (courseId: string) => {
   const { data } = await axios.delete(\`\${COURSES_API}/\${courseId}\`);
   return data;
+};`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="onDeleteCourse"
+            file="app/(kambaz)/dashboard/page.tsx"
+          >{`const deleteCourse = useCoursesStore((state) => state.deleteCourse);
+...
+const onDeleteCourse = async (courseId: string) => {
+  await client.deleteCourse(courseId);
+  deleteCourse(courseId);
 };`}</CodeBlock>
         </Section>
 
@@ -1233,6 +1319,16 @@ app.post("/api/users/current/courses", createCourse);`}</CodeBlock>
   Object.assign(course, courseUpdates);
   return course;
 }`}</CodeBlock>
+          <CodeBlock
+            language="ts"
+            name="updateCourse route"
+            file="webdev-server/Kambaz/Courses/routes.ts"
+          >{`const updateCourse = (req, res) => {
+  const { courseId } = req.params;
+  const status = dao.updateCourse(courseId, req.body);
+  res.json(status);
+};
+app.put("/api/courses/:courseId", updateCourse);`}</CodeBlock>
           <p>
             In the course client, add an{" "}
             <code>updateCourse</code>{" "}function that PUTs an existing
@@ -1252,6 +1348,16 @@ app.post("/api/users/current/courses", createCourse);`}</CodeBlock>
           >{`export const updateCourse = async (course: { _id: string }) => {
   const { data } = await axios.put(\`\${COURSES_API}/\${course._id}\`, course);
   return data;
+};`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="onUpdateCourse"
+            file="app/(kambaz)/dashboard/page.tsx"
+          >{`const updateCourse = useCoursesStore((state) => state.updateCourse);
+...
+const onUpdateCourse = async () => {
+  const saved = await client.updateCourse(course);
+  updateCourse(saved);
 };`}</CodeBlock>
           <CodeBlock
             language="tsx"
@@ -1409,9 +1515,13 @@ export default function Dashboard() {
           <code>PUT/DELETE /api/modules/:moduleId</code>.
         </p>
         <p>
-          The Modules screen fetches into component state with the
-          same client functions. Chapter 4&apos;s Zustand module store
-          is no longer the source of truth once Express is wired.
+          The server is the source of truth. The Zustand module
+          store is a client cache. <code>addModule</code>{" "}appends
+          the module the server returned and no longer mints{" "}
+          <code>_id</code>. <code>setModules</code>{" "}replaces the
+          cache from <code>findModulesForCourse</code>. Create,
+          update, and delete <code>await</code>{" "}the client, then
+          call the matching store action.
         </p>
 
         <Section
@@ -1532,6 +1642,42 @@ app.post("/api/courses/:courseId/modules", createModuleForCourse);`}</CodeBlock>
   const response = await axios.post(\`\${COURSES_API}/\${courseId}/modules\`, module);
   return response.data;
 };`}</CodeBlock>
+          <CodeBlock
+            language="ts"
+            name="modules store cache"
+            file="app/(kambaz)/store/modulesStore.ts"
+          >{`addModule: (module) =>
+  set((state) => ({
+    modules: [...state.modules, module],
+  })),
+...
+setModules: (modules) => set({ modules }),`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="modules load"
+            file="app/(kambaz)/courses/[cid]/modules/page.tsx"
+          >{`import * as client from "../../client";
+...
+const setModules = useModulesStore((state) => state.setModules);
+...
+useEffect(() => {
+  const load = async () => {
+    setModules(await client.findModulesForCourse(courseId));
+  };
+  load();
+}, [courseId]);`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="onAddModule"
+            file="app/(kambaz)/courses/[cid]/modules/page.tsx"
+          >{`const addModule = useModulesStore((state) => state.addModule);
+...
+const onAddModule = async () => {
+  const created = await client.createModuleForCourse(courseId, {
+    name: moduleName,
+  });
+  addModule(created);
+};`}</CodeBlock>
         </Section>
 
         <Section
@@ -1585,6 +1731,16 @@ app.delete("/api/modules/:moduleId", deleteModule);`}</CodeBlock>
   const response = await axios.delete(\`\${MODULES_API}/\${moduleId}\`);
   return response.data;
 };`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="onRemoveModule"
+            file="app/(kambaz)/courses/[cid]/modules/page.tsx"
+          >{`const deleteModule = useModulesStore((state) => state.deleteModule);
+...
+const onRemoveModule = async (moduleId: string) => {
+  await client.deleteModule(moduleId);
+  deleteModule(moduleId);
+};`}</CodeBlock>
         </Section>
 
         <Section
@@ -1621,11 +1777,31 @@ app.delete("/api/modules/:moduleId", deleteModule);`}</CodeBlock>
 }`}</CodeBlock>
           <CodeBlock
             language="ts"
+            name="updateModule route"
+            file="webdev-server/Kambaz/Modules/routes.ts"
+          >{`const updateModule = (req, res) => {
+  const { moduleId } = req.params;
+  const status = dao.updateModule(moduleId, req.body);
+  res.json(status);
+};
+app.put("/api/modules/:moduleId", updateModule);`}</CodeBlock>
+          <CodeBlock
+            language="ts"
             name="updateModule client"
             file="app/(kambaz)/courses/client.ts"
           >{`export const updateModule = async (module: { _id: string }) => {
   const { data } = await axios.put(\`\${MODULES_API}/\${module._id}\`, module);
   return data;
+};`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="onUpdateModule"
+            file="app/(kambaz)/courses/[cid]/modules/page.tsx"
+          >{`const updateModule = useModulesStore((state) => state.updateModule);
+...
+const onUpdateModule = async (module) => {
+  const saved = await client.updateModule(module);
+  updateModule(saved);
 };`}</CodeBlock>
         </Section>
       </Section>
@@ -1646,8 +1822,133 @@ app.delete("/api/modules/:moduleId", deleteModule);`}</CodeBlock>
           earlier chapters to use the new client file to CRUD
           assignments. New assignments, updates to assignments, and
           deleted assignments should persist if the screens are
-          refreshed as long as the server is running.
+          refreshed as long as the server is running. Copy the modules
+          shape. The server is the source of truth. The Zustand store
+          is a cache: <code>addAssignment</code>{" "}appends the server
+          object and does not mint <code>_id</code>, and{" "}
+          <code>setAssignments</code>{" "}replaces the list after a fetch.
         </p>
+          <CodeBlock
+            language="ts"
+            name="Assignments DAO"
+            file="webdev-server/Kambaz/Assignments/dao.ts"
+          >{`import { v4 as uuidv4 } from "uuid";
+export default function AssignmentsDao(db) {
+  const findAssignmentsForCourse = (courseId) =>
+    db.assignments.filter((assignment) => assignment.course === courseId);
+  const createAssignment = (assignment) => {
+    const created = { ...assignment, _id: uuidv4() };
+    db.assignments = [...db.assignments, created];
+    return created;
+  };
+  const updateAssignment = (assignmentId, updates) => {
+    const assignment = db.assignments.find((item) => item._id === assignmentId);
+    Object.assign(assignment, updates);
+    return assignment;
+  };
+  const deleteAssignment = (assignmentId) => {
+    db.assignments = db.assignments.filter((item) => item._id !== assignmentId);
+  };
+  return {
+    findAssignmentsForCourse,
+    createAssignment,
+    updateAssignment,
+    deleteAssignment,
+  };
+}`}</CodeBlock>
+          <CodeBlock
+            language="ts"
+            name="AssignmentRoutes"
+            file="webdev-server/Kambaz/Assignments/routes.ts"
+          >{`import AssignmentsDao from "./dao";
+export default function AssignmentRoutes(app, db) {
+  const dao = AssignmentsDao(db);
+  const findAssignmentsForCourse = (req, res) => {
+    res.json(dao.findAssignmentsForCourse(req.params.courseId));
+  };
+  const createAssignmentForCourse = (req, res) => {
+    const created = dao.createAssignment({
+      ...req.body,
+      course: req.params.courseId,
+    });
+    res.json(created);
+  };
+  const updateAssignment = (req, res) => {
+    res.json(dao.updateAssignment(req.params.assignmentId, req.body));
+  };
+  const deleteAssignment = (req, res) => {
+    dao.deleteAssignment(req.params.assignmentId);
+    res.sendStatus(200);
+  };
+  app.get("/api/courses/:courseId/assignments", findAssignmentsForCourse);
+  app.post("/api/courses/:courseId/assignments", createAssignmentForCourse);
+  app.put("/api/assignments/:assignmentId", updateAssignment);
+  app.delete("/api/assignments/:assignmentId", deleteAssignment);
+}`}</CodeBlock>
+          <CodeBlock
+            language="ts"
+            name="assignments client"
+            file="app/(kambaz)/courses/client.ts"
+          >{`const ASSIGNMENTS_API = \`\${HTTP_SERVER}/api/assignments\`;
+export const findAssignmentsForCourse = async (courseId: string) => {
+  const { data } = await axios.get(\`\${COURSES_API}/\${courseId}/assignments\`);
+  return data;
+};
+export const createAssignmentForCourse = async (courseId: string, assignment: unknown) => {
+  const { data } = await axios.post(
+    \`\${COURSES_API}/\${courseId}/assignments\`,
+    assignment,
+  );
+  return data;
+};
+export const updateAssignment = async (assignment: { _id: string }) => {
+  const { data } = await axios.put(\`\${ASSIGNMENTS_API}/\${assignment._id}\`, assignment);
+  return data;
+};
+export const deleteAssignment = async (assignmentId: string) => {
+  const { data } = await axios.delete(\`\${ASSIGNMENTS_API}/\${assignmentId}\`);
+  return data;
+};`}</CodeBlock>
+          <CodeBlock
+            language="ts"
+            name="assignments store cache"
+            file="app/(kambaz)/store/assignmentsStore.ts"
+          >{`addAssignment: (assignment) =>
+  set((state) => ({
+    assignments: [...state.assignments, assignment],
+  })),
+...
+setAssignments: (assignments) => set({ assignments }),`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="assignments handlers"
+            file="app/(kambaz)/courses/[cid]/assignments/page.tsx"
+          >{`import * as client from "../../client";
+...
+const setAssignments = useAssignmentsStore((state) => state.setAssignments);
+const addAssignment = useAssignmentsStore((state) => state.addAssignment);
+const updateAssignment = useAssignmentsStore((state) => state.updateAssignment);
+const deleteAssignment = useAssignmentsStore((state) => state.deleteAssignment);
+...
+useEffect(() => {
+  const load = async () => {
+    setAssignments(await client.findAssignmentsForCourse(courseId));
+  };
+  load();
+}, [courseId]);
+...
+const onAddAssignment = async () => {
+  const created = await client.createAssignmentForCourse(courseId, draft);
+  addAssignment(created);
+};
+const onUpdateAssignment = async (assignment) => {
+  const saved = await client.updateAssignment(assignment);
+  updateAssignment(saved);
+};
+const onDeleteAssignment = async (assignmentId: string) => {
+  await client.deleteAssignment(assignmentId);
+  deleteAssignment(assignmentId);
+};`}</CodeBlock>
       </Section>
 
       <Section

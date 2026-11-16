@@ -1368,8 +1368,8 @@ describe("lecture decks", () => {
     assert.equal(counts["ch5-check-understanding"], 7);
     assert.equal(counts["kambaz-migrate-db"], 7);
     assert.equal(counts["kambaz-account-rest"], 23);
-    assert.equal(counts["kambaz-sessions"], 20);
-    assert.equal(counts["kambaz-courses-api"], 16);
+    assert.equal(counts["kambaz-sessions"], 21);
+    assert.equal(counts["kambaz-courses-api"], 45);
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 13);
     assert.equal(counts["mongoose"], 12);
@@ -1382,7 +1382,7 @@ describe("lecture decks", () => {
     assert.equal(counts["ch6-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-db"], 14);
     assert.equal(counts["kambaz-modules-db"], 10);
-    assert.equal(counts["kambaz-enrollments-db"], 13);
+    assert.equal(counts["kambaz-enrollments-db"], 16);
     assert.equal(counts["youtube-api"], 11);
     assert.equal(counts["youtube-search"], 11);
     assert.equal(counts["youtube-details"], 23);
@@ -3646,6 +3646,11 @@ describe("lecture decks", () => {
       "http-server": { sibling: "two-ports" },
       "lab5-env": { purpose: "env-same-code" },
       "kambaz-account-rest": { "dao-architecture": "account-dao" },
+      "kambaz-courses-api": {
+        "courses-architecture": "courses-dao",
+        "modules-architecture": "modules-dao",
+        "assignments-architecture": "assignments-dao",
+      },
       "kambaz-sessions": {
         "one-user": "session-one-user",
         "many-sessions": "session-many",

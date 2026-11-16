@@ -108,7 +108,31 @@ function HArrow({ x1, x2, y, label }: { x1: number; x2: number; y: number; label
   );
 }
 
-export default function AccountDaoDiagram() {
+type TierSpec = {
+  titleId: string;
+  title: string;
+  uiName: string;
+  uiMembers: string[];
+  clientName: string;
+  clientMembers: string[];
+  routesName: string;
+  routesMembers: string[];
+  daoName: string;
+  daoMembers: string[];
+};
+
+export function TierDiagram({
+  titleId,
+  title,
+  uiName,
+  uiMembers,
+  clientName,
+  clientMembers,
+  routesName,
+  routesMembers,
+  daoName,
+  daoMembers,
+}: TierSpec) {
   const uiX = 32;
   const clientX = 352;
   const routesX = 756;
@@ -128,12 +152,9 @@ export default function AccountDaoDiagram() {
     <svg
       role="img"
       viewBox="0 0 2048 292"
-      aria-labelledby="account-dao-title"
+      aria-labelledby={titleId}
     >
-      <title id="account-dao-title">
-        AccountUI uses AccountClient. HTTP requests reach UserRoutes, which calls UserDao.
-        UserDao reads and updates the in-memory Database. JSON files are imported once at startup and are not written.
-      </title>
+      <title id={titleId}>{title}</title>
       <rect x={clientGroupX} y={groupY} width={clientGroupW} height={groupH} rx={16} fill={BLUE.group} stroke={BLUE.stroke} strokeWidth={3} />
       <text x={uiX} y={groupY + 28} fontFamily={FONT} fontSize={18} fontWeight={700} fill={BLUE.stroke}>
         Client
@@ -145,42 +166,30 @@ export default function AccountDaoDiagram() {
 
       <ClassBox
         x={uiX}
-        name="AccountUI"
+        name={uiName}
         stereotype="<<UI>>"
-        members={["signin()", "signup()", "setCurrentUser()"]}
+        members={uiMembers}
         tone={BLUE}
       />
       <ClassBox
         x={clientX}
-        name="AccountClient"
+        name={clientName}
         stereotype="<<client.ts>>"
-        members={["signin()", "signup()", "profile()", "signout()"]}
+        members={clientMembers}
         tone={BLUE}
       />
       <ClassBox
         x={routesX}
-        name="UserRoutes"
+        name={routesName}
         stereotype="<<routes.ts>>"
-        members={[
-          "POST /api/users/signup",
-          "POST /api/users/signin",
-          "POST /api/users/signout",
-          "GET /api/users/profile",
-          "PUT /api/users/:userId",
-        ]}
+        members={routesMembers}
         tone={YELLOW}
       />
       <ClassBox
         x={daoX}
-        name="UserDao"
+        name={daoName}
         stereotype="<<dao.ts>>"
-        members={[
-          "createUser()",
-          "findUserByUsername()",
-          "findUserByCredentials()",
-          "updateUser()",
-          "deleteUser()",
-        ]}
+        members={daoMembers}
         tone={YELLOW}
       />
       <ClassBox
@@ -248,5 +257,130 @@ export default function AccountDaoDiagram() {
       <HArrow x1={routesX + BOX_W} x2={daoX} y={midY} label="calls" />
       <HArrow x1={daoX + BOX_W} x2={dbX} y={midY} label={"reads/updates\nin memory"} />
     </svg>
+  );
+}
+
+const ACCOUNT: TierSpec = {
+  titleId: "account-dao-title",
+  title:
+    "AccountUI uses AccountClient. HTTP requests reach UserRoutes, which calls UserDao. UserDao reads and updates the in-memory Database. JSON files are imported once at startup and are not written.",
+  uiName: "AccountUI",
+  uiMembers: ["signin()", "signup()", "setCurrentUser()"],
+  clientName: "AccountClient",
+  clientMembers: ["signin()", "signup()", "profile()", "signout()"],
+  routesName: "UserRoutes",
+  routesMembers: [
+    "POST /api/users/signup",
+    "POST /api/users/signin",
+    "POST /api/users/signout",
+    "GET /api/users/profile",
+    "PUT /api/users/:userId",
+  ],
+  daoName: "UserDao",
+  daoMembers: [
+    "createUser()",
+    "findUserByUsername()",
+    "findUserByCredentials()",
+    "updateUser()",
+    "deleteUser()",
+  ],
+};
+
+export default function AccountDaoDiagram() {
+  return <TierDiagram {...ACCOUNT} />;
+}
+
+export function CoursesTierDiagram() {
+  return (
+    <TierDiagram
+      titleId="courses-dao-title"
+      title="Dashboard uses CoursesClient. HTTP requests reach CourseRoutes, which calls CoursesDao. CoursesDao reads and updates the in-memory Database."
+      uiName="Dashboard"
+      uiMembers={["findMyCourses()", "createCourse()", "fetchAllCourses()"]}
+      clientName="CoursesClient"
+      clientMembers={["fetchAllCourses()", "findMyCourses()", "createCourse()"]}
+      routesName="CourseRoutes"
+      routesMembers={[
+        "GET /api/courses",
+        "GET /users/:userId/courses",
+        "POST /users/current/courses",
+      ]}
+      daoName="CoursesDao"
+      daoMembers={["findAllCourses()", "findCoursesForEnrolledUser()", "createCourse()"]}
+    />
+  );
+}
+
+export function AssignmentsTierDiagram() {
+  return (
+    <TierDiagram
+      titleId="assignments-dao-title"
+      title="AssignmentsPage uses AssignmentsClient. HTTP requests reach AssignmentRoutes, which calls AssignmentsDao. AssignmentsDao reads and updates the in-memory Database."
+      uiName="AssignmentsPage"
+      uiMembers={[
+        "findAssignmentsForCourse()",
+        "createAssignmentForCourse()",
+        "updateAssignment()",
+        "deleteAssignment()",
+      ]}
+      clientName="AssignmentsClient"
+      clientMembers={[
+        "findAssignmentsForCourse()",
+        "createAssignmentForCourse()",
+        "updateAssignment()",
+        "deleteAssignment()",
+      ]}
+      routesName="AssignmentRoutes"
+      routesMembers={[
+        "GET /courses/:cid/assignments",
+        "POST /courses/:cid/assignments",
+        "PUT /assignments/:id",
+        "DELETE /assignments/:id",
+      ]}
+      daoName="AssignmentsDao"
+      daoMembers={[
+        "findAssignmentsForCourse()",
+        "createAssignment()",
+        "updateAssignment()",
+        "deleteAssignment()",
+      ]}
+    />
+  );
+}
+
+export function ModulesTierDiagram() {
+  return (
+    <TierDiagram
+      titleId="modules-dao-title"
+      title="ModulesPage uses ModulesClient. HTTP requests reach ModuleRoutes, which calls ModulesDao. ModulesDao reads and updates the in-memory Database."
+      uiName="ModulesPage"
+      uiMembers={[
+        "findModulesForCourse()",
+        "createModuleForCourse()",
+        "updateModule()",
+        "deleteModule()",
+      ]}
+      clientName="ModulesClient"
+      clientMembers={[
+        "findModulesForCourse()",
+        "createModuleForCourse()",
+        "updateModule()",
+        "deleteModule()",
+      ]}
+      routesName="ModuleRoutes"
+      routesMembers={[
+        "GET /courses/:cid/modules",
+        "POST /courses/:cid/modules",
+        "PUT /modules/:moduleId",
+        "DELETE /modules/:moduleId",
+      ]}
+      daoName="ModulesDao"
+      daoMembers={[
+        "findModulesForCourse()",
+        "createModule()",
+        "updateModule()",
+        "deleteModule()",
+      ]}
+    />
   );
 }
