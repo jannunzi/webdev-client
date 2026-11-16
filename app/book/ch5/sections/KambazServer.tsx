@@ -509,20 +509,12 @@ app.put("/api/users/:userId", updateUser);`}</CodeBlock>
 app.get("/api/users/profile", profile);`}</CodeBlock>
           <p>
             Then in the React Web app, implement a function to retrieve
-            the account information from that server route. Create a
-            Session-style fetch that runs when Kambaz first loads —
-            call <code>client.profile()</code>, then{" "}
-            <code>setCurrentUser</code>{" "}from{" "}
-            <code>AccountContext</code>. Kambaz is already wrapped
-            with{" "}
-            <code>AccountProvider</code>{" "}in{" "}
-            <code>app/(kambaz)/layout.tsx</code>. You can fetch the
-            profile from a small client component under that provider,
-            or from Profile itself on mount. Confirm that it works by
-            signing in, and then from the Profile screen, reload the
-            browser. Make sure the user information still renders
-            correctly once sessions are configured in{" "}
-            <SectionLink to="5.4.3" />.
+            the account information from that server route. A reload
+            clears <code>AccountContext</code>, so the signed-in user
+            has to be read back from the server. That fetch belongs in{" "}
+            <SectionLink to="5.4.3.3" />: it calls{" "}
+            <code>client.profile()</code>{" "}when Kambaz loads, and it
+            only works once the request sends the session cookie.
           </p>
           <CodeBlock
             language="ts"
@@ -784,6 +776,102 @@ export const signout = async () => {
             <code>axios</code>, the session cookie never leaves the
             browser and Express treats the request as anonymous.
           </p>
+        </Section>
+
+        <Section
+          level={3}
+          id="sec-5-4-3-3"
+          title="5.4.3.3 Restoring the User after a Refresh"
+        >
+          <p>
+            <code>AccountContext</code>{" "}keeps <code>currentUser</code>{" "}
+            in memory. A browser refresh clears that memory, so the
+            interface looks signed out even though the server session
+            still has the user. On load, the client has to ask the
+            server. <code>profile()</code>{" "}sends the session cookie
+            and returns that user. <code>setCurrentUser</code>{" "}stores
+            the response back in Context.
+          </p>
+          <p>
+            <code>Session</code>{" "}does that fetch once.{" "}
+            <code>pending</code>{" "}starts true, and the component
+            renders nothing until the request finishes, so the rest of
+            Kambaz does not flash a signed-out screen. A missing
+            session leaves <code>currentUser</code>{" "}null. Create{" "}
+            <code>app/(kambaz)/account/Session.tsx</code>:
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="Session"
+            file="app/(kambaz)/account/Session.tsx"
+          >{`"use client";
+
+import { useEffect, useState, type ReactNode } from "react";
+import { useAccountContext } from "./AccountContext";
+import * as client from "./client";
+
+export default function Session({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const [pending, setPending] = useState(true);
+  const { setCurrentUser } = useAccountContext();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const currentUser = await client.profile();
+        setCurrentUser(currentUser);
+      } catch {
+        setCurrentUser(null);
+      } finally {
+        setPending(false);
+      }
+    };
+    fetchProfile();
+  }, [setCurrentUser]);
+
+  if (pending) {
+    return null;
+  }
+  return children;
+}`}</CodeBlock>
+          <p>
+            Put <code>Session</code>{" "}inside{" "}
+            <code>AccountProvider</code>{" "}in{" "}
+            <code>app/(kambaz)/layout.tsx</code>, and wrap the
+            navigation and the page. The provider must be the parent,
+            because <code>Session</code>{" "}calls{" "}
+            <code>setCurrentUser</code>. Sign in, open Profile, and
+            reload. The same user is still signed in.
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="KambazLayout"
+            file="app/(kambaz)/layout.tsx"
+          >{`import { ReactNode } from "react";
+import "./kambaz.css";
+import KambazNavigation from "./Navigation";
+import Session from "./account/Session";
+import { AccountProvider } from "@/lib/account/AccountContext";
+
+export default function KambazLayout({
+  children,
+}: Readonly<{ children: ReactNode }>) {
+  return (
+    <AccountProvider>
+      <Session>
+        <div id="wd-kambaz" className="font-sans">
+          <KambazNavigation />
+          <div className="wd-main-content-offset p-3">
+            {children}
+          </div>
+        </div>
+      </Session>
+    </AccountProvider>
+  );
+}`}</CodeBlock>
         </Section>
       </Section>
 
