@@ -53,6 +53,7 @@ SESSION_SECRET=super secret session phrase`,
     title: "Ordering CORS, Session, and JSON",
     kind: "demo",
     bullets: [
+      "Cookie requests need `credentials: true` and an explicit origin. `*` is rejected",
       "Production: `proxy`, `sameSite: \"none\"`, `secure` cookies",
       "That is how Vercel can send credentials to Render",
     ],
@@ -143,9 +144,9 @@ const signout = (req, res) => {
     title: "Sending Cookies with Axios",
     kind: "demo",
     bullets: [
-      "Default axios drops cookies.",
+      "Default axios drops cookies",
       "`axios.create({ withCredentials: true })`",
-      "Profile, signout, update, and later `/current/courses` must use it",
+      "Replace `axios` in signin, signup, updateUser, profile, and signout",
     ],
   },
   {
@@ -155,16 +156,41 @@ const signout = (req, res) => {
     code: `import axios from "axios";
 const axiosWithCredentials = axios.create({ withCredentials: true });
 export const signin = async (credentials: { username: string; password: string }) => {
-  const response = await axiosWithCredentials.post(\`\${USERS_API}/signin\`, credentials);
+  const response = await axiosWithCredentials.post(
+    \`\${USERS_API}/signin\`,
+    credentials,
+  );
+  return response.data;
+};
+export const signup = async (user: { username: string; password: string }) => {
+  const response = await axiosWithCredentials.post(
+    \`\${USERS_API}/signup\`,
+    user,
+  );
+  return response.data;
+};
+export const updateUser = async (user: { _id: string }) => {
+  const response = await axiosWithCredentials.put(
+    \`\${USERS_API}/\${user._id}\`,
+    user,
+  );
   return response.data;
 };
 export const profile = async () => {
-  const response = await axiosWithCredentials.get(\`\${USERS_API}/profile\`);
+  const response = await axiosWithCredentials.get(
+    \`\${USERS_API}/profile\`,
+  );
+  return response.data;
+};
+export const signout = async () => {
+  const response = await axiosWithCredentials.post(
+    \`\${USERS_API}/signout\`,
+  );
   return response.data;
 };`,
     codeLanguage: "ts",
     codeFile: "app/(kambaz)/account/client.ts",
-    codeAddedLines: [2, 8],
+    codeHighlightLines: [2],
   },
   {
     id: "recap",

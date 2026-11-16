@@ -1367,7 +1367,7 @@ describe("lecture decks", () => {
     assert.equal(counts["next-routes"], 28);
     assert.equal(counts["ch5-check-understanding"], 7);
     assert.equal(counts["kambaz-migrate-db"], 7);
-    assert.equal(counts["kambaz-account-rest"], 18);
+    assert.equal(counts["kambaz-account-rest"], 19);
     assert.equal(counts["kambaz-sessions"], 12);
     assert.equal(counts["kambaz-courses-api"], 15);
     assert.equal(counts["deploy-api"], 8);
@@ -3181,7 +3181,11 @@ describe("lecture decks", () => {
     assert.match(accountRest, /\/api\/users\/signin/);
     assert.match(accountRest, /setCurrentUser/);
     assert.match(accountRest, /findUserByCredentials/);
-    assert.match(accountRest, /axiosWithCredentials/);
+    assert.match(accountRest, /axios\.post/);
+    assert.doesNotMatch(accountRest, /withCredentials/);
+    assert.equal(accountIds[accountIds.indexOf("routes") + 1], "wire-db");
+    assert.match(findSlide("kambaz-account-rest", "wire-db").code ?? "", /from "\.\/Kambaz\/Database"/);
+    assert.doesNotMatch(findSlide("kambaz-account-rest", "wire-db").code ?? "", /users\.json/);
 
     const sessions = slideText("kambaz-sessions");
     assert.equal(findSlide("kambaz-sessions", "title").cover?.headline, "Server Sessions");
