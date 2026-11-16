@@ -188,9 +188,8 @@ export default function UsersDao(db) {
           Sign-in uses POST so the username and password stay in the
           request body. A GET would put them in the URL, which the
           browser keeps in history and servers often write into logs
-          and caches. HTTPS encrypts the query string too, so this is
-          not about encryption. Sign-in, sign-up, and sign-out also
-          change server state: sign-up creates a user, and sign-in and
+          and caches. Sign-in, sign-up, and sign-out also change
+          server state: sign-up creates a user, and sign-in and
           sign-out start or end a session. Those are not safe GETs.
           Earlier, POST mapped to create. Auth actions bend that
           mapping, and that is standard practice.
