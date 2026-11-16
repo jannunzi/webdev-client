@@ -246,8 +246,14 @@ export default function UserRoutes(app, db) {
 }`}</CodeBlock>
           <p>
             Import and configure the routes in{" "}
-            <code>index.ts</code>{" "}and pass a reference to the
-            database to each of the route modules. Call{" "}
+            <code>index.ts</code>. Import the Database barrel,{" "}
+            <code>import db from &quot;./Kambaz/Database&quot;</code>,
+            which exports{" "}
+            <code>{`{ courses, modules, assignments, users, enrollments }`}</code>.
+            Pass that object to <code>UserRoutes(app, db)</code>.
+            Do not import <code>users.json</code>{" "}here: the DAO
+            reads <code>db.users</code>, and a JSON array has no{" "}
+            <code>find</code>{" "}method. Call{" "}
             <code>app.use(cors())</code>{" "}and{" "}
             <code>express.json()</code>{" "}before the routes.{" "}
             <SectionLink to="5.4.3.1" />{" "}replaces this CORS setup
@@ -259,7 +265,7 @@ export default function UserRoutes(app, db) {
             file="webdev-server/index.ts"
           >{`import express from "express";
 import cors from "cors";
-import db from "./Kambaz/Database/index";
+import db from "./Kambaz/Database";
 import UserRoutes from "./Kambaz/Users/routes";
 const app = express();
 app.use(cors());

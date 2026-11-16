@@ -78,8 +78,8 @@ export default function UsersDao(db) {
     title: "Defining the Account POST Routes",
     kind: "demo",
     bullets: [
-      "Register after CORS, the session (server memory of who is signed in), and `express.json()`",
-      "Pass `db` into the route module",
+      "`UserRoutes(app, db)` receives the database object and builds the DAO",
+      "The next slide imports that object in `index.ts` and registers the routes",
     ],
     code: `import UsersDao from "./dao";
 export default function UserRoutes(app, db) {
@@ -96,6 +96,28 @@ export default function UserRoutes(app, db) {
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeHighlightLines: [[8, 11]],
+  },
+  {
+    id: "wire-db",
+    title: "Passing the Database to the Routes",
+    kind: "demo",
+    bullets: [
+      "Import `db` from `./Kambaz/Database`, not from `users.json`",
+      "That index exports courses, modules, assignments, users, and enrollments",
+      "Call `UserRoutes(app, db)` after `cors()` and `express.json()`",
+    ],
+    code: `import express from "express";
+import cors from "cors";
+import db from "./Kambaz/Database";
+import UserRoutes from "./Kambaz/Users/routes";
+const app = express();
+app.use(cors());
+app.use(express.json());
+UserRoutes(app, db);
+app.listen(process.env.PORT || 4000);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/index.ts",
+    codeHighlightLines: [3, 8],
   },
   {
     id: "why-post",
