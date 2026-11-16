@@ -149,13 +149,14 @@ app.use(express.json());`,
     title: "Storing the User on the Session",
     kind: "demo",
     bullets: [
-      "Signin 401 if credentials miss. Profile 401 if nobody is signed in",
-      "Signout destroys the session. Profile update must keep it in sync",
+      "Signin returns 401 when the credentials do not match",
+      "Signup returns 400 when the username is taken",
+      "Both store the user in `req.session.currentUser`",
     ],
   },
   {
     id: "session-auth",
-    title: "Reading the User from the Session",
+    title: "Signing In and Signing Up",
     kind: "demo",
     code: `const signin = (req, res) => {
   const { username, password } = req.body;
@@ -167,7 +168,29 @@ app.use(express.json());`,
     res.status(401).json({ message: "Unable to login. Try again later." });
   }
 };
-const profile = (req, res) => {
+const signup = (req, res) => {
+  const user = dao.findUserByUsername(req.body.username);
+  if (user) {
+    res.status(400).json({ message: "Username already in use" });
+    return;
+  }
+  const currentUser = dao.createUser(req.body);
+  req.session["currentUser"] = currentUser;
+  res.json(currentUser);
+};`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
+    codeHighlightLines: [5, 19],
+  },
+  {
+    id: "session-profile",
+    title: "Profile and Sign-Out",
+    kind: "demo",
+    bullets: [
+      "Profile returns 401 when nobody is signed in",
+      "Signout destroys the session",
+    ],
+    code: `const profile = (req, res) => {
   const currentUser = req.session["currentUser"];
   if (!currentUser) {
     res.sendStatus(401);
@@ -181,7 +204,7 @@ const signout = (req, res) => {
 };`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/routes.ts",
-    codeHighlightLines: [5, 12, 20],
+    codeHighlightLines: [2, 10],
   },
   {
     id: "axios-cookies-intro",

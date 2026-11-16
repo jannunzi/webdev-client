@@ -1217,10 +1217,32 @@ app.get("/api/courses/:cid/users", findUsersForCourse);`}</CodeBlock>
   const response = await axios.get(\`\${COURSES_API}/\${courseId}/users\`);
   return response.data;
 };`}</CodeBlock>
+          <p>
+            The People page changes are the client import, the users
+            state, and the effect below.{" "}
+            <code>findUsersForCourse(cid)</code>{" "}replaces the
+            enrollment filter. Pass that array to{" "}
+            <code>PeopleTable</code>.
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="People page load"
+            file="app/(kambaz)/courses/[cid]/people/table/page.tsx"
+          >{`import * as client from "../../../client";
+...
+const [users, setUsers] = useState<User[]>([]);
+...
+const fetchUsers = async () => {
+  setUsers(await client.findUsersForCourse(cid));
+};
+useEffect(() => {
+  fetchUsers();
+}, [cid]);
+...
+return <PeopleTable users={users} fetchUsers={fetchUsers} />;`}</CodeBlock>
           <OnYourOwn>
-            Point the course People page at{" "}
-            <code>findUsersForCourse(cid)</code>{" "}and confirm a student
-            who is not enrolled does not appear.
+            Open People and confirm a student who is not enrolled
+            does not appear.
           </OnYourOwn>
         </Section>
       </Section>

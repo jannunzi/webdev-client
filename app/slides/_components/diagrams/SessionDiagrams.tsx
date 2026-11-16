@@ -96,7 +96,7 @@ function SequenceDiagram({
     <svg
       role="img"
       viewBox={`0 0 ${width} ${height}`}
-      className="h-auto w-full"
+      preserveAspectRatio="xMidYMid meet"
       aria-labelledby={`${title.replace(/\s+/g, "-")}-title`}
     >
       <title id={`${title.replace(/\s+/g, "-")}-title`}>{title}</title>
@@ -268,7 +268,7 @@ export function ManySessionsDiagram() {
     <svg
       role="img"
       viewBox="0 0 1440 820"
-      className="h-auto w-full"
+      preserveAspectRatio="xMidYMid meet"
       aria-labelledby="many-sessions-title"
     >
       <title id="many-sessions-title">
