@@ -700,68 +700,56 @@ setAssignments: (assignments) => set({ assignments }),`,
     codeHighlightLines: [[1, 4], 6],
   },
   {
-    id: "assignments-handlers",
-    title: "Saving Assignments into the Store",
+    id: "assignments-load-ui",
+    title: "Loading Assignments from the Server",
     kind: "demo",
     code: `const setAssignments = useAssignmentsStore((state) => state.setAssignments);
-const addAssignment = useAssignmentsStore((state) => state.addAssignment);
-const updateAssignment = useAssignmentsStore((state) => state.updateAssignment);
-const deleteAssignment = useAssignmentsStore((state) => state.deleteAssignment);
 ...
 useEffect(() => {
   const load = async () => {
     setAssignments(await client.findAssignmentsForCourse(courseId));
   };
   load();
-}, [courseId]);
-...
-const onAddAssignment = async () => {
-  const created = await client.createAssignmentForCourse(courseId, draft);
-  addAssignment(created);
-};
-const onUpdateAssignment = async (assignment) => {
-  const saved = await client.updateAssignment(assignment);
-  updateAssignment(saved);
-};
-const onDeleteAssignment = async (assignmentId: string) => {
-  await client.deleteAssignment(assignmentId);
-  deleteAssignment(assignmentId);
-};`,
+}, [courseId]);`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/assignments/page.tsx",
-    codeHighlightLines: [[1, 4], [6, 11], [13, 24]],
+    codeHighlightLines: [1, [3, 8]],
   },
   {
-    id: "assignments-write-server",
-    title: "Writing Assignment Routes",
+    id: "assignments-create-dao",
+    title: "Creating an Assignment in the DAO",
     kind: "demo",
     code: `const createAssignment = (assignment) => {
   const created = { ...assignment, _id: uuidv4() };
   db.assignments = [...db.assignments, created];
   return created;
-};
-const updateAssignment = (assignmentId, updates) => {
-  const assignment = db.assignments.find((item) => item._id === assignmentId);
-  Object.assign(assignment, updates);
-  return assignment;
-};
-const deleteAssignment = (assignmentId) => {
-  db.assignments = db.assignments.filter((item) => item._id !== assignmentId);
 };`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Assignments/dao.ts",
-    codeBlocks: [
-      {
-        language: "ts",
-        file: "webdev-server/Kambaz/Assignments/routes.ts",
-        code: `app.post("/api/courses/:courseId/assignments", createAssignmentForCourse);
-app.put("/api/assignments/:assignmentId", updateAssignment);
-app.delete("/api/assignments/:assignmentId", deleteAssignment);`,
-      },
-      {
-        language: "ts",
-        file: "app/(kambaz)/courses/client.ts",
-        code: `export const createAssignmentForCourse = async (
+  },
+  {
+    id: "assignments-create-route",
+    title: "Posting an Assignment Route",
+    kind: "demo",
+    code: `const createAssignmentForCourse = (req, res) => {
+  const created = dao.createAssignment({
+    ...req.body,
+    course: req.params.courseId,
+  });
+  res.json(created);
+};
+app.post(
+  "/api/courses/:courseId/assignments",
+  createAssignmentForCourse,
+);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Assignments/routes.ts",
+  },
+  {
+    id: "assignments-create-client",
+    title: "Posting an Assignment from the Client",
+    kind: "demo",
+    code: `export const createAssignmentForCourse = async (
   courseId: string,
   assignment: unknown,
 ) => {
@@ -770,22 +758,143 @@ app.delete("/api/assignments/:assignmentId", deleteAssignment);`,
     assignment,
   );
   return data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/courses/client.ts",
+    codeAddedLines: [[1, 10]],
+  },
+  {
+    id: "assignments-add-ui",
+    title: "Adding the Server Assignment",
+    kind: "demo",
+    code: `const addAssignment = useAssignmentsStore((state) => state.addAssignment);
+...
+const onAddAssignment = async () => {
+  const created = await client.createAssignmentForCourse(courseId, draft);
+  addAssignment(created);
+};`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/assignments/page.tsx",
+    codeHighlightLines: [1, [3, 6]],
+  },
+  {
+    id: "assignments-update-dao",
+    title: "Updating an Assignment in the DAO",
+    kind: "demo",
+    code: `const updateAssignment = (assignmentId, updates) => {
+  const assignment = db.assignments.find(
+    (item) => item._id === assignmentId,
+  );
+  Object.assign(assignment, updates);
+  return assignment;
+};`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Assignments/dao.ts",
+  },
+  {
+    id: "assignments-update-route",
+    title: "Updating the Assignment Route",
+    kind: "demo",
+    code: `const updateAssignment = (req, res) => {
+  const saved = dao.updateAssignment(
+    req.params.assignmentId,
+    req.body,
+  );
+  res.json(saved);
 };
-export const updateAssignment = async (assignment: { _id: string }) => {
+app.put("/api/assignments/:assignmentId", updateAssignment);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Assignments/routes.ts",
+  },
+  {
+    id: "assignments-update-client",
+    title: "Updating an Assignment from the Client",
+    kind: "demo",
+    code: `export const updateAssignment = async (
+  assignment: { _id: string },
+) => {
   const { data } = await axios.put(
     \`\${ASSIGNMENTS_API}/\${assignment._id}\`,
     assignment,
   );
   return data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/courses/client.ts",
+    codeAddedLines: [[1, 9]],
+  },
+  {
+    id: "assignments-update-ui",
+    title: "Updating the Cached Assignment",
+    kind: "demo",
+    code: `const updateAssignment = useAssignmentsStore(
+  (state) => state.updateAssignment,
+);
+...
+const onUpdateAssignment = async (assignment) => {
+  const saved = await client.updateAssignment(assignment);
+  updateAssignment(saved);
+};`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/assignments/page.tsx",
+    codeHighlightLines: [[1, 3], [5, 8]],
+  },
+  {
+    id: "assignments-delete-dao",
+    title: "Deleting an Assignment in the DAO",
+    kind: "demo",
+    code: `const deleteAssignment = (assignmentId) => {
+  db.assignments = db.assignments.filter(
+    (item) => item._id !== assignmentId,
+  );
+};`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Assignments/dao.ts",
+  },
+  {
+    id: "assignments-delete-route",
+    title: "Deleting an Assignment Route",
+    kind: "demo",
+    code: `const deleteAssignment = (req, res) => {
+  dao.deleteAssignment(req.params.assignmentId);
+  res.sendStatus(200);
 };
-export const deleteAssignment = async (assignmentId: string) => {
+app.delete(
+  "/api/assignments/:assignmentId",
+  deleteAssignment,
+);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Assignments/routes.ts",
+  },
+  {
+    id: "assignments-delete-client",
+    title: "Deleting an Assignment from the Client",
+    kind: "demo",
+    code: `export const deleteAssignment = async (assignmentId: string) => {
   const { data } = await axios.delete(
     \`\${ASSIGNMENTS_API}/\${assignmentId}\`,
   );
   return data;
 };`,
-      },
-    ],
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/courses/client.ts",
+    codeAddedLines: [[1, 6]],
+  },
+  {
+    id: "assignments-delete-ui",
+    title: "Removing the Deleted Assignment",
+    kind: "demo",
+    code: `const deleteAssignment = useAssignmentsStore(
+  (state) => state.deleteAssignment,
+);
+...
+const onDeleteAssignment = async (assignmentId: string) => {
+  await client.deleteAssignment(assignmentId);
+  deleteAssignment(assignmentId);
+};`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/assignments/page.tsx",
+    codeHighlightLines: [[1, 3], [5, 8]],
   },
   {
     id: "recap",
