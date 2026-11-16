@@ -104,7 +104,7 @@ export default function UserRoutes(app, db) {
     bullets: [
       "POST keeps the username and password in the body, not the URL",
       "History, logs, and caches keep the URL",
-      "Sign-in, sign-up, and sign-out change server state, so they are not safe GETs",
+      "GET should only read data",
       "They are actions, not reads, so they do not map onto create, read, update, and delete",
       "POST is the standard practice, and visiting a link never sends it",
       "Profile only reads the current user, so it stays a GET",
