@@ -298,47 +298,6 @@ export const fetchTodos = async () => {
     codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
   },
   {
-    id: "body-how",
-    title: "Reading a JSON Request Body",
-    kind: "content",
-    bullets: [
-      "Client: `axios.post(url, { title: \"New Task\" })` puts JSON in the request body",
-      "A header on the request, `Content-Type: application/json`, says the body is JSON",
-      "By default Express does not read the body, so `req.body` is `undefined`",
-      "`express.json()` reads the body and sets `req.body = { title: \"New Task\" }`",
-      "Routes registered after it can use `req.body`",
-    ],
-  },
-  {
-    id: "json-body",
-    title: "Sending JSON in the HTTP Body",
-    kind: "content",
-    bullets: [
-      "URLs are short, strings-only, and visible on the wire",
-      "`express.json()` reads the JSON body and turns it into the `req.body` object",
-      "Place it after CORS and before the routes",
-    ],
-    code: `app.use(cors());
-app.use(express.json());
-Lab5(app);`,
-    codeLanguage: "ts",
-    codeFile: "webdev-server/index.ts",
-    codeAddedLines: [2],
-  },
-  {
-    id: "verbs",
-    title: "Choosing the Right HTTP Verb",
-    kind: "content",
-    bullets: [
-      "**GET** — retrieve only. We misused it for create/delete",
-      "**POST** — create",
-      "**PUT** — update",
-      "**DELETE** — remove",
-      "**OPTIONS** — the browser asks first whether the server allows those verbs from another origin",
-      "Keep the older GET routes so earlier links still work",
-    ],
-  },
-  {
     id: "icon-flow",
     title: "Deleting Items Asynchronously",
     kind: "content",
@@ -391,6 +350,47 @@ export const createNewTodo = async () => {
     code: "const createNewTodo = async () => {\n  setTodos(await client.createNewTodo());\n};\n<FaPlusCircle onClick={createNewTodo} id=\"wd-create-todo\"\n  className=\"cursor-pointer text-green-600\" />",
     codeLanguage: "tsx",
     codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
+  },
+  {
+    id: "body-how",
+    title: "Reading a JSON Request Body",
+    kind: "content",
+    bullets: [
+      "Client: `axios.post(url, { title: \"New Task\" })` puts JSON in the request body",
+      "A header on the request, `Content-Type: application/json`, says the body is JSON",
+      "By default Express does not read the body, so `req.body` is `undefined`",
+      "`express.json()` reads the body and sets `req.body = { title: \"New Task\" }`",
+      "Routes registered after it can use `req.body`",
+    ],
+  },
+  {
+    id: "json-body",
+    title: "Sending JSON in the HTTP Body",
+    kind: "content",
+    bullets: [
+      "URLs are short, strings-only, and visible on the wire",
+      "`express.json()` reads the JSON body and turns it into the `req.body` object",
+      "Place it after CORS and before the routes",
+    ],
+    code: `app.use(cors());
+app.use(express.json());
+Lab5(app);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/index.ts",
+    codeAddedLines: [2],
+  },
+  {
+    id: "verbs",
+    title: "Choosing the Right HTTP Verb",
+    kind: "content",
+    bullets: [
+      "**GET** — retrieve only. We misused it for create/delete",
+      "**POST** — create",
+      "**PUT** — update",
+      "**DELETE** — remove",
+      "**OPTIONS** — the browser asks first whether the server allows those verbs from another origin",
+      "Keep the older GET routes so earlier links still work",
+    ],
   },
   {
     id: "post-delete-intro",
