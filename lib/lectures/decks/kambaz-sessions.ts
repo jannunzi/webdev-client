@@ -155,6 +155,8 @@ const signout = (req, res) => {
     kind: "demo",
     code: `import axios from "axios";
 const axiosWithCredentials = axios.create({ withCredentials: true });
+const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
+const USERS_API = \`\${HTTP_SERVER}/api/users\`;
 export const signin = async (credentials: { username: string; password: string }) => {
   const response = await axiosWithCredentials.post(
     \`\${USERS_API}/signin\`,
@@ -190,7 +192,96 @@ export const signout = async () => {
 };`,
     codeLanguage: "ts",
     codeFile: "app/(kambaz)/account/client.ts",
-    codeHighlightLines: [2],
+    codeHighlightLines: [[2, 4]],
+  },
+  {
+    id: "refresh-why",
+    title: "Keeping the User after Refresh",
+    kind: "content",
+    bullets: [
+      "AccountContext lives in memory. A refresh clears `currentUser`",
+      "The server session still has that user, stored with the cookie",
+      "On load, call `profile()` and then `setCurrentUser`",
+    ],
+  },
+  {
+    id: "session",
+    title: "Fetching the Profile on Load",
+    kind: "demo",
+    bullets: [
+      "`pending` starts true, so Kambaz renders nothing during the request",
+      "A missing session sets `currentUser` to `null`",
+    ],
+    code: `"use client";
+
+import { useEffect, useState, type ReactNode } from "react";
+import { useAccountContext } from "./AccountContext";
+import * as client from "./client";
+
+export default function Session({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const [pending, setPending] = useState(true);
+  const { setCurrentUser } = useAccountContext();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const currentUser = await client.profile();
+        setCurrentUser(currentUser);
+      } catch {
+        setCurrentUser(null);
+      } finally {
+        setPending(false);
+      }
+    };
+    fetchProfile();
+  }, [setCurrentUser]);
+
+  if (pending) {
+    return null;
+  }
+  return children;
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/account/Session.tsx",
+    codeHighlightLines: [[15, 26], [28, 30]],
+  },
+  {
+    id: "session-layout",
+    title: "Wrapping Kambaz in Session",
+    kind: "demo",
+    bullets: [
+      "`Session` sits inside `AccountProvider` so it can call `setCurrentUser`",
+      "It wraps the navigation and the page",
+    ],
+    code: `import { ReactNode } from "react";
+import "./kambaz.css";
+import KambazNavigation from "./Navigation";
+import Session from "./account/Session";
+import { AccountProvider } from "@/lib/account/AccountContext";
+
+export default function KambazLayout({
+  children,
+}: Readonly<{ children: ReactNode }>) {
+  return (
+    <AccountProvider>
+      <Session>
+        <div id="wd-kambaz" className="font-sans">
+          <KambazNavigation />
+          <div className="wd-main-content-offset p-3">
+            {children}
+          </div>
+        </div>
+      </Session>
+    </AccountProvider>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/layout.tsx",
+    codeHighlightLines: [[4, 5], [11, 19]],
   },
   {
     id: "recap",
@@ -200,6 +291,7 @@ export const signout = async () => {
       "`req.session.currentUser` per browser cookie",
       "CORS `credentials` + a specific `CLIENT_URL`",
       "Every signed-in axios call uses `withCredentials`",
+      "Session calls `profile()` on load so a refresh keeps the user",
     ],
   },
   {
