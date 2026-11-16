@@ -1368,7 +1368,7 @@ describe("lecture decks", () => {
     assert.equal(counts["ch5-check-understanding"], 7);
     assert.equal(counts["kambaz-migrate-db"], 7);
     assert.equal(counts["kambaz-account-rest"], 19);
-    assert.equal(counts["kambaz-sessions"], 15);
+    assert.equal(counts["kambaz-sessions"], 20);
     assert.equal(counts["kambaz-courses-api"], 16);
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 13);
@@ -3624,6 +3624,13 @@ describe("lecture decks", () => {
       "http-server": { sibling: "two-ports" },
       "lab5-env": { purpose: "env-same-code" },
       "kambaz-account-rest": { "dao-architecture": "account-dao" },
+      "kambaz-sessions": {
+        "one-user": "session-one-user",
+        "many-sessions": "session-many",
+        "session-create": "session-create",
+        "session-update": "session-update",
+        "session-read": "session-read",
+      },
     } as const;
 
     const used = new Set<string>();
