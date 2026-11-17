@@ -80,7 +80,6 @@ await mongoose.connect(CONNECTION_STRING);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/index.ts",
     codeHighlightLines: [[1, 3]],
-    embed: "lab6-status",
   },
   {
     id: "render",

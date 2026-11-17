@@ -67,7 +67,6 @@ const signup = async (req, res) => {
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeHighlightLines: [1, 3, 13, 18],
-    embed: "kambaz-styled-signin",
   },
   {
     id: "find-all-dao",
@@ -148,6 +147,15 @@ app.get("/api/users", findAllUsers);`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/Table.tsx",
     codeHighlightLines: [[1, 3], [12, 14]],
+  },
+  {
+    id: "people-table-live",
+    title: "People Table Live Demo",
+    kind: "demo",
+    bullets: [
+      "The table renders the `users` array it was given",
+      "Odd rows are striped. The first column is the name",
+    ],
     embed: "kambaz-styled-people",
   },
   {

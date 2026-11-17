@@ -39,18 +39,14 @@ function Actor({
   lifeBottom: number;
 }) {
   const width = 230;
+  const left = x - width / 2;
+  const top = 16;
+  const height = 64;
+  const radius = 10;
+  const header = `M${left} ${top + radius} a${radius} ${radius} 0 0 1 ${radius} ${-radius} h${width - 2 * radius} a${radius} ${radius} 0 0 1 ${radius} ${radius} v${height - radius} h${-width} z`;
   return (
     <g>
-      <rect
-        x={x - width / 2}
-        y={16}
-        width={width}
-        height={64}
-        rx={10}
-        fill={tone.header}
-        stroke={tone.stroke}
-        strokeWidth={3}
-      />
+      <path d={header} fill={tone.header} stroke={tone.stroke} strokeWidth={3} />
       <text
         x={x}
         y={56}

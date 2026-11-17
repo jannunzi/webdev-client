@@ -1373,8 +1373,8 @@ describe("lecture decks", () => {
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 13);
     assert.equal(counts["mongoose"], 13);
-    assert.equal(counts["mongo-apis"], 15);
-    assert.equal(counts["mongo-users-crud"], 26);
+    assert.equal(counts["mongo-apis"], 16);
+    assert.equal(counts["mongo-users-crud"], 28);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
     assert.equal(counts["atlas-node"], 11);
@@ -1382,7 +1382,7 @@ describe("lecture decks", () => {
     assert.equal(counts["ch6-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-db"], 32);
     assert.equal(counts["kambaz-modules-db"], 25);
-    assert.equal(counts["kambaz-enrollments-db"], 20);
+    assert.equal(counts["kambaz-enrollments-db"], 24);
     assert.equal(counts["youtube-api"], 11);
     assert.equal(counts["youtube-search"], 11);
     assert.equal(counts["youtube-details"], 23);
@@ -1957,18 +1957,13 @@ describe("lecture decks", () => {
       "kambaz-courses-api": { client: "kambaz-styled-dashboard" },
       mongoose: { env: "lab6-status" },
       "mongo-apis": {
-        async: "kambaz-styled-signin",
         "people-table": "kambaz-styled-people",
       },
       "mongo-users-crud": { "users-live": "lab6-users" },
-      "atlas-compass": { import: "kambaz-styled-dashboard" },
-      "atlas-node": { env: "lab6-status" },
-      "atlas-sessions": { client: "kambaz-styled-signin" },
       "kambaz-courses-db": { dashboard: "kambaz-styled-dashboard" },
       "kambaz-modules-db": { "modules-live": "kambaz-styled-modules" },
       "kambaz-enrollments-db": {
         people: "kambaz-styled-people",
-        assignments: "kambaz-styled-assignments",
       },
       "youtube-search": { field: "youtube-search" },
       "youtube-details": {
@@ -3656,6 +3651,8 @@ describe("lecture decks", () => {
         "read-all-path": "users-read-all",
       },
       "mongo-users-crud": {
+        "users-picture": "users-stack",
+        "filter-path": "users-filter",
         "read-one-path": "users-read-one",
         "delete-path": "users-delete",
         "update-path": "users-update",
@@ -3679,6 +3676,10 @@ describe("lecture decks", () => {
       "kambaz-enrollments-db": {
         "enroll-picture": "enroll-stack",
         "read-path": "enroll-read",
+        "joins-path": "enroll-joins",
+        "enroll-create-path": "enroll-create",
+        "enroll-unenroll-path": "enroll-unenroll",
+        "people-path": "enroll-people",
       },
       "kambaz-sessions": {
         "one-user": "session-one-user",

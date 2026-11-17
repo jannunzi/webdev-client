@@ -64,7 +64,6 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
       "Confirm document counts match the localhost Compass window",
       "Edits on localhost do not appear on Atlas until you import or the app writes",
     ],
-    embed: "kambaz-styled-dashboard",
   },
   {
     id: "two",

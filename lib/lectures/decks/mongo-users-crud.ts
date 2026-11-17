@@ -11,6 +11,20 @@ export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "users-picture",
+    title: "Users from the Page to Mongo",
+    kind: "demo",
+    bullets: ["Every user route, from the page through the users collection"],
+    diagram: "users-stack",
+  },
+  {
+    id: "filter-path",
+    title: "GET /api/users?role and ?name",
+    kind: "demo",
+    bullets: ["One GET. `role` and `name` are separate filters"],
+    diagram: "users-filter",
+  },
+  {
     id: "predicates-intro",
     title: "find() accepts a predicate",
     kind: "demo",
