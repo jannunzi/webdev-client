@@ -1371,7 +1371,7 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-sessions"], 21);
     assert.equal(counts["kambaz-courses-api"], 56);
     assert.equal(counts["deploy-api"], 8);
-    assert.equal(counts["local-mongo"], 13);
+    assert.equal(counts["local-mongo"], 12);
     assert.equal(counts["mongoose"], 13);
     assert.equal(counts["mongo-apis"], 16);
     assert.equal(counts["mongo-users-crud"], 38);
@@ -3646,6 +3646,7 @@ describe("lecture decks", () => {
         "modules-architecture": "modules-dao",
         "assignments-architecture": "assignments-dao",
       },
+      "local-mongo": { purpose: "mongo-roadmap" },
       "mongo-apis": {
         "users-picture": "users-stack",
         "read-all-path": "users-read-all",
@@ -4165,7 +4166,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 267);
+    assert.equal(intros, 266);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {

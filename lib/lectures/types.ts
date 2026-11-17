@@ -745,6 +745,7 @@ export const LECTURE_DIAGRAM_IDS = [
   "courses-dao",
   "modules-dao",
   "assignments-dao",
+  "mongo-roadmap",
   "users-stack",
   "users-read-all",
   "users-filter",

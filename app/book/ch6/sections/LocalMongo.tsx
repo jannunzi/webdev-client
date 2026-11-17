@@ -25,10 +25,15 @@ export default function LocalMongo() {
           or restart your computer. The MongoDB database will
           automatically start whenever you start your computer, which
           is the arrangement you want while you work through this
-          chapter and the next assignment. On Windows, confirm the
+          chapter and the next assignment.           On Windows, confirm the
           database is running by searching for MongoDB in the Services
           dialog. On macOS, confirm the database is running by clicking
-          the MongoDB icon in the System Settings dialog. The service
+          the MongoDB icon in the System Settings dialog. On Linux,
+          the official <code>mongodb-org</code>{" "}packages register a{" "}
+          <code>mongod</code>{" "}service:{" "}
+          <code>sudo systemctl status mongod</code>{" "}shows whether
+          it is running, and <code>sudo systemctl enable mongod</code>{" "}
+          starts it on boot. The service
           dialog gives you controls to start and stop the database, but
           it should already be configured to start automatically when
           you restart your computer. Leave the service set to start
@@ -93,6 +98,40 @@ export PATH="$PATH:/usr/local/mongodb-macos-x86_64-8.0.4/bin"`}</CodeBlock>
             computer so every new terminal session can find{" "}
             <code>mongod</code>{" "}and <code>mongosh</code>.
           </p>
+          <p>
+            On Linux, install the official{" "}
+            <code>mongodb-org</code>{" "}package from MongoDB&apos;s apt
+            repository (Ubuntu) or yum repository (RHEL). Do not use
+            the distribution package named <code>mongodb</code>; it
+            conflicts with <code>mongodb-org</code>. The repository
+            setup for your release is on{" "}
+            <OfficialLink href="https://www.mongodb.com/docs/manual/administration/install-community-linux/">
+              Install MongoDB Community on Linux
+            </OfficialLink>
+            . After that list file is in place:
+          </p>
+          <CodeBlock language="shell">{`# Ubuntu
+sudo apt-get install -y mongodb-org
+
+# RHEL
+sudo yum install -y mongodb-org
+
+sudo systemctl start mongod
+sudo systemctl enable mongod
+sudo systemctl status mongod`}</CodeBlock>
+          <p>
+            Those packages set the data directory in{" "}
+            <code>/etc/mongod.conf</code>:{" "}
+            <code>/var/lib/mongodb</code>{" "}on Debian and Ubuntu, and{" "}
+            <code>/var/lib/mongo</code>{" "}on RHEL. A downloaded{" "}
+            <code>.tgz</code>{" "}is the manual alternative. Extract it,
+            then copy or symlink <code>bin</code>{" "}into a directory
+            already on <code>PATH</code>, such as{" "}
+            <code>/usr/local/bin</code>:
+          </p>
+          <CodeBlock language="shell">{`tar -zxvf mongodb-*.tgz
+sudo cp /path/to/the/mongodb-directory/bin/* /usr/local/bin/
+mongod --version`}</CodeBlock>
         </Section>
 
         <Section
@@ -125,19 +164,29 @@ mkdir data`}</CodeBlock>
             process unless the installer registered a service.
           </p>
           <CodeBlock language="shell">{`cd ~
+mkdir data
+
 # Windows (path and version will differ)
 # C:\\Program Files\\mongodb-windows-x86_64-8.0.4\\bin\\mongod --dbpath data
 
 # macOS
-# /usr/local/mongodb-macos-aarch64-8.0.4/bin/mongod --dbpath data`}</CodeBlock>
+# /usr/local/mongodb-macos-aarch64-8.0.4/bin/mongod --dbpath data
+
+# Linux tarball, after bin is on PATH
+mongod --dbpath data`}</CodeBlock>
           <p>
             If you installed MongoDB on macOS in{" "}
-            <code>/usr/local</code>, the second command is the one you
+            <code>/usr/local</code>, the macOS command is the one you
             want. The version folder name changes with each release;
             copy the path you actually unzipped rather than the sample
-            numbers. Once <code>mongod</code>{" "}prints that it is
-            waiting for connections on port 27017, Compass and later
-            Mongoose can reach it.
+            numbers. On Linux the <code>mongodb-org</code>{" "}service
+            is already using its package data directory, so you do not
+            pass <code>--dbpath</code>{" "}unless you started a tarball
+            build by hand. Once <code>mongod</code>{" "}is waiting for
+            connections on port 27017, Compass and later Mongoose can
+            reach it at <code>mongodb://127.0.0.1:27017</code>. If
+            Connect fails, the service or that terminal is not
+            listening.
           </p>
         </Section>
       </Section>

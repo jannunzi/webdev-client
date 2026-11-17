@@ -13,7 +13,13 @@ const TONES = {
   red: RED,
 } as const;
 
-type Box = { name: string; lines: string[]; tone: keyof typeof TONES };
+type Box = {
+  name: string;
+  lines: string[];
+  tone: keyof typeof TONES;
+  /** Thicker stroke. The first line is the “new in this chapter” mark. */
+  emphasis?: boolean;
+};
 
 const HEADER_H = 48;
 const LINE_H = 22;
@@ -75,6 +81,7 @@ function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidt
         const tone: Tone = TONES[box.tone];
         const x = 36 + index * (boxWidth + gap);
         const h = heights[index]!;
+        const stroke = box.emphasis ? 6 : 3;
         return (
           <g key={`${box.name}-${index}`}>
             {index > 0 ? (
@@ -113,13 +120,13 @@ function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidt
               rx={RADIUS}
               fill={tone.fill}
               stroke={tone.stroke}
-              strokeWidth={3}
+              strokeWidth={stroke}
             />
             <path
               d={headerPath(x, top, boxWidth, HEADER_H)}
               fill={tone.header}
               stroke={tone.stroke}
-              strokeWidth={3}
+              strokeWidth={stroke}
             />
             <line
               x1={x}
@@ -127,7 +134,7 @@ function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidt
               x2={x + boxWidth}
               y2={top + HEADER_H}
               stroke={tone.stroke}
-              strokeWidth={3}
+              strokeWidth={stroke}
             />
             <text
               x={x + boxWidth / 2}
@@ -147,7 +154,8 @@ function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidt
                 y={top + HEADER_H + 20 + lineIndex * LINE_H}
                 fontFamily={MONO}
                 fontSize={14}
-                fill="#171717"
+                fontWeight={box.emphasis && lineIndex === 0 ? 700 : 400}
+                fill={box.emphasis && lineIndex === 0 ? tone.stroke : "#171717"}
               >
                 {line}
               </text>
@@ -160,6 +168,22 @@ function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidt
 }
 
 const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[] }> = {
+  "mongo-roadmap": {
+    title: "From the React UI to the database",
+    boxWidth: 220,
+    boxes: [
+      { name: "React UI", lines: ["Next.js client", "built in ch3–5"], tone: "blue" },
+      { name: "client.ts", lines: ["axios", "built in ch5"], tone: "blue" },
+      { name: "Routes", lines: ["Express", "built in ch5"], tone: "yellow" },
+      { name: "DAO", lines: ["in-memory arrays", "built in ch5"], tone: "yellow" },
+      {
+        name: "Database",
+        lines: ["new in ch6", "local MongoDB", "Atlas later"],
+        tone: "red",
+        emphasis: true,
+      },
+    ],
+  },
   "users-stack": {
     title: "Users from the page to MongoDB",
     boxWidth: 268,

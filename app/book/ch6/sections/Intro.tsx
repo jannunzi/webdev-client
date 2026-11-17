@@ -3,6 +3,7 @@ import SectionLink from "../../components/SectionLink";
 import ChapterLink from "../../components/ChapterLink";
 import OfficialLink from "../../components/OfficialLink";
 import LocalUrl from "../../components/LocalUrl";
+import { StackDiagram } from "@/app/slides/_components/diagrams/StackDiagrams";
 
 export default function Intro() {
   return (
@@ -165,8 +166,11 @@ export default function Intro() {
             Render
           </OfficialLink>{" "}
           service. <SectionLink to="6.4" />{" "}migrates courses,
-          modules, enrollments, and assignments.
+          modules, enrollments, and assignments. The first four tiers
+          below are already built. The database tier is the new piece:
+          a local MongoDB instance in this section, and Atlas later.
         </p>
+        <StackDiagram id="mongo-roadmap" />
       </section>
 
       <Section id="sec-6-1" title="6.1 Working with a Local MongoDB Instance">
