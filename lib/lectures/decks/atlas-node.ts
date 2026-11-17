@@ -26,20 +26,15 @@ export const ATLAS_NODE_SLIDES: LectureSlide[] = [
     ],
   },
   {
-    id: "network-intro",
+    id: "network",
     title: "Allow access from anywhere",
     kind: "demo",
     bullets: [
       "Atlas → Network Access → + ADD IP ADDRESS",
       "ALLOW ACCESS FROM ANYWHERE adds `0.0.0.0/0`",
-      "Free Render outbound IPs change. A laptop-only allow list will fail",
-      "Without this entry, Mongoose hangs even if the password is correct",
+      "Free Render outbound IPs change, so a laptop-only list fails",
+      "Without this entry, Mongoose hangs",
     ],
-  },
-  {
-    id: "network",
-    title: "Allow access from anywhere (code)",
-    kind: "demo",
     code: `0.0.0.0/0`,
     codeLanguage: "text",
     codeFile: "Atlas Network Access",

@@ -1372,18 +1372,18 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-courses-api"], 56);
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 12);
-    assert.equal(counts["mongoose"], 13);
+    assert.equal(counts["mongoose"], 12);
     assert.equal(counts["mongo-apis"], 16);
-    assert.equal(counts["mongo-users-crud"], 38);
+    assert.equal(counts["mongo-users-crud"], 36);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
-    assert.equal(counts["atlas-node"], 11);
-    assert.equal(counts["atlas-sessions"], 13);
+    assert.equal(counts["atlas-node"], 10);
+    assert.equal(counts["atlas-sessions"], 12);
     assert.equal(counts["ch6-check-understanding"], 7);
-    assert.equal(counts["kambaz-courses-db"], 36);
-    assert.equal(counts["kambaz-modules-db"], 29);
-    assert.equal(counts["kambaz-enrollments-db"], 25);
-    assert.equal(counts["youtube-api"], 11);
+    assert.equal(counts["kambaz-courses-db"], 34);
+    assert.equal(counts["kambaz-modules-db"], 28);
+    assert.equal(counts["kambaz-enrollments-db"], 23);
+    assert.equal(counts["youtube-api"], 9);
     assert.equal(counts["youtube-search"], 11);
     assert.equal(counts["youtube-details"], 23);
     assert.equal(counts["chatgpt-api"], 14);
@@ -4166,7 +4166,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 266);
+    assert.equal(intros, 257);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {

@@ -17,21 +17,12 @@ export const MONGOOSE_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing Mongoose",
-    kind: "content",
-    bullets: [
-      "Applications need `find`, `create`, `updateOne`, and `deleteOne`",
-      "Work on branch `a6` in both `webdev-client` and `webdev-server`",
-      "Set the connection URI in `webdev-server` and the server uses Mongoose",
-    ],
-  },
-  {
-    id: "install",
-    title: "npm install mongoose",
+    title: "Install Mongoose in webdev-server",
     kind: "demo",
     bullets: [
-      "From the Node project root — not the Next.js app",
-      "Schemas and models once, then CRUD on those models",
+      "Applications need `find`, `create`, `updateOne`, and `deleteOne`",
+      "Run this in `webdev-server` on branch `a6`, not the Next.js app",
+      "The connection URI stays in `webdev-server`",
     ],
     code: `cd webdev-server
 npm install mongoose`,

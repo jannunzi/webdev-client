@@ -72,20 +72,15 @@ export default schema;`,
     diagram: "modules-read",
   },
   {
-    id: "find-intro",
+    id: "find",
+    links: ["http://localhost:4000/api/courses/RS101/modules"],
     title: "Find modules by course id",
     kind: "demo",
     bullets: [
       "Collection: `model.find({ course: courseId })`",
-      "Embed would `findById` the course and return `course.modules`",
+      "An embed would return `course.modules` instead",
       "Same nested URL Chapter 5 already used",
     ],
-  },
-  {
-    id: "find",
-    links: ["http://localhost:4000/api/courses/RS101/modules"],
-    title: "Find modules by course id (code)",
-    kind: "demo",
     code: `function findModulesForCourse(courseId) {
   return model.find({ course: courseId });
 }`,
