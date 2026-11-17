@@ -1372,7 +1372,7 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-courses-api"], 56);
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 13);
-    assert.equal(counts["mongoose"], 12);
+    assert.equal(counts["mongoose"], 13);
     assert.equal(counts["mongo-apis"], 15);
     assert.equal(counts["mongo-users-crud"], 26);
     assert.equal(counts["atlas"], 9);
@@ -1955,7 +1955,7 @@ describe("lecture decks", () => {
       },
       "kambaz-account-rest": { "signin-ui": "kambaz-styled-signin" },
       "kambaz-courses-api": { client: "kambaz-styled-dashboard" },
-      mongoose: { env: "lab6-status", dao: "lab6-todos" },
+      mongoose: { env: "lab6-status" },
       "mongo-apis": {
         async: "kambaz-styled-signin",
         "people-table": "kambaz-styled-people",
