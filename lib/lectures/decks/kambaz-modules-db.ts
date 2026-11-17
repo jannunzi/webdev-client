@@ -11,6 +11,13 @@ export const KAMBAZ_MODULES_DB_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "modules-picture",
+    title: "Modules from the Page to Mongo",
+    kind: "demo",
+    bullets: ["Page, client, nested routes, DAO, then the modules collection"],
+    diagram: "modules-stack",
+  },
+  {
     id: "purpose",
     title: "Implementing Modules in MongoDB",
     kind: "content",
@@ -53,6 +60,13 @@ export default schema;`,
     codeHighlightLines: [6],
   },
   {
+    id: "read-path",
+    title: "GET a course's modules",
+    kind: "demo",
+    bullets: ["The page calls findModulesForCourse, then setModules"],
+    diagram: "modules-read",
+  },
+  {
     id: "find-intro",
     title: "Find modules by course id",
     kind: "demo",
@@ -82,38 +96,229 @@ app.get("/api/courses/:courseId/modules", findModulesForCourse);`,
     codeAddedLines: [[5, 10]],
   },
   {
-    id: "create",
-    title: "Create includes the course id",
+    id: "find-client",
+    title: "Fetching Modules for a Course",
     kind: "demo",
-    bullets: [
-      "Collection: uuid + `model.create`, including `course`",
-      "Embed: `$push: { modules: newModule }` on the parent course",
-    ],
-    code: `function createModule(module) {
-  const newModule = { ...module, _id: uuidv4() };
-  return model.create(newModule);
-}`,
+    code: `export const findModulesForCourse = async (
+  courseId: string,
+) => {
+  const { data } = await axios.get(
+    \`\${COURSES_API}/\${courseId}/modules\`,
+  );
+  return data;
+};`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Modules/dao.ts",
-    codeAddedLines: [[1, 4]],
+    codeFile: "app/(kambaz)/courses/client.ts",
+    codeAddedLines: [[1, 8]],
   },
   {
-    id: "delete-update",
-    title: "deleteOne and updateOne $set",
+    id: "find-ui",
+    title: "Modules Page Loads the Course",
     kind: "demo",
-    bullets: [
-      "Client keeps `DELETE /api/modules/:moduleId` — the FK is on the document",
-      "Embed would `$pull` / `course.modules.id(moduleId)` and `save()` the parent",
-    ],
+    code: `const setModules = useModulesStore(
+  (state) => state.setModules,
+);
+useEffect(() => {
+  const load = async () => {
+    setModules(
+      await client.findModulesForCourse(courseId),
+    );
+  };
+  load();
+}, [courseId]);`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/page.tsx",
+    codeHighlightLines: [[1, 12]],
+  },
+  {
+    id: "delete-path",
+    title: "DELETE /api/modules/:moduleId",
+    kind: "demo",
+    bullets: ["deleteOne by module id, then drop it from the store"],
+    diagram: "modules-delete",
+  },
+  {
+    id: "delete",
+    title: "deleteOne by module id",
+    kind: "demo",
     code: `function deleteModule(moduleId) {
   return model.deleteOne({ _id: moduleId });
 }
-function updateModule(moduleId, moduleUpdates) {
-  return model.updateOne({ _id: moduleId }, { $set: moduleUpdates });
-}`,
+const deleteModule = async (req, res) => {
+  const status = await dao.deleteModule(
+    req.params.moduleId,
+  );
+  res.send(status);
+};
+app.delete("/api/modules/:moduleId", deleteModule);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Modules/dao.ts",
-    codeAddedLines: [[1, 6]],
+    codeAddedLines: [[4, 11]],
+  },
+  {
+    id: "delete-client",
+    title: "Deleting a Module from the Client",
+    kind: "demo",
+    code: `export const deleteModule = async (
+  moduleId: string,
+) => {
+  const response = await axios.delete(
+    \`\${MODULES_API}/\${moduleId}\`,
+  );
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/courses/client.ts",
+    codeAddedLines: [[1, 8]],
+  },
+  {
+    id: "delete-ui",
+    title: "Remove Drops the Module",
+    kind: "demo",
+    code: `const deleteModule = useModulesStore(
+  (state) => state.deleteModule,
+);
+const onRemoveModule = async (moduleId: string) => {
+  await client.deleteModule(moduleId);
+  deleteModule(moduleId);
+};`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/page.tsx",
+    codeHighlightLines: [[4, 7]],
+  },
+  {
+    id: "update-path",
+    title: "PUT /api/modules/:moduleId",
+    kind: "demo",
+    bullets: ["$set the fields the editor sent"],
+    diagram: "modules-update",
+  },
+  {
+    id: "update",
+    title: "updateOne with $set",
+    kind: "demo",
+    code: `function updateModule(moduleId, moduleUpdates) {
+  return model.updateOne(
+    { _id: moduleId },
+    { $set: moduleUpdates },
+  );
+}
+const updateModule = async (req, res) => {
+  const status = await dao.updateModule(
+    req.params.moduleId,
+    req.body,
+  );
+  res.send(status);
+};
+app.put("/api/modules/:moduleId", updateModule);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Modules/dao.ts",
+    codeAddedLines: [[7, 15]],
+  },
+  {
+    id: "update-client",
+    title: "Updating a Module from the Client",
+    kind: "demo",
+    code: `export const updateModule = async (
+  module: { _id: string },
+) => {
+  const { data } = await axios.put(
+    \`\${MODULES_API}/\${module._id}\`,
+    module,
+  );
+  return data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/courses/client.ts",
+    codeAddedLines: [[1, 9]],
+  },
+  {
+    id: "update-ui",
+    title: "Save Writes the Module",
+    kind: "demo",
+    code: `const updateModule = useModulesStore(
+  (state) => state.updateModule,
+);
+const onUpdateModule = async (module) => {
+  const saved = await client.updateModule(module);
+  updateModule(saved);
+};`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/page.tsx",
+    codeHighlightLines: [[4, 7]],
+  },
+  {
+    id: "create-path",
+    title: "POST a module under the course",
+    kind: "demo",
+    bullets: ["The store appends the module the server returned"],
+    diagram: "modules-create",
+  },
+  {
+    id: "create",
+    title: "Create includes the course id",
+    kind: "demo",
+    code: `function createModule(module) {
+  const newModule = { ...module, _id: uuidv4() };
+  return model.create(newModule);
+}
+const createModuleForCourse = async (req, res) => {
+  const { courseId } = req.params;
+  const created = await dao.createModule({
+    ...req.body,
+    course: courseId,
+  });
+  res.json(created);
+};
+app.post(
+  "/api/courses/:courseId/modules",
+  createModuleForCourse,
+);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Modules/dao.ts",
+    codeAddedLines: [[5, 16]],
+  },
+  {
+    id: "create-client",
+    title: "Creating a Module from the Client",
+    kind: "demo",
+    code: `export const createModuleForCourse = async (
+  courseId: string,
+  module: unknown,
+) => {
+  const response = await axios.post(
+    \`\${COURSES_API}/\${courseId}/modules\`,
+    module,
+  );
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/courses/client.ts",
+    codeAddedLines: [[1, 10]],
+  },
+  {
+    id: "create-ui",
+    title: "Add Appends the New Module",
+    kind: "demo",
+    code: `const addModule = useModulesStore(
+  (state) => state.addModule,
+);
+const onAddModule = async () => {
+  const created = await client.createModuleForCourse(
+    courseId,
+    { name: moduleName },
+  );
+  addModule(created);
+};`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/modules/page.tsx",
+    codeHighlightLines: [[4, 10]],
+  },
+  {
+    id: "modules-live",
+    title: "Modules Writes Documents",
+    kind: "demo",
+    bullets: ["Add, rename, and delete a module, then confirm Compass"],
     embed: "kambaz-styled-modules",
   },
   {

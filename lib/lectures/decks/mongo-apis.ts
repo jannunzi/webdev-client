@@ -11,6 +11,20 @@ export const MONGO_APIS_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "users-picture",
+    title: "Users from the Page to Mongo",
+    kind: "demo",
+    bullets: ["Page, client, routes, DAO, then the users collection"],
+    diagram: "users-stack",
+  },
+  {
+    id: "read-all-path",
+    title: "GET /api/users",
+    kind: "demo",
+    bullets: ["Users calls findAllUsers, then setUsers"],
+    diagram: "users-read-all",
+  },
+  {
     id: "purpose",
     title: "Implementing MongoDB APIs",
     kind: "content",

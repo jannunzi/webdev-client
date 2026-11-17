@@ -183,6 +183,53 @@ const findCoursesForEnrolledUser = async (req, res) => {
   const courses = await dao.findCoursesForEnrolledUser(userId);
   res.json(courses);
 };`}</CodeBlock>
+          <p>
+            Read one course the same way. <code>findById</code>{" "}is
+            the one-document lookup. The Dashboard still loads the
+            list with the Chapter 5 client; the server is the source
+            of truth and <code>setCourses</code>{" "}replaces the
+            Zustand cache.
+          </p>
+          <CodeBlock
+            language="ts"
+            name="findCourseById"
+            file="webdev-server/Kambaz/Courses/dao.ts"
+          >{`function findCourseById(courseId) {
+  return model.findById(courseId);
+}`}</CodeBlock>
+          <CodeBlock
+            language="ts"
+            name="findCourseById route"
+            file="webdev-server/Kambaz/Courses/routes.ts"
+          >{`const findCourseById = async (req, res) => {
+  const course = await dao.findCourseById(req.params.courseId);
+  res.json(course);
+};
+app.get("/api/courses/:courseId", findCourseById);`}</CodeBlock>
+          <CodeBlock
+            language="ts"
+            name="courses mongo client"
+            file="app/(kambaz)/courses/client.ts"
+          >{`export const fetchAllCourses = async () => {
+  const { data } = await axios.get(COURSES_API);
+  return data;
+};
+export const findCourseById = async (courseId: string) => {
+  const { data } = await axios.get(\`\${COURSES_API}/\${courseId}\`);
+  return data;
+};`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="courses cache load"
+            file="app/(kambaz)/dashboard/page.tsx"
+          >{`const setCourses = useCoursesStore((state) => state.setCourses);
+...
+useEffect(() => {
+  const load = async () => {
+    setCourses(await client.fetchAllCourses());
+  };
+  load();
+}, []);`}</CodeBlock>
         </Section>
 
         <Section
@@ -232,6 +279,34 @@ const findCoursesForEnrolledUser = async (req, res) => {
   res.json(newCourse);
 };
 app.post("/api/courses", createCourse);`}</CodeBlock>
+          <CodeBlock
+            language="ts"
+            name="createCourse client mongo"
+            file="app/(kambaz)/courses/client.ts"
+          >{`export const createCourse = async (course: unknown) => {
+  const { data } = await axiosWithCredentials.post(COURSES_API, course);
+  return data;
+};`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="onAddCourse mongo"
+            file="app/(kambaz)/dashboard/page.tsx"
+          >{`const addCourse = useCoursesStore((state) => state.addCourse);
+...
+const onAddCourse = async () => {
+  const newCourse = await client.createCourse(course);
+  addCourse(newCourse);
+};`}</CodeBlock>
+          <CodeBlock
+            language="ts"
+            name="courses store mongo"
+            file="app/(kambaz)/store/coursesStore.ts"
+          >{`addCourse: (course) =>
+  set((state) => ({
+    courses: [...state.courses, course],
+  })),
+...
+setCourses: (courses) => set({ courses }),`}</CodeBlock>
         </Section>
 
         <Section
@@ -275,6 +350,24 @@ app.post("/api/courses", createCourse);`}</CodeBlock>
   res.send(status);
 };
 app.delete("/api/courses/:courseId", deleteCourse);`}</CodeBlock>
+          <CodeBlock
+            language="ts"
+            name="deleteCourse client mongo"
+            file="app/(kambaz)/courses/client.ts"
+          >{`export const deleteCourse = async (courseId: string) => {
+  const { data } = await axios.delete(\`\${COURSES_API}/\${courseId}\`);
+  return data;
+};`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="onDeleteCourse mongo"
+            file="app/(kambaz)/dashboard/page.tsx"
+          >{`const deleteCourse = useCoursesStore((state) => state.deleteCourse);
+...
+const onDeleteCourse = async (courseId: string) => {
+  await client.deleteCourse(courseId);
+  deleteCourse(courseId);
+};`}</CodeBlock>
         </Section>
 
         <Section
@@ -322,6 +415,27 @@ app.delete("/api/courses/:courseId", deleteCourse);`}</CodeBlock>
   res.send(status);
 };
 app.put("/api/courses/:courseId", updateCourse);`}</CodeBlock>
+          <CodeBlock
+            language="ts"
+            name="updateCourse client mongo"
+            file="app/(kambaz)/courses/client.ts"
+          >{`export const updateCourse = async (course: { _id: string }) => {
+  const { data } = await axios.put(
+    \`\${COURSES_API}/\${course._id}\`,
+    course,
+  );
+  return data;
+};`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="onUpdateCourse mongo"
+            file="app/(kambaz)/dashboard/page.tsx"
+          >{`const updateCourse = useCoursesStore((state) => state.updateCourse);
+...
+const onUpdateCourse = async () => {
+  const saved = await client.updateCourse(course);
+  updateCourse(saved);
+};`}</CodeBlock>
         </Section>
       </Section>
 
@@ -564,6 +678,26 @@ export default schema;`}</CodeBlock>
   res.json(modules);
 };
 app.get("/api/courses/:courseId/modules", findModulesForCourse);`}</CodeBlock>
+          <CodeBlock
+            language="ts"
+            name="findModules client mongo"
+            file="app/(kambaz)/courses/client.ts"
+          >{`export const findModulesForCourse = async (courseId: string) => {
+  const { data } = await axios.get(\`\${COURSES_API}/\${courseId}/modules\`);
+  return data;
+};`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="modules cache load"
+            file="app/(kambaz)/courses/[cid]/modules/page.tsx"
+          >{`const setModules = useModulesStore((state) => state.setModules);
+...
+useEffect(() => {
+  const load = async () => {
+    setModules(await client.findModulesForCourse(courseId));
+  };
+  load();
+}, [courseId]);`}</CodeBlock>
         </Section>
 
         <Section
@@ -613,6 +747,45 @@ app.get("/api/courses/:courseId/modules", findModulesForCourse);`}</CodeBlock>
             the course&apos;s <code>modules</code>{" "}array if you
             embedded.
           </p>
+          <CodeBlock
+            language="ts"
+            name="createModule route mongo"
+            file="webdev-server/Kambaz/Modules/routes.ts"
+          >{`const createModuleForCourse = async (req, res) => {
+  const { courseId } = req.params;
+  const created = await dao.createModule({
+    ...req.body,
+    course: courseId,
+  });
+  res.json(created);
+};
+app.post("/api/courses/:courseId/modules", createModuleForCourse);`}</CodeBlock>
+          <CodeBlock
+            language="ts"
+            name="createModule client mongo"
+            file="app/(kambaz)/courses/client.ts"
+          >{`export const createModuleForCourse = async (
+  courseId: string,
+  module: unknown,
+) => {
+  const response = await axios.post(
+    \`\${COURSES_API}/\${courseId}/modules\`,
+    module,
+  );
+  return response.data;
+};`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="onAddModule mongo"
+            file="app/(kambaz)/courses/[cid]/modules/page.tsx"
+          >{`const addModule = useModulesStore((state) => state.addModule);
+...
+const onAddModule = async () => {
+  const created = await client.createModuleForCourse(courseId, {
+    name: moduleName,
+  });
+  addModule(created);
+};`}</CodeBlock>
         </Section>
 
         <Section
@@ -656,6 +829,35 @@ app.get("/api/courses/:courseId/modules", findModulesForCourse);`}</CodeBlock>
             and pass <code>cid</code>{" "}from the Modules page into{" "}
             <code>onRemoveModule</code>.
           </p>
+          <CodeBlock
+            language="ts"
+            name="deleteModule route mongo"
+            file="webdev-server/Kambaz/Modules/routes.ts"
+          >{`const deleteModule = async (req, res) => {
+  const status = await dao.deleteModule(req.params.moduleId);
+  res.send(status);
+};
+app.delete("/api/modules/:moduleId", deleteModule);`}</CodeBlock>
+          <CodeBlock
+            language="ts"
+            name="deleteModule client mongo"
+            file="app/(kambaz)/courses/client.ts"
+          >{`export const deleteModule = async (moduleId: string) => {
+  const response = await axios.delete(
+    \`\${MODULES_API}/\${moduleId}\`,
+  );
+  return response.data;
+};`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="onRemoveModule mongo"
+            file="app/(kambaz)/courses/[cid]/modules/page.tsx"
+          >{`const deleteModule = useModulesStore((state) => state.deleteModule);
+...
+const onRemoveModule = async (moduleId: string) => {
+  await client.deleteModule(moduleId);
+  deleteModule(moduleId);
+};`}</CodeBlock>
         </Section>
 
         <Section
@@ -700,6 +902,41 @@ app.get("/api/courses/:courseId/modules", findModulesForCourse);`}</CodeBlock>
             Update / Delete buttons write documents instead of array
             elements.
           </p>
+          <CodeBlock
+            language="ts"
+            name="updateModule route mongo"
+            file="webdev-server/Kambaz/Modules/routes.ts"
+          >{`const updateModule = async (req, res) => {
+  const status = await dao.updateModule(
+    req.params.moduleId,
+    req.body,
+  );
+  res.send(status);
+};
+app.put("/api/modules/:moduleId", updateModule);`}</CodeBlock>
+          <CodeBlock
+            language="ts"
+            name="updateModule client mongo"
+            file="app/(kambaz)/courses/client.ts"
+          >{`export const updateModule = async (
+  module: { _id: string },
+) => {
+  const { data } = await axios.put(
+    \`\${MODULES_API}/\${module._id}\`,
+    module,
+  );
+  return data;
+};`}</CodeBlock>
+          <CodeBlock
+            language="tsx"
+            name="onUpdateModule mongo"
+            file="app/(kambaz)/courses/[cid]/modules/page.tsx"
+          >{`const updateModule = useModulesStore((state) => state.updateModule);
+...
+const onUpdateModule = async (module) => {
+  const saved = await client.updateModule(module);
+  updateModule(saved);
+};`}</CodeBlock>
           <CodeBlock
             language="tsx"
             name="Dashboard"

@@ -1373,16 +1373,16 @@ describe("lecture decks", () => {
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 13);
     assert.equal(counts["mongoose"], 12);
-    assert.equal(counts["mongo-apis"], 13);
-    assert.equal(counts["mongo-users-crud"], 14);
+    assert.equal(counts["mongo-apis"], 15);
+    assert.equal(counts["mongo-users-crud"], 26);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
     assert.equal(counts["atlas-node"], 11);
     assert.equal(counts["atlas-sessions"], 13);
     assert.equal(counts["ch6-check-understanding"], 7);
-    assert.equal(counts["kambaz-courses-db"], 14);
-    assert.equal(counts["kambaz-modules-db"], 10);
-    assert.equal(counts["kambaz-enrollments-db"], 16);
+    assert.equal(counts["kambaz-courses-db"], 32);
+    assert.equal(counts["kambaz-modules-db"], 25);
+    assert.equal(counts["kambaz-enrollments-db"], 20);
     assert.equal(counts["youtube-api"], 11);
     assert.equal(counts["youtube-search"], 11);
     assert.equal(counts["youtube-details"], 23);
@@ -1960,12 +1960,12 @@ describe("lecture decks", () => {
         async: "kambaz-styled-signin",
         "people-table": "kambaz-styled-people",
       },
-      "mongo-users-crud": { create: "lab6-users" },
+      "mongo-users-crud": { "users-live": "lab6-users" },
       "atlas-compass": { import: "kambaz-styled-dashboard" },
       "atlas-node": { env: "lab6-status" },
       "atlas-sessions": { client: "kambaz-styled-signin" },
-      "kambaz-courses-db": { "delete-update": "kambaz-styled-dashboard" },
-      "kambaz-modules-db": { "delete-update": "kambaz-styled-modules" },
+      "kambaz-courses-db": { dashboard: "kambaz-styled-dashboard" },
+      "kambaz-modules-db": { "modules-live": "kambaz-styled-modules" },
       "kambaz-enrollments-db": {
         people: "kambaz-styled-people",
         assignments: "kambaz-styled-assignments",
@@ -3650,6 +3650,35 @@ describe("lecture decks", () => {
         "courses-architecture": "courses-dao",
         "modules-architecture": "modules-dao",
         "assignments-architecture": "assignments-dao",
+      },
+      "mongo-apis": {
+        "users-picture": "users-stack",
+        "read-all-path": "users-read-all",
+      },
+      "mongo-users-crud": {
+        "read-one-path": "users-read-one",
+        "delete-path": "users-delete",
+        "update-path": "users-update",
+        "create-path": "users-create",
+      },
+      "kambaz-courses-db": {
+        "courses-picture": "courses-stack",
+        "read-all-path": "courses-read-all",
+        "read-one-path": "courses-read-one",
+        "delete-path": "courses-delete",
+        "update-path": "courses-update",
+        "create-path": "courses-create",
+      },
+      "kambaz-modules-db": {
+        "modules-picture": "modules-stack",
+        "read-path": "modules-read",
+        "create-path": "modules-create",
+        "delete-path": "modules-delete",
+        "update-path": "modules-update",
+      },
+      "kambaz-enrollments-db": {
+        "enroll-picture": "enroll-stack",
+        "read-path": "enroll-read",
       },
       "kambaz-sessions": {
         "one-user": "session-one-user",

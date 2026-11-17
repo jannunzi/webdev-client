@@ -42,8 +42,10 @@ import XaiKeyMock from "./XaiKeyMock";
 import YoutubeEnableApiMock from "./YoutubeEnableApiMock";
 import YoutubeSaveFlow from "./YoutubeSaveFlow";
 import YoutubeSearchFlow from "./YoutubeSearchFlow";
+import { isStackDiagram, StackDiagram } from "./StackDiagrams";
 
 export default function LectureDiagram({ id }: { id: LectureDiagramId }) {
+  if (isStackDiagram(id)) return <StackDiagram id={id} />;
   switch (id) {
     case "network-of-networks":
       return <NetworkOfNetworksDiagram />;
