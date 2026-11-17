@@ -146,12 +146,11 @@ export default model;`,
   },
   {
     id: "dao",
-    title: "DAO wraps generic model verbs",
+    title: "DAO Finders Wrap Model Queries",
     kind: "demo",
     bullets: [
       "Same function names as Chapter 5 — now they return promises",
-      "`createUser` assigns `uuidv4()` so enrollments stay string ids",
-      "`updateUser` uses `$set` so omitted fields stay as they were",
+      "`find`, `findById`, and `findOne` query the users collection",
     ],
     code: `import model from "./model";
 import { v4 as uuidv4 } from "uuid";
@@ -162,6 +161,20 @@ export default function UsersDao() {
     model.findOne({ username: username });
   const findUserByCredentials = (username, password) =>
     model.findOne({ username, password });
+  ...`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
+    codeHighlightLines: [[4, 9]],
+  },
+  {
+    id: "dao-writes",
+    title: "DAO Writes Create, Update, and Delete",
+    kind: "demo",
+    bullets: [
+      "`createUser` assigns `uuidv4()` so enrollments stay string ids",
+      "`updateUser` uses `$set` so omitted fields stay as they were",
+    ],
+    code: `  ...
   const updateUser = (userId, user) =>
     model.updateOne({ _id: userId }, { $set: user });
   const deleteUser = (userId) => model.deleteOne({ _id: userId });
@@ -176,8 +189,7 @@ export default function UsersDao() {
 }`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/dao.ts",
-    codeHighlightLines: [4, [10, 11], [13, 16]],
-    embed: "lab6-todos",
+    codeHighlightLines: [[2, 3], 4, [5, 8]],
   },
   {
     id: "recap",

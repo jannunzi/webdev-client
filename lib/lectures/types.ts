@@ -696,7 +696,6 @@ export const LECTURE_EMBED_IDS = [
   "lab5-objects-async",
   "lab5-arrays-async",
   "lab6-status",
-  "lab6-todos",
   "lab6-users",
   "youtube-search",
   "youtube-details",
