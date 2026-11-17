@@ -92,6 +92,13 @@ export const findUsersByPartialName = async (name: string) => {
     codeAddedLines: [[1, 8]],
   },
   {
+    id: "read-one-path",
+    title: "GET /api/users/:userId",
+    kind: "demo",
+    bullets: ["findById loads the document Details shows"],
+    diagram: "users-read-one",
+  },
+  {
     id: "by-id",
     links: ["http://localhost:4000/api/users/123"],
     title: "findById loads one document",
@@ -128,6 +135,29 @@ app.get("/api/users/:userId", findUserById);`,
     codeAddedLines: [[1, 4]],
   },
   {
+    id: "details-ui",
+    title: "Details Loads One User",
+    kind: "demo",
+    code: `const fetchUser = async () => {
+  if (!uid) return;
+  const user = await client.findUserById(uid);
+  setUser(user);
+};
+useEffect(() => {
+  fetchUser();
+}, [uid]);`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/Details.tsx",
+    codeHighlightLines: [[1, 8]],
+  },
+  {
+    id: "delete-path",
+    title: "DELETE /api/users/:userId",
+    kind: "demo",
+    bullets: ["Details deletes, then the list refreshes"],
+    diagram: "users-delete",
+  },
+  {
     id: "delete",
     title: "DELETE by primary key",
     kind: "demo",
@@ -143,6 +173,37 @@ app.delete("/api/users/:userId", async (req, res) => {
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/dao.ts",
     codeAddedLines: [[1, 5]],
+  },
+  {
+    id: "delete-client",
+    title: "Deleting a User from the Client",
+    kind: "demo",
+    code: `export const deleteUser = async (userId: string) => {
+  const response = await axios.delete(\`\${USERS_API}/\${userId}\`);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/account/client.ts",
+    codeAddedLines: [[1, 4]],
+  },
+  {
+    id: "delete-ui",
+    title: "Delete Removes the Document",
+    kind: "demo",
+    code: `const deleteUser = async (uid: string) => {
+  await client.deleteUser(uid);
+  onClose();
+};`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/Details.tsx",
+    codeHighlightLines: [[1, 4]],
+  },
+  {
+    id: "update-path",
+    title: "PUT /api/users/:userId",
+    kind: "demo",
+    bullets: ["$set keeps fields the editor did not send"],
+    diagram: "users-update",
   },
   {
     id: "update-intro",
@@ -176,6 +237,44 @@ app.put("/api/users/:userId", updateUser);`,
     codeHighlightLines: [2, [8, 10]],
   },
   {
+    id: "update-client",
+    title: "Updating a User from the Client",
+    kind: "demo",
+    code: `export const updateUser = async (user: any) => {
+  const response = await axiosWithCredentials.put(
+    \`\${USERS_API}/\${user._id}\`,
+    user,
+  );
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/account/client.ts",
+    codeAddedLines: [[1, 7]],
+  },
+  {
+    id: "update-ui",
+    title: "Save Writes the User",
+    kind: "demo",
+    code: `const saveUser = async () => {
+  const [firstName, lastName] = name.split(" ");
+  const updatedUser = { ...user, firstName, lastName };
+  await client.updateUser(updatedUser);
+  setUser(updatedUser);
+  setEditing(false);
+  onClose();
+};`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/Details.tsx",
+    codeHighlightLines: [[1, 8]],
+  },
+  {
+    id: "create-path",
+    title: "POST /api/users",
+    kind: "demo",
+    bullets: ["The new document is the one the server returned"],
+    diagram: "users-create",
+  },
+  {
     id: "create",
     title: "POST assigns a fresh uuid",
     kind: "demo",
@@ -195,6 +294,47 @@ app.post("/api/users", createUser);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeAddedLines: [[5, 9]],
+  },
+  {
+    id: "create-client",
+    title: "Creating a User from the Client",
+    kind: "demo",
+    code: `export const createUser = async (user: any) => {
+  const response = await axios.post(
+    \`\${USERS_API}\`,
+    user,
+  );
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/account/client.ts",
+    codeAddedLines: [[1, 7]],
+  },
+  {
+    id: "create-ui",
+    title: "Plus User Appends the Document",
+    kind: "demo",
+    code: `const createUser = async () => {
+  const user = await client.createUser({
+    firstName: "New",
+    lastName: \`User \${users.length + 1}\`,
+    username: \`newuser\${Date.now()}\`,
+    password: "password123",
+    email: \`email\${users.length + 1}@neu.edu\`,
+    section: "S101",
+    role: "STUDENT",
+  });
+  setUsers([...users, user]);
+};`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/account/users/page.tsx",
+    codeHighlightLines: [[1, 12]],
+  },
+  {
+    id: "users-live",
+    title: "Users Screen Writes Documents",
+    kind: "demo",
+    bullets: ["Filter, open, edit, delete, then create"],
     embed: "lab6-users",
   },
   {

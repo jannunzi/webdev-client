@@ -11,6 +11,20 @@ export const KAMBAZ_ENROLLMENTS_DB_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "enroll-picture",
+    title: "Enrollments from People to Mongo",
+    kind: "demo",
+    bullets: ["People, client, routes, DAO, then the enrollments collection"],
+    diagram: "enroll-stack",
+  },
+  {
+    id: "read-path",
+    title: "GET enrolled courses",
+    kind: "demo",
+    bullets: ["populate turns the course ref into the course document"],
+    diagram: "enroll-read",
+  },
+  {
     id: "purpose",
     title: "Implementing Enrollments in MongoDB",
     kind: "content",
@@ -126,6 +140,68 @@ app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Enrollments/dao.ts",
     codeHighlightLines: [[11, 12]],
+  },
+  {
+    id: "enroll-routes",
+    title: "Enroll and Unenroll Routes",
+    kind: "demo",
+    code: `const enrollUserInCourse = async (req, res) => {
+  let { uid, cid } = req.params;
+  if (uid === "current") {
+    uid = req.session["currentUser"]._id;
+  }
+  const status = await enrollmentsDao
+    .enrollUserInCourse(uid, cid);
+  res.send(status);
+};
+const unenrollUserFromCourse = async (req, res) => {
+  let { uid, cid } = req.params;
+  if (uid === "current") {
+    uid = req.session["currentUser"]._id;
+  }
+  const status = await enrollmentsDao
+    .unenrollUserFromCourse(uid, cid);
+  res.send(status);
+};
+app.post(
+  "/api/users/:uid/courses/:cid",
+  enrollUserInCourse,
+);
+app.delete(
+  "/api/users/:uid/courses/:cid",
+  unenrollUserFromCourse,
+);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/routes.ts",
+    codeAddedLines: [[1, 26]],
+  },
+  {
+    id: "enroll-client",
+    title: "Enroll and Unenroll from the Client",
+    kind: "demo",
+    code: `export const enrollIntoCourse = async (
+  userId: string,
+  courseId: string,
+) => {
+  const response =
+    await axiosWithCredentials.post(
+      \`\${USERS_API}/\${userId}/courses/\${courseId}\`,
+    );
+  return response.data;
+};
+export const unenrollFromCourse = async (
+  userId: string,
+  courseId: string,
+) => {
+  const response =
+    await axiosWithCredentials.delete(
+      \`\${USERS_API}/\${userId}/courses/\${courseId}\`,
+    );
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/courses/client.ts",
+    codeAddedLines: [[1, 20]],
   },
   {
     id: "people",
