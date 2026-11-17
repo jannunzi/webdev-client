@@ -128,17 +128,17 @@ export default userSchema;`,
     title: "One compiled UserModel",
     kind: "demo",
     bullets: [
-      "`\"UserModel\"` is the name other schemas `ref` — enrollments later",
-      "You do not instantiate it. Import and call `model.find()`",
+      "The model is the interface to a collection: `find`, `findById`, `create`, `updateOne`, `deleteOne`",
+      "The schema describes a user. The model reads and writes `users`",
+      "Those functions are generic for any schema. Mongoose is an ODM, like an ORM",
     ],
     code: `import mongoose from "mongoose";
 import schema from "./schema";
-const model = mongoose.models.UserModel ||
-  mongoose.model("UserModel", schema);
+const model = mongoose.model("UserModel", schema);
 export default model;`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/model.ts",
-    codeAddedLines: [[3, 4]],
+    codeHighlightLines: [3],
   },
   {
     id: "dao",

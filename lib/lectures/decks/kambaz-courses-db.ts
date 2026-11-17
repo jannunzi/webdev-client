@@ -61,16 +61,15 @@ export default courseSchema;`,
     title: "CourseModel from the schema",
     kind: "demo",
     bullets: [
-      "Same pattern as `UserModel` — one compiled model per process",
+      "Same call as `UserModel`: `mongoose.model` from the schema",
     ],
     code: `import mongoose from "mongoose";
 import schema from "./schema";
-const model = mongoose.models.CourseModel ||
-  mongoose.model("CourseModel", schema);
+const model = mongoose.model("CourseModel", schema);
 export default model;`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Courses/model.ts",
-    codeAddedLines: [[3, 4]],
+    codeHighlightLines: [3],
   },
   {
     id: "read-all-path",
