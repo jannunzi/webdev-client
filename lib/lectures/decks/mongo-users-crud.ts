@@ -87,12 +87,8 @@ const findUsersByPartialName = (partialName) => {
   },
   {
     id: "filter-ui",
-    title: "Role select and name input",
+    title: "Filtering Users from the Client",
     kind: "demo",
-    bullets: [
-      "All Roles clears the filter and calls `fetchUsers` again",
-      "Style the select with Tailwind: a bordered control about a quarter of the width",
-    ],
     code: `export const findUsersByRole = async (role: string) => {
   const response = await axios.get(\`\${USERS_API}?role=\${role}\`);
   return response.data;
@@ -104,6 +100,71 @@ export const findUsersByPartialName = async (name: string) => {
     codeLanguage: "ts",
     codeFile: "app/(kambaz)/account/client.ts",
     codeAddedLines: [[1, 8]],
+  },
+  {
+    id: "filter-role",
+    title: "Role select filters the users",
+    kind: "demo",
+    code: `const [role, setRole] = useState("");
+const filterUsersByRole = async (role: string) => {
+  setRole(role);
+  if (role) {
+    const users = await client.findUsersByRole(role);
+    setUsers(users);
+  } else {
+    fetchUsers();
+  }
+};
+// in the JSX:
+<select
+  value={role}
+  onChange={(e) => filterUsersByRole(e.target.value)}
+  className="wd-select-role mb-2 w-1/4 rounded border border-neutral-300 px-2 py-1"
+>
+  <option value="">All Roles</option>
+  <option value="STUDENT">Students</option>
+  <option value="TA">Assistants</option>
+  <option value="FACULTY">Faculty</option>
+  <option value="ADMIN">Administrators</option>
+</select>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/account/users/page.tsx",
+    codeHighlightLines: [[2, 9], 14],
+  },
+  {
+    id: "filter-name",
+    title: "Name input filters the users",
+    kind: "demo",
+    code: `const [name, setName] = useState("");
+const filterUsersByName = async (name: string) => {
+  setName(name);
+  if (name) {
+    const users = await client.findUsersByPartialName(name);
+    setUsers(users);
+  } else {
+    fetchUsers();
+  }
+};
+// in the JSX:
+<input
+  className="wd-filter-by-name me-2 mb-2 w-1/4 rounded border border-neutral-300 px-2 py-1"
+  placeholder="Search people"
+  value={name}
+  onChange={(e) => filterUsersByName(e.target.value)}
+/>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/account/users/page.tsx",
+    codeHighlightLines: [[2, 9], 16],
+  },
+  {
+    id: "filter-live",
+    title: "Filter by Role or Name",
+    kind: "demo",
+    bullets: [
+      "Students shows only STUDENT. All Roles loads everyone",
+      "Search people matches first or last name",
+    ],
+    embed: "lab6-users",
   },
   {
     id: "read-one-path",
@@ -121,15 +182,24 @@ export const findUsersByPartialName = async (name: string) => {
       "Convenience for `findOne({ _id: userId })`",
       "Confirm in the browser: `/api/users/` plus an `_id` from Compass",
     ],
-    code: `const findUserById = (userId) => model.findById(userId);
-const findUserById = async (req, res) => {
+    code: `const findUserById = (userId) => model.findById(userId);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
+    codeAddedLines: [1],
+  },
+  {
+    id: "by-id-route",
+    links: ["http://localhost:4000/api/users/123"],
+    title: "GET one user route",
+    kind: "demo",
+    code: `const findUserById = async (req, res) => {
   const user = await dao.findUserById(req.params.userId);
   res.json(user);
 };
 app.get("/api/users/:userId", findUserById);`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Users/dao.ts",
-    codeAddedLines: [[2, 6]],
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
+    codeAddedLines: [[1, 5]],
   },
   {
     id: "details",
@@ -165,6 +235,16 @@ useEffect(() => {
     codeHighlightLines: [[1, 8]],
   },
   {
+    id: "read-one-live",
+    title: "Open One User",
+    kind: "demo",
+    bullets: [
+      "Click a name. Details loads that one document",
+      "The panel shows the role and the login id",
+    ],
+    embed: "lab6-users",
+  },
+  {
     id: "delete-path",
     title: "DELETE /api/users/:userId",
     kind: "demo",
@@ -179,14 +259,22 @@ useEffect(() => {
       "`findByIdAndDelete` or `deleteOne({ _id })` — same result",
       "Details: red Delete, then `onClose`. Cancel leaves Compass unchanged",
     ],
-    code: `const deleteUser = (userId) => model.findByIdAndDelete(userId);
-app.delete("/api/users/:userId", async (req, res) => {
+    code: `const deleteUser = (userId) => model.findByIdAndDelete(userId);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
+    codeAddedLines: [1],
+  },
+  {
+    id: "delete-route",
+    title: "DELETE user route",
+    kind: "demo",
+    code: `app.delete("/api/users/:userId", async (req, res) => {
   const status = await dao.deleteUser(req.params.userId);
   res.json(status);
 });`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Users/dao.ts",
-    codeAddedLines: [[1, 5]],
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
+    codeAddedLines: [[1, 4]],
   },
   {
     id: "delete-client",
@@ -213,6 +301,16 @@ app.delete("/api/users/:userId", async (req, res) => {
     codeHighlightLines: [[1, 4]],
   },
   {
+    id: "delete-live",
+    title: "Delete Removes the Row",
+    kind: "demo",
+    bullets: [
+      "Delete drops the document and closes Details",
+      "That name leaves the table",
+    ],
+    embed: "lab6-users",
+  },
+  {
     id: "update-path",
     title: "PUT /api/users/:userId",
     kind: "demo",
@@ -230,12 +328,19 @@ app.delete("/api/users/:userId", async (req, res) => {
   },
   {
     id: "update",
-    title: "$set, then refresh the session (code)",
+    title: "$set keeps the other fields",
     kind: "demo",
     code: `const updateUser = (userId, user) =>
-  model.updateOne({ _id: userId }, { $set: user });
-
-const updateUser = async (req, res) => {
+  model.updateOne({ _id: userId }, { $set: user });`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
+    codeHighlightLines: [[1, 2]],
+  },
+  {
+    id: "update-route",
+    title: "PUT refreshes the session",
+    kind: "demo",
+    code: `const updateUser = async (req, res) => {
   const { userId } = req.params;
   const userUpdates = req.body;
   await dao.updateUser(userId, userUpdates);
@@ -248,7 +353,7 @@ const updateUser = async (req, res) => {
 app.put("/api/users/:userId", updateUser);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/routes.ts",
-    codeHighlightLines: [2, [8, 10]],
+    codeHighlightLines: [[5, 8]],
   },
   {
     id: "update-client",
@@ -282,6 +387,16 @@ app.put("/api/users/:userId", updateUser);`,
     codeHighlightLines: [[1, 8]],
   },
   {
+    id: "update-live",
+    title: "Save Writes the Name",
+    kind: "demo",
+    bullets: [
+      "Edit the name, then press Enter or Save",
+      "The table shows the new name",
+    ],
+    embed: "lab6-users",
+  },
+  {
     id: "create-path",
     title: "POST /api/users",
     kind: "demo",
@@ -299,15 +414,23 @@ app.put("/api/users/:userId", updateUser);`,
     code: `const createUser = (user) => {
   const newUser = { ...user, _id: uuidv4() };
   return model.create(newUser);
-};
-const createUser = async (req, res) => {
+};`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
+    codeAddedLines: [[1, 4]],
+  },
+  {
+    id: "create-route",
+    title: "POST user route",
+    kind: "demo",
+    code: `const createUser = async (req, res) => {
   const user = await dao.createUser(req.body);
   res.json(user);
 };
 app.post("/api/users", createUser);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/routes.ts",
-    codeAddedLines: [[5, 9]],
+    codeAddedLines: [[1, 5]],
   },
   {
     id: "create-client",
@@ -346,9 +469,12 @@ app.post("/api/users", createUser);`,
   },
   {
     id: "users-live",
-    title: "Users Screen Writes Documents",
+    title: "Plus User Adds a Document",
     kind: "demo",
-    bullets: ["Filter, open, edit, delete, then create"],
+    bullets: [
+      "+ Users inserts a New User",
+      "The new row is the document the server returned",
+    ],
     embed: "lab6-users",
   },
   {

@@ -65,8 +65,8 @@ function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidt
   const width = 36 + boxes.length * boxWidth + (boxes.length - 1) * gap + 36;
   const height = 24 + Math.max(...heights) + 20;
   const top = 20;
-  const requestY = top + 16;
-  const responseY = top + 36;
+  const requestY = top + HEADER_H + 10;
+  const responseY = top + HEADER_H + 32;
 
   return (
     <svg role="img" viewBox={`0 0 ${width} ${height}`} aria-label={title}>

@@ -107,9 +107,16 @@ export default enrollmentSchema;`,
     kind: "demo",
     code: `function unenrollAllUsersFromCourse(courseId) {
   return model.deleteMany({ course: courseId });
-}
-
-const deleteCourse = async (req, res) => {
+}`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Enrollments/dao.ts",
+    codeAddedLines: [[1, 3]],
+  },
+  {
+    id: "delete-course-route",
+    title: "DELETE course drops the joins",
+    kind: "demo",
+    code: `const deleteCourse = async (req, res) => {
   const { courseId } = req.params;
   await enrollmentsDao.unenrollAllUsersFromCourse(courseId);
   const status = await dao.deleteCourse(courseId);
@@ -117,7 +124,7 @@ const deleteCourse = async (req, res) => {
 };`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Courses/routes.ts",
-    codeAddedLines: [[5, 10]],
+    codeAddedLines: [[1, 6]],
   },
   {
     id: "enroll-create-path",
@@ -155,12 +162,10 @@ const deleteCourse = async (req, res) => {
 }
 function unenrollUserFromCourse(user, course) {
   return model.deleteOne({ user, course });
-}
-app.post("/api/users/:uid/courses/:cid", enrollUserInCourse);
-app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);`,
+}`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Enrollments/dao.ts",
-    codeHighlightLines: [[11, 12]],
+    codeHighlightLines: [[1, 10]],
   },
   {
     id: "enroll-routes",
