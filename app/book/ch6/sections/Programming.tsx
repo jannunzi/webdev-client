@@ -308,26 +308,18 @@ export default model;`}</CodeBlock>
         title="6.2.5 Retrieving Data from MongoDB with Mongoose"
       >
         <p>
-          The Mongoose model created in the previous section provides
-          low-level functions such as <code>find</code>,{" "}
-          <code>create</code>, <code>updateOne</code>, and{" "}
-          <code>deleteOne</code>{" "}that are deliberately vague since
-          they need to be able to operate on any collection. It is good
-          practice to wrap these low-level generic functions within
-          higher-level functions that are specific to the use cases of
-          the specific project. For instance, instead of just using the
-          generic <code>find()</code>{" "}function, it would be
-          preferable to use something such as{" "}
-          <code>findUsers()</code>, <code>findUserById()</code>, or{" "}
-          <code>findUserByUsername()</code>. A previous chapter
-          implemented a data access object using arrays declared in the{" "}
-          <code>Database/index.ts</code>{" "}files. This chapter
-          refactors the DAOs so they use an actual database.{" "}
-          <ChapterLink to={5} />&apos;s DAO read arrays from that barrel file. This chapter
-          keeps the same function names and reimplements them with the
-          model. The following <code>Kambaz/Users/dao.ts</code>{" "}
-          re-implements the CRUD operations for the users collection
-          written in terms of the low-level Mongoose model operations.
+          A DAO is the application-level interface to the database.
+          Its functions are written in terms of the model&apos;s
+          generic calls.{" "}
+          <code>findUserByUsername</code>{" "}wraps{" "}
+          <code>model.findOne({`{ username }`})</code>. Routes rely
+          only on the API the DAO defines, so the data source can
+          change without the rest of the application changing.{" "}
+          <ChapterLink to={5} />{" "}read arrays from{" "}
+          <code>Database/index.ts</code>. This chapter keeps those
+          function names and reimplements them with the model. The{" "}
+          <code>Kambaz/Users/dao.ts</code>{" "}listing below is that
+          interface for the <code>users</code>{" "}collection.
         </p>
         <CodeBlock
           language="ts"

@@ -145,8 +145,9 @@ export default model;`,
     title: "DAO Finders Wrap Model Queries",
     kind: "demo",
     bullets: [
-      "Same function names as Chapter 5 — now they return promises",
-      "`find`, `findById`, and `findOne` query the users collection",
+      "A DAO is the app's database API, written with the model's generic calls",
+      "`findUserByUsername` wraps `model.findOne({ username })`",
+      "Routes call the DAO only, so ch5 arrays become Mongo without route changes",
     ],
     code: `import model from "./model";
 import { v4 as uuidv4 } from "uuid";
