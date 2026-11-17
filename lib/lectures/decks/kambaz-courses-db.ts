@@ -190,14 +190,22 @@ useEffect(() => {
     kind: "demo",
     code: `function findCourseById(courseId) {
   return model.findById(courseId);
-}
-const findCourseById = async (req, res) => {
+}`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/dao.ts",
+  },
+  {
+    id: "read-one-route",
+    title: "GET one course route",
+    kind: "demo",
+    code: `const findCourseById = async (req, res) => {
   const course = await dao.findCourseById(req.params.courseId);
   res.json(course);
 };
 app.get("/api/courses/:courseId", findCourseById);`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Courses/dao.ts",
+    codeFile: "webdev-server/Kambaz/Courses/routes.ts",
+    codeAddedLines: [[1, 5]],
   },
   {
     id: "read-one-client",
@@ -224,15 +232,23 @@ app.get("/api/courses/:courseId", findCourseById);`,
     kind: "demo",
     code: `function deleteCourse(courseId) {
   return model.deleteOne({ _id: courseId });
-}
-const deleteCourse = async (req, res) => {
+}`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/dao.ts",
+  },
+  {
+    id: "delete-route",
+    title: "DELETE course route",
+    kind: "demo",
+    code: `const deleteCourse = async (req, res) => {
   const { courseId } = req.params;
   const status = await dao.deleteCourse(courseId);
   res.send(status);
 };
 app.delete("/api/courses/:courseId", deleteCourse);`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Courses/dao.ts",
+    codeFile: "webdev-server/Kambaz/Courses/routes.ts",
+    codeAddedLines: [[1, 6]],
   },
   {
     id: "delete-client",
@@ -273,8 +289,15 @@ const onDeleteCourse = async (courseId: string) => {
     kind: "demo",
     code: `function updateCourse(courseId, courseUpdates) {
   return model.updateOne({ _id: courseId }, { $set: courseUpdates });
-}
-const updateCourse = async (req, res) => {
+}`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/dao.ts",
+  },
+  {
+    id: "update-route",
+    title: "PUT course route",
+    kind: "demo",
+    code: `const updateCourse = async (req, res) => {
   const { courseId } = req.params;
   const courseUpdates = req.body;
   const status = await dao.updateCourse(courseId, courseUpdates);
@@ -282,7 +305,8 @@ const updateCourse = async (req, res) => {
 };
 app.put("/api/courses/:courseId", updateCourse);`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Courses/dao.ts",
+    codeFile: "webdev-server/Kambaz/Courses/routes.ts",
+    codeAddedLines: [[1, 7]],
   },
   {
     id: "update-client",
@@ -336,9 +360,16 @@ const onUpdateCourse = async () => {
     code: `function createCourse(course) {
   const newCourse = { ...course, _id: uuidv4() };
   return model.create(newCourse);
-}
-
-const createCourse = async (req, res) => {
+}`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/dao.ts",
+    codeAddedLines: [[1, 4]],
+  },
+  {
+    id: "create-route",
+    title: "POST course route",
+    kind: "demo",
+    code: `const createCourse = async (req, res) => {
   const newCourse = await dao.createCourse(req.body);
   const currentUser = req.session["currentUser"];
   enrollmentsDao.enrollUserInCourse(currentUser._id, newCourse._id);
@@ -346,8 +377,8 @@ const createCourse = async (req, res) => {
 };
 app.post("/api/courses", createCourse);`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Courses/dao.ts",
-    codeAddedLines: [[6, 12]],
+    codeFile: "webdev-server/Kambaz/Courses/routes.ts",
+    codeAddedLines: [[1, 7]],
   },
   {
     id: "create-client",

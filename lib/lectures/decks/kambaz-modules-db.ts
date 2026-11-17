@@ -83,17 +83,25 @@ export default schema;`,
     kind: "demo",
     code: `function findModulesForCourse(courseId) {
   return model.find({ course: courseId });
-}
-
-const findModulesForCourse = async (req, res) => {
+}`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Modules/dao.ts",
+    codeAddedLines: [[1, 3]],
+  },
+  {
+    id: "find-route",
+    links: ["http://localhost:4000/api/courses/RS101/modules"],
+    title: "GET modules route",
+    kind: "demo",
+    code: `const findModulesForCourse = async (req, res) => {
   const { courseId } = req.params;
   const modules = await dao.findModulesForCourse(courseId);
   res.json(modules);
 };
 app.get("/api/courses/:courseId/modules", findModulesForCourse);`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Modules/dao.ts",
-    codeAddedLines: [[5, 10]],
+    codeFile: "webdev-server/Kambaz/Modules/routes.ts",
+    codeAddedLines: [[1, 6]],
   },
   {
     id: "find-client",
@@ -143,8 +151,16 @@ useEffect(() => {
     kind: "demo",
     code: `function deleteModule(moduleId) {
   return model.deleteOne({ _id: moduleId });
-}
-const deleteModule = async (req, res) => {
+}`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Modules/dao.ts",
+    codeAddedLines: [[1, 3]],
+  },
+  {
+    id: "delete-route",
+    title: "DELETE module route",
+    kind: "demo",
+    code: `const deleteModule = async (req, res) => {
   const status = await dao.deleteModule(
     req.params.moduleId,
   );
@@ -152,8 +168,8 @@ const deleteModule = async (req, res) => {
 };
 app.delete("/api/modules/:moduleId", deleteModule);`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Modules/dao.ts",
-    codeAddedLines: [[4, 11]],
+    codeFile: "webdev-server/Kambaz/Modules/routes.ts",
+    codeAddedLines: [[1, 7]],
   },
   {
     id: "delete-client",
@@ -202,8 +218,16 @@ const onRemoveModule = async (moduleId: string) => {
     { _id: moduleId },
     { $set: moduleUpdates },
   );
-}
-const updateModule = async (req, res) => {
+}`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Modules/dao.ts",
+    codeAddedLines: [[1, 5]],
+  },
+  {
+    id: "update-route",
+    title: "PUT module route",
+    kind: "demo",
+    code: `const updateModule = async (req, res) => {
   const status = await dao.updateModule(
     req.params.moduleId,
     req.body,
@@ -212,8 +236,8 @@ const updateModule = async (req, res) => {
 };
 app.put("/api/modules/:moduleId", updateModule);`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Modules/dao.ts",
-    codeAddedLines: [[7, 15]],
+    codeFile: "webdev-server/Kambaz/Modules/routes.ts",
+    codeAddedLines: [[1, 8]],
   },
   {
     id: "update-client",
@@ -261,8 +285,16 @@ const onUpdateModule = async (module) => {
     code: `function createModule(module) {
   const newModule = { ...module, _id: uuidv4() };
   return model.create(newModule);
-}
-const createModuleForCourse = async (req, res) => {
+}`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Modules/dao.ts",
+    codeAddedLines: [[1, 4]],
+  },
+  {
+    id: "create-route",
+    title: "POST module route",
+    kind: "demo",
+    code: `const createModuleForCourse = async (req, res) => {
   const { courseId } = req.params;
   const created = await dao.createModule({
     ...req.body,
@@ -275,8 +307,8 @@ app.post(
   createModuleForCourse,
 );`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Modules/dao.ts",
-    codeAddedLines: [[5, 16]],
+    codeFile: "webdev-server/Kambaz/Modules/routes.ts",
+    codeAddedLines: [[1, 12]],
   },
   {
     id: "create-client",

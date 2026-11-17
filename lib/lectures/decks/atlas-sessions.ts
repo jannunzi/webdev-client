@@ -55,7 +55,6 @@ SESSION_SECRET=a long random phrase`,
     codeLanguage: "ts",
     codeFile: "webdev-server/index.ts",
     codeHighlightLines: [3],
-    embed: "kambaz-styled-signin",
   },
   {
     id: "secure-intro",

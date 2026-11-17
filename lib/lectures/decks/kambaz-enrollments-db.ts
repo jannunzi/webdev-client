@@ -18,13 +18,6 @@ export const KAMBAZ_ENROLLMENTS_DB_SLIDES: LectureSlide[] = [
     diagram: "enroll-stack",
   },
   {
-    id: "read-path",
-    title: "GET enrolled courses",
-    kind: "demo",
-    bullets: ["populate turns the course ref into the course document"],
-    diagram: "enroll-read",
-  },
-  {
     id: "purpose",
     title: "Implementing Enrollments in MongoDB",
     kind: "content",
@@ -70,6 +63,13 @@ export default enrollmentSchema;`,
     codeHighlightLines: [[4, 5], [9, 12], 15],
   },
   {
+    id: "read-path",
+    title: "GET enrolled courses",
+    kind: "demo",
+    bullets: ["populate turns the course ref into the course document"],
+    diagram: "enroll-read",
+  },
+  {
     id: "populate",
     title: "populate unwraps the course",
     kind: "demo",
@@ -86,6 +86,13 @@ export default enrollmentSchema;`,
     codeHighlightLines: [2, 3],
   },
   {
+    id: "joins-path",
+    title: "DELETE a course and its joins",
+    kind: "demo",
+    bullets: ["deleteMany removes every enrollment for that course"],
+    diagram: "enroll-joins",
+  },
+  {
     id: "delete-course-intro",
     title: "Delete a course, then its joins",
     kind: "demo",
@@ -100,9 +107,16 @@ export default enrollmentSchema;`,
     kind: "demo",
     code: `function unenrollAllUsersFromCourse(courseId) {
   return model.deleteMany({ course: courseId });
-}
-
-const deleteCourse = async (req, res) => {
+}`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Enrollments/dao.ts",
+    codeAddedLines: [[1, 3]],
+  },
+  {
+    id: "delete-course-route",
+    title: "DELETE course drops the joins",
+    kind: "demo",
+    code: `const deleteCourse = async (req, res) => {
   const { courseId } = req.params;
   await enrollmentsDao.unenrollAllUsersFromCourse(courseId);
   const status = await dao.deleteCourse(courseId);
@@ -110,7 +124,21 @@ const deleteCourse = async (req, res) => {
 };`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Courses/routes.ts",
-    codeAddedLines: [[5, 10]],
+    codeAddedLines: [[1, 6]],
+  },
+  {
+    id: "enroll-create-path",
+    title: "POST enrolls the user",
+    kind: "demo",
+    bullets: ["The route inserts one enrollment for the session user"],
+    diagram: "enroll-create",
+  },
+  {
+    id: "enroll-unenroll-path",
+    title: "DELETE unenrolls the user",
+    kind: "demo",
+    bullets: ["The same URL with DELETE removes that one enrollment"],
+    diagram: "enroll-unenroll",
   },
   {
     id: "enroll-intro",
@@ -134,12 +162,10 @@ const deleteCourse = async (req, res) => {
 }
 function unenrollUserFromCourse(user, course) {
   return model.deleteOne({ user, course });
-}
-app.post("/api/users/:uid/courses/:cid", enrollUserInCourse);
-app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);`,
+}`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Enrollments/dao.ts",
-    codeHighlightLines: [[11, 12]],
+    codeHighlightLines: [[1, 10]],
   },
   {
     id: "enroll-routes",
@@ -202,6 +228,13 @@ export const unenrollFromCourse = async (
     codeLanguage: "ts",
     codeFile: "app/(kambaz)/courses/client.ts",
     codeAddedLines: [[1, 20]],
+  },
+  {
+    id: "people-path",
+    title: "GET /api/courses/:cid/users",
+    kind: "demo",
+    bullets: ["People lists users enrolled in this course"],
+    diagram: "enroll-people",
   },
   {
     id: "people",
@@ -275,7 +308,6 @@ return <PeopleTable users={users} fetchUsers={fetchUsers} />;`,
       "Own collection + `course` FK, or embed on the course",
       "`findAssignmentsForCourse`, create, update, delete — mirror modules",
     ],
-    embed: "kambaz-styled-assignments",
   },
   {
     id: "recap",
