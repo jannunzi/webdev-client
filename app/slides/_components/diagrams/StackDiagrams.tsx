@@ -475,89 +475,183 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[] }> 
   },
 };
 
-function SqlVsDocument() {
-  const left = { x: 16, y: 16, w: 800, h: 668 };
-  const right = { x: 848, y: 16, w: 816, h: 668 };
-  const courses = [
-    ["RS101", "Rocket Propulsion", "RS4550"],
-    ["RS102", "Aerodynamics", "RS4560"],
-  ];
-  const modules = [
-    ["M101", "RS101", "Introduction to Rocket Propulsion"],
-    ["M102", "RS101", "Fuel and Combustion"],
-  ];
-  const json = [
-    "{",
-    '  "_id": "RS101",',
-    '  "name": "Rocket Propulsion",',
-    '  "number": "RS4550",',
-    '  "modules": [',
-    "    {",
-    '      "_id": "M101",',
-    '      "name": "Introduction to Rocket Propulsion"',
-    "    },",
-    "    {",
-    '      "_id": "M102",',
-    '      "name": "Fuel and Combustion"',
-    "    }",
-    "  ]",
-    "}",
-  ];
+function DataTable({
+  x,
+  y,
+  caption,
+  columns,
+  rows,
+}: {
+  x: number;
+  y: number;
+  caption: string;
+  columns: { label: string; width: number }[];
+  rows: string[][];
+}) {
+  const headH = 46;
+  const rowH = 44;
+  const width = columns.reduce((sum, column) => sum + column.width, 0);
+  const height = headH + rows.length * rowH;
+  let cursor = x;
+  const centers = columns.map((column) => {
+    const center = cursor + column.width / 2;
+    cursor += column.width;
+    return center;
+  });
   return (
-    <svg role="img" viewBox="0 0 1680 700" aria-label="SQL tables beside one course document">
-      <title>SQL tables beside one course document</title>
-      <rect x={left.x} y={left.y} width={left.w} height={left.h} rx={12} fill={YELLOW.fill} stroke={YELLOW.stroke} strokeWidth={3} />
-      <path d={headerPath(left.x, left.y, left.w, 48)} fill={YELLOW.header} stroke={YELLOW.stroke} strokeWidth={3} />
-      <line x1={left.x} y1={left.y + 48} x2={left.x + left.w} y2={left.y + 48} stroke={YELLOW.stroke} strokeWidth={3} />
-      <text x={left.x + left.w / 2} y={left.y + 32} textAnchor="middle" fontFamily={FONT} fontSize={22} fontWeight={700} fill="#171717">
+    <g>
+      <text x={x} y={y - 12} fontFamily={FONT} fontSize={18} fontWeight={700} fill={YELLOW.stroke}>
+        {caption}
+      </text>
+      <rect x={x} y={y} width={width} height={height} fill="#fff" stroke={YELLOW.stroke} strokeWidth={2} />
+      <rect x={x} y={y} width={width} height={headH} fill={YELLOW.header} stroke={YELLOW.stroke} strokeWidth={2} />
+      {columns.map((column, index) => {
+        const cellX = x + columns.slice(0, index).reduce((sum, item) => sum + item.width, 0);
+        return (
+          <g key={column.label}>
+            {index > 0 ? (
+              <line x1={cellX} y1={y} x2={cellX} y2={y + height} stroke={YELLOW.stroke} strokeWidth={2} />
+            ) : null}
+            <text
+              x={centers[index]}
+              y={y + 30}
+              textAnchor="middle"
+              fontFamily={MONO}
+              fontSize={16}
+              fontWeight={700}
+              fill="#171717"
+            >
+              {column.label}
+            </text>
+          </g>
+        );
+      })}
+      {rows.map((row, rowIndex) => {
+        const rowY = y + headH + rowIndex * rowH;
+        return (
+          <g key={row.join("-")}>
+            <line x1={x} y1={rowY} x2={x + width} y2={rowY} stroke={YELLOW.stroke} strokeWidth={2} />
+            {row.map((cell, index) => (
+              <text
+                key={cell}
+                x={centers[index]}
+                y={rowY + 29}
+                textAnchor="middle"
+                fontFamily={MONO}
+                fontSize={16}
+                fill="#171717"
+              >
+                {cell}
+              </text>
+            ))}
+          </g>
+        );
+      })}
+    </g>
+  );
+}
+
+function SqlVsDocument() {
+  const coursesX = 36;
+  const coursesY = 96;
+  const courseCols = [
+    { label: "_id (PK)", width: 150 },
+    { label: "name", width: 280 },
+    { label: "number", width: 150 },
+  ];
+  const moduleCols = [
+    { label: "_id (PK)", width: 150 },
+    { label: "course (FK)", width: 170 },
+    { label: "name", width: 420 },
+  ];
+  const coursesW = courseCols.reduce((sum, column) => sum + column.width, 0);
+  const modulesW = moduleCols.reduce((sum, column) => sum + column.width, 0);
+  const headH = 46;
+  const rowH = 44;
+  const coursesBottom = coursesY + headH + 2 * rowH;
+  const modulesY = coursesBottom + 88;
+  const pkX = coursesX + courseCols[0].width / 2;
+  const fkX = coursesX + moduleCols[0].width + moduleCols[1].width / 2;
+  const gapY = coursesBottom + 44;
+  const json = `{
+  "_id": "RS101",
+  "name": "Rocket Propulsion",
+  "number": "RS4550",
+  "modules": [
+    {
+      "_id": "M101",
+      "name": "Introduction to Rocket Propulsion"
+    },
+    {
+      "_id": "M102",
+      "name": "Fuel and Combustion"
+    }
+  ]
+}`.split("\n");
+  const leftW = 36 + modulesW + 36;
+  const rightX = leftW + 28;
+  const rightW = 760;
+  const height = 620;
+  const width = rightX + rightW + 20;
+  return (
+    <svg
+      role="img"
+      viewBox={`0 0 ${width} ${height}`}
+      preserveAspectRatio="xMidYMid meet"
+      aria-label="SQL tables beside one indented course document"
+    >
+      <title>SQL tables beside one indented course document</title>
+      <rect x={16} y={16} width={leftW - 8} height={height - 32} rx={12} fill={YELLOW.fill} stroke={YELLOW.stroke} strokeWidth={3} />
+      <path d={headerPath(16, 16, leftW - 8, 48)} fill={YELLOW.header} stroke={YELLOW.stroke} strokeWidth={3} />
+      <line x1={16} y1={64} x2={leftW + 8} y2={64} stroke={YELLOW.stroke} strokeWidth={3} />
+      <text x={16 + (leftW - 8) / 2} y={48} textAnchor="middle" fontFamily={FONT} fontSize={22} fontWeight={700} fill="#171717">
         SQL tables
       </text>
-      <text x={48} y={92} fontFamily={FONT} fontSize={16} fontWeight={700} fill={YELLOW.stroke}>
-        courses
-      </text>
-      {["_id  PK", "name", "number"].map((label, index) => (
-        <text key={label} x={[48, 180, 470][index]} y={124} fontFamily={MONO} fontSize={15} fontWeight={700} fill="#171717">
-          {label}
-        </text>
-      ))}
-      {courses.map((row, rowIndex) =>
-        row.map((cell, index) => (
-          <text key={`${rowIndex}-${cell}`} x={[48, 180, 470][index]} y={160 + rowIndex * 32} fontFamily={MONO} fontSize={15} fill="#171717">
-            {cell}
-          </text>
-        )),
-      )}
-      <text x={48} y={260} fontFamily={FONT} fontSize={16} fontWeight={700} fill={YELLOW.stroke}>
-        modules
-      </text>
-      {["_id  PK", "course  FK", "name"].map((label, index) => (
-        <text key={label} x={[48, 180, 340][index]} y={292} fontFamily={MONO} fontSize={15} fontWeight={700} fill="#171717">
-          {label}
-        </text>
-      ))}
-      {modules.map((row, rowIndex) =>
-        row.map((cell, index) => (
-          <text key={`${rowIndex}-${cell}`} x={[48, 180, 340][index]} y={328 + rowIndex * 32} fontFamily={MONO} fontSize={15} fill="#171717">
-            {cell}
-          </text>
-        )),
-      )}
-      <line x1={320} y1={322} x2={320} y2={154} stroke="#171717" strokeWidth={3} />
-      <line x1={320} y1={154} x2={118} y2={154} stroke="#171717" strokeWidth={3} />
-      <polygon points="100,154 114,146 114,162" fill="#171717" />
-      <text x={332} y={240} fontFamily={FONT} fontSize={15} fontWeight={700} fill="#171717">
-        FK
+      <DataTable
+        x={coursesX}
+        y={coursesY}
+        caption="courses"
+        columns={courseCols}
+        rows={[
+          ["RS101", "Rocket Propulsion", "RS4550"],
+          ["RS102", "Aerodynamics", "RS4560"],
+        ]}
+      />
+      <DataTable
+        x={coursesX}
+        y={modulesY}
+        caption="modules"
+        columns={moduleCols}
+        rows={[
+          ["M101", "RS101", "Introduction to Rocket Propulsion"],
+          ["M102", "RS101", "Fuel and Combustion"],
+        ]}
+      />
+      <line x1={fkX} y1={modulesY} x2={fkX} y2={gapY} stroke="#171717" strokeWidth={3} />
+      <line x1={fkX} y1={gapY} x2={pkX} y2={gapY} stroke="#171717" strokeWidth={3} />
+      <line x1={pkX} y1={gapY} x2={pkX} y2={coursesBottom + 14} stroke="#171717" strokeWidth={3} />
+      <polygon points={`${pkX},${coursesBottom} ${pkX - 7},${coursesBottom + 14} ${pkX + 7},${coursesBottom + 14}`} fill="#171717" />
+      <text x={(fkX + pkX) / 2} y={gapY - 10} textAnchor="middle" fontFamily={FONT} fontSize={16} fontWeight={700} fill="#171717">
+        FK → PK
       </text>
 
-      <rect x={right.x} y={right.y} width={right.w} height={right.h} rx={12} fill={RED.fill} stroke={RED.stroke} strokeWidth={3} />
-      <path d={headerPath(right.x, right.y, right.w, 48)} fill={RED.header} stroke={RED.stroke} strokeWidth={3} />
-      <line x1={right.x} y1={right.y + 48} x2={right.x + right.w} y2={right.y + 48} stroke={RED.stroke} strokeWidth={3} />
-      <text x={right.x + right.w / 2} y={right.y + 32} textAnchor="middle" fontFamily={FONT} fontSize={22} fontWeight={700} fill="#171717">
+      <rect x={rightX} y={16} width={rightW} height={height - 32} rx={12} fill={RED.fill} stroke={RED.stroke} strokeWidth={3} />
+      <path d={headerPath(rightX, 16, rightW, 48)} fill={RED.header} stroke={RED.stroke} strokeWidth={3} />
+      <line x1={rightX} y1={64} x2={rightX + rightW} y2={64} stroke={RED.stroke} strokeWidth={3} />
+      <text x={rightX + rightW / 2} y={48} textAnchor="middle" fontFamily={FONT} fontSize={22} fontWeight={700} fill="#171717">
         JSON document
       </text>
+      <rect x={rightX + 28} y={92} width={rightW - 56} height={json.length * 32 + 28} fill="#fff" stroke={RED.stroke} strokeWidth={2} />
       {json.map((line, index) => (
-        <text key={line} x={880} y={100 + index * 36} fontFamily={MONO} fontSize={18} fill="#171717">
-          {line}
+        <text
+          key={`${index}-${line}`}
+          x={rightX + 44}
+          y={124 + index * 32}
+          fontFamily={MONO}
+          fontSize={18}
+          fill="#171717"
+        >
+          {line || " "}
         </text>
       ))}
     </svg>
