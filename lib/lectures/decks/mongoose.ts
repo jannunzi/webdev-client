@@ -5,6 +5,11 @@ export const MONGOOSE_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#00ED64",
+      icon: "code",
+      headline: "Mongoose",
+    },
     bullets: [
       "Chapter 6 · Mongoose",
       "Connect, env, schema, DAO",
@@ -12,21 +17,12 @@ export const MONGOOSE_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing Mongoose",
-    kind: "content",
-    bullets: [
-      "Applications need `find`, `create`, `updateOne`, and `deleteOne`",
-      "Work on branch `a6` in both `webdev-client` and `webdev-server`",
-      "Set the connection URI in `webdev-server` and the server uses Mongoose",
-    ],
-  },
-  {
-    id: "install",
-    title: "npm install mongoose",
+    title: "Install Mongoose in webdev-server",
     kind: "demo",
     bullets: [
-      "From the Node project root — not the Next.js app",
-      "Schemas and models once, then CRUD on those models",
+      "Applications need `find`, `create`, `updateOne`, and `deleteOne`",
+      "Run this in `webdev-server` on branch `a6`, not the Next.js app",
+      "The connection URI stays in `webdev-server`",
     ],
     code: `cd webdev-server
 npm install mongoose`,
@@ -67,7 +63,6 @@ DATABASE_CONNECTION_STRING=mongodb://127.0.0.1:27017/kambaz`,
     codeLanguage: "bash",
     codeFile: "webdev-server/.env",
     codeAddedLines: [5],
-    embed: "lab6-status",
   },
   {
     id: "read-env",
@@ -93,6 +88,7 @@ await mongoose.connect(CONNECTION_STRING);`,
     title: "A schema validates writes",
     kind: "demo",
     bullets: [
+      "A schema is a SQL table declaration written in app code; MongoDB stays schemaless",
       "`_id` is `String` so Chapter 3 ids still match enrollments",
       "`required` validates username. `unique: true` is an index, not a validator",
       "`{ collection: \"users\" }` — do not let Mongoose invent a name",
@@ -132,25 +128,26 @@ export default userSchema;`,
     title: "One compiled UserModel",
     kind: "demo",
     bullets: [
-      "`\"UserModel\"` is the name other schemas `ref` — enrollments later",
-      "You do not instantiate it. Import and call `model.find()`",
+      "The model is the interface to a collection: `find`, `findById`, `create`, `updateOne`, `deleteOne`",
+      "The schema describes a user. The model reads and writes `users`",
+      "Those functions are generic for any schema. Mongoose is an ODM, like an ORM",
     ],
     code: `import mongoose from "mongoose";
 import schema from "./schema";
-const model = mongoose.models.UserModel ||
-  mongoose.model("UserModel", schema);
+const model = mongoose.model("UserModel", schema);
 export default model;`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/model.ts",
-    codeAddedLines: [[3, 4]],
+    codeHighlightLines: [3],
   },
   {
     id: "dao",
     title: "DAO Finders Wrap Model Queries",
     kind: "demo",
     bullets: [
-      "Same function names as Chapter 5 — now they return promises",
-      "`find`, `findById`, and `findOne` query the users collection",
+      "A DAO is the app's database API, written with the model's generic calls",
+      "`findUserByUsername` wraps `model.findOne({ username })`",
+      "Routes call the DAO only, so ch5 arrays become Mongo without route changes",
     ],
     code: `import model from "./model";
 import { v4 as uuidv4 } from "uuid";

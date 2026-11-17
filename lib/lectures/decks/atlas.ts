@@ -5,6 +5,11 @@ export const ATLAS_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#00ED64",
+      icon: "cloud",
+      headline: "Atlas",
+    },
     bullets: [
       "Chapter 6 · Integrating with Atlas",
       "Hosted Mongo, then remote sessions",

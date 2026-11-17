@@ -1371,19 +1371,19 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-sessions"], 21);
     assert.equal(counts["kambaz-courses-api"], 56);
     assert.equal(counts["deploy-api"], 8);
-    assert.equal(counts["local-mongo"], 13);
-    assert.equal(counts["mongoose"], 13);
+    assert.equal(counts["local-mongo"], 12);
+    assert.equal(counts["mongoose"], 12);
     assert.equal(counts["mongo-apis"], 16);
-    assert.equal(counts["mongo-users-crud"], 38);
+    assert.equal(counts["mongo-users-crud"], 36);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
-    assert.equal(counts["atlas-node"], 11);
-    assert.equal(counts["atlas-sessions"], 13);
+    assert.equal(counts["atlas-node"], 10);
+    assert.equal(counts["atlas-sessions"], 12);
     assert.equal(counts["ch6-check-understanding"], 7);
-    assert.equal(counts["kambaz-courses-db"], 36);
-    assert.equal(counts["kambaz-modules-db"], 29);
-    assert.equal(counts["kambaz-enrollments-db"], 25);
-    assert.equal(counts["youtube-api"], 11);
+    assert.equal(counts["kambaz-courses-db"], 34);
+    assert.equal(counts["kambaz-modules-db"], 28);
+    assert.equal(counts["kambaz-enrollments-db"], 23);
+    assert.equal(counts["youtube-api"], 9);
     assert.equal(counts["youtube-search"], 11);
     assert.equal(counts["youtube-details"], 23);
     assert.equal(counts["chatgpt-api"], 14);
@@ -1955,7 +1955,6 @@ describe("lecture decks", () => {
       },
       "kambaz-account-rest": { "signin-ui": "kambaz-styled-signin" },
       "kambaz-courses-api": { client: "kambaz-styled-dashboard" },
-      mongoose: { env: "lab6-status" },
       "mongo-apis": {
         "people-table": "kambaz-styled-people",
       },
@@ -3646,6 +3645,10 @@ describe("lecture decks", () => {
         "modules-architecture": "modules-dao",
         "assignments-architecture": "assignments-dao",
       },
+      "local-mongo": {
+        purpose: "mongo-roadmap",
+        nosql: "sql-vs-document",
+      },
       "mongo-apis": {
         "users-picture": "users-stack",
         "read-all-path": "users-read-all",
@@ -4165,7 +4168,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 267);
+    assert.equal(intros, 257);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
@@ -4432,6 +4435,28 @@ export const updateTitle = async (title: string) => {
     );
     assert.match(objectsAsync.code ?? "", /client\.fetchAssignment\(\)/);
     assert.match(objectsAsync.code ?? "", /client\.updateTitle\(/);
+  });
+});
+
+describe("Chapter 5 and 6 title covers", () => {
+  const ICONS = ["server", "code", "link", "check", "database", "user", "cloud"];
+
+  it("gives every chapter 5 and 6 opener a cover", () => {
+    for (const lecture of listLectures()) {
+      if (lecture.chapter !== 5 && lecture.chapter !== 6) continue;
+      const title = getLectureDeck(lecture.slug)!.slides[0]!;
+      assert.equal(title.id, "title", lecture.slug);
+      assert.equal(title.kind, "title", lecture.slug);
+      assert.ok(title.cover, `${lecture.slug} title slide needs a cover`);
+      assert.match(title.cover.color, /^#[0-9A-Fa-f]{6}$/, lecture.slug);
+      assert.ok(ICONS.includes(title.cover.icon), lecture.slug);
+      assert.ok(title.cover.headline.length > 0 && title.cover.headline.length <= 42, lecture.slug);
+    }
+    const youtube = findSlide("youtube-api", "title");
+    assert.equal(youtube.cover?.color, "#FF0000");
+    assert.equal(youtube.cover?.headline, "YouTube API");
+    assert.equal(findSlide("youtube-api", "api").kind, "content");
+    assert.equal(findSlide("youtube-api", "api-key").kind, "content");
   });
 });
 

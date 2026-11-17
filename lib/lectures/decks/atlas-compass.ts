@@ -5,6 +5,11 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#00ED64",
+      icon: "database",
+      headline: "Atlas Compass",
+    },
     bullets: [
       "Chapter 6 · Atlas Compass",
       "Connect, then import JSON",

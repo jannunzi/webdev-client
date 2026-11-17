@@ -189,7 +189,11 @@ await mongoose.connect(CONNECTION_STRING);`}</CodeBlock>
           datatypes Schemas and Models to interact with collections.
           Mongoose Schemas describe the structure of the data being
           stored in the database and are used to validate the data
-          being stored or modified through the Mongoose library. If a
+          being stored or modified through the Mongoose library. A
+          schema is the equivalent of a SQL table declaration, but
+          SQL tables are declared in the database while a Mongoose
+          schema is implemented in the application code. MongoDB
+          itself stays schemaless. If a
           route tries to insert a user without a username, Mongoose
           rejects the write before it reaches the collection. The
           schema shown below describes the structure for the{" "}
@@ -272,19 +276,21 @@ export default userSchema;`}</CodeBlock>
         title="6.2.4 Implementing Mongoose Models"
       >
         <p>
-          Mongoose models implement a low-level API to interact with
-          MongoDB collections programmatically. Models provide CRUD
-          (Create, Read, Update, Delete) functions such as{" "}
-          <code>find()</code>, <code>create()</code>,{" "}
-          <code>updateOne()</code>, <code>deleteOne()</code>, and{" "}
-          <code>findById()</code>. Those names are deliberately generic
-          because they can interact with any collection configured in
-          the schema. In <code>Kambaz/Users/model.ts</code>{" "}below,
-          create a Mongoose model from the users schema. In the next
-          section we will create a data access object that implements
-          higher-level functions specific to the domain of Kambaz —
-          <code>findUserByCredentials</code>{" "}instead of a bare{" "}
-          <code>findOne</code>.
+          A Mongoose model is the interface the application uses to
+          interact with one collection. It provides{" "}
+          <code>find()</code>, <code>findById()</code>,{" "}
+          <code>create()</code>, <code>updateOne()</code>, and{" "}
+          <code>deleteOne()</code>. Those functions are deliberately
+          generic so they work with any schema, the way an ORM works
+          for SQL tables. Mongoose is an ODM, an object-document
+          mapper. The schema says what a document looks like. The
+          model uses that schema to read and write the{" "}
+          <code>users</code>{" "}collection. Express with nodemon
+          restarts the whole process, so{" "}
+          <code>mongoose.model</code>{" "}does not need a hot-reload
+          guard. In the next section the DAO wraps these generic
+          calls in Kambaz names such as{" "}
+          <code>findUserByCredentials</code>.
         </p>
         <CodeBlock
           language="ts"
@@ -292,21 +298,8 @@ export default userSchema;`}</CodeBlock>
           file="webdev-server/Kambaz/Users/model.ts"
         >{`import mongoose from "mongoose";
 import schema from "./schema";
-const model = mongoose.models.UserModel ||
-  mongoose.model("UserModel", schema);
+const model = mongoose.model("UserModel", schema);
 export default model;`}</CodeBlock>
-        <p>
-          The first argument, <code>&quot;UserModel&quot;</code>, is
-          the model name other schemas use in <code>ref</code> —
-          enrollments will point at it in <SectionLink to="6.4.3" />{" "}
-          when <code>populate(&quot;user&quot;)</code>{" "}needs to know
-          which model to load. The second argument is the schema you
-          just wrote. Exporting the model lets the DAO import a single
-          object and call <code>model.find()</code>{" "}without repeating
-          the collection name. You do not instantiate the model
-          yourself; Mongoose keeps one compiled model per name for the
-          life of the process.
-        </p>
       </Section>
 
       <Section
@@ -315,26 +308,18 @@ export default model;`}</CodeBlock>
         title="6.2.5 Retrieving Data from MongoDB with Mongoose"
       >
         <p>
-          The Mongoose model created in the previous section provides
-          low-level functions such as <code>find</code>,{" "}
-          <code>create</code>, <code>updateOne</code>, and{" "}
-          <code>deleteOne</code>{" "}that are deliberately vague since
-          they need to be able to operate on any collection. It is good
-          practice to wrap these low-level generic functions within
-          higher-level functions that are specific to the use cases of
-          the specific project. For instance, instead of just using the
-          generic <code>find()</code>{" "}function, it would be
-          preferable to use something such as{" "}
-          <code>findUsers()</code>, <code>findUserById()</code>, or{" "}
-          <code>findUserByUsername()</code>. A previous chapter
-          implemented a data access object using arrays declared in the{" "}
-          <code>Database/index.ts</code>{" "}files. This chapter
-          refactors the DAOs so they use an actual database.{" "}
-          <ChapterLink to={5} />&apos;s DAO read arrays from that barrel file. This chapter
-          keeps the same function names and reimplements them with the
-          model. The following <code>Kambaz/Users/dao.ts</code>{" "}
-          re-implements the CRUD operations for the users collection
-          written in terms of the low-level Mongoose model operations.
+          A DAO is the application-level interface to the database.
+          Its functions are written in terms of the model&apos;s
+          generic calls.{" "}
+          <code>findUserByUsername</code>{" "}wraps{" "}
+          <code>model.findOne({`{ username }`})</code>. Routes rely
+          only on the API the DAO defines, so the data source can
+          change without the rest of the application changing.{" "}
+          <ChapterLink to={5} />{" "}read arrays from{" "}
+          <code>Database/index.ts</code>. This chapter keeps those
+          function names and reimplements them with the model. The{" "}
+          <code>Kambaz/Users/dao.ts</code>{" "}listing below is that
+          interface for the <code>users</code>{" "}collection.
         </p>
         <CodeBlock
           language="ts"

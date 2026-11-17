@@ -5,6 +5,11 @@ export const ATLAS_SESSIONS_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#00ED64",
+      icon: "user",
+      headline: "Remote Sessions",
+    },
     bullets: [
       "Chapter 6 · Atlas remote sessions",
       "Five keys, then sign in",
@@ -57,19 +62,14 @@ SESSION_SECRET=a long random phrase`,
     codeHighlightLines: [3],
   },
   {
-    id: "secure-intro",
+    id: "secure",
     title: "SERVER_ENV turns on cookies",
     kind: "demo",
     bullets: [
-      "`SERVER_ENV=production` is what turns on secure cookies",
-      "`sameSite: \"none\"` plus `secure: true` so Vercel can send them",
+      "`SERVER_ENV=production` turns on secure cookies",
+      "`sameSite: \"none\"` and `secure: true` let Vercel send them",
       "Leave this as `development` on your laptop",
     ],
-  },
-  {
-    id: "secure",
-    title: "SERVER_ENV turns on cookies (code)",
-    kind: "demo",
     code: `if (process.env.SERVER_ENV === "production") {
   app.set("trust proxy", 1);
   sessionOptions.proxy = true;

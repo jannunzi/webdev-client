@@ -1,7 +1,6 @@
 "use client";
 
 import type { ReactNode } from "react";
-import ConnectionStatus from "@/app/labs/lab6/intermediates/6-2-1-Connection";
 import Lab6Todos from "@/app/labs/lab6/intermediates/6-2-5-Todos";
 import Lab6Users from "@/app/labs/lab6/intermediates/6-2-6-Users";
 import LectureDemoFrame from "./LectureDemoFrame";
@@ -19,14 +18,6 @@ function Lab6Demo({
         {children}
       </div>
     </LectureDemoFrame>
-  );
-}
-
-export function Lab6StatusEmbed() {
-  return (
-    <Lab6Demo label="app/labs/lab6/Connection.tsx">
-      <ConnectionStatus />
-    </Lab6Demo>
   );
 }
 

@@ -13,7 +13,13 @@ const TONES = {
   red: RED,
 } as const;
 
-type Box = { name: string; lines: string[]; tone: keyof typeof TONES };
+type Box = {
+  name: string;
+  lines: string[];
+  tone: keyof typeof TONES;
+  /** Thicker stroke. The first line is the “new in this chapter” mark. */
+  emphasis?: boolean;
+};
 
 const HEADER_H = 48;
 const LINE_H = 22;
@@ -75,6 +81,7 @@ function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidt
         const tone: Tone = TONES[box.tone];
         const x = 36 + index * (boxWidth + gap);
         const h = heights[index]!;
+        const stroke = box.emphasis ? 6 : 3;
         return (
           <g key={`${box.name}-${index}`}>
             {index > 0 ? (
@@ -113,13 +120,13 @@ function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidt
               rx={RADIUS}
               fill={tone.fill}
               stroke={tone.stroke}
-              strokeWidth={3}
+              strokeWidth={stroke}
             />
             <path
               d={headerPath(x, top, boxWidth, HEADER_H)}
               fill={tone.header}
               stroke={tone.stroke}
-              strokeWidth={3}
+              strokeWidth={stroke}
             />
             <line
               x1={x}
@@ -127,7 +134,7 @@ function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidt
               x2={x + boxWidth}
               y2={top + HEADER_H}
               stroke={tone.stroke}
-              strokeWidth={3}
+              strokeWidth={stroke}
             />
             <text
               x={x + boxWidth / 2}
@@ -147,7 +154,8 @@ function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidt
                 y={top + HEADER_H + 20 + lineIndex * LINE_H}
                 fontFamily={MONO}
                 fontSize={14}
-                fill="#171717"
+                fontWeight={box.emphasis && lineIndex === 0 ? 700 : 400}
+                fill={box.emphasis && lineIndex === 0 ? tone.stroke : "#171717"}
               >
                 {line}
               </text>
@@ -160,6 +168,22 @@ function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidt
 }
 
 const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[] }> = {
+  "mongo-roadmap": {
+    title: "From the React UI to the database",
+    boxWidth: 220,
+    boxes: [
+      { name: "React UI", lines: ["Next.js client", "built in ch3–5"], tone: "blue" },
+      { name: "client.ts", lines: ["axios", "built in ch5"], tone: "blue" },
+      { name: "Routes", lines: ["Express", "built in ch5"], tone: "yellow" },
+      { name: "DAO", lines: ["in-memory arrays", "built in ch5"], tone: "yellow" },
+      {
+        name: "Database",
+        lines: ["new in ch6", "local MongoDB", "Atlas later"],
+        tone: "red",
+        emphasis: true,
+      },
+    ],
+  },
   "users-stack": {
     title: "Users from the page to MongoDB",
     boxWidth: 268,
@@ -451,16 +475,106 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[] }> 
   },
 };
 
+function SqlVsDocument() {
+  const left = { x: 16, y: 16, w: 800, h: 668 };
+  const right = { x: 848, y: 16, w: 816, h: 668 };
+  const courses = [
+    ["RS101", "Rocket Propulsion", "RS4550"],
+    ["RS102", "Aerodynamics", "RS4560"],
+  ];
+  const modules = [
+    ["M101", "RS101", "Introduction to Rocket Propulsion"],
+    ["M102", "RS101", "Fuel and Combustion"],
+  ];
+  const json = [
+    "{",
+    '  "_id": "RS101",',
+    '  "name": "Rocket Propulsion",',
+    '  "number": "RS4550",',
+    '  "modules": [',
+    "    {",
+    '      "_id": "M101",',
+    '      "name": "Introduction to Rocket Propulsion"',
+    "    },",
+    "    {",
+    '      "_id": "M102",',
+    '      "name": "Fuel and Combustion"',
+    "    }",
+    "  ]",
+    "}",
+  ];
+  return (
+    <svg role="img" viewBox="0 0 1680 700" aria-label="SQL tables beside one course document">
+      <title>SQL tables beside one course document</title>
+      <rect x={left.x} y={left.y} width={left.w} height={left.h} rx={12} fill={YELLOW.fill} stroke={YELLOW.stroke} strokeWidth={3} />
+      <path d={headerPath(left.x, left.y, left.w, 48)} fill={YELLOW.header} stroke={YELLOW.stroke} strokeWidth={3} />
+      <line x1={left.x} y1={left.y + 48} x2={left.x + left.w} y2={left.y + 48} stroke={YELLOW.stroke} strokeWidth={3} />
+      <text x={left.x + left.w / 2} y={left.y + 32} textAnchor="middle" fontFamily={FONT} fontSize={22} fontWeight={700} fill="#171717">
+        SQL tables
+      </text>
+      <text x={48} y={92} fontFamily={FONT} fontSize={16} fontWeight={700} fill={YELLOW.stroke}>
+        courses
+      </text>
+      {["_id  PK", "name", "number"].map((label, index) => (
+        <text key={label} x={[48, 180, 470][index]} y={124} fontFamily={MONO} fontSize={15} fontWeight={700} fill="#171717">
+          {label}
+        </text>
+      ))}
+      {courses.map((row, rowIndex) =>
+        row.map((cell, index) => (
+          <text key={`${rowIndex}-${cell}`} x={[48, 180, 470][index]} y={160 + rowIndex * 32} fontFamily={MONO} fontSize={15} fill="#171717">
+            {cell}
+          </text>
+        )),
+      )}
+      <text x={48} y={260} fontFamily={FONT} fontSize={16} fontWeight={700} fill={YELLOW.stroke}>
+        modules
+      </text>
+      {["_id  PK", "course  FK", "name"].map((label, index) => (
+        <text key={label} x={[48, 180, 340][index]} y={292} fontFamily={MONO} fontSize={15} fontWeight={700} fill="#171717">
+          {label}
+        </text>
+      ))}
+      {modules.map((row, rowIndex) =>
+        row.map((cell, index) => (
+          <text key={`${rowIndex}-${cell}`} x={[48, 180, 340][index]} y={328 + rowIndex * 32} fontFamily={MONO} fontSize={15} fill="#171717">
+            {cell}
+          </text>
+        )),
+      )}
+      <line x1={320} y1={322} x2={320} y2={154} stroke="#171717" strokeWidth={3} />
+      <line x1={320} y1={154} x2={118} y2={154} stroke="#171717" strokeWidth={3} />
+      <polygon points="100,154 114,146 114,162" fill="#171717" />
+      <text x={332} y={240} fontFamily={FONT} fontSize={15} fontWeight={700} fill="#171717">
+        FK
+      </text>
+
+      <rect x={right.x} y={right.y} width={right.w} height={right.h} rx={12} fill={RED.fill} stroke={RED.stroke} strokeWidth={3} />
+      <path d={headerPath(right.x, right.y, right.w, 48)} fill={RED.header} stroke={RED.stroke} strokeWidth={3} />
+      <line x1={right.x} y1={right.y + 48} x2={right.x + right.w} y2={right.y + 48} stroke={RED.stroke} strokeWidth={3} />
+      <text x={right.x + right.w / 2} y={right.y + 32} textAnchor="middle" fontFamily={FONT} fontSize={22} fontWeight={700} fill="#171717">
+        JSON document
+      </text>
+      {json.map((line, index) => (
+        <text key={line} x={880} y={100 + index * 36} fontFamily={MONO} fontSize={18} fill="#171717">
+          {line}
+        </text>
+      ))}
+    </svg>
+  );
+}
+
 export type StackDiagramId = keyof typeof STACKS;
 
-export function isStackDiagram(id: string): id is StackDiagramId {
-  return Object.prototype.hasOwnProperty.call(STACKS, id);
+export function isStackDiagram(id: string): id is StackDiagramId | "sql-vs-document" {
+  return id === "sql-vs-document" || Object.prototype.hasOwnProperty.call(STACKS, id);
 }
 
 export function StackDiagram({ id }: { id: string }) {
+  if (id === "sql-vs-document") return <SqlVsDocument />;
   const spec = STACKS[id];
   if (!spec) return null;
   return <Flow title={spec.title} boxes={spec.boxes} boxWidth={spec.boxWidth} />;
 }
 
-export const STACK_DIAGRAM_IDS = Object.keys(STACKS);
+export const STACK_DIAGRAM_IDS = ["sql-vs-document", ...Object.keys(STACKS)];

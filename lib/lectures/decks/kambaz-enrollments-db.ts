@@ -5,6 +5,11 @@ export const KAMBAZ_ENROLLMENTS_DB_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#C8102E",
+      icon: "database",
+      headline: "Enrollments",
+    },
     bullets: [
       "Chapter 6 · Enrollments M:N",
       "A mapping collection",
@@ -93,18 +98,13 @@ export default enrollmentSchema;`,
     diagram: "enroll-joins",
   },
   {
-    id: "delete-course-intro",
+    id: "delete-course",
     title: "Delete a course, then its joins",
     kind: "demo",
     bullets: [
-      "`deleteMany` is the many-document cousin of `deleteOne`",
-      "Otherwise Dashboard populates a course id that no longer exists",
+      "`deleteMany` removes every enrollment for that course",
+      "Otherwise Dashboard populates a missing course id",
     ],
-  },
-  {
-    id: "delete-course",
-    title: "Delete a course, then its joins (code)",
-    kind: "demo",
     code: `function unenrollAllUsersFromCourse(courseId) {
   return model.deleteMany({ course: courseId });
 }`,
@@ -141,18 +141,14 @@ export default enrollmentSchema;`,
     diagram: "enroll-unenroll",
   },
   {
-    id: "enroll-intro",
+    id: "enroll",
     title: "Enroll / unenroll on your own",
     kind: "demo",
     bullets: [
-      "`enrollUserInCourse` inserts `{ user, course, _id: userId-courseId }`",
-      "`uid === \"current\"` reads the session, same as enrolled-courses",
+      "`enrollUserInCourse` inserts `{ user, course }`",
+      "`_id` is `userId-courseId`",
+      "`uid === \"current\"` reads the session",
     ],
-  },
-  {
-    id: "enroll",
-    title: "Enroll / unenroll on your own (code)",
-    kind: "demo",
     code: `function enrollUserInCourse(userId, courseId) {
   return model.create({
     user: userId,

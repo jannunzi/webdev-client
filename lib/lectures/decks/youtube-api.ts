@@ -5,6 +5,11 @@ export const YOUTUBE_API_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#FF0000",
+      icon: "link",
+      headline: "YouTube API",
+    },
     bullets: [
       "Integrating with the YouTube Video API",
       "Data API v3 · key, then search",
@@ -12,18 +17,11 @@ export const YOUTUBE_API_SLIDES: LectureSlide[] = [
   },
   {
     id: "api",
-    title: "API",
-    kind: "title",
-    bullets: [
-      "Google Cloud project, then an **API key**",
-      "Enable **YouTube Data API v3**",
-    ],
-  },
-  {
-    id: "docs",
     title: "YouTube Data API v3",
     kind: "content",
     bullets: [
+      "Google Cloud project, then an **API key**",
+      "Enable **YouTube Data API v3**",
       "[developers.google.com/youtube/v3](https://developers.google.com/youtube/v3)",
       "Optional walkthrough: [youtu.be/KSfs9fJW1rY](https://youtu.be/KSfs9fJW1rY)",
     ],
@@ -42,20 +40,13 @@ export const YOUTUBE_API_SLIDES: LectureSlide[] = [
   },
   {
     id: "api-key",
-    title: "API Key",
-    kind: "title",
-    bullets: [
-      "Console → Credentials → **Create API key**",
-      "Copy once. Do **not** commit it",
-    ],
-  },
-  {
-    id: "console",
-    title: "Google Cloud dashboard",
+    title: "Create a Google Cloud API key",
     kind: "content",
     bullets: [
       "[console.cloud.google.com/apis/dashboard](https://console.cloud.google.com/apis/dashboard)",
-      "**Create New Project** — a single class project is enough",
+      "**Create New Project** — one class project is enough",
+      "Credentials → **Create API key**. Copy it once",
+      "Do **not** commit the key",
     ],
   },
   {

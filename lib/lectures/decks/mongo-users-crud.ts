@@ -5,6 +5,11 @@ export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#00ED64",
+      icon: "user",
+      headline: "User CRUD",
+    },
     bullets: [
       "Chapter 6 · User CRUD",
       "Filter, id, mutate",
@@ -25,19 +30,14 @@ export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
     diagram: "users-filter",
   },
   {
-    id: "predicates-intro",
+    id: "predicates",
     title: "find() accepts a predicate",
     kind: "demo",
     bullets: [
       "`{ role }` is shorthand for `{ role: role }`",
-      "`$or` + `$regex` with flag `i` — `thor` finds Thor",
+      "`$regex` with flag `i` — `thor` finds Thor",
       "Export both so the route can call them",
     ],
-  },
-  {
-    id: "predicates",
-    title: "find() accepts a predicate (code)",
-    kind: "demo",
     code: `const findUsersByRole = (role) => model.find({ role });
 const findUsersByPartialName = (partialName) => {
   const regex = new RegExp(partialName, "i");
@@ -318,18 +318,13 @@ useEffect(() => {
     diagram: "users-update",
   },
   {
-    id: "update-intro",
-    title: "$set, then refresh the session",
-    kind: "demo",
-    bullets: [
-      "Without `$set`, Mongoose replaces the whole document",
-      "If the path id matches `currentUser`, merge into `req.session`",
-    ],
-  },
-  {
     id: "update",
     title: "$set keeps the other fields",
     kind: "demo",
+    bullets: [
+      "Without `$set`, Mongoose replaces the whole document",
+      "The route merges a matching `currentUser` into the session",
+    ],
     code: `const updateUser = (userId, user) =>
   model.updateOne({ _id: userId }, { $set: user });`,
     codeLanguage: "ts",

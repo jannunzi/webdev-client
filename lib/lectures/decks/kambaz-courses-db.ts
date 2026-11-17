@@ -5,6 +5,11 @@ export const KAMBAZ_COURSES_DB_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#C8102E",
+      icon: "database",
+      headline: "Courses in Mongo",
+    },
     bullets: [
       "Chapter 6 · Kambaz Courses DB",
       "CRUD courses in Mongo",
@@ -30,18 +35,13 @@ export const KAMBAZ_COURSES_DB_SLIDES: LectureSlide[] = [
     diagram: "courses-stack",
   },
   {
-    id: "schema-intro",
+    id: "schema",
     title: "Course schema keeps string ids",
     kind: "demo",
     bullets: [
-      "`_id` stays `String` — enrollments and modules already store those ids",
-      "`CourseModel` is the name enrollments will `ref` later",
+      "`_id` stays `String` so enrollments can store it",
+      "`CourseModel` is the name enrollments `ref`",
     ],
-  },
-  {
-    id: "schema",
-    title: "Course schema keeps string ids (code)",
-    kind: "demo",
     code: `import mongoose from "mongoose";
 const courseSchema = new mongoose.Schema({
   _id: String,
@@ -61,16 +61,15 @@ export default courseSchema;`,
     title: "CourseModel from the schema",
     kind: "demo",
     bullets: [
-      "Same pattern as `UserModel` — one compiled model per process",
+      "Same call as `UserModel`: `mongoose.model` from the schema",
     ],
     code: `import mongoose from "mongoose";
 import schema from "./schema";
-const model = mongoose.models.CourseModel ||
-  mongoose.model("CourseModel", schema);
+const model = mongoose.model("CourseModel", schema);
 export default model;`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Courses/model.ts",
-    codeAddedLines: [[3, 4]],
+    codeHighlightLines: [3],
   },
   {
     id: "read-all-path",
@@ -345,18 +344,13 @@ const onUpdateCourse = async () => {
     diagram: "courses-create",
   },
   {
-    id: "create-intro",
+    id: "create",
     title: "createCourse assigns a uuid",
     kind: "demo",
     bullets: [
-      "Spread, `_id: uuidv4()`, `model.create`",
-      "Route still enrolls the current user — that write becomes Mongo later",
+      "Spread the course, set `_id: uuidv4()`, then `model.create`",
+      "The route still enrolls the current user",
     ],
-  },
-  {
-    id: "create",
-    title: "createCourse assigns a uuid (code)",
-    kind: "demo",
     code: `function createCourse(course) {
   const newCourse = { ...course, _id: uuidv4() };
   return model.create(newCourse);

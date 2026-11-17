@@ -5,6 +5,11 @@ export const LOCAL_MONGO_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#00ED64",
+      icon: "database",
+      headline: "Local MongoDB",
+    },
     bullets: [
       "Chapter 6 · Local MongoDB",
       "Install, Compass, then kambaz",
@@ -15,22 +20,20 @@ export const LOCAL_MONGO_SLIDES: LectureSlide[] = [
     title: "Implementing a Local MongoDB",
     kind: "content",
     bullets: [
-      "Chapter 5 stored courses and users in process memory",
-      "Restart `nodemon` and Dashboard reseeds from JSON files",
-      "MongoDB keeps **documents** in **collections** — JSON that survives reboot",
-      "This section installs a local instance before any Node code talks to it",
+      "Chapters 3–5 already built the UI, client, routes, and the in-memory DAO",
+      "Chapter 6 adds local MongoDB now. Atlas replaces that host later",
     ],
+    diagram: "mongo-roadmap",
   },
   {
     id: "nosql",
     title: "Documents, not rows",
     kind: "content",
     bullets: [
-      "SQL tables store primitive columns; documents nest objects and arrays",
-      "No predefined schema — a library added later decides which shapes are valid",
-      "A course can hold modules and lessons without three foreign-key tables",
-      "Same `_id`, `username`, and `role` fields you already mapped in Account",
+      "SQL stores flat rows. A document can nest modules in an array",
+      "Kambaz keeps a modules collection and stores the course id",
     ],
+    diagram: "sql-vs-document",
   },
   {
     id: "install",
@@ -39,79 +42,92 @@ export const LOCAL_MONGO_SLIDES: LectureSlide[] = [
     bullets: [
       "Download MongoDB Community Server for your OS",
       "Choose **run as a service** so it starts when you log in",
-      "Windows: Services dialog. macOS: System Settings MongoDB icon",
+      "Windows: Services. macOS: System Settings. Linux: `systemctl`",
       "Leave it set to start automatically while you work this chapter",
     ],
   },
   {
-    id: "manual",
-    title: "Optional: Homebrew or PATH",
+    id: "manual-macos",
+    title: "macOS: Homebrew or a PATH",
     kind: "demo",
     bullets: [
-      "The Atlas CLI (Atlas is MongoDB's hosted service) can stand up a local sandbox",
-      "Or unzip, add `bin` to PATH, then `which mongod`",
+      "Atlas CLI can stand up a local sandbox",
+      "Or unzip under `/usr/local` and add `bin` to PATH",
     ],
     code: `brew install mongodb-atlas
 atlas setup
 
 # ~/.zshrc — version folder will differ
-export PATH="$PATH:/usr/local/mongodb-macos-x86_64-8.0.4/bin"`,
+export PATH="$PATH:/usr/local/\\
+mongodb-macos-x86_64-8.0.4/bin"
+
+# /usr/local/mongodb-macos-aarch64-8.0.4/\\
+# bin/mongod --dbpath data`,
     codeLanguage: "bash",
   },
   {
-    id: "mongod",
-    title: "mongod listens on 27017",
+    id: "manual-windows",
+    title: "Windows: unzip and add PATH",
     kind: "demo",
     bullets: [
-      "Skip this if the installer already registered a service",
-      "Create `~/data`, then pass `--dbpath`. Leave that terminal open",
+      "Unzip under `C:\\Program Files`",
+      "Win+R, `sysdm.cpl`, Advanced, Environment Variables, edit Path",
+    ],
+    code: `# version folder will differ
+# C:\\Program Files\\
+# mongodb-windows-x86_64-8.0.4\\bin
+
+# C:\\Program Files\\
+# mongodb-windows-x86_64-8.0.4\\bin\\
+# mongod --dbpath data`,
+    codeLanguage: "bash",
+  },
+  {
+    id: "manual-linux",
+    title: "Linux: mongodb-org and systemctl",
+    kind: "demo",
+    bullets: [
+      "MongoDB's apt or yum repo, not the distro `mongodb` package",
+      "Package data dir: `/var/lib/mongodb` or `/var/lib/mongo`",
+      "Tarball: copy `bin` to `/usr/local/bin`, then `--dbpath`",
+    ],
+    code: `# Ubuntu
+sudo apt-get install -y mongodb-org
+# RHEL
+sudo yum install -y mongodb-org
+
+sudo systemctl start mongod
+sudo systemctl enable mongod
+sudo systemctl status mongod`,
+    codeLanguage: "bash",
+  },
+  {
+    id: "start-compass",
+    title: "Start mongod and Connect Compass",
+    kind: "demo",
+    bullets: [
+      "Skip this when the service is already listening",
+      "Otherwise create `data` and pass `--dbpath`",
+      "Connect fails when `mongod` is not listening",
     ],
     code: `cd ~
 mkdir data
-# macOS path and version will differ
-# /usr/local/mongodb-macos-aarch64-8.0.4/bin/mongod --dbpath data`,
+mongod --dbpath data
+
+mongodb://127.0.0.1:27017`,
     codeLanguage: "bash",
     interactiveHint:
-      "Waiting for connections on port 27017 means Compass and later Mongoose can reach it.",
+      "Port 27017 is the Compass New Connection URI and the host Mongoose uses next.",
   },
   {
-    id: "compass",
-    title: "Connect Compass to localhost",
+    id: "create-user",
+    title: "Create kambaz.users and Insert a User",
     kind: "demo",
     bullets: [
-      "Compass is the GUI. Spotlight or the Windows search finds it",
-      "New Connection should already show the local URI",
-      "If Connect fails, the service or `mongod` is not listening",
+      "Create database `kambaz` and collection `users` together",
+      "Keep **kambaz** — the URI later ends with `/kambaz`",
+      "ADD DATA → Insert document. `_id` is a string",
     ],
-    code: `mongodb://127.0.0.1:27017`,
-    codeLanguage: "text",
-    interactiveHint:
-      "Same host and port Mongoose uses next.",
-  },
-  {
-    id: "create-db",
-    title: "Create kambaz and users",
-    kind: "content",
-    bullets: [
-      "Click the connection, then Create database",
-      "Database `kambaz`, first collection `users` — both names together",
-      "MongoDB creates a database when the first collection is created",
-      "Keep the name **kambaz** — the connection string later ends with `/kambaz`",
-    ],
-  },
-  {
-    id: "insert-intro",
-    title: "Insert one user document",
-    kind: "demo",
-    bullets: [
-      "Select `kambaz` → `users`, then ADD DATA → Insert document",
-      "Shape matches `users.json` from Chapter 3 — `_id` is a string",
-    ],
-  },
-  {
-    id: "insert",
-    title: "Insert one user document (code)",
-    kind: "demo",
     code: `{
   "_id": "123",
   "username": "iron_man",
