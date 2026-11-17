@@ -1955,7 +1955,6 @@ describe("lecture decks", () => {
       },
       "kambaz-account-rest": { "signin-ui": "kambaz-styled-signin" },
       "kambaz-courses-api": { client: "kambaz-styled-dashboard" },
-      mongoose: { env: "lab6-status" },
       "mongo-apis": {
         "people-table": "kambaz-styled-people",
       },
@@ -3646,7 +3645,10 @@ describe("lecture decks", () => {
         "modules-architecture": "modules-dao",
         "assignments-architecture": "assignments-dao",
       },
-      "local-mongo": { purpose: "mongo-roadmap" },
+      "local-mongo": {
+        purpose: "mongo-roadmap",
+        nosql: "sql-vs-document",
+      },
       "mongo-apis": {
         "users-picture": "users-stack",
         "read-all-path": "users-read-all",

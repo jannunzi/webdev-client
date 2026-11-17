@@ -232,10 +232,7 @@ import {
   Lab5EnvEmbed,
   Lab5HelloEmbed,
 } from "./Lab5Embeds";
-import {
-  Lab6StatusEmbed,
-  Lab6UsersEmbed,
-} from "./Lab6Embeds";
+import { Lab6UsersEmbed } from "./Lab6Embeds";
 import {
   GrokModulesEmbed,
   GrokSparkleEmbed,
@@ -672,8 +669,6 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <Lab5ObjectsAsyncEmbed />;
     case "lab5-arrays-async":
       return <Lab5ArraysAsyncEmbed />;
-    case "lab6-status":
-      return <Lab6StatusEmbed />;
     case "lab6-users":
       return <Lab6UsersEmbed />;
     case "youtube-search":

@@ -30,11 +30,10 @@ export const LOCAL_MONGO_SLIDES: LectureSlide[] = [
     title: "Documents, not rows",
     kind: "content",
     bullets: [
-      "SQL tables store primitive columns; documents nest objects and arrays",
-      "No predefined schema — a library added later decides which shapes are valid",
-      "A course can hold modules and lessons without three foreign-key tables",
-      "Same `_id`, `username`, and `role` fields you already mapped in Account",
+      "SQL stores flat rows. A document can nest modules in an array",
+      "Kambaz keeps a modules collection and stores the course id",
     ],
+    diagram: "sql-vs-document",
   },
   {
     id: "install",

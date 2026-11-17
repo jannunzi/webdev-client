@@ -97,8 +97,14 @@ export default function Intro() {
           <OfficialLink href="https://mongoosejs.com/">
             Mongoose
           </OfficialLink>{" "}
-          schemas — that decides which shapes are valid.
+          schemas — that decides which shapes are valid. The figure
+          contrasts two SQL tables with one course document that
+          embeds its modules. Kambaz does not embed them. Each module
+          stays in the <code>modules</code>{" "}collection and stores
+          the course id, the <code>course</code>{" "}field in{" "}
+          <SectionLink to="6.4.2" />.
         </p>
+        <StackDiagram id="sql-vs-document" />
         <p>
           In the previous chapter we learned how to create an HTTP
           server with Node.js and{" "}

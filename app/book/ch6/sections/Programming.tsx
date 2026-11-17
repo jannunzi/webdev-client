@@ -189,7 +189,11 @@ await mongoose.connect(CONNECTION_STRING);`}</CodeBlock>
           datatypes Schemas and Models to interact with collections.
           Mongoose Schemas describe the structure of the data being
           stored in the database and are used to validate the data
-          being stored or modified through the Mongoose library. If a
+          being stored or modified through the Mongoose library. A
+          schema is the equivalent of a SQL table declaration, but
+          SQL tables are declared in the database while a Mongoose
+          schema is implemented in the application code. MongoDB
+          itself stays schemaless. If a
           route tries to insert a user without a username, Mongoose
           rejects the write before it reaches the collection. The
           schema shown below describes the structure for the{" "}
