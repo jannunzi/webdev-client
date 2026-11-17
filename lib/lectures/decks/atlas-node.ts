@@ -5,6 +5,11 @@ export const ATLAS_NODE_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#00ED64",
+      icon: "server",
+      headline: "Atlas from Node",
+    },
     bullets: [
       "Chapter 6 · Atlas from Node.js",
       "Network Access, then Drivers",

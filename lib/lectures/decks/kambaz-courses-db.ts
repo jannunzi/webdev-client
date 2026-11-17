@@ -5,6 +5,11 @@ export const KAMBAZ_COURSES_DB_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#C8102E",
+      icon: "database",
+      headline: "Courses in Mongo",
+    },
     bullets: [
       "Chapter 6 · Kambaz Courses DB",
       "CRUD courses in Mongo",

@@ -5,6 +5,11 @@ export const MONGOOSE_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#00ED64",
+      icon: "code",
+      headline: "Mongoose",
+    },
     bullets: [
       "Chapter 6 · Mongoose",
       "Connect, env, schema, DAO",

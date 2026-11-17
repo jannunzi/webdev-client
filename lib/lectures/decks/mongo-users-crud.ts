@@ -5,6 +5,11 @@ export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#00ED64",
+      icon: "user",
+      headline: "User CRUD",
+    },
     bullets: [
       "Chapter 6 · User CRUD",
       "Filter, id, mutate",

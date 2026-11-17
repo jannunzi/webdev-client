@@ -5,6 +5,11 @@ export const MONGO_APIS_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#00ED64",
+      icon: "server",
+      headline: "Mongo APIs",
+    },
     bullets: [
       "Chapter 6 · Mongo APIs",
       "Async routes, then find all",

@@ -5,6 +5,11 @@ export const ATLAS_SESSIONS_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#00ED64",
+      icon: "user",
+      headline: "Remote Sessions",
+    },
     bullets: [
       "Chapter 6 · Atlas remote sessions",
       "Five keys, then sign in",

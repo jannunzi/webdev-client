@@ -5,6 +5,11 @@ export const KAMBAZ_MODULES_DB_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#C8102E",
+      icon: "database",
+      headline: "Modules 1:N",
+    },
     bullets: [
       "Chapter 6 · Modules 1:N",
       "One course, many modules",

@@ -5,6 +5,11 @@ export const YOUTUBE_API_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#FF0000",
+      icon: "link",
+      headline: "YouTube API",
+    },
     bullets: [
       "Integrating with the YouTube Video API",
       "Data API v3 · key, then search",
@@ -13,7 +18,7 @@ export const YOUTUBE_API_SLIDES: LectureSlide[] = [
   {
     id: "api",
     title: "API",
-    kind: "title",
+    kind: "content",
     bullets: [
       "Google Cloud project, then an **API key**",
       "Enable **YouTube Data API v3**",
@@ -43,7 +48,7 @@ export const YOUTUBE_API_SLIDES: LectureSlide[] = [
   {
     id: "api-key",
     title: "API Key",
-    kind: "title",
+    kind: "content",
     bullets: [
       "Console → Credentials → **Create API key**",
       "Copy once. Do **not** commit it",

@@ -5,6 +5,11 @@ export const LOCAL_MONGO_SLIDES: LectureSlide[] = [
     id: "title",
     title: "WEB DEV",
     kind: "title",
+    cover: {
+      color: "#00ED64",
+      icon: "database",
+      headline: "Local MongoDB",
+    },
     bullets: [
       "Chapter 6 · Local MongoDB",
       "Install, Compass, then kambaz",

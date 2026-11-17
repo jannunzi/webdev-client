@@ -4435,6 +4435,28 @@ export const updateTitle = async (title: string) => {
   });
 });
 
+describe("Chapter 5 and 6 title covers", () => {
+  const ICONS = ["server", "code", "link", "check", "database", "user", "cloud"];
+
+  it("gives every chapter 5 and 6 opener a cover", () => {
+    for (const lecture of listLectures()) {
+      if (lecture.chapter !== 5 && lecture.chapter !== 6) continue;
+      const title = getLectureDeck(lecture.slug)!.slides[0]!;
+      assert.equal(title.id, "title", lecture.slug);
+      assert.equal(title.kind, "title", lecture.slug);
+      assert.ok(title.cover, `${lecture.slug} title slide needs a cover`);
+      assert.match(title.cover.color, /^#[0-9A-Fa-f]{6}$/, lecture.slug);
+      assert.ok(ICONS.includes(title.cover.icon), lecture.slug);
+      assert.ok(title.cover.headline.length > 0 && title.cover.headline.length <= 42, lecture.slug);
+    }
+    const youtube = findSlide("youtube-api", "title");
+    assert.equal(youtube.cover?.color, "#FF0000");
+    assert.equal(youtube.cover?.headline, "YouTube API");
+    assert.equal(findSlide("youtube-api", "api").kind, "content");
+    assert.equal(findSlide("youtube-api", "api-key").kind, "content");
+  });
+});
+
 describe("Chapter 5 next-up slides", () => {
   it("name the next deck by its cover title", () => {
     for (const l of listLectures().filter((l) => l.chapter === 5)) {
