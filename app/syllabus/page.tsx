@@ -9,8 +9,8 @@ export default async function Page({
 }) {
   const { section } = await searchParams;
   const raw = Array.isArray(section) ? section[0] : section;
-  const sectionId = sectionIdFromLegacyTab(raw);
-  const destination = sectionId ? legacySectionPath(sectionId) : undefined;
+  const sectionId = sectionIdFromLegacyTab(raw) ?? "cs5610-02";
+  const destination = legacySectionPath(sectionId);
   if (destination) redirect(destination);
   return <SyllabusPage />;
 }

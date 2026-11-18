@@ -6,6 +6,15 @@
  * with no sections yet (CS5500) is one card and uses its own book route.
  */
 
+import {
+  courseNumberPath,
+  FOUNDATIONS_SUBJECT,
+  parseSectionToken,
+  sectionSyllabusPath,
+  sharedPagePath,
+  WEBDEV_SUBJECT,
+} from "./routes";
+
 export type TermSeason = "Fall" | "Spring" | "Summer" | "Winter";
 
 export type OfferingStatus = "active" | "coming-soon";
@@ -57,8 +66,16 @@ export const courseOfferings: CourseOffering[] = [
     title: "Web Development",
     term: { season: "Spring", year: 2027 },
     status: "coming-soon",
-    syllabusHref: "/coming-soon/cs5610-sp2027",
-    bookHref: "/book",
+    syllabusHref: courseNumberPath({
+      year: "2027",
+      term: "spring",
+      subject: WEBDEV_SUBJECT,
+      courseNumber: "cs5610",
+    }),
+    bookHref: sharedPagePath(
+      { year: "2026", term: "fall", subject: WEBDEV_SUBJECT },
+      "book",
+    ),
     sections: [],
   },
   {
@@ -67,8 +84,16 @@ export const courseOfferings: CourseOffering[] = [
     title: "Web Development",
     term: { season: "Spring", year: 2027 },
     status: "coming-soon",
-    syllabusHref: "/coming-soon/cs4550-sp2027",
-    bookHref: "/book",
+    syllabusHref: courseNumberPath({
+      year: "2027",
+      term: "spring",
+      subject: WEBDEV_SUBJECT,
+      courseNumber: "cs4550",
+    }),
+    bookHref: sharedPagePath(
+      { year: "2026", term: "fall", subject: WEBDEV_SUBJECT },
+      "book",
+    ),
     sections: [],
   },
   {
@@ -77,20 +102,41 @@ export const courseOfferings: CourseOffering[] = [
     title: "Web Development",
     term: { season: "Fall", year: 2026 },
     status: "active",
-    syllabusHref: "/syllabus/cs5610-02",
-    bookHref: "/book",
+    syllabusHref: sectionSyllabusPath({
+      year: "2026",
+      term: "fall",
+      subject: WEBDEV_SUBJECT,
+      courseNumber: "cs5610",
+      section: "02",
+    }),
+    bookHref: sharedPagePath(
+      { year: "2026", term: "fall", subject: WEBDEV_SUBJECT },
+      "book",
+    ),
     sections: [
       {
         id: "cs5610-02",
         label: "CS5610-02",
         detail: "In person",
-        syllabusHref: "/syllabus/cs5610-02",
+        syllabusHref: sectionSyllabusPath({
+          year: "2026",
+          term: "fall",
+          subject: WEBDEV_SUBJECT,
+          courseNumber: "cs5610",
+          section: "02",
+        }),
       },
       {
         id: "cs5610-09",
         label: "CS5610-09",
         detail: "Online",
-        syllabusHref: "/syllabus/cs5610-09",
+        syllabusHref: sectionSyllabusPath({
+          year: "2026",
+          term: "fall",
+          subject: WEBDEV_SUBJECT,
+          courseNumber: "cs5610",
+          section: "09",
+        }),
       },
     ],
   },
@@ -100,14 +146,29 @@ export const courseOfferings: CourseOffering[] = [
     title: "Web Development",
     term: { season: "Fall", year: 2026 },
     status: "active",
-    syllabusHref: "/syllabus/cs4550-01",
-    bookHref: "/book",
+    syllabusHref: sectionSyllabusPath({
+      year: "2026",
+      term: "fall",
+      subject: WEBDEV_SUBJECT,
+      courseNumber: "cs4550",
+      section: "01",
+    }),
+    bookHref: sharedPagePath(
+      { year: "2026", term: "fall", subject: WEBDEV_SUBJECT },
+      "book",
+    ),
     sections: [
       {
         id: "cs4550-01",
         label: "CS4550-01",
         detail: "In person",
-        syllabusHref: "/syllabus/cs4550-01",
+        syllabusHref: sectionSyllabusPath({
+          year: "2026",
+          term: "fall",
+          subject: WEBDEV_SUBJECT,
+          courseNumber: "cs4550",
+          section: "01",
+        }),
       },
     ],
   },
@@ -117,8 +178,16 @@ export const courseOfferings: CourseOffering[] = [
     title: "Foundations of Software Engineering",
     term: { season: "Summer", year: 2027 },
     status: "coming-soon",
-    syllabusHref: "/cs5500",
-    bookHref: "/cs5500/book",
+    syllabusHref: courseNumberPath({
+      year: "2027",
+      term: "summer",
+      subject: FOUNDATIONS_SUBJECT,
+      courseNumber: "cs5500",
+    }),
+    bookHref: sharedPagePath(
+      { year: "2027", term: "summer", subject: FOUNDATIONS_SUBJECT },
+      "book",
+    ),
     sections: [],
   },
 ];
@@ -226,27 +295,28 @@ export function landingCards(
   return landingGroups(offerings).flatMap((group) => group.cards);
 }
 
-const TAB_ID_PREFIX = "syllabus-tab-";
-
 /**
- * Section id from an old tab address: `cs5610-02`, `#cs5610-02`, or
- * `syllabus-tab-cs5610-02` (the tab button id).
+ * Section id from an old tab address: `cs5610-02`, `#cs5610-02`,
+ * `CS5610-02`, or `syllabus-tab-cs5610-02`.
  */
 export function sectionIdFromLegacyTab(
   value: string | null | undefined,
 ): string | undefined {
-  if (!value) return undefined;
-  let token = value.trim();
-  if (token.startsWith("#")) token = token.slice(1);
-  if (token.startsWith(TAB_ID_PREFIX)) token = token.slice(TAB_ID_PREFIX.length);
-  if (!token) return undefined;
-  const card = landingCards().find((item) => item.sectionId === token);
-  return card?.sectionId ?? undefined;
+  const parsed = parseSectionToken(value);
+  if (!parsed) return undefined;
+  return `${parsed.courseNumber}-${parsed.section}`;
 }
 
 export function legacySectionPath(sectionId: string): string | undefined {
-  const card = landingCards().find((item) => item.sectionId === sectionId);
-  return card?.href;
+  const parsed = parseSectionToken(sectionId);
+  if (!parsed) return undefined;
+  return sectionSyllabusPath({
+    year: "2026",
+    term: "fall",
+    subject: WEBDEV_SUBJECT,
+    courseNumber: parsed.courseNumber,
+    section: parsed.section,
+  });
 }
 
 /** Path aliases for the old section tabs. Query and hash forms are handled on `/syllabus`. */

@@ -1,6 +1,7 @@
 import path from "node:path";
 import type { NextConfig } from "next";
 import { legacyTabRedirects } from "./lib/courses/offerings";
+import { courseContentRewrites } from "./lib/courses/routes";
 
 const inlineEditLoader = path.join(process.cwd(), "lib/inline-edit/loader.cjs");
 
@@ -33,6 +34,9 @@ const nextConfig: NextConfig = {
       use: [inlineEditLoader],
     });
     return config;
+  },
+  async rewrites() {
+    return { beforeFiles: courseContentRewrites() };
   },
   async redirects() {
     return [

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import CourseBreadcrumb from "@/app/courses/CourseBreadcrumb";
-import { sectionIdFromLegacyTab } from "@/lib/courses/offerings";
+import { legacySectionPath, sectionIdFromLegacyTab } from "@/lib/courses/offerings";
 import {
   SECTION_STORAGE_KEY,
   findSection,
@@ -126,16 +126,18 @@ export default function SyllabusView({
   const router = useRouter();
 
   useEffect(() => {
-    if (lockedSectionId) {
-      try {
-        window.localStorage.setItem(SECTION_STORAGE_KEY, lockedSectionId);
-      } catch {
-        // Storage blocked: this visit still shows the section from the URL.
-      }
+    const fromHash = sectionIdFromLegacyTab(window.location.hash);
+    const hashPath = fromHash ? legacySectionPath(fromHash) : undefined;
+    if (hashPath && hashPath !== window.location.pathname) {
+      router.replace(hashPath);
       return;
     }
-    const fromHash = sectionIdFromLegacyTab(window.location.hash);
-    if (fromHash) router.replace(`/syllabus/${fromHash}`);
+    if (!lockedSectionId) return;
+    try {
+      window.localStorage.setItem(SECTION_STORAGE_KEY, lockedSectionId);
+    } catch {
+      // Storage blocked: this visit still shows the section from the URL.
+    }
   }, [lockedSectionId, router]);
 
   const section = useMemo(

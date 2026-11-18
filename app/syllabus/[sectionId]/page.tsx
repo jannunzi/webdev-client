@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import CourseBreadcrumb from "@/app/courses/CourseBreadcrumb";
-import { landingCards, type LandingCard } from "@/lib/courses/offerings";
+import { landingCards, legacySectionPath, type LandingCard } from "@/lib/courses/offerings";
 import { sections } from "../data/sections";
 import SyllabusPage from "../SyllabusPage";
 
@@ -50,6 +50,8 @@ export default async function SectionSyllabusPage({
   params: Promise<{ sectionId: string }>;
 }) {
   const { sectionId } = await params;
+  const destination = legacySectionPath(sectionId);
+  if (destination) redirect(destination);
   if (sections.some((section) => section.id === sectionId)) {
     return <SyllabusPage sectionId={sectionId} />;
   }

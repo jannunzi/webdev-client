@@ -4,10 +4,11 @@ import CourseSiteHeader from "./CourseSiteHeader";
 
 export default function CourseInfoLayout({
   children,
-}: Readonly<{ children: ReactNode }>) {
+  header = "auto",
+}: Readonly<{ children: ReactNode; header?: "auto" | "home" | "full" }>) {
   return (
     <div className="book-shell min-h-screen">
-      <CourseSiteHeader />
+      <CourseSiteHeader variant={header} />
       <main className="min-w-0 py-8">
         <div className="page-content px-4 sm:px-6">{children}</div>
       </main>

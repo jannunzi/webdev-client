@@ -1,3 +1,5 @@
+import { contextualHref, type CourseContext } from "@/lib/courses/routes";
+
 export const COURSE_INFO_LINKS = [
   { href: "/", label: "Courses" },
   { href: "/syllabus", label: "Syllabus" },
@@ -14,20 +16,28 @@ export const COURSE_INFO_LINKS = [
 
 export type CourseInfoHref = (typeof COURSE_INFO_LINKS)[number]["href"];
 
-export function courseNavItems(showBook2: boolean): { href: string; label: string }[] {
+export function courseNavItems(
+  showBook2: boolean,
+  context: CourseContext | null = null,
+): { href: string; label: string }[] {
   const items: { href: string; label: string }[] = COURSE_INFO_LINKS.map((link) => ({
-    href: link.href,
+    href: contextualHref(link.href, context),
     label: link.label,
   }));
   if (!showBook2) return items;
-  const bookAt = items.findIndex((item) => item.href === "/book");
+  const bookAt = items.findIndex((item) => item.label === "Book");
   items.splice(bookAt + 1, 0, { href: "/book2", label: "book2" });
   return items;
 }
 
 export function isCourseNavCurrent(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/";
   if (href === "/book2") return pathname === "/book2" || pathname.startsWith("/book2/");
-  return isCourseInfoCurrent(pathname, href as CourseInfoHref);
+  if (pathname === href || pathname.startsWith(`${href}/`)) return true;
+  if ((COURSE_INFO_LINKS as readonly { href: string }[]).some((link) => link.href === href)) {
+    return isCourseInfoCurrent(pathname, href as CourseInfoHref);
+  }
+  return false;
 }
 
 export function isCourseInfoCurrent(
