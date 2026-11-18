@@ -133,6 +133,16 @@ export function SlideBlockView({
           {block.type === "component" ? <ComponentView block={block} /> : null}
         </div>
   ));
+  if (slide.layout === "code-columns") {
+    const bullets = blocks.filter((_, index) => slide.blocks[index]!.type !== "code");
+    const codes = blocks.filter((_, index) => slide.blocks[index]!.type === "code");
+    return (
+      <div className="lecture-code-columns-slide">
+        {bullets}
+        <div className="lecture-code-columns">{codes}</div>
+      </div>
+    );
+  }
   if (slide.layout === "split") {
     // Bullets left, portrait demo right.
     return (

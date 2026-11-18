@@ -99,7 +99,7 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
       "`.then()` runs a callback when the response arrives",
       "`.catch()` runs when the request fails",
     ],
-    code: `export const fetchTodos = () =>
+    code: `export const fetchTodosWithPromise = () =>
   axios.get(TODOS_API).then(response => response.data);`,
     codeLanguage: "ts",
     codeFile: "app/labs/lab5/client.ts",
@@ -121,16 +121,27 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     id: "fetch-todos-await",
     title: "fetchTodos with await",
     kind: "demo",
+    layout: "code-columns",
     bullets: [
-      "`fetchTodos` in `client.ts` waits on `axios.get(TODOS_API)`",
+      "Both return the same todos. The await version reads top to bottom",
     ],
-    code: `const TODOS_API = \`\${HTTP_SERVER}/lab5/todos\`;
+    codeBlocks: [
+      {
+        file: "app/labs/lab5/client.ts",
+        language: "ts",
+        code: `export const fetchTodosWithPromise = () =>
+  axios.get(TODOS_API).then(response => response.data);`,
+      },
+      {
+        file: "app/labs/lab5/client.ts",
+        language: "ts",
+        code: `const TODOS_API = \`\${HTTP_SERVER}/lab5/todos\`;
 export const fetchTodos = async () => {
   const response = await axios.get(TODOS_API);
   return response.data;
 };`,
-    codeLanguage: "ts",
-    codeFile: "app/labs/lab5/client.ts",
+      },
+    ],
   },
   {
     id: "axios-how",

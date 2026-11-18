@@ -83,8 +83,8 @@ export type BlockSlide = {
   hintLoc?: InlineLoc;
   captionLoc?: InlineLoc;
   density?: LectureSlideDensity;
-  /** "split": bullets on the left, component on the right. */
-  layout?: "split";
+  /** "split": bullets on the left, component on the right. "code-columns": snippets side by side. */
+  layout?: "split" | "code-columns";
   cover?: LectureCover;
   /** Clickable route URLs (open in a new tab). */
   links?: string[];

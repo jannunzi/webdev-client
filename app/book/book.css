@@ -1064,6 +1064,58 @@ html.lecture-presenting body {
  * copy and grows into the leftover height. The graphic scales uniformly
  * inside that slot (see DiagramFit) and does not spill past the slide.
  */
+/* Two client.ts listings side by side. The columns fill leftover height and match. */
+.lecture-slide[data-code-columns="true"] {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.lecture-slide[data-code-columns="true"] .lecture-code-columns-slide {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.lecture-code-columns {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+.lecture-code-columns > .lecture-block {
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.lecture-code-columns > .lecture-block > div {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.lecture-code-columns .book-code-block {
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+  margin-block: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.lecture-code-columns .book-code-block-body {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
 .lecture-slide[data-diagram-fit="stack"] {
   display: flex;
   flex-direction: column;

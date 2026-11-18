@@ -1087,10 +1087,13 @@ app.get("/lab5/todos/:id/title/:title", updateTodoTitle);`}</CodeBlock>
             <code>await</code>{" "}(ES2017) is the standard style today,
             and the listings in this section use it.{" "}
             <code>TODOS_API</code>{" "}is{" "}
-            <code>{`\${HTTP_SERVER}/lab5/todos`}</code>. Reading every
-            todo with a promise is{" "}
+            <code>{`\${HTTP_SERVER}/lab5/todos`}</code>.{" "}
+            <code>fetchTodosWithPromise</code>{" "}reads every todo with a
+            promise:{" "}
             <code>axios.get(TODOS_API).then(response =&gt; response.data)</code>.
-            The same read as <code>fetchTodos</code>{" "}waits instead:{" "}
+            Both return the same todos. The same read as{" "}
+            <code>fetchTodos</code>{" "}waits instead, and that version reads
+            top to bottom:{" "}
             <code>const response = await axios.get(TODOS_API)</code>{" "}
             and then <code>return response.data</code>.
           </p>

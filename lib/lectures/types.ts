@@ -807,8 +807,8 @@ export type LectureSlide = {
    * tighter so diagrams/embeds still fit, but does not shrink-to-avoid-scroll.
    */
   density?: LectureSlideDensity;
-  /** "split": bullets on the left, embed on the right (portrait demos). */
-  layout?: "split";
+  /** "split": bullets on the left, embed on the right. "code-columns": snippets side by side, equal height. */
+  layout?: "split" | "code-columns";
   /** Opt-in thumbnail-style cover for `kind: "title"` slides. */
   cover?: LectureCover;
   /** Server routes to try, e.g. `http://localhost:4000/hello`. Open in a new tab. */
