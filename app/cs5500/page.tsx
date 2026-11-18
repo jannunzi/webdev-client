@@ -3,6 +3,7 @@ import CourseBreadcrumb from "@/app/courses/CourseBreadcrumb";
 import { offeringById, offeringHeading } from "@/lib/courses/offerings";
 import Cs5500AiCourses from "./Cs5500AiCourses";
 import Cs5500AiStrategies from "./Cs5500AiStrategies";
+import Cs5500DominoCompare from "./Cs5500DominoCompare";
 import Cs5500Resources from "./Cs5500Resources";
 import Cs5500Schedule from "./Cs5500Schedule";
 
@@ -31,6 +32,7 @@ export default function Cs5500Page() {
       </p>
       <Cs5500AiStrategies />
       <Cs5500AiCourses />
+      <Cs5500DominoCompare />
       <Cs5500Schedule />
       <Cs5500Resources />
     </article>
