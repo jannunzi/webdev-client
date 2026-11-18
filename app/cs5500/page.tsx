@@ -1,6 +1,7 @@
 import Link from "next/link";
 import CourseBreadcrumb from "@/app/courses/CourseBreadcrumb";
 import { offeringById, offeringHeading } from "@/lib/courses/offerings";
+import Cs5500AiStrategies from "./Cs5500AiStrategies";
 import Cs5500Resources from "./Cs5500Resources";
 
 export default function Cs5500Page() {
@@ -26,6 +27,7 @@ export default function Cs5500Page() {
           </>
         ) : null}
       </p>
+      <Cs5500AiStrategies />
       <Cs5500Resources />
     </article>
   );
