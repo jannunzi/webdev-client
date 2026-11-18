@@ -1,5 +1,6 @@
 import path from "node:path";
 import type { NextConfig } from "next";
+import { legacyTabRedirects } from "./lib/courses/offerings";
 
 const inlineEditLoader = path.join(process.cwd(), "lib/inline-edit/loader.cjs");
 
@@ -35,11 +36,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      {
-        source: "/",
-        destination: "/syllabus",
-        permanent: false,
-      },
+      ...legacyTabRedirects(),
       {
         source: "/lectures",
         destination: "/slides",

@@ -1,4 +1,5 @@
 export const COURSE_INFO_LINKS = [
+  { href: "/", label: "Courses" },
   { href: "/syllabus", label: "Syllabus" },
   { href: "/book", label: "Book" },
   { href: "/blog", label: "Blog" },

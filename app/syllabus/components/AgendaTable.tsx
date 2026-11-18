@@ -67,8 +67,6 @@ export default function AgendaTable({
       <p>{CANVAS_QUIZ_WINDOWS_NOTE}</p>
       <div
         id="syllabus-agenda-panel"
-        role="tabpanel"
-        aria-labelledby={`syllabus-tab-${section.id}`}
         className="overflow-x-auto rounded-md border border-neutral-200"
       >
         <table className="w-full border-collapse text-left text-sm">
