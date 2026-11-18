@@ -1,8 +1,10 @@
 import Link from "next/link";
 import CourseBreadcrumb from "@/app/courses/CourseBreadcrumb";
 import { offeringById, offeringHeading } from "@/lib/courses/offerings";
+import Cs5500AiCourses from "./Cs5500AiCourses";
 import Cs5500AiStrategies from "./Cs5500AiStrategies";
 import Cs5500Resources from "./Cs5500Resources";
+import Cs5500Schedule from "./Cs5500Schedule";
 
 export default function Cs5500Page() {
   const offering = offeringById("cs5500-su2027");
@@ -28,6 +30,8 @@ export default function Cs5500Page() {
         ) : null}
       </p>
       <Cs5500AiStrategies />
+      <Cs5500AiCourses />
+      <Cs5500Schedule />
       <Cs5500Resources />
     </article>
   );
