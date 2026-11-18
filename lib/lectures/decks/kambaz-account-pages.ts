@@ -14,6 +14,7 @@ export const KAMBAZ_ACCOUNT_PAGES_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing Account Pages and Sign Up",
     kind: "content",
+    diagram: "account-pages-goal",
     bullets: [
       "Account screens change depending on whether someone is signed in",
       "Profile lets the signed-in user edit their details and sign out",

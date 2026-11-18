@@ -14,6 +14,7 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing Course State Management",
     kind: "content",
+    diagram: "courses-store-goal",
     bullets: [
       "Chapter 3 made Kambaz data-driven, but the data never changes",
       "Application state is data many screens share and users can change",

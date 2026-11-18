@@ -14,6 +14,7 @@ export const TAILWIND_RESPONSIVE_SLIDES: LectureSlide[] = [
     id: "intro",
     title: "Implementing Responsive Design",
     kind: "content",
+    diagram: "tailwind-breakpoints",
     bullets: [
       "A **responsive** page changes as the viewport — the browser window — gets wider",
       "As with media queries, a **breakpoint** is a viewport width at which styles change. Tailwind names five of those widths",

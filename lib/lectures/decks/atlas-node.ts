@@ -20,6 +20,7 @@ export const ATLAS_NODE_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Connecting Node.js to Atlas",
     kind: "content",
+    diagram: "atlas-node-goal",
     bullets: [
       "Compass can see Atlas. Mongoose on Render still cannot",
       "Open Network Access so free Render outbound IPs can reach the cluster",

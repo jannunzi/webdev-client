@@ -14,6 +14,7 @@ export const KAMBAZ_DASHBOARD_DATA_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing a Data-Driven Dashboard",
     kind: "content",
+    diagram: "dashboard-data-goal",
     bullets: [
       "Refactor the Chapter 2 dashboard so it maps JSON, not three hardcoded cards",
       "Pass each course as one `course` prop and key the card by `course._id`",

@@ -14,6 +14,7 @@ export const KAMBAZ_COURSES_DATA_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing Course Data",
     kind: "content",
+    diagram: "courses-data-goal",
     bullets: [
       "The layout lives at `app/(kambaz)/courses/[cid]/layout.tsx`",
       "Await `params`, then `find` the course whose `_id` matches `cid`",

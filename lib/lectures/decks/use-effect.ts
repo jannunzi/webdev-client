@@ -14,6 +14,7 @@ export const USE_EFFECT_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing useEffect",
     kind: "content",
+    diagram: "use-effect-goal",
     bullets: [
       "The component body should compute JSX from props and state",
       "Talking to `document`, a timer, or a network is a side effect",

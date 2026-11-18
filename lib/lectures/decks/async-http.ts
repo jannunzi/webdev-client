@@ -20,6 +20,7 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Fetching Data Without Leaving the Page",
     kind: "content",
+    diagram: "async-http-goal",
     bullets: [
       "Links to the server replace the whole page with the raw reply",
       "Real apps fetch data in the background and update just part of the page",

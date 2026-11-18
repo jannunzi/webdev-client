@@ -14,6 +14,7 @@ export const REACT_CONTEXT_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing React Context",
     kind: "content",
+    diagram: "react-context-goal",
     bullets: [
       "A parent publishes a value. Any descendant can read it",
       "Right tool: theme, signed-in user, current course id",

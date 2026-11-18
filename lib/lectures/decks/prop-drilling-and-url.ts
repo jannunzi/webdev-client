@@ -14,6 +14,7 @@ export const PROP_DRILLING_AND_URL_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing Prop Drilling and URL State",
     kind: "content",
+    diagram: "prop-drill-goal",
     bullets: [
       "Lift to a parent and pass props — works until the tree is deep",
       "Encode the value in the next page’s URL — query or path",

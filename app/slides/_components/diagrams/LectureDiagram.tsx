@@ -43,9 +43,18 @@ import YoutubeEnableApiMock from "./YoutubeEnableApiMock";
 import YoutubeSaveFlow from "./YoutubeSaveFlow";
 import YoutubeSearchFlow from "./YoutubeSearchFlow";
 import { isStackDiagram, StackDiagram } from "./StackDiagrams";
+import { GoalDiagram, isGoalDiagram } from "./GoalDiagrams";
+import type { LectureDiagramFocus } from "@/lib/lectures/types";
 
-export default function LectureDiagram({ id }: { id: LectureDiagramId }) {
+export default function LectureDiagram({
+  id,
+  focus,
+}: {
+  id: LectureDiagramId;
+  focus?: LectureDiagramFocus;
+}) {
   if (isStackDiagram(id)) return <StackDiagram id={id} />;
+  if (isGoalDiagram(id)) return <GoalDiagram id={id} />;
   switch (id) {
     case "network-of-networks":
       return <NetworkOfNetworksDiagram />;
@@ -110,7 +119,7 @@ export default function LectureDiagram({ id }: { id: LectureDiagramId }) {
     case "env-same-code":
       return <EnvSameCodeDiagram />;
     case "account-dao":
-      return <AccountDaoDiagram />;
+      return <AccountDaoDiagram focus={focus} />;
     case "courses-dao":
       return <CoursesTierDiagram />;
     case "modules-dao":

@@ -14,6 +14,7 @@ export const KAMBAZ_MODULES_DATA_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing Modules Data",
     kind: "content",
+    diagram: "modules-data-goal",
     bullets: [
       "Each module in `modules.json` has a `course` field matching a course `_id`",
       "Filter by the `cid` from `useParams`, then map modules and nested lessons",

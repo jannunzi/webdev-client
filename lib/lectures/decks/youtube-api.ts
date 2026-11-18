@@ -20,6 +20,7 @@ export const YOUTUBE_API_SLIDES: LectureSlide[] = [
     id: "api",
     title: "YouTube Data API v3",
     kind: "content",
+    diagram: "youtube-api-goal",
     bullets: [
       "Google Cloud project, then an **API key**",
       "Enable **YouTube Data API v3**",

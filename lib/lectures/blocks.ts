@@ -4,6 +4,7 @@ import {
   isBookKambazTargetSrc,
   lectureSlideCodeBlocks,
   type LectureCodeBlock,
+  type LectureDiagramFocus,
   type LectureDiagramId,
   type LectureEmbedId,
   type LectureSlide,
@@ -75,6 +76,7 @@ export type BlockSlide = {
   blocks: SlideBlock[];
   interactiveHint?: string;
   diagram?: LectureDiagramId;
+  diagramFocus?: LectureDiagramFocus;
   imageSrc?: string;
   imageAlt?: string;
   imageCaption?: string;
@@ -346,6 +348,7 @@ export function toBlockSlide(slide: AuthoredSlide): BlockSlide {
       : slide.interactiveHint,
     ...(hintLoc ? { hintLoc } : {}),
     diagram: slide.diagram,
+    ...(slide.diagramFocus ? { diagramFocus: slide.diagramFocus } : {}),
     imageSrc: slide.imageSrc,
     imageAlt: slide.imageAlt,
     imageCaption: isEditableMark(slide.imageCaption)

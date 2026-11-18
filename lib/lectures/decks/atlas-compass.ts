@@ -20,6 +20,7 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Connecting Compass to Atlas",
     kind: "content",
+    diagram: "atlas-compass-goal",
     bullets: [
       "Local Compass is still on `mongodb://127.0.0.1:27017`",
       "The cluster you just created needs its own Compass window",

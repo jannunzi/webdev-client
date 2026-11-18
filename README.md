@@ -490,7 +490,13 @@ first object's line and `]` on the last object's line, and those rows
 are left-aligned so the objects line up. Title bands keep square bottoms.
 Arrows stay in the standard request/response style. The figure fills
 the leftover slide height, then scales uniformly so the aspect ratio
-holds (`DiagramFit`). Index thumbs are branded SVG cards in
+holds (`DiagramFit`). Each deck opens with a high-level diagram on
+slide 2 or 3 that shows the deck's overall goal, unless a diagram would
+not explain that goal: a language or styling drill whose next slides are
+the syntax, or a screen build whose target screenshot is already the
+picture. Reuse a later diagram when that figure is the overview.
+Otherwise add a simple figure with the same box, arrow, and fit rules.
+Index thumbs are branded SVG cards in
 `public/lectures/thumbs/` — see `public/lectures/README.md`. Commands and
 source live in `LectureSlide.code` / `codeBlocks`, not as bullet items.
 

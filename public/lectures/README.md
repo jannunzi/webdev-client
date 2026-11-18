@@ -23,6 +23,12 @@ last object's line, and those rows are left-aligned so the objects
 line up. Keep square-bottom title bands, the standard arrows, and
 fill-height-then-scale (`DiagramFit` in the slide shell).
 
+Each deck should open with a high-level diagram on slide 2 or 3 that
+shows the deck's overall goal, unless a diagram would not explain that
+goal (a language or styling drill whose next slides are the syntax, or a
+screen build whose target screenshot is already the picture). Reuse a
+diagram from later in the deck when that figure is the overview.
+
 `LECTURE_DIAGRAM_IDS` in `lib/lectures/types.ts` is the catalog of
 diagrams and product-UI mocks (browser chrome + key labels, not
 screenshots). Live React demos stay on `embed` (User card, Welcome

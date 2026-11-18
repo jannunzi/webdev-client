@@ -20,6 +20,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Serving APIs from Next.js Itself",
     kind: "content",
+    diagram: "next-routes-goal",
     bullets: [
       "Express runs as a separate server on port 4000",
       "Next.js can also answer API requests from files in `app/api/`",

@@ -20,6 +20,7 @@ export const ATLAS_SESSIONS_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing Remote Sessions",
     kind: "content",
+    diagram: "atlas-sessions-goal",
     bullets: [
       "Local Node already stores `currentUser` in a cookie",
       "Render must store `currentUser` in the session so Vercel can send `connect.sid` back",

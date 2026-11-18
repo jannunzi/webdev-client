@@ -14,6 +14,7 @@ export const KAMBAZ_DATABASE_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing the Kambaz Database",
     kind: "content",
+    diagram: "kambaz-db-goal",
     bullets: [
       "Chapters 1–2 built screens whose markup never changed",
       "Lab 3 drills were throwaway. Wire Kambaz so the UI follows JSON",

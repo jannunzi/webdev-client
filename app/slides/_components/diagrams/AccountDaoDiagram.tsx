@@ -20,17 +20,28 @@ function ClassBox({
   stereotype,
   members,
   tone,
+  focused = false,
 }: {
   x: number;
   name: string;
   stereotype: string;
   members: string[];
   tone: Tone;
+  focused?: boolean;
 }) {
   const padded = Array.from({ length: ROWS }, (_, index) => members[index] ?? "");
   return (
     <g>
-      <rect x={x} y={BOX_Y} width={BOX_W} height={BOX_H} rx={8} fill={tone.body} stroke={tone.stroke} strokeWidth={3} />
+      <rect
+        x={x}
+        y={BOX_Y}
+        width={BOX_W}
+        height={BOX_H}
+        rx={8}
+        fill={tone.body}
+        stroke={tone.stroke}
+        strokeWidth={focused ? 6 : 3}
+      />
       <path
         d={`M${x} ${BOX_Y + 8} a8 8 0 0 1 8 -8 h${BOX_W - 16} a8 8 0 0 1 8 8 v${HEADER_H - 8} h-${BOX_W} z`}
         fill={tone.header}
@@ -108,6 +119,8 @@ function HArrow({ x1, x2, y, label }: { x1: number; x2: number; y: number; label
   );
 }
 
+export type TierDiagramFocus = "ui" | "client" | "routes" | "dao";
+
 type TierSpec = {
   titleId: string;
   title: string;
@@ -119,6 +132,7 @@ type TierSpec = {
   routesMembers: string[];
   daoName: string;
   daoMembers: string[];
+  focus?: TierDiagramFocus;
 };
 
 export function TierDiagram({
@@ -132,6 +146,7 @@ export function TierDiagram({
   routesMembers,
   daoName,
   daoMembers,
+  focus,
 }: TierSpec) {
   const uiX = 32;
   const clientX = 352;
@@ -140,18 +155,22 @@ export function TierDiagram({
   const dbX = 1488;
   const midY = BOX_Y + BOX_H / 2;
   const groupY = 12;
-  const groupH = BOX_Y + BOX_H + 16 - groupY;
   const clientGroupX = uiX - 16;
   const clientGroupW = clientX + BOX_W + 16 - clientGroupX;
   const serverGroupX = routesX - 16;
   const serverGroupW = dbX + BOX_W + 16 - serverGroupX;
   const filesX = dbX + BOX_W + 88;
   const filesY = BOX_Y + 36;
+  const focusX =
+    focus === "ui" ? uiX : focus === "client" ? clientX : focus === "routes" ? routesX : focus === "dao" ? daoX : null;
+  const hereExtra = focusX == null ? 0 : 78;
+  const groupBottom = BOX_Y + BOX_H + 16 + hereExtra;
+  const groupH = groupBottom - groupY;
 
   return (
     <svg
       role="img"
-      viewBox="0 0 2048 292"
+      viewBox={`0 0 2048 ${292 + hereExtra}`}
       aria-labelledby={titleId}
     >
       <title id={titleId}>{title}</title>
@@ -170,6 +189,7 @@ export function TierDiagram({
         stereotype="<<UI>>"
         members={uiMembers}
         tone={BLUE}
+        focused={focusX === uiX}
       />
       <ClassBox
         x={clientX}
@@ -177,6 +197,7 @@ export function TierDiagram({
         stereotype="<<client.ts>>"
         members={clientMembers}
         tone={BLUE}
+        focused={focusX === clientX}
       />
       <ClassBox
         x={routesX}
@@ -184,6 +205,7 @@ export function TierDiagram({
         stereotype="<<routes.ts>>"
         members={routesMembers}
         tone={YELLOW}
+        focused={focusX === routesX}
       />
       <ClassBox
         x={daoX}
@@ -191,6 +213,7 @@ export function TierDiagram({
         stereotype="<<dao.ts>>"
         members={daoMembers}
         tone={YELLOW}
+        focused={focusX === daoX}
       />
       <ClassBox
         x={dbX}
@@ -256,6 +279,33 @@ export function TierDiagram({
       <HArrow x1={clientX + BOX_W} x2={routesX} y={midY} label="HTTP requests" />
       <HArrow x1={routesX + BOX_W} x2={daoX} y={midY} label="calls" />
       <HArrow x1={daoX + BOX_W} x2={dbX} y={midY} label={"reads/updates\nin memory"} />
+      {focusX == null ? null : (
+        <g>
+          <line
+            x1={focusX + BOX_W / 2}
+            y1={BOX_Y + BOX_H + 46}
+            x2={focusX + BOX_W / 2}
+            y2={BOX_Y + BOX_H + 16}
+            stroke="#171717"
+            strokeWidth={3}
+          />
+          <polygon
+            points={`${focusX + BOX_W / 2},${BOX_Y + BOX_H + 4} ${focusX + BOX_W / 2 - 8},${BOX_Y + BOX_H + 18} ${focusX + BOX_W / 2 + 8},${BOX_Y + BOX_H + 18}`}
+            fill="#171717"
+          />
+          <text
+            x={focusX + BOX_W / 2}
+            y={BOX_Y + BOX_H + 66}
+            textAnchor="middle"
+            fontFamily={FONT}
+            fontSize={15}
+            fontWeight={700}
+            fill="#171717"
+          >
+            you are here
+          </text>
+        </g>
+      )}
     </svg>
   );
 }
@@ -286,8 +336,8 @@ const ACCOUNT: TierSpec = {
   ],
 };
 
-export default function AccountDaoDiagram() {
-  return <TierDiagram {...ACCOUNT} />;
+export default function AccountDaoDiagram({ focus }: { focus?: TierDiagramFocus }) {
+  return <TierDiagram {...ACCOUNT} focus={focus} />;
 }
 
 export function CoursesTierDiagram() {

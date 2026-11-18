@@ -14,6 +14,7 @@ export const ZUSTAND_COUNTER_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing a Zustand Counter",
     kind: "content",
+    diagram: "zustand-counter-goal",
     bullets: [
       "Zustand (German for state) is a small, popular library for shared state",
       "Its docs use a joke about bears. It is not a misspelling of bare",

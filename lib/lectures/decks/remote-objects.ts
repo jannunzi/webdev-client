@@ -22,6 +22,7 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Keeping Objects on the Server",
     kind: "content",
+    diagram: "remote-objects-goal",
     bullets: [
       "Numbers and strings were a start. Real apps keep objects, like an assignment",
       "The server holds one assignment object in memory for every client",

@@ -14,6 +14,7 @@ export const HTML_AND_DOM_SLIDES: LectureSlide[] = [
     id: "html-means",
     title: "Introduction to HTML and the DOM",
     kind: "content",
+    diagram: "dom-tree",
     bullets: [
       "**HTML** stands for **HyperText Markup Language**",
       "A language browsers understand so they can **format** webpages",

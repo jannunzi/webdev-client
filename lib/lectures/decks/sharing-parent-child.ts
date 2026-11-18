@@ -14,6 +14,7 @@ export const SHARING_PARENT_CHILD_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing Parent-Child State Sharing",
     kind: "content",
+    diagram: "sharing-parent-goal",
     bullets: [
       "A sibling cannot read another component’s `useState`",
       "Move the value and setter to a parent both can reach",
