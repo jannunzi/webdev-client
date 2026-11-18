@@ -70,8 +70,10 @@ function Arrow({
 function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidth: number }) {
   const gap = 108;
   const heights = boxes.map((box) => boxHeight(box.lines.length));
+  // Side-by-side boxes share the tallest height so the row reads as one band.
+  const boxH = Math.max(...heights);
   const width = 36 + boxes.length * boxWidth + (boxes.length - 1) * gap + 36;
-  const height = 24 + Math.max(...heights) + 20;
+  const height = 24 + boxH + 20;
   const top = 20;
   const requestY = top + HEADER_H + 10;
   const responseY = top + HEADER_H + 32;
@@ -82,7 +84,7 @@ function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidt
       {boxes.map((box, index) => {
         const tone: Tone = TONES[box.tone];
         const x = 36 + index * (boxWidth + gap);
-        const h = heights[index]!;
+        const h = boxH;
         const stroke = box.emphasis ? 6 : 3;
         return (
           <g key={`${box.name}-${index}`}>
@@ -579,16 +581,13 @@ function SqlVsDocument() {
   "_id": "RS101",
   "name": "Rocket Propulsion",
   "number": "RS4550",
-  "modules": [
-    {
+  "modules": [{
       "_id": "M101",
       "name": "Introduction to Rocket Propulsion"
-    },
-    {
+    }, {
       "_id": "M102",
       "name": "Fuel and Combustion"
-    }
-  ]
+    }]
 }`.split("\n");
   const leftW = 36 + modulesW + 36;
   const rightX = leftW + 28;
@@ -690,7 +689,8 @@ function ArraysPicture() {
   const routeH = boxHeight(ARRAY_ROUTES.length);
   const clientH = boxHeight(ARRAY_METHODS.length);
   const uiH = boxHeight(1);
-  const height = 24 + routeH + 20;
+  const boxH = Math.max(routeH, clientH, uiH);
+  const height = 24 + boxH + 20;
   const top = 20;
   const requestY = top + HEADER_H + 18;
   const responseY = top + HEADER_H + 52;
@@ -698,7 +698,7 @@ function ArraysPicture() {
     {
       x: uiX,
       w: uiW,
-      h: uiH,
+      h: boxH,
       name: "WorkingWithRemoteArrays",
       lines: ["WorkingWithRemoteArrays.tsx"],
       tone: BLUE,
@@ -706,7 +706,7 @@ function ArraysPicture() {
     {
       x: clientX,
       w: clientW,
-      h: clientH,
+      h: boxH,
       name: "client.ts",
       lines: ARRAY_METHODS,
       tone: BLUE,
@@ -714,7 +714,7 @@ function ArraysPicture() {
     {
       x: routeX,
       w: routeW,
-      h: routeH,
+      h: boxH,
       name: "WorkingWithRemoteArrays.ts",
       lines: ARRAY_ROUTES,
       tone: YELLOW,

@@ -849,6 +849,7 @@ export default function LectureDeckShell({
           data-demo-stage={demoStage ? "true" : undefined}
           data-target-figure={targetFigure ? "true" : undefined}
           data-diagram-fit={hasFittedDiagram ? "stack" : undefined}
+          data-code-columns={slide.layout === "code-columns" ? "true" : undefined}
           data-lecture-present={
             fallbackPresent ? "fallback" : isNativeFullscreen ? "native" : undefined
           }

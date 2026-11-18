@@ -484,7 +484,13 @@ are not nested under `/book`.
 Press **f** (or the Fullscreen button) for presentation mode; **Esc** exits.
 Add `?fullscreen=1` to retry fullscreen after the next click (browsers require
 a gesture). Slide figures are authored SVG/React in
-`app/slides/_components/diagrams/`. Index thumbs are branded SVG cards in
+`app/slides/_components/diagrams/`. Side-by-side boxes in one diagram
+share the height of the tallest box. A JSON array keeps `[` on the
+first object's line and `]` on the last object's line, and those rows
+are left-aligned so the objects line up. Title bands keep square bottoms.
+Arrows stay in the standard request/response style. The figure fills
+the leftover slide height, then scales uniformly so the aspect ratio
+holds (`DiagramFit`). Index thumbs are branded SVG cards in
 `public/lectures/thumbs/` — see `public/lectures/README.md`. Commands and
 source live in `LectureSlide.code` / `codeBlocks`, not as bullet items.
 

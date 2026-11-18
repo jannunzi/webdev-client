@@ -53,7 +53,7 @@ export default function ReactDataUiDiagram() {
           React
         </text>
 
-        <rect x="378" y="86" width="196" height="108" rx="12" fill="#fee2e2" stroke="#171717" strokeWidth="2.5" />
+        <rect x="378" y="28" width="196" height="224" rx="12" fill="#fee2e2" stroke="#171717" strokeWidth="2.5" />
         <text x="476" y="132" textAnchor="middle" fontSize="22" fontWeight="700" fontFamily="ui-sans-serif, system-ui, sans-serif">
           User()
         </text>

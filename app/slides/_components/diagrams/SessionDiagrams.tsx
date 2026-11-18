@@ -293,11 +293,11 @@ export function ManySessionsDiagram() {
             <ArrowHead x={520} y={y + 70} dir={1} />
             <line x1={820} y1={y + 70} x2={1004} y2={y + 70} stroke="#171717" strokeWidth={3} />
             <ArrowHead x={1020} y={y + 70} dir={1} />
-            <rect x={1040} y={y + 10} width={300} height={120} rx={10} fill="#fff" stroke={RED.stroke} strokeWidth={3} />
-            <text x={1190} y={y + 58} textAnchor="middle" fontFamily={FONT} fontSize={20} fontWeight={700} fill="#171717">
+            <rect x={1040} y={y} width={300} height={140} rx={10} fill="#fff" stroke={RED.stroke} strokeWidth={3} />
+            <text x={1190} y={y + 64} textAnchor="middle" fontFamily={FONT} fontSize={20} fontWeight={700} fill="#171717">
               {row.cookie.split(" ")[1]}
             </text>
-            <text x={1190} y={y + 94} textAnchor="middle" fontFamily={FONT} fontSize={18} fill="#171717">
+            <text x={1190} y={y + 100} textAnchor="middle" fontFamily={FONT} fontSize={18} fill="#171717">
               {row.session}
             </text>
           </g>

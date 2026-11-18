@@ -17,6 +17,12 @@ Exception: the Lab 5 path, object, array, and HTTP-server decks may set
 with `imageAlt` that describes the flow. Those files are the slide figures.
 They are not Google Slides crops and not index cards.
 
+Side-by-side boxes in one diagram share the height of the tallest
+box. A JSON array keeps `[` on the first object's line and `]` on the
+last object's line, and those rows are left-aligned so the objects
+line up. Keep square-bottom title bands, the standard arrows, and
+fill-height-then-scale (`DiagramFit` in the slide shell).
+
 `LECTURE_DIAGRAM_IDS` in `lib/lectures/types.ts` is the catalog of
 diagrams and product-UI mocks (browser chrome + key labels, not
 screenshots). Live React demos stay on `embed` (User card, Welcome
