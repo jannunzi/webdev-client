@@ -6,6 +6,8 @@
  * with no sections yet (CS5500) is one card and uses its own book route.
  */
 
+import { formatMeetingWeekdays } from "@/app/syllabus/data/dates";
+import { sections as syllabusSections } from "@/app/syllabus/data/sections";
 import {
   courseNumberPath,
   FOUNDATIONS_SUBJECT,
@@ -45,6 +47,14 @@ export type CourseOffering = {
   syllabusHref: string;
   bookHref: string;
   sections: OfferingSection[];
+  /**
+   * Meeting facts when the offering has no syllabus section yet.
+   * Online offerings omit a room.
+   */
+  meeting?: {
+    delivery: "Online" | "In person";
+    when: string;
+  };
 };
 
 const SEASON_RANK: Record<TermSeason, number> = {
@@ -189,13 +199,22 @@ export const courseOfferings: CourseOffering[] = [
       "book",
     ),
     sections: [],
+    meeting: {
+      delivery: "Online",
+      when: "Mon/Wed 3:00–4:30 PM",
+    },
   },
 ];
 
 export type LandingCard = {
   id: string;
   offeringId: string;
+  /** Long label used outside the card, including term. */
   heading: string;
+  /** Card title: CS5610-02, or CS5610 when there is no section yet. */
+  title: string;
+  /** Course name, delivery, and meeting facts. No course number or section. */
+  lines: string[];
   term: CourseTerm;
   sectionId: string | null;
   sectionLabel: string | null;
@@ -212,11 +231,9 @@ export type LandingGroup = {
   cards: LandingCard[];
 };
 
-/** Column classes so three sections sit on one desktop row and wrap below that. */
-export function termCardGridClass(cardCount: number): string {
-  if (cardCount >= 3) return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
-  if (cardCount === 2) return "grid-cols-1 sm:grid-cols-2";
-  return "grid-cols-1";
+/** Same card width in every term: 3 columns on desktop, 2 on tablet, 1 on a phone. */
+export function termCardGridClass(): string {
+  return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
 }
 
 export function termLabel(term: CourseTerm): string {
@@ -232,6 +249,19 @@ export function offeringById(id: string): CourseOffering | undefined {
   return courseOfferings.find((offering) => offering.id === id);
 }
 
+function meetingLines(sectionId: string, fallbackDetail?: string): string[] {
+  const section = syllabusSections.find((item) => item.id === sectionId);
+  if (!section) return fallbackDetail ? [fallbackDetail] : [];
+  const lines = [section.modality === "online" ? "Online" : "In person"];
+  if (section.daysOfWeek.length > 0 && section.time) {
+    lines.push(`${formatMeetingWeekdays(section.daysOfWeek)}, ${section.time}`);
+  }
+  if (section.modality !== "online" && section.location.trim()) {
+    lines.push(section.location);
+  }
+  return lines;
+}
+
 function cardsForOffering(offering: CourseOffering): LandingCard[] {
   const heading = offeringHeading(offering);
   if (offering.sections.length === 0) {
@@ -240,6 +270,13 @@ function cardsForOffering(offering: CourseOffering): LandingCard[] {
         id: offering.id,
         offeringId: offering.id,
         heading,
+        title: offering.courseNumber,
+        lines: [
+          offering.title,
+          ...(offering.meeting
+            ? [offering.meeting.delivery, offering.meeting.when]
+            : []),
+        ],
         term: offering.term,
         sectionId: null,
         sectionLabel: null,
@@ -254,6 +291,8 @@ function cardsForOffering(offering: CourseOffering): LandingCard[] {
     id: section.id,
     offeringId: offering.id,
     heading,
+    title: section.label,
+    lines: [offering.title, ...meetingLines(section.id, section.detail)],
     term: offering.term,
     sectionId: section.id,
     sectionLabel: section.label,
