@@ -4,5 +4,5 @@ import CourseInfoLayout from "@/app/course-info/CourseInfoLayout";
 export default function ComingSoonLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  return <CourseInfoLayout>{children}</CourseInfoLayout>;
+  return <CourseInfoLayout header="home">{children}</CourseInfoLayout>;
 }

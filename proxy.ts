@@ -7,6 +7,7 @@ import {
   passwordChangeRedirect,
   resolveMustChangePassword,
 } from "@/lib/auth/must-change-password";
+import { legacyCourseRedirect } from "@/lib/courses/routes";
 
 /**
  * Next.js 16 proxy (formerly middleware). Clerk uses this to attach session
@@ -52,15 +53,40 @@ async function redirectIfPasswordChangeRequired(
   return NextResponse.redirect(url, status);
 }
 
+const COURSE_PATH_HEADER = "x-course-path";
+
+/** 307 old course URLs, and remember the public path for the header. */
+function withCourseRouting(request: NextRequest): NextResponse {
+  const redirectTo = legacyCourseRedirect(
+    request.nextUrl.pathname,
+    request.nextUrl.searchParams,
+  );
+  if (redirectTo) {
+    const destination = request.nextUrl.clone();
+    destination.pathname = redirectTo.pathname;
+    destination.search = redirectTo.search;
+    return NextResponse.redirect(destination, 307);
+  }
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set(COURSE_PATH_HEADER, request.nextUrl.pathname);
+  return NextResponse.next({ request: { headers: requestHeaders } });
+}
+
 export default clerkKeysPresent()
   ? clerkMiddleware(async (auth, request) => {
       const { userId, sessionClaims } = await auth();
-      if (!userId) return;
-      if (isPasswordChangeExemptPath(request.nextUrl.pathname)) return;
-      return redirectIfPasswordChangeRequired(userId, sessionClaims, request);
+      if (userId && !isPasswordChangeExemptPath(request.nextUrl.pathname)) {
+        const passwordRedirect = await redirectIfPasswordChangeRequired(
+          userId,
+          sessionClaims,
+          request,
+        );
+        if (passwordRedirect) return passwordRedirect;
+      }
+      return withCourseRouting(request);
     })
-  : function proxy() {
-      return NextResponse.next();
+  : function proxy(request: NextRequest) {
+      return withCourseRouting(request);
     };
 
 export const config = {

@@ -40,7 +40,7 @@ describe("course offerings", () => {
     const summer = groups[0]?.cards[0];
     assert.equal(summer?.heading, "CS5500 · Foundations of Software Engineering · Summer 2027");
     assert.equal(summer?.status, "coming-soon");
-    assert.equal(summer?.href, "/cs5500");
+    assert.equal(summer?.href, "/2027/summer/fse/cs5500");
 
     const spring = groups[1]?.cards ?? [];
     assert.deepEqual(
@@ -53,15 +53,19 @@ describe("course offerings", () => {
     for (const card of spring) {
       assert.equal(card.status, "coming-soon");
       assert.equal(card.sectionId, null);
-      assert.equal(card.bookHref, "/book");
-      assert.match(card.href, /^\/coming-soon\//);
+      assert.equal(card.bookHref, "/2026/fall/webdev/book");
+      assert.match(card.href, /^\/2027\/spring\/webdev\//);
     }
 
     const fall = groups[2];
     assert.equal(termCardGridClass(fall?.cards.length ?? 0), "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3");
     assert.deepEqual(
       fall?.cards.map((card) => card.href),
-      ["/syllabus/cs5610-02", "/syllabus/cs5610-09", "/syllabus/cs4550-01"],
+      [
+        "/2026/fall/webdev/cs5610/02/syllabus",
+        "/2026/fall/webdev/cs5610/09/syllabus",
+        "/2026/fall/webdev/cs4550/01/syllabus",
+      ],
     );
     assert.deepEqual(
       sections.map((section) => section.id),
@@ -98,8 +102,8 @@ describe("course offerings", () => {
     assert.equal(offering.courseNumber, "CS5500");
     assert.equal(offering.title, "Foundations of Software Engineering");
     assert.deepEqual(offering.term, { season: "Summer", year: 2027 });
-    assert.equal(offering.syllabusHref, "/cs5500");
-    assert.equal(offering.bookHref, "/cs5500/book");
+    assert.equal(offering.syllabusHref, "/2027/summer/fse/cs5500");
+    assert.equal(offering.bookHref, "/2027/summer/fse/book");
     assert.deepEqual(offering.sections, []);
     assert.equal(
       offeringHeading(offering),
@@ -109,8 +113,8 @@ describe("course offerings", () => {
     const card = landingCards().find((item) => item.offeringId === "cs5500-su2027");
     assert.ok(card);
     assert.equal(card.status, "coming-soon");
-    assert.equal(card.href, "/cs5500");
-    assert.equal(card.bookHref, "/cs5500/book");
+    assert.equal(card.href, "/2027/summer/fse/cs5500");
+    assert.equal(card.bookHref, "/2027/summer/fse/book");
     assert.equal(card.sectionLabel, null);
   });
 
@@ -121,7 +125,7 @@ describe("course offerings", () => {
       ["CS5610", "CS4550"],
     );
     for (const offering of active) {
-      assert.equal(offering.bookHref, "/book");
+      assert.equal(offering.bookHref, "/2026/fall/webdev/book");
     }
   });
 
@@ -132,7 +136,7 @@ describe("course offerings", () => {
     assert.equal(sectionIdFromLegacyTab("#syllabus-tab-cs5610-02"), "cs5610-02");
     assert.equal(sectionIdFromLegacyTab("cs5500"), undefined);
     assert.equal(sectionIdFromLegacyTab(""), undefined);
-    assert.equal(legacySectionPath("cs4550-01"), "/syllabus/cs4550-01");
+    assert.equal(legacySectionPath("cs4550-01"), "/2026/fall/webdev/cs4550/01/syllabus");
     assert.equal(legacySectionPath("missing"), undefined);
   });
 
@@ -141,12 +145,12 @@ describe("course offerings", () => {
     assert.deepEqual(
       redirects.map((item) => [item.source, item.destination]),
       [
-        ["/syllabus-tab-cs5610-02", "/syllabus/cs5610-02"],
-        ["/cs5610-02", "/syllabus/cs5610-02"],
-        ["/syllabus-tab-cs5610-09", "/syllabus/cs5610-09"],
-        ["/cs5610-09", "/syllabus/cs5610-09"],
-        ["/syllabus-tab-cs4550-01", "/syllabus/cs4550-01"],
-        ["/cs4550-01", "/syllabus/cs4550-01"],
+        ["/syllabus-tab-cs5610-02", "/2026/fall/webdev/cs5610/02/syllabus"],
+        ["/cs5610-02", "/2026/fall/webdev/cs5610/02/syllabus"],
+        ["/syllabus-tab-cs5610-09", "/2026/fall/webdev/cs5610/09/syllabus"],
+        ["/cs5610-09", "/2026/fall/webdev/cs5610/09/syllabus"],
+        ["/syllabus-tab-cs4550-01", "/2026/fall/webdev/cs4550/01/syllabus"],
+        ["/cs4550-01", "/2026/fall/webdev/cs4550/01/syllabus"],
       ],
     );
     for (const item of redirects) assert.equal(item.permanent, false);
@@ -182,7 +186,7 @@ describe("course landing routes", () => {
     assert.equal(isCourseInfoCurrent("/syllabus", "/"), false);
     assert.equal(isCourseInfoCurrent("/syllabus/cs5610-02", "/"), false);
     assert.equal(isCourseInfoCurrent("/syllabus/cs5610-02", "/syllabus"), true);
-    assert.equal(isCourseInfoCurrent("/cs5500", "/syllabus"), false);
-    assert.equal(isCourseInfoCurrent("/cs5500/book", "/book"), false);
+    assert.equal(isCourseInfoCurrent("/2027/summer/fse/cs5500", "/syllabus"), false);
+    assert.equal(isCourseInfoCurrent("/2027/summer/fse/book", "/book"), false);
   });
 });

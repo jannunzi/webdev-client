@@ -3,22 +3,25 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import type { CourseContext } from "@/lib/courses/routes";
 import { courseNavItems, isCourseNavCurrent } from "./links";
 
 function CourseLinkList({
   className,
   onNavigate,
   showBook2,
+  context,
+  pathname,
 }: {
   className?: string;
   onNavigate?: () => void;
   showBook2: boolean;
+  context: CourseContext | null;
+  pathname: string;
 }) {
-  const pathname = usePathname();
-
   return (
     <ul className={className}>
-      {courseNavItems(showBook2).map((link) => {
+      {courseNavItems(showBook2, context).map((link) => {
         const current = isCourseNavCurrent(pathname, link.href);
         return (
           <li key={link.href}>
@@ -40,7 +43,15 @@ function CourseLinkList({
   );
 }
 
-export default function CourseSiteNav() {
+export default function CourseSiteNav({
+  context = null,
+  pathname: serverPath = "",
+}: {
+  context?: CourseContext | null;
+  pathname?: string;
+}) {
+  const clientPath = usePathname();
+  const pathname = serverPath || clientPath;
   const [showBook2, setShowBook2] = useState(false);
   useEffect(() => {
     let cancelled = false;
@@ -62,11 +73,15 @@ export default function CourseSiteNav() {
         </summary>
         <CourseLinkList
           showBook2={showBook2}
+          context={context}
+          pathname={pathname}
           className="mt-2 flex list-none flex-col gap-1 p-0"
         />
       </details>
       <CourseLinkList
         showBook2={showBook2}
+        context={context}
+        pathname={pathname}
         className="m-0 hidden list-none flex-wrap items-center gap-x-3 gap-y-1 p-0 md:flex"
       />
     </nav>
