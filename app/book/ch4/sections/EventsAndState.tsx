@@ -407,16 +407,12 @@ export default function CounterBroken() {
           <CounterBroken />
         </LiveDemo>
         <p>
-          For the DOM to be updated as expected, we need to tell React
-          that changes to a particular variable are indeed relevant to
-          changes in the DOM. To do this, use the{" "}
-          <code>useState</code>{" "}hook to declare the state variable, and
-          update it using the mutator function. Calling the setter queues
-          a new render with the new value. Implement the{" "}
-          <code>Counter</code>{" "}component below, import it in Lab 4, and
-          confirm it works as expected. Do the same with the rest of the
-          exercises that follow.
-        </p>
+{"For the DOM to be updated as expected, we need to tell React that changes to a particular variable are indeed relevant to changes in the DOM. To do this, use the "}
+<code>useState</code>
+{" hook to declare the state variable, and update it using the mutator function. Calling the setter queues a new render with the new value. Implement the "}
+<code>Counter</code>
+{" component below, import it in Lab 4, and confirm it works as expected. Do the same with the rest of the exercises that follow."}
+</p>
         <CodeBlock
           language="tsx"
           name="Counter"
