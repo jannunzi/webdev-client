@@ -180,7 +180,7 @@ export default function LectureDeckApp({
     delete extraDecks[slug];
     writeHubDraft(storage, { ...hub, titles, extraDecks });
     if (wasExtra && !authored) {
-      window.location.href = "/slides?edit=1";
+      window.location.href = "/2026/fall/webdev/slides?edit=1";
       return;
     }
     if (authoredBlocks) {
@@ -234,9 +234,9 @@ export default function LectureDeckApp({
           it. Open the slides index, or create a deck in edit mode.
         </p>
         <p>
-          <Link href="/slides">All slides</Link>
+          <Link href="/2026/fall/webdev/slides">All slides</Link>
           {" · "}
-          <Link href="/slides?edit=1">Edit hub</Link>
+          <Link href="/2026/fall/webdev/slides?edit=1">Edit hub</Link>
         </p>
       </article>
     );
@@ -245,7 +245,7 @@ export default function LectureDeckApp({
   const editHref = lectureEditHref({
     href:
       typeof window === "undefined"
-        ? `/slides/${slug}`
+        ? `/2026/fall/webdev/slides/${slug}`
         : window.location.href,
     edit: !editMode,
   });
@@ -330,7 +330,7 @@ export default function LectureDeckApp({
               <span>
                 This deck is still on the legacy slide shape (read-only). Pilot
                 edit mode:{" "}
-                <Link href="/slides/installing-nodejs?edit=1">
+                <Link href="/2026/fall/webdev/slides/installing-nodejs?edit=1">
                   Installing Node.js
                 </Link>
                 .

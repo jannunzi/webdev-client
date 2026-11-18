@@ -1,3 +1,4 @@
+import { COVER_KAMBAZ } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const KAMBAZ_COURSES_DB_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const KAMBAZ_COURSES_DB_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#C8102E",
+      color: COVER_KAMBAZ,
       icon: "database",
       headline: "Courses in Mongo",
     },
@@ -39,7 +40,7 @@ export const KAMBAZ_COURSES_DB_SLIDES: LectureSlide[] = [
     title: "Course schema keeps string ids",
     kind: "demo",
     bullets: [
-      "`_id` stays `String` so enrollments can store it",
+      "`_id` stays `String` so an enrollment can store the course id",
       "`CourseModel` is the name enrollments `ref`",
     ],
     code: `import mongoose from "mongoose";
@@ -61,7 +62,7 @@ export default courseSchema;`,
     title: "CourseModel from the schema",
     kind: "demo",
     bullets: [
-      "Same call as `UserModel`: `mongoose.model` from the schema",
+      "Same call as `UserModel`: `mongoose.model(\"CourseModel\", schema)`",
     ],
     code: `import mongoose from "mongoose";
 import schema from "./schema";
@@ -119,7 +120,7 @@ async function findCoursesForEnrolledUser(userId) {
     kind: "demo",
     bullets: [
       "`userId === \"current\"` still reads the session — 401 if anonymous",
-      "Only the lookup behind it is now a promise",
+      "Only `dao.findAllCourses()` is now a promise",
     ],
   },
   {
@@ -222,7 +223,7 @@ app.get("/api/courses/:courseId", findCourseById);`,
     id: "delete-path",
     title: "DELETE /api/courses/:courseId",
     kind: "demo",
-    bullets: ["Delete the document, then drop it from the store"],
+    bullets: ["`DELETE /api/courses/:courseId` deletes the course, then the store drops that course"],
     diagram: "courses-delete",
   },
   {
@@ -340,7 +341,7 @@ const onUpdateCourse = async () => {
     id: "create-path",
     title: "POST /api/courses",
     kind: "demo",
-    bullets: ["The store appends the course the server returned"],
+    bullets: ["The store appends the course `POST /api/courses` returned"],
     diagram: "courses-create",
   },
   {
@@ -349,7 +350,7 @@ const onUpdateCourse = async () => {
     kind: "demo",
     bullets: [
       "Spread the course, set `_id: uuidv4()`, then `model.create`",
-      "The route still enrolls the current user",
+      "`POST /api/courses` still enrolls `currentUser` in the new course",
     ],
     code: `function createCourse(course) {
   const newCourse = { ...course, _id: uuidv4() };

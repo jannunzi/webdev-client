@@ -1,3 +1,4 @@
+import { COVER_MONGO } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const ATLAS_SESSIONS_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const ATLAS_SESSIONS_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#00ED64",
+      color: COVER_MONGO,
       icon: "user",
       headline: "Remote Sessions",
     },
@@ -21,7 +22,7 @@ export const ATLAS_SESSIONS_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "Local Node already stores `currentUser` in a cookie",
-      "Render must do the same so Vercel can send that cookie back",
+      "Render must store `currentUser` in the session so Vercel can send `connect.sid` back",
       "CORS and `sameSite` read `CLIENT_URL` and `SERVER_ENV`",
       "The Atlas URI is one of the five keys — not the only one",
     ],
@@ -67,8 +68,8 @@ SESSION_SECRET=a long random phrase`,
     kind: "demo",
     bullets: [
       "`SERVER_ENV=production` turns on secure cookies",
-      "`sameSite: \"none\"` and `secure: true` let Vercel send them",
-      "Leave this as `development` on your laptop",
+      "`sameSite: \"none\"` and `secure: true` let the browser send the session cookie from Vercel",
+      "Leave `SERVER_ENV` as `development` on your laptop",
     ],
     code: `if (process.env.SERVER_ENV === "production") {
   app.set("trust proxy", 1);
@@ -88,7 +89,7 @@ SESSION_SECRET=a long random phrase`,
     kind: "content",
     bullets: [
       "Render hostname only — `your-webdev-server.onrender.com`",
-      "Strip `https://` if the dashboard prefilled it",
+      "Strip `https://` if the Render dashboard prefilled `SERVER_URL`",
       "Vercel `NEXT_PUBLIC_HTTP_SERVER` **does** include `https://`",
     ],
   },

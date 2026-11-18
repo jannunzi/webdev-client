@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { toPublicCourseHref } from "@/lib/courses/routes";
 import { rewriteBookPath, type BookBase } from "@/lib/book-editor/book2-path";
 import SelfCheck from "../../components/SelfCheck";
 import {
@@ -38,8 +39,13 @@ export function PracticeQuizArticle({
   quiz: PracticeQuiz;
   linkBase?: BookBase;
 }) {
-  const sectionHref = `${rewriteBookPath(quiz.chapterHref, linkBase)}#${quiz.sectionId}`;
-  const practiceHref = rewriteBookPath("/book/practice", linkBase);
+  const chapterHref =
+    linkBase === "/book2"
+      ? rewriteBookPath(quiz.chapterHref, linkBase)
+      : toPublicCourseHref(quiz.chapterHref);
+  const sectionHref = `${chapterHref}#${quiz.sectionId}`;
+  const practiceHref =
+    linkBase === "/book2" ? rewriteBookPath("/book/practice", linkBase) : toPublicCourseHref("/book/practice");
   return (
     <article className="book-content">
       <nav
@@ -65,7 +71,7 @@ export function PracticeQuizArticle({
         Drawn from{" "}
         <Link href={sectionHref}>{quiz.sectionLabel}</Link>
         {" in "}
-        <Link href={rewriteBookPath(quiz.chapterHref, linkBase)}>{quiz.chapterLabel}</Link>.
+        <Link href={chapterHref}>{quiz.chapterLabel}</Link>.
       </p>
 
       <SelfCheck quizId={quiz.quizId} bank={quiz.bank} count={quiz.count} />

@@ -163,7 +163,7 @@ export default async function AssignmentsIndexPage() {
               className="rounded-lg border border-neutral-300 bg-white p-4 shadow-sm"
             >
               <h2 className="mt-0 mb-1 flex flex-wrap items-center gap-2 font-sans text-lg font-semibold">
-                <Link href={`/assignments/${item.id}`}>
+                <Link href={`/2026/fall/webdev/assignments/${item.id}`}>
                   {item.canvasId} — {item.title}
                 </Link>
                 {status ? <AssignmentStatusBadge status={status} /> : null}
@@ -180,7 +180,7 @@ export default async function AssignmentsIndexPage() {
               <p className="mb-3 mt-0 text-neutral-800">{item.summary}</p>
               <div className="flex flex-wrap gap-2">
                 <Link
-                  href={`/assignments/${item.id}`}
+                  href={`/2026/fall/webdev/assignments/${item.id}`}
                   className="book-practice-cta inline-block rounded border border-neutral-800 bg-neutral-800 px-3 py-2 text-sm"
                 >
                   {item.status === "ready"

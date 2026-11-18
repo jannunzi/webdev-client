@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { toPublicCourseHref } from "@/lib/courses/routes";
 import { usePathname } from "next/navigation";
 import {
   useCallback,
@@ -1216,7 +1217,12 @@ function TocPanel({
 }
 
 export function chaptersForBase(base: BookBase = "/book"): ChapterToc[] {
-  if (base === "/book") return CHAPTERS;
+  if (base === "/book") {
+    return CHAPTERS.map((chapter) => ({
+      ...chapter,
+      href: toPublicCourseHref(chapter.href),
+    }));
+  }
   return CHAPTERS.map((chapter) => ({ ...chapter, href: rewriteBookPath(chapter.href, base) }));
 }
 
@@ -1543,8 +1549,8 @@ export default function BookTOC({ base = "/book" }: { base?: BookBase }) {
       suppressScrollPauseRef={suppressScrollPauseRef}
       resumeHref={resume?.href ?? null}
       resumeLabel={resume?.label ?? null}
-      homeHref={base === "/book2" ? "/book2" : "/book"}
-      practiceHref={base === "/book2" ? "/book2/practice" : "/book/practice"}
+      homeHref={base === "/book2" ? "/book2" : toPublicCourseHref("/book")}
+      practiceHref={base === "/book2" ? "/book2/practice" : toPublicCourseHref("/book/practice")}
       prevChapter={prevChapter}
       nextChapter={nextChapter}
       onNavigate={onNavigate}

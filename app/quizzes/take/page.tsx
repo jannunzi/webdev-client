@@ -35,15 +35,15 @@ export default function TakeQuizIndexPage() {
           <Link href="/quizzes/staff">Staff attempts</Link>
           {" · "}
         </StaffOnly>
-        <Link href="/book">Course book</Link>
+        <Link href="/2026/fall/webdev/book">Course book</Link>
         {" · "}
-        <Link href="/blog">Blog</Link>
+        <Link href="/2026/fall/webdev/blog">Blog</Link>
         {" · "}
-        <Link href="/assignments">Assignments</Link>
+        <Link href="/2026/fall/webdev/assignments">Assignments</Link>
         {" · "}
-        <Link href="/slides">Slides</Link>
+        <Link href="/2026/fall/webdev/slides">Slides</Link>
         {" · "}
-        <Link href="/book/practice">Practice (ungraded)</Link>
+        <Link href="/2026/fall/webdev/book/practice">Practice (ungraded)</Link>
       </p>
       <h1 className="mt-0 text-3xl font-semibold tracking-tight">
         Graded quizzes
@@ -57,7 +57,7 @@ export default function TakeQuizIndexPage() {
         {STUDENT_COPY.takeIndexLead} After you submit an exam, the same URL is
         how you come back for your score and — during the class-wide review
         week — the answers. Ungraded practice self-checks stay on{" "}
-        <Link href="/book/practice">/book/practice</Link>.
+        <Link href="/2026/fall/webdev/book/practice">/book/practice</Link>.
         <StaffOnly>
           {" "}
           Author review banks (answers shown) stay on{" "}

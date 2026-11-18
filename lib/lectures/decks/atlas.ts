@@ -1,3 +1,4 @@
+import { COVER_MONGO } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const ATLAS_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const ATLAS_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#00ED64",
+      color: COVER_MONGO,
       icon: "cloud",
       headline: "Atlas",
     },
@@ -34,7 +35,7 @@ export const ATLAS_SLIDES: LectureSlide[] = [
       "Free cluster, Compass import, Network Access, then a **new** Render service",
       "Same `DATABASE_CONNECTION_STRING` key you already used on localhost",
       "Do not overwrite the Chapter 5 `a5` URL while TAs are grading",
-      "A6 and the 12/7 project both grade against this hosted cluster",
+      "A6 and the 12/7 project both grade against the Atlas cluster",
     ],
   },
   {
@@ -64,8 +65,8 @@ export const ATLAS_SLIDES: LectureSlide[] = [
     bullets: [
       "Create a database user on the Connect screen — for example `giuseppi`",
       "These credentials are how Mongoose logs in from Render",
-      "Store them in a password manager. Do **not** commit the password",
-      "Forget them and you must create a new user later",
+      "Store the database username and password in a password manager",
+      "Do **not** commit the password. A lost password means a new database user",
     ],
   },
   {
@@ -75,7 +76,7 @@ export const ATLAS_SLIDES: LectureSlide[] = [
     bullets: [
       "Atlas URIs use `mongodb+srv://`, not `mongodb://127.0.0.1`",
       "The host will differ. Scheme, username, password, and cluster matter",
-      "Next lecture pastes this into Compass. Later, Drivers add `/kambaz?`",
+      "The next deck pastes this `mongodb+srv://` URI into Compass. Drivers later add `/kambaz?`",
     ],
     code: `mongodb+srv://giuseppi:supersecretpassword@kambaz.jxui0bc.mongodb.net/`,
     codeLanguage: "text",

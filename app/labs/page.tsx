@@ -12,62 +12,62 @@ export default function Labs() {
           </Link>
         </li>
         <li>
-          <Link href="/labs/lab1" id="wd-lab1-link">
+          <Link href="/2026/fall/webdev/labs/lab1" id="wd-lab1-link">
             Lab 1: HTML Examples
           </Link>
         </li>
         <li>
-          <Link href="/labs/lab2" id="wd-lab2-link">
+          <Link href="/2026/fall/webdev/labs/lab2" id="wd-lab2-link">
             Lab 2: CSS Basics
           </Link>
         </li>
         <li>
-          <Link href="/labs/lab3" id="wd-lab3-link">
+          <Link href="/2026/fall/webdev/labs/lab3" id="wd-lab3-link">
             Lab 3: JavaScript Fundamentals
           </Link>
         </li>
         <li>
-          <Link href="/labs/lab4" id="wd-lab4-link">
+          <Link href="/2026/fall/webdev/labs/lab4" id="wd-lab4-link">
             Lab 4: Client State
           </Link>
         </li>
         <li>
-          <Link href="/labs/lab5" id="wd-lab5-link">
+          <Link href="/2026/fall/webdev/labs/lab5" id="wd-lab5-link">
             Lab 5: RESTful Web APIs
           </Link>
         </li>
         <li>
-          <Link href="/labs/lab6" id="wd-lab6-link">
+          <Link href="/2026/fall/webdev/labs/lab6" id="wd-lab6-link">
             Lab 6: MongoDB
           </Link>
         </li>
         <li>
-          <Link href="/labs/lab2/intermediates" id="wd-lab2-steps-link">
+          <Link href="/2026/fall/webdev/labs/lab2/intermediates" id="wd-lab2-steps-link">
             Lab 2 Intermediate Steps
           </Link>
         </li>
         <li>
-          <Link href="/labs/lab3/intermediates" id="wd-lab3-steps-link">
+          <Link href="/2026/fall/webdev/labs/lab3/intermediates" id="wd-lab3-steps-link">
             Lab 3 Intermediate Steps
           </Link>
         </li>
         <li>
-          <Link href="/labs/lab4/intermediates" id="wd-lab4-steps-link">
+          <Link href="/2026/fall/webdev/labs/lab4/intermediates" id="wd-lab4-steps-link">
             Lab 4 Intermediate Steps
           </Link>
         </li>
         <li>
-          <Link href="/labs/lab5/intermediates" id="wd-lab5-steps-link">
+          <Link href="/2026/fall/webdev/labs/lab5/intermediates" id="wd-lab5-steps-link">
             Lab 5 Intermediate Steps
           </Link>
         </li>
         <li>
-          <Link href="/labs/lab6/intermediates" id="wd-lab6-steps-link">
+          <Link href="/2026/fall/webdev/labs/lab6/intermediates" id="wd-lab6-steps-link">
             Lab 6 Intermediate Steps
           </Link>
         </li>
         <li>
-          <Link href="/labs/lab1/intermediates" id="wd-lab1-steps-link">
+          <Link href="/2026/fall/webdev/labs/lab1/intermediates" id="wd-lab1-steps-link">
             Lab 1 Intermediate Steps
           </Link>
         </li>

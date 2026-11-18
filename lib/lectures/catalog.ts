@@ -1,4 +1,5 @@
 import { COURSE_SITE_ORIGIN } from "@/lib/course-site/origin";
+import { toPublicCourseHref } from "@/lib/courses/routes";
 import { lectureTopics } from "@/app/syllabus/data/topics";
 import { ANCHORS_SLIDES } from "./decks/anchors";
 import { COMMIT_TO_GITHUB_SLIDES } from "./decks/commit-to-github";
@@ -73,7 +74,6 @@ import { ZUSTAND_COUNTER_SLIDES } from "./decks/zustand-counter";
 import { ZUSTAND_TODOS_SLIDES } from "./decks/zustand-todos";
 import { USE_EFFECT_SLIDES } from "./decks/use-effect";
 import { CUSTOM_HOOKS_SLIDES } from "./decks/custom-hooks";
-import { CH4_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch4-check-understanding";
 import { KAMBAZ_COURSES_STORE_SLIDES } from "./decks/kambaz-courses-store";
 import { KAMBAZ_DASHBOARD_CRUD_SLIDES } from "./decks/kambaz-dashboard-crud";
 import { KAMBAZ_MODULES_STORE_SLIDES } from "./decks/kambaz-modules-store";
@@ -89,7 +89,6 @@ import { REMOTE_OBJECTS_SLIDES } from "./decks/remote-objects";
 import { REMOTE_ARRAYS_SLIDES } from "./decks/remote-arrays";
 import { ASYNC_HTTP_SLIDES } from "./decks/async-http";
 import { NEXT_ROUTES_SLIDES } from "./decks/next-routes";
-import { CH5_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch5-check-understanding";
 import { KAMBAZ_MIGRATE_DB_SLIDES } from "./decks/kambaz-migrate-db";
 import { KAMBAZ_ACCOUNT_REST_SLIDES } from "./decks/kambaz-account-rest";
 import { KAMBAZ_SESSIONS_SLIDES } from "./decks/kambaz-sessions";
@@ -103,7 +102,6 @@ import { ATLAS_SLIDES } from "./decks/atlas";
 import { ATLAS_COMPASS_SLIDES } from "./decks/atlas-compass";
 import { ATLAS_NODE_SLIDES } from "./decks/atlas-node";
 import { ATLAS_SESSIONS_SLIDES } from "./decks/atlas-sessions";
-import { CH6_CHECK_UNDERSTANDING_SLIDES } from "./decks/ch6-check-understanding";
 import { KAMBAZ_COURSES_DB_SLIDES } from "./decks/kambaz-courses-db";
 import { KAMBAZ_MODULES_DB_SLIDES } from "./decks/kambaz-modules-db";
 import { KAMBAZ_ENROLLMENTS_DB_SLIDES } from "./decks/kambaz-enrollments-db";
@@ -165,8 +163,8 @@ export function bookHrefForSection(
 ): string {
   const href = bookChapterMeta(chapter).href;
   // No Integrating chapter in the book yet — do not invent /book/ch7 or #sec-7-*.
-  if (!sectionId || href === "/project") return href;
-  return `${href}#${sectionId}`;
+  if (!sectionId || href === "/project") return toPublicCourseHref(href);
+  return toPublicCourseHref(`${href}#${sectionId}`);
 }
 
 /** Deck chrome label. Project week links to `/project`, not a book chapter. */
@@ -180,7 +178,7 @@ export function lectureCompanionLinkLabel(
 }
 
 export function slidesHref(slug: LectureSlug): string {
-  return `${SLIDES_PATH}/${slug}`;
+  return toPublicCourseHref(`${SLIDES_PATH}/${slug}`);
 }
 
 const LECTURE_SUMMARIES: Record<
@@ -924,16 +922,6 @@ const LECTURE_SUMMARIES: Record<
     canvasLecture: 13,
     slides: CUSTOM_HOOKS_SLIDES,
   },
-  "ch4-check-understanding": {
-    title: "Check Your Understanding",
-    summary:
-      "A 10-item self-check on events, useState, Context, Zustand, and useEffect before stateful Kambaz.",
-    chapter: 4,
-    topicId: "ch4-check",
-    bookSectionId: "sec-4-9",
-    canvasLecture: 13,
-    slides: CH4_CHECK_UNDERSTANDING_SLIDES,
-  },
   "kambaz-courses-store": {
     title: "A Courses Store",
     summary:
@@ -1084,16 +1072,6 @@ const LECTURE_SUMMARIES: Record<
     canvasLecture: 18,
     slides: NEXT_ROUTES_SLIDES,
   },
-  "ch5-check-understanding": {
-    title: "Check Your Understanding",
-    summary:
-      "A 10-item self-check on Express setup, CORS, axios, and the Next.js calculator.",
-    chapter: 5,
-    topicId: "ch5-check",
-    bookSectionId: "sec-5-check",
-    canvasLecture: 18,
-    slides: CH5_CHECK_UNDERSTANDING_SLIDES,
-  },
   "kambaz-migrate-db": {
     title: "Migrating the Database",
     summary:
@@ -1223,16 +1201,6 @@ const LECTURE_SUMMARIES: Record<
     bookSectionId: "sec-6-3-2",
     canvasLecture: 23,
     slides: ATLAS_SESSIONS_SLIDES,
-  },
-  "ch6-check-understanding": {
-    title: "Check Your Understanding",
-    summary:
-      "A 10-item self-check on schemas, DAOs, async routes, and Atlas.",
-    chapter: 6,
-    topicId: "ch6-check",
-    bookSectionId: "sec-6-check",
-    canvasLecture: 23,
-    slides: CH6_CHECK_UNDERSTANDING_SLIDES,
   },
   "kambaz-courses-db": {
     title: "Kambaz Courses DB",
@@ -1374,7 +1342,7 @@ export function getLecture(slug: string): LectureHubItem | undefined {
     canvasLecture: entry.canvasLecture,
     title: entry.title,
     summary: entry.summary,
-    chapterHref: chapter.href,
+    chapterHref: toPublicCourseHref(chapter.href),
     chapterTitle: chapter.title,
     publicUrl: lecturePublicUrl(slug),
     thumbnailSrc: lectureThumbPath(slug),
@@ -1480,7 +1448,7 @@ export function listChapterTopicGroups(): LectureChapterGroup[] {
       }
       return {
         chapter,
-        href: meta.href,
+        href: toPublicCourseHref(meta.href),
         title: meta.title,
         weeks: meta.weeks,
         topics,

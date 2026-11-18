@@ -1,3 +1,4 @@
+import { COVER_KAMBAZ } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const KAMBAZ_ENROLLMENTS_DB_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const KAMBAZ_ENROLLMENTS_DB_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#C8102E",
+      color: COVER_KAMBAZ,
       icon: "database",
       headline: "Enrollments",
     },
@@ -94,7 +95,7 @@ export default enrollmentSchema;`,
     id: "joins-path",
     title: "DELETE a course and its joins",
     kind: "demo",
-    bullets: ["deleteMany removes every enrollment for that course"],
+    bullets: ["`deleteMany({ course })` removes every enrollment for the deleted course"],
     diagram: "enroll-joins",
   },
   {
@@ -130,14 +131,14 @@ export default enrollmentSchema;`,
     id: "enroll-create-path",
     title: "POST enrolls the user",
     kind: "demo",
-    bullets: ["The route inserts one enrollment for the session user"],
+    bullets: ["`POST /api/users/:uid/courses/:cid` inserts one enrollment for the session user"],
     diagram: "enroll-create",
   },
   {
     id: "enroll-unenroll-path",
     title: "DELETE unenrolls the user",
     kind: "demo",
-    bullets: ["The same URL with DELETE removes that one enrollment"],
+    bullets: ["`DELETE /api/users/:uid/courses/:cid` removes that user's enrollment in `:cid`"],
     diagram: "enroll-unenroll",
   },
   {
@@ -229,7 +230,7 @@ export const unenrollFromCourse = async (
     id: "people-path",
     title: "GET /api/courses/:cid/users",
     kind: "demo",
-    bullets: ["People lists users enrolled in this course"],
+    bullets: ["`GET /api/courses/:cid/users` lists users enrolled in `:cid`"],
     diagram: "enroll-people",
   },
   {
@@ -267,7 +268,7 @@ app.get("/api/courses/:cid/users", findUsersForCourse);`,
     title: "People Page Loads Enrolled Users",
     kind: "demo",
     bullets: [
-      "Pass that array to `PeopleTable`. The enrollment filter is gone",
+      "Pass the array from `GET /api/courses/:cid/users` to `PeopleTable`",
     ],
     code: `import * as client from "../../../client";
 ...

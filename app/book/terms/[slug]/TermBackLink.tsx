@@ -10,7 +10,7 @@ import {
 import { isSafeBookPath } from "../termSlug";
 
 function chapterLikePath(path: string): boolean {
-  return path === "/book" || /^\/book\/ch\d+/.test(path);
+  return path === "/2026/fall/webdev/book" || /^\/book\/ch\d+/.test(path);
 }
 
 function subscribeReferrer() {
@@ -61,9 +61,9 @@ export default function TermBackLink({
       ? `${last.pathname}#${last.hash}`
       : last.pathname
     : null;
-  const href = fromHref ?? referrerHref ?? lastHref ?? "/book";
+  const href = fromHref ?? referrerHref ?? lastHref ?? "/2026/fall/webdev/book";
   const label =
-    href === "/book" ? "Back to book home" : "Back to chapter";
+    href === "/2026/fall/webdev/book" ? "Back to book home" : "Back to chapter";
 
   return (
     <p className="mb-4 font-sans text-sm">

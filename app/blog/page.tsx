@@ -41,14 +41,14 @@ export default function BlogIndexPage() {
                 </time>
               </p>
               <h2 className="mt-0 mb-2 font-sans text-2xl font-semibold tracking-tight">
-                <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                <Link href={`/2026/fall/webdev/blog/${post.slug}`}>{post.title}</Link>
               </h2>
               <BlogTagChips tags={post.tags} />
               <p className="mt-3 mb-3 text-[1.05rem] text-neutral-800">
                 {post.intro[0]}
               </p>
               <p className="mb-0 font-sans text-sm">
-                <Link href={`/blog/${post.slug}`}>Read digest</Link>
+                <Link href={`/2026/fall/webdev/blog/${post.slug}`}>Read digest</Link>
                 {" · "}
                 <BlogSourceLink source={post.source} />
               </p>

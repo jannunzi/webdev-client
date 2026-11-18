@@ -1,3 +1,4 @@
+import { COVER_NEUTRAL } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#171717",
+      color: COVER_NEUTRAL,
       icon: "server",
       headline: "Next.js Server Routes",
     },
@@ -353,15 +354,6 @@ useEffect(() => {
       "`app/api/.../route.ts` exports the HTTP method",
       "Same-origin `/api` — no CORS, no port 4000",
       "Lab 5 and Kambaz still talk to Express",
-    ],
-  },
-  {
-    id: "next-up",
-    title: "Next: Check Your Understanding",
-    kind: "title",
-    bullets: [
-      "A 10-item self-check before Kambaz moves onto Express",
-      "CORS, axios, and the calculator",
     ],
   },
 ];

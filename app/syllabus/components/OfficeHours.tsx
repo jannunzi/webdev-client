@@ -15,7 +15,7 @@ export default function OfficeHours({
     <SyllabusSection id="office-hours" title="Teaching assistants and office hours">
       <p>{placeholder}</p>
       <p>
-        Dedicated page: <Link href="/office-hours">Office Hours</Link>
+        Dedicated page: <Link href="/2026/fall/webdev/office-hours">Office Hours</Link>
         {" · "}
         <Link href="/piazza-hours">Piazza Hours</Link>.
       </p>

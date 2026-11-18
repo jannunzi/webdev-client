@@ -10,19 +10,19 @@ export default function AssignmentHubNav({
     <p className="mb-4 font-sans text-sm">
       {current === "detail" ? (
         <>
-          <Link href="/assignments">Assignments</Link>
+          <Link href="/2026/fall/webdev/assignments">Assignments</Link>
           {" · "}
         </>
       ) : null}
       <Link href="/syllabus#assignments">Syllabus</Link>
       {" · "}
-      <Link href="/book">Course book</Link>
+      <Link href="/2026/fall/webdev/book">Course book</Link>
       {" · "}
-      <Link href="/blog">Blog</Link>
+      <Link href="/2026/fall/webdev/blog">Blog</Link>
       {" · "}
-      <Link href="/slides">Slides</Link>
+      <Link href="/2026/fall/webdev/slides">Slides</Link>
       {" · "}
-      <Link href="/book/practice">Practice (ungraded)</Link>
+      <Link href="/2026/fall/webdev/book/practice">Practice (ungraded)</Link>
       <InstructorPeopleLink />
     </p>
   );

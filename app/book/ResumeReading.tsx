@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
+import { toPublicCourseHref } from "@/lib/courses/routes";
 import { rewriteBookPath, type BookBase } from "@/lib/book-editor/book2-path";
 import { describeLastPosition } from "./TOC";
 import {
@@ -22,7 +23,13 @@ export default function ResumeReading({ base = "/book" }: { base?: BookBase }) {
       : last;
   const described = describeLastPosition(position);
   const resume = described
-    ? { ...described, href: rewriteBookPath(described.href, base) }
+    ? {
+        ...described,
+        href:
+          base === "/book2"
+            ? rewriteBookPath(described.href, base)
+            : toPublicCourseHref(described.href),
+      }
     : null;
 
   if (!resume) return null;

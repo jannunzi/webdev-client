@@ -11,7 +11,7 @@ export default function BlogNotFound() {
         for the current list.
       </p>
       <p>
-        <Link href="/blog">All posts</Link>
+        <Link href="/2026/fall/webdev/blog">All posts</Link>
       </p>
       <CourseInfoFooter current="/blog" />
     </article>

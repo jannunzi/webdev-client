@@ -19,6 +19,6 @@ export function isProjectDocSlug(slug: string): slug is ProjectDocSlug {
   return PROJECT_DOC_SLUGS.includes(slug as ProjectDocSlug);
 }
 
-export function projectDocHref(slug: ProjectDocSlug): `/project/${ProjectDocSlug}` {
-  return `/project/${slug}`;
+export function projectDocHref(slug: ProjectDocSlug): `/2026/fall/webdev/project/${ProjectDocSlug}` {
+  return `/2026/fall/webdev/project/${slug}`;
 }

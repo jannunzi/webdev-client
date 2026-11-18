@@ -1,3 +1,4 @@
+import { COVER_MONGO } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const LOCAL_MONGO_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const LOCAL_MONGO_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#00ED64",
+      color: COVER_MONGO,
       icon: "database",
       headline: "Local MongoDB",
     },
@@ -21,7 +22,7 @@ export const LOCAL_MONGO_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "Chapters 3–5 already built the UI, client, routes, and the in-memory DAO",
-      "Chapter 6 adds local MongoDB now. Atlas replaces that host later",
+      "Chapter 6 adds MongoDB on `127.0.0.1:27017`. Atlas replaces `127.0.0.1` later",
     ],
     diagram: "mongo-roadmap",
   },
@@ -41,9 +42,9 @@ export const LOCAL_MONGO_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "Download MongoDB Community Server for your OS",
-      "Choose **run as a service** so it starts when you log in",
+      "Choose **run as a service** so MongoDB Community starts when you log in",
       "Windows: Services. macOS: System Settings. Linux: `systemctl`",
-      "Leave it set to start automatically while you work this chapter",
+      "Leave MongoDB Community set to start automatically for this chapter",
     ],
   },
   {
@@ -106,7 +107,7 @@ sudo systemctl status mongod`,
     title: "Start mongod and Connect Compass",
     kind: "demo",
     bullets: [
-      "Skip this when the service is already listening",
+      "Skip `mongod --dbpath` when the MongoDB service already listens on port `27017`",
       "Otherwise create `data` and pass `--dbpath`",
       "Connect fails when `mongod` is not listening",
     ],

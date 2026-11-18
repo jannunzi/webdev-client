@@ -32,7 +32,7 @@ export default function VideoPicker({
   }
 
   return (
-    <form action="/videos" method="get" className="flex flex-wrap items-end gap-3">
+    <form action="/2026/fall/webdev/videos" method="get" className="flex flex-wrap items-end gap-3">
       <label className="min-w-[14rem] flex-1 font-sans text-sm font-semibold">
         Your section
         <select

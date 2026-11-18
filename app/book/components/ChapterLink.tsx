@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { toPublicCourseHref } from "@/lib/courses/routes";
 
 export function chapterHref(chapter: number | string): string {
-  return `/book/ch${chapter}`;
+  return toPublicCourseHref(`/2026/fall/webdev/book/ch${chapter}`);
 }
 
 /** Link to a book chapter page — e.g. Chapter 2 → /book/ch2.

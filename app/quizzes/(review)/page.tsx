@@ -7,7 +7,7 @@ export default async function QuizzesIndexPage() {
   return renderStaffReview(() => (
     <article className="page-content font-sans">
       <p className="mb-4 text-sm">
-        <Link href="/book">Course book</Link>
+        <Link href="/2026/fall/webdev/book">Course book</Link>
         {" · "}
         <Link href="/syllabus">Syllabus</Link>
         <InstructorPeopleLink />
@@ -21,7 +21,7 @@ export default async function QuizzesIndexPage() {
       </p>
       <p>
         {CANVAS_ONLY_QUIZ_SENTENCE} Practice self-checks stay on{" "}
-        <Link href="/book/practice">/book/practice</Link>.
+        <Link href="/2026/fall/webdev/book/practice">/book/practice</Link>.
       </p>
       <ul className="list-disc pl-5">
         <li>

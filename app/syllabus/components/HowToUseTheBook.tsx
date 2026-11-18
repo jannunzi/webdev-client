@@ -10,7 +10,7 @@ export default function HowToUseTheBook() {
     <SyllabusSection id="book" title={HOW_TO_USE_THE_BOOK_HEADING}>
       <p>
         {HOW_TO_USE_THE_BOOK_INTRO}{" "}
-        <Link href="/book#how-to-use">Open the book</Link>.
+        <Link href="/2026/fall/webdev/book#how-to-use">Open the book</Link>.
       </p>
       <p>
         Optional book videos are not the same as lecture recordings. For

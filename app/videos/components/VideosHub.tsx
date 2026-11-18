@@ -200,7 +200,7 @@ export default function VideosHub({
         </p>
         <p className="rounded-lg border border-sky-300 bg-sky-50 px-4 py-3 font-sans text-sm text-sky-950">
           These clips follow the book. They are not a substitute for labs or
-          the checklists on <Link href="/assignments">Assignments</Link>.
+          the checklists on <Link href="/2026/fall/webdev/assignments">Assignments</Link>.
         </p>
         <CoursePlaylists playlists={playlists} />
         <LectureSectionFilter

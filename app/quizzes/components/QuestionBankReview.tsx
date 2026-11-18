@@ -48,7 +48,7 @@ export default function QuestionBankReview({
   bank,
   stats,
   studentDrawNote,
-  chapterHref = "/book/ch1",
+  chapterHref = "/2026/fall/webdev/book/ch1",
   quizId,
   takeHref = "/quizzes/take/q3",
 }: {
@@ -94,7 +94,7 @@ export default function QuestionBankReview({
         {" · "}
         <Link href={chapterHref}>Chapter {bank.chapter}</Link>
         {" · "}
-        <Link href="/book">Book home</Link>
+        <Link href="/2026/fall/webdev/book">Book home</Link>
       </p>
 
       <div

@@ -96,14 +96,14 @@ describe("url helpers", () => {
         term: "React",
         officialUrl: "https://react.dev/",
       }),
-      "/book/terms/react",
+      "/2026/fall/webdev/book/terms/react",
     );
     assert.equal(
       termPageHref("https://www.mongodb.com/try/download/community", "mongodb.com", {
         term: "mongodb.com",
         officialUrl: "https://www.mongodb.com/",
       }),
-      "/book/terms/mongodb-com?href=https%3A%2F%2Fwww.mongodb.com%2Ftry%2Fdownload%2Fcommunity",
+      "/2026/fall/webdev/book/terms/mongodb-com?href=https%3A%2F%2Fwww.mongodb.com%2Ftry%2Fdownload%2Fcommunity",
     );
   });
 });

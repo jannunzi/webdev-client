@@ -12,20 +12,20 @@ export default function VideosHubNav({
     <p className="mb-3 font-sans text-sm">
       {current === "clip" ? (
         <>
-          <Link href="/videos">Videos</Link>
+          <Link href="/2026/fall/webdev/videos">Videos</Link>
           {" · "}
         </>
       ) : null}
       <Link href="/syllabus">Syllabus</Link>
       {" · "}
-      <Link href="/book">Course book</Link>
+      <Link href="/2026/fall/webdev/book">Course book</Link>
       {" · "}
-      <Link href="/slides">Slides</Link>
+      <Link href="/2026/fall/webdev/slides">Slides</Link>
       {current === "hub"
         ? chapters.map((chapter) => (
             <span key={chapter}>
               {" · "}
-              <Link href={`/videos#chapter-${chapter}-heading`}>
+              <Link href={`/2026/fall/webdev/videos#chapter-${chapter}-heading`}>
                 {lectureChapterLabel(chapter)}
               </Link>
             </span>

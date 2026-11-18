@@ -81,13 +81,13 @@ export default function StaffBatchTools({ assignmentId }: { assignmentId: string
         </button>
         <a
           className="inline-flex h-10 items-center rounded border border-neutral-800 bg-white px-3 text-sm hover:bg-neutral-50"
-          href={`/assignments/${assignmentId}/export`}
+          href={`/2026/fall/webdev/assignments/${assignmentId}/export`}
         >
           Download grade export (CSV)
         </a>
         <a
           className="inline-flex h-10 items-center rounded border border-neutral-800 bg-white px-3 text-sm hover:bg-neutral-50"
-          href={`/assignments/${assignmentId}/export?view=summary`}
+          href={`/2026/fall/webdev/assignments/${assignmentId}/export?view=summary`}
         >
           Most-missed items (CSV)
         </a>

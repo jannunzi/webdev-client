@@ -16,7 +16,7 @@ export default function AssignmentsBlurb({
       ))}
       <p>
         Track the Delivery / Lab / Kambaz checklist on{" "}
-        <Link href="/assignments">Assignments</Link>.
+        <Link href="/2026/fall/webdev/assignments">Assignments</Link>.
       </p>
       <ol className="list-none space-y-3 pl-0">
         {assignments.map((assignment) => (
@@ -25,7 +25,7 @@ export default function AssignmentsBlurb({
             className="rounded-md border border-neutral-200 bg-white px-4 py-3"
           >
             <p className="font-sans font-semibold">
-              <Link href={`/assignments/${assignment.id.toLowerCase()}`}>
+              <Link href={`/2026/fall/webdev/assignments/${assignment.id.toLowerCase()}`}>
                 {assignment.id} — {assignment.title}
               </Link>{" "}
               <span className="font-normal text-neutral-500">

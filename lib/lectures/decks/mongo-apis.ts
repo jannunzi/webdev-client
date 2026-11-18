@@ -1,3 +1,4 @@
+import { COVER_MONGO } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const MONGO_APIS_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const MONGO_APIS_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#00ED64",
+      color: COVER_MONGO,
       icon: "server",
       headline: "Mongo APIs",
     },
@@ -124,7 +125,7 @@ app.get("/api/users", findAllUsers);`,
     title: "PeopleTable takes a users prop",
     kind: "demo",
     bullets: [
-      "Stop joining enrollments in the browser — the server filters",
+      "Stop joining enrollments in the browser. Express `GET /api/users` returns the filtered list",
       "Users screen passes every user; course People later passes a subset",
       "A full-width collapsed table with a light border and striped odd rows",
     ],

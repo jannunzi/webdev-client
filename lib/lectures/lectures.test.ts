@@ -189,9 +189,9 @@ describe("lecture catalog", () => {
     assert.equal(LECTURE_6_SLUGS.length, 7);
     assert.equal(LECTURE_7_SLUGS.length, 6);
     assert.equal(CHAPTER_3_SLUGS.length, 23);
-    assert.equal(CHAPTER_4_SLUGS.length, 19);
-    assert.equal(CHAPTER_5_SLUGS.length, 14);
-    assert.equal(CHAPTER_6_SLUGS.length, 12);
+    assert.equal(CHAPTER_4_SLUGS.length, 18);
+    assert.equal(CHAPTER_5_SLUGS.length, 13);
+    assert.equal(CHAPTER_6_SLUGS.length, 11);
     assert.equal(PROJECT_SLUGS.length, 9);
     assert.ok(!PROJECT_SLUGS.some((slug) => slug.startsWith("napster")));
   });
@@ -202,11 +202,11 @@ describe("lecture catalog", () => {
     for (const item of items) {
       assert.equal(item.chapter, 1);
       assert.equal(item.canvasLecture, 1);
-      assert.equal(item.chapterHref, "/book/ch1");
+      assert.equal(item.chapterHref, "/2026/fall/webdev/book/ch1");
       assert.ok(item.chapterTitle.length > 0);
       assert.ok(item.title.length > 0);
       assert.ok(item.summary.length > 0);
-      assert.equal(item.publicUrl, `${COURSE_SITE_ORIGIN}/slides/${item.slug}`);
+      assert.equal(item.publicUrl, `${COURSE_SITE_ORIGIN}/2026/fall/webdev/slides/${item.slug}`);
       assert.equal(lecturePublicUrl(item.slug), item.publicUrl);
       assert.equal(item.thumbnailSrc, lectureDeckThumbnail(item.slug));
       assert.doesNotMatch(item.thumbnailSrc, /slide-01/);
@@ -215,12 +215,12 @@ describe("lecture catalog", () => {
     assert.equal(items[0]?.topicId, "intro");
     assert.equal(items[0]?.topic, "Introduction");
     assert.equal(items[0]?.bookSectionId, "intro");
-    assert.equal(items[0]?.bookHref, "/book/ch1#intro");
+    assert.equal(items[0]?.bookHref, "/2026/fall/webdev/book/ch1#intro");
     assert.equal(items[1]?.topicId, "setup");
     assert.equal(items[2]?.topicId, "setup");
     assert.equal(items[3]?.topicId, "source-control");
     assert.equal(items[3]?.bookSectionId, "sec-1-5");
-    assert.equal(items[3]?.bookHref, "/book/ch1#sec-1-5");
+    assert.equal(items[3]?.bookHref, "/2026/fall/webdev/book/ch1#sec-1-5");
     assert.equal(items[4]?.topicId, "deploy");
     assert.equal(items[4]?.bookSectionId, "sec-1-6");
   });
@@ -237,7 +237,7 @@ describe("lecture catalog", () => {
       assert.equal(item.topicId, "html");
       assert.equal(item.topic, "1.3 Introduction to HTML");
       assert.equal(item.canvasLecture, 2);
-      assert.equal(item.chapterHref, "/book/ch1");
+      assert.equal(item.chapterHref, "/2026/fall/webdev/book/ch1");
       assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
     }
   });
@@ -291,7 +291,7 @@ describe("lecture catalog", () => {
           : "2.3 Styling Webpages with Tailwind CSS",
       );
       assert.equal(item.canvasLecture, 6);
-      assert.equal(item.chapterHref, "/book/ch2");
+      assert.equal(item.chapterHref, "/2026/fall/webdev/book/ch2");
       assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
     }
   });
@@ -308,7 +308,7 @@ describe("lecture catalog", () => {
       assert.equal(item.topicId, "kambaz-styling");
       assert.equal(item.topic, "2.4 Styling Kambaz with CSS and Tailwind");
       assert.equal(item.canvasLecture, 7);
-      assert.equal(item.chapterHref, "/book/ch2");
+      assert.equal(item.chapterHref, "/2026/fall/webdev/book/ch2");
       assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
     }
   });
@@ -325,7 +325,7 @@ describe("lecture catalog", () => {
       assert.equal(item.topicId, "css");
       assert.equal(item.topic, "2.1 Styling React Components with CSS");
       assert.equal(item.canvasLecture, 4);
-      assert.equal(item.chapterHref, "/book/ch2");
+      assert.equal(item.chapterHref, "/2026/fall/webdev/book/ch2");
       assert.equal(
         item.chapterTitle,
         "Styling User Interfaces with CSS and Tailwind",
@@ -346,7 +346,7 @@ describe("lecture catalog", () => {
       assert.equal(item.topicId, "kambaz-html");
       assert.equal(item.topic, "1.4 Prototyping the React Kambaz User Interface with HTML");
       assert.equal(item.canvasLecture, 3);
-      assert.equal(item.chapterHref, "/book/ch1");
+      assert.equal(item.chapterHref, "/2026/fall/webdev/book/ch1");
       assert.match(item.thumbnailSrc, /\/lectures\/thumbs\/.+\.svg$/);
     }
   });
@@ -357,7 +357,7 @@ describe("lecture catalog", () => {
       groups.map((group) => group.chapter),
       [1, 2, 3, 4, 5, 6, 7],
     );
-    assert.equal(groups[0]?.href, "/book/ch1");
+    assert.equal(groups[0]?.href, "/2026/fall/webdev/book/ch1");
     assert.equal(
       groups[0]?.title,
       "Building Next.js User Interfaces with HTML",
@@ -418,7 +418,7 @@ describe("lecture catalog", () => {
       [...LECTURE_3_SLUGS],
     );
 
-    assert.equal(groups[1]?.href, "/book/ch2");
+    assert.equal(groups[1]?.href, "/2026/fall/webdev/book/ch2");
     assert.deepEqual(
       groups[1]?.topics.map((topic) => topic.topicId),
       ["css", "react-icons", "tailwind", "kambaz-styling"],
@@ -449,7 +449,7 @@ describe("lecture catalog", () => {
       [...LECTURE_7_SLUGS],
     );
 
-    assert.equal(groups[2]?.href, "/book/ch3");
+    assert.equal(groups[2]?.href, "/2026/fall/webdev/book/ch3");
     assert.deepEqual(
       groups[2]?.topics.map((topic) => topic.topicId),
       [
@@ -476,7 +476,7 @@ describe("lecture catalog", () => {
         "3.10 Implementing a Data Driven Kambaz Application",
       ],
     );
-    assert.equal(groups[2]?.topics[0]?.bookHref, "/book/ch3#sec-3-2");
+    assert.equal(groups[2]?.topics[0]?.bookHref, "/2026/fall/webdev/book/ch3#sec-3-2");
     assert.deepEqual(
       groups[2]?.topics[0]?.decks.map((deck) => deck.slug),
       CHAPTER_3_SLUGS.slice(0, 5),
@@ -524,7 +524,7 @@ describe("lecture catalog", () => {
       ],
     );
 
-    assert.equal(groups[3]?.href, "/book/ch4");
+    assert.equal(groups[3]?.href, "/2026/fall/webdev/book/ch4");
     assert.deepEqual(
       groups[3]?.topics.map((topic) => topic.topicId),
       [
@@ -533,7 +533,6 @@ describe("lecture catalog", () => {
         "react-context",
         "zustand",
         "effects",
-        "ch4-check",
         "kambaz-state",
       ],
     );
@@ -545,11 +544,10 @@ describe("lecture catalog", () => {
         "4.4 React Context",
         "4.5 Zustand",
         "4.7 Side Effects with useEffect",
-        "4.9 Check Your Understanding",
         "4.10 Adding State to the Kambaz User Interface",
       ],
     );
-    assert.equal(groups[3]?.topics[0]?.bookHref, "/book/ch4#sec-4-2");
+    assert.equal(groups[3]?.topics[0]?.bookHref, "/2026/fall/webdev/book/ch4#sec-4-2");
     assert.deepEqual(
       groups[3]?.topics[0]?.decks.map((deck) => deck.slug),
       CHAPTER_4_SLUGS.slice(0, 4),
@@ -572,10 +570,6 @@ describe("lecture catalog", () => {
     );
     assert.deepEqual(
       groups[3]?.topics[5]?.decks.map((deck) => deck.slug),
-      ["ch4-check-understanding"],
-    );
-    assert.deepEqual(
-      groups[3]?.topics[6]?.decks.map((deck) => deck.slug),
       [
         "kambaz-courses-store",
         "kambaz-dashboard-crud",
@@ -587,14 +581,13 @@ describe("lecture catalog", () => {
       ],
     );
 
-    assert.equal(groups[4]?.href, "/book/ch5");
+    assert.equal(groups[4]?.href, "/2026/fall/webdev/book/ch5");
     assert.deepEqual(
       groups[4]?.topics.map((topic) => topic.topicId),
       [
         "http-server",
         "lab5-api",
         "next-routes",
-        "ch5-check",
         "kambaz-server",
         "deploy-api",
       ],
@@ -605,12 +598,11 @@ describe("lecture catalog", () => {
         "5.1 Installing and Configuring an HTTP Web Server",
         "5.2 Lab Exercises",
         "5.3 Next.js Server Routes",
-        "Check Your Understanding",
         "5.4 Implementing the Kambaz Node.js HTTP Server",
         "5.5 Deploying to a Public Remote Server",
       ],
     );
-    assert.equal(groups[4]?.topics[0]?.bookHref, "/book/ch5#sec-5-1");
+    assert.equal(groups[4]?.topics[0]?.bookHref, "/2026/fall/webdev/book/ch5#sec-5-1");
     assert.deepEqual(
       groups[4]?.topics[0]?.decks.map((deck) => deck.slug),
       ["http-server", "nodemon-es6-routes"],
@@ -631,10 +623,6 @@ describe("lecture catalog", () => {
     );
     assert.deepEqual(
       groups[4]?.topics[3]?.decks.map((deck) => deck.slug),
-      ["ch5-check-understanding"],
-    );
-    assert.deepEqual(
-      groups[4]?.topics[4]?.decks.map((deck) => deck.slug),
       [
         "kambaz-migrate-db",
         "kambaz-account-rest",
@@ -643,11 +631,11 @@ describe("lecture catalog", () => {
       ],
     );
     assert.deepEqual(
-      groups[4]?.topics[5]?.decks.map((deck) => deck.slug),
+      groups[4]?.topics[4]?.decks.map((deck) => deck.slug),
       ["deploy-api"],
     );
 
-    assert.equal(groups[5]?.href, "/book/ch6");
+    assert.equal(groups[5]?.href, "/2026/fall/webdev/book/ch6");
     assert.deepEqual(
       groups[5]?.topics.map((topic) => topic.topicId),
       [
@@ -655,7 +643,6 @@ describe("lecture catalog", () => {
         "mongoose",
         "mongo-apis",
         "atlas",
-        "ch6-check",
         "kambaz-db",
       ],
     );
@@ -666,11 +653,10 @@ describe("lecture catalog", () => {
         "6.2 Programming with a MongoDB Database",
         "6.2.6 Implementing APIs to Interact with MongoDB",
         "6.3 Integrating with MongoDB Hosted in Atlas Cloud Service",
-        "Check Your Understanding",
         "6.4 Integrating the Kambaz Web Application with a Database",
       ],
     );
-    assert.equal(groups[5]?.topics[0]?.bookHref, "/book/ch6#sec-6-1");
+    assert.equal(groups[5]?.topics[0]?.bookHref, "/2026/fall/webdev/book/ch6#sec-6-1");
     assert.deepEqual(
       groups[5]?.topics[0]?.decks.map((deck) => deck.slug),
       ["local-mongo"],
@@ -689,10 +675,6 @@ describe("lecture catalog", () => {
     );
     assert.deepEqual(
       groups[5]?.topics[4]?.decks.map((deck) => deck.slug),
-      ["ch6-check-understanding"],
-    );
-    assert.deepEqual(
-      groups[5]?.topics[5]?.decks.map((deck) => deck.slug),
       [
         "kambaz-courses-db",
         "kambaz-modules-db",
@@ -700,7 +682,7 @@ describe("lecture catalog", () => {
       ],
     );
 
-    assert.equal(groups[6]?.href, "/project");
+    assert.equal(groups[6]?.href, "/2026/fall/webdev/project");
     assert.equal(groups[6]?.title, "Integrating with External APIs");
     assert.equal(groups[6]?.weeks, "12/7");
     assert.deepEqual(
@@ -728,7 +710,7 @@ describe("lecture catalog", () => {
       ["grok-api", "grok-chat", "grok-images"],
     );
     for (const topic of groups[6]?.topics ?? []) {
-      assert.equal(topic.bookHref, "/project");
+      assert.equal(topic.bookHref, "/2026/fall/webdev/project");
     }
 
     for (const group of groups) {
@@ -787,7 +769,7 @@ describe("lecture catalog", () => {
     );
     assert.deepEqual(
       chapters.map((entry) => entry.href),
-      ["/book/ch1", "/book/ch2", "/book/ch3", "/book/ch4", "/book/ch5", "/book/ch6", "/project"],
+      ["/2026/fall/webdev/book/ch1", "/2026/fall/webdev/book/ch2", "/2026/fall/webdev/book/ch3", "/2026/fall/webdev/book/ch4", "/2026/fall/webdev/book/ch5", "/2026/fall/webdev/book/ch6", "/2026/fall/webdev/project"],
     );
     assert.equal(chapters[0]?.title, BOOK_CHAPTERS[0]?.title);
     assert.equal(chapters[1]?.title, BOOK_CHAPTERS[1]?.title);
@@ -826,24 +808,24 @@ describe("lecture catalog", () => {
 
   it("keeps Book’s preferred Ch1 bookSectionId anchors", () => {
     const preferred = {
-      "intro-to-web-development": "/book/ch1#intro",
-      "installing-nodejs": "/book/ch1#sec-1-2-1",
-      "creating-a-nextjs-react-application": "/book/ch1#sec-1-2-4",
-      "commit-to-github": "/book/ch1#sec-1-5",
-      "deploying-to-vercel": "/book/ch1#sec-1-6",
-      "html-and-dom": "/book/ch1#sec-1-3",
-      "headings-and-paragraphs": "/book/ch1#sec-1-3-1",
-      "lists-and-tables": "/book/ch1#sec-1-3-3",
-      "web-forms": "/book/ch1#sec-1-3-6",
-      anchors: "/book/ch1#sec-1-3-9",
-      "single-page-navigation": "/book/ch1#sec-1-3-10",
-      "kambaz-overview": "/book/ch1#sec-1-4-1",
-      "kambaz-account": "/book/ch1#sec-1-4-2",
-      "kambaz-dashboard": "/book/ch1#sec-1-4-3",
-      "kambaz-navigation": "/book/ch1#sec-1-4-3-1",
-      "kambaz-courses": "/book/ch1#sec-1-4-4",
-      "kambaz-modules": "/book/ch1#sec-1-4-5",
-      "kambaz-assignments": "/book/ch1#sec-1-4-7",
+      "intro-to-web-development": "/2026/fall/webdev/book/ch1#intro",
+      "installing-nodejs": "/2026/fall/webdev/book/ch1#sec-1-2-1",
+      "creating-a-nextjs-react-application": "/2026/fall/webdev/book/ch1#sec-1-2-4",
+      "commit-to-github": "/2026/fall/webdev/book/ch1#sec-1-5",
+      "deploying-to-vercel": "/2026/fall/webdev/book/ch1#sec-1-6",
+      "html-and-dom": "/2026/fall/webdev/book/ch1#sec-1-3",
+      "headings-and-paragraphs": "/2026/fall/webdev/book/ch1#sec-1-3-1",
+      "lists-and-tables": "/2026/fall/webdev/book/ch1#sec-1-3-3",
+      "web-forms": "/2026/fall/webdev/book/ch1#sec-1-3-6",
+      anchors: "/2026/fall/webdev/book/ch1#sec-1-3-9",
+      "single-page-navigation": "/2026/fall/webdev/book/ch1#sec-1-3-10",
+      "kambaz-overview": "/2026/fall/webdev/book/ch1#sec-1-4-1",
+      "kambaz-account": "/2026/fall/webdev/book/ch1#sec-1-4-2",
+      "kambaz-dashboard": "/2026/fall/webdev/book/ch1#sec-1-4-3",
+      "kambaz-navigation": "/2026/fall/webdev/book/ch1#sec-1-4-3-1",
+      "kambaz-courses": "/2026/fall/webdev/book/ch1#sec-1-4-4",
+      "kambaz-modules": "/2026/fall/webdev/book/ch1#sec-1-4-5",
+      "kambaz-assignments": "/2026/fall/webdev/book/ch1#sec-1-4-7",
     } as const;
     for (const [slug, href] of Object.entries(preferred)) {
       const item = getLecture(slug);
@@ -854,81 +836,78 @@ describe("lecture catalog", () => {
   });
 
   it("maps Ch1–Ch3 decks to book section anchors for bidirectional links", () => {
-    assert.equal(getLecture("installing-nodejs")?.bookHref, "/book/ch1#sec-1-2-1");
+    assert.equal(getLecture("installing-nodejs")?.bookHref, "/2026/fall/webdev/book/ch1#sec-1-2-1");
     assert.equal(
       getLecture("creating-a-nextjs-react-application")?.bookHref,
-      "/book/ch1#sec-1-2-4",
+      "/2026/fall/webdev/book/ch1#sec-1-2-4",
     );
-    assert.equal(getLecture("html-and-dom")?.bookHref, "/book/ch1#sec-1-3");
-    assert.equal(getLecture("headings-and-paragraphs")?.bookHref, "/book/ch1#sec-1-3-1");
-    assert.equal(getLecture("css-intro")?.bookHref, "/book/ch2#sec-2-1");
-    assert.equal(getLecture("react-icons")?.bookHref, "/book/ch2#sec-2-2");
-    assert.equal(getLecture("tailwind-spacing")?.bookHref, "/book/ch2#sec-2-3-1");
-    assert.equal(getLecture("kambaz-nav-styling")?.bookHref, "/book/ch2#sec-2-4-1");
-    assert.equal(getLecture("intro-to-javascript")?.bookHref, "/book/ch3#sec-3-2");
-    assert.equal(getLecture("javascript-functions")?.bookHref, "/book/ch3#sec-3-3");
-    assert.equal(getLecture("javascript-arrays")?.bookHref, "/book/ch3#sec-3-4");
-    assert.equal(getLecture("dynamic-styling")?.bookHref, "/book/ch3#sec-3-6");
-    assert.equal(getLecture("client-and-server")?.bookHref, "/book/ch3#sec-3-7");
-    assert.equal(getLecture("parameterizing-components")?.bookHref, "/book/ch3#sec-3-8");
-    assert.equal(getLecture("kambaz-database")?.bookHref, "/book/ch3#sec-3-10");
-    assert.equal(getLecture("kambaz-dashboard-data")?.bookHref, "/book/ch3#sec-3-10-3");
-    assert.equal(getLecture("click-events")?.bookHref, "/book/ch4#sec-4-2-1");
-    assert.equal(getLecture("usestate-counter")?.bookHref, "/book/ch4#sec-4-2-4");
-    assert.equal(getLecture("sharing-parent-child")?.bookHref, "/book/ch4#sec-4-3-1");
-    assert.equal(getLecture("react-context")?.bookHref, "/book/ch4#sec-4-4");
-    assert.equal(getLecture("zustand-counter")?.bookHref, "/book/ch4#sec-4-5-1");
-    assert.equal(getLecture("zustand-todos")?.bookHref, "/book/ch4#sec-4-5-2");
-    assert.equal(getLecture("use-effect")?.bookHref, "/book/ch4#sec-4-7");
-    assert.equal(getLecture("ch4-check-understanding")?.bookHref, "/book/ch4#sec-4-9");
-    assert.equal(getLecture("kambaz-courses-store")?.bookHref, "/book/ch4#sec-4-10-1");
-    assert.equal(getLecture("kambaz-dashboard-crud")?.bookHref, "/book/ch4#sec-4-10-2");
-    assert.equal(getLecture("kambaz-modules-store")?.bookHref, "/book/ch4#sec-4-10-4");
-    assert.equal(getLecture("kambaz-account-context")?.bookHref, "/book/ch4#sec-4-10-5");
-    assert.equal(getLecture("http-server")?.bookHref, "/book/ch5#sec-5-1");
-    assert.equal(getLecture("nodemon-es6-routes")?.bookHref, "/book/ch5#sec-5-1-6");
-    assert.equal(getLecture("lab5-env")?.bookHref, "/book/ch5#sec-5-2-1");
-    assert.equal(getLecture("path-and-query")?.bookHref, "/book/ch5#sec-5-2-2");
-    assert.equal(getLecture("remote-objects")?.bookHref, "/book/ch5#sec-5-2-3");
-    assert.equal(getLecture("remote-arrays")?.bookHref, "/book/ch5#sec-5-2-4");
-    assert.equal(getLecture("async-http")?.bookHref, "/book/ch5#sec-5-2-5");
-    assert.equal(getLecture("next-routes")?.bookHref, "/book/ch5#sec-5-3");
-    assert.equal(getLecture("ch5-check-understanding")?.bookHref, "/book/ch5#sec-5-check");
-    assert.equal(getLecture("kambaz-migrate-db")?.bookHref, "/book/ch5#sec-5-4-1");
-    assert.equal(getLecture("kambaz-account-rest")?.bookHref, "/book/ch5#sec-5-4-2");
-    assert.equal(getLecture("kambaz-sessions")?.bookHref, "/book/ch5#sec-5-4-3");
-    assert.equal(getLecture("kambaz-courses-api")?.bookHref, "/book/ch5#sec-5-4-5");
-    assert.equal(getLecture("deploy-api")?.bookHref, "/book/ch5#sec-5-5");
-    assert.equal(getLecture("local-mongo")?.bookHref, "/book/ch6#sec-6-1");
-    assert.equal(getLecture("mongoose")?.bookHref, "/book/ch6#sec-6-2");
-    assert.equal(getLecture("mongo-apis")?.bookHref, "/book/ch6#sec-6-2-6");
-    assert.equal(getLecture("mongo-users-crud")?.bookHref, "/book/ch6#sec-6-2-6-3");
-    assert.equal(getLecture("atlas")?.bookHref, "/book/ch6#sec-6-3");
-    assert.equal(getLecture("atlas-compass")?.bookHref, "/book/ch6#sec-6-3-1-1");
-    assert.equal(getLecture("atlas-node")?.bookHref, "/book/ch6#sec-6-3-1-2");
-    assert.equal(getLecture("atlas-sessions")?.bookHref, "/book/ch6#sec-6-3-2");
-    assert.equal(getLecture("ch6-check-understanding")?.bookHref, "/book/ch6#sec-6-check");
-    assert.equal(getLecture("kambaz-courses-db")?.bookHref, "/book/ch6#sec-6-4-1");
-    assert.equal(getLecture("kambaz-modules-db")?.bookHref, "/book/ch6#sec-6-4-2");
-    assert.equal(getLecture("kambaz-enrollments-db")?.bookHref, "/book/ch6#sec-6-4-3");
-    assert.equal(getLecture("youtube-api")?.bookHref, "/project");
-    assert.equal(getLecture("chatgpt-api")?.bookHref, "/project");
-    assert.equal(getLecture("grok-api")?.bookHref, "/project");
+    assert.equal(getLecture("html-and-dom")?.bookHref, "/2026/fall/webdev/book/ch1#sec-1-3");
+    assert.equal(getLecture("headings-and-paragraphs")?.bookHref, "/2026/fall/webdev/book/ch1#sec-1-3-1");
+    assert.equal(getLecture("css-intro")?.bookHref, "/2026/fall/webdev/book/ch2#sec-2-1");
+    assert.equal(getLecture("react-icons")?.bookHref, "/2026/fall/webdev/book/ch2#sec-2-2");
+    assert.equal(getLecture("tailwind-spacing")?.bookHref, "/2026/fall/webdev/book/ch2#sec-2-3-1");
+    assert.equal(getLecture("kambaz-nav-styling")?.bookHref, "/2026/fall/webdev/book/ch2#sec-2-4-1");
+    assert.equal(getLecture("intro-to-javascript")?.bookHref, "/2026/fall/webdev/book/ch3#sec-3-2");
+    assert.equal(getLecture("javascript-functions")?.bookHref, "/2026/fall/webdev/book/ch3#sec-3-3");
+    assert.equal(getLecture("javascript-arrays")?.bookHref, "/2026/fall/webdev/book/ch3#sec-3-4");
+    assert.equal(getLecture("dynamic-styling")?.bookHref, "/2026/fall/webdev/book/ch3#sec-3-6");
+    assert.equal(getLecture("client-and-server")?.bookHref, "/2026/fall/webdev/book/ch3#sec-3-7");
+    assert.equal(getLecture("parameterizing-components")?.bookHref, "/2026/fall/webdev/book/ch3#sec-3-8");
+    assert.equal(getLecture("kambaz-database")?.bookHref, "/2026/fall/webdev/book/ch3#sec-3-10");
+    assert.equal(getLecture("kambaz-dashboard-data")?.bookHref, "/2026/fall/webdev/book/ch3#sec-3-10-3");
+    assert.equal(getLecture("click-events")?.bookHref, "/2026/fall/webdev/book/ch4#sec-4-2-1");
+    assert.equal(getLecture("usestate-counter")?.bookHref, "/2026/fall/webdev/book/ch4#sec-4-2-4");
+    assert.equal(getLecture("sharing-parent-child")?.bookHref, "/2026/fall/webdev/book/ch4#sec-4-3-1");
+    assert.equal(getLecture("react-context")?.bookHref, "/2026/fall/webdev/book/ch4#sec-4-4");
+    assert.equal(getLecture("zustand-counter")?.bookHref, "/2026/fall/webdev/book/ch4#sec-4-5-1");
+    assert.equal(getLecture("zustand-todos")?.bookHref, "/2026/fall/webdev/book/ch4#sec-4-5-2");
+    assert.equal(getLecture("use-effect")?.bookHref, "/2026/fall/webdev/book/ch4#sec-4-7");
+    assert.equal(getLecture("kambaz-courses-store")?.bookHref, "/2026/fall/webdev/book/ch4#sec-4-10-1");
+    assert.equal(getLecture("kambaz-dashboard-crud")?.bookHref, "/2026/fall/webdev/book/ch4#sec-4-10-2");
+    assert.equal(getLecture("kambaz-modules-store")?.bookHref, "/2026/fall/webdev/book/ch4#sec-4-10-4");
+    assert.equal(getLecture("kambaz-account-context")?.bookHref, "/2026/fall/webdev/book/ch4#sec-4-10-5");
+    assert.equal(getLecture("http-server")?.bookHref, "/2026/fall/webdev/book/ch5#sec-5-1");
+    assert.equal(getLecture("nodemon-es6-routes")?.bookHref, "/2026/fall/webdev/book/ch5#sec-5-1-6");
+    assert.equal(getLecture("lab5-env")?.bookHref, "/2026/fall/webdev/book/ch5#sec-5-2-1");
+    assert.equal(getLecture("path-and-query")?.bookHref, "/2026/fall/webdev/book/ch5#sec-5-2-2");
+    assert.equal(getLecture("remote-objects")?.bookHref, "/2026/fall/webdev/book/ch5#sec-5-2-3");
+    assert.equal(getLecture("remote-arrays")?.bookHref, "/2026/fall/webdev/book/ch5#sec-5-2-4");
+    assert.equal(getLecture("async-http")?.bookHref, "/2026/fall/webdev/book/ch5#sec-5-2-5");
+    assert.equal(getLecture("next-routes")?.bookHref, "/2026/fall/webdev/book/ch5#sec-5-3");
+    assert.equal(getLecture("kambaz-migrate-db")?.bookHref, "/2026/fall/webdev/book/ch5#sec-5-4-1");
+    assert.equal(getLecture("kambaz-account-rest")?.bookHref, "/2026/fall/webdev/book/ch5#sec-5-4-2");
+    assert.equal(getLecture("kambaz-sessions")?.bookHref, "/2026/fall/webdev/book/ch5#sec-5-4-3");
+    assert.equal(getLecture("kambaz-courses-api")?.bookHref, "/2026/fall/webdev/book/ch5#sec-5-4-5");
+    assert.equal(getLecture("deploy-api")?.bookHref, "/2026/fall/webdev/book/ch5#sec-5-5");
+    assert.equal(getLecture("local-mongo")?.bookHref, "/2026/fall/webdev/book/ch6#sec-6-1");
+    assert.equal(getLecture("mongoose")?.bookHref, "/2026/fall/webdev/book/ch6#sec-6-2");
+    assert.equal(getLecture("mongo-apis")?.bookHref, "/2026/fall/webdev/book/ch6#sec-6-2-6");
+    assert.equal(getLecture("mongo-users-crud")?.bookHref, "/2026/fall/webdev/book/ch6#sec-6-2-6-3");
+    assert.equal(getLecture("atlas")?.bookHref, "/2026/fall/webdev/book/ch6#sec-6-3");
+    assert.equal(getLecture("atlas-compass")?.bookHref, "/2026/fall/webdev/book/ch6#sec-6-3-1-1");
+    assert.equal(getLecture("atlas-node")?.bookHref, "/2026/fall/webdev/book/ch6#sec-6-3-1-2");
+    assert.equal(getLecture("atlas-sessions")?.bookHref, "/2026/fall/webdev/book/ch6#sec-6-3-2");
+    assert.equal(getLecture("kambaz-courses-db")?.bookHref, "/2026/fall/webdev/book/ch6#sec-6-4-1");
+    assert.equal(getLecture("kambaz-modules-db")?.bookHref, "/2026/fall/webdev/book/ch6#sec-6-4-2");
+    assert.equal(getLecture("kambaz-enrollments-db")?.bookHref, "/2026/fall/webdev/book/ch6#sec-6-4-3");
+    assert.equal(getLecture("youtube-api")?.bookHref, "/2026/fall/webdev/project");
+    assert.equal(getLecture("chatgpt-api")?.bookHref, "/2026/fall/webdev/project");
+    assert.equal(getLecture("grok-api")?.bookHref, "/2026/fall/webdev/project");
     assert.equal(getLecture("youtube-api")?.bookSectionId, undefined);
     assert.equal(getLecture("youtube-api")?.chapter, 7);
     assert.equal(getLecture("youtube-api")?.canvasLecture, 25);
     for (const slug of PROJECT_SLUGS) {
       const item = getLecture(slug);
       assert.equal(item?.bookSectionId, undefined);
-      assert.equal(item?.bookHref, "/project");
+      assert.equal(item?.bookHref, "/2026/fall/webdev/project");
       assert.equal(item?.chapter, 7);
       assert.doesNotMatch(item?.bookHref ?? "", /\/book\/ch/);
     }
     for (const topic of LECTURE_TOPICS.filter((entry) => entry.chapter === 7)) {
       assert.equal(topic.bookSectionId, undefined);
     }
-    assert.equal(bookHrefForSection(7), "/project");
-    assert.equal(bookHrefForSection(7, "sec-7-1"), "/project");
+    assert.equal(bookHrefForSection(7), "/2026/fall/webdev/project");
+    assert.equal(bookHrefForSection(7, "sec-7-1"), "/2026/fall/webdev/project");
     assert.equal(lectureCompanionLinkLabel(7), "Open the project");
     assert.equal(
       lectureCompanionLinkLabel(3, "sec-3-2"),
@@ -962,10 +941,10 @@ describe("lecture catalog", () => {
     assert.equal(listDecksForBookSection("sec-2-3")[0]?.slug, "tailwind-intro");
     assert.equal(listDecksForBookSection("sec-2-2")[0]?.slug, "react-icons");
     assert.equal(getLecture("css-rotation")?.bookSectionId, undefined);
-    assert.equal(getLecture("css-rotation")?.bookHref, "/book/ch2");
+    assert.equal(getLecture("css-rotation")?.bookHref, "/2026/fall/webdev/book/ch2");
     for (const item of listLectures()) {
       if (item.bookSectionId) {
-        assert.match(item.bookHref, /^\/book\/ch\d#/);
+        assert.match(item.bookHref, /^\/2026\/fall\/webdev\/book\/ch\d#/);
       }
     }
   });
@@ -1102,7 +1081,7 @@ describe("lecture catalog", () => {
     assert.equal(groups[12]?.canvasLecture, 13);
     assert.deepEqual(
       groups[12]?.decks.map((deck) => deck.slug),
-      ["use-effect", "custom-hooks", "ch4-check-understanding"],
+      ["use-effect", "custom-hooks"],
     );
     assert.equal(groups[13]?.title, "Lecture 14");
     assert.equal(groups[13]?.canvasLecture, 14);
@@ -1144,7 +1123,6 @@ describe("lecture catalog", () => {
         "remote-arrays",
         "async-http",
         "next-routes",
-        "ch5-check-understanding",
       ],
     );
     assert.equal(groups[18]?.title, "Lecture 19");
@@ -1184,7 +1162,6 @@ describe("lecture catalog", () => {
         "atlas-compass",
         "atlas-node",
         "atlas-sessions",
-        "ch6-check-understanding",
       ],
     );
     assert.equal(groups[23]?.title, "Lecture 24");
@@ -1349,7 +1326,6 @@ describe("lecture decks", () => {
     assert.equal(counts["zustand-todos"], 17);
     assert.equal(counts["use-effect"], 8);
     assert.equal(counts["custom-hooks"], 24);
-    assert.equal(counts["ch4-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-store"], 10);
     assert.equal(counts["kambaz-dashboard-crud"], 15);
     assert.equal(counts["kambaz-modules-store"], 25);
@@ -1364,22 +1340,20 @@ describe("lecture decks", () => {
     assert.equal(counts["remote-objects"], 14);
     assert.equal(counts["remote-arrays"], 19);
     assert.equal(counts["async-http"], 41);
-    assert.equal(counts["next-routes"], 28);
-    assert.equal(counts["ch5-check-understanding"], 7);
+    assert.equal(counts["next-routes"], 27);
     assert.equal(counts["kambaz-migrate-db"], 7);
     assert.equal(counts["kambaz-account-rest"], 23);
     assert.equal(counts["kambaz-sessions"], 21);
     assert.equal(counts["kambaz-courses-api"], 56);
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 12);
-    assert.equal(counts["mongoose"], 12);
+    assert.equal(counts["mongoose"], 13);
     assert.equal(counts["mongo-apis"], 16);
     assert.equal(counts["mongo-users-crud"], 36);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
     assert.equal(counts["atlas-node"], 10);
     assert.equal(counts["atlas-sessions"], 12);
-    assert.equal(counts["ch6-check-understanding"], 7);
     assert.equal(counts["kambaz-courses-db"], 34);
     assert.equal(counts["kambaz-modules-db"], 28);
     assert.equal(counts["kambaz-enrollments-db"], 23);
@@ -2018,7 +1992,7 @@ describe("lecture decks", () => {
     assert.match(item.summary, /Node/);
     assert.doesNotMatch(item.summary, /Express/i);
     assert.doesNotMatch(item.summary, /4000/);
-    assert.equal(item.bookHref, "/book/ch1#sec-1-2-1");
+    assert.equal(item.bookHref, "/2026/fall/webdev/book/ch1#sec-1-2-1");
     const text = slideText("installing-nodejs");
     assert.match(text, /localhost:4000\/hello/);
   });
@@ -3034,11 +3008,6 @@ describe("lecture decks", () => {
     assert.match(effect, /document.title/);
     assert.match(effect, /wd-use-effect/);
 
-    const check = slideText("ch4-check-understanding");
-    assert.match(check, /sec-4-9/);
-    assert.match(check, /self-check/);
-    assert.doesNotMatch(check, /Lecture \d+/);
-
     const store = slideText("kambaz-courses-store");
     assert.match(store, /useCoursesStore/);
     assert.match(store, /coursesStore.ts/);
@@ -3131,11 +3100,6 @@ describe("lecture decks", () => {
     assert.match(next, /\/api\/lab5\/calculator/);
     assert.match(next, /searchParams/);
     assert.doesNotMatch(next, /Lecture \d+/);
-
-    const check = slideText("ch5-check-understanding");
-    assert.match(check, /sec-5-check/);
-    assert.match(check, /self-check/);
-    assert.doesNotMatch(check, /Lecture \d+/);
 
     const migrate = slideText("kambaz-migrate-db");
     assert.match(migrate, /Kambaz\/Database/);
@@ -3299,11 +3263,6 @@ describe("lecture decks", () => {
     assert.match(sessions, /12\/7/);
     assert.doesNotMatch(sessions, /netlify\.com/i);
 
-    const check = slideText("ch6-check-understanding");
-    assert.match(check, /sec-6-check/);
-    assert.match(check, /self-check/);
-    assert.doesNotMatch(check, /Lecture \d+/);
-
     const courses = slideText("kambaz-courses-db");
     assert.match(courses, /CourseModel/);
     assert.match(courses, /model\.find/);
@@ -3406,7 +3365,7 @@ describe("lecture decks", () => {
     const intro = getLecture("intro-to-javascript");
     assert.ok(intro);
     assert.equal(intro.chapter, 3);
-    assert.equal(intro.bookHref, "/book/ch3#sec-3-2");
+    assert.equal(intro.bookHref, "/2026/fall/webdev/book/ch3#sec-3-2");
     assert.equal(intro.topicId, "js-intro");
   });
 
@@ -3492,7 +3451,7 @@ describe("lecture decks", () => {
         slideNumber: 3,
         present: true,
       }),
-      "/slides/html-and-dom?fullscreen=1#slide-3",
+      "/2026/fall/webdev/slides/html-and-dom?fullscreen=1#slide-3",
     );
     assert.equal(
       lecturePresentHref({
@@ -3500,7 +3459,7 @@ describe("lecture decks", () => {
         slideNumber: 3,
         present: false,
       }),
-      "/slides/html-and-dom#slide-3",
+      "/2026/fall/webdev/slides/html-and-dom#slide-3",
     );
     assert.equal(isLecturePresentHistoryState(null), false);
     assert.equal(isLecturePresentHistoryState(LECTURE_PRESENT_STATE), true);
@@ -3509,7 +3468,7 @@ describe("lecture decks", () => {
   it("builds a Continue href that keeps presenter mode across decks", () => {
     assert.equal(
       lectureDeckHref({ slug: "creating-a-nextjs-react-application" }),
-      "/slides/creating-a-nextjs-react-application#slide-1",
+      "/2026/fall/webdev/slides/creating-a-nextjs-react-application#slide-1",
     );
     assert.equal(
       lectureDeckHref({
@@ -3517,7 +3476,7 @@ describe("lecture decks", () => {
         slideNumber: 1,
         present: true,
       }),
-      "/slides/creating-a-nextjs-react-application?fullscreen=1#slide-1",
+      "/2026/fall/webdev/slides/creating-a-nextjs-react-application?fullscreen=1#slide-1",
     );
     assert.equal(isLectureNextUpSlide({ id: "next-up", title: "Example DOM" }), true);
     assert.equal(isLectureNextUpSlide({ id: "next-up", title: "Next: colors" }), true);
@@ -4365,7 +4324,7 @@ describe("diagram fit", () => {
     assert.doesNotMatch(css, /max-height:\s*125%/);
     assert.doesNotMatch(css, /max-width:\s*125%/);
     assert.match(shell, /data-diagram-fit=\{hasFittedDiagram \? "stack"/);
-    assert.match(shell, /<DiagramFit>/);
+    assert.match(shell, /<DiagramFit /);
     assert.doesNotMatch(shell, /data-flow-diagram/);
 
     const env = readFileSync(
@@ -4390,7 +4349,7 @@ describe("diagram fit", () => {
     );
     assert.equal(hub.match(/target="_blank"/g)?.length, 2);
     assert.equal(hub.match(/rel="noopener noreferrer"/g)?.length, 2);
-    assert.match(hub, /href=\{`\/slides\/\$\{deck\.slug\}`\} target="_blank"/);
+    assert.match(hub, /href=\{`\/2026\/fall\/webdev\/slides\/\$\{deck\.slug\}`\} target="_blank"/);
   });
 
   it("does not name Axios on the async-http opener before the library slide defines it", () => {
@@ -4453,7 +4412,7 @@ describe("Chapter 5 and 6 title covers", () => {
       assert.ok(title.cover.headline.length > 0 && title.cover.headline.length <= 42, lecture.slug);
     }
     const youtube = findSlide("youtube-api", "title");
-    assert.equal(youtube.cover?.color, "#FF0000");
+    assert.equal(youtube.cover?.color, "#7C1D1D");
     assert.equal(youtube.cover?.headline, "YouTube API");
     assert.equal(findSlide("youtube-api", "api").kind, "content");
     assert.equal(findSlide("youtube-api", "api-key").kind, "content");
@@ -4467,7 +4426,8 @@ describe("Chapter 5 next-up slides", () => {
       const nextDeck = next ? getLectureDeck(next) : undefined;
       if (!nextDeck || nextDeck.slides[0]?.cover === undefined || getLecture(next!)?.chapter !== 5) continue;
       const nextUp = getLectureDeck(l.slug)!.slides.filter((s) => s.title.startsWith("Next:")).pop();
-      assert.equal(nextUp?.title, `Next: ${nextDeck.slides[0].cover!.headline}`, l.slug);
+      if (!nextUp) continue;
+      assert.equal(nextUp.title, `Next: ${nextDeck.slides[0].cover!.headline}`, l.slug);
     }
   });
 });

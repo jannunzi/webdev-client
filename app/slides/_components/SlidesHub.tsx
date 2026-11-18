@@ -70,7 +70,7 @@ function DeckCard({
         </div>
       ) : null}
       <Link
-        href={editMode ? `/slides/${deck.slug}?edit=1` : `/slides/${deck.slug}`}
+        href={editMode ? `/2026/fall/webdev/slides/${deck.slug}?edit=1` : `/2026/fall/webdev/slides/${deck.slug}`}
         target="_blank"
         rel="noopener noreferrer"
         className="group block no-underline"
@@ -90,7 +90,7 @@ function DeckCard({
           />
         ) : (
           <h3 className="mt-0 mb-1 font-sans text-lg font-semibold text-neutral-900">
-            <Link href={`/slides/${deck.slug}`} target="_blank" rel="noopener noreferrer">
+            <Link href={`/2026/fall/webdev/slides/${deck.slug}`} target="_blank" rel="noopener noreferrer">
               {deck.title}
             </Link>
           </h3>
@@ -210,7 +210,7 @@ export default function SlidesHub({
     });
     setNewTitle("");
     setStatus(`Created ${slug}. Opening editor…`);
-    router.push(`/slides/${slug}?edit=1`);
+    router.push(`/2026/fall/webdev/slides/${slug}?edit=1`);
   }
 
   function resetHub() {
@@ -234,7 +234,7 @@ export default function SlidesHub({
           </h1>
           <p className="mb-0 font-sans text-sm">
             <Link
-              href={editMode ? "/slides" : "/slides?edit=1"}
+              href={editMode ? "/2026/fall/webdev/slides" : "/2026/fall/webdev/slides?edit=1"}
               className="text-neutral-500 no-underline hover:underline"
             >
               {editMode ? "Done" : "Edit"}
@@ -251,7 +251,7 @@ export default function SlidesHub({
         <p className="rounded-lg border border-sky-300 bg-sky-50 px-4 py-3 font-sans text-sm text-sky-950">
           These slides are the classroom version of the matching book chapter.
           They are not a substitute for labs or the checklists on{" "}
-          <Link href="/assignments">Assignments</Link>.
+          <Link href="/2026/fall/webdev/assignments">Assignments</Link>.
         </p>
 
         {editMode ? (

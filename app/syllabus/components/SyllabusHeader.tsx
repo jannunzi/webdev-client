@@ -37,7 +37,7 @@ export default function SyllabusHeader({
       </p>
       <p className="mt-4 text-[1.05rem] text-neutral-800">
         Companion to{" "}
-        <Link href="/book">{course.bookTitle}</Link>.{" "}
+        <Link href="/2026/fall/webdev/book">{course.bookTitle}</Link>.{" "}
         <Link href="#book">How to use the book</Link>
         {". "}
         <Link href="#accounts">Course website accounts</Link>

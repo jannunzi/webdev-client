@@ -1,3 +1,4 @@
+import { COVER_MONGO } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const ATLAS_NODE_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const ATLAS_NODE_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#00ED64",
+      color: COVER_MONGO,
       icon: "server",
       headline: "Atlas from Node",
     },
@@ -33,7 +34,7 @@ export const ATLAS_NODE_SLIDES: LectureSlide[] = [
       "Atlas → Network Access → + ADD IP ADDRESS",
       "ALLOW ACCESS FROM ANYWHERE adds `0.0.0.0/0`",
       "Free Render outbound IPs change, so a laptop-only list fails",
-      "Without this entry, Mongoose hangs",
+      "Without `0.0.0.0/0`, Mongoose on Render hangs",
     ],
     code: `0.0.0.0/0`,
     codeLanguage: "text",
@@ -61,7 +62,7 @@ export const ATLAS_NODE_SLIDES: LectureSlide[] = [
     bullets: [
       "Mongoose connects to the cluster even if the path is missing",
       "Default database is `test` — Compass `kambaz` then looks empty",
-      "Dashboard on Vercel shows no courses. Compass on Atlas still has them",
+      "The Vercel Dashboard shows no courses. Compass still shows the `kambaz` documents",
       "Fix: put `/kambaz?` in `DATABASE_CONNECTION_STRING` and redeploy",
     ],
   },

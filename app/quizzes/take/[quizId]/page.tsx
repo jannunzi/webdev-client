@@ -82,11 +82,11 @@ function TakeNav({
         </>
       ) : null}
       {" · "}
-      <Link href="/book">Book</Link>
+      <Link href="/2026/fall/webdev/book">Book</Link>
       {" · "}
-      <Link href="/blog">Blog</Link>
+      <Link href="/2026/fall/webdev/blog">Blog</Link>
       {" · "}
-      <Link href="/slides">Slides</Link>
+      <Link href="/2026/fall/webdev/slides">Slides</Link>
     </p>
   );
 }

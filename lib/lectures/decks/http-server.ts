@@ -1,3 +1,4 @@
+import { COVER_NODE } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const HTTP_SERVER_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const HTTP_SERVER_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#339933",
+      color: COVER_NODE,
       icon: "server",
       headline: "Creating Express Servers",
     },

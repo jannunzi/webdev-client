@@ -1,3 +1,4 @@
+import { COVER_YOUTUBE } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const YOUTUBE_API_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const YOUTUBE_API_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#FF0000",
+      color: COVER_YOUTUBE,
       icon: "link",
       headline: "YouTube API",
     },
