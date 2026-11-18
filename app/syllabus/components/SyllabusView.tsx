@@ -1,6 +1,9 @@
 "use client";
 
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useSyncExternalStore } from "react";
+import { useRouter } from "next/navigation";
+import CourseBreadcrumb from "@/app/courses/CourseBreadcrumb";
+import { sectionIdFromLegacyTab } from "@/lib/courses/offerings";
 import {
   SECTION_STORAGE_KEY,
   findSection,
@@ -37,7 +40,6 @@ import MeetingInfo from "./MeetingInfo";
 import OfficeHours from "./OfficeHours";
 import ProjectBlurb from "./ProjectBlurb";
 import RegradePolicy from "./RegradePolicy";
-import SectionTabs from "./SectionTabs";
 import SyllabusHeader from "./SyllabusHeader";
 import SyllabusNav from "./SyllabusNav";
 import TitleIX from "./TitleIX";
@@ -55,11 +57,16 @@ function subscribeToStoredSection(onChange: () => void): () => void {
   return () => window.removeEventListener("storage", onChange);
 }
 
+function sectionCrumb(section: { code: string; sectionNumber: string }): string {
+  return `${section.code.replace(/\s+/g, "")}-${section.sectionNumber}`;
+}
+
 export default function SyllabusView({
   course,
   semester,
   sections,
   defaultSectionId,
+  lockedSectionId,
   agendaGroupsBySection,
   deadlines,
   deadlinesNote,
@@ -84,6 +91,8 @@ export default function SyllabusView({
   semester: SemesterDates;
   sections: CourseSection[];
   defaultSectionId: string;
+  /** Section chosen from its own URL. Omit on `/syllabus`, which keeps the saved pick. */
+  lockedSectionId?: string;
   agendaGroupsBySection: Record<string, AgendaGroup[]>;
   deadlines: Deadline[];
   deadlinesNote: string;
@@ -104,27 +113,30 @@ export default function SyllabusView({
   titleIX: PolicyBlock;
   disabilities: PolicyBlock;
 }) {
-  // In-session pick (works even if localStorage is blocked).
-  const [chosenId, setChosenId] = useState<string | null>(null);
-  // Saved pick. Server snapshot is null so SSR and hydration render the first
-  // tab; the saved section is applied right after hydration.
+  // Saved pick. Server snapshot is null so SSR and hydration render the
+  // default section; the saved section is applied right after hydration.
   const storedId = useSyncExternalStore(
     subscribeToStoredSection,
     readStoredSection,
     () => null,
   );
   const sectionId =
-    chosenId ??
+    lockedSectionId ??
     (storedId ? resolveStoredSectionId(storedId, sections) : defaultSectionId);
+  const router = useRouter();
 
-  function selectSection(id: string) {
-    setChosenId(id);
-    try {
-      window.localStorage.setItem(SECTION_STORAGE_KEY, id);
-    } catch {
-      // Storage blocked: selection still works for this visit.
+  useEffect(() => {
+    if (lockedSectionId) {
+      try {
+        window.localStorage.setItem(SECTION_STORAGE_KEY, lockedSectionId);
+      } catch {
+        // Storage blocked: this visit still shows the section from the URL.
+      }
+      return;
     }
-  }
+    const fromHash = sectionIdFromLegacyTab(window.location.hash);
+    if (fromHash) router.replace(`/syllabus/${fromHash}`);
+  }, [lockedSectionId, router]);
 
   const section = useMemo(
     () => findSection(sectionId),
@@ -134,11 +146,7 @@ export default function SyllabusView({
 
   return (
     <article className="page-content">
-      <SectionTabs
-        sections={sections}
-        activeId={section.id}
-        onSelect={selectSection}
-      />
+      <CourseBreadcrumb current={sectionCrumb(section)} />
       <SyllabusHeader course={course} section={section} />
       <div className="mt-6">
         <SyllabusNav />

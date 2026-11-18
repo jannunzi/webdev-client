@@ -1,56 +1,16 @@
-import {
-  academicIntegrity,
-  agendaGroupsBySection,
-  aiPolicy,
-  assignments,
-  assignmentsIntro,
-  classroomEnvironment,
-  course,
-  courseGoals,
-  deadlines,
-  deadlinesNote,
-  defaultSectionId,
-  disabilities,
-  evaluationItems,
-  evaluationNotes,
-  gradeBands,
-  latePolicy,
-  officeHourColumns,
-  officeHourRows,
-  officeHoursPlaceholder,
-  regradePolicy,
-  sections,
-  semester,
-  titleIX,
-} from "./data";
-import SyllabusView from "./components/SyllabusView";
+import { redirect } from "next/navigation";
+import { sectionIdFromLegacyTab, legacySectionPath } from "@/lib/courses/offerings";
+import SyllabusPage from "./SyllabusPage";
 
-export default function SyllabusPage() {
-  return (
-    <SyllabusView
-      course={course}
-      semester={semester}
-      sections={sections}
-      defaultSectionId={defaultSectionId}
-      agendaGroupsBySection={agendaGroupsBySection}
-      deadlines={deadlines}
-      deadlinesNote={deadlinesNote}
-      courseGoals={courseGoals}
-      evaluationItems={evaluationItems}
-      evaluationNotes={evaluationNotes}
-      gradeBands={gradeBands}
-      latePolicy={latePolicy}
-      regradePolicy={regradePolicy}
-      assignmentsIntro={assignmentsIntro}
-      assignments={assignments}
-      officeHourRows={officeHourRows}
-      officeHourColumns={officeHourColumns}
-      officeHoursPlaceholder={officeHoursPlaceholder}
-      aiPolicy={aiPolicy}
-      academicIntegrity={academicIntegrity}
-      classroomEnvironment={classroomEnvironment}
-      titleIX={titleIX}
-      disabilities={disabilities}
-    />
-  );
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ section?: string | string[] }>;
+}) {
+  const { section } = await searchParams;
+  const raw = Array.isArray(section) ? section[0] : section;
+  const sectionId = sectionIdFromLegacyTab(raw);
+  const destination = sectionId ? legacySectionPath(sectionId) : undefined;
+  if (destination) redirect(destination);
+  return <SyllabusPage />;
 }
