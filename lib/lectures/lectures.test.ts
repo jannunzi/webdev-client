@@ -1384,13 +1384,14 @@ describe("lecture decks", () => {
     const css = readFileSync(join(process.cwd(), "app/book/book.css"), "utf8");
     assert.match(css, /\.lecture-slide-title\s*\{[^}]*white-space:\s*nowrap/);
     assert.match(css, /max\(0\.95rem,\s*calc\(100cqi \/ 24\)\)/);
+    assert.match(css, /--lecture-bullet-fit/);
     assert.match(
       css,
-      /\.lecture-slide-spacious \.lecture-slide-bullets \{[^}]*font-size:\s*calc\(2\.25rem/,
+      /\.lecture-slide-spacious \.lecture-slide-bullets,[\s\S]*?font-size:\s*calc\(\s*2\.25rem/,
     );
-    assert.match(css, /font-size:\s*calc\(2\.75rem/);
-    assert.match(css, /font-size:\s*calc\(3\.15rem/);
-    assert.match(
+    assert.match(css, /font-size:\s*calc\(\s*2\.75rem/);
+    assert.match(css, /font-size:\s*calc\(\s*3\.15rem/);
+    assert.doesNotMatch(
       css,
       /\.lecture-slide-dense \.lecture-slide-bullets \{[^}]*font-size:\s*calc\(1\.7rem/,
     );

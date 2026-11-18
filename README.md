@@ -474,9 +474,12 @@ New decks should set `chapter`, `topicId` (from `LECTURE_TOPICS`),
 `/book/chN#${bookSectionId}`.
 
 Catalog and slide data live in `lib/lectures/`. The React shell is
-`app/slides/_components/LectureDeckShell.tsx`. Text-only slides use
-`spacious` type (larger titles and bullets); slides with a `diagram` or
-`embed` stay `dense`. These routes are not nested under `/book`.
+`app/slides/_components/LectureDeckShell.tsx`. Bullet text uses one
+standard size (the spacious size, 3.15rem at a 1280px-wide viewport).
+The shell shrinks that size, via `--lecture-bullet-fit`, only when code
+or a diagram on the same slide would otherwise overflow, and only until
+the slide fits. Text-only slides stay at the standard size. These routes
+are not nested under `/book`.
 
 Press **f** (or the Fullscreen button) for presentation mode; **Esc** exits.
 Add `?fullscreen=1` to retry fullscreen after the next click (browsers require

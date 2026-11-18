@@ -45,6 +45,7 @@ import {
   fitDemoScale,
   setDemoScale,
 } from "@/lib/lectures/demo-fit";
+import { fitBulletScale } from "@/lib/lectures/bullet-fit";
 import DiagramFit from "./diagrams/DiagramFit";
 import LectureDiagram from "./diagrams/LectureDiagram";
 import LectureFilmstrip from "./LectureFilmstrip";
@@ -273,6 +274,58 @@ export default function LectureDeckShell({
   const isPresenting = isNativeFullscreen || fallbackPresent;
   fallbackPresentRef.current = fallbackPresent;
   indexRef.current = index;
+
+  useLayoutEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    let fitting = false;
+    const fitBullets = () => {
+      if (fitting) return;
+      fitting = true;
+      try {
+        const bullets = stage.querySelector(".lecture-slide-bullets");
+        const code = stage.querySelector(".book-code-block");
+        const diagram = stage.querySelector(
+          ".lecture-diagram-fit, .lecture-target-figure",
+        );
+        const embed = stage.querySelector(".lecture-demo-frame");
+        const pressure = Boolean(code || diagram || embed);
+        const reason = [
+          code ? "code" : "",
+          diagram ? "diagram" : "",
+          embed ? "embed" : "",
+        ]
+          .filter(Boolean)
+          .join("+");
+        const overflows = (scale: number) => {
+          stage.style.setProperty("--lecture-bullet-fit", String(scale));
+          return stage.scrollHeight > stage.clientHeight + 2;
+        };
+        const scale = !bullets || !pressure ? 1 : fitBulletScale(overflows);
+        stage.style.setProperty("--lecture-bullet-fit", String(scale));
+        stage.dataset.bulletFit = String(scale);
+        stage.dataset.bulletFitReason = scale < 1 ? reason : "standard";
+      } finally {
+        fitting = false;
+      }
+    };
+    const observer = new ResizeObserver(fitBullets);
+    const watch = () => {
+      observer.observe(stage);
+      for (const node of stage.querySelectorAll(
+        ".book-code-block, .lecture-diagram-fit, .lecture-demo-frame, img",
+      )) {
+        observer.observe(node);
+      }
+    };
+    fitBullets();
+    watch();
+    stage.addEventListener("load", fitBullets, true);
+    return () => {
+      observer.disconnect();
+      stage.removeEventListener("load", fitBullets, true);
+    };
+  }, [index, isPresenting, slide?.id]);
 
   useLayoutEffect(() => {
     const stage = stageRef.current;
