@@ -1,3 +1,4 @@
+import { COVER_ASYNC } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#5A29E4",
+      color: COVER_ASYNC,
       icon: "link",
       headline: "Async HTTP and JSON",
     },

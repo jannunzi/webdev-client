@@ -30,7 +30,7 @@ export default function StaffFixupPanel(props: StaffFixupPanelProps) {
       if (res.ok) router.refresh();
     });
   const result = props.student?.result ?? null;
-  const exportHref = `/assignments/${props.assignmentId}/fixup-export${props.section ? `?section=${encodeURIComponent(props.section)}` : ""}`;
+  const exportHref = `/2026/fall/webdev/assignments/${props.assignmentId}/fixup-export${props.section ? `?section=${encodeURIComponent(props.section)}` : ""}`;
 
   return (
     <section className="my-6 rounded-lg border border-amber-400 bg-amber-50 px-4 py-3 font-sans text-sm" aria-labelledby="staff-fixup-heading">

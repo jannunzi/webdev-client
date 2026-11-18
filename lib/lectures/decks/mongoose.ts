@@ -1,3 +1,4 @@
+import { COVER_MONGO } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const MONGOOSE_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const MONGOOSE_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#00ED64",
+      color: COVER_MONGO,
       icon: "code",
       headline: "Mongoose",
     },
@@ -21,7 +22,7 @@ export const MONGOOSE_SLIDES: LectureSlide[] = [
     kind: "demo",
     bullets: [
       "Applications need `find`, `create`, `updateOne`, and `deleteOne`",
-      "Run this in `webdev-server` on branch `a6`, not the Next.js app",
+      "Run `npm install mongoose` in `webdev-server` on branch `a6`, not the Next.js app",
       "The connection URI stays in `webdev-server`",
     ],
     code: `cd webdev-server
@@ -33,7 +34,7 @@ npm install mongoose`,
     title: "Connect before any route runs",
     kind: "demo",
     bullets: [
-      "The URL is the **connection string** — localhost, port 27017, `/kambaz`",
+      "`CONNECTION_STRING` is `mongodb://127.0.0.1:27017/kambaz`",
       "Place `connect` near the top of `index.ts`",
       "If `mongod` is down, Mongoose retries and then fails",
     ],
@@ -52,8 +53,8 @@ const app = express();`,
     kind: "demo",
     bullets: [
       "Node `.env` — not the Next.js `.env.local`",
-      "Same key later holds the Atlas `mongodb+srv://` string",
-      "Alongside the session keys from Chapter 5",
+      "`DATABASE_CONNECTION_STRING` later holds the Atlas `mongodb+srv://` string",
+      "Alongside `SESSION_SECRET` from Chapter 5",
     ],
     code: `SERVER_ENV=development
 CLIENT_URL=http://localhost:3000
@@ -70,7 +71,7 @@ DATABASE_CONNECTION_STRING=mongodb://127.0.0.1:27017/kambaz`,
     kind: "demo",
     bullets: [
       "`dotenv/config` loads `.env` before other modules read keys",
-      "Fallback keeps you on localhost if the line is missing",
+      "If `.env` has no `DATABASE_CONNECTION_STRING`, the `||` falls back to the local `mongodb://127.0.0.1:27017/kambaz`",
     ],
     code: `import "dotenv/config";
 import mongoose from "mongoose";
@@ -84,14 +85,24 @@ await mongoose.connect(CONNECTION_STRING);`,
     codeAddedLines: [1, [4, 6]],
   },
   {
+    id: "schema-where",
+    title: "SQL declares the schema, MongoDB does not",
+    kind: "content",
+    bullets: [
+      "In SQL, each table's schema (columns and types) is defined in the database itself",
+      "In MongoDB, the database doesn't enforce a schema; Mongoose schemas define it in application code",
+      "`_id` is `String` so Chapter 3 ids still match enrollments",
+    ],
+  },
+  {
     id: "schema-intro",
     title: "A schema validates writes",
-    kind: "demo",
+    kind: "content",
+    density: "dense",
     bullets: [
-      "A schema is a SQL table declaration written in app code; MongoDB stays schemaless",
-      "`_id` is `String` so Chapter 3 ids still match enrollments",
-      "`required` validates username. `unique: true` is an index, not a validator",
-      "`{ collection: \"users\" }` — do not let Mongoose invent a name",
+      "`required: true` rejects an insert that's missing `username`",
+      "`unique: true` rejects an insert or update that would duplicate an existing `username` (enforced by a unique index in MongoDB)",
+      "`{ collection: \"users\" }` names the collection; without it, Mongoose picks one for you (the lowercased, pluralized model name)",
     ],
   },
   {

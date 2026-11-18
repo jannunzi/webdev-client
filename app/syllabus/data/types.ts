@@ -122,7 +122,7 @@ export type AgendaGroup = {
 
 export type LectureTopic = {
   topic: string;
-  /** Optional syllabus link, e.g. `/slides` for the project-week decks. */
+  /** Optional syllabus link, e.g. `/2026/fall/webdev/slides` for the project-week decks. */
   href?: string;
   /** Book chapter for weekly rows. Omitted on exam-only (X2) and project weeks. */
   chapter?: number;

@@ -1,4 +1,5 @@
 import { COURSE_SITE_ORIGIN } from "@/lib/course-site/origin";
+import { toPublicCourseHref } from "@/lib/courses/routes";
 
 /** Serialize contenteditable HTML back to the slide markdown dialect. */
 export function htmlToSlideText(html: string): string {
@@ -57,5 +58,5 @@ export function lectureEditHref({
   const url = new URL(href, COURSE_SITE_ORIGIN);
   if (edit) url.searchParams.set("edit", "1");
   else url.searchParams.delete("edit");
-  return `${url.pathname}${url.search}${url.hash}`;
+  return toPublicCourseHref(`${url.pathname}${url.search}${url.hash}`);
 }

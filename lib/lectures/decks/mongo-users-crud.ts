@@ -1,3 +1,4 @@
+import { COVER_MONGO } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#00ED64",
+      color: COVER_MONGO,
       icon: "user",
       headline: "User CRUD",
     },
@@ -36,7 +37,7 @@ export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
     bullets: [
       "`{ role }` is shorthand for `{ role: role }`",
       "`$regex` with flag `i` — `thor` finds Thor",
-      "Export both so the route can call them",
+      "Export `findUsersByRole` and `findUsersByPartialName` for `GET /api/users`",
     ],
     code: `const findUsersByRole = (role) => model.find({ role });
 const findUsersByPartialName = (partialName) => {
@@ -59,7 +60,7 @@ const findUsersByPartialName = (partialName) => {
     bullets: [
       "Parse `role` and `name` from `req.query`",
       "Client encodes `?role=FACULTY` or `?name=thor`",
-      "Independent filters are required — combining them is extra",
+      "`role` and `name` each filter alone. Sending both query params is extra",
     ],
   },
   {
@@ -239,7 +240,7 @@ useEffect(() => {
     title: "Open One User",
     kind: "demo",
     bullets: [
-      "Click a name. Details loads that one document",
+      "Click a name in the users list. Details loads that user's document",
       "The panel shows the role and the login id",
     ],
     embed: "lab6-users",
@@ -306,7 +307,7 @@ useEffect(() => {
     kind: "demo",
     bullets: [
       "Delete drops the document and closes Details",
-      "That name leaves the table",
+      "The deleted user's name leaves the users table",
     ],
     embed: "lab6-users",
   },
@@ -323,7 +324,7 @@ useEffect(() => {
     kind: "demo",
     bullets: [
       "Without `$set`, Mongoose replaces the whole document",
-      "The route merges a matching `currentUser` into the session",
+      "`PUT /api/users/:userId` copies saved fields onto `req.session.currentUser` when the ids match",
     ],
     code: `const updateUser = (userId, user) =>
   model.updateOne({ _id: userId }, { $set: user });`,
@@ -395,7 +396,7 @@ app.put("/api/users/:userId", updateUser);`,
     id: "create-path",
     title: "POST /api/users",
     kind: "demo",
-    bullets: ["The new document is the one the server returned"],
+    bullets: ["`POST /api/users` returns the created user, and the table shows that document"],
     diagram: "users-create",
   },
   {
@@ -468,7 +469,7 @@ app.post("/api/users", createUser);`,
     kind: "demo",
     bullets: [
       "+ Users inserts a New User",
-      "The new row is the document the server returned",
+      "The new row is the user document `POST /api/users` returned",
     ],
     embed: "lab6-users",
   },

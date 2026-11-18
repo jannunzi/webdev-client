@@ -225,7 +225,7 @@ describe("HTML §1.3 lecture clip map", () => {
       assert.ok(typeof score === "number" && score >= 0.7, id);
     }
     assert.equal(bookSectionTitle("sec-1-3-1"), "Headings, div, and span");
-    assert.equal(bookPathForSection("sec-1-3-1"), "/book/ch1#sec-1-3-1");
+    assert.equal(bookPathForSection("sec-1-3-1"), "/2026/fall/webdev/book/ch1#sec-1-3-1");
   });
 
   it("resolves sec-1-3-1 to the SP26 CS4550 clip for a Fall 2026 student", () => {
@@ -436,9 +436,9 @@ describe("videos query and course ids", () => {
     assert.equal(defaultVideoCourseId(), "CS4550");
     assert.equal(defaultVideoSemester(), "FA26");
     assert.equal(bookSectionNumberLabel("sec-1-2-1"), "1.2.1");
-    assert.equal(bookPathForSection("sec-1-3"), "/book/ch1#sec-1-3");
-    assert.equal(bookPathForSection("sec-1-3-1"), "/book/ch1#sec-1-3-1");
-    assert.equal(bookPathForSection("sec-2-1-10"), "/book/ch2#sec-2-1-10");
+    assert.equal(bookPathForSection("sec-1-3"), "/2026/fall/webdev/book/ch1#sec-1-3");
+    assert.equal(bookPathForSection("sec-1-3-1"), "/2026/fall/webdev/book/ch1#sec-1-3-1");
+    assert.equal(bookPathForSection("sec-2-1-10"), "/2026/fall/webdev/book/ch2#sec-2-1-10");
 
     const href = videosHref("sec-1-2-1", { course: "CS4550", semester: "FA26" });
     assert.equal(href, "/videos?section=sec-1-2-1&course=CS4550&semester=FA26");

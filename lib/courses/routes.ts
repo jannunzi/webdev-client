@@ -171,6 +171,10 @@ export function isMinimalCourseHeader(pathname: string): boolean {
 export function contextualHref(href: string, context: CourseContext | null): string {
   if (!context || !NAV_PREFIXES.has(href)) return href;
   if (href === "/syllabus") return syllabusPathForContext(context);
+  // CS5500 has its own book. Slides, labs, and the other shared pages live on webdev.
+  if (context.subject === FOUNDATIONS_SUBJECT && href !== "/book") {
+    return sharedPagePath(DEFAULT_COURSE_CONTEXT, href.slice(1));
+  }
   return sharedPagePath(context, href.slice(1));
 }
 
@@ -287,6 +291,36 @@ export function legacyCourseRedirect(
   }
 
   return null;
+}
+
+/**
+ * Turn a legacy site href into the public course path. Hashes and unrelated
+ * query params stay. Editor, auth, and already-canonical paths are unchanged.
+ */
+export function toPublicCourseHref(href: string): string {
+  if (!href.startsWith("/") || href.startsWith("//")) return href;
+  const hashAt = href.indexOf("#");
+  const hash = hashAt >= 0 ? href.slice(hashAt) : "";
+  const beforeHash = hashAt >= 0 ? href.slice(0, hashAt) : href;
+  const queryAt = beforeHash.indexOf("?");
+  const pathname = queryAt >= 0 ? beforeHash.slice(0, queryAt) : beforeHash;
+  const search = queryAt >= 0 ? beforeHash.slice(queryAt + 1) : "";
+  if (
+    pathname === "/book2" ||
+    pathname.startsWith("/book2/") ||
+    pathname === "/book-editor" ||
+    pathname.startsWith("/book-editor/") ||
+    pathname.startsWith("/account/") ||
+    pathname === "/sign-in" ||
+    pathname.startsWith("/sign-in/") ||
+    pathname === "/sign-up" ||
+    pathname.startsWith("/sign-up/")
+  ) {
+    return href;
+  }
+  const redirected = legacyCourseRedirect(pathname, new URLSearchParams(search));
+  if (!redirected) return href;
+  return `${redirected.pathname}${redirected.search}${hash}`;
 }
 
 /** Where a shared webdev page is actually rendered. Foundations is not rewritten. */

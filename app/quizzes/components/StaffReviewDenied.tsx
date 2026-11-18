@@ -7,7 +7,7 @@ function StudentExamLinks() {
   return (
     <p>
       {CANVAS_ONLY_QUIZ_SENTENCE} Practice stays public at{" "}
-      <Link href="/book/practice">/book/practice</Link>.
+      <Link href="/2026/fall/webdev/book/practice">/book/practice</Link>.
     </p>
   );
 }

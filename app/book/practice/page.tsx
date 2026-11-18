@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { toPublicCourseHref } from "@/lib/courses/routes";
 import { rewriteBookPath, type BookBase } from "@/lib/book-editor/book2-path";
 import {
   PRACTICE_QUIZZES,
@@ -57,7 +58,7 @@ export function PracticeIndex({ linkBase = "/book" }: { linkBase?: BookBase }) {
       {groups.map((group) => (
         <section key={group.chapterHref} className="mt-8">
           <h2 className="mb-3 border-b border-neutral-300 pb-2 font-sans text-xl font-semibold">
-            <Link href={rewriteBookPath(group.chapterHref, linkBase)}>{group.chapterLabel}</Link>
+            <Link href={linkBase === "/book2" ? rewriteBookPath(group.chapterHref, linkBase) : toPublicCourseHref(group.chapterHref)}>{group.chapterLabel}</Link>
           </h2>
           <ul className="m-0 list-none space-y-3 p-0">
             {group.items.map((quiz) => (
@@ -70,14 +71,14 @@ export function PracticeIndex({ linkBase = "/book" }: { linkBase?: BookBase }) {
                 </h3>
                 <p className="mb-3 mt-0 font-sans text-sm text-neutral-700">
                   From{" "}
-                  <Link href={`${rewriteBookPath(quiz.chapterHref, linkBase)}#${quiz.sectionId}`}>
+                  <Link href={`${linkBase === "/book2" ? rewriteBookPath(quiz.chapterHref, linkBase) : toPublicCourseHref(quiz.chapterHref)}#${quiz.sectionId}`}>
                     {quiz.sectionLabel}
                   </Link>
                   {" — "}
                   {quiz.count} questions drawn at random.
                 </p>
                 <Link
-                  href={practicePath(quiz.quizId)}
+                  href={linkBase === "/book2" ? practicePath(quiz.quizId) : toPublicCourseHref(practicePath(quiz.quizId))}
                   className="book-practice-cta inline-block rounded border border-neutral-400 bg-neutral-800 px-3 py-2 text-sm"
                 >
                   Open practice quiz

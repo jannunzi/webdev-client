@@ -261,7 +261,7 @@ describe("slide markup and edit query", () => {
         href: "https://kambaz.dev/slides/installing-nodejs#slide-2",
         edit: true,
       }),
-      "/slides/installing-nodejs?edit=1#slide-2",
+      "/2026/fall/webdev/slides/installing-nodejs?edit=1#slide-2",
     );
   });
 });

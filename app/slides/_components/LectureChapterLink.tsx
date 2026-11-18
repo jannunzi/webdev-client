@@ -7,7 +7,7 @@ export default function LectureChapterLink({
   lecture?: Pick<LectureHubItem, "chapter" | "chapterHref" | "chapterTitle">;
 }) {
   const chapter = lecture?.chapter ?? 1;
-  const href = lecture?.chapterHref ?? "/book/ch1";
+  const href = lecture?.chapterHref ?? "/2026/fall/webdev/book/ch1";
   const chapterTitle =
     lecture?.chapterTitle ?? "Building Next.js User Interfaces with HTML";
 

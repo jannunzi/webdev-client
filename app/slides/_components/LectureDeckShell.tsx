@@ -2,6 +2,7 @@
 
 import { openSlideLinksInNewTab } from "./slideLinks";
 import Link from "next/link";
+import { toPublicCourseHref } from "@/lib/courses/routes";
 import { Oswald } from "next/font/google";
 import { type CSSProperties, useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import {
@@ -579,12 +580,12 @@ export default function LectureDeckShell({
   const fittedDiagram = hasFittedDiagram ? (
     <>
       {slide.diagram ? (
-        <DiagramFit>
+        <DiagramFit key={`${slide.id}-diagram`}>
           <LectureDiagram id={slide.diagram} />
         </DiagramFit>
       ) : null}
       {flowDiagram && slide.imageSrc ? (
-        <DiagramFit>
+        <DiagramFit key={`${slide.id}-flow`}>
           <LectureSlideImage
             src={slide.imageSrc}
             alt={slide.imageAlt ?? slide.title}
@@ -709,14 +710,14 @@ export default function LectureDeckShell({
               className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1"
             >
               {prevDeck ? (
-                <Link href={`/slides/${prevDeck.slug}`} title={prevDeck.title}>
+                <Link href={toPublicCourseHref(`/2026/fall/webdev/slides/${prevDeck.slug}`)} title={prevDeck.title}>
                   ← Previous deck
                 </Link>
               ) : (
                 <span className="text-neutral-400">First deck</span>
               )}
               {nextDeck ? (
-                <Link href={`/slides/${nextDeck.slug}`} title={nextDeck.title}>
+                <Link href={toPublicCourseHref(`/2026/fall/webdev/slides/${nextDeck.slug}`)} title={nextDeck.title}>
                   Next deck →
                 </Link>
               ) : (

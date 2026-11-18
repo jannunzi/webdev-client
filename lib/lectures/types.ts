@@ -72,7 +72,6 @@ export const CHAPTER_4_SLUGS = [
   "zustand-todos",
   "use-effect",
   "custom-hooks",
-  "ch4-check-understanding",
   "kambaz-courses-store",
   "kambaz-dashboard-crud",
   "kambaz-modules-store",
@@ -92,7 +91,6 @@ export const CHAPTER_5_SLUGS = [
   "remote-arrays",
   "async-http",
   "next-routes",
-  "ch5-check-understanding",
   "kambaz-migrate-db",
   "kambaz-account-rest",
   "kambaz-sessions",
@@ -110,7 +108,6 @@ export const CHAPTER_6_SLUGS = [
   "atlas-compass",
   "atlas-node",
   "atlas-sessions",
-  "ch6-check-understanding",
   "kambaz-courses-db",
   "kambaz-modules-db",
   "kambaz-enrollments-db",
@@ -366,12 +363,6 @@ export const LECTURE_TOPICS = [
     bookSectionId: "sec-4-7",
   },
   {
-    topicId: "ch4-check",
-    chapter: 4,
-    title: "4.9 Check Your Understanding",
-    bookSectionId: "sec-4-9",
-  },
-  {
     topicId: "kambaz-state",
     chapter: 4,
     title: "4.10 Adding State to the Kambaz User Interface",
@@ -394,12 +385,6 @@ export const LECTURE_TOPICS = [
     chapter: 5,
     title: "5.3 Next.js Server Routes",
     bookSectionId: "sec-5-3",
-  },
-  {
-    topicId: "ch5-check",
-    chapter: 5,
-    title: "Check Your Understanding",
-    bookSectionId: "sec-5-check",
   },
   {
     topicId: "kambaz-server",
@@ -436,12 +421,6 @@ export const LECTURE_TOPICS = [
     chapter: 6,
     title: "6.3 Integrating with MongoDB Hosted in Atlas Cloud Service",
     bookSectionId: "sec-6-3",
-  },
-  {
-    topicId: "ch6-check",
-    chapter: 6,
-    title: "Check Your Understanding",
-    bookSectionId: "sec-6-check",
   },
   {
     topicId: "kambaz-db",

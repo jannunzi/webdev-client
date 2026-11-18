@@ -44,7 +44,7 @@ describe("book2 navigation", () => {
     const chapters = chaptersForBase("/book2");
     assert.equal(chapters[0]?.href, "/book2/ch1");
     assert.equal(chapters[5]?.href, "/book2/ch6");
-    assert.equal(chaptersForBase("/book")[0]?.href, "/book/ch1");
+    assert.equal(chaptersForBase("/book")[0]?.href, "/2026/fall/webdev/book/ch1");
     assert.equal(rewriteBookPath("/book/ch1#intro", "/book2"), "/book2/ch1#intro");
     assert.equal(rewriteBookPath("/book/practice", "/book2"), "/book2/practice");
     assert.equal(rewriteBookPath("https://example.com/book/ch1", "/book2"), "https://example.com/book/ch1");
@@ -206,7 +206,7 @@ describe("book2 draft reader", () => {
     assert.match(html, /href="\/book\/practice\/1\.lab"/);
     assert.doesNotMatch(html, /href="\/book\/ch1"/);
     const published = renderToStaticMarkup(createElement(PracticeIndex, {}));
-    assert.match(published, /href="\/book\/ch1#sec-1-3-13"/);
+    assert.match(published, /href="\/2026\/fall\/webdev\/book\/ch1#sec-1-3-13"/);
   });
 });
 

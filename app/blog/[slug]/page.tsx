@@ -44,7 +44,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   return (
     <article className="page-content">
       <p className="mb-4 font-sans text-sm">
-        <Link href="/blog">← All posts</Link>
+        <Link href="/2026/fall/webdev/blog">← All posts</Link>
       </p>
       <CourseInfoHeader
         title={post.title}

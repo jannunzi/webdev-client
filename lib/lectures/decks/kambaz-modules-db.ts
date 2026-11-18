@@ -1,3 +1,4 @@
+import { COVER_KAMBAZ } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const KAMBAZ_MODULES_DB_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const KAMBAZ_MODULES_DB_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#C8102E",
+      color: COVER_KAMBAZ,
       icon: "database",
       headline: "Modules 1:N",
     },
@@ -142,7 +143,7 @@ useEffect(() => {
     id: "delete-path",
     title: "DELETE /api/modules/:moduleId",
     kind: "demo",
-    bullets: ["deleteOne by module id, then drop it from the store"],
+    bullets: ["`DELETE /api/modules/:moduleId` deletes the module, then the store drops that module"],
     diagram: "modules-delete",
   },
   {
@@ -275,7 +276,7 @@ const onUpdateModule = async (module) => {
     id: "create-path",
     title: "POST a module under the course",
     kind: "demo",
-    bullets: ["The store appends the module the server returned"],
+    bullets: ["The store appends the module `POST /api/courses/:courseId/modules` returned"],
     diagram: "modules-create",
   },
   {

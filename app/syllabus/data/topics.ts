@@ -35,7 +35,7 @@ export function examModuleHeading(exam: "X1" | "X2"): string {
 export const PROJECT_GRADING_HEADING = "Project grading";
 
 /** Hub index; decks are /slides/youtube-api, /slides/chatgpt-api, /slides/grok-api. */
-export const PROJECT_GRADING_SLIDES_HREF = "/slides";
+export const PROJECT_GRADING_SLIDES_HREF = "/2026/fall/webdev/slides";
 
 export const PROJECT_GRADING_TOPIC =
   "Project grading — Integrating with external APIs (YouTube, ChatGPT, Grok slides)";

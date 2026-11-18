@@ -130,7 +130,7 @@ async function PeoplePageBody({ section }: { section?: string }) {
         {" · "}
         <Link href="/quizzes/take">Graded quizzes</Link>
         {" · "}
-        <Link href="/book">Course book</Link>
+        <Link href="/2026/fall/webdev/book">Course book</Link>
       </p>
       <h1 className="mt-0 text-3xl font-semibold tracking-tight">People</h1>
       <p className="text-neutral-700">

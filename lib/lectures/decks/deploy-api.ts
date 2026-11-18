@@ -1,3 +1,4 @@
+import { COVER_DEPLOY } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const DEPLOY_API_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const DEPLOY_API_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#0E7C66",
+      color: COVER_DEPLOY,
       icon: "cloud",
       headline: "Deploy the API",
     },

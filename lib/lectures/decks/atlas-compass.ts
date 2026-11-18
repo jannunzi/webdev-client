@@ -1,3 +1,4 @@
+import { COVER_MONGO } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#00ED64",
+      color: COVER_MONGO,
       icon: "database",
       headline: "Atlas Compass",
     },
@@ -31,7 +32,7 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
     kind: "demo",
     bullets: [
       "Choose a connection method → Compass",
-      "Copy the string from **Access your data through tools**",
+      "Copy the `mongodb+srv://` URI from **Access your data through tools**",
       "The host will differ. Scheme, username, password, and hostname matter",
     ],
     code: `mongodb+srv://giuseppi:supersecretpassword@kambaz.jxui0bc.mongodb.net/`,
@@ -56,7 +57,7 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "Same steps as the local Compass setup: Create database, name `kambaz`",
-      "First collection can be `users` — Mongo creates the database with it",
+      "A first collection named `users` creates the `kambaz` database",
       "Keep the name **kambaz** — the Drivers URI later ends with `/kambaz?`",
     ],
   },

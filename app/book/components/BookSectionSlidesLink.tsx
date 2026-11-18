@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { toPublicCourseHref } from "@/lib/courses/routes";
 import {
   lectureTopicByBookSection,
   listDecksForBookSection,
@@ -47,7 +48,7 @@ export default function BookSectionSlidesLink({
 
   return (
     <Link
-      href={`/slides#chapter-${topic!.chapter}-${topic!.topicId}-heading`}
+      href={toPublicCourseHref(`/2026/fall/webdev/slides#chapter-${topic!.chapter}-${topic!.topicId}-heading`)}
       className="font-sans text-sm font-medium text-blue-700 no-underline hover:underline"
     >
       Slides

@@ -17,10 +17,19 @@ export default function DiagramFit({ children }: { children: ReactNode }) {
     const inner = innerRef.current;
     if (!slot || !inner) return;
 
+    let frame = 0;
+    let tries = 0;
+
     const fit = () => {
       const slotWidth = slot.clientWidth;
       const slotHeight = slot.clientHeight;
-      if (slotWidth < 2 || slotHeight < 2) return;
+      if (slotWidth < 2 || slotHeight < 2) {
+        if (tries < 12) {
+          tries += 1;
+          frame = requestAnimationFrame(fit);
+        }
+        return;
+      }
 
       inner.style.zoom = "1";
       if (inner.querySelector("[data-diagram-stretch]")) {
@@ -38,7 +47,13 @@ export default function DiagramFit({ children }: { children: ReactNode }) {
         svg.style.maxWidth = "none";
         svg.style.maxHeight = "none";
       } else if (img instanceof HTMLImageElement) {
-        if (img.naturalWidth < 1 || img.naturalHeight < 1) return;
+        if (img.naturalWidth < 1 || img.naturalHeight < 1) {
+          if (tries < 12) {
+            tries += 1;
+            frame = requestAnimationFrame(fit);
+          }
+          return;
+        }
         img.style.width = `${img.naturalWidth}px`;
         img.style.height = `${img.naturalHeight}px`;
         img.style.maxWidth = "none";
@@ -55,7 +70,14 @@ export default function DiagramFit({ children }: { children: ReactNode }) {
 
       const naturalWidth = inner.offsetWidth;
       const naturalHeight = inner.offsetHeight;
-      if (naturalWidth < 1 || naturalHeight < 1) return;
+      if (naturalWidth < 1 || naturalHeight < 1) {
+        if (tries < 12) {
+          tries += 1;
+          frame = requestAnimationFrame(fit);
+        }
+        return;
+      }
+      tries = 0;
       inner.style.zoom = String(
         diagramFitScale(slotWidth, slotHeight, naturalWidth, naturalHeight),
       );
@@ -64,13 +86,29 @@ export default function DiagramFit({ children }: { children: ReactNode }) {
     const img = inner.querySelector("img");
     img?.addEventListener("load", fit);
     fit();
-    const observer = new ResizeObserver(fit);
+    const observer = new ResizeObserver(() => {
+      tries = 0;
+      fit();
+    });
     observer.observe(slot);
+    observer.observe(inner);
+    const visible =
+      typeof IntersectionObserver === "undefined"
+        ? null
+        : new IntersectionObserver((entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) {
+              tries = 0;
+              fit();
+            }
+          });
+    visible?.observe(slot);
     return () => {
+      cancelAnimationFrame(frame);
       observer.disconnect();
+      visible?.disconnect();
       img?.removeEventListener("load", fit);
     };
-  }, []);
+  }, [children]);
 
   return (
     <div ref={slotRef} className="lecture-diagram-fit">

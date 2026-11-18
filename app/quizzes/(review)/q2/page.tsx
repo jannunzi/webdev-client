@@ -35,7 +35,7 @@ export default async function Quiz2BankPage() {
       <QuestionBankReview
         bank={bank}
         stats={stats}
-        chapterHref="/book/ch2"
+        chapterHref="/2026/fall/webdev/book/ch2"
         quizId="q2"
         studentDrawNote={`Website Q2 draws ${WEBSITE_TRADITIONAL_DRAW_COUNT} traditional items plus ${WEBSITE_CODING_DRAW_COUNT} coding items, about ${QUIZ_TIME_LIMIT_MINUTES.q2} minutes, 100 points. Canvas fallback is traditional-only.`}
       />

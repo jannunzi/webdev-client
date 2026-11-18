@@ -14,7 +14,7 @@ export default function SlideDeckNotFound() {
         index, or open the matching chapter in the book.
       </p>
       <p>
-        <Link href="/slides">All slides</Link>
+        <Link href="/2026/fall/webdev/slides">All slides</Link>
         {chapters.map((chapter) => (
           <span key={chapter.chapter}>
             {" · "}

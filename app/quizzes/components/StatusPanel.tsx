@@ -22,17 +22,17 @@ export default function StatusPanel({
       <p className="m-0 text-base font-semibold tracking-tight">{title}</p>
       <div className="mt-1 text-sm [&_p]:mb-2 [&_p:last-child]:mb-0">{children}</div>
       <p className="mb-0 mt-3 text-sm">
-        <Link href="/book">Course book</Link>
+        <Link href="/2026/fall/webdev/book">Course book</Link>
         {" · "}
-        <Link href="/blog">Blog</Link>
+        <Link href="/2026/fall/webdev/blog">Blog</Link>
         {" · "}
-        <Link href="/assignments">Assignments</Link>
+        <Link href="/2026/fall/webdev/assignments">Assignments</Link>
         {" · "}
-        <Link href="/slides">Slides</Link>
+        <Link href="/2026/fall/webdev/slides">Slides</Link>
         {" · "}
         <Link href="/quizzes">Question banks</Link>
         {" · "}
-        <Link href="/book/practice">Practice (ungraded)</Link>
+        <Link href="/2026/fall/webdev/book/practice">Practice (ungraded)</Link>
       </p>
     </div>
   );

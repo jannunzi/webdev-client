@@ -1,9 +1,11 @@
+import { toPublicCourseHref } from "@/lib/courses/routes";
 import {
   bookChapterMeta,
   bookHrefForSection,
   COURSE_SITE_ORIGIN,
   isLectureSlug,
   lectureTopicMeta,
+  slidesHref,
 } from "./catalog";
 import {
   applySlugOrder,
@@ -34,9 +36,9 @@ export function hubItemFromDraftMeta(meta: HubDraftDeckMeta): LectureHubItem {
     canvasLecture: 1,
     title: meta.title,
     summary: meta.summary,
-    chapterHref: chapter.href,
+    chapterHref: toPublicCourseHref(chapter.href),
     chapterTitle: chapter.title,
-    publicUrl: `${COURSE_SITE_ORIGIN}/slides/${meta.slug}`,
+    publicUrl: `${COURSE_SITE_ORIGIN}${slidesHref(meta.slug as LectureHubItem["slug"])}`,
     thumbnailSrc: meta.thumbnailSrc || HUB_DRAFT_THUMB,
   };
 }

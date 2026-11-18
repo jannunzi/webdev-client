@@ -68,7 +68,7 @@ describe("Fall 2026 lectureTopics", () => {
     assert.doesNotMatch(lectureTopics[12]!.topic, /MongoDB/i);
     assert.doesNotMatch(lectureTopics[12]!.topic, /Napster/i);
     assert.doesNotMatch(lectureTopics[12]!.topic, /OMDb/i);
-    assert.equal(lectureTopics[12]!.href, "/slides");
+    assert.equal(lectureTopics[12]!.href, "/2026/fall/webdev/slides");
     assert.equal(lectureTopics[12]!.project, true);
     assert.match(lectureTopics[13]!.topic, /^X2 final/);
     assert.doesNotMatch(lectureTopics[13]!.topic, /project/i);
@@ -243,7 +243,7 @@ describe("agenda Week of labels and chapter groups", () => {
     assert.equal(mondayOfWeek(groups[6]!.rows[0]!.date), "2026-12-07");
     assert.match(groups[6]?.rows[0]?.topic ?? "", /Project grading/);
     assert.match(groups[6]?.rows[0]?.topic ?? "", /Integrating with external APIs/);
-    assert.equal(groups[6]?.rows[0]?.href, "/slides");
+    assert.equal(groups[6]?.rows[0]?.href, "/2026/fall/webdev/slides");
     assert.doesNotMatch(groups[6]?.rows[0]?.topic ?? "", /Atlas/i);
     assert.equal(mondayOfWeek(groups[7]!.rows[0]!.date), "2026-12-14");
     assert.equal(SHARED_CURRICULUM_END, "2026-12-14");

@@ -1,3 +1,4 @@
+import { COVER_KAMBAZ } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const KAMBAZ_SESSIONS_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const KAMBAZ_SESSIONS_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#C8102E",
+      color: COVER_KAMBAZ,
       icon: "user",
       headline: "Server Sessions",
       stackWords: true,

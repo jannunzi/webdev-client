@@ -41,25 +41,25 @@ export default function SyllabusNav() {
         ))}
       </ul>
       <p className="mt-3 border-t border-neutral-200 pt-2 text-neutral-600">
-        <Link href="/book">Book</Link>
+        <Link href="/2026/fall/webdev/book">Book</Link>
         {" · "}
-        <Link href="/blog">Blog</Link>
+        <Link href="/2026/fall/webdev/blog">Blog</Link>
         {" · "}
-        <Link href="/assignments">Assignments</Link>
+        <Link href="/2026/fall/webdev/assignments">Assignments</Link>
         {" · "}
-        <Link href="/slides">Slides</Link>
+        <Link href="/2026/fall/webdev/slides">Slides</Link>
         {" · "}
-        <Link href="/labs">Labs</Link>
+        <Link href="/2026/fall/webdev/labs">Labs</Link>
         {" · "}
         <Link href="/account/signin">Kambaz</Link>
         {" · "}
         <Link href="/calendar">Calendar</Link>
         {" · "}
-        <Link href="/office-hours">Office Hours</Link>
+        <Link href="/2026/fall/webdev/office-hours">Office Hours</Link>
         {" · "}
         <Link href="/piazza-hours">Piazza Hours</Link>
         {" · "}
-        <Link href="/project">Project</Link>
+        <Link href="/2026/fall/webdev/project">Project</Link>
       </p>
     </nav>
   );

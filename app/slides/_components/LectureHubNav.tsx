@@ -14,25 +14,25 @@ export default function LectureHubNav({
     <p className="mb-3 font-sans text-sm">
       {current === "deck" ? (
         <>
-          <Link href={editMode ? "/slides?edit=1" : "/slides"}>Slides</Link>
+          <Link href={editMode ? "/2026/fall/webdev/slides?edit=1" : "/2026/fall/webdev/slides"}>Slides</Link>
           {" · "}
         </>
       ) : null}
       <Link href="/syllabus">Syllabus</Link>
       {" · "}
-      <Link href="/book">Course book</Link>
+      <Link href="/2026/fall/webdev/book">Course book</Link>
       {" · "}
-      <Link href="/blog">Blog</Link>
+      <Link href="/2026/fall/webdev/blog">Blog</Link>
       {chapters.map((chapter) => (
         <span key={chapter.chapter}>
           {" · "}
-          <Link href={`/slides#chapter-${chapter.chapter}-heading`}>
+          <Link href={`/2026/fall/webdev/slides#chapter-${chapter.chapter}-heading`}>
             {lectureChapterLabel(chapter.chapter)}
           </Link>
         </span>
       ))}
       {" · "}
-      <Link href="/assignments">Assignments</Link>
+      <Link href="/2026/fall/webdev/assignments">Assignments</Link>
     </p>
   );
 }

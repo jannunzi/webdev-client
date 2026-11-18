@@ -39,7 +39,7 @@ export function titleFromSlug(slug: string): string {
 
 /** Only allow in-app book paths (no protocol-relative or external URLs). */
 export function isSafeBookPath(path: string): boolean {
-  if (!path.startsWith("/book")) return false;
+  if (!path.startsWith("/book") && !path.startsWith("/2026/fall/webdev/book")) return false;
   if (path.startsWith("//")) return false;
   if (path.includes("://")) return false;
   if (path.includes("\\")) return false;
@@ -105,5 +105,5 @@ export function termPageHref(
     params.set("q", extras.searchQuery);
   }
   const qs = params.toString();
-  return qs ? `/book/terms/${slug}?${qs}` : `/book/terms/${slug}`;
+  return qs ? `/2026/fall/webdev/book/terms/${slug}?${qs}` : `/2026/fall/webdev/book/terms/${slug}`;
 }

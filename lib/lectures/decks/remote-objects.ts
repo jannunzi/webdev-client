@@ -1,3 +1,4 @@
+import { COVER_NODE } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
 export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
@@ -6,7 +7,7 @@ export const REMOTE_OBJECTS_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     cover: {
-      color: "#339933",
+      color: COVER_NODE,
       icon: "server",
       headline: "Remote Objects",
       stackWords: true,

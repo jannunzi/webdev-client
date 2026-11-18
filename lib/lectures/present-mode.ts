@@ -1,3 +1,5 @@
+import { toPublicCourseHref } from "@/lib/courses/routes";
+
 /** History.state flag so browser Back exits CSS present mode, not the deck. */
 export const LECTURE_PRESENT_STATE = { lecturePresent: true } as const;
 
@@ -83,7 +85,7 @@ export function lecturePresentHref({
   if (present === true) url.searchParams.set("fullscreen", "1");
   if (present === false) url.searchParams.delete("fullscreen");
   url.hash = `slide-${slideNumber}`;
-  return `${url.pathname}${url.search}${url.hash}`;
+  return toPublicCourseHref(`${url.pathname}${url.search}${url.hash}`);
 }
 
 /** Next-deck path. Carry `?fullscreen=1` when already presenting. */
@@ -97,7 +99,7 @@ export function lectureDeckHref({
   present?: boolean;
 }): string {
   const search = present ? "?fullscreen=1" : "";
-  return `/slides/${slug}${search}#slide-${slideNumber}`;
+  return toPublicCourseHref(`/slides/${slug}${search}#slide-${slideNumber}`);
 }
 
 /**

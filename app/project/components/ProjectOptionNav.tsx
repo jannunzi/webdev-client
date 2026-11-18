@@ -15,7 +15,7 @@ export default function ProjectOptionNav({
       {current === "hub" ? (
         <span className="text-neutral-800">Overview</span>
       ) : (
-        <Link href="/project">Overview</Link>
+        <Link href="/2026/fall/webdev/project">Overview</Link>
       )}
       {PROJECT_DOCS.map((doc) => (
         <span key={doc.slug}>
@@ -23,7 +23,7 @@ export default function ProjectOptionNav({
           {current === doc.slug ? (
             <span className="text-neutral-800">{doc.title}</span>
           ) : (
-            <Link href={`/project/${doc.slug}`}>{doc.title}</Link>
+            <Link href={`/2026/fall/webdev/project/${doc.slug}`}>{doc.title}</Link>
           )}
         </span>
       ))}

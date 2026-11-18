@@ -20,7 +20,7 @@ describe("final project hub and requirement pages", () => {
   it("links hub options to on-site Quizzes, Pazza, and Open-Ended pages", () => {
     assert.deepEqual(
       projectOverview.options.map((option) => option.href),
-      ["/project/quizzes", "/project/pazza", "/project/open-ended"],
+      ["/2026/fall/webdev/project/quizzes", "/2026/fall/webdev/project/pazza", "/2026/fall/webdev/project/open-ended"],
     );
     const hub = read("app/project/page.tsx");
     assert.match(hub, /option\.href/);
@@ -33,7 +33,7 @@ describe("final project hub and requirement pages", () => {
     assert.ok(existsSync(join(root, "app/project/[option]/page.tsx")));
 
     for (const doc of PROJECT_DOCS) {
-      assert.equal(projectDocHref(doc.slug), `/project/${doc.slug}`);
+      assert.equal(projectDocHref(doc.slug), `/2026/fall/webdev/project/${doc.slug}`);
       assert.equal(getProjectDoc(doc.slug)?.title, doc.title);
       const images = doc.blocks.filter((block) => block.type === "img");
       assert.ok(images.length > 0, `${doc.slug} should include screenshots`);

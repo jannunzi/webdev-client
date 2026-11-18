@@ -38,7 +38,7 @@ export default async function ProjectOptionPage({ params }: PageProps) {
   return (
     <article className="page-content">
       <p className="mb-4 font-sans text-sm">
-        <Link href="/project">← Final Project</Link>
+        <Link href="/2026/fall/webdev/project">← Final Project</Link>
       </p>
       <CourseInfoHeader
         title={doc.title}

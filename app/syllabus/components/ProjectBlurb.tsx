@@ -19,7 +19,7 @@ export default function ProjectBlurb({
       </ul>
       <p>
         Full requirements for Quizzes, Pazza, and the open-ended option are on
-        the <Link href="/project">Final Project</Link> page.
+        the <Link href="/2026/fall/webdev/project">Final Project</Link> page.
       </p>
     </SyllabusSection>
   );

@@ -1,3 +1,5 @@
+import { svgIndentedLine } from "@/lib/lectures/svg-indent";
+
 const BLUE = { fill: "#e8f0fe", header: "#a4c2f4", stroke: "#2f6fd0" };
 const YELLOW = { fill: "#fff8dc", header: "#ffe59a", stroke: "#e09038" };
 const RED = { fill: "#fff1f2", header: "#f8c8c8", stroke: "#dc2626" };
@@ -642,18 +644,21 @@ function SqlVsDocument() {
         JSON document
       </text>
       <rect x={rightX + 28} y={92} width={rightW - 56} height={json.length * 32 + 28} fill="#fff" stroke={RED.stroke} strokeWidth={2} />
-      {json.map((line, index) => (
-        <text
-          key={`${index}-${line}`}
-          x={rightX + 44}
-          y={124 + index * 32}
-          fontFamily={MONO}
-          fontSize={18}
-          fill="#171717"
-        >
-          {line || " "}
-        </text>
-      ))}
+      {json.map((line, index) => {
+        const indented = svgIndentedLine(line, 22);
+        return (
+          <text
+            key={`${index}-${indented.text}`}
+            x={rightX + 44 + indented.xOffset}
+            y={124 + index * 32}
+            fontFamily={MONO}
+            fontSize={18}
+            fill="#171717"
+          >
+            {indented.text}
+          </text>
+        );
+      })}
     </svg>
   );
 }

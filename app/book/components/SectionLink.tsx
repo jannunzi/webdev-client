@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { toPublicCourseHref } from "@/lib/courses/routes";
 
 /** Normalize "§1.3.11" or "1.3.11" → "1.3.11" */
 export function normalizeSectionRef(ref: string): string {
@@ -15,7 +16,7 @@ export function sectionHref(ref: string): string {
   const parts = cleaned.split(".");
   const chapter = parts[0];
   const id = `sec-${parts.join("-")}`;
-  return `/book/ch${chapter}#${id}`;
+  return toPublicCourseHref(`/2026/fall/webdev/book/ch${chapter}#${id}`);
 }
 
 export default function SectionLink({
@@ -41,7 +42,7 @@ export default function SectionLink({
       href={href}
       className={className}
       onClick={(e) => {
-        const targetPath = `/book/ch${cleaned.split(".")[0]}`;
+        const targetPath = `/2026/fall/webdev/book/ch${cleaned.split(".")[0]}`;
         if (pathname !== targetPath) return;
         const el = document.getElementById(hash);
         if (!el) return;
