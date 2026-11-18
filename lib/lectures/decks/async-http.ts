@@ -121,7 +121,6 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     id: "fetch-todos-await",
     title: "fetchTodos with await",
     kind: "demo",
-    layout: "code-columns",
     bullets: [
       "Both return the same todos. The await version reads top to bottom",
     ],
@@ -184,6 +183,10 @@ export const fetchTodos = async () => {
     id: "cors",
     title: "Allowing Cross-Origin Requests",
     kind: "demo",
+    bullets: [
+      "`app.use(cors())` with no options allows all requests from any origin",
+      "A later chapter restricts CORS to the React application's origin",
+    ],
     codeBlocks: [
       { code: "npm install cors\nnpm i -D @types/cors", language: "bash" },
       {
@@ -202,8 +205,9 @@ Lab5(app);`,
     title: "Creating a Reusable Client Library",
     kind: "demo",
     bullets: [
-      "In a new `app/labs/lab5/client.ts`, add the request function",
-      "Screens share one file so the welcome URL changes once",
+      "It is bad practice for each component to send its own HTTP requests",
+      "A component should focus on rendering the UI",
+      "Network calls belong in `app/labs/lab5/client.ts`, which any component can import",
     ],
     code: `import axios from "axios";
 const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
@@ -380,17 +384,6 @@ export const fetchTodos = async () => {
     codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
   },
   {
-    id: "remove-get-live",
-    title: "Remove Todo Live Demo",
-    kind: "demo",
-    bullets: [
-      "Click the trash icon on a todo",
-      "That todo leaves the list",
-      "Start Express on port 4000 first (`npm start` in webdev-server)",
-    ],
-    embed: "lab5-arrays-async",
-  },
-  {
     id: "create-get-intro",
     title: "Creating a Todo from the Client",
     kind: "content",
@@ -424,17 +417,6 @@ export const fetchTodos = async () => {
     code: "const createNewTodo = async () => {\n  setTodos(await client.createNewTodo());\n};\n<FaPlusCircle onClick={createNewTodo} id=\"wd-create-todo\"\n  className=\"cursor-pointer text-green-600\" />",
     codeLanguage: "tsx",
     codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
-  },
-  {
-    id: "create-get-live",
-    title: "Create Todo Live Demo",
-    kind: "demo",
-    bullets: [
-      "Click the green + button",
-      "New Task appears in the list",
-      "Start Express on port 4000 first (`npm start` in webdev-server)",
-    ],
-    embed: "lab5-arrays-async",
   },
   {
     id: "body-how",
@@ -536,17 +518,6 @@ app.post("/lab5/todos", postNewTodo);`,
     codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
   },
   {
-    id: "post-live",
-    title: "POST Todo Live Demo",
-    kind: "demo",
-    bullets: [
-      "Click the blue + button",
-      "New Posted Todo is appended",
-      "Start Express on port 4000 first (`npm start` in webdev-server)",
-    ],
-    embed: "lab5-arrays-async",
-  },
-  {
     id: "delete-http-intro",
     title: "Removing a Todo with HTTP DELETE",
     kind: "content",
@@ -602,17 +573,6 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
     codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
   },
   {
-    id: "delete-live",
-    title: "DELETE Todo Live Demo",
-    kind: "demo",
-    bullets: [
-      "Click the X on a todo",
-      "That todo leaves the list",
-      "Start Express on port 4000 first (`npm start` in webdev-server)",
-    ],
-    embed: "lab5-arrays-async",
-  },
-  {
     id: "put-server",
     title: "Updating Items with HTTP PUT",
     kind: "demo",
@@ -651,17 +611,6 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
     code: "const editTodo = (todo) => {\n  setTodos(todos.map((t) => (t.id === todo.id ? { ...todo, editing: true } : t)));\n};\nconst updateTodo = async (todo) => {\n  await client.updateTodo(todo);\n  setTodos(todos.map((t) => (t.id === todo.id ? todo : t)));\n};\n<FaPencilAlt onClick={() => editTodo(todo)} className=\"cursor-pointer text-blue-600\" />\n<input type=\"checkbox\" checked={todo.completed}\n  onChange={(e) => updateTodo({ ...todo, completed: e.target.checked })} />",
     codeLanguage: "tsx",
     codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
-  },
-  {
-    id: "put-live",
-    title: "PUT Todo Live Demo",
-    kind: "demo",
-    bullets: [
-      "Click the pencil, edit the title, and toggle the checkbox",
-      "Refresh and the change is still there",
-      "Start Express on port 4000 first (`npm start` in webdev-server)",
-    ],
-    embed: "lab5-arrays-async",
   },
   {
     id: "error-server",

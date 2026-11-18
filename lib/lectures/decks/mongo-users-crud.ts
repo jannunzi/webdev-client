@@ -158,16 +158,6 @@ const filterUsersByName = async (name: string) => {
     codeHighlightLines: [[2, 9], 16],
   },
   {
-    id: "filter-live",
-    title: "Filter by Role or Name",
-    kind: "demo",
-    bullets: [
-      "Students shows only STUDENT. All Roles loads everyone",
-      "Search people matches first or last name",
-    ],
-    embed: "lab6-users",
-  },
-  {
     id: "read-one-path",
     title: "GET /api/users/:userId",
     kind: "demo",
@@ -236,16 +226,6 @@ useEffect(() => {
     codeHighlightLines: [[1, 8]],
   },
   {
-    id: "read-one-live",
-    title: "Open One User",
-    kind: "demo",
-    bullets: [
-      "Click a name in the users list. Details loads that user's document",
-      "The panel shows the role and the login id",
-    ],
-    embed: "lab6-users",
-  },
-  {
     id: "delete-path",
     title: "DELETE /api/users/:userId",
     kind: "demo",
@@ -300,16 +280,6 @@ useEffect(() => {
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/Details.tsx",
     codeHighlightLines: [[1, 4]],
-  },
-  {
-    id: "delete-live",
-    title: "Delete Removes the Row",
-    kind: "demo",
-    bullets: [
-      "Delete drops the document and closes Details",
-      "The deleted user's name leaves the users table",
-    ],
-    embed: "lab6-users",
   },
   {
     id: "update-path",
@@ -381,16 +351,6 @@ app.put("/api/users/:userId", updateUser);`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/Details.tsx",
     codeHighlightLines: [[1, 8]],
-  },
-  {
-    id: "update-live",
-    title: "Save Writes the Name",
-    kind: "demo",
-    bullets: [
-      "Edit the name, then press Enter or Save",
-      "The table shows the new name",
-    ],
-    embed: "lab6-users",
   },
   {
     id: "create-path",

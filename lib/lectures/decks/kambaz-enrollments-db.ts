@@ -197,16 +197,6 @@ app.post(
     codeFile: "app/(kambaz)/courses/client.ts",
   },
   {
-    id: "enroll-live",
-    title: "Enroll Live Demo",
-    kind: "demo",
-    bullets: [
-      "On a course you are not in, click Enroll",
-      "The card switches to show you are enrolled",
-    ],
-    embed: "kambaz-enrollments",
-  },
-  {
     id: "enroll-unenroll-path",
     title: "DELETE unenrolls the user",
     kind: "demo",
@@ -270,11 +260,11 @@ app.delete(
   },
   {
     id: "unenroll-live",
-    title: "Unenroll Live Demo",
+    title: "Enroll and Unenroll Live Demo",
     kind: "demo",
     bullets: [
+      "On a course you are not in, click Enroll",
       "On a course you are in, click Unenroll",
-      "The card no longer treats you as enrolled",
     ],
     embed: "kambaz-enrollments",
   },

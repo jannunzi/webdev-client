@@ -1338,8 +1338,8 @@ describe("lecture decks", () => {
     assert.equal(counts["lab5-env"], 10);
     assert.equal(counts["path-and-query"], 17);
     assert.equal(counts["remote-objects"], 14);
-    assert.equal(counts["remote-arrays"], 25);
-    assert.equal(counts["async-http"], 53);
+    assert.equal(counts["remote-arrays"], 23);
+    assert.equal(counts["async-http"], 48);
     assert.equal(counts["next-routes"], 27);
     assert.equal(counts["kambaz-migrate-db"], 7);
     assert.equal(counts["kambaz-account-rest"], 23);
@@ -1349,14 +1349,14 @@ describe("lecture decks", () => {
     assert.equal(counts["local-mongo"], 12);
     assert.equal(counts["mongoose"], 13);
     assert.equal(counts["mongo-apis"], 16);
-    assert.equal(counts["mongo-users-crud"], 36);
+    assert.equal(counts["mongo-users-crud"], 32);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
     assert.equal(counts["atlas-node"], 10);
     assert.equal(counts["atlas-sessions"], 12);
     assert.equal(counts["kambaz-courses-db"], 34);
     assert.equal(counts["kambaz-modules-db"], 28);
-    assert.equal(counts["kambaz-enrollments-db"], 28);
+    assert.equal(counts["kambaz-enrollments-db"], 27);
     assert.equal(counts["youtube-api"], 9);
     assert.equal(counts["youtube-search"], 11);
     assert.equal(counts["youtube-details"], 23);
@@ -4120,7 +4120,12 @@ describe("explanation text never buries the code", () => {
         }
         assert.equal(code.id, base, `${deck.slug}#${slide.id} comes right before ${base}`);
         assert.ok(code.code || code.codeBlocks?.length, `${deck.slug}#${base} has the code`);
-        assert.ok(!code.bullets?.length, `${deck.slug}#${base} keeps its text on the intro`);
+        const bulletsOnCode = deck.slug === "async-http" && code.id === "cors";
+        if (bulletsOnCode) {
+          assert.ok((code.bullets?.length ?? 0) > 0, "async-http#cors states what app.use(cors()) allows");
+        } else {
+          assert.ok(!code.bullets?.length, `${deck.slug}#${base} keeps its text on the intro`);
+        }
         assert.ok(slide.bullets?.length, `${deck.slug}#${slide.id} has the explanation`);
         // Foreshadowing demo: the row the next code slide builds (Jose asked for it).
         const foreshadow = ["kambaz-modules-store#editor-intro", "kambaz-modules-store#controls-intro", "kambaz-modules-store#buttons-intro", "kambaz-course-enrollments#enroll-card-intro"].includes(`${deck.slug}#${slide.id}`);
@@ -4372,7 +4377,7 @@ describe("diagram fit", () => {
       slides.slice(definedAt + 1, definedAt + 5).map((slide) => slide.id),
       ["http-methods-crud", "what-is-rest", "rest-conventions", "crud-courses"],
     );
-    assert.equal(slides.length, 53);
+    assert.equal(slides.length, 48);
     const assignmentClient = findSlide("async-http", "assignment-client");
     const objectsAsync = findSlide("async-http", "objects-async");
     assert.ok(
