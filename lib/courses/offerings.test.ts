@@ -7,10 +7,12 @@ import { sections } from "../../app/syllabus/data/sections.ts";
 import {
   courseOfferings,
   landingCards,
+  landingGroups,
   legacySectionPath,
   legacyTabRedirects,
   offeringById,
   offeringHeading,
+  termCardGridClass,
   sectionIdFromLegacyTab,
 } from "./offerings.ts";
 
@@ -21,36 +23,61 @@ function read(rel: string) {
 }
 
 describe("course offerings", () => {
-  it("builds one card per current section, then the CS5500 placeholder", () => {
-    const cards = landingCards();
+  it("groups cards by term, newest first, and keeps Fall 2026 sections in one row", () => {
+    const groups = landingGroups();
     assert.deepEqual(
-      cards.map((card) => card.sectionId),
-      ["cs5610-02", "cs5610-09", "cs4550-01", null],
+      groups.map((group) => group.label),
+      ["Summer 2027", "Spring 2027", "Fall 2026"],
+    );
+    assert.deepEqual(
+      groups.map((group) => group.cards.map((card) => card.id)),
+      [
+        ["cs5500-su2027"],
+        ["cs5610-sp2027", "cs4550-sp2027"],
+        ["cs5610-02", "cs5610-09", "cs4550-01"],
+      ],
+    );
+    const summer = groups[0]?.cards[0];
+    assert.equal(summer?.heading, "CS5500 · Foundations of Software Engineering · Summer 2027");
+    assert.equal(summer?.status, "coming-soon");
+    assert.equal(summer?.href, "/cs5500");
+
+    const spring = groups[1]?.cards ?? [];
+    assert.deepEqual(
+      spring.map((card) => card.heading),
+      [
+        "CS5610 · Web Development · Spring 2027",
+        "CS4550 · Web Development · Spring 2027",
+      ],
+    );
+    for (const card of spring) {
+      assert.equal(card.status, "coming-soon");
+      assert.equal(card.sectionId, null);
+      assert.equal(card.bookHref, "/book");
+      assert.match(card.href, /^\/coming-soon\//);
+    }
+
+    const fall = groups[2];
+    assert.equal(termCardGridClass(fall?.cards.length ?? 0), "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3");
+    assert.deepEqual(
+      fall?.cards.map((card) => card.href),
+      ["/syllabus/cs5610-02", "/syllabus/cs5610-09", "/syllabus/cs4550-01"],
     );
     assert.deepEqual(
       sections.map((section) => section.id),
       ["cs5610-02", "cs5610-09", "cs4550-01"],
     );
     assert.deepEqual(
-      cards.slice(0, 3).map((card) => card.heading),
+      landingCards().map((card) => card.id),
       [
-        "CS5610 · Web Development · Fall 2026",
-        "CS5610 · Web Development · Fall 2026",
-        "CS4550 · Web Development · Fall 2026",
+        "cs5500-su2027",
+        "cs5610-sp2027",
+        "cs4550-sp2027",
+        "cs5610-02",
+        "cs5610-09",
+        "cs4550-01",
       ],
     );
-    assert.deepEqual(
-      cards.slice(0, 3).map((card) => card.sectionLabel),
-      ["CS5610-02", "CS5610-09", "CS4550-01"],
-    );
-    assert.deepEqual(
-      cards.slice(0, 3).map((card) => card.href),
-      ["/syllabus/cs5610-02", "/syllabus/cs5610-09", "/syllabus/cs4550-01"],
-    );
-    for (const card of cards.slice(0, 3)) {
-      assert.equal(card.status, "active");
-      assert.equal(card.bookHref, "/book");
-    }
   });
 
   it("keeps section modality in step with the syllabus sections", () => {
@@ -134,6 +161,9 @@ describe("course landing routes", () => {
     assert.match(read("app/(course)/page.tsx"), /CourseOfferingCards/);
     assert.match(read("app/(course)/page.tsx"), /wd-course-dashboard-title/);
     assert.match(read("app/courses/CourseOfferingCards.tsx"), /wd-course-dashboard/);
+    assert.match(read("app/courses/CourseOfferingCards.tsx"), /landingGroups/);
+    assert.match(read("app/courses/CourseOfferingCards.tsx"), /termCardGridClass/);
+    assert.match(read("app/coming-soon/[offeringId]/page.tsx"), /wd-coming-soon/);
     assert.match(read("app/courses/CourseOfferingCards.tsx"), /wd-course-card-/);
     assert.match(read("app/syllabus/page.tsx"), /sectionIdFromLegacyTab/);
     assert.match(read("app/syllabus/components/SyllabusView.tsx"), /CourseBreadcrumb/);

@@ -38,7 +38,39 @@ export type CourseOffering = {
   sections: OfferingSection[];
 };
 
+const SEASON_RANK: Record<TermSeason, number> = {
+  Spring: 1,
+  Summer: 2,
+  Fall: 3,
+  Winter: 4,
+};
+
+/** Newer terms first. Within a year, Fall, then Summer, then Spring. */
+export function termSortKey(term: CourseTerm): number {
+  return term.year * 10 + SEASON_RANK[term.season];
+}
+
 export const courseOfferings: CourseOffering[] = [
+  {
+    id: "cs5610-sp2027",
+    courseNumber: "CS5610",
+    title: "Web Development",
+    term: { season: "Spring", year: 2027 },
+    status: "coming-soon",
+    syllabusHref: "/coming-soon/cs5610-sp2027",
+    bookHref: "/book",
+    sections: [],
+  },
+  {
+    id: "cs4550-sp2027",
+    courseNumber: "CS4550",
+    title: "Web Development",
+    term: { season: "Spring", year: 2027 },
+    status: "coming-soon",
+    syllabusHref: "/coming-soon/cs4550-sp2027",
+    bookHref: "/book",
+    sections: [],
+  },
   {
     id: "cs5610-fa2026",
     courseNumber: "CS5610",
@@ -95,6 +127,7 @@ export type LandingCard = {
   id: string;
   offeringId: string;
   heading: string;
+  term: CourseTerm;
   sectionId: string | null;
   sectionLabel: string | null;
   detail: string | null;
@@ -102,6 +135,20 @@ export type LandingCard = {
   href: string;
   bookHref: string;
 };
+
+export type LandingGroup = {
+  id: string;
+  label: string;
+  term: CourseTerm;
+  cards: LandingCard[];
+};
+
+/** Column classes so three sections sit on one desktop row and wrap below that. */
+export function termCardGridClass(cardCount: number): string {
+  if (cardCount >= 3) return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+  if (cardCount === 2) return "grid-cols-1 sm:grid-cols-2";
+  return "grid-cols-1";
+}
 
 export function termLabel(term: CourseTerm): string {
   return `${term.season} ${term.year}`;
@@ -116,45 +163,67 @@ export function offeringById(id: string): CourseOffering | undefined {
   return courseOfferings.find((offering) => offering.id === id);
 }
 
-/**
- * One card per section. An offering with no sections (a coming-soon course)
- * is a single card. Order follows `courseOfferings`.
- */
-export function landingCards(
-  offerings: readonly CourseOffering[] = courseOfferings,
-): LandingCard[] {
-  const cards: LandingCard[] = [];
-  for (const offering of offerings) {
-    const heading = offeringHeading(offering);
-    if (offering.sections.length === 0) {
-      cards.push({
+function cardsForOffering(offering: CourseOffering): LandingCard[] {
+  const heading = offeringHeading(offering);
+  if (offering.sections.length === 0) {
+    return [
+      {
         id: offering.id,
         offeringId: offering.id,
         heading,
+        term: offering.term,
         sectionId: null,
         sectionLabel: null,
         detail: null,
         status: offering.status,
         href: offering.syllabusHref,
         bookHref: offering.bookHref,
-      });
-      continue;
-    }
-    for (const section of offering.sections) {
-      cards.push({
-        id: section.id,
-        offeringId: offering.id,
-        heading,
-        sectionId: section.id,
-        sectionLabel: section.label,
-        detail: section.detail ?? null,
-        status: offering.status,
-        href: section.syllabusHref,
-        bookHref: offering.bookHref,
-      });
-    }
+      },
+    ];
   }
-  return cards;
+  return offering.sections.map((section) => ({
+    id: section.id,
+    offeringId: offering.id,
+    heading,
+    term: offering.term,
+    sectionId: section.id,
+    sectionLabel: section.label,
+    detail: section.detail ?? null,
+    status: offering.status,
+    href: section.syllabusHref,
+    bookHref: offering.bookHref,
+  }));
+}
+
+/**
+ * Cards grouped by term, newest term first. Within a term, offerings stay
+ * in `courseOfferings` order. A course with no sections is one card.
+ */
+export function landingGroups(
+  offerings: readonly CourseOffering[] = courseOfferings,
+): LandingGroup[] {
+  const groups: LandingGroup[] = [];
+  for (const offering of offerings) {
+    const id = `${offering.term.year}-${offering.term.season.toLowerCase()}`;
+    let group = groups.find((item) => item.id === id);
+    if (!group) {
+      group = {
+        id,
+        label: termLabel(offering.term),
+        term: offering.term,
+        cards: [],
+      };
+      groups.push(group);
+    }
+    group.cards.push(...cardsForOffering(offering));
+  }
+  return groups.sort((a, b) => termSortKey(b.term) - termSortKey(a.term));
+}
+
+export function landingCards(
+  offerings: readonly CourseOffering[] = courseOfferings,
+): LandingCard[] {
+  return landingGroups(offerings).flatMap((group) => group.cards);
 }
 
 const TAB_ID_PREFIX = "syllabus-tab-";
