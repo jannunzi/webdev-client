@@ -1,6 +1,6 @@
 /**
- * Published materials from other CS5500 instructors. Summer 2027 is not open
- * yet, so the coming-soon page points at these sources and no others.
+ * Published materials for the CS5500 coming-soon page: a verified CMU 17-313
+ * reference, then other CS5500 instructors. Summer 2027 is not open yet.
  */
 
 export type Cs5500Resource = {
@@ -17,6 +17,43 @@ export type Cs5500ResourceGroup = {
 };
 
 export const cs5500ResourceGroups: Cs5500ResourceGroup[] = [
+  {
+    id: "cmu-17-313",
+    title: "Reference course: CMU 17-313 Foundations of Software Engineering",
+    note: "Public course site. The class schedule and the lecture slide PDFs are linked from the home page.",
+    links: [
+      {
+        label: "Course site",
+        url: "https://cmu-313.github.io/",
+        note: "Home page with the class calendar and schedule; lecture slide PDFs are linked from the schedule",
+      },
+      {
+        label: "Course overview",
+        url: "https://cmu-313.github.io/overview/",
+        note: "Topics beyond writing code: clients, teams, risk, and when software is good enough to ship",
+      },
+      {
+        label: "Syllabus",
+        url: "https://cmu-313.github.io/syllabus/",
+        note: "In-person lectures and recitations; policies, prerequisites, and teamwork",
+      },
+      {
+        label: "Projects",
+        url: "https://cmu-313.github.io/assignments/",
+        note: "Six projects, from Hello, opencode! through an open-source excursion",
+      },
+      {
+        label: "Recitations",
+        url: "https://cmu-313.github.io/recitations/",
+        note: "Recitation pages, including TypeScript, property-based testing, Docker, and CI/CD",
+      },
+      {
+        label: "Hall of Fame",
+        url: "https://cmu-313.github.io/hall-of-fame/",
+        note: "Student groups and links to their merged open-source pull requests",
+      },
+    ],
+  },
   {
     id: "current-fall-2026",
     title: "Current CS5500 (Fall 2026, Mark Bonicillo, Seattle)",
