@@ -1,9 +1,6 @@
 import Link from "next/link";
-import {
-  landingGroups,
-  termCardGridClass,
-  type LandingCard,
-} from "@/lib/courses/offerings";
+import { landingGroupsWithMeetings } from "@/lib/courses/card-meetings";
+import { termCardGridClass, type LandingCard } from "@/lib/courses/offerings";
 
 function cardStripe(card: LandingCard): string {
   return card.status === "coming-soon" ? "bg-amber-500" : "bg-neutral-900";
@@ -47,7 +44,7 @@ function OfferingCard({ card }: { card: LandingCard }) {
 }
 
 export default function CourseOfferingCards() {
-  const groups = landingGroups();
+  const groups = landingGroupsWithMeetings();
   return (
     <div id="wd-course-dashboard" className="grid gap-8">
       {groups.map((group) => (

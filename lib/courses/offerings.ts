@@ -6,8 +6,6 @@
  * with no sections yet (CS5500) is one card and uses its own book route.
  */
 
-import { formatMeetingWeekdays } from "@/app/syllabus/data/dates";
-import { sections as syllabusSections } from "@/app/syllabus/data/sections";
 import {
   courseNumberPath,
   FOUNDATIONS_SUBJECT,
@@ -249,19 +247,6 @@ export function offeringById(id: string): CourseOffering | undefined {
   return courseOfferings.find((offering) => offering.id === id);
 }
 
-function meetingLines(sectionId: string, fallbackDetail?: string): string[] {
-  const section = syllabusSections.find((item) => item.id === sectionId);
-  if (!section) return fallbackDetail ? [fallbackDetail] : [];
-  const lines = [section.modality === "online" ? "Online" : "In person"];
-  if (section.daysOfWeek.length > 0 && section.time) {
-    lines.push(`${formatMeetingWeekdays(section.daysOfWeek)}, ${section.time}`);
-  }
-  if (section.modality !== "online" && section.location.trim()) {
-    lines.push(section.location);
-  }
-  return lines;
-}
-
 function cardsForOffering(offering: CourseOffering): LandingCard[] {
   const heading = offeringHeading(offering);
   if (offering.sections.length === 0) {
@@ -292,7 +277,7 @@ function cardsForOffering(offering: CourseOffering): LandingCard[] {
     offeringId: offering.id,
     heading,
     title: section.label,
-    lines: [offering.title, ...meetingLines(section.id, section.detail)],
+    lines: [offering.title],
     term: offering.term,
     sectionId: section.id,
     sectionLabel: section.label,
