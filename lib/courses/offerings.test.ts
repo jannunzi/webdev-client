@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { describe, it } from "node:test";
 import { COURSE_INFO_LINKS, isCourseInfoCurrent } from "../../app/course-info/links.ts";
 import { sections } from "../../app/syllabus/data/sections.ts";
+import { landingGroupsWithMeetings } from "./card-meetings.ts";
 import {
   courseOfferings,
   landingCards,
@@ -58,7 +59,20 @@ describe("course offerings", () => {
     }
 
     const fall = groups[2];
-    assert.equal(termCardGridClass(fall?.cards.length ?? 0), "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3");
+    assert.equal(termCardGridClass(), "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3");
+    assert.deepEqual(
+      landingGroupsWithMeetings().flatMap((group) =>
+        group.cards.map((card) => [card.title, ...card.lines, card.status]),
+      ),
+      [
+        ["CS5500", "Foundations of Software Engineering", "Online", "Mon/Wed 3:00–4:30 PM", "coming-soon"],
+        ["CS5610", "Web Development", "coming-soon"],
+        ["CS4550", "Web Development", "coming-soon"],
+        ["CS5610-02", "Web Development", "In person", "Mondays, 6:00–9:00pm ET", "Shillman Hall 105", "active"],
+        ["CS5610-09", "Web Development", "Online", "Tuesdays, 6:00–9:00pm ET", "active"],
+        ["CS4550-01", "Web Development", "In person", "Wednesdays, 6:00–9:00pm ET", "Shillman Hall 105", "active"],
+      ],
+    );
     assert.deepEqual(
       fall?.cards.map((card) => card.href),
       [
@@ -109,6 +123,10 @@ describe("course offerings", () => {
       offeringHeading(offering),
       "CS5500 · Foundations of Software Engineering · Summer 2027",
     );
+    assert.deepEqual(offering.meeting, {
+      delivery: "Online",
+      when: "Mon/Wed 3:00–4:30 PM",
+    });
 
     const card = landingCards().find((item) => item.offeringId === "cs5500-su2027");
     assert.ok(card);
