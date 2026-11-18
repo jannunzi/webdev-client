@@ -14,6 +14,7 @@ export const ZUSTAND_TODOS_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing Zustand Todos",
     kind: "content",
+    diagram: "zustand-todos-goal",
     bullets: [
       "Goal: a todo list where components add, edit and delete todos",
       "The list and the todo being typed both live in a Zustand store",

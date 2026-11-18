@@ -14,6 +14,7 @@ export const USESTATE_COUNTER_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing useState",
     kind: "content",
+    diagram: "usestate-goal",
     bullets: [
       "React turns data structures into a user interface",
       "Until now that data was static JSON. Clicks must rewrite it",

@@ -1342,7 +1342,7 @@ describe("lecture decks", () => {
     assert.equal(counts["async-http"], 48);
     assert.equal(counts["next-routes"], 27);
     assert.equal(counts["kambaz-migrate-db"], 7);
-    assert.equal(counts["kambaz-account-rest"], 23);
+    assert.equal(counts["kambaz-account-rest"], 24);
     assert.equal(counts["kambaz-sessions"], 21);
     assert.equal(counts["kambaz-courses-api"], 56);
     assert.equal(counts["deploy-api"], 8);
@@ -1575,10 +1575,10 @@ describe("lecture decks", () => {
   });
 
   it("sizes text-only slides spacious and diagram/embed slides dense", () => {
-    const textOnly = findSlide("intro-to-web-development", "internet");
+    const textOnly = findSlide("intro-to-web-development", "web");
     const diagram = findSlide("intro-to-web-development", "client-server");
     const embed = findSlide("creating-a-nextjs-react-application", "welcome-page");
-    const htmlText = findSlide("html-and-dom", "html-means");
+    const htmlText = findSlide("html-and-dom", "plain-text");
     const htmlDiagram = findSlide("html-and-dom", "the-dom");
     const htmlEmbed = findSlide("headings-and-paragraphs", "lab1-nest-live");
     assert.equal(lectureSlideDensity(textOnly), "spacious");
@@ -1928,7 +1928,7 @@ describe("lecture decks", () => {
         "hello-ui-live": "lab5-hello",
         "client-live": "lab5-calculator",
       },
-      "kambaz-account-rest": { "signin-ui": "kambaz-styled-signin" },
+      "kambaz-account-rest": { "signin-live": "kambaz-styled-signin" },
       "kambaz-courses-api": { client: "kambaz-styled-dashboard" },
       "mongo-apis": {
         "people-table": "kambaz-styled-people",
@@ -3153,6 +3153,16 @@ describe("lecture decks", () => {
       "client",
       "signin-ui",
     ]);
+    assert.equal(accountIds[accountIds.indexOf("signin-ui") + 1], "signin-live");
+    assert.equal(findSlide("kambaz-account-rest", "signin-ui").embed, undefined);
+    assert.equal(findSlide("kambaz-account-rest", "signin-live").embed, "kambaz-styled-signin");
+    assert.equal(findSlide("kambaz-account-rest", "purpose").diagram, "account-dao");
+    assert.equal(findSlide("kambaz-account-rest", "dao").diagramFocus, "dao");
+    assert.equal(toBlockSlide(findSlide("kambaz-account-rest", "dao")).diagramFocus, "dao");
+    assert.equal(findSlide("kambaz-account-rest", "signin").diagramFocus, "routes");
+    assert.equal(findSlide("kambaz-account-rest", "signin-flow").diagramFocus, "client");
+    assert.equal(findSlide("kambaz-account-rest", "signin-ui").diagramFocus, "ui");
+    assert.equal(findSlide("kambaz-account-rest", "dao-architecture").diagramFocus, undefined);
     assert.deepEqual(accountIds.slice(accountIds.indexOf("signup-dao"), accountIds.indexOf("signup-ui") + 1), [
       "signup-dao",
       "signup",
@@ -3551,6 +3561,7 @@ describe("lecture decks", () => {
   it("uses authored diagrams instead of Google Slides rasters", () => {
     const expected = {
       "intro-to-web-development": {
+        internet: "network-of-networks",
         "network-of-networks": "network-of-networks",
         "client-server": "client-server",
         ssr: "ssr",
@@ -3565,6 +3576,7 @@ describe("lecture decks", () => {
         "browser-parses-dom": "dom-tree",
       },
       "commit-to-github": {
+        "install-git": "commit-github-goal",
         "create-repo": "github-create-repo-mock",
       },
       "deploying-to-vercel": {
@@ -3579,28 +3591,49 @@ describe("lecture decks", () => {
         "disable-auth": "vercel-auth-mock",
       },
       "html-and-dom": {
+        "html-means": "dom-tree",
         "the-dom": "dom-tree",
       },
       "css-box-model": {
         layers: "box-model",
       },
       "tailwind-responsive": {
+        intro: "tailwind-breakpoints",
         "prefix-ruler": "tailwind-breakpoints",
       },
-      "usestate-counter": { "hooks-table": "hooks-table" },
+      "usestate-counter": { purpose: "usestate-goal", "hooks-table": "hooks-table" },
       "youtube-api": {
+        api: "youtube-api-goal",
         credentials: "google-cloud-key-mock",
         enable: "youtube-enable-api-mock",
       },
-      "youtube-search": { client: "youtube-search-flow" },
+      "youtube-search": { endpoint: "youtube-search-flow", client: "youtube-search-flow" },
       "youtube-details": { dao: "youtube-save-flow" },
-      "chatgpt-api": { project: "openai-project-key-mock" },
-      "chatgpt-text": { "roles-code": "openai-roles-flow" },
-      "grok-api": { tokens: "grok-token-flow", key: "xai-key-mock" },
+      "chatgpt-api": { gpt: "chatgpt-api-goal", project: "openai-project-key-mock" },
+      "chatgpt-text": { prompting: "openai-roles-flow", "roles-code": "openai-roles-flow" },
+      "grok-api": { intro: "grok-api-goal", tokens: "grok-token-flow", key: "xai-key-mock" },
       "http-server": { sibling: "two-ports" },
       "lab5-env": { purpose: "env-same-code" },
       "remote-arrays": { purpose: "arrays-stack" },
-      "kambaz-account-rest": { "dao-architecture": "account-dao" },
+      "remote-objects": { purpose: "remote-objects-goal" },
+      "async-http": { purpose: "async-http-goal" },
+      "next-routes": { purpose: "next-routes-goal" },
+      "nodemon-es6-routes": { purpose: "nodemon-goal" },
+      "kambaz-migrate-db": { purpose: "migrate-db" },
+      "deploy-api": { purpose: "deploy-api-goal" },
+      mongoose: { purpose: "mongoose-goal" },
+      atlas: { purpose: "atlas-goal" },
+      "atlas-compass": { purpose: "atlas-compass-goal" },
+      "atlas-node": { purpose: "atlas-node-goal" },
+      "atlas-sessions": { purpose: "atlas-sessions-goal" },
+      "kambaz-account-rest": {
+        purpose: "account-dao",
+        "dao-architecture": "account-dao",
+        dao: "account-dao",
+        signin: "account-dao",
+        "signin-flow": "account-dao",
+        "signin-ui": "account-dao",
+      },
       "kambaz-courses-api": {
         "courses-architecture": "courses-dao",
         "modules-architecture": "modules-dao",
@@ -3652,6 +3685,28 @@ describe("lecture decks", () => {
         "session-update": "session-update",
         "session-read": "session-read",
       },
+      "kambaz-overview": { what: "kambaz-overview-goal" },
+      "kambaz-database": { purpose: "kambaz-db-goal" },
+      "client-and-server": { purpose: "client-components-goal" },
+      "kambaz-dashboard-data": { purpose: "dashboard-data-goal" },
+      "kambaz-courses-data": { purpose: "courses-data-goal" },
+      "kambaz-modules-data": { purpose: "modules-data-goal" },
+      "kambaz-assignments-data": { purpose: "assignments-data-goal" },
+      "react-context": { purpose: "react-context-goal" },
+      "zustand-counter": { purpose: "zustand-counter-goal" },
+      "zustand-todos": { purpose: "zustand-todos-goal" },
+      "use-effect": { purpose: "use-effect-goal" },
+      "sharing-parent-child": { purpose: "sharing-parent-goal" },
+      "prop-drilling-and-url": { purpose: "prop-drill-goal" },
+      "kambaz-courses-store": { purpose: "courses-store-goal" },
+      "kambaz-modules-store": { purpose: "modules-store-goal" },
+      "kambaz-dashboard-crud": { purpose: "dashboard-crud-goal" },
+      "kambaz-account-context": { purpose: "account-context-goal" },
+      "kambaz-account-pages": { purpose: "account-pages-goal" },
+      "kambaz-course-enrollments": { purpose: "enrollments-goal" },
+      "kambaz-people-table": { purpose: "people-table-goal" },
+      "grok-chat": { "chat-intro": "grok-chat-goal" },
+      "grok-images": { endpoint: "grok-images-goal" },
     } as const;
 
     const used = new Set<string>();

@@ -20,6 +20,7 @@ export const ATLAS_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing a Cloud Database",
     kind: "content",
+    diagram: "atlas-goal",
     bullets: [
       "Local `mongod` lives on your laptop — Compass at `27017`",
       "The remote Express VM has no `kambaz` and no Compass documents",

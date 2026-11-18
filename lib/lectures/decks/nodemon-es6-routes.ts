@@ -20,6 +20,7 @@ export const NODEMON_ES6_ROUTES_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Restarting and Organizing the Server",
     kind: "content",
+    diagram: "nodemon-goal",
     bullets: [
       "Every code change means stopping and restarting the server by hand",
       "Nodemon watches your files and restarts the server when you save",

@@ -14,6 +14,7 @@ export const KAMBAZ_MODULES_STORE_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing Module State Management",
     kind: "content",
+    diagram: "modules-store-goal",
     bullets: [
       "Modules are application state: the Modules and Home screens both show them",
       "Users will add, rename and delete modules, and both screens must re-render",

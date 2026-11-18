@@ -20,6 +20,7 @@ export const KAMBAZ_MIGRATE_DB_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Moving Kambaz Data to the Server",
     kind: "content",
+    diagram: "migrate-db",
     bullets: [
       "Dashboard Add, Edit, and Delete still reset on refresh: the data lives in the browser",
       "Data on the server survives refresh and is shared by every browser",

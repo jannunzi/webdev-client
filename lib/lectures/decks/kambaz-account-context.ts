@@ -14,6 +14,7 @@ export const KAMBAZ_ACCOUNT_CONTEXT_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing Account Context",
     kind: "content",
+    diagram: "account-context-goal",
     bullets: [
       "Sign in, Profile, Dashboard and Account Navigation all need the signed-in user",
       "That user changes only at sign in and sign out, not while typing",

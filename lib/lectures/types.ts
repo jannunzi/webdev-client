@@ -755,9 +755,50 @@ export const LECTURE_DIAGRAM_IDS = [
   "session-update",
   "session-read",
   "arrays-stack",
+  "migrate-db",
+  "async-http-goal",
+  "next-routes-goal",
+  "deploy-api-goal",
+  "mongoose-goal",
+  "atlas-goal",
+  "atlas-compass-goal",
+  "atlas-node-goal",
+  "atlas-sessions-goal",
+  "nodemon-goal",
+  "remote-objects-goal",
+  "kambaz-db-goal",
+  "client-components-goal",
+  "commit-github-goal",
+  "youtube-api-goal",
+  "chatgpt-api-goal",
+  "usestate-goal",
+  "grok-api-goal",
+  "grok-chat-goal",
+  "grok-images-goal",
+  "kambaz-overview-goal",
+  "react-context-goal",
+  "zustand-counter-goal",
+  "zustand-todos-goal",
+  "use-effect-goal",
+  "courses-store-goal",
+  "modules-store-goal",
+  "dashboard-data-goal",
+  "courses-data-goal",
+  "modules-data-goal",
+  "assignments-data-goal",
+  "dashboard-crud-goal",
+  "account-context-goal",
+  "account-pages-goal",
+  "enrollments-goal",
+  "people-table-goal",
+  "sharing-parent-goal",
+  "prop-drill-goal",
 ] as const;
 
 export type LectureDiagramId = (typeof LECTURE_DIAGRAM_IDS)[number];
+
+/** Which box the account architecture diagram marks with a "you are here" arrow. */
+export type LectureDiagramFocus = "ui" | "client" | "routes" | "dao";
 
 export type LectureCodeBlock = {
   code: string;
@@ -801,6 +842,8 @@ export type LectureSlide = {
   embed?: LectureEmbedId;
   /** Authored SVG/React figure — not a Google Slides raster. */
   diagram?: LectureDiagramId;
+  /** "You are here" target when `diagram` is the account architecture figure. */
+  diagramFocus?: LectureDiagramFocus;
   /**
    * Force dense/spacious type. Default: dense when a diagram or embed is present.
    * Spacious is for text-only slides (larger bullets). Dense stays a step

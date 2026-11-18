@@ -11,6 +11,7 @@ export const COMMIT_TO_GITHUB_SLIDES: LectureSlide[] = [
     id: "install-git",
     title: "Install GitHub Client",
     kind: "content",
+    diagram: "commit-github-goal",
     bullets: [
       "**macOS** already has a **git** client in Terminal",
       "On **Windows**, download and install from [https://git-scm.com/download/win](https://git-scm.com/download/win)",

@@ -13,6 +13,7 @@ export const GROK_IMAGES_SLIDES: LectureSlide[] = [
     id: "endpoint",
     title: "Image Generation Endpoint",
     kind: "content",
+    diagram: "grok-images-goal",
     bullets: [
       "`https://api.x.ai/v1/images/generations`",
       "Chat stays on **`/v1/chat/completions`**",

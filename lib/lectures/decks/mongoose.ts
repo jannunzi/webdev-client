@@ -20,6 +20,7 @@ export const MONGOOSE_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Install Mongoose in webdev-server",
     kind: "demo",
+    diagram: "mongoose-goal",
     bullets: [
       "Applications need `find`, `create`, `updateOne`, and `deleteOne`",
       "Run `npm install mongoose` in `webdev-server` on branch `a6`, not the Next.js app",

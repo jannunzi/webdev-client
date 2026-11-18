@@ -14,6 +14,7 @@ export const KAMBAZ_PEOPLE_TABLE_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing the People Table CRUD",
     kind: "content",
+    diagram: "people-table-goal",
     bullets: [
       "The People screen lists the users enrolled in a course",
       "This module lets instructors add, edit and delete those users",

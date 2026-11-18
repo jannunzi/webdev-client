@@ -14,6 +14,7 @@ export const KAMBAZ_DASHBOARD_CRUD_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing Dashboard CRUD",
     kind: "content",
+    diagram: "dashboard-crud-goal",
     bullets: [
       "The Dashboard will let users create, edit and delete courses (CRUD)",
       "The published courses come from the shared courses store",

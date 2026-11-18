@@ -13,6 +13,7 @@ export const CHATGPT_TEXT_SLIDES: LectureSlide[] = [
     id: "prompting",
     title: "Text generation and prompting",
     kind: "content",
+    diagram: "openai-roles-flow",
     bullets: [
       "Use an LLM to generate text from a **prompt**, as in ChatGPT",
       "Code, equations, structured **JSON**, or human-like prose",

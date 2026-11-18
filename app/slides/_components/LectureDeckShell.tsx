@@ -67,15 +67,15 @@ const COVER_ICON_PATHS: Record<LectureCoverIcon, string> = {
 };
 
 /**
- * Up to two balanced lines: size for the longer of half the headline or its
- * longest word, so no single word can overflow the slide.
+ * One line, sized to the slide width. Uppercase sans is about 0.62em wide,
+ * and 88% of the width leaves a margin on both sides.
  */
-function coverHeadlineSize(headline: string): string {
-  const longestWord = Math.max(...headline.split(/\s+/).map((w) => w.length));
-  const perLine = Math.max(longestWord, Math.ceil(headline.length * 0.55), 6);
-  // Two lines at line-height 1.05 stay within ~50% of the slide height,
-  // leaving room for the icon above and the WebDevTV mark below.
-  return `min(11rem, ${(150 / perLine).toFixed(2)}cqw, 24cqh)`;
+function coverHeadlineSize(headline: string, scale = 1): string {
+  const chars = Math.max(headline.trim().length, 1);
+  const cqw = ((88 / (chars * 0.62)) * scale).toFixed(2);
+  const rem = (11 * scale).toFixed(2);
+  const height = (22 * scale).toFixed(2);
+  return `min(${rem}rem, ${cqw}cqw, ${height}cqh)`;
 }
 
 /** Scaled cover title. Default covers keep `coverHeadlineSize` unchanged. */
@@ -100,9 +100,9 @@ function CoverHeadline({
 }) {
   const ref = useRef<HTMLHeadingElement>(null);
   const words = headline.split(/\s+/).filter(Boolean);
-  const fontSize = scale === 1 && !stackWords
-    ? coverHeadlineSize(headline)
-    : scaledCoverHeadlineSize(headline, scale);
+  const fontSize = stackWords
+    ? scaledCoverHeadlineSize(headline, scale)
+    : coverHeadlineSize(headline, scale);
 
   useLayoutEffect(() => {
     const node = ref.current;
@@ -113,12 +113,12 @@ function CoverHeadline({
       node.style.fontSize = fontSize;
       const slideRect = slide.getBoundingClientRect();
       if (slideRect.width < 8 || slideRect.height < 8) return;
-      const maxW = slideRect.width * 0.86;
-      const maxH = slideRect.height * 0.58;
+      const maxW = slideRect.width * (stackWords ? 0.86 : 0.92);
+      const maxH = slideRect.height * (stackWords ? 0.58 : 0.7);
       let size = Number.parseFloat(getComputedStyle(node).fontSize);
       if (!Number.isFinite(size)) return;
-      const floor = Math.min(size, 28);
-      for (let step = 0; step < 32 && size > floor; step += 1) {
+      const floor = stackWords ? Math.min(size, 28) : 14;
+      for (let step = 0; step < 40 && size > floor; step += 1) {
         const lines = [...node.querySelectorAll(".lecture-cover-headline-line")];
         const widest = lines.length
           ? Math.max(...lines.map((line) => (line as HTMLElement).scrollWidth))
@@ -136,7 +136,7 @@ function CoverHeadline({
     const fonts = document.fonts;
     if (fonts?.ready) void fonts.ready.then(fit);
     return () => observer.disconnect();
-  }, [fontSize]);
+  }, [fontSize, stackWords]);
 
   return (
     <h2
@@ -634,7 +634,7 @@ export default function LectureDeckShell({
     <>
       {slide.diagram ? (
         <DiagramFit key={`${slide.id}-diagram`}>
-          <LectureDiagram id={slide.diagram} />
+          <LectureDiagram id={slide.diagram} focus={slide.diagramFocus} />
         </DiagramFit>
       ) : null}
       {flowDiagram && slide.imageSrc ? (
@@ -864,20 +864,11 @@ export default function LectureDeckShell({
           {cover ? (
             <>
               <LectureCoverIconMark icon={cover.icon} />
-              {cover.stackWords || (cover.headlineScale ?? 1) !== 1 ? (
-                <CoverHeadline
-                  headline={cover.headline}
-                  scale={cover.headlineScale ?? 1}
-                  stackWords={Boolean(cover.stackWords)}
-                />
-              ) : (
-                <h2
-                  className={`lecture-cover-headline ${coverFont.className}`}
-                  style={{ fontSize: coverHeadlineSize(cover.headline) }}
-                >
-                  {cover.headline}
-                </h2>
-              )}
+              <CoverHeadline
+                headline={cover.headline}
+                scale={cover.headlineScale ?? 1}
+                stackWords={Boolean(cover.stackWords)}
+              />
               <p className="lecture-cover-brand">WebDevTV</p>
             </>
           ) : hasFittedDiagram ? (

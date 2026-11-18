@@ -14,6 +14,7 @@ export const CLIENT_AND_SERVER_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing Client and Server Components",
     kind: "content",
+    diagram: "client-components-goal",
     bullets: [
       "Next.js components are **Server Components** unless you say otherwise",
       "They render on the server, send HTML, and can read disk and env",

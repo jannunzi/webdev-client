@@ -14,6 +14,7 @@ export const KAMBAZ_COURSE_ENROLLMENTS_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing Course Enrollments",
     kind: "content",
+    diagram: "enrollments-goal",
     bullets: [
       "An enrollments store records which user is in which course",
       "Each card can Enroll or Unenroll the signed-in user",

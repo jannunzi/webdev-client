@@ -20,6 +20,7 @@ export const DEPLOY_API_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Putting the Server Online",
     kind: "content",
+    diagram: "deploy-api-goal",
     bullets: [
       "Everything runs on your laptop; nobody else can reach localhost",
       "Next.js already deploys to Vercel on `git push`",

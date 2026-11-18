@@ -14,6 +14,7 @@ export const CHATGPT_API_SLIDES: LectureSlide[] = [
     id: "gpt",
     title: "GPT-4",
     kind: "content",
+    diagram: "chatgpt-api-goal",
     bullets: [
       "A large **multimodal** model — text or image in, text out",
       "Broader knowledge, advanced **reasoning**, better accuracy",

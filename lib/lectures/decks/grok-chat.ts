@@ -13,6 +13,7 @@ export const GROK_CHAT_SLIDES: LectureSlide[] = [
     id: "chat-intro",
     title: "Introduction",
     kind: "content",
+    diagram: "grok-chat-goal",
     bullets: [
       "Chat is the most popular feature on the **xAI API**",
       "Summarize, write, answer, support, or help with **code**",

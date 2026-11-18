@@ -14,6 +14,7 @@ export const KAMBAZ_OVERVIEW_SLIDES: LectureSlide[] = [
     id: "what",
     title: "Introduction to Kambaz",
     kind: "content",
+    diagram: "kambaz-overview-goal",
     bullets: [
       "**Kambaz** is inspired by a popular online learning management system",
       "Chapter 1 builds **plain HTML structure**. CSS is Chapter 2 / A2",

@@ -14,6 +14,7 @@ export const KAMBAZ_ASSIGNMENTS_DATA_SLIDES: LectureSlide[] = [
     id: "purpose",
     title: "Implementing Assignments and People Data",
     kind: "content",
+    diagram: "assignments-data-goal",
     bullets: [
       "Assignments: `db.assignments.filter` where `assignment.course === cid`",
       "The editor `find`s by `aid` and fills fields with `assignment?.title ?? \"\"`",

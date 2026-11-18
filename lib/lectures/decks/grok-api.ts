@@ -23,6 +23,7 @@ export const GROK_API_SLIDES: LectureSlide[] = [
     id: "intro",
     title: "Introduction",
     kind: "content",
+    diagram: "grok-api-goal",
     bullets: [
       "Inspired by the **Hitchhiker's Guide** — maximally truth-seeking",
       "xAI offers an API at **`https://api.x.ai/v1`**",

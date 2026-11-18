@@ -11,6 +11,7 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
     id: "internet",
     title: "What is the Internet?",
     kind: "content",
+    diagram: "network-of-networks",
     bullets: [
       "A global **network of computers**. **Network of networks**",
       "Researched by **DARPA** early 60s to survive WWIII",
