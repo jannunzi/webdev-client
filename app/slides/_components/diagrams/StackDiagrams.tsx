@@ -663,17 +663,162 @@ function SqlVsDocument() {
   );
 }
 
+const ARRAY_ROUTES = [
+  "GET /lab5/todos",
+  "GET /lab5/todos/:id",
+  "GET /lab5/todos?completed=true",
+  "GET /lab5/todos/create",
+  "GET /lab5/todos/:id/delete",
+  "GET /lab5/todos/:id/title/:title",
+  "GET /lab5/todos/:id/completed/:completed",
+  "GET /lab5/todos/:id/description/:description",
+];
+
+const ARRAY_METHODS = ["fetchTodos", "createNewTodo", "removeTodo"];
+
+function ArraysPicture() {
+  const uiW = 360;
+  const clientW = 250;
+  const routeW = 500;
+  const gapUi = 28;
+  const gapHttp = 176;
+  const left = 24;
+  const uiX = left;
+  const clientX = uiX + uiW + gapUi;
+  const routeX = clientX + clientW + gapHttp;
+  const width = routeX + routeW + 24;
+  const routeH = boxHeight(ARRAY_ROUTES.length);
+  const clientH = boxHeight(ARRAY_METHODS.length);
+  const uiH = boxHeight(1);
+  const height = 24 + routeH + 20;
+  const top = 20;
+  const requestY = top + HEADER_H + 18;
+  const responseY = top + HEADER_H + 52;
+  const boxes = [
+    {
+      x: uiX,
+      w: uiW,
+      h: uiH,
+      name: "WorkingWithRemoteArrays",
+      lines: ["WorkingWithRemoteArrays.tsx"],
+      tone: BLUE,
+    },
+    {
+      x: clientX,
+      w: clientW,
+      h: clientH,
+      name: "client.ts",
+      lines: ARRAY_METHODS,
+      tone: BLUE,
+    },
+    {
+      x: routeX,
+      w: routeW,
+      h: routeH,
+      name: "WorkingWithRemoteArrays.ts",
+      lines: ARRAY_ROUTES,
+      tone: YELLOW,
+    },
+  ];
+
+  return (
+    <svg
+      role="img"
+      viewBox={`0 0 ${width} ${height}`}
+      aria-label="WorkingWithRemoteArrays calls client.ts, which requests every Lab 5 todos route"
+    >
+      <title>Remote arrays from the component to the routes</title>
+      <Arrow x1={clientX + clientW + 8} x2={routeX - 8} y={requestY} />
+      <text
+        x={clientX + clientW + gapHttp / 2}
+        y={requestY - 8}
+        textAnchor="middle"
+        fontFamily={FONT}
+        fontSize={13}
+        fontWeight={700}
+        fill="#171717"
+      >
+        HTTP REQUEST
+      </text>
+      <Arrow x1={routeX - 8} x2={clientX + clientW + 8} y={responseY} dashed />
+      <text
+        x={clientX + clientW + gapHttp / 2}
+        y={responseY + 18}
+        textAnchor="middle"
+        fontFamily={FONT}
+        fontSize={13}
+        fontWeight={700}
+        fill="#171717"
+      >
+        HTTP RESPONSE
+      </text>
+      {boxes.map((box) => (
+        <g key={box.name}>
+          <rect
+            x={box.x}
+            y={top}
+            width={box.w}
+            height={box.h}
+            rx={RADIUS}
+            fill={box.tone.fill}
+            stroke={box.tone.stroke}
+            strokeWidth={3}
+          />
+          <path
+            d={headerPath(box.x, top, box.w, HEADER_H)}
+            fill={box.tone.header}
+            stroke={box.tone.stroke}
+            strokeWidth={3}
+          />
+          <line
+            x1={box.x}
+            y1={top + HEADER_H}
+            x2={box.x + box.w}
+            y2={top + HEADER_H}
+            stroke={box.tone.stroke}
+            strokeWidth={3}
+          />
+          <text
+            x={box.x + box.w / 2}
+            y={top + 31}
+            textAnchor="middle"
+            fontFamily={FONT}
+            fontSize={18}
+            fontWeight={700}
+            fill="#171717"
+          >
+            {box.name}
+          </text>
+          {box.lines.map((line, lineIndex) => (
+            <text
+              key={line}
+              x={box.x + 16}
+              y={top + HEADER_H + 22 + lineIndex * LINE_H}
+              fontFamily={MONO}
+              fontSize={15}
+              fill="#171717"
+            >
+              {line}
+            </text>
+          ))}
+        </g>
+      ))}
+    </svg>
+  );
+}
+
 export type StackDiagramId = keyof typeof STACKS;
 
-export function isStackDiagram(id: string): id is StackDiagramId | "sql-vs-document" {
-  return id === "sql-vs-document" || Object.prototype.hasOwnProperty.call(STACKS, id);
+export function isStackDiagram(id: string): id is StackDiagramId | "sql-vs-document" | "arrays-stack" {
+  return id === "sql-vs-document" || id === "arrays-stack" || Object.prototype.hasOwnProperty.call(STACKS, id);
 }
 
 export function StackDiagram({ id }: { id: string }) {
   if (id === "sql-vs-document") return <SqlVsDocument />;
+  if (id === "arrays-stack") return <ArraysPicture />;
   const spec = STACKS[id];
   if (!spec) return null;
   return <Flow title={spec.title} boxes={spec.boxes} boxWidth={spec.boxWidth} />;
 }
 
-export const STACK_DIAGRAM_IDS = ["sql-vs-document", ...Object.keys(STACKS)];
+export const STACK_DIAGRAM_IDS = ["sql-vs-document", "arrays-stack", ...Object.keys(STACKS)];

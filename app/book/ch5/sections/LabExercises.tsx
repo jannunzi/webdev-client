@@ -1074,6 +1074,27 @@ app.get("/lab5/todos/:id/title/:title", updateTodoTitle);`}</CodeBlock>
           </p>
           <CodeBlock language="shell">{`npm install axios`}</CodeBlock>
           <p>
+            An axios call such as <code>axios.get(TODOS_API)</code>{" "}
+            returns a <code>Promise</code>, an object for a value that
+            arrives later. <code>.then()</code>{" "}runs a callback when
+            the response arrives, and <code>.catch()</code>{" "}runs when
+            the request fails. <code>async</code>/<code>await</code>{" "}
+            is syntactic sugar over promises: <code>await</code>{" "}
+            pauses the <code>async</code>{" "}function until the promise
+            resolves, so the code reads top to bottom without{" "}
+            <code>.then()</code>{" "}chains. An <code>async</code>{" "}
+            function always returns a promise. <code>async</code>/
+            <code>await</code>{" "}(ES2017) is the standard style today,
+            and the listings in this section use it.{" "}
+            <code>TODOS_API</code>{" "}is{" "}
+            <code>{`\${HTTP_SERVER}/lab5/todos`}</code>. Reading every
+            todo with a promise is{" "}
+            <code>axios.get(TODOS_API).then(response =&gt; response.data)</code>.
+            The same read as <code>fetchTodos</code>{" "}waits instead:{" "}
+            <code>const response = await axios.get(TODOS_API)</code>{" "}
+            and then <code>return response.data</code>.
+          </p>
+          <p>
             Let us use the same server routes implemented in earlier
             exercises, but instead of clicking on hyperlinks in the
             React client, we will use axios to programmatically invoke
