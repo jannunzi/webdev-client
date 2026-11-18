@@ -98,7 +98,6 @@ await mongoose.connect(CONNECTION_STRING);`,
     id: "schema-intro",
     title: "A schema validates writes",
     kind: "content",
-    density: "dense",
     bullets: [
       "`required: true` rejects an insert that's missing `username`",
       "`unique: true` rejects an insert or update that would duplicate an existing `username` (enforced by a unique index in MongoDB)",
