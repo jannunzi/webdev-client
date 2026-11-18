@@ -23,7 +23,7 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     bullets: [
       "Links to the server replace the whole page with the raw reply",
       "Real apps fetch data in the background and update just part of the page",
-      "An HTTP library sends the request from a component and waits for the reply",
+      "Axios implements AJAX (Asynchronous JavaScript and XML) to send HTTP requests and receive responses asynchronously from the browser to a remote server.",
       "POST, PUT, and DELETE then let the page create, change, and remove server data",
     ],
   },
@@ -54,7 +54,7 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
   },
   {
     id: "what-is-rest",
-    title: "What Is REST?",
+    title: "RESTful Web APIs",
     kind: "content",
     bullets: [
       "**REST** is Representational State Transfer, a web API style",
@@ -91,15 +91,46 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     ],
   },
   {
+    id: "promises",
+    title: "Promises",
+    kind: "demo",
+    bullets: [
+      "An axios call returns a Promise, an object for a value that arrives later",
+      "`.then()` runs a callback when the response arrives",
+      "`.catch()` runs when the request fails",
+    ],
+    code: `export const fetchTodos = () =>
+  axios.get(TODOS_API).then(response => response.data);`,
+    codeLanguage: "ts",
+    codeFile: "app/labs/lab5/client.ts",
+  },
+  {
     id: "async-await",
     title: "Waiting for Replies with async and await",
     kind: "content",
     bullets: [
+      "async/await is syntactic sugar over promises: await pauses the async function until the promise resolves, so the code reads top to bottom without .then() chains",
+      "An async function always returns a promise. async/await (ES2017) is the standard style today",
       "A request to the server takes time, and the page must not freeze while it waits",
       "`axios.get` returns a promise: a value that arrives later",
       "`await` pauses only that function until the promise delivers the reply",
       "A function that uses `await` must be marked `async`",
     ],
+  },
+  {
+    id: "fetch-todos-await",
+    title: "fetchTodos with await",
+    kind: "demo",
+    bullets: [
+      "`fetchTodos` in `client.ts` waits on `axios.get(TODOS_API)`",
+    ],
+    code: `const TODOS_API = \`\${HTTP_SERVER}/lab5/todos\`;
+export const fetchTodos = async () => {
+  const response = await axios.get(TODOS_API);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/labs/lab5/client.ts",
   },
   {
     id: "axios-how",
@@ -311,23 +342,19 @@ export const fetchTodos = async () => {
     ],
   },
   {
-    id: "todos-get-writes",
-    title: "Adding GET-style Todo Requests",
+    id: "remove-get-client",
+    title: "Requesting Remove from client.ts",
     kind: "demo",
     bullets: [
-      "In `client.ts`, add remove and create as shown below",
+      "In `client.ts`, add `removeTodo` as shown below",
+      "The server responds with the array of surviving todos",
     ],
     code: `export const removeTodo = async (todo: { id: number }) => {
   const response = await axios.get(\`\${TODOS_API}/\${todo.id}/delete\`);
   return response.data;
-};
-export const createNewTodo = async () => {
-  const response = await axios.get(\`\${TODOS_API}/create\`);
-  return response.data;
 };`,
     codeLanguage: "ts",
     codeFile: "app/labs/lab5/client.ts",
-    codeAddedLines: [[1, 8]],
   },
   {
     id: "arrays-async-remove",
@@ -342,6 +369,41 @@ export const createNewTodo = async () => {
     codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
   },
   {
+    id: "remove-get-live",
+    title: "Remove Todo Live Demo",
+    kind: "demo",
+    bullets: [
+      "Click the trash icon on a todo",
+      "That todo leaves the list",
+      "Start Express on port 4000 first (`npm start` in webdev-server)",
+    ],
+    embed: "lab5-arrays-async",
+  },
+  {
+    id: "create-get-intro",
+    title: "Creating a Todo from the Client",
+    kind: "content",
+    bullets: [
+      "The server already has GET `/lab5/todos/create`",
+      "`createNewTodo` in `client.ts` requests that route",
+      "The + button stores the array the server returns",
+    ],
+  },
+  {
+    id: "create-get-client",
+    title: "Requesting Create from client.ts",
+    kind: "demo",
+    bullets: [
+      "In `client.ts`, add `createNewTodo` as shown below",
+    ],
+    code: `export const createNewTodo = async () => {
+  const response = await axios.get(\`\${TODOS_API}/create\`);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/labs/lab5/client.ts",
+  },
+  {
     id: "arrays-async-create",
     title: "Creating an Item from a Button",
     kind: "demo",
@@ -351,6 +413,17 @@ export const createNewTodo = async () => {
     code: "const createNewTodo = async () => {\n  setTodos(await client.createNewTodo());\n};\n<FaPlusCircle onClick={createNewTodo} id=\"wd-create-todo\"\n  className=\"cursor-pointer text-green-600\" />",
     codeLanguage: "tsx",
     codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
+  },
+  {
+    id: "create-get-live",
+    title: "Create Todo Live Demo",
+    kind: "demo",
+    bullets: [
+      "Click the green + button",
+      "New Task appears in the list",
+      "Start Express on port 4000 first (`npm start` in webdev-server)",
+    ],
+    embed: "lab5-arrays-async",
   },
   {
     id: "body-how",
@@ -394,41 +467,6 @@ Lab5(app);`,
     ],
   },
   {
-    id: "post-delete-intro",
-    title: "Implementing POST and DELETE Routes",
-    kind: "demo",
-    bullets: [
-      "In `WorkingWithRemoteArrays.ts`, add both routes as shown below",
-      "POST `/lab5/todos` spreads `req.body` and assigns an id",
-      "DELETE `/lab5/todos/:id` returns 404 when the id is missing",
-    ],
-  },
-  {
-    id: "post-delete",
-    title: "Writing the POST and DELETE Handlers",
-    kind: "demo",
-    code: `const postNewTodo = (req, res) => {
-  const newTodo = { ...req.body, id: new Date().getTime() };
-  todos.push(newTodo);
-  res.json(newTodo);
-};
-const deleteTodo = (req, res) => {
-  const { id } = req.params;
-  const todoIndex = todos.findIndex((t) => t.id === parseInt(id));
-  if (todoIndex === -1) {
-    res.status(404).json({ message: \`Unable to delete Todo with ID \${id}\` });
-    return;
-  }
-  todos.splice(todoIndex, 1);
-  res.sendStatus(200);
-};
-app.post("/lab5/todos", postNewTodo);
-app.delete("/lab5/todos/:id", deleteTodo);`,
-    codeLanguage: "ts",
-    codeFile: "webdev-server/Lab5/WorkingWithRemoteArrays.ts",
-    codeHighlightLines: [[16, 17]],
-  },
-  {
     id: "post-flow",
     title: "Creating Items with HTTP POST",
     kind: "content",
@@ -437,30 +475,42 @@ app.delete("/lab5/todos/:id", deleteTodo);`,
       "Example body: `{ title: \"New Posted Todo\", completed: false }`",
       "The server adds an id, stores it, and replies with the new todo",
       "The client appends `response.data` to its `todos` state",
+      "Keep the older GET `/lab5/todos/create` route so earlier links still work",
     ],
   },
   {
-    id: "todos-verbs",
-    title: "Adding POST, DELETE, and PUT Clients",
+    id: "post-route",
+    links: ["http://localhost:4000/lab5/todos"],
+    title: "Writing the POST Create Route",
     kind: "demo",
     bullets: [
-      "In `client.ts`, add the three requests as shown below",
+      "In `WorkingWithRemoteArrays.ts`, add `postNewTodo` as shown below",
+      "`req.body` is the posted todo. The reply is only `newTodo`",
+    ],
+    code: `const postNewTodo = (req, res) => {
+  const newTodo = { ...req.body, id: new Date().getTime() };
+  todos.push(newTodo);
+  res.json(newTodo);
+};
+app.get("/lab5/todos/create", createNewTodo);
+app.post("/lab5/todos", postNewTodo);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithRemoteArrays.ts",
+  },
+  {
+    id: "post-client",
+    title: "Posting a Todo from client.ts",
+    kind: "demo",
+    bullets: [
+      "In `client.ts`, add `postNewTodo` as shown below",
+      "The second argument of `axios.post` is the todo object",
     ],
     code: `export const postNewTodo = async (todo: { title: string; completed: boolean }) => {
   const response = await axios.post(TODOS_API, todo);
   return response.data;
-};
-export const deleteTodo = async (todo: { id: number }) => {
-  const response = await axios.delete(\`\${TODOS_API}/\${todo.id}\`);
-  return response.data;
-};
-export const updateTodo = async (todo: { id: number }) => {
-  const response = await axios.put(\`\${TODOS_API}/\${todo.id}\`, todo);
-  return response.data;
 };`,
     codeLanguage: "ts",
     codeFile: "app/labs/lab5/client.ts",
-    codeAddedLines: [[1, 12]],
   },
   {
     id: "arrays-async-post",
@@ -475,16 +525,81 @@ export const updateTodo = async (todo: { id: number }) => {
     codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
   },
   {
+    id: "post-live",
+    title: "POST Todo Live Demo",
+    kind: "demo",
+    bullets: [
+      "Click the blue + button",
+      "New Posted Todo is appended",
+      "Start Express on port 4000 first (`npm start` in webdev-server)",
+    ],
+    embed: "lab5-arrays-async",
+  },
+  {
+    id: "delete-http-intro",
+    title: "Removing a Todo with HTTP DELETE",
+    kind: "content",
+    bullets: [
+      "DELETE `/lab5/todos/:id` removes the item. The path has no `/delete` suffix",
+      "`res.sendStatus(200)` replies with success instead of the whole array",
+      "Keep GET `/lab5/todos/:id/delete` so the earlier link still works",
+    ],
+  },
+  {
+    id: "delete-route",
+    title: "Writing the DELETE Route",
+    kind: "demo",
+    bullets: [
+      "In `WorkingWithRemoteArrays.ts`, add `deleteTodo` as shown below",
+    ],
+    code: `const deleteTodo = (req, res) => {
+  const { id } = req.params;
+  const todoIndex = todos.findIndex((t) => t.id === parseInt(id));
+  todos.splice(todoIndex, 1);
+  res.sendStatus(200);
+};
+app.delete("/lab5/todos/:id", deleteTodo);
+app.get("/lab5/todos/:id/delete", removeTodo);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithRemoteArrays.ts",
+  },
+  {
+    id: "delete-client",
+    title: "Deleting a Todo from client.ts",
+    kind: "demo",
+    bullets: [
+      "In `client.ts`, add `deleteTodo` as shown below",
+      "`axios.delete` matches `app.delete` and the URL without `/delete`",
+    ],
+    code: `export const deleteTodo = async (todo: { id: number }) => {
+  const response = await axios.delete(\`\${TODOS_API}/\${todo.id}\`);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/labs/lab5/client.ts",
+  },
+  {
     id: "arrays-async-delete",
     title: "Deleting Items with HTTP DELETE",
     kind: "demo",
     bullets: [
-      "In `WorkingWithRemoteArraysAsync.tsx`, switch delete to DELETE",
-      "The server returns a status. Filter it out locally",
+      "In `WorkingWithRemoteArraysAsync.tsx`, add the X button",
+      "The server returns a status. Filter the todo out locally",
     ],
     code: "const deleteTodo = async (todo) => {\n  await client.deleteTodo(todo);\n  setTodos(todos.filter((t) => t.id !== todo.id));\n};\n<TiDelete onClick={() => deleteTodo(todo)} id=\"wd-delete-todo\"\n  className=\"cursor-pointer text-2xl text-red-600\" />",
     codeLanguage: "tsx",
     codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
+  },
+  {
+    id: "delete-live",
+    title: "DELETE Todo Live Demo",
+    kind: "demo",
+    bullets: [
+      "Click the X on a todo",
+      "That todo leaves the list",
+      "Start Express on port 4000 first (`npm start` in webdev-server)",
+    ],
+    embed: "lab5-arrays-async",
   },
   {
     id: "put-server",
@@ -500,6 +615,21 @@ export const updateTodo = async (todo: { id: number }) => {
     codeFile: "webdev-server/Lab5/WorkingWithRemoteArrays.ts",
   },
   {
+    id: "put-client",
+    title: "Updating a Todo from client.ts",
+    kind: "demo",
+    bullets: [
+      "In `client.ts`, add `updateTodo` as shown below",
+      "The second argument of `axios.put` is the updated todo",
+    ],
+    code: `export const updateTodo = async (todo: { id: number }) => {
+  const response = await axios.put(\`\${TODOS_API}/\${todo.id}\`, todo);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/labs/lab5/client.ts",
+  },
+  {
     id: "arrays-async-put",
     title: "Sending a PUT Request with Axios",
     kind: "demo",
@@ -512,15 +642,44 @@ export const updateTodo = async (todo: { id: number }) => {
     codeFile: "app/labs/lab5/WorkingWithRemoteArraysAsync.tsx",
   },
   {
+    id: "put-live",
+    title: "PUT Todo Live Demo",
+    kind: "demo",
+    bullets: [
+      "Click the pencil, edit the title, and toggle the checkbox",
+      "Refresh and the change is still there",
+      "Start Express on port 4000 first (`npm start` in webdev-server)",
+    ],
+    embed: "lab5-arrays-async",
+  },
+  {
     id: "error-server",
     title: "Responding 404 for a Missing Item",
     kind: "demo",
     bullets: [
-      "In `WorkingWithRemoteArrays.ts`, update the route as shown below",
+      "In `WorkingWithRemoteArrays.ts`, update `deleteTodo` and `updateTodo` as shown below",
       "No matching id: reply `404` with a `message`",
-      "The same check goes in `updateTodo`",
     ],
-    code: "const deleteTodo = (req, res) => {\n  const { id } = req.params;\n  const todoIndex = todos.findIndex((t) => t.id === parseInt(id));\n  if (todoIndex === -1) {\n    res.status(404).json({ message: `Unable to delete Todo with ID ${id}` });\n    return;\n  }\n  todos.splice(todoIndex, 1);\n  res.sendStatus(200);\n};",
+    code: `const deleteTodo = (req, res) => {
+  const { id } = req.params;
+  const todoIndex = todos.findIndex((t) => t.id === parseInt(id));
+  if (todoIndex === -1) {
+    res.status(404).json({ message: \`Unable to delete Todo with ID \${id}\` });
+    return;
+  }
+  todos.splice(todoIndex, 1);
+  res.sendStatus(200);
+};
+const updateTodo = (req, res) => {
+  const { id } = req.params;
+  const todoIndex = todos.findIndex((t) => t.id === parseInt(id));
+  if (todoIndex === -1) {
+    res.status(404).json({ message: \`Unable to update Todo with ID \${id}\` });
+    return;
+  }
+  todos = todos.map((t) => (t.id === parseInt(id) ? { ...t, ...req.body } : t));
+  res.sendStatus(200);
+};`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Lab5/WorkingWithRemoteArrays.ts",
   },

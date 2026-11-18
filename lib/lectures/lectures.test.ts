@@ -1338,8 +1338,8 @@ describe("lecture decks", () => {
     assert.equal(counts["lab5-env"], 10);
     assert.equal(counts["path-and-query"], 17);
     assert.equal(counts["remote-objects"], 14);
-    assert.equal(counts["remote-arrays"], 19);
-    assert.equal(counts["async-http"], 41);
+    assert.equal(counts["remote-arrays"], 25);
+    assert.equal(counts["async-http"], 53);
     assert.equal(counts["next-routes"], 27);
     assert.equal(counts["kambaz-migrate-db"], 7);
     assert.equal(counts["kambaz-account-rest"], 23);
@@ -1356,7 +1356,7 @@ describe("lecture decks", () => {
     assert.equal(counts["atlas-sessions"], 12);
     assert.equal(counts["kambaz-courses-db"], 34);
     assert.equal(counts["kambaz-modules-db"], 28);
-    assert.equal(counts["kambaz-enrollments-db"], 23);
+    assert.equal(counts["kambaz-enrollments-db"], 28);
     assert.equal(counts["youtube-api"], 9);
     assert.equal(counts["youtube-search"], 11);
     assert.equal(counts["youtube-details"], 23);
@@ -3599,6 +3599,7 @@ describe("lecture decks", () => {
       "grok-api": { tokens: "grok-token-flow", key: "xai-key-mock" },
       "http-server": { sibling: "two-ports" },
       "lab5-env": { purpose: "env-same-code" },
+      "remote-arrays": { purpose: "arrays-stack" },
       "kambaz-account-rest": { "dao-architecture": "account-dao" },
       "kambaz-courses-api": {
         "courses-architecture": "courses-dao",
@@ -3718,9 +3719,8 @@ describe("lecture decks", () => {
       ["remote-arrays", "client", "/lectures/remote-arrays/remote-arrays-slide2-diagram.png"],
       ["remote-arrays", "id-how", "/lectures/remote-arrays/remote-arrays-slide5-diagram.png"],
       ["remote-arrays", "client-filter", "/lectures/remote-arrays/remote-arrays-slide9-diagram.png"],
-      ["remote-arrays", "create-delete-intro", "/lectures/remote-arrays/remote-arrays-slide10-diagram.png"],
-      ["remote-arrays", "client-create", "/lectures/remote-arrays/remote-arrays-slide10-diagram.png"],
-      ["remote-arrays", "client-remove", "/lectures/remote-arrays/remote-arrays-slide13-diagram.png"],
+      ["remote-arrays", "create-intro", "/lectures/remote-arrays/remote-arrays-slide10-diagram.png"],
+      ["remote-arrays", "remove-intro", "/lectures/remote-arrays/remote-arrays-slide13-diagram.png"],
       ["http-server", "request-trip", "/lectures/http-server/request-trip-diagram.png"],
     ] as const;
     for (const [slug, id, src] of placed) {
@@ -4128,7 +4128,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 257);
+    assert.equal(intros, 255);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
@@ -4353,13 +4353,13 @@ describe("diagram fit", () => {
     assert.match(hub, /href=\{`\/2026\/fall\/webdev\/slides\/\$\{deck\.slug\}`\} target="_blank"/);
   });
 
-  it("does not name Axios on the async-http opener before the library slide defines it", () => {
+  it("names Axios as the AJAX library on the async-http purpose slide", () => {
     const purpose = findSlide("async-http", "purpose");
     assert.equal(
       purpose.bullets?.[2],
-      "An HTTP library sends the request from a component and waits for the reply",
+      "Axios implements AJAX (Asynchronous JavaScript and XML) to send HTTP requests and receive responses asynchronously from the browser to a remote server.",
     );
-    assert.doesNotMatch((purpose.bullets ?? []).join("\n"), /axios/i);
+    assert.equal(findSlide("async-http", "what-is-rest").title, "RESTful Web APIs");
     const slides = getLectureDeck("async-http")!.slides;
     const purposeAt = slides.findIndex((slide) => slide.id === "purpose");
     const definedAt = slides.findIndex((slide) => slide.id === "axios-lib");
@@ -4372,7 +4372,7 @@ describe("diagram fit", () => {
       slides.slice(definedAt + 1, definedAt + 5).map((slide) => slide.id),
       ["http-methods-crud", "what-is-rest", "rest-conventions", "crud-courses"],
     );
-    assert.equal(slides.length, 41);
+    assert.equal(slides.length, 53);
     const assignmentClient = findSlide("async-http", "assignment-client");
     const objectsAsync = findSlide("async-http", "objects-async");
     assert.ok(

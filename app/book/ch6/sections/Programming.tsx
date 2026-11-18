@@ -189,13 +189,13 @@ await mongoose.connect(CONNECTION_STRING);`}</CodeBlock>
           datatypes Schemas and Models to interact with collections.
           Mongoose Schemas describe the structure of the data being
           stored in the database and are used to validate the data
-          being stored or modified through the Mongoose library. A
-          schema is the equivalent of a SQL table declaration, but
-          SQL tables are declared in the database while a Mongoose
-          schema is implemented in the application code. MongoDB
-          itself stays schemaless. If a
-          route tries to insert a user without a username, Mongoose
-          rejects the write before it reaches the collection. The
+          being stored or modified through the Mongoose library. In
+          SQL, each table&apos;s schema (columns and types) is defined
+          in the database itself. In MongoDB, the database doesn&apos;t
+          enforce a schema; Mongoose schemas define it in application
+          code. <code>required: true</code> rejects an insert
+          that&apos;s missing the field, for example{" "}
+          <code>username</code>. The
           schema shown below describes the structure for the{" "}
           <code>users</code>{" "}collection imported earlier. Create the
           schema in a Users directory in your Node.js project.
@@ -232,11 +232,11 @@ export default userSchema;`}</CodeBlock>
           JSON files still work; if we omitted it, MongoDB would assign
           ObjectIds and every enrollment that stored{" "}
           <code>&quot;123&quot;</code>{" "}would stop matching.{" "}
-          <code>username</code>{" "}is required, so a missing name is
-          rejected before the write. <code>unique: true</code>{" "}is
-          not that check. It asks MongoDB for a unique index, and a
-          second document with the same username fails with a
-          duplicate-key error once the index exists.{" "}
+          <code>username</code>{" "}is marked{" "}
+          <code>required: true</code>, so an insert that&apos;s missing
+          the field is rejected. <code>unique: true</code>{" "}rejects
+          an insert or update that would duplicate an existing value,
+          enforced by a unique index in MongoDB.{" "}
           <code>password</code>{" "}is required.{" "}
           <code>select: false</code>{" "}leaves it off documents that{" "}
           <code>find</code>{" "}and <code>findOne</code>{" "}return. Sign
@@ -263,10 +263,11 @@ export default userSchema;`}</CodeBlock>
           <code>totalActivity</code>{" "}is a string so the table can
           show a duration such as <code>10:21:32</code>{" "}without
           forcing a numeric type. The second argument,{" "}
-          <code>{`{ collection: "users" }`}</code>, tells Mongoose to
-          store documents in the <code>users</code>{" "}collection you
-          created in Compass rather than inventing a pluralized default
-          name.
+          <code>{`{ collection: "users" }`}</code>, names the
+          collection. Without it, Mongoose picks one for you (the
+          lowercased, pluralized model name). With the option, documents
+          go in the <code>users</code>{" "}collection you created in
+          Compass.
         </p>
       </Section>
 

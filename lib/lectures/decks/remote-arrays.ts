@@ -27,6 +27,7 @@ export const REMOTE_ARRAYS_SLIDES: LectureSlide[] = [
       "The server keeps a todos array with routes to create, read, update, and delete",
       "Every client sees the same list until the server restarts",
     ],
+    diagram: "arrays-stack",
   },
   {
     id: "get-all",
@@ -147,24 +148,26 @@ app.get("/lab5/todos/:id", getTodoById);`,
       "GET /lab5/todos?completed=true sets req.query.completed to the string true, filters to Task 2 and Task 4, and res.json returns those two todos.",
   },
   {
-    id: "create-delete-intro",
-    title: "Adding and Removing Array Items",
+    id: "create-intro",
+    title: "Creating a Todo",
     kind: "demo",
     bullets: [
-      "In `WorkingWithRemoteArrays.ts`, add both routes as shown below",
-      "GET `/create` pushes a New Task onto the array",
-      "GET `/:id/delete` splices that item out",
-      "Misusing GET is a teaching step. The Async HTTP and JSON deck switches to POST and DELETE",
+      "GET `/lab5/todos/create` pushes a New Task and `res.json(todos)` returns the whole array",
+      "Register that route before `/lab5/todos/:id`, or `:id` treats `create` as an id",
+      "The new todo's `id` is `new Date().getTime()`",
     ],
     imageSrc: "/lectures/remote-arrays/remote-arrays-slide10-diagram.png",
     imageAlt:
       "GET /lab5/todos/create builds a New Task, pushes it onto the todos array, and res.json returns the full array including that task.",
   },
   {
-    id: "create-delete",
-    links: ["http://localhost:4000/lab5/todos/create", "http://localhost:4000/lab5/todos/1/delete"],
-    title: "Writing Add and Remove Item Routes",
+    id: "create-route",
+    links: ["http://localhost:4000/lab5/todos/create"],
+    title: "Writing the Create Route",
     kind: "demo",
+    bullets: [
+      "In `WorkingWithRemoteArrays.ts`, add `createNewTodo` as shown below",
+    ],
     code: `const createNewTodo = (req, res) => {
   const newTodo = {
     id: new Date().getTime(),
@@ -174,45 +177,116 @@ app.get("/lab5/todos/:id", getTodoById);`,
   todos.push(newTodo);
   res.json(todos);
 };
-const removeTodo = (req, res) => {
+app.get("/lab5/todos/create", createNewTodo);
+app.get("/lab5/todos/:id", getTodoById);`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Lab5/WorkingWithRemoteArrays.ts",
+  },
+  {
+    id: "create-client",
+    title: "Requesting Create from client.ts",
+    kind: "demo",
+    bullets: [
+      "In `client.ts`, add `createNewTodo` as shown below",
+      "`axios.get` calls GET `/lab5/todos/create` and returns the array",
+    ],
+    code: `export const createNewTodo = async () => {
+  const response = await axios.get(\`\${TODOS_API}/create\`);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/labs/lab5/client.ts",
+  },
+  {
+    id: "create-ui",
+    title: "Linking to Create a Todo",
+    kind: "demo",
+    bullets: [
+      "In `WorkingWithRemoteArrays.tsx`, add the Create Todo link",
+    ],
+    code: "<a id=\"wd-create-todo\" href={`${API}/create`}>Create Todo</a>",
+    codeLanguage: "tsx",
+    codeFile: "app/labs/lab5/WorkingWithRemoteArrays.tsx",
+  },
+  {
+    id: "create-live",
+    title: "Create Todo Live Demo",
+    kind: "demo",
+    bullets: [
+      "Click Create Todo",
+      "Get Todos afterwards includes New Task",
+      "Start Express on port 4000 first (`npm start` in webdev-server)",
+    ],
+    embed: "lab5-arrays",
+  },
+  {
+    id: "remove-intro",
+    title: "Removing a Todo",
+    kind: "demo",
+    bullets: [
+      "GET `/lab5/todos/:id/delete` encodes the id in the path",
+      "`findIndex` locates that id and `splice` removes it",
+      "`res.json(todos)` returns the remaining array",
+    ],
+    imageSrc: "/lectures/remote-arrays/remote-arrays-slide13-diagram.png",
+    imageAlt:
+      "With todo.id 1, GET /lab5/todos/1/delete finds that id, splices it out, and res.json returns the remaining todos.",
+  },
+  {
+    id: "remove-route",
+    links: ["http://localhost:4000/lab5/todos/1/delete"],
+    title: "Writing the Remove Route",
+    kind: "demo",
+    bullets: [
+      "In `WorkingWithRemoteArrays.ts`, add `removeTodo` as shown below",
+    ],
+    code: `const removeTodo = (req, res) => {
   const { id } = req.params;
   const todoIndex = todos.findIndex((t) => t.id === parseInt(id));
   todos.splice(todoIndex, 1);
   res.json(todos);
 };
-app.get("/lab5/todos/create", createNewTodo);
 app.get("/lab5/todos/:id/delete", removeTodo);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Lab5/WorkingWithRemoteArrays.ts",
-    codeHighlightLines: [[16, 17]],
   },
   {
-    id: "client-create",
-    title: "Linking to Add an Item",
+    id: "remove-client",
+    title: "Requesting Remove from client.ts",
     kind: "demo",
     bullets: [
-      "In `WorkingWithRemoteArrays.tsx`, add the following link.",
+      "In `client.ts`, add `removeTodo` as shown below",
+      "`axios.get` calls GET `/lab5/todos/:id/delete` and returns the surviving array",
     ],
-    code: "<a id=\"wd-create-todo\" href={`${API}/create`}>Create Todo</a>",
-    codeLanguage: "tsx",
-    codeFile: "app/labs/lab5/WorkingWithRemoteArrays.tsx",
-    imageSrc: "/lectures/remote-arrays/remote-arrays-slide10-diagram.png",
-    imageAlt:
-      "GET /lab5/todos/create builds a New Task, pushes it onto the todos array, and res.json returns the full array including that task.",
+    code: `export const removeTodo = async (todo: { id: number }) => {
+  const response = await axios.get(\`\${TODOS_API}/\${todo.id}/delete\`);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/labs/lab5/client.ts",
   },
   {
-    id: "client-remove",
-    title: "Linking to Remove an Item by ID",
+    id: "remove-ui",
+    title: "Linking to Remove a Todo",
     kind: "demo",
     bullets: [
-      "In `WorkingWithRemoteArrays.tsx`, add the delete link as shown below",
+      "In `WorkingWithRemoteArrays.tsx`, add the remove link",
+      "The link uses the `todo` state's id",
     ],
     code: "<a id=\"wd-remove-todo\" href={`${API}/${todo.id}/delete`}>\n  Remove Todo with ID = {todo.id}\n</a>",
     codeLanguage: "tsx",
     codeFile: "app/labs/lab5/WorkingWithRemoteArrays.tsx",
-    imageSrc: "/lectures/remote-arrays/remote-arrays-slide13-diagram.png",
-    imageAlt:
-      "With todo.id 1, GET /lab5/todos/1/delete finds that id, splices it out, and res.json returns the remaining todos.",
+  },
+  {
+    id: "remove-live",
+    title: "Remove Todo Live Demo",
+    kind: "demo",
+    bullets: [
+      "Type an id, then click Remove Todo with ID",
+      "Get Todos afterwards no longer includes that id",
+      "Start Express on port 4000 first (`npm start` in webdev-server)",
+    ],
+    embed: "lab5-arrays",
   },
   {
     id: "title-server",
@@ -254,11 +328,11 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
   },
   {
     id: "client-live",
-    title: "Remote Arrays Live Demo",
+    title: "Update Todo Live Demo",
     kind: "demo",
     bullets: [
-      "Get Todos, then Get Todo by ID and Get Completed",
-      "Create, Remove, Update \u2014 then Get Todos again",
+      "Type an id and a title, then click Update Todo",
+      "Get Todos afterwards shows that title",
       "Start Express on port 4000 first (`npm start` in webdev-server)",
     ],
     embed: "lab5-arrays",
