@@ -6,6 +6,7 @@ import { A1_RUBRIC } from "./a1";
 import { A2_RUBRIC } from "./a2";
 import { A3_RUBRIC } from "./a3";
 import { A4_RUBRIC } from "./a4";
+import { A5_RUBRIC } from "./a5";
 import type {
   AssignmentHubItem,
   AssignmentId,
@@ -18,6 +19,7 @@ const RUBRICS: Partial<Record<AssignmentId, AssignmentRubric>> = {
   a2: A2_RUBRIC,
   a3: A3_RUBRIC,
   a4: A4_RUBRIC,
+  a5: A5_RUBRIC,
 };
 
 export { COURSE_SITE_ORIGIN };

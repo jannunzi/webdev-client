@@ -17,6 +17,7 @@ import { criterionCoverage, getChecker } from "./checkers";
 import { latestResultByCriterion, runConfiguredChecks } from "./checks";
 import type { AssignmentCheckResult, HtmlFetchResult } from "./checks";
 import { supportsUrlSubmission } from "./access";
+import { getAssignment } from "./catalog";
 import { formatPointsPercent } from "./grade";
 import { stripWdIds } from "./html";
 import { resolveNameQuery } from "./names";
@@ -199,10 +200,12 @@ describe("A5 helpers", () => {
 });
 
 describe("A5 wiring", () => {
-  it("is registered with the other checkers but does not open submissions", () => {
+  it("is registered and accepts URL submissions", () => {
     assert.equal(getChecker("a5"), A5_CHECKER);
     assert.equal(criterionCoverage("a5", "a5-kambaz-modules-api"), "auto");
-    assert.equal(supportsUrlSubmission("a5"), false);
+    assert.equal(supportsUrlSubmission("a5"), true);
+    assert.equal(getAssignment("a5")?.status, "ready");
+    assert.equal(getAssignment("a5")?.dueDate, "2026-11-29");
   });
 
   it("verifies every rubric item at a seeded path", () => {

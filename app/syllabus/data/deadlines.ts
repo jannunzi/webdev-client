@@ -6,8 +6,9 @@ import type { Deadline, IsoDate } from "./types";
  * project dates per section.
  *
  * Assignment dues are Canvas Sunday 23:59 ET (`all_day_date`). Keep the
- * published A1–A3 Sundays. Exact A4–A6 due dates are in Canvas; do not
- * invent Sunday dues for them here.
+ * published A1–A3 Sundays. A5 is due Sunday, November 29, 2026 at
+ * 11:59pm America/New_York (Jose, Nov 20). Exact A4 and A6 due dates are
+ * in Canvas; do not invent Sunday dues for them here.
  *
  * Quizzes (Piazza Post 33) are the week after that chapter’s assignment is
  * due. The quiz `date` is the shared Monday of that week. Student-facing
@@ -66,6 +67,11 @@ export const deadlines: Deadline[] = [
     label: quizLabel("Q3 — JavaScript", "2026-10-26"),
   },
   {
+    date: "2026-11-08",
+    kind: "assignment",
+    label: "A5 assigned — RESTful Web APIs",
+  },
+  {
     date: "2026-11-09",
     kind: "quiz",
     label: quizLabel("Q4 — Client state", "2026-11-09"),
@@ -74,6 +80,11 @@ export const deadlines: Deadline[] = [
     date: "2026-11-23",
     kind: "quiz",
     label: quizLabel("Q5 — REST APIs", "2026-11-23"),
+  },
+  {
+    date: "2026-11-29",
+    kind: "assignment",
+    label: "A5 due — RESTful Web APIs",
   },
   { date: "2026-12-06", kind: "project", label: "Project due" },
   {
@@ -89,4 +100,4 @@ export const deadlines: Deadline[] = [
 ];
 
 export const deadlinesNote =
-  "Assignment, exam, and project dates are one Canvas calendar for every section. Assignments are due Sunday 11:59pm ET. Quizzes (Q1–Q6) are the week after each chapter’s assignment is due. X1 is taken in the second half of lecture the week of November 2. The project is due Sunday, December 6; grading begins the week of December 7. X2 is due Sunday 11:59pm ET the week of December 14 (finals week). Exact assignment due dates are in Canvas.";
+  "Assignment, exam, and project dates are one Canvas calendar for every section. Assignments are due Sunday 11:59pm ET. A5 is due Sunday, November 29, 2026 at 11:59pm ET. Quizzes (Q1–Q6) are the week after each chapter’s assignment is due. X1 is taken in the second half of lecture the week of November 2. The project is due Sunday, December 6; grading begins the week of December 7. X2 is due Sunday 11:59pm ET the week of December 14 (finals week). Exact assignment due dates are in Canvas.";

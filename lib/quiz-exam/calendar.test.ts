@@ -12,6 +12,7 @@ const CANVAS_ASSIGNMENT_DUES: Record<string, string> = {
   A1: "2026-09-27",
   A2: "2026-10-11",
   A3: "2026-10-25",
+  A5: "2026-11-29",
 };
 
 const QUIZ_WINDOWS: Record<string, { unlock: string; due: string }> = {
@@ -42,7 +43,7 @@ describe("Fall 2026 Canvas calendar", () => {
       assert.ok(row, `${id} due is missing from syllabus deadlines`);
       assert.equal(row.date, due);
     }
-    for (const id of ["A4", "A5", "A6"]) {
+    for (const id of ["A4", "A6"]) {
       assert.equal(
         deadlines.some(
           (deadline) =>
