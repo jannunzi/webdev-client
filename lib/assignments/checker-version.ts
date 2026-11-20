@@ -53,6 +53,15 @@ export const A3_CHECKER_RULES_VERSION = "a3-rules-v5";
  *       /courses/<id>/home still count once.
  */
 export const A4_CHECKER_RULES_VERSION = "a4-rules-v3";
+/**
+ * A5 history:
+ *   v1: Lab pages graded on structure; the student's Node server (found
+ *       from the Lab 5 links) graded on read-only GET routes with the
+ *       checker's own numbers; Next.js Route Handlers on the deploy.
+ *       Turned on for URL submit (Jose, Nov 20, 2026). Due Sunday,
+ *       November 29, 2026 at 11:59pm ET.
+ */
+export const A5_CHECKER_RULES_VERSION = "a5-rules-v1";
 
 /** Short commit of the running deployment, when Vercel provides it. */
 export function deployedCommit(env: Record<string, string | undefined> = process.env): string {

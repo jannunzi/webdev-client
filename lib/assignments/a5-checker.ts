@@ -1,4 +1,5 @@
 import { A5_RUBRIC } from "./a5";
+import { A5_CHECKER_RULES_VERSION } from "./checker-version";
 import type { A1RubricAutoSpec } from "./a1-rubric-types";
 import {
   A5_STRUCTURE_FALLBACKS,
@@ -9,17 +10,10 @@ import {
 } from "./a5-structure";
 import type { AssignmentChecker } from "./checker-types";
 
-/**
- * A5 history:
- *   v1: Lab pages graded on structure; the student's Node server (found
- *       from the Lab 5 links) graded on read-only GET routes with the
- *       checker's own numbers; Next.js Route Handlers on the deploy.
- * Kept here, not in checker-version.ts, until A5 is turned on.
- */
 /** Saved runs with the server unreachable before its items go to TA review. */
 export const A5_RECHECK_LIMIT = 3;
 
-export const A5_CHECKER_RULES_VERSION = "a5-rules-v1";
+export { A5_CHECKER_RULES_VERSION };
 
 export const A5_CHECKER_FOLLOWUP_CAP = 0;
 

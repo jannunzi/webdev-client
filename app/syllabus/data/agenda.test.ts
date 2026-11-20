@@ -286,6 +286,7 @@ describe("agenda Week of labels and chapter groups", () => {
       { id: "A1", sunday: "2026-09-27", monday: "2026-09-21" },
       { id: "A2", sunday: "2026-10-11", monday: "2026-10-05" },
       { id: "A3", sunday: "2026-10-25", monday: "2026-10-19" },
+      { id: "A5", sunday: "2026-11-29", monday: "2026-11-23" },
     ];
     for (const { id, sunday, monday } of assignmentSundays) {
       const due = deadlines.find(
@@ -299,7 +300,7 @@ describe("agenda Week of labels and chapter groups", () => {
         `${id} due should appear on the week of ${monday}`,
       );
     }
-    for (const id of ["A4", "A5", "A6"]) {
+    for (const id of ["A4", "A6"]) {
       assert.equal(
         deadlines.some(
           (deadline) =>

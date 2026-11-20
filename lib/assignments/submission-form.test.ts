@@ -430,7 +430,7 @@ describe("A1 submission form visibility", () => {
       false,
     );
     const otherAssignment = preparePublicAssignmentCheck({
-      assignmentId: "a5",
+      assignmentId: "a6",
       githubUrl: "",
       vercelUrl: "https://jane-a1.vercel.app",
     });
@@ -470,6 +470,9 @@ describe("A3 submission form", () => {
   it("requires the GitHub URL for A3 like A2", () => {
     assert.equal(missingA2GithubMessage("a3", ""), ASSIGNMENT_STUDENT_COPY.a3GithubRequired);
     assert.equal(missingA2GithubMessage("a3", "https://github.com/jane/webdev-client"), null);
+    assert.equal(missingA2GithubMessage("a4", ""), ASSIGNMENT_STUDENT_COPY.a4GithubRequired);
+    assert.equal(missingA2GithubMessage("a5", ""), ASSIGNMENT_STUDENT_COPY.a5GithubRequired);
+    assert.equal(missingA2GithubMessage("a5", "https://github.com/jane/webdev-client"), null);
     assert.equal(missingA2GithubMessage("a1", ""), null);
   });
 });
