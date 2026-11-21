@@ -551,21 +551,27 @@ const filterUsersByName = async (name: string) => {
           language="ts"
           name="findUserById"
           file="webdev-server/Kambaz/Users/dao.ts"
-        >{`const findUserById = (userId) => model.findById(userId);
-// route:
-const findUserById = async (req, res) => {
+        >{`const findUserById = (userId) => model.findById(userId);`}</CodeBlock>
+        <p>
+          Make the <code>findUserById</code>{" "}DAO function available
+          as a RESTful Web API as shown below. The route reads{" "}
+          <code>userId</code>{" "}from the path, awaits the DAO, and
+          responds with that one document.
+        </p>
+        <CodeBlock
+          language="ts"
+          name="findUserById route"
+          file="webdev-server/Kambaz/Users/routes.ts"
+        >{`const findUserById = async (req, res) => {
   const user = await dao.findUserById(req.params.userId);
   res.json(user);
 };
 app.get("/api/users/:userId", findUserById);`}</CodeBlock>
         <p>
-          Make the <code>findUserById</code>{" "}DAO function available
-          as a RESTful Web API as shown above. The route reads{" "}
-          <code>userId</code>{" "}from the path, awaits the DAO, and
-          responds with that one document. Confirm it in the browser
+          Confirm it in the browser
           by opening{" "}
           <code>http://localhost:4000/api/users/</code>{" "}followed by
-          an <code>_id</code>{" "}you copy from Compass. The user
+          an <code>_id</code>{" "}copied from Compass. The user
           interface can then interact with the server using the{" "}
           <code>findUserById</code>{" "}client function shown below,
           which appends the id to <code>USERS_API</code>.
@@ -703,18 +709,25 @@ onClick={() => {
           language="ts"
           name="deleteUser"
           file="webdev-server/Kambaz/Users/dao.ts"
-        >{`const deleteUser = (userId) => model.findByIdAndDelete(userId);
-app.delete("/api/users/:userId", async (req, res) => {
-  const status = await dao.deleteUser(req.params.userId);
-  res.json(status);
-});`}</CodeBlock>
+        >{`const deleteUser = (userId) => model.findByIdAndDelete(userId);`}</CodeBlock>
         <p>
           The route below makes the <code>deleteUser</code>{" "}
           operation available as a RESTful Web API for integration
           with the user interface, which encodes the id of the user
-          to remove as a path parameter. In the React Web app,
-          implement a client function that integrates with that
-          route.
+          to remove as a path parameter.
+        </p>
+        <CodeBlock
+          language="ts"
+          name="deleteUser route"
+          file="webdev-server/Kambaz/Users/routes.ts"
+        >{`const deleteUser = async (req, res) => {
+  const status = await dao.deleteUser(req.params.userId);
+  res.json(status);
+};
+app.delete("/api/users/:userId", deleteUser);`}</CodeBlock>
+        <p>
+          In the React Web app, implement a client function that
+          integrates with that route.
         </p>
         <CodeBlock
           language="ts"
@@ -778,11 +791,14 @@ app.delete("/api/users/:userId", async (req, res) => {
           <code>updateUser</code>{" "}as shown below to update a single
           document by first identifying it by its primary key, and
           then updating the matching fields in the{" "}
-          <code>user</code>{" "}parameter. The <code>$set</code>{" "}
-          operator is important: without it, Mongoose would replace
-          the entire document with the payload and you would lose
-          fields the editor did not send. With <code>$set</code>,
-          only the keys present in <code>user</code>{" "}change.
+          <code>user</code>{" "}parameter.{" "}
+          <code>updateOne</code>{" "}wraps a plain object in{" "}
+          <code>$set</code>{" "}before the write reaches MongoDB, so a
+          missing operator still updates only the keys in the object.
+          The listing passes <code>{`{ $set: user }`}</code> so that
+          operator is explicit. Only the keys present in{" "}
+          <code>user</code>{" "}change; every other field on the
+          document stays.
         </p>
         <CodeBlock
           language="ts"
