@@ -128,6 +128,42 @@ describe("paragraph insert and remove", () => {
     assert.equal(item.ok, false);
   });
 
+  it("saves an introduction and ordered steps without the instruction", () => {
+    const hash = hashIncluding(source, "OfficialLink");
+    const instruction =
+      "Introduce the software development cycle. list the various steps/levels, and prepare the chapter with the purpose of identifying opportunities where AI could help at each step.";
+    const result = replaceEditableSource(
+      source,
+      FILE,
+      hash,
+      `Hello <slot data-i="0"></slot> and <slot data-i="1"></slot>. <div data-ai-instruction="1">${instruction}</div>`,
+      {
+        insertsAfter: [
+          {
+            kind: "p",
+            html: "The software development cycle is the sequence of work from a need to a running system.",
+          },
+          {
+            kind: "ol",
+            items: [
+              "<strong>Requirements</strong> — name what the program must do.",
+              "<strong>Design</strong> — choose the structure.",
+            ],
+          },
+        ],
+      },
+    );
+    assert.equal(result.ok, true);
+    if (!result.ok) return;
+    assert.match(result.source, /<ol>/);
+    assert.match(result.source, /<li><strong>\{"Requirements"\}<\/strong>/);
+    assert.match(result.source, /software development cycle is the sequence/);
+    assert.match(result.source, /<OfficialLink href="https:\/\/www\.w3\.org\/">/);
+    assert.match(result.source, /<code>HTML<\/code>/);
+    assert.doesNotMatch(result.source, /data-ai-instruction/);
+    assert.doesNotMatch(result.source, /identifying opportunities where AI could help/);
+  });
+
   it("keeps ordinary prose that happens to look like an instruction", () => {
     const hash = hashIncluding(source, "next paragraph");
     const result = replaceEditableSource(
