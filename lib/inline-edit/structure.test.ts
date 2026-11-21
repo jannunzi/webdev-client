@@ -63,14 +63,22 @@ describe("paragraph insert and remove", () => {
     assert.doesNotMatch(result.source, /<p>\s*<ul/);
   });
 
-  it("persists a blank paragraph and refuses a nested block", () => {
+  it("discards a blank inserted paragraph and refuses a nested block", () => {
     const hash = hashIncluding(source, "next paragraph");
     const blank = replaceEditableSource(source, FILE, hash, "The next paragraph stays.", {
-      insertsAfter: [{ kind: "p", html: "" }],
+      insertsAfter: [
+        { kind: "p", html: "" },
+        { kind: "p", html: "   " },
+        { kind: "p", html: "<br>" },
+        { kind: "p", html: "&nbsp;" },
+        { kind: "p", html: "Kept sentence." },
+      ],
     });
     assert.equal(blank.ok, true);
     if (!blank.ok) return;
-    assert.match(blank.source, /<p><\/p>/);
+    assert.doesNotMatch(blank.source, /<p><\/p>/);
+    assert.doesNotMatch(blank.source, /<p>\s*<\/p>/);
+    assert.match(blank.source, /Kept sentence/);
     assert.match(blank.source, /The next paragraph stays\./);
     assert.match(blank.source, /OfficialLink/);
 
@@ -126,6 +134,59 @@ describe("paragraph insert and remove", () => {
       insertsAfter: [{ kind: "p", html: "Nope" }],
     });
     assert.equal(item.ok, false);
+  });
+
+  it("deletes a paragraph whose save is only whitespace and leaves an unrelated empty paragraph", () => {
+    const withBlank = source.replace(
+      "<p>The next paragraph stays.</p>",
+      "<p></p>\n      <p>The next paragraph stays.</p>",
+    );
+    const hash = hashIncluding(withBlank, "OfficialLink");
+    const cleared = replaceEditableSource(withBlank, FILE, hash, " <br> &nbsp; ");
+    assert.equal(cleared.ok, true);
+    if (!cleared.ok) return;
+    assert.doesNotMatch(cleared.source, /OfficialLink/);
+    assert.match(cleared.source, /<p><\/p>/);
+    assert.match(cleared.source, /The next paragraph stays\./);
+    assert.match(cleared.source, /id="intro"/);
+
+    const kept = replaceEditableSource(
+      withBlank,
+      FILE,
+      hash,
+      '<slot data-i="0"></slot> <slot data-i="1"></slot>',
+    );
+    assert.equal(kept.ok, true);
+    if (!kept.ok) return;
+    assert.match(kept.source, /<OfficialLink href="https:\/\/www\.w3\.org\/">/);
+    assert.match(kept.source, /<p><\/p>/);
+  });
+
+  it("keeps a new paragraph that is only a link or code span", () => {
+    const hash = hashIncluding(source, "next paragraph");
+    const result = replaceEditableSource(source, FILE, hash, "The next paragraph stays.", {
+      insertsAfter: [
+        { kind: "p", html: '<a href="/book/terms/internet">Internet</a>' },
+        { kind: "p", html: "<code>HTML</code>" },
+        { kind: "p", html: "<br>" },
+      ],
+    });
+    assert.equal(result.ok, true);
+    if (!result.ok) return;
+    assert.match(result.source, /href=\{"\/book\/terms\/internet"\}/);
+    assert.match(result.source, /<code>\{"HTML"\}<\/code>/);
+    assert.doesNotMatch(result.source, /<p><\/p>/);
+    assert.match(result.source, /OfficialLink/);
+  });
+
+  it("does not delete a heading when its text is cleared to spaces", () => {
+    const hash = hashIncluding(source, "Learning objectives");
+    const result = replaceEditableSource(source, FILE, hash, " <br> ");
+    assert.equal(result.ok, true);
+    if (!result.ok) return;
+    assert.match(result.source, /<h2 id="intro">/);
+    assert.match(result.source, /id="intro"/);
+    assert.match(result.source, /OfficialLink/);
   });
 
   it("keeps ordinary prose that happens to look like an instruction", () => {

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
   inlineToHtml,
+  isSemanticallyEmptyParagraph,
   plainText,
   sanitizeEditedHtml,
   sanitizeFreshInline,
@@ -79,6 +80,24 @@ describe("edited HTML sanitizer", () => {
     assert.doesNotMatch(blocks[0].items.join(""), /script|alert/);
     assert.match(blocks[0].items[1] ?? "", /<code>markup<\/code>/);
     assert.doesNotMatch(blocks[0].items[1] ?? "", /<a /);
+  });
+
+  it("treats spaces, breaks, and nbsp as empty, and keeps links and code", () => {
+    assert.equal(isSemanticallyEmptyParagraph(""), true);
+    assert.equal(isSemanticallyEmptyParagraph("   "), true);
+    assert.equal(isSemanticallyEmptyParagraph("<br>"), true);
+    assert.equal(isSemanticallyEmptyParagraph("&nbsp;"), true);
+    assert.equal(isSemanticallyEmptyParagraph("<em> &nbsp; </em>"), true);
+    assert.equal(isSemanticallyEmptyParagraph("<strong>Term</strong>"), false);
+    assert.equal(isSemanticallyEmptyParagraph('<code></code>'), false);
+    assert.equal(isSemanticallyEmptyParagraph('<a href="/book/terms/internet"></a>'), false);
+    assert.equal(isSemanticallyEmptyParagraph('<slot data-i="0"></slot>'), false);
+    assert.equal(
+      isSemanticallyEmptyParagraph(
+        '<div data-ai-instruction="1">Create a list of terms</div>',
+      ),
+      true,
+    );
   });
 
   it("refuses a nested block inside a new paragraph", () => {

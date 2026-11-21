@@ -92,6 +92,18 @@ export function inlineToHtml(nodes: readonly SanitizedNode[]): string {
   return nodes.map(inlineHtml).join("");
 }
 
+const MEANINGFUL_STRUCTURE = /<(?:slot|code|a)\b/i;
+
+/**
+ * A paragraph save is empty when it has only spaces, non-breaking spaces, or
+ * line breaks. A link, code span, or slot is content even when its text is blank.
+ */
+export function isSemanticallyEmptyParagraph(html: string): boolean {
+  if (MEANINGFUL_STRUCTURE.test(html)) return false;
+  const text = plainText(sanitizeEditedHtml(html, "jsx")).replace(/[\s\u00a0]/g, "");
+  return text.length === 0;
+}
+
 export function plainText(nodes: SanitizedNode[]): string {
   return nodes.map(plainNode).join("");
 }

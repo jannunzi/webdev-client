@@ -217,6 +217,81 @@ try {
     "neighbor removed",
   );
 
+  await page.goto(base, { waitUntil: "networkidle" });
+  const savesBeforeBlank = saves.length;
+  const blankHost = await start(page);
+  await page.getByRole("button", { name: "Insert paragraph below" }).click();
+  const blank = page.locator("[data-draft-kind='p'] [contenteditable='true']");
+  await blank.click();
+  const blankBox = await blank.boundingBox();
+  assert(blankBox && blankBox.height >= 20, "blank draft has no hit target");
+  await page.screenshot({ path: `${outDir}/inline-blank-draft.png` });
+  await page.getByRole("button", { name: "Insert paragraph below" }).click();
+  const drafts = page.locator("[data-draft-kind='p'] [contenteditable='true']");
+  await drafts.nth(1).click();
+  await page.keyboard.type("Browsers still request pages.");
+  await page.getByRole("button", { name: "Save edit" }).click();
+  await page.getByText("committed").waitFor();
+  const mixed = saves.at(-1);
+  assert(mixed.insertsAfter?.length === 1, "blank draft was saved beside a filled paragraph");
+  assert(mixed.insertsAfter[0].kind === "p", "filled insert was not a paragraph");
+  assert(mixed.insertsAfter[0].html.includes("Browsers still request pages."), "filled insert text missing");
+  assert(!JSON.stringify(mixed).includes("<p></p>"), "empty paragraph element was saved");
+  assert(!mixed.remove, "original paragraph was removed");
+  assert(/href="\/book\/terms\/internet\/?"/.test(mixed.html), "link lost while discarding a blank draft");
+  assert((await page.locator("[data-draft-kind='p']").count()) === 1, "blank draft stayed on screen");
+  assert((await page.getByText("Browsers still request pages.").count()) === 1, "filled draft disappeared");
+  assert((await blankHost.innerText()).includes("Internet"), "original paragraph changed");
+
+  await page.goto(base, { waitUntil: "networkidle" });
+  const onlyBlankSaves = saves.length;
+  await start(page);
+  await page.getByRole("button", { name: "Insert paragraph below" }).click();
+  await page.locator("[data-draft-kind='p'] [contenteditable='true']").click();
+  await page.keyboard.type("   ");
+  await page.getByRole("button", { name: "Save edit" }).click();
+  await page.getByText("No change to save").waitFor();
+  assert(saves.length === onlyBlankSaves, "whitespace draft triggered a save");
+  assert((await page.locator("[data-draft-kind='p']").count()) === 0, "whitespace draft remained");
+  assert((await page.getByText("A following paragraph stays in place.").count()) === 1, "neighbor changed");
+  await page.screenshot({ path: `${outDir}/inline-blank-discarded.png` });
+
+  await page.goto(base, { waitUntil: "networkidle" });
+  const cleared = await start(page);
+  await cleared.click();
+  await page.keyboard.press("Control+A");
+  await page.keyboard.press("Backspace");
+  await page.keyboard.press("Escape");
+  await page.keyboard.press("Escape");
+  assert((await cleared.innerText()).includes("Internet"), "cancel did not restore cleared text");
+  assert((await page.locator("[data-inline-removed]").count()) === 0, "cancel left a removed paragraph");
+  await page.getByRole("button", { name: "Edit text" }).click();
+  const editingParagraph = page.locator("[data-src-hash]").first();
+  await editingParagraph.click();
+  await page.keyboard.press("Control+A");
+  await page.keyboard.press("Backspace");
+  await page.keyboard.type("Servers answer the browser.");
+  await page.getByRole("button", { name: "Save edit" }).click();
+  await page.getByText("committed").waitFor();
+  const retyped = saves.at(-1);
+  assert(retyped.remove !== true, "retyped paragraph was deleted");
+  assert(retyped.html.includes("Servers answer the browser."), "retyped text was not saved");
+  assert(!JSON.stringify(retyped).includes("Create a list of terms"), "instruction leaked");
+
+  await page.goto(base, { waitUntil: "networkidle" });
+  await start(page);
+  await page.locator("[data-src-hash]").first().click();
+  await page.keyboard.press("Control+A");
+  await page.keyboard.press("Backspace");
+  await page.getByRole("button", { name: "Save edit" }).click();
+  await page.getByText("committed").waitFor();
+  const emptied = saves.at(-1);
+  assert(emptied.remove === true, "cleared paragraph was not removed");
+  assert(!emptied.html, "cleared paragraph html was saved");
+  assert(!JSON.stringify(emptied).includes("<p></p>"), "empty paragraph markup was saved");
+  assert(!JSON.stringify(emptied).includes("Create a list of terms"), "instruction leaked");
+  assert(savesBeforeBlank >= 0, "save counter missing");
+
   await page.unroute("**/api/staff/ai-suggest");
   await page.route("**/api/staff/ai-suggest", async (route) => {
     await route.fulfill({

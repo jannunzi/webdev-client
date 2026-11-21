@@ -27,10 +27,12 @@ import {
   buildSavePayload,
   captureSession,
   clearSessionNodes,
+  discardEmptyDrafts,
   editableHost,
   insertInstruction,
   insertParagraphBelow,
   instructionText,
+  paragraphHtmlUnchanged,
   markParagraphRemoved,
   paragraphEditable,
   renderGeneratedBlocks,
@@ -562,6 +564,31 @@ function Editor() {
 
   async function commit(el: HTMLElement, payload?: SavePayload) {
     const built = buildSavePayload(el);
+    const original = originals.current.get(el);
+    if (
+      !payload &&
+      !built.remove &&
+      built.insertsBefore.length === 0 &&
+      built.insertsAfter.length === 0 &&
+      original !== undefined &&
+      paragraphHtmlUnchanged(el, original)
+    ) {
+      clearSessionNodes(el);
+      release(el);
+      originals.current.delete(el);
+      setEditing(null);
+      setSave({
+        el,
+        phase: "committed",
+        message: "No change to save",
+        payload: {
+          file: el.dataset.srcFile ?? "",
+          hash: el.dataset.srcHash ?? "",
+          html: built.html,
+        },
+      });
+      return;
+    }
     const nextPayload: SavePayload = payload ?? {
       file: el.dataset.srcFile ?? "",
       hash: el.dataset.srcHash ?? "",
@@ -572,6 +599,7 @@ function Editor() {
     };
     const visible = el.innerHTML;
     if (!payload) {
+      discardEmptyDrafts(el);
       stripInstructionNodes(el);
       release(el);
       originals.current.delete(el);
