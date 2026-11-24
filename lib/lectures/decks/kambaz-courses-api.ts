@@ -38,7 +38,7 @@ export const KAMBAZ_COURSES_API_SLIDES: LectureSlide[] = [
   },
   {
     id: "dao-intro",
-    title: "Filtering Courses by Enrollment",
+    title: "Courses DAO filters by enrollment",
     kind: "demo",
     bullets: [
       "In a new `Kambaz/Courses/dao.ts`, add the functions below",
@@ -48,7 +48,7 @@ export const KAMBAZ_COURSES_API_SLIDES: LectureSlide[] = [
   },
   {
     id: "dao",
-    title: "Writing the Courses DAO",
+    title: "Courses DAO implements database finders",
     kind: "demo",
     code: `import { v4 as uuidv4 } from "uuid";
 export default function CoursesDao(db) {
@@ -190,7 +190,7 @@ useEffect(() => {
   },
   {
     id: "create-dao",
-    title: "Adding Course Create and Enroll",
+    title: "Courses DAO creates and enrolls",
     kind: "demo",
     bullets: [
       "In `Courses/dao.ts`, add create as shown below",
@@ -296,7 +296,7 @@ const onAddCourse = async () => {
   },
   {
     id: "course-delete-server",
-    title: "Deleting a Course on the Server",
+    title: "Courses DAO deletes a course",
     kind: "demo",
     code: `function deleteCourse(courseId) {
   const { courses, enrollments } = db;
@@ -348,7 +348,7 @@ const onDeleteCourse = async (courseId: string) => {
   },
   {
     id: "course-update-server",
-    title: "Updating a Course on the Server",
+    title: "Courses DAO updates a course",
     kind: "demo",
     code: `function updateCourse(courseId, courseUpdates) {
   const { courses } = db;
@@ -409,7 +409,7 @@ const onUpdateCourse = async () => {
   {
     id: "modules-find-server",
     links: ["http://localhost:4000/api/courses/RS101/modules"],
-    title: "Finding a Course's Modules",
+    title: "Modules DAO finds a course's modules",
     kind: "demo",
     code: `function findModulesForCourse(courseId) {
   const { modules } = db;
@@ -478,7 +478,7 @@ useEffect(() => {
   },
   {
     id: "modules-create-server",
-    title: "Creating a Module on the Server",
+    title: "Modules DAO creates a module",
     kind: "demo",
     code: `function createModule(module) {
   const newModule = { ...module, _id: uuidv4() };
@@ -537,7 +537,7 @@ const onAddModule = async () => {
   },
   {
     id: "modules-delete-server",
-    title: "Deleting a Module on the Server",
+    title: "Modules DAO deletes a module",
     kind: "demo",
     code: `function deleteModule(moduleId) {
   const { modules } = db;
@@ -586,7 +586,7 @@ const onRemoveModule = async (moduleId: string) => {
   },
   {
     id: "modules-update-server",
-    title: "Updating a Module on the Server",
+    title: "Modules DAO updates a module",
     kind: "demo",
     code: `function updateModule(moduleId, moduleUpdates) {
   const { modules } = db;
@@ -649,7 +649,7 @@ const onUpdateModule = async (module) => {
   },
   {
     id: "assignments-find-server",
-    title: "Finding a Course's Assignments",
+    title: "Assignments DAO finds by course",
     kind: "demo",
     code: `const findAssignmentsForCourse = (courseId) =>
   db.assignments.filter((assignment) => assignment.course === courseId);`,
@@ -718,7 +718,7 @@ useEffect(() => {
   },
   {
     id: "assignments-create-dao",
-    title: "Creating an Assignment in the DAO",
+    title: "Assignments DAO creates one",
     kind: "demo",
     code: `const createAssignment = (assignment) => {
   const created = { ...assignment, _id: uuidv4() };
@@ -780,7 +780,7 @@ const onAddAssignment = async () => {
   },
   {
     id: "assignments-update-dao",
-    title: "Updating an Assignment in the DAO",
+    title: "Assignments DAO updates one",
     kind: "demo",
     code: `const updateAssignment = (assignmentId, updates) => {
   const assignment = db.assignments.find(
@@ -842,7 +842,7 @@ const onUpdateAssignment = async (assignment) => {
   },
   {
     id: "assignments-delete-dao",
-    title: "Deleting an Assignment in the DAO",
+    title: "Assignments DAO deletes one",
     kind: "demo",
     code: `const deleteAssignment = (assignmentId) => {
   db.assignments = db.assignments.filter(

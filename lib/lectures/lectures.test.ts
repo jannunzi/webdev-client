@@ -55,7 +55,15 @@ import {
   lectureThumbPath,
 } from "./types";
 import { expandLineMarks } from "../code-block/lines";
-import { DIAGRAM_MAX_HEIGHT_OF_SLIDE, diagramFitScale, isLectureIconSvg } from "./diagram-fit";
+import {
+  DIAGRAM_LABEL_TARGET_PX,
+  DIAGRAM_MAX_HEIGHT_OF_SLIDE,
+  balanceBoxWidths,
+  diagramFitScale,
+  diagramMinFontPx,
+  fontPxThatFits,
+  isLectureIconSvg,
+} from "./diagram-fit";
 import { slidePaneOverflows, slidePaneScrollStep } from "./slide-pane";
 import {
   LECTURE_PRESENT_STATE,
@@ -4439,6 +4447,37 @@ describe("diagram fit", () => {
 
     assert.equal(diagramFitScale(0, 400, 100, 50), 1);
     assert.equal(diagramFitScale(400, 400, 0, 50), 1);
+  });
+
+  it("keeps diagram labels at the slide 9 size, not the bullet size", () => {
+    assert.equal(DIAGRAM_LABEL_TARGET_PX, 24);
+    assert.equal(diagramMinFontPx(1680, 50.4), 24);
+    assert.equal(diagramMinFontPx(800, 36), 24);
+    assert.ok(fontPxThatFits("enroll", 420, 32) > 40);
+    const shared = 440;
+    const widths = balanceBoxWidths(
+      [
+        { name: "People", lines: ["PeopleTable"] },
+        { name: "courses client", lines: ["axios"] },
+        {
+          name: "CourseRoutes",
+          lines: [
+            "GET /api/users/:userId/courses",
+            "DELETE /api/users/:uid/courses/:cid",
+          ],
+        },
+        { name: "EnrollmentsDao", lines: ["populate"] },
+        { name: "enrollments", lines: ["MongoDB"] },
+      ],
+      shared,
+      46,
+      38,
+    );
+    assert.ok(widths[0]! < shared, "People is narrower");
+    assert.ok(widths[1]! > widths[0]!, "courses client fits its title");
+    assert.ok(widths[2]! > shared, "CourseRoutes is wider");
+    assert.ok(widths[3]! > widths[0]!, "EnrollmentsDao fits its title");
+    assert.ok(widths[4]! < widths[2]!, "enrollments is narrower than the route list");
   });
 
   it("stops a tall drawing at the CRUD Users slide 2 height", () => {

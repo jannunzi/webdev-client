@@ -1188,11 +1188,17 @@ html.lecture-presenting body {
   overflow: auto;
 }
 
-/* A screen mock under the bullets uses the leftover height. Flow diagrams do not.
-   Slightly smaller bullets keep the sentences on screen and leave that room. */
-.lecture-slide[data-diagram-fit="stack"]:has([data-screen-demo]) .lecture-slide-bullets {
-  font-size: 1.5rem;
-  line-height: 1.3;
+/* A you-are-here map sits under the code. The listing keeps its height; the map uses the room below, capped so it stays balanced. */
+.lecture-slide[data-diagram-fit="stack"]:has(.book-code-block) > .lecture-diagram-copy {
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+.lecture-slide[data-diagram-fit="stack"]:has(.book-code-block) > .lecture-diagram-fit {
+  flex: 1 1 auto;
+  max-height: 42%;
+  min-height: 9rem;
+  margin-top: 1.35rem;
 }
 
 .lecture-slide[data-diagram-fit="stack"] > .lecture-diagram-fit {

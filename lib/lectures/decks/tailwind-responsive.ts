@@ -138,7 +138,7 @@ export const TAILWIND_RESPONSIVE_SLIDES: LectureSlide[] = [
     title: "Grid uses the prefixes",
     kind: "content",
     bullets: [
-      "**CSS Grid** places children into columns, with a gap between the cells. `grid` turns the grid on, `grid-cols-*` sets how many columns, and `gap-4` sets that gap. The next deck goes further with grid utilities",
+      "**CSS Grid** places children into columns, with a gap between the cells. `grid` turns the grid on, `grid-cols-*` sets how many columns, and `gap-4` sets that gap",
       "Column count uses those same prefixes. A later prefix overrides an earlier one from its width up",
     ],
   },

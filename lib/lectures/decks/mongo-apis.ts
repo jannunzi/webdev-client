@@ -82,7 +82,7 @@ export const MONGO_APIS_SLIDES: LectureSlide[] = [
   },
   {
     id: "find-all-dao",
-    title: "`find()` with no predicate",
+    title: "Users DAO finds every user",
     kind: "demo",
     bullets: [
       "Same `findAllUsers` you returned from the DAO",
@@ -98,6 +98,8 @@ return {
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/dao.ts",
     codeHighlightLines: [1, 3],
+    diagram: "users-read-all",
+    diagramFocus: "dao",
   },
   {
     id: "find-all-route",
@@ -116,6 +118,8 @@ app.get("/api/users", findAllUsers);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeAddedLines: [[1, 5]],
+    diagram: "users-read-all",
+    diagramFocus: "routes",
   },
   {
     id: "find-all-client",
@@ -132,6 +136,8 @@ app.get("/api/users", findAllUsers);`,
     codeLanguage: "ts",
     codeFile: "app/(kambaz)/account/client.ts",
     codeAddedLines: [[1, 4]],
+    diagram: "users-read-all",
+    diagramFocus: "client",
   },
   {
     id: "people-table",

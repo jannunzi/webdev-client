@@ -1025,7 +1025,7 @@ const LECTURE_SUMMARIES: Record<
   "path-and-query": {
     title: "Sending Data to the Server",
     summary:
-      "Ways to send data: path params, query strings, and JSON bodies (in the Async HTTP and JSON deck). req.params vs req.query, .toString() on results, then multiply and divide on your own.",
+      "Ways to send data: path params, query strings, and JSON bodies. req.params vs req.query, .toString() on results, then multiply and divide on your own.",
     chapter: 5,
     topicId: "lab5-api",
     bookSectionId: "sec-5-2-2",

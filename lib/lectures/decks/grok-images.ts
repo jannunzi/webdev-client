@@ -220,7 +220,7 @@ const CourseSchema = z.object({
   },
   {
     id: "upsert",
-    title: "Add `upsertCourse` DAO",
+    title: "Courses DAO upserts a course",
     kind: "demo",
     bullets: [
       "`findOneAndUpdate` with **`upsert: true`**",
