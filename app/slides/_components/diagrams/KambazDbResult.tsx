@@ -1,6 +1,10 @@
+import { BsPlus } from "react-icons/bs";
+import { FaCheckCircle, FaCircle, FaPencilAlt, FaPlus, FaTrash } from "react-icons/fa";
+import { IoEllipsisVertical } from "react-icons/io5";
 import UiMockFrame from "./UiMockFrame";
 
 type CourseRow = { id: string; name: string; mark?: boolean };
+type CardButtons = "delete" | "edit" | "card";
 type ModuleRow = { name: string; mark?: boolean };
 type JoinRow = { user: string; course: string; gone?: boolean };
 
@@ -9,7 +13,37 @@ const AERO: CourseRow = { id: "RS102", name: "Aerodynamics" };
 const INTRO: ModuleRow = { name: "Introduction to Rocket Propulsion" };
 const FUEL: ModuleRow = { name: "Fuel and Combustion" };
 
-function CourseList({ rows }: { rows: CourseRow[] }) {
+function CourseButtons({ emphasize }: { emphasize?: "delete" | "edit" }) {
+  const mark = "outline outline-2 outline-offset-2 outline-neutral-900";
+  return (
+    <div className="flex flex-wrap gap-2">
+      <button
+        type="button"
+        className="inline-flex items-center justify-center rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+      >
+        Go
+      </button>
+      <button
+        type="button"
+        className={`inline-flex items-center justify-center rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium ${
+          emphasize === "edit" ? mark : ""
+        }`}
+      >
+        Edit
+      </button>
+      <button
+        type="button"
+        className={`inline-flex items-center justify-center rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white ${
+          emphasize === "delete" ? mark : ""
+        }`}
+      >
+        Delete
+      </button>
+    </div>
+  );
+}
+
+function CourseList({ rows, buttons }: { rows: CourseRow[]; buttons?: CardButtons }) {
   return (
     <UiMockFrame product="Dashboard" url="http://localhost:3000/dashboard">
       <div className="w-[1040px] font-sans text-neutral-900">
@@ -18,11 +52,22 @@ function CourseList({ rows }: { rows: CourseRow[] }) {
           {rows.map((row) => (
             <div
               key={row.id}
-              className={`rounded border bg-white p-4 ${
-                row.mark ? "border-red-600" : "border-neutral-300"
+              className={`overflow-hidden rounded-lg border bg-white shadow-sm ${
+                row.mark ? "border-red-600" : "border-neutral-200"
               }`}
             >
-              <h5 className="m-0 text-lg font-semibold">{row.name}</h5>
+              <div className={`h-24 ${row.mark ? "bg-red-100" : "bg-neutral-200"}`} />
+              <div className="p-4">
+                <h5 className="m-0 mb-2 truncate text-lg font-semibold">{row.name}</h5>
+                <p className="m-0 mb-3 text-sm text-neutral-600">{row.id}</p>
+                {buttons ? (
+                  <CourseButtons
+                    emphasize={
+                      buttons === "delete" ? "delete" : buttons === "edit" && row.mark ? "edit" : undefined
+                    }
+                  />
+                ) : null}
+              </div>
             </div>
           ))}
         </div>
@@ -31,19 +76,76 @@ function CourseList({ rows }: { rows: CourseRow[] }) {
   );
 }
 
-function ModuleList({ rows }: { rows: ModuleRow[] }) {
+function ModuleControls() {
+  return (
+    <div id="wd-modules-controls" className="mb-3 flex flex-wrap items-center gap-2">
+      <button
+        type="button"
+        className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+      >
+        Collapse All
+      </button>
+      <button
+        type="button"
+        className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+      >
+        View Progress
+      </button>
+      <select
+        defaultValue="publish-all"
+        className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-sm"
+      >
+        <option value="publish-all">Publish All</option>
+      </select>
+      <button
+        type="button"
+        id="wd-add-module-btn"
+        className="inline-flex items-center gap-1 rounded border border-red-600 bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+      >
+        <FaPlus aria-hidden /> Module
+      </button>
+    </div>
+  );
+}
+
+function ModuleRowActions() {
+  return (
+    <span className="ms-3 flex shrink-0 items-center gap-2">
+      <FaPencilAlt className="text-blue-600" title="Edit module" />
+      <FaTrash className="text-red-600" title="Delete module" />
+      <span className="relative me-1 inline-flex">
+        <FaCheckCircle className="absolute text-xl text-green-600" style={{ top: "2px" }} aria-hidden />
+        <FaCircle className="text-base text-white" aria-hidden />
+      </span>
+      <BsPlus className="text-3xl" aria-hidden />
+      <IoEllipsisVertical className="text-xl" aria-hidden />
+    </span>
+  );
+}
+
+function ModuleList({
+  rows,
+  controls = false,
+  actions = false,
+}: {
+  rows: ModuleRow[];
+  controls?: boolean;
+  actions?: boolean;
+}) {
   return (
     <UiMockFrame product="Modules" url="http://localhost:3000/courses/RS101/modules">
       <div className="w-[1040px] font-sans text-neutral-900">
+        {controls ? <ModuleControls /> : null}
         <ul className="m-0 list-none p-0">
           {rows.map((row) => (
             <li
               key={row.name}
-              className={`mb-2 rounded border px-4 py-3 text-lg ${
+              className={`mb-2 flex items-center justify-between rounded border px-4 py-3 text-lg ${
                 row.mark ? "border-red-600 bg-white font-semibold" : "border-neutral-300 bg-neutral-100"
               }`}
             >
-              {row.name}
+              <span className="min-w-0 flex-1">{row.name}</span>
+              {actions ? <ModuleRowActions /> : null}
             </li>
           ))}
         </ul>
@@ -124,20 +226,20 @@ export default function KambazDbResult({ id }: { id: KambazDbResultId }) {
   if (id === "courses-create-result") {
     return (
       <CourseList
+        buttons="card"
         rows={[ROCKET, AERO, { id: "new", name: "Combustion Lab", mark: true }]}
       />
     );
   }
   if (id === "courses-delete-result") {
     return (
-      <CourseList
-        rows={[ROCKET]}
-      />
+      <CourseList buttons="delete" rows={[ROCKET]} />
     );
   }
   if (id === "courses-update-result") {
     return (
       <CourseList
+        buttons="edit"
         rows={[{ id: "RS101", name: "Rocket Engines", mark: true }, AERO]}
       />
     );
@@ -145,18 +247,20 @@ export default function KambazDbResult({ id }: { id: KambazDbResultId }) {
   if (id === "modules-create-result") {
     return (
       <ModuleList
+        controls
         rows={[INTRO, FUEL, { name: "Nozzle Design", mark: true }]}
       />
     );
   }
   if (id === "modules-delete-result") {
     return (
-      <ModuleList rows={[INTRO]} />
+      <ModuleList actions rows={[INTRO]} />
     );
   }
   if (id === "modules-update-result") {
     return (
       <ModuleList
+        actions
         rows={[{ name: "Intro to Propulsion", mark: true }, FUEL]}
       />
     );

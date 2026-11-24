@@ -4506,6 +4506,10 @@ describe("diagram fit", () => {
     );
     assert.match(css, /data-diagram-fit="stack"/);
     assert.match(css, /\.lecture-diagram-fit \{/);
+    assert.match(css, /\[data-diagram-map="true"\] > \.lecture-diagram-fit/);
+    assert.match(css, /align-items:\s*flex-end/);
+    assert.match(css, /margin-top:\s*1\.35rem/);
+    assert.match(shell, /data-diagram-map=\{mapDiagram \? "true"/);
     assert.doesNotMatch(css, /max-height:\s*125%/);
     assert.doesNotMatch(css, /max-width:\s*125%/);
     assert.match(shell, /data-diagram-fit=\{hasFittedDiagram \? "stack"/);
