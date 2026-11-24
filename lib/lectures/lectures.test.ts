@@ -56,7 +56,9 @@ import {
 } from "./types";
 import { expandLineMarks } from "../code-block/lines";
 import {
+  DIAGRAM_LABEL_TARGET_PX,
   DIAGRAM_MAX_HEIGHT_OF_SLIDE,
+  balanceBoxWidths,
   diagramFitScale,
   diagramMinFontPx,
   fontPxThatFits,
@@ -4446,12 +4448,34 @@ describe("diagram fit", () => {
     assert.equal(diagramFitScale(400, 400, 0, 50), 1);
   });
 
-  it("keeps diagram labels near bullet size without dropping below 22px", () => {
-    assert.equal(diagramMinFontPx(1280, 50.4), 32);
-    assert.equal(diagramMinFontPx(1680, 50.4), 40.3);
-    assert.equal(diagramMinFontPx(800, 36), 22);
+  it("keeps diagram labels at the slide 9 size, not the bullet size", () => {
+    assert.equal(DIAGRAM_LABEL_TARGET_PX, 24);
+    assert.equal(diagramMinFontPx(1680, 50.4), 24);
+    assert.equal(diagramMinFontPx(800, 36), 24);
     assert.ok(fontPxThatFits("enroll", 420, 32) > 40);
-    assert.ok(fontPxThatFits("response", 220, 18) > 30);
+    const shared = 440;
+    const widths = balanceBoxWidths(
+      [
+        { name: "People", lines: ["PeopleTable"] },
+        { name: "courses client", lines: ["axios"] },
+        {
+          name: "CourseRoutes",
+          lines: [
+            "GET /api/users/:userId/courses",
+            "DELETE /api/users/:uid/courses/:cid",
+          ],
+        },
+        { name: "EnrollmentsDao", lines: ["populate"] },
+        { name: "enrollments", lines: ["MongoDB"] },
+      ],
+      shared,
+      46,
+      38,
+    );
+    assert.ok(widths[0]! < shared, "People is narrower");
+    assert.ok(widths[2]! > shared, "CourseRoutes is wider");
+    assert.ok(widths[4]! < shared, "enrollments is narrower");
+    assert.ok(widths[2]! > widths[0]!, "the route list is wider than People");
   });
 
   it("stops a tall drawing at the CRUD Users slide 2 height", () => {

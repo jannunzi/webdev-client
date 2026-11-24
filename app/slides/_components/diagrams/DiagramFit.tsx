@@ -88,12 +88,14 @@ function raiseDiagramText(inner: HTMLElement, zoom: number, slideWidth: number) 
         boxWidth = right - left;
       }
     }
-    let next = minVisual / zoom;
+    const target = minVisual / zoom;
+    let next = target;
     if (boxWidth > 0) {
       next = Math.min(next, fontPxThatFits(content, boxWidth, container ? 36 : 36));
     }
     if (lineGap > 0) next = Math.min(next, lineGap * 0.8);
-    next = Math.max(base, next);
+    // Slide 9's labels are the ceiling. Oversized type shrinks down to them.
+    next = Math.max(12, Math.min(next, target));
     text.setAttribute("font-size", String(Math.round(next * 10) / 10));
   }
 }

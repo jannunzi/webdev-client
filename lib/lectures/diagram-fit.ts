@@ -41,14 +41,40 @@ export function diagramFitScale(
 export const DIAGRAM_FONT_EM = 0.68;
 
 /**
- * Diagram labels should stay readable at fullscreen and approach the
- * lecture's regular bullet size. A wide slide aims higher; a narrow one
- * never drops below 22px.
+ * Fullscreen rendered size of the slide 9 labels on main
+ * (`setCourses`, `GET`, `populate`, `course ref`): SVG 22px at zoom 1.099.
+ * Labels and arrow text aim for this size and do not grow toward bullet type.
  */
-export function diagramMinFontPx(slideWidth: number, bulletPx: number): number {
-  const scaled = 32 * (Math.max(slideWidth, 1) / 1280);
-  const nearBullet = bulletPx > 0 ? bulletPx * 0.8 : scaled;
-  return Math.round(Math.max(22, Math.min(nearBullet, scaled)) * 10) / 10;
+export const DIAGRAM_LABEL_TARGET_PX = 24;
+
+export function diagramMinFontPx(_slideWidth: number, _bulletPx: number): number {
+  return DIAGRAM_LABEL_TARGET_PX;
+}
+
+/**
+ * Give a long list the extra width and keep short boxes a little narrower,
+ * so one wide column does not force every label down to the same tiny zoom.
+ */
+export function balanceBoxWidths(
+  boxes: { name: string; lines: string[] }[],
+  shared: number,
+  nameSize: number,
+  lineSize: number,
+): number[] {
+  const em = 0.66;
+  const pad = 64;
+  const narrow = shared * 0.7;
+  const wide = shared * 1.3;
+  return boxes.map((box) => {
+    const longest = box.lines.reduce((max, line) => Math.max(max, line.length), 0);
+    const list = box.lines.length > 1 && longest > 24;
+    const lineChars = list ? Math.min(longest, 22) : longest;
+    const nameW = box.name.length * nameSize * em + pad;
+    // Short labels such as PeopleTable need enough box to reach the slide 9 size.
+    const bodySize = list ? lineSize : Math.max(lineSize, 46);
+    const lineW = lineChars * bodySize * em + pad;
+    return Math.round(Math.min(wide, Math.max(narrow, nameW, lineW)));
+  });
 }
 
 /** Largest font whose text stays inside `boxWidth`, leaving `padding`. */

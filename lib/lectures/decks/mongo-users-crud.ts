@@ -67,6 +67,8 @@ return {
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/dao.ts",
     codeAddedLines: [1, 6],
+    diagram: "users-filter-role",
+    diagramFocus: "dao",
   },
   {
     id: "role-route",
@@ -89,6 +91,8 @@ return {
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeAddedLines: [[2, 7]],
+    diagram: "users-filter-role",
+    diagramFocus: "routes",
   },
   {
     id: "role-client",
@@ -102,6 +106,8 @@ return {
     codeLanguage: "ts",
     codeFile: "app/(kambaz)/account/client.ts",
     codeAddedLines: [[1, 5]],
+    diagram: "users-filter-role",
+    diagramFocus: "client",
   },
   {
     id: "role-filter",
@@ -124,6 +130,8 @@ const filterUsersByRole = async (role: string) => {
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/users/page.tsx",
     codeHighlightLines: [[2, 9]],
+    diagram: "users-filter-role",
+    diagramFocus: "ui",
   },
   {
     id: "role-select",
@@ -186,6 +194,8 @@ const filterUsersByRole = async (role: string) => {
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/dao.ts",
     codeAddedLines: [[1, 9]],
+    diagram: "users-filter-name",
+    diagramFocus: "dao",
   },
   {
     id: "name-route",
@@ -214,6 +224,8 @@ const filterUsersByRole = async (role: string) => {
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeAddedLines: [2, [7, 11]],
+    diagram: "users-filter-name",
+    diagramFocus: "routes",
   },
   {
     id: "name-client",
@@ -228,6 +240,8 @@ const filterUsersByRole = async (role: string) => {
     codeLanguage: "ts",
     codeFile: "app/(kambaz)/account/client.ts",
     codeAddedLines: [[1, 6]],
+    diagram: "users-filter-name",
+    diagramFocus: "client",
   },
   {
     id: "name-filter",
@@ -250,6 +264,8 @@ const filterUsersByName = async (name: string) => {
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/users/page.tsx",
     codeHighlightLines: [[2, 9]],
+    diagram: "users-filter-name",
+    diagramFocus: "ui",
   },
   {
     id: "name-field",
@@ -512,6 +528,8 @@ onClick={() => {
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/dao.ts",
     codeHighlightLines: [[1, 2]],
+    diagram: "users-update",
+    diagramFocus: "dao",
   },
   {
     id: "update-route",
@@ -532,6 +550,8 @@ app.put("/api/users/:userId", updateUser);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeHighlightLines: [[6, 8]],
+    diagram: "users-update",
+    diagramFocus: "routes",
   },
   {
     id: "update-client",
@@ -547,6 +567,8 @@ app.put("/api/users/:userId", updateUser);`,
     codeLanguage: "ts",
     codeFile: "app/(kambaz)/account/client.ts",
     codeAddedLines: [[1, 7]],
+    diagram: "users-update",
+    diagramFocus: "client",
   },
   {
     id: "update-save",
@@ -569,6 +591,8 @@ const saveUser = async () => {
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/Details.tsx",
     codeHighlightLines: [[3, 10]],
+    diagram: "users-update",
+    diagramFocus: "ui",
   },
   {
     id: "update-result",

@@ -55,7 +55,7 @@ export default function LectureDiagram({
   id: LectureDiagramId;
   focus?: LectureDiagramFocus;
 }) {
-  if (isStackDiagram(id)) return <StackDiagram id={id} />;
+  if (isStackDiagram(id)) return <StackDiagram id={id} focus={focus} />;
   if (isGoalDiagram(id)) return <GoalDiagram id={id} />;
   switch (id) {
     case "network-of-networks":

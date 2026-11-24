@@ -24,7 +24,7 @@ export const PATH_AND_QUERY_SLIDES: LectureSlide[] = [
       "So far the server sends fixed text. Real apps need input, like which course or what to add",
       "**Path parameters** — `/lab5/add/2/5` as URL segments",
       "**Query parameters** — `/lab5/add?a=2&b=5` after `?`",
-      "**JSON request body** — `{a: 2, b: 5}`, covered in the Async HTTP and JSON deck",
+      "**JSON request body** — `{a: 2, b: 5}` in the POST body, read on the server as `req.body`",
     ],
     imageSrc: "/lectures/path-and-query/path-query-diagram.png",
     imageAlt:

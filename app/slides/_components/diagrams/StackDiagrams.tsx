@@ -1,4 +1,6 @@
+import { balanceBoxWidths } from "@/lib/lectures/diagram-fit";
 import { svgIndentedLine } from "@/lib/lectures/svg-indent";
+import type { LectureDiagramFocus } from "@/lib/lectures/types";
 
 const BLUE = { fill: "#e8f0fe", header: "#a4c2f4", stroke: "#2f6fd0" };
 const YELLOW = { fill: "#fff8dc", header: "#ffe59a", stroke: "#e09038" };
@@ -119,36 +121,52 @@ function Arrow({
   );
 }
 
+/** Left-to-right stacks are UI, client, routes, then the DAO or collection. */
+function focusBoxIndex(focus: LectureDiagramFocus, count: number): number {
+  if (count <= 1) return 0;
+  if (focus === "ui") return 0;
+  if (focus === "client") return count >= 4 ? 1 : 0;
+  if (focus === "routes") return count >= 5 ? 2 : Math.max(0, count - 2);
+  return count >= 5 ? 3 : count - 1;
+}
+
 function Flow({
   title,
   boxes,
   boxWidth,
   large = false,
+  focus,
 }: {
   title: string;
   boxes: Box[];
   boxWidth: number;
   /** Larger type and arrows. Box height still follows the text. */
   large?: boolean;
+  focus?: LectureDiagramFocus;
 }) {
   const headerH = large ? 96 : 64;
   const lineH = large ? 52 : 34;
   const padB = large ? 40 : 18;
-  const gap = large ? 220 : 150;
+  const gap = large ? 250 : 160;
   const side = large ? 24 : 32;
   const nameSize = large ? 46 : 28;
   const lineSize = large ? 38 : 22;
   const labelSize = large ? 34 : 20;
   const strokeW = large ? 5 : 3;
   const head = large ? 10 : 6;
-  const width = side + boxes.length * boxWidth + (boxes.length - 1) * gap + side;
-  const wrapInner = boxWidth - 48;
-  const drawn = boxes.map((box) => ({
-    ...box,
-    // Long routes wrap so the list stays left-aligned at a readable size
-    // instead of shrinking to a few pixels.
-    bodyLines: box.lines.flatMap((line) => wrapToReadable(line, lineSize, wrapInner)),
-  }));
+  const widths = balanceBoxWidths(boxes, boxWidth, nameSize, lineSize);
+  const width =
+    side + widths.reduce((sum, item) => sum + item, 0) + (boxes.length - 1) * gap + side;
+  const drawn = boxes.map((box, index) => {
+    const inner = (widths[index] ?? boxWidth) - 48;
+    return {
+      ...box,
+      width: widths[index] ?? boxWidth,
+      // Long routes wrap so the list stays left-aligned at a readable size
+      // instead of shrinking to a few pixels.
+      bodyLines: box.lines.flatMap((line) => wrapToReadable(line, lineSize, inner)),
+    };
+  });
   const contentBody = Math.max(
     ...drawn.map((box) => Math.max(box.bodyLines.length, 1) * lineH + padB),
   );
@@ -156,18 +174,29 @@ function Flow({
   // Body is at least tall enough for both arrows, and never stretched to the slide.
   const { bodyH, requestY, responseY } = bodyAndArrows(top + headerH, contentBody, large);
   const boxH = headerH + bodyH;
-  const height = (large ? 12 : 24) + boxH + (large ? 12 : 20);
-  const fitSize = (text: string, size: number) => {
-    const fitted = Math.floor((boxWidth - 32) / (Math.max(text.length, 1) * 0.6));
+  const here = focus ? 108 : 0;
+  const height = (large ? 12 : 24) + boxH + (large ? 12 : 20) + here;
+  const focusIndex = focus ? focusBoxIndex(focus, drawn.length) : -1;
+  const fitSize = (text: string, size: number, span: number) => {
+    const fitted = Math.floor((span - 36) / (Math.max(text.length, 1) * 0.62));
     return Math.min(size, Math.max(fitted, 12));
   };
+  const origins: number[] = [];
+  {
+    let cursor = side;
+    for (const span of widths) {
+      origins.push(cursor);
+      cursor += span + gap;
+    }
+  }
 
   return (
     <svg role="img" viewBox={`0 0 ${width} ${height}`} aria-label={title}>
       <title>{title}</title>
       {drawn.map((box, index) => {
         const tone: Tone = TONES[box.tone];
-        const x = side + index * (boxWidth + gap);
+        const x = origins[index] ?? side;
+        const span = box.width;
         const h = boxH;
         const stroke = box.emphasis ? 6 : 3;
         return (
@@ -216,7 +245,7 @@ function Flow({
             <rect
               x={x}
               y={top}
-              width={boxWidth}
+              width={span}
               height={h}
               rx={RADIUS}
               fill={tone.fill}
@@ -224,7 +253,7 @@ function Flow({
               strokeWidth={stroke}
             />
             <path
-              d={headerPath(x, top, boxWidth, headerH)}
+              d={headerPath(x, top, span, headerH)}
               fill={tone.header}
               stroke={tone.stroke}
               strokeWidth={stroke}
@@ -232,17 +261,17 @@ function Flow({
             <line
               x1={x}
               y1={top + headerH}
-              x2={x + boxWidth}
+              x2={x + span}
               y2={top + headerH}
               stroke={tone.stroke}
               strokeWidth={stroke}
             />
             <text
-              x={x + boxWidth / 2}
+              x={x + span / 2}
               y={large ? top + headerH * 0.62 : top + 31}
               textAnchor="middle"
               fontFamily={FONT}
-              fontSize={fitSize(box.name, nameSize)}
+              fontSize={fitSize(box.name, nameSize, span)}
               fontWeight={700}
               fill="#171717"
             >
@@ -256,13 +285,13 @@ function Flow({
               return (
               <text
                 key={`${line}-${lineIndex}`}
-                x={list ? x + inset : large ? x + boxWidth / 2 : x + inset}
+                x={list ? x + inset : large ? x + span / 2 : x + inset}
                 y={(large
                   ? top + headerH + (h - headerH - box.bodyLines.length * lineH) / 2 + 38
                   : top + headerH + 26) + lineIndex * lineH}
                 textAnchor={list || !large ? "start" : "middle"}
                 fontFamily={MONO}
-                fontSize={fitSize(line, lineSize)}
+                fontSize={fitSize(line, lineSize, span)}
                 fontWeight={box.emphasis && lineIndex === 0 ? 700 : 400}
                 fill={box.emphasis && lineIndex === 0 ? tone.stroke : "#171717"}
               >
@@ -270,6 +299,33 @@ function Flow({
               </text>
               );
             })}
+            {index === focusIndex ? (
+              <g>
+                <line
+                  x1={x + span / 2}
+                  y1={top + h + 70}
+                  x2={x + span / 2}
+                  y2={top + h + 16}
+                  stroke="#171717"
+                  strokeWidth={4}
+                />
+                <polygon
+                  points={`${x + span / 2},${top + h + 4} ${x + span / 2 - 12},${top + h + 22} ${x + span / 2 + 12},${top + h + 22}`}
+                  fill="#171717"
+                />
+                <text
+                  x={x + span / 2}
+                  y={top + h + 96}
+                  textAnchor="middle"
+                  fontFamily={FONT}
+                  fontSize={large ? 28 : 22}
+                  fontWeight={700}
+                  fill="#171717"
+                >
+                  you are here
+                </text>
+              </g>
+            ) : null}
           </g>
         );
       })}
@@ -953,7 +1009,7 @@ export function isStackDiagram(id: string): id is StackDiagramId | "sql-vs-docum
   return id === "sql-vs-document" || id === "arrays-stack" || Object.prototype.hasOwnProperty.call(STACKS, id);
 }
 
-export function StackDiagram({ id }: { id: string }) {
+export function StackDiagram({ id, focus }: { id: string; focus?: LectureDiagramFocus }) {
   if (id === "sql-vs-document") return <SqlVsDocument />;
   if (id === "arrays-stack") return <ArraysPicture />;
   const spec = STACKS[id];
@@ -964,6 +1020,7 @@ export function StackDiagram({ id }: { id: string }) {
       boxes={spec.boxes}
       boxWidth={spec.boxWidth}
       large={spec.large}
+      focus={focus}
     />
   );
 }
