@@ -295,8 +295,8 @@ export default function Users() {
           Add a Users link to the Account Navigation sidebar that
           navigates to the Users screen only if the logged-in user has
           an <code>ADMIN</code>{" "}role. The signed-in user lives in
-          Account Context from <ChapterLink to={4} />, not in a Redux
-          slice, so read <code>currentUser</code>{" "}from{" "}
+          Account Context from <ChapterLink to={4} />, so read{" "}
+          <code>currentUser</code>{" "}from{" "}
           <code>useAccountContext()</code>. Render the link with the
           same Tailwind pattern the other Account links already use:
           semibold black when the path ends with{" "}

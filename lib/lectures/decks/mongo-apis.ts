@@ -166,11 +166,12 @@ app.get("/api/users", findAllUsers);`,
   },
   {
     id: "users-screen-intro",
-    title: "Users fetches on mount",
+    title: "Why a Users screen",
     kind: "demo",
     bullets: [
-      "Client Component: `useState` plus `useEffect`",
-      "`fetchUsers` is passed into the table so Details can refresh",
+      "The route and PeopleTable are ready, but no page fetches every user from the database",
+      "A Users screen loads all users when it opens and displays them with PeopleTable",
+      "People Details creates, updates, and deletes, so that list has to refresh afterward",
     ],
   },
   {
@@ -207,9 +208,9 @@ export default function Users() {
     title: "Users link is ADMIN only",
     kind: "demo",
     bullets: [
-      "Read `currentUser` from `useAccountContext()` — not a Redux slice",
-      "Seed `nick_fury` / `fury123` is an administrator",
-      "Faculty and student sessions must not show the link",
+      "Only an `ADMIN` should open the Users screen. Faculty and students must not see the link",
+      "Read `currentUser` from `useAccountContext()` and show the link only when `role` is `ADMIN`",
+      "`nick_fury` is an ADMIN account in the sample users. Sign in as that user to test the link",
     ],
   },
   {
@@ -231,24 +232,5 @@ export default function Users() {
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/account/Navigation.tsx",
     codeAddedLines: [[1, 12]],
-  },
-  {
-    id: "recap",
-    title: "Find-all recap",
-    kind: "content",
-    bullets: [
-      "`async` / `await` on every DAO call — Sign in still sets the session",
-      "`GET /api/users` plus `findAllUsers` on the client",
-      "ADMIN Account Nav → Users → PeopleTable",
-    ],
-  },
-  {
-    id: "next-up",
-    title: "Next: filter and user CRUD",
-    kind: "title",
-    bullets: [
-      "Predicates, find by id, then delete, update, and create",
-      "`?role=` and People Details",
-    ],
   },
 ];
