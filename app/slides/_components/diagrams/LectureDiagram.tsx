@@ -46,6 +46,7 @@ import { isStackDiagram, StackDiagram } from "./StackDiagrams";
 import { GoalDiagram, isGoalDiagram } from "./GoalDiagrams";
 import UsersCrudMock from "./UsersCrudMock";
 import KambazDbResult from "./KambazDbResult";
+import EnrollmentsMnDiagram from "./EnrollmentsMnDiagram";
 import type { LectureDiagramFocus } from "@/lib/lectures/types";
 
 export default function LectureDiagram({
@@ -157,6 +158,8 @@ export default function LectureDiagram({
     case "enroll-create-result":
     case "enroll-unenroll-result":
       return <KambazDbResult id={id} />;
+    case "enrollments-mn":
+      return <EnrollmentsMnDiagram />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;

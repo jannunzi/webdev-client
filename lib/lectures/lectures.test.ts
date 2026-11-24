@@ -3703,6 +3703,7 @@ describe("lecture decks", () => {
         "update-result": "modules-update-result",
       },
       "kambaz-enrollments-db": {
+        purpose: "enrollments-mn",
         "enroll-picture": "enroll-stack",
         "read-path": "enroll-read",
         "read-result": "enroll-read-result",
