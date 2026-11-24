@@ -810,6 +810,8 @@ export const LECTURE_DIAGRAM_IDS = [
   "account-pages-goal",
   "enrollments-goal",
   "enrollments-mn",
+  "modules-1n",
+  "modules-shapes",
   "people-table-goal",
   "sharing-parent-goal",
   "prop-drill-goal",

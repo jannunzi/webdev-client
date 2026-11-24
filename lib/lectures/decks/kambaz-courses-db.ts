@@ -1,6 +1,20 @@
 import { COVER_KAMBAZ } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
+function sectionSlide(id: string, headline: string): LectureSlide {
+  return {
+    id,
+    title: "WEB DEV",
+    kind: "title",
+    cover: {
+      color: COVER_KAMBAZ,
+      icon: "database",
+      headline,
+    },
+    bullets: ["Chapter 6 · Kambaz Courses DB", headline],
+  };
+}
+
 export const KAMBAZ_COURSES_DB_SLIDES: LectureSlide[] = [
   {
     id: "title",
@@ -70,6 +84,7 @@ export default model;`,
     codeFile: "webdev-server/Kambaz/Courses/model.ts",
     codeHighlightLines: [3],
   },
+  sectionSlide("section-listing", "Listing Courses"),
   {
     id: "read-all-path",
     title: "`GET /api/courses`",
@@ -178,6 +193,7 @@ useEffect(() => {
     bullets: ["The cards are the documents `GET /api/courses` returned"],
     embed: "kambaz-styled-dashboard",
   },
+  sectionSlide("section-reading", "Reading One Course"),
   {
     id: "read-one-path",
     title: "`GET /api/courses/:courseId`",
@@ -260,6 +276,7 @@ app.get("/api/courses/:courseId", findCourseById);`,
     ],
     diagram: "courses-one-result",
   },
+  sectionSlide("section-creating", "Creating Courses"),
   {
     id: "create-path",
     title: "`POST /api/courses`",
@@ -350,6 +367,7 @@ const onAddCourse = async () => {
     ],
     diagram: "courses-create-result",
   },
+  sectionSlide("section-deleting", "Deleting Courses"),
   {
     id: "delete-path",
     title: "`DELETE /api/courses/:courseId`",
@@ -433,6 +451,7 @@ const onDeleteCourse = async (courseId: string) => {
     ],
     diagram: "courses-delete-result",
   },
+  sectionSlide("section-updating", "Updating Courses"),
   {
     id: "update-path",
     title: "`PUT /api/courses/:courseId`",

@@ -498,10 +498,10 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 440,
     large: true,
     boxes: [
-      { name: "Modules", lines: ["store"], tone: "blue" },
-      { name: "courses client", lines: ["axios"], tone: "blue" },
+      { name: "Modules.tsx", lines: ["store"], tone: "blue" },
+      { name: "client.ts", lines: ["axios"], tone: "blue" },
       {
-        name: "ModuleRoutes",
+        name: "ModuleRoutes.ts",
         lines: [
           "GET /api/courses/:courseId/modules",
           "POST /api/courses/:courseId/modules",
@@ -510,8 +510,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
         ],
         tone: "yellow",
       },
-      { name: "ModulesDao", lines: ["course id"], tone: "yellow" },
-      { name: "modules", lines: ["MongoDB"], tone: "red" },
+      { name: "ModuleDAO.ts", lines: ["course id"], tone: "yellow" },
+      { name: "MongoDB", lines: ["modules"], tone: "red" },
     ],
   },
   "modules-read": {
@@ -519,10 +519,10 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 250,
     large: true,
     boxes: [
-      { name: "Modules", lines: ["setModules"], tone: "blue" },
-      { name: "findModules", lines: ["GET"], tone: "blue" },
-      { name: "GET nested", lines: ["await dao"], tone: "yellow" },
-      { name: "find", lines: ["{ course }"], tone: "red" },
+      { name: "Modules.tsx", lines: ["setModules"], tone: "blue" },
+      { name: "client.ts", lines: ["GET"], tone: "blue" },
+      { name: "ModuleRoutes.ts", lines: ["GET nested"], tone: "yellow" },
+      { name: "MongoDB", lines: ["{ course }"], tone: "red" },
     ],
   },
   "modules-delete": {
@@ -530,10 +530,10 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 250,
     large: true,
     boxes: [
-      { name: "Modules", lines: ["deleteModule"], tone: "blue" },
-      { name: "deleteModule", lines: ["DELETE"], tone: "blue" },
-      { name: "DELETE /:moduleId", lines: ["await dao"], tone: "yellow" },
-      { name: "deleteOne", lines: ["modules"], tone: "red" },
+      { name: "Modules.tsx", lines: ["deleteModule"], tone: "blue" },
+      { name: "client.ts", lines: ["DELETE"], tone: "blue" },
+      { name: "ModuleRoutes.ts", lines: ["DELETE /:moduleId"], tone: "yellow" },
+      { name: "MongoDB", lines: ["deleteOne"], tone: "red" },
     ],
   },
   "modules-update": {
@@ -541,10 +541,10 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 240,
     large: true,
     boxes: [
-      { name: "Modules", lines: ["updateModule"], tone: "blue" },
-      { name: "updateModule", lines: ["PUT"], tone: "blue" },
-      { name: "PUT /:moduleId", lines: ["$set"], tone: "yellow" },
-      { name: "updateOne", lines: ["modules"], tone: "red" },
+      { name: "Modules.tsx", lines: ["updateModule"], tone: "blue" },
+      { name: "client.ts", lines: ["PUT"], tone: "blue" },
+      { name: "ModuleRoutes.ts", lines: ["PUT /:moduleId"], tone: "yellow" },
+      { name: "MongoDB", lines: ["updateOne"], tone: "red" },
     ],
   },
   "modules-create": {
@@ -552,10 +552,10 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 250,
     large: true,
     boxes: [
-      { name: "Modules", lines: ["addModule"], tone: "blue" },
-      { name: "createModule", lines: ["POST"], tone: "blue" },
-      { name: "POST nested", lines: ["await dao"], tone: "yellow" },
-      { name: "model.create", lines: ["modules"], tone: "red" },
+      { name: "Modules.tsx", lines: ["addModule"], tone: "blue" },
+      { name: "client.ts", lines: ["POST"], tone: "blue" },
+      { name: "ModuleRoutes.ts", lines: ["POST nested"], tone: "yellow" },
+      { name: "MongoDB", lines: ["model.create"], tone: "red" },
     ],
   },
   "enroll-stack": {

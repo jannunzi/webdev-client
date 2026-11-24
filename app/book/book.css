@@ -768,6 +768,14 @@ code.quiz-prompt-code {
   min-height: 0;
 }
 
+/* The title's overflow:hidden lets a flex item shrink to nothing, so a tall
+   live embed covers the heading. Keep the heading at its own size; the embed
+   uses the room that remains. */
+.lecture-slide[data-demo-stage="true"] > .lecture-slide-kicker,
+.lecture-slide[data-demo-stage="true"] > .lecture-slide-title {
+  flex: 0 0 auto;
+}
+
 .lecture-slide[data-demo-stage="true"] > .lecture-block[data-block-type="bullets"] {
   flex: 0 0 auto;
 }
