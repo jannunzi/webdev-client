@@ -9,21 +9,20 @@ const AERO: CourseRow = { id: "RS102", name: "Aerodynamics" };
 const INTRO: ModuleRow = { name: "Introduction to Rocket Propulsion" };
 const FUEL: ModuleRow = { name: "Fuel and Combustion" };
 
-function CourseList({ rows, note }: { rows: CourseRow[]; note: string }) {
+function CourseList({ rows }: { rows: CourseRow[] }) {
   return (
     <UiMockFrame product="Dashboard" url="http://localhost:3000/dashboard">
-      <div className="flex min-h-[460px] w-[1040px] flex-col justify-center font-sans text-neutral-900">
-        <p className="mt-0 mb-3 text-base font-semibold text-red-700">{note}</p>
+      <div className="w-[1040px] font-sans text-neutral-900">
+        <h2 className="m-0 mb-3 text-xl font-semibold">Published Courses ({rows.length})</h2>
         <div className="grid grid-cols-3 gap-3">
           {rows.map((row) => (
             <div
               key={row.id}
-              className={`rounded border bg-white p-3 ${
+              className={`rounded border bg-white p-4 ${
                 row.mark ? "border-red-600" : "border-neutral-300"
               }`}
             >
-              <p className="m-0 text-sm text-neutral-500">{row.id}</p>
-              <p className="m-0 mt-1 text-lg font-semibold">{row.name}</p>
+              <h5 className="m-0 text-lg font-semibold">{row.name}</h5>
             </div>
           ))}
         </div>
@@ -32,11 +31,10 @@ function CourseList({ rows, note }: { rows: CourseRow[]; note: string }) {
   );
 }
 
-function ModuleList({ rows, note }: { rows: ModuleRow[]; note: string }) {
+function ModuleList({ rows }: { rows: ModuleRow[] }) {
   return (
     <UiMockFrame product="Modules" url="http://localhost:3000/courses/RS101/modules">
-      <div className="flex min-h-[460px] w-[1040px] flex-col justify-center font-sans text-neutral-900">
-        <p className="mt-0 mb-3 text-base font-semibold text-red-700">{note}</p>
+      <div className="w-[1040px] font-sans text-neutral-900">
         <ul className="m-0 list-none p-0">
           {rows.map((row) => (
             <li
@@ -54,11 +52,11 @@ function ModuleList({ rows, note }: { rows: ModuleRow[]; note: string }) {
   );
 }
 
-function JoinTable({ rows, note }: { rows: JoinRow[]; note: string }) {
+function JoinTable({ rows }: { rows: JoinRow[] }) {
+  const visible = rows.filter((row) => !row.gone);
   return (
     <UiMockFrame product="Compass" url="kambaz.enrollments">
-      <div className="flex min-h-[460px] w-[1040px] flex-col justify-center font-sans text-neutral-900">
-        <p className="mt-0 mb-3 text-base font-semibold text-red-700">{note}</p>
+      <div className="w-[1040px] font-sans text-neutral-900">
         <table className="w-full border-collapse text-left text-lg">
           <thead>
             <tr className="border-b border-neutral-300">
@@ -67,8 +65,8 @@ function JoinTable({ rows, note }: { rows: JoinRow[]; note: string }) {
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
-              <tr key={`${row.user}-${row.course}`} className={row.gone ? "text-neutral-400 line-through" : ""}>
+            {visible.map((row) => (
+              <tr key={`${row.user}-${row.course}`}>
                 <td className="p-2">{row.user}</td>
                 <td className="p-2">{row.course}</td>
               </tr>
@@ -80,14 +78,12 @@ function JoinTable({ rows, note }: { rows: JoinRow[]; note: string }) {
   );
 }
 
-function EnrollCard({ enrolled, note }: { enrolled: boolean; note: string }) {
+function EnrollCard({ enrolled }: { enrolled: boolean }) {
   return (
     <UiMockFrame product="Dashboard" url="http://localhost:3000/dashboard">
-      <div className="flex min-h-[460px] w-[1040px] flex-col justify-center font-sans text-neutral-900">
-        <p className="mt-0 mb-3 text-base font-semibold text-red-700">{note}</p>
+      <div className="w-[1040px] font-sans text-neutral-900">
         <div className="w-80 rounded border border-neutral-300 bg-white p-4">
-          <p className="m-0 text-sm text-neutral-500">RS102</p>
-          <p className="m-0 mt-1 text-lg font-semibold">Aerodynamics</p>
+          <h5 className="m-0 text-lg font-semibold">Aerodynamics</h5>
           <button
             type="button"
             className={`mt-3 rounded px-3 py-1.5 text-base font-medium text-white ${
@@ -119,12 +115,8 @@ export default function KambazDbResult({ id }: { id: KambazDbResultId }) {
   if (id === "courses-one-result") {
     return (
       <UiMockFrame product="Course" url="GET /api/courses/RS101">
-        <div className="flex min-h-[460px] w-[1040px] flex-col justify-center font-sans text-neutral-900">
-          <p className="mt-0 mb-3 text-base font-semibold text-red-700">
-            The course header is the one document findById returned.
-          </p>
-          <h2 className="m-0 text-2xl font-semibold">Rocket Propulsion</h2>
-          <p className="m-0 mt-2 text-lg text-neutral-600">RS101 · 4 credits</p>
+        <div className="w-[1040px] font-sans text-neutral-900">
+          <h2 className="m-0 text-2xl font-semibold text-red-600">Rocket Propulsion &gt; Home</h2>
         </div>
       </UiMockFrame>
     );
@@ -133,7 +125,6 @@ export default function KambazDbResult({ id }: { id: KambazDbResultId }) {
     return (
       <CourseList
         rows={[ROCKET, AERO, { id: "new", name: "Combustion Lab", mark: true }]}
-        note="POST returned Combustion Lab. The Dashboard appended that document."
       />
     );
   }
@@ -141,7 +132,6 @@ export default function KambazDbResult({ id }: { id: KambazDbResultId }) {
     return (
       <CourseList
         rows={[ROCKET]}
-        note="Aerodynamics is gone. GET /api/courses no longer returns RS102."
       />
     );
   }
@@ -149,7 +139,6 @@ export default function KambazDbResult({ id }: { id: KambazDbResultId }) {
     return (
       <CourseList
         rows={[{ id: "RS101", name: "Rocket Engines", mark: true }, AERO]}
-        note="Save wrote Rocket Engines. The card shows the name MongoDB stored."
       />
     );
   }
@@ -157,20 +146,18 @@ export default function KambazDbResult({ id }: { id: KambazDbResultId }) {
     return (
       <ModuleList
         rows={[INTRO, FUEL, { name: "Nozzle Design", mark: true }]}
-        note="POST under RS101 appended Nozzle Design."
       />
     );
   }
   if (id === "modules-delete-result") {
     return (
-      <ModuleList rows={[INTRO]} note="Fuel and Combustion was deleted. The list no longer shows it." />
+      <ModuleList rows={[INTRO]} />
     );
   }
   if (id === "modules-update-result") {
     return (
       <ModuleList
         rows={[{ name: "Intro to Propulsion", mark: true }, FUEL]}
-        note="Save wrote Intro to Propulsion over the old module name."
       />
     );
   }
@@ -178,7 +165,6 @@ export default function KambazDbResult({ id }: { id: KambazDbResultId }) {
     return (
       <CourseList
         rows={[ROCKET, AERO]}
-        note="These are the courses populate returned for the signed-in user."
       />
     );
   }
@@ -190,14 +176,13 @@ export default function KambazDbResult({ id }: { id: KambazDbResultId }) {
           { user: "ada", course: "RS102", gone: true },
           { user: "grace", course: "RS102", gone: true },
         ]}
-        note="RS102 is deleted, and every enrollment that pointed at it is gone."
       />
     );
   }
   if (id === "enroll-create-result") {
     return (
-      <EnrollCard enrolled note="One enrollment row was inserted. The button now says Unenroll." />
+      <EnrollCard enrolled />
     );
   }
-  return <EnrollCard enrolled={false} note="That enrollment row was deleted. The button says Enroll again." />;
+  return <EnrollCard enrolled={false} />;
 }

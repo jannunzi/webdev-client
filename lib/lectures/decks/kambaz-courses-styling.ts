@@ -25,7 +25,7 @@ export const KAMBAZ_COURSES_STYLING_SLIDES: LectureSlide[] = [
     title: "What's a hook?",
     kind: "content",
     bullets: [
-      "`usePathname` is the first hook in this book",
+      "`usePathname` is a hook. Next.js uses it to read the current URL path",
       "A **hook** is a function whose name starts with `use` that you call inside a component to get something React or Next.js provides. Here Next.js provides the current URL path",
       "Call hooks only at the top level of a component, never in loops or conditions. Most hooks need a Client Component",
     ],

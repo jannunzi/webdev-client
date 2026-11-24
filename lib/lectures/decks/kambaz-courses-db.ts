@@ -30,7 +30,10 @@ export const KAMBAZ_COURSES_DB_SLIDES: LectureSlide[] = [
     id: "courses-picture",
     title: "Courses from the Dashboard to Mongo",
     kind: "demo",
-    bullets: ["Page, client, routes, DAO, then the courses collection"],
+    bullets: [
+      "The Dashboard asks the courses client, and the client calls the Express course routes.",
+      "Each route calls the Courses DAO, which reads and writes the courses collection.",
+    ],
     diagram: "courses-stack",
   },
   {
@@ -71,7 +74,10 @@ export default model;`,
     id: "read-all-path",
     title: "GET /api/courses",
     kind: "demo",
-    bullets: ["Dashboard calls fetchAllCourses, then setCourses"],
+    bullets: [
+      "The Dashboard calls fetchAllCourses, which sends GET /api/courses.",
+      "The route awaits the DAO, and setCourses replaces the cached list with those documents.",
+    ],
     diagram: "courses-read-all",
   },
   {
@@ -100,7 +106,7 @@ return { findAllCourses };`,
     kind: "demo",
     bullets: [
       "Drop the `db` argument. Mongo is the only source",
-      "The handlers on the next slides use this `dao`",
+      "Routes call this `dao` instead of reading an in-memory array",
     ],
     code: `import CoursesDao from "./dao";
 
@@ -166,7 +172,10 @@ useEffect(() => {
     id: "read-one-path",
     title: "GET /api/courses/:courseId",
     kind: "demo",
-    bullets: ["findById is the one-document lookup"],
+    bullets: [
+      "findById looks up one course document by its id.",
+      "The editor calls GET /api/courses/:courseId and shows that document.",
+    ],
     diagram: "courses-read-one",
   },
   {
@@ -228,14 +237,19 @@ app.get("/api/courses/:courseId", findCourseById);`,
     id: "read-one-result",
     title: "One course fills the header",
     kind: "demo",
-    bullets: ["Point at the name. It is the document for that id"],
+    bullets: [
+      "The header shows the name of the course document whose id is in the URL.",
+    ],
     diagram: "courses-one-result",
   },
   {
     id: "create-path",
     title: "POST /api/courses",
     kind: "demo",
-    bullets: ["The store appends the course `POST /api/courses` returned"],
+    bullets: [
+      "The form posts the new course to POST /api/courses.",
+      "The store appends the document the route returns, so the new card appears.",
+    ],
     diagram: "courses-create",
   },
   {
@@ -305,14 +319,19 @@ const onAddCourse = async () => {
     id: "create-result",
     title: "New course appears on the list",
     kind: "demo",
-    bullets: ["Point at the new card. That name is the inserted document"],
+    bullets: [
+      "The new card's name is the document that POST /api/courses inserted.",
+    ],
     diagram: "courses-create-result",
   },
   {
     id: "delete-path",
     title: "DELETE /api/courses/:courseId",
     kind: "demo",
-    bullets: ["Delete the document, then drop that course from the cache"],
+    bullets: [
+      "Delete sends DELETE /api/courses/:courseId, and the DAO removes that document.",
+      "The store then drops the same course from the cached list.",
+    ],
     diagram: "courses-delete",
   },
   {
@@ -375,14 +394,19 @@ const onDeleteCourse = async (courseId: string) => {
     id: "delete-result",
     title: "Deleted course leaves the list",
     kind: "demo",
-    bullets: ["Point at the gap. That document is no longer in the collection"],
+    bullets: [
+      "The missing card is the course document that deleteOne removed from the collection.",
+    ],
     diagram: "courses-delete-result",
   },
   {
     id: "update-path",
     title: "PUT /api/courses/:courseId",
     kind: "demo",
-    bullets: ["`$set` the fields the editor sent, then cache the result"],
+    bullets: [
+      "Save sends PUT /api/courses/:courseId with the fields the editor changed.",
+      "`$set` writes those fields, and the store replaces the cached course with the result.",
+    ],
     diagram: "courses-update",
   },
   {
@@ -449,7 +473,9 @@ const onUpdateCourse = async () => {
     id: "update-result",
     title: "Saved name is on the card",
     kind: "demo",
-    bullets: ["Point at the new name. `$set` wrote it before the next refresh"],
+    bullets: [
+      "The card shows the saved name because `$set` wrote it on that course document.",
+    ],
     diagram: "courses-update-result",
   },
   {

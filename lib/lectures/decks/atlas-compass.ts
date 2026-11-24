@@ -39,7 +39,7 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
     code: `mongodb+srv://giuseppi:supersecretpassword@kambaz.jxui0bc.mongodb.net/`,
     codeLanguage: "text",
     interactiveHint:
-      "This is the Compass string. The Drivers string later adds `/kambaz?`.",
+      "This is the Compass string. The Node driver string adds `/kambaz?` before the query.",
   },
   {
     id: "paste",
@@ -59,7 +59,7 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
     bullets: [
       "Same steps as the local Compass setup: Create database, name `kambaz`",
       "A first collection named `users` creates the `kambaz` database",
-      "Keep the name **kambaz** — the Drivers URI later ends with `/kambaz?`",
+      "Keep the name **kambaz**. The Node driver URI ends with `/kambaz?`",
     ],
   },
   {

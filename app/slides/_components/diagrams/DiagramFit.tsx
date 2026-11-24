@@ -1,12 +1,16 @@
 "use client";
 
 import { useLayoutEffect, useRef, type ReactNode } from "react";
-import { diagramFitScale, isLectureIconSvg } from "@/lib/lectures/diagram-fit";
+import {
+  DIAGRAM_MAX_HEIGHT_OF_SLIDE,
+  diagramFitScale,
+  isLectureIconSvg,
+} from "@/lib/lectures/diagram-fit";
 
 /**
- * Shared slot for every lecture diagram. The slot is the slide height left
- * under the copy. The graphic keeps its aspect ratio and scales — up or
- * down — to the largest size that still sits inside the slot.
+ * Shared slot for every lecture diagram. The graphic keeps its aspect ratio
+ * and scales to fit the leftover slot, but not past the balanced height of
+ * CRUD Users slide 2. Whitespace under a short row is fine.
  */
 export default function DiagramFit({ children }: { children: ReactNode }) {
   const slotRef = useRef<HTMLDivElement>(null);
@@ -83,8 +87,19 @@ export default function DiagramFit({ children }: { children: ReactNode }) {
         return;
       }
       tries = 0;
+      const slide = slot.closest("article");
+      const slideHeight =
+        slide instanceof HTMLElement && slide.clientHeight > 0
+          ? slide.clientHeight
+          : slotHeight;
       inner.style.zoom = String(
-        diagramFitScale(slotWidth, slotHeight, naturalWidth, naturalHeight),
+        diagramFitScale(
+          slotWidth,
+          slotHeight,
+          naturalWidth,
+          naturalHeight,
+          slideHeight * DIAGRAM_MAX_HEIGHT_OF_SLIDE,
+        ),
       );
     };
 

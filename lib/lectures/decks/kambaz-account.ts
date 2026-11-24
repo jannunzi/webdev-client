@@ -26,7 +26,7 @@ export const KAMBAZ_ACCOUNT_SLIDES: LectureSlide[] = [
     title: "Canvas target: Sign in",
     kind: "content",
     bullets: [
-      "Book Figure 2.4.9a — the Canvas-inspired Account Sign in we match",
+      "The Canvas-inspired Account Sign in screen",
       "This week is **structure**. Chapter 2 / A2 add the Tailwind look",
     ],
     imageSrc: "/images/book/kambaz/account-signin.png",
@@ -38,7 +38,7 @@ export const KAMBAZ_ACCOUNT_SLIDES: LectureSlide[] = [
     title: "Canvas target: Profile",
     kind: "content",
     bullets: [
-      "Book Figure 2.4.9b — Profile fields we will stub in HTML this week",
+      "Profile fields stubbed in HTML: username, password, first name, last name, email, role",
       "Sign up uses the same form pattern as Sign in",
     ],
     imageSrc: "/images/book/kambaz/account-profile.png",

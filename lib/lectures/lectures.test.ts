@@ -55,7 +55,7 @@ import {
   lectureThumbPath,
 } from "./types";
 import { expandLineMarks } from "../code-block/lines";
-import { diagramFitScale, isLectureIconSvg } from "./diagram-fit";
+import { DIAGRAM_MAX_HEIGHT_OF_SLIDE, diagramFitScale, isLectureIconSvg } from "./diagram-fit";
 import { slidePaneOverflows, slidePaneScrollStep } from "./slide-pane";
 import {
   LECTURE_PRESENT_STATE,
@@ -4409,6 +4409,16 @@ describe("diagram fit", () => {
 
     assert.equal(diagramFitScale(0, 400, 100, 50), 1);
     assert.equal(diagramFitScale(400, 400, 0, 50), 1);
+  });
+
+  it("stops a tall drawing at the CRUD Users slide 2 height", () => {
+    const slideHeight = 800;
+    const cap = slideHeight * DIAGRAM_MAX_HEIGHT_OF_SLIDE;
+    const stretched = diagramFitScale(1240, 598, 1852, 852, cap);
+    assert.ok(852 * stretched <= cap + 0.02);
+    const slide2 = diagramFitScale(1240, 440, 876, 188, cap);
+    assert.ok(Math.abs(slide2 - 1240 / 876) < 0.001);
+    assert.ok(188 * slide2 <= cap + 0.02);
   });
 
   it("does not treat a react-icon viewBox as the diagram canvas", () => {

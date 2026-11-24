@@ -91,7 +91,7 @@ export default function Lesson({
     title: "Canvas target: Modules",
     kind: "content",
     bullets: [
-      "Book Figure 1.4.5a — weeks → lessons → content items",
+      "Weeks, then lessons, then content items",
       "This week is the **nested list**. Chapter 2 styles the bars",
     ],
     imageSrc: "/images/book/kambaz/modules.png",
@@ -198,7 +198,7 @@ export default function Modules() {
     title: "Canvas target: Home",
     kind: "content",
     bullets: [
-      "Book Figure 1.4.6a — Modules beside Course Status",
+      "Modules sit beside Course Status",
       "Kambaz + Course nav already come from the outer layouts",
     ],
     imageSrc: "/images/book/kambaz/home.png",

@@ -21,9 +21,9 @@ export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
     title: "What we are building",
     kind: "demo",
     bullets: [
-      "The Users page already lists every document",
-      "Filter that list, open one user, then write",
-      "Delete, update, and create change the collection",
+      "The Users page already lists every document.",
+      "Filter that list, or open one user by id.",
+      "Delete, update, and create change the collection.",
     ],
     diagram: "users-crud-goal",
   },
@@ -32,9 +32,9 @@ export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
     title: "Filter by role and by name",
     kind: "demo",
     bullets: [
-      "Ask for a subset: all faculty, or a typed name",
-      "Ids go in the path. Filters go in the query string",
-      "Role first. Then a name with a regular expression",
+      "An administrator can ask for a subset: one role, or part of a name.",
+      "A user id belongs in the path. A filter belongs in the query string.",
+      "Role is an exact match. A name is a regular expression on the first or last name.",
     ],
     diagram: "users-filters-preview",
   },
@@ -42,7 +42,11 @@ export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
     id: "role-path",
     title: "GET /api/users?role=",
     kind: "demo",
-    bullets: ["Role menu, client, the same GET, then find by role"],
+    bullets: [
+      "The role menu calls findUsersByRole in the client.",
+      "The client sends GET /api/users with the chosen role in the query string.",
+      "That same route reads role, and the DAO runs find with that role.",
+    ],
     diagram: "users-filter-role",
   },
   {
@@ -69,9 +73,8 @@ return {
     title: "GET /api/users reads ?role=",
     kind: "demo",
     bullets: [
-      "Same `GET /api/users`. Read `role` from `req.query`",
-      "A role returns that subset, then `return`",
-      "Leave `name` off until the next section",
+      "The same GET /api/users reads `role` from `req.query`.",
+      "When a role was sent, the route returns that subset and stops.",
     ],
     code: `const findAllUsers = async (req, res) => {
   const { role } = req.query;
@@ -102,11 +105,11 @@ return {
   },
   {
     id: "role-filter",
-    title: "Empty role refetches everyone",
+    title: "No role selected loads everyone",
     kind: "demo",
     bullets: [
-      "An empty value calls `fetchUsers()`",
-      "Faculty sends `?role=FACULTY`",
+      "If no role is selected, the menu stays on All Roles, no `?role=` is sent, and `fetchUsers()` loads every user.",
+      "Choosing Faculty in the dropdown sends `GET /api/users?role=FACULTY`.",
     ],
     code: `const [role, setRole] = useState("");
 const filterUsersByRole = async (role: string) => {
@@ -147,9 +150,8 @@ const filterUsersByRole = async (role: string) => {
     title: "Faculty narrows the list",
     kind: "demo",
     bullets: [
-      "The menu reads Faculty",
-      "The request is `GET /api/users?role=FACULTY`",
-      "The rows are Nick Fury and Bruce Banner",
+      "The role menu shows Faculty, so the client sends `GET /api/users?role=FACULTY`.",
+      "The table renders the users that filtered request returned.",
     ],
     diagram: "users-role-result",
   },
@@ -157,7 +159,11 @@ const filterUsersByRole = async (role: string) => {
     id: "name-path",
     title: "GET /api/users?name=",
     kind: "demo",
-    bullets: ["Search people, the client, the same GET, then a regular expression"],
+    bullets: [
+      "The Search people box calls findUsersByPartialName in the client.",
+      "The client sends GET /api/users with the typed text in `?name=`.",
+      "The DAO turns that text into a regular expression and matches the first or last name.",
+    ],
     diagram: "users-filter-name",
   },
   {
@@ -165,9 +171,8 @@ const filterUsersByRole = async (role: string) => {
     title: "Partial name in the DAO",
     kind: "demo",
     bullets: [
-      "The `i` flag is case-insensitive, so `thor` finds Thor",
-      "`$or` means either first name or last name matches",
-      "Export it. The book searches first and last name only",
+      "`i` means case-insensitive: the pattern matches a name no matter how it is capitalized.",
+      "`$or` means a user matches when either the first name or the last name fits the pattern.",
     ],
     code: `const findUsersByPartialName = (partialName) => {
   const regex = new RegExp(partialName, "i");
@@ -229,8 +234,8 @@ const filterUsersByRole = async (role: string) => {
     title: "Each keystroke filters by name",
     kind: "demo",
     bullets: [
-      "Every keystroke sends the partial name",
-      "An empty field calls `fetchUsers()`",
+      "Each keystroke sends the text in Search people as `?name=`.",
+      "If Search people is blank, no name is sent, and `fetchUsers()` loads every user.",
     ],
     code: `const [name, setName] = useState("");
 const filterUsersByName = async (name: string) => {
@@ -266,9 +271,8 @@ const filterUsersByName = async (name: string) => {
     title: "Stark narrows the list",
     kind: "demo",
     bullets: [
-      "Search people reads Stark",
-      "The request is `GET /api/users?name=Stark`",
-      "The only row is Tony Stark",
+      "Search people holds the typed text, and the client sends it as `GET /api/users?name=`.",
+      "The table renders only the users whose first or last name matched.",
     ],
     diagram: "users-name-result",
   },
@@ -277,8 +281,8 @@ const filterUsersByName = async (name: string) => {
     title: "GET /api/users/:userId",
     kind: "demo",
     bullets: [
-      "The id belongs in the path, not the query string",
-      "This route is not `GET /api/users`",
+      "The user id belongs in the path, because it names one document rather than a filter.",
+      "Details calls `GET /api/users/:userId`, a different route from `GET /api/users`.",
     ],
     diagram: "users-read-one",
   },
@@ -372,9 +376,8 @@ onClick={() => {
     title: "Details shows one user",
     kind: "demo",
     bullets: [
-      "Bruce Banner's name is the open link",
-      "The request is `GET /api/users/789`",
-      "The panel shows his role, login, and section",
+      "Opening a name loads that one user with `GET /api/users/:userId`.",
+      "The panel shows the role, login id, section, and total activity stored on that document.",
     ],
     diagram: "users-details-result",
   },
@@ -382,7 +385,10 @@ onClick={() => {
     id: "delete-path",
     title: "DELETE /api/users/:userId",
     kind: "demo",
-    bullets: ["Details deletes, then the list refreshes"],
+    bullets: [
+      "Details sends `DELETE /api/users/:userId` for the user who is open.",
+      "The DAO deletes that document, and the list fetches again so the row is gone.",
+    ],
     diagram: "users-delete",
   },
   {
@@ -477,8 +483,8 @@ onClick={() => {
     title: "Delete removes the user",
     kind: "demo",
     bullets: [
-      "The request is `DELETE /api/users/789`",
-      "Bruce Banner is not in the list",
+      "The request was `DELETE /api/users/:userId`.",
+      "The table renders the list after that user was removed.",
     ],
     diagram: "users-delete-result",
   },
@@ -486,7 +492,10 @@ onClick={() => {
     id: "update-path",
     title: "PUT /api/users/:userId",
     kind: "demo",
-    bullets: ["`$set` keeps fields the editor did not send"],
+    bullets: [
+      "Details sends `PUT /api/users/:userId` with the fields the editor changed.",
+      "`$set` writes those fields and leaves every field that was not sent as it was.",
+    ],
     diagram: "users-update",
   },
   {
@@ -566,9 +575,8 @@ const saveUser = async () => {
     title: "Save writes the new name",
     kind: "demo",
     bullets: [
-      "The input reads Antonio Stark",
-      "The request is `PUT /api/users/123`",
-      "The row says Antonio Stark. Email and role stayed",
+      "Save sends `PUT /api/users/:userId` with the edited name.",
+      "The table shows the saved name. Fields that were not sent, such as email and role, stay as they were.",
     ],
     diagram: "users-update-result",
   },
@@ -576,7 +584,10 @@ const saveUser = async () => {
     id: "create-path",
     title: "POST /api/users",
     kind: "demo",
-    bullets: ["POST returns the created user. The table shows that document"],
+    bullets: [
+      "The Users page sends `POST /api/users` with the new user.",
+      "The route returns the created document, and the table adds that row.",
+    ],
     diagram: "users-create",
   },
   {
@@ -585,7 +596,7 @@ const saveUser = async () => {
     kind: "demo",
     bullets: [
       "`uuidv4()` replaces a leftover `_id`",
-      "An empty `_id` would collide on insert",
+      "If the posted user has no `_id`, a second insert that also has no `_id` would collide",
       "`POST` returns the created user for the table",
     ],
     codeBlocks: [

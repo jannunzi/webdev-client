@@ -119,7 +119,7 @@ export default function KambazLayout({
     title: "Coverage is the checklist",
     kind: "content",
     bullets: [
-      "The book walks through Kambaz Navigation, Dashboard, Course Navigation, Modules, Home, People, and Assignments",
+      "Walk Kambaz Navigation, Dashboard, Course Navigation, Modules, Home, People, and Assignments",
       "Assignment Editor and Account stay **On your own**: match the figures and interactive demos in those sections",
       "Use the coverage checklist after you restyle, not instead of walking the screens",
     ],

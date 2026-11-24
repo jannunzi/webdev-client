@@ -26,7 +26,7 @@ export const KAMBAZ_ASSIGNMENTS_SLIDES: LectureSlide[] = [
     title: "Canvas target: Assignments",
     kind: "content",
     bullets: [
-      "Book Figure 1.4.7a — grouped list students see in Canvas-style LMS",
+      "A grouped assignment list, the way a Canvas-style course shows it",
       "This week: **plain HTML**. Match the ids; Tailwind is Chapter 2",
     ],
     imageSrc: "/images/book/kambaz/assignments.png",
@@ -197,7 +197,7 @@ export default async function Assignments({
     title: "Canvas target: Assignment editor",
     kind: "content",
     bullets: [
-      "Book Figure 1.4.8a — faculty edit name, points, dates, and assign",
+      "Faculty edit the assignment name, points, dates, and who it is assigned to",
       "Start from name / description / points, then complete on your own",
     ],
     imageSrc: "/images/book/kambaz/assignment-editor.png",

@@ -77,7 +77,7 @@ export const ATLAS_SLIDES: LectureSlide[] = [
     bullets: [
       "Atlas URIs use `mongodb+srv://`, not `mongodb://127.0.0.1`",
       "The host will differ. Scheme, username, password, and cluster matter",
-      "The next deck pastes this `mongodb+srv://` URI into Compass. Drivers later add `/kambaz?`",
+      "Compass uses this `mongodb+srv://` URI. The Node driver string adds `/kambaz?` before the query",
     ],
     code: `mongodb+srv://giuseppi:supersecretpassword@kambaz.jxui0bc.mongodb.net/`,
     codeLanguage: "text",

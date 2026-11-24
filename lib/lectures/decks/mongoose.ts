@@ -54,7 +54,7 @@ const app = express();`,
     kind: "demo",
     bullets: [
       "Node `.env` — not the Next.js `.env.local`",
-      "`DATABASE_CONNECTION_STRING` later holds the Atlas `mongodb+srv://` string",
+      "`DATABASE_CONNECTION_STRING` is the MongoDB URI Node reads when it starts",
       "Alongside `SESSION_SECRET` from Chapter 5",
     ],
     code: `SERVER_ENV=development

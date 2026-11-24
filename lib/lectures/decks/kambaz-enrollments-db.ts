@@ -30,7 +30,10 @@ export const KAMBAZ_ENROLLMENTS_DB_SLIDES: LectureSlide[] = [
     id: "enroll-picture",
     title: "Enrollments from People to Mongo",
     kind: "demo",
-    bullets: ["People, client, routes, DAO, then the enrollments collection"],
+    bullets: [
+      "People and the Dashboard ask the courses client, and the client calls the course routes.",
+      "Those routes call the Enrollments DAO, which reads and writes the enrollments collection.",
+    ],
     diagram: "enroll-stack",
   },
   {
@@ -87,7 +90,7 @@ export default model;`,
     title: "Enrollments DAO exports functions",
     kind: "demo",
     bullets: [
-      "Import `model`. The functions on the next slides close over it",
+      "Import `model`. The DAO functions close over it when they find and write enrollments",
       "Export the function. Courses routes create it once",
     ],
     code: `import model from "./model";
@@ -105,7 +108,7 @@ export default function EnrollmentsDao() {
     kind: "demo",
     bullets: [
       "Import it next to the courses DAO",
-      "Every later route on this deck calls `enrollmentsDao`",
+      "Course routes call `enrollmentsDao` to enroll, unenroll, and list people",
     ],
     code: `import CoursesDao from "./dao";
 import EnrollmentsDao from "../Enrollments/dao";
@@ -120,7 +123,10 @@ const enrollmentsDao = EnrollmentsDao();`,
     id: "read-path",
     title: "GET enrolled courses",
     kind: "demo",
-    bullets: ["populate turns the course id into the course document"],
+    bullets: [
+      "populate replaces the course id on each enrollment with the course document.",
+      "The Dashboard can then show the course name instead of only an id.",
+    ],
     diagram: "enroll-read",
   },
   {
@@ -200,14 +206,19 @@ useEffect(() => {
     id: "read-result",
     title: "Dashboard shows my courses",
     kind: "demo",
-    bullets: ["Point at the cards. Each one was a populated course"],
+    bullets: [
+      "Each card is a course document that populate attached to an enrollment.",
+    ],
     diagram: "enroll-read-result",
   },
   {
     id: "joins-path",
     title: "DELETE a course and its joins",
     kind: "demo",
-    bullets: ["`deleteMany({ course })` removes every enrollment for that course"],
+    bullets: [
+      "Deleting a course also deletes its enrollments, or those rows would point at a missing course.",
+      "`deleteMany({ course })` removes every enrollment whose course field is that course id.",
+    ],
     diagram: "enroll-joins",
   },
   {
@@ -270,14 +281,19 @@ const onDeleteCourse = async (courseId: string) => {
     id: "joins-result",
     title: "Course and its rows are gone",
     kind: "demo",
-    bullets: ["Point at the crossed-out rows. Those enrollments pointed at the deleted course"],
+    bullets: [
+      "The enrollments whose course was the deleted course are gone from the collection.",
+    ],
     diagram: "enroll-joins-result",
   },
   {
     id: "enroll-create-path",
     title: "POST enrolls the user",
     kind: "demo",
-    bullets: ["`POST /api/users/:uid/courses/:cid` inserts one enrollment"],
+    bullets: [
+      "Enroll sends POST /api/users/:uid/courses/:cid.",
+      "The DAO inserts one enrollment document with that user id and that course id.",
+    ],
     diagram: "enroll-create",
   },
   {
@@ -413,14 +429,19 @@ const enrolled = currentUser
     id: "enroll-result",
     title: "Button says Unenroll",
     kind: "demo",
-    bullets: ["Point at Unenroll. One enrollment row was inserted"],
+    bullets: [
+      "The button says Unenroll because the POST inserted an enrollment for this user and course.",
+    ],
     diagram: "enroll-create-result",
   },
   {
     id: "enroll-unenroll-path",
     title: "DELETE unenrolls the user",
     kind: "demo",
-    bullets: ["`DELETE /api/users/:uid/courses/:cid` removes that one row"],
+    bullets: [
+      "Unenroll sends DELETE /api/users/:uid/courses/:cid.",
+      "The DAO deletes the one enrollment that pairs this user with this course.",
+    ],
     diagram: "enroll-unenroll",
   },
   {
@@ -495,14 +516,19 @@ app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);`,
     id: "unenroll-result",
     title: "Button says Enroll again",
     kind: "demo",
-    bullets: ["Point at Enroll. The same button now inserts, because the row is gone"],
+    bullets: [
+      "The button says Enroll again because that enrollment document was deleted.",
+    ],
     diagram: "enroll-unenroll-result",
   },
   {
     id: "people-path",
     title: "GET /api/courses/:cid/users",
     kind: "demo",
-    bullets: ["People lists the users enrolled in this course, not every user"],
+    bullets: [
+      "People asks GET /api/courses/:cid/users for this course only.",
+      "The list is the users enrolled in the course, not every user in the collection.",
+    ],
     diagram: "enroll-people",
   },
   {
