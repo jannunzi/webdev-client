@@ -96,10 +96,14 @@ function Flow({
   const contentHeights = boxes.map(
     (box) => headerH + Math.max(box.lines.length, 1) * lineH + padB,
   );
-  // A short horizontal row stays a thin strip unless the boxes themselves are tall.
-  const boxH = Math.max(...contentHeights, large ? 460 : 0);
   const width = side + boxes.length * boxWidth + (boxes.length - 1) * gap + side;
+  // A short horizontal row stays a thin strip unless the boxes themselves are tall.
+  // Height tracks the row width so a 4- or 5-box diagram still fills 1280×800.
+  const fillH = large ? Math.round(width * 0.46) - 24 : 0;
+  const boxH = Math.max(...contentHeights, large ? 460 : 0, fillH);
   const height = (large ? 12 : 24) + boxH + (large ? 12 : 20);
+  const fitSize = (text: string, size: number) =>
+    Math.min(size, Math.max(13, Math.floor((boxWidth - 28) / (Math.max(text.length, 1) * 0.62))));
   const top = large ? 12 : 20;
   const bodyMid = top + headerH + (boxH - headerH) / 2;
   const requestY = large ? bodyMid - 36 : top + HEADER_H + 10;
@@ -185,7 +189,7 @@ function Flow({
               y={large ? top + headerH * 0.62 : top + 31}
               textAnchor="middle"
               fontFamily={FONT}
-              fontSize={nameSize}
+              fontSize={fitSize(box.name, nameSize)}
               fontWeight={700}
               fill="#171717"
             >
@@ -200,7 +204,7 @@ function Flow({
                   : top + HEADER_H + 20) + lineIndex * lineH}
                 textAnchor={large ? "middle" : "start"}
                 fontFamily={MONO}
-                fontSize={lineSize}
+                fontSize={fitSize(line, lineSize)}
                 fontWeight={box.emphasis && lineIndex === 0 ? 700 : 400}
                 fill={box.emphasis && lineIndex === 0 ? tone.stroke : "#171717"}
               >
@@ -337,7 +341,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   },
   "courses-stack": {
     title: "Courses from the Dashboard to MongoDB",
-    boxWidth: 460,
+    boxWidth: 400,
     large: true,
     boxes: [
       { name: "Dashboard", lines: ["store"], tone: "blue" },
@@ -414,7 +418,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   },
   "modules-stack": {
     title: "Modules from the page to MongoDB",
-    boxWidth: 520,
+    boxWidth: 440,
     large: true,
     boxes: [
       { name: "Modules", lines: ["store"], tone: "blue" },
@@ -479,7 +483,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   },
   "enroll-stack": {
     title: "Enrollments from People to MongoDB",
-    boxWidth: 520,
+    boxWidth: 440,
     large: true,
     boxes: [
       { name: "People", lines: ["PeopleTable"], tone: "blue" },
