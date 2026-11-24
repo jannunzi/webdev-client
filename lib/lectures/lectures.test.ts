@@ -55,7 +55,7 @@ import {
   lectureThumbPath,
 } from "./types";
 import { expandLineMarks } from "../code-block/lines";
-import { diagramFitScale } from "./diagram-fit";
+import { diagramFitScale, isLectureIconSvg } from "./diagram-fit";
 import { slidePaneOverflows, slidePaneScrollStep } from "./slide-pane";
 import {
   LECTURE_PRESENT_STATE,
@@ -1348,8 +1348,8 @@ describe("lecture decks", () => {
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 12);
     assert.equal(counts["mongoose"], 13);
-    assert.equal(counts["mongo-apis"], 14);
-    assert.equal(counts["mongo-users-crud"], 29);
+    assert.equal(counts["mongo-apis"], 15);
+    assert.equal(counts["mongo-users-crud"], 41);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
     assert.equal(counts["atlas-node"], 10);
@@ -3661,7 +3661,7 @@ describe("lecture decks", () => {
       },
       "mongo-apis": {
         "users-picture": "users-stack",
-        "read-all-path": "users-read-all",
+        purpose: "users-read-all",
       },
       "mongo-users-crud": {
         goal: "users-crud-goal",
@@ -4147,6 +4147,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
       "kambaz-people-table#people-table-part-3",
       "kambaz-people-table#people-table-part-4",
       "kambaz-people-table#people-table-part-5",
+      "mongo-apis#people-table-part-2",
     ]);
     assert.match(findSlide("javascript-arrays", "simple-part-2").code!, /^ {2}return \($/m);
     assert.match(findSlide("spread-and-destructuring", "destructing-imports-part-2").code!, /^ {8}<tbody>/);
@@ -4395,6 +4396,12 @@ describe("diagram fit", () => {
 
     assert.equal(diagramFitScale(0, 400, 100, 50), 1);
     assert.equal(diagramFitScale(400, 400, 0, 50), 1);
+  });
+
+  it("does not treat a react-icon viewBox as the diagram canvas", () => {
+    assert.equal(isLectureIconSvg("1em", "1em"), true);
+    assert.equal(isLectureIconSvg(null, null), false);
+    assert.equal(isLectureIconSvg("1316", null), false);
   });
 
   it("fits every diagram in the leftover slide height", () => {

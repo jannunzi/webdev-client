@@ -42,7 +42,7 @@ export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
     id: "role-path",
     title: "GET /api/users?role=",
     kind: "demo",
-    bullets: ["The role menu, the client, the same GET, then `find({ role })`"],
+    bullets: ["Role menu, client, the same GET, then find by role"],
     diagram: "users-filter-role",
   },
   {
@@ -88,25 +88,27 @@ return {
     codeAddedLines: [[2, 7]],
   },
   {
-    id: "role-ui",
-    title: "Role from the client and page",
+    id: "role-client",
+    title: "Client finds users by role",
+    kind: "demo",
+    code: `export const findUsersByRole = async (role: string) => {
+  const response = await axios.get(
+    \`\${USERS_API}?role=\${role}\`);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/account/client.ts",
+    codeAddedLines: [[1, 5]],
+  },
+  {
+    id: "role-filter",
+    title: "Empty role refetches everyone",
     kind: "demo",
     bullets: [
       "An empty value calls `fetchUsers()`",
       "Faculty sends `?role=FACULTY`",
     ],
-    codeBlocks: [
-      {
-        code: `export const findUsersByRole = async (role: string) => {
-  const response = await axios.get(\`\${USERS_API}?role=\${role}\`);
-  return response.data;
-};`,
-        language: "ts",
-        file: "app/(kambaz)/account/client.ts",
-        addedLines: [[1, 4]],
-      },
-      {
-        code: `const [role, setRole] = useState("");
+    code: `const [role, setRole] = useState("");
 const filterUsersByRole = async (role: string) => {
   setRole(role);
   if (role) {
@@ -115,12 +117,20 @@ const filterUsersByRole = async (role: string) => {
   } else {
     fetchUsers();
   }
-};
-// in the JSX:
-<select
+};`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/account/users/page.tsx",
+    codeHighlightLines: [[2, 9]],
+  },
+  {
+    id: "role-select",
+    title: "Role menu calls the filter",
+    kind: "demo",
+    code: `<select
   value={role}
   onChange={(e) => filterUsersByRole(e.target.value)}
-  className="wd-select-role mb-2 w-1/4 rounded border border-neutral-300 px-2 py-1"
+  className="wd-select-role mb-2 w-1/4 rounded
+    border border-neutral-300 px-2 py-1"
 >
   <option value="">All Roles</option>
   <option value="STUDENT">Students</option>
@@ -128,11 +138,9 @@ const filterUsersByRole = async (role: string) => {
   <option value="FACULTY">Faculty</option>
   <option value="ADMIN">Administrators</option>
 </select>`,
-        language: "tsx",
-        file: "app/(kambaz)/account/users/page.tsx",
-        highlightLines: [[2, 9], 14],
-      },
-    ],
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/account/users/page.tsx",
+    codeHighlightLines: [3],
   },
   {
     id: "role-result",
@@ -203,25 +211,28 @@ const filterUsersByRole = async (role: string) => {
     codeAddedLines: [2, [7, 11]],
   },
   {
-    id: "name-ui",
-    title: "Name from the client and page",
+    id: "name-client",
+    title: "Client finds a partial name",
+    kind: "demo",
+    code: `export const findUsersByPartialName =
+  async (name: string) => {
+  const response = await axios.get(
+    \`\${USERS_API}?name=\${name}\`);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/account/client.ts",
+    codeAddedLines: [[1, 6]],
+  },
+  {
+    id: "name-filter",
+    title: "Each keystroke filters by name",
     kind: "demo",
     bullets: [
       "Every keystroke sends the partial name",
       "An empty field calls `fetchUsers()`",
     ],
-    codeBlocks: [
-      {
-        code: `export const findUsersByPartialName = async (name: string) => {
-  const response = await axios.get(\`\${USERS_API}?name=\${name}\`);
-  return response.data;
-};`,
-        language: "ts",
-        file: "app/(kambaz)/account/client.ts",
-        addedLines: [[1, 4]],
-      },
-      {
-        code: `const [name, setName] = useState("");
+    code: `const [name, setName] = useState("");
 const filterUsersByName = async (name: string) => {
   setName(name);
   if (name) {
@@ -230,19 +241,25 @@ const filterUsersByName = async (name: string) => {
   } else {
     fetchUsers();
   }
-};
-// in the JSX:
-<input
-  className="wd-filter-by-name me-2 mb-2 w-1/4 rounded border border-neutral-300 px-2 py-1"
+};`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/account/users/page.tsx",
+    codeHighlightLines: [[2, 9]],
+  },
+  {
+    id: "name-field",
+    title: "Search field sends the name",
+    kind: "demo",
+    code: `<input
+  className="wd-filter-by-name me-2 mb-2 w-1/4
+    rounded border border-neutral-300 px-2 py-1"
   placeholder="Search people"
   value={name}
   onChange={(e) => filterUsersByName(e.target.value)}
 />`,
-        language: "tsx",
-        file: "app/(kambaz)/account/users/page.tsx",
-        highlightLines: [[2, 9], 16],
-      },
-    ],
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/account/users/page.tsx",
+    codeHighlightLines: [6],
   },
   {
     id: "name-result",
@@ -294,26 +311,28 @@ app.get("/api/users/:userId", findUserById);`,
     ],
   },
   {
-    id: "details",
-    title: "Client and People Details",
+    id: "details-client",
+    title: "Client loads one user by id",
+    kind: "demo",
+    bullets: ["The id is in the path, not the query string"],
+    code: `export const findUserById = async (id: string) => {
+  const response = await axios.get(
+    \`\${USERS_API}/\${id}\`);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/account/client.ts",
+    codeAddedLines: [[1, 5]],
+  },
+  {
+    id: "details-fetch",
+    title: "Details fetches when uid changes",
     kind: "demo",
     bullets: [
       "No `uid` means `return null`, so the panel stays hidden",
       "`useEffect` depends on `uid`, so the next name reloads",
-      "The id is in the path, not the query string",
     ],
-    codeBlocks: [
-      {
-        code: `export const findUserById = async (id: string) => {
-  const response = await axios.get(\`\${USERS_API}/\${id}\`);
-  return response.data;
-};`,
-        language: "ts",
-        file: "app/(kambaz)/account/client.ts",
-        addedLines: [[1, 4]],
-      },
-      {
-        code: `const fetchUser = async () => {
+    code: `const fetchUser = async () => {
   if (!uid) return;
   const user = await client.findUserById(uid);
   setUser(user);
@@ -321,25 +340,32 @@ app.get("/api/users/:userId", findUserById);`,
 useEffect(() => {
   if (uid) fetchUser();
 }, [uid]);
-if (!uid) return null;
-<div className="wd-name text-lg text-red-700">
+if (!uid) return null;`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/Details.tsx",
+    codeHighlightLines: [[1, 9]],
+  },
+  {
+    id: "details-fields",
+    title: "Details shows role and login",
+    kind: "demo",
+    code: `<div className="wd-name text-lg text-red-700">
   {user.firstName} {user.lastName}
 </div>
 <b>Roles:</b> <span className="wd-roles">{user.role}</span>
 <br />
-<b>Login ID:</b> <span className="wd-login-id">{user.loginId}</span>
+<b>Login ID:</b>
+<span className="wd-login-id">{user.loginId}</span>
 <br />
-<b>Section:</b> <span className="wd-section">{user.section}</span>
+<b>Section:</b>
+<span className="wd-section">{user.section}</span>
 // Table.tsx, on the name cell:
 onClick={() => {
   setShowDetails(true);
   setShowUserId(user._id);
 }}`,
-        language: "tsx",
-        file: "app/(kambaz)/courses/[cid]/people/Details.tsx",
-        highlightLines: [[1, 10]],
-      },
-    ],
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/Details.tsx",
   },
   {
     id: "details-result",
@@ -386,48 +412,65 @@ onClick={() => {
     ],
   },
   {
-    id: "delete-ui",
-    title: "Delete from Details",
+    id: "delete-client",
+    title: "Client deletes one user",
+    kind: "demo",
+    code: `export const deleteUser = async (userId: string) => {
+  const response = await axios.delete(
+    \`\${USERS_API}/\${userId}\`);
+  return response.data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/account/client.ts",
+    codeAddedLines: [[1, 5]],
+  },
+  {
+    id: "delete-handler",
+    title: "Delete closes and refreshes",
     kind: "demo",
     bullets: [
       "Delete calls the API, then closes and refreshes",
       "Cancel only closes. The document stays",
     ],
-    codeBlocks: [
-      {
-        code: `export const deleteUser = async (userId: string) => {
-  const response = await axios.delete(\`\${USERS_API}/\${userId}\`);
-  return response.data;
-};`,
-        language: "ts",
-        file: "app/(kambaz)/account/client.ts",
-        addedLines: [[1, 4]],
-      },
-      {
-        code: `const deleteUser = async (uid: string) => {
+    code: `const deleteUser = async (uid: string) => {
   await client.deleteUser(uid);
   onClose();
-};
-// in the JSX, after the activity fields:
-<button
+};`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/Details.tsx",
+    codeHighlightLines: [[1, 4]],
+  },
+  {
+    id: "delete-buttons",
+    title: "Delete button calls deleteUser",
+    kind: "demo",
+    code: `<button
   type="button"
   onClick={() => deleteUser(uid)}
-  className="wd-delete float-end rounded bg-red-600 px-3 py-1 text-sm text-white"
+  className="wd-delete float-end rounded bg-red-600
+    px-3 py-1 text-sm text-white"
 >
   Delete
-</button>
-<button
+</button>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/Details.tsx",
+    codeHighlightLines: [[1, 8]],
+  },
+  {
+    id: "delete-cancel",
+    title: "Cancel only closes the panel",
+    kind: "demo",
+    code: `<button
   type="button"
   onClick={onClose}
-  className="wd-cancel float-end me-2 rounded bg-neutral-200 px-3 py-1 text-sm"
+  className="wd-cancel float-end me-2 rounded
+    bg-neutral-200 px-3 py-1 text-sm"
 >
   Cancel
 </button>`,
-        language: "tsx",
-        file: "app/(kambaz)/courses/[cid]/people/Details.tsx",
-        highlightLines: [[1, 4], [6, 18]],
-      },
-    ],
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/Details.tsx",
+    codeHighlightLines: [[1, 8]],
   },
   {
     id: "delete-result",
@@ -447,63 +490,64 @@ onClick={() => {
     diagram: "users-update",
   },
   {
-    id: "update-server",
-    title: "$set and the session route",
+    id: "update-dao",
+    title: "$set keeps omitted fields",
     kind: "demo",
     bullets: [
       "Without `$set`, only the fields you sent would remain",
       "Always update the database. Copy the session only if the ids match",
       "Editing someone else must not change your own role",
     ],
-    codeBlocks: [
-      {
-        code: `const updateUser = (userId, user) =>
+    code: `const updateUser = (userId, user) =>
   model.updateOne({ _id: userId }, { $set: user });`,
-        language: "ts",
-        file: "webdev-server/Kambaz/Users/dao.ts",
-        highlightLines: [[1, 2]],
-      },
-      {
-        code: `const updateUser = async (req, res) => {
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
+    codeHighlightLines: [[1, 2]],
+  },
+  {
+    id: "update-route",
+    title: "PUT copies your own session",
+    kind: "demo",
+    code: `const updateUser = async (req, res) => {
   const { userId } = req.params;
   const userUpdates = req.body;
   await dao.updateUser(userId, userUpdates);
   const currentUser = req.session["currentUser"];
   if (currentUser && currentUser._id === userId) {
-    req.session["currentUser"] = { ...currentUser, ...userUpdates };
+    req.session["currentUser"] = {
+      ...currentUser, ...userUpdates };
   }
   res.json(currentUser);
 };
 app.put("/api/users/:userId", updateUser);`,
-        language: "ts",
-        file: "webdev-server/Kambaz/Users/routes.ts",
-        highlightLines: [[6, 8]],
-      },
-    ],
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
+    codeHighlightLines: [[6, 8]],
   },
   {
-    id: "update-ui",
-    title: "Save from Details",
+    id: "update-client",
+    title: "Client puts the edited user",
     kind: "demo",
-    bullets: [
-      "One input holds first and last, split on a space",
-      "Enter or the check saves, then the panel closes",
-    ],
-    codeBlocks: [
-      {
-        code: `export const updateUser = async (user: any) => {
+    code: `export const updateUser = async (user: any) => {
   const response = await axiosWithCredentials.put(
     \`\${USERS_API}/\${user._id}\`,
     user,
   );
   return response.data;
 };`,
-        language: "ts",
-        file: "app/(kambaz)/account/client.ts",
-        addedLines: [[1, 7]],
-      },
-      {
-        code: `const [name, setName] = useState("");
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/account/client.ts",
+    codeAddedLines: [[1, 7]],
+  },
+  {
+    id: "update-save",
+    title: "Save splits the name and closes",
+    kind: "demo",
+    bullets: [
+      "One input holds first and last, split on a space",
+      "Enter or the check saves, then the panel closes",
+    ],
+    code: `const [name, setName] = useState("");
 const [editing, setEditing] = useState(false);
 const saveUser = async () => {
   const [firstName, lastName] = name.split(" ");
@@ -512,15 +556,10 @@ const saveUser = async () => {
   setUser(updatedUser);
   setEditing(false);
   onClose();
-};
-// pencil when !editing, check when editing
-// name text when !editing; input when editing
-// input onKeyDown: if Enter, saveUser()`,
-        language: "tsx",
-        file: "app/(kambaz)/courses/[cid]/people/Details.tsx",
-        highlightLines: [[3, 10]],
-      },
-    ],
+};`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/Details.tsx",
+    codeHighlightLines: [[3, 10]],
   },
   {
     id: "update-result",
@@ -537,7 +576,7 @@ const saveUser = async () => {
     id: "create-path",
     title: "POST /api/users",
     kind: "demo",
-    bullets: ["`POST /api/users` returns the created user, and the table shows that document"],
+    bullets: ["POST returns the created user. The table shows that document"],
     diagram: "users-create",
   },
   {
@@ -572,28 +611,29 @@ app.post("/api/users", createUser);`,
     ],
   },
   {
-    id: "create-ui",
-    title: "+ User on the Users page",
+    id: "create-client",
+    title: "Client posts a new user",
     kind: "demo",
-    bullets: [
-      "`Date.now()` in the username keeps two clicks unique",
-      "Append the user the server returned",
-    ],
-    codeBlocks: [
-      {
-        code: `export const createUser = async (user: any) => {
+    code: `export const createUser = async (user: any) => {
   const response = await axios.post(
     \`\${USERS_API}\`,
     user,
   );
   return response.data;
 };`,
-        language: "ts",
-        file: "app/(kambaz)/account/client.ts",
-        addedLines: [[1, 7]],
-      },
-      {
-        code: `const createUser = async () => {
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/account/client.ts",
+    codeAddedLines: [[1, 7]],
+  },
+  {
+    id: "create-page",
+    title: "Users page appends the result",
+    kind: "demo",
+    bullets: [
+      "`Date.now()` in the username keeps two clicks unique",
+      "Append the user the server returned",
+    ],
+    code: `const createUser = async () => {
   const user = await client.createUser({
     firstName: "New",
     lastName: \`User \${users.length + 1}\`,
@@ -605,11 +645,9 @@ app.post("/api/users", createUser);`,
   });
   setUsers([...users, user]);
 };`,
-        language: "tsx",
-        file: "app/(kambaz)/account/users/page.tsx",
-        highlightLines: [[1, 12]],
-      },
-    ],
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/account/users/page.tsx",
+    codeHighlightLines: [[1, 12]],
   },
   {
     id: "users-live",

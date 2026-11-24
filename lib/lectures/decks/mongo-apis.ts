@@ -24,46 +24,48 @@ export const MONGO_APIS_SLIDES: LectureSlide[] = [
     diagram: "users-stack",
   },
   {
-    id: "read-all-path",
-    title: "GET /api/users",
+    id: "purpose",
+    title: "Implementing MongoDB APIs",
     kind: "demo",
-    bullets: ["Users calls findAllUsers, then setUsers"],
+    bullets: [
+      "DAO hides the vendor. Routes are the HTTP calls",
+      "React still posts JSON to the same signin URL",
+      "Each verb: DAO, Express route, and axios client",
+    ],
     diagram: "users-read-all",
   },
   {
-    id: "purpose",
-    title: "Implementing MongoDB APIs",
-    kind: "content",
-    bullets: [
-      "DAO hides the vendor. Routes turn HTTP into function calls",
-      "React still posts to `/api/users/signin` and receives JSON",
-      "Each verb is implemented three times: DAO, Express, axios client",
-    ],
-  },
-  {
-    id: "async",
-    title: "Database calls are promises",
+    id: "signin",
+    title: "Signin awaits the database",
     kind: "demo",
-    bullets: [
-      "Chapter 5 arrays were **synchronous**. Mongo answers later",
-      "Tag handlers `async` and `await` every DAO call",
-      "Do the same for profile, signout, and course routes",
-    ],
+    bullets: ["Tag the handler `async` and `await` the DAO call"],
     code: `const signin = async (req, res) => {
   const { username, password } = req.body;
-  const currentUser = await dao.findUserByCredentials(username, password);
+  const currentUser = await dao.findUserByCredentials(
+    username, password);
   if (currentUser) {
     req.session["currentUser"] = currentUser;
     res.json(currentUser);
   } else {
-    res.status(401).json({ message: "Unable to login. Try again later." });
+    res.status(401).json({
+      message: "Unable to login. Try again later." });
   }
-};
-
-const signup = async (req, res) => {
-  const user = await dao.findUserByUsername(req.body.username);
+};`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
+    codeHighlightLines: [1, 3],
+  },
+  {
+    id: "signup",
+    title: "Signup awaits createUser",
+    kind: "demo",
+    bullets: ["Do the same for profile, signout, and course routes"],
+    code: `const signup = async (req, res) => {
+  const user = await dao.findUserByUsername(
+    req.body.username);
   if (user) {
-    res.status(400).json({ message: "Username already taken" });
+    res.status(400).json({
+      message: "Username already taken" });
     return;
   }
   const currentUser = await dao.createUser(req.body);
@@ -72,7 +74,7 @@ const signup = async (req, res) => {
 };`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/routes.ts",
-    codeHighlightLines: [1, 3, 13, 18],
+    codeHighlightLines: [1, 2, 9],
   },
   {
     id: "find-all-dao",
@@ -82,9 +84,16 @@ const signup = async (req, res) => {
       "Same `findAllUsers` you returned from the DAO",
       "Empty `find()` returns every document in `users`",
     ],
-    code: `const findAllUsers = () => model.find();`,
+    code: `const findAllUsers = () => model.find();
+return {
+  createUser, findAllUsers,
+  findUserById, findUserByUsername,
+  findUserByCredentials,
+  updateUser, deleteUser,
+};`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/dao.ts",
+    codeHighlightLines: [1, 3],
   },
   {
     id: "find-all-route",
@@ -125,9 +134,9 @@ app.get("/api/users", findAllUsers);`,
     title: "PeopleTable takes a users prop",
     kind: "demo",
     bullets: [
-      "Stop joining enrollments in the browser. Express `GET /api/users` returns the filtered list",
-      "Users screen passes every user; course People later passes a subset",
-      "A full-width collapsed table with a light border and striped odd rows",
+      "Stop joining enrollments in the browser",
+      "Users passes everyone. Course People passes a subset",
+      "Full width, light border, striped odd rows",
     ],
     code: `export default function PeopleTable({
   users = [],
@@ -135,8 +144,16 @@ app.get("/api/users", findAllUsers);`,
 }: {
   users?: any[];
   fetchUsers: () => void;
-}) {
-  return (
+}) {`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/Table.tsx",
+    codeHighlightLines: [[1, 3]],
+  },
+  {
+    id: "people-table-part-2",
+    title: "Each row is one user",
+    kind: "demo",
+    code: `  return (
     <div id="wd-people-table" className="overflow-x-auto">
       <table className="w-full border-collapse text-left text-sm">
         <tbody>
@@ -152,7 +169,8 @@ app.get("/api/users", findAllUsers);`,
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/Table.tsx",
-    codeHighlightLines: [[1, 3], [12, 14]],
+    codeStartLine: 8,
+    codeHighlightLines: [[5, 7]],
   },
   {
     id: "people-table-live",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef, type ReactNode } from "react";
-import { diagramFitScale } from "@/lib/lectures/diagram-fit";
+import { diagramFitScale, isLectureIconSvg } from "@/lib/lectures/diagram-fit";
 
 /**
  * Shared slot for every lecture diagram. The slot is the slide height left
@@ -38,7 +38,12 @@ export default function DiagramFit({ children }: { children: ReactNode }) {
         return;
       }
 
-      const svg = inner.querySelector("svg");
+      const svg = [...inner.querySelectorAll("svg")].find(
+        (node): node is SVGSVGElement =>
+          node instanceof SVGSVGElement &&
+          !isLectureIconSvg(node.getAttribute("width"), node.getAttribute("height")) &&
+          node.viewBox.baseVal.width > 0,
+      );
       const img = inner.querySelector("img");
       if (svg instanceof SVGSVGElement && svg.viewBox.baseVal.width > 0) {
         const box = svg.viewBox.baseVal;

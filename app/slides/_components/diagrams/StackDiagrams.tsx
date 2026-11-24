@@ -171,7 +171,155 @@ function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidt
   );
 }
 
-const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[] }> = {
+function ArrowVertical({
+  x,
+  y1,
+  y2,
+  dashed,
+}: {
+  x: number;
+  y1: number;
+  y2: number;
+  dashed?: boolean;
+}) {
+  const dir = y2 > y1 ? 1 : -1;
+  const base = y2 - dir * 12;
+  return (
+    <g>
+      <line
+        x1={x}
+        y1={y1}
+        x2={x}
+        y2={base}
+        stroke="#171717"
+        strokeWidth={3}
+        strokeDasharray={dashed ? "8 6" : undefined}
+      />
+      <polygon points={`${x},${y2} ${x - 6},${base} ${x + 6},${base}`} fill="#171717" />
+    </g>
+  );
+}
+
+/**
+ * Four short stages stacked, wide enough that the row fills a 1280×800
+ * slide instead of sitting as a thin strip under the title.
+ */
+function ColumnFlow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidth: number }) {
+  const gap = 52;
+  const minBox = 96;
+  const heights = boxes.map((box) => Math.max(boxHeight(box.lines.length), minBox));
+  const padX = 40;
+  const width = padX + boxWidth + padX;
+  const height = 24 + heights.reduce((sum, h) => sum + h, 0) + (boxes.length - 1) * gap + 20;
+  const tops: number[] = [];
+  let cursor = 24;
+  for (const h of heights) {
+    tops.push(cursor);
+    cursor += h + gap;
+  }
+
+  return (
+    <svg role="img" viewBox={`0 0 ${width} ${height}`} aria-label={title}>
+      <title>{title}</title>
+      {boxes.map((box, index) => {
+        const tone: Tone = TONES[box.tone];
+        const x = padX;
+        const top = tops[index]!;
+        const h = heights[index]!;
+        const stroke = box.emphasis ? 6 : 3;
+        const bodyTop = top + HEADER_H;
+        const bodyH = h - HEADER_H;
+        const textBlock = box.lines.length * 26;
+        const textStart = bodyTop + (bodyH - textBlock) / 2 + 20;
+        const prevBottom = index > 0 ? tops[index - 1]! + heights[index - 1]! : 0;
+        const mid = x + boxWidth / 2;
+        return (
+          <g key={`${box.name}-${index}`}>
+            {index > 0 ? (
+              <g>
+                <ArrowVertical x={mid - 150} y1={prevBottom + 6} y2={top - 6} />
+                <text
+                  x={mid - 162}
+                  y={(prevBottom + top) / 2 + 5}
+                  textAnchor="end"
+                  fontFamily={FONT}
+                  fontSize={16}
+                  fontWeight={700}
+                  fill="#171717"
+                >
+                  request
+                </text>
+                <ArrowVertical x={mid + 150} y1={top - 6} y2={prevBottom + 6} dashed />
+                <text
+                  x={mid + 162}
+                  y={(prevBottom + top) / 2 + 5}
+                  textAnchor="start"
+                  fontFamily={FONT}
+                  fontSize={16}
+                  fontWeight={700}
+                  fill="#171717"
+                >
+                  response
+                </text>
+              </g>
+            ) : null}
+            <rect
+              x={x}
+              y={top}
+              width={boxWidth}
+              height={h}
+              rx={RADIUS}
+              fill={tone.fill}
+              stroke={tone.stroke}
+              strokeWidth={stroke}
+            />
+            <path
+              d={headerPath(x, top, boxWidth, HEADER_H)}
+              fill={tone.header}
+              stroke={tone.stroke}
+              strokeWidth={stroke}
+            />
+            <line
+              x1={x}
+              y1={bodyTop}
+              x2={x + boxWidth}
+              y2={bodyTop}
+              stroke={tone.stroke}
+              strokeWidth={stroke}
+            />
+            <text
+              x={x + boxWidth / 2}
+              y={top + 32}
+              textAnchor="middle"
+              fontFamily={FONT}
+              fontSize={26}
+              fontWeight={700}
+              fill="#171717"
+            >
+              {box.name}
+            </text>
+            {box.lines.map((line, lineIndex) => (
+              <text
+                key={line}
+                x={x + boxWidth / 2}
+                y={textStart + lineIndex * 26}
+                textAnchor="middle"
+                fontFamily={MONO}
+                fontSize={20}
+                fontWeight={box.emphasis && lineIndex === 0 ? 700 : 400}
+                fill={box.emphasis && lineIndex === 0 ? tone.stroke : "#171717"}
+              >
+                {line}
+              </text>
+            ))}
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; layout?: "column" }> = {
   "mongo-roadmap": {
     title: "From the React UI to the database",
     boxWidth: 220,
@@ -217,7 +365,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[] }> 
   },
   "users-read-all": {
     title: "GET /api/users",
-    boxWidth: 230,
+    boxWidth: 1080,
+    layout: "column",
     boxes: [
       { name: "Users", lines: ["setUsers"], tone: "blue" },
       { name: "findAllUsers", lines: ["GET"], tone: "blue" },
@@ -227,7 +376,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[] }> 
   },
   "users-filter-role": {
     title: "GET /api/users?role=",
-    boxWidth: 250,
+    boxWidth: 1080,
+    layout: "column",
     boxes: [
       { name: "Users", lines: ["role select"], tone: "blue" },
       { name: "findUsersByRole", lines: ["GET ?role="], tone: "blue" },
@@ -247,7 +397,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[] }> 
   },
   "users-read-one": {
     title: "GET /api/users/:userId",
-    boxWidth: 230,
+    boxWidth: 1080,
+    layout: "column",
     boxes: [
       { name: "Details", lines: ["uid"], tone: "blue" },
       { name: "findUserById", lines: ["GET"], tone: "blue" },
@@ -257,7 +408,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[] }> 
   },
   "users-delete": {
     title: "DELETE /api/users/:userId",
-    boxWidth: 280,
+    boxWidth: 1080,
+    layout: "column",
     boxes: [
       { name: "Details", lines: ["onDelete"], tone: "blue" },
       { name: "deleteUser", lines: ["DELETE"], tone: "blue" },
@@ -267,7 +419,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[] }> 
   },
   "users-update": {
     title: "PUT /api/users/:userId",
-    boxWidth: 230,
+    boxWidth: 1080,
+    layout: "column",
     boxes: [
       { name: "Details", lines: ["onSave"], tone: "blue" },
       { name: "updateUser", lines: ["PUT"], tone: "blue" },
@@ -277,7 +430,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[] }> 
   },
   "users-create": {
     title: "POST /api/users",
-    boxWidth: 230,
+    boxWidth: 1080,
+    layout: "column",
     boxes: [
       { name: "Users", lines: ["onCreate"], tone: "blue" },
       { name: "createUser", lines: ["POST"], tone: "blue" },
@@ -828,6 +982,9 @@ export function StackDiagram({ id }: { id: string }) {
   if (id === "arrays-stack") return <ArraysPicture />;
   const spec = STACKS[id];
   if (!spec) return null;
+  if (spec.layout === "column") {
+    return <ColumnFlow title={spec.title} boxes={spec.boxes} boxWidth={spec.boxWidth} />;
+  }
   return <Flow title={spec.title} boxes={spec.boxes} boxWidth={spec.boxWidth} />;
 }
 
