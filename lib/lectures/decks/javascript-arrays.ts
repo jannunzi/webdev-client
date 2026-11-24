@@ -80,7 +80,7 @@ export const JAVASCRIPT_ARRAYS_SLIDES: LectureSlide[] = [
   },
   {
     id: "index",
-    title: "length and indexOf",
+    title: "length and `indexOf`",
     kind: "content",
     code: `export default function ArrayIndexAndLength() {
   const numberArray1 = [1, 2, 3, 4, 5];

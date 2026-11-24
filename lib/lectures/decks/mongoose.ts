@@ -68,7 +68,7 @@ DATABASE_CONNECTION_STRING=mongodb://127.0.0.1:27017/kambaz`,
   },
   {
     id: "read-env",
-    title: "Read process.env, then connect",
+    title: "Read `process.env`, then connect",
     kind: "demo",
     bullets: [
       "`dotenv/config` loads `.env` before other modules read keys",

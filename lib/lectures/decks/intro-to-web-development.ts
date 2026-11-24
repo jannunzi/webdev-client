@@ -110,7 +110,7 @@ export const INTRO_TO_WEB_DEVELOPMENT_SLIDES: LectureSlide[] = [
     bullets: [
       "**1995** — **JavaScript** (Netscape)",
       "**1996** — Adobe Flash",
-      "**2006** — jQuery",
+      "**2006** — `jQuery`",
       "**2010** — Knockout · AngularJS · Backbone",
       "**2013** — **React** (Facebook)",
       "**2014** — Vue · **2016** — Angular 2+ · **Svelte** · **Next.js** (server first)",

@@ -256,7 +256,7 @@ const [b, setB] = useState("23");
     kind: "title",
     bullets: [
       "`res.json` for an assignment object that survives until reboot",
-      "GET the object, then mutate title via the path",
+      "`GET` the object, then mutate title via the path",
     ],
   },
 ];

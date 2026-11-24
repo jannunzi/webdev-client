@@ -193,7 +193,7 @@ app.get("/lab5/assignment/title/:newTitle", setAssignmentTitle);`,
     kind: "content",
     bullets: [
       "`res.json` for objects. `res.send` for plain strings",
-      "GET a property, then encode a write in the path",
+      "`GET` a property, then encode a write in the path",
       "On your own: score and completed the same way",
     ],
   },

@@ -118,7 +118,7 @@ export default function CourseNavigation({ cid }: { cid: string }) {
   },
   {
     id: "list-group-css-intro",
-    title: "Course Navigation rules in kambaz.css",
+    title: "Course Navigation rules in `kambaz.css`",
     kind: "content",
     bullets: [
       "Append these rules to `kambaz.css` — keep everything already in the file",

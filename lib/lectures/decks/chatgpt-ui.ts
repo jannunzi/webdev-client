@@ -294,7 +294,7 @@ app.get("/api/openai/audio/transcribe/:audioFile", transcribe);`,
   },
   {
     id: "suggest-course",
-    title: "Add suggestCourse Route",
+    title: "Add `suggestCourse` Route",
     kind: "demo",
     bullets: [
       "Respond **JSON only** — name and description",

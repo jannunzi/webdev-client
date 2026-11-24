@@ -115,7 +115,7 @@ export default function TypesPage() {
   },
   {
     id: "object-types",
-    title: "ObjectTypes.tsx",
+    title: "`ObjectTypes.tsx`",
     kind: "content",
     code: `type Course = {
   name: string;
@@ -173,7 +173,7 @@ export default function ObjectTypes() {
   },
   {
     id: "interfaces",
-    title: "Interfaces.tsx",
+    title: "`Interfaces.tsx`",
     kind: "content",
     code: `interface Person {
   firstName: string;
@@ -276,7 +276,7 @@ export default function UnionTypes() {
   },
   {
     id: "enums",
-    title: "Enums.tsx",
+    title: "`Enums.tsx`",
     kind: "content",
     code: `enum Grade {
   A = "A",
@@ -334,7 +334,7 @@ export default function Enums() {
   },
   {
     id: "functions",
-    title: "FunctionTypes.tsx",
+    title: "`FunctionTypes.tsx`",
     kind: "content",
     code: `function add(a: number, b: number): number {
   return a + b;
@@ -456,7 +456,7 @@ export default function TypedProps() {
   },
   {
     id: "narrowing",
-    title: "Narrowing.tsx",
+    title: "`Narrowing.tsx`",
     kind: "content",
     code: `type User = {
   username: string;
@@ -515,7 +515,7 @@ export default function Narrowing() {
   },
   {
     id: "any-unknown",
-    title: "AnyVsUnknown.tsx",
+    title: "`AnyVsUnknown.tsx`",
     kind: "content",
     code: `function lengthOf(value: unknown): number {
   if (typeof value === "string") return value.length;
@@ -570,7 +570,7 @@ export default function AnyVsUnknown() {
   },
   {
     id: "utility",
-    title: "UtilityTypes.tsx",
+    title: "`UtilityTypes.tsx`",
     kind: "content",
     code: `type Course = {
   name: string;

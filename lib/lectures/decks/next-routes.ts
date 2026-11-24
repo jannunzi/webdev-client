@@ -31,7 +31,7 @@ export const NEXT_ROUTES_SLIDES: LectureSlide[] = [
   {
     id: "hello",
     links: ["http://localhost:3000/api/lab5/hello"],
-    title: "Writing a GET Route Handler",
+    title: "Writing a `GET` Route Handler",
     kind: "demo",
     bullets: [
       "Earlier, the Express server on port 4000 answered `/lab5/welcome`",
@@ -82,7 +82,7 @@ const data = await response.json();`,
   },
   {
     id: "hello-ui",
-    title: "Fetching Inside useEffect",
+    title: "Fetching Inside `useEffect`",
     kind: "demo",
     code: "\"use client\";\n\nimport { useEffect, useState } from \"react\";\n\nexport default function HelloRoute() {\n  const [hello, setHello] = useState<{ message?: string }>({});\n  useEffect(() => {\n    fetch(\"/api/lab5/hello\")\n      .then((response) => response.json())\n      .then(setHello);\n  }, []);",
     codeLanguage: "tsx",
@@ -131,7 +131,7 @@ useEffect(() => {
   },
   {
     id: "hello-client",
-    title: "Moving the Request into client.ts",
+    title: "Moving the Request into `client.ts`",
     kind: "demo",
     bullets: [
       "In `client.ts`, add the hello request as shown below",

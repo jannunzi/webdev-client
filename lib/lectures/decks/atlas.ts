@@ -41,7 +41,7 @@ export const ATLAS_SLIDES: LectureSlide[] = [
   },
   {
     id: "signup",
-    title: "Sign in at mongodb.com",
+    title: "Sign in at `mongodb.com`",
     kind: "content",
     bullets: [
       "Google account or email — confirm the validation message if asked",

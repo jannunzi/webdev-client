@@ -97,7 +97,7 @@ export const ANCHORS_SLIDES: LectureSlide[] = [
   },
   {
     id: "lab1-page-intro",
-    title: "The Completed Lab 1 page.tsx",
+    title: "The Completed Lab 1 `page.tsx`",
     kind: "content",
     bullets: [
       "`page.tsx` stays thin: import each exercise, then render it in order",
@@ -106,7 +106,7 @@ export const ANCHORS_SLIDES: LectureSlide[] = [
   },
   {
     id: "lab1-page",
-    title: "The Completed Lab 1 page.tsx (code)",
+    title: "The Completed Lab 1 `page.tsx` (code)",
     kind: "content",
     code: `import HeadingTags from "./HeadingTags";
 import ParagraphTag from "./ParagraphTag";

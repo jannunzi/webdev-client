@@ -152,7 +152,7 @@ app.get("/lab5/todos/:id", getTodoById);`,
     title: "Creating a Todo",
     kind: "demo",
     bullets: [
-      "GET `/lab5/todos/create` pushes a New Task and `res.json(todos)` returns the whole array",
+      "`GET` `/lab5/todos/create` pushes a New Task and `res.json(todos)` returns the whole array",
       "Register that route before `/lab5/todos/:id`, or `:id` treats `create` as an id",
       "The new todo's `id` is `new Date().getTime()`",
     ],
@@ -184,11 +184,11 @@ app.get("/lab5/todos/:id", getTodoById);`,
   },
   {
     id: "create-client",
-    title: "Requesting Create from client.ts",
+    title: "Requesting Create from `client.ts`",
     kind: "demo",
     bullets: [
       "In `client.ts`, add `createNewTodo` as shown below",
-      "`axios.get` calls GET `/lab5/todos/create` and returns the array",
+      "`axios.get` calls `GET` `/lab5/todos/create` and returns the array",
     ],
     code: `export const createNewTodo = async () => {
   const response = await axios.get(\`\${TODOS_API}/create\`);
@@ -213,7 +213,7 @@ app.get("/lab5/todos/:id", getTodoById);`,
     title: "Removing a Todo",
     kind: "demo",
     bullets: [
-      "GET `/lab5/todos/:id/delete` encodes the id in the path",
+      "`GET` `/lab5/todos/:id/delete` encodes the id in the path",
       "`findIndex` locates that id and `splice` removes it",
       "`res.json(todos)` returns the remaining array",
     ],
@@ -241,11 +241,11 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
   },
   {
     id: "remove-client",
-    title: "Requesting Remove from client.ts",
+    title: "Requesting Remove from `client.ts`",
     kind: "demo",
     bullets: [
       "In `client.ts`, add `removeTodo` as shown below",
-      "`axios.get` calls GET `/lab5/todos/:id/delete` and returns the surviving array",
+      "`axios.get` calls `GET` `/lab5/todos/:id/delete` and returns the surviving array",
     ],
     code: `export const removeTodo = async (todo: { id: number }) => {
   const response = await axios.get(\`\${TODOS_API}/\${todo.id}/delete\`);
@@ -321,7 +321,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
     kind: "content",
     bullets: [
       "`res.json(todos)` for the collection. `find` / `splice` for one id",
-      "Keep the GET create/delete routes so earlier links still work",
+      "Keep the `GET` create/delete routes so earlier links still work",
       "Proper verbs arrive with a JSON body in the next module",
     ],
   },
@@ -330,7 +330,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
     title: "Next: Async HTTP and JSON",
     kind: "title",
     bullets: [
-      "Stay on the page. Then POST, PUT, and DELETE for real",
+      "Stay on the page. Then `POST`, `PUT`, and `DELETE` for real",
       "AJAX (requests without a page reload), CORS (letting another origin call the server), `express.json()`",
     ],
   },

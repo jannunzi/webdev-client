@@ -30,7 +30,7 @@ export const KAMBAZ_SESSIONS_SLIDES: LectureSlide[] = [
   },
   {
     id: "one-user",
-    title: "One currentUser for Every Browser",
+    title: "One `currentUser` for Every Browser",
     kind: "content",
     bullets: [
       "Browser B signs in and overwrites `currentUser`, so browser A sees B",
@@ -214,12 +214,12 @@ const signout = (req, res) => {
     bullets: [
       "Default axios drops cookies",
       "`axios.create({ withCredentials: true })`",
-      "Replace `axios` in signin, signup, updateUser, profile, and signout",
+      "Replace `axios` in signin, signup, `updateUser`, profile, and signout",
     ],
   },
   {
     id: "axios-cookies",
-    title: "Configuring Axios withCredentials",
+    title: "Configuring Axios `withCredentials`",
     kind: "demo",
     code: `import axios from "axios";
 const axiosWithCredentials = axios.create({ withCredentials: true });

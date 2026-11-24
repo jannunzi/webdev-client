@@ -72,17 +72,17 @@ export default model;`,
   },
   {
     id: "read-all-path",
-    title: "GET /api/courses",
+    title: "`GET /api/courses`",
     kind: "demo",
     bullets: [
-      "The Dashboard calls fetchAllCourses, which sends GET /api/courses.",
-      "The route awaits the DAO, and setCourses replaces the cached list with those documents.",
+      "The Dashboard calls `fetchAllCourses`, which sends `GET /api/courses.`",
+      "The route awaits the DAO, and `setCourses` replaces the cached list with those documents.",
     ],
     diagram: "courses-read-all",
   },
   {
     id: "find",
-    title: "findAllCourses in the DAO",
+    title: "`findAllCourses` in the DAO",
     kind: "demo",
     bullets: [
       "Comment out the array return so there is one source of truth",
@@ -119,7 +119,7 @@ export default function CourseRoutes(app) {
   },
   {
     id: "async-routes",
-    title: "GET /api/courses awaits find",
+    title: "`GET /api/courses` awaits find",
     kind: "demo",
     bullets: [
       "`model.find()` is a promise, so the route is `async` and `await`s the DAO",
@@ -170,17 +170,17 @@ useEffect(() => {
   },
   {
     id: "read-one-path",
-    title: "GET /api/courses/:courseId",
+    title: "`GET /api/courses/:courseId`",
     kind: "demo",
     bullets: [
-      "findById looks up one course document by its id.",
-      "The editor calls GET /api/courses/:courseId and shows that document.",
+      "`findById` looks up one course document by its id.",
+      "The editor calls `GET /api/courses/:courseId` and shows that document.",
     ],
     diagram: "courses-read-one",
   },
   {
     id: "read-one-server",
-    title: "findCourseById in the DAO",
+    title: "`findCourseById` in the DAO",
     kind: "demo",
     bullets: ["Export it next to `findAllCourses`"],
     code: `function findCourseById(courseId) {
@@ -195,7 +195,7 @@ return {
   },
   {
     id: "read-one-route",
-    title: "GET one course route",
+    title: "`GET` one course route",
     kind: "demo",
     code: `const findCourseById = async (req, res) => {
   const course = await dao.findCourseById(req.params.courseId);
@@ -244,17 +244,17 @@ app.get("/api/courses/:courseId", findCourseById);`,
   },
   {
     id: "create-path",
-    title: "POST /api/courses",
+    title: "`POST /api/courses`",
     kind: "demo",
     bullets: [
-      "The form posts the new course to POST /api/courses.",
+      "The form posts the new course to `POST /api/courses.`",
       "The store appends the document the route returns, so the new card appears.",
     ],
     diagram: "courses-create",
   },
   {
     id: "create",
-    title: "createCourse assigns a uuid",
+    title: "`createCourse` assigns a uuid",
     kind: "demo",
     bullets: [
       "Spread the course, set `_id: uuidv4()`, then `model.create`",
@@ -275,7 +275,7 @@ return {
   },
   {
     id: "create-route",
-    title: "POST course route",
+    title: "`POST` course route",
     kind: "demo",
     code: `const createCourse = async (req, res) => {
   const newCourse = await dao.createCourse(req.body);
@@ -320,23 +320,23 @@ const onAddCourse = async () => {
     title: "New course appears on the list",
     kind: "demo",
     bullets: [
-      "The new card's name is the document that POST /api/courses inserted.",
+      "The new card's name is the document that `POST /api/courses` inserted.",
     ],
     diagram: "courses-create-result",
   },
   {
     id: "delete-path",
-    title: "DELETE /api/courses/:courseId",
+    title: "`DELETE /api/courses/:courseId`",
     kind: "demo",
     bullets: [
-      "Delete sends DELETE /api/courses/:courseId, and the DAO removes that document.",
+      "Delete sends `DELETE /api/courses/:courseId`, and the DAO removes that document.",
       "The store then drops the same course from the cached list.",
     ],
     diagram: "courses-delete",
   },
   {
     id: "delete-server",
-    title: "deleteOne by course id",
+    title: "`deleteOne` by course id",
     kind: "demo",
     bullets: ["Export `deleteCourse` on the DAO"],
     code: `function deleteCourse(courseId) {
@@ -352,7 +352,7 @@ return {
   },
   {
     id: "delete-route",
-    title: "DELETE course route",
+    title: "`DELETE` course route",
     kind: "demo",
     code: `const deleteCourse = async (req, res) => {
   const { courseId } = req.params;
@@ -395,23 +395,23 @@ const onDeleteCourse = async (courseId: string) => {
     title: "Deleted course leaves the list",
     kind: "demo",
     bullets: [
-      "The missing card is the course document that deleteOne removed from the collection.",
+      "The missing card is the course document that `deleteOne` removed from the collection.",
     ],
     diagram: "courses-delete-result",
   },
   {
     id: "update-path",
-    title: "PUT /api/courses/:courseId",
+    title: "`PUT /api/courses/:courseId`",
     kind: "demo",
     bullets: [
-      "Save sends PUT /api/courses/:courseId with the fields the editor changed.",
+      "Save sends `PUT /api/courses/:courseId` with the fields the editor changed.",
       "`$set` writes those fields, and the store replaces the cached course with the result.",
     ],
     diagram: "courses-update",
   },
   {
     id: "update-server",
-    title: "updateOne with $set",
+    title: "`updateOne` with `$set`",
     kind: "demo",
     bullets: ["Fields you omit stay as they were. Export `updateCourse`"],
     code: `function updateCourse(courseId, courseUpdates) {
@@ -427,7 +427,7 @@ return {
   },
   {
     id: "update-route",
-    title: "PUT course route",
+    title: "`PUT` course route",
     kind: "demo",
     code: `const updateCourse = async (req, res) => {
   const { courseId } = req.params;

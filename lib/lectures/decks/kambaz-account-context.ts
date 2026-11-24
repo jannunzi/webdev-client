@@ -57,7 +57,7 @@ const AccountContext = createContext<AccountContextValue | null>(null);
   },
   {
     id: "context-part-2",
-    title: "AccountProvider and useAccountContext",
+    title: "AccountProvider and `useAccountContext`",
     kind: "content",
     code: `export function AccountProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -126,7 +126,7 @@ export default function KambazLayout({
   },
   {
     id: "signin",
-    title: "Sign In Lookup and setCurrentUser",
+    title: "Sign In Lookup and `setCurrentUser`",
     kind: "content",
     code: `"use client";
 

@@ -7,7 +7,7 @@ export const HEADINGS_AND_PARAGRAPHS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "HEADINGS & PARAGRAPHS",
-      "Lab 1: HeadingTags.tsx (`wd-h-tag`) and ParagraphTag.tsx (`wd-p-tag`)",
+      "Lab 1: `HeadingTags.tsx` (`wd-h-tag`) and `ParagraphTag.tsx` (`wd-p-tag`)",
     ],
   },
   {

@@ -4396,6 +4396,35 @@ describe("Chapter 4 account §4.10.7 assignment slides", () => {
   });
 });
 
+describe("inline code in slide text", () => {
+  const allow = new Set(["macOS", "iOS", "iPhone", "iPad", "camelCase", "eXtensible", "xAI"]);
+  const camel = /\b[a-z][a-z0-9]*[A-Z][A-Za-z0-9]*\b/g;
+  const call = /\b[A-Za-z_$][\w$]*\(\)/g;
+
+  it("backticks camelCase names and calls in bullets and titles", () => {
+    const bare: string[] = [];
+    for (const deck of listLectureDecks()) {
+      for (const slide of deck.slides) {
+        const fields = [slide.title, ...(slide.bullets ?? []), slide.imageCaption, slide.interactiveHint];
+        for (const raw of fields) {
+          if (!raw) continue;
+          const plain = raw
+            .replace(/\[[^\]]+\]\([^)]+\)/g, " ")
+            .replace(/\*\*[^*]+\*\*/g, " ")
+            .split("`")
+            .filter((_, index) => index % 2 === 0)
+            .join(" ");
+          const found = [...(plain.match(camel) ?? []), ...(plain.match(call) ?? [])].filter(
+            (word) => !allow.has(word),
+          );
+          if (found.length) bare.push(`${deck.slug}#${slide.id}: ${found.join(", ")}`);
+        }
+      }
+    }
+    assert.deepEqual(bare, []);
+  });
+});
+
 describe("diagram fit", () => {
   it("scales uniformly to the leftover slot and does not overflow either axis", () => {
     const wide = diagramFitScale(800, 600, 1600, 400);

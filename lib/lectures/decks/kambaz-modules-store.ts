@@ -63,7 +63,7 @@ type ModulesStore = {
   },
   {
     id: "store-part-2",
-    title: "Seed modules and addModule",
+    title: "Seed modules and `addModule`",
     kind: "content",
     code: `export const useModulesStore = create<ModulesStore>((set) => ({
   modules: modulesJson as CourseModule[],
@@ -87,7 +87,7 @@ type ModulesStore = {
   },
   {
     id: "store-part-3",
-    title: "delete, update and editModule",
+    title: "delete, update and `editModule`",
     kind: "content",
     code: `  deleteModule: (moduleId) =>
     set((state) => ({

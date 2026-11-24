@@ -45,7 +45,7 @@ export const COMMIT_TO_GITHUB_SLIDES: LectureSlide[] = [
     kind: "demo",
     bullets: [
       "Use **GitHub.com** instead of the school's GitHub",
-      "Create an account at GitHub.com and create a new **webdev-client** repo",
+      "Create an account at `GitHub.com` and create a new **webdev-client** repo",
       "Public. **Empty** — do not add a README, `.gitignore`, or license",
     ],
     diagram: "github-create-repo-mock",

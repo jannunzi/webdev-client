@@ -105,7 +105,7 @@ export default function ReactIconsSampler() {
   },
   {
     id: "class-name-intro",
-    title: "className, style, and size",
+    title: "`className`, style, and size",
     kind: "content",
     bullets: [
       "Icon components accept ordinary element props",
@@ -116,7 +116,7 @@ export default function ReactIconsSampler() {
   },
   {
     id: "class-name",
-    title: "className, style, and size (code)",
+    title: "`className`, style, and size (code)",
     kind: "content",
     code: `<FaCalendar className="text-4xl text-red-600" />
 <AiOutlineDashboard size={32} style={{ color: "navy" }} />`,

@@ -112,7 +112,7 @@ export default function AccountPage() {
   },
   {
     id: "profile",
-    title: "Profile Draft from currentUser",
+    title: "Profile Draft from `currentUser`",
     kind: "content",
     code: `"use client";
 
@@ -322,7 +322,7 @@ export { emptyUser };`,
   },
   {
     id: "signup",
-    title: "Sign Up with createUser",
+    title: "Sign Up with `createUser`",
     kind: "content",
     code: `"use client";
 

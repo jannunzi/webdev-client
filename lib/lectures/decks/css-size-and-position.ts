@@ -395,7 +395,7 @@ export const CSS_SIZE_AND_POSITION_SLIDES: LectureSlide[] = [
   },
   {
     id: "positions-file",
-    title: "One Positions.tsx file",
+    title: "One `Positions.tsx` file",
     kind: "content",
     bullets: [
       "The three blocks are siblings inside `wd-css-positions`",

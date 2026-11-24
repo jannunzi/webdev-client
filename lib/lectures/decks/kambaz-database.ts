@@ -169,7 +169,7 @@ const LINKS = [
   },
   {
     id: "download-courses-intro",
-    title: "Download courses.json first",
+    title: "Download `courses.json` first",
     kind: "content",
     bullets: [
       "Kambaz keeps its data in **JSON** files under `app/(kambaz)/database/`",
@@ -180,14 +180,14 @@ const LINKS = [
   },
   {
     id: "download-courses",
-    title: "Download courses.json first (code)",
+    title: "Download `courses.json` first (code)",
     kind: "content",
     code: `curl -o "app/(kambaz)/database/courses.json" https://kambaz.dev/downloads/kambaz-database/courses.json`,
     codeLanguage: "shell",
   },
   {
     id: "database",
-    title: "index.ts re-exports the JSON",
+    title: "`index.ts` re-exports the JSON",
     kind: "content",
     bullets: [
       "Re-export from `index.ts` so screens write `import * as db from \"../database\"`",

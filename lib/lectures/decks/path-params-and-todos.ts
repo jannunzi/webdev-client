@@ -182,7 +182,7 @@ export default TodoItem;`,
   },
   {
     id: "todos-json",
-    title: "The list lives in todos.json",
+    title: "The list lives in `todos.json`",
     kind: "content",
     bullets: [
       "A `.json` file is data. Next.js can `import` it as a JavaScript value",

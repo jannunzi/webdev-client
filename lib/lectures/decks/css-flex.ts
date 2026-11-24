@@ -43,7 +43,7 @@ export const CSS_FLEX_SLIDES: LectureSlide[] = [
   },
   {
     id: "tsx-intro",
-    title: "First version of Flex.tsx is just the row",
+    title: "First `Flex.tsx` is just the row",
     kind: "content",
     bullets: [
       "`display: flex` lines children up in a row with no floats, clearing, or percentage math.",
@@ -52,7 +52,7 @@ export const CSS_FLEX_SLIDES: LectureSlide[] = [
   },
   {
     id: "tsx",
-    title: "First Flex.tsx (code)",
+    title: "First `Flex.tsx` (code)",
     kind: "content",
     code: `export default function Flex() {
   return (

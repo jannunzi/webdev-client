@@ -92,13 +92,15 @@ export default function DiagramFit({ children }: { children: ReactNode }) {
         slide instanceof HTMLElement && slide.clientHeight > 0
           ? slide.clientHeight
           : slotHeight;
+      // Screen mocks fill the leftover slot. Flow drawings stay at the slide-2 cap.
+      const screenDemo = Boolean(inner.querySelector("[data-screen-demo]"));
       inner.style.zoom = String(
         diagramFitScale(
           slotWidth,
           slotHeight,
           naturalWidth,
           naturalHeight,
-          slideHeight * DIAGRAM_MAX_HEIGHT_OF_SLIDE,
+          screenDemo ? Number.POSITIVE_INFINITY : slideHeight * DIAGRAM_MAX_HEIGHT_OF_SLIDE,
         ),
       );
     };

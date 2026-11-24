@@ -25,7 +25,7 @@ export const CLIENT_AND_SERVER_SLIDES: LectureSlide[] = [
   },
   {
     id: "client",
-    title: "usePathname needs a Client Component",
+    title: "`usePathname` needs a Client Component",
     kind: "content",
     code: `"use client";
 
@@ -131,10 +131,10 @@ export default function ServerComponentDemo() {
   },
   {
     id: "pathname-intro",
-    title: "usePathname",
+    title: "`usePathname`",
     kind: "content",
     bullets: [
-      "A **pathname** is the part of the URL after the host and before any `?`, e.g. `/labs/lab3/client-apis`",
+      "A **pathname** is the part of the URL after the host and before any `?`, `e.g`. `/labs/lab3/client-apis`",
       "A **hook** is a React function whose name starts with `use`, called only at the top of a component",
       "`usePathname()` from `next/navigation` returns the current pathname",
       "This version also splits it into **segments**, the pieces between the slashes",
@@ -142,7 +142,7 @@ export default function ServerComponentDemo() {
   },
   {
     id: "pathname",
-    title: "usePathname (code)",
+    title: "`usePathname` (code)",
     kind: "content",
     code: `"use client";
 
@@ -164,7 +164,7 @@ export default function PathnameDemo() {
   },
   {
     id: "pathname-live",
-    title: "usePathname: live demo",
+    title: "`usePathname`: live demo",
     kind: "demo",
     bullets: [
       "Here the pathname is the slides route",
@@ -194,7 +194,7 @@ export default function ClientApis() {
   },
   {
     id: "search-params-intro",
-    title: "useSearchParams",
+    title: "`useSearchParams`",
     kind: "content",
     bullets: [
       "The **query string** is the part of a URL after `?`: `name=value` pairs joined by `&`, as in `?name=Alice`",
@@ -205,7 +205,7 @@ export default function ClientApis() {
   },
   {
     id: "search-params",
-    title: "useSearchParams (code)",
+    title: "`useSearchParams` (code)",
     kind: "content",
     code: `"use client";
 
@@ -228,7 +228,7 @@ export default function SearchParamsDemo() {
   },
   {
     id: "search-params-live",
-    title: "useSearchParams: live demo",
+    title: "`useSearchParams`: live demo",
     kind: "demo",
     bullets: [
       "Click the link: the greeting changes without a server round trip",
@@ -237,18 +237,18 @@ export default function SearchParamsDemo() {
   },
   {
     id: "suspense-intro",
-    title: "useSearchParams needs Suspense",
+    title: "`useSearchParams` needs Suspense",
     kind: "content",
     bullets: [
       "**Prerendering**: Next.js builds a page's HTML ahead of time, at `next build`, when there is no visitor and no query string",
       "So a component that calls `useSearchParams` on a prerendered page must sit inside a `<Suspense>` boundary",
       "`Suspense`, from `react`, renders its `fallback` in the prerendered HTML, then swaps in the real component once the browser knows the URL",
-      "Without it, `next build` fails with \"Missing Suspense boundary with useSearchParams\"",
+      "Without it, `next build` fails with \"Missing Suspense boundary with `useSearchParams`\"",
     ],
   },
   {
     id: "suspense",
-    title: "useSearchParams needs Suspense (code)",
+    title: "`useSearchParams` needs Suspense (code)",
     kind: "content",
     code: `import { Suspense } from "react";
 import PathnameDemo from "./PathnameDemo";
@@ -281,7 +281,7 @@ export default function ClientApis() {
   },
   {
     id: "window-intro",
-    title: "Read window in useEffect",
+    title: "Read window in `useEffect`",
     kind: "content",
     bullets: [
       "**Hydration** is React attaching to the server's HTML in the browser; a **hydration error** is when the two renders differ",
@@ -292,7 +292,7 @@ export default function ClientApis() {
   },
   {
     id: "window",
-    title: "Read window in useEffect (code)",
+    title: "Read window in `useEffect` (code)",
     kind: "content",
     code: `"use client";
 
@@ -357,7 +357,7 @@ export default function WindowDemo() {
   },
   {
     id: "geolocation-intro",
-    title: "navigator.geolocation",
+    title: "`navigator.geolocation`",
     kind: "content",
     bullets: [
       "`window.navigator` (just `navigator`) describes the browser. `navigator.geolocation` is the **Geolocation API**: the device's latitude and longitude",
@@ -369,7 +369,7 @@ export default function WindowDemo() {
   },
   {
     id: "geolocation",
-    title: "navigator.geolocation (code)",
+    title: "`navigator.geolocation` (code)",
     kind: "content",
     code: `"use client";
 
@@ -427,7 +427,7 @@ export default function GeolocationDemo() {
   },
   {
     id: "geolocation-live",
-    title: "navigator.geolocation: live demo",
+    title: "`navigator.geolocation`: live demo",
     kind: "demo",
     bullets: [
       "Nothing is asked until you click. Block location in the site settings and try again: the message explains what happened",
@@ -679,7 +679,7 @@ export default function OsDemo() {
   },
   {
     id: "env-client-check-intro",
-    title: "process.env",
+    title: "`process.env`",
     kind: "content",
     bullets: [
       "An **environment variable** is a named setting given to a program from outside its code; in Node.js they are properties of `process.env`",
@@ -722,7 +722,7 @@ export default function EnvDemo() {
   },
   {
     id: "env-live",
-    title: "process.env: live demo",
+    title: "`process.env`: live demo",
     kind: "demo",
     bullets: [
       "The server line shows the message; the browser line shows `undefined`",
@@ -732,7 +732,7 @@ export default function EnvDemo() {
   },
   {
     id: "request-headers-intro",
-    title: "headers()",
+    title: "`headers()`",
     kind: "content",
     bullets: [
       "Every request carries **headers**, name-value lines describing it. `user-agent` names the browser and operating system",
@@ -743,7 +743,7 @@ export default function EnvDemo() {
   },
   {
     id: "request-headers",
-    title: "headers() (code)",
+    title: "`headers()` (code)",
     kind: "content",
     code: `import { headers } from "next/headers";
 
@@ -765,7 +765,7 @@ export default async function RequestHeadersDemo() {
   },
   {
     id: "request-headers-live",
-    title: "headers(): live demo",
+    title: "`headers()`: live demo",
     kind: "demo",
     bullets: [
       "The server sees the same IP as the client IP demo, without asking anyone else. On `npm run dev` there is no proxy, so it is unknown",

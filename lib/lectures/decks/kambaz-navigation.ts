@@ -93,7 +93,7 @@ export default function KambazNavigation() {
   },
   {
     id: "layout-intro",
-    title: "layout.tsx: nav left, children right",
+    title: "`layout.tsx`: nav left, children right",
     kind: "content",
     bullets: [
       "`app/(kambaz)/layout.tsx` wraps every Kambaz route",
@@ -103,7 +103,7 @@ export default function KambazNavigation() {
   },
   {
     id: "layout",
-    title: "layout.tsx (code)",
+    title: "`layout.tsx` (code)",
     kind: "content",
     code: `import { ReactNode } from "react";
 import KambazNavigation from "./Navigation";
@@ -135,11 +135,11 @@ export default function KambazLayout({
     kind: "demo",
     embed: "kambaz-navigation",
     interactiveHint:
-      "Click Calendar or Inbox. Those routes 404 until not-found.tsx exists.",
+      "Click Calendar or Inbox. Those routes 404 until `not-found.tsx` exists.",
   },
   {
     id: "not-found-intro",
-    title: "not-found.tsx for missing pages",
+    title: "`not-found.tsx` for missing pages",
     kind: "content",
     bullets: [
       "Calendar and Inbox have no `page.tsx` yet — they 404",
@@ -149,7 +149,7 @@ export default function KambazLayout({
   },
   {
     id: "not-found",
-    title: "not-found.tsx for missing pages (code)",
+    title: "`not-found.tsx` for missing pages (code)",
     kind: "content",
     code: `import Link from "next/link";
 

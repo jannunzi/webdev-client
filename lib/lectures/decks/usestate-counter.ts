@@ -6,13 +6,13 @@ export const USESTATE_COUNTER_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Chapter 4 · useState and the Counter",
+      "Chapter 4 · `useState` and the Counter",
       "A setter that tells React to paint",
     ],
   },
   {
     id: "purpose",
-    title: "Implementing useState",
+    title: "Implementing `useState`",
     kind: "content",
     diagram: "usestate-goal",
     bullets: [
@@ -24,7 +24,7 @@ export const USESTATE_COUNTER_SLIDES: LectureSlide[] = [
   },
   {
     id: "hook-pair",
-    title: "useState returns a pair",
+    title: "`useState` returns a pair",
     kind: "content",
     bullets: [
       "`const [count, setCount] = useState(7)`",
@@ -90,7 +90,7 @@ export default function CounterBroken() {
   },
   {
     id: "prep-counter",
-    title: "Fixing the Counter with useState",
+    title: "Fixing the Counter with `useState`",
     kind: "content",
     bullets: [
       "The broken counter changed a variable React never saw",
@@ -100,7 +100,7 @@ export default function CounterBroken() {
   },
   {
     id: "working",
-    title: "setCount queues a new render",
+    title: "`setCount` queues a new render",
     kind: "content",
     code: `"use client";
 
@@ -158,7 +158,7 @@ export default function Counter() {
   },
   {
     id: "effects",
-    title: "useEffect reaches outside",
+    title: "`useEffect` reaches outside",
     kind: "content",
     bullets: [
       "An **effect** is code that reaches outside the component, such as reading the window size",

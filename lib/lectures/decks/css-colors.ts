@@ -85,7 +85,7 @@ export const CSS_COLORS_SLIDES: LectureSlide[] = [
   },
   {
     id: "wire-intro",
-    title: "Import each demo into page.tsx",
+    title: "Import each demo into `page.tsx`",
     kind: "content",
     bullets: [
       "`import \"./index.css\"` once, then one component import and one tag per exercise",
@@ -95,7 +95,7 @@ export const CSS_COLORS_SLIDES: LectureSlide[] = [
   },
   {
     id: "wire",
-    title: "Import each demo into page.tsx (code)",
+    title: "Import each demo into `page.tsx` (code)",
     kind: "content",
     code: `import "./index.css";
 import ForegroundColors from "./ForegroundColors";

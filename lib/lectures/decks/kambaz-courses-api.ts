@@ -95,7 +95,7 @@ export default function CoursesDao(db) {
   {
     id: "routes",
     links: ["http://localhost:4000/api/courses", "http://localhost:4000/api/users/123/courses"],
-    title: "Writing the Courses GET Routes",
+    title: "Writing the Courses `GET` Routes",
     kind: "demo",
     code: `import CoursesDao from "./dao";
 export default function CourseRoutes(app, db) {
@@ -128,7 +128,7 @@ export default function CourseRoutes(app, db) {
     kind: "demo",
     bullets: [
       "In `courses/client.ts`, add both functions below",
-      "`fetchAllCourses` is a plain GET of `/api/courses`",
+      "`fetchAllCourses` is a plain `GET` of `/api/courses`",
       "`findMyCourses` sends cookies to `/api/users/current/courses`",
     ],
     code: `import axios from "axios";
@@ -233,7 +233,7 @@ useEffect(() => {
   },
   {
     id: "create-flow",
-    title: "Creating a Resource with POST",
+    title: "Creating a Resource with `POST`",
     kind: "content",
     bullets: [
       "Dashboard Add sends the course draft to the client function",
@@ -249,7 +249,7 @@ useEffect(() => {
     kind: "demo",
     bullets: [
       "In `courses/client.ts`, add the function as shown below",
-      "POST the draft to `/api/users/current/courses`",
+      "`POST` the draft to `/api/users/current/courses`",
       "Add, refresh, and the course stays listed while Express runs",
     ],
     code: `export const createCourse = async (course: unknown) => {

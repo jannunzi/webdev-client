@@ -58,7 +58,7 @@ export const DYNAMIC_STYLING_SLIDES: LectureSlide[] = [
   },
   {
     id: "classes",
-    title: "Build className from a variable",
+    title: "Build `className` from a variable",
     kind: "content",
     code: `import "./Classes.css";
 

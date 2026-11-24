@@ -121,7 +121,7 @@ export const ARRAY_ITERATION_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "`map` transforms every item. The next tools pick some of them",
-      "Find, findIndex, filter, includes / some / every",
+      "Find, `findIndex`, filter, includes / some / every",
     ],
   },
 ];

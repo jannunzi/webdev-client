@@ -91,7 +91,7 @@ npm init`,
   },
   {
     id: "toolchain-config",
-    title: "Configuring package.json for ES Modules",
+    title: "Configuring `package.json` for ES Modules",
     kind: "demo",
     bullets: [
       "`\"type\": \"module\"` lets the server use `import` and `export`",
@@ -127,7 +127,7 @@ npm init`,
   },
   {
     id: "tsconfig",
-    title: "Writing the Server tsconfig.json",
+    title: "Writing the Server `tsconfig.json`",
     kind: "demo",
     code: `{
   "compilerOptions": {
@@ -161,7 +161,7 @@ npm init`,
   },
   {
     id: "express-intro",
-    title: "Defining a GET Route with Express",
+    title: "Defining a `GET` Route with Express",
     kind: "demo",
     bullets: [
       "Goal: answer `GET /hello` with Hello World! on port 4000",

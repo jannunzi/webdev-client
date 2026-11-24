@@ -89,7 +89,7 @@ export const TAILWIND_SPACING_SLIDES: LectureSlide[] = [
   },
   {
     id: "vs-css",
-    title: "Same job as Lab 2 Padding.tsx",
+    title: "Same job as Lab 2 `Padding.tsx`",
     kind: "content",
     bullets: [
       "Plain CSS wrote `.wd-padded-top-left { padding-top: 50px; }`",

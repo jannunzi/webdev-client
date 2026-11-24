@@ -761,8 +761,37 @@ code.quiz-prompt-code {
  * Demo-only slides (no code sharing the stage): grow the live embed and
  * form controls ~30% so Signup/Signin/Profile fields read from the back.
  */
+.lecture-slide[data-demo-stage="true"] {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.lecture-slide[data-demo-stage="true"] > .lecture-block[data-block-type="bullets"] {
+  flex: 0 0 auto;
+}
+
+.lecture-slide[data-demo-stage="true"] > .lecture-block[data-block-type="component"] {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.lecture-slide[data-demo-stage="true"] > .lecture-block[data-block-type="component"] > * {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .lecture-slide[data-demo-stage="true"] .lecture-demo-frame {
-  margin-block: 0.85rem;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-block: 0.35rem 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .lecture-slide[data-demo-stage="true"] .lecture-demo-frame-caption {
@@ -770,6 +799,8 @@ code.quiz-prompt-code {
 }
 
 .lecture-slide[data-demo-stage="true"] .lecture-demo-frame-body {
+  flex: 1 1 auto;
+  min-height: 0;
   font-size: 1.3em;
   /* Set per slide by fitDemoScale (lib/lectures/demo-fit.ts): zoom scales
    * text, form controls and fixed px boxes together, never below 1. */
@@ -1155,6 +1186,13 @@ html.lecture-presenting body {
   flex: 0 1 auto;
   min-height: 0;
   overflow: auto;
+}
+
+/* A screen mock under the bullets uses the leftover height. Flow diagrams do not.
+   Slightly smaller bullets keep the sentences on screen and leave that room. */
+.lecture-slide[data-diagram-fit="stack"]:has([data-screen-demo]) .lecture-slide-bullets {
+  font-size: 1.5rem;
+  line-height: 1.3;
 }
 
 .lecture-slide[data-diagram-fit="stack"] > .lecture-diagram-fit {
