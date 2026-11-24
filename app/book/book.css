@@ -1209,6 +1209,24 @@ html.lecture-presenting body {
   margin-top: 1.35rem;
 }
 
+/* You-are-here maps stay at the bottom of the slide, one height, so a
+   longer listing does not shove them up or shrink them. The copy scrolls
+   above a fixed gap and never covers the map. */
+.lecture-slide[data-diagram-fit="stack"][data-diagram-map="true"] > .lecture-diagram-copy {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.lecture-slide[data-diagram-fit="stack"][data-diagram-map="true"] > .lecture-diagram-fit {
+  flex: 0 0 34%;
+  height: 34%;
+  max-height: 34%;
+  min-height: 0;
+  margin-top: 1.35rem;
+  align-items: flex-end;
+}
+
 .lecture-slide[data-diagram-fit="stack"] > .lecture-diagram-fit {
   flex: 1 1 0;
   min-height: 7.5rem;

@@ -637,6 +637,10 @@ export default function LectureDeckShell({
       })
     : undefined;
   const hasFittedDiagram = Boolean(slide.diagram) || flowDiagram;
+  // Code slides that reuse a stack diagram with a you-are-here arrow.
+  const mapDiagram = Boolean(
+    slide.diagramFocus && slide.blocks.some((block) => block.type === "code"),
+  );
   const fittedDiagram = hasFittedDiagram ? (
     <>
       {slide.diagram ? (
@@ -856,6 +860,7 @@ export default function LectureDeckShell({
           data-demo-stage={demoStage ? "true" : undefined}
           data-target-figure={targetFigure ? "true" : undefined}
           data-diagram-fit={hasFittedDiagram ? "stack" : undefined}
+          data-diagram-map={mapDiagram ? "true" : undefined}
           data-code-columns={slide.layout === "code-columns" ? "true" : undefined}
           data-lecture-present={
             fallbackPresent ? "fallback" : isNativeFullscreen ? "native" : undefined

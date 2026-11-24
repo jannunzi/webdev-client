@@ -316,7 +316,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     title: "Users from the page to MongoDB",
     boxWidth: 268,
     boxes: [
-      { name: "Users page", lines: ["useEffect", "Details"], tone: "blue" },
+      { name: "Users.tsx", lines: ["useEffect", "Details"], tone: "blue" },
       {
         name: "client.ts",
         lines: [
@@ -360,7 +360,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
         ],
         tone: "yellow",
       },
-      { name: "users", lines: ["MongoDB"], tone: "red" },
+      { name: "MongoDB", lines: ["users"], tone: "red" },
     ],
   },
   "users-read-all": {
@@ -368,11 +368,11 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 300,
     large: true,
     boxes: [
-      { name: "Users", lines: ["setUsers"], tone: "blue" },
+      { name: "Users.tsx", lines: ["setUsers"], tone: "blue" },
       { name: "client.ts", lines: ["findAllUsers()"], tone: "blue" },
       { name: "UserRoutes.ts", lines: ["GET /api/users"], tone: "yellow" },
       { name: "UserDAO.ts", lines: ["findAllUsers()"], tone: "yellow" },
-      { name: "model.find()", lines: ["users"], tone: "red" },
+      { name: "MongoDB", lines: ["users"], tone: "red" },
     ],
   },
   "users-filter-role": {
@@ -380,11 +380,11 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 340,
     large: true,
     boxes: [
-      { name: "Users", lines: ["role select"], tone: "blue" },
+      { name: "Users.tsx", lines: ["role select"], tone: "blue" },
       { name: "client.ts", lines: ["findUsersByRole()"], tone: "blue" },
       { name: "UserRoutes.ts", lines: ["GET /api/users?role="], tone: "yellow" },
       { name: "UserDAO.ts", lines: ["findUsersByRole()"], tone: "yellow" },
-      { name: "find({ role })", lines: ["users"], tone: "red" },
+      { name: "MongoDB", lines: ["users"], tone: "red" },
     ],
   },
   "users-filter-name": {
@@ -392,11 +392,11 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 420,
     large: true,
     boxes: [
-      { name: "Users", lines: ["Search people"], tone: "blue" },
+      { name: "Users.tsx", lines: ["Search people"], tone: "blue" },
       { name: "client.ts", lines: ["findUsersByPartialName()"], tone: "blue" },
       { name: "UserRoutes.ts", lines: ["GET /api/users?name="], tone: "yellow" },
       { name: "UserDAO.ts", lines: ["findUsersByPartialName()"], tone: "yellow" },
-      { name: "find()", lines: ["$or", "$regex firstName", "$regex lastName"], tone: "red" },
+      { name: "MongoDB", lines: ["$or", "$regex firstName", "$regex lastName"], tone: "red" },
     ],
   },
   "users-read-one": {
@@ -404,11 +404,11 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 320,
     large: true,
     boxes: [
-      { name: "Details", lines: ["uid"], tone: "blue" },
+      { name: "Details.tsx", lines: ["uid"], tone: "blue" },
       { name: "client.ts", lines: ["findUserById()"], tone: "blue" },
       { name: "UserRoutes.ts", lines: ["GET /api/users/:userId"], tone: "yellow" },
       { name: "UserDAO.ts", lines: ["findUserById()"], tone: "yellow" },
-      { name: "findById", lines: ["one user"], tone: "red" },
+      { name: "MongoDB", lines: ["one user"], tone: "red" },
     ],
   },
   "users-delete": {
@@ -416,11 +416,11 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 380,
     large: true,
     boxes: [
-      { name: "Details", lines: ["onDelete"], tone: "blue" },
+      { name: "Details.tsx", lines: ["onDelete"], tone: "blue" },
       { name: "client.ts", lines: ["deleteUser()"], tone: "blue" },
       { name: "UserRoutes.ts", lines: ["DELETE /api/users/:userId"], tone: "yellow" },
       { name: "UserDAO.ts", lines: ["deleteUser()"], tone: "yellow" },
-      { name: "findByIdAndDelete", lines: ["one user"], tone: "red" },
+      { name: "MongoDB", lines: ["one user"], tone: "red" },
     ],
   },
   "users-update": {
@@ -428,11 +428,11 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 300,
     large: true,
     boxes: [
-      { name: "Details", lines: ["onSave"], tone: "blue" },
+      { name: "Details.tsx", lines: ["onSave"], tone: "blue" },
       { name: "client.ts", lines: ["updateUser()"], tone: "blue" },
       { name: "UserRoutes.ts", lines: ["PUT /api/users/:userId"], tone: "yellow" },
       { name: "UserDAO.ts", lines: ["updateUser()"], tone: "yellow" },
-      { name: "updateOne", lines: ["users"], tone: "red" },
+      { name: "MongoDB", lines: ["users"], tone: "red" },
     ],
   },
   "users-create": {
@@ -440,11 +440,11 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 300,
     large: true,
     boxes: [
-      { name: "Users", lines: ["onCreate"], tone: "blue" },
+      { name: "Users.tsx", lines: ["onCreate"], tone: "blue" },
       { name: "client.ts", lines: ["createUser()"], tone: "blue" },
       { name: "UserRoutes.ts", lines: ["POST /api/users"], tone: "yellow" },
       { name: "UserDAO.ts", lines: ["createUser()"], tone: "yellow" },
-      { name: "model.create", lines: ["users"], tone: "red" },
+      { name: "MongoDB", lines: ["users"], tone: "red" },
     ],
   },
   "courses-stack": {
@@ -452,7 +452,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 400,
     large: true,
     boxes: [
-      { name: "Dashboard", lines: ["store"], tone: "blue" },
+      { name: "Dashboard.tsx", lines: ["store"], tone: "blue" },
       {
         name: "client.ts",
         lines: [
@@ -486,7 +486,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
         ],
         tone: "yellow",
       },
-      { name: "courses", lines: ["MongoDB"], tone: "red" },
+      { name: "MongoDB", lines: ["courses"], tone: "red" },
     ],
   },
   "courses-read-all": {
@@ -494,11 +494,11 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 240,
     large: true,
     boxes: [
-      { name: "Dashboard", lines: ["setCourses"], tone: "blue" },
+      { name: "Dashboard.tsx", lines: ["setCourses"], tone: "blue" },
       { name: "client.ts", lines: ["fetchAllCourses()"], tone: "blue" },
       { name: "CourseRoutes.ts", lines: ["GET /api/courses"], tone: "yellow" },
       { name: "CourseDAO.ts", lines: ["findAllCourses()"], tone: "yellow" },
-      { name: "model.find()", lines: ["courses"], tone: "red" },
+      { name: "MongoDB", lines: ["courses"], tone: "red" },
     ],
   },
   "courses-read-one": {
@@ -506,11 +506,11 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 300,
     large: true,
     boxes: [
-      { name: "Editor", lines: ["setCourse"], tone: "blue" },
+      { name: "layout.tsx", lines: ["setCourse"], tone: "blue" },
       { name: "client.ts", lines: ["findCourseById()"], tone: "blue" },
       { name: "CourseRoutes.ts", lines: ["GET /api/courses/:courseId"], tone: "yellow" },
       { name: "CourseDAO.ts", lines: ["findCourseById()"], tone: "yellow" },
-      { name: "findById", lines: ["one course"], tone: "red" },
+      { name: "MongoDB", lines: ["one course"], tone: "red" },
     ],
   },
   "courses-delete": {
@@ -518,11 +518,11 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 250,
     large: true,
     boxes: [
-      { name: "Dashboard", lines: ["deleteCourse"], tone: "blue" },
+      { name: "Dashboard.tsx", lines: ["deleteCourse"], tone: "blue" },
       { name: "client.ts", lines: ["deleteCourse()"], tone: "blue" },
       { name: "CourseRoutes.ts", lines: ["DELETE /api/courses/:courseId"], tone: "yellow" },
       { name: "CourseDAO.ts", lines: ["deleteCourse()"], tone: "yellow" },
-      { name: "deleteOne", lines: ["courses"], tone: "red" },
+      { name: "MongoDB", lines: ["courses"], tone: "red" },
     ],
   },
   "courses-update": {
@@ -530,11 +530,11 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 240,
     large: true,
     boxes: [
-      { name: "Dashboard", lines: ["updateCourse"], tone: "blue" },
+      { name: "Dashboard.tsx", lines: ["updateCourse"], tone: "blue" },
       { name: "client.ts", lines: ["updateCourse()"], tone: "blue" },
       { name: "CourseRoutes.ts", lines: ["PUT /api/courses/:courseId"], tone: "yellow" },
       { name: "CourseDAO.ts", lines: ["updateCourse()"], tone: "yellow" },
-      { name: "updateOne", lines: ["courses"], tone: "red" },
+      { name: "MongoDB", lines: ["courses"], tone: "red" },
     ],
   },
   "courses-create": {
@@ -542,11 +542,11 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 240,
     large: true,
     boxes: [
-      { name: "Dashboard", lines: ["addCourse"], tone: "blue" },
+      { name: "Dashboard.tsx", lines: ["addCourse"], tone: "blue" },
       { name: "client.ts", lines: ["createCourse()"], tone: "blue" },
       { name: "CourseRoutes.ts", lines: ["POST /api/courses"], tone: "yellow" },
       { name: "CourseDAO.ts", lines: ["createCourse()"], tone: "yellow" },
-      { name: "model.create", lines: ["courses"], tone: "red" },
+      { name: "MongoDB", lines: ["courses"], tone: "red" },
     ],
   },
   "modules-stack": {
@@ -641,7 +641,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 440,
     large: true,
     boxes: [
-      { name: "People", lines: ["PeopleTable"], tone: "blue" },
+      { name: "PeopleTable.tsx", lines: ["PeopleTable"], tone: "blue" },
       {
         name: "client.ts",
         lines: [
@@ -675,7 +675,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
         ],
         tone: "yellow",
       },
-      { name: "enrollments", lines: ["MongoDB"], tone: "red" },
+      { name: "MongoDB", lines: ["enrollments"], tone: "red" },
     ],
   },
   "enroll-read": {
@@ -683,11 +683,11 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 250,
     large: true,
     boxes: [
-      { name: "Dashboard", lines: ["setCourses"], tone: "blue" },
+      { name: "Dashboard.tsx", lines: ["setCourses"], tone: "blue" },
       { name: "client.ts", lines: ["findMyCourses()"], tone: "blue" },
       { name: "CourseRoutes.ts", lines: ["GET /api/users/:userId/courses"], tone: "yellow" },
       { name: "EnrollmentsDAO.ts", lines: ["findCoursesForUser()"], tone: "yellow" },
-      { name: "enrollments", lines: ["course ref"], tone: "red" },
+      { name: "MongoDB", lines: ["course ref"], tone: "red" },
     ],
   },
   "enroll-people": {
@@ -695,11 +695,11 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 340,
     large: true,
     boxes: [
-      { name: "People", lines: ["setUsers"], tone: "blue" },
+      { name: "PeopleTable.tsx", lines: ["setUsers"], tone: "blue" },
       { name: "client.ts", lines: ["findUsersForCourse()"], tone: "blue" },
       { name: "CourseRoutes.ts", lines: ["GET /api/courses/:cid/users"], tone: "yellow" },
       { name: "EnrollmentsDAO.ts", lines: ["findUsersForCourse()"], tone: "yellow" },
-      { name: "populate", lines: ["user ref"], tone: "red" },
+      { name: "MongoDB", lines: ["user ref"], tone: "red" },
     ],
   },
   "enroll-joins": {
@@ -707,11 +707,11 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 250,
     large: true,
     boxes: [
-      { name: "Dashboard", lines: ["delete course"], tone: "blue" },
+      { name: "Dashboard.tsx", lines: ["delete course"], tone: "blue" },
       { name: "client.ts", lines: ["deleteCourse()"], tone: "blue" },
       { name: "CourseRoutes.ts", lines: ["DELETE /api/courses/:courseId"], tone: "yellow" },
       { name: "EnrollmentsDAO.ts", lines: ["unenrollAllUsersFromCourse()"], tone: "yellow" },
-      { name: "enrollments", lines: ["{ course }"], tone: "red" },
+      { name: "MongoDB", lines: ["{ course }"], tone: "red" },
     ],
   },
   "enroll-create": {
@@ -719,11 +719,11 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 420,
     large: true,
     boxes: [
-      { name: "Dashboard", lines: ["enroll"], tone: "blue" },
+      { name: "Dashboard.tsx", lines: ["enroll"], tone: "blue" },
       { name: "client.ts", lines: ["enrollIntoCourse()"], tone: "blue" },
       { name: "CourseRoutes.ts", lines: ["POST /api/users/:uid/courses/:cid"], tone: "yellow" },
       { name: "EnrollmentsDAO.ts", lines: ["enrollUserInCourse()"], tone: "yellow" },
-      { name: "model.create", lines: ["enrollments"], tone: "red" },
+      { name: "MongoDB", lines: ["enrollments"], tone: "red" },
     ],
   },
   "enroll-unenroll": {
@@ -731,11 +731,11 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
     boxWidth: 440,
     large: true,
     boxes: [
-      { name: "Dashboard", lines: ["unenroll"], tone: "blue" },
+      { name: "Dashboard.tsx", lines: ["unenroll"], tone: "blue" },
       { name: "client.ts", lines: ["unenrollFromCourse()"], tone: "blue" },
       { name: "CourseRoutes.ts", lines: ["DELETE /api/users/:uid/courses/:cid"], tone: "yellow" },
       { name: "EnrollmentsDAO.ts", lines: ["unenrollUserFromCourse()"], tone: "yellow" },
-      { name: "deleteOne", lines: ["enrollments"], tone: "red" },
+      { name: "MongoDB", lines: ["enrollments"], tone: "red" },
     ],
   },
 };
