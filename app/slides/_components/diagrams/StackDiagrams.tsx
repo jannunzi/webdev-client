@@ -43,14 +43,18 @@ function Arrow({
   x2,
   y,
   dashed,
+  stroke = 3,
+  head = 6,
 }: {
   x1: number;
   x2: number;
   y: number;
   dashed?: boolean;
+  stroke?: number;
+  head?: number;
 }) {
   const dir = x2 > x1 ? 1 : -1;
-  const base = x2 - dir * 12;
+  const base = x2 - dir * (head + 8);
   return (
     <g>
       <line
@@ -59,56 +63,92 @@ function Arrow({
         x2={base}
         y2={y}
         stroke="#171717"
-        strokeWidth={3}
-        strokeDasharray={dashed ? "8 6" : undefined}
+        strokeWidth={stroke}
+        strokeDasharray={dashed ? "10 7" : undefined}
       />
-      <polygon points={`${x2},${y} ${base},${y - 6} ${base},${y + 6}`} fill="#171717" />
+      <polygon points={`${x2},${y} ${base},${y - head} ${base},${y + head}`} fill="#171717" />
     </g>
   );
 }
 
-function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidth: number }) {
-  const gap = 108;
-  const heights = boxes.map((box) => boxHeight(box.lines.length));
-  // Side-by-side boxes share the tallest height so the row reads as one band.
-  const boxH = Math.max(...heights);
-  const width = 36 + boxes.length * boxWidth + (boxes.length - 1) * gap + 36;
-  const height = 24 + boxH + 20;
-  const top = 20;
-  const requestY = top + HEADER_H + 10;
-  const responseY = top + HEADER_H + 32;
+function Flow({
+  title,
+  boxes,
+  boxWidth,
+  large = false,
+}: {
+  title: string;
+  boxes: Box[];
+  boxWidth: number;
+  /** Taller boxes, type, and arrows so a horizontal row fills the slide. */
+  large?: boolean;
+}) {
+  const headerH = large ? 78 : HEADER_H;
+  const lineH = large ? 34 : LINE_H;
+  const padB = large ? 36 : PAD_B;
+  const gap = large ? 148 : 108;
+  const side = large ? 24 : 36;
+  const nameSize = large ? 28 : 18;
+  const lineSize = large ? 22 : 14;
+  const labelSize = large ? 22 : 13;
+  const strokeW = large ? 5 : 3;
+  const head = large ? 10 : 6;
+  const contentHeights = boxes.map(
+    (box) => headerH + Math.max(box.lines.length, 1) * lineH + padB,
+  );
+  // A short horizontal row stays a thin strip unless the boxes themselves are tall.
+  const boxH = Math.max(...contentHeights, large ? 460 : 0);
+  const width = side + boxes.length * boxWidth + (boxes.length - 1) * gap + side;
+  const height = (large ? 12 : 24) + boxH + (large ? 12 : 20);
+  const top = large ? 12 : 20;
+  const bodyMid = top + headerH + (boxH - headerH) / 2;
+  const requestY = large ? bodyMid - 36 : top + HEADER_H + 10;
+  const responseY = large ? bodyMid + 36 : top + HEADER_H + 32;
 
   return (
     <svg role="img" viewBox={`0 0 ${width} ${height}`} aria-label={title}>
       <title>{title}</title>
       {boxes.map((box, index) => {
         const tone: Tone = TONES[box.tone];
-        const x = 36 + index * (boxWidth + gap);
+        const x = side + index * (boxWidth + gap);
         const h = boxH;
         const stroke = box.emphasis ? 6 : 3;
         return (
           <g key={`${box.name}-${index}`}>
             {index > 0 ? (
               <g>
-                <Arrow x1={x - gap + 4} x2={x - 4} y={requestY} />
+                <Arrow
+                  x1={x - gap + 6}
+                  x2={x - 8}
+                  y={requestY}
+                  stroke={strokeW}
+                  head={head}
+                />
                 <text
                   x={x - gap / 2}
-                  y={requestY - 6}
+                  y={requestY - (large ? 14 : 6)}
                   textAnchor="middle"
                   fontFamily={FONT}
-                  fontSize={13}
+                  fontSize={labelSize}
                   fontWeight={700}
                   fill="#171717"
                 >
                   request
                 </text>
-                <Arrow x1={x - 4} x2={x - gap + 4} y={responseY} dashed />
+                <Arrow
+                  x1={x - 8}
+                  x2={x - gap + 6}
+                  y={responseY}
+                  dashed
+                  stroke={strokeW}
+                  head={head}
+                />
                 <text
                   x={x - gap / 2}
-                  y={responseY + 16}
+                  y={responseY + (large ? 28 : 16)}
                   textAnchor="middle"
                   fontFamily={FONT}
-                  fontSize={13}
+                  fontSize={labelSize}
                   fontWeight={700}
                   fill="#171717"
                 >
@@ -127,25 +167,25 @@ function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidt
               strokeWidth={stroke}
             />
             <path
-              d={headerPath(x, top, boxWidth, HEADER_H)}
+              d={headerPath(x, top, boxWidth, headerH)}
               fill={tone.header}
               stroke={tone.stroke}
               strokeWidth={stroke}
             />
             <line
               x1={x}
-              y1={top + HEADER_H}
+              y1={top + headerH}
               x2={x + boxWidth}
-              y2={top + HEADER_H}
+              y2={top + headerH}
               stroke={tone.stroke}
               strokeWidth={stroke}
             />
             <text
               x={x + boxWidth / 2}
-              y={top + 31}
+              y={large ? top + headerH * 0.62 : top + 31}
               textAnchor="middle"
               fontFamily={FONT}
-              fontSize={18}
+              fontSize={nameSize}
               fontWeight={700}
               fill="#171717"
             >
@@ -154,10 +194,13 @@ function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidt
             {box.lines.map((line, lineIndex) => (
               <text
                 key={line}
-                x={x + 12}
-                y={top + HEADER_H + 20 + lineIndex * LINE_H}
+                x={large ? x + boxWidth / 2 : x + 12}
+                y={(large
+                  ? top + headerH + (h - headerH - box.lines.length * lineH) / 2 + 22
+                  : top + HEADER_H + 20) + lineIndex * lineH}
+                textAnchor={large ? "middle" : "start"}
                 fontFamily={MONO}
-                fontSize={14}
+                fontSize={lineSize}
                 fontWeight={box.emphasis && lineIndex === 0 ? 700 : 400}
                 fill={box.emphasis && lineIndex === 0 ? tone.stroke : "#171717"}
               >
@@ -171,155 +214,7 @@ function Flow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidt
   );
 }
 
-function ArrowVertical({
-  x,
-  y1,
-  y2,
-  dashed,
-}: {
-  x: number;
-  y1: number;
-  y2: number;
-  dashed?: boolean;
-}) {
-  const dir = y2 > y1 ? 1 : -1;
-  const base = y2 - dir * 12;
-  return (
-    <g>
-      <line
-        x1={x}
-        y1={y1}
-        x2={x}
-        y2={base}
-        stroke="#171717"
-        strokeWidth={3}
-        strokeDasharray={dashed ? "8 6" : undefined}
-      />
-      <polygon points={`${x},${y2} ${x - 6},${base} ${x + 6},${base}`} fill="#171717" />
-    </g>
-  );
-}
-
-/**
- * Four short stages stacked, wide enough that the row fills a 1280×800
- * slide instead of sitting as a thin strip under the title.
- */
-function ColumnFlow({ title, boxes, boxWidth }: { title: string; boxes: Box[]; boxWidth: number }) {
-  const gap = 52;
-  const minBox = 96;
-  const heights = boxes.map((box) => Math.max(boxHeight(box.lines.length), minBox));
-  const padX = 40;
-  const width = padX + boxWidth + padX;
-  const height = 24 + heights.reduce((sum, h) => sum + h, 0) + (boxes.length - 1) * gap + 20;
-  const tops: number[] = [];
-  let cursor = 24;
-  for (const h of heights) {
-    tops.push(cursor);
-    cursor += h + gap;
-  }
-
-  return (
-    <svg role="img" viewBox={`0 0 ${width} ${height}`} aria-label={title}>
-      <title>{title}</title>
-      {boxes.map((box, index) => {
-        const tone: Tone = TONES[box.tone];
-        const x = padX;
-        const top = tops[index]!;
-        const h = heights[index]!;
-        const stroke = box.emphasis ? 6 : 3;
-        const bodyTop = top + HEADER_H;
-        const bodyH = h - HEADER_H;
-        const textBlock = box.lines.length * 26;
-        const textStart = bodyTop + (bodyH - textBlock) / 2 + 20;
-        const prevBottom = index > 0 ? tops[index - 1]! + heights[index - 1]! : 0;
-        const mid = x + boxWidth / 2;
-        return (
-          <g key={`${box.name}-${index}`}>
-            {index > 0 ? (
-              <g>
-                <ArrowVertical x={mid - 150} y1={prevBottom + 6} y2={top - 6} />
-                <text
-                  x={mid - 162}
-                  y={(prevBottom + top) / 2 + 5}
-                  textAnchor="end"
-                  fontFamily={FONT}
-                  fontSize={16}
-                  fontWeight={700}
-                  fill="#171717"
-                >
-                  request
-                </text>
-                <ArrowVertical x={mid + 150} y1={top - 6} y2={prevBottom + 6} dashed />
-                <text
-                  x={mid + 162}
-                  y={(prevBottom + top) / 2 + 5}
-                  textAnchor="start"
-                  fontFamily={FONT}
-                  fontSize={16}
-                  fontWeight={700}
-                  fill="#171717"
-                >
-                  response
-                </text>
-              </g>
-            ) : null}
-            <rect
-              x={x}
-              y={top}
-              width={boxWidth}
-              height={h}
-              rx={RADIUS}
-              fill={tone.fill}
-              stroke={tone.stroke}
-              strokeWidth={stroke}
-            />
-            <path
-              d={headerPath(x, top, boxWidth, HEADER_H)}
-              fill={tone.header}
-              stroke={tone.stroke}
-              strokeWidth={stroke}
-            />
-            <line
-              x1={x}
-              y1={bodyTop}
-              x2={x + boxWidth}
-              y2={bodyTop}
-              stroke={tone.stroke}
-              strokeWidth={stroke}
-            />
-            <text
-              x={x + boxWidth / 2}
-              y={top + 32}
-              textAnchor="middle"
-              fontFamily={FONT}
-              fontSize={26}
-              fontWeight={700}
-              fill="#171717"
-            >
-              {box.name}
-            </text>
-            {box.lines.map((line, lineIndex) => (
-              <text
-                key={line}
-                x={x + boxWidth / 2}
-                y={textStart + lineIndex * 26}
-                textAnchor="middle"
-                fontFamily={MONO}
-                fontSize={20}
-                fontWeight={box.emphasis && lineIndex === 0 ? 700 : 400}
-                fill={box.emphasis && lineIndex === 0 ? tone.stroke : "#171717"}
-              >
-                {line}
-              </text>
-            ))}
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
-
-const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; layout?: "column" }> = {
+const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; large?: boolean }> = {
   "mongo-roadmap": {
     title: "From the React UI to the database",
     boxWidth: 220,
@@ -365,8 +260,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   },
   "users-read-all": {
     title: "GET /api/users",
-    boxWidth: 1080,
-    layout: "column",
+    boxWidth: 300,
+    large: true,
     boxes: [
       { name: "Users", lines: ["setUsers"], tone: "blue" },
       { name: "findAllUsers", lines: ["GET"], tone: "blue" },
@@ -376,8 +271,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   },
   "users-filter-role": {
     title: "GET /api/users?role=",
-    boxWidth: 1080,
-    layout: "column",
+    boxWidth: 340,
+    large: true,
     boxes: [
       { name: "Users", lines: ["role select"], tone: "blue" },
       { name: "findUsersByRole", lines: ["GET ?role="], tone: "blue" },
@@ -387,7 +282,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   },
   "users-filter-name": {
     title: "GET /api/users?name=",
-    boxWidth: 290,
+    boxWidth: 420,
+    large: true,
     boxes: [
       { name: "Users", lines: ["Search people"], tone: "blue" },
       { name: "Client", lines: ["findUsersByPartialName", "GET ?name="], tone: "blue" },
@@ -397,8 +293,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   },
   "users-read-one": {
     title: "GET /api/users/:userId",
-    boxWidth: 1080,
-    layout: "column",
+    boxWidth: 320,
+    large: true,
     boxes: [
       { name: "Details", lines: ["uid"], tone: "blue" },
       { name: "findUserById", lines: ["GET"], tone: "blue" },
@@ -408,8 +304,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   },
   "users-delete": {
     title: "DELETE /api/users/:userId",
-    boxWidth: 1080,
-    layout: "column",
+    boxWidth: 380,
+    large: true,
     boxes: [
       { name: "Details", lines: ["onDelete"], tone: "blue" },
       { name: "deleteUser", lines: ["DELETE"], tone: "blue" },
@@ -419,8 +315,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   },
   "users-update": {
     title: "PUT /api/users/:userId",
-    boxWidth: 1080,
-    layout: "column",
+    boxWidth: 300,
+    large: true,
     boxes: [
       { name: "Details", lines: ["onSave"], tone: "blue" },
       { name: "updateUser", lines: ["PUT"], tone: "blue" },
@@ -430,8 +326,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   },
   "users-create": {
     title: "POST /api/users",
-    boxWidth: 1080,
-    layout: "column",
+    boxWidth: 300,
+    large: true,
     boxes: [
       { name: "Users", lines: ["onCreate"], tone: "blue" },
       { name: "createUser", lines: ["POST"], tone: "blue" },
@@ -982,10 +878,14 @@ export function StackDiagram({ id }: { id: string }) {
   if (id === "arrays-stack") return <ArraysPicture />;
   const spec = STACKS[id];
   if (!spec) return null;
-  if (spec.layout === "column") {
-    return <ColumnFlow title={spec.title} boxes={spec.boxes} boxWidth={spec.boxWidth} />;
-  }
-  return <Flow title={spec.title} boxes={spec.boxes} boxWidth={spec.boxWidth} />;
+  return (
+    <Flow
+      title={spec.title}
+      boxes={spec.boxes}
+      boxWidth={spec.boxWidth}
+      large={spec.large}
+    />
+  );
 }
 
 export const STACK_DIAGRAM_IDS = ["sql-vs-document", "arrays-stack", ...Object.keys(STACKS)];
