@@ -1348,15 +1348,15 @@ describe("lecture decks", () => {
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 12);
     assert.equal(counts["mongoose"], 13);
-    assert.equal(counts["mongo-apis"], 15);
-    assert.equal(counts["mongo-users-crud"], 41);
+    assert.equal(counts["mongo-apis"], 17);
+    assert.equal(counts["mongo-users-crud"], 43);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
-    assert.equal(counts["atlas-node"], 8);
-    assert.equal(counts["atlas-sessions"], 10);
-    assert.equal(counts["kambaz-courses-db"], 37);
-    assert.equal(counts["kambaz-modules-db"], 29);
-    assert.equal(counts["kambaz-enrollments-db"], 36);
+    assert.equal(counts["atlas-node"], 10);
+    assert.equal(counts["atlas-sessions"], 12);
+    assert.equal(counts["kambaz-courses-db"], 38);
+    assert.equal(counts["kambaz-modules-db"], 31);
+    assert.equal(counts["kambaz-enrollments-db"], 44);
     assert.equal(counts["youtube-api"], 9);
     assert.equal(counts["youtube-search"], 11);
     assert.equal(counts["youtube-details"], 23);
@@ -3231,9 +3231,9 @@ describe("lecture decks", () => {
     assert.doesNotMatch(apis, /\bseed\b/i);
     assert.doesNotMatch(apis, /fury123/);
     const apiIds = getLectureDeck("mongo-apis")!.slides.map((slide) => slide.id);
-    assert.equal(apiIds.at(-1), "admin-link");
-    assert.equal(apiIds.includes("recap"), false);
-    assert.equal(apiIds.includes("next-up"), false);
+    assert.deepEqual(apiIds.slice(-2), ["recap", "next-up"]);
+    assert.equal(findSlide("mongo-apis", "recap").title, "Find-all recap");
+    assert.equal(findSlide("mongo-apis", "next-up").title, "Next: CRUD Users");
     assert.equal(apiIds[apiIds.indexOf("users-screen") - 1], "users-screen-intro");
     const usersIntro = findSlide("mongo-apis", "users-screen-intro").bullets ?? [];
     assert.match(usersIntro.join("\n"), /loads all users/);
@@ -3296,6 +3296,8 @@ describe("lecture decks", () => {
     assert.match(courses, /uuidv4/);
     assert.match(courses, /deleteOne/);
     assert.match(courses, /updateOne/);
+    assert.doesNotMatch(courses, /db\.enrollments|courses\.filter/);
+    assert.doesNotMatch(courses, /enrollUserInCourse/);
 
     const modules = slideText("kambaz-modules-db");
     assert.match(modules, /one-to-many|1:N|foreign key/i);
@@ -4531,5 +4533,83 @@ describe("Chapter 5 next-up slides", () => {
       if (!nextUp) continue;
       assert.equal(nextUp.title, `Next: ${nextDeck.slides[0].cover!.headline}`, l.slug);
     }
+  });
+});
+
+describe("restored chapter 6 closing slides", () => {
+  const restored = [
+    "mongo-apis",
+    "mongo-users-crud",
+    "atlas-node",
+    "atlas-sessions",
+    "kambaz-courses-db",
+    "kambaz-modules-db",
+    "kambaz-enrollments-db",
+  ] as const;
+
+  it("ends each deck with its recap, then a Next slide named for the next cover", () => {
+    for (const slug of restored) {
+      const slides = getLectureDeck(slug)!.slides;
+      const recap = slides.at(-2)!;
+      const nextUp = slides.at(-1)!;
+      assert.equal(recap.id, "recap", slug);
+      assert.match(recap.title, /recap/i, slug);
+      assert.equal(nextUp.id, "next-up", slug);
+      const nextSlug = adjacentLectureSlugs(slug).next?.slug;
+      const headline = getLectureDeck(nextSlug!)!.slides[0]!.cover!.headline;
+      assert.equal(nextUp.title, `Next: ${headline}`, slug);
+      assert.doesNotMatch(slideText(slug), /redux/i, slug);
+      assert.doesNotMatch(slideText(slug), /\bseed\b/i, slug);
+      assert.doesNotMatch(slideText(slug), /fury123/, slug);
+    }
+  });
+});
+
+describe("chapter 6 courses and enrollments follow the book", () => {
+  it("defines each enrollment operation before a route calls it", () => {
+    const ids = getLectureDeck("kambaz-enrollments-db")!.slides.map((slide) => slide.id);
+    const at = (id: string) => ids.indexOf(id);
+    assert.ok(at("dao-skeleton") < at("routes-wire"));
+    assert.ok(at("routes-wire") < at("populate"));
+    assert.ok(at("populate") < at("read-route"));
+    assert.ok(at("enroll-dao") < at("create-enroll"));
+    assert.ok(at("enroll-client") < at("enroll-refresh"));
+    assert.ok(at("enroll-refresh") < at("enroll-enrolled"));
+    assert.ok(at("enroll-enrolled") < at("enroll-ui"));
+    assert.ok(at("unenroll-client") < at("unenroll-ui"));
+    assert.equal(
+      findSlide("kambaz-enrollments-db", "enroll-ui").codeFile,
+      "app/(kambaz)/dashboard/CourseCard.tsx",
+    );
+    assert.equal(
+      findSlide("kambaz-enrollments-db", "unenroll-ui").codeFile,
+      "app/(kambaz)/dashboard/CourseCard.tsx",
+    );
+    assert.match(
+      findSlide("kambaz-enrollments-db", "read-route").code ?? "",
+      /app\.get\("\/api\/users\/:userId\/courses"/,
+    );
+    assert.match(
+      findSlide("kambaz-enrollments-db", "dao-skeleton").code ?? "",
+      /import model from "\.\/model"/,
+    );
+    assert.match(
+      findSlide("kambaz-enrollments-db", "routes-wire").code ?? "",
+      /const enrollmentsDao = EnrollmentsDao\(\)/,
+    );
+    assert.match(
+      findSlide("kambaz-enrollments-db", "create-enroll").code ?? "",
+      /enrollmentsDao\.enrollUserInCourse\(\s*currentUser\._id, newCourse\._id\)/,
+    );
+    assert.match(findSlide("kambaz-enrollments-db", "enroll-enrolled").code ?? "", /enrolledIds\.includes/);
+    assert.match(findSlide("kambaz-enrollments-db", "enroll-ui").code ?? "", /enrollIntoCourse/);
+    assert.match(findSlide("kambaz-enrollments-db", "unenroll-ui").code ?? "", /unenrollFromCourse/);
+    assert.match(findSlide("kambaz-enrollments-db", "enroll-refresh").code ?? "", /findMyCourses/);
+    const coursesIds = getLectureDeck("kambaz-courses-db")!.slides.map((slide) => slide.id);
+    assert.equal(coursesIds.includes("enrolled-dao"), false);
+    assert.ok(coursesIds.indexOf("routes-wire") < coursesIds.indexOf("async-routes"));
+    assert.match(findSlide("kambaz-courses-db", "routes-wire").code ?? "", /CoursesDao\(\)/);
+    assert.doesNotMatch(findSlide("kambaz-courses-db", "routes-wire").code ?? "", /\bdb\b/);
+    assert.match(findSlide("kambaz-courses-db", "async-routes").code ?? "", /app\.get\("\/api\/courses"/);
   });
 });

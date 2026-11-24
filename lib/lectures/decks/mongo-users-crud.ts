@@ -659,4 +659,23 @@ app.post("/api/users", createUser);`,
     ],
     embed: "lab6-users",
   },
+  {
+    id: "recap",
+    title: "User CRUD recap",
+    kind: "content",
+    bullets: [
+      "`findUsersByRole`, then `$regex` on first or last name",
+      "`findById`, `findByIdAndDelete`, `updateOne` + `$set`, `create`",
+      "Users screen: filter, open Details, delete, save, then + User",
+    ],
+  },
+  {
+    id: "next-up",
+    title: "Next: Atlas",
+    kind: "title",
+    bullets: [
+      "127.0.0.1 is empty on Render — Atlas is the public cluster",
+      "Free Kambaz cluster, Compass, then a new Render service",
+    ],
+  },
 ];
