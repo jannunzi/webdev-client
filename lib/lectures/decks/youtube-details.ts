@@ -359,7 +359,7 @@ const saveYouTubeVideoToLesson = async () => {
   },
   {
     id: "dao",
-    title: "Save the Video ID in the Lesson",
+    title: "Modules DAO saves the video id",
     kind: "demo",
     bullets: [
       "DAO sets **`lesson.youTubeId = vid`** and saves the module",

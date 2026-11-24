@@ -81,7 +81,7 @@ export default schema;`,
   {
     id: "find",
     links: ["http://localhost:4000/api/courses/RS101/modules"],
-    title: "Find modules by course id",
+    title: "Modules DAO finds a course's modules",
     kind: "demo",
     bullets: [
       "`find({ course: courseId })` returns that course's modules",
@@ -157,7 +157,7 @@ useEffect(() => {
   },
   {
     id: "create",
-    title: "Create includes the course id",
+    title: "Modules DAO creates a module",
     kind: "demo",
     bullets: [
       "The route puts `course` on the body before `model.create`",
@@ -244,7 +244,7 @@ const onAddModule = async () => {
   },
   {
     id: "delete",
-    title: "`deleteOne` by module id",
+    title: "Modules DAO deletes a module",
     kind: "demo",
     bullets: ["Export `deleteModule` on the DAO"],
     code: `function deleteModule(moduleId) {
@@ -317,7 +317,7 @@ const onRemoveModule = async (moduleId: string) => {
   },
   {
     id: "update",
-    title: "`updateOne` with `$set`",
+    title: "Modules DAO updates a module",
     kind: "demo",
     bullets: ["Export `updateModule` on the DAO"],
     code: `function updateModule(moduleId, moduleUpdates) {

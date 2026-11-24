@@ -153,7 +153,7 @@ export default model;`,
   },
   {
     id: "dao",
-    title: "DAO Finders Wrap Model Queries",
+    title: "Users DAO implements database finders",
     kind: "demo",
     bullets: [
       "A DAO is the app's database API, written with the model's generic calls",
@@ -176,7 +176,7 @@ export default function UsersDao() {
   },
   {
     id: "dao-writes",
-    title: "DAO Writes Create, Update, and Delete",
+    title: "Users DAO implements database CRUD",
     kind: "demo",
     bullets: [
       "`createUser` assigns `uuidv4()` so enrollments stay string ids",

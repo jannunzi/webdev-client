@@ -36,3 +36,25 @@ export function diagramFitScale(
   if (maxHeight <= 0) return fit;
   return Math.min(fit, maxHeight / naturalHeight);
 }
+
+/** Average SVG glyph width relative to the font size. */
+export const DIAGRAM_FONT_EM = 0.68;
+
+/**
+ * Diagram labels should stay readable at fullscreen and approach the
+ * lecture's regular bullet size. A wide slide aims higher; a narrow one
+ * never drops below 22px.
+ */
+export function diagramMinFontPx(slideWidth: number, bulletPx: number): number {
+  const scaled = 32 * (Math.max(slideWidth, 1) / 1280);
+  const nearBullet = bulletPx > 0 ? bulletPx * 0.8 : scaled;
+  return Math.round(Math.max(22, Math.min(nearBullet, scaled)) * 10) / 10;
+}
+
+/** Largest font whose text stays inside `boxWidth`, leaving `padding`. */
+export function fontPxThatFits(text: string, boxWidth: number, padding = 20): number {
+  const inner = boxWidth - padding;
+  const chars = Math.max(text.trim().length, 1);
+  if (inner <= 4) return 0;
+  return inner / (chars * DIAGRAM_FONT_EM);
+}

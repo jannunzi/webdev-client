@@ -87,7 +87,7 @@ export default model;`,
   },
   {
     id: "dao-skeleton",
-    title: "Enrollments DAO exports functions",
+    title: "Enrollments DAO implements database CRUD",
     kind: "demo",
     bullets: [
       "Import `model`. The DAO functions close over it when they find and write enrollments",
@@ -131,7 +131,7 @@ const enrollmentsDao = EnrollmentsDao();`,
   },
   {
     id: "populate",
-    title: "populate unwraps the course",
+    title: "Enrollments DAO finds a user's courses",
     kind: "demo",
     bullets: [
       "`populate(\"course\")` replaces the id with the course document",
@@ -223,7 +223,7 @@ useEffect(() => {
   },
   {
     id: "delete-course",
-    title: "`deleteMany` by course id",
+    title: "Enrollments DAO deletes a course's rows",
     kind: "demo",
     bullets: [
       "Otherwise Dashboard tries to populate a course id that is gone",
@@ -298,7 +298,7 @@ const onDeleteCourse = async (courseId: string) => {
   },
   {
     id: "enroll-dao",
-    title: "`enrollUserInCourse` inserts one",
+    title: "Enrollments DAO enrolls a user",
     kind: "demo",
     bullets: [
       "`_id` is `userId-courseId`, so the pair stays unique",
@@ -325,7 +325,7 @@ return {
     kind: "demo",
     bullets: [
       "The courses deck inserted the document. This line writes the join",
-      "`enrollUserInCourse` already exists, so the route can call it",
+      "`enrollUserInCourse(currentUser._id, newCourse._id)` enrolls the signed-in user in the new course",
     ],
     code: `const createCourse = async (req, res) => {
   const newCourse = await dao.createCourse(req.body);
@@ -446,7 +446,7 @@ const enrolled = currentUser
   },
   {
     id: "unenroll-dao",
-    title: "unenroll deletes one row",
+    title: "Enrollments DAO drops one enrollment",
     kind: "demo",
     bullets: ["`deleteOne({ user, course })` removes that pair. Export it"],
     code: `function unenrollUserFromCourse(user, course) {
@@ -533,7 +533,7 @@ app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);`,
   },
   {
     id: "people-dao",
-    title: "populate unwraps the user",
+    title: "Enrollments DAO finds a course's users",
     kind: "demo",
     bullets: [
       "Same shape as `findCoursesForUser`, with `populate(\"user\")`",

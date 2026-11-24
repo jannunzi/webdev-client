@@ -82,7 +82,7 @@ export const MONGO_APIS_SLIDES: LectureSlide[] = [
   },
   {
     id: "find-all-dao",
-    title: "`find()` with no predicate",
+    title: "Users DAO finds every user",
     kind: "demo",
     bullets: [
       "Same `findAllUsers` you returned from the DAO",

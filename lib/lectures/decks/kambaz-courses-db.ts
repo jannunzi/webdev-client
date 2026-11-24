@@ -82,7 +82,7 @@ export default model;`,
   },
   {
     id: "find",
-    title: "`findAllCourses` in the DAO",
+    title: "Courses DAO finds every course",
     kind: "demo",
     bullets: [
       "Comment out the array return so there is one source of truth",
@@ -180,7 +180,7 @@ useEffect(() => {
   },
   {
     id: "read-one-server",
-    title: "`findCourseById` in the DAO",
+    title: "Courses DAO finds one course",
     kind: "demo",
     bullets: ["Export it next to `findAllCourses`"],
     code: `function findCourseById(courseId) {
@@ -254,7 +254,7 @@ app.get("/api/courses/:courseId", findCourseById);`,
   },
   {
     id: "create",
-    title: "`createCourse` assigns a uuid",
+    title: "Courses DAO creates a course",
     kind: "demo",
     bullets: [
       "Spread the course, set `_id: uuidv4()`, then `model.create`",
@@ -336,7 +336,7 @@ const onAddCourse = async () => {
   },
   {
     id: "delete-server",
-    title: "`deleteOne` by course id",
+    title: "Courses DAO deletes a course",
     kind: "demo",
     bullets: ["Export `deleteCourse` on the DAO"],
     code: `function deleteCourse(courseId) {
@@ -411,7 +411,7 @@ const onDeleteCourse = async (courseId: string) => {
   },
   {
     id: "update-server",
-    title: "`updateOne` with `$set`",
+    title: "Courses DAO updates a course",
     kind: "demo",
     bullets: ["Fields you omit stay as they were. Export `updateCourse`"],
     code: `function updateCourse(courseId, courseUpdates) {

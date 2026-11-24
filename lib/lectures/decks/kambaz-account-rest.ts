@@ -92,7 +92,7 @@ app.listen(process.env.PORT || 4000);`,
   },
   {
     id: "dao-intro",
-    title: "Defining a Data Access Object",
+    title: "Users DAO interfaces with the database",
     kind: "demo",
     bullets: [
       "The Data Access Object (DAO) is a design pattern that encapsulates access to a data source behind a set of functions",
@@ -113,7 +113,7 @@ app.listen(process.env.PORT || 4000);`,
   },
   {
     id: "dao",
-    title: "Finding a User by Credentials",
+    title: "Users DAO finds by credentials",
     kind: "demo",
     code: `export default function UsersDao(db) {
   let { users } = db;
@@ -221,7 +221,7 @@ const signin = async () => {
   },
   {
     id: "signup-dao",
-    title: "Adding Sign-Up to the Users DAO",
+    title: "Users DAO creates a new user",
     kind: "demo",
     bullets: [
       "`createUser` copies the new user and assigns an `_id`",
@@ -308,7 +308,7 @@ app.post("/api/users/signup", signup);`,
   },
   {
     id: "profile-dao",
-    title: "Updating a User in the DAO",
+    title: "Users DAO updates a user",
     kind: "demo",
     bullets: [
       "`updateUser` replaces the matching user in the array",

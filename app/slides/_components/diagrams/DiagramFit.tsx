@@ -4,13 +4,105 @@ import { useLayoutEffect, useRef, type ReactNode } from "react";
 import {
   DIAGRAM_MAX_HEIGHT_OF_SLIDE,
   diagramFitScale,
+  diagramMinFontPx,
+  fontPxThatFits,
   isLectureIconSvg,
 } from "@/lib/lectures/diagram-fit";
+
+type Box = { x: number; y: number; width: number; height: number };
+
+function raiseDiagramText(inner: HTMLElement, zoom: number, slideWidth: number) {
+  if (zoom <= 0) return;
+  const root = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+  const bulletPx = root * (slideWidth >= 1024 ? 3.15 : slideWidth >= 640 ? 2.75 : 2.25);
+  const minVisual = diagramMinFontPx(slideWidth, bulletPx);
+  const texts = [...inner.querySelectorAll("text")].filter(
+    (node): node is SVGTextElement => node instanceof SVGTextElement,
+  );
+  const rects: Box[] = [...inner.querySelectorAll("rect")]
+    .filter((node): node is SVGRectElement => node instanceof SVGRectElement)
+    .map((rect) => ({
+      x: Number.parseFloat(rect.getAttribute("x") || "0"),
+      y: Number.parseFloat(rect.getAttribute("y") || "0"),
+      width: Number.parseFloat(rect.getAttribute("width") || "0"),
+      height: Number.parseFloat(rect.getAttribute("height") || "0"),
+    }))
+    .filter((rect) => rect.width > 0 && rect.height > 0);
+
+  for (const text of texts) {
+    if (!text.dataset.diagramFont) {
+      text.dataset.diagramFont = text.getAttribute("font-size") || "16";
+    }
+    const base = Number.parseFloat(text.dataset.diagramFont);
+    if (!Number.isFinite(base) || base <= 0) continue;
+    const content = (text.textContent || "").replace(/\s+/g, " ").trim();
+    if (!content) continue;
+    const x = Number.parseFloat(text.getAttribute("x") || "0");
+    const y = Number.parseFloat(text.getAttribute("y") || "0");
+    let container: Box | null = null;
+    let containerArea = Number.POSITIVE_INFINITY;
+    for (const rect of rects) {
+      const inside =
+        x >= rect.x - 8 &&
+        x <= rect.x + rect.width + 8 &&
+        y >= rect.y - 4 &&
+        y <= rect.y + rect.height + 12;
+      if (!inside) continue;
+      const area = rect.width * rect.height;
+      if (area < containerArea) {
+        container = rect;
+        containerArea = area;
+      }
+    }
+    let boxWidth = 0;
+    let lineGap = 0;
+    if (container) {
+      boxWidth = container.width;
+      const ys = texts
+        .filter((other) => {
+          const ox = Number.parseFloat(other.getAttribute("x") || "0");
+          const oy = Number.parseFloat(other.getAttribute("y") || "0");
+          return (
+            ox >= container.x - 8 &&
+            ox <= container.x + container.width + 8 &&
+            oy >= container.y - 4 &&
+            oy <= container.y + container.height + 12
+          );
+        })
+        .map((other) => Number.parseFloat(other.getAttribute("y") || "0"))
+        .sort((a, b) => a - b);
+      const index = ys.indexOf(y);
+      const gaps: number[] = [];
+      if (index > 0) gaps.push(y - ys[index - 1]);
+      if (index >= 0 && index < ys.length - 1) gaps.push(ys[index + 1] - y);
+      lineGap = gaps.length > 0 ? Math.min(...gaps) : 0;
+    } else {
+      let left = Number.NEGATIVE_INFINITY;
+      let right = Number.POSITIVE_INFINITY;
+      for (const rect of rects) {
+        const end = rect.x + rect.width;
+        if (end <= x + 2) left = Math.max(left, end);
+        else if (rect.x >= x - 2) right = Math.min(right, rect.x);
+      }
+      if (Number.isFinite(left) && Number.isFinite(right) && right > left) {
+        boxWidth = right - left;
+      }
+    }
+    let next = minVisual / zoom;
+    if (boxWidth > 0) {
+      next = Math.min(next, fontPxThatFits(content, boxWidth, container ? 36 : 36));
+    }
+    if (lineGap > 0) next = Math.min(next, lineGap * 0.8);
+    next = Math.max(base, next);
+    text.setAttribute("font-size", String(Math.round(next * 10) / 10));
+  }
+}
 
 /**
  * Shared slot for every lecture diagram. The graphic keeps its aspect ratio
  * and scales to fit the leftover slot, but not past the balanced height of
- * CRUD Users slide 2. Whitespace under a short row is fine.
+ * CRUD Users slide 2. Whitespace under a short row is fine. Labels, arrow
+ * text, and box contents then grow toward the bullet size when the box allows.
  */
 export default function DiagramFit({ children }: { children: ReactNode }) {
   const slotRef = useRef<HTMLDivElement>(null);
@@ -94,15 +186,15 @@ export default function DiagramFit({ children }: { children: ReactNode }) {
           : slotHeight;
       // Screen mocks fill the leftover slot. Flow drawings stay at the slide-2 cap.
       const screenDemo = Boolean(inner.querySelector("[data-screen-demo]"));
-      inner.style.zoom = String(
-        diagramFitScale(
-          slotWidth,
-          slotHeight,
-          naturalWidth,
-          naturalHeight,
-          screenDemo ? Number.POSITIVE_INFINITY : slideHeight * DIAGRAM_MAX_HEIGHT_OF_SLIDE,
-        ),
+      const zoom = diagramFitScale(
+        slotWidth,
+        slotHeight,
+        naturalWidth,
+        naturalHeight,
+        screenDemo ? Number.POSITIVE_INFINITY : slideHeight * DIAGRAM_MAX_HEIGHT_OF_SLIDE,
       );
+      inner.style.zoom = String(zoom);
+      raiseDiagramText(inner, zoom, slide instanceof HTMLElement ? slide.clientWidth : slotWidth);
     };
 
     const img = inner.querySelector("img");

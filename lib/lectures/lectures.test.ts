@@ -55,7 +55,13 @@ import {
   lectureThumbPath,
 } from "./types";
 import { expandLineMarks } from "../code-block/lines";
-import { DIAGRAM_MAX_HEIGHT_OF_SLIDE, diagramFitScale, isLectureIconSvg } from "./diagram-fit";
+import {
+  DIAGRAM_MAX_HEIGHT_OF_SLIDE,
+  diagramFitScale,
+  diagramMinFontPx,
+  fontPxThatFits,
+  isLectureIconSvg,
+} from "./diagram-fit";
 import { slidePaneOverflows, slidePaneScrollStep } from "./slide-pane";
 import {
   LECTURE_PRESENT_STATE,
@@ -4438,6 +4444,14 @@ describe("diagram fit", () => {
 
     assert.equal(diagramFitScale(0, 400, 100, 50), 1);
     assert.equal(diagramFitScale(400, 400, 0, 50), 1);
+  });
+
+  it("keeps diagram labels near bullet size without dropping below 22px", () => {
+    assert.equal(diagramMinFontPx(1280, 50.4), 32);
+    assert.equal(diagramMinFontPx(1680, 50.4), 40.3);
+    assert.equal(diagramMinFontPx(800, 36), 22);
+    assert.ok(fontPxThatFits("enroll", 420, 32) > 40);
+    assert.ok(fontPxThatFits("response", 220, 18) > 30);
   });
 
   it("stops a tall drawing at the CRUD Users slide 2 height", () => {

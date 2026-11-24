@@ -299,7 +299,14 @@ export default function LectureDeckShell({
           .join("+");
         const overflows = (scale: number) => {
           stage.style.setProperty("--lecture-bullet-fit", String(scale));
-          return stage.scrollHeight > stage.clientHeight + 2;
+          if (stage.scrollHeight > stage.clientHeight + 2) return true;
+          // Stack slides clip the article and scroll the copy instead. Shrink
+          // only when that copy actually overflows — a short bullet with room
+          // under a screen mock stays at the regular size.
+          const copy = stage.querySelector(".lecture-diagram-copy");
+          return (
+            copy instanceof HTMLElement && copy.scrollHeight > copy.clientHeight + 2
+          );
         };
         const scale = !bullets || !pressure ? 1 : fitBulletScale(overflows);
         stage.style.setProperty("--lecture-bullet-fit", String(scale));

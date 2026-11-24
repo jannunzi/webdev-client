@@ -51,7 +51,7 @@ export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
   },
   {
     id: "role-dao",
-    title: "`findUsersByRole` in the DAO",
+    title: "Users DAO finds users by role",
     kind: "demo",
     bullets: [
       "`{ role }` is shorthand for `{ role: role }`",
@@ -168,7 +168,7 @@ const filterUsersByRole = async (role: string) => {
   },
   {
     id: "name-dao",
-    title: "Partial name in the DAO",
+    title: "Users DAO finds users by name",
     kind: "demo",
     bullets: [
       "`i` means case-insensitive: the pattern matches a name no matter how it is capitalized.",
@@ -289,7 +289,7 @@ const filterUsersByName = async (name: string) => {
   {
     id: "by-id",
     links: ["http://localhost:4000/api/users/123"],
-    title: "`findById` and the `GET` route",
+    title: "Users DAO finds a user by id",
     kind: "demo",
     bullets: [
       "`findById` is shorthand for `findOne({ _id: userId })`",
@@ -393,7 +393,7 @@ onClick={() => {
   },
   {
     id: "delete-server",
-    title: "Delete in the DAO and route",
+    title: "Users DAO deletes one user",
     kind: "demo",
     bullets: [
       "The id is in the path",
@@ -500,7 +500,7 @@ onClick={() => {
   },
   {
     id: "update-dao",
-    title: "`$set` keeps omitted fields",
+    title: "Users DAO updates a user",
     kind: "demo",
     bullets: [
       "Without `$set`, only the fields you sent would remain",
@@ -592,7 +592,7 @@ const saveUser = async () => {
   },
   {
     id: "create-server",
-    title: "Create in the DAO and route",
+    title: "Users DAO creates a user",
     kind: "demo",
     bullets: [
       "`uuidv4()` replaces a leftover `_id`",

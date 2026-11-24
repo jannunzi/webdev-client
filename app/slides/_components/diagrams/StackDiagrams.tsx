@@ -28,6 +28,32 @@ const LINE_H = 22;
 const PAD_B = 14;
 const RADIUS = 12;
 
+/** Break a long label so it can stay large instead of shrinking to fit one line. */
+function wrapToReadable(text: string, size: number, inner: number): string[] {
+  const readable = Math.min(size, 30);
+  const maxChars = Math.max(8, Math.floor(inner / (readable * 0.62)));
+  if (text.length <= maxChars) return [text];
+  const parts: string[] = [];
+  let rest = text.trim();
+  while (rest.length > maxChars) {
+    let split = -1;
+    const limit = Math.min(maxChars, rest.length - 1);
+    for (let i = limit; i >= 6; i -= 1) {
+      const ch = rest[i] ?? "";
+      if (ch === " " || ch === "/") {
+        split = ch === "/" ? i + 1 : i;
+        break;
+      }
+    }
+    if (split < 6) split = maxChars;
+    const piece = rest.slice(0, split).replace(/[\s/]+$/, "");
+    if (piece) parts.push(piece);
+    rest = rest.slice(split).replace(/^[\s/]+/, "");
+  }
+  if (rest) parts.push(rest);
+  return parts.length > 0 ? parts : [text];
+}
+
 function boxHeight(lines: number) {
   return HEADER_H + Math.max(lines, 1) * LINE_H + PAD_B;
 }
@@ -38,8 +64,8 @@ function boxHeight(lines: number) {
  * the same pair, so the response never sits on the bottom edge.
  */
 function arrowChannel(large: boolean) {
-  const pairGap = large ? 72 : 36;
-  const edgePad = large ? 64 : 28;
+  const pairGap = large ? 80 : 40;
+  const edgePad = large ? 88 : 36;
   return { pairGap, edgePad, minBody: edgePad * 2 + pairGap };
 }
 
@@ -105,32 +131,41 @@ function Flow({
   /** Larger type and arrows. Box height still follows the text. */
   large?: boolean;
 }) {
-  const headerH = large ? 78 : HEADER_H;
-  const lineH = large ? 34 : LINE_H;
-  const padB = large ? 36 : PAD_B;
-  const gap = large ? 148 : 108;
-  const side = large ? 24 : 36;
-  const nameSize = large ? 28 : 18;
-  const lineSize = large ? 22 : 14;
-  const labelSize = large ? 22 : 13;
+  const headerH = large ? 96 : 64;
+  const lineH = large ? 52 : 34;
+  const padB = large ? 40 : 18;
+  const gap = large ? 220 : 150;
+  const side = large ? 24 : 32;
+  const nameSize = large ? 46 : 28;
+  const lineSize = large ? 38 : 22;
+  const labelSize = large ? 34 : 20;
   const strokeW = large ? 5 : 3;
   const head = large ? 10 : 6;
   const width = side + boxes.length * boxWidth + (boxes.length - 1) * gap + side;
+  const wrapInner = boxWidth - 48;
+  const drawn = boxes.map((box) => ({
+    ...box,
+    // Long routes wrap so the list stays left-aligned at a readable size
+    // instead of shrinking to a few pixels.
+    bodyLines: box.lines.flatMap((line) => wrapToReadable(line, lineSize, wrapInner)),
+  }));
   const contentBody = Math.max(
-    ...boxes.map((box) => Math.max(box.lines.length, 1) * lineH + padB),
+    ...drawn.map((box) => Math.max(box.bodyLines.length, 1) * lineH + padB),
   );
   const top = large ? 12 : 20;
   // Body is at least tall enough for both arrows, and never stretched to the slide.
   const { bodyH, requestY, responseY } = bodyAndArrows(top + headerH, contentBody, large);
   const boxH = headerH + bodyH;
   const height = (large ? 12 : 24) + boxH + (large ? 12 : 20);
-  const fitSize = (text: string, size: number) =>
-    Math.min(size, Math.max(13, Math.floor((boxWidth - 28) / (Math.max(text.length, 1) * 0.62))));
+  const fitSize = (text: string, size: number) => {
+    const fitted = Math.floor((boxWidth - 32) / (Math.max(text.length, 1) * 0.6));
+    return Math.min(size, Math.max(fitted, 12));
+  };
 
   return (
     <svg role="img" viewBox={`0 0 ${width} ${height}`} aria-label={title}>
       <title>{title}</title>
-      {boxes.map((box, index) => {
+      {drawn.map((box, index) => {
         const tone: Tone = TONES[box.tone];
         const x = side + index * (boxWidth + gap);
         const h = boxH;
@@ -148,7 +183,7 @@ function Flow({
                 />
                 <text
                   x={x - gap / 2}
-                  y={requestY - (large ? 14 : 6)}
+                  y={requestY - (large ? 36 : 22)}
                   textAnchor="middle"
                   fontFamily={FONT}
                   fontSize={labelSize}
@@ -167,7 +202,7 @@ function Flow({
                 />
                 <text
                   x={x - gap / 2}
-                  y={responseY + (large ? 28 : 16)}
+                  y={responseY + (large ? 44 : 28)}
                   textAnchor="middle"
                   fontFamily={FONT}
                   fontSize={labelSize}
@@ -213,18 +248,18 @@ function Flow({
             >
               {box.name}
             </text>
-            {box.lines.map((line, lineIndex) => {
+            {box.bodyLines.map((line, lineIndex) => {
               // A list of routes, functions, or code lines reads from the left.
               // A single label stays centered under the title.
-              const list = box.lines.length > 1;
-              const inset = 18;
+              const list = box.lines.length > 1 || box.bodyLines.length > 1;
+              const inset = 22;
               return (
               <text
-                key={line}
+                key={`${line}-${lineIndex}`}
                 x={list ? x + inset : large ? x + boxWidth / 2 : x + inset}
                 y={(large
-                  ? top + headerH + (h - headerH - box.lines.length * lineH) / 2 + 22
-                  : top + HEADER_H + 20) + lineIndex * lineH}
+                  ? top + headerH + (h - headerH - box.bodyLines.length * lineH) / 2 + 38
+                  : top + headerH + 26) + lineIndex * lineH}
                 textAnchor={list || !large ? "start" : "middle"}
                 fontFamily={MONO}
                 fontSize={fitSize(line, lineSize)}
