@@ -1,6 +1,20 @@
 import { COVER_MONGO } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
+function sectionSlide(id: string, headline: string): LectureSlide {
+  return {
+    id,
+    title: "WEB DEV",
+    kind: "title",
+    cover: {
+      color: COVER_MONGO,
+      icon: "server",
+      headline,
+    },
+    bullets: ["Chapter 6 · Mongo APIs", headline],
+  };
+}
+
 export const MONGO_APIS_SLIDES: LectureSlide[] = [
   {
     id: "title",
@@ -80,6 +94,7 @@ export const MONGO_APIS_SLIDES: LectureSlide[] = [
     codeFile: "webdev-server/Kambaz/Users/routes.ts",
     codeHighlightLines: [1, 2, 9],
   },
+  sectionSlide("section-finding", "Finding Users"),
   {
     id: "find-all-dao",
     title: "Users DAO finds every user",
@@ -192,6 +207,7 @@ app.get("/api/users", findAllUsers);`,
     ],
     embed: "kambaz-styled-people",
   },
+  sectionSlide("section-users-screen", "Users Screen"),
   {
     id: "users-screen-intro",
     title: "Why a Users screen",

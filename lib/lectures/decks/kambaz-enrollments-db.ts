@@ -1,6 +1,20 @@
 import { COVER_KAMBAZ } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
+function sectionSlide(id: string, headline: string): LectureSlide {
+  return {
+    id,
+    title: "WEB DEV",
+    kind: "title",
+    cover: {
+      color: COVER_KAMBAZ,
+      icon: "database",
+      headline,
+    },
+    bullets: ["Chapter 6 · Enrollments M:N", headline],
+  };
+}
+
 export const KAMBAZ_ENROLLMENTS_DB_SLIDES: LectureSlide[] = [
   {
     id: "title",
@@ -120,6 +134,7 @@ const enrollmentsDao = EnrollmentsDao();`,
     codeFile: "webdev-server/Kambaz/Courses/routes.ts",
     codeAddedLines: [2, 5],
   },
+  sectionSlide("section-reading", "Enrolled Courses"),
   {
     id: "read-path",
     title: "`GET` enrolled courses",
@@ -220,6 +235,7 @@ useEffect(() => {
     ],
     diagram: "enroll-read-result",
   },
+  sectionSlide("section-joins", "Deleting Joins"),
   {
     id: "joins-path",
     title: "`DELETE` a course and its joins",
@@ -303,6 +319,7 @@ const onDeleteCourse = async (courseId: string) => {
     ],
     diagram: "enroll-joins-result",
   },
+  sectionSlide("section-enrolling", "Enrolling"),
   {
     id: "enroll-create-path",
     title: "`POST` enrolls the user",
@@ -464,6 +481,7 @@ const enrolled = currentUser
     ],
     diagram: "enroll-create-result",
   },
+  sectionSlide("section-unenrolling", "Unenrolling"),
   {
     id: "enroll-unenroll-path",
     title: "`DELETE` unenrolls the user",
@@ -559,6 +577,7 @@ app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);`,
     ],
     diagram: "enroll-unenroll-result",
   },
+  sectionSlide("section-people", "Listing People"),
   {
     id: "people-path",
     title: "`GET /api/courses/:cid/users`",

@@ -47,6 +47,7 @@ import { GoalDiagram, isGoalDiagram } from "./GoalDiagrams";
 import UsersCrudMock from "./UsersCrudMock";
 import KambazDbResult from "./KambazDbResult";
 import EnrollmentsMnDiagram from "./EnrollmentsMnDiagram";
+import { ModulesOneToNDiagram, ModulesShapesDiagram } from "./ModulesRelationDiagrams";
 import type { LectureDiagramFocus } from "@/lib/lectures/types";
 
 export default function LectureDiagram({
@@ -160,6 +161,10 @@ export default function LectureDiagram({
       return <KambazDbResult id={id} />;
     case "enrollments-mn":
       return <EnrollmentsMnDiagram />;
+    case "modules-1n":
+      return <ModulesOneToNDiagram />;
+    case "modules-shapes":
+      return <ModulesShapesDiagram />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;

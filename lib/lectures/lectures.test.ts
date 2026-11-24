@@ -1356,15 +1356,15 @@ describe("lecture decks", () => {
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 12);
     assert.equal(counts["mongoose"], 13);
-    assert.equal(counts["mongo-apis"], 17);
-    assert.equal(counts["mongo-users-crud"], 43);
+    assert.equal(counts["mongo-apis"], 19);
+    assert.equal(counts["mongo-users-crud"], 48);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
     assert.equal(counts["atlas-node"], 10);
     assert.equal(counts["atlas-sessions"], 12);
-    assert.equal(counts["kambaz-courses-db"], 38);
-    assert.equal(counts["kambaz-modules-db"], 31);
-    assert.equal(counts["kambaz-enrollments-db"], 44);
+    assert.equal(counts["kambaz-courses-db"], 43);
+    assert.equal(counts["kambaz-modules-db"], 35);
+    assert.equal(counts["kambaz-enrollments-db"], 49);
     assert.equal(counts["youtube-api"], 9);
     assert.equal(counts["youtube-search"], 11);
     assert.equal(counts["youtube-details"], 23);
@@ -3701,6 +3701,8 @@ describe("lecture decks", () => {
         "create-result": "courses-create-result",
       },
       "kambaz-modules-db": {
+        purpose: "modules-1n",
+        shapes: "modules-shapes",
         "modules-picture": "modules-stack",
         "read-path": "modules-read",
         "create-path": "modules-create",

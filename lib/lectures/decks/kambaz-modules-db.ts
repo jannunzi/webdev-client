@@ -1,6 +1,20 @@
 import { COVER_KAMBAZ } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
+function sectionSlide(id: string, headline: string): LectureSlide {
+  return {
+    id,
+    title: "WEB DEV",
+    kind: "title",
+    cover: {
+      color: COVER_KAMBAZ,
+      icon: "database",
+      headline,
+    },
+    bullets: ["Chapter 6 · Modules 1:N", headline],
+  };
+}
+
 export const KAMBAZ_MODULES_DB_SLIDES: LectureSlide[] = [
   {
     id: "title",
@@ -25,6 +39,7 @@ export const KAMBAZ_MODULES_DB_SLIDES: LectureSlide[] = [
       "The link is already a course id on each module in the JSON file",
       "That id has to live on a document, or the Modules page cannot find them",
     ],
+    diagram: "modules-1n",
   },
   {
     id: "shapes",
@@ -36,6 +51,7 @@ export const KAMBAZ_MODULES_DB_SLIDES: LectureSlide[] = [
       "Embed the children in the parent — a `modules` array, no second collection",
       "Pick one per project. Do not insert the same module in two places",
     ],
+    diagram: "modules-shapes",
   },
   {
     id: "modules-picture",
@@ -68,6 +84,7 @@ export default schema;`,
     codeFile: "webdev-server/Kambaz/Modules/schema.ts",
     codeHighlightLines: [6],
   },
+  sectionSlide("section-retrieving", "Retrieving Modules"),
   {
     id: "read-path",
     title: "`GET` a course's modules",
@@ -153,6 +170,7 @@ useEffect(() => {
     bullets: ["These rows are the documents whose `course` is this course id"],
     embed: "kambaz-styled-modules",
   },
+  sectionSlide("section-creating", "Creating Modules"),
   {
     id: "create-path",
     title: "`POST` a module under the course",
@@ -248,6 +266,7 @@ const onAddModule = async () => {
     ],
     diagram: "modules-create-result",
   },
+  sectionSlide("section-deleting", "Deleting Modules"),
   {
     id: "delete-path",
     title: "`DELETE /api/modules/:moduleId`",
@@ -329,6 +348,7 @@ const onRemoveModule = async (moduleId: string) => {
     ],
     diagram: "modules-delete-result",
   },
+  sectionSlide("section-updating", "Updating Modules"),
   {
     id: "update-path",
     title: "`PUT /api/modules/:moduleId`",

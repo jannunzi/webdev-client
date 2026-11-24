@@ -1,6 +1,20 @@
 import { COVER_MONGO } from "../cover-colors";
 import type { LectureSlide } from "../types";
 
+function sectionSlide(id: string, headline: string): LectureSlide {
+  return {
+    id,
+    title: "WEB DEV",
+    kind: "title",
+    cover: {
+      color: COVER_MONGO,
+      icon: "user",
+      headline,
+    },
+    bullets: ["Chapter 6 · CRUD Users", headline],
+  };
+}
+
 export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
   {
     id: "title",
@@ -163,6 +177,7 @@ const filterUsersByRole = async (role: string) => {
     ],
     diagram: "users-role-result",
   },
+  sectionSlide("section-name", "Filtering by Name"),
   {
     id: "name-path",
     title: "`GET /api/users?name=`",
@@ -292,6 +307,7 @@ const filterUsersByName = async (name: string) => {
     ],
     diagram: "users-name-result",
   },
+  sectionSlide("section-reading", "Reading a User"),
   {
     id: "read-one-path",
     title: "`GET /api/users/:userId`",
@@ -397,6 +413,7 @@ onClick={() => {
     ],
     diagram: "users-details-result",
   },
+  sectionSlide("section-deleting", "Deleting Users"),
   {
     id: "delete-path",
     title: "`DELETE /api/users/:userId`",
@@ -504,6 +521,7 @@ onClick={() => {
     ],
     diagram: "users-delete-result",
   },
+  sectionSlide("section-updating", "Updating Users"),
   {
     id: "update-path",
     title: "`PUT /api/users/:userId`",
@@ -604,6 +622,7 @@ const saveUser = async () => {
     ],
     diagram: "users-update-result",
   },
+  sectionSlide("section-creating", "Creating Users"),
   {
     id: "create-path",
     title: "`POST /api/users`",
