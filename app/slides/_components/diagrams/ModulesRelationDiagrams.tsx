@@ -104,17 +104,18 @@ export function ModulesOneToNDiagram() {
 
 /** Module ids on the course, beside modules embedded in the course document. */
 export function ModulesShapesDiagram() {
-  const rowH = linesHeight(5);
-  const top = 6;
-  const yFor = (count: number) => top + (rowH - linesHeight(count)) / 2;
-  const height = top + rowH + 6;
+  const lineH = 36;
+  const rowH = linesHeight(5, lineH);
+  const top = 4;
+  const yFor = (count: number) => top + (rowH - linesHeight(count, lineH)) / 2;
+  const height = top + rowH + 4;
   const mid = top + rowH / 2;
-  const courseW = 270;
-  const moduleW = 200;
-  const embedW = 320;
-  const gap = 110;
-  const groupGap = 72;
-  const side = 16;
+  const courseW = 300;
+  const moduleW = 220;
+  const embedW = 360;
+  const gap = 130;
+  const side = 8;
+  const groupGap = 760;
 
   const courseX = side;
   const moduleX = courseX + courseW + gap;
@@ -136,15 +137,17 @@ export function ModulesShapesDiagram() {
         title="Course"
         lines={["modules: [", '  "M101",', '  "M102",', "  ...", "]"]}
         tone={BLUE}
+        lineH={lineH}
       />
       <Box
         x={moduleX}
         y={yFor(2)}
         w={moduleW}
-        h={linesHeight(2)}
+        h={linesHeight(2, lineH)}
         title="Module"
         lines={["_id", "name"]}
         tone={YELLOW}
+        lineH={lineH}
       />
       <Arrow x1={courseX + courseW + 8} x2={moduleX - 8} y={mid} />
       <GapLabel x={courseX + courseW + gap / 2} y={mid - 20} text="id" />
@@ -156,6 +159,7 @@ export function ModulesShapesDiagram() {
         title="Course"
         lines={["modules: [", "  { module1 },", "  { module2 },", "  ...", "]"]}
         tone={BLUE}
+        lineH={lineH}
       />
     </svg>
   );
