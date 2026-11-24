@@ -29,6 +29,7 @@ function raiseDiagramText(inner: HTMLElement, zoom: number, slideWidth: number) 
     }))
     .filter((rect) => rect.width > 0 && rect.height > 0);
 
+  const planned: { text: SVGTextElement; next: number; x: number; anchor: string; key: string }[] = [];
   for (const text of texts) {
     if (!text.dataset.diagramFont) {
       text.dataset.diagramFont = text.getAttribute("font-size") || "16";
@@ -91,12 +92,33 @@ function raiseDiagramText(inner: HTMLElement, zoom: number, slideWidth: number) 
     const target = minVisual / zoom;
     let next = target;
     if (boxWidth > 0) {
-      next = Math.min(next, fontPxThatFits(content, boxWidth, container ? 36 : 36));
+      next = Math.min(next, fontPxThatFits(content, boxWidth, container ? 28 : 16));
     }
     if (lineGap > 0) next = Math.min(next, lineGap * 0.8);
-    // Slide 9's labels are the ceiling. Oversized type shrinks down to them.
     next = Math.max(12, Math.min(next, target));
-    text.setAttribute("font-size", String(Math.round(next * 10) / 10));
+    const anchor = text.getAttribute("text-anchor") || "start";
+    const key = container
+      ? `${container.x},${container.y},${container.width}`
+      : "gap";
+    planned.push({ text, next, x, anchor, key });
+  }
+  // A list shares one size: the size that fits its longest line. Shorter
+  // lines do not grow past it.
+  const lists = new Map<string, typeof planned>();
+  for (const item of planned) {
+    if (item.anchor !== "start") continue;
+    const groupKey = `${item.key}:${Math.round(item.x)}`;
+    const group = lists.get(groupKey) ?? [];
+    group.push(item);
+    lists.set(groupKey, group);
+  }
+  for (const group of lists.values()) {
+    if (group.length < 2) continue;
+    const uniform = Math.min(...group.map((item) => item.next));
+    for (const item of group) item.next = uniform;
+  }
+  for (const item of planned) {
+    item.text.setAttribute("font-size", String(Math.round(item.next * 10) / 10));
   }
 }
 

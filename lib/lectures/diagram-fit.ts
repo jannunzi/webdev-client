@@ -52,8 +52,8 @@ export function diagramMinFontPx(_slideWidth: number, _bulletPx: number): number
 }
 
 /**
- * Give a long list the extra width and keep short boxes a little narrower,
- * so one wide column does not force every label down to the same tiny zoom.
+ * A multi-line list is as wide as its longest line, so every line stays on
+ * one row. The other boxes shrink to their own labels.
  */
 export function balanceBoxWidths(
   boxes: { name: string; lines: string[] }[],
@@ -61,19 +61,15 @@ export function balanceBoxWidths(
   nameSize: number,
   lineSize: number,
 ): number[] {
-  const em = 0.66;
-  const pad = 64;
-  const narrow = shared * 0.7;
-  const wide = shared * 1.3;
+  const em = 0.62;
+  const pad = 44;
   return boxes.map((box) => {
-    const longest = box.lines.reduce((max, line) => Math.max(max, line.length), 0);
-    const list = box.lines.length > 1 && longest > 24;
-    const lineChars = list ? Math.min(longest, 22) : longest;
-    const nameW = box.name.length * nameSize * em + pad;
-    // Short labels such as PeopleTable need enough box to reach the slide 9 size.
-    const bodySize = list ? lineSize : Math.max(lineSize, 46);
-    const lineW = lineChars * bodySize * em + pad;
-    return Math.round(Math.min(wide, Math.max(narrow, nameW, lineW)));
+    const longestLine = box.lines.reduce((max, line) => Math.max(max, line.length), 0);
+    const list = box.lines.length > 1 && longestLine > 16;
+    if (list) return Math.round(longestLine * lineSize * em + pad);
+    const chars = Math.max(box.name.length, longestLine, 1);
+    const content = chars * Math.max(nameSize, lineSize) * 0.58 + pad;
+    return Math.round(Math.max(shared * 0.36, Math.min(shared * 0.62, content)));
   });
 }
 

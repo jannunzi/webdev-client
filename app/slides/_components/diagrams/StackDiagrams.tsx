@@ -30,32 +30,6 @@ const LINE_H = 22;
 const PAD_B = 14;
 const RADIUS = 12;
 
-/** Break a long label so it can stay large instead of shrinking to fit one line. */
-function wrapToReadable(text: string, size: number, inner: number): string[] {
-  const readable = Math.min(size, 30);
-  const maxChars = Math.max(8, Math.floor(inner / (readable * 0.62)));
-  if (text.length <= maxChars) return [text];
-  const parts: string[] = [];
-  let rest = text.trim();
-  while (rest.length > maxChars) {
-    let split = -1;
-    const limit = Math.min(maxChars, rest.length - 1);
-    for (let i = limit; i >= 6; i -= 1) {
-      const ch = rest[i] ?? "";
-      if (ch === " " || ch === "/") {
-        split = ch === "/" ? i + 1 : i;
-        break;
-      }
-    }
-    if (split < 6) split = maxChars;
-    const piece = rest.slice(0, split).replace(/[\s/]+$/, "");
-    if (piece) parts.push(piece);
-    rest = rest.slice(split).replace(/^[\s/]+/, "");
-  }
-  if (rest) parts.push(rest);
-  return parts.length > 0 ? parts : [text];
-}
-
 function boxHeight(lines: number) {
   return HEADER_H + Math.max(lines, 1) * LINE_H + PAD_B;
 }
@@ -147,7 +121,7 @@ function Flow({
   const headerH = large ? 96 : 64;
   const lineH = large ? 52 : 34;
   const padB = large ? 40 : 18;
-  const gap = large ? 250 : 160;
+  const gap = large ? 132 : 96;
   const side = large ? 24 : 32;
   const nameSize = large ? 46 : 28;
   const lineSize = large ? 38 : 22;
@@ -157,16 +131,12 @@ function Flow({
   const widths = balanceBoxWidths(boxes, boxWidth, nameSize, lineSize);
   const width =
     side + widths.reduce((sum, item) => sum + item, 0) + (boxes.length - 1) * gap + side;
-  const drawn = boxes.map((box, index) => {
-    const inner = (widths[index] ?? boxWidth) - 48;
-    return {
-      ...box,
-      width: widths[index] ?? boxWidth,
-      // Long routes wrap so the list stays left-aligned at a readable size
-      // instead of shrinking to a few pixels.
-      bodyLines: box.lines.flatMap((line) => wrapToReadable(line, lineSize, inner)),
-    };
-  });
+  const drawn = boxes.map((box, index) => ({
+    ...box,
+    width: widths[index] ?? boxWidth,
+    // Each list item stays on one line. The box is sized to the longest item.
+    bodyLines: box.lines,
+  }));
   const contentBody = Math.max(
     ...drawn.map((box) => Math.max(box.bodyLines.length, 1) * lineH + padB),
   );
@@ -219,7 +189,7 @@ function Flow({
                   fontWeight={700}
                   fill="#171717"
                 >
-                  request
+                  req
                 </text>
                 <Arrow
                   x1={x - 8}
@@ -238,7 +208,7 @@ function Flow({
                   fontWeight={700}
                   fill="#171717"
                 >
-                  response
+                  res
                 </text>
               </g>
             ) : null}
@@ -278,10 +248,11 @@ function Flow({
               {box.name}
             </text>
             {box.bodyLines.map((line, lineIndex) => {
-              // A list of routes, functions, or code lines reads from the left.
-              // A single label stays centered under the title.
-              const list = box.lines.length > 1 || box.bodyLines.length > 1;
-              const inset = 22;
+              // A list of routes, functions, or code lines reads from the left
+              // at one size: the size that fits the longest line.
+              const list = box.bodyLines.length > 1;
+              const inset = 18;
+              const longest = box.bodyLines.reduce((best, item) => (item.length > best.length ? item : best), "");
               return (
               <text
                 key={`${line}-${lineIndex}`}
@@ -291,7 +262,7 @@ function Flow({
                   : top + headerH + 26) + lineIndex * lineH}
                 textAnchor={list || !large ? "start" : "middle"}
                 fontFamily={MONO}
-                fontSize={fitSize(line, lineSize, span)}
+                fontSize={fitSize(list ? longest : line, lineSize, span)}
                 fontWeight={box.emphasis && lineIndex === 0 ? 700 : 400}
                 fill={box.emphasis && lineIndex === 0 ? tone.stroke : "#171717"}
               >
