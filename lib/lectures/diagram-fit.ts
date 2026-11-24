@@ -52,8 +52,9 @@ export function diagramMinFontPx(_slideWidth: number, _bulletPx: number): number
 }
 
 /**
- * A multi-line list is as wide as its longest line, so every line stays on
- * one row. The other boxes shrink to their own labels.
+ * A list box is as wide as its longest line, so every line stays on one row.
+ * Every other box is exactly wide enough for its title at the normal title
+ * size, so a long title is not auto-shrunk.
  */
 export function balanceBoxWidths(
   boxes: { name: string; lines: string[] }[],
@@ -61,15 +62,15 @@ export function balanceBoxWidths(
   nameSize: number,
   lineSize: number,
 ): number[] {
-  const em = 0.62;
-  const pad = 44;
+  const em = 0.7;
+  const pad = 48;
   return boxes.map((box) => {
     const longestLine = box.lines.reduce((max, line) => Math.max(max, line.length), 0);
     const list = box.lines.length > 1 && longestLine > 16;
-    if (list) return Math.round(longestLine * lineSize * em + pad);
-    const chars = Math.max(box.name.length, longestLine, 1);
-    const content = chars * Math.max(nameSize, lineSize) * 0.58 + pad;
-    return Math.round(Math.max(shared * 0.36, Math.min(shared * 0.62, content)));
+    const nameW = box.name.length * nameSize * em + pad;
+    if (list) return Math.round(Math.max(nameW, longestLine * lineSize * 0.62 + pad));
+    const lineW = Math.max(longestLine, 1) * lineSize * 0.62 + pad;
+    return Math.round(Math.max(nameW, lineW, shared * 0.34));
   });
 }
 

@@ -4473,9 +4473,10 @@ describe("diagram fit", () => {
       38,
     );
     assert.ok(widths[0]! < shared, "People is narrower");
+    assert.ok(widths[1]! > widths[0]!, "courses client fits its title");
     assert.ok(widths[2]! > shared, "CourseRoutes is wider");
-    assert.ok(widths[4]! < shared, "enrollments is narrower");
-    assert.ok(widths[2]! > widths[0]!, "the route list is wider than People");
+    assert.ok(widths[3]! > widths[0]!, "EnrollmentsDao fits its title");
+    assert.ok(widths[4]! < widths[2]!, "enrollments is narrower than the route list");
   });
 
   it("stops a tall drawing at the CRUD Users slide 2 height", () => {

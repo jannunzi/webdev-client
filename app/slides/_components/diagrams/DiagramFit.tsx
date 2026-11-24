@@ -29,7 +29,14 @@ function raiseDiagramText(inner: HTMLElement, zoom: number, slideWidth: number) 
     }))
     .filter((rect) => rect.width > 0 && rect.height > 0);
 
-  const planned: { text: SVGTextElement; next: number; x: number; anchor: string; key: string }[] = [];
+  const planned: {
+    text: SVGTextElement;
+    next: number;
+    x: number;
+    anchor: string;
+    key: string;
+    weight: string;
+  }[] = [];
   for (const text of texts) {
     if (!text.dataset.diagramFont) {
       text.dataset.diagramFont = text.getAttribute("font-size") || "16";
@@ -97,10 +104,11 @@ function raiseDiagramText(inner: HTMLElement, zoom: number, slideWidth: number) 
     if (lineGap > 0) next = Math.min(next, lineGap * 0.8);
     next = Math.max(12, Math.min(next, target));
     const anchor = text.getAttribute("text-anchor") || "start";
+    const weight = text.getAttribute("font-weight") || "400";
     const key = container
       ? `${container.x},${container.y},${container.width}`
       : "gap";
-    planned.push({ text, next, x, anchor, key });
+    planned.push({ text, next, x, anchor, key, weight });
   }
   // A list shares one size: the size that fits its longest line. Shorter
   // lines do not grow past it.
@@ -116,6 +124,12 @@ function raiseDiagramText(inner: HTMLElement, zoom: number, slideWidth: number) 
     if (group.length < 2) continue;
     const uniform = Math.min(...group.map((item) => item.next));
     for (const item of group) item.next = uniform;
+  }
+  // Box titles share one size, so a long title cannot render smaller than "People".
+  const titles = planned.filter((item) => item.anchor === "middle" && Number(item.weight) >= 700 && item.key !== "gap");
+  if (titles.length > 1) {
+    const uniform = Math.min(...titles.map((item) => item.next));
+    for (const item of titles) item.next = uniform;
   }
   for (const item of planned) {
     item.text.setAttribute("font-size", String(Math.round(item.next * 10) / 10));

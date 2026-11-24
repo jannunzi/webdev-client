@@ -1198,6 +1198,7 @@ html.lecture-presenting body {
   flex: 1 1 auto;
   max-height: 42%;
   min-height: 9rem;
+  margin-top: 1.35rem;
 }
 
 .lecture-slide[data-diagram-fit="stack"] > .lecture-diagram-fit {

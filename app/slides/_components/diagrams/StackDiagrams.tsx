@@ -121,7 +121,7 @@ function Flow({
   const headerH = large ? 96 : 64;
   const lineH = large ? 52 : 34;
   const padB = large ? 40 : 18;
-  const gap = large ? 132 : 96;
+  const gap = large ? 96 : 72;
   const side = large ? 24 : 32;
   const nameSize = large ? 46 : 28;
   const lineSize = large ? 38 : 22;
@@ -144,7 +144,7 @@ function Flow({
   // Body is at least tall enough for both arrows, and never stretched to the slide.
   const { bodyH, requestY, responseY } = bodyAndArrows(top + headerH, contentBody, large);
   const boxH = headerH + bodyH;
-  const here = focus ? 108 : 0;
+  const here = focus ? 44 : 0;
   const height = (large ? 12 : 24) + boxH + (large ? 12 : 20) + here;
   const focusIndex = focus ? focusBoxIndex(focus, drawn.length) : -1;
   const fitSize = (text: string, size: number, span: number) => {
@@ -274,27 +274,16 @@ function Flow({
               <g>
                 <line
                   x1={x + span / 2}
-                  y1={top + h + 70}
+                  y1={top + h + 36}
                   x2={x + span / 2}
-                  y2={top + h + 16}
+                  y2={top + h + 14}
                   stroke="#171717"
                   strokeWidth={4}
                 />
                 <polygon
-                  points={`${x + span / 2},${top + h + 4} ${x + span / 2 - 12},${top + h + 22} ${x + span / 2 + 12},${top + h + 22}`}
+                  points={`${x + span / 2},${top + h + 4} ${x + span / 2 - 11},${top + h + 20} ${x + span / 2 + 11},${top + h + 20}`}
                   fill="#171717"
                 />
-                <text
-                  x={x + span / 2}
-                  y={top + h + 96}
-                  textAnchor="middle"
-                  fontFamily={FONT}
-                  fontSize={large ? 28 : 22}
-                  fontWeight={700}
-                  fill="#171717"
-                >
-                  you are here
-                </text>
               </g>
             ) : null}
           </g>
