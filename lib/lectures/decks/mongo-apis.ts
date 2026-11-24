@@ -251,4 +251,23 @@ export default function Users() {
     codeFile: "app/(kambaz)/account/Navigation.tsx",
     codeAddedLines: [[1, 12]],
   },
+  {
+    id: "recap",
+    title: "Find-all recap",
+    kind: "content",
+    bullets: [
+      "`async` / `await` on signin and signup — the session is still set",
+      "`find()` with no predicate, then `GET /api/users` and `findAllUsers`",
+      "ADMIN Account Nav → Users screen → PeopleTable",
+    ],
+  },
+  {
+    id: "next-up",
+    title: "Next: CRUD Users",
+    kind: "title",
+    bullets: [
+      "Filter by role, then by a partial name",
+      "Open one user, then delete, update, and create",
+    ],
+  },
 ];

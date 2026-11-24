@@ -135,4 +135,23 @@ SESSION_SECRET=a long random phrase`,
       "Zustand still talks to Express — Mongoose is what reaches Atlas",
     ],
   },
+  {
+    id: "recap",
+    title: "Remote sessions recap",
+    kind: "content",
+    bullets: [
+      "Five keys: Atlas URI, `CLIENT_URL`, `SERVER_URL`, `SERVER_ENV`, secret",
+      "`SERVER_ENV=production` plus a Vercel origin with no trailing slash",
+      "Manual Deploy, then sign in. Secrets stay on Render",
+    ],
+  },
+  {
+    id: "next-up",
+    title: "Next: Courses in Mongo",
+    kind: "title",
+    bullets: [
+      "Course schema and model, then find, create, delete, and update",
+      "Dashboard add, edit, and delete write documents",
+    ],
+  },
 ];

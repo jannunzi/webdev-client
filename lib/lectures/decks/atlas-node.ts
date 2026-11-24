@@ -112,4 +112,23 @@ await mongoose.connect(CONNECTION_STRING);`,
     interactiveHint:
       "Local `.env.development` stays `http://localhost:4000`. Same `NEXT_PUBLIC_HTTP_SERVER` variable.",
   },
+  {
+    id: "recap",
+    title: "Node.js recap",
+    kind: "content",
+    bullets: [
+      "`0.0.0.0/0`, Drivers URI with `/kambaz?`, same env key",
+      "New Render service — do not overwrite `a5`",
+      "Vercel `NEXT_PUBLIC_HTTP_SERVER` points at the new origin",
+    ],
+  },
+  {
+    id: "next-up",
+    title: "Next: Remote Sessions",
+    kind: "title",
+    bullets: [
+      "Sign in still needs a cookie the Vercel app can send back",
+      "Five Render keys, then Manual Deploy",
+    ],
+  },
 ];

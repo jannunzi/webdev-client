@@ -83,6 +83,40 @@ export default model;`,
     codeHighlightLines: [3],
   },
   {
+    id: "dao-skeleton",
+    title: "Enrollments DAO exports functions",
+    kind: "demo",
+    bullets: [
+      "Import `model`. The functions on the next slides close over it",
+      "Export the function. Courses routes create it once",
+    ],
+    code: `import model from "./model";
+
+export default function EnrollmentsDao() {
+  return {};
+}`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Enrollments/dao.ts",
+    codeAddedLines: [[1, 5]],
+  },
+  {
+    id: "routes-wire",
+    title: "Courses routes create the DAO",
+    kind: "demo",
+    bullets: [
+      "Import it next to the courses DAO",
+      "Every later route on this deck calls `enrollmentsDao`",
+    ],
+    code: `import CoursesDao from "./dao";
+import EnrollmentsDao from "../Enrollments/dao";
+
+const dao = CoursesDao();
+const enrollmentsDao = EnrollmentsDao();`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/routes.ts",
+    codeAddedLines: [2, 5],
+  },
+  {
     id: "read-path",
     title: "GET enrolled courses",
     kind: "demo",
@@ -126,10 +160,11 @@ return { findCoursesForUser };`,
   }
   const courses = await enrollmentsDao.findCoursesForUser(userId);
   res.json(courses);
-};`,
+};
+app.get("/api/users/:userId/courses", findCoursesForEnrolledUser);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Courses/routes.ts",
-    codeHighlightLines: [12],
+    codeHighlightLines: [11, 14],
   },
   {
     id: "read-client",
@@ -269,6 +304,25 @@ return {
     codeAddedLines: [[1, 7], 10],
   },
   {
+    id: "create-enroll",
+    title: "Create also enrolls you",
+    kind: "demo",
+    bullets: [
+      "The courses deck inserted the document. This line writes the join",
+      "`enrollUserInCourse` already exists, so the route can call it",
+    ],
+    code: `const createCourse = async (req, res) => {
+  const newCourse = await dao.createCourse(req.body);
+  const currentUser = req.session["currentUser"];
+  enrollmentsDao.enrollUserInCourse(
+    currentUser._id, newCourse._id);
+  res.json(newCourse);
+};`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Courses/routes.ts",
+    codeAddedLines: [[3, 5]],
+  },
+  {
     id: "enroll-route",
     title: "POST enrolls the session user",
     kind: "demo",
@@ -303,20 +357,57 @@ app.post("/api/users/:uid/courses/:cid", enrollUserInCourse);`,
     codeAddedLines: [[1, 9]],
   },
   {
-    id: "enroll-ui",
-    title: "Enroll button calls the client",
+    id: "enroll-refresh",
+    title: "Dashboard reloads from the server",
     kind: "demo",
-    code: `const toggleEnrollment = () => {
-  if (!currentUser) return;
-  if (enrolled) {
-    unenrollFromCourse(currentUser._id, course._id);
-  } else {
-    enrollIntoCourse(currentUser._id, course._id);
-  }
+    bullets: [
+      "`enrolledIds` comes from `findMyCourses`, not a local array",
+      "Both buttons call `reload` after the write",
+    ],
+    code: `const reload = async () => {
+  setCourses(await client.fetchAllCourses());
+  const mine = await client.findMyCourses();
+  setEnrolledIds(mine.map((item) => item._id));
 };`,
     codeLanguage: "tsx",
-    codeFile: "app/slides/_components/embeds/enrollments/dashboard/CourseCard.tsx",
-    codeHighlightLines: [6],
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeAddedLines: [[1, 5]],
+  },
+  {
+    id: "enroll-enrolled",
+    title: "Card reads enrolled ids",
+    kind: "demo",
+    bullets: [
+      "Import the courses client. Do not read an enrollments store",
+      "`enrolled` is whether this id came back from the server",
+    ],
+    code: `import * as coursesClient from "../courses/client";
+import { useAccountContext } from "../account/AccountContext";
+
+const { currentUser } = useAccountContext();
+const enrolled = currentUser
+  ? enrolledIds.includes(course._id)
+  : null;`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeHighlightLines: [1, [5, 7]],
+  },
+  {
+    id: "enroll-ui",
+    title: "Enroll writes, then reloads",
+    kind: "demo",
+    bullets: ["`onChange` is the dashboard `reload`"],
+    code: `const onEnroll = async () => {
+  if (!currentUser || enrolled) return;
+  await coursesClient.enrollIntoCourse(
+    currentUser._id,
+    course._id,
+  );
+  await onChange();
+};`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeHighlightLines: [[3, 7]],
   },
   {
     id: "enroll-result",
@@ -382,6 +473,23 @@ app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);`,
     codeLanguage: "ts",
     codeFile: "app/(kambaz)/courses/client.ts",
     codeAddedLines: [[1, 9]],
+  },
+  {
+    id: "unenroll-ui",
+    title: "Unenroll deletes, then reloads",
+    kind: "demo",
+    bullets: ["Same `onChange`. The id leaves `enrolledIds` on the next paint"],
+    code: `const onUnenroll = async () => {
+  if (!currentUser || !enrolled) return;
+  await coursesClient.unenrollFromCourse(
+    currentUser._id,
+    course._id,
+  );
+  await onChange();
+};`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeHighlightLines: [[3, 7]],
   },
   {
     id: "unenroll-result",
@@ -485,6 +593,25 @@ return <PeopleTable users={users} fetchUsers={fetchUsers} />;`,
       "On your own — schema, model, DAO, then `await` the Chapter 5 routes",
       "Own collection plus a `course` id, or embed the assignments on the course",
       "`findAssignmentsForCourse`, create, update, delete — the modules shape",
+    ],
+  },
+  {
+    id: "recap",
+    title: "Enrollments recap",
+    kind: "content",
+    bullets: [
+      "Mapping collection with `ref: \"UserModel\"` and `CourseModel`",
+      "`populate`, `deleteMany` on course delete, enroll / unenroll URLs",
+      "Course People lists enrolled users. Assignments follow modules",
+    ],
+  },
+  {
+    id: "next-up",
+    title: "Next: YouTube API",
+    kind: "title",
+    bullets: [
+      "Google Cloud project, then a YouTube Data API v3 key",
+      "Store the key in env. Never commit a live key",
     ],
   },
 ];

@@ -366,4 +366,23 @@ const onUpdateModule = async (module) => {
     bullets: ["Point at the new name. `$set` wrote it"],
     diagram: "modules-update-result",
   },
+  {
+    id: "recap",
+    title: "Modules 1:N recap",
+    kind: "content",
+    bullets: [
+      "`modules` collection + `course` foreign key",
+      "`find({ course })`, create with uuid, `deleteOne`, `$set`",
+      "Add, rename, and delete. The row shows the saved name",
+    ],
+  },
+  {
+    id: "next-up",
+    title: "Next: Enrollments",
+    kind: "title",
+    bullets: [
+      "A mapping collection turns many-to-many into two 1:N links",
+      "`ref`, `populate(\"course\")`, then enroll / unenroll",
+    ],
+  },
 ];

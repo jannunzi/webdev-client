@@ -83,35 +83,33 @@ export default model;`,
       "`model.find()` with no filter returns every course document",
       "Export `findAllCourses` on the object the DAO returns",
     ],
-    code: `function findAllCourses() {
+    code: `import model from "./model";
+
+function findAllCourses() {
   // return Database.courses;
   return model.find();
 }
 return { findAllCourses };`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Courses/dao.ts",
-    codeAddedLines: [[1, 4]],
+    codeAddedLines: [[1, 7]],
   },
   {
-    id: "enrolled-dao",
-    title: "Enrolled helper still filters",
+    id: "routes-wire",
+    title: "Routes call CoursesDao",
     kind: "demo",
-    code: `async function findCoursesForEnrolledUser(userId) {
-  const { enrollments } = db;
-  const courses = await model.find();
-  const enrolledCourses = courses.filter((course) =>
-    enrollments.some(
-      (enrollment) =>
-        enrollment.user === userId &&
-        enrollment.course === course._id,
-    ),
-  );
-  return enrolledCourses;
-}
-return { findAllCourses, findCoursesForEnrolledUser };`,
+    bullets: [
+      "Drop the `db` argument. Mongo is the only source",
+      "The handlers on the next slides use this `dao`",
+    ],
+    code: `import CoursesDao from "./dao";
+
+export default function CourseRoutes(app) {
+  const dao = CoursesDao();
+}`,
     codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Courses/dao.ts",
-    codeAddedLines: [[1, 12], 13],
+    codeFile: "webdev-server/Kambaz/Courses/routes.ts",
+    codeAddedLines: [[1, 5]],
   },
   {
     id: "async-routes",
@@ -123,31 +121,11 @@ return { findAllCourses, findCoursesForEnrolledUser };`,
     code: `const findAllCourses = async (req, res) => {
   const courses = await dao.findAllCourses();
   res.send(courses);
-};`,
+};
+app.get("/api/courses", findAllCourses);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Courses/routes.ts",
-    codeHighlightLines: [1, 2],
-  },
-  {
-    id: "enrolled-route",
-    title: "Current user reads the session",
-    kind: "demo",
-    code: `const findCoursesForEnrolledUser = async (req, res) => {
-  let { userId } = req.params;
-  if (userId === "current") {
-    const currentUser = req.session["currentUser"];
-    if (!currentUser) {
-      res.sendStatus(401);
-      return;
-    }
-    userId = currentUser._id;
-  }
-  const courses = await dao.findCoursesForEnrolledUser(userId);
-  res.json(courses);
-};`,
-    codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Courses/routes.ts",
-    codeHighlightLines: [1, 12],
+    codeHighlightLines: [1, 2, 4],
   },
   {
     id: "read-all-client",
@@ -200,8 +178,7 @@ useEffect(() => {
   return model.findById(courseId);
 }
 return {
-  findAllCourses, findCoursesForEnrolledUser,
-  findCourseById,
+  findAllCourses, findCourseById,
 };`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Courses/dao.ts",
@@ -269,17 +246,18 @@ app.get("/api/courses/:courseId", findCourseById);`,
       "Spread the course, set `_id: uuidv4()`, then `model.create`",
       "Export `createCourse` on the DAO",
     ],
-    code: `function createCourse(course) {
+    code: `import { v4 as uuidv4 } from "uuid";
+
+function createCourse(course) {
   const newCourse = { ...course, _id: uuidv4() };
   return model.create(newCourse);
 }
 return {
-  findAllCourses, findCoursesForEnrolledUser,
-  findCourseById, createCourse,
+  findAllCourses, findCourseById, createCourse,
 };`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Courses/dao.ts",
-    codeAddedLines: [[1, 4], 7],
+    codeAddedLines: [[1, 6], 8],
   },
   {
     id: "create-route",
@@ -287,14 +265,12 @@ return {
     kind: "demo",
     code: `const createCourse = async (req, res) => {
   const newCourse = await dao.createCourse(req.body);
-  const currentUser = req.session["currentUser"];
-  enrollmentsDao.enrollUserInCourse(currentUser._id, newCourse._id);
   res.json(newCourse);
 };
 app.post("/api/courses", createCourse);`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Courses/routes.ts",
-    codeAddedLines: [[1, 7]],
+    codeAddedLines: [[1, 5]],
   },
   {
     id: "create-client",
@@ -348,7 +324,7 @@ const onAddCourse = async () => {
   return model.deleteOne({ _id: courseId });
 }
 return {
-  findAllCourses, findCoursesForEnrolledUser, findCourseById,
+  findAllCourses, findCourseById,
   createCourse, deleteCourse,
 };`,
     codeLanguage: "ts",
@@ -418,7 +394,7 @@ const onDeleteCourse = async (courseId: string) => {
   return model.updateOne({ _id: courseId }, { $set: courseUpdates });
 }
 return {
-  findAllCourses, findCoursesForEnrolledUser, findCourseById,
+  findAllCourses, findCourseById,
   createCourse, deleteCourse, updateCourse,
 };`,
     codeLanguage: "ts",
@@ -475,5 +451,24 @@ const onUpdateCourse = async () => {
     kind: "demo",
     bullets: ["Point at the new name. `$set` wrote it before the next refresh"],
     diagram: "courses-update-result",
+  },
+  {
+    id: "recap",
+    title: "Courses DB recap",
+    kind: "content",
+    bullets: [
+      "`CourseModel` + `collection: \"courses\"`",
+      "`find`, `create` + uuid, `deleteOne`, `updateOne` + `$set`",
+      "Routes are `async`. Dashboard buttons write documents",
+    ],
+  },
+  {
+    id: "next-up",
+    title: "Next: Modules 1:N",
+    kind: "title",
+    bullets: [
+      "A course has many modules — foreign key, id array, or embed",
+      "Keep a `modules` collection with `course`",
+    ],
   },
 ];
