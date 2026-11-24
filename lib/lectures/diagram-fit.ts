@@ -7,15 +7,22 @@ export function isLectureIconSvg(width: string | null, height: string | null): b
 }
 
 /**
- * Largest uniform scale that fits a diagram in the leftover slide slot.
- * Height grows to the slot when the aspect ratio allows; width follows
- * the same scale. The result never exceeds the slot on either axis.
+ * CRUD Users slide 2, at 1280×800, draws its diagram at about a third of
+ * the stage. Taller drawings stop there instead of filling the leftover slot.
+ */
+export const DIAGRAM_MAX_HEIGHT_OF_SLIDE = 0.34;
+
+/**
+ * Largest uniform scale that fits a diagram in the leftover slide slot
+ * without growing past the slide-2 height. The graphic keeps its aspect
+ * ratio. The result never exceeds the slot on either axis.
  */
 export function diagramFitScale(
   slotWidth: number,
   slotHeight: number,
   naturalWidth: number,
   naturalHeight: number,
+  maxHeight = Number.POSITIVE_INFINITY,
 ): number {
   if (
     slotWidth <= 0 ||
@@ -25,5 +32,7 @@ export function diagramFitScale(
   ) {
     return 1;
   }
-  return Math.min(slotWidth / naturalWidth, slotHeight / naturalHeight);
+  const fit = Math.min(slotWidth / naturalWidth, slotHeight / naturalHeight);
+  if (maxHeight <= 0) return fit;
+  return Math.min(fit, maxHeight / naturalHeight);
 }

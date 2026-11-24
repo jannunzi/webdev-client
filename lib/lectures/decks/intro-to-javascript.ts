@@ -18,7 +18,7 @@ export const INTRO_TO_JAVASCRIPT_SLIDES: LectureSlide[] = [
       "Chapters 1–2 gave Kambaz **structure** and **style**",
       "Those screens still show the same markup no matter who is signed in",
       "This chapter takes control of **data and logic** so the UI can change with the data",
-      "Same spine as `/book/ch3` and Lab 3 — one component per idea",
+      "Lab 3 does the same: one component per idea",
     ],
   },
   {

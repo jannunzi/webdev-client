@@ -97,7 +97,7 @@ export default function CourseNavigation({ cid }: { cid: string }) {
     title: "Canvas target: Course nav",
     kind: "content",
     bullets: [
-      "Book Figure 2.4.3 — Course Navigation beside the course content",
+      "Course Navigation sits beside the course content",
       "This week: a **plain list**. Active-route styling is Chapter 2",
     ],
     imageSrc: "/images/book/kambaz/course-navigation.png",

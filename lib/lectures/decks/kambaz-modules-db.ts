@@ -41,7 +41,10 @@ export const KAMBAZ_MODULES_DB_SLIDES: LectureSlide[] = [
     id: "modules-picture",
     title: "Modules from the Page to Mongo",
     kind: "demo",
-    bullets: ["Page, client, nested routes, DAO, then the modules collection"],
+    bullets: [
+      "The Modules page asks the courses client, and the client calls the nested course routes.",
+      "Each route calls the Modules DAO, which reads and writes the modules collection.",
+    ],
     diagram: "modules-stack",
   },
   {
@@ -69,7 +72,10 @@ export default schema;`,
     id: "read-path",
     title: "GET a course's modules",
     kind: "demo",
-    bullets: ["The page calls findModulesForCourse, then setModules"],
+    bullets: [
+      "The page calls findModulesForCourse with the course id from the URL.",
+      "The route finds documents whose course field is that id, and setModules shows them.",
+    ],
     diagram: "modules-read",
   },
   {
@@ -143,7 +149,10 @@ useEffect(() => {
     id: "create-path",
     title: "POST a module under the course",
     kind: "demo",
-    bullets: ["The store appends the module the nested POST returned"],
+    bullets: [
+      "Add sends POST /api/courses/:courseId/modules with the new module.",
+      "The store appends the document the route returns, so the new row appears.",
+    ],
     diagram: "modules-create",
   },
   {
@@ -218,14 +227,19 @@ const onAddModule = async () => {
     id: "create-result",
     title: "New module is on the list",
     kind: "demo",
-    bullets: ["Point at the new row. Its document stores this course id"],
+    bullets: [
+      "The new row is the module document that was inserted, and its course field is this course's id.",
+    ],
     diagram: "modules-create-result",
   },
   {
     id: "delete-path",
     title: "DELETE /api/modules/:moduleId",
     kind: "demo",
-    bullets: ["Delete the document, then drop that module from the cache"],
+    bullets: [
+      "Delete sends DELETE /api/modules/:moduleId, and the DAO removes that document.",
+      "The store then drops the same module from the cached list.",
+    ],
     diagram: "modules-delete",
   },
   {
@@ -286,14 +300,19 @@ const onRemoveModule = async (moduleId: string) => {
     id: "delete-result",
     title: "Deleted module leaves the list",
     kind: "demo",
-    bullets: ["Point at the shorter list. That document was removed"],
+    bullets: [
+      "The shorter list is what remains after that module document was removed.",
+    ],
     diagram: "modules-delete-result",
   },
   {
     id: "update-path",
     title: "PUT /api/modules/:moduleId",
     kind: "demo",
-    bullets: ["`$set` the fields the editor sent"],
+    bullets: [
+      "Save sends PUT /api/modules/:moduleId with the fields the editor changed.",
+      "`$set` writes those fields and leaves every field that was not sent as it was.",
+    ],
     diagram: "modules-update",
   },
   {
@@ -363,7 +382,9 @@ const onUpdateModule = async (module) => {
     id: "update-result",
     title: "Saved name is on the row",
     kind: "demo",
-    bullets: ["Point at the new name. `$set` wrote it"],
+    bullets: [
+      "The row shows the saved name because `$set` wrote it on that module document.",
+    ],
     diagram: "modules-update-result",
   },
   {

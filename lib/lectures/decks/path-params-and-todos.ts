@@ -246,7 +246,7 @@ export default function TodoList() {
     bullets: [
       "Import `TodoList` from its subfolder, `./todos/TodoList`, and render it last",
       "`TodoItem` is rendered inside `TodoList`, so the page does not import it",
-      "This is the finished Lab 3 page: every component in book order, each under its own heading",
+      "This is the finished Lab 3 page: every component, each under its own heading",
       "Your On your own and With AI additions live inside those components; extra `Add`, `Square`, and `Highlight` go right after them",
     ],
   },

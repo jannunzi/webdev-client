@@ -20,7 +20,11 @@ export const MONGO_APIS_SLIDES: LectureSlide[] = [
     id: "users-picture",
     title: "Users from the Page to Mongo",
     kind: "demo",
-    bullets: ["Page, client, routes, DAO, then the users collection"],
+    bullets: [
+      "The Users page asks the account client for users.",
+      "The client calls the Express routes, and each route calls the Users DAO.",
+      "The DAO reads and writes the users collection.",
+    ],
     diagram: "users-stack",
   },
   {
@@ -28,9 +32,9 @@ export const MONGO_APIS_SLIDES: LectureSlide[] = [
     title: "Implementing MongoDB APIs",
     kind: "demo",
     bullets: [
-      "DAO hides the vendor. Routes are the HTTP calls",
-      "React still posts JSON to the same signin URL",
-      "Each verb: DAO, Express route, and axios client",
+      "The DAO is the only code that talks to MongoDB, so a route never imports Mongoose.",
+      "The React page still sends JSON to the same sign-in URL.",
+      "Each action needs a DAO function, an Express route, and an axios call in the client.",
     ],
     diagram: "users-read-all",
   },
@@ -119,7 +123,7 @@ app.get("/api/users", findAllUsers);`,
     kind: "demo",
     bullets: [
       "`USERS_API` already prefixes `NEXT_PUBLIC_HTTP_SERVER`",
-      "Credentials so a later admin-only check can read the session cookie",
+      "Send credentials so the session cookie goes with the request. Without it the server answers 401",
     ],
     code: `export const findAllUsers = async () => {
   const response = await axiosWithCredentials.get(USERS_API);

@@ -114,7 +114,7 @@ export default function TailwindLab() {
     kind: "content",
     bullets: [
       "Screens use **Tailwind** utilities and **React Icons**",
-      "Follow `/book/ch2` and `/labs/lab2/tailwind`",
+      "Follow Chapter 2 and `/labs/lab2/tailwind`",
       "The **viewport** is the browser window. A **breakpoint** is a viewport width at which styles change. `md:` starts at 48rem (768px)",
       "A **12-column grid** divides the page into twelve columns. `md:col-span-6` spans six of them",
       "Course Navigation’s list group is CSS you write in `kambaz.css`",

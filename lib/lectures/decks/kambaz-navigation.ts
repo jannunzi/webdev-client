@@ -84,7 +84,7 @@ export default function KambazNavigation() {
     title: "Canvas target: Navigation",
     kind: "content",
     bullets: [
-      "Book Figure 2.4.1 — the finished black icon column we are aiming at",
+      "The finished black icon column",
       "This week: a **plain list** of links. Tailwind comes in Chapter 2",
     ],
     imageSrc: "/images/book/kambaz/navigation.png",

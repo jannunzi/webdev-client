@@ -6,15 +6,46 @@ import UiMockFrame from "./UiMockFrame";
 
 type Row = {
   name: string;
+  loginId: string;
+  section: string;
   role: string;
-  email: string;
+  lastActivity: string;
+  totalActivity: string;
 };
 
-const TONY: Row = { name: "Tony Stark", role: "STUDENT", email: "tony@stark.com" };
-const NATASHA: Row = { name: "Natasha Romanoff", role: "TA", email: "natasha@avengers.com" };
-const BANNER: Row = { name: "Bruce Banner", role: "FACULTY", email: "bruce@avengers.com" };
-const FURY: Row = { name: "Nick Fury", role: "FACULTY", email: "nick@shield.gov" };
-const ANTONIO: Row = { name: "Antonio Stark", role: "STUDENT", email: "tony@stark.com" };
+const TONY: Row = {
+  name: "Tony Stark",
+  loginId: "001234561S",
+  section: "S101",
+  role: "STUDENT",
+  lastActivity: "2020-10-01",
+  totalActivity: "10:21:32",
+};
+const NATASHA: Row = {
+  name: "Natasha Romanoff",
+  loginId: "001234564S",
+  section: "S101",
+  role: "TA",
+  lastActivity: "2020-11-05",
+  totalActivity: "13:23:34",
+};
+const BANNER: Row = {
+  name: "Bruce Banner",
+  loginId: "001234567F",
+  section: "S102",
+  role: "FACULTY",
+  lastActivity: "2020-12-05",
+  totalActivity: "32:10:45",
+};
+const FURY: Row = {
+  name: "Nick Fury",
+  loginId: "001234566F",
+  section: "S101",
+  role: "FACULTY",
+  lastActivity: "2020-11-15",
+  totalActivity: "40:12:18",
+};
+const ANTONIO: Row = { ...TONY, name: "Antonio Stark" };
 
 function Field({
   label,
@@ -38,25 +69,29 @@ function Field({
 
 function PeopleTable({ rows, linked }: { rows: Row[]; linked?: string }) {
   return (
-    <table className="w-full border-collapse text-left text-base">
+    <table className="w-full border-collapse text-left text-sm">
       <thead>
         <tr className="border-b border-neutral-300">
           <th className="p-2">Name</th>
+          <th className="p-2">Login ID</th>
+          <th className="p-2">Section</th>
           <th className="p-2">Role</th>
-          <th className="p-2">Email</th>
+          <th className="p-2">Last Activity</th>
+          <th className="p-2">Total Activity</th>
         </tr>
       </thead>
       <tbody>
         {rows.map((row) => (
-          <tr key={row.email + row.name} className="odd:bg-neutral-50">
+          <tr key={row.loginId + row.name} className="odd:bg-neutral-50">
             <td className="p-2 whitespace-nowrap">
               <FaUserCircle className="me-2 inline text-lg text-neutral-500" aria-hidden />
-              <span className={linked === row.name ? "text-blue-700 underline" : undefined}>
-                {row.name}
-              </span>
+              <span className={linked === row.name ? "cursor-pointer" : undefined}>{row.name}</span>
             </td>
+            <td className="p-2">{row.loginId}</td>
+            <td className="p-2">{row.section}</td>
             <td className="p-2">{row.role}</td>
-            <td className="p-2">{row.email}</td>
+            <td className="p-2">{row.lastActivity}</td>
+            <td className="p-2">{row.totalActivity}</td>
           </tr>
         ))}
       </tbody>
@@ -72,7 +107,6 @@ function Screen({
   searchActive,
   rows,
   linked,
-  note,
   panel,
 }: {
   url: string;
@@ -82,17 +116,16 @@ function Screen({
   searchActive?: boolean;
   rows: Row[];
   linked?: string;
-  note?: string;
   panel?: ReactNode;
 }) {
   return (
     <UiMockFrame product="Users" url={url}>
-      <div className="w-[760px] font-sans text-neutral-900">
+      <div className="w-[980px] font-sans text-neutral-900">
+        <h3 className="mb-2 mt-0 text-lg">Users</h3>
         <div className="mb-3 flex flex-wrap gap-2">
           <Field label="All Roles" value={role} active={roleActive} />
           <Field label="Search people" value={search} active={searchActive} />
         </div>
-        {note ? <p className="mt-0 mb-3 text-base font-semibold text-red-700">{note}</p> : null}
         <div className="flex gap-3">
           <div className="min-w-0 flex-1 overflow-hidden rounded border border-neutral-200 bg-white">
             <PeopleTable rows={rows} linked={linked} />
@@ -109,24 +142,26 @@ function DetailsPanel({
   role,
   loginId,
   section,
+  totalActivity,
   editing,
-  actions,
 }: {
   name: string;
   role: string;
   loginId: string;
   section: string;
+  totalActivity: string;
   editing?: boolean;
-  actions?: React.ReactNode;
 }) {
   return (
     <aside className="relative w-56 shrink-0 rounded border border-neutral-300 bg-white p-3 shadow">
       <IoCloseSharp className="absolute end-2 top-2 text-2xl" aria-hidden />
       <FaUserCircle className="mx-auto mt-2 text-3xl text-neutral-500" aria-hidden />
       {editing ? (
-        <div className="wd-edit-name mt-3 rounded border border-neutral-300 px-2 py-1 text-base font-semibold text-red-700">
-          {name}
-        </div>
+        <input
+          className="wd-edit-name mt-3 w-full rounded border border-neutral-300 px-2 py-1 text-base"
+          defaultValue={name}
+          readOnly
+        />
       ) : (
         <div className="wd-name mt-3 text-lg text-red-700">{name}</div>
       )}
@@ -136,13 +171,23 @@ function DetailsPanel({
       <p className="mb-1">
         <b>Login ID:</b> <span className="wd-login-id">{loginId}</span>
       </p>
-      <p className="mb-2">
+      <p className="mb-1">
         <b>Section:</b> <span className="wd-section">{section}</span>
       </p>
-      {actions}
+      <p className="mb-2">
+        <b>Total Activity:</b> <span className="wd-total-activity">{totalActivity}</span>
+      </p>
+      <button type="button" className="float-end rounded bg-red-600 px-3 py-1 text-sm text-white">
+        Delete
+      </button>
+      <button type="button" className="float-end me-2 rounded bg-neutral-200 px-3 py-1 text-sm">
+        Cancel
+      </button>
     </aside>
   );
 }
+
+const PAGE = "http://localhost:3000/account/users";
 
 export default function UsersCrudMock({
   id,
@@ -181,40 +226,28 @@ export default function UsersCrudMock({
   }
   if (id === "users-role-result") {
     return (
-      <Screen
-        url="GET http://localhost:4000/api/users?role=FACULTY"
-        role="Faculty"
-        roleActive
-        rows={[FURY, BANNER]}
-        note="Faculty is selected. Nick Fury and Bruce Banner remain."
-      />
+      <Screen url={PAGE} role="Faculty" roleActive rows={[FURY, BANNER]} />
     );
   }
   if (id === "users-name-result") {
     return (
-      <Screen
-        url="GET http://localhost:4000/api/users?name=Stark"
-        role="All Roles"
-        search="Stark"
-        searchActive
-        rows={[TONY]}
-        note="Search people is Stark. Only Tony Stark remains."
-      />
+      <Screen url={PAGE} role="All Roles" search="Stark" searchActive rows={[TONY]} />
     );
   }
   if (id === "users-details-result") {
     return (
       <Screen
-        url="GET http://localhost:4000/api/users/789"
+        url={PAGE}
         role="All Roles"
         rows={[TONY, BANNER, FURY]}
         linked="Bruce Banner"
         panel={
           <DetailsPanel
-            name="Bruce Banner"
-            role="FACULTY"
-            loginId="001234567F"
-            section="S102"
+            name={BANNER.name}
+            role={BANNER.role}
+            loginId={BANNER.loginId}
+            section={BANNER.section}
+            totalActivity={BANNER.totalActivity}
           />
         }
       />
@@ -222,27 +255,22 @@ export default function UsersCrudMock({
   }
   if (id === "users-delete-result") {
     return (
-      <Screen
-        url="DELETE http://localhost:4000/api/users/789"
-        role="All Roles"
-        rows={[TONY, NATASHA, FURY]}
-        note="DELETE /api/users/789 removed Bruce Banner."
-      />
+      <Screen url={PAGE} role="All Roles" rows={[TONY, NATASHA, FURY]} />
     );
   }
   return (
     <Screen
-      url="PUT http://localhost:4000/api/users/123"
+      url={PAGE}
       role="All Roles"
       rows={[ANTONIO, NATASHA, BANNER]}
-      linked="Antonio Stark"
-      note="Enter saved Antonio Stark. Email and role stayed put."
+      linked={ANTONIO.name}
       panel={
         <DetailsPanel
-          name="Antonio Stark"
-          role="STUDENT"
-          loginId="001234561S"
-          section="S101"
+          name={ANTONIO.name}
+          role={ANTONIO.role}
+          loginId={ANTONIO.loginId}
+          section={ANTONIO.section}
+          totalActivity={ANTONIO.totalActivity}
           editing
         />
       }

@@ -80,7 +80,7 @@ function Flow({
   title: string;
   boxes: Box[];
   boxWidth: number;
-  /** Taller boxes, type, and arrows so a horizontal row fills the slide. */
+  /** Larger type and arrows. Box height still follows the text. */
   large?: boolean;
 }) {
   const headerH = large ? 78 : HEADER_H;
@@ -97,10 +97,8 @@ function Flow({
     (box) => headerH + Math.max(box.lines.length, 1) * lineH + padB,
   );
   const width = side + boxes.length * boxWidth + (boxes.length - 1) * gap + side;
-  // A short horizontal row stays a thin strip unless the boxes themselves are tall.
-  // Height tracks the row width so a 4- or 5-box diagram still fills 1280×800.
-  const fillH = large ? Math.round(width * 0.46) - 24 : 0;
-  const boxH = Math.max(...contentHeights, large ? 460 : 0, fillH);
+  // Height is the text. Do not stretch a short row so it fills the slide.
+  const boxH = Math.max(...contentHeights);
   const height = (large ? 12 : 24) + boxH + (large ? 12 : 20);
   const fitSize = (text: string, size: number) =>
     Math.min(size, Math.max(13, Math.floor((boxWidth - 28) / (Math.max(text.length, 1) * 0.62))));

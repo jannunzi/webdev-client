@@ -26,7 +26,7 @@ export const KAMBAZ_DASHBOARD_SLIDES: LectureSlide[] = [
     title: "Canvas target: Dashboard",
     kind: "content",
     bullets: [
-      "Book Figure 1.4.3a — course cards are the Canvas-inspired target",
+      "Course cards are the Canvas-inspired Dashboard",
       "This week is **plain HTML**. Chapter 2 styles the cards",
     ],
     imageSrc: "/images/book/kambaz/dashboard.png",

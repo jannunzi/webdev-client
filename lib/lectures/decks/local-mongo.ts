@@ -22,7 +22,7 @@ export const LOCAL_MONGO_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "Chapters 3–5 already built the UI, client, routes, and the in-memory DAO",
-      "Chapter 6 adds MongoDB on `127.0.0.1:27017`. Atlas replaces `127.0.0.1` later",
+      "Chapter 6 adds MongoDB on `127.0.0.1:27017`, in the kambaz database",
     ],
     diagram: "mongo-roadmap",
   },
@@ -118,7 +118,7 @@ mongod --dbpath data
 mongodb://127.0.0.1:27017`,
     codeLanguage: "bash",
     interactiveHint:
-      "Port 27017 is the Compass New Connection URI and the host Mongoose uses next.",
+      "Port 27017 is the Compass New Connection URI and the host Mongoose connects to.",
   },
   {
     id: "create-user",
@@ -126,7 +126,7 @@ mongodb://127.0.0.1:27017`,
     kind: "demo",
     bullets: [
       "Create database `kambaz` and collection `users` together",
-      "Keep **kambaz** — the URI later ends with `/kambaz`",
+      "Keep the name **kambaz**. The connection string's database path is `/kambaz`",
       "ADD DATA → Insert document. `_id` is a string",
     ],
     code: `{
@@ -146,7 +146,7 @@ mongodb://127.0.0.1:27017`,
     kind: "content",
     bullets: [
       "ADD DATA → Import JSON: `users`, `courses`, `modules`, `assignments`, `enrollments`",
-      "Create a collection per file so names match later Mongoose `collection` options",
+      "Name each collection to match the Mongoose `collection` option: users, courses, modules, assignments, enrollments",
       "Confirm counts. Open one course — `name` and `_id` look like the React database",
       "Those string ids are why the user schema declares `_id` as `String`",
     ],

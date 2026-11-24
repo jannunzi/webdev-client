@@ -1089,9 +1089,9 @@ html.lecture-presenting body {
 }
 
 /*
- * Every diagram — authored SVG and request/response PNG — sits under the
- * copy and grows into the leftover height. The graphic scales uniformly
- * inside that slot (see DiagramFit) and does not spill past the slide.
+ * Every diagram sits under the copy. It scales uniformly inside the leftover
+ * slot (see DiagramFit) and stops around the height of CRUD Users slide 2,
+ * so a wide row keeps its shape and leaves whitespace below.
  */
 /* Two client.ts listings side by side. The columns fill leftover height and match. */
 .lecture-slide[data-code-columns="true"] {
