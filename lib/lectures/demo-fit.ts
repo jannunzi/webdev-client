@@ -22,7 +22,10 @@ export const DEMO_FIT_CAPS: Record<string, number> = {};
  * never shrink below the default size; a too-tall demo scrolls instead. The fit then picks the largest scale
  * in [floor, cap] that does not overflow, so the whole demo shows.
  */
-export const DEMO_FIT_FLOORS: Record<string, number> = {};
+export const DEMO_FIT_FLOORS: Record<string, number> = {
+  // The styled Dashboard is taller than a 1280×800 slide at the default floor.
+  "kambaz-courses-db#dashboard-live": 0.9,
+};
 
 /** Largest scale in [min, max] (to `STEP`) for which `overflows` is false. */
 export function fitDemoScale(

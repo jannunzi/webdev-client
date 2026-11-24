@@ -45,6 +45,7 @@ import YoutubeSearchFlow from "./YoutubeSearchFlow";
 import { isStackDiagram, StackDiagram } from "./StackDiagrams";
 import { GoalDiagram, isGoalDiagram } from "./GoalDiagrams";
 import UsersCrudMock from "./UsersCrudMock";
+import KambazDbResult from "./KambazDbResult";
 import type { LectureDiagramFocus } from "@/lib/lectures/types";
 
 export default function LectureDiagram({
@@ -144,6 +145,18 @@ export default function LectureDiagram({
     case "users-delete-result":
     case "users-update-result":
       return <UsersCrudMock id={id} />;
+    case "courses-one-result":
+    case "courses-create-result":
+    case "courses-delete-result":
+    case "courses-update-result":
+    case "modules-create-result":
+    case "modules-delete-result":
+    case "modules-update-result":
+    case "enroll-read-result":
+    case "enroll-joins-result":
+    case "enroll-create-result":
+    case "enroll-unenroll-result":
+      return <KambazDbResult id={id} />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;
