@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
+import CoursePeopleTable from "@/app/book/ch2/embeds/_styled/courses/cid/people/PeopleTable";
 import UiMockFrame from "./UiMockFrame";
 
 type Row = {
@@ -157,13 +158,13 @@ export default function UsersCrudMock({
   if (id === "users-filters-preview") {
     return (
       <UiMockFrame product="Users" url="http://localhost:3000/account/users">
-        <div className="w-[760px] font-sans text-neutral-900">
+        <div className="w-[1080px] font-sans text-neutral-900">
           <div className="mb-3 flex flex-wrap items-start gap-3">
             <div className="overflow-hidden rounded border border-red-600 bg-white text-base shadow">
               {["All Roles", "Students", "Assistants", "Faculty", "Administrators"].map((option) => (
                 <div
                   key={option}
-                  className={`px-3 py-1.5 ${option === "All Roles" ? "bg-neutral-100 font-semibold" : ""}`}
+                  className={`px-4 py-1.5 ${option === "All Roles" ? "bg-neutral-100 font-semibold" : ""}`}
                 >
                   {option}
                 </div>
@@ -171,8 +172,8 @@ export default function UsersCrudMock({
             </div>
             <Field label="Search people" />
           </div>
-          <div className="overflow-hidden rounded border border-neutral-200 bg-white">
-            <PeopleTable rows={[TONY, NATASHA, BANNER]} />
+          <div className="overflow-hidden rounded border border-neutral-200 bg-white [&_tbody_tr:nth-child(n+3)]:hidden">
+            <CoursePeopleTable />
           </div>
         </div>
       </UiMockFrame>

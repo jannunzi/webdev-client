@@ -32,7 +32,11 @@ export function Lab6TodosEmbed() {
 export function Lab6UsersEmbed() {
   return (
     <Lab6Demo label="app/labs/lab6/Users.tsx">
-      <Lab6Users />
+      {/* The lecture stage shows the controls and the first two people.
+          The lab page still lists everyone. */}
+      <div className="[&_tbody_tr:nth-child(n+3)]:hidden">
+        <Lab6Users />
+      </div>
     </Lab6Demo>
   );
 }
