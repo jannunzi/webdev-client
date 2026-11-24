@@ -928,35 +928,31 @@ html.lecture-presenting body {
   margin-top: 1.25rem;
 }
 
-/* Last-slide Continue on a live demo stays on screen and reads from the back. */
-.lecture-slide[data-demo-stage="true"]:has(> .lecture-slide-continue) {
-  display: flex;
-  flex-direction: column;
+/* Continue sits on the top-right corner of a live embed so it stays in view. */
+.lecture-slide[data-demo-stage="true"]:not(.lecture-slide-present-fallback):not(
+    .lecture-slide-present-native
+  ):has(.lecture-demo-frame) {
+  position: relative;
 }
 
-.lecture-slide[data-demo-stage="true"]:has(> .lecture-slide-continue) > .lecture-slide-kicker,
-.lecture-slide[data-demo-stage="true"]:has(> .lecture-slide-continue) > .lecture-slide-title,
-.lecture-slide[data-demo-stage="true"]:has(> .lecture-slide-continue) > .lecture-slide-bullets,
-.lecture-slide[data-demo-stage="true"]:has(> .lecture-slide-continue) > .lecture-slide-continue,
-.lecture-slide[data-demo-stage="true"]:has(> .lecture-slide-continue) > .lecture-demo-frame {
-  flex-shrink: 0;
+.lecture-slide[data-demo-stage="true"] > .lecture-block:has(.lecture-demo-frame) {
+  anchor-name: --lecture-embed;
 }
 
 .lecture-slide[data-demo-stage="true"] > .lecture-slide-continue {
-  position: sticky;
-  bottom: 0;
+  position: absolute;
+  position-anchor: --lecture-embed;
+  top: anchor(top);
+  right: anchor(right);
   z-index: 6;
-  margin-top: auto;
-  padding: 0.75rem 0 0.15rem;
-  background: #fffbeb;
-  border-top: 3px solid #171717;
+  margin: 0.45rem 0.55rem 0 0;
 }
 
 .lecture-slide[data-demo-stage="true"] .lecture-slide-continue-link {
-  display: block;
-  text-align: center;
-  font-size: 2.15rem;
-  padding: 0.9rem 1.5rem;
+  display: inline-block;
+  font-size: 1.65rem;
+  padding: 0.55rem 1.15rem;
+  box-shadow: 0 2px 0 #171717;
 }
 
 .lecture-slide-continue-link {
