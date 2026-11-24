@@ -25,6 +25,7 @@ export const KAMBAZ_ENROLLMENTS_DB_SLIDES: LectureSlide[] = [
       "Storing a list on both sides means two writes, and the second write can fail",
       "An enrollments document stores one user id and one course id",
     ],
+    diagram: "enrollments-mn",
   },
   {
     id: "enroll-picture",
