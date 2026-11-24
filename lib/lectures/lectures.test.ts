@@ -1348,7 +1348,7 @@ describe("lecture decks", () => {
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 12);
     assert.equal(counts["mongoose"], 13);
-    assert.equal(counts["mongo-apis"], 16);
+    assert.equal(counts["mongo-apis"], 14);
     assert.equal(counts["mongo-users-crud"], 32);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
@@ -3225,7 +3225,23 @@ describe("lecture decks", () => {
     assert.match(apis, /findAllUsers/);
     assert.match(apis, /ADMIN/);
     assert.match(apis, /useAccountContext/);
+    assert.match(apis, /nick_fury/);
     assert.doesNotMatch(apis, /Lecture \d+/);
+    assert.doesNotMatch(apis, /redux/i);
+    assert.doesNotMatch(apis, /\bseed\b/i);
+    assert.doesNotMatch(apis, /fury123/);
+    const apiIds = getLectureDeck("mongo-apis")!.slides.map((slide) => slide.id);
+    assert.equal(apiIds.at(-1), "admin-link");
+    assert.equal(apiIds.includes("recap"), false);
+    assert.equal(apiIds.includes("next-up"), false);
+    assert.equal(apiIds[apiIds.indexOf("users-screen") - 1], "users-screen-intro");
+    const usersIntro = findSlide("mongo-apis", "users-screen-intro").bullets ?? [];
+    assert.match(usersIntro.join("\n"), /loads all users/);
+    assert.match(usersIntro.join("\n"), /refresh/);
+    assert.doesNotMatch(usersIntro.join("\n"), /useState|useEffect/);
+    for (const slug of CHAPTER_6_SLUGS) {
+      assert.doesNotMatch(slideText(slug), /redux/i, `${slug} mentions Redux`);
+    }
 
     const crud = slideText("mongo-users-crud");
     assert.match(crud, /findUsersByRole/);
