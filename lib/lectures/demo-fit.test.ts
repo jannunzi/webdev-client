@@ -63,9 +63,11 @@ describe("demoElementOverflows", () => {
 });
 
 describe("DEMO_FIT_FLOORS", () => {
-  it("never shrinks a demo below the default size; tall demos scroll at 1.3x", async () => {
+  it("shrinks only the Dashboard course list so it fits a 1280×800 slide", async () => {
     const { DEMO_FIT_FLOORS } = await import("./demo-fit");
-    assert.deepEqual(DEMO_FIT_FLOORS, {});
+    assert.deepEqual(DEMO_FIT_FLOORS, {
+      "kambaz-courses-db#dashboard-live": 0.9,
+    });
     assert.equal(fitDemoScale((s) => s > 0.95), DEMO_FIT_MIN);
   });
 });

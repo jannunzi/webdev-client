@@ -23,6 +23,8 @@ type GoalSpec = {
   between?: string;
   /** Aim the arrow at the last line, the row that is moving. */
   arrowOnLastLine?: boolean;
+  /** Extra box height so a two-box row fills the slide under a short title. */
+  tall?: boolean;
 };
 
 function headerPath(x: number, y: number, w: number, h: number) {
@@ -45,7 +47,7 @@ function GoalPicture({ spec }: { spec: GoalSpec }) {
   const headerH = 46;
   const lineH = 28;
   const maxLines = Math.max(...spec.boxes.map((box) => box.lines.length));
-  const boxH = headerH + maxLines * lineH + 18;
+  const boxH = headerH + maxLines * lineH + (spec.tall ? 210 : 18);
   const widths = spec.boxes.map((box) => {
     const longest = Math.max(box.title.length, ...box.lines.map((line) => line.length));
     return Math.max(220, Math.ceil(longest * 10.4 + 40));
@@ -94,7 +96,7 @@ function GoalPicture({ spec }: { spec: GoalSpec }) {
               {box.title}
             </text>
             {box.lines.map((line, lineIndex) => {
-              const lineY = y + headerH + lineIndex * lineH;
+              const lineY = y + headerH + (spec.tall ? 78 : 0) + lineIndex * lineH;
               const last = spec.arrowOnLastLine && lineIndex === box.lines.length - 1;
               return (
                 <g key={`${box.title}-${line}`}>
@@ -229,19 +231,20 @@ const GOALS = {
     ],
   },
   "atlas-node-goal": {
-    label: "Mongoose on Render reaches Atlas after Network Access allows 0.0.0.0/0",
-    arrow: "Network Access",
+    label: "Node on Render connects to the Atlas cluster that stores the kambaz database",
+    arrow: "connection string",
+    tall: true,
     boxes: [
-      { title: "Render", tone: "yellow", lines: ["Mongoose", "Drivers URI"] },
-      { title: "Atlas", tone: "red", lines: ["0.0.0.0/0", "/kambaz"] },
+      { title: "Render", tone: "yellow", lines: ["Node server", "Mongoose"] },
+      { title: "Atlas", tone: "red", lines: ["Allowed addresses", "kambaz database"] },
     ],
   },
   "atlas-sessions-goal": {
-    label: "Vercel sends connect.sid and Render stores currentUser in the session",
-    arrow: "connect.sid",
+    label: "The browser on Vercel sends the session cookie and Render remembers who signed in",
+    arrow: "session cookie",
     boxes: [
-      { title: "Vercel", tone: "blue", lines: ["Browser", "CLIENT_URL"] },
-      { title: "Render", tone: "yellow", lines: ["express-session", "currentUser"] },
+      { title: "Vercel", tone: "blue", lines: ["Browser", "Your site"] },
+      { title: "Render", tone: "yellow", lines: ["Signed-in user", "Session"] },
     ],
   },
   "nodemon-goal": {

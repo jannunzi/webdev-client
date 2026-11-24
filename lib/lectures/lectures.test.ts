@@ -1352,11 +1352,11 @@ describe("lecture decks", () => {
     assert.equal(counts["mongo-users-crud"], 41);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
-    assert.equal(counts["atlas-node"], 10);
-    assert.equal(counts["atlas-sessions"], 12);
-    assert.equal(counts["kambaz-courses-db"], 34);
-    assert.equal(counts["kambaz-modules-db"], 28);
-    assert.equal(counts["kambaz-enrollments-db"], 27);
+    assert.equal(counts["atlas-node"], 8);
+    assert.equal(counts["atlas-sessions"], 10);
+    assert.equal(counts["kambaz-courses-db"], 37);
+    assert.equal(counts["kambaz-modules-db"], 29);
+    assert.equal(counts["kambaz-enrollments-db"], 36);
     assert.equal(counts["youtube-api"], 9);
     assert.equal(counts["youtube-search"], 11);
     assert.equal(counts["youtube-details"], 23);
@@ -3682,23 +3682,34 @@ describe("lecture decks", () => {
         "courses-picture": "courses-stack",
         "read-all-path": "courses-read-all",
         "read-one-path": "courses-read-one",
+        "read-one-result": "courses-one-result",
         "delete-path": "courses-delete",
+        "delete-result": "courses-delete-result",
         "update-path": "courses-update",
+        "update-result": "courses-update-result",
         "create-path": "courses-create",
+        "create-result": "courses-create-result",
       },
       "kambaz-modules-db": {
         "modules-picture": "modules-stack",
         "read-path": "modules-read",
         "create-path": "modules-create",
+        "create-result": "modules-create-result",
         "delete-path": "modules-delete",
+        "delete-result": "modules-delete-result",
         "update-path": "modules-update",
+        "update-result": "modules-update-result",
       },
       "kambaz-enrollments-db": {
         "enroll-picture": "enroll-stack",
         "read-path": "enroll-read",
+        "read-result": "enroll-read-result",
         "joins-path": "enroll-joins",
+        "joins-result": "enroll-joins-result",
         "enroll-create-path": "enroll-create",
+        "enroll-result": "enroll-create-result",
         "enroll-unenroll-path": "enroll-unenroll",
+        "unenroll-result": "enroll-unenroll-result",
         "people-path": "enroll-people",
       },
       "kambaz-sessions": {
@@ -4212,7 +4223,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 254);
+    assert.equal(intros, 251);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {

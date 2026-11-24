@@ -18,14 +18,13 @@ export const ATLAS_SESSIONS_SLIDES: LectureSlide[] = [
   },
   {
     id: "purpose",
-    title: "Implementing Remote Sessions",
+    title: "The sign-in cookie must travel",
     kind: "content",
     diagram: "atlas-sessions-goal",
     bullets: [
-      "Local Node already stores `currentUser` in a cookie",
-      "Render must store `currentUser` in the session so Vercel can send `connect.sid` back",
-      "CORS and `sameSite` read `CLIENT_URL` and `SERVER_ENV`",
-      "The Atlas URI is one of the five keys — not the only one",
+      "On your laptop the browser and Node are one site, so the session cookie is sent",
+      "Vercel and Render are two different sites, so the browser holds the cookie back",
+      "Tell Render the Vercel address, and mark the cookie so the browser will send it",
     ],
   },
   {
@@ -134,25 +133,6 @@ SESSION_SECRET=a long random phrase`,
       "Graders on 12/7 open Vercel, sign in, and read hosted documents",
       "Same five keys. Same `/dbname?` rule. Same `0.0.0.0/0` allow list",
       "Zustand still talks to Express — Mongoose is what reaches Atlas",
-    ],
-  },
-  {
-    id: "recap",
-    title: "Remote sessions recap",
-    kind: "content",
-    bullets: [
-      "Five keys: Atlas URI, `CLIENT_URL`, `SERVER_URL`, `SERVER_ENV`, secret",
-      "`SERVER_ENV=production` plus a Vercel origin with no trailing slash",
-      "Manual Deploy, then sign in. Secrets stay on Render",
-    ],
-  },
-  {
-    id: "next-up",
-    title: "Next: check your understanding",
-    kind: "title",
-    bullets: [
-      "A 10-item self-check on schemas, DAOs, and Atlas",
-      "Self-check, then migrate Kambaz collections",
     ],
   },
 ];

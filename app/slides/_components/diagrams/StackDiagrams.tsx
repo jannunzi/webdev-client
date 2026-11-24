@@ -337,7 +337,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   },
   "courses-stack": {
     title: "Courses from the Dashboard to MongoDB",
-    boxWidth: 320,
+    boxWidth: 460,
+    large: true,
     boxes: [
       { name: "Dashboard", lines: ["store"], tone: "blue" },
       { name: "courses client", lines: ["axios"], tone: "blue" },
@@ -359,6 +360,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   "courses-read-all": {
     title: "GET /api/courses",
     boxWidth: 240,
+    large: true,
     boxes: [
       { name: "Dashboard", lines: ["setCourses"], tone: "blue" },
       { name: "fetchAllCourses", lines: ["GET"], tone: "blue" },
@@ -368,7 +370,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   },
   "courses-read-one": {
     title: "GET /api/courses/:courseId",
-    boxWidth: 240,
+    boxWidth: 300,
+    large: true,
     boxes: [
       { name: "Editor", lines: ["setCourse"], tone: "blue" },
       { name: "findCourseById", lines: ["GET"], tone: "blue" },
@@ -379,6 +382,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   "courses-delete": {
     title: "DELETE /api/courses/:courseId",
     boxWidth: 250,
+    large: true,
     boxes: [
       { name: "Dashboard", lines: ["deleteCourse"], tone: "blue" },
       { name: "deleteCourse", lines: ["DELETE"], tone: "blue" },
@@ -389,6 +393,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   "courses-update": {
     title: "PUT /api/courses/:courseId",
     boxWidth: 240,
+    large: true,
     boxes: [
       { name: "Dashboard", lines: ["updateCourse"], tone: "blue" },
       { name: "updateCourse", lines: ["PUT"], tone: "blue" },
@@ -399,6 +404,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   "courses-create": {
     title: "POST /api/courses",
     boxWidth: 240,
+    large: true,
     boxes: [
       { name: "Dashboard", lines: ["addCourse"], tone: "blue" },
       { name: "createCourse", lines: ["POST"], tone: "blue" },
@@ -408,7 +414,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   },
   "modules-stack": {
     title: "Modules from the page to MongoDB",
-    boxWidth: 360,
+    boxWidth: 520,
+    large: true,
     boxes: [
       { name: "Modules", lines: ["store"], tone: "blue" },
       { name: "courses client", lines: ["axios"], tone: "blue" },
@@ -429,6 +436,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   "modules-read": {
     title: "GET /api/courses/:courseId/modules",
     boxWidth: 250,
+    large: true,
     boxes: [
       { name: "Modules", lines: ["setModules"], tone: "blue" },
       { name: "findModules", lines: ["GET"], tone: "blue" },
@@ -439,6 +447,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   "modules-delete": {
     title: "DELETE /api/modules/:moduleId",
     boxWidth: 250,
+    large: true,
     boxes: [
       { name: "Modules", lines: ["deleteModule"], tone: "blue" },
       { name: "deleteModule", lines: ["DELETE"], tone: "blue" },
@@ -449,6 +458,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   "modules-update": {
     title: "PUT /api/modules/:moduleId",
     boxWidth: 240,
+    large: true,
     boxes: [
       { name: "Modules", lines: ["updateModule"], tone: "blue" },
       { name: "updateModule", lines: ["PUT"], tone: "blue" },
@@ -459,6 +469,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   "modules-create": {
     title: "POST /api/courses/:courseId/modules",
     boxWidth: 250,
+    large: true,
     boxes: [
       { name: "Modules", lines: ["addModule"], tone: "blue" },
       { name: "createModule", lines: ["POST"], tone: "blue" },
@@ -468,7 +479,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   },
   "enroll-stack": {
     title: "Enrollments from People to MongoDB",
-    boxWidth: 360,
+    boxWidth: 520,
+    large: true,
     boxes: [
       { name: "People", lines: ["PeopleTable"], tone: "blue" },
       { name: "courses client", lines: ["axios"], tone: "blue" },
@@ -490,6 +502,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   "enroll-read": {
     title: "GET enrolled courses",
     boxWidth: 250,
+    large: true,
     boxes: [
       { name: "Dashboard", lines: ["setCourses"], tone: "blue" },
       { name: "findMyCourses", lines: ["GET"], tone: "blue" },
@@ -499,7 +512,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   },
   "enroll-people": {
     title: "GET /api/courses/:cid/users",
-    boxWidth: 260,
+    boxWidth: 340,
+    large: true,
     boxes: [
       { name: "People", lines: ["setUsers"], tone: "blue" },
       { name: "findUsersForCourse", lines: ["GET"], tone: "blue" },
@@ -510,6 +524,7 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   "enroll-joins": {
     title: "DELETE a course and its joins",
     boxWidth: 250,
+    large: true,
     boxes: [
       { name: "Dashboard", lines: ["delete course"], tone: "blue" },
       { name: "deleteCourse", lines: ["DELETE"], tone: "blue" },
@@ -519,7 +534,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   },
   "enroll-create": {
     title: "POST enrolls the user",
-    boxWidth: 250,
+    boxWidth: 420,
+    large: true,
     boxes: [
       { name: "Dashboard", lines: ["enroll"], tone: "blue" },
       { name: "enrollIntoCourse", lines: ["POST"], tone: "blue" },
@@ -529,7 +545,8 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   },
   "enroll-unenroll": {
     title: "DELETE unenrolls the user",
-    boxWidth: 260,
+    boxWidth: 440,
+    large: true,
     boxes: [
       { name: "Dashboard", lines: ["unenroll"], tone: "blue" },
       { name: "unenrollFromCourse", lines: ["DELETE"], tone: "blue" },
