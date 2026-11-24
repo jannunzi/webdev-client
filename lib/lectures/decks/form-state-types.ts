@@ -75,7 +75,7 @@ export default function BooleanStateVariables() {
   },
   {
     id: "string",
-    title: "String: value and onChange",
+    title: "String: value and `onChange`",
     kind: "content",
     code: `"use client";
 
@@ -324,7 +324,7 @@ export default function ArrayStateVariable() {
   },
   {
     id: "profile-types",
-    title: "profile.ts (code)",
+    title: "`profile.ts` (code)",
     kind: "content",
     code: `export type Role = "" | "STUDENT" | "TA" | "FACULTY";
 export type Theme = "light" | "dark";

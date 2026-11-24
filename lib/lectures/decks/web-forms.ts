@@ -7,7 +7,7 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "FORMS",
-      "Lab 1 folder: app/labs/lab1/forms/",
+      "Lab 1 folder: app`/labs/lab1/forms/`",
     ],
   },
   {
@@ -92,7 +92,7 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
   },
   {
     id: "forms-wrapper-intro",
-    title: "Wire TextFields into Forms.tsx",
+    title: "Wire TextFields into `Forms.tsx`",
     kind: "content",
     bullets: [
       "`#wd-forms` wraps a `<form id=\"wd-text-fields\">`",
@@ -101,7 +101,7 @@ export const WEB_FORMS_SLIDES: LectureSlide[] = [
   },
   {
     id: "forms-wrapper",
-    title: "Wire TextFields into Forms.tsx (code)",
+    title: "Wire TextFields into `Forms.tsx` (code)",
     kind: "content",
     code: `import TextFields from "./TextFields";
 
@@ -638,7 +638,7 @@ Lorem ipsum dolor sit amet...
   },
   {
     id: "forms-complete-intro",
-    title: "The Completed Forms.tsx",
+    title: "The Completed `Forms.tsx`",
     kind: "content",
     bullets: [
       "An **event handler** is a function that runs when something happens, such as a click or a form submit",
@@ -649,7 +649,7 @@ Lorem ipsum dolor sit amet...
   },
   {
     id: "forms-complete",
-    title: "The Completed Forms.tsx (code)",
+    title: "The Completed `Forms.tsx` (code)",
     kind: "content",
     code: `"use client";
 
@@ -694,7 +694,7 @@ export default function Forms() {
   },
   {
     id: "uncontrolled-reminder",
-    title: "defaultValue, not value",
+    title: "`defaultValue`, not value",
     kind: "content",
     bullets: [
       "HTML samples often write `value=`. In React Lab 1 use **`defaultValue`**",

@@ -7,7 +7,7 @@ export const GROK_API_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Integrating with **Grok**",
-      "xAI · tokens · **grok-4-latest**",
+      "`xAI` · tokens · **grok-4-latest**",
     ],
   },
   {
@@ -26,8 +26,8 @@ export const GROK_API_SLIDES: LectureSlide[] = [
     diagram: "grok-api-goal",
     bullets: [
       "Inspired by the **Hitchhiker's Guide** — maximally truth-seeking",
-      "xAI offers an API at **`https://api.x.ai/v1`**",
-      "The same models power Grok.com, the apps, and Grok on **X**",
+      "`xAI` offers an API at **`https://api.x.ai/v1`**",
+      "The same models power `Grok.com`, the apps, and Grok on **X**",
     ],
   },
   {
@@ -36,7 +36,7 @@ export const GROK_API_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "You pay for **input tokens** plus **completion tokens**",
-      "Check current prices on the xAI console before class demos",
+      "Check current prices on the `xAI` console before class demos",
     ],
   },
   {
@@ -101,7 +101,7 @@ export const GROK_API_SLIDES: LectureSlide[] = [
     title: "Add Paid Credits",
     kind: "content",
     bullets: [
-      "Purchase credits in the xAI console",
+      "Purchase credits in the `xAI` console",
       "The free quota is **not enough** for class",
     ],
   },
@@ -159,7 +159,7 @@ export const GROK_API_SLIDES: LectureSlide[] = [
   },
   {
     id: "install",
-    title: "Install xAI Libraries",
+    title: "Install `xAI` Libraries",
     kind: "demo",
     bullets: ["Install on **`webdev-server`**"],
     code: `cd webdev-server

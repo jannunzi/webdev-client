@@ -111,7 +111,7 @@ export default function Hello(app: Express) {
   {
     id: "wire-hello",
     links: ["http://localhost:4000/hello", "http://localhost:4000/"],
-    title: "Registering a Route File in index.ts",
+    title: "Registering a Route File in `index.ts`",
     kind: "demo",
     bullets: [
       "Import `./Hello` — no extension. tsx loads `Hello.ts`",

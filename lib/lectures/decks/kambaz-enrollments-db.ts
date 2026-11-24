@@ -121,7 +121,7 @@ const enrollmentsDao = EnrollmentsDao();`,
   },
   {
     id: "read-path",
-    title: "GET enrolled courses",
+    title: "`GET` enrolled courses",
     kind: "demo",
     bullets: [
       "populate replaces the course id on each enrollment with the course document.",
@@ -152,7 +152,7 @@ return { findCoursesForUser };`,
   },
   {
     id: "read-route",
-    title: "GET current user's courses",
+    title: "`GET` current user's courses",
     kind: "demo",
     code: `const findCoursesForEnrolledUser = async (req, res) => {
   let { userId } = req.params;
@@ -213,7 +213,7 @@ useEffect(() => {
   },
   {
     id: "joins-path",
-    title: "DELETE a course and its joins",
+    title: "`DELETE` a course and its joins",
     kind: "demo",
     bullets: [
       "Deleting a course also deletes its enrollments, or those rows would point at a missing course.",
@@ -223,7 +223,7 @@ useEffect(() => {
   },
   {
     id: "delete-course",
-    title: "deleteMany by course id",
+    title: "`deleteMany` by course id",
     kind: "demo",
     bullets: [
       "Otherwise Dashboard tries to populate a course id that is gone",
@@ -239,7 +239,7 @@ return { findCoursesForUser, unenrollAllUsersFromCourse };`,
   },
   {
     id: "delete-course-route",
-    title: "DELETE course drops the joins",
+    title: "`DELETE` course drops the joins",
     kind: "demo",
     code: `const deleteCourse = async (req, res) => {
   const { courseId } = req.params;
@@ -288,17 +288,17 @@ const onDeleteCourse = async (courseId: string) => {
   },
   {
     id: "enroll-create-path",
-    title: "POST enrolls the user",
+    title: "`POST` enrolls the user",
     kind: "demo",
     bullets: [
-      "Enroll sends POST /api/users/:uid/courses/:cid.",
+      "Enroll sends `POST /api/users/:uid/courses/:cid.`",
       "The DAO inserts one enrollment document with that user id and that course id.",
     ],
     diagram: "enroll-create",
   },
   {
     id: "enroll-dao",
-    title: "enrollUserInCourse inserts one",
+    title: "`enrollUserInCourse` inserts one",
     kind: "demo",
     bullets: [
       "`_id` is `userId-courseId`, so the pair stays unique",
@@ -340,7 +340,7 @@ return {
   },
   {
     id: "enroll-route",
-    title: "POST enrolls the session user",
+    title: "`POST` enrolls the session user",
     kind: "demo",
     code: `const enrollUserInCourse = async (req, res) => {
   let { uid, cid } = req.params;
@@ -430,16 +430,16 @@ const enrolled = currentUser
     title: "Button says Unenroll",
     kind: "demo",
     bullets: [
-      "The button says Unenroll because the POST inserted an enrollment for this user and course.",
+      "The button says Unenroll because the `POST` inserted an enrollment for this user and course.",
     ],
     diagram: "enroll-create-result",
   },
   {
     id: "enroll-unenroll-path",
-    title: "DELETE unenrolls the user",
+    title: "`DELETE` unenrolls the user",
     kind: "demo",
     bullets: [
-      "Unenroll sends DELETE /api/users/:uid/courses/:cid.",
+      "Unenroll sends `DELETE /api/users/:uid/courses/:cid.`",
       "The DAO deletes the one enrollment that pairs this user with this course.",
     ],
     diagram: "enroll-unenroll",
@@ -462,7 +462,7 @@ return {
   },
   {
     id: "unenroll-route",
-    title: "DELETE unenrolls the session",
+    title: "`DELETE` unenrolls the session",
     kind: "demo",
     code: `const unenrollUserFromCourse = async (req, res) => {
   let { uid, cid } = req.params;
@@ -523,10 +523,10 @@ app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);`,
   },
   {
     id: "people-path",
-    title: "GET /api/courses/:cid/users",
+    title: "`GET /api/courses/:cid/users`",
     kind: "demo",
     bullets: [
-      "People asks GET /api/courses/:cid/users for this course only.",
+      "People asks `GET /api/courses/:cid/users` for this course only.",
       "The list is the users enrolled in the course, not every user in the collection.",
     ],
     diagram: "enroll-people",
@@ -557,7 +557,7 @@ return {
   {
     id: "people",
     links: ["http://localhost:4000/api/courses/RS101/users"],
-    title: "GET enrolled users route",
+    title: "`GET` enrolled users route",
     kind: "demo",
     code: `const findUsersForCourse = async (req, res) => {
   const { cid } = req.params;

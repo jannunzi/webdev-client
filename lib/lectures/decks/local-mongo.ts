@@ -122,7 +122,7 @@ mongodb://127.0.0.1:27017`,
   },
   {
     id: "create-user",
-    title: "Create kambaz.users and Insert a User",
+    title: "Create `kambaz.users` and Insert a User",
     kind: "demo",
     bullets: [
       "Create database `kambaz` and collection `users` together",

@@ -30,7 +30,7 @@ export const KAMBAZ_ACCOUNT_REST_SLIDES: LectureSlide[] = [
   },
   {
     id: "routes",
-    title: "Defining the Account POST Routes",
+    title: "Defining the Account `POST` Routes",
     kind: "demo",
     bullets: [
       "`UserRoutes(app, db)` receives the database object and builds the DAO",
@@ -78,16 +78,16 @@ app.listen(process.env.PORT || 4000);`,
   },
   {
     id: "why-post",
-    title: "Why Sign-In Uses POST",
+    title: "Why Sign-In Uses `POST`",
     kind: "content",
     bullets: [
-      "POST keeps the username and password in the body, not the URL",
+      "`POST` keeps the username and password in the body, not the URL",
       "History, logs, and caches keep the URL",
       "Sign-in, sign-up, and sign-out change server state",
       "GETs should only read data",
       "They are actions, not reads, so they do not map onto create, read, update, and delete",
-      "POST is the standard practice, and visiting a link never sends it",
-      "Profile only reads the current user, so it stays a GET",
+      "`POST` is the standard practice, and visiting a link never sends it",
+      "Profile only reads the current user, so it stays a `GET`",
     ],
   },
   {
@@ -129,7 +129,7 @@ app.listen(process.env.PORT || 4000);`,
   },
   {
     id: "signin",
-    title: "Implementing POST /api/users/signin",
+    title: "Implementing `POST /api/users/signin`",
     kind: "demo",
     bullets: [
       "Read `username` and `password` from `req.body`",
@@ -247,7 +247,7 @@ const findUserByUsername = (username) =>
   },
   {
     id: "signup",
-    title: "Implementing POST /api/users/signup",
+    title: "Implementing `POST /api/users/signup`",
     kind: "demo",
     bullets: [
       "400 if `findUserByUsername` already has that name",
@@ -324,7 +324,7 @@ const updateUser = (userId, user) =>
   },
   {
     id: "update",
-    title: "Implementing PUT /api/users/:userId",
+    title: "Implementing `PUT /api/users/:userId`",
     kind: "demo",
     bullets: [
       "The path id and the body go to `dao.updateUser`",
@@ -347,7 +347,7 @@ app.put("/api/users/:userId", updateUser);`,
     title: "Sending Profile Updates with Axios",
     kind: "demo",
     bullets: [
-      "PUT the edited user to `/api/users/:userId`",
+      "`PUT` the edited user to `/api/users/:userId`",
     ],
     code: `export const updateUser = async (user: { _id: string }) => {
   const response = await axios.put(\`\${USERS_API}/\${user._id}\`, user);

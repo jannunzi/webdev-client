@@ -175,7 +175,7 @@ export default function LabsLayout({
   },
   {
     id: "lab2-page",
-    title: "Lab 2 is its own page.tsx",
+    title: "Lab 2 is its own `page.tsx`",
     kind: "content",
     code: `export default function Lab2() {
   return (

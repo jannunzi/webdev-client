@@ -7,7 +7,7 @@ export const LISTS_AND_TABLES_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "LISTS",
-      "Lab 1: ListTags.tsx (`wd-lists`) then Tables.tsx (`wd-tables`)",
+      "Lab 1: `ListTags.tsx` (`wd-lists`) then `Tables.tsx` (`wd-tables`)",
     ],
   },
   {
@@ -240,7 +240,7 @@ My favorite books (in no particular order)
   },
   {
     id: "tfoot-colspan",
-    title: "tfoot and colSpan",
+    title: "tfoot and `colSpan`",
     kind: "content",
     bullets: [
       "`tfoot` is the summary row — Average, totals, notes",

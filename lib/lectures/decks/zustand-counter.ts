@@ -28,7 +28,7 @@ export const ZUSTAND_COUNTER_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "Goal: a store holding a count, plus up and down functions",
-      "It starts at 7, the same as the Context and useState counters",
+      "It starts at 7, the same as the Context and `useState` counters",
       "The next slide builds the store, then a component that uses it",
     ],
   },

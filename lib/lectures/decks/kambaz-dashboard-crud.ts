@@ -155,7 +155,7 @@ export default function Dashboard() {
   },
   {
     id: "card-props",
-    title: "CourseCard takes course and onEdit properties",
+    title: "CourseCard takes course and `onEdit` properties",
     kind: "content",
     code: `import Link from "next/link";
 import Image from "next/image";
@@ -233,7 +233,7 @@ export default function CourseCard({
     title: "Editing and Updating a Course",
     kind: "demo",
     bullets: [
-      "Edit: `setCourse(c)` so the form shows that card — preventDefault again",
+      "Edit: `setCourse(c)` so the form shows that card — `preventDefault` again",
       "Update: `updateCourse(course)` maps the matching `_id`",
       "The link and `_id` stay. The title and description change",
     ],

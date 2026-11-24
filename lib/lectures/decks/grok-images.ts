@@ -76,7 +76,7 @@ console.log(response.data[0].url);`,
     title: "Describe Prompt",
     kind: "demo",
     bullets: [
-      "POST **`{ name, description }`** when both are present",
+      "`POST` **`{ name, description }`** when both are present",
     ],
     code: `export const suggestAnImageForCourse = async (courseName, courseDescription) => {
   const response = await client.images.generate({
@@ -127,7 +127,7 @@ console.log(completion.choices[0].message.content);`,
   },
   {
     id: "vision-xai",
-    title: "Understanding Images with xAI API",
+    title: "Understanding Images with `xAI` API",
     kind: "demo",
     bullets: ["`generateText` with `{ type: \"image\" }`"],
     code: `const result = await generateText({
@@ -220,7 +220,7 @@ const CourseSchema = z.object({
   },
   {
     id: "upsert",
-    title: "Add upsertCourse DAO",
+    title: "Add `upsertCourse` DAO",
     kind: "demo",
     bullets: [
       "`findOneAndUpdate` with **`upsert: true`**",
@@ -266,7 +266,7 @@ const CourseSchema = z.object({
     title: "Add Suggest Button",
     kind: "demo",
     bullets: [
-      "Modules page calls GET, then **`setModules`** on the store",
+      "Modules page calls `GET`, then **`setModules`** on the store",
     ],
     code: `const [loading, setLoading] = useState(false);
 const { cid } = useParams();

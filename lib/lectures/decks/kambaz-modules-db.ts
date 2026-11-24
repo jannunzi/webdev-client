@@ -70,11 +70,11 @@ export default schema;`,
   },
   {
     id: "read-path",
-    title: "GET a course's modules",
+    title: "`GET` a course's modules",
     kind: "demo",
     bullets: [
-      "The page calls findModulesForCourse with the course id from the URL.",
-      "The route finds documents whose course field is that id, and setModules shows them.",
+      "The page calls `findModulesForCourse` with the course id from the URL.",
+      "The route finds documents whose course field is that id, and `setModules` shows them.",
     ],
     diagram: "modules-read",
   },
@@ -98,7 +98,7 @@ return { findModulesForCourse };`,
   {
     id: "find-route",
     links: ["http://localhost:4000/api/courses/RS101/modules"],
-    title: "GET modules route",
+    title: "`GET` modules route",
     kind: "demo",
     code: `const findModulesForCourse = async (req, res) => {
   const { courseId } = req.params;
@@ -147,10 +147,10 @@ useEffect(() => {
   },
   {
     id: "create-path",
-    title: "POST a module under the course",
+    title: "`POST` a module under the course",
     kind: "demo",
     bullets: [
-      "Add sends POST /api/courses/:courseId/modules with the new module.",
+      "Add sends `POST /api/courses/:courseId/modules` with the new module.",
       "The store appends the document the route returns, so the new row appears.",
     ],
     diagram: "modules-create",
@@ -174,7 +174,7 @@ return { findModulesForCourse, createModule };`,
   },
   {
     id: "create-route",
-    title: "POST module route",
+    title: "`POST` module route",
     kind: "demo",
     code: `const createModuleForCourse = async (req, res) => {
   const { courseId } = req.params;
@@ -234,17 +234,17 @@ const onAddModule = async () => {
   },
   {
     id: "delete-path",
-    title: "DELETE /api/modules/:moduleId",
+    title: "`DELETE /api/modules/:moduleId`",
     kind: "demo",
     bullets: [
-      "Delete sends DELETE /api/modules/:moduleId, and the DAO removes that document.",
+      "Delete sends `DELETE /api/modules/:moduleId`, and the DAO removes that document.",
       "The store then drops the same module from the cached list.",
     ],
     diagram: "modules-delete",
   },
   {
     id: "delete",
-    title: "deleteOne by module id",
+    title: "`deleteOne` by module id",
     kind: "demo",
     bullets: ["Export `deleteModule` on the DAO"],
     code: `function deleteModule(moduleId) {
@@ -257,7 +257,7 @@ return { findModulesForCourse, createModule, deleteModule };`,
   },
   {
     id: "delete-route",
-    title: "DELETE module route",
+    title: "`DELETE` module route",
     kind: "demo",
     code: `const deleteModule = async (req, res) => {
   const status = await dao.deleteModule(req.params.moduleId);
@@ -307,17 +307,17 @@ const onRemoveModule = async (moduleId: string) => {
   },
   {
     id: "update-path",
-    title: "PUT /api/modules/:moduleId",
+    title: "`PUT /api/modules/:moduleId`",
     kind: "demo",
     bullets: [
-      "Save sends PUT /api/modules/:moduleId with the fields the editor changed.",
+      "Save sends `PUT /api/modules/:moduleId` with the fields the editor changed.",
       "`$set` writes those fields and leaves every field that was not sent as it was.",
     ],
     diagram: "modules-update",
   },
   {
     id: "update",
-    title: "updateOne with $set",
+    title: "`updateOne` with `$set`",
     kind: "demo",
     bullets: ["Export `updateModule` on the DAO"],
     code: `function updateModule(moduleId, moduleUpdates) {
@@ -333,7 +333,7 @@ return {
   },
   {
     id: "update-route",
-    title: "PUT module route",
+    title: "`PUT` module route",
     kind: "demo",
     code: `const updateModule = async (req, res) => {
   const status = await dao.updateModule(

@@ -234,7 +234,7 @@ export default function ZustandTodoList() {
   },
   {
     id: "profile-store",
-    title: "profileStore (code)",
+    title: "`profileStore` (code)",
     kind: "content",
     code: `import { create } from "zustand";
 import { emptyProfile, type Profile } from "../profile/profile";
@@ -321,7 +321,7 @@ export default function ZustandProfileForm() {
   },
   {
     id: "next-up",
-    title: "Next: useEffect",
+    title: "Next: `useEffect`",
     kind: "title",
     bullets: [
       "Render computes JSX. Effects run after React paints",

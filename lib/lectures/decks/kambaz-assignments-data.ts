@@ -24,7 +24,7 @@ export const KAMBAZ_ASSIGNMENTS_DATA_SLIDES: LectureSlide[] = [
   },
   {
     id: "assignments-json",
-    title: "Download assignments.json, then import",
+    title: "Download `assignments.json`, then import",
     kind: "content",
     bullets: [
       "Download [assignments.json](https://kambaz.dev/downloads/kambaz-database/assignments.json) into `app/(kambaz)/database/` — three per course, A101–A303",

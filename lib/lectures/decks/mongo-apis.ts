@@ -61,7 +61,7 @@ export const MONGO_APIS_SLIDES: LectureSlide[] = [
   },
   {
     id: "signup",
-    title: "Signup awaits createUser",
+    title: "Signup awaits `createUser`",
     kind: "demo",
     bullets: ["Do the same for profile, signout, and course routes"],
     code: `const signup = async (req, res) => {
@@ -82,7 +82,7 @@ export const MONGO_APIS_SLIDES: LectureSlide[] = [
   },
   {
     id: "find-all-dao",
-    title: "find() with no predicate",
+    title: "`find()` with no predicate",
     kind: "demo",
     bullets: [
       "Same `findAllUsers` you returned from the DAO",
@@ -102,7 +102,7 @@ return {
   {
     id: "find-all-route",
     links: ["http://localhost:4000/api/users"],
-    title: "GET /api/users returns JSON",
+    title: "`GET /api/users` returns JSON",
     kind: "demo",
     bullets: [
       "Open `http://localhost:4000/api/users` in the browser",

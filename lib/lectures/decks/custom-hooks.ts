@@ -22,7 +22,7 @@ export const CUSTOM_HOOKS_SLIDES: LectureSlide[] = [
   },
   {
     id: "window-size-intro",
-    title: "Step 1: useWindowSize",
+    title: "Step 1: `useWindowSize`",
     kind: "content",
     bullets: [
       "The window demo kept the size in `useState` and filled it from `useEffect`",
@@ -32,7 +32,7 @@ export const CUSTOM_HOOKS_SLIDES: LectureSlide[] = [
   },
   {
     id: "window-size",
-    title: "useWindowSize (code)",
+    title: "`useWindowSize` (code)",
     kind: "content",
     code: `import { useEffect, useState } from "react";
 
@@ -94,7 +94,7 @@ export default function WindowSizeDemo() {
   },
   {
     id: "toggle",
-    title: "Step 2: useToggle",
+    title: "Step 2: `useToggle`",
     kind: "content",
     bullets: [
       "A custom hook does not need an effect",
@@ -151,7 +151,7 @@ export default function ToggleDemo() {
   },
   {
     id: "local-storage-intro",
-    title: "Step 3: useLocalStorage",
+    title: "Step 3: `useLocalStorage`",
     kind: "content",
     bullets: [
       "`localStorage` is a per-site key-value store that survives a reload; it only stores strings",
@@ -161,7 +161,7 @@ export default function ToggleDemo() {
   },
   {
     id: "local-storage",
-    title: "useLocalStorage (code)",
+    title: "`useLocalStorage` (code)",
     kind: "content",
     code: `import { useEffect, useState } from "react";
 
@@ -292,7 +292,7 @@ export default function IndependentToggles() {
   },
   {
     id: "profile-hook-intro",
-    title: "Step 5: useProfileForm",
+    title: "Step 5: `useProfileForm`",
     kind: "content",
     bullets: [
       "The profile form kept three state variables and a `save` that validates on submit",
@@ -302,7 +302,7 @@ export default function IndependentToggles() {
   },
   {
     id: "profile-hook",
-    title: "useProfileForm (code)",
+    title: "`useProfileForm` (code)",
     kind: "content",
     code: `import { useState, type FormEvent } from "react";
 import {

@@ -51,7 +51,7 @@ export const LAB5_ENV_SLIDES: LectureSlide[] = [
   },
   {
     id: "register",
-    title: "Registering Lab5 Routes in index.ts",
+    title: "Registering Lab5 Routes in `index.ts`",
     kind: "demo",
     bullets: [
       "Import `./Lab5/index` with no extension; pass the shared `app`",

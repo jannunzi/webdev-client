@@ -23,7 +23,7 @@ export const KAMBAZ_MODULES_DATA_SLIDES: LectureSlide[] = [
   },
   {
     id: "modules-json",
-    title: "Download modules.json, then import it",
+    title: "Download `modules.json`, then import it",
     kind: "content",
     bullets: [
       "Download [modules.json](https://kambaz.dev/downloads/kambaz-database/modules.json) into `app/(kambaz)/database/` — nine modules, three per course, each with lessons",

@@ -56,7 +56,7 @@ export default async function PeopleTablePage({
       "Goal: a form above the table with first and last name inputs",
       "Add creates a user and enrolls them in this course",
       "Each row gets Edit, which loads it into the form, and Delete",
-      "The form imports emptyUser from the account context, so every screen shares one draft",
+      "The form imports `emptyUser` from the account context, so every screen shares one draft",
       "The next five slides build the table in parts",
     ],
   },

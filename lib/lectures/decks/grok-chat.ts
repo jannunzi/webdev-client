@@ -17,7 +17,7 @@ export const GROK_CHAT_SLIDES: LectureSlide[] = [
     bullets: [
       "Chat is the most popular feature on the **xAI API**",
       "Summarize, write, answer, support, or help with **code**",
-      "You POST a request. The API returns a **complete** response",
+      "You `POST` a request. The API returns a **complete** response",
     ],
   },
   {
@@ -69,7 +69,7 @@ console.log(completion.choices[0].message);`,
     title: "Conversations",
     kind: "content",
     bullets: [
-      "The xAI API is **stateless**",
+      "The `xAI` API is **stateless**",
       "It does **not** remember the previous request",
       "Resend prior prompts and results if you want **context**",
     ],
@@ -100,7 +100,7 @@ console.log(completion.choices[0].message);`,
     title: "Message Role Order Flexibility",
     kind: "content",
     bullets: [
-      "Unlike some providers, xAI lets you **mix roles in any order**",
+      "Unlike some providers, `xAI` lets you **mix roles in any order**",
       "Two `system` messages, or `user` **before** `system`, both work",
     ],
   },

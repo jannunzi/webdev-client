@@ -8,7 +8,7 @@ import {
 export const INSTALLING_NODEJS_SLIDES: BlockSlide[] = [
   createBlockSlide({
     id: "title",
-    title: "NODE.JS",
+    title: "`NODE.JS`",
     kind: "title",
     blocks: [
       createBulletsBlock({
@@ -117,7 +117,7 @@ export const INSTALLING_NODEJS_SLIDES: BlockSlide[] = [
     title: "Download Node.js",
     kind: "content",
     interactiveHint:
-      "Open nodejs.org and use the LTS button.",
+      "Open `nodejs.org` and use the LTS button.",
     blocks: [
       createBulletsBlock({
         id: "download-bullets",

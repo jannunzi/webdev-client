@@ -13,7 +13,7 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     },
     bullets: [
       "Chapter 5 · Async HTTP and JSON",
-      "Axios, CORS, POST/PUT/DELETE",
+      "Axios, CORS, `POST`/`PUT`/`DELETE`",
     ],
   },
   {
@@ -25,7 +25,7 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
       "Links to the server replace the whole page with the raw reply",
       "Real apps fetch data in the background and update just part of the page",
       "Axios implements AJAX (Asynchronous JavaScript and XML) to send HTTP requests and receive responses asynchronously from the browser to a remote server.",
-      "POST, PUT, and DELETE then let the page create, change, and remove server data",
+      "`POST`, `PUT`, and `DELETE` then let the page create, change, and remove server data",
     ],
   },
   {
@@ -110,7 +110,7 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
     title: "Waiting for Replies with async and await",
     kind: "content",
     bullets: [
-      "async/await is syntactic sugar over promises: await pauses the async function until the promise resolves, so the code reads top to bottom without .then() chains",
+      "async/await is syntactic sugar over promises: await pauses the async function until the promise resolves, so the code reads top to bottom without .`then()` chains",
       "An async function always returns a promise. async/await (ES2017) is the standard style today",
       "A request to the server takes time, and the page must not freeze while it waits",
       "`axios.get` returns a promise: a value that arrives later",
@@ -120,7 +120,7 @@ export const ASYNC_HTTP_SLIDES: LectureSlide[] = [
   },
   {
     id: "fetch-todos-await",
-    title: "fetchTodos with await",
+    title: "`fetchTodos` with await",
     kind: "demo",
     bullets: [
       "Both return the same todos. The await version reads top to bottom",
@@ -359,7 +359,7 @@ export const fetchTodos = async () => {
   },
   {
     id: "remove-get-client",
-    title: "Requesting Remove from client.ts",
+    title: "Requesting Remove from `client.ts`",
     kind: "demo",
     bullets: [
       "In `client.ts`, add `removeTodo` as shown below",
@@ -378,7 +378,7 @@ export const fetchTodos = async () => {
     kind: "demo",
     bullets: [
       "In `WorkingWithRemoteArraysAsync.tsx`, add the remove handler",
-      "The GET-style delete route returns the new array",
+      "The `GET`-style delete route returns the new array",
     ],
     code: "const removeTodo = async (todo) => {\n  setTodos(await client.removeTodo(todo));\n};\n<FaTrash onClick={() => removeTodo(todo)} id=\"wd-remove-todo\"\n  className=\"cursor-pointer text-red-600\" />",
     codeLanguage: "tsx",
@@ -389,14 +389,14 @@ export const fetchTodos = async () => {
     title: "Creating a Todo from the Client",
     kind: "content",
     bullets: [
-      "The server already has GET `/lab5/todos/create`",
+      "The server already has `GET` `/lab5/todos/create`",
       "`createNewTodo` in `client.ts` requests that route",
       "The + button stores the array the server returns",
     ],
   },
   {
     id: "create-get-client",
-    title: "Requesting Create from client.ts",
+    title: "Requesting Create from `client.ts`",
     kind: "demo",
     bullets: [
       "In `client.ts`, add `createNewTodo` as shown below",
@@ -457,25 +457,25 @@ Lab5(app);`,
       "**PUT** — update",
       "**DELETE** — remove",
       "**OPTIONS** — the browser asks first whether the server allows those verbs from another origin",
-      "Keep the older GET routes so earlier links still work",
+      "Keep the older `GET` routes so earlier links still work",
     ],
   },
   {
     id: "post-flow",
-    title: "Creating Items with HTTP POST",
+    title: "Creating Items with HTTP `POST`",
     kind: "content",
     bullets: [
       "`axios.post(TODOS_API, todo)` sends `todo` as a JSON body",
       "Example body: `{ title: \"New Posted Todo\", completed: false }`",
       "The server adds an id, stores it, and replies with the new todo",
       "The client appends `response.data` to its `todos` state",
-      "Keep the older GET `/lab5/todos/create` route so earlier links still work",
+      "Keep the older `GET` `/lab5/todos/create` route so earlier links still work",
     ],
   },
   {
     id: "post-route",
     links: ["http://localhost:4000/lab5/todos"],
-    title: "Writing the POST Create Route",
+    title: "Writing the `POST` Create Route",
     kind: "demo",
     bullets: [
       "In `WorkingWithRemoteArrays.ts`, add `postNewTodo` as shown below",
@@ -493,7 +493,7 @@ app.post("/lab5/todos", postNewTodo);`,
   },
   {
     id: "post-client",
-    title: "Posting a Todo from client.ts",
+    title: "Posting a Todo from `client.ts`",
     kind: "demo",
     bullets: [
       "In `client.ts`, add `postNewTodo` as shown below",
@@ -508,10 +508,10 @@ app.post("/lab5/todos", postNewTodo);`,
   },
   {
     id: "arrays-async-post",
-    title: "Sending a POST Request with Axios",
+    title: "Sending a `POST` Request with Axios",
     kind: "demo",
     bullets: [
-      "In `WorkingWithRemoteArraysAsync.tsx`, switch create to POST",
+      "In `WorkingWithRemoteArraysAsync.tsx`, switch create to `POST`",
       "The server returns only the new todo. Append it",
     ],
     code: "const postNewTodo = async () => {\n  const newTodo = await client.postNewTodo({\n    title: \"New Posted Todo\",\n    completed: false,\n  });\n  setTodos([...todos, newTodo]);\n};\n<FaPlusCircle onClick={postNewTodo} id=\"wd-post-todo\"\n  className=\"cursor-pointer text-blue-600\" />",
@@ -520,17 +520,17 @@ app.post("/lab5/todos", postNewTodo);`,
   },
   {
     id: "delete-http-intro",
-    title: "Removing a Todo with HTTP DELETE",
+    title: "Removing a Todo with HTTP `DELETE`",
     kind: "content",
     bullets: [
-      "DELETE `/lab5/todos/:id` removes the item. The path has no `/delete` suffix",
+      "`DELETE` `/lab5/todos/:id` removes the item. The path has no `/delete` suffix",
       "`res.sendStatus(200)` replies with success instead of the whole array",
-      "Keep GET `/lab5/todos/:id/delete` so the earlier link still works",
+      "Keep `GET` `/lab5/todos/:id/delete` so the earlier link still works",
     ],
   },
   {
     id: "delete-route",
-    title: "Writing the DELETE Route",
+    title: "Writing the `DELETE` Route",
     kind: "demo",
     bullets: [
       "In `WorkingWithRemoteArrays.ts`, add `deleteTodo` as shown below",
@@ -548,7 +548,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
   },
   {
     id: "delete-client",
-    title: "Deleting a Todo from client.ts",
+    title: "Deleting a Todo from `client.ts`",
     kind: "demo",
     bullets: [
       "In `client.ts`, add `deleteTodo` as shown below",
@@ -563,7 +563,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
   },
   {
     id: "arrays-async-delete",
-    title: "Deleting Items with HTTP DELETE",
+    title: "Deleting Items with HTTP `DELETE`",
     kind: "demo",
     bullets: [
       "In `WorkingWithRemoteArraysAsync.tsx`, add the X button",
@@ -575,7 +575,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
   },
   {
     id: "put-server",
-    title: "Updating Items with HTTP PUT",
+    title: "Updating Items with HTTP `PUT`",
     kind: "demo",
     bullets: [
       "In `WorkingWithRemoteArrays.ts`, add the route as shown below",
@@ -588,7 +588,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
   },
   {
     id: "put-client",
-    title: "Updating a Todo from client.ts",
+    title: "Updating a Todo from `client.ts`",
     kind: "demo",
     bullets: [
       "In `client.ts`, add `updateTodo` as shown below",
@@ -603,7 +603,7 @@ app.get("/lab5/todos/:id/delete", removeTodo);`,
   },
   {
     id: "arrays-async-put",
-    title: "Sending a PUT Request with Axios",
+    title: "Sending a `PUT` Request with Axios",
     kind: "demo",
     bullets: [
       "In `WorkingWithRemoteArraysAsync.tsx`, add editing as shown below",
@@ -674,7 +674,7 @@ const updateTodo = (req, res) => {
     bullets: [
       "axios + `async`/`await` keep the Lab 5 page on screen",
       "`cors()` then `express.json()` then the routes",
-      "POST / PUT / DELETE with error status codes",
+      "`POST` / `PUT` / `DELETE` with error status codes",
     ],
   },
   {

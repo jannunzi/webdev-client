@@ -100,7 +100,7 @@ export default function Lesson({
   },
   {
     id: "modules-page-intro",
-    title: "Modules.tsx uses Module + Lesson",
+    title: "`Modules.tsx` uses Module + Lesson",
     kind: "content",
     bullets: [
       "Import `Module` and `Lesson`, then nest Week 1 fully",
@@ -110,7 +110,7 @@ export default function Lesson({
   },
   {
     id: "modules-page",
-    title: "Modules.tsx uses Module + Lesson (code)",
+    title: "`Modules.tsx` uses Module + Lesson (code)",
     kind: "content",
     code: `import Module from "./Module";
 import Lesson from "./Lesson";

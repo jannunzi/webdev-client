@@ -87,7 +87,7 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "console-intro",
-    title: "Logging with console.log",
+    title: "Logging with `console.log`",
     kind: "content",
     bullets: [
       "Right-click Lab 3 → Inspect → **Console** tab",
@@ -98,7 +98,7 @@ export const JAVASCRIPT_OBJECTS_SLIDES: LectureSlide[] = [
   },
   {
     id: "console",
-    title: "Logging with console.log (code)",
+    title: "Logging with `console.log` (code)",
     kind: "content",
     code: `import VariablesAndConstants from "./VariablesAndConstants";
 import VariableTypes from "./VariableTypes";

@@ -36,7 +36,7 @@ export const KAMBAZ_COURSES_STORE_SLIDES: LectureSlide[] = [
   },
   {
     id: "why-not-local",
-    title: "Limits of Dashboard useState",
+    title: "Limits of Dashboard `useState`",
     kind: "content",
     bullets: [
       "A course added on the Dashboard would exist only on the Dashboard",

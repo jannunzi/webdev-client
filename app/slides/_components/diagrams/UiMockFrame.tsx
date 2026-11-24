@@ -10,7 +10,10 @@ export default function UiMockFrame({
   children: ReactNode;
 }) {
   return (
-    <figure className="my-5 overflow-hidden rounded-lg border-2 border-neutral-800 bg-white text-neutral-900 shadow-sm">
+    <figure
+      data-screen-demo=""
+      className="my-5 overflow-hidden rounded-lg border-2 border-neutral-800 bg-white text-neutral-900 shadow-sm"
+    >
       <figcaption className="m-0 flex flex-wrap items-center gap-2 border-b border-neutral-200 bg-neutral-100 px-3 py-2 font-sans text-sm text-neutral-600">
         <span className="font-semibold uppercase tracking-wide">Walkthrough</span>
         <span>{product}</span>

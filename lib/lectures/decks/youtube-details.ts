@@ -252,7 +252,7 @@ export default function YouTubeVideoDetails() {
   },
   {
     id: "if-id",
-    title: "If youTubeId, Show Details",
+    title: "If `youTubeId`, Show Details",
     kind: "demo",
     bullets: [
       "Has **`youTubeId`** → Details. Otherwise show the name",
@@ -274,7 +274,7 @@ export default function YouTubeVideoDetails() {
     kind: "title",
     bullets: [
       "Pass **`mid`** and **`lid`** through the query string",
-      "POST the **video id** onto the lesson",
+      "`POST` the **video id** onto the lesson",
     ],
   },
   {
@@ -378,7 +378,7 @@ const saveYouTubeVideoToLesson = async () => {
   },
   {
     id: "route",
-    title: "In Server, Parse Video ID from URL POST",
+    title: "In Server, Parse Video ID from URL `POST`",
     kind: "demo",
     bullets: ["Express reads **`:cid :mid :lid :vid`**"],
     code: `const saveYouTubeVideoToLesson = async (req, res) => {

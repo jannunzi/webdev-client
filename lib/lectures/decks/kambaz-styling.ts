@@ -23,7 +23,7 @@ export const KAMBAZ_STYLING_SLIDES: LectureSlide[] = [
   },
   {
     id: "no-preflight",
-    title: "Step 1: Create kambaz.css",
+    title: "Step 1: Create `kambaz.css`",
     kind: "content",
     bullets: [
       "**Preflight** is Tailwind's base reset. `@import \"tailwindcss\"` includes it",
@@ -37,7 +37,7 @@ export const KAMBAZ_STYLING_SLIDES: LectureSlide[] = [
   },
   {
     id: "kambaz-css-intro",
-    title: "Step 2: Append the base to kambaz.css",
+    title: "Step 2: Append the base to `kambaz.css`",
     kind: "content",
     bullets: [
       "**Append** these rules below the two `@import` lines from Step 1. Pasting over the file drops the Tailwind imports",
@@ -47,7 +47,7 @@ export const KAMBAZ_STYLING_SLIDES: LectureSlide[] = [
   },
   {
     id: "kambaz-css",
-    title: "Step 2: kambaz.css base (code)",
+    title: "Step 2: `kambaz.css` base (code)",
     kind: "content",
     code: `/* System sans-serif — Tailwind utilities alone
    do not set the body font */
@@ -74,7 +74,7 @@ export const KAMBAZ_STYLING_SLIDES: LectureSlide[] = [
   },
   {
     id: "layout-intro",
-    title: "Step 3: Layout imports kambaz.css",
+    title: "Step 3: Layout imports `kambaz.css`",
     kind: "content",
     bullets: [
       "The Kambaz layout imports `./kambaz.css`. Next.js bundles the file only once, even if another component imports it too",
@@ -83,7 +83,7 @@ export const KAMBAZ_STYLING_SLIDES: LectureSlide[] = [
   },
   {
     id: "layout",
-    title: "Step 3: Layout imports kambaz.css (code)",
+    title: "Step 3: Layout imports `kambaz.css` (code)",
     kind: "content",
     code: `import { ReactNode } from "react";
 import "./kambaz.css";

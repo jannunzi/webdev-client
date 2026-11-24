@@ -53,7 +53,7 @@ export const REDUCE_AND_JSON_SLIDES: LectureSlide[] = [
   },
   {
     id: "json",
-    title: "JSON.stringify shows the shape",
+    title: "`JSON.stringify` shows the shape",
     kind: "content",
     code: `export default function JsonStringify() {
   const squares = [1, 4, 16, 25, 36];

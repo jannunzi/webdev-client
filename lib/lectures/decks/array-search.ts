@@ -56,7 +56,7 @@ export const ARRAY_SEARCH_SLIDES: LectureSlide[] = [
   },
   {
     id: "find-index",
-    title: "findIndex returns a position",
+    title: "`findIndex` returns a position",
     kind: "content",
     code: `export default function FindIndex() {
   const numberArray1 = [1, 2, 4, 5, 6];

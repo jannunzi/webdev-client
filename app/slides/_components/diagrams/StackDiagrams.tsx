@@ -32,6 +32,28 @@ function boxHeight(lines: number) {
   return HEADER_H + Math.max(lines, 1) * LINE_H + PAD_B;
 }
 
+/**
+ * Room for the request shaft and the dashed response shaft inside the body.
+ * Short rows grow to this minimum. Taller rows keep their text and center
+ * the same pair, so the response never sits on the bottom edge.
+ */
+function arrowChannel(large: boolean) {
+  const pairGap = large ? 72 : 36;
+  const edgePad = large ? 64 : 28;
+  return { pairGap, edgePad, minBody: edgePad * 2 + pairGap };
+}
+
+function bodyAndArrows(bodyTop: number, contentBody: number, large: boolean) {
+  const { pairGap, minBody } = arrowChannel(large);
+  const bodyH = Math.max(contentBody, minBody);
+  const mid = bodyTop + bodyH / 2;
+  return {
+    bodyH,
+    requestY: mid - pairGap / 2,
+    responseY: mid + pairGap / 2,
+  };
+}
+
 /** Header band: top corners match the body radius, bottom corners stay square. */
 function headerPath(x: number, y: number, w: number, h: number) {
   const r = RADIUS;
@@ -93,19 +115,17 @@ function Flow({
   const labelSize = large ? 22 : 13;
   const strokeW = large ? 5 : 3;
   const head = large ? 10 : 6;
-  const contentHeights = boxes.map(
-    (box) => headerH + Math.max(box.lines.length, 1) * lineH + padB,
-  );
   const width = side + boxes.length * boxWidth + (boxes.length - 1) * gap + side;
-  // Height is the text. Do not stretch a short row so it fills the slide.
-  const boxH = Math.max(...contentHeights);
+  const contentBody = Math.max(
+    ...boxes.map((box) => Math.max(box.lines.length, 1) * lineH + padB),
+  );
+  const top = large ? 12 : 20;
+  // Body is at least tall enough for both arrows, and never stretched to the slide.
+  const { bodyH, requestY, responseY } = bodyAndArrows(top + headerH, contentBody, large);
+  const boxH = headerH + bodyH;
   const height = (large ? 12 : 24) + boxH + (large ? 12 : 20);
   const fitSize = (text: string, size: number) =>
     Math.min(size, Math.max(13, Math.floor((boxWidth - 28) / (Math.max(text.length, 1) * 0.62))));
-  const top = large ? 12 : 20;
-  const bodyMid = top + headerH + (boxH - headerH) / 2;
-  const requestY = large ? bodyMid - 36 : top + HEADER_H + 10;
-  const responseY = large ? bodyMid + 36 : top + HEADER_H + 32;
 
   return (
     <svg role="img" viewBox={`0 0 ${width} ${height}`} aria-label={title}>
@@ -193,14 +213,19 @@ function Flow({
             >
               {box.name}
             </text>
-            {box.lines.map((line, lineIndex) => (
+            {box.lines.map((line, lineIndex) => {
+              // A list of routes, functions, or code lines reads from the left.
+              // A single label stays centered under the title.
+              const list = box.lines.length > 1;
+              const inset = 18;
+              return (
               <text
                 key={line}
-                x={large ? x + boxWidth / 2 : x + 12}
+                x={list ? x + inset : large ? x + boxWidth / 2 : x + inset}
                 y={(large
                   ? top + headerH + (h - headerH - box.lines.length * lineH) / 2 + 22
                   : top + HEADER_H + 20) + lineIndex * lineH}
-                textAnchor={large ? "middle" : "start"}
+                textAnchor={list || !large ? "start" : "middle"}
                 fontFamily={MONO}
                 fontSize={fitSize(line, lineSize)}
                 fontWeight={box.emphasis && lineIndex === 0 ? 700 : 400}
@@ -208,7 +233,8 @@ function Flow({
               >
                 {line}
               </text>
-            ))}
+              );
+            })}
           </g>
         );
       })}
@@ -768,11 +794,11 @@ function ArraysPicture() {
   const routeH = boxHeight(ARRAY_ROUTES.length);
   const clientH = boxHeight(ARRAY_METHODS.length);
   const uiH = boxHeight(1);
-  const boxH = Math.max(routeH, clientH, uiH);
-  const height = 24 + boxH + 20;
   const top = 20;
-  const requestY = top + HEADER_H + 18;
-  const responseY = top + HEADER_H + 52;
+  const contentBody = Math.max(routeH, clientH, uiH) - HEADER_H;
+  const { bodyH, requestY, responseY } = bodyAndArrows(top + HEADER_H, contentBody, false);
+  const boxH = HEADER_H + bodyH;
+  const height = 24 + boxH + 20;
   const boxes = [
     {
       x: uiX,

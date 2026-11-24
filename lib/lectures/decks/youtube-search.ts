@@ -17,7 +17,7 @@ export const YOUTUBE_SEARCH_SLIDES: LectureSlide[] = [
     diagram: "youtube-search-flow",
     bullets: [
       "URL: `https://www.googleapis.com/youtube/v3/search`",
-      "Required: **q** — search keyword · **key** — API key · **part** — e.g. `snippet`",
+      "Required: **q** — search keyword · **key** — API key · **part** — `e.g`. `snippet`",
     ],
     code: `https://www.googleapis.com/youtube/v3/search?q=boats&key=YOUR_KEY&part=snippet`,
     codeLanguage: "text",

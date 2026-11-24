@@ -6,13 +6,13 @@ export const USE_EFFECT_SLIDES: LectureSlide[] = [
     title: "WEB DEV",
     kind: "title",
     bullets: [
-      "Chapter 4 · Side Effects with useEffect",
+      "Chapter 4 · Side Effects with `useEffect`",
       "Work that is not the return value",
     ],
   },
   {
     id: "purpose",
-    title: "Implementing useEffect",
+    title: "Implementing `useEffect`",
     kind: "content",
     diagram: "use-effect-goal",
     bullets: [
@@ -102,7 +102,7 @@ export default function Effect() {
   },
   {
     id: "recap",
-    title: "useEffect recap",
+    title: "`useEffect` recap",
     kind: "content",
     bullets: [
       "JSX in the return. Side effects in `useEffect`",

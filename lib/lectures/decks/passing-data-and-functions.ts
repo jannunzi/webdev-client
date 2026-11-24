@@ -86,7 +86,7 @@ export default function PassingDataOnEvent() {
   },
   {
     id: "passing-functions",
-    title: "theFunction is a prop",
+    title: "`theFunction` is a prop",
     kind: "content",
     code: `export default function PassingFunctions({
   message,
@@ -154,7 +154,7 @@ export default function PassingDataOnEvent() {
   },
   {
     id: "next-up",
-    title: "Next: useState and the counter",
+    title: "Next: `useState` and the counter",
     kind: "title",
     bullets: [
       "A click that only alerts does not change the page",
