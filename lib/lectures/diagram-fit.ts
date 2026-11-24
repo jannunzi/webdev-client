@@ -37,8 +37,8 @@ export function diagramFitScale(
   return Math.min(fit, maxHeight / naturalHeight);
 }
 
-/** Average SVG glyph width relative to the font size. */
-export const DIAGRAM_FONT_EM = 0.68;
+/** Average SVG glyph width relative to the font size. Matches the slide mono font. */
+export const DIAGRAM_FONT_EM = 0.61;
 
 /**
  * Fullscreen rendered size of the slide 9 labels on main
@@ -52,25 +52,25 @@ export function diagramMinFontPx(_slideWidth: number, _bulletPx: number): number
 }
 
 /**
- * A list box is as wide as its longest line, so every line stays on one row.
- * Every other box is exactly wide enough for its title at the normal title
- * size, so a long title is not auto-shrunk.
+ * A list box is as wide as its longest line at the list size, so every route
+ * stays on one row. Every other box fits its title and its body label at the
+ * title size, so PeopleTable is not shrunk to make room for the routes.
  */
 export function balanceBoxWidths(
   boxes: { name: string; lines: string[] }[],
-  shared: number,
+  _shared: number,
   nameSize: number,
   lineSize: number,
 ): number[] {
-  const em = 0.7;
-  const pad = 48;
+  const em = DIAGRAM_FONT_EM;
+  const pad = 36;
   return boxes.map((box) => {
     const longestLine = box.lines.reduce((max, line) => Math.max(max, line.length), 0);
     const list = box.lines.length > 1 && longestLine > 16;
     const nameW = box.name.length * nameSize * em + pad;
-    if (list) return Math.round(Math.max(nameW, longestLine * lineSize * 0.62 + pad));
-    const lineW = Math.max(longestLine, 1) * lineSize * 0.62 + pad;
-    return Math.round(Math.max(nameW, lineW, shared * 0.34));
+    if (list) return Math.round(Math.max(nameW, longestLine * lineSize * em + pad));
+    const lineW = Math.max(longestLine, 1) * nameSize * em + pad;
+    return Math.round(Math.max(nameW, lineW));
   });
 }
 

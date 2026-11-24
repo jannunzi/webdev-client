@@ -99,7 +99,7 @@ function raiseDiagramText(inner: HTMLElement, zoom: number, slideWidth: number) 
     const target = minVisual / zoom;
     let next = target;
     if (boxWidth > 0) {
-      next = Math.min(next, fontPxThatFits(content, boxWidth, container ? 28 : 16));
+      next = Math.min(next, fontPxThatFits(content, boxWidth, container ? 22 : 10));
     }
     if (lineGap > 0) next = Math.min(next, lineGap * 0.8);
     next = Math.max(12, Math.min(next, target));

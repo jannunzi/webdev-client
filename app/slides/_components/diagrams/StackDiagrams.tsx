@@ -1,4 +1,4 @@
-import { balanceBoxWidths } from "@/lib/lectures/diagram-fit";
+import { DIAGRAM_FONT_EM, balanceBoxWidths } from "@/lib/lectures/diagram-fit";
 import { svgIndentedLine } from "@/lib/lectures/svg-indent";
 import type { LectureDiagramFocus } from "@/lib/lectures/types";
 
@@ -40,8 +40,8 @@ function boxHeight(lines: number) {
  * the same pair, so the response never sits on the bottom edge.
  */
 function arrowChannel(large: boolean) {
-  const pairGap = large ? 80 : 40;
-  const edgePad = large ? 88 : 36;
+  const pairGap = large ? 64 : 40;
+  const edgePad = large ? 48 : 36;
   return { pairGap, edgePad, minBody: edgePad * 2 + pairGap };
 }
 
@@ -118,14 +118,16 @@ function Flow({
   large?: boolean;
   focus?: LectureDiagramFocus;
 }) {
-  const headerH = large ? 96 : 64;
-  const lineH = large ? 52 : 34;
-  const padB = large ? 40 : 18;
-  const gap = large ? 96 : 72;
-  const side = large ? 24 : 32;
-  const nameSize = large ? 46 : 28;
-  const lineSize = large ? 38 : 22;
-  const labelSize = large ? 34 : 20;
+  const headerH = large ? 58 : 64;
+  const lineH = large ? 36 : 34;
+  const padB = large ? 22 : 18;
+  const gap = large ? 66 : 72;
+  const side = large ? 16 : 32;
+  // Large rows are drawn at the fullscreen target. The routes list is one
+  // step smaller so the row stays horizontal and the other labels reach it.
+  const nameSize = large ? 24 : 28;
+  const lineSize = large ? 21 : 22;
+  const labelSize = large ? 24 : 20;
   const strokeW = large ? 5 : 3;
   const head = large ? 10 : 6;
   const widths = balanceBoxWidths(boxes, boxWidth, nameSize, lineSize);
@@ -144,11 +146,11 @@ function Flow({
   // Body is at least tall enough for both arrows, and never stretched to the slide.
   const { bodyH, requestY, responseY } = bodyAndArrows(top + headerH, contentBody, large);
   const boxH = headerH + bodyH;
-  const here = focus ? 44 : 0;
+  const here = focus ? 88 : 0;
   const height = (large ? 12 : 24) + boxH + (large ? 12 : 20) + here;
   const focusIndex = focus ? focusBoxIndex(focus, drawn.length) : -1;
   const fitSize = (text: string, size: number, span: number) => {
-    const fitted = Math.floor((span - 36) / (Math.max(text.length, 1) * 0.62));
+    const fitted = Math.floor((span - 32) / (Math.max(text.length, 1) * DIAGRAM_FONT_EM));
     return Math.min(size, Math.max(fitted, 12));
   };
   const origins: number[] = [];
@@ -262,7 +264,7 @@ function Flow({
                   : top + headerH + 26) + lineIndex * lineH}
                 textAnchor={list || !large ? "start" : "middle"}
                 fontFamily={MONO}
-                fontSize={fitSize(list ? longest : line, lineSize, span)}
+                fontSize={fitSize(list ? longest : line, list ? lineSize : nameSize, span)}
                 fontWeight={box.emphasis && lineIndex === 0 ? 700 : 400}
                 fill={box.emphasis && lineIndex === 0 ? tone.stroke : "#171717"}
               >
@@ -274,14 +276,14 @@ function Flow({
               <g>
                 <line
                   x1={x + span / 2}
-                  y1={top + h + 36}
+                  y1={top + h + 72}
                   x2={x + span / 2}
-                  y2={top + h + 14}
+                  y2={top + h + 18}
                   stroke="#171717"
                   strokeWidth={4}
                 />
                 <polygon
-                  points={`${x + span / 2},${top + h + 4} ${x + span / 2 - 11},${top + h + 20} ${x + span / 2 + 11},${top + h + 20}`}
+                  points={`${x + span / 2},${top + h + 6} ${x + span / 2 - 13},${top + h + 26} ${x + span / 2 + 13},${top + h + 26}`}
                   fill="#171717"
                 />
               </g>
