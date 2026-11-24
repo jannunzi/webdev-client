@@ -225,14 +225,24 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[] }> 
       { name: "model.find()", lines: ["users"], tone: "red" },
     ],
   },
-  "users-filter": {
-    title: "GET /api/users?role and ?name",
+  "users-filter-role": {
+    title: "GET /api/users?role=",
     boxWidth: 250,
     boxes: [
-      { name: "Users", lines: ["role or name"], tone: "blue" },
-      { name: "findUsersByRole", lines: ["GET ?role"], tone: "blue" },
-      { name: "GET /api/users", lines: ["?name too"], tone: "yellow" },
-      { name: "find()", lines: ["role or $regex"], tone: "red" },
+      { name: "Users", lines: ["role select"], tone: "blue" },
+      { name: "findUsersByRole", lines: ["GET ?role="], tone: "blue" },
+      { name: "GET /api/users", lines: ["if role"], tone: "yellow" },
+      { name: "find({ role })", lines: ["users"], tone: "red" },
+    ],
+  },
+  "users-filter-name": {
+    title: "GET /api/users?name=",
+    boxWidth: 290,
+    boxes: [
+      { name: "Users", lines: ["Search people"], tone: "blue" },
+      { name: "Client", lines: ["findUsersByPartialName", "GET ?name="], tone: "blue" },
+      { name: "GET /api/users", lines: ["if name"], tone: "yellow" },
+      { name: "find()", lines: ["$or", "$regex firstName", "$regex lastName"], tone: "red" },
     ],
   },
   "users-read-one": {
@@ -247,12 +257,12 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[] }> 
   },
   "users-delete": {
     title: "DELETE /api/users/:userId",
-    boxWidth: 240,
+    boxWidth: 280,
     boxes: [
       { name: "Details", lines: ["onDelete"], tone: "blue" },
       { name: "deleteUser", lines: ["DELETE"], tone: "blue" },
       { name: "DELETE /:userId", lines: ["await dao"], tone: "yellow" },
-      { name: "deleteOne", lines: ["users"], tone: "red" },
+      { name: "findByIdAndDelete", lines: ["one user"], tone: "red" },
     ],
   },
   "users-update": {

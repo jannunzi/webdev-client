@@ -1349,7 +1349,7 @@ describe("lecture decks", () => {
     assert.equal(counts["local-mongo"], 12);
     assert.equal(counts["mongoose"], 13);
     assert.equal(counts["mongo-apis"], 14);
-    assert.equal(counts["mongo-users-crud"], 32);
+    assert.equal(counts["mongo-users-crud"], 29);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
     assert.equal(counts["atlas-node"], 10);
@@ -3664,11 +3664,18 @@ describe("lecture decks", () => {
         "read-all-path": "users-read-all",
       },
       "mongo-users-crud": {
-        "users-picture": "users-stack",
-        "filter-path": "users-filter",
+        goal: "users-crud-goal",
+        "filter-why": "users-filters-preview",
+        "role-path": "users-filter-role",
+        "role-result": "users-role-result",
+        "name-path": "users-filter-name",
+        "name-result": "users-name-result",
         "read-one-path": "users-read-one",
+        "details-result": "users-details-result",
         "delete-path": "users-delete",
+        "delete-result": "users-delete-result",
         "update-path": "users-update",
+        "update-result": "users-update-result",
         "create-path": "users-create",
       },
       "kambaz-courses-db": {
@@ -4204,7 +4211,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 255);
+    assert.equal(intros, 254);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
