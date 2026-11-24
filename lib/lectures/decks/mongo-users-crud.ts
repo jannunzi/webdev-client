@@ -9,73 +9,74 @@ export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
     cover: {
       color: COVER_MONGO,
       icon: "user",
-      headline: "User CRUD",
+      headline: "CRUD Users",
     },
     bullets: [
-      "Chapter 6 · User CRUD",
-      "Filter, id, mutate",
+      "Chapter 6 · CRUD Users",
+      "Filter, open one, delete, update, create",
     ],
   },
   {
-    id: "users-picture",
-    title: "Users from the Page to Mongo",
+    id: "goal",
+    title: "What we are building",
     kind: "demo",
-    bullets: ["Every user route, from the page through the users collection"],
-    diagram: "users-stack",
+    bullets: [
+      "The Users page already lists every document",
+      "Filter that list, open one user, then write",
+      "Delete, update, and create change the collection",
+    ],
+    diagram: "users-crud-goal",
   },
   {
-    id: "filter-path",
-    title: "GET /api/users?role and ?name",
+    id: "filter-why",
+    title: "Filter by role and by name",
     kind: "demo",
-    bullets: ["One GET. `role` and `name` are separate filters"],
-    diagram: "users-filter",
+    bullets: [
+      "Ask for a subset: all faculty, or a typed name",
+      "Ids go in the path. Filters go in the query string",
+      "Role first. Then a name with a regular expression",
+    ],
+    diagram: "users-filters-preview",
   },
   {
-    id: "predicates",
-    title: "find() accepts a predicate",
+    id: "role-path",
+    title: "GET /api/users?role=",
+    kind: "demo",
+    bullets: ["The role menu, the client, the same GET, then `find({ role })`"],
+    diagram: "users-filter-role",
+  },
+  {
+    id: "role-dao",
+    title: "findUsersByRole in the DAO",
     kind: "demo",
     bullets: [
       "`{ role }` is shorthand for `{ role: role }`",
-      "`$regex` with flag `i` — `thor` finds Thor",
-      "Export `findUsersByRole` and `findUsersByPartialName` for `GET /api/users`",
+      "`find()` returns an array. Many users share a role",
+      "Export `findUsersByRole` on the object the DAO returns",
     ],
     code: `const findUsersByRole = (role) => model.find({ role });
-const findUsersByPartialName = (partialName) => {
-  const regex = new RegExp(partialName, "i");
-  return model.find({
-    $or: [
-      { firstName: { $regex: regex } },
-      { lastName: { $regex: regex } },
-    ],
-  });
+return {
+  createUser, findAllUsers, findUserById,
+  findUserByUsername, findUserByCredentials,
+  updateUser, deleteUser, findUsersByRole,
 };`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/dao.ts",
-    codeAddedLines: [[1, 11]],
+    codeAddedLines: [1, 6],
   },
   {
-    id: "query-route-intro",
-    title: "One GET, two query filters",
+    id: "role-route",
+    title: "GET /api/users reads ?role=",
     kind: "demo",
     bullets: [
-      "Parse `role` and `name` from `req.query`",
-      "Client encodes `?role=FACULTY` or `?name=thor`",
-      "`role` and `name` each filter alone. Sending both query params is extra",
+      "Same `GET /api/users`. Read `role` from `req.query`",
+      "A role returns that subset, then `return`",
+      "Leave `name` off until the next section",
     ],
-  },
-  {
-    id: "query-route",
-    title: "One GET, two query filters (code)",
-    kind: "demo",
     code: `const findAllUsers = async (req, res) => {
-  const { role, name } = req.query;
+  const { role } = req.query;
   if (role) {
     const users = await dao.findUsersByRole(role);
-    res.json(users);
-    return;
-  }
-  if (name) {
-    const users = await dao.findUsersByPartialName(name);
     res.json(users);
     return;
   }
@@ -84,29 +85,28 @@ const findUsersByPartialName = (partialName) => {
 };`,
     codeLanguage: "ts",
     codeFile: "webdev-server/Kambaz/Users/routes.ts",
-    codeAddedLines: [[2, 12]],
+    codeAddedLines: [[2, 7]],
   },
   {
-    id: "filter-ui",
-    title: "Filtering Users from the Client",
+    id: "role-ui",
+    title: "Role from the client and page",
     kind: "demo",
-    code: `export const findUsersByRole = async (role: string) => {
+    bullets: [
+      "An empty value calls `fetchUsers()`",
+      "Faculty sends `?role=FACULTY`",
+    ],
+    codeBlocks: [
+      {
+        code: `export const findUsersByRole = async (role: string) => {
   const response = await axios.get(\`\${USERS_API}?role=\${role}\`);
   return response.data;
-};
-export const findUsersByPartialName = async (name: string) => {
-  const response = await axios.get(\`\${USERS_API}?name=\${name}\`);
-  return response.data;
 };`,
-    codeLanguage: "ts",
-    codeFile: "app/(kambaz)/account/client.ts",
-    codeAddedLines: [[1, 8]],
-  },
-  {
-    id: "filter-role",
-    title: "Role select filters the users",
-    kind: "demo",
-    code: `const [role, setRole] = useState("");
+        language: "ts",
+        file: "app/(kambaz)/account/client.ts",
+        addedLines: [[1, 4]],
+      },
+      {
+        code: `const [role, setRole] = useState("");
 const filterUsersByRole = async (role: string) => {
   setRole(role);
   if (role) {
@@ -128,15 +128,100 @@ const filterUsersByRole = async (role: string) => {
   <option value="FACULTY">Faculty</option>
   <option value="ADMIN">Administrators</option>
 </select>`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/account/users/page.tsx",
-    codeHighlightLines: [[2, 9], 14],
+        language: "tsx",
+        file: "app/(kambaz)/account/users/page.tsx",
+        highlightLines: [[2, 9], 14],
+      },
+    ],
   },
   {
-    id: "filter-name",
-    title: "Name input filters the users",
+    id: "role-result",
+    title: "Faculty narrows the list",
     kind: "demo",
-    code: `const [name, setName] = useState("");
+    bullets: [
+      "The menu reads Faculty",
+      "The request is `GET /api/users?role=FACULTY`",
+      "The rows are Nick Fury and Bruce Banner",
+    ],
+    diagram: "users-role-result",
+  },
+  {
+    id: "name-path",
+    title: "GET /api/users?name=",
+    kind: "demo",
+    bullets: ["Search people, the client, the same GET, then a regular expression"],
+    diagram: "users-filter-name",
+  },
+  {
+    id: "name-dao",
+    title: "Partial name in the DAO",
+    kind: "demo",
+    bullets: [
+      "The `i` flag is case-insensitive, so `thor` finds Thor",
+      "`$or` means either first name or last name matches",
+      "Export it. The book searches first and last name only",
+    ],
+    code: `const findUsersByPartialName = (partialName) => {
+  const regex = new RegExp(partialName, "i");
+  return model.find({
+    $or: [
+      { firstName: { $regex: regex } },
+      { lastName: { $regex: regex } },
+    ],
+  });
+};`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/dao.ts",
+    codeAddedLines: [[1, 9]],
+  },
+  {
+    id: "name-route",
+    title: "GET /api/users reads ?name=",
+    kind: "demo",
+    bullets: [
+      "Add `if (name)` under the existing `if (role)`",
+      "When both are sent, `role` wins",
+      "Still one route. The handler reads `req.query`",
+    ],
+    code: `const findAllUsers = async (req, res) => {
+  const { role, name } = req.query;
+  if (role) {
+    const users = await dao.findUsersByRole(role);
+    res.json(users);
+    return;
+  }
+  if (name) {
+    const users = await dao.findUsersByPartialName(name);
+    res.json(users);
+    return;
+  }
+  const users = await dao.findAllUsers();
+  res.json(users);
+};`,
+    codeLanguage: "ts",
+    codeFile: "webdev-server/Kambaz/Users/routes.ts",
+    codeAddedLines: [2, [7, 11]],
+  },
+  {
+    id: "name-ui",
+    title: "Name from the client and page",
+    kind: "demo",
+    bullets: [
+      "Every keystroke sends the partial name",
+      "An empty field calls `fetchUsers()`",
+    ],
+    codeBlocks: [
+      {
+        code: `export const findUsersByPartialName = async (name: string) => {
+  const response = await axios.get(\`\${USERS_API}?name=\${name}\`);
+  return response.data;
+};`,
+        language: "ts",
+        file: "app/(kambaz)/account/client.ts",
+        addedLines: [[1, 4]],
+      },
+      {
+        code: `const [name, setName] = useState("");
 const filterUsersByName = async (name: string) => {
   setName(name);
   if (name) {
@@ -153,77 +238,119 @@ const filterUsersByName = async (name: string) => {
   value={name}
   onChange={(e) => filterUsersByName(e.target.value)}
 />`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/account/users/page.tsx",
-    codeHighlightLines: [[2, 9], 16],
+        language: "tsx",
+        file: "app/(kambaz)/account/users/page.tsx",
+        highlightLines: [[2, 9], 16],
+      },
+    ],
+  },
+  {
+    id: "name-result",
+    title: "Stark narrows the list",
+    kind: "demo",
+    bullets: [
+      "Search people reads Stark",
+      "The request is `GET /api/users?name=Stark`",
+      "The only row is Tony Stark",
+    ],
+    diagram: "users-name-result",
   },
   {
     id: "read-one-path",
     title: "GET /api/users/:userId",
     kind: "demo",
-    bullets: ["findById loads the document Details shows"],
+    bullets: [
+      "The id belongs in the path, not the query string",
+      "This route is not `GET /api/users`",
+    ],
     diagram: "users-read-one",
   },
   {
     id: "by-id",
     links: ["http://localhost:4000/api/users/123"],
-    title: "findById loads one document",
+    title: "findById and the GET route",
     kind: "demo",
     bullets: [
-      "Convenience for `findOne({ _id: userId })`",
-      "Confirm in the browser: `/api/users/` plus an `_id` from Compass",
+      "`findById` is shorthand for `findOne({ _id: userId })`",
+      "Open `/api/users/` plus an id in the browser",
     ],
-    code: `const findUserById = (userId) => model.findById(userId);`,
-    codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Users/dao.ts",
-    codeAddedLines: [1],
-  },
-  {
-    id: "by-id-route",
-    links: ["http://localhost:4000/api/users/123"],
-    title: "GET one user route",
-    kind: "demo",
-    code: `const findUserById = async (req, res) => {
+    codeBlocks: [
+      {
+        code: `const findUserById = (userId) => model.findById(userId);`,
+        language: "ts",
+        file: "webdev-server/Kambaz/Users/dao.ts",
+        addedLines: [1],
+      },
+      {
+        code: `const findUserById = async (req, res) => {
   const user = await dao.findUserById(req.params.userId);
   res.json(user);
 };
 app.get("/api/users/:userId", findUserById);`,
-    codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Users/routes.ts",
-    codeAddedLines: [[1, 5]],
+        language: "ts",
+        file: "webdev-server/Kambaz/Users/routes.ts",
+        addedLines: [[1, 5]],
+      },
+    ],
   },
   {
     id: "details",
-    title: "People Details on a name click",
+    title: "Client and People Details",
     kind: "demo",
     bullets: [
-      "Parse `uid`. If missing, return `null` so the panel does not render",
-      "`useEffect` depends on `uid` so a second click reloads",
-      "The panel is a fixed column on the right: `fixed top-0 end-0 bottom-0`, a white background, and a shadow",
+      "No `uid` means `return null`, so the panel stays hidden",
+      "`useEffect` depends on `uid`, so the next name reloads",
+      "The id is in the path, not the query string",
     ],
-    code: `export const findUserById = async (id: string) => {
+    codeBlocks: [
+      {
+        code: `export const findUserById = async (id: string) => {
   const response = await axios.get(\`\${USERS_API}/\${id}\`);
   return response.data;
 };`,
-    codeLanguage: "ts",
-    codeFile: "app/(kambaz)/account/client.ts",
-    codeAddedLines: [[1, 4]],
-  },
-  {
-    id: "details-ui",
-    title: "Details Loads One User",
-    kind: "demo",
-    code: `const fetchUser = async () => {
+        language: "ts",
+        file: "app/(kambaz)/account/client.ts",
+        addedLines: [[1, 4]],
+      },
+      {
+        code: `const fetchUser = async () => {
   if (!uid) return;
   const user = await client.findUserById(uid);
   setUser(user);
 };
 useEffect(() => {
-  fetchUser();
-}, [uid]);`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/courses/[cid]/people/Details.tsx",
-    codeHighlightLines: [[1, 8]],
+  if (uid) fetchUser();
+}, [uid]);
+if (!uid) return null;
+<div className="wd-name text-lg text-red-700">
+  {user.firstName} {user.lastName}
+</div>
+<b>Roles:</b> <span className="wd-roles">{user.role}</span>
+<br />
+<b>Login ID:</b> <span className="wd-login-id">{user.loginId}</span>
+<br />
+<b>Section:</b> <span className="wd-section">{user.section}</span>
+// Table.tsx, on the name cell:
+onClick={() => {
+  setShowDetails(true);
+  setShowUserId(user._id);
+}}`,
+        language: "tsx",
+        file: "app/(kambaz)/courses/[cid]/people/Details.tsx",
+        highlightLines: [[1, 10]],
+      },
+    ],
+  },
+  {
+    id: "details-result",
+    title: "Details shows one user",
+    kind: "demo",
+    bullets: [
+      "Bruce Banner's name is the open link",
+      "The request is `GET /api/users/789`",
+      "The panel shows his role, login, and section",
+    ],
+    diagram: "users-details-result",
   },
   {
     id: "delete-path",
@@ -233,80 +360,111 @@ useEffect(() => {
     diagram: "users-delete",
   },
   {
-    id: "delete",
-    title: "DELETE by primary key",
+    id: "delete-server",
+    title: "Delete in the DAO and route",
     kind: "demo",
     bullets: [
-      "`findByIdAndDelete` or `deleteOne({ _id })` — same result",
-      "Details: red Delete, then `onClose`. Cancel leaves Compass unchanged",
+      "The id is in the path",
+      "The route sends back the DAO result, not the user list",
     ],
-    code: `const deleteUser = (userId) => model.findByIdAndDelete(userId);`,
-    codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Users/dao.ts",
-    codeAddedLines: [1],
-  },
-  {
-    id: "delete-route",
-    title: "DELETE user route",
-    kind: "demo",
-    code: `app.delete("/api/users/:userId", async (req, res) => {
+    codeBlocks: [
+      {
+        code: `const deleteUser = (userId) => model.findByIdAndDelete(userId);`,
+        language: "ts",
+        file: "webdev-server/Kambaz/Users/dao.ts",
+        addedLines: [1],
+      },
+      {
+        code: `app.delete("/api/users/:userId", async (req, res) => {
   const status = await dao.deleteUser(req.params.userId);
   res.json(status);
 });`,
-    codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Users/routes.ts",
-    codeAddedLines: [[1, 4]],
-  },
-  {
-    id: "delete-client",
-    title: "Deleting a User from the Client",
-    kind: "demo",
-    code: `export const deleteUser = async (userId: string) => {
-  const response = await axios.delete(\`\${USERS_API}/\${userId}\`);
-  return response.data;
-};`,
-    codeLanguage: "ts",
-    codeFile: "app/(kambaz)/account/client.ts",
-    codeAddedLines: [[1, 4]],
+        language: "ts",
+        file: "webdev-server/Kambaz/Users/routes.ts",
+        addedLines: [[1, 4]],
+      },
+    ],
   },
   {
     id: "delete-ui",
-    title: "Delete Removes the Document",
+    title: "Delete from Details",
     kind: "demo",
-    code: `const deleteUser = async (uid: string) => {
+    bullets: [
+      "Delete calls the API, then closes and refreshes",
+      "Cancel only closes. The document stays",
+    ],
+    codeBlocks: [
+      {
+        code: `export const deleteUser = async (userId: string) => {
+  const response = await axios.delete(\`\${USERS_API}/\${userId}\`);
+  return response.data;
+};`,
+        language: "ts",
+        file: "app/(kambaz)/account/client.ts",
+        addedLines: [[1, 4]],
+      },
+      {
+        code: `const deleteUser = async (uid: string) => {
   await client.deleteUser(uid);
   onClose();
-};`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/courses/[cid]/people/Details.tsx",
-    codeHighlightLines: [[1, 4]],
+};
+// in the JSX, after the activity fields:
+<button
+  type="button"
+  onClick={() => deleteUser(uid)}
+  className="wd-delete float-end rounded bg-red-600 px-3 py-1 text-sm text-white"
+>
+  Delete
+</button>
+<button
+  type="button"
+  onClick={onClose}
+  className="wd-cancel float-end me-2 rounded bg-neutral-200 px-3 py-1 text-sm"
+>
+  Cancel
+</button>`,
+        language: "tsx",
+        file: "app/(kambaz)/courses/[cid]/people/Details.tsx",
+        highlightLines: [[1, 4], [6, 18]],
+      },
+    ],
+  },
+  {
+    id: "delete-result",
+    title: "Delete removes the user",
+    kind: "demo",
+    bullets: [
+      "The request is `DELETE /api/users/789`",
+      "Bruce Banner is not in the list",
+    ],
+    diagram: "users-delete-result",
   },
   {
     id: "update-path",
     title: "PUT /api/users/:userId",
     kind: "demo",
-    bullets: ["$set keeps fields the editor did not send"],
+    bullets: ["`$set` keeps fields the editor did not send"],
     diagram: "users-update",
   },
   {
-    id: "update",
-    title: "$set keeps the other fields",
+    id: "update-server",
+    title: "$set and the session route",
     kind: "demo",
     bullets: [
-      "Without `$set`, Mongoose replaces the whole document",
-      "`PUT /api/users/:userId` copies saved fields onto `req.session.currentUser` when the ids match",
+      "Without `$set`, only the fields you sent would remain",
+      "Always update the database. Copy the session only if the ids match",
+      "Editing someone else must not change your own role",
     ],
-    code: `const updateUser = (userId, user) =>
+    codeBlocks: [
+      {
+        code: `const updateUser = (userId, user) =>
   model.updateOne({ _id: userId }, { $set: user });`,
-    codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Users/dao.ts",
-    codeHighlightLines: [[1, 2]],
-  },
-  {
-    id: "update-route",
-    title: "PUT refreshes the session",
-    kind: "demo",
-    code: `const updateUser = async (req, res) => {
+        language: "ts",
+        file: "webdev-server/Kambaz/Users/dao.ts",
+        highlightLines: [[1, 2]],
+      },
+      {
+        code: `const updateUser = async (req, res) => {
   const { userId } = req.params;
   const userUpdates = req.body;
   await dao.updateUser(userId, userUpdates);
@@ -317,40 +475,63 @@ useEffect(() => {
   res.json(currentUser);
 };
 app.put("/api/users/:userId", updateUser);`,
-    codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Users/routes.ts",
-    codeHighlightLines: [[5, 8]],
+        language: "ts",
+        file: "webdev-server/Kambaz/Users/routes.ts",
+        highlightLines: [[6, 8]],
+      },
+    ],
   },
   {
-    id: "update-client",
-    title: "Updating a User from the Client",
+    id: "update-ui",
+    title: "Save from Details",
     kind: "demo",
-    code: `export const updateUser = async (user: any) => {
+    bullets: [
+      "One input holds first and last, split on a space",
+      "Enter or the check saves, then the panel closes",
+    ],
+    codeBlocks: [
+      {
+        code: `export const updateUser = async (user: any) => {
   const response = await axiosWithCredentials.put(
     \`\${USERS_API}/\${user._id}\`,
     user,
   );
   return response.data;
 };`,
-    codeLanguage: "ts",
-    codeFile: "app/(kambaz)/account/client.ts",
-    codeAddedLines: [[1, 7]],
-  },
-  {
-    id: "update-ui",
-    title: "Save Writes the User",
-    kind: "demo",
-    code: `const saveUser = async () => {
+        language: "ts",
+        file: "app/(kambaz)/account/client.ts",
+        addedLines: [[1, 7]],
+      },
+      {
+        code: `const [name, setName] = useState("");
+const [editing, setEditing] = useState(false);
+const saveUser = async () => {
   const [firstName, lastName] = name.split(" ");
   const updatedUser = { ...user, firstName, lastName };
   await client.updateUser(updatedUser);
   setUser(updatedUser);
   setEditing(false);
   onClose();
-};`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/courses/[cid]/people/Details.tsx",
-    codeHighlightLines: [[1, 8]],
+};
+// pencil when !editing, check when editing
+// name text when !editing; input when editing
+// input onKeyDown: if Enter, saveUser()`,
+        language: "tsx",
+        file: "app/(kambaz)/courses/[cid]/people/Details.tsx",
+        highlightLines: [[3, 10]],
+      },
+    ],
+  },
+  {
+    id: "update-result",
+    title: "Save writes the new name",
+    kind: "demo",
+    bullets: [
+      "The input reads Antonio Stark",
+      "The request is `PUT /api/users/123`",
+      "The row says Antonio Stark. Email and role stayed",
+    ],
+    diagram: "users-update-result",
   },
   {
     id: "create-path",
@@ -360,54 +541,59 @@ app.put("/api/users/:userId", updateUser);`,
     diagram: "users-create",
   },
   {
-    id: "create",
-    title: "POST assigns a fresh uuid",
+    id: "create-server",
+    title: "Create in the DAO and route",
     kind: "demo",
     bullets: [
-      "Strip a leftover `_id` — an empty string would collide",
-      "`Date.now()` in the username so two clicks stay unique",
+      "`uuidv4()` replaces a leftover `_id`",
+      "An empty `_id` would collide on insert",
+      "`POST` returns the created user for the table",
     ],
-    code: `const createUser = (user) => {
+    codeBlocks: [
+      {
+        code: `const createUser = (user) => {
   const newUser = { ...user, _id: uuidv4() };
   return model.create(newUser);
 };`,
-    codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Users/dao.ts",
-    codeAddedLines: [[1, 4]],
-  },
-  {
-    id: "create-route",
-    title: "POST user route",
-    kind: "demo",
-    code: `const createUser = async (req, res) => {
+        language: "ts",
+        file: "webdev-server/Kambaz/Users/dao.ts",
+        addedLines: [[1, 4]],
+      },
+      {
+        code: `const createUser = async (req, res) => {
   const user = await dao.createUser(req.body);
   res.json(user);
 };
 app.post("/api/users", createUser);`,
-    codeLanguage: "ts",
-    codeFile: "webdev-server/Kambaz/Users/routes.ts",
-    codeAddedLines: [[1, 5]],
+        language: "ts",
+        file: "webdev-server/Kambaz/Users/routes.ts",
+        addedLines: [[1, 5]],
+      },
+    ],
   },
   {
-    id: "create-client",
-    title: "Creating a User from the Client",
+    id: "create-ui",
+    title: "+ User on the Users page",
     kind: "demo",
-    code: `export const createUser = async (user: any) => {
+    bullets: [
+      "`Date.now()` in the username keeps two clicks unique",
+      "Append the user the server returned",
+    ],
+    codeBlocks: [
+      {
+        code: `export const createUser = async (user: any) => {
   const response = await axios.post(
     \`\${USERS_API}\`,
     user,
   );
   return response.data;
 };`,
-    codeLanguage: "ts",
-    codeFile: "app/(kambaz)/account/client.ts",
-    codeAddedLines: [[1, 7]],
-  },
-  {
-    id: "create-ui",
-    title: "Plus User Appends the Document",
-    kind: "demo",
-    code: `const createUser = async () => {
+        language: "ts",
+        file: "app/(kambaz)/account/client.ts",
+        addedLines: [[1, 7]],
+      },
+      {
+        code: `const createUser = async () => {
   const user = await client.createUser({
     firstName: "New",
     lastName: \`User \${users.length + 1}\`,
@@ -419,37 +605,20 @@ app.post("/api/users", createUser);`,
   });
   setUsers([...users, user]);
 };`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/account/users/page.tsx",
-    codeHighlightLines: [[1, 12]],
+        language: "tsx",
+        file: "app/(kambaz)/account/users/page.tsx",
+        highlightLines: [[1, 12]],
+      },
+    ],
   },
   {
     id: "users-live",
-    title: "Plus User Adds a Document",
+    title: "+ User adds a document",
     kind: "demo",
     bullets: [
-      "+ Users inserts a New User",
-      "The new row is the user document `POST /api/users` returned",
+      "+ Users, Search people, and the role menu are on screen",
+      "Click + Users. The new row is the document `POST` returned",
     ],
     embed: "lab6-users",
-  },
-  {
-    id: "recap",
-    title: "User CRUD recap",
-    kind: "content",
-    bullets: [
-      "`find({ role })` and `$regex` on first or last name",
-      "`findById`, `findByIdAndDelete`, `updateOne` + `$set`, `create`",
-      "Users screen: filter, open Details, edit, delete, then + User",
-    ],
-  },
-  {
-    id: "next-up",
-    title: "Next: host the database",
-    kind: "title",
-    bullets: [
-      "127.0.0.1 is empty on Render — Atlas is the public cluster",
-      "Free Kambaz cluster, Compass, then a new Render service",
-    ],
   },
 ];

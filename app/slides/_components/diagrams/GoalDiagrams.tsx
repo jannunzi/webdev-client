@@ -452,6 +452,15 @@ const GOALS = {
       { title: "Layout", tone: "blue", lines: ["Course guard", "Cards"] },
     ],
   },
+  "users-crud-goal": {
+    label: "CRUD Users: filter the list, open one user, then delete, update, and create",
+    arrow: "then",
+    boxes: [
+      { title: "Filter", tone: "blue", lines: ["?role=", "?name="] },
+      { title: "One user", tone: "yellow", lines: ["GET /:userId", "Details"] },
+      { title: "Write", tone: "red", lines: ["DELETE", "PUT $set", "POST"] },
+    ],
+  },
   "people-table-goal": {
     label: "The People table lists enrolled users and writes add, edit, and delete through account context",
     arrow: "context",

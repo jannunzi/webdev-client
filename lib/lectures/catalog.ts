@@ -1155,7 +1155,7 @@ const LECTURE_SUMMARIES: Record<
   "mongo-users-crud": {
     title: "User CRUD",
     summary:
-      "Filter by role and name, findById, then delete, $set update, and create.",
+      "Filter by role, then by name, then open, delete, update, and create a user.",
     chapter: 6,
     topicId: "mongo-apis",
     bookSectionId: "sec-6-2-6-3",

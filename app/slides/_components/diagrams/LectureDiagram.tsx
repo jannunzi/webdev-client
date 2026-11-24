@@ -44,6 +44,7 @@ import YoutubeSaveFlow from "./YoutubeSaveFlow";
 import YoutubeSearchFlow from "./YoutubeSearchFlow";
 import { isStackDiagram, StackDiagram } from "./StackDiagrams";
 import { GoalDiagram, isGoalDiagram } from "./GoalDiagrams";
+import UsersCrudMock from "./UsersCrudMock";
 import type { LectureDiagramFocus } from "@/lib/lectures/types";
 
 export default function LectureDiagram({
@@ -136,6 +137,13 @@ export default function LectureDiagram({
       return <SessionUpdateDiagram />;
     case "session-read":
       return <SessionReadDiagram />;
+    case "users-filters-preview":
+    case "users-role-result":
+    case "users-name-result":
+    case "users-details-result":
+    case "users-delete-result":
+    case "users-update-result":
+      return <UsersCrudMock id={id} />;
     default: {
       const _exhaustive: never = id;
       return _exhaustive;
