@@ -63,6 +63,7 @@ import {
   diagramMinFontPx,
   fontPxThatFits,
   isLectureIconSvg,
+  tableColumnWidth,
 } from "./diagram-fit";
 import { slidePaneOverflows, slidePaneScrollStep } from "./slide-pane";
 import {
@@ -4492,6 +4493,22 @@ describe("diagram fit", () => {
     assert.ok(188 * slide2 <= cap + 0.02);
   });
 
+  it("measures a SQL cell by its column, not the whole table", () => {
+    const rect = { x: 36, y: 96, width: 580, height: 134 };
+    const lines = [
+      { x1: 186, y1: 96, x2: 186, y2: 230 },
+      { x1: 466, y1: 96, x2: 466, y2: 230 },
+    ];
+    assert.equal(tableColumnWidth(111, rect, lines), 150);
+    assert.equal(tableColumnWidth(326, rect, lines), 280);
+    assert.equal(tableColumnWidth(523, rect, lines), 150);
+    assert.equal(tableColumnWidth(326, rect, []), null);
+    const name = fontPxThatFits("Rocket Propulsion", 280, 12);
+    const id = fontPxThatFits("RS101", 150, 12);
+    assert.ok(name * 17 * 0.61 <= 280);
+    assert.ok(id > name);
+  });
+
   it("does not treat a react-icon viewBox as the diagram canvas", () => {
     assert.equal(isLectureIconSvg("1em", "1em"), true);
     assert.equal(isLectureIconSvg(null, null), false);
@@ -4514,6 +4531,17 @@ describe("diagram fit", () => {
     assert.doesNotMatch(css, /max-width:\s*125%/);
     assert.match(shell, /data-diagram-fit=\{hasFittedDiagram \? "stack"/);
     assert.match(shell, /<DiagramFit /);
+    const stacks = readFileSync(
+      join(process.cwd(), "app/slides/_components/diagrams/StackDiagrams.tsx"),
+      "utf8",
+    );
+    assert.match(stacks, /data-diagram-natural/);
+    const fit = readFileSync(
+      join(process.cwd(), "app/slides/_components/diagrams/DiagramFit.tsx"),
+      "utf8",
+    );
+    assert.match(fit, /data-diagram-natural/);
+    assert.match(fit, /tableColumnWidth/);
     assert.doesNotMatch(shell, /data-flow-diagram/);
 
     const env = readFileSync(

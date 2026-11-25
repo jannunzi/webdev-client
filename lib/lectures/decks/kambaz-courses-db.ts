@@ -87,7 +87,7 @@ export default model;`,
   sectionSlide("section-listing", "Listing Courses"),
   {
     id: "read-all-path",
-    title: "`GET /api/courses`",
+    title: "Listing every course",
     kind: "demo",
     bullets: [
       "The Dashboard calls `fetchAllCourses`, which sends `GET /api/courses.`",
@@ -138,7 +138,7 @@ export default function CourseRoutes(app) {
   },
   {
     id: "async-routes",
-    title: "`GET /api/courses` awaits find",
+    title: "Awaiting the course list",
     kind: "demo",
     bullets: [
       "`model.find()` is a promise, so the route is `async` and `await`s the DAO",
@@ -196,7 +196,7 @@ useEffect(() => {
   sectionSlide("section-reading", "Reading One Course"),
   {
     id: "read-one-path",
-    title: "`GET /api/courses/:courseId`",
+    title: "Loading one course",
     kind: "demo",
     bullets: [
       "`findById` looks up one course document by its id.",
@@ -279,7 +279,7 @@ app.get("/api/courses/:courseId", findCourseById);`,
   sectionSlide("section-creating", "Creating Courses"),
   {
     id: "create-path",
-    title: "`POST /api/courses`",
+    title: "Creating a course",
     kind: "demo",
     bullets: [
       "The form posts the new course to `POST /api/courses.`",
@@ -370,7 +370,7 @@ const onAddCourse = async () => {
   sectionSlide("section-deleting", "Deleting Courses"),
   {
     id: "delete-path",
-    title: "`DELETE /api/courses/:courseId`",
+    title: "Deleting a course",
     kind: "demo",
     bullets: [
       "Delete sends `DELETE /api/courses/:courseId`, and the DAO removes that document.",
@@ -454,7 +454,7 @@ const onDeleteCourse = async (courseId: string) => {
   sectionSlide("section-updating", "Updating Courses"),
   {
     id: "update-path",
-    title: "`PUT /api/courses/:courseId`",
+    title: "Updating a course",
     kind: "demo",
     bullets: [
       "Save sends `PUT /api/courses/:courseId` with the fields the editor changed.",

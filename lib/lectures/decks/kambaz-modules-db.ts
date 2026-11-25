@@ -269,7 +269,7 @@ const onAddModule = async () => {
   sectionSlide("section-deleting", "Deleting Modules"),
   {
     id: "delete-path",
-    title: "`DELETE /api/modules/:moduleId`",
+    title: "Deleting a module",
     kind: "demo",
     bullets: [
       "Delete sends `DELETE /api/modules/:moduleId`, and the DAO removes that document.",
@@ -351,7 +351,7 @@ const onRemoveModule = async (moduleId: string) => {
   sectionSlide("section-updating", "Updating Modules"),
   {
     id: "update-path",
-    title: "`PUT /api/modules/:moduleId`",
+    title: "Updating a module",
     kind: "demo",
     bullets: [
       "Save sends `PUT /api/modules/:moduleId` with the fields the editor changed.",

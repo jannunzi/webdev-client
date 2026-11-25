@@ -61,9 +61,9 @@ export function balanceBoxWidths(
   _shared: number,
   nameSize: number,
   lineSize: number,
+  pad = 36,
 ): number[] {
   const em = DIAGRAM_FONT_EM;
-  const pad = 36;
   return boxes.map((box) => {
     const longestLine = box.lines.reduce((max, line) => Math.max(max, line.length), 0);
     const list = box.lines.length > 1 && longestLine > 16;
@@ -72,6 +72,40 @@ export function balanceBoxWidths(
     const lineW = Math.max(longestLine, 1) * nameSize * em + pad;
     return Math.round(Math.max(nameW, lineW));
   });
+}
+
+export type DiagramRule = { x1: number; y1: number; x2: number; y2: number };
+
+/**
+ * Width of the column that contains `x` when vertical rules split a table.
+ * Returns null when the rect is not a gridded table, so flow-box labels
+ * keep measuring the whole box.
+ */
+export function tableColumnWidth(
+  x: number,
+  rect: { x: number; y: number; width: number; height: number },
+  lines: DiagramRule[],
+): number | null {
+  const dividers = lines
+    .filter((line) => {
+      if (Math.abs(line.x1 - line.x2) > 1.5) return false;
+      const ruleX = (line.x1 + line.x2) / 2;
+      if (ruleX <= rect.x + 2 || ruleX >= rect.x + rect.width - 2) return false;
+      const top = Math.min(line.y1, line.y2);
+      const bottom = Math.max(line.y1, line.y2);
+      const overlap = Math.min(bottom, rect.y + rect.height) - Math.max(top, rect.y);
+      return overlap > rect.height * 0.6;
+    })
+    .map((line) => (line.x1 + line.x2) / 2)
+    .sort((a, b) => a - b);
+  if (dividers.length === 0) return null;
+  const bounds = [rect.x, ...dividers, rect.x + rect.width];
+  for (let index = 0; index < bounds.length - 1; index++) {
+    const start = bounds[index]!;
+    const end = bounds[index + 1]!;
+    if (x >= start - 1 && x <= end + 1) return end - start;
+  }
+  return null;
 }
 
 /** Largest font whose text stays inside `boxWidth`, leaving `padding`. */

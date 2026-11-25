@@ -7,6 +7,8 @@ import {
   diagramMinFontPx,
   fontPxThatFits,
   isLectureIconSvg,
+  tableColumnWidth,
+  type DiagramRule,
 } from "@/lib/lectures/diagram-fit";
 
 type Box = { x: number; y: number; width: number; height: number };
@@ -28,6 +30,14 @@ function raiseDiagramText(inner: HTMLElement, zoom: number, slideWidth: number) 
       height: Number.parseFloat(rect.getAttribute("height") || "0"),
     }))
     .filter((rect) => rect.width > 0 && rect.height > 0);
+  const rules: DiagramRule[] = [...inner.querySelectorAll("line")]
+    .filter((node): node is SVGLineElement => node instanceof SVGLineElement)
+    .map((line) => ({
+      x1: Number.parseFloat(line.getAttribute("x1") || "0"),
+      y1: Number.parseFloat(line.getAttribute("y1") || "0"),
+      x2: Number.parseFloat(line.getAttribute("x2") || "0"),
+      y2: Number.parseFloat(line.getAttribute("y2") || "0"),
+    }));
 
   const planned: {
     text: SVGTextElement;
@@ -36,6 +46,7 @@ function raiseDiagramText(inner: HTMLElement, zoom: number, slideWidth: number) 
     anchor: string;
     key: string;
     weight: string;
+    column: boolean;
   }[] = [];
   for (const text of texts) {
     if (!text.dataset.diagramFont) {
@@ -98,8 +109,21 @@ function raiseDiagramText(inner: HTMLElement, zoom: number, slideWidth: number) 
     }
     const target = minVisual / zoom;
     let next = target;
-    if (boxWidth > 0) {
-      next = Math.min(next, fontPxThatFits(content, boxWidth, container ? 22 : 10));
+    const column =
+      container == null ? null : tableColumnWidth(x, container, rules);
+    if (column != null) {
+      // A table cell is only as wide as its column. Measuring the whole
+      // table lets "RS101" and "Rocket Propulsion" grow into each other.
+      next = Math.min(next, fontPxThatFits(content, column, 12));
+    } else if (boxWidth > 0) {
+      const anchorNow = text.getAttribute("text-anchor") || "start";
+      // Indented lines start to the right of the box edge. Fit them in the
+      // room that is actually left, or a long JSON value runs out of the box.
+      const room =
+        container && anchorNow !== "middle"
+          ? container.x + container.width - x
+          : boxWidth;
+      next = Math.min(next, fontPxThatFits(content, Math.max(room, 8), container ? 16 : 10));
     }
     if (lineGap > 0) next = Math.min(next, lineGap * 0.8);
     next = Math.max(12, Math.min(next, target));
@@ -108,7 +132,7 @@ function raiseDiagramText(inner: HTMLElement, zoom: number, slideWidth: number) 
     const key = container
       ? `${container.x},${container.y},${container.width}`
       : "gap";
-    planned.push({ text, next, x, anchor, key, weight });
+    planned.push({ text, next, x, anchor, key, weight, column: column != null });
   }
   // A list shares one size: the size that fits its longest line. Shorter
   // lines do not grow past it.
@@ -130,6 +154,19 @@ function raiseDiagramText(inner: HTMLElement, zoom: number, slideWidth: number) 
   if (titles.length > 1) {
     const uniform = Math.min(...titles.map((item) => item.next));
     for (const item of titles) item.next = uniform;
+  }
+  // Cells in one table share the size that fits the longest value, so a
+  // short id cannot render larger than the name beside it.
+  const tables = new Map<string, typeof planned>();
+  for (const item of planned) {
+    if (!item.column) continue;
+    const group = tables.get(item.key) ?? [];
+    group.push(item);
+    tables.set(item.key, group);
+  }
+  for (const group of tables.values()) {
+    const uniform = Math.min(...group.map((item) => item.next));
+    for (const item of group) item.next = uniform;
   }
   for (const item of planned) {
     item.text.setAttribute("font-size", String(Math.round(item.next * 10) / 10));
@@ -222,14 +259,16 @@ export default function DiagramFit({ children }: { children: ReactNode }) {
         slide instanceof HTMLElement && slide.clientHeight > 0
           ? slide.clientHeight
           : slotHeight;
-      // Screen mocks fill the leftover slot. Flow drawings stay at the slide-2 cap.
+      // Screen mocks and composed table/ER drawings fill the leftover slot.
+      // Flow rows stay at the slide-2 cap so a stack does not stretch.
       const screenDemo = Boolean(inner.querySelector("[data-screen-demo]"));
+      const composed = Boolean(inner.querySelector("[data-diagram-natural]"));
       const zoom = diagramFitScale(
         slotWidth,
         slotHeight,
         naturalWidth,
         naturalHeight,
-        screenDemo ? Number.POSITIVE_INFINITY : slideHeight * DIAGRAM_MAX_HEIGHT_OF_SLIDE,
+        screenDemo || composed ? Number.POSITIVE_INFINITY : slideHeight * DIAGRAM_MAX_HEIGHT_OF_SLIDE,
       );
       inner.style.zoom = String(zoom);
       raiseDiagramText(inner, zoom, slide instanceof HTMLElement ? slide.clientWidth : slotWidth);

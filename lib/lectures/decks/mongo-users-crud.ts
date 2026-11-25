@@ -54,7 +54,7 @@ export const MONGO_USERS_CRUD_SLIDES: LectureSlide[] = [
   },
   {
     id: "role-path",
-    title: "`GET /api/users?role=`",
+    title: "Filtering users by role",
     kind: "demo",
     bullets: [
       "The role menu calls `findUsersByRole` in the client.",
@@ -86,12 +86,8 @@ return {
   },
   {
     id: "role-route",
-    title: "`GET /api/users` reads `?role=`",
+    title: "Filtering users by role in query",
     kind: "demo",
-    bullets: [
-      "The same `GET /api/users` reads `role` from `req.query`.",
-      "When a role was sent, the route returns that subset and stops.",
-    ],
     code: `const findAllUsers = async (req, res) => {
   const { role } = req.query;
   if (role) {
@@ -180,7 +176,7 @@ const filterUsersByRole = async (role: string) => {
   sectionSlide("section-name", "Filtering by Name"),
   {
     id: "name-path",
-    title: "`GET /api/users?name=`",
+    title: "Filtering users by name",
     kind: "demo",
     bullets: [
       "The Search people box calls `findUsersByPartialName` in the client.",
@@ -214,13 +210,8 @@ const filterUsersByRole = async (role: string) => {
   },
   {
     id: "name-route",
-    title: "`GET /api/users` reads `?name=`",
+    title: "Filtering users by name in query",
     kind: "demo",
-    bullets: [
-      "Add `if (name)` under the existing `if (role)`",
-      "When both are sent, `role` wins",
-      "Still one route. The handler reads `req.query`",
-    ],
     code: `const findAllUsers = async (req, res) => {
   const { role, name } = req.query;
   if (role) {
@@ -310,7 +301,7 @@ const filterUsersByName = async (name: string) => {
   sectionSlide("section-reading", "Reading a User"),
   {
     id: "read-one-path",
-    title: "`GET /api/users/:userId`",
+    title: "Loading one user",
     kind: "demo",
     bullets: [
       "The user id belongs in the path, because it names one document rather than a filter.",
@@ -416,7 +407,7 @@ onClick={() => {
   sectionSlide("section-deleting", "Deleting Users"),
   {
     id: "delete-path",
-    title: "`DELETE /api/users/:userId`",
+    title: "Deleting one user",
     kind: "demo",
     bullets: [
       "Details sends `DELETE /api/users/:userId` for the user who is open.",
@@ -524,7 +515,7 @@ onClick={() => {
   sectionSlide("section-updating", "Updating Users"),
   {
     id: "update-path",
-    title: "`PUT /api/users/:userId`",
+    title: "Updating one user",
     kind: "demo",
     bullets: [
       "Details sends `PUT /api/users/:userId` with the fields the editor changed.",
@@ -625,7 +616,7 @@ const saveUser = async () => {
   sectionSlide("section-creating", "Creating Users"),
   {
     id: "create-path",
-    title: "`POST /api/users`",
+    title: "Creating a user",
     kind: "demo",
     bullets: [
       "The Users page sends `POST /api/users` with the new user.",

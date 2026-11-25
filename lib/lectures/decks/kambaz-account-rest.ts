@@ -129,7 +129,7 @@ app.listen(process.env.PORT || 4000);`,
   },
   {
     id: "signin",
-    title: "Implementing `POST /api/users/signin`",
+    title: "Implementing sign-in",
     kind: "demo",
     bullets: [
       "Read `username` and `password` from `req.body`",
@@ -247,7 +247,7 @@ const findUserByUsername = (username) =>
   },
   {
     id: "signup",
-    title: "Implementing `POST /api/users/signup`",
+    title: "Implementing sign-up",
     kind: "demo",
     bullets: [
       "400 if `findUserByUsername` already has that name",
@@ -324,7 +324,7 @@ const updateUser = (userId, user) =>
   },
   {
     id: "update",
-    title: "Implementing `PUT /api/users/:userId`",
+    title: "Updating the signed-in user",
     kind: "demo",
     bullets: [
       "The path id and the body go to `dao.updateUser`",
