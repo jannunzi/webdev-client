@@ -580,7 +580,7 @@ app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);`,
   sectionSlide("section-people", "Listing People"),
   {
     id: "people-path",
-    title: "`GET /api/courses/:cid/users`",
+    title: "Listing people in a course",
     kind: "demo",
     bullets: [
       "People asks `GET /api/courses/:cid/users` for this course only.",

@@ -119,7 +119,7 @@ return {
   {
     id: "find-all-route",
     links: ["http://localhost:4000/api/users"],
-    title: "`GET /api/users` returns JSON",
+    title: "Route returns users as JSON",
     kind: "demo",
     bullets: [
       "Open `http://localhost:4000/api/users` in the browser",

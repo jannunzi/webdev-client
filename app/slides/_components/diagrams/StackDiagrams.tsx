@@ -110,6 +110,8 @@ function Flow({
   boxWidth,
   large = false,
   focus,
+  gap: gapOverride,
+  contentPad = 36,
 }: {
   title: string;
   boxes: Box[];
@@ -117,12 +119,17 @@ function Flow({
   /** Larger type and arrows. Box height still follows the text. */
   large?: boolean;
   focus?: LectureDiagramFocus;
+  /** Wider arrow channel. Box height does not change. */
+  gap?: number;
+  /** Horizontal padding inside each box. */
+  contentPad?: number;
 }) {
   const headerH = large ? 58 : 64;
   const lineH = large ? 36 : 34;
   const padB = large ? 22 : 18;
-  const gap = large ? 66 : 72;
+  const gap = gapOverride ?? (large ? 66 : 72);
   const side = large ? 16 : 32;
+  const inset = Math.round(contentPad / 2);
   // Large rows are drawn at the fullscreen target. The routes list is one
   // step smaller so the row stays horizontal and the other labels reach it.
   const nameSize = large ? 24 : 28;
@@ -130,7 +137,7 @@ function Flow({
   const labelSize = large ? 24 : 20;
   const strokeW = large ? 5 : 3;
   const head = large ? 10 : 6;
-  const widths = balanceBoxWidths(boxes, boxWidth, nameSize, lineSize);
+  const widths = balanceBoxWidths(boxes, boxWidth, nameSize, lineSize, contentPad);
   const width =
     side + widths.reduce((sum, item) => sum + item, 0) + (boxes.length - 1) * gap + side;
   const drawn = boxes.map((box, index) => ({
@@ -240,7 +247,7 @@ function Flow({
             />
             <text
               x={x + span / 2}
-              y={large ? top + headerH * 0.62 : top + 31}
+              y={top + headerH / 2 + fitSize(box.name, nameSize, span) * 0.35}
               textAnchor="middle"
               fontFamily={FONT}
               fontSize={fitSize(box.name, nameSize, span)}
@@ -250,21 +257,23 @@ function Flow({
               {box.name}
             </text>
             {box.bodyLines.map((line, lineIndex) => {
-              // A list of routes, functions, or code lines reads from the left
-              // at one size: the size that fits the longest line.
+              // One label stays centered. A list of functions or URLs is
+              // left-aligned, and the whole block is centered in the body.
               const list = box.bodyLines.length > 1;
-              const inset = 18;
               const longest = box.bodyLines.reduce((best, item) => (item.length > best.length ? item : best), "");
+              const size = fitSize(longest, list ? lineSize : nameSize, span - inset);
+              const block = box.bodyLines.length * lineH;
+              const bodyTop = top + headerH;
+              const baseline =
+                bodyTop + (bodyH - block) / 2 + lineH * 0.5 + size * 0.35 + lineIndex * lineH;
               return (
               <text
                 key={`${line}-${lineIndex}`}
-                x={list ? x + inset : large ? x + span / 2 : x + inset}
-                y={(large
-                  ? top + headerH + (h - headerH - box.bodyLines.length * lineH) / 2 + 38
-                  : top + headerH + 26) + lineIndex * lineH}
-                textAnchor={list || !large ? "start" : "middle"}
+                x={list ? x + inset : x + span / 2}
+                y={baseline}
+                textAnchor={list ? "start" : "middle"}
                 fontFamily={MONO}
-                fontSize={fitSize(list ? longest : line, list ? lineSize : nameSize, span)}
+                fontSize={size}
                 fontWeight={box.emphasis && lineIndex === 0 ? 700 : 400}
                 fill={box.emphasis && lineIndex === 0 ? tone.stroke : "#171717"}
               >
@@ -295,7 +304,10 @@ function Flow({
   );
 }
 
-const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; large?: boolean }> = {
+const STACKS: Record<
+  string,
+  { title: string; boxWidth: number; boxes: Box[]; large?: boolean; gap?: number; contentPad?: number }
+> = {
   "mongo-roadmap": {
     title: "From the React UI to the database",
     boxWidth: 220,
@@ -315,6 +327,10 @@ const STACKS: Record<string, { title: string; boxWidth: number; boxes: Box[]; la
   "users-stack": {
     title: "Users from the page to MongoDB",
     boxWidth: 268,
+    // The route list makes the row tall, so the height cap would otherwise
+    // leave unused width. A wider channel keeps the same box height.
+    gap: 150,
+    contentPad: 56,
     boxes: [
       { name: "Users.tsx", lines: ["useEffect", "Details"], tone: "blue" },
       {
@@ -818,7 +834,7 @@ function DataTable({
 
 function SqlVsDocument() {
   const coursesX = 36;
-  const coursesY = 96;
+  const coursesY = 132;
   const courseCols = [
     { label: "_id (PK)", width: 150 },
     { label: "name", width: 280 },
@@ -858,6 +874,7 @@ function SqlVsDocument() {
   return (
     <svg
       role="img"
+      data-diagram-natural=""
       viewBox={`0 0 ${width} ${height}`}
       preserveAspectRatio="xMidYMid meet"
       aria-label="SQL tables beside one indented course document"
@@ -1086,6 +1103,8 @@ export function StackDiagram({ id, focus }: { id: string; focus?: LectureDiagram
       boxWidth={spec.boxWidth}
       large={spec.large}
       focus={focus}
+      gap={spec.gap}
+      contentPad={spec.contentPad}
     />
   );
 }
