@@ -89,7 +89,6 @@ await mongoose.connect(CONNECTION_STRING);`,
     kind: "demo",
     bullets: [
       "Push branch `a6`. Deploy a **new** Render (or Heroku) service",
-      "Do not overwrite the Chapter 5 `a5` URL while TAs are grading",
       "Environment: `DATABASE_CONNECTION_STRING` = the Atlas Drivers URI",
     ],
     code: `DATABASE_CONNECTION_STRING=mongodb+srv://USER:PASSWORD@cluster/kambaz?retryWrites=true&w=majority`,

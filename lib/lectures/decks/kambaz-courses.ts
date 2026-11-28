@@ -98,7 +98,7 @@ export default function CourseNavigation({ cid }: { cid: string }) {
     kind: "content",
     bullets: [
       "Course Navigation sits beside the course content",
-      "This week: a **plain list**. Active-route styling is Chapter 2",
+      "A **plain list**. Active-route styling is Chapter 2",
     ],
     imageSrc: "/images/book/kambaz/course-navigation.png",
     imageAlt: "Target Course Navigation sidebar",
@@ -158,7 +158,7 @@ export default async function CoursesLayout({
     kind: "demo",
     embed: "kambaz-courses",
     interactiveHint:
-      "Click Piazza or Zoom. Placeholder heading pages are enough this week.",
+      "Click Piazza or Zoom. Those routes are heading-only stubs.",
   },
   {
     id: "next-16-4-build-fix",
@@ -183,7 +183,7 @@ export default async function CoursesLayout({
   },
   {
     id: "placeholders",
-    title: "Placeholder pages this week",
+    title: "Placeholder pages",
     kind: "content",
     bullets: [
       "Real screens this chapter: Home, Modules, Assignments",

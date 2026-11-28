@@ -20,7 +20,6 @@ import {
 const HTML = "app/book/ch1/sections/HtmlSections.tsx";
 const KAMBAZ = "app/book/ch1/sections/KambazSections.tsx";
 const INTRO = "app/book/ch1/sections/IntroAndSetup.tsx";
-const CLOSING = "app/book/ch1/sections/ClosingSections.tsx";
 
 function read(path: string): string {
   return readFileSync(join(process.cwd(), path), "utf8");
@@ -129,7 +128,6 @@ const BOOK_COPIES: Array<
   ["single-page-navigation", "layout-children", HTML, "LabsLayout"],
   ["kambaz-assignments", "assignment-item", KAMBAZ, "AssignmentItem"],
   ["kambaz-assignments", "await-params", KAMBAZ, "Assignments"],
-  ["kambaz-assignments", "labs-name-github", CLOSING, "LabsNameGithub"],
 ];
 
 /** Live demo slide that must directly follow each book-copy code slide. */
@@ -151,7 +149,6 @@ const LIVE_AFTER: Array<[string, string, string, string]> = [
   ["web-forms", "highlighted-box-lab", "highlighted-box-live", "highlighted-box"],
   ["anchors", "href-documents", "href-documents-live", "anchors"],
   ["kambaz-assignments", "await-params", "await-params-live", "kambaz-assignments-step"],
-  ["kambaz-assignments", "labs-name-github", "labs-name-github-live", "labs-name-github"],
 ];
 
 const A1_SLUGS = [...LECTURE_1_SLUGS, ...LECTURE_2_SLUGS, ...LECTURE_3_SLUGS];
@@ -338,26 +335,23 @@ describe("Chapter 1 slides from the A1 slides-only walkthrough", () => {
     assert.match(practice, /after\*\* the sample text, just before `<\/div>`/);
   });
 
-  it("ends A1 with #222's Labs name/section/GitHub listing, Lab 4/5 left as a comment", () => {
+  it("keeps name, section, and grader hand-in off the A1 slides", () => {
     const deck = "kambaz-assignments";
-    const labs = slide(deck, "labs-name-github");
-    assert.equal(labs.codeFile, "app/labs/page.tsx");
-    const listing = labs.code ?? "";
-    assert.match(listing, /<h2>Jose Annunziato<\/h2>\n      <p>CS4550 Section 01<\/p>/);
-    assert.match(listing, /id="wd-github"/);
-    assert.match(listing, /<Link href="\/" id="wd-kambaz-link">/);
-    assert.match(listing, /\{\/\* your Lab 4 \/ Lab 5 links \*\/\}/);
-    assert.doesNotMatch(listing, /\/labs\/lab[45]/, "Lab 4/5 links are On your own answers");
-    assert.equal(listing.trim(), bookListing(CLOSING, "LabsNameGithub").trim());
-    const push = code(deck, "labs-name-github-push");
-    assert.equal(
-      push,
-      'git add .\ngit commit -m "Add name, section, and GitHub link to Labs"\ngit push',
-    );
     const ids = getLectureDeck(deck)!.slides.map((row) => row.id);
-    assert.deepEqual(ids.slice(-3), ["labs-name-github", "labs-name-github-live", "labs-name-github-push"]);
-    // The live demo renders the same file the book's LiveDemo uses.
-    assert.equal(listing.trim(), read("app/labs/lab1/intermediates/1-5-LabsNameGithub.tsx").trim());
+    assert.equal(ids.at(-1), "labels");
+    for (const id of [
+      "labs-name-github-intro",
+      "labs-name-github",
+      "labs-name-github-live",
+      "labs-name-github-push",
+    ]) {
+      assert.equal(ids.includes(id), false, id);
+    }
+    for (const row of a1Slides()) {
+      assert.doesNotMatch(row.text, /Jose Annunziato/, `${row.slug} ${row.slide.id}`);
+      assert.doesNotMatch(row.text, /CS4550/, `${row.slug} ${row.slide.id}`);
+      assert.doesNotMatch(row.text, /Graders need to know/, `${row.slug} ${row.slide.id}`);
+    }
     assert.equal(A1_SLUGS[A1_SLUGS.length - 1], deck, "last A1 deck, after §1.4 like the book's §1.5");
   });
 
@@ -399,10 +393,6 @@ describe("Chapter 1 slides from the A1 slides-only walkthrough", () => {
     assert.match(
       read("app/slides/_components/embeds/KambazAssignmentsStepEmbed.tsx"),
       /from "@\/app\/book\/ch1\/embeds\/assignments-step\/Assignments"/,
-    );
-    assert.match(
-      read("app/slides/_components/embeds/LabsNameGithubEmbed.tsx"),
-      /from "@\/app\/labs\/lab1\/intermediates\/1-5-LabsNameGithub"/,
     );
   });
 });

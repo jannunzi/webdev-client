@@ -20,7 +20,6 @@ export const KAMBAZ_DATABASE_SLIDES: LectureSlide[] = [
       "Lab 3 drills were throwaway. Wire Kambaz so the UI follows JSON",
       "Different courses on the dashboard; modules and people once the URL has a course id",
       "Keep your Chapter 2 styling and `wd-*` ids. Change only lines that read `params`, `usePathname`, or `db`",
-      "A coverage checklist comes at the end — after you walk the screens",
     ],
   },
   {

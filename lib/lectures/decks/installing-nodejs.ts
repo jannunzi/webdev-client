@@ -10,12 +10,7 @@ export const INSTALLING_NODEJS_SLIDES: BlockSlide[] = [
     id: "title",
     title: "`NODE.JS`",
     kind: "title",
-    blocks: [
-      createBulletsBlock({
-        id: "title-bullets",
-        items: ["Jose Annunziato"],
-      }),
-    ],
+    blocks: [],
   }),
   createBlockSlide({
     id: "client-server-reminder",
@@ -160,7 +155,7 @@ v20.17.0`,
       createBulletsBlock({
         id: "course-folder-bullets",
         items: [
-          "Create a folder for this semester. Lowercase, no spaces",
+          "Create a folder. Lowercase, no spaces",
         ],
       }),
       createCodeBlock({

@@ -33,7 +33,7 @@ export const DEPLOY_API_SLIDES: LectureSlide[] = [
     title: "Pushing the Server to GitHub",
     kind: "demo",
     bullets: [
-      "A **separate** public repo so graders see server history alone",
+      "A **separate** public repo for the server",
       "`node_modules` and `.env*` stay out of git",
       "Work on branch `a5` in both repositories",
     ],
@@ -103,15 +103,6 @@ SESSION_SECRET=a phrase that is not committed`,
       "Second GitHub repo. Render runs `npm start`",
       "Render `SERVER_URL` has no protocol. Vercel env has `https://`",
       "You can finish Lab 5 on your machine without this Vercel step",
-    ],
-  },
-  {
-    id: "next-up",
-    title: "Next: Conclusion and Assignment 5",
-    kind: "title",
-    bullets: [
-      "Push `a5` on both repos and submit the Vercel URL",
-      "What shipped, then the deliverable list",
     ],
   },
 ];

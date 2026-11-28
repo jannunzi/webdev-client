@@ -29,7 +29,6 @@ import HtmlSkeletonEmbed from "./HtmlSkeletonEmbed";
 import ImagesEmbed from "./ImagesEmbed";
 import Lab1StubEmbed from "./Lab1StubEmbed";
 import LabsIndexEmbed from "./LabsIndexEmbed";
-import LabsNameGithubEmbed from "./LabsNameGithubEmbed";
 import KambazAssignmentsStepEmbed from "./KambazAssignmentsStepEmbed";
 import KambazAssignmentsFinishedEmbed from "./KambazAssignmentsFinishedEmbed";
 import {
@@ -326,8 +325,6 @@ export default function LectureEmbed({ id }: { id: LectureEmbedId }) {
       return <KambazAssignmentsStepEmbed />;
     case "kambaz-assignments-finished":
       return <KambazAssignmentsFinishedEmbed />;
-    case "labs-name-github":
-      return <LabsNameGithubEmbed />;
     case "css-style-attr":
       return <CssStyleAttrEmbed />;
     case "css-import":

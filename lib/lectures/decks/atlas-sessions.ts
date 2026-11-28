@@ -125,17 +125,6 @@ SESSION_SECRET=a long random phrase`,
     ],
   },
   {
-    id: "project",
-    title: "Project week uses this cluster",
-    kind: "content",
-    bullets: [
-      "Quizzes, Pazza, and open-ended all persist through Atlas",
-      "Graders on 12/7 open Vercel, sign in, and read hosted documents",
-      "Same five keys. Same `/dbname?` rule. Same `0.0.0.0/0` allow list",
-      "Zustand still talks to Express — Mongoose is what reaches Atlas",
-    ],
-  },
-  {
     id: "recap",
     title: "Remote sessions recap",
     kind: "content",

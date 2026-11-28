@@ -113,7 +113,7 @@ export default function Highlight({ children }: { children: ReactNode }) {
     kind: "content",
     bullets: [
       "A **wrapper component** renders its `children` inside extra markup, such as a styled `div`, without knowing what they are",
-      "A reading demo, not part of the graded lab: no need to add these files to your Lab 3 page",
+      "A reading demo: no need to add these files to your Lab 3 page",
       "The styling uses **inline style objects** (the `style` attribute): the values come from props, which a fixed CSS class cannot hold",
       "A plain number becomes pixels: `{ margin: 12 }` is `margin: 12px`",
     ],

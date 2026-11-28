@@ -27,7 +27,7 @@ export const KAMBAZ_DASHBOARD_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "Course cards are the Canvas-inspired Dashboard",
-      "This week is **plain HTML**. Chapter 2 styles the cards",
+      "**Plain HTML**. Chapter 2 styles the cards",
     ],
     imageSrc: "/images/book/kambaz/dashboard.png",
     imageAlt: "Target Kambaz Dashboard with course cards",
@@ -138,7 +138,7 @@ export default function Dashboard() {
     kind: "content",
     bullets: [
       "Point the Sign in button at `/dashboard`",
-      "Keep id `wd-signin-btn`; the ids help us test your work",
+      "Keep id `wd-signin-btn`",
     ],
     code: `<Link href="/dashboard" id="wd-signin-btn">
   Sign in

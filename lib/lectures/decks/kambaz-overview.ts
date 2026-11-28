@@ -62,7 +62,7 @@ app/(kambaz)/account/signin/page.tsx  →  /account/signin`,
     bullets: [
       "Add a Kambaz `Link` in `app/labs/TOC.tsx` **and** the Labs index",
       "`href=\"/\"` — the group owns `/`",
-      "Keep id `wd-kambaz-link`; the ids help us test your work",
+      "Keep id `wd-kambaz-link`",
     ],
   },
   {
@@ -116,8 +116,8 @@ export default function Kambaz() {
     kind: "content",
     bullets: [
       "These screens use browser-default HTML: inputs, `Link`s, a `<table>` for chrome",
-      "Keep the given `id` and `className` values (`wd-*`): later chapters build on them, and the ids help us test your work",
-      "Chapter 2 / Lab 2 add Tailwind. Do not invent a new layout language this week",
+      "Keep the given `id` and `className` values (`wd-*`): later chapters build on them",
+      "Chapter 2 / Lab 2 add Tailwind. Do not invent a new layout language yet",
     ],
   },
   {

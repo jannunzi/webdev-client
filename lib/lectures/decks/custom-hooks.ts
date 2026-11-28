@@ -408,13 +408,4 @@ export default function HooksPage() {
       "Return a pair for two values, an object for more",
     ],
   },
-  {
-    id: "next-up",
-    title: "Next: check your understanding",
-    kind: "title",
-    bullets: [
-      "A 10-item self-check before stateful Kambaz",
-      "Events, `useState`, Context, Zustand, `useEffect`",
-    ],
-  },
 ];

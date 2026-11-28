@@ -35,8 +35,6 @@ export const ATLAS_SLIDES: LectureSlide[] = [
     bullets: [
       "Free cluster, Compass import, Network Access, then a **new** Render service",
       "Same `DATABASE_CONNECTION_STRING` key you already used on localhost",
-      "Do not overwrite the Chapter 5 `a5` URL while TAs are grading",
-      "A6 and the 12/7 project both grade against the Atlas cluster",
     ],
   },
   {
@@ -91,7 +89,6 @@ export const ATLAS_SLIDES: LectureSlide[] = [
     bullets: [
       "Render cannot see localhost Mongo — Atlas is the public cluster",
       "Free `Kambaz` cluster plus a database user you will remember",
-      "Same pattern for A6 and the project graders open the week of 12/7",
     ],
   },
   {
