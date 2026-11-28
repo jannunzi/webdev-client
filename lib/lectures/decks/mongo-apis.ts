@@ -261,6 +261,8 @@ export default function PeopleTable({
     codeFile: "app/(kambaz)/courses/[cid]/people/Table.tsx",
     codeStartLine: 36,
     codeHighlightLines: [[1, 3]],
+    diagram: "users-read-all",
+    diagramFocus: "ui",
   },
   {
     id: "people-table-live",
