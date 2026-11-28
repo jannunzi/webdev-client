@@ -1357,7 +1357,7 @@ describe("lecture decks", () => {
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 12);
     assert.equal(counts["mongoose"], 13);
-    assert.equal(counts["mongo-apis"], 19);
+    assert.equal(counts["mongo-apis"], 22);
     assert.equal(counts["mongo-users-crud"], 48);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
@@ -3248,6 +3248,23 @@ describe("lecture decks", () => {
     assert.match(usersIntro.join("\n"), /loads all users/);
     assert.match(usersIntro.join("\n"), /refresh/);
     assert.doesNotMatch(usersIntro.join("\n"), /useState|useEffect/);
+    assert.equal(
+      findSlide("mongo-apis", "from-people-table").code,
+      bookCodeBlockByName("app/book/ch6/sections/Apis.tsx", "Course PeopleTable"),
+    );
+    assert.equal(
+      joinedListing("mongo-apis", "people-table"),
+      bookCodeBlockByName("app/book/ch6/sections/Apis.tsx", "PeopleTable"),
+    );
+    const peopleIds = apiIds.slice(apiIds.indexOf("from-people-table"), apiIds.indexOf("section-users-screen"));
+    assert.deepEqual(peopleIds, [
+      "from-people-table",
+      "people-table",
+      "people-table-part-2",
+      "people-table-part-3",
+      "people-table-part-4",
+      "people-table-live",
+    ]);
     for (const slug of CHAPTER_6_SLUGS) {
       assert.doesNotMatch(slideText(slug), /redux/i, `${slug} mentions Redux`);
     }

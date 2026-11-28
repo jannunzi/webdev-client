@@ -155,15 +155,43 @@ app.get("/api/users", findAllUsers);`,
     diagramFocus: "client",
   },
   {
+    id: "from-people-table",
+    title: "Course PeopleTable reads users",
+    kind: "demo",
+    bullets: [
+      "`cid` loads `users` from `useAccountContext`",
+      "`enrollments.some` keeps that course. Delete it and the `db.users` read",
+      "`people/Table.tsx` takes `users` and `fetchUsers`",
+    ],
+    code: `export default function PeopleTable({ cid }: { cid: string }) {
+  const { users, createUser, updateUser, deleteUser } = useAccountContext();
+  const { enrollments, enrollIntoCourse } = useEnrollmentsStore();
+  const [user, setUser] = useState<User>(emptyUser);
+  const enrolled = users.filter((usr) =>
+    enrollments.some((enrollment) => enrollment.user === usr._id && enrollment.course === cid));
+  const addUser = () => {
+    const newUser = createUser(user);
+    enrollIntoCourse(newUser._id, cid);
+  };`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx",
+    codeHighlightLines: [[5, 6]],
+  },
+  {
     id: "people-table",
     title: "PeopleTable takes a users prop",
     kind: "demo",
     bullets: [
-      "Stop joining enrollments in the browser",
-      "Users passes everyone. Course People passes a subset",
-      "Full width, light border, striped odd rows",
+      "`users` defaults to `[]` when the parent omits it",
+      "`fetchUsers` reloads that array",
+      "`PeopleDetails` is imported from `./Details`",
     ],
-    code: `export default function PeopleTable({
+    code: `"use client";
+import { useState } from "react";
+import { FaUserCircle } from "react-icons/fa";
+import PeopleDetails from "./Details";
+
+export default function PeopleTable({
   users = [],
   fetchUsers,
 }: {
@@ -172,19 +200,56 @@ app.get("/api/users", findAllUsers);`,
 }) {`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/Table.tsx",
-    codeHighlightLines: [[1, 3]],
+    codeHighlightLines: [[4, 11]],
   },
   {
     id: "people-table-part-2",
-    title: "Each row is one user",
+    title: "People table head",
     kind: "demo",
     code: `  return (
     <div id="wd-people-table" className="overflow-x-auto">
       <table className="w-full border-collapse text-left text-sm">
-        <tbody>
+        <thead>
+          <tr className="border-b border-neutral-300">
+            <th className="p-2">Name</th>
+            <th className="p-2">Login ID</th>
+            <th className="p-2">Section</th>
+            <th className="p-2">Role</th>
+            <th className="p-2">Last Activity</th>
+            <th className="p-2">Total Activity</th>
+          </tr>
+        </thead>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/Table.tsx",
+    codeStartLine: 13,
+    codeHighlightLines: [[6, 11]],
+  },
+  {
+    id: "people-table-part-3",
+    title: "Name, login id, and section",
+    kind: "demo",
+    code: `        <tbody>
           {users.map((user) => (
             <tr key={user._id} className="odd:bg-neutral-50">
-              <td className="wd-full-name p-2">{user.firstName}</td>
+              <td className="wd-full-name p-2 text-nowrap">
+                <FaUserCircle className="me-2 inline text-3xl text-neutral-500" />
+                <span className="wd-first-name">{user.firstName}</span>{" "}
+                <span className="wd-last-name">{user.lastName}</span>
+              </td>
+              <td className="wd-login-id p-2">{user.loginId}</td>
+              <td className="wd-section p-2">{user.section}</td>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/Table.tsx",
+    codeStartLine: 26,
+    codeHighlightLines: [[2, 10]],
+  },
+  {
+    id: "people-table-part-4",
+    title: "Role and activity cells",
+    kind: "demo",
+    code: `              <td className="wd-role p-2">{user.role}</td>
+              <td className="wd-last-activity p-2">{user.lastActivity}</td>
+              <td className="wd-total-activity p-2">{user.totalActivity}</td>
             </tr>
           ))}
         </tbody>
@@ -194,8 +259,10 @@ app.get("/api/users", findAllUsers);`,
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/Table.tsx",
-    codeStartLine: 8,
-    codeHighlightLines: [[5, 7]],
+    codeStartLine: 36,
+    codeHighlightLines: [[1, 3]],
+    diagram: "users-read-all",
+    diagramFocus: "ui",
   },
   {
     id: "people-table-live",

@@ -193,13 +193,38 @@ app.get("/api/users", findAllUsers);`}</CodeBlock>
   return response.data;
 };`}</CodeBlock>
         <p>
-          To display the array of users from the database, refactor
-          the People Table component to accept an optional{" "}
+          To display the array of users from the database, replace{" "}
+          <code>app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx</code>.
+          That component took <code>cid</code>, read{" "}
+          <code>users</code>{" "}with <code>useAccountContext</code>,
+          and kept rows whose <code>enrollment.course</code>{" "}matched{" "}
+          <code>cid</code>{" "}using <code>enrollments.some</code>.
+          Earlier the same screen read <code>db.users</code>{" "}and{" "}
+          <code>db.enrollments</code>. Delete that read and that
+          filter. Move the table to{" "}
+          <code>app/(kambaz)/courses/[cid]/people/Table.tsx</code>,
+          which takes <code>users</code>{" "}and <code>fetchUsers</code>{" "}
+          and renders the array the parent passes.
+        </p>
+        <CodeBlock
+          language="tsx"
+          name="Course PeopleTable"
+          file="app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx"
+        >{`export default function PeopleTable({ cid }: { cid: string }) {
+  const { users, createUser, updateUser, deleteUser } = useAccountContext();
+  const { enrollments, enrollIntoCourse } = useEnrollmentsStore();
+  const [user, setUser] = useState<User>(emptyUser);
+  const enrolled = users.filter((usr) =>
+    enrollments.some((enrollment) => enrollment.user === usr._id && enrollment.course === cid));
+  const addUser = () => {
+    const newUser = createUser(user);
+    enrollIntoCourse(newUser._id, cid);
+  };`}</CodeBlock>
+        <p>
+          The refactored component accepts an optional{" "}
           <code>users</code>{" "}parameter instead of retrieving the
-          users from the local file system. Convert the People Table
-          from a page into a component as shown below. Remove any
-          filters that joined enrollments in the browser, since data
-          access rules are best handled at the server. The table
+          users from the local file system. <code>fetchUsers</code>{" "}
+          reloads that array. The table
           should render whatever array the parent passes; the Users
           screen will pass every user, and the course People page in{" "}
           <SectionLink to="6.4.3.5" />{" "}will pass only the students
