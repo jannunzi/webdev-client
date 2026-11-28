@@ -193,15 +193,19 @@ app.get("/api/users", findAllUsers);`}</CodeBlock>
   return response.data;
 };`}</CodeBlock>
         <p>
-          To display the array of users from the database, refactor
-          the People Table component to accept an optional{" "}
-          <code>users</code>{" "}parameter instead of retrieving the
-          users from the local file system. Convert the People Table
-          from a page into a component as shown below. Remove any
-          filters that joined enrollments in the browser, since data
-          access rules are best handled at the server. The table
-          should render whatever array the parent passes; the Users
-          screen will pass every user, and the course People page in{" "}
+          To display the array of users from the database, replace{" "}
+          <code>app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx</code>{" "}
+          with{" "}
+          <code>app/(kambaz)/courses/[cid]/people/Table.tsx</code>.
+          The earlier file took a <code>cid</code>, read{" "}
+          <code>users</code>{" "}from account context, and kept only the
+          rows whose <code>enrollments</code>{" "}matched that course.
+          This component does not. It accepts <code>users</code>{" "}
+          and <code>fetchUsers</code>{" "}and renders the array the
+          parent passes. Remove the enrollment <code>filter</code>,
+          the name inputs, and the Add, Edit, and Delete buttons.
+          Data access stays on the server. The Users screen passes
+          every user, and the course People page in{" "}
           <SectionLink to="6.4.3.5" />{" "}will pass only the students
           enrolled in that course. Style the table with Tailwind
           utility classes: a full-width collapsed

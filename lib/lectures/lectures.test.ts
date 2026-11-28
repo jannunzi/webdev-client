@@ -128,7 +128,7 @@ function idsWithoutIntros(deckSlug: string): string[] {
 }
 
 /** Every deck where code and its live demo sit on separate slides: all of Chapters 3 and 4, plus single-page-navigation. */
-const SPLIT_DEMO_DECKS = [...CHAPTER_3_SLUGS, ...CHAPTER_4_SLUGS, "single-page-navigation"] as const;
+const SPLIT_DEMO_DECKS = [...CHAPTER_3_SLUGS, ...CHAPTER_4_SLUGS, "single-page-navigation", "mongo-apis"] as const;
 
 /**
  * A listing split across slides (code before `return`, then the JSX) joined
@@ -1357,7 +1357,7 @@ describe("lecture decks", () => {
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 12);
     assert.equal(counts["mongoose"], 13);
-    assert.equal(counts["mongo-apis"], 19);
+    assert.equal(counts["mongo-apis"], 21);
     assert.equal(counts["mongo-users-crud"], 48);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
@@ -3248,6 +3248,18 @@ describe("lecture decks", () => {
     assert.match(usersIntro.join("\n"), /loads all users/);
     assert.match(usersIntro.join("\n"), /refresh/);
     assert.doesNotMatch(usersIntro.join("\n"), /useState|useEffect/);
+    assert.equal(
+      joinedListing("mongo-apis", "people-table"),
+      bookCodeBlockByName("app/book/ch6/sections/Apis.tsx", "PeopleTable"),
+    );
+    assert.equal(
+      findSlide("mongo-apis", "users-screen").code,
+      bookCodeBlockByName("app/book/ch6/sections/Apis.tsx", "Users"),
+    );
+    assert.match(
+      readFileSync(join(process.cwd(), "app/book/ch6/sections/Apis.tsx"), "utf8"),
+      /people\/table\/PeopleTable\.tsx/,
+    );
     for (const slug of CHAPTER_6_SLUGS) {
       assert.doesNotMatch(slideText(slug), /redux/i, `${slug} mentions Redux`);
     }
@@ -4022,7 +4034,7 @@ function addedLineMarks(prev: string, next: string): Array<number | [number, num
 describe("Chapter 3 decks: code, then the live demo", () => {
   /** Every book `<CodeBlock file=…>` body for `file` in the Chapter 3 sections. */
   function ch3BookListings(file: string): string[] {
-    const dirs = ["app/book/ch1/sections", "app/book/ch2/sections", "app/book/ch3/sections", "app/book/ch4/sections"].map((d) => join(process.cwd(), d));
+    const dirs = ["app/book/ch1/sections", "app/book/ch2/sections", "app/book/ch3/sections", "app/book/ch4/sections", "app/book/ch6/sections"].map((d) => join(process.cwd(), d));
     const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const pattern = new RegExp(
       `file="${escape(file)}"\\s*>\\{\`([\\s\\S]*?)\`\\}</CodeBlock>`,
@@ -4106,7 +4118,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
         );
       });
     }
-    assert.equal(demos, 112);
+    assert.equal(demos, 113);
   });
 
   it("keeps one code slide unless a listing is long, and never leaves a tiny tail", () => {
@@ -4173,6 +4185,7 @@ describe("Chapter 3 decks: code, then the live demo", () => {
       "kambaz-people-table#people-table-part-4",
       "kambaz-people-table#people-table-part-5",
       "mongo-apis#people-table-part-2",
+      "mongo-apis#people-table-part-3",
     ]);
     assert.match(findSlide("javascript-arrays", "simple-part-2").code!, /^ {2}return \($/m);
     assert.match(findSlide("spread-and-destructuring", "destructing-imports-part-2").code!, /^ {8}<tbody>/);
@@ -4237,7 +4250,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 251);
+    assert.equal(intros, 252);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {
