@@ -10,7 +10,6 @@ export const DEPLOYING_TO_VERCEL_SLIDES: LectureSlide[] = [
     id: "title",
     title: "VERCEL",
     kind: "title",
-    bullets: ["Jose Annunziato"],
   },
   {
     id: "account",
@@ -38,7 +37,7 @@ export const DEPLOYING_TO_VERCEL_SLIDES: LectureSlide[] = [
     bullets: [
       "Create a website from several different source control",
       "We're using **GitHub** to store our source code",
-      "Select **GitHub** for this course",
+      "Select **GitHub**",
       "Give **Vercel** permissions to interact with GitHub on your behalf",
     ],
     diagram: "vercel-git-provider-mock",
@@ -100,21 +99,10 @@ export const DEPLOYING_TO_VERCEL_SLIDES: LectureSlide[] = [
     title: "Vercel Authentication",
     kind: "demo",
     bullets: [
-      "Disable authentication to easily share with TAs and instructors",
+      "Disable authentication so the production URL loads with no Vercel login",
     ],
     diagram: "vercel-auth-mock",
     interactiveHint:
       "Incognito: the production URL must load with **no** Vercel login.",
-  },
-  {
-    id: "break",
-    title: "BREAK",
-    kind: "break",
-    bullets: ["Jose Annunziato"],
-  },
-  {
-    id: "office-hours",
-    title: "OFFICE HOURS",
-    kind: "break",
   },
 ];

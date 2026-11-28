@@ -7,7 +7,7 @@ export const CSS_ROTATION_SLIDES: LectureSlide[] = [
     kind: "title",
     bullets: [
       "Chapter 2 · Rotation and Gradients",
-      "Optional extras. Not required for Lab 2 checklists",
+      "Optional extras after flex and media queries",
     ],
   },
   {
@@ -15,7 +15,6 @@ export const CSS_ROTATION_SLIDES: LectureSlide[] = [
     title: "Implementing Rotation and Gradients",
     kind: "content",
     bullets: [
-      "Lab 2’s graded path stopped at flex and media queries",
       "`transform: rotate` turns a box without changing document flow the way float does",
       "`linear-gradient` and `radial-gradient` paint a fill that is not a flat color",
       "Useful for emphasis. Do not rotate body copy as a layout strategy",

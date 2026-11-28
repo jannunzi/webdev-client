@@ -357,13 +357,4 @@ export default function Lab3() {
       "JSON + `map` + a parameterized row is the data-driven list pattern",
     ],
   },
-  {
-    id: "next-up",
-    title: "Next: check your understanding",
-    kind: "title",
-    bullets: [
-      "Pause on the practice quiz before wiring Kambaz to JSON",
-      "Ten items from this chapter — not graded",
-    ],
-  },
 ];

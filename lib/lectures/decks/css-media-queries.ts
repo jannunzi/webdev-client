@@ -195,7 +195,7 @@ export default function MediaQueriesDemo() {
     kind: "title",
     bullets: [
       "You can restyle a page when the viewport crosses a width",
-      "Optional: `transform: rotate` and CSS gradients — extras, not Lab 2 required",
+      "Next: `transform: rotate` and CSS gradients",
     ],
   },
 ];

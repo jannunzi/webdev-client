@@ -387,7 +387,7 @@ export default async function PeopleTable({
     kind: "title",
     bullets: [
       "Lab 3 taught the language. Kambaz now renders from JSON",
-      "Walk the screens against the coverage checklist. Chapter 4 adds state",
+      "Chapter 4 adds state",
     ],
   },
 ];

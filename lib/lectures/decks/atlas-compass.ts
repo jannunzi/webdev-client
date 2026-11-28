@@ -102,7 +102,7 @@ export const ATLAS_COMPASS_SLIDES: LectureSlide[] = [
     bullets: [
       "New Compass window, `mongodb+srv` string, Connect",
       "Create `kambaz` if needed, then import all five JSON files",
-      "Two connections: laptop for labs, Atlas for Render and 12/7",
+      "Two connections: laptop for labs, Atlas for Render",
     ],
   },
   {

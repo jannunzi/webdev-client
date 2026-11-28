@@ -85,7 +85,7 @@ export default function KambazNavigation() {
     kind: "content",
     bullets: [
       "The finished black icon column",
-      "This week: a **plain list** of links. Tailwind comes in Chapter 2",
+      "A **plain list** of links. Tailwind comes in Chapter 2",
     ],
     imageSrc: "/images/book/kambaz/navigation.png",
     imageAlt: "Target Kambaz Navigation sidebar with Dashboard",

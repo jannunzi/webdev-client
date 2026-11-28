@@ -17,7 +17,7 @@ export const BOOLEANS_AND_CONDITIONALS_SLIDES: LectureSlide[] = [
     bullets: [
       "`&&` and, `||` or, `!` not, then comparisons",
       "Always compare with `===` and `!==` — value **and** type",
-      "`==` coerces types and hides bugs. Do not use it in this course",
+      "`==` coerces types and hides bugs. Do not use it",
       "Cast booleans for display: `{false3 + \"\"}`",
     ],
   },

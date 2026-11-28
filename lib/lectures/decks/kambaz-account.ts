@@ -27,7 +27,7 @@ export const KAMBAZ_ACCOUNT_SLIDES: LectureSlide[] = [
     kind: "content",
     bullets: [
       "The Canvas-inspired Account Sign in screen",
-      "This week is **structure**. Chapter 2 / A2 add the Tailwind look",
+      "**Structure** only. Chapter 2 / A2 add the Tailwind look",
     ],
     imageSrc: "/images/book/kambaz/account-signin.png",
     imageAlt: "Target Account Sign in screen with NEU chrome and Account nav",

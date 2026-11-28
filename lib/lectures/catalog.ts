@@ -446,7 +446,7 @@ const LECTURE_SUMMARIES: Record<
   "css-rotation": {
     title: "Rotation and Gradients",
     summary:
-      "Optional extras: transform rotate plus linear and radial gradients. Not required for Lab 2.",
+      "Optional extras: transform rotate plus linear and radial gradients.",
     chapter: 2,
     topicId: "css",
     canvasLecture: 4,
@@ -1195,7 +1195,7 @@ const LECTURE_SUMMARIES: Record<
   "atlas-sessions": {
     title: "Atlas Remote Sessions",
     summary:
-      "Five Render keys, secure cookies, then sign in so 12/7 graders read Atlas.",
+      "Five Render keys, secure cookies, then sign in against Atlas.",
     chapter: 6,
     topicId: "atlas",
     bookSectionId: "sec-6-3-2",

@@ -1276,20 +1276,20 @@ describe("lecture decks", () => {
     assert.ok((counts["installing-nodejs"] ?? 0) >= 16);
     assert.equal(counts["creating-a-nextjs-react-application"], 19);
     assert.equal(counts["commit-to-github"], 7);
-    assert.equal(counts["deploying-to-vercel"], 13);
+    assert.equal(counts["deploying-to-vercel"], 11);
     assert.equal(counts["html-and-dom"], 20);
     assert.equal(counts["headings-and-paragraphs"], 21);
     assert.equal(counts["lists-and-tables"], 24);
     assert.equal(counts["web-forms"], 58);
     assert.equal(counts["anchors"], 9);
-    assert.equal(counts["single-page-navigation"], 21);
+    assert.equal(counts["single-page-navigation"], 20);
     assert.equal(counts["kambaz-overview"], 9);
     assert.equal(counts["kambaz-account"], 20);
     assert.equal(counts["kambaz-dashboard"], 10);
     assert.equal(counts["kambaz-navigation"], 11);
     assert.equal(counts["kambaz-courses"], 13);
     assert.equal(counts["kambaz-modules"], 17);
-    assert.equal(counts["kambaz-assignments"], 22);
+    assert.equal(counts["kambaz-assignments"], 18);
     assert.equal(counts["css-intro"], 28);
     assert.equal(counts["css-colors"], 14);
     assert.equal(counts["css-box-model"], 25);
@@ -1328,7 +1328,7 @@ describe("lecture decks", () => {
     assert.equal(counts["dynamic-styling"], 10);
     assert.equal(counts["client-and-server"], 57);
     assert.equal(counts["parameterizing-components"], 25);
-    assert.equal(counts["path-params-and-todos"], 17);
+    assert.equal(counts["path-params-and-todos"], 16);
     assert.equal(counts["kambaz-database"], 14);
     assert.equal(counts["kambaz-dashboard-data"], 8);
     assert.equal(counts["kambaz-courses-data"], 11);
@@ -1344,7 +1344,7 @@ describe("lecture decks", () => {
     assert.equal(counts["zustand-counter"], 8);
     assert.equal(counts["zustand-todos"], 17);
     assert.equal(counts["use-effect"], 8);
-    assert.equal(counts["custom-hooks"], 24);
+    assert.equal(counts["custom-hooks"], 23);
     assert.equal(counts["kambaz-courses-store"], 10);
     assert.equal(counts["kambaz-dashboard-crud"], 15);
     assert.equal(counts["kambaz-modules-store"], 25);
@@ -1364,7 +1364,7 @@ describe("lecture decks", () => {
     assert.equal(counts["kambaz-account-rest"], 24);
     assert.equal(counts["kambaz-sessions"], 21);
     assert.equal(counts["kambaz-courses-api"], 56);
-    assert.equal(counts["deploy-api"], 8);
+    assert.equal(counts["deploy-api"], 7);
     assert.equal(counts["local-mongo"], 12);
     assert.equal(counts["mongoose"], 13);
     assert.equal(counts["mongo-apis"], 19);
@@ -1372,7 +1372,7 @@ describe("lecture decks", () => {
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
     assert.equal(counts["atlas-node"], 10);
-    assert.equal(counts["atlas-sessions"], 12);
+    assert.equal(counts["atlas-sessions"], 11);
     assert.equal(counts["kambaz-courses-db"], 43);
     assert.equal(counts["kambaz-modules-db"], 35);
     assert.equal(counts["kambaz-enrollments-db"], 49);
@@ -1713,7 +1713,6 @@ describe("lecture decks", () => {
         "await-params-live": "kambaz-assignments-step",
         "finished-live": "kambaz-assignments-finished",
         "editor-finished-live": "kambaz-assignment-editor",
-        "labs-name-github-live": "labs-name-github",
       },
       "css-intro": {
         "style-attr": "css-style-attr",
@@ -2040,6 +2039,16 @@ describe("lecture decks", () => {
       assert.doesNotMatch(text, /Kanbas/);
       assert.doesNotMatch(text, /HashRouter/);
       assert.doesNotMatch(text, /src\/Kanbas/);
+      assert.doesNotMatch(text, /Jose Annunziato/, deck.slug);
+      assert.doesNotMatch(text, /OFFICE HOURS/, deck.slug);
+      assert.doesNotMatch(text, /\bgraders?\b/i, deck.slug);
+      assert.doesNotMatch(text, /\bTAs\b/, deck.slug);
+      assert.doesNotMatch(text, /\b12\/7\b/, deck.slug);
+      assert.doesNotMatch(text, /this week/i, deck.slug);
+      assert.doesNotMatch(text, /this semester/i, deck.slug);
+      assert.doesNotMatch(text, /before you submit/i, deck.slug);
+      assert.doesNotMatch(text, /not graded/i, deck.slug);
+      assert.doesNotMatch(text, /help us test your work/i, deck.slug);
     }
   });
 
@@ -2050,15 +2059,16 @@ describe("lecture decks", () => {
     assert.match(text, /Vercel Authentication/);
     assert.match(text, /webdev-client/);
     assert.doesNotMatch(text, /kambaz-next-js/);
-    assert.match(text, /OFFICE HOURS/);
-    assert.match(text, /BREAK/);
-    assert.match(text, /Jose Annunziato/);
     assert.doesNotMatch(text, /netlify\.com/i);
     assert.doesNotMatch(text, /Netlify/);
     assert.doesNotMatch(text, /Deploy to Netlify/);
     assert.doesNotMatch(text, /kanbas/);
     assert.doesNotMatch(text, /Push to update/);
     assert.doesNotMatch(text, /Install Vercel on GitHub/);
+    assert.doesNotMatch(text, /OFFICE HOURS/);
+    assert.doesNotMatch(text, /\bBREAK\b/);
+    assert.doesNotMatch(text, /Jose Annunziato/);
+    assert.doesNotMatch(text, /TAs and instructors/);
   });
 
   it("names the GitHub repo webdev-client", () => {
@@ -2417,7 +2427,9 @@ describe("lecture decks", () => {
     assert.match(rotation, /transform: rotate/);
     assert.match(rotation, /linear-gradient/);
     assert.match(rotation, /radial-gradient/);
-    assert.match(rotation, /Not required for Lab 2/);
+    assert.match(rotation, /Optional extras after flex and media queries/);
+    assert.doesNotMatch(rotation, /Not required for Lab 2/);
+    assert.doesNotMatch(rotation, /graded path/);
   });
 
   it("teaches Chapter 2 Tailwind and Kambaz styling after Lecture 4", () => {
@@ -3306,7 +3318,8 @@ describe("lecture decks", () => {
     assert.match(sessions, /CLIENT_URL/);
     assert.match(sessions, /SESSION_SECRET/);
     assert.match(sessions, /NEXT_PUBLIC_/);
-    assert.match(sessions, /12\/7/);
+    assert.doesNotMatch(sessions, /12\/7/);
+    assert.doesNotMatch(sessions, /Graders/);
     assert.doesNotMatch(sessions, /netlify\.com/i);
 
     const courses = slideText("kambaz-courses-db");
@@ -4247,7 +4260,7 @@ describe("explanation text never buries the code", () => {
         assert.ok(code.title.length <= LECTURE_TITLE_MAX_CHARS, `${deck.slug}#${base} title`);
       });
     }
-    assert.equal(intros, 251);
+    assert.equal(intros, 250);
   });
 
   it("splits path-params-and-todos TOC into explanation, then code", () => {

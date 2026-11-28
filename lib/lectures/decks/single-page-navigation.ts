@@ -193,7 +193,7 @@ export default function LabsLayout({
     kind: "demo",
     bullets: [
       "Create `app/labs/lab2/page.tsx` — URL `/labs/lab2`",
-      "A heading is enough for this week. CSS fills the file in Chapter 2",
+      "A heading is enough. CSS fills the file in Chapter 2",
     ],
     embed: "labs-layout",
   },
@@ -294,15 +294,6 @@ export default function LabsLayout({
       "Labs index + TOC use `Link` to Lab 1–3",
       "A labs layout keeps navigation visible while `{children}` swap",
       "`(kambaz)` can own `/` after you remove the extra `app/page.tsx`",
-    ],
-  },
-  {
-    id: "next-up",
-    title: "OFFICE HOURS",
-    kind: "break",
-    bullets: [
-      "Bring the Lab 1 URL and the DevTools Elements panel if a `wd-` id is missing",
-      "Hours and links: the course Office Hours page and the syllabus",
     ],
   },
 ];

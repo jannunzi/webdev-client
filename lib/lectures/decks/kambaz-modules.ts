@@ -92,7 +92,7 @@ export default function Lesson({
     kind: "content",
     bullets: [
       "Weeks, then lessons, then content items",
-      "This week is the **nested list**. Chapter 2 styles the bars",
+      "Build the **nested list**. Chapter 2 styles the bars",
     ],
     imageSrc: "/images/book/kambaz/modules.png",
     imageAlt: "Target Kambaz Modules screen",

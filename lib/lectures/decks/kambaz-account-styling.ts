@@ -90,23 +90,20 @@ export const KAMBAZ_ACCOUNT_STYLING_SLIDES: LectureSlide[] = [
       "React Icons — components, not `<i class=\"fa\">`",
       "Tailwind utilities on `/labs/lab2/tailwind`",
       "Kambaz: theme + utilities, no Preflight; flex instead of tables",
-      "Use the coverage checklist. Assignment Editor and Account stay On your own",
     ],
   },
   {
     id: "delivery-intro",
-    title: "Deliver on branch a2",
+    title: "Deploy every branch",
     kind: "content",
     bullets: [
-      "Same `webdev-client` repo from Chapter 1. Graders compare `main` with this branch",
+      "Same `webdev-client` repo from Chapter 1",
       "Vercel: Settings → Git, or Build & Deployment → Branches — deploy every branch",
-      "Submit the GitHub URL pointed at `a2` and that branch’s preview URL",
-      "Turn off Deployment Protection so graders can open it without signing in",
     ],
   },
   {
     id: "delivery",
-    title: "Deliver on branch a2 (code)",
+    title: "Push branch a2 (code)",
     kind: "content",
     code: `git checkout -b a2
 git add .
@@ -119,7 +116,6 @@ git push -u origin a2`,
     title: "Lab 2, then Chapter 3",
     kind: "title",
     bullets: [
-      "Push `a2` and confirm the branch preview before you submit",
       "Chapter 3 adds JavaScript and data-driven UI on these same screens",
     ],
   },
