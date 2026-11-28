@@ -1365,7 +1365,7 @@ describe("lecture decks", () => {
     assert.equal(counts["atlas-sessions"], 12);
     assert.equal(counts["kambaz-courses-db"], 43);
     assert.equal(counts["kambaz-modules-db"], 35);
-    assert.equal(counts["kambaz-enrollments-db"], 49);
+    assert.equal(counts["kambaz-enrollments-db"], 68);
     assert.equal(counts["youtube-api"], 9);
     assert.equal(counts["youtube-search"], 11);
     assert.equal(counts["youtube-details"], 23);
@@ -4718,6 +4718,52 @@ describe("chapter 6 courses and enrollments follow the book", () => {
     assert.match(findSlide("kambaz-enrollments-db", "enroll-ui").code ?? "", /enrollIntoCourse/);
     assert.match(findSlide("kambaz-enrollments-db", "unenroll-ui").code ?? "", /unenrollFromCourse/);
     assert.match(findSlide("kambaz-enrollments-db", "enroll-refresh").code ?? "", /findMyCourses/);
+    assert.match(findSlide("kambaz-enrollments-db", "dash-state").code ?? "", /const \[enrolledIds, setEnrolledIds\]/);
+    assert.ok(at("dash-state") < at("enroll-refresh"));
+    assert.ok(at("fetch-all") < at("enroll-refresh"));
+    assert.ok(at("dash-imports") < at("dash-state"));
+    assert.ok(at("unenroll-ui") < at("card-enroll"));
+    const book = "app/book/ch6/sections/KambazDb.tsx";
+    const dashboardIds = [
+      "dash-imports",
+      "dash-state",
+      "enroll-refresh",
+      "dash-handlers",
+      "dash-add",
+      "dash-update",
+      "dash-fields",
+      "dash-list",
+      "dash-cards",
+    ];
+    const cardIds = [
+      "card-imports",
+      "card-props",
+      "enroll-enrolled",
+      "enroll-ui",
+      "unenroll-ui",
+      "card-frame",
+      "card-text",
+      "card-go",
+      "card-edit",
+      "card-delete",
+      "card-enroll",
+      "card-click",
+      "card-close",
+    ];
+    assert.equal(
+      dashboardIds.map((id) => findSlide("kambaz-enrollments-db", id).code ?? "").join("\n"),
+      bookCodeBlock(book, "Dashboard enrollments", "app/(kambaz)/dashboard/page.tsx"),
+    );
+    assert.equal(
+      cardIds.map((id) => findSlide("kambaz-enrollments-db", id).code ?? "").join("\n"),
+      bookCodeBlock(book, "CourseCard enrollments", "app/(kambaz)/dashboard/CourseCard.tsx"),
+    );
+    assert.equal(
+      findSlide("kambaz-enrollments-db", "fetch-all").code,
+      bookCodeBlock(book, "courses mongo client", "app/(kambaz)/courses/client.ts").split(
+        "export const findCourseById",
+      )[0].replace(/\n$/, ""),
+    );
     const coursesIds = getLectureDeck("kambaz-courses-db")!.slides.map((slide) => slide.id);
     assert.equal(coursesIds.includes("enrolled-dao"), false);
     assert.ok(coursesIds.indexOf("routes-wire") < coursesIds.indexOf("async-routes"));

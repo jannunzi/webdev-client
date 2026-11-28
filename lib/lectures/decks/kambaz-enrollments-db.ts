@@ -414,72 +414,240 @@ app.post("/api/users/:uid/courses/:cid", enrollUserInCourse);`,
     diagramFocus: "client",
   },
   {
+    id: "fetch-all",
+    title: "Fetching every course",
+    kind: "demo",
+    bullets: [
+      "`axios.get` sends `GET /api/courses`",
+      "`fetchAllCourses` returns the course documents",
+    ],
+    code: `export const fetchAllCourses = async () => {
+  const { data } = await axios.get(COURSES_API);
+  return data;
+};`,
+    codeLanguage: "ts",
+    codeFile: "app/(kambaz)/courses/client.ts",
+    codeHighlightLines: [[1, 4]],
+  },
+  {
+    id: "dash-imports",
+    title: "Dashboard imports the client",
+    kind: "demo",
+    bullets: [
+      "`import * as client` loads the course client functions",
+      "`useCoursesStore` reads the cached course list",
+      "`useAccountContext` supplies `currentUser`",
+    ],
+    code: `"use client";
+
+import { useEffect, useState } from "react";
+import CourseCard from "./CourseCard";
+import {
+  emptyCourse,
+  useCoursesStore,
+  type Course,
+} from "../store/coursesStore";
+import { useAccountContext } from "../account/AccountContext";
+import * as client from "../courses/client";
+`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeHighlightLines: [11],
+  },
+  {
+    id: "dash-state",
+    title: "Courses and enrolled ids",
+    kind: "demo",
+    bullets: [
+      "`setCourses` replaces the Zustand course cache",
+      "`useState` creates `enrolledIds` and `setEnrolledIds`",
+      "`currentUser` is the signed-in user",
+    ],
+    code: `export default function Dashboard() {
+  const courses = useCoursesStore((state) => state.courses);
+  const setCourses = useCoursesStore((state) => state.setCourses);
+  const [course, setCourse] = useState<Course>(emptyCourse);
+  const [enrolledIds, setEnrolledIds] = useState<string[]>([]);
+  const { currentUser } = useAccountContext();
+`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeStartLine: 13,
+    codeHighlightLines: [5],
+  },
+  {
     id: "enroll-refresh",
     title: "Dashboard reloads from the server",
     kind: "demo",
     bullets: [
-      "`enrolledIds` comes from `findMyCourses`, not a local array",
-      "Both buttons call `reload` after the write",
+      "`fetchAllCourses` loads every course into `setCourses`",
+      "`findMyCourses` returns this user's courses, and `setEnrolledIds` stores their ids",
+      "`useEffect` calls `reload` when `currentUser` changes",
     ],
-    code: `const reload = async () => {
-  setCourses(await client.fetchAllCourses());
-  const mine = await client.findMyCourses();
-  setEnrolledIds(mine.map((item) => item._id));
-};`,
+    code: `  const reload = async () => {
+    setCourses(await client.fetchAllCourses());
+    const mine = await client.findMyCourses();
+    setEnrolledIds(mine.map((item) => item._id));
+  };
+
+  useEffect(() => {
+    reload();
+  }, [currentUser]);
+`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/page.tsx",
-    codeAddedLines: [[1, 5]],
-    diagram: "enroll-create",
-    diagramFocus: "ui",
+    codeStartLine: 20,
+    codeHighlightLines: [4, [7, 9]],
   },
   {
-    id: "enroll-enrolled",
-    title: "Card reads enrolled ids",
+    id: "dash-handlers",
+    title: "Handlers write, then reload",
     kind: "demo",
     bullets: [
-      "Import the courses client. Do not read an enrollments store",
-      "`enrolled` is whether this id came back from the server",
+      "`createCourse` posts the form, then `reload` refetches",
+      "`updateCourse` saves the course, then `reload` refetches",
+      "`deleteCourse` removes the course, then `reload` refetches",
     ],
-    code: `import * as coursesClient from "../courses/client";
-import { useAccountContext } from "../account/AccountContext";
+    code: `  const onAddCourse = async () => {
+    await client.createCourse(course);
+    await reload();
+  };
 
-const { currentUser } = useAccountContext();
-const enrolled = currentUser
-  ? enrolledIds.includes(course._id)
-  : null;`,
+  const onUpdateCourse = async () => {
+    await client.updateCourse(course);
+    await reload();
+  };
+
+  const onDeleteCourse = async (courseId: string) => {
+    await client.deleteCourse(courseId);
+    await reload();
+  };
+`,
     codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
-    codeHighlightLines: [1, [5, 7]],
-    diagram: "enroll-create",
-    diagramFocus: "ui",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeStartLine: 30,
+    codeHighlightLines: [3, 8, 13],
   },
   {
-    id: "enroll-ui",
-    title: "Enroll writes, then reloads",
-    kind: "demo",
-    bullets: ["`onChange` is the dashboard `reload`"],
-    code: `const onEnroll = async () => {
-  if (!currentUser || enrolled) return;
-  await coursesClient.enrollIntoCourse(
-    currentUser._id,
-    course._id,
-  );
-  await onChange();
-};`,
-    codeLanguage: "tsx",
-    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
-    codeHighlightLines: [[3, 7]],
-    diagram: "enroll-create",
-    diagramFocus: "ui",
-  },
-  {
-    id: "enroll-result",
-    title: "Button says Unenroll",
+    id: "dash-add",
+    title: "Add calls the create handler",
     kind: "demo",
     bullets: [
-      "The button says Unenroll because the `POST` inserted an enrollment for this user and course.",
+      "`onClick` calls `onAddCourse`",
     ],
-    diagram: "enroll-create-result",
+    code: `  return (
+    <div id="wd-dashboard">
+      <h1 id="wd-dashboard-title">Dashboard</h1>
+      <hr />
+      <h5 className="flex flex-wrap items-center gap-2">
+        New Course
+        <button
+          type="button"
+          className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+          id="wd-add-new-course-click"
+          onClick={onAddCourse}
+        >
+          Add
+        </button>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeStartLine: 45,
+    codeHighlightLines: [11],
+  },
+  {
+    id: "dash-update",
+    title: "Update calls the save handler",
+    kind: "demo",
+    bullets: [
+      "`onClick` calls `onUpdateCourse`",
+    ],
+    code: `        <button
+          type="button"
+          className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
+          id="wd-update-course-click"
+          onClick={onUpdateCourse}
+        >
+          Update
+        </button>
+      </h5>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeStartLine: 59,
+    codeHighlightLines: [5],
+  },
+  {
+    id: "dash-fields",
+    title: "Course name and description",
+    kind: "demo",
+    bullets: [
+      "`setCourse` stores the name and the description",
+    ],
+    code: `      <input
+        className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
+        value={course.name}
+        onChange={(e) => setCourse({ ...course, name: e.target.value })}
+        id="wd-course-name"
+      />
+      <textarea
+        className="mb-3 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
+        rows={3}
+        value={course.description}
+        onChange={(e) =>
+          setCourse({ ...course, description: e.target.value })
+        }
+        id="wd-course-description"
+      />`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeStartLine: 68,
+    codeHighlightLines: [4, [11, 13]],
+  },
+  {
+    id: "dash-list",
+    title: "Published course count",
+    kind: "demo",
+    bullets: [
+      "`courses.length` counts the courses in the cache",
+    ],
+    code: `      <hr />
+      <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2>
+      <hr />
+      <div
+        id="wd-dashboard-courses"
+        className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+      >`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeStartLine: 83,
+    codeHighlightLines: [2],
+  },
+  {
+    id: "dash-cards",
+    title: "Cards receive the enrolled ids",
+    kind: "demo",
+    bullets: [
+      "Each card gets `enrolledIds` and `onChange`",
+      "`onChange` is `reload`",
+      "`onDelete` calls `onDeleteCourse` with the course id",
+    ],
+    code: `        {courses.map((c) => (
+          <CourseCard
+            key={c._id}
+            course={c}
+            enrolledIds={enrolledIds}
+            onChange={reload}
+            onEdit={() => setCourse(c)}
+            onDelete={() => onDeleteCourse(c._id)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/page.tsx",
+    codeStartLine: 90,
+    codeHighlightLines: [5, 6, 8],
   },
   sectionSlide("section-unenrolling", "Unenrolling"),
   {
@@ -550,23 +718,312 @@ app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);`,
     diagramFocus: "client",
   },
   {
+    id: "card-imports",
+    title: "CourseCard imports",
+    kind: "demo",
+    bullets: [
+      "`coursesClient` is `enrollIntoCourse` and `unenrollFromCourse`",
+      "`Course` is the course document type",
+    ],
+    code: `import Link from "next/link";
+import Image from "next/image";
+import * as coursesClient from "../courses/client";
+import { useAccountContext } from "../account/AccountContext";
+import type { Course } from "../store/coursesStore";
+`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeHighlightLines: [3, 4],
+  },
+  {
+    id: "card-props",
+    title: "CourseCard props",
+    kind: "demo",
+    bullets: [
+      "`enrolledIds` is the list `setEnrolledIds` stored",
+      "`onChange` is the dashboard `reload`",
+      "`onEdit` and `onDelete` come from the Dashboard",
+    ],
+    code: `export default function CourseCard({
+  course,
+  enrolledIds,
+  onChange,
+  onEdit,
+  onDelete,
+}: {
+  course: Course;
+  enrolledIds: string[];
+  onChange: () => Promise<void>;
+  onEdit: () => void;
+  onDelete: () => void;
+}) {`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeStartLine: 7,
+    codeHighlightLines: [3, 4],
+  },
+  {
+    id: "enroll-enrolled",
+    title: "Card reads enrolled ids",
+    kind: "demo",
+    bullets: [
+      "`useAccountContext` reads `currentUser`",
+      "`enrolledIds.includes` checks this `course._id`",
+      "`enrolled` is null when `currentUser` is missing",
+    ],
+    code: `  const { currentUser } = useAccountContext();
+  const enrolled = currentUser
+    ? enrolledIds.includes(course._id)
+    : null;
+`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeStartLine: 20,
+    codeHighlightLines: [[2, 4]],
+  },
+  {
+    id: "enroll-ui",
+    title: "Enroll writes, then reloads",
+    kind: "demo",
+    bullets: [
+      "`enrollIntoCourse` posts the user id and the course id",
+      "`onChange` runs `reload`",
+    ],
+    code: `  const onEnroll = async () => {
+    if (!currentUser || enrolled) return;
+    await coursesClient.enrollIntoCourse(
+      currentUser._id,
+      course._id,
+    );
+    await onChange();
+  };
+`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeStartLine: 25,
+    codeHighlightLines: [[3, 6]],
+  },
+  {
     id: "unenroll-ui",
     title: "Unenroll deletes, then reloads",
     kind: "demo",
-    bullets: ["Same `onChange`. The id leaves `enrolledIds` on the next paint"],
-    code: `const onUnenroll = async () => {
-  if (!currentUser || !enrolled) return;
-  await coursesClient.unenrollFromCourse(
-    currentUser._id,
-    course._id,
-  );
-  await onChange();
-};`,
+    bullets: [
+      "`unenrollFromCourse` deletes that user and course pair",
+      "`onChange` runs `reload`, and the id leaves `enrolledIds`",
+    ],
+    code: `  const onUnenroll = async () => {
+    if (!currentUser || !enrolled) return;
+    await coursesClient.unenrollFromCourse(
+      currentUser._id,
+      course._id,
+    );
+    await onChange();
+  };
+`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
-    codeHighlightLines: [[3, 7]],
-    diagram: "enroll-unenroll",
-    diagramFocus: "ui",
+    codeStartLine: 34,
+    codeHighlightLines: [[3, 6]],
+  },
+  {
+    id: "card-frame",
+    title: "Card link and image",
+    kind: "demo",
+    bullets: [
+      "`Link` opens this course's home screen",
+    ],
+    code: `  return (
+    <div className={
+      "wd-dashboard-course w-[300px] max-w-full overflow-hidden " +
+      "rounded-lg border border-neutral-200 bg-white shadow-sm"
+    }>
+      <Link
+        href={\`/courses/\${course._id}/home\`}
+        className="wd-dashboard-course-link block text-neutral-900 no-underline"
+      >
+        <Image
+          src={course.image}
+          width={300}
+          height={160}
+          alt={course.name}
+          className="h-40 w-full object-cover"
+        />`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeStartLine: 43,
+    codeHighlightLines: [7],
+  },
+  {
+    id: "card-text",
+    title: "Card title and description",
+    kind: "demo",
+    bullets: [
+      "The heading shows `course.name`",
+      "The paragraph shows `course.description`",
+    ],
+    code: `        <div className="p-4">
+          <h5 className={
+            "wd-dashboard-course-title m-0 mb-2 truncate " +
+            "text-lg font-semibold whitespace-nowrap"
+          }>
+            {course.name}
+          </h5>
+          <p className={
+            "wd-dashboard-course-description m-0 mb-3 h-[100px] " +
+            "overflow-hidden text-sm text-neutral-600"
+          }>
+            {course.description}
+          </p>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeStartLine: 59,
+    codeHighlightLines: [6, 12],
+  },
+  {
+    id: "card-go",
+    title: "Go button",
+    kind: "demo",
+    bullets: [
+      "Go sits inside the `Link`, so it opens the course",
+    ],
+    code: `          <button
+            type="button"
+            className={
+              "inline-flex items-center justify-center rounded " +
+              "bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+            }
+          >
+            Go
+          </button>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeStartLine: 72,
+  },
+  {
+    id: "card-edit",
+    title: "Edit button",
+    kind: "demo",
+    bullets: [
+      "`preventDefault` keeps the click off the course link",
+      "`onEdit` fills the form with this course",
+    ],
+    code: `          <button
+            type="button"
+            id="wd-edit-course-click"
+            className={
+              "ms-2 inline-flex items-center justify-center rounded " +
+              "bg-yellow-400 px-3 py-1.5 text-sm font-medium"
+            }
+            onClick={(event) => {
+              event.preventDefault();
+              onEdit();
+            }}
+          >
+            Edit
+          </button>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeStartLine: 81,
+    codeHighlightLines: [[9, 10]],
+  },
+  {
+    id: "card-delete",
+    title: "Delete button",
+    kind: "demo",
+    bullets: [
+      "`onDelete` calls `onDeleteCourse` for this course",
+    ],
+    code: `          <button
+            type="button"
+            id="wd-delete-course-click"
+            className={
+              "ms-2 inline-flex items-center justify-center rounded " +
+              "bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+            }
+            onClick={(event) => {
+              event.preventDefault();
+              onDelete();
+            }}
+          >
+            Delete
+          </button>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeStartLine: 95,
+    codeHighlightLines: [[9, 10]],
+  },
+  {
+    id: "card-enroll",
+    title: "Enrollment button colors",
+    kind: "demo",
+    bullets: [
+      "`enrolled` picks `bg-red-600` or `bg-green-600`",
+    ],
+    code: `          {enrolled !== null && (
+            <button
+              type="button"
+              id="wd-enrollment-click"
+              className={
+                "ms-2 inline-flex items-center justify-center rounded " +
+                "px-3 py-1.5 text-sm font-medium text-white " +
+                (enrolled ? "bg-red-600" : "bg-green-600")
+              }`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeStartLine: 109,
+    codeHighlightLines: [8],
+  },
+  {
+    id: "card-click",
+    title: "Enrollment button handler",
+    kind: "demo",
+    bullets: [
+      "`preventDefault` stays on the button",
+      "`onUnenroll` runs when `enrolled` is true",
+      "`onEnroll` runs when `enrolled` is false",
+    ],
+    code: `              onClick={(event) => {
+                event.preventDefault();
+                if (enrolled) {
+                  onUnenroll();
+                } else {
+                  onEnroll();
+                }
+              }}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeStartLine: 118,
+    codeHighlightLines: [[2, 7]],
+  },
+  {
+    id: "card-close",
+    title: "Enrollment button label",
+    kind: "demo",
+    bullets: [
+      "The label is Unenroll when `enrolled` is true, and Enroll when it is false",
+    ],
+    code: `            >
+              {enrolled ? "Unenroll" : "Enroll"}
+            </button>
+          )}
+        </div>
+      </Link>
+    </div>
+  );
+}`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/dashboard/CourseCard.tsx",
+    codeStartLine: 126,
+    codeHighlightLines: [2],
+  },
+  {
+    id: "enroll-result",
+    title: "Button says Unenroll",
+    kind: "demo",
+    bullets: [
+      "The button says Unenroll because the `POST` inserted an enrollment for this user and course.",
+    ],
+    diagram: "enroll-create-result",
   },
   {
     id: "unenroll-result",
