@@ -1387,12 +1387,301 @@ export const unenrollFromCourse = async (userId: string, courseId: string) => {
   );
   return response.data;
 };`}</CodeBlock>
+          <p>
+            The Dashboard shows every course and keeps the ids of the
+            courses the signed-in user is in.{" "}
+            <code>import * as client</code>{" "}loads{" "}
+            <code>fetchAllCourses</code>, <code>findMyCourses</code>,{" "}
+            <code>createCourse</code>, <code>updateCourse</code>, and{" "}
+            <code>deleteCourse</code>. <code>setCourses</code>{" "}replaces
+            the Zustand cache. <code>useState</code>{" "}creates{" "}
+            <code>enrolledIds</code>{" "}and <code>setEnrolledIds</code>.{" "}
+            <code>currentUser</code>{" "}comes from{" "}
+            <code>useAccountContext</code>.
+          </p>
+          <p>
+            <code>reload</code>{" "}calls <code>fetchAllCourses</code>{" "}
+            and then <code>findMyCourses</code>.{" "}
+            <code>setEnrolledIds</code>{" "}stores{" "}
+            <code>item._id</code>{" "}from each course{" "}
+            <code>findMyCourses</code>{" "}returned.{" "}
+            <code>useEffect</code>{" "}calls <code>reload</code>{" "}when{" "}
+            <code>currentUser</code>{" "}changes.{" "}
+            <code>onAddCourse</code>, <code>onUpdateCourse</code>, and{" "}
+            <code>onDeleteCourse</code>{" "}write through the client and
+            then call <code>reload</code>{" "}so the cache and the ids
+            match the database. Each card receives{" "}
+            <code>enrolledIds</code>{" "}and <code>onChange</code>, and{" "}
+            <code>onChange</code>{" "}is <code>reload</code>.
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="Dashboard enrollments"
+            file="app/(kambaz)/dashboard/page.tsx"
+          >{`"use client";
+
+import { useEffect, useState } from "react";
+import CourseCard from "./CourseCard";
+import {
+  emptyCourse,
+  useCoursesStore,
+  type Course,
+} from "../store/coursesStore";
+import { useAccountContext } from "../account/AccountContext";
+import * as client from "../courses/client";
+
+export default function Dashboard() {
+  const courses = useCoursesStore((state) => state.courses);
+  const setCourses = useCoursesStore((state) => state.setCourses);
+  const [course, setCourse] = useState<Course>(emptyCourse);
+  const [enrolledIds, setEnrolledIds] = useState<string[]>([]);
+  const { currentUser } = useAccountContext();
+
+  const reload = async () => {
+    setCourses(await client.fetchAllCourses());
+    const mine = await client.findMyCourses();
+    setEnrolledIds(mine.map((item) => item._id));
+  };
+
+  useEffect(() => {
+    reload();
+  }, [currentUser]);
+
+  const onAddCourse = async () => {
+    await client.createCourse(course);
+    await reload();
+  };
+
+  const onUpdateCourse = async () => {
+    await client.updateCourse(course);
+    await reload();
+  };
+
+  const onDeleteCourse = async (courseId: string) => {
+    await client.deleteCourse(courseId);
+    await reload();
+  };
+
+  return (
+    <div id="wd-dashboard">
+      <h1 id="wd-dashboard-title">Dashboard</h1>
+      <hr />
+      <h5 className="flex flex-wrap items-center gap-2">
+        New Course
+        <button
+          type="button"
+          className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+          id="wd-add-new-course-click"
+          onClick={onAddCourse}
+        >
+          Add
+        </button>
+        <button
+          type="button"
+          className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
+          id="wd-update-course-click"
+          onClick={onUpdateCourse}
+        >
+          Update
+        </button>
+      </h5>
+      <input
+        className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
+        value={course.name}
+        onChange={(e) => setCourse({ ...course, name: e.target.value })}
+        id="wd-course-name"
+      />
+      <textarea
+        className="mb-3 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
+        rows={3}
+        value={course.description}
+        onChange={(e) =>
+          setCourse({ ...course, description: e.target.value })
+        }
+        id="wd-course-description"
+      />
+      <hr />
+      <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2>
+      <hr />
+      <div
+        id="wd-dashboard-courses"
+        className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+      >
+        {courses.map((c) => (
+          <CourseCard
+            key={c._id}
+            course={c}
+            enrolledIds={enrolledIds}
+            onChange={reload}
+            onEdit={() => setCourse(c)}
+            onDelete={() => onDeleteCourse(c._id)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}`}</CodeBlock>
+          <p>
+            <code>CourseCard</code>{" "}takes <code>course</code>,{" "}
+            <code>enrolledIds</code>, <code>onChange</code>,{" "}
+            <code>onEdit</code>, and <code>onDelete</code>.{" "}
+            <code>useAccountContext</code>{" "}reads{" "}
+            <code>currentUser</code>. <code>enrolled</code>{" "}is true
+            when <code>enrolledIds.includes(course._id)</code>{" "}and
+            null when nobody is signed in.{" "}
+            <code>onEnroll</code>{" "}calls{" "}
+            <code>coursesClient.enrollIntoCourse</code>{" "}and then{" "}
+            <code>onChange</code>. <code>onUnenroll</code>{" "}calls{" "}
+            <code>coursesClient.unenrollFromCourse</code>{" "}and then{" "}
+            <code>onChange</code>. The enrollment button calls{" "}
+            <code>onUnenroll</code>{" "}when <code>enrolled</code>{" "}is
+            true and <code>onEnroll</code>{" "}otherwise.{" "}
+            <code>preventDefault</code>{" "}keeps that click from
+            following the course link.
+          </p>
+          <CodeBlock
+            language="tsx"
+            name="CourseCard enrollments"
+            file="app/(kambaz)/dashboard/CourseCard.tsx"
+          >{`import Link from "next/link";
+import Image from "next/image";
+import * as coursesClient from "../courses/client";
+import { useAccountContext } from "../account/AccountContext";
+import type { Course } from "../store/coursesStore";
+
+export default function CourseCard({
+  course,
+  enrolledIds,
+  onChange,
+  onEdit,
+  onDelete,
+}: {
+  course: Course;
+  enrolledIds: string[];
+  onChange: () => Promise<void>;
+  onEdit: () => void;
+  onDelete: () => void;
+}) {
+  const { currentUser } = useAccountContext();
+  const enrolled = currentUser
+    ? enrolledIds.includes(course._id)
+    : null;
+
+  const onEnroll = async () => {
+    if (!currentUser || enrolled) return;
+    await coursesClient.enrollIntoCourse(
+      currentUser._id,
+      course._id,
+    );
+    await onChange();
+  };
+
+  const onUnenroll = async () => {
+    if (!currentUser || !enrolled) return;
+    await coursesClient.unenrollFromCourse(
+      currentUser._id,
+      course._id,
+    );
+    await onChange();
+  };
+
+  return (
+    <div className={
+      "wd-dashboard-course w-[300px] max-w-full overflow-hidden " +
+      "rounded-lg border border-neutral-200 bg-white shadow-sm"
+    }>
+      <Link
+        href={\`/courses/\${course._id}/home\`}
+        className="wd-dashboard-course-link block text-neutral-900 no-underline"
+      >
+        <Image
+          src={course.image}
+          width={300}
+          height={160}
+          alt={course.name}
+          className="h-40 w-full object-cover"
+        />
+        <div className="p-4">
+          <h5 className={
+            "wd-dashboard-course-title m-0 mb-2 truncate " +
+            "text-lg font-semibold whitespace-nowrap"
+          }>
+            {course.name}
+          </h5>
+          <p className={
+            "wd-dashboard-course-description m-0 mb-3 h-[100px] " +
+            "overflow-hidden text-sm text-neutral-600"
+          }>
+            {course.description}
+          </p>
+          <button
+            type="button"
+            className={
+              "inline-flex items-center justify-center rounded " +
+              "bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+            }
+          >
+            Go
+          </button>
+          <button
+            type="button"
+            id="wd-edit-course-click"
+            className={
+              "ms-2 inline-flex items-center justify-center rounded " +
+              "bg-yellow-400 px-3 py-1.5 text-sm font-medium"
+            }
+            onClick={(event) => {
+              event.preventDefault();
+              onEdit();
+            }}
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            id="wd-delete-course-click"
+            className={
+              "ms-2 inline-flex items-center justify-center rounded " +
+              "bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+            }
+            onClick={(event) => {
+              event.preventDefault();
+              onDelete();
+            }}
+          >
+            Delete
+          </button>
+          {enrolled !== null && (
+            <button
+              type="button"
+              id="wd-enrollment-click"
+              className={
+                "ms-2 inline-flex items-center justify-center rounded " +
+                "px-3 py-1.5 text-sm font-medium text-white " +
+                (enrolled ? "bg-red-600" : "bg-green-600")
+              }
+              onClick={(event) => {
+                event.preventDefault();
+                if (enrolled) {
+                  onUnenroll();
+                } else {
+                  onEnroll();
+                }
+              }}
+            >
+              {enrolled ? "Unenroll" : "Enroll"}
+            </button>
+          )}
+        </div>
+      </Link>
+    </div>
+  );
+}`}</CodeBlock>
           <OnYourOwn>
-            Refactor the Chapter 4/5 enroll buttons so they call these
-            two functions and then refetch the dashboard courses.
-            Confirm users can enroll and unenroll from courses and
-            that the corresponding enrollment documents are inserted
-            and removed from the database.
+            Type the Dashboard and CourseCard above. Sign in, enroll
+            in a course, and confirm the enrollment document is in
+            the database. Unenroll and confirm that document is gone.
+            The button label follows <code>enrolledIds</code>.
           </OnYourOwn>
           <WithAI
             prompt={`In the Kambaz dashboard enroll/unenroll handlers, call enrollIntoCourse and unenrollFromCourse from app/(kambaz)/courses/client.ts with the current user id and course id, then refetch courses. Keep any extra UI I added.`}

@@ -571,6 +571,44 @@ describe("Kambaz book demos match the code block they show", () => {
     );
   });
 
+  it("joins the enrollments dashboard and card slides into the book listings", () => {
+    const deck = "lib/lectures/decks/kambaz-enrollments-db.ts";
+    const book = "app/book/ch6/sections/KambazDb.tsx";
+    const join = (ids: string[]) => ids.map((id) => slideCode(deck, id)).join("\n");
+    assert.equal(
+      join([
+        "dash-imports",
+        "dash-state",
+        "enroll-refresh",
+        "dash-handlers",
+        "dash-add",
+        "dash-update",
+        "dash-fields",
+        "dash-list",
+        "dash-cards",
+      ]),
+      codeBlock(book, "Dashboard enrollments"),
+    );
+    assert.equal(
+      join([
+        "card-imports",
+        "card-props",
+        "enroll-enrolled",
+        "enroll-ui",
+        "unenroll-ui",
+        "card-frame",
+        "card-text",
+        "card-go",
+        "card-edit",
+        "card-delete",
+        "card-enroll",
+        "card-click",
+        "card-close",
+      ]),
+      codeBlock(book, "CourseCard enrollments"),
+    );
+  });
+
   it("keeps the dashboard slide listings identical to the book", () => {
     assert.equal(
       slideCode("lib/lectures/decks/kambaz-dashboard-styling.ts", "grid").trim(),
