@@ -155,19 +155,44 @@ app.get("/api/users", findAllUsers);`,
     diagramFocus: "client",
   },
   {
-    id: "people-table-intro",
-    title: "PeopleTable takes a users prop",
+    id: "from-people-table",
+    title: "Course PeopleTable reads users",
     kind: "demo",
     bullets: [
-      "`people/table/PeopleTable.tsx` took `cid`, read `users` from context, and kept rows whose `enrollments` match that course",
-      "`Table.tsx` takes `users` and `fetchUsers`. Drop the `cid` prop, the enrollment `filter`, and the add form",
-      "`users.map` draws one row per user in the array the parent passed",
+      "`people/table/PeopleTable.tsx` takes `cid` and reads `users` with `useAccountContext`",
+      "`enrollments.some` keeps users whose `enrollment.course` is `cid`. Delete this filter and the old `db.users` read",
+      "The table moves to `people/Table.tsx` and takes `users` and `fetchUsers`",
     ],
+    code: `"use client";
+
+import { useState } from "react";
+import { FaUserCircle } from "react-icons/fa";
+import { useEnrollmentsStore } from "../../../../store/enrollmentsStore";
+import { emptyUser, useAccountContext, type User } from "../../../../account/AccountContext";
+
+export default function PeopleTable({ cid }: { cid: string }) {
+  const { users, createUser, updateUser, deleteUser } = useAccountContext();
+  const { enrollments, enrollIntoCourse } = useEnrollmentsStore();
+  const [user, setUser] = useState<User>(emptyUser);
+  const enrolled = users.filter((usr) =>
+    enrollments.some((enrollment) => enrollment.user === usr._id && enrollment.course === cid));
+  const addUser = () => {
+    const newUser = createUser(user);
+    enrollIntoCourse(newUser._id, cid);
+  };`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx",
+    codeHighlightLines: [[8, 13]],
   },
   {
     id: "people-table",
-    title: "PeopleTable props (code)",
+    title: "PeopleTable takes a users prop",
     kind: "demo",
+    bullets: [
+      "`users` defaults to `[]` when the parent omits it",
+      "`fetchUsers` reloads that array",
+      "`PeopleDetails` is imported from `./Details`",
+    ],
     code: `"use client";
 import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
@@ -182,7 +207,7 @@ export default function PeopleTable({
 }) {`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/Table.tsx",
-    codeHighlightLines: [[6, 11]],
+    codeHighlightLines: [[4, 11]],
     diagram: "users-read-all",
     diagramFocus: "ui",
   },
@@ -206,7 +231,7 @@ export default function PeopleTable({
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/Table.tsx",
     codeStartLine: 13,
-    codeHighlightLines: [[3, 5]],
+    codeHighlightLines: [[6, 11]],
   },
   {
     id: "people-table-part-3",
@@ -235,7 +260,7 @@ export default function PeopleTable({
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/Table.tsx",
     codeStartLine: 26,
-    codeHighlightLines: [[2, 3]],
+    codeHighlightLines: [[2, 13]],
   },
   {
     id: "people-table-live",

@@ -194,18 +194,46 @@ app.get("/api/users", findAllUsers);`}</CodeBlock>
 };`}</CodeBlock>
         <p>
           To display the array of users from the database, replace{" "}
-          <code>app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx</code>{" "}
-          with{" "}
-          <code>app/(kambaz)/courses/[cid]/people/Table.tsx</code>.
-          The earlier file took a <code>cid</code>, read{" "}
-          <code>users</code>{" "}from account context, and kept only the
-          rows whose <code>enrollments</code>{" "}matched that course.
-          This component does not. It accepts <code>users</code>{" "}
-          and <code>fetchUsers</code>{" "}and renders the array the
-          parent passes. Remove the enrollment <code>filter</code>,
-          the name inputs, and the Add, Edit, and Delete buttons.
-          Data access stays on the server. The Users screen passes
-          every user, and the course People page in{" "}
+          <code>app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx</code>.
+          That component took <code>cid</code>, read{" "}
+          <code>users</code>{" "}with <code>useAccountContext</code>,
+          and kept rows whose <code>enrollment.course</code>{" "}matched{" "}
+          <code>cid</code>{" "}using <code>enrollments.some</code>.
+          Earlier the same screen read <code>db.users</code>{" "}and{" "}
+          <code>db.enrollments</code>. Delete that read and that
+          filter. Move the table to{" "}
+          <code>app/(kambaz)/courses/[cid]/people/Table.tsx</code>,
+          which takes <code>users</code>{" "}and <code>fetchUsers</code>{" "}
+          and renders the array the parent passes.
+        </p>
+        <CodeBlock
+          language="tsx"
+          name="Course PeopleTable"
+          file="app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx"
+        >{`"use client";
+
+import { useState } from "react";
+import { FaUserCircle } from "react-icons/fa";
+import { useEnrollmentsStore } from "../../../../store/enrollmentsStore";
+import { emptyUser, useAccountContext, type User } from "../../../../account/AccountContext";
+
+export default function PeopleTable({ cid }: { cid: string }) {
+  const { users, createUser, updateUser, deleteUser } = useAccountContext();
+  const { enrollments, enrollIntoCourse } = useEnrollmentsStore();
+  const [user, setUser] = useState<User>(emptyUser);
+  const enrolled = users.filter((usr) =>
+    enrollments.some((enrollment) => enrollment.user === usr._id && enrollment.course === cid));
+  const addUser = () => {
+    const newUser = createUser(user);
+    enrollIntoCourse(newUser._id, cid);
+  };`}</CodeBlock>
+        <p>
+          The refactored component accepts an optional{" "}
+          <code>users</code>{" "}parameter instead of retrieving the
+          users from the local file system. <code>fetchUsers</code>{" "}
+          reloads that array. The table
+          should render whatever array the parent passes; the Users
+          screen will pass every user, and the course People page in{" "}
           <SectionLink to="6.4.3.5" />{" "}will pass only the students
           enrolled in that course. Style the table with Tailwind
           utility classes: a full-width collapsed
