@@ -159,18 +159,11 @@ app.get("/api/users", findAllUsers);`,
     title: "Course PeopleTable reads users",
     kind: "demo",
     bullets: [
-      "`people/table/PeopleTable.tsx` takes `cid` and reads `users` with `useAccountContext`",
-      "`enrollments.some` keeps users whose `enrollment.course` is `cid`. Delete this filter and the old `db.users` read",
-      "The table moves to `people/Table.tsx` and takes `users` and `fetchUsers`",
+      "`cid` loads `users` from `useAccountContext`",
+      "`enrollments.some` keeps that course. Delete it and the `db.users` read",
+      "`people/Table.tsx` takes `users` and `fetchUsers`",
     ],
-    code: `"use client";
-
-import { useState } from "react";
-import { FaUserCircle } from "react-icons/fa";
-import { useEnrollmentsStore } from "../../../../store/enrollmentsStore";
-import { emptyUser, useAccountContext, type User } from "../../../../account/AccountContext";
-
-export default function PeopleTable({ cid }: { cid: string }) {
+    code: `export default function PeopleTable({ cid }: { cid: string }) {
   const { users, createUser, updateUser, deleteUser } = useAccountContext();
   const { enrollments, enrollIntoCourse } = useEnrollmentsStore();
   const [user, setUser] = useState<User>(emptyUser);
@@ -182,7 +175,7 @@ export default function PeopleTable({ cid }: { cid: string }) {
   };`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx",
-    codeHighlightLines: [[8, 13]],
+    codeHighlightLines: [[5, 6]],
   },
   {
     id: "people-table",
@@ -208,8 +201,6 @@ export default function PeopleTable({
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/Table.tsx",
     codeHighlightLines: [[4, 11]],
-    diagram: "users-read-all",
-    diagramFocus: "ui",
   },
   {
     id: "people-table-part-2",
@@ -235,7 +226,7 @@ export default function PeopleTable({
   },
   {
     id: "people-table-part-3",
-    title: "Each row is one user",
+    title: "Name, login id, and section",
     kind: "demo",
     code: `        <tbody>
           {users.map((user) => (
@@ -246,8 +237,17 @@ export default function PeopleTable({
                 <span className="wd-last-name">{user.lastName}</span>
               </td>
               <td className="wd-login-id p-2">{user.loginId}</td>
-              <td className="wd-section p-2">{user.section}</td>
-              <td className="wd-role p-2">{user.role}</td>
+              <td className="wd-section p-2">{user.section}</td>`,
+    codeLanguage: "tsx",
+    codeFile: "app/(kambaz)/courses/[cid]/people/Table.tsx",
+    codeStartLine: 26,
+    codeHighlightLines: [[2, 10]],
+  },
+  {
+    id: "people-table-part-4",
+    title: "Role and activity cells",
+    kind: "demo",
+    code: `              <td className="wd-role p-2">{user.role}</td>
               <td className="wd-last-activity p-2">{user.lastActivity}</td>
               <td className="wd-total-activity p-2">{user.totalActivity}</td>
             </tr>
@@ -259,8 +259,8 @@ export default function PeopleTable({
 }`,
     codeLanguage: "tsx",
     codeFile: "app/(kambaz)/courses/[cid]/people/Table.tsx",
-    codeStartLine: 26,
-    codeHighlightLines: [[2, 13]],
+    codeStartLine: 36,
+    codeHighlightLines: [[1, 3]],
   },
   {
     id: "people-table-live",

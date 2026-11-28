@@ -1357,7 +1357,7 @@ describe("lecture decks", () => {
     assert.equal(counts["deploy-api"], 8);
     assert.equal(counts["local-mongo"], 12);
     assert.equal(counts["mongoose"], 13);
-    assert.equal(counts["mongo-apis"], 21);
+    assert.equal(counts["mongo-apis"], 22);
     assert.equal(counts["mongo-users-crud"], 48);
     assert.equal(counts["atlas"], 9);
     assert.equal(counts["atlas-compass"], 9);
@@ -3262,6 +3262,7 @@ describe("lecture decks", () => {
       "people-table",
       "people-table-part-2",
       "people-table-part-3",
+      "people-table-part-4",
       "people-table-live",
     ]);
     for (const slug of CHAPTER_6_SLUGS) {

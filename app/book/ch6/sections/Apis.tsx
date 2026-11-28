@@ -210,14 +210,7 @@ app.get("/api/users", findAllUsers);`}</CodeBlock>
           language="tsx"
           name="Course PeopleTable"
           file="app/(kambaz)/courses/[cid]/people/table/PeopleTable.tsx"
-        >{`"use client";
-
-import { useState } from "react";
-import { FaUserCircle } from "react-icons/fa";
-import { useEnrollmentsStore } from "../../../../store/enrollmentsStore";
-import { emptyUser, useAccountContext, type User } from "../../../../account/AccountContext";
-
-export default function PeopleTable({ cid }: { cid: string }) {
+        >{`export default function PeopleTable({ cid }: { cid: string }) {
   const { users, createUser, updateUser, deleteUser } = useAccountContext();
   const { enrollments, enrollIntoCourse } = useEnrollmentsStore();
   const [user, setUser] = useState<User>(emptyUser);
