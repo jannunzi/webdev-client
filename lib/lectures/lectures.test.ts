@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { renderToStaticMarkup } from "react-dom/server";
 import {
   authoredSlideBullets,
   authoredSlideTextParts,
@@ -58,13 +59,22 @@ import { expandLineMarks } from "../code-block/lines";
 import {
   DIAGRAM_LABEL_TARGET_PX,
   DIAGRAM_MAX_HEIGHT_OF_SLIDE,
+  DIAGRAM_OPEN_GAP_Y_PAD,
   balanceBoxWidths,
   diagramFitScale,
   diagramMinFontPx,
   fontPxThatFits,
   isLectureIconSvg,
+  openGapWidth,
+  stackedLabelGap,
   tableColumnWidth,
 } from "./diagram-fit";
+import {
+  OneCurrentUserDiagram,
+  SessionCreateDiagram,
+  SessionReadDiagram,
+  SessionUpdateDiagram,
+} from "../../app/slides/_components/diagrams/SessionDiagrams";
 import { slidePaneOverflows, slidePaneScrollStep } from "./slide-pane";
 import {
   LECTURE_PRESENT_STATE,
@@ -4491,6 +4501,65 @@ describe("diagram fit", () => {
     const slide2 = diagramFitScale(1240, 440, 876, 188, cap);
     assert.ok(Math.abs(slide2 - 1240 / 876) < 0.001);
     assert.ok(188 * slide2 <= cap + 0.02);
+  });
+
+  it("caps open-space stacks by line gap and ignores pills above the label", () => {
+    assert.equal(stackedLabelGap(100, 40, [{ x: 100, y: 40 }]), 0);
+    assert.equal(
+      stackedLabelGap(100, 80, [
+        { x: 100, y: 40 },
+        { x: 100, y: 80 },
+        { x: 400, y: 50 },
+      ]),
+      40,
+    );
+    assert.equal(stackedLabelGap(100, 80, [{ x: 130, y: 40 }]), 0);
+
+    const enrollments = [
+      { x: 8, y: 16, width: 196, height: 170 },
+      { x: 296, y: 16, width: 196, height: 170 },
+    ];
+    assert.equal(openGapWidth(250, 222, enrollments), 92);
+
+    const modules = [
+      { x: 12, y: 32, width: 220, height: 138 },
+      { x: 364, y: 16, width: 220, height: 170 },
+    ];
+    assert.equal(openGapWidth(298, 222, modules), 132);
+    assert.ok(222 <= 170 + DIAGRAM_OPEN_GAP_Y_PAD);
+
+    const actors = [
+      { x: 28, y: 18, width: 400, height: 64 },
+      { x: 520, y: 18, width: 400, height: 64 },
+    ];
+    assert.equal(openGapWidth(474, 150, actors), 0);
+    assert.equal(fontPxThatFits("Session Store", 400, 16) >= DIAGRAM_LABEL_TARGET_PX, true);
+  });
+
+  it("draws session sequences as boxes that fill the leftover slot", () => {
+    for (const draw of [
+      OneCurrentUserDiagram,
+      SessionCreateDiagram,
+      SessionUpdateDiagram,
+      SessionReadDiagram,
+    ]) {
+      const html = renderToStaticMarkup(draw());
+      assert.match(html, /data-diagram-natural/, draw.name);
+      assert.match(html, /<rect[^>]*width="400"/, draw.name);
+      const labels = [...html.matchAll(/<text[^>]*y="([\d.]+)"[^>]*>([^<]*)<\/text>/g)].map((match) => ({
+        y: Number(match[1]),
+        text: match[2] ?? "",
+      }));
+      const actorBottom = 18 + 64;
+      const message = labels.filter((label) => label.y > actorBottom + DIAGRAM_OPEN_GAP_Y_PAD);
+      assert.ok(message.length >= 2, draw.name);
+      const ys = [...new Set(message.map((label) => label.y))].sort((a, b) => a - b);
+      const gaps = ys.slice(1).map((y, index) => y - ys[index]!);
+      const stacked = gaps.filter((gap) => gap < 70);
+      assert.ok(stacked.length > 0, `${draw.name} ${gaps.join(",")}`);
+      for (const gap of stacked) assert.ok(gap >= 40, `${draw.name} line gap ${gap}`);
+      assert.ok(Math.min(...message.map((label) => label.y)) >= actorBottom + 64, draw.name);
+    }
   });
 
   it("measures a SQL cell by its column, not the whole table", () => {

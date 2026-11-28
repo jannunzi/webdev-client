@@ -27,6 +27,25 @@ function ArrowHead({ x, y, dir }: { x: number; y: number; dir: 1 | -1 }) {
   return <polygon points={`${x},${y} ${base},${y - 7} ${base},${y + 7}`} fill="#171717" />;
 }
 
+/** Wide enough that "Session Store" still reaches the 24px label target. */
+const ACTOR_W = 400;
+const ACTOR_TOP = 18;
+const ACTOR_H = 64;
+/**
+ * Baseline gap for a two-line message. The slide raiser aims at 24px and
+ * will not grow a label past 80% of this gap, so the lines cannot overlap.
+ */
+const LABEL_LINE = 46;
+/** Last baseline above the arrow shaft, clear of the self-call hump. */
+const LABEL_ABOVE = 50;
+/** Room under the actor box before the first label, past the open-gap pad. */
+const PILL_CLEAR = 68;
+/**
+ * Shaft-to-shaft pitch. A two-line label sits above its shaft, so the pitch
+ * has to clear that stack and the previous self-call hook.
+ */
+const STEP = 148;
+
 function Actor({
   x,
   name,
@@ -38,18 +57,22 @@ function Actor({
   tone: Tone;
   lifeBottom: number;
 }) {
-  const width = 230;
-  const left = x - width / 2;
-  const top = 16;
-  const height = 64;
-  const radius = 10;
-  const header = `M${left} ${top + radius} a${radius} ${radius} 0 0 1 ${radius} ${-radius} h${width - 2 * radius} a${radius} ${radius} 0 0 1 ${radius} ${radius} v${height - radius} h${-width} z`;
+  const left = x - ACTOR_W / 2;
   return (
     <g>
-      <path d={header} fill={tone.header} stroke={tone.stroke} strokeWidth={3} />
+      <rect
+        x={left}
+        y={ACTOR_TOP}
+        width={ACTOR_W}
+        height={ACTOR_H}
+        rx={12}
+        fill={tone.header}
+        stroke={tone.stroke}
+        strokeWidth={3}
+      />
       <text
         x={x}
-        y={56}
+        y={ACTOR_TOP + 42}
         textAnchor="middle"
         fontFamily={FONT}
         fontSize={22}
@@ -60,7 +83,7 @@ function Actor({
       </text>
       <line
         x1={x}
-        y1={80}
+        y1={ACTOR_TOP + ACTOR_H}
         x2={x}
         y2={lifeBottom}
         stroke="#737373"
@@ -81,16 +104,19 @@ function SequenceDiagram({
   steps: Step[];
 }) {
   const width = 1440;
-  const height = 900;
-  const xs = actors.map((_, index) => 220 + index * ((width - 440) / Math.max(actors.length - 1, 1)));
+  const inset = ACTOR_W / 2 + 28;
+  const xs = actors.map(
+    (_, index) => inset + index * ((width - 2 * inset) / Math.max(actors.length - 1, 1)),
+  );
   const xOf = (id: ActorId) => xs[actors.findIndex((actor) => actor.id === id)]!;
-  const top = 150;
-  const bottom = height - 50;
-  const gap = (bottom - top) / Math.max(steps.length - 1, 1);
+  const maxLines = Math.max(1, ...steps.map((step) => step.lines.length));
+  const firstArrow = ACTOR_TOP + ACTOR_H + PILL_CLEAR + (maxLines - 1) * LABEL_LINE + LABEL_ABOVE;
+  const height = firstArrow + Math.max(steps.length - 1, 0) * STEP + 48;
 
   return (
     <svg
       role="img"
+      data-diagram-natural=""
       viewBox={`0 0 ${width} ${height}`}
       preserveAspectRatio="xMidYMid meet"
       aria-labelledby={`${title.replace(/\s+/g, "-")}-title`}
@@ -106,22 +132,23 @@ function SequenceDiagram({
         />
       ))}
       {steps.map((step, index) => {
-        const y = top + index * gap;
+        const y = firstArrow + index * STEP;
         const x1 = xOf(step.from);
         const x2 = xOf(step.to);
-        const labelX = step.from === step.to ? x1 + 150 : (x1 + x2) / 2;
+        const self = step.from === step.to;
+        const labelX = self ? x1 + 150 : (x1 + x2) / 2;
         return (
           <g key={`${step.from}-${step.to}-${index}`}>
-            {step.from === step.to ? (
+            {self ? (
               <>
                 <path
-                  d={`M${x1} ${y - 18} h72 v40`}
+                  d={`M${x1} ${y - 24} h56 v24`}
                   fill="none"
                   stroke="#171717"
                   strokeWidth={3}
                 />
-                <line x1={x1 + 72} y1={y + 22} x2={x1 + 16} y2={y + 22} stroke="#171717" strokeWidth={3} />
-                <ArrowHead x={x1} y={y + 22} dir={-1} />
+                <line x1={x1 + 56} y1={y} x2={x1 + 16} y2={y} stroke="#171717" strokeWidth={3} />
+                <ArrowHead x={x1} y={y} dir={-1} />
               </>
             ) : (
               <>
@@ -141,7 +168,7 @@ function SequenceDiagram({
               <text
                 key={line}
                 x={labelX}
-                y={y - 28 - (step.lines.length - 1 - lineIndex) * 22}
+                y={y - LABEL_ABOVE - (step.lines.length - 1 - lineIndex) * LABEL_LINE}
                 textAnchor="middle"
                 fontFamily={FONT}
                 fontSize={18}

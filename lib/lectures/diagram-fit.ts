@@ -115,3 +115,56 @@ export function fontPxThatFits(text: string, boxWidth: number, padding = 20): nu
   if (inner <= 4) return 0;
   return inner / (chars * DIAGRAM_FONT_EM);
 }
+
+/**
+ * How far below a box a caption still counts as sitting in that row's gap.
+ * Relationship captions are 36px under the tallest box and about 52px under
+ * a shorter neighbor. Sequence labels start further down the lifeline.
+ */
+export const DIAGRAM_OPEN_GAP_Y_PAD = 56;
+
+/**
+ * Width of the gap a label sits in, when boxes flank it on the same row.
+ * Boxes well above or below the baseline do not count, so an actor pill
+ * cannot squeeze a message label that is drawn further down the lifeline.
+ * Returns 0 when the label is not between two boxes.
+ */
+export function openGapWidth(
+  x: number,
+  y: number,
+  rects: { x: number; y: number; width: number; height: number }[],
+  yPad = DIAGRAM_OPEN_GAP_Y_PAD,
+): number {
+  let left = Number.NEGATIVE_INFINITY;
+  let right = Number.POSITIVE_INFINITY;
+  for (const rect of rects) {
+    if (y < rect.y - yPad || y > rect.y + rect.height + yPad) continue;
+    const end = rect.x + rect.width;
+    if (end <= x + 2) left = Math.max(left, end);
+    else if (rect.x >= x - 2) right = Math.min(right, rect.x);
+  }
+  if (!Number.isFinite(left) || !Number.isFinite(right) || right <= left) return 0;
+  return right - left;
+}
+
+/**
+ * Distance to the nearest other label in this column.
+ * Open-space sequence labels stack a fixed SVG distance apart and are not
+ * inside a rect, so the raiser caps the font at 80% of this gap.
+ * Returns 0 when the label has no neighbor in the column.
+ */
+export function stackedLabelGap(
+  x: number,
+  y: number,
+  points: { x: number; y: number }[],
+  columnSlack = 8,
+): number {
+  let gap = Number.POSITIVE_INFINITY;
+  for (const point of points) {
+    if (Math.abs(point.x - x) > columnSlack) continue;
+    const distance = Math.abs(point.y - y);
+    if (distance < 0.5) continue;
+    if (distance < gap) gap = distance;
+  }
+  return Number.isFinite(gap) ? gap : 0;
+}
