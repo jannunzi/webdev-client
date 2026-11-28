@@ -7,6 +7,8 @@ import {
   diagramMinFontPx,
   fontPxThatFits,
   isLectureIconSvg,
+  openGapWidth,
+  stackedLabelGap,
   tableColumnWidth,
   type DiagramRule,
 } from "@/lib/lectures/diagram-fit";
@@ -96,16 +98,20 @@ function raiseDiagramText(inner: HTMLElement, zoom: number, slideWidth: number) 
       if (index >= 0 && index < ys.length - 1) gaps.push(ys[index + 1] - y);
       lineGap = gaps.length > 0 ? Math.min(...gaps) : 0;
     } else {
-      let left = Number.NEGATIVE_INFINITY;
-      let right = Number.POSITIVE_INFINITY;
-      for (const rect of rects) {
-        const end = rect.x + rect.width;
-        if (end <= x + 2) left = Math.max(left, end);
-        else if (rect.x >= x - 2) right = Math.min(right, rect.x);
-      }
-      if (Number.isFinite(left) && Number.isFinite(right) && right > left) {
-        boxWidth = right - left;
-      }
+      // Only boxes on this row. An actor pill must not narrow a message
+      // label drawn further down the lifeline.
+      boxWidth = openGapWidth(x, y, rects);
+      // Stacked labels in open space (sequence messages) have no rect, so
+      // the line gap is the only thing that keeps the raised font from
+      // colliding with the line above it.
+      lineGap = stackedLabelGap(
+        x,
+        y,
+        texts.map((other) => ({
+          x: Number.parseFloat(other.getAttribute("x") || "0"),
+          y: Number.parseFloat(other.getAttribute("y") || "0"),
+        })),
+      );
     }
     const target = minVisual / zoom;
     let next = target;
@@ -259,8 +265,9 @@ export default function DiagramFit({ children }: { children: ReactNode }) {
         slide instanceof HTMLElement && slide.clientHeight > 0
           ? slide.clientHeight
           : slotHeight;
-      // Screen mocks and composed table/ER drawings fill the leftover slot.
-      // Flow rows stay at the slide-2 cap so a stack does not stretch.
+      // Screen mocks, composed table/ER drawings, and sequence diagrams fill
+      // the leftover slot. Flow rows stay at the slide-2 cap so a stack
+      // does not stretch.
       const screenDemo = Boolean(inner.querySelector("[data-screen-demo]"));
       const composed = Boolean(inner.querySelector("[data-diagram-natural]"));
       const zoom = diagramFitScale(
